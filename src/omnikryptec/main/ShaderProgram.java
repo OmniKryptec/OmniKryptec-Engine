@@ -26,7 +26,7 @@ public abstract class ShaderProgram {
 	
 	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
-	public ShaderProgram(String vertexFile, String fragmentFile) {
+	public ShaderProgram(InputStream vertexFile, InputStream fragmentFile) {
 		ShaderHolder vertexShaderHolder = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
 		ShaderHolder fragmentShaderHolder = loadShader(fragmentFile, GL20.GL_FRAGMENT_SHADER);
 		vertexShaderID = vertexShaderHolder.getID();
@@ -41,18 +41,18 @@ public abstract class ShaderProgram {
 		for(int i=0; i<vertexShaderHolder.getUniformLines().size(); i++){
 			tmp = vertexShaderHolder.getUniformLines().get(i).split(" ")[2];
 			if(uniforms_map.containsKey(tmp)){
-				
+				//error weil doppelte uniform
 			}else{
 				uniforms_map.put(tmp, getUniformLocation(tmp));
 			}
 		}
-		getAllUniformLocations();
 	}
-
-	@Deprecated
-	protected abstract void getAllUniformLocations();
-
-	protected int getUniformLocation(String uniformName) {
+	
+	public int getUniformID(String name){
+		return uniforms_map.get(name);
+	}
+	
+	private int getUniformLocation(String uniformName) {
 		return GL20.glGetUniformLocation(programID, uniformName);
 	}
 
@@ -60,6 +60,10 @@ public abstract class ShaderProgram {
 		GL20.glUseProgram(programID);
 	}
 
+	/**
+	 * Works without "stopping" the shader.
+	 */
+	@Deprecated
 	public void stop() {
 		GL20.glUseProgram(0);
 	}
@@ -79,27 +83,59 @@ public abstract class ShaderProgram {
 		GL20.glBindAttribLocation(programID, attrib, varName);
 	}
 
-	protected void loadUpFloat(int location, float value) {
+	
+	
+	public void loadFloat(String name, float value){
+		errorIfNoSuchUniform(name);
+		loadFloat(uniforms_map.get(name), value);
+	}
+	
+	public void loadFloat(int location, float value) {
 		GL20.glUniform1f(location, value);
 	}
 
-	protected void loadUpInt(int location, int value) {
+	public void loadInt(String name, int value){
+		errorIfNoSuchUniform(name);
+		loadInt(uniforms_map.get(name), value);
+	}
+	
+	public void loadInt(int location, int value) {
 		GL20.glUniform1i(location, value);
 	}
 
-	protected void loadUpVector(int loacation, Vector3f vector) {
+	public void loadVector3f(String name, Vector3f vector){
+		errorIfNoSuchUniform(name);
+		loadVector3f(uniforms_map.get(name), vector);
+	}
+	
+	public void loadVector3f(int loacation, Vector3f vector) {
 		GL20.glUniform3f(loacation, vector.x, vector.y, vector.z);
 	}
 
-	protected void loadUp4DVector(int loacation, Vector4f vector) {
+	public void loadVector4f(String name, Vector4f vector){
+		errorIfNoSuchUniform(name);
+		loadVector4f(uniforms_map.get(name), vector);
+	}
+	
+	public void loadVector4f(int loacation, Vector4f vector) {
 		GL20.glUniform4f(loacation, vector.x, vector.y, vector.z, vector.w);
 	}
 
-	protected void loadUp2DVector(int loacation, Vector2f vector) {
+	public void loadVector2f(String name, Vector2f vector){
+		errorIfNoSuchUniform(name);
+		loadVector2f(uniforms_map.get(name), vector);
+	}
+	
+	public void loadVector2f(int loacation, Vector2f vector) {
 		GL20.glUniform2f(loacation, vector.x, vector.y);
 	}
 
-	protected void loadUpBoolean(int location, boolean value) {
+	public void loadBoolean(String name, boolean value){
+		errorIfNoSuchUniform(name);
+		loadBoolean(uniforms_map.get(name), value);
+	}
+	
+	public void loadBoolean(int location, boolean value) {
 		float toLoad = 0;
 		if (value) {
 			toLoad = 1;
@@ -107,17 +143,33 @@ public abstract class ShaderProgram {
 		GL20.glUniform1f(location, toLoad);
 	}
 
-	protected void loadUpMatrix(int location, Matrix4f matrix) {
+	public void loadMatrix4f(String name, Matrix4f matrix){
+		errorIfNoSuchUniform(name);
+		loadMatrix4f(uniforms_map.get(name), matrix);
+	}
+	
+	public void loadMatrix4f(int location, Matrix4f matrix) {
 		matrix.store(matrixBuffer);
 		matrixBuffer.flip();
 		GL20.glUniformMatrix4(location, false, matrixBuffer);
 	}
+	
+	private void errorIfNoSuchUniform(String name){
+		if(!testForUniform(name)){
+			//exception?
+		}
+	}
+	
+	public boolean testForUniform(String name){
+		return uniforms_map.containsKey(name);
+	}
 
-	private static ShaderHolder loadShader(String file, int type) {
+//==============================================LOADINGSECTION=======================================================
+	
+	private static ShaderHolder loadShader(InputStream in, int type) {
 		StringBuilder shaderSrc = new StringBuilder();
 		List<String> uniforms = new ArrayList<>();
 		try {
-			InputStream in = Class.class.getResourceAsStream(file);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			String line;
 			while ((line = reader.readLine()) != null) {
