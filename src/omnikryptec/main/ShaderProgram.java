@@ -46,6 +46,8 @@ public abstract class ShaderProgram {
 				uniforms_map.put(tmp, getUniformLocation(tmp));
 			}
 		}
+		vertexShaderHolder = null;
+		fragmentShaderHolder = null;
 	}
 	
 	public int getUniformID(String name){
