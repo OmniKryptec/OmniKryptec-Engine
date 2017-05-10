@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package omnikryptec.test;
+package omnikryptec.debug;
 
 import javax.swing.Timer;
 

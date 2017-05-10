@@ -5,6 +5,8 @@
  */
 package omnikryptec.test;
 
+import omnikryptec.debug.VariableChangeListener;
+
 /**
  *
  * @author Paul
