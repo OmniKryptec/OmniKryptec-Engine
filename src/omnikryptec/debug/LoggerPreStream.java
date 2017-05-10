@@ -12,6 +12,7 @@ public class LoggerPreStream extends FilterOutputStream{
 	
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
 	private ErrorLevel default_level = ErrorLevel.INFO;
+	private boolean enableErrorlvl=true;
 	
 	public LoggerPreStream(OutputStream out) {
 		super(out);
@@ -37,17 +38,26 @@ public class LoggerPreStream extends FilterOutputStream{
 
 	private void beforeWrite() throws IOException {
 		if(this.formatter!=null){
-			out.write((LocalDateTime.now().format(formatter)).getBytes());
+			out.write(("["+LocalDateTime.now().format(formatter)+"]").getBytes());
 		}
-		out.write((" ["+default_level.name()+"]").getBytes());
+		if(enableErrorlvl){
+			out.write(("["+default_level.name()+"] ").getBytes());
+		}
 	}
 	
 	public void setDateTimeFormatter(DateTimeFormatter formatter){
 		this.formatter = formatter;
 	}
 	
-	public void setDefaultErrorLevel(ErrorLevel defaultlvl){
+	public void setErrorLevel(ErrorLevel defaultlvl){
 		this.default_level = defaultlvl;
 	}
+	
+	public void enableErrorLevel(boolean b){
+		this.enableErrorlvl = b;
+	}
 
+	public ErrorLevel getErrorLevel() {
+		return default_level;
+	}
 }
