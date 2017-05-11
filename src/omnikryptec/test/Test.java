@@ -19,7 +19,8 @@ public class Test {
      */
     public static void main(String[] args) {
         Logger.enableLoggerRedirection(true);
-        System.err.println("Test");
+        System.out.println("Test 1");
+        System.err.println("Test 2");
         VariableChangeListener vcl = new VariableChangeListener(250) {
 
             @Override
@@ -40,6 +41,11 @@ public class Test {
                 test_data = "Troll 2";
                 Thread.sleep(1000);
                 test_data = "Troll 3";
+                Thread.sleep(1000);
+                Logger.setLogEntryFormat("me <-  dtcl");
+                test_data = "Troll 4";
+                Thread.sleep(1000);
+                test_data = "Troll 5";
                 Thread.sleep(1000 / 0);
                 System.exit(0);
             } catch (Exception ex) {

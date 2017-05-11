@@ -12,8 +12,6 @@ import java.util.concurrent.Executors;
  */
 public class Logger {
 
-    public static final String STANDARD_DATETIMEFORMAT = "dd.MM.yyyy HH:mm:ss.SSS";
-
     public static final PrintStream OLDSYSOUT = System.out;
     public static final PrintStream OLDSYSERR = System.err;
     public static final SystemOutputStream NEWSYSOUT = new SystemOutputStream(OLDSYSOUT, false);
@@ -141,6 +139,14 @@ public class Logger {
         NEWSYSOUT.setDateTimeFormat(dateTimeFormat);
         for(LogEntry logEntry : LOG) {
             logEntry.setDateTimeFormat(dateTimeFormat);
+        }
+    }
+    
+    public static void setLogEntryFormat(String logEntryFormat) {
+        NEWSYSERR.setLogEntryFormat(logEntryFormat);
+        NEWSYSOUT.setLogEntryFormat(logEntryFormat);
+        for(LogEntry logEntry : LOG) {
+            logEntry.setLogEntryFormat(logEntryFormat);
         }
     }
 
