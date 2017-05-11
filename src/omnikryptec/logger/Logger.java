@@ -137,17 +137,21 @@ public class Logger {
     public static void setDateTimeFormat(String dateTimeFormat) {
         NEWSYSERR.setDateTimeFormat(dateTimeFormat);
         NEWSYSOUT.setDateTimeFormat(dateTimeFormat);
+        /*
         for(LogEntry logEntry : LOG) {
             logEntry.setDateTimeFormat(dateTimeFormat);
         }
+        */
     }
     
     public static void setLogEntryFormat(String logEntryFormat) {
         NEWSYSERR.setLogEntryFormat(logEntryFormat);
         NEWSYSOUT.setLogEntryFormat(logEntryFormat);
+        /*
         for(LogEntry logEntry : LOG) {
             logEntry.setLogEntryFormat(logEntryFormat);
         }
+        */
     }
 
 }
