@@ -39,9 +39,11 @@ public class Test {
                 test_data = "Troll 2";
                 Thread.sleep(1000);
                 test_data = "Troll 3";
-                Thread.sleep(1000);
+                Thread.sleep(1000 / 0);
                 System.exit(0);
             } catch (Exception ex) {
+                Logger.logErr("Error: " + ex, ex);
+                System.exit(-1);
             }
         }).start();
     }

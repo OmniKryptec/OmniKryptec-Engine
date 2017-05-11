@@ -120,15 +120,15 @@ public class SystemOutputStream extends PrintStream {
     }
     
     private void print(String g, Instant instant, boolean newLine) {
-        Logger.log(getLogEntry(g, instant).setPrintLevel(true).setPrintTimestamp(true).setPrintExtraInformation(true).setNewLine(newLine));
+        Logger.log(getLogEntry(g, instant).setNewLine(newLine));
     }
 
     public void log(LogEntry logentry) {
         super.print(logentry.toString());
     }
 
-    public LogEntry getLogEntry(String g, Instant timestamp) {
-        return new LogEntry(g, timestamp, (errorStream ? ErrorLevel.ERROR : ErrorLevel.INFO), dateTimeFormat, getThread(), getStackTraceElement());
+    public LogEntry getLogEntry(Object g, Instant timestamp) {
+        return new LogEntry(g, timestamp, (errorStream ? ErrorLevel.ERROR : ErrorLevel.INFO), dateTimeFormat, getThread(), getStackTraceElement()).setPrintLevel(true).setPrintTimestamp(true).setPrintExtraInformation(true);
     }
     
     protected StackTraceElement[] getStackTraceElements() {

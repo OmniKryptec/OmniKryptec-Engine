@@ -57,6 +57,10 @@ public class Logger {
             return false;
         }
     }
+    
+    public static void logErr(Object message, Exception ex) {
+        log(NEWSYSERR.getLogEntry(message, Instant.now()).setException(ex));
+    }
 
     public static void log(Object message, ErrorLevel level) {
         log(message, level, level.isBad());
