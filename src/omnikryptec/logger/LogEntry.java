@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import omnikryptec.logger.Logger.ErrorLevel;
 
 /**
  *
@@ -12,32 +13,27 @@ import java.time.format.DateTimeFormatter;
  */
 public class LogEntry implements Serializable {
 
-	public static final int LEVELERROR = -1;
-	public static final int LEVELLOW = 0;
-	public static final int LEVELNORMAL = 1;
-	public static final int LEVELINPUT = 2;
-	public static final int LEVELCOMMAND = 3;
-
-	public static final String[] LEVELNAMES = new String[] { "ERROR", "LOW", "NORMAL", "INPUT", "COMMAND" };
-
 	private Object logentry = null;
 	private Instant timestamp = null;
 	private Thread thread = null;
 	private StackTraceElement stacktraceelement = null;
 	private Exception exception = null;
-	private String datetimeformat = "dd.MM.yyyy HH:mm:ss";
-	private int level = -2;
+	private ErrorLevel level = ErrorLevel.INFO;
+	private String dateTimeFormat = Logger.STANDARD_DATETIMEFORMAT;
 	private boolean printTimestamp = false;
 	private boolean printExtraInformation = false;
 	private boolean printLevel = false;
 	private boolean debug = false;
 
-	public LogEntry(Object logentry, Instant timestamp, int level, String datetimeformat, Thread thread,
-			StackTraceElement stacktraceelement) {
+        public LogEntry(Object logentry, Instant timestamp, ErrorLevel level) {
+            this(logentry, timestamp, level, Logger.STANDARD_DATETIMEFORMAT, null, null);
+        }
+        
+	public LogEntry(Object logentry, Instant timestamp, ErrorLevel level, String dateTimeFormat, Thread thread, StackTraceElement stacktraceelement) {
 		this.logentry = logentry;
 		this.timestamp = timestamp;
 		this.level = level;
-		this.datetimeformat = datetimeformat;
+		this.dateTimeFormat = dateTimeFormat;
 		this.thread = thread;
 		this.stacktraceelement = stacktraceelement;
 	}
@@ -46,98 +42,105 @@ public class LogEntry implements Serializable {
 		return logentry;
 	}
 
-	public void setLogEntry(Object logentry) {
+	public LogEntry setLogEntry(Object logentry) {
 		this.logentry = logentry;
+                return this;
 	}
 
 	public Instant getTimeStamp() {
 		return timestamp;
 	}
 
-	public void setTimeStamp(Instant timestamp) {
+	public LogEntry setTimeStamp(Instant timestamp) {
 		this.timestamp = timestamp;
+                return this;
 	}
 
 	public StackTraceElement getStackTraceElement() {
 		return stacktraceelement;
 	}
 
-	public void setStackTraceElement(StackTraceElement stacktraceelement) {
+	public LogEntry setStackTraceElement(StackTraceElement stacktraceelement) {
 		this.stacktraceelement = stacktraceelement;
+                return this;
 	}
 
 	public Exception getException() {
 		return exception;
 	}
 
-	public void setException(Exception exception) {
+	public LogEntry setException(Exception exception) {
 		this.exception = exception;
+                return this;
 	}
 
-	public int getLevel() {
+	public ErrorLevel getLevel() {
 		return level;
 	}
 
-	public void setLevel(int level) {
+	public LogEntry setLevel(ErrorLevel level) {
 		this.level = level;
+                return this;
 	}
 
 	public String getDateTimeFormat() {
-		return datetimeformat;
+		return dateTimeFormat;
 	}
 
-	public void setDateTimeFormat(String datetimeformat) {
-		this.datetimeformat = datetimeformat;
+	public LogEntry setDateTimeFormat(String dateTimeFormat) {
+		this.dateTimeFormat = dateTimeFormat;
+                return this;
 	}
 
 	public boolean isPrintTimestamp() {
 		return printTimestamp;
 	}
 
-	public void setPrintTimestamp(boolean printTimestamp) {
+	public LogEntry setPrintTimestamp(boolean printTimestamp) {
 		this.printTimestamp = printTimestamp;
+                return this;
 	}
 
 	public boolean isPrintExtraInformation() {
 		return printExtraInformation;
 	}
 
-	public void setPrintExtraInformation(boolean printExtraInformation) {
+	public LogEntry setPrintExtraInformation(boolean printExtraInformation) {
 		this.printExtraInformation = printExtraInformation;
+                return this;
 	}
 
 	public boolean isDebug() {
 		return debug;
 	}
 
-	public void setDebug(boolean debug) {
+	public LogEntry setDebug(boolean debug) {
 		this.debug = debug;
+                return this;
 	}
 
 	public boolean isPrintLevel() {
 		return printLevel;
 	}
 
-	public void setPrintLevel(boolean printLevel) {
+	public LogEntry setPrintLevel(boolean printLevel) {
 		this.printLevel = printLevel;
-	}
-
-	public String getLevelName() {
-		return LEVELNAMES[level + 1];
+                return this;
 	}
 
 	public Thread getThread() {
 		return thread;
 	}
 
-	public void setThread(Thread thread) {
+	public LogEntry setThread(Thread thread) {
 		this.thread = thread;
+                return this;
 	}
 
 	@Override
 	public String toString() {
 		String temp_datetime = String.format("[%s]", LocalDateTime.ofInstant(getTimeStamp(), ZoneId.systemDefault())
-				.format(DateTimeFormatter.ofPattern(datetimeformat)));
+				.format(DateTimeFormatter.ofPattern(dateTimeFormat)));
 		String temp_extrainformation_format = "";
 		String temp_extrainformation = "";
 		if (getThread() != null) {
@@ -151,7 +154,7 @@ public class LogEntry implements Serializable {
 					getStackTraceElement().getMethodName(), getStackTraceElement().getFileName(),
 					getStackTraceElement().getLineNumber());
 		}
-		String temp_level = String.format("[%s]", getLevelName());
+		String temp_level = String.format("[%s]", level.toString());
 		Object msg = getLogEntry();
 		String output = "";
 		if (printTimestamp || debug) {
@@ -173,7 +176,7 @@ public class LogEntry implements Serializable {
 			output += ": ";
 		}
 		output += msg;
-		if (level == LEVELERROR && exception != null) {
+		if (level == ErrorLevel.ERROR && exception != null) {
 			for (StackTraceElement e : exception.getStackTrace()) {
 				output += "\n" + e;
 			}

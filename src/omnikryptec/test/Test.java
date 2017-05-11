@@ -1,6 +1,7 @@
 package omnikryptec.test;
 
 import omnikryptec.debug.VariableChangeListener;
+import omnikryptec.logger.Logger;
 
 /**
  *
@@ -17,6 +18,8 @@ public class Test {
 	 *            Egal
 	 */
 	public static void main(String[] args) {
+            Logger.enableLoggerRedirection(true);
+            System.err.println("Test");
 		VariableChangeListener vcl = new VariableChangeListener(250) {
 
 			@Override

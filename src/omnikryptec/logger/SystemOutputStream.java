@@ -1,11 +1,10 @@
 package omnikryptec.logger;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+import omnikryptec.logger.Logger.ErrorLevel;
 
 /**
  *
@@ -13,19 +12,12 @@ import java.time.format.DateTimeFormatter;
  */
 public class SystemOutputStream extends PrintStream {
 
-	private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-	// private JLogger logger = null;
+	private String dateTimeFormat = Logger.STANDARD_DATETIMEFORMAT;
+        private boolean errorStream = false;
 
-	public SystemOutputStream(OutputStream out/* , JLogger logger */) {
+	public SystemOutputStream(OutputStream out, boolean errorStream) {
 		super(out);
-		// this.logger = logger;
-	}
-
-	public String doFinal(Object o, Instant instant, Thread thread, StackTraceElement e) {
-		String prefix = "[" + LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).format(dtf) + "]: ";
-		String suffix = "";
-		String output = prefix + o + suffix;
-		return output;
+                this.errorStream = errorStream;
 	}
 
 	@Override
@@ -72,8 +64,43 @@ public class SystemOutputStream extends PrintStream {
 	public void print(String g) {
 		// super.print(doFinal(g, Instant.now(), logger.getThread(),
 		// logger.getStackTraceElement()));
-		super.print(g);
+		super.print(getLogEntry(g, Instant.now()).setPrintLevel(true).setPrintTimestamp(true).setPrintExtraInformation(true).toString());
 	}
+        
+        public LogEntry getLogEntry(String g, Instant timestamp) {
+            return new LogEntry(g, timestamp, (errorStream ? ErrorLevel.ERROR : ErrorLevel.INFO), dateTimeFormat, getThread(), getStackTraceElement());
+        }
+        
+    
+    protected StackTraceElement[] getStackTraceElements() {
+        return Thread.currentThread().getStackTrace();
+    }
+    
+    protected Thread getThread() {
+        return Thread.currentThread();
+    }
+    
+    protected StackTraceElement getStackTraceElement() {
+        return getStackTraceElement(Thread.currentThread());
+    }
+    
+    protected StackTraceElement getStackTraceElement(Thread thread) {
+        int i = 1;
+        final String[] forbidden_names = new String[] {this.getClass().getName(), Logger.class.getName(), /*StaticStandard.class.getName(), */SystemOutputStream.class.getName(), SystemInputStream.class.getName(), PrintStream.class.getName(), InputStream.class.getName()};
+        while(containsArray(thread.getStackTrace()[i].getClassName(), forbidden_names)) {
+            i++;
+        }
+        return thread.getStackTrace()[i];
+    }
+    
+    private boolean containsArray(String g, String[] array) {
+        for(String gg : array) {
+            if(g.equals(gg)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 	/*
 	 * public DateTimeFormatter getDateTimeFormatter() { return dtf; }
@@ -81,5 +108,14 @@ public class SystemOutputStream extends PrintStream {
 	 * public void setDateTimeFormatter(DateTimeFormatter dtf) { this.dtf = dtf;
 	 * }
 	 */
+
+    public String getDateTimeFormat() {
+        return dateTimeFormat;
+    }
+
+    public SystemOutputStream setDateTimeFormat(String dateTimeFormat) {
+        this.dateTimeFormat = dateTimeFormat;
+        return this;
+    }
 
 }
