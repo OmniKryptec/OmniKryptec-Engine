@@ -12,6 +12,8 @@ import omnikryptec.logger.Logger.ErrorLevel;
  * @author Paul
  */
 public class LogEntry implements Serializable {
+    
+        public static final String NEWLINESTRING = "\n";
 
 	private Object logentry = null;
 	private Instant timestamp = null;
@@ -24,6 +26,7 @@ public class LogEntry implements Serializable {
 	private boolean printExtraInformation = false;
 	private boolean printLevel = false;
 	private boolean debug = false;
+        private boolean newLine = true;
 
         public LogEntry(Object logentry, Instant timestamp, ErrorLevel level) {
             this(logentry, timestamp, level, Logger.STANDARD_DATETIMEFORMAT, null, null);
@@ -137,22 +140,26 @@ public class LogEntry implements Serializable {
                 return this;
 	}
 
+        public boolean isNewLine() {
+            return newLine;
+        }
+
+        public LogEntry setNewLine(boolean newLine) {
+            this.newLine = newLine;
+            return this;
+        }
+
 	@Override
 	public String toString() {
-		String temp_datetime = String.format("[%s]", LocalDateTime.ofInstant(getTimeStamp(), ZoneId.systemDefault())
-				.format(DateTimeFormatter.ofPattern(dateTimeFormat)));
+		String temp_datetime = String.format("[%s]", LocalDateTime.ofInstant(getTimeStamp(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern(dateTimeFormat)));
 		String temp_extrainformation_format = "";
 		String temp_extrainformation = "";
 		if (getThread() != null) {
 			temp_extrainformation_format = "[%s] [%s.%s(%s:%s)]";
-			temp_extrainformation = String.format(temp_extrainformation_format, thread.getName(),
-					getStackTraceElement().getClassName(), getStackTraceElement().getMethodName(),
-					getStackTraceElement().getFileName(), getStackTraceElement().getLineNumber());
+			temp_extrainformation = String.format(temp_extrainformation_format, thread.getName(), getStackTraceElement().getClassName(), getStackTraceElement().getMethodName(), getStackTraceElement().getFileName(), getStackTraceElement().getLineNumber());
 		} else {
 			temp_extrainformation_format = "[%s.%s(%s:%s)]";
-			temp_extrainformation = String.format(temp_extrainformation_format, getStackTraceElement().getClassName(),
-					getStackTraceElement().getMethodName(), getStackTraceElement().getFileName(),
-					getStackTraceElement().getLineNumber());
+			temp_extrainformation = String.format(temp_extrainformation_format, getStackTraceElement().getClassName(), getStackTraceElement().getMethodName(), getStackTraceElement().getFileName(), getStackTraceElement().getLineNumber());
 		}
 		String temp_level = String.format("[%s]", level.toString());
 		Object msg = getLogEntry();
@@ -178,9 +185,12 @@ public class LogEntry implements Serializable {
 		output += msg;
 		if (level == ErrorLevel.ERROR && exception != null) {
 			for (StackTraceElement e : exception.getStackTrace()) {
-				output += "\n" + e;
+				output += NEWLINESTRING + e;
 			}
 		}
+                if(newLine) {
+                    output += NEWLINESTRING;
+                }
 		return output;
 	}
 
