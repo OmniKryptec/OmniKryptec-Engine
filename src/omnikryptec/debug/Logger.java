@@ -10,6 +10,7 @@ public class Logger {
 	public static final LoggerPreStream ERRPRE = new LoggerPreStream(OLDSYSERR);
 	private static final PrintStream SYSOUTOVERRIDE = new PrintStream(OUTPRE);
 	private static final PrintStream SYSERROVERRIDE = new PrintStream(ERRPRE);
+        
 	static {
 		OUTPRE.setErrorLevel(ErrorLevel.INFO);
 		ERRPRE.setErrorLevel(ErrorLevel.ERROR);
@@ -18,9 +19,16 @@ public class Logger {
 	private static boolean enabled = false;
 
 	public static enum ErrorLevel {
-		FINEST(false), FINER(false), FINE(false), INFO(false), WARNING(true), ERROR(true);
+		FINEST(false),
+                FINER(false),
+                FINE(false),
+                INFO(false),
+                INPUT(false),
+                COMMAND(false),
+                WARNING(true),
+                ERROR(true);
 
-		private boolean isBad;
+		private final boolean isBad;
 
 		private ErrorLevel(boolean bad) {
 			isBad = bad;

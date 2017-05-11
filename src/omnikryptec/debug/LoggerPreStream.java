@@ -10,7 +10,7 @@ import omnikryptec.debug.Logger.ErrorLevel;
 
 public class LoggerPreStream extends FilterOutputStream {
 
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss.SSS");
 	private ErrorLevel default_level = ErrorLevel.INFO;
 	private boolean enableErrorlvl = true;
 
