@@ -5,7 +5,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import omnikryptec.logger.Logger.ErrorLevel;
+import omnikryptec.logger.Logger.LogLevel;
 
 /**
  *
@@ -15,12 +15,12 @@ public class LogEntry implements Serializable {
     
     public static final String NEWLINESTRING = "\n";
 
-    private Object logentry = null;
+    private Object logEntry = null;
     private Instant timestamp = null;
     private Thread thread = null;
     private StackTraceElement stacktraceelement = null;
     private Exception exception = null;
-    private ErrorLevel level = ErrorLevel.INFO;
+    private LogLevel level = LogLevel.INFO;
     private String dateTimeFormat = Logger.STANDARD_DATETIMEFORMAT;
     private boolean printTimestamp = false;
     private boolean printExtraInformation = false;
@@ -28,12 +28,12 @@ public class LogEntry implements Serializable {
     private boolean debug = false;
     private boolean newLine = true;
 
-    public LogEntry(Object logentry, Instant timestamp, ErrorLevel level) {
-        this(logentry, timestamp, level, Logger.STANDARD_DATETIMEFORMAT, null, null);
+    public LogEntry(Object logEntry, Instant timestamp, LogLevel level) {
+        this(logEntry, timestamp, level, Logger.STANDARD_DATETIMEFORMAT, null, null);
     }
 
-    public LogEntry(Object logentry, Instant timestamp, ErrorLevel level, String dateTimeFormat, Thread thread, StackTraceElement stacktraceelement) {
-        this.logentry = logentry;
+    public LogEntry(Object logEntry, Instant timestamp, LogLevel level, String dateTimeFormat, Thread thread, StackTraceElement stacktraceelement) {
+        this.logEntry = logEntry;
         this.timestamp = timestamp;
         this.level = level;
         this.dateTimeFormat = dateTimeFormat;
@@ -42,11 +42,11 @@ public class LogEntry implements Serializable {
     }
 
     public Object getLogEntry() {
-        return logentry;
+        return logEntry;
     }
 
-    public LogEntry setLogEntry(Object logentry) {
-        this.logentry = logentry;
+    public LogEntry setLogEntry(Object logEntry) {
+        this.logEntry = logEntry;
         return this;
     }
 
@@ -77,11 +77,11 @@ public class LogEntry implements Serializable {
         return this;
     }
 
-    public ErrorLevel getLevel() {
+    public LogLevel getLevel() {
         return level;
     }
 
-    public LogEntry setLevel(ErrorLevel level) {
+    public LogEntry setLevel(LogLevel level) {
         this.level = level;
         return this;
     }
@@ -183,7 +183,7 @@ public class LogEntry implements Serializable {
             output += ": ";
         }
         output += msg;
-        if(level == ErrorLevel.ERROR && exception != null) {
+        if(level == LogLevel.ERROR && exception != null) {
             for(StackTraceElement e : exception.getStackTrace()) {
                 output += NEWLINESTRING + e;
             }

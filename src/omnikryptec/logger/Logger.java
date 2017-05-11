@@ -23,25 +23,35 @@ public class Logger {
     private static final ExecutorService THREADPOOL = Executors.newFixedThreadPool(1);
 
     private static boolean enabled = false;
+    public static LogLevel minimumLogLevel = LogLevel.INFO;
 
-    public static enum ErrorLevel {
-        FINEST(false),
-        FINER(false),
-        FINE(false),
-        INFO(false),
-        INPUT(false),
-        COMMAND(false),
-        WARNING(true),
-        ERROR(true);
+    public static enum LogLevel {
+        FINEST  (false, 6),
+        FINER   (false, 5),
+        FINE    (false, 4),
+        INFO    (false, 3),
+        INPUT   (false, 2),
+        COMMAND (false, 1),
+        WARNING (true, 0),
+        ERROR   (true, -1);
 
         private final boolean isBad;
+        /**
+         * The higher the level the less important is this LogLevel
+         */
+        private final int level;
 
-        private ErrorLevel(boolean bad) {
-            isBad = bad;
+        private LogLevel(boolean isBad, int level) {
+            this.isBad = isBad;
+            this.level = level;
         }
 
         public boolean isBad() {
             return isBad;
+        }
+        
+        public int getLevel() {
+            return level;
         }
     }
 
@@ -66,45 +76,45 @@ public class Logger {
     }
 
     public static void log(Object message) {
-        log(message, ErrorLevel.INFO);
+        log(message, LogLevel.INFO);
     }
     
-    public static void log(Object message, ErrorLevel level) {
+    public static void log(Object message, LogLevel level) {
         log(message, level, level.isBad());
     }
 
-    public static void log(Object message, ErrorLevel level, boolean error) {
+    public static void log(Object message, LogLevel level, boolean error) {
         log(message, level, error, true);
     }
 
-    public static void log(Object message, ErrorLevel level, boolean error, boolean newLine) {
+    public static void log(Object message, LogLevel level, boolean error, boolean newLine) {
         Instant instant = Instant.now();
-        LogEntry logentry = null;
+        LogEntry logEntry = null;
         if(error) {
-            logentry = NEWSYSERR.getLogEntry(message, instant);
+            logEntry = NEWSYSERR.getLogEntry(message, instant);
         } else {
-            logentry = NEWSYSOUT.getLogEntry(message, instant);
+            logEntry = NEWSYSOUT.getLogEntry(message, instant);
         }
-        logentry.setLevel(level);
-        logentry.setNewLine(newLine);
-        log(logentry);
+        logEntry.setLevel(level);
+        logEntry.setNewLine(newLine);
+        log(logEntry);
     }
     
-    public static void log(LogEntry logentry) {
-        addLogEntry(logentry);
+    public static void log(LogEntry logEntry) {
+        addLogEntry(logEntry);
     }
     
-    private static void addLogEntry(LogEntry logentry) {
+    private static void addLogEntry(LogEntry logEntry) {
         THREADPOOL.submit(() -> {
             try {
                 SystemOutputStream stream = null;
-                if(logentry.getLevel().isBad) {
+                if(logEntry.getLevel().isBad) {
                     stream = NEWSYSERR;
                 } else {
                     stream = NEWSYSOUT;
                 }
-                LOG.add(logentry);
-                stream.log(logentry);
+                LOG.add(logEntry);
+                stream.log(logEntry);
             } catch (Exception ex) {
             }
         });
@@ -112,6 +122,18 @@ public class Logger {
 
     public static boolean isLoggerRedirectionEnabled() {
         return enabled;
+    }
+
+    public static LogLevel getMinimumLogLevel() {
+        return minimumLogLevel;
+    }
+
+    public static void setMinimumLogLevel(LogLevel minimumLogLevel) {
+        Logger.minimumLogLevel = minimumLogLevel;
+    }
+    
+    public static boolean isMinimumLogLevel(LogLevel logLevel) {
+        return logLevel.getLevel() <= minimumLogLevel.getLevel();
     }
 
 }

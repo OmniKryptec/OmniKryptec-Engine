@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.time.Instant;
-import omnikryptec.logger.Logger.ErrorLevel;
+import omnikryptec.logger.Logger.LogLevel;
 
 /**
  *
@@ -123,12 +123,14 @@ public class SystemOutputStream extends PrintStream {
         Logger.log(getLogEntry(g, instant).setNewLine(newLine));
     }
 
-    public void log(LogEntry logentry) {
-        super.print(logentry.toString());
+    public void log(LogEntry logEntry) {
+        if(Logger.isMinimumLogLevel(logEntry.getLevel())) {
+            super.print(logEntry.toString());
+        }
     }
 
     public LogEntry getLogEntry(Object g, Instant timestamp) {
-        return new LogEntry(g, timestamp, (errorStream ? ErrorLevel.ERROR : ErrorLevel.INFO), dateTimeFormat, getThread(), getStackTraceElement()).setPrintLevel(true).setPrintTimestamp(true).setPrintExtraInformation(true);
+        return new LogEntry(g, timestamp, (errorStream ? LogLevel.ERROR : LogLevel.INFO), dateTimeFormat, getThread(), getStackTraceElement()).setPrintLevel(true).setPrintTimestamp(true).setPrintExtraInformation(true);
     }
     
     protected StackTraceElement[] getStackTraceElements() {

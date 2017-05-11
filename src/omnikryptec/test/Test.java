@@ -2,6 +2,7 @@ package omnikryptec.test;
 
 import omnikryptec.debug.VariableChangeListener;
 import omnikryptec.logger.Logger;
+import omnikryptec.logger.Logger.LogLevel;
 
 /**
  *
@@ -43,6 +44,8 @@ public class Test {
                 System.exit(0);
             } catch (Exception ex) {
                 Logger.logErr("Error: " + ex, ex);
+                Logger.log("Test 1", LogLevel.FINE);
+                Logger.log("Test 2", LogLevel.INFO);
                 System.exit(-1);
             }
         }).start();
