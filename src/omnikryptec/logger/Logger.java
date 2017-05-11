@@ -135,5 +135,13 @@ public class Logger {
     public static boolean isMinimumLogLevel(LogLevel logLevel) {
         return logLevel.getLevel() <= minimumLogLevel.getLevel();
     }
+    
+    public static void setDateTimeFormat(String dateTimeFormat) {
+        NEWSYSERR.setDateTimeFormat(dateTimeFormat);
+        NEWSYSOUT.setDateTimeFormat(dateTimeFormat);
+        for(LogEntry logEntry : LOG) {
+            logEntry.setDateTimeFormat(dateTimeFormat);
+        }
+    }
 
 }
