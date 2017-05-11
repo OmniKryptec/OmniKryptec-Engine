@@ -3,6 +3,8 @@ package omnikryptec.logger;
 import java.io.PrintStream;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 
@@ -18,6 +20,7 @@ public class Logger {
     public static final SystemOutputStream NEWSYSERR = new SystemOutputStream(OLDSYSERR, true);
     
     public static final ArrayList<LogEntry> LOG = new ArrayList<>();
+    private static final ExecutorService THREADPOOL = Executors.newFixedThreadPool(1);
 
     private static boolean enabled = false;
 
@@ -62,6 +65,10 @@ public class Logger {
         log(NEWSYSERR.getLogEntry(message, Instant.now()).setException(ex));
     }
 
+    public static void log(Object message) {
+        log(message, ErrorLevel.INFO);
+    }
+    
     public static void log(Object message, ErrorLevel level) {
         log(message, level, level.isBad());
     }
@@ -71,18 +78,36 @@ public class Logger {
     }
 
     public static void log(Object message, ErrorLevel level, boolean error, boolean newLine) {
-        log(new LogEntry(message, Instant.now(), level).setNewLine(newLine));
+        Instant instant = Instant.now();
+        LogEntry logentry = null;
+        if(error) {
+            logentry = NEWSYSERR.getLogEntry(message, instant);
+        } else {
+            logentry = NEWSYSOUT.getLogEntry(message, instant);
+        }
+        logentry.setLevel(level);
+        logentry.setNewLine(newLine);
+        log(logentry);
     }
     
     public static void log(LogEntry logentry) {
-        SystemOutputStream stream = null;
-        if(logentry.getLevel().isBad) {
-            stream = NEWSYSERR;
-        } else {
-            stream = NEWSYSOUT;
-        }
-        LOG.add(logentry);
-        stream.log(logentry);
+        addLogEntry(logentry);
+    }
+    
+    private static void addLogEntry(LogEntry logentry) {
+        THREADPOOL.submit(() -> {
+            try {
+                SystemOutputStream stream = null;
+                if(logentry.getLevel().isBad) {
+                    stream = NEWSYSERR;
+                } else {
+                    stream = NEWSYSOUT;
+                }
+                LOG.add(logentry);
+                stream.log(logentry);
+            } catch (Exception ex) {
+            }
+        });
     }
 
     public static boolean isLoggerRedirectionEnabled() {
