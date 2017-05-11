@@ -4,7 +4,7 @@ import javax.swing.Timer;
 
 /**
  *
- * @author Paul
+ * @author Panzer1119
  */
 public abstract class VariableChangeListener {
 

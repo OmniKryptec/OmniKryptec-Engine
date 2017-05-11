@@ -4,6 +4,10 @@ import java.io.PrintStream;
 import java.time.Instant;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Panzer1119 & pcfreak9000
+ */
 public class Logger {
 
     public static final String STANDARD_DATETIMEFORMAT = "dd.MM.yyyy HH:mm:ss.SSS";
@@ -38,13 +42,19 @@ public class Logger {
         }
     }
 
-    public static void enableLoggerRedirection(boolean b) {
-        if (b && !enabled) {
+    public static boolean enableLoggerRedirection(boolean enable) {
+        if(enable && !enabled) {
             System.setOut(NEWSYSOUT);
             System.setErr(NEWSYSERR);
-        } else if (!b && enabled) {
+            enabled = true;
+            return true;
+        } else if(!enable && enabled) {
             System.setOut(OLDSYSOUT);
             System.setErr(OLDSYSERR);
+            enabled = false;
+            return true;
+        } else {
+            return false;
         }
     }
 

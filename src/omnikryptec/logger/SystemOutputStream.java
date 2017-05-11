@@ -8,7 +8,7 @@ import omnikryptec.logger.Logger.ErrorLevel;
 
 /**
  *
- * @author Paul
+ * @author Panzer1119
  */
 public class SystemOutputStream extends PrintStream {
 
@@ -66,7 +66,61 @@ public class SystemOutputStream extends PrintStream {
 
     @Override
     public void print(String g) {
-        Logger.log(getLogEntry(g, Instant.now()).setPrintLevel(true).setPrintTimestamp(true).setPrintExtraInformation(true));
+        print(g, Instant.now(), false);
+    }
+    
+    
+    @Override
+    public void println(char c) {
+        println("" + c);
+    }
+
+    @Override
+    public void println(long l) {
+        println("" + l);
+    }
+
+    @Override
+    public void println(double d) {
+        println("" + d);
+    }
+
+    @Override
+    public void println(float f) {
+        println("" + f);
+    }
+
+    @Override
+    public void println(boolean b) {
+        println("" + b);
+    }
+
+    @Override
+    public void println(int i) {
+        println("" + i);
+    }
+
+    @Override
+    public void println(char[] c) {
+        println(new String(c));
+    }
+
+    @Override
+    public void println(Object o) {
+        if(o != null) {
+            println(o.toString());
+        } else {
+            println("" + null);
+        }
+    }
+
+    @Override
+    public void println(String g) {
+        print(g, Instant.now(), true);
+    }
+    
+    private void print(String g, Instant instant, boolean newLine) {
+        Logger.log(getLogEntry(g, instant).setPrintLevel(true).setPrintTimestamp(true).setPrintExtraInformation(true).setNewLine(newLine));
     }
 
     public void log(LogEntry logentry) {
@@ -106,13 +160,6 @@ public class SystemOutputStream extends PrintStream {
         }
         return false;
     }
-
-    /*
-     * public DateTimeFormatter getDateTimeFormatter() { return dtf; }
-     * 
-     * public void setDateTimeFormatter(DateTimeFormatter dtf) { this.dtf = dtf;
-     * }
-     */
 
     public String getDateTimeFormat() {
         return dateTimeFormat;

@@ -5,7 +5,7 @@ import omnikryptec.logger.Logger;
 
 /**
  *
- * @author Paul
+ * @author Panzer1119
  */
 public class Test {
 
@@ -14,8 +14,7 @@ public class Test {
 	/**
 	 * Test fuer den VariableChangeListener
 	 * 
-	 * @param args
-	 *            Egal
+	 * @param args Egal
 	 */
 	public static void main(String[] args) {
             Logger.enableLoggerRedirection(true);
