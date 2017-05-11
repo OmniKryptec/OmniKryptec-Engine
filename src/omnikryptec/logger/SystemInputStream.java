@@ -6,7 +6,7 @@ package omnikryptec.logger;
 
 /**
  *
- * @author Paul
+ * @author Panzer1119
  */
 public class SystemInputStream {
 

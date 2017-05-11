@@ -6,12 +6,11 @@ package omnikryptec.main;
  */
 public class OmniKryptecEngine {
 
-	/**
-	 * @param args
-	 *            the command line arguments
-	 */
-	public static void main(String[] args) {
-
-	}
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        
+    }
 
 }
