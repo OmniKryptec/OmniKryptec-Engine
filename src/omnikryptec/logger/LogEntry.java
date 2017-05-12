@@ -16,6 +16,7 @@ public class LogEntry implements Serializable {
     public static final String STANDARD_DATETIMEFORMAT = "dd.MM.yyyy HH:mm:ss.SSS";
     public static final String STANDARD_LOGENTRYFORMAT = "dtclthll: meex";
     public static final String NEWLINESTRING = "\n";
+    public static final String ESCAPESTRING = "/";
 
     private Object logEntry = null;
     private Instant timestamp = null;
@@ -211,6 +212,10 @@ public class LogEntry implements Serializable {
                 temp_1:
                 for(int i = 0; i < (logEntryFormatTemp.length() - 1); i++) {
                     final String symbol = logEntryFormatTemp.substring(i, i + 2);
+                    if(symbol.startsWith(ESCAPESTRING)) {
+                        output += symbol.charAt(1);
+                        break temp_1;
+                    }
                     switch(symbol) {
                         case "dt":
                             output += (dt != null ? dt : "");
