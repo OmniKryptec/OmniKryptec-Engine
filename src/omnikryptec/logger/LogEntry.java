@@ -13,7 +13,12 @@ import omnikryptec.logger.Logger.LogLevel;
  */
 public class LogEntry implements Serializable {
     
-    public static final String STANDARD_DATETIMEFORMAT = "dd.MM.yyyy HH:mm:ss.SSS";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1045037976976108198L;
+	
+	public static final String STANDARD_DATETIMEFORMAT = "dd.MM.yyyy HH:mm:ss.SSS";
     public static final String STANDARD_LOGENTRYFORMAT = "dtclthll: meex";
     public static final String NEWLINESTRING = "\n";
 
