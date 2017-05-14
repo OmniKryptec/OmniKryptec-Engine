@@ -3,6 +3,10 @@ package omnikryptec.display;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.PixelFormat;
 
+/**
+ * 
+ * @author pcfreak9000
+ */
 public class OpenGLInfo {
 
 	private int majVers = 3;

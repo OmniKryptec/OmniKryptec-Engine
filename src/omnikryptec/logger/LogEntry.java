@@ -219,7 +219,7 @@ public class LogEntry implements Serializable {
                     final String symbol = logEntryFormatTemp.substring(i, i + 2);
                     if(symbol.startsWith(ESCAPESTRING)) {
                         output += symbol.charAt(1);
-                        break temp_1;
+                        break;
                     }
                     switch(symbol) {
                         case "dt":
