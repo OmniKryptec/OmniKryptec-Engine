@@ -17,6 +17,10 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+/**
+ * 
+ * @author pcfreak9000
+ */
 public abstract class ShaderProgram {
 	private int programID;
 	private int vertexShaderID;
