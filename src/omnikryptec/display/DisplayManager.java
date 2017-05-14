@@ -1,4 +1,4 @@
-package omnikryptec.main;
+package omnikryptec.display;
 
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
@@ -77,7 +77,6 @@ public class DisplayManager {
 			if (!resize(width, height, fullscreen)) {
 				return false;
 			}
-
 			Display.setLocation(-1, -1);
 			Display.setResizable(true);
 			Display.create(info.getPixelFormat(), info.getAttribs());

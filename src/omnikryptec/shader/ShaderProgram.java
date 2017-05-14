@@ -1,4 +1,4 @@
-package omnikryptec.main;
+package omnikryptec.shader;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

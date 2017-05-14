@@ -1,4 +1,4 @@
-package omnikryptec.main;
+package omnikryptec.display;
 
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.PixelFormat;
