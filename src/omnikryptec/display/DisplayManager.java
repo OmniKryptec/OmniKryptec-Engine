@@ -4,6 +4,7 @@ import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 
 import omnikryptec.input.InputUtil;
 
@@ -21,72 +22,38 @@ public class DisplayManager {
 
 	public static final int DISABLE_FPS_CAP = 0;
 
+	private static GameSettings settings;
+	
 	private DisplayManager() {
 	}
 
-	/**
-	 * creates the display
-	 * 
-	 * @param name
-	 *            the name or null for no name
-	 * @param width
-	 *            the width
-	 * @param height
-	 *            the height
-	 * @return false if creation failed
-	 */
-	public static boolean createDisplay(String name, int width, int height) {
-		return createDisplay(name, width, height, false);
+
+	public static boolean createDisplay(String name, GameSettings settings) {
+		return createDisplay(name, settings, new OpenGLInfo());
 	}
 
-	/**
-	 * creates the display
-	 * 
-	 * @param name
-	 *            the name or null for no name
-	 * @param width
-	 *            the width
-	 * @param height
-	 *            the height
-	 * @param fullscreen
-	 *            try to make the game fullscreen?
-	 * @return
-	 */
-	public static boolean createDisplay(String name, int width, int height, boolean fullscreen) {
-		return createDisplay(name, width, height, fullscreen, new OpenGLInfo());
-	}
-
-	/**
-	 * creates the display
-	 * 
-	 * @param name
-	 *            the name or null for no name
-	 * @param width
-	 *            the width
-	 * @param height
-	 *            the height
-	 * @param fullscreen
-	 *            try to make the game fullscreen?
-	 * @return false if creation failed
-	 */
-	public static boolean createDisplay(String name, int width, int height, boolean fullscreen, OpenGLInfo info) {
+	public static boolean createDisplay(String name, GameSettings settings, OpenGLInfo info) {
+		DisplayManager.settings = settings;
 		if (name == null) {
 			name = "";
 		}
 		try {
-			if (!resize(width, height, fullscreen)) {
+			if (!resize(settings.getWidth(), settings.getHeight(), settings.wantsFullscreen())) {
 				return false;
 			}
+			if(settings.getInitialFpsCap()!=-1){
+				setSyncFPS(settings.getInitialFpsCap());
+			}
 			Display.setLocation(-1, -1);
-			Display.setResizable(true);
+			Display.setResizable(settings.wantsResizeable());
 			Display.create(info.getPixelFormat(), info.getAttribs());
 			Display.setTitle(name);
-			GL11.glViewport(0, 0, width, height);
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			GL11.glEnable(GL11.GL_CULL_FACE);
-			GL11.glCullFace(GL11.GL_FRONT);
-
+			if(settings.getMultiSamples()!=GameSettings.NO_MULTISAMPLING){
+				GL11.glEnable(GL13.GL_MULTISAMPLE);
+			}
+			GL11.glViewport(0, 0, settings.getWidth(), settings.getHeight());
+//			GL11.glEnable(GL11.GL_BLEND);
+//			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			lasttime = getCurrentTime();
 			return true;
 		} catch (Exception e) {
@@ -180,12 +147,16 @@ public class DisplayManager {
 	}
 
 	/**
-	 * the fpscap for renderig. if its <=0 there is no FPScap
+	 * the fpscap for renderig. if its equal to 0 there is no FPScap
 	 * 
 	 * @return
 	 */
 	public static int getFPSCap() {
 		return sync;
+	}
+	
+	public static GameSettings getSettings(){
+		return settings;
 	}
 
 }
