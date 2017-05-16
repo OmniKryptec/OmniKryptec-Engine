@@ -24,25 +24,32 @@ public class DisplayManager {
 
 	private static GameSettings settings;
 	
+	private static DisplayManager manager;
+	
 	private DisplayManager() {
 	}
 
 
+	public static DisplayManager instance(){
+		return manager;
+	}
+	
 	public static boolean createDisplay(String name, GameSettings settings) {
 		return createDisplay(name, settings, new OpenGLInfo());
 	}
 
 	public static boolean createDisplay(String name, GameSettings settings, OpenGLInfo info) {
 		DisplayManager.settings = settings;
+		manager = new DisplayManager();
 		if (name == null) {
 			name = "";
 		}
 		try {
-			if (!resize(settings.getWidth(), settings.getHeight(), settings.wantsFullscreen())) {
+			if (!manager.resize(settings.getWidth(), settings.getHeight(), settings.wantsFullscreen())) {
 				return false;
 			}
 			if(settings.getInitialFpsCap()!=-1){
-				setSyncFPS(settings.getInitialFpsCap());
+				manager.setSyncFPS(settings.getInitialFpsCap());
 			}
 			Display.setLocation(-1, -1);
 			Display.setResizable(settings.wantsResizeable());
@@ -54,7 +61,7 @@ public class DisplayManager {
 			GL11.glViewport(0, 0, settings.getWidth(), settings.getHeight());
 //			GL11.glEnable(GL11.GL_BLEND);
 //			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			lasttime = getCurrentTime();
+			lasttime = manager.getCurrentTime();
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -72,7 +79,7 @@ public class DisplayManager {
 	 *            try to make the game fullscreen=
 	 * @return false if rezising failed
 	 */
-	public static boolean resize(int width, int height, boolean fullscreen) {
+	public boolean resize(int width, int height, boolean fullscreen) {
 		try {
 			boolean found = false;
 
@@ -113,14 +120,14 @@ public class DisplayManager {
 	 * 
 	 * @param fps
 	 */
-	public static void setSyncFPS(int fps) {
+	public void setSyncFPS(int fps) {
 		sync = fps;
 	}
 
 	/**
 	 * updates the display
 	 */
-	public static void updateDisplay() {
+	public void updateDisplay() {
 		if (Display.wasResized()) {
 			GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
 		}
@@ -134,15 +141,15 @@ public class DisplayManager {
 		InputUtil.nextFrame();
 	}
 
-	public static float getDeltaTime() {
+	public float getDeltaTime() {
 		return deltatime;
 	}
 
-	public static long getFPS() {
+	public long getFPS() {
 		return Math.round(1.0 / deltatime);
 	}
 
-	public static long getCurrentTime() {
+	public long getCurrentTime() {
 		return Sys.getTime() * 1000 / Sys.getTimerResolution();
 	}
 
@@ -151,11 +158,11 @@ public class DisplayManager {
 	 * 
 	 * @return
 	 */
-	public static int getFPSCap() {
+	public int getFPSCap() {
 		return sync;
 	}
 	
-	public static GameSettings getSettings(){
+	public GameSettings getSettings(){
 		return settings;
 	}
 

@@ -10,7 +10,7 @@ import omnikryptec.renderer.RenderUtil;
 
 public class PostProcessing {
 
-	private static final float[] POSITIONS = { -1, 1, -1, -1, 1, 1, 1, -1 };
+	//private static final float[] POSITIONS = { -1, 1, -1, -1, 1, 1, 1, -1 };
 
 	// public static void init(Loader loader) {
 	// quad = loader.loadToVAO(POSITIONS, 2);
@@ -19,14 +19,22 @@ public class PostProcessing {
 	private static List<PostProcessingStage> stages = new ArrayList<>();
 	private static List<Fbo> beforelist = new ArrayList<>();
 	private static Fbo before;
-
+	private static PostProcessingStage currentStage;
+	
 	public static void doPostProcessing(Fbo fbo) {
 		before = fbo;
 		beforelist.add(before);
 		start();
 		for (int i = 0; i < stages.size(); i++) {
-			stages.get(i).render(before, beforelist);
-			before = stages.get(i).getFbo();
+			currentStage = stages.get(i);
+			if(!currentStage.usesDefaultRenderObject()){
+				end();
+			}
+			currentStage.render(before, beforelist);
+			if(!currentStage.usesDefaultRenderObject()){
+				start();
+			}
+			before = currentStage.getFbo();
 			beforelist.add(before);
 		}
 		end();
@@ -40,11 +48,11 @@ public class PostProcessing {
 	private static void start() {
 		// GL30.glBindVertexArray(quad.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
-		RenderUtil.enableDepthTest(false);
+		RenderUtil.enableDepthTesting(false);
 	}
 
 	private static void end() {
-		RenderUtil.enableDepthTest(true);
+		RenderUtil.enableDepthTesting(true);
 		GL20.glDisableVertexAttribArray(0);
 		GL30.glBindVertexArray(0);
 	}

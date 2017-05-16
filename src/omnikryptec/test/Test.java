@@ -3,6 +3,7 @@ package omnikryptec.test;
 import omnikryptec.debug.VariableChangeListener;
 import omnikryptec.logger.Logger;
 import omnikryptec.logger.Logger.LogLevel;
+import omnikryptec.texture.Texture;
 
 /**
  *

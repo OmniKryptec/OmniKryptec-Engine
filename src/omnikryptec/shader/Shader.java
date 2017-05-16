@@ -173,7 +173,7 @@ public abstract class Shader {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				shaderSrc.append(line).append("\n");
-				if (line.toLowerCase().startsWith("uniform")) {
+				if (line.toLowerCase().trim().startsWith("uniform")) {
 					uniforms.add(line);
 				}
 			}

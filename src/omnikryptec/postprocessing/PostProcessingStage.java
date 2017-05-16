@@ -4,8 +4,12 @@ import java.util.List;
 
 public interface PostProcessingStage {
 
-	public void render(Fbo before, List<Fbo> beforelist);
+	void render(Fbo before, List<Fbo> beforelist);
 
-	public Fbo getFbo();
-
+	Fbo getFbo();
+	
+	default boolean usesDefaultRenderObject(){
+		return true;
+	}
+	
 }
