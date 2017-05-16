@@ -5,12 +5,12 @@ import java.util.List;
 public class PostProcessingGroup implements PostProcessingStage {
 
 	@Override
-	public void render(Fbo before, List<Fbo> beforelist) {
+	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist) {
 
 	}
 
 	@Override
-	public Fbo getFbo() {
+	public FrameBufferObject getFbo() {
 		return null;
 	}
 

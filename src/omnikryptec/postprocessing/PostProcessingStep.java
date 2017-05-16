@@ -9,15 +9,15 @@ import omnikryptec.shader.Shader;
 public abstract class PostProcessingStep implements PostProcessingStage {
 
 	private Shader shader;
-	private Fbo target;
+	private FrameBufferObject target;
 
-	protected PostProcessingStep(Shader shader, Fbo target) {
+	protected PostProcessingStep(Shader shader, FrameBufferObject target) {
 		this.shader = shader;
 		this.target = target;
 	}
 
 	@Override
-	public void render(Fbo before, List<Fbo> beforelist) {
+	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist) {
 		shader.start();
 		bindTexture(before, beforelist, shader);
 		renderQuad();
@@ -25,11 +25,11 @@ public abstract class PostProcessingStep implements PostProcessingStage {
 	}
 
 	@Override
-	public Fbo getFbo() {
+	public FrameBufferObject getFbo() {
 		return target;
 	}
 
-	public abstract void bindTexture(Fbo texture, List<Fbo> beforelist, Shader using);
+	public abstract void bindTexture(FrameBufferObject texture, List<FrameBufferObject> beforelist, Shader using);
 
 	public abstract void afterRendering();
 

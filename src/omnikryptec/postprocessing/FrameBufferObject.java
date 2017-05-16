@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL30;
 
 import omnikryptec.display.GameSettings;
 
-public class Fbo {
+public class FrameBufferObject {
 
 	private final int width;
 	private final int height;
@@ -43,7 +43,7 @@ public class Fbo {
 	 *            - an int indicating the type of depth buffer attachment that
 	 *            this FBO should use.
 	 */
-	public Fbo(int width, int height, DepthbufferType type) {
+	public FrameBufferObject(int width, int height, DepthbufferType type) {
 		this.width = width;
 		this.height = height;
 		initialiseFrameBuffer(type);
@@ -56,7 +56,7 @@ public class Fbo {
 	 * @param height
 	 * @param multisamples
 	 */
-	public Fbo(int width, int height, int multisamples) {
+	public FrameBufferObject(int width, int height, int multisamples) {
 		this.width = width;
 		this.height = height;
 		this.multisample = multisamples;
@@ -116,7 +116,7 @@ public class Fbo {
 		return depthTexture;
 	}
 
-	public void resolveToFbo(Fbo out) {
+	public void resolveToFbo(FrameBufferObject out) {
 		GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, out.frameBuffer);
 		GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, frameBuffer);
 		GL30.glBlitFramebuffer(0, 0, width, height, 0, 0, out.width, out.height,

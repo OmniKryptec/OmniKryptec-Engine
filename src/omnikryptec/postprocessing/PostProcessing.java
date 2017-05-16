@@ -17,11 +17,11 @@ public class PostProcessing {
 	// }
 
 	private static List<PostProcessingStage> stages = new ArrayList<>();
-	private static List<Fbo> beforelist = new ArrayList<>();
-	private static Fbo before;
+	private static List<FrameBufferObject> beforelist = new ArrayList<>();
+	private static FrameBufferObject before;
 	private static PostProcessingStage currentStage;
 	
-	public static void doPostProcessing(Fbo fbo) {
+	public static void doPostProcessing(FrameBufferObject fbo) {
 		before = fbo;
 		beforelist.add(before);
 		start();

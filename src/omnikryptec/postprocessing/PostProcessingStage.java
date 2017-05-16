@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface PostProcessingStage {
 
-	void render(Fbo before, List<Fbo> beforelist);
+	void render(FrameBufferObject before, List<FrameBufferObject> beforelist);
 
-	Fbo getFbo();
+	FrameBufferObject getFbo();
 	
 	default boolean usesDefaultRenderObject(){
 		return true;

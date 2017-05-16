@@ -5,22 +5,22 @@ import omnikryptec.objLoader.ModelData;
 
 public class Model {
 
-	private Vao vao;
+	private VertexArrayObject vao;
 	private boolean nm;
 	
 	public Model(ModelData data){
-		vao = Vao.create();
+		vao = VertexArrayObject.create();
 		vao.storeData(data.getIndices(), data.getIndices().length, data.getVertices(), data.getTextureCoords(), data.getNormals());
 		nm = false;
 	}
 	
 	public Model(ModelDataNM data){
-		vao = Vao.create();
+		vao = VertexArrayObject.create();
 		vao.storeData(data.getIndices(), data.getIndices().length, data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getTangents());
 		nm = true;
 	}
 	
-	public Vao getVao(){
+	public VertexArrayObject getVao(){
 		return vao;
 	}
 	

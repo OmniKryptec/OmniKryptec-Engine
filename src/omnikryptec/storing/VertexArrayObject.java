@@ -5,21 +5,21 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-public class Vao {
+public class VertexArrayObject {
 	
 	private static final int BYTES_PER_FLOAT = 4;
 
 	public final int id;
-	private Vbo dataVbo;
-	private Vbo indexVbo;
+	private VertexBufferObject dataVbo;
+	private VertexBufferObject indexVbo;
 	private int indexCount;
 
-	public static Vao create() {
+	public static VertexArrayObject create() {
 		int id = GL30.glGenVertexArrays();
-		return new Vao(id);
+		return new VertexArrayObject(id);
 	}
 
-	private Vao(int id) {
+	private VertexArrayObject(int id) {
 		this.id = id;
 	}
 	
@@ -63,7 +63,7 @@ public class Vao {
 	}
 
 	private void createIndexBuffer(int[] indices){
-		this.indexVbo = Vbo.create(GL15.GL_ELEMENT_ARRAY_BUFFER);
+		this.indexVbo = VertexBufferObject.create(GL15.GL_ELEMENT_ARRAY_BUFFER);
 		indexVbo.bind();
 		indexVbo.storeData(indices);
 		this.indexCount = indices.length;
@@ -84,7 +84,7 @@ public class Vao {
 	}
 
 	private void storeInterleavedData(float[] data, int... lengths) {
-		dataVbo = Vbo.create(GL15.GL_ARRAY_BUFFER);
+		dataVbo = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
 		dataVbo.bind();
 		dataVbo.storeData(data);
 		int bytesPerVertex = calculateBytesPerVertex(lengths);

@@ -6,19 +6,19 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL15;
 
-public class Vbo {
+public class VertexBufferObject {
 	
 	private final int vboId;
 	private final int type;
 	
-	private Vbo(int vboId, int type){
+	private VertexBufferObject(int vboId, int type){
 		this.vboId = vboId;
 		this.type = type;
 	}
 	
-	public static Vbo create(int type){
+	public static VertexBufferObject create(int type){
 		int id = GL15.glGenBuffers();
-		return new Vbo(id, type);
+		return new VertexBufferObject(id, type);
 	}
 	
 	public void bind(){
