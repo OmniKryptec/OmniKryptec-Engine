@@ -46,7 +46,7 @@ public class Shader {
 		for (int i = 0; i < vertexShaderHolder.getUniformLines().size(); i++) {
 			tmp = vertexShaderHolder.getUniformLines().get(i).split(" ")[2];
 			if (uniforms.contains(tmp)) {
-				if(Logger.isInDebugMode()){
+				if(Logger.isDebugMode()){
 					Logger.log("Uniform name already in use (vertexshader): " + tmp, LogLevel.WARNING, true);
 				}
 			} else {
@@ -56,14 +56,14 @@ public class Shader {
 		for (int i = 0; i < fragmentShaderHolder.getUniformLines().size(); i++) {
 			tmp = fragmentShaderHolder.getUniformLines().get(i).split(" ")[2];
 			if (uniforms.contains(tmp)) {
-				if(Logger.isInDebugMode()){
+				if(Logger.isDebugMode()){
 					Logger.log("Uniform name already in use (fragmentshader): " + tmp, LogLevel.WARNING, true);
 				}
 			} else {
 				uniforms.add(tmp);
 			}
 		}
-		if (uniformstmp.size() != uniforms.size() && Logger.isInDebugMode()) {
+		if (uniformstmp.size() != uniforms.size() && Logger.isDebugMode()) {
 			Logger.log("Found uniforms: " + uniforms + "; Required uniforms in constructor: " + uniformstmp.size(),
 					LogLevel.WARNING, false);
 		}

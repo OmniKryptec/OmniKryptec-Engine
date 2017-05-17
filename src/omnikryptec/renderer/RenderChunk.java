@@ -55,7 +55,7 @@ public class RenderChunk {
 						chunk.get(tmpr).put(tmp.getTexturedModel(), new ArrayList<>());
 					}
 					chunk.get(tmpr).get(tmp.getTexturedModel()).add(tmp);
-				} else if (Logger.isInDebugMode()) {
+				} else if (Logger.isDebugMode()) {
 					Logger.log("IRenderer is null", LogLevel.WARNING);
 				}
 			} else {
@@ -77,7 +77,7 @@ public class RenderChunk {
 					if (chunk.get(tmpr).isEmpty()) {
 						chunk.remove(tmpr);
 					}
-				} else if (Logger.isInDebugMode()) {
+				} else if (Logger.isDebugMode()) {
 					Logger.log("IRenderer is null", LogLevel.WARNING);
 				}
 			} else {

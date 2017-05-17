@@ -20,10 +20,10 @@ public class Logger {
     public static final ArrayList<LogEntry> LOG = new ArrayList<>();
     private static final ExecutorService THREADPOOL = Executors.newFixedThreadPool(1);
 
+    private static boolean debugMode = false;
     private static boolean enabled = false;
     public static LogLevel minimumLogLevel = LogLevel.INFO;
     
-    private static boolean debugmode=false;
     
     public static enum LogLevel {
         FINEST  (false, 6),
@@ -55,12 +55,13 @@ public class Logger {
         }
     }
     
-    public static void setDebugMode(boolean b){
-    	debugmode = b;
+    public static Class setDebugMode(boolean debugMode) {
+    	Logger.debugMode = debugMode;
+        return Logger.class;
     }
     
-    public static boolean isInDebugMode(){
-    	return debugmode;
+    public static boolean isDebugMode() {
+    	return debugMode;
     }
     
     public static boolean enableLoggerRedirection(boolean enable) {

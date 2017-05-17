@@ -64,7 +64,7 @@ public class DisplayManager {
 			lasttime = manager.getCurrentTime();
 			return new OmniKryptecEngine(manager);
 		} catch (Exception e) {
-			if(Logger.isInDebugMode()){
+			if(Logger.isDebugMode()){
 				e.printStackTrace();
 			}
 			return null;
