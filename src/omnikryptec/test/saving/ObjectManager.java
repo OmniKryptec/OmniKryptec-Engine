@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import omnikryptec.logger.Logger;
 import omnikryptec.storing.GameObject;
-import omnikryptec.test.saving.World;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
@@ -82,7 +81,7 @@ public class ObjectManager {
             World world_second = World.loadWorldFromFile(file);
             Logger.log(world_second);
             //saveGameObjects(test_array, new File("test_save.txt"), true);
-            Thread.sleep(1000);
+            //Thread.sleep(1000);
             System.exit(0);
         } catch (Exception ex) {
         }

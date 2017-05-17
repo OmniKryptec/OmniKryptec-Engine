@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 
@@ -18,12 +19,22 @@ public class Logger {
     public static final SystemOutputStream NEWSYSERR = new SystemOutputStream(OLDSYSERR, true);
     
     public static final ArrayList<LogEntry> LOG = new ArrayList<>();
-    private static final ExecutorService THREADPOOL = Executors.newFixedThreadPool(1);
+    private static ExecutorService THREADPOOL = null;
 
     private static boolean debugMode = false;
     private static boolean enabled = false;
     public static LogLevel minimumLogLevel = LogLevel.INFO;
     
+    static {
+        initializeThreadPool();
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                THREADPOOL.shutdown();
+                THREADPOOL.awaitTermination(1, TimeUnit.MINUTES);
+            } catch (Exception ex) {
+            }
+        }));
+    }
     
     public static enum LogLevel {
         FINEST  (false, 6),
@@ -114,6 +125,9 @@ public class Logger {
     }
     
     private static void addLogEntry(LogEntry logEntry) {
+        if(THREADPOOL.isShutdown() || THREADPOOL.isTerminated()) {
+            initializeThreadPool();
+        }
         THREADPOOL.submit(() -> {
             try {
                 SystemOutputStream stream = null;
@@ -128,6 +142,10 @@ public class Logger {
             	ex.printStackTrace(OLDSYSERR);
             }
         });
+    }
+    
+    private static void initializeThreadPool() {
+        THREADPOOL = Executors.newFixedThreadPool(1);
     }
 
     public static boolean isLoggerRedirectionEnabled() {
