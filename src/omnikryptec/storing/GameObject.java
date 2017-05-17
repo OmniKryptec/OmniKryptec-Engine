@@ -1,5 +1,6 @@
 package omnikryptec.storing;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.renderer.RenderChunk;
@@ -15,7 +16,8 @@ public class GameObject {
     private GameObject parent;
     private boolean active = true;
     private Vector3f rotation;
-    private RenderChunk mychunk;
+    //@JsonView(GameObject.class) //To hide this while saving it
+    private RenderChunk myChunk;
 
     /**
      * creates a gameobject with no parent
@@ -207,13 +209,13 @@ public class GameObject {
         pos = new Vector3f(toCopy.pos);
     }
 
-    public GameObject setMyChunk(RenderChunk c){
-        this.mychunk = c;
+    public GameObject setMyChunk(RenderChunk myChunk){
+        this.myChunk = myChunk;
         return this;
     }
 
     public RenderChunk getMyChunk(){
-            return mychunk;
+            return myChunk;
     }
 
     public Vector3f getPos() {
@@ -224,17 +226,8 @@ public class GameObject {
         return rotation;
     }
 
-    public RenderChunk getMychunk() {
-        return mychunk;
-    }
-
     public GameObject setPos(Vector3f pos) {
         this.pos = pos;
-        return this;
-    }
-
-    public GameObject setMychunk(RenderChunk mychunk) {
-        this.mychunk = mychunk;
         return this;
     }
     
