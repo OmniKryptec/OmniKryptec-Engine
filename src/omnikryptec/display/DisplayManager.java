@@ -7,6 +7,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
 import omnikryptec.input.InputUtil;
+import omnikryptec.logger.Logger;
+import omnikryptec.main.OmniKryptecEngine;
 
 /**
  * 
@@ -34,11 +36,11 @@ public class DisplayManager {
 		return manager;
 	}
 	
-	public static boolean createDisplay(String name, GameSettings settings) {
+	public static OmniKryptecEngine createDisplay(String name, GameSettings settings) {
 		return createDisplay(name, settings, new OpenGLInfo());
 	}
 
-	public static boolean createDisplay(String name, GameSettings settings, OpenGLInfo info) {
+	public static OmniKryptecEngine createDisplay(String name, GameSettings settings, OpenGLInfo info) {
 		DisplayManager.settings = settings;
 		manager = new DisplayManager();
 		if (name == null) {
@@ -46,7 +48,7 @@ public class DisplayManager {
 		}
 		try {
 			if (!manager.resize(settings.getWidth(), settings.getHeight(), settings.wantsFullscreen())) {
-				return false;
+				return null;
 			}
 			if(settings.getInitialFpsCap()!=-1){
 				manager.setSyncFPS(settings.getInitialFpsCap());
@@ -59,12 +61,13 @@ public class DisplayManager {
 				GL11.glEnable(GL13.GL_MULTISAMPLE);
 			}
 			GL11.glViewport(0, 0, settings.getWidth(), settings.getHeight());
-//			GL11.glEnable(GL11.GL_BLEND);
-//			GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			lasttime = manager.getCurrentTime();
-			return true;
+			return new OmniKryptecEngine(manager);
 		} catch (Exception e) {
-			return false;
+			if(Logger.isInDebugMode()){
+				e.printStackTrace();
+			}
+			return null;
 		}
 	}
 

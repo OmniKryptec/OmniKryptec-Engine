@@ -1,31 +1,28 @@
 package omnikryptec.storing;
 
-import omnikryptec.nmObjConverter.ModelDataNM;
-import omnikryptec.objLoader.ModelData;
+import omnikryptec.objConverter.ModelData;
 
 public class Model {
 
-	private VertexArrayObject vao;
-	private boolean nm;
+	private VertexArrayObject vao;	
+//	public Model(ModelData data){
+//		vao = VertexArrayObject.create();
+//		vao.storeData(data.getIndices(), data.getIndices().length, data.getVertices(), data.getTextureCoords(), data.getNormals());
+//		nm = false;
+//	}
 	
 	public Model(ModelData data){
 		vao = VertexArrayObject.create();
-		vao.storeData(data.getIndices(), data.getIndices().length, data.getVertices(), data.getTextureCoords(), data.getNormals());
-		nm = false;
+		vao.storeData(data.getIndices(), data.getIndices().length, data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getTangents());
 	}
 	
-	public Model(ModelDataNM data){
-		vao = VertexArrayObject.create();
-		vao.storeData(data.getIndices(), data.getIndices().length, data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getTangents());
-		nm = true;
+	public Model(VertexArrayObject vao){
+		this.vao = vao;
 	}
 	
 	public VertexArrayObject getVao(){
 		return vao;
 	}
 	
-	public boolean isNormalMapped(){
-		return nm;
-	}
 	
 }

@@ -1,8 +1,4 @@
-/*
- * Made bei ThinMatrix (YouTube)
- */
-
-package omnikryptec.objLoader;
+package omnikryptec.objConverter;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -13,15 +9,16 @@ import java.util.List;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-public class OBJFileLoader {
+public class ObjLoader {
 
 
-	public static ModelData loadOBJModOption(InputStream stream) {
 
+	public static ModelData loadNMOBJ(InputStream file) {
 		InputStreamReader objStream = null;
 		try {
-			objStream = new InputStreamReader(stream);
+			objStream = new InputStreamReader(file);
 		} catch (Exception e) {
+			
 			e.printStackTrace();
 			System.exit(-1);
 		}
@@ -60,9 +57,10 @@ public class OBJFileLoader {
 				String[] vertex1 = currentLine[1].split("/");
 				String[] vertex2 = currentLine[2].split("/");
 				String[] vertex3 = currentLine[3].split("/");
-				processVertex(vertex1, vertices, indices);
-				processVertex(vertex2, vertices, indices);
-				processVertex(vertex3, vertices, indices);
+				Vertex v0 = processVertex(vertex1, vertices, indices);
+				Vertex v1 = processVertex(vertex2, vertices, indices);
+				Vertex v2 = processVertex(vertex3, vertices, indices);
+				calculateTangents(v0, v1, v2, textures);
 				line = reader.readLine();
 			}
 			reader.close();
@@ -74,13 +72,33 @@ public class OBJFileLoader {
 		float[] verticesArray = new float[vertices.size() * 3];
 		float[] texturesArray = new float[vertices.size() * 2];
 		float[] normalsArray = new float[vertices.size() * 3];
-		float furthest = convertDataToArrays(vertices, textures, normals, verticesArray, texturesArray, normalsArray);
+		float[] tangentsArray = new float[vertices.size() * 3];
+		float furthest = convertDataToArrays(vertices, textures, normals, verticesArray, texturesArray, normalsArray,
+				tangentsArray);
 		int[] indicesArray = convertIndicesListToArray(indices);
-		ModelData data = new ModelData(verticesArray, texturesArray, normalsArray, indicesArray, furthest);
-		return data;
+		return new ModelData(verticesArray, texturesArray, normalsArray, tangentsArray, indicesArray, furthest);
 	}
 
-	private static void processVertex(String[] vertex, List<Vertex> vertices, List<Integer> indices) {
+	private static void calculateTangents(Vertex v0, Vertex v1, Vertex v2, List<Vector2f> textures) {
+		Vector3f delatPos1 = Vector3f.sub(v1.getPosition(), v0.getPosition(), null);
+		Vector3f delatPos2 = Vector3f.sub(v2.getPosition(), v0.getPosition(), null);
+		Vector2f uv0 = textures.get(v0.getTextureIndex());
+		Vector2f uv1 = textures.get(v1.getTextureIndex());
+		Vector2f uv2 = textures.get(v2.getTextureIndex());
+		Vector2f deltaUv1 = Vector2f.sub(uv1, uv0, null);
+		Vector2f deltaUv2 = Vector2f.sub(uv2, uv0, null);
+
+		float r = 1.0f / (deltaUv1.x * deltaUv2.y - deltaUv1.y * deltaUv2.x);
+		delatPos1.scale(deltaUv2.y);
+		delatPos2.scale(deltaUv1.y);
+		Vector3f tangent = Vector3f.sub(delatPos1, delatPos2, null);
+		tangent.scale(r);
+		v0.addTangent(tangent);
+		v1.addTangent(tangent);
+		v2.addTangent(tangent);
+	}
+
+	private static Vertex processVertex(String[] vertex, List<Vertex> vertices, List<Integer> indices) {
 		int index = Integer.parseInt(vertex[0]) - 1;
 		Vertex currentVertex = vertices.get(index);
 		int textureIndex = Integer.parseInt(vertex[1]) - 1;
@@ -89,8 +107,9 @@ public class OBJFileLoader {
 			currentVertex.setTextureIndex(textureIndex);
 			currentVertex.setNormalIndex(normalIndex);
 			indices.add(index);
+			return currentVertex;
 		} else {
-			dealWithAlreadyProcessedVertex(currentVertex, textureIndex, normalIndex, indices, vertices);
+			return dealWithAlreadyProcessedVertex(currentVertex, textureIndex, normalIndex, indices, vertices);
 		}
 	}
 
@@ -103,7 +122,7 @@ public class OBJFileLoader {
 	}
 
 	private static float convertDataToArrays(List<Vertex> vertices, List<Vector2f> textures, List<Vector3f> normals,
-			float[] verticesArray, float[] texturesArray, float[] normalsArray) {
+			float[] verticesArray, float[] texturesArray, float[] normalsArray, float[] tangentsArray) {
 		float furthestPoint = 0;
 		for (int i = 0; i < vertices.size(); i++) {
 			Vertex currentVertex = vertices.get(i);
@@ -113,6 +132,7 @@ public class OBJFileLoader {
 			Vector3f position = currentVertex.getPosition();
 			Vector2f textureCoord = textures.get(currentVertex.getTextureIndex());
 			Vector3f normalVector = normals.get(currentVertex.getNormalIndex());
+			Vector3f tangent = currentVertex.getAverageTangent();
 			verticesArray[i * 3] = position.x;
 			verticesArray[i * 3 + 1] = position.y;
 			verticesArray[i * 3 + 2] = position.z;
@@ -121,32 +141,39 @@ public class OBJFileLoader {
 			normalsArray[i * 3] = normalVector.x;
 			normalsArray[i * 3 + 1] = normalVector.y;
 			normalsArray[i * 3 + 2] = normalVector.z;
+			tangentsArray[i * 3] = tangent.x;
+			tangentsArray[i * 3 + 1] = tangent.y;
+			tangentsArray[i * 3 + 2] = tangent.z;
+
 		}
 		return furthestPoint;
 	}
 
-	private static void dealWithAlreadyProcessedVertex(Vertex previousVertex, int newTextureIndex, int newNormalIndex,
-			List<Integer> indices, List<Vertex> vertices) {
+	private static Vertex dealWithAlreadyProcessedVertex(Vertex previousVertex, int newTextureIndex,
+			int newNormalIndex, List<Integer> indices, List<Vertex> vertices) {
 		if (previousVertex.hasSameTextureAndNormal(newTextureIndex, newNormalIndex)) {
 			indices.add(previousVertex.getIndex());
+			return previousVertex;
 		} else {
 			Vertex anotherVertex = previousVertex.getDuplicateVertex();
 			if (anotherVertex != null) {
-				dealWithAlreadyProcessedVertex(anotherVertex, newTextureIndex, newNormalIndex, indices, vertices);
+				return dealWithAlreadyProcessedVertex(anotherVertex, newTextureIndex, newNormalIndex, indices,
+						vertices);
 			} else {
-				Vertex duplicateVertex = new Vertex(vertices.size(), previousVertex.getPosition());
+				Vertex duplicateVertex = previousVertex.duplicate(vertices.size());// NEW
 				duplicateVertex.setTextureIndex(newTextureIndex);
 				duplicateVertex.setNormalIndex(newNormalIndex);
 				previousVertex.setDuplicateVertex(duplicateVertex);
 				vertices.add(duplicateVertex);
 				indices.add(duplicateVertex.getIndex());
+				return duplicateVertex;
 			}
-
 		}
 	}
 
 	private static void removeUnusedVertices(List<Vertex> vertices) {
 		for (Vertex vertex : vertices) {
+			vertex.averageTangents();
 			if (!vertex.isSet()) {
 				vertex.setTextureIndex(0);
 				vertex.setNormalIndex(0);

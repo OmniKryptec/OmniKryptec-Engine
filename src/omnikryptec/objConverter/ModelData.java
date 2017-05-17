@@ -1,6 +1,6 @@
-package omnikryptec.nmObjConverter;
+package omnikryptec.objConverter;
 
-public class ModelDataNM {
+public class ModelData {
 
 	private float[] vertices;
 	private float[] textureCoords;
@@ -9,7 +9,7 @@ public class ModelDataNM {
 	private int[] indices;
 	private float furthestPoint;
 
-	public ModelDataNM(float[] vertices, float[] textureCoords, float[] normals, float[] tangents, int[] indices,
+	public ModelData(float[] vertices, float[] textureCoords, float[] normals, float[] tangents, int[] indices,
 			float furthestPoint) {
 		this.vertices = vertices;
 		this.textureCoords = textureCoords;

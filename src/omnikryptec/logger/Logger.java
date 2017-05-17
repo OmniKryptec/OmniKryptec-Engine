@@ -22,7 +22,9 @@ public class Logger {
 
     private static boolean enabled = false;
     public static LogLevel minimumLogLevel = LogLevel.INFO;
-
+    
+    private static boolean debugmode=false;
+    
     public static enum LogLevel {
         FINEST  (false, 6),
         FINER   (false, 5),
@@ -52,7 +54,15 @@ public class Logger {
             return level;
         }
     }
-
+    
+    public static void setDebugMode(boolean b){
+    	debugmode = b;
+    }
+    
+    public static boolean isInDebugMode(){
+    	return debugmode;
+    }
+    
     public static boolean enableLoggerRedirection(boolean enable) {
         if(enable && !enabled) {
             System.setOut(NEWSYSOUT);
@@ -114,6 +124,7 @@ public class Logger {
                 LOG.add(logEntry);
                 stream.log(logEntry);
             } catch (Exception ex) {
+            	ex.printStackTrace(OLDSYSERR);
             }
         });
     }
