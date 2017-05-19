@@ -7,6 +7,7 @@ import java.util.Map;
 
 import omnikryptec.logger.Logger;
 import omnikryptec.logger.Logger.LogLevel;
+import omnikryptec.main.Scene;
 import omnikryptec.storing.Entity;
 import omnikryptec.storing.GameObject;
 import omnikryptec.storing.TexturedModel;
@@ -30,11 +31,13 @@ public class RenderChunk {
 	}
 
 	private long x, y, z;
-
-	public RenderChunk(long x, long y, long z) {
+	private Scene scene;
+	
+	public RenderChunk(long x, long y, long z, Scene s) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.scene = s;
 	}
 
 	private Map<IRenderer, Map<TexturedModel, List<Entity>>> chunk = new HashMap<>();
@@ -98,5 +101,25 @@ public class RenderChunk {
 
 	public long getChunkZ() {
 		return z;
+	}
+
+	public void frame() {
+		for(IRenderer r : chunk.keySet()){
+			if(r!=null){
+				r.start();
+				r.render(chunk.get(r));
+				r.end();
+			}
+		}
+		for(int i=0; i<other.size(); i++){
+			if(other.get(i)!=null){
+				other.get(i).doLogic();
+				other.get(i).checkChunkPos();
+			}
+		}
+	}
+
+	public Scene getScene() {
+		return scene;
 	}
 }

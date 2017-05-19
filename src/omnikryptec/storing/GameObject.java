@@ -3,6 +3,9 @@ package omnikryptec.storing;
 import com.fasterxml.jackson.annotation.JsonView;
 import org.lwjgl.util.vector.Vector3f;
 
+import omnikryptec.logger.Logger;
+import omnikryptec.logger.Logger.LogLevel;
+import omnikryptec.main.Scene;
 import omnikryptec.renderer.RenderChunk;
 
 /**
@@ -100,7 +103,21 @@ public class GameObject {
      */
     public void doLogic() {
     }
-
+    
+    
+    public void checkChunkPos(){
+    	if(getMyChunk()!=null){
+    		if(getMyChunk().getChunkX()!=getChunkX()||getMyChunk().getChunkY()!=getChunkY()||getMyChunk().getChunkZ()!=getChunkZ()){
+    			getMyChunk().getScene().addGameObject(this);
+    			getMyChunk().removeGameObject(this);
+    		}
+    	}else{
+    		if(Logger.isDebugMode()){
+    			Logger.log("MyChunk is null (Should not happen -.-)", LogLevel.WARNING);
+    		}
+    	}
+    }
+    
     /**
      * 
      * @return true if a parent is set
@@ -229,6 +246,11 @@ public class GameObject {
     public GameObject setPos(Vector3f pos) {
         this.pos = pos;
         return this;
+    }
+    
+    @Override
+    public String toString(){
+    	return "GameObject [ Pos: "+pos.toString()+" Rot: "+rotation.toString()+" ]";
     }
     
 }

@@ -5,17 +5,24 @@ import java.util.Map;
 
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.storing.GameObject;
+import omnikryptec.storing.Camera;
 
 public class Scene {
 
 	private Map<String, RenderChunk> scene = new HashMap<>();
-
+	private Camera cam;
+	private long cox,coy,coz;
+	
+	public Scene(Camera cam){
+		this.cam = cam;
+	}
+	
 	private String tmp;
-
+	
 	public void addGameObject(GameObject g) {
 		tmp = xyzToString(g.getChunkX(), g.getChunkY(), g.getChunkZ());
 		if (!scene.containsKey(tmp)) {
-			scene.put(tmp, new RenderChunk(g.getChunkX(), g.getChunkY(), g.getChunkZ()));
+			scene.put(tmp, new RenderChunk(g.getChunkX(), g.getChunkY(), g.getChunkZ(), this));
 		}
 		scene.get(tmp).addGameObject(g);
 	}
@@ -36,4 +43,30 @@ public class Scene {
 		return x + ":" + y + ":" + z;
 	}
 
+	
+	public Camera getCamera(){
+		return cam;
+	}
+	
+	public void setCamera(Camera cam){
+		this.cam = cam;
+	}
+	
+	private long cx,cy,cz;
+	private RenderChunk tmpc;
+	public void frame(){
+		cx = cam.getChunkX();
+		cy = cam.getChunkY();
+		cz = cam.getChunkZ();
+		for(long x=-cox+cx; x<=cox+cx; x++){
+			for(long y=-coy+cy; y<=coy+cy; y++){
+				for(long z=-coz+cz; z<=coz+cz; z++){
+					if((tmpc = scene.get(xyzToString(x, y, z)))!=null){
+						tmpc.frame();
+					}
+				}
+			}
+		}
+	}
+	
 }
