@@ -1,15 +1,98 @@
 package omnikryptec.logger;
 
-//import jaddon.controller.StaticStandard;
-//import java.io.InputStream;
-//import java.util.Scanner;
+import java.io.IOException;
+import java.io.InputStream;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Scanner;
+import omnikryptec.logger.Logger.LogLevel;
 
 /**
  *
  * @author Panzer1119
  */
 public class SystemInputStream {
-
+    
+    public static final byte NEWLINEBYTE = ((byte) ((int) '\n'));
+    
+    private final InputStream inputStreamOriginal;
+    private final InputStream inputStreamNew;
+    private final ArrayList<Byte> buffer = new ArrayList<>();
+    private boolean isActive = false;
+    
+    public SystemInputStream(InputStream inputStreamOriginal) {
+        this.inputStreamOriginal = inputStreamOriginal;
+        this.inputStreamNew = new InputStream() {
+            
+            @Override
+            public int read() throws IOException {
+                int read = inputStreamOriginal.read();
+                if(read == -1) {
+                    setActive(false);
+                }
+                processData((byte) read);
+                return read;
+            }
+            
+        };
+    }
+    
+    public InputStream getOriginalInputStream() {
+        return inputStreamOriginal;
+    }
+    
+    public InputStream getNewInputStream() {
+        return inputStreamNew;
+    }
+    
+    public SystemInputStream setActive(boolean isActive) {
+        if(!this.isActive && isActive) {
+            //Schalte an
+            //thread.start();
+        } else if(this.isActive && !isActive) {
+            //Schalte aus
+            //thread.interrupt();
+            //thread.stop();
+        }
+        this.isActive = isActive;
+        return this;
+    }
+    
+    public boolean isActive() {
+        return isActive;
+    }
+    
+    private void processData(byte data) {
+        if(data == NEWLINEBYTE) {
+            final byte[] dataAll = new byte[buffer.size()];
+            for(int i = 0; i < dataAll.length; i++) {
+                dataAll[i] = buffer.get(i);
+            }
+            buffer.clear();
+            final String temp = new String(dataAll);
+            final LogEntry logEntry = new LogEntry(temp, Instant.now(), temp.startsWith(Command.COMMANDSTART) ? LogLevel.COMMAND : LogLevel.INPUT);
+            Logger.log(logEntry);
+        } else {
+            buffer.add(data);
+        }
+    }
+    
+    private final Thread thread = new Thread(new Runnable() {
+        
+        @Override
+        public void run() {
+            if(true) { //TODO Das mache ich später
+                return;
+            }
+            try {
+                final Scanner scanner = new Scanner(inputStreamOriginal);
+            } catch (Exception ex) {
+                Logger.OLDSYSERR.println("Error while reading the InputStream: " + ex);
+            }
+        }
+        
+    });
+    
 	/*
 	 * private InputStream inputstream = null; private Scanner scanner = null;
 	 * private JLogger logger = null; private final Thread thread = new

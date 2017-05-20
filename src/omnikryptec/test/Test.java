@@ -1,6 +1,9 @@
 package omnikryptec.test;
 
+import java.util.Scanner;
+import javax.swing.JFrame;
 import omnikryptec.debug.VariableChangeListener;
+import omnikryptec.logger.Commands;
 import omnikryptec.logger.Logger;
 import omnikryptec.logger.Logger.LogLevel;
 import omnikryptec.texture.Texture;
@@ -22,6 +25,23 @@ public class Test {
         Logger.enableLoggerRedirection(true);
         System.out.println("Test 1");
         System.err.println("Test 2");
+        JFrame frame = new JFrame();
+        frame.setVisible(true);
+        new Thread(() -> {
+            try {
+                final Scanner scanner = new Scanner(System.in);
+                while(scanner.hasNextLine()) {
+                    Logger.log("Scanned: " + scanner.nextLine());
+                }
+                Logger.log("Scanner stopped");
+                scanner.close();
+            } catch (Exception ex) {
+                
+            }
+        }).start();
+        if(true) {
+            return;
+        }
         VariableChangeListener vcl = new VariableChangeListener(250) {
 
             @Override

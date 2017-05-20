@@ -1,5 +1,6 @@
 package omnikryptec.logger;
 
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -13,14 +14,18 @@ import java.util.concurrent.TimeUnit;
  */
 public class Logger {
 
-    public static final PrintStream OLDSYSOUT = System.out;
-    public static final PrintStream OLDSYSERR = System.err;
+    protected static final PrintStream OLDSYSOUT = System.out;
+    protected static final PrintStream OLDSYSERR = System.err;
+    protected static final InputStream OLDSYSIN = System.in;
     public static final SystemOutputStream NEWSYSOUT = new SystemOutputStream(OLDSYSOUT, false);
     public static final SystemOutputStream NEWSYSERR = new SystemOutputStream(OLDSYSERR, true);
+    public static final SystemInputStream NEWSYSIN = new SystemInputStream(OLDSYSIN);
     
     public static final ArrayList<LogEntry> LOG = new ArrayList<>();
     private static ExecutorService THREADPOOL = null;
 
+    public static String DATETIMEFORMAT = LogEntry.STANDARD_DATETIMEFORMAT;
+    public static String LOGENTRYFORMAT = LogEntry.STANDARD_LOGENTRYFORMAT;
     private static boolean debugMode = false;
     private static boolean enabled = false;
     public static LogLevel minimumLogLevel = LogLevel.INFO;
@@ -34,6 +39,7 @@ public class Logger {
             } catch (Exception ex) {
             }
         }));
+        Commands.initialize();
     }
     
     public static enum LogLevel {
@@ -79,11 +85,15 @@ public class Logger {
         if(enable && !enabled) {
             System.setOut(NEWSYSOUT);
             System.setErr(NEWSYSERR);
+            System.setIn(NEWSYSIN.getNewInputStream());
+            NEWSYSIN.setActive(true);
             enabled = true;
             return true;
         } else if(!enable && enabled) {
             System.setOut(OLDSYSOUT);
             System.setErr(OLDSYSERR);
+            NEWSYSIN.setActive(false);
+            System.setIn(OLDSYSIN);
             enabled = false;
             return true;
         } else {
@@ -91,33 +101,39 @@ public class Logger {
         }
     }
     
-    public static void logErr(Object message, Exception ex) {
-        log(NEWSYSERR.getLogEntry(message, Instant.now()).setException(ex));
+    public static LogEntry logErr(Object message, Exception ex) {
+        LogEntry logEntry = NEWSYSERR.getLogEntry(message, Instant.now()).setException(ex);
+        log(logEntry);
+        return logEntry;
     }
 
-    public static void log(Object message) {
-        log(message, LogLevel.INFO);
+    public static LogEntry log(Object message) {
+        return log(message, LogLevel.INFO);
     }
     
-    public static void log(Object message, LogLevel level) {
-        log(message, level, level.isBad());
+    public static LogEntry log(Object message, LogLevel level) {
+        return log(message, level, level.isBad());
     }
 
-    public static void log(Object message, LogLevel level, boolean error) {
-        log(message, level, error, true);
+    public static LogEntry log(Object message, LogLevel level, boolean error) {
+        return log(message, level, error, true);
     }
 
-    public static void log(Object message, LogLevel level, boolean error, boolean newLine) {
+    public static LogEntry log(Object message, LogLevel level, boolean error, boolean newLine) {
         Instant instant = Instant.now();
         LogEntry logEntry = null;
         if(error) {
             logEntry = NEWSYSERR.getLogEntry(message, instant);
+            if(logEntry.getException() == null) {
+                logEntry.setException(new Exception());
+            }
         } else {
             logEntry = NEWSYSOUT.getLogEntry(message, instant);
         }
         logEntry.setLevel(level);
         logEntry.setNewLine(newLine);
         log(logEntry);
+        return logEntry;
     }
     
     public static void log(LogEntry logEntry) {
@@ -137,7 +153,16 @@ public class Logger {
                     stream = NEWSYSOUT;
                 }
                 LOG.add(logEntry);
-                stream.log(logEntry);
+                if(logEntry.getLevel() == LogLevel.COMMAND && logEntry.getLogEntry() != null) {
+                    boolean found = Command.runCommand(logEntry.getLogEntry().toString().substring(1));
+                    if(!found) {
+                        LogEntry logEntryError = NEWSYSERR.getLogEntry("Command not found!", Instant.now());
+                        logEntryError.setLogEntryFormat(LogEntryFormatter.toggleFormat(logEntryError.getLogEntryFormat(), true, false, true, true, true, true));
+                        Logger.log(logEntryError);
+                    }
+                } else {
+                    stream.log(logEntry);
+                }
             } catch (Exception ex) {
             	ex.printStackTrace(OLDSYSERR);
             }
@@ -165,8 +190,7 @@ public class Logger {
     }
     
     public static void setDateTimeFormat(String dateTimeFormat) {
-        NEWSYSERR.setDateTimeFormat(dateTimeFormat);
-        NEWSYSOUT.setDateTimeFormat(dateTimeFormat);
+        DATETIMEFORMAT = dateTimeFormat;
         /*
         for(LogEntry logEntry : LOG) {
             logEntry.setDateTimeFormat(dateTimeFormat);
@@ -175,8 +199,7 @@ public class Logger {
     }
     
     public static void setLogEntryFormat(String logEntryFormat) {
-        NEWSYSERR.setLogEntryFormat(logEntryFormat);
-        NEWSYSOUT.setLogEntryFormat(logEntryFormat);
+        LOGENTRYFORMAT = logEntryFormat;
         /*
         for(LogEntry logEntry : LOG) {
             logEntry.setLogEntryFormat(logEntryFormat);

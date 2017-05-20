@@ -13,12 +13,8 @@ import omnikryptec.logger.Logger.LogLevel;
  */
 public class LogEntry implements Serializable {
     
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1045037976976108198L;
-	
-	public static final String STANDARD_DATETIMEFORMAT = "dd.MM.yyyy HH:mm:ss.SSS";
+    private static final long serialVersionUID = 1045037976976108198L;
+    public static final String STANDARD_DATETIMEFORMAT = "dd.MM.yyyy HH:mm:ss.SSS";
     public static final String STANDARD_LOGENTRYFORMAT = "dtclthll: meex";
     public static final String NEWLINESTRING = "\n";
     public static final String ESCAPESTRING = "/";
@@ -249,7 +245,7 @@ public class LogEntry implements Serializable {
                 logEntryFormatTemp = logEntryFormatTemp.substring(remove);
             }
         } catch (Exception ex2) {
-            Logger.OLDSYSERR.println(ex2);
+            Logger.OLDSYSERR.println("Error while formattig a LogEntry" + ex2);
         }
         if(newLine) {
             output += NEWLINESTRING;

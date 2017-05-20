@@ -84,13 +84,14 @@ public class OmniKryptecEngine {
     	close(shutdownOption);
     }
     
-    public void frame(){
+    public OmniKryptecEngine frame(){
     	if(sceneCurrent != null){
             sceneCurrent.frame(null, Render.All);
     	}
+        return this;
     }
     
-    public void close(ShutdownOption shutdownOption){
+    public OmniKryptecEngine close(ShutdownOption shutdownOption){
     	if(shutdownOption.getLevel() >= ShutdownOption.ENGINE.getLevel()){
             cleanup();
             manager.close();
@@ -98,6 +99,7 @@ public class OmniKryptecEngine {
                 shutdownCompletely();
             }
     	}
+        return this;
     }
     
     private void cleanup(){
@@ -105,22 +107,25 @@ public class OmniKryptecEngine {
     	PostProcessing.cleanup();
     }
     
-    public void addAndSetScene(String name, Scene scene){
+    public OmniKryptecEngine addAndSetScene(String name, Scene scene){
     	addScene(name, scene);
     	setScene(name);
+        return this;
     }
     
-    public void addScene(String name, Scene scene){
+    public OmniKryptecEngine addScene(String name, Scene scene){
     	if(name != null && scene != null){
             scenes.put(name, scene);
     	}
+        return this;
     }
     
-    public void setScene(String name){
+    public OmniKryptecEngine setScene(String name){
     	sceneCurrent = scenes.get(name);
     	if(sceneCurrent != null){
             sceneCurrentName = name;
     	}
+        return this;
     }
     
     public Scene getCurrentScene(){
@@ -131,7 +136,7 @@ public class OmniKryptecEngine {
     	return sceneCurrentName;
     }
     
-    private static void shutdownCompletely() {
+    public static final void shutdownCompletely() {
         while(true) {
             try {
                 System.exit(0);

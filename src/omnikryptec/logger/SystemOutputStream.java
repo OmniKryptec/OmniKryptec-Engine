@@ -12,8 +12,6 @@ import omnikryptec.logger.Logger.LogLevel;
  */
 public class SystemOutputStream extends PrintStream {
 
-    private String dateTimeFormat = LogEntry.STANDARD_DATETIMEFORMAT;
-    private String logEntryFormat = LogEntry.STANDARD_LOGENTRYFORMAT;
     private boolean errorStream = false;
 
     public SystemOutputStream(OutputStream out, boolean errorStream) {
@@ -131,7 +129,7 @@ public class SystemOutputStream extends PrintStream {
     }
 
     public LogEntry getLogEntry(Object g, Instant timestamp) {
-        return new LogEntry(g, timestamp, (errorStream ? LogLevel.ERROR : LogLevel.INFO), dateTimeFormat, logEntryFormat, getThread(), getStackTraceElement());
+        return new LogEntry(g, timestamp, (errorStream ? LogLevel.ERROR : LogLevel.INFO), Logger.DATETIMEFORMAT, Logger.LOGENTRYFORMAT, getThread(), getStackTraceElement());
     }
     
     protected StackTraceElement[] getStackTraceElements() {
@@ -147,8 +145,8 @@ public class SystemOutputStream extends PrintStream {
     }
     
     protected StackTraceElement getStackTraceElement(Thread thread) {
-        int i = 1;
-        final String[] forbidden_names = new String[] {this.getClass().getName(), Logger.class.getName(), SystemOutputStream.class.getName(), SystemInputStream.class.getName(), PrintStream.class.getName(), InputStream.class.getName()};
+        int i = 0;
+        final String[] forbidden_names = new String[] {this.getClass().getName(), Thread.class.getName(), Logger.class.getName(), SystemOutputStream.class.getName(), SystemInputStream.class.getName(), PrintStream.class.getName(), InputStream.class.getName()};
         while(containsArray(thread.getStackTrace()[i].getClassName(), forbidden_names)) {
             i++;
         }
@@ -162,23 +160,6 @@ public class SystemOutputStream extends PrintStream {
             }
         }
         return false;
-    }
-
-    public String getDateTimeFormat() {
-        return dateTimeFormat;
-    }
-
-    public SystemOutputStream setDateTimeFormat(String dateTimeFormat) {
-        this.dateTimeFormat = dateTimeFormat;
-        return this;
-    }
-
-    public String getLogEntryFormat() {
-        return logEntryFormat;
-    }
-
-    public void setLogEntryFormat(String logEntryFormat) {
-        this.logEntryFormat = logEntryFormat;
     }
 
 }
