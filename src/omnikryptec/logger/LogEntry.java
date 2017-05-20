@@ -210,36 +210,33 @@ public class LogEntry implements Serializable {
         try {
             while(!logEntryFormatTemp.isEmpty()) {
                 int remove = 2;
-                temp_1:
-                for(int i = 0; i < (logEntryFormatTemp.length() - 1); i++) {
-                    final String symbol = logEntryFormatTemp.substring(i, i + 2);
-                    if(symbol.startsWith(ESCAPESTRING)) {
-                        output += symbol.charAt(1);
-                        break;
-                    }
+                final String symbol = logEntryFormatTemp.substring(0, 2);
+                if(symbol.startsWith(ESCAPESTRING)) {
+                    output += symbol.charAt(1);
+                } else {
                     switch(symbol) {
                         case "dt":
                             output += (dt != null ? dt : "");
-                            break temp_1;
+                            break;
                         case "cl":
                             output += (cl != null ? cl : "");
-                            break temp_1;
+                            break;
                         case "th":
                             output += (th != null ? th : "");
-                            break temp_1;
+                            break;
                         case "ll":
                             output += (ll != null ? ll : "");
-                            break temp_1;
+                            break;
                         case "me":
                             output += (me != null ? me : "");
-                            break temp_1;
+                            break;
                         case "ex":
                             output += (ex != null ? ex : "");
-                            break temp_1;
+                            break;
                         default:
                             output += symbol.charAt(0);
                             remove = 1;
-                            break temp_1;
+                            break;
                     }
                 }
                 logEntryFormatTemp = logEntryFormatTemp.substring(remove);
