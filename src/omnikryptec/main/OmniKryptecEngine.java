@@ -1,6 +1,14 @@
 package omnikryptec.main;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.print.attribute.HashAttributeSet;
+
 import omnikryptec.display.DisplayManager;
+import omnikryptec.postprocessing.PostProcessing;
+import omnikryptec.renderer.RenderChunk;
+import omnikryptec.renderer.RenderChunk.Render;
 import omnikryptec.storing.Material;
 import omnikryptec.texture.Texture;
 
@@ -31,21 +39,95 @@ public class OmniKryptecEngine {
 		Starting, Running, Error, Stopped;
 	}
     
+    public static enum ShutdownOptions{
+    	JAVA(2), ENGINE(1), NOTHING(0);
+    	
+    	
+    	private int level=0;
+    	private ShutdownOptions(int lvl){
+    		this.level = lvl;
+    	}
+    	
+    	public int getlvl(){
+    		return level;
+    	}
+    }
+    
     private State state = State.Stopped;
     
     public State getState(){
     	return state;
     }
     
+    private DisplayManager manager;
+    private Map<String, Scene> scenes = new HashMap<>();
+    private String curscenename;
+    private Scene curscene;
+    
     public OmniKryptecEngine(DisplayManager manager){
     	if(manager==null){
     		throw new NullPointerException("DisplayManager is null");
     	}
+    	this.manager = manager;
     	state = State.Starting;
     	instance = this;
     	Material.setDefaultNormalMap(Texture.newTexture(OmniKryptecEngine.class.getResourceAsStream(DEFAULT_NORMALMAP)).create());
     }
     
+    public DisplayManager getDisplayManager(){
+    	return manager;
+    }
     
+    public void loop(ShutdownOptions opt){
+    	
+    	close(opt);
+    }
+    
+    public void frame(){
+    	if(curscene!=null){
+    		curscene.frame(null, Render.All);
+    	}
+    }
+    
+    public void close(ShutdownOptions opt){
+    	if(opt.getlvl()>0){
+    		cleanup();
+    		manager.close();
+    		if(opt.getlvl()>1){
+    			System.exit(0);
+    		}
+    	}
+    }
+    
+    private void cleanup(){
+    	RenderChunk.cleanup();
+    	PostProcessing.cleanup();
+    }
+    
+    public void addAndSetScene(String name, Scene scene){
+    	addScene(name, scene);
+    	setScene(name);
+    }
+    
+    public void addScene(String name, Scene scene){
+    	if(name!=null&&scene!=null){
+    		scenes.put(name, scene);
+    	}
+    }
+    
+    public void setScene(String name){
+    	curscene = scenes.get(name);
+    	if(curscene!=null){
+    		curscenename = name;
+    	}
+    }
+    
+    public Scene getCurrentScene(){
+    	return curscene;
+    }
+    
+    public String getCurrentSceneName(){
+    	return curscenename;
+    }
     
 }

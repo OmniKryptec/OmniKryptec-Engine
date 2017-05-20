@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL32;
+
 import omnikryptec.logger.Logger;
 import omnikryptec.logger.Logger.LogLevel;
 
@@ -16,18 +18,30 @@ public class Shader {
 	private int programID;
 	private int vertexShaderID;
 	private int fragmentShaderID;
+	private int geometryShaderID=0;
 	private List<String> uniforms = new ArrayList<>();
 
 	// private static FloatBuffer matrixBuffer =
 	// BufferUtils.createFloatBuffer(16);
 
-	public Shader(InputStream vertexFile, InputStream fragmentFile, Object... uniAttr) {
+	public Shader(InputStream vertexFile, InputStream fragmentFile, Object... uniAttr){
+		this(vertexFile, null, fragmentFile, uniAttr);
+	}
+	
+	
+	public Shader(InputStream vertexFile, InputStream geometryFile, InputStream fragmentFile, Object... uniAttr) {
 		ShaderHolder vertexShaderHolder = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
 		ShaderHolder fragmentShaderHolder = loadShader(fragmentFile, GL20.GL_FRAGMENT_SHADER);
+		ShaderHolder geometryShaderHolder = null;
 		vertexShaderID = vertexShaderHolder.getID();
 		fragmentShaderID = fragmentShaderHolder.getID();
 		programID = GL20.glCreateProgram();
 		GL20.glAttachShader(programID, vertexShaderID);
+		if(geometryFile!=null){
+			geometryShaderHolder = loadShader(geometryFile, GL32.GL_GEOMETRY_SHADER);
+			geometryShaderID = geometryShaderHolder.getID();
+			GL20.glAttachShader(programID, geometryShaderID);
+		}
 		GL20.glAttachShader(programID, fragmentShaderID);
 		List<Uniform> uniformstmp = new ArrayList<>();
 		List<String> attributes = new ArrayList<>();
@@ -63,12 +77,25 @@ public class Shader {
 				uniforms.add(tmp);
 			}
 		}
+		if(geometryFile!=null){
+			for (int i = 0; i < geometryShaderHolder.getUniformLines().size(); i++) {
+				tmp = geometryShaderHolder.getUniformLines().get(i).split(" ")[2];
+				if (uniforms.contains(tmp)) {
+					if(Logger.isDebugMode()){
+						Logger.log("Uniform name already in use (geometryshader): " + tmp, LogLevel.WARNING, true);
+					}
+				} else {
+					uniforms.add(tmp);
+				}
+			}
+		}
 		if (uniformstmp.size() != uniforms.size() && Logger.isDebugMode()) {
 			Logger.log("Found uniforms: " + uniforms + "; Required uniforms in constructor: " + uniformstmp.size(),
 					LogLevel.WARNING, false);
 		}
 		vertexShaderHolder = null;
 		fragmentShaderHolder = null;
+		geometryShaderHolder = null;
 	}
 
 	public void start() {
@@ -89,6 +116,10 @@ public class Shader {
 		GL20.glDetachShader(programID, fragmentShaderID);
 		GL20.glDeleteShader(vertexShaderID);
 		GL20.glDeleteShader(fragmentShaderID);
+		if(geometryShaderID!=0){
+			GL20.glDetachShader(programID, geometryShaderID);
+			GL20.glDeleteShader(geometryShaderID);
+		}
 		GL20.glDeleteProgram(programID);
 	}
 

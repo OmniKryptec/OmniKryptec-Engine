@@ -10,11 +10,6 @@ import omnikryptec.renderer.RenderUtil;
 
 public class PostProcessing {
 
-	//private static final float[] POSITIONS = { -1, 1, -1, -1, 1, 1, 1, -1 };
-
-	// public static void init(Loader loader) {
-	// quad = loader.loadToVAO(POSITIONS, 2);
-	// }
 
 	private static List<PostProcessingStage> stages = new ArrayList<>();
 	private static List<FrameBufferObject> beforelist = new ArrayList<>();
@@ -42,7 +37,10 @@ public class PostProcessing {
 		before.resolveToScreen();
 	}
 
-	public static void cleanUp() {
+	public static void cleanup() {
+		for(int i=0; i<beforelist.size(); i++){
+			beforelist.get(i).cleanUp();
+		}
 	}
 
 	private static void start() {

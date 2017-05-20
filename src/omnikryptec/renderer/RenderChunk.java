@@ -30,6 +30,14 @@ public class RenderChunk {
 		return DEPTH;
 	}
 
+	private static List<IRenderer> allrenderer = new ArrayList<>();
+	
+	public static void cleanup(){
+		for(int i=0; i<allrenderer.size(); i++){
+			allrenderer.get(i).cleanup();
+		}
+	}
+	
 	private long x, y, z;
 	private Scene scene;
 	
@@ -51,6 +59,9 @@ public class RenderChunk {
 			if (g instanceof Entity) {
 				tmp = (Entity) g;
 				if ((tmpr = tmp.getTexturedModel().getMaterial().getRenderer()) != null) {
+					if(!allrenderer.contains(tmpr)){
+						allrenderer.add(tmpr);
+					}
 					if (!chunk.containsKey(tmpr)) {
 						chunk.put(tmpr, new HashMap<>());
 					}
@@ -103,11 +114,15 @@ public class RenderChunk {
 		return z;
 	}
 
-	public void frame() {
+	public static enum Render{
+		All, EvElse, OnlThis;
+	}
+	
+	public void frame(IRenderer rend, Render type) {
 		for(IRenderer r : chunk.keySet()){
-			if(r!=null){
+			if(r!=null&&(type==Render.All||(type==Render.OnlThis&&rend==r)||(type==Render.EvElse&&rend!=r))){
 				r.start();
-				r.render(chunk.get(r));
+				r.render(scene, chunk.get(r));
 				r.end();
 			}
 		}
@@ -122,4 +137,6 @@ public class RenderChunk {
 	public Scene getScene() {
 		return scene;
 	}
+
+
 }

@@ -169,4 +169,9 @@ public class DisplayManager {
 		return settings;
 	}
 
+
+	public void close() {
+		Display.destroy();
+	}
+
 }
