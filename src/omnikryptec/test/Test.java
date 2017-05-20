@@ -41,7 +41,7 @@ public class Test {
             try {
                 final Scanner scanner = new Scanner(System.in);
                 while(scanner.hasNextLine()) {
-                    Logger.log("Scanned: " + scanner.nextLine());
+                    Logger.log("Scanned: " + scanner.nextLine()); //FIXME InputStream wird zwar abgefangen, aber dann nicht mehr hierher weitergeleitet
                 }
                 Logger.log("Scanner stopped");
                 scanner.close();
