@@ -22,9 +22,21 @@ public class Commands {
         
     }.setUseArguments(false).setHelp("Usage:\n/exit");
     
-    static {
-        COMMANDEXIT.getCommand();
-    }
+    public static final Command COMMANDTEST = new Command("test") {
+        
+        @Override
+        public void run(String arguments) {
+            try {
+                String[] args = Command.getArguments(arguments);
+                for(String arg : args) {
+                    Logger.log(arg);
+                }
+            } catch (Exception ex) {
+                Logger.logErr("Error while executing command \"test " + arguments + "\": " + ex, ex);
+            }
+        }
+        
+    }.setUseArguments(true).setHelp("Usage:\n/test <...>");
     
     public static final void initialize() {
         //Nothing, this function only registers automatically all standard Command's 

@@ -13,6 +13,7 @@ import omnikryptec.exceptions.UnsupportedCharacterException;
 public class Command {
     
     public static final String COMMANDSTART = "/";
+    public static final String ESCAPESTRING = "\\";
     public static final String ESCAPESPACESTRING = "\"";
     public static final HashMap<String, Command> COMMANDS = new HashMap<>();
     
@@ -59,17 +60,27 @@ public class Command {
         for(int i = 0; i < arguments.length(); i++) {
             char c = arguments.charAt(i);
             String c_string = "" + c;
-            if(c_string.equals(ESCAPESPACESTRING)) {
-                isArg = !isArg;
-            } else {
-                if((!c_string.equals(delimiter) || isArg)) {
-                    temp += c;
-                } else {
-                    if(!temp.isEmpty()) {
-                        args.add(temp);
+            switch(c_string) {
+                case ESCAPESTRING:
+                    i++;
+                    if(arguments.length() > i) {
+                        char c_2 = arguments.charAt(i);
+                        temp += c_2;
                     }
-                    temp = "";
-                }
+                    break;
+                case ESCAPESPACESTRING:
+                    isArg = !isArg;
+                    break;
+                default:
+                    if((!c_string.equals(delimiter) || isArg)) {
+                        temp += c;
+                    } else {
+                        if(!temp.isEmpty()) {
+                            args.add(temp);
+                        }
+                        temp = "";
+                    }
+                    break;
             }
         }
         if(!temp.isEmpty()) {
