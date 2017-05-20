@@ -124,9 +124,6 @@ public class Logger {
         LogEntry logEntry = null;
         if(error) {
             logEntry = NEWSYSERR.getLogEntry(message, instant);
-            if(logEntry.getException() == null) {
-                logEntry.setException(new Exception());
-            }
         } else {
             logEntry = NEWSYSOUT.getLogEntry(message, instant);
         }
