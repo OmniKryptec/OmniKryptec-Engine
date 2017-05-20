@@ -13,7 +13,9 @@ import omnikryptec.logger.LogEntry.LogLevel;
  */
 public class SystemInputStream {
     
-    public static final byte NEWLINEBYTE = ((byte) ((int) '\n'));
+    public static final char NEWLINECHAR = '\n';
+    public static final int NEWLINEINT = (int) NEWLINECHAR;
+    public static final byte NEWLINEBYTE = (byte) NEWLINEINT;
     
     private final InputStream inputStreamOriginal;
     private final InputStream inputStreamNew;

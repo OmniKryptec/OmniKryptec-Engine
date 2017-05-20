@@ -28,6 +28,9 @@ public class LogEntryFormatter {
     }
     
     public static String toggleFormat(String pattern, boolean dt, boolean cl, boolean th, boolean ll, boolean me, boolean ex) {
+        if(!dt && !cl && !th && !ll && me) {
+            return LogEntryFormatTile.MESSAGE.getShortcut() + (ex ? LogEntryFormatTile.EXCEPTION.getShortcut() : "");
+        }
         if(!dt) {
             pattern = pattern.replaceAll(LogEntryFormatTile.DATETIME.getShortcut(), "");
         }

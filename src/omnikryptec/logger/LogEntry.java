@@ -14,10 +14,10 @@ import java.time.format.DateTimeFormatter;
 public class LogEntry implements Serializable {
     
     private static final long serialVersionUID = 1045037976976108198L;
-    public static final String STANDARD_DATETIMEFORMAT = "dd.MM.yyyy HH:mm:ss.SSS";
-    public static final String STANDARD_LOGENTRYFORMAT = "dtclthll: meex";
-    public static final String NEWLINESTRING = "\n";
-    public static final String ESCAPESTRING = "/";
+    public static String STANDARD_DATETIMEFORMAT = "dd.MM.yyyy HH:mm:ss.SSS";
+    public static String STANDARD_LOGENTRYFORMAT = "dtclthll: meex";
+    public static String NEWLINESTRING = "\n";
+    public static String ESCAPESTRING = "/";
 
     private Object logEntry = null;
     private Instant timestamp = null;
@@ -158,8 +158,15 @@ public class LogEntry implements Serializable {
      * 
      * @param logEntryFormat String New LogEntry Format
      */
-    public void setLogEntryFormat(String logEntryFormat) {
+    public LogEntry setLogEntryFormat(String logEntryFormat) {
         this.logEntryFormat = logEntryFormat;
+        return this;
+    }
+    
+    public LogEntry update() {
+        setDateTimeFormat(Logger.DATETIMEFORMAT);
+        setLogEntryFormat(Logger.LOGENTRYFORMAT);
+        return this;
     }
 
     @Override
@@ -256,7 +263,7 @@ public class LogEntry implements Serializable {
         FINE    (false, 4, Color.WHITE, Color.DARK_GRAY),
         INFO    (false, 3, Color.WHITE, Color.BLACK),
         INPUT   (false, 2, Color.WHITE, Color.BLUE),
-        COMMAND (false, 1, Color.WHITE, Color.CYAN),
+        COMMAND (false, 1, Color.WHITE, Color.MAGENTA),
         WARNING (true,  0, Color.WHITE, Color.ORANGE),
         ERROR   (true, -1, Color.WHITE, Color.RED);
 
@@ -289,6 +296,10 @@ public class LogEntry implements Serializable {
         
         public Color getForegroundColor() {
             return colorForeground;
+        }
+        
+        public String toText() {
+            return toString().toUpperCase().substring(0, 1) + toString().toLowerCase().substring(1);
         }
     }
     

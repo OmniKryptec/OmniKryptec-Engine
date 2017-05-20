@@ -1,6 +1,5 @@
 package omnikryptec.logger;
 
-import java.awt.Color;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.time.Instant;
@@ -23,6 +22,8 @@ public class Logger {
     public static final SystemOutputStream NEWSYSERR = new SystemOutputStream(OLDSYSERR, true);
     public static final SystemInputStream NEWSYSIN = new SystemInputStream(OLDSYSIN);
     
+    public static LogLevel minimumLogLevel = LogLevel.INFO;
+    public static final Console CONSOLE;
     public static final ArrayList<LogEntry> LOG = new ArrayList<>();
     private static ExecutorService THREADPOOL = null;
 
@@ -30,7 +31,6 @@ public class Logger {
     public static String LOGENTRYFORMAT = LogEntry.STANDARD_LOGENTRYFORMAT;
     private static boolean debugMode = false;
     private static boolean enabled = false;
-    public static LogLevel minimumLogLevel = LogLevel.INFO;
     
     static {
         initializeThreadPool();
@@ -42,6 +42,8 @@ public class Logger {
             }
         }));
         Commands.initialize();
+        CONSOLE = new Console();
+        CONSOLE.showConsole(null);
     }
     
     public static Class setDebugMode(boolean debugMode) {
@@ -132,6 +134,9 @@ public class Logger {
                 } else {
                     stream.log(logEntry);
                 }
+                if(CONSOLE.isVisible() && CONSOLE.isShowed()) {
+                    CONSOLE.addToConsole(logEntry, false);
+                }
             } catch (Exception ex) {
             	ex.printStackTrace(OLDSYSERR);
             }
@@ -155,6 +160,9 @@ public class Logger {
     }
     
     public static boolean isMinimumLogLevel(LogLevel logLevel) {
+        if(logLevel == null) {
+            return false;
+        }
         return logLevel.getLevel() <= minimumLogLevel.getLevel();
     }
     
