@@ -45,8 +45,8 @@ public class OmniKryptecEngine {
     	
     	private int level=0;
         
-    	private ShutdownOptions(int lvl){
-    		this.level = lvl;
+    	private ShutdownOptions(int level){
+    		this.level = level;
     	}
     	
     	public int getLevel(){
@@ -62,8 +62,8 @@ public class OmniKryptecEngine {
     
     private DisplayManager manager;
     private Map<String, Scene> scenes = new HashMap<>();
-    private String curscenename;
-    private Scene curscene;
+    private String sceneCurrentName;
+    private Scene sceneCurrent;
     
     public OmniKryptecEngine(DisplayManager manager){
     	if(manager == null){
@@ -85,8 +85,8 @@ public class OmniKryptecEngine {
     }
     
     public void frame(){
-    	if(curscene!=null){
-    		curscene.frame(null, Render.All);
+    	if(sceneCurrent != null){
+    		sceneCurrent.frame(null, Render.All);
     	}
     }
     
@@ -117,18 +117,18 @@ public class OmniKryptecEngine {
     }
     
     public void setScene(String name){
-    	curscene = scenes.get(name);
-    	if(curscene!=null){
-    		curscenename = name;
+    	sceneCurrent = scenes.get(name);
+    	if(sceneCurrent != null){
+    		sceneCurrentName = name;
     	}
     }
     
     public Scene getCurrentScene(){
-    	return curscene;
+    	return sceneCurrent;
     }
     
     public String getCurrentSceneName(){
-    	return curscenename;
+    	return sceneCurrentName;
     }
     
     private static final void shutdownCompletely() {
