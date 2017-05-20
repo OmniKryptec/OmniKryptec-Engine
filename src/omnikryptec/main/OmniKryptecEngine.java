@@ -61,7 +61,7 @@ public class OmniKryptecEngine {
     }
     
     private DisplayManager manager;
-    private Map<String, Scene> scenes = new HashMap<>();
+    private final Map<String, Scene> scenes = new HashMap<>();
     private String sceneCurrentName;
     private Scene sceneCurrent;
     
@@ -111,7 +111,7 @@ public class OmniKryptecEngine {
     }
     
     public void addScene(String name, Scene scene){
-    	if(name!=null&&scene!=null){
+    	if(name != null && scene != null){
     		scenes.put(name, scene);
     	}
     }
