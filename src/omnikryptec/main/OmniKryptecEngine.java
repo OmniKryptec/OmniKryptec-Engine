@@ -16,14 +16,13 @@ import omnikryptec.texture.Texture;
  */
 public class OmniKryptecEngine {
 	
-	
-	private static final String DEFAULT_NORMALMAP = "/omnikryptec/storing/normal.png";
-	
-	private static OmniKryptecEngine instance;
-	
-	public static OmniKryptecEngine instance(){
-		return instance;
-	}
+    private static final String DEFAULT_NORMALMAP = "/omnikryptec/storing/normal.png";
+
+    private static OmniKryptecEngine instance;
+
+    public static OmniKryptecEngine instance(){
+            return instance;
+    }
 	
     /**
      * @param args the command line arguments
@@ -32,25 +31,26 @@ public class OmniKryptecEngine {
     	
     }
 
-    
     public static enum State{
-		Starting, Running, Error, Stopped;
-	}
+        Starting,
+        Running,
+        Error,
+        Stopped;
+    }
     
-    public static enum ShutdownOptions{
-        
+    public static enum ShutdownOption{
     	JAVA(2),
         ENGINE(1),
         NOTHING(0);
     	
-    	private int level=0;
+    	private final int level;
         
-    	private ShutdownOptions(int level){
-    		this.level = level;
+    	private ShutdownOption(int level){
+            this.level = level;
     	}
     	
     	public int getLevel(){
-    		return level;
+            return level;
     	}
     }
     
@@ -67,36 +67,36 @@ public class OmniKryptecEngine {
     
     public OmniKryptecEngine(DisplayManager manager){
     	if(manager == null){
-    		throw new NullPointerException("DisplayManager is null");
+            throw new NullPointerException("DisplayManager is null");
     	}
     	this.manager = manager;
     	state = State.Starting;
     	instance = this;
-    	Material.setDefaultNormalMap(Texture.newTexture(OmniKryptecEngine.class.getResourceAsStream(DEFAULT_NORMALMAP)).create());
+    	Material.setDefaultNormalMap(Texture.newTexture(OmniKryptecEngine.class.getResourceAsStream(DEFAULT_NORMALMAP)).create()); //FIXME Test Only?
     }
     
     public DisplayManager getDisplayManager(){
     	return manager;
     }
     
-    public void loop(ShutdownOptions opt){
+    public void loop(ShutdownOption shutdownOption){
     	
-    	close(opt);
+    	close(shutdownOption);
     }
     
     public void frame(){
     	if(sceneCurrent != null){
-    		sceneCurrent.frame(null, Render.All);
+            sceneCurrent.frame(null, Render.All);
     	}
     }
     
-    public void close(ShutdownOptions opt){
-    	if(opt.getLevel() >= ShutdownOptions.ENGINE.getLevel()){
-    		cleanup();
-    		manager.close();
-    		if(opt.getLevel() >= ShutdownOptions.JAVA.getLevel()){
-                    shutdownCompletely();
-    		}
+    public void close(ShutdownOption shutdownOption){
+    	if(shutdownOption.getLevel() >= ShutdownOption.ENGINE.getLevel()){
+            cleanup();
+            manager.close();
+            if(shutdownOption.getLevel() >= ShutdownOption.JAVA.getLevel()){
+                shutdownCompletely();
+            }
     	}
     }
     
@@ -112,14 +112,14 @@ public class OmniKryptecEngine {
     
     public void addScene(String name, Scene scene){
     	if(name != null && scene != null){
-    		scenes.put(name, scene);
+            scenes.put(name, scene);
     	}
     }
     
     public void setScene(String name){
     	sceneCurrent = scenes.get(name);
     	if(sceneCurrent != null){
-    		sceneCurrentName = name;
+            sceneCurrentName = name;
     	}
     }
     
@@ -131,7 +131,7 @@ public class OmniKryptecEngine {
     	return sceneCurrentName;
     }
     
-    private static final void shutdownCompletely() {
+    private static void shutdownCompletely() {
         while(true) {
             try {
                 System.exit(0);
