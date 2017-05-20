@@ -3,8 +3,6 @@ package omnikryptec.main;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.print.attribute.HashAttributeSet;
-
 import omnikryptec.display.DisplayManager;
 import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.renderer.RenderChunk;
@@ -40,15 +38,18 @@ public class OmniKryptecEngine {
 	}
     
     public static enum ShutdownOptions{
-    	JAVA(2), ENGINE(1), NOTHING(0);
-    	
+        
+    	JAVA(2),
+        ENGINE(1),
+        NOTHING(0);
     	
     	private int level=0;
+        
     	private ShutdownOptions(int lvl){
     		this.level = lvl;
     	}
     	
-    	public int getlvl(){
+    	public int getLevel(){
     		return level;
     	}
     }
@@ -65,7 +66,7 @@ public class OmniKryptecEngine {
     private Scene curscene;
     
     public OmniKryptecEngine(DisplayManager manager){
-    	if(manager==null){
+    	if(manager == null){
     		throw new NullPointerException("DisplayManager is null");
     	}
     	this.manager = manager;
@@ -90,11 +91,11 @@ public class OmniKryptecEngine {
     }
     
     public void close(ShutdownOptions opt){
-    	if(opt.getlvl()>0){
+    	if(opt.getLevel() >= ShutdownOptions.ENGINE.getLevel()){
     		cleanup();
     		manager.close();
-    		if(opt.getlvl()>1){
-    			System.exit(0);
+    		if(opt.getLevel() >= ShutdownOptions.JAVA.getLevel()){
+                    shutdownCompletely();
     		}
     	}
     }
@@ -128,6 +129,16 @@ public class OmniKryptecEngine {
     
     public String getCurrentSceneName(){
     	return curscenename;
+    }
+    
+    private static final void shutdownCompletely() {
+        while(true) {
+            try {
+                System.exit(0);
+            } catch (Exception ex) {
+                System.exit(-1);
+            }
+        }
     }
     
 }
