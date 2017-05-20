@@ -1,11 +1,9 @@
 package omnikryptec.storing;
 
-import com.fasterxml.jackson.annotation.JsonView;
+import omnikryptec.logger.LogEntry.LogLevel;
 import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.logger.Logger;
-import omnikryptec.logger.Logger.LogLevel;
-import omnikryptec.main.Scene;
 import omnikryptec.renderer.RenderChunk;
 
 /**

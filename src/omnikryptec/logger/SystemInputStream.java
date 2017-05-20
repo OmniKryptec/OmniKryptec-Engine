@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Scanner;
-import omnikryptec.logger.Logger.LogLevel;
+import omnikryptec.logger.LogEntry.LogLevel;
 
 /**
  *

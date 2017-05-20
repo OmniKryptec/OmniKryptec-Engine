@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import omnikryptec.logger.Logger;
-import omnikryptec.logger.Logger.LogLevel;
+import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.renderer.IRenderer;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.Render;

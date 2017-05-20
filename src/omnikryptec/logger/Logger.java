@@ -1,5 +1,6 @@
 package omnikryptec.logger;
 
+import java.awt.Color;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.time.Instant;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import omnikryptec.logger.LogEntry.LogLevel;
 
 /**
  * 
@@ -40,36 +42,6 @@ public class Logger {
             }
         }));
         Commands.initialize();
-    }
-    
-    public static enum LogLevel {
-        FINEST  (false, 6),
-        FINER   (false, 5),
-        FINE    (false, 4),
-        INFO    (false, 3),
-        INPUT   (false, 2),
-        COMMAND (false, 1),
-        WARNING (true, 0),
-        ERROR   (true, -1);
-
-        private final boolean isBad;
-        /**
-         * The higher the level the less important is this LogLevel
-         */
-        private final int level;
-
-        private LogLevel(boolean isBad, int level) {
-            this.isBad = isBad;
-            this.level = level;
-        }
-
-        public boolean isBad() {
-            return isBad;
-        }
-        
-        public int getLevel() {
-            return level;
-        }
     }
     
     public static Class setDebugMode(boolean debugMode) {
@@ -111,15 +83,15 @@ public class Logger {
         return log(message, LogLevel.INFO);
     }
     
-    public static LogEntry log(Object message, LogLevel level) {
-        return log(message, level, level.isBad());
+    public static LogEntry log(Object message, LogLevel logLevel) {
+        return log(message, logLevel, logLevel.isBad());
     }
 
-    public static LogEntry log(Object message, LogLevel level, boolean error) {
-        return log(message, level, error, true);
+    public static LogEntry log(Object message, LogLevel logLevel, boolean error) {
+        return log(message, logLevel, error, true);
     }
 
-    public static LogEntry log(Object message, LogLevel level, boolean error, boolean newLine) {
+    public static LogEntry log(Object message, LogLevel logLevel, boolean error, boolean newLine) {
         Instant instant = Instant.now();
         LogEntry logEntry = null;
         if(error) {
@@ -127,7 +99,7 @@ public class Logger {
         } else {
             logEntry = NEWSYSOUT.getLogEntry(message, instant);
         }
-        logEntry.setLevel(level);
+        logEntry.setLogLevel(logLevel);
         logEntry.setNewLine(newLine);
         log(logEntry);
         return logEntry;
@@ -144,13 +116,13 @@ public class Logger {
         THREADPOOL.submit(() -> {
             try {
                 SystemOutputStream stream = null;
-                if(logEntry.getLevel().isBad) {
+                if(logEntry.getLogLevel().isBad()) {
                     stream = NEWSYSERR;
                 } else {
                     stream = NEWSYSOUT;
                 }
                 LOG.add(logEntry);
-                if(logEntry.getLevel() == LogLevel.COMMAND && logEntry.getLogEntry() != null) {
+                if(logEntry.getLogLevel() == LogLevel.COMMAND && logEntry.getLogEntry() != null) {
                     boolean found = Command.runCommand(logEntry.getLogEntry().toString().substring(1));
                     if(!found) {
                         LogEntry logEntryError = NEWSYSERR.getLogEntry("Command not found!", Instant.now());

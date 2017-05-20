@@ -38,7 +38,7 @@ public class Command {
     
     private final void preRun(String arguments) {
         if(!arguments.isEmpty() && !usesArguments) {
-            Logger.log("Command uses no arguments", Logger.LogLevel.ERROR);
+            Logger.log("Command uses no arguments", LogEntry.LogLevel.ERROR);
             return;
         }
         run(arguments);
