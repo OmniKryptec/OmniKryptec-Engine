@@ -172,7 +172,7 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
             try {
                 doc.insertString(doc.getLength(), logEntry.toString(), style);
             } catch (Exception ex) {
-                //logErr(String.format(lang.getProperty("error_while_adding_to_the_console", "Error while adding to the console: %s"), ex));
+                //logErr(String.format(lang.getProperty("error_while_adding_to_the_console", "Error while adding to the console: %s"), ex)); //FIXME LANGUAGE!!!
                 Logger.logErr("Error while adding to the console: " + ex, ex);
             }
             textPane.setCaretPosition(doc.getLength());
@@ -181,7 +181,6 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
     }
     
     public void reloadConsole() {
-        //FIXME HALLO ?!?!
         reloadConsole(true);
     }
     
@@ -583,7 +582,7 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
     @Override
     public void windowClosing(WindowEvent e) {
         if(e.getSource() == this) {
-            //TODO Mache was, wenn das zu geht
+            hideConsole();
         }
     }
 
