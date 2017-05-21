@@ -6,7 +6,12 @@ package omnikryptec.exceptions;
  */
 public class UnsupportedCharacterException extends Exception {
     
-    public UnsupportedCharacterException(String string) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -493126597894968110L;
+
+	public UnsupportedCharacterException(String string) {
         super(string);
     }
     

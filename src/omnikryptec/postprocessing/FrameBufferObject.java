@@ -13,15 +13,14 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import omnikryptec.display.GameSettings;
+import omnikryptec.exceptions.IllegalAccessException;
 
-public class FrameBufferObject {
+public class FrameBufferObject{
 
 	private final int width;
 	private final int height;
 
 	private int frameBuffer;
-
-	private int colourTexture;
 	private int depthTexture;
 
 	private int depthBuffer;
@@ -97,11 +96,14 @@ public class FrameBufferObject {
 	 */
 	public void cleanUp() {
 		GL30.glDeleteFramebuffers(frameBuffer);
-		GL11.glDeleteTextures(colourTexture);
 		GL11.glDeleteTextures(depthTexture);
 		GL30.glDeleteRenderbuffers(depthBuffer);
 		for(int i=0; i<colBuffers.length; i++){
-			GL30.glDeleteRenderbuffers(colBuffers[i]);
+			if(multisample!=GameSettings.NO_MULTISAMPLING){
+				GL30.glDeleteRenderbuffers(colBuffers[i]);
+			}else{
+				GL11.glDeleteTextures(colBuffers[i]);
+			}
 		}
 	}
 
@@ -134,19 +136,19 @@ public class FrameBufferObject {
 	}
 
 	/**
-	 * @return The ID of the texture containing the colour buffer of the FBO.
-	 */
-	public int getColourTexture() {
-		return colourTexture;
-	}
-
-	/**
 	 * @return The texture containing the FBOs depth buffer.
 	 */
 	public int getDepthTexture() {
 		return depthTexture;
 	}
 
+	public int getTexture(int index){
+		if(multisample!=GameSettings.NO_MULTISAMPLING){
+			throw new IllegalAccessException("This framebuffer is multisampled and has no textures.");
+		}
+		return colBuffers[index];
+	}
+	
 	public void resolveToFbo(FrameBufferObject out, int attachment) {
 		GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, out.frameBuffer);
 		GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, frameBuffer);
@@ -178,11 +180,11 @@ public class FrameBufferObject {
 		createFrameBuffer();
 		if (multisample != GameSettings.NO_MULTISAMPLING) {
 			for(int i=0; i<targets.length; i++){
-				createMultisampleColourAttachment(targets[i]);
+				colBuffers[i] = createMultisampleColourAttachment(targets[i]);
 			}
 		} else {
 			for(int i=0; i<targets.length; i++){
-				createTextureAttachment(targets[i]);
+				colBuffers[i] = createTextureAttachment(targets[i]);
 			}
 		}
 		if (type == DepthbufferType.DEPTH_RENDER_BUFFER) {
@@ -272,5 +274,6 @@ public class FrameBufferObject {
 		GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL30.GL_RENDERBUFFER,
 				depthBuffer);
 	}
+
 
 }
