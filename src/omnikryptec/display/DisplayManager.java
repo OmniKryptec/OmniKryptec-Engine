@@ -41,6 +41,9 @@ public class DisplayManager {
 	}
 
 	public static OmniKryptecEngine createDisplay(String name, GameSettings settings, OpenGLInfo info) {
+		if(manager!=null){
+			throw new IllegalStateException("The DisplayManager is already created!");
+		}
 		DisplayManager.settings = settings;
 		manager = new DisplayManager();
 		if (name == null) {

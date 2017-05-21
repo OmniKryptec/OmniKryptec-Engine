@@ -1,4 +1,4 @@
-package omnikryptec.main;
+package omnikryptec.exceptions;
 
 public class OmniKryptecException extends RuntimeException {
 

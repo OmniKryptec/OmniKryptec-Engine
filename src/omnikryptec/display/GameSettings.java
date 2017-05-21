@@ -15,6 +15,8 @@ public class GameSettings {
 	private boolean clampEdges=false;
 	private boolean nearest=false;
 	
+	private int eventThreadPoolSize=2;
+	
 	public static final int NO_MULTISAMPLING=0;
 	
 	public GameSettings(int width, int height){
@@ -107,5 +109,15 @@ public class GameSettings {
 		nearest = b;
 		return this;
 	}
+
+	public int getEventThreadpoolSize() {
+		return eventThreadPoolSize;
+	}
+	
+	public GameSettings setEventThreadpoolSize(int i){
+		this.eventThreadPoolSize = i;
+		return this;
+	}
+	
 	
 }

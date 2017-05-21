@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import omnikryptec.display.DisplayManager;
+import omnikryptec.event.EventSystem;
+import omnikryptec.input.InputUtil;
+import omnikryptec.logger.Commands;
 import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.Render;
@@ -21,7 +24,13 @@ public class OmniKryptecEngine {
     private static OmniKryptecEngine instance;
 
     public static OmniKryptecEngine instance(){
-            return instance;
+    	if(instance==null){
+    		if(DisplayManager.instance()==null){
+    			throw new IllegalStateException("Cant create the Engine because the DisplayManager is not created yet!");
+    		}
+    		new OmniKryptecEngine(DisplayManager.instance());
+    	}
+    	return instance;
     }
 	
     /**
@@ -35,6 +44,7 @@ public class OmniKryptecEngine {
         Starting,
         Running,
         Error,
+        Stopping,
         Stopped;
     }
     
@@ -61,6 +71,7 @@ public class OmniKryptecEngine {
     }
     
     private DisplayManager manager;
+    private EventSystem eventsystem; 
     private final Map<String, Scene> scenes = new HashMap<>();
     private String sceneCurrentName;
     private Scene sceneCurrent;
@@ -69,18 +80,32 @@ public class OmniKryptecEngine {
     	if(manager == null){
             throw new NullPointerException("DisplayManager is null");
     	}
+    	if(instance!=null){
+    		throw new IllegalStateException("OmniKryptec-Engine is already made!");
+    	}
     	this.manager = manager;
     	state = State.Starting;
     	instance = this;
-    	Material.setDefaultNormalMap(Texture.newTexture(OmniKryptecEngine.class.getResourceAsStream(DEFAULT_NORMALMAP)).create()); //FIXME Test Only?
+    	eventsystem = EventSystem.instance();
+    	Material.setDefaultNormalMap(Texture.newTexture(OmniKryptecEngine.class.getResourceAsStream(DEFAULT_NORMALMAP)).create());
     }
     
     public DisplayManager getDisplayManager(){
     	return manager;
     }
     
+    public EventSystem getEventsystem(){
+    	return eventsystem;
+    }
+    
     public void loop(ShutdownOption shutdownOption){
-    	
+    	try{
+    		state = State.Running;
+    		
+    		
+    	}catch(Exception e){
+    		state = State.Error;
+    	}
     	close(shutdownOption);
     }
     
@@ -88,18 +113,23 @@ public class OmniKryptecEngine {
     	if(sceneCurrent != null){
             sceneCurrent.frame(null, Render.All);
     	}
+    	InputUtil.nextFrame();
         return this;
     }
     
     public OmniKryptecEngine close(ShutdownOption shutdownOption){
     	if(shutdownOption.getLevel() >= ShutdownOption.ENGINE.getLevel()){
+    		state = State.Stopping;
             cleanup();
             manager.close();
+            state = State.Stopped;
             if(shutdownOption.getLevel() >= ShutdownOption.JAVA.getLevel()){
-                shutdownCompletely();
+                Commands.COMMANDEXIT.run("java");
             }
+            return null;
+    	}else{
+    		return this;
     	}
-        return this;
     }
     
     private void cleanup(){
@@ -135,15 +165,6 @@ public class OmniKryptecEngine {
     public String getCurrentSceneName(){
     	return sceneCurrentName;
     }
-    
-    public static final void shutdownCompletely() {
-        while(true) {
-            try {
-                System.exit(0);
-            } catch (Exception ex) {
-                System.exit(-1);
-            }
-        }
-    }
+
     
 }

@@ -127,7 +127,7 @@ public class RenderChunk {
 			}
 		}
 		for(int i=0; i<other.size(); i++){
-			if(other.get(i)!=null){
+			if(other.get(i)!=null&&other.get(i).isActive()){
 				other.get(i).doLogic();
 				other.get(i).checkChunkPos();
 			}
