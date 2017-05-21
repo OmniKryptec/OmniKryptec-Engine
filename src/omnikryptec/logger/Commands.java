@@ -1,6 +1,8 @@
 package omnikryptec.logger;
 
+import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 
 /**
  *
@@ -12,22 +14,42 @@ public class Commands {
         
         @Override
         public void run(String arguments) {
+            ShutdownOption shutdownOption = ShutdownOption.JAVA;
+            if(!arguments.isEmpty()) {
+                boolean found = false;
+                String[] args = getArguments(arguments);
+                for(String g : args) {
+                    if(g.equalsIgnoreCase("-engine")) {
+                        shutdownOption = ShutdownOption.ENGINE;
+                        found = true;
+                        break;
+                    }
+                }
+                if(!found) {
+                    Logger.log(getHelp());
+                    return;
+                }
+            }
             try {
-                OmniKryptecEngine.instance().close(OmniKryptecEngine.ShutdownOption.JAVA);
+                OmniKryptecEngine.instance().close(shutdownOption);
+                Logger.log("Engine was successfully exited", LogLevel.FINE);
             } catch (Exception ex) {
-                //Logger.logErr("Error while exiting program: " + ex, ex);
-                OmniKryptecEngine.shutdownCompletely();
+                if(shutdownOption == ShutdownOption.JAVA) {
+                    shutdownCompletely();
+                } else {
+                    Logger.log("No engine running", LogLevel.WARNING);
+                }
             }
         }
         
-    }.setUseArguments(false).setHelp("Usage:\n/exit");
+    }.setUseArguments(true).setHelp("Usage:\nexit [-engine]\nParameter - Description\nengine - Stops only the engine");
     
     public static final Command COMMANDTEST = new Command("test") {
         
         @Override
         public void run(String arguments) {
             try {
-                String[] args = Command.getArguments(arguments);
+                String[] args = getArguments(arguments);
                 for(String arg : args) {
                     Logger.log(arg);
                 }
@@ -36,10 +58,20 @@ public class Commands {
             }
         }
         
-    }.setUseArguments(true).setHelp("Usage:\n/test <...>");
+    }.setUseArguments(true).setHelp("Usage:\ntest <...>");
     
     public static final void initialize() {
         //Nothing, this function only registers automatically all standard Command's 
+    }
+    
+    private static final void shutdownCompletely() {
+        while(true) {
+            try {
+                System.exit(0);
+            } catch (Exception ex) {
+                System.exit(-1);
+            }
+        }
     }
     
 }
