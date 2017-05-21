@@ -5,6 +5,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import omnikryptec.shader.Shader;
+import omnikryptec.util.RenderUtil;
 
 public abstract class PostProcessingStep implements PostProcessingStage {
 
@@ -35,12 +36,12 @@ public abstract class PostProcessingStep implements PostProcessingStage {
 
 	private void renderQuad() {
 		target.bindFrameBuffer();
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+		RenderUtil.clear(0, 0, 0, 1);
 		GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);
 		target.unbindFrameBuffer();
 	}
 
 	public void cleanUp() {
-		target.cleanUp();
+		target.clear();
 	}
 }

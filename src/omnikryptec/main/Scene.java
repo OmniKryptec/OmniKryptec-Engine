@@ -68,7 +68,7 @@ public class Scene {
     private long cx, cy, cz;
     private RenderChunk tmpc;
 
-    public void frame(IRenderer re, Render info) {
+    public void frame(Render info, IRenderer ...re) {
         cx = cam.getChunkX();
         cy = cam.getChunkY();
         cz = cam.getChunkZ();
@@ -76,7 +76,7 @@ public class Scene {
             for(long y = -coy + cy; y <= coy + cy; y++){
                 for(long z = -coz + cz; z <= coz + cz; z++){
                     if((tmpc = scene.get(xyzToString(x, y, z))) != null){
-                            tmpc.frame(re, info);
+                            tmpc.frame(info, re);
                     }
                 }
             }

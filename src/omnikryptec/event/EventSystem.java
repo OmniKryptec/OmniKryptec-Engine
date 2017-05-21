@@ -1,5 +1,6 @@
 package omnikryptec.event;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,18 @@ public class EventSystem {
 	private static EventSystem instance;
 	
 	private EventSystem() {
+		Field[] fields = EventType.class.getFields();
+		for(int i=0; i<fields.length; i++){
+			try {
+				if(fields[i].get(null) instanceof EventType){
+					deftypes.add((EventType) fields[i].get(null));
+				}
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public static EventSystem instance(){

@@ -6,7 +6,6 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
-import omnikryptec.input.InputUtil;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 
@@ -144,7 +143,6 @@ public class DisplayManager {
 		long currentFrameTime = getCurrentTime();
 		deltatime = (currentFrameTime - lasttime) / 1000f;
 		lasttime = currentFrameTime;
-		InputUtil.nextFrame();
 	}
 
 	public float getDeltaTime() {

@@ -3,15 +3,26 @@ package omnikryptec.main;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL30;
+
 import omnikryptec.display.DisplayManager;
+import omnikryptec.display.GameSettings;
+import omnikryptec.event.Event;
 import omnikryptec.event.EventSystem;
-import omnikryptec.input.InputUtil;
+import omnikryptec.event.EventType;
 import omnikryptec.logger.Commands;
+import omnikryptec.postprocessing.FrameBufferObject;
+import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.Render;
+import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.storing.Material;
+import omnikryptec.storing.VertexArrayObject;
 import omnikryptec.texture.Texture;
+import omnikryptec.util.InputUtil;
+import omnikryptec.util.RenderUtil;
 
 /**
  *
@@ -76,6 +87,11 @@ public class OmniKryptecEngine {
     private String sceneCurrentName;
     private Scene sceneCurrent;
     
+    private FrameBufferObject scenefbo;
+    private FrameBufferObject unsampledfbo;
+    
+    private boolean requestclose=false;
+    
     public OmniKryptecEngine(DisplayManager manager){
     	if(manager == null){
             throw new NullPointerException("DisplayManager is null");
@@ -88,6 +104,21 @@ public class OmniKryptecEngine {
     	instance = this;
     	eventsystem = EventSystem.instance();
     	Material.setDefaultNormalMap(Texture.newTexture(OmniKryptecEngine.class.getResourceAsStream(DEFAULT_NORMALMAP)).create());
+    	RenderUtil.cullBackFaces(true);
+    	RenderUtil.enableDepthTesting(true);
+    	createFbos();
+    	eventsystem.fireEvent(new Event(), EventType.BOOTING_COMPLETED);
+    }
+    
+    private void createFbos(){
+    	scenefbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), manager.getSettings().getMultiSamples(), GL30.GL_COLOR_ATTACHMENT0);
+    	unsampledfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE, GL30.GL_COLOR_ATTACHMENT0);
+    }
+    
+    private void resizeFbos(){
+    	scenefbo.clear();
+    	unsampledfbo.clear();
+    	createFbos();
     }
     
     public DisplayManager getDisplayManager(){
@@ -101,19 +132,36 @@ public class OmniKryptecEngine {
     public void loop(ShutdownOption shutdownOption){
     	try{
     		state = State.Running;
-    		
-    		
+    		while(Display.isCloseRequested()||requestclose){
+    			frame();
+    			RenderUtil.clear(0,0,0,1);
+    		}
     	}catch(Exception e){
     		state = State.Error;
+    		eventsystem.fireEvent(new Event(e), EventType.ERROR);
     	}
     	close(shutdownOption);
     }
     
+    public void requestClose(){
+    	requestclose=true;
+    }
+    
     public OmniKryptecEngine frame(){
-    	if(sceneCurrent != null){
-            sceneCurrent.frame(null, Render.All);
+    	if(Display.wasResized()){
+    		resizeFbos();
+    		eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
     	}
+    	scenefbo.bindFrameBuffer();
+    	RenderUtil.clear(0, 0, 0, 1);
+    	if(sceneCurrent != null){
+            sceneCurrent.frame(Render.All);
+    	}
+    	scenefbo.unbindFrameBuffer();
+    	scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);
+    	PostProcessing.doPostProcessing(unsampledfbo);
     	InputUtil.nextFrame();
+    	DisplayManager.instance().updateDisplay();
         return this;
     }
     
@@ -135,6 +183,10 @@ public class OmniKryptecEngine {
     private void cleanup(){
     	RenderChunk.cleanup();
     	PostProcessing.cleanup();
+    	VertexArrayObject.cleanup();
+    	FrameBufferObject.cleanup();
+    	RendererRegistration.cleanup();
+    	instance=null;
     }
     
     public OmniKryptecEngine addAndSetScene(String name, Scene scene){

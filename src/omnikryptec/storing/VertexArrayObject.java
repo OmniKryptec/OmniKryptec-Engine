@@ -1,5 +1,8 @@
 package omnikryptec.storing;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
@@ -13,7 +16,9 @@ public class VertexArrayObject {
 	private VertexBufferObject dataVbo;
 	private VertexBufferObject indexVbo;
 	private int indexCount;
-
+	
+	private static List<VertexArrayObject> vaos = new ArrayList<>();
+	
 	public static VertexArrayObject create() {
 		int id = GL30.glGenVertexArrays();
 		return new VertexArrayObject(id);
@@ -21,6 +26,7 @@ public class VertexArrayObject {
 
 	private VertexArrayObject(int id) {
 		this.id = id;
+		vaos.add(this);
 	}
 	
 	public int getIndexCount(){
@@ -129,4 +135,11 @@ public class VertexArrayObject {
 		return interleavedBuffer;
 	}
 
+	public static void cleanup(){
+		for(int i=0; i<vaos.size(); i++){
+			vaos.get(i).delete();
+		}
+		vaos.clear();
+	}
+	
 }

@@ -1,12 +1,13 @@
 package omnikryptec.postprocessing;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-import omnikryptec.renderer.RenderUtil;
+import omnikryptec.util.RenderUtil;
 
 public class PostProcessing {
 
@@ -16,9 +17,9 @@ public class PostProcessing {
 	private static FrameBufferObject before;
 	private static PostProcessingStage currentStage;
 	
-	public static void doPostProcessing(FrameBufferObject fbo) {
-		before = fbo;
-		beforelist.add(before);
+	public static void doPostProcessing(FrameBufferObject ...fbo) {
+		before = fbo[fbo.length-1];
+		beforelist.addAll(Arrays.asList(fbo));
 		start();
 		for (int i = 0; i < stages.size(); i++) {
 			currentStage = stages.get(i);
@@ -39,7 +40,7 @@ public class PostProcessing {
 
 	public static void cleanup() {
 		for(int i=0; i<beforelist.size(); i++){
-			beforelist.get(i).cleanUp();
+			beforelist.get(i).clear();
 		}
 	}
 

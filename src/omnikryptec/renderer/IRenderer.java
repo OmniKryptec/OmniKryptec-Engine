@@ -13,6 +13,5 @@ public interface IRenderer {
 	void render(Scene s, Map<TexturedModel, List<Entity>> entities);
 	void end();
 	void cleanup();
-	
-	
+
 }

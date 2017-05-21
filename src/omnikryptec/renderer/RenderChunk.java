@@ -118,9 +118,14 @@ public class RenderChunk {
 		All, EvElse, OnlThis;
 	}
 	
-	public void frame(IRenderer rend, Render type) {
+	private final IRenderer[] empty_array = new IRenderer[]{null};
+	
+	public void frame(Render type, IRenderer ...rend) {
+		if(rend==null||rend.length==0){
+			rend = empty_array;
+		}
 		for(IRenderer r : chunk.keySet()){
-			if(r!=null&&(type==Render.All||(type==Render.OnlThis&&rend==r)||(type==Render.EvElse&&rend!=r))){
+			if(r!=null&&(type==Render.All||(type==Render.OnlThis&&contains(rend, r))||(type==Render.EvElse&&!contains(rend, r)))){
 				r.start();
 				r.render(scene, chunk.get(r));
 				r.end();
@@ -134,6 +139,15 @@ public class RenderChunk {
 		}
 	}
 
+	private boolean contains(Object[] array, Object obj){
+		for(int i=0; i<array.length; i++){
+			if(array[i]==obj){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public Scene getScene() {
 		return scene;
 	}

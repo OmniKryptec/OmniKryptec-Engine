@@ -3,6 +3,8 @@ package omnikryptec.postprocessing;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
@@ -35,7 +37,11 @@ public class FrameBufferObject implements ITexture{
 	public static enum DepthbufferType {
 		NONE, DEPTH_TEXTURE, DEPTH_RENDER_BUFFER;
 	}
-
+	
+	
+	private static List<FrameBufferObject> fbos = new ArrayList<>();
+	private static List<FrameBufferObject> history = new ArrayList<>();
+	
 	/**
 	 * Creates an FBO of a specified width and height, with the desired type of
 	 * depth buffer attachment.
@@ -96,7 +102,7 @@ public class FrameBufferObject implements ITexture{
 	/**
 	 * Deletes the frame buffer and its attachments when the game closes.
 	 */
-	public void cleanUp() {
+	public void clear() {
 		GL30.glDeleteFramebuffers(frameBuffer);
 		GL11.glDeleteTextures(depthTexture);
 		GL30.glDeleteRenderbuffers(depthBuffer);
@@ -114,6 +120,7 @@ public class FrameBufferObject implements ITexture{
 	 * rendered after this will be rendered to this FBO, and not to the screen.
 	 */
 	public void bindFrameBuffer() {
+		history.add(this);
 		GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, frameBuffer);
 		GL11.glViewport(0, 0, width, height);
 	}
@@ -126,8 +133,14 @@ public class FrameBufferObject implements ITexture{
 	public void unbindFrameBuffer() {
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
+		history.remove(history.lastIndexOf(this));
+		if(history.size()>0){
+			history.get(history.size()-1).bindFrameBuffer();
+		}
 	}
-
+	
+	
+	
 	/**
 	 * Binds the current FBO to be read from (not used in tutorial 43).
 	 */
@@ -178,6 +191,7 @@ public class FrameBufferObject implements ITexture{
 	 *            FBO.
 	 */
 	private void initialiseFrameBuffer(DepthbufferType type) {
+		fbos.add(this);
 		colBuffers = new int[targets.length];
 		createFrameBuffer();
 		if (multisample != GameSettings.NO_MULTISAMPLING) {
@@ -277,6 +291,9 @@ public class FrameBufferObject implements ITexture{
 				depthBuffer);
 	}
 
+	/**
+	 * info[0] is the attachmentindex to use
+	 */
 	@Override
 	public void bindToUnit(int unit, int... info) {
 		if(info == null || info.length==0){
@@ -285,6 +302,14 @@ public class FrameBufferObject implements ITexture{
 		GL13.glActiveTexture(GL13.GL_TEXTURE0 + unit);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, getTexture(info[0]));
 	}
-
+	
+	
+	public static void cleanup(){
+		for(int i=0; i<fbos.size(); i++){
+			fbos.get(i).clear();
+		}
+		fbos.clear();
+		history.clear();
+	}
 
 }

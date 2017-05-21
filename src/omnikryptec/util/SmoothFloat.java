@@ -1,4 +1,4 @@
-package omnikryptec.storing;
+package omnikryptec.util;
 
 public class SmoothFloat {
 	

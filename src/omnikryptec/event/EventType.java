@@ -7,10 +7,20 @@ package omnikryptec.event;
  */
 public final class EventType {
 	
+	public static final EventType BOOTING_COMPLETED = new EventType("booting_completed");
+
+
+
+	public static final EventType ERROR = new EventType("error");
+
+
+
+	public static final EventType RESIZED = new EventType("resized");
 	
 	
-	private String name;
-	private boolean needsCurrentThread=false;
+	
+	private final String name;
+	private final boolean needsCurrentThread;
 	
 	public EventType(String name, boolean needsCurrentThread){
 		this.name = name;

@@ -1,4 +1,4 @@
-package omnikryptec.input;
+package omnikryptec.util;
 
 import org.lwjgl.input.Keyboard;
 
