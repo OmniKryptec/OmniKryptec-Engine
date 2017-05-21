@@ -60,7 +60,7 @@ public class Language extends Properties {
     
     @Override
     public String toString() {
-        return getLanguageName();
+        return String.format("%s (%s)", getLanguageName(), getLanguageCodeShort());
     }
         
 }

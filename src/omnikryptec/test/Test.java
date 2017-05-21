@@ -2,6 +2,7 @@ package omnikryptec.test;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.File;
 import java.util.Scanner;
 
 import javax.swing.DefaultListModel;
@@ -9,6 +10,8 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 
 import omnikryptec.debug.VariableChangeListener;
+import omnikryptec.lang.ILanguage;
+import omnikryptec.lang.LanguageManager;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.swing.JCheckBoxList;
@@ -17,7 +20,7 @@ import omnikryptec.swing.JCheckBoxList;
  *
  * @author Panzer1119
  */
-public class Test {
+public class Test implements ILanguage {
 
     public static String test_data = "Troll";
 
@@ -27,14 +30,18 @@ public class Test {
      * @param args Egal
      */
     public static void main(String[] args) {
+        LanguageManager.fileToLanguageCodeShort(new File("Test_log.txt"));
         Logger.enableLoggerRedirection(true);
+        Test test = new Test();
+        LanguageManager.addLanguageListener(test);
+        LanguageManager.collectAllLanguageKeys(new File("lang_TE.txt"));
         System.out.println("Test 1");
         System.err.println("Test 2");
         JFrame frame = new JFrame("Test");
         frame.setSize(new Dimension(400, 400));
         frame.setLayout(new BorderLayout());
         DefaultListModel<JCheckBox> model = new DefaultListModel<>();
-        model.addElement(new JCheckBox("Test 1"));
+        model.addElement(new JCheckBox(LanguageManager.getLang("test_key_1", "test_1")));
         JCheckBoxList cbl = new JCheckBoxList(model);
         frame.add(cbl, BorderLayout.CENTER);
         frame.setLocationRelativeTo(null);
@@ -88,6 +95,16 @@ public class Test {
                 System.exit(-1);
             }
         }).start();
+    }
+
+    @Override
+    public void reloadLanguage() {
+        getLang("file", "File");
+        getLang("edit", "Edit");
+        getLang("remove", "Remove");
+        getLang("add", "Add");
+        getLang("exit", "Exit");
+        getLang("restart", "Restart");
     }
 
 }

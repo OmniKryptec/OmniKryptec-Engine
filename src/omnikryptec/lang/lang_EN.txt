@@ -1,0 +1,3 @@
+DE=German
+EN=English
+test_key_1=Test Key 1

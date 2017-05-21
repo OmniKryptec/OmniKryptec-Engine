@@ -1,0 +1,3 @@
+DE=Deutsch
+EN=Englisch
+test_key_1=Test Schlüssel 1
