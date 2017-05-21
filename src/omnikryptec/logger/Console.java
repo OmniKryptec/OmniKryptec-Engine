@@ -14,6 +14,7 @@ import java.io.FileWriter;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import javax.imageio.ImageIO;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
@@ -21,6 +22,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.LogEntryFormatter.LogEntryFormatTile;
 

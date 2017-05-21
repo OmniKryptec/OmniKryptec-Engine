@@ -5,12 +5,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
-import omnikryptec.logger.Logger;
 import omnikryptec.logger.LogEntry.LogLevel;
+import omnikryptec.logger.Logger;
 
 public class Shader {
 	

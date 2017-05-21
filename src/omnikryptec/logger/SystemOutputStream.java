@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.time.Instant;
+
 import omnikryptec.logger.LogEntry.LogLevel;
 
 /**

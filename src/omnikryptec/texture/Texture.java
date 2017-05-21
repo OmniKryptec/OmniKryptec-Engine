@@ -4,9 +4,8 @@ import java.io.InputStream;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL30;
 
-public class Texture{
+public class Texture implements ITexture{
 
 	public final int textureId;
 	private final TextureData data;
@@ -23,8 +22,8 @@ public class Texture{
 	}
 	
 	
-	
-	public void bindToUnit(int unit) {
+	@Override
+	public void bindToUnit(int unit, int...info) {
 		GL13.glActiveTexture(GL13.GL_TEXTURE0 + unit);
 		GL11.glBindTexture(type, textureId);
 	}
@@ -55,5 +54,6 @@ public class Texture{
 	public TextureData getData(){
 		return data;
 	}
+
 
 }

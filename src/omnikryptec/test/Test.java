@@ -3,9 +3,11 @@ package omnikryptec.test;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.Scanner;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+
 import omnikryptec.debug.VariableChangeListener;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;

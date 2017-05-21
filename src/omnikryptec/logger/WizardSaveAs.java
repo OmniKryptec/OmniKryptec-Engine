@@ -8,10 +8,12 @@ import java.awt.event.WindowListener;
 import java.io.File;
 import java.time.Instant;
 import java.util.HashMap;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
+
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.LogEntryFormatter.LogEntryFormatTile;
 import omnikryptec.swing.JCheckBoxList;

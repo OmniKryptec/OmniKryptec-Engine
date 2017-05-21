@@ -8,14 +8,16 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import omnikryptec.display.GameSettings;
 import omnikryptec.exceptions.IllegalAccessException;
+import omnikryptec.texture.ITexture;
 
-public class FrameBufferObject{
+public class FrameBufferObject implements ITexture{
 
 	private final int width;
 	private final int height;
@@ -273,6 +275,15 @@ public class FrameBufferObject{
 		}
 		GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL30.GL_RENDERBUFFER,
 				depthBuffer);
+	}
+
+	@Override
+	public void bindToUnit(int unit, int... info) {
+		if(info == null || info.length==0){
+			info = new int[]{0};
+		}
+		GL13.glActiveTexture(GL13.GL_TEXTURE0 + unit);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, getTexture(info[0]));
 	}
 
 

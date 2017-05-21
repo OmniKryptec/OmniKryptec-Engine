@@ -1,8 +1,8 @@
 package omnikryptec.storing;
 
-import omnikryptec.logger.LogEntry.LogLevel;
 import org.lwjgl.util.vector.Vector3f;
 
+import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.renderer.RenderChunk;
 

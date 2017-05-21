@@ -5,11 +5,14 @@
  */
 package omnikryptec.test.saving;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
+
+import org.lwjgl.util.vector.Vector3f;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import omnikryptec.logger.Logger;
 import omnikryptec.storing.GameObject;
-import org.lwjgl.util.vector.Vector3f;
 
 /**
  *
