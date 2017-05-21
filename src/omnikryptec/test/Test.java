@@ -1,12 +1,15 @@
 package omnikryptec.test;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.Scanner;
+import javax.swing.DefaultListModel;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import omnikryptec.debug.VariableChangeListener;
-import omnikryptec.logger.Commands;
+import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
-import omnikryptec.logger.Logger.LogLevel;
-import omnikryptec.texture.Texture;
+import omnikryptec.swing.JCheckBoxList;
 
 /**
  *
@@ -25,13 +28,20 @@ public class Test {
         Logger.enableLoggerRedirection(true);
         System.out.println("Test 1");
         System.err.println("Test 2");
-        JFrame frame = new JFrame();
+        JFrame frame = new JFrame("Test");
+        frame.setSize(new Dimension(400, 400));
+        frame.setLayout(new BorderLayout());
+        DefaultListModel<JCheckBox> model = new DefaultListModel<>();
+        model.addElement(new JCheckBox("Test 1"));
+        JCheckBoxList cbl = new JCheckBoxList(model);
+        frame.add(cbl, BorderLayout.CENTER);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         new Thread(() -> {
             try {
                 final Scanner scanner = new Scanner(System.in);
                 while(scanner.hasNextLine()) {
-                    Logger.log("Scanned: " + scanner.nextLine());
+                    Logger.log("Scanned: " + scanner.nextLine()); //FIXME InputStream wird zwar abgefangen, aber dann nicht mehr hierher weitergeleitet
                 }
                 Logger.log("Scanner stopped");
                 scanner.close();

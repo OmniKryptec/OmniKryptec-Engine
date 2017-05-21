@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
 import omnikryptec.logger.Logger;
-import omnikryptec.logger.Logger.LogLevel;
+import omnikryptec.logger.LogEntry.LogLevel;
 
 public class Shader {
 	

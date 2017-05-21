@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.time.Instant;
-import omnikryptec.logger.Logger.LogLevel;
+import omnikryptec.logger.LogEntry.LogLevel;
 
 /**
  *
@@ -123,7 +123,7 @@ public class SystemOutputStream extends PrintStream {
     }
 
     public void log(LogEntry logEntry) {
-        if(Logger.isMinimumLogLevel(logEntry.getLevel())) {
+        if(Logger.isMinimumLogLevel(logEntry.getLogLevel())) {
             super.print(logEntry.toString());
         }
     }

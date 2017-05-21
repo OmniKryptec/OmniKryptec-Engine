@@ -1,11 +1,11 @@
 package omnikryptec.logger;
 
+import java.awt.Color;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import omnikryptec.logger.Logger.LogLevel;
 
 /**
  *
@@ -14,17 +14,17 @@ import omnikryptec.logger.Logger.LogLevel;
 public class LogEntry implements Serializable {
     
     private static final long serialVersionUID = 1045037976976108198L;
-    public static final String STANDARD_DATETIMEFORMAT = "dd.MM.yyyy HH:mm:ss.SSS";
-    public static final String STANDARD_LOGENTRYFORMAT = "dtclthll: meex";
-    public static final String NEWLINESTRING = "\n";
-    public static final String ESCAPESTRING = "/";
+    public static String STANDARD_DATETIMEFORMAT = "dd.MM.yyyy HH:mm:ss.SSS";
+    public static String STANDARD_LOGENTRYFORMAT = "dtclthll: meex";
+    public static String NEWLINESTRING = "\n";
+    public static String ESCAPESTRING = "/";
 
     private Object logEntry = null;
     private Instant timestamp = null;
     private Thread thread = null;
     private StackTraceElement stackTraceElement = null;
     private Exception exception = null;
-    private LogLevel level = LogLevel.INFO;
+    private LogLevel logLevel = LogLevel.INFO;
     private String dateTimeFormat = STANDARD_DATETIMEFORMAT;
     private String logEntryFormat = STANDARD_LOGENTRYFORMAT;
     private boolean debug = false;
@@ -42,18 +42,18 @@ public class LogEntry implements Serializable {
         this(logEntry, timestamp, LogLevel.INFO);
     }
     
-    public LogEntry(Object logEntry, Instant timestamp, LogLevel level) {
-        this(logEntry, timestamp, level, null, null);
+    public LogEntry(Object logEntry, Instant timestamp, LogLevel logLevel) {
+        this(logEntry, timestamp, logLevel, null, null);
     }
     
-    public LogEntry(Object logEntry, Instant timestamp, LogLevel level, Thread thread, StackTraceElement stackTraceElement) {
-        this(logEntry, timestamp, level, STANDARD_DATETIMEFORMAT, STANDARD_LOGENTRYFORMAT, thread, stackTraceElement);
+    public LogEntry(Object logEntry, Instant timestamp, LogLevel logLevel, Thread thread, StackTraceElement stackTraceElement) {
+        this(logEntry, timestamp, logLevel, Logger.DATETIMEFORMAT, Logger.LOGENTRYFORMAT, thread, stackTraceElement);
     }
 
-    public LogEntry(Object logEntry, Instant timestamp, LogLevel level, String dateTimeFormat, String logEntryFormat, Thread thread, StackTraceElement stackTraceElement) {
+    public LogEntry(Object logEntry, Instant timestamp, LogLevel logLevel, String dateTimeFormat, String logEntryFormat, Thread thread, StackTraceElement stackTraceElement) {
         this.logEntry = logEntry;
         this.timestamp = timestamp;
-        this.level = level;
+        this.logLevel = logLevel;
         this.dateTimeFormat = dateTimeFormat;
         this.logEntryFormat = logEntryFormat;
         this.thread = thread;
@@ -96,12 +96,12 @@ public class LogEntry implements Serializable {
         return this;
     }
 
-    public LogLevel getLevel() {
-        return level;
+    public LogLevel getLogLevel() {
+        return logLevel;
     }
 
-    public LogEntry setLevel(LogLevel level) {
-        this.level = level;
+    public LogEntry setLogLevel(LogLevel logLevel) {
+        this.logLevel = logLevel;
         return this;
     }
 
@@ -158,8 +158,15 @@ public class LogEntry implements Serializable {
      * 
      * @param logEntryFormat String New LogEntry Format
      */
-    public void setLogEntryFormat(String logEntryFormat) {
+    public LogEntry setLogEntryFormat(String logEntryFormat) {
         this.logEntryFormat = logEntryFormat;
+        return this;
+    }
+    
+    public LogEntry update() {
+        setDateTimeFormat(Logger.DATETIMEFORMAT);
+        setLogEntryFormat(Logger.LOGENTRYFORMAT);
+        return this;
     }
 
     @Override
@@ -193,11 +200,11 @@ public class LogEntry implements Serializable {
             th = null;
         }
         try {
-            ll = String.format("[%s]", level.toString());
+            ll = String.format("[%s]", logLevel.toString());
         } catch (Exception ex2) {
             ll = null;
         }
-        if(level == LogLevel.ERROR && exception != null) {
+        if(logLevel == LogLevel.ERROR && exception != null) {
             try {
                 ex = "";
                 for(StackTraceElement e : exception.getStackTrace()) {
@@ -250,4 +257,50 @@ public class LogEntry implements Serializable {
         return output;
     }
 
+    public static enum LogLevel {
+        FINEST  (false, 6, Color.WHITE, Color.LIGHT_GRAY),
+        FINER   (false, 5, Color.WHITE, Color.GRAY),
+        FINE    (false, 4, Color.WHITE, Color.DARK_GRAY),
+        INFO    (false, 3, Color.WHITE, Color.BLACK),
+        INPUT   (false, 2, Color.WHITE, Color.BLUE),
+        COMMAND (false, 1, Color.WHITE, Color.MAGENTA),
+        WARNING (true,  0, Color.WHITE, Color.ORANGE),
+        ERROR   (true, -1, Color.WHITE, Color.RED);
+
+        private final boolean isBad;
+        /**
+         * The higher the level the less important is this LogLevel
+         */
+        private final int level;
+        private final Color colorBackground;
+        private final Color colorForeground;
+
+        private LogLevel(boolean isBad, int level, Color colorBackground, Color colorForeground) {
+            this.isBad = isBad;
+            this.level = level;
+            this.colorBackground = colorBackground;
+            this.colorForeground = colorForeground;
+        }
+
+        public boolean isBad() {
+            return isBad;
+        }
+        
+        public int getLevel() {
+            return level;
+        }
+        
+        public Color getBackgroundColor() {
+            return colorBackground;
+        }
+        
+        public Color getForegroundColor() {
+            return colorForeground;
+        }
+        
+        public String toText() {
+            return toString().toUpperCase().substring(0, 1) + toString().toLowerCase().substring(1);
+        }
+    }
+    
 }
