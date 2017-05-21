@@ -124,7 +124,7 @@ public class OmniKryptecEngine {
             manager.close();
             state = State.Stopped;
             if(shutdownOption.getLevel() >= ShutdownOption.JAVA.getLevel()){
-                Commands.COMMANDEXIT.run("java");
+                Commands.COMMANDEXIT.run("-java");
             }
             return null;
     	}else{

@@ -23,7 +23,7 @@ public class Commands {
                     if(g.equalsIgnoreCase("-engine")) {
                         shutdownOption = ShutdownOption.ENGINE;
                         found = true;
-                    } else if(g.equalsIgnoreCase("-direct")) {
+                    } else if(g.equalsIgnoreCase("-java")) {
                         instantShutdown = true;
                         found = true;
                     }
@@ -49,7 +49,7 @@ public class Commands {
             }
         }
         
-    }.setUseArguments(true).setHelp("Usage:\nexit [-engine] [-direct]\nParameter - Description\nengine - Stops only the engine\ndirect - Stops directly the JVM");
+    }.setUseArguments(true).setHelp("Usage:\nexit [-engine/-java]\nParameter - Description\nengine - Stops only the engine\njava - Stops directly the JVM");
     
     public static final Command COMMANDTEST = new Command("test") {
         
