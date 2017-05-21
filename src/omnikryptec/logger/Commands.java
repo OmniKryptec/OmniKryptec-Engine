@@ -15,6 +15,7 @@ public class Commands {
         @Override
         public void run(String arguments) {
             ShutdownOption shutdownOption = ShutdownOption.JAVA;
+            boolean instantShutdown = false;
             if(!arguments.isEmpty()) {
                 boolean found = false;
                 String[] args = getArguments(arguments);
@@ -22,7 +23,9 @@ public class Commands {
                     if(g.equalsIgnoreCase("-engine")) {
                         shutdownOption = ShutdownOption.ENGINE;
                         found = true;
-                        break;
+                    } else if(g.equalsIgnoreCase("-direct")) {
+                        instantShutdown = true;
+                        found = true;
                     }
                 }
                 if(!found) {
@@ -31,8 +34,12 @@ public class Commands {
                 }
             }
             try {
-                OmniKryptecEngine.instance().close(shutdownOption);
-                Logger.log("Engine was successfully exited", LogLevel.FINE);
+                if(instantShutdown) {
+                    shutdownCompletely();
+                } else {
+                    OmniKryptecEngine.instance().close(shutdownOption);
+                    Logger.log("Engine was successfully exited", LogLevel.FINE);
+                }
             } catch (Exception ex) {
                 if(shutdownOption == ShutdownOption.JAVA) {
                     shutdownCompletely();
@@ -42,7 +49,7 @@ public class Commands {
             }
         }
         
-    }.setUseArguments(true).setHelp("Usage:\nexit [-engine]\nParameter - Description\nengine - Stops only the engine");
+    }.setUseArguments(true).setHelp("Usage:\nexit [-engine] [-direct]\nParameter - Description\nengine - Stops only the engine\ndirect - Stops directly the JVM");
     
     public static final Command COMMANDTEST = new Command("test") {
         
