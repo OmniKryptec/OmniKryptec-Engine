@@ -1,27 +1,28 @@
 package omnikryptec.storing;
 
 import omnikryptec.renderer.IRenderer;
+import omnikryptec.texture.ITexture;
 import omnikryptec.texture.Texture;
 
 public class Material {
 	
-	private static Texture defaultNormalMap;
+	private static ITexture defaultNormalMap;
 	
-	public static void setDefaultNormalMap(Texture t){
+	public static void setDefaultNormalMap(ITexture t){
 		if(t!=null){
 			defaultNormalMap = t;
 		}
 	}
 	
-	public static Texture getDefaultNormalMap(){
+	public static ITexture getDefaultNormalMap(){
 		return defaultNormalMap;
 	}
 	
 	private float reflectivity;
 	private float shineDamper;
 	
-	private Texture normalmap;
-	private Texture specularmap;
+	private ITexture normalmap;
+	private ITexture specularmap;
 	private boolean hasTransparency=false;
 	private IRenderer renderer;
 	
@@ -44,11 +45,11 @@ public class Material {
 		this.specularmap = specularmap;
 	}
 	
-	public Texture getNormalmap(){
+	public ITexture getNormalmap(){
 		return normalmap;
 	}
 	
-	public Texture getSpecularmap(){
+	public ITexture getSpecularmap(){
 		return specularmap;
 	}
 	
