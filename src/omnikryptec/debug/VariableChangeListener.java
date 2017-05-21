@@ -6,10 +6,10 @@ import javax.swing.Timer;
  *
  * @author Panzer1119
  */
-public abstract class VariableChangeListener {
+public abstract class VariableChangeListener<T> {
 
     private final Timer timer;
-    private Object variable = null;
+    private T variable = null;
     private boolean firstCheck = true;
     private boolean isChecking = false;
 
@@ -27,7 +27,7 @@ public abstract class VariableChangeListener {
      * 
      * @return Object New value
      */
-    public abstract Object getVariable();
+    public abstract T getVariable();
 
     /**
      * This function is called if the variable changed its value
@@ -35,7 +35,7 @@ public abstract class VariableChangeListener {
      * @param oldValue Object Old value
      * @param newValue Object New Value
      */
-    public abstract void variableChanged(Object oldValue, Object newValue);
+    public abstract void variableChanged(T oldValue, T newValue);
 
     /**
      * Update function
@@ -47,7 +47,7 @@ public abstract class VariableChangeListener {
         isChecking = true;
         new Thread(() -> {
             try {
-                Object o = getVariable();
+                T o = getVariable();
                 if(o != variable && !firstCheck) {
                     variableChanged(variable, o);
                 } else if(firstCheck) {
