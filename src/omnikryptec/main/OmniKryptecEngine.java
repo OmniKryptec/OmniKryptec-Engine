@@ -11,6 +11,7 @@ import omnikryptec.event.Event;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
 import omnikryptec.logger.Commands;
+import omnikryptec.logger.Logger;
 import omnikryptec.postprocessing.FrameBufferObject;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.PostProcessing;
@@ -139,7 +140,7 @@ public class OmniKryptecEngine {
     	}catch(Exception e){
     		state = State.Error;
     		eventsystem.fireEvent(new Event(e), EventType.ERROR);
-    		e.printStackTrace();
+                Logger.logErr("Error while looping: " + e, e);
     	}
     	close(shutdownOption);
     }

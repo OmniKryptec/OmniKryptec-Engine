@@ -22,6 +22,7 @@ public class Command {
     private String help = "";
     private boolean usesArguments = false;
     private boolean runAlways = false;
+    private boolean hasExtraThread = false;
     
     private static final ExecutorService commandExecutor = Executors.newFixedThreadPool(10);
     
@@ -48,6 +49,15 @@ public class Command {
     public final Command delete() {
         COMMANDS.remove(command);
         return this;
+    }
+    
+    public final Command setHasExtraThread(boolean hasExtraThread) {
+        this.hasExtraThread = hasExtraThread;
+        return this;
+    }
+    
+    public final boolean hasExtraThread() {
+        return hasExtraThread;
     }
     
     public static final String[] getArguments(String arguments) {
@@ -101,33 +111,27 @@ public class Command {
                     }
                     final String arguments = arguments_temp;
                     Command cc = COMMANDS.get(c);
-                    Runnable run = new Runnable() {
-                        
-                        @Override
-                        public void run() {
-                            try {
-                                if(cc.isRunningAlways()) {
-                                    COMMANDS.get(c).run(arguments);
-                                } else {
-                                    COMMANDS.get(c).preRun(arguments);
-                                }
-                            } catch (Exception ex) {
+                    Runnable run = () -> {
+                        try {
+                            if(cc.isRunningAlways()) {
+                                COMMANDS.get(c).run(arguments);
+                            } else {
+                                COMMANDS.get(c).preRun(arguments);
                             }
+                        } catch (Exception ex) {
                         }
-                        
                     };
-                    Runnable run_2 = new Runnable() {
-                        
-                        @Override
-                        public void run() {
-                            try {
-                                CommandEvent.commandExecuted(new CommandEvent(Command.class, COMMANDS.get(c), arguments));
-                            } catch (Exception ex) {
-                            }
+                    Runnable run_2 = () -> {
+                        try {
+                            CommandEvent.commandExecuted(new CommandEvent(Command.class, COMMANDS.get(c), arguments));
+                        } catch (Exception ex) {
                         }
-                        
                     };
-                    commandExecutor.execute(run);
+                    if(cc.hasExtraThread) {
+                        commandExecutor.execute(run);
+                    } else {
+                        run.run();
+                    }
                     commandExecutor.execute(run_2);
                     return true;
                 }

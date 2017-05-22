@@ -46,7 +46,7 @@ public class EngineTest{
 		ent3.setRelativePos(-5, 0, -5);
 		//ent.setScale(new Vector3f(2, 2, 2));
 		//RenderUtil.goWireframe(true);
-		OmniKryptecEngine.instance().startLoop(ShutdownOption.JAVA);
+		OmniKryptecEngine.instance().startLoop(ShutdownOption.ENGINE);
 	}
 	
 }

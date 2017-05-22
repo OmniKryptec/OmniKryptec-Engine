@@ -1,5 +1,7 @@
 package omnikryptec.logger;
 
+import java.util.concurrent.TimeUnit;
+import omnikryptec.debug.SignalAwaiter;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
@@ -37,8 +39,11 @@ public class Commands {
                 if(instantShutdown) {
                     shutdownCompletely();
                 } else {
-                    OmniKryptecEngine.instance().close(shutdownOption);
-                    Logger.log("Engine was successfully exited", LogLevel.FINE);
+                    OmniKryptecEngine.instance().requestClose();
+                    Logger.log("Engine was successfully exited");
+                    if(shutdownOption == ShutdownOption.JAVA) {
+                        shutdownCompletely();
+                    }
                 }
             } catch (Exception ex) {
                 if(shutdownOption == ShutdownOption.JAVA) {
@@ -53,7 +58,7 @@ public class Commands {
             }
         }
         
-    }.setUseArguments(true).setHelp("Usage:\nexit [-engine/-java]\nParameter - Description\nengine - Stops only the engine\njava - Stops directly the JVM");
+    }.setUseArguments(true).setHasExtraThread(true).setHelp("Usage:\nexit [-engine/-java]\nParameter - Description\nengine - Stops only the engine\njava - Stops directly the JVM");
     
     public static final Command COMMANDTEST = new Command("test") {
         
@@ -69,7 +74,7 @@ public class Commands {
             }
         }
         
-    }.setUseArguments(true).setHelp("Usage:\ntest <...>");
+    }.setUseArguments(true).setHasExtraThread(true).setHelp("Usage:\ntest <...>");
     
     public static final void initialize() {
         //Nothing, this function only registers automatically all standard Command's 
