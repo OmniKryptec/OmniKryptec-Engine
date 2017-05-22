@@ -38,11 +38,14 @@ public class Commands {
             try {
                 if(instantShutdown) {
                     shutdownCompletely();
-                } else if(OmniKryptecEngine.instance().getState() != (OmniKryptecEngine.State.Running || OmniKryptecEngine.State.Starting)) {
-                    Logger.log("Engine is not running", LogLevel.WARNING);
                 } else {
-                    OmniKryptecEngine.instance().requestClose();
-                    Logger.log("Engine was successfully exited");
+                    final OmniKryptecEngine.State state = OmniKryptecEngine.instance().getState();
+                    if(state != OmniKryptecEngine.State.Running && state != OmniKryptecEngine.State.Starting) {
+                        Logger.log("Engine is not running", LogLevel.WARNING);
+                    } else {
+                        OmniKryptecEngine.instance().requestClose();
+                        Logger.log("Engine was successfully exited");
+                    }
                 }
                 if(shutdownOption == ShutdownOption.JAVA) {
                     shutdownCompletely();
