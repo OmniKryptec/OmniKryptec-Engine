@@ -25,6 +25,7 @@ import javax.swing.text.StyledDocument;
 
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.LogEntryFormatter.LogEntryFormatTile;
+import omnikryptec.main.OmniKryptecEngine;
 
 /**
  *
@@ -49,6 +50,7 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
     private int depth = 0;
     private boolean visible = false;
     private boolean showed = false;
+    private boolean exitWhenLastOne = false;
     private WizardSaveAs wizardSaveAs = null;
     
     public Console() {
@@ -190,6 +192,7 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
             showed = false;
         }
         reloadConsole();
+        lookForExit();
     }
     
     public void hideConsole() {
@@ -199,6 +202,7 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
             showed = true;
         }
         reloadConsole();
+        lookForExit();
     }
     
     public void showConsole(Component c) {
@@ -226,6 +230,27 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
             showConsole(c);
         }
         reloadConsole();
+    }
+    
+    private void lookForExit() {
+        if(exitWhenLastOne) {
+            try {
+                if(OmniKryptecEngine.instance() == null) {
+                    Commands.COMMANDEXIT.run("-java");
+                }
+            } catch (Exception ex) {
+                Commands.COMMANDEXIT.run("-java");
+            }
+        }
+    }
+
+    public boolean isExitWhenLastOne() {
+        return exitWhenLastOne;
+    }
+
+    public Console setExitWhenLastOne(boolean exitWhenLastOne) {
+        this.exitWhenLastOne = exitWhenLastOne;
+        return this;
     }
     
     private void reloadCheckBoxSelectionsFromSave() {

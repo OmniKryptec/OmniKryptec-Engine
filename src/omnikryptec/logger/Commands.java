@@ -46,9 +46,9 @@ public class Commands {
                         OmniKryptecEngine.instance().requestClose();
                         Logger.log("Engine was successfully exited");
                     }
-                }
-                if(shutdownOption == ShutdownOption.JAVA) {
-                    shutdownCompletely();
+                    if(shutdownOption == ShutdownOption.JAVA) {
+                        shutdownCompletely();
+                    }
                 }
             } catch (Exception ex) {
                 if(shutdownOption == ShutdownOption.JAVA) {

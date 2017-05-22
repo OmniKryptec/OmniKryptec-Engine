@@ -25,6 +25,8 @@ public class EngineTest{
                 Logger.showConsoleDirect();
 		Logger.enableLoggerRedirection(true);
 		Logger.setDebugMode(true);
+                Logger.CONSOLE.setExitWhenLastOne(true);
+                Logger.showConsoleDirect();
                 Logger.log("Loaded Natives: " + NativesLoader.loadNatives());
 		
 		DisplayManager.createDisplay("Test", new GameSettings("EngineTest", 1280, 720).setAnisotropicLevel(4));
@@ -46,7 +48,7 @@ public class EngineTest{
 		ent3.setRelativePos(-5, 0, -5);
 		//ent.setScale(new Vector3f(2, 2, 2));
 		//RenderUtil.goWireframe(true);
-		OmniKryptecEngine.instance().startLoop(ShutdownOption.ENGINE);
+		OmniKryptecEngine.instance().startLoop(ShutdownOption.JAVA);
 	}
 	
 }
