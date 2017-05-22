@@ -22,7 +22,6 @@ import omnikryptec.util.RenderUtil;
 public class EngineTest{
 
 	public static void main(String[] args) {
-                Logger.showConsoleDirect();
 		Logger.enableLoggerRedirection(true);
 		Logger.setDebugMode(true);
                 Logger.CONSOLE.setExitWhenLastOne(true);
