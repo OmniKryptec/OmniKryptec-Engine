@@ -7,7 +7,6 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL30;
 
 import omnikryptec.display.DisplayManager;
-import omnikryptec.display.GameSettings;
 import omnikryptec.event.Event;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
@@ -106,6 +105,7 @@ public class OmniKryptecEngine {
     	Material.setDefaultNormalMap(Texture.newTexture(OmniKryptecEngine.class.getResourceAsStream(DEFAULT_NORMALMAP)).create());
     	RenderUtil.cullBackFaces(true);
     	RenderUtil.enableDepthTesting(true);
+    	RendererRegistration.init();
     	createFbos();
     	eventsystem.fireEvent(new Event(), EventType.BOOTING_COMPLETED);
     }
@@ -129,16 +129,17 @@ public class OmniKryptecEngine {
     	return eventsystem;
     }
     
-    public void loop(ShutdownOption shutdownOption){
+    public void startLoop(ShutdownOption shutdownOption){
     	try{
     		state = State.Running;
-    		while(Display.isCloseRequested()||requestclose){
-    			frame();
-    			RenderUtil.clear(0,0,0,1);
+    		while(!Display.isCloseRequested()&&!requestclose){
+    			frame(true);
     		}
+    		
     	}catch(Exception e){
     		state = State.Error;
     		eventsystem.fireEvent(new Event(e), EventType.ERROR);
+    		e.printStackTrace();
     	}
     	close(shutdownOption);
     }
@@ -147,13 +148,15 @@ public class OmniKryptecEngine {
     	requestclose=true;
     }
     
-    public OmniKryptecEngine frame(){
+    public OmniKryptecEngine frame(boolean clear){
     	if(Display.wasResized()){
     		resizeFbos();
     		eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
     	}
     	scenefbo.bindFrameBuffer();
-    	RenderUtil.clear(0, 0, 0, 1);
+    	if(clear){
+    		RenderUtil.clear(0, 0, 0, 0);
+    	}
     	if(sceneCurrent != null){
             sceneCurrent.frame(Render.All);
     	}
@@ -162,7 +165,9 @@ public class OmniKryptecEngine {
     	PostProcessing.doPostProcessing(unsampledfbo);
     	InputUtil.nextFrame();
     	DisplayManager.instance().updateDisplay();
-        return this;
+    	eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
+    	eventsystem.fireEvent(new Event(), EventType.RENDER_EVENT);
+    	return this;
     }
     
     public OmniKryptecEngine close(ShutdownOption shutdownOption){

@@ -1,6 +1,7 @@
 package omnikryptec.storing;
 
 import omnikryptec.renderer.IRenderer;
+import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.texture.ITexture;
 import omnikryptec.texture.Texture;
 
@@ -24,7 +25,7 @@ public class Material {
 	private ITexture normalmap;
 	private ITexture specularmap;
 	private boolean hasTransparency=false;
-	private IRenderer renderer;
+	private IRenderer renderer = RendererRegistration.DEF_ENTITY_RENDERER;
 	
 	public Material(){
 		this(0, 10);

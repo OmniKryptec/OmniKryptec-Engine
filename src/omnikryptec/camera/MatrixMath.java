@@ -2,8 +2,11 @@ package omnikryptec.camera;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
-public class Projection {
+import omnikryptec.storing.Entity;
+
+public class MatrixMath {
 
 	public static Matrix4f perspectiveProjection(float fovdeg, float far, float near) {
 		return perspectiveProjection(fovdeg, far, near, Display.getWidth(), Display.getHeight());
@@ -61,5 +64,16 @@ public class Projection {
 
 	public static Matrix4f orthographicProjection2D(float x, float y, float width, float height, float near, float far) {
 		return orthographicProjection(x, x + width, y, y + height, near, far);
+	}
+	
+	public static Matrix4f createTransformationMatrix(Entity e) {
+		Matrix4f matrix = new Matrix4f();
+		matrix.setIdentity();
+		Matrix4f.translate(e.getAbsolutePos(), matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().x), new Vector3f(1, 0, 0), matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().y), new Vector3f(0, 1, 0), matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().z), new Vector3f(0, 0, 1), matrix, matrix);
+		Matrix4f.scale(e.getScale(), matrix, matrix);
+		return matrix;
 	}
 }

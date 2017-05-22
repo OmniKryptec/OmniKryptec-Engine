@@ -16,8 +16,15 @@ public final class EventType {
 
 
 	public static final EventType RESIZED = new EventType("resized");
+
+
+
+	public static final EventType FRAME_EVENT = new EventType("frame");
 	
-	
+	/**
+	 * like the frame event but in the renderthread for renderingpurposes
+	 */
+	public static final EventType RENDER_EVENT = new EventType("render_frame", true);
 	
 	private final String name;
 	private final boolean needsCurrentThread;

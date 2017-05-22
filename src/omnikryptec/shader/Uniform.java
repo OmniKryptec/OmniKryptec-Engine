@@ -23,5 +23,10 @@ public abstract class Uniform {
 	protected int getLocation(){
 		return location;
 	}
+	
+	@Override
+	public String toString(){
+		return "Name: "+name+" Location: "+location;
+	}
 
 }

@@ -54,12 +54,12 @@ public class Shader {
 			}
 		}
 		bindAttributes(attributes.toArray(new String[1]));
-		storeUniforms(uniformstmp.toArray(new Uniform[1]));
 		GL20.glLinkProgram(programID);
 		GL20.glValidateProgram(programID);
+		storeUniforms(uniformstmp.toArray(new Uniform[1]));
 		String tmp;
 		for (int i = 0; i < vertexShaderHolder.getUniformLines().size(); i++) {
-			tmp = vertexShaderHolder.getUniformLines().get(i).split(" ")[2];
+			tmp = vertexShaderHolder.getUniformLines().get(i).split(" ")[2].replace(";", "");
 			if (uniforms.contains(tmp)) {
 				if(Logger.isDebugMode()){
 					Logger.log("Uniform name already in use (vertexshader): " + tmp, LogLevel.WARNING, true);
@@ -69,7 +69,7 @@ public class Shader {
 			}
 		}
 		for (int i = 0; i < fragmentShaderHolder.getUniformLines().size(); i++) {
-			tmp = fragmentShaderHolder.getUniformLines().get(i).split(" ")[2];
+			tmp = fragmentShaderHolder.getUniformLines().get(i).split(" ")[2].replace(";", "");
 			if (uniforms.contains(tmp)) {
 				if(Logger.isDebugMode()){
 					Logger.log("Uniform name already in use (fragmentshader): " + tmp, LogLevel.WARNING, true);
@@ -80,7 +80,7 @@ public class Shader {
 		}
 		if(geometryFile!=null){
 			for (int i = 0; i < geometryShaderHolder.getUniformLines().size(); i++) {
-				tmp = geometryShaderHolder.getUniformLines().get(i).split(" ")[2];
+				tmp = geometryShaderHolder.getUniformLines().get(i).split(" ")[2].replace(";", "");
 				if (uniforms.contains(tmp)) {
 					if(Logger.isDebugMode()){
 						Logger.log("Uniform name already in use (geometryshader): " + tmp, LogLevel.WARNING, true);
@@ -91,7 +91,7 @@ public class Shader {
 			}
 		}
 		if (uniformstmp.size() != uniforms.size() && Logger.isDebugMode()) {
-			Logger.log("Found uniforms: " + uniforms + "; Required uniforms in constructor: " + uniformstmp.size(),
+			Logger.log("Found uniforms: " + uniforms + ";\n		Required uniforms in constructor: " + uniformstmp.size(),
 					LogLevel.WARNING, false);
 		}
 		vertexShaderHolder = null;
@@ -125,12 +125,18 @@ public class Shader {
 	}
 
 	private void storeUniforms(Uniform... uniforms) {
+		if(uniforms==null||uniforms.length==0){
+			return;
+		}
 		for (int i = 0; i < uniforms.length; i++) {
 			uniforms[i].storeUniformLocation(programID);
 		}
 	}
 
 	private void bindAttributes(String... strings) {
+		if(strings==null||strings.length==0){
+			return;
+		}
 		for (int i = 0; i < strings.length; i++) {
 			GL20.glBindAttribLocation(programID, i, strings[i]);
 		}

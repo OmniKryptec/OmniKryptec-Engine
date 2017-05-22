@@ -97,7 +97,7 @@ public class RenderChunk {
 			} else {
 				other.remove(g);
 			}
-			g.setMyChunk(null);
+			//g.setMyChunk(null);
 		}
 		return g;
 	}
@@ -124,11 +124,10 @@ public class RenderChunk {
 		if(rend==null||rend.length==0){
 			rend = empty_array;
 		}
+
 		for(IRenderer r : chunk.keySet()){
 			if(r!=null&&(type==Render.All||(type==Render.OnlThis&&contains(rend, r))||(type==Render.EvElse&&!contains(rend, r)))){
-				r.start();
 				r.render(scene, chunk.get(r));
-				r.end();
 			}
 		}
 		for(int i=0; i<other.size(); i++){

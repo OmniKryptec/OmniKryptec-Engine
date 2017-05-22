@@ -20,6 +20,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 

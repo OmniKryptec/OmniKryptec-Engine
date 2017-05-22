@@ -9,9 +9,10 @@ public class Camera extends GameObject{
 	
 	
 	private Matrix4f projection;
-	private Matrix4f view;
+	private Matrix4f view = new Matrix4f();
 	
-	protected Camera(Matrix4f projmat){
+	public Camera(Matrix4f projmat){
+		super();
 		this.projection = projmat;
 	}
 	

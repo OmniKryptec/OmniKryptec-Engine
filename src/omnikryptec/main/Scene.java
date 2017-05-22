@@ -3,8 +3,8 @@ package omnikryptec.main;
 import java.util.HashMap;
 import java.util.Map;
 
-import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.camera.Camera;
+import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.renderer.IRenderer;
 import omnikryptec.renderer.RenderChunk;
@@ -81,6 +81,11 @@ public class Scene {
                 }
             }
         }
+        cam.doLogic();
+        doLogic();
     }
+
+	public void doLogic() {		
+	}
 
 }

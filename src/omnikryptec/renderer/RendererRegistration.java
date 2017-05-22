@@ -5,7 +5,16 @@ import java.util.List;
 
 public class RendererRegistration {
 	
+	
 	private static final List<IRenderer> existingRenderers = new ArrayList<>();
+
+	public static final DefaultEntityRenderer DEF_ENTITY_RENDERER;
+	
+	static{
+		DEF_ENTITY_RENDERER = new DefaultEntityRenderer();
+	}
+	
+	
 	
 	
 	public static boolean exists(IRenderer r){
@@ -21,5 +30,11 @@ public class RendererRegistration {
 			existingRenderers.get(i).cleanup();
 		}
 		existingRenderers.clear();
+	}
+
+	/**
+	 * trigger static constructor
+	 */
+	public static void init() {
 	}
 }

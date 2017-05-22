@@ -13,10 +13,10 @@ import omnikryptec.renderer.RenderChunk;
  */
 public class GameObject {
 
-    private Vector3f pos;
-    private GameObject parent;
+    private Vector3f pos = new Vector3f();
+    private GameObject parent = null;
     private boolean active = true;
-    private Vector3f rotation;
+    private Vector3f rotation = new Vector3f();
     //@JsonView(GameObject.class) //To hide this while saving it
     private RenderChunk myChunk;
 
@@ -69,7 +69,7 @@ public class GameObject {
      */
     public Vector3f getAbsolutePos() {
         if (parent == null) {
-                return pos;
+        	return pos;
         }
         return Vector3f.add(parent.getAbsolutePos(), pos, null);
     }
@@ -225,12 +225,12 @@ public class GameObject {
     }
 
     public GameObject setMyChunk(RenderChunk myChunk){
-        this.myChunk = myChunk;
+    	this.myChunk = myChunk;
         return this;
     }
 
     public RenderChunk getMyChunk(){
-            return myChunk;
+    	return myChunk;
     }
 
     public Vector3f getPos() {

@@ -133,7 +133,9 @@ public class FrameBufferObject implements ITexture{
 	public void unbindFrameBuffer() {
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
-		history.remove(history.lastIndexOf(this));
+		if(history.size()>0){
+			history.remove(history.lastIndexOf(this));
+		}
 		if(history.size()>0){
 			history.get(history.size()-1).bindFrameBuffer();
 		}
