@@ -1,5 +1,6 @@
 package omnikryptec.logger;
 
+import java.awt.Component;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.time.Instant;
@@ -24,7 +25,7 @@ public class Logger {
     public static final SystemInputStream NEWSYSIN = new SystemInputStream(OLDSYSIN);
     
     public static LogLevel minimumLogLevel = LogLevel.INFO;
-    public static final Console CONSOLE;
+    public static final Console CONSOLE = new Console();
     public static final ArrayList<LogEntry> LOG = new ArrayList<>();
     private static ExecutorService THREADPOOL = null;
 
@@ -43,20 +44,17 @@ public class Logger {
             }
         }));
         Commands.initialize();
-        CONSOLE = new Console();
-        CONSOLE.showConsole(null);
     }
     
-    public static Class setDebugMode(boolean debugMode) {
+    public static final void setDebugMode(boolean debugMode) {
     	Logger.debugMode = debugMode;
-        return Logger.class;
     }
     
-    public static boolean isDebugMode() {
+    public static final boolean isDebugMode() {
     	return debugMode;
     }
     
-    public static boolean enableLoggerRedirection(boolean enable) {
+    public static final boolean enableLoggerRedirection(boolean enable) {
         if(enable && !enabled) {
             System.setOut(NEWSYSOUT);
             System.setErr(NEWSYSERR);
@@ -76,25 +74,34 @@ public class Logger {
         }
     }
     
+    public static final Console showConsoleDirect() {
+        return showConsole(null);
+    }
+    
+    public static final Console showConsole(Component c) {
+        new Thread(() -> CONSOLE.showConsole(c)).start();
+        return CONSOLE;
+    }
+    
     public static LogEntry logErr(Object message, Exception ex) {
         LogEntry logEntry = NEWSYSERR.getLogEntry(message, Instant.now()).setException(ex);
         log(logEntry);
         return logEntry;
     }
 
-    public static LogEntry log(Object message) {
+    public static final LogEntry log(Object message) {
         return log(message, LogLevel.INFO);
     }
     
-    public static LogEntry log(Object message, LogLevel logLevel) {
+    public static final LogEntry log(Object message, LogLevel logLevel) {
         return log(message, logLevel, logLevel.isBad());
     }
 
-    public static LogEntry log(Object message, LogLevel logLevel, boolean error) {
+    public static final LogEntry log(Object message, LogLevel logLevel, boolean error) {
         return log(message, logLevel, error, true);
     }
 
-    public static LogEntry log(Object message, LogLevel logLevel, boolean error, boolean newLine) {
+    public static final LogEntry log(Object message, LogLevel logLevel, boolean error, boolean newLine) {
         Instant instant = Instant.now();
         LogEntry logEntry = null;
         if(error) {
@@ -108,11 +115,11 @@ public class Logger {
         return logEntry;
     }
     
-    public static void log(LogEntry logEntry) {
+    public static final void log(LogEntry logEntry) {
         addLogEntry(logEntry);
     }
     
-    private static void addLogEntry(LogEntry logEntry) {
+    private static final void addLogEntry(LogEntry logEntry) {
         if(THREADPOOL.isShutdown() || THREADPOOL.isTerminated()) {
             initializeThreadPool();
         }
@@ -144,45 +151,35 @@ public class Logger {
         });
     }
     
-    private static void initializeThreadPool() {
+    private static final void initializeThreadPool() {
         THREADPOOL = Executors.newFixedThreadPool(1);
     }
 
-    public static boolean isLoggerRedirectionEnabled() {
+    public static final boolean isLoggerRedirectionEnabled() {
         return enabled;
     }
 
-    public static LogLevel getMinimumLogLevel() {
+    public static final LogLevel getMinimumLogLevel() {
         return minimumLogLevel;
     }
 
-    public static void setMinimumLogLevel(LogLevel minimumLogLevel) {
+    public static final void setMinimumLogLevel(LogLevel minimumLogLevel) {
         Logger.minimumLogLevel = minimumLogLevel;
     }
     
-    public static boolean isMinimumLogLevel(LogLevel logLevel) {
+    public static final boolean isMinimumLogLevel(LogLevel logLevel) {
         if(logLevel == null) {
             return false;
         }
         return logLevel.getLevel() <= minimumLogLevel.getLevel();
     }
     
-    public static void setDateTimeFormat(String dateTimeFormat) {
+    public static final void setDateTimeFormat(String dateTimeFormat) {
         DATETIMEFORMAT = dateTimeFormat;
-        /*
-        for(LogEntry logEntry : LOG) {
-            logEntry.setDateTimeFormat(dateTimeFormat);
-        }
-        */
     }
     
-    public static void setLogEntryFormat(String logEntryFormat) {
+    public static final void setLogEntryFormat(String logEntryFormat) {
         LOGENTRYFORMAT = logEntryFormat;
-        /*
-        for(LogEntry logEntry : LOG) {
-            logEntry.setLogEntryFormat(logEntryFormat);
-        }
-        */
     }
 
 }

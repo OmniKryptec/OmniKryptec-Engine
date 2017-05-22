@@ -16,15 +16,18 @@ import omnikryptec.storing.Entity;
 import omnikryptec.storing.Model;
 import omnikryptec.storing.TexturedModel;
 import omnikryptec.texture.Texture;
+import omnikryptec.util.NativesLoader;
 import omnikryptec.util.RenderUtil;
 
 public class EngineTest{
 
 	public static void main(String[] args) {
+                Logger.showConsoleDirect();
 		Logger.enableLoggerRedirection(true);
 		Logger.setDebugMode(true);
+                Logger.log("Loaded Natives: " + NativesLoader.loadNatives());
 		
-		DisplayManager.createDisplay("Test", new GameSettings(1280, 720).setAnisotropicLevel(4));
+		DisplayManager.createDisplay("Test", new GameSettings("EngineTest", 1280, 720).setAnisotropicLevel(4));
 		Model brunnen = new Model(ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
 		//Model brunnen = Model.generateQuad();
 		Texture brunnent = Texture.newTexture(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create();

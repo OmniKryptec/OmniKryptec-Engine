@@ -2,6 +2,7 @@ package omnikryptec.display;
 
 public class GameSettings {
 	
+        private String name;
 	private int width, height;
 	private boolean fullscreen=false;
 	private boolean resizeable=true;
@@ -19,7 +20,7 @@ public class GameSettings {
 	
 	public static final int NO_MULTISAMPLING=0;
 	
-	public GameSettings(int width, int height){
+	public GameSettings(String name, int width, int height){
 		this.width = width;
 		this.height = height;
 	}
@@ -31,6 +32,10 @@ public class GameSettings {
 	public int getHeight(){
 		return height;
 	}
+        
+        public String getName(){
+                return name;
+        }
 	
 	public GameSettings setFullscreen(boolean b){
 		this.fullscreen = b;

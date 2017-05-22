@@ -36,7 +36,7 @@ public class Test implements ILanguage {
         LanguageManager.addLanguageListener(test);
         LanguageManager.collectAllLanguageKeys(new File("lang_TE.txt"));
         System.out.println("Test 1");
-        System.err.println("Test 2");
+        System.err.println("Test 2 " + System.getProperty("user.home"));
         JFrame frame = new JFrame("Test");
         frame.setSize(new Dimension(400, 400));
         frame.setLayout(new BorderLayout());

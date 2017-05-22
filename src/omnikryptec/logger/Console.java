@@ -49,23 +49,19 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
     private int depth = 0;
     private boolean visible = false;
     private boolean showed = false;
-    private final WizardSaveAs wizardSaveAs;
+    private WizardSaveAs wizardSaveAs = null;
     
-    /**
-     * Creates new form Console
-     */
     public Console() {
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         initComponents();
         init();
         initListeners();
         addWindowListener(this);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         try {
             setIconImage(ImageIO.read(Console.class.getResourceAsStream(ICON)));
         } catch (Exception ex) {
             Logger.logErr("Error while loading console icon: " + ex, ex);
         }
-        wizardSaveAs = new WizardSaveAs(this);
     }
     
     private void initListeners() {
@@ -205,6 +201,9 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
     }
     
     public void showConsole(Component c) {
+        if(wizardSaveAs == null) {
+            wizardSaveAs = new WizardSaveAs(this);
+        }
         if(!visible && !showed) {
             //reloadLang(); //FIXME LANGUAGE!!!
             reloadCheckBoxSelectionsFromSave();
