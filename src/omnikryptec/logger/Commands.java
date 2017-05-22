@@ -44,7 +44,11 @@ public class Commands {
                 if(shutdownOption == ShutdownOption.JAVA) {
                     shutdownCompletely();
                 } else {
-                    Logger.log("No engine running", LogLevel.WARNING);
+                    if(ex instanceof NullPointerException) {
+                        Logger.log("No engine running", LogLevel.WARNING);
+                    } else {
+                        Logger.logErr("Error while shutting down the engine: " + ex, ex);
+                    }
                 }
             }
         }

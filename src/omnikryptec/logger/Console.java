@@ -52,6 +52,7 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
     private WizardSaveAs wizardSaveAs = null;
     
     public Console() {
+        setTitle("Console");
         initComponents();
         init();
         initListeners();
