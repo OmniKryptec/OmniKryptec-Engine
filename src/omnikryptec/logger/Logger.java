@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import omnikryptec.lang.LanguageManager;
 
 import omnikryptec.logger.LogEntry.LogLevel;
 
@@ -43,6 +44,7 @@ public class Logger {
             } catch (Exception ex) {
             }
         }));
+        LanguageManager.initialize();
         Commands.initialize();
     }
     
