@@ -74,7 +74,14 @@ public class Language extends Properties {
     }
     
     public final Language addToLanguage(Properties language) {
+        return addToLanguage(language, false);
+    }
+    
+    public final Language addToLanguage(Properties language, boolean reloadAll) {
         putAll(language);
+        if(reloadAll && LanguageManager.languageActive == this) {
+            LanguageManager.notifyAllILanguageInterfaces();
+        }
         return this;
     }
 
