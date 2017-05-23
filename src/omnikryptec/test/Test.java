@@ -30,7 +30,6 @@ public class Test implements ILanguage {
      * @param args Egal
      */
     public static void main(String[] args) {
-        LanguageManager.fileToLanguageCodeShort(new File("Test_log.txt"));
         Logger.enableLoggerRedirection(true);
         Test test = new Test();
         LanguageManager.addLanguageListener(test);

@@ -1,7 +1,5 @@
 package omnikryptec.logger;
 
-import java.util.concurrent.TimeUnit;
-import omnikryptec.debug.SignalAwaiter;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
@@ -43,7 +41,7 @@ public class Commands {
                     if(state != OmniKryptecEngine.State.Running && state != OmniKryptecEngine.State.Starting) {
                         Logger.log("Engine is not running", LogLevel.WARNING);
                     } else {
-                        OmniKryptecEngine.instance().requestClose();
+                        OmniKryptecEngine.instance().requestClose(ShutdownOption.ENGINE);
                         Logger.log("Engine was successfully exited");
                     }
                     if(shutdownOption == ShutdownOption.JAVA) {

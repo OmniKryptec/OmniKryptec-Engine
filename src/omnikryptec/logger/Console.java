@@ -192,7 +192,7 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
             showed = false;
         }
         reloadConsole();
-        lookForExit();
+        checkForExit();
     }
     
     public void hideConsole() {
@@ -202,7 +202,7 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
             showed = true;
         }
         reloadConsole();
-        lookForExit();
+        checkForExit();
     }
     
     public void showConsole(Component c) {
@@ -232,10 +232,10 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
         reloadConsole();
     }
     
-    private void lookForExit() {
+    private void checkForExit() {
         if(exitWhenLastOne) {
             try {
-                if(OmniKryptecEngine.instance() == null) {
+                if(OmniKryptecEngine.instance() == null || OmniKryptecEngine.instance().getState() == OmniKryptecEngine.State.Stopped) {
                     Commands.COMMANDEXIT.run("-java");
                 }
             } catch (Exception ex) {
