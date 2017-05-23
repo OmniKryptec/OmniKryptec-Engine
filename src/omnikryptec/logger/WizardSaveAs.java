@@ -8,11 +8,15 @@ import java.awt.event.WindowListener;
 import java.io.File;
 import java.time.Instant;
 import java.util.HashMap;
+import javax.swing.BorderFactory;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
+import javax.swing.border.EtchedBorder;
+import omnikryptec.lang.ILanguage;
+import omnikryptec.lang.LanguageManager;
 
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.LogEntryFormatter.LogEntryFormatTile;
@@ -22,7 +26,7 @@ import omnikryptec.swing.JCheckBoxList;
  *
  * @author Panzer1119
  */
-public class WizardSaveAs extends javax.swing.JDialog implements ActionListener, WindowListener {
+public class WizardSaveAs extends javax.swing.JDialog implements ActionListener, ILanguage, WindowListener {
     
     private final Console console;
     private LogEntry logEntry = null;
@@ -47,6 +51,8 @@ public class WizardSaveAs extends javax.swing.JDialog implements ActionListener,
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         folder = new File(System.getProperty("user.dir"));
         reloadInfo();
+        LanguageManager.addLanguageListener(this);
+        reloadLanguage();
     }
     
     private void reloadInfo() {
@@ -118,7 +124,7 @@ public class WizardSaveAs extends javax.swing.JDialog implements ActionListener,
     private DefaultListModel<JCheckBox> getCheckBoxListModel() {
         final DefaultListModel<JCheckBox> model = new DefaultListModel<>();
         for(LogLevel ll : console.getLogLevels()) {
-            JCheckBox checkBox = new JCheckBox("Save " + ll.toText()); //FIXME LANGUAGE?!?! //String.format(StaticStandard.getLang().getLang("save_logLevel", "Save %s"), ll.toText());
+            JCheckBox checkBox = new JCheckBox(ll.toLocalizedText());
             checkBox.setSelected(console.logLevelVisibilities.get(ll));
             model.addElement(checkBox);
         }
@@ -446,6 +452,29 @@ public class WizardSaveAs extends javax.swing.JDialog implements ActionListener,
 
     @Override
     public void windowDeactivated(WindowEvent e) {
+    }
+
+    @Override
+    public void reloadLanguage() {
+        setTitle(getLang("save_as", "Save as"));
+        button_center_path.setText(getLang("search_computer", "Search Computer"));
+        button_bottom_back.setText(getLang("wizard_back", "< Back"));
+        button_bottom_next.setText(getLang("wizard_next", "Next >"));
+        button_bottom_finish.setText(getLang("finish", "Finish"));
+        button_bottom_cancel.setText(getLang("cancel", "Cancel"));
+        label_center_path.setText(getLang("file", "File"));
+        label_save_infos.setText(getLang("save_infos", "Save Infos"));
+        label_save_level.setText(getLang("save_level", "Save Level"));
+        checkBox_save_infos_appearance.setText(getLang("appearance", "Appearance"));
+        checkBox_save_infos_logLevel.setText(getLang("level", "Level"));
+        checkBox_save_infos_thread.setText(getLang("thread", "Thread"));
+        checkBox_save_infos_timestamp.setText(getLang("timestamp", "Timestamp"));
+        panel_settings_settings.setBorder(BorderFactory.createTitledBorder(new EtchedBorder(), getLang("settings", "Settings")));
+        int i = 0;
+        for(LogLevel ll : console.getLogLevels()) {
+            checkBoxList.getModel().getElementAt(i).setText(ll.toLocalizedText());
+            i++;
+        }
     }
     
 }

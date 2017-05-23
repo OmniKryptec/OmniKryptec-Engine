@@ -22,6 +22,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import omnikryptec.lang.ILanguage;
+import omnikryptec.lang.LanguageManager;
 
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.LogEntryFormatter.LogEntryFormatTile;
@@ -31,7 +33,7 @@ import omnikryptec.main.OmniKryptecEngine;
  *
  * @author Panzer1119
  */
-public class Console extends JFrame implements ActionListener, KeyListener, WindowListener {
+public class Console extends JFrame implements ActionListener, ILanguage, KeyListener, WindowListener {
 
     public static final String ICON = "/omnikryptec/icons/Farm-Fresh_application_xp_terminal.png";
     
@@ -42,7 +44,7 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
     }};
     protected final HashMap<JCheckBoxMenuItem, LogLevel> logLevelCheckBoxes = new HashMap<JCheckBoxMenuItem, LogLevel>() {{
         for(LogLevel ll : LogLevel.values()) {
-            final JCheckBoxMenuItem cbmi = new JCheckBoxMenuItem("Show " + ll.toText());
+            final JCheckBoxMenuItem cbmi = new JCheckBoxMenuItem(String.format(getLang("show_f", "Show %s"), ll.toLocalizedText()));
             put(cbmi, ll);
         }
     }};
@@ -54,7 +56,6 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
     private WizardSaveAs wizardSaveAs = null;
     
     public Console() {
-        setTitle("Console");
         initComponents();
         init();
         initListeners();
@@ -65,6 +66,8 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
         } catch (Exception ex) {
             Logger.logErr("Error while loading console icon: " + ex, ex);
         }
+        LanguageManager.addLanguageListener(this);
+        reloadLanguage();
     }
     
     private void initListeners() {
@@ -152,7 +155,6 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
                 try {
                     doc.insertString(doc.getLength(), logEntry.toString(), style);
                 } catch (Exception ex) {
-                    //logErr(String.format(lang.getProperty("error_while_adding_to_the_console", "Error while adding to the console: %s"), ex));
                     Logger.logErr("Error while adding to the console: " + ex, ex);
                 }
             }
@@ -173,7 +175,6 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
             try {
                 doc.insertString(doc.getLength(), logEntry.toString(), style);
             } catch (Exception ex) {
-                //logErr(String.format(lang.getProperty("error_while_adding_to_the_console", "Error while adding to the console: %s"), ex)); //FIXME LANGUAGE!!!
                 Logger.logErr("Error while adding to the console: " + ex, ex);
             }
             textPane.setCaretPosition(doc.getLength());
@@ -210,7 +211,6 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
             wizardSaveAs = new WizardSaveAs(this);
         }
         if(!visible && !showed) {
-            //reloadLang(); //FIXME LANGUAGE!!!
             reloadCheckBoxSelectionsFromSave();
             setLocationRelativeTo(c);
             setVisible(true);
@@ -221,7 +221,6 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
     }
     public void reShowConsole(Component c) {
         if(!visible && showed) {
-            //reloadLang(); //FIXME LANGUAGE!!!
             reloadCheckBoxSelectionsFromSave();
             setVisible(true);
             visible = true;
@@ -631,6 +630,26 @@ public class Console extends JFrame implements ActionListener, KeyListener, Wind
 
     @Override
     public void windowDeactivated(WindowEvent e) {
+    }
+
+    @Override
+    public void reloadLanguage() {
+        setTitle(getLang("console", "Console"));
+        M1.setText(getLang("file", "File"));
+        M2.setText(getLang("options", "Options"));
+        M1I1.setText(getLang("exit", "Exit"));
+        M1I2.setText(getLang("restart", "Restart"));
+        M1I3.setText(getLang("reload", "Reload"));
+        M1I4.setText(getLang("save_as", "Save as"));
+        M2C1.setText(String.format(getLang("show_f", "Show %s"), getLang("timestamp", "Timestamp")));
+        M2C2.setText(String.format(getLang("show_f", "Show %s"), getLang("appearance", "Appearance")));
+        M2C3.setText(String.format(getLang("show_f", "Show %s"), getLang("thread", "Thread")));
+        M2C4.setText(String.format(getLang("show_f", "Show %s"), getLang("level", "Level")));
+        M2C5.setText(getLang("enable_debug_mode", "Enable Debug Mode"));
+        button_input.setText(getLang("enter", "Enter"));
+        for(JCheckBoxMenuItem cbmi : logLevelCheckBoxes.keySet()) {
+            cbmi.setText(String.format(getLang("show_f", "Show %s"), logLevelCheckBoxes.get(cbmi).toLocalizedText()));
+        }
     }
     
 }

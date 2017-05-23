@@ -31,6 +31,18 @@ public class Test implements ILanguage {
      */
     public static void main(String[] args) {
         Logger.enableLoggerRedirection(true);
+        Logger.CONSOLE.setExitWhenLastOne(true);
+        Logger.showConsoleDirect();
+        new Thread(() -> {
+            try {
+                Thread.sleep(4000);
+                LanguageManager.setLanguage("EN");
+                Thread.sleep(4000);
+                LanguageManager.setLanguage("DE");
+            } catch (Exception ex) {
+                Logger.logErr("Error FTW: " + ex, ex);
+            }
+        }).start();
         Test test = new Test();
         LanguageManager.addLanguageListener(test);
         LanguageManager.collectAllLanguageKeys(new File("lang_TE.txt"));

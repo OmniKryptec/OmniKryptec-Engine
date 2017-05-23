@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import omnikryptec.lang.LanguageManager;
 
 /**
  *
@@ -300,6 +301,10 @@ public class LogEntry implements Serializable {
         
         public String toText() {
             return toString().toUpperCase().substring(0, 1) + toString().toLowerCase().substring(1);
+        }
+        
+        public String toLocalizedText() {
+            return LanguageManager.getLang(toString().toLowerCase(), toText());
         }
     }
     

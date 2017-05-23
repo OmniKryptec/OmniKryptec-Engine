@@ -26,11 +26,11 @@ public class LanguageManager {
     
     static {
         loadLanguages();
-        setLanguage("EN");
+        setLanguage("DE");
     }
     
     public static final void initialize() {
-        //Nothing, this function only loads automatically all standard languages 
+        //Nothing, this function only loads automatically all standard languages
     }
     
     public static final String getLang(String key, String defaultValue) {
