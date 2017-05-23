@@ -80,6 +80,10 @@ public class Logger {
     
     public static final Console showConsole(Component c) {
         new Thread(() -> CONSOLE.showConsole(c)).start();
+        try {
+            Thread.sleep(500);
+        } catch (Exception ex) {
+        }
         return CONSOLE;
     }
     
