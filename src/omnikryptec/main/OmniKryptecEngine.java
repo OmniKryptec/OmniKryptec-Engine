@@ -90,7 +90,8 @@ public class OmniKryptecEngine {
     private FrameBufferObject scenefbo;
     private FrameBufferObject unsampledfbo;
     
-    private boolean requestclose=false;
+    private ShutdownOption shutdownOption = ShutdownOption.NOTHING;
+    private boolean requestclose = false;
     
     public OmniKryptecEngine(DisplayManager manager){
     	if(manager == null){
@@ -131,6 +132,7 @@ public class OmniKryptecEngine {
     }
     
     public void startLoop(ShutdownOption shutdownOption){
+        setShutdownOption(shutdownOption);
     	try{
     		state = State.Running;
     		while(!Display.isCloseRequested()&&!requestclose){
@@ -142,11 +144,17 @@ public class OmniKryptecEngine {
     		eventsystem.fireEvent(new Event(e), EventType.ERROR);
                 Logger.logErr("Error while looping: " + e, e);
     	}
-    	close(shutdownOption);
+    	close(this.shutdownOption);
     }
     
-    public void requestClose(){
-    	requestclose=true;
+    public OmniKryptecEngine requestClose() {
+        return requestClose(shutdownOption);
+    }
+    
+    public OmniKryptecEngine requestClose(ShutdownOption shutdownOption) {
+        setShutdownOption(shutdownOption);
+    	requestclose = true;
+        return this;
     }
     
     public OmniKryptecEngine frame(boolean clear){
@@ -192,7 +200,6 @@ public class OmniKryptecEngine {
     	VertexArrayObject.cleanup();
     	FrameBufferObject.cleanup();
     	RendererRegistration.cleanup();
-    	instance=null;
     }
     
     public OmniKryptecEngine addAndSetScene(String name, Scene scene){
@@ -224,5 +231,13 @@ public class OmniKryptecEngine {
     	return sceneCurrentName;
     }
 
+    public ShutdownOption getShutdownOption() {
+        return shutdownOption;
+    }
+
+    public OmniKryptecEngine setShutdownOption(ShutdownOption shutdownOption) {
+        this.shutdownOption = shutdownOption;
+        return this;
+    }
     
 }
