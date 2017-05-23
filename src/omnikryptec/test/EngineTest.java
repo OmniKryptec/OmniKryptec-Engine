@@ -22,12 +22,13 @@ import omnikryptec.util.RenderUtil;
 public class EngineTest{
 
 	public static void main(String[] args) {
-		Logger.enableLoggerRedirection(true);
-		Logger.setDebugMode(true);
+            try {
+                NativesLoader.loadNatives();
+                Logger.enableLoggerRedirection(true);
+                Logger.setDebugMode(true);
                 Logger.CONSOLE.setExitWhenLastOne(true);
                 Logger.showConsoleDirect();
-                Logger.log("Loaded Natives: " + NativesLoader.loadNatives());
-		
+                
 		DisplayManager.createDisplay("Test", new GameSettings("EngineTest", 1280, 720).setAnisotropicLevel(4));
 		Model brunnen = new Model(ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
 		//Model brunnen = Model.generateQuad();
@@ -48,6 +49,9 @@ public class EngineTest{
 		//ent.setScale(new Vector3f(2, 2, 2));
 		//RenderUtil.goWireframe(true);
 		OmniKryptecEngine.instance().startLoop(ShutdownOption.JAVA);
+            } catch (Exception ex) {
+                Logger.logErr("Error: " + ex, ex);
+            }
 	}
 	
 }
