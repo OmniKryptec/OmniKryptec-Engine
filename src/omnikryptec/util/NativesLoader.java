@@ -79,20 +79,10 @@ public class NativesLoader {
     
     private static final boolean extractNatives(File nativesFolder) {
         try {
-            switch(OSUtil.OS) {
-                case WINDOWS:
-                    return extractNativesFromPath(nativesFolder, NATIVESPATH + OSUtil.OS.WINDOWS.getName());
-                case MAC:
-                    return extractNativesFromPath(nativesFolder, NATIVESPATH + OSUtil.OS.MAC.getName());
-                case UNIX:
-                    return extractNativesFromPath(nativesFolder, NATIVESPATH + OSUtil.OS.UNIX.getName());
-                case SOLARIS:
-                    return extractNativesFromPath(nativesFolder, NATIVESPATH + OSUtil.OS.SOLARIS.getName());
-                case ERROR:
-                    return false;
-                default:
-                    return false;
+            if(OSUtil.OS == null || OSUtil.OS == OSUtil.OS.ERROR) {
+                return false;
             }
+            return extractNativesFromPath(nativesFolder, OSUtil.OS.toPathForResource(NATIVESPATH));
         } catch (Exception ex) {
             Logger.logErr("Error while extracting natives: " + ex, ex);
             return false;
@@ -111,7 +101,7 @@ public class NativesLoader {
     private static final File getStandardNativesFolder() {
         boolean appDataCreated = OSUtil.createStandardFolders();
         if(appDataCreated) {
-            return new File(OSUtil.STANDARDAPPDATA.getAbsolutePath() + File.separator + "natives");
+            return new File(OSUtil.STANDARDAPPDATA.getAbsolutePath() + File.separator + "natives" + File.separator + OSUtil.OS.getName());
         } else {
             return null;
         }

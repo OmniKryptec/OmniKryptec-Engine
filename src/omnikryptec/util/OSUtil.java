@@ -42,6 +42,15 @@ public class OSUtil {
         public String getName() {
             return name;
         }
+        
+        public String toPathForResource(String nativesPath) {
+            return (nativesPath.startsWith(PATHSEPARATOR) ? "" : PATHSEPARATOR) + nativesPath + (nativesPath.endsWith(PATHSEPARATOR) ? "" : PATHSEPARATOR) + name;
+        }
+        
+        @Override
+        public String toString() {
+            return name;
+        }
     }
     
     public static final OS getOS() {
