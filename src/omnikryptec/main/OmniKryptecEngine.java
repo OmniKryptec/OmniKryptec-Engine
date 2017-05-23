@@ -1,7 +1,6 @@
 package omnikryptec.main;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL30;
@@ -34,12 +33,12 @@ public class OmniKryptecEngine {
 
     private static OmniKryptecEngine instance;
 
-    public static OmniKryptecEngine instance(){
-    	if(instance==null){
-    		if(DisplayManager.instance()==null){
-    			throw new IllegalStateException("Cant create the Engine because the DisplayManager is not created yet!");
-    		}
-    		new OmniKryptecEngine(DisplayManager.instance());
+    public static OmniKryptecEngine instance() {
+    	if(instance == null) {
+            if(DisplayManager.instance() == null) {
+                throw new IllegalStateException("Cant create the Engine because the DisplayManager is not created yet!");
+            }
+            new OmniKryptecEngine(DisplayManager.instance());
     	}
     	return instance;
     }
@@ -51,7 +50,7 @@ public class OmniKryptecEngine {
     	
     }
 
-    public static enum State{
+    public static enum State {
         Starting,
         Running,
         Error,
@@ -59,31 +58,31 @@ public class OmniKryptecEngine {
         Stopped;
     }
     
-    public static enum ShutdownOption{
+    public static enum ShutdownOption {
     	JAVA(2),
         ENGINE(1),
         NOTHING(0);
     	
     	private final int level;
         
-    	private ShutdownOption(int level){
+    	private ShutdownOption(int level) {
             this.level = level;
     	}
     	
-    	public int getLevel(){
+    	public int getLevel() {
             return level;
     	}
     }
     
     private State state = State.Stopped;
     
-    public State getState(){
+    public State getState() {
     	return state;
     }
     
     private DisplayManager manager;
     private EventSystem eventsystem; 
-    private final Map<String, Scene> scenes = new HashMap<>();
+    private final HashMap<String, Scene> scenes = new HashMap<>();
     private String sceneCurrentName;
     private Scene sceneCurrent;
     
@@ -93,12 +92,12 @@ public class OmniKryptecEngine {
     private ShutdownOption shutdownOption = ShutdownOption.NOTHING;
     private boolean requestclose = false;
     
-    public OmniKryptecEngine(DisplayManager manager){
+    public OmniKryptecEngine(DisplayManager manager) {
     	if(manager == null){
             throw new NullPointerException("DisplayManager is null");
     	}
-    	if(instance!=null){
-    		throw new IllegalStateException("OmniKryptec-Engine is already made!");
+    	if(instance != null){
+            throw new IllegalStateException("OmniKryptec-Engine was already created!");
     	}
     	this.manager = manager;
     	state = State.Starting;
@@ -112,61 +111,60 @@ public class OmniKryptecEngine {
     	eventsystem.fireEvent(new Event(), EventType.BOOTING_COMPLETED);
     }
     
-    private void createFbos(){
+    private void createFbos() {
     	scenefbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), manager.getSettings().getMultiSamples(), GL30.GL_COLOR_ATTACHMENT0);
     	unsampledfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE, GL30.GL_COLOR_ATTACHMENT0);
     }
     
-    private void resizeFbos(){
+    private void resizeFbos() {
     	scenefbo.clear();
     	unsampledfbo.clear();
     	createFbos();
     }
     
-    public DisplayManager getDisplayManager(){
+    public final DisplayManager getDisplayManager() {
     	return manager;
     }
     
-    public EventSystem getEventsystem(){
+    public final EventSystem getEventsystem() {
     	return eventsystem;
     }
     
-    public void startLoop(ShutdownOption shutdownOption){
+    public final void startLoop(ShutdownOption shutdownOption) {
         setShutdownOption(shutdownOption);
-    	try{
-    		state = State.Running;
-    		while(!Display.isCloseRequested()&&!requestclose){
-    			frame(true);
-    		}
-    		
-    	}catch(Exception e){
-    		state = State.Error;
-    		eventsystem.fireEvent(new Event(e), EventType.ERROR);
-                Logger.logErr("Error while looping: " + e, e);
+    	try {
+            state = State.Running;
+            while(!Display.isCloseRequested() && !requestclose) {
+                    frame(true);
+            }	
+    	} catch (Exception e) {
+            state = State.Error;
+            Logger.logErr("Error while looping: " + e, e);
+            eventsystem.fireEvent(new Event(e), EventType.ERROR);
     	}
     	close(this.shutdownOption);
     }
     
-    public OmniKryptecEngine requestClose() {
+    public final OmniKryptecEngine requestClose() {
         return requestClose(shutdownOption);
     }
     
-    public OmniKryptecEngine requestClose(ShutdownOption shutdownOption) {
+    public final OmniKryptecEngine requestClose(ShutdownOption shutdownOption) {
         setShutdownOption(shutdownOption);
     	requestclose = true;
         return this;
     }
     
-    public OmniKryptecEngine frame(boolean clear){
-    	if(Display.wasResized()){
-    		resizeFbos();
-    		eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
+    public final OmniKryptecEngine frame(boolean clear) {
+    	if(Display.wasResized()) {
+            resizeFbos();
+            eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
     	}
     	scenefbo.bindFrameBuffer();
-    	if(clear){
-    		RenderUtil.clear(0, 0, 0, 0);
+    	if(clear) {
+            RenderUtil.clear(0, 0, 0, 0);
     	}
-    	if(sceneCurrent != null){
+    	if(sceneCurrent != null) {
             sceneCurrent.frame(Render.All);
     	}
     	scenefbo.unbindFrameBuffer();
@@ -179,22 +177,22 @@ public class OmniKryptecEngine {
     	return this;
     }
     
-    public OmniKryptecEngine close(ShutdownOption shutdownOption){
-    	if(shutdownOption.getLevel() >= ShutdownOption.ENGINE.getLevel()){
-    		state = State.Stopping;
+    public final OmniKryptecEngine close(ShutdownOption shutdownOption) {
+    	if(shutdownOption.getLevel() >= ShutdownOption.ENGINE.getLevel()) {
+            state = State.Stopping;
             cleanup();
             manager.close();
             state = State.Stopped;
-            if(shutdownOption.getLevel() >= ShutdownOption.JAVA.getLevel()){
+            if(shutdownOption.getLevel() >= ShutdownOption.JAVA.getLevel()) {
                 Commands.COMMANDEXIT.run("-java");
             }
             return null;
-    	}else{
-    		return this;
+    	} else {
+            return this;
     	}
     }
     
-    private void cleanup(){
+    private void cleanup() {
     	RenderChunk.cleanup();
     	PostProcessing.cleanup();
     	VertexArrayObject.cleanup();
@@ -202,40 +200,40 @@ public class OmniKryptecEngine {
     	RendererRegistration.cleanup();
     }
     
-    public OmniKryptecEngine addAndSetScene(String name, Scene scene){
+    public final OmniKryptecEngine addAndSetScene(String name, Scene scene) {
     	addScene(name, scene);
     	setScene(name);
         return this;
     }
     
-    public OmniKryptecEngine addScene(String name, Scene scene){
-    	if(name != null && scene != null){
+    public final OmniKryptecEngine addScene(String name, Scene scene) {
+    	if(name != null && scene != null) {
             scenes.put(name, scene);
     	}
         return this;
     }
     
-    public OmniKryptecEngine setScene(String name){
+    public final OmniKryptecEngine setScene(String name) {
     	sceneCurrent = scenes.get(name);
-    	if(sceneCurrent != null){
+    	if(sceneCurrent != null) {
             sceneCurrentName = name;
     	}
         return this;
     }
     
-    public Scene getCurrentScene(){
+    public final Scene getCurrentScene() {
     	return sceneCurrent;
     }
     
-    public String getCurrentSceneName(){
+    public final String getCurrentSceneName() {
     	return sceneCurrentName;
     }
 
-    public ShutdownOption getShutdownOption() {
+    public final ShutdownOption getShutdownOption() {
         return shutdownOption;
     }
 
-    public OmniKryptecEngine setShutdownOption(ShutdownOption shutdownOption) {
+    public final OmniKryptecEngine setShutdownOption(ShutdownOption shutdownOption) {
         this.shutdownOption = shutdownOption;
         return this;
     }
