@@ -1,12 +1,10 @@
 package omnikryptec.logger;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Scanner;
 
 import omnikryptec.logger.LogEntry.LogLevel;
 
@@ -60,8 +58,11 @@ public class SystemInputStream {
             public int read() throws IOException {
                 synchronized(buffer) {
                     Logger.log("Read-Try: " + buffer.size());
-                    while(buffer.size() <= 0 && false) {
-                        
+                    while(buffer.isEmpty()) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (Exception ex) {
+                        }
                     }
                     Logger.log("Can Read: " + buffer.size());
                     return buffer.pollFirst();
@@ -70,11 +71,15 @@ public class SystemInputStream {
 
             @Override
             public int available() throws IOException {
-                //return buffer.size();
-                return 1;
+                if(buffer.isEmpty()) {
+                    return -1; //-1 or 1???
+                } else {
+                    return buffer.size();
+                }
             }
             
-        };*/
+        };
+        */
     }
     
     public InputStream getOriginalInputStream() {
