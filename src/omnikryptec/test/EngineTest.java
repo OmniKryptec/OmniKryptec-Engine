@@ -26,7 +26,7 @@ public class EngineTest{
             Logger.enableLoggerRedirection(true);
             Logger.setDebugMode(true);
             Logger.CONSOLE.setExitWhenLastOne(true);
-           // Logger.showConsoleDirect();
+            Logger.showConsoleDirect();
             
 			DisplayManager.createDisplay("Test", new GameSettings("EngineTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32));
 			Model brunnen = new Model(ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
