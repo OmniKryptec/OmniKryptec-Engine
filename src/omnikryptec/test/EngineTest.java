@@ -5,6 +5,7 @@ import omnikryptec.camera.Camera;
 import omnikryptec.camera.MatrixMath;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GameSettings;
+import omnikryptec.lang.LanguageManager;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;

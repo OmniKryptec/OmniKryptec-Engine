@@ -74,7 +74,14 @@ public class Language extends Properties {
     }
     
     public final Language addToLanguage(Properties language) {
+        return addToLanguage(language, false);
+    }
+    
+    public final Language addToLanguage(Properties language, boolean reloadAll) {
         putAll(language);
+        if(reloadAll && LanguageManager.languageActive == this) {
+            LanguageManager.notifyAllILanguageInterfaces();
+        }
         return this;
     }
 
@@ -221,6 +228,9 @@ public class Language extends Properties {
                     String path_temp = file.toString();
                     if(path_temp.contains(path.replaceAll(LANGUAGEPATHSEPARATOR, File.separator + File.separator))) {
                         path_temp = path_temp.substring(path_temp.indexOf(path.replaceAll(LANGUAGEPATHSEPARATOR, File.separator + File.separator)) + path.replaceAll(LANGUAGEPATHSEPARATOR, File.separator + File.separator).length() + 1).replaceAll(File.separator + File.separator, LANGUAGEPATHSEPARATOR);
+                    }
+                    if(path_temp.startsWith(path)) {
+                        path_temp = path_temp.substring(path.length() + 1);
                     }
                     if(path_temp.startsWith(LANGUAGEFILEPREFIX)) {
                         output.add((path + LANGUAGEPATHSEPARATOR + path_temp));

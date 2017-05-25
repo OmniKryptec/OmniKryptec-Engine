@@ -17,23 +17,14 @@ import omnikryptec.logger.LogEntry.LogLevel;
  * @author Panzer1119 & pcfreak9000
  */
 public class Logger {
-
+    
     protected static final PrintStream OLDSYSOUT = System.out;
     protected static final PrintStream OLDSYSERR = System.err;
     protected static final InputStream OLDSYSIN = System.in;
     public static final SystemOutputStream NEWSYSOUT = new SystemOutputStream(OLDSYSOUT, false);
     public static final SystemOutputStream NEWSYSERR = new SystemOutputStream(OLDSYSERR, true);
     public static final SystemInputStream NEWSYSIN = new SystemInputStream(OLDSYSIN);
-    
-    public static LogLevel minimumLogLevel = LogLevel.INFO;
-    public static final Console CONSOLE = new Console();
-    public static final ArrayList<LogEntry> LOG = new ArrayList<>();
     private static ExecutorService THREADPOOL = null;
-
-    public static String DATETIMEFORMAT = LogEntry.STANDARD_DATETIMEFORMAT;
-    public static String LOGENTRYFORMAT = LogEntry.STANDARD_LOGENTRYFORMAT;
-    private static boolean debugMode = false;
-    private static boolean enabled = false;
     
     static {
         initializeThreadPool();
@@ -47,6 +38,15 @@ public class Logger {
         LanguageManager.initialize();
         Commands.initialize();
     }
+    
+    public static LogLevel minimumLogLevel = LogLevel.INFO;
+    public static final Console CONSOLE = new Console();
+    public static final ArrayList<LogEntry> LOG = new ArrayList<>();
+
+    public static String DATETIMEFORMAT = LogEntry.STANDARD_DATETIMEFORMAT;
+    public static String LOGENTRYFORMAT = LogEntry.STANDARD_LOGENTRYFORMAT;
+    private static boolean debugMode = false;
+    private static boolean enabled = false;
     
     public static final void setDebugMode(boolean debugMode) {
     	Logger.debugMode = debugMode;

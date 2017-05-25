@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import omnikryptec.lang.LanguageManager;
 
 /**
  *
@@ -183,7 +184,6 @@ public class LogEntry implements Serializable {
             dt = String.format("[%s]", LocalDateTime.ofInstant(timestamp, ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern(dateTimeFormat)));
         } catch (Exception ex2) {
             dt = null;
-            Logger.OLDSYSERR.println(ex2);
         }
         if(stackTraceElement != null) {
             try {
@@ -249,7 +249,9 @@ public class LogEntry implements Serializable {
                 logEntryFormatTemp = logEntryFormatTemp.substring(remove);
             }
         } catch (Exception ex2) {
-            Logger.OLDSYSERR.println("Error while formattig a LogEntry" + ex2);
+            //Logger.OLDSYSERR.println("Error while formattig a LogEntry: " + ex2);
+            //ex2.printStackTrace(Logger.OLDSYSERR);
+            output = String.valueOf(logEntry);
         }
         if(newLine) {
             output += NEWLINESTRING;
@@ -300,6 +302,10 @@ public class LogEntry implements Serializable {
         
         public String toText() {
             return toString().toUpperCase().substring(0, 1) + toString().toLowerCase().substring(1);
+        }
+        
+        public String toLocalizedText() {
+            return LanguageManager.getLang(toString().toLowerCase(), toText());
         }
     }
     

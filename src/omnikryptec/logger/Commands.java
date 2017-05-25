@@ -37,12 +37,16 @@ public class Commands {
                 if(instantShutdown) {
                     shutdownCompletely();
                 } else {
-                    final OmniKryptecEngine.State state = OmniKryptecEngine.instance().getState();
-                    if(state != OmniKryptecEngine.State.Running && state != OmniKryptecEngine.State.Starting) {
-                        Logger.log("Engine is not running", LogLevel.WARNING);
-                    } else {
-                        OmniKryptecEngine.instance().requestClose(ShutdownOption.ENGINE);
-                        Logger.log("Engine was successfully exited");
+                    if(OmniKryptecEngine.getInstance() != null) {
+                        final OmniKryptecEngine.State state = OmniKryptecEngine.getInstance().getState();
+                        if(state != OmniKryptecEngine.State.Running && state != OmniKryptecEngine.State.Starting) {
+                            Logger.log("Engine is not running", LogLevel.WARNING);
+                        } else {
+                            OmniKryptecEngine.getInstance().requestClose(ShutdownOption.ENGINE);
+                            Logger.log("Engine was successfully exited");
+                        }
+                    } else if(shutdownOption == ShutdownOption.ENGINE) {
+                        Logger.log("Engine does not exist", LogLevel.WARNING);
                     }
                     if(shutdownOption == ShutdownOption.JAVA) {
                         shutdownCompletely();
@@ -53,7 +57,7 @@ public class Commands {
                     shutdownCompletely();
                 } else {
                     if(ex instanceof NullPointerException) {
-                        Logger.log("No engine existing", LogLevel.WARNING);
+                        Logger.log("Engine does not exist", LogLevel.WARNING);
                     } else {
                         Logger.logErr("Error while shutting down the engine: " + ex, ex);
                     }
