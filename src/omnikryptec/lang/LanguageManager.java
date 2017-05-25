@@ -39,7 +39,7 @@ public class LanguageManager {
     
     public static final String getLang(Language language, String key, String defaultValue) {
         if(language == null) {
-            return null;
+            return defaultValue;
         }
         if(isCollecting) {
             languageDefault.put(key, defaultValue);
