@@ -1,6 +1,5 @@
 package omnikryptec.test;
 
-import com.sun.webkit.dom.KeyboardEventImpl;
 import omnikryptec.camera.Camera;
 import omnikryptec.camera.MatrixMath;
 import omnikryptec.display.DisplayManager;
