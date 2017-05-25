@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -27,6 +28,17 @@ public class Test implements ILanguage {
 
     public static String test_data = "Troll";
 
+    public static final ArrayList<StackTraceElement> stackTrace = new ArrayList<>();
+    
+    public static Thread thread_test = new Thread(() -> {
+        try {
+            Thread.sleep(1000);
+            troll();
+        } catch (Exception ex) {
+            Logger.logErr("Error 1: " + ex, ex);
+        }
+    });
+    
     /**
      * Test fuer den VariableChangeListener
      * 
@@ -46,6 +58,27 @@ public class Test implements ILanguage {
                 LanguageManager.setLanguage("DE");
             } catch (Exception ex) {
                 Logger.logErr("Error FTW: " + ex, ex);
+            }
+        }).start();
+        thread_test.start();
+        new Thread(() -> {
+            try {
+                while(true) {
+                    final StackTraceElement[] st = thread_test.getStackTrace();
+                    if(st.length == 0) {
+                        continue;
+                    }
+                    int i = 0;
+                    for(StackTraceElement e : st) {
+                        if(stackTrace.isEmpty() || st.length >= stackTrace.size() || !stackTrace.get(stackTrace.size() - st.length + i).toString().equalsIgnoreCase(e.toString())) {
+                            stackTrace.add(e);
+                            Logger.log(e);
+                        }
+                        i++;
+                    }
+                }
+            } catch (Exception ex) {
+                Logger.logErr("Error 2: " + ex, ex);
             }
         }).start();
         //LanguageManager.collectAllLanguageKeys(new File("lang_TE.txt"));
@@ -139,6 +172,10 @@ public class Test implements ILanguage {
         getLang("add", "Add");
         getLang("exit", "Exit");
         getLang("restart", "Restart");
+    }
+    
+    public static void troll() {
+        Logger.log("troll");
     }
 
 }

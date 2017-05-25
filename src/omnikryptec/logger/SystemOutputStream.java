@@ -147,8 +147,8 @@ public class SystemOutputStream extends PrintStream {
     
     protected StackTraceElement getStackTraceElement(Thread thread) {
         int i = 0;
-        final String[] forbidden_names = new String[] {this.getClass().getName(), Logger.class.getName(), SystemOutputStream.class.getName(), SystemInputStream.class.getName(), PrintStream.class.getName(), InputStream.class.getName()};
-        while((thread.getStackTrace().length < i) && containsArray(thread.getStackTrace()[i].getClassName(), forbidden_names)) {
+        final String[] forbidden_names = new String[] {this.getClass().getName(), Thread.class.getName(), Logger.class.getName(), SystemOutputStream.class.getName(), SystemInputStream.class.getName(), PrintStream.class.getName(), InputStream.class.getName()};
+        while((i < (thread.getStackTrace().length - 1)) && containsArray(thread.getStackTrace()[i].getClassName(), forbidden_names)) {
             i++;
         }
         return thread.getStackTrace()[i];
