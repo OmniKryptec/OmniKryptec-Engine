@@ -1,9 +1,12 @@
 package omnikryptec.logger;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 import omnikryptec.logger.LogEntry.LogLevel;
@@ -38,6 +41,7 @@ public class SystemInputStream {
             }
             Logger.log("Thread System-InputStream stopped");
         });
+        /*
         this.inputStreamNew = new InputStream() {
             
             @Override
@@ -51,35 +55,49 @@ public class SystemInputStream {
             }
             
         };
-        /*
+        */
         this.inputStreamNew = new InputStream() {
             
             @Override
             public int read() throws IOException {
-                synchronized(buffer) {
-                    Logger.log("Read-Try: " + buffer.size());
+                //synchronized(buffer) {
+                    //Logger.log("Read-Try: " + buffer.size());
                     while(buffer.isEmpty()) {
                         try {
                             Thread.sleep(100);
                         } catch (Exception ex) {
                         }
                     }
-                    Logger.log("Can Read: " + buffer.size());
-                    return buffer.pollFirst();
-                }
+                    byte temp = buffer.getFirst();
+                    buffer.pop();
+                    //Logger.log("Return: " + temp);
+                    //Logger.log("Can Read: " + buffer.size());
+                    return temp;
+                //}
+            }
+            
+            @Override
+            public int available() throws IOException {
+                //synchronized(buffer) {
+                    if(buffer.isEmpty()) {
+                        return 1; //-1 or 1???
+                    } else {
+                        return buffer.size();
+                    }
+                //}
             }
 
             @Override
-            public int available() throws IOException {
-                if(buffer.isEmpty()) {
-                    return -1; //-1 or 1???
-                } else {
-                    return buffer.size();
-                }
+            public void close() throws IOException {
+                throw new IllegalStateException("The SystemInputStream can not be closed");
+            }
+            
+            @Override
+            public String toString() {
+                return "Custom SystemInputStream";
             }
             
         };
-        */
     }
     
     public InputStream getOriginalInputStream() {
@@ -92,9 +110,9 @@ public class SystemInputStream {
     
     public SystemInputStream setActive(boolean isActive) {
         if(!this.isActive && isActive) {
-            //thread.start();
+            thread.start();
         } else if(this.isActive && !isActive) {
-            //thread.interrupt();
+            thread.interrupt();
             //thread.stop();
         }
         this.isActive = isActive;
@@ -107,7 +125,7 @@ public class SystemInputStream {
     
     private void processData(byte data) {
         synchronized(buffer) {
-            //buffer.addLast(data);
+            buffer.addLast(data);
             if(data == NEWLINEBYTE) {
                 final byte[] dataAll = new byte[lineBuffer.size()];
                 for(int i = 0; i < dataAll.length; i++) {
@@ -120,6 +138,24 @@ public class SystemInputStream {
             } else {
                 lineBuffer.add(data);
             }
+        }
+    }
+    
+    public static String nextLine() {
+        try {
+            byte[] buffer = new byte[0];
+            while(Logger.NEWSYSIN.getNewInputStream().available() > 0) {
+                byte read = (byte) Logger.NEWSYSIN.getNewInputStream().read();
+                buffer = Arrays.copyOf(buffer, buffer.length + 1);
+                buffer[buffer.length - 1] = read;
+                if(read == ((byte) 10)) {
+                    return new String(buffer);
+                }
+            }
+            return null;
+        } catch (Exception ex) {
+            Logger.logErr("Error while reading next line: " + ex, ex);
+            return null;
         }
     }
 
