@@ -25,6 +25,7 @@ public class EngineTest2 {
 	public static void main(String[] args) {
         try {
             NativesLoader.loadNatives();
+            OmniKryptecEngine.addShutdownHook(() -> NativesLoader.unloadNatives());
             Logger.enableLoggerRedirection(true);
             Logger.setDebugMode(true);
             Logger.CONSOLE.setExitWhenLastOne(true);
@@ -57,7 +58,6 @@ public class EngineTest2 {
             ent3.setRelativePos(-5, 0, 2);
             //ent.setScale(new Vector3f(1, 1, 1));
             OmniKryptecEngine.instance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
-            NativesLoader.unloadNatives();
         } catch (Exception ex) {
             Logger.logErr("Error: " + ex, ex);
         }
@@ -67,7 +67,7 @@ public class EngineTest2 {
             final float deltaPos = (0.4F * DisplayManager.instance().getDeltaTime());
             final float deltaRot = (10.0F * DisplayManager.instance().getDeltaTime());
             if(InputUtil.isKeyDown(Keyboard.KEY_W)) {
-                camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y, (float) ((camera.getRelativePos().z - deltaPos) * Math.sin(camera.getRelativeRotation().y)));
+                camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y, (float) ((camera.getRelativePos().z - deltaPos) * Math.sin(Math.toRadians(camera.getRelativeRotation().y))));
             }
             if(InputUtil.isKeyDown(Keyboard.KEY_S)) {
                 camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y,              camera.getRelativePos().z + deltaPos);
