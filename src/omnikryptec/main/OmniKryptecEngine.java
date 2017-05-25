@@ -42,6 +42,10 @@ public class OmniKryptecEngine {
     	}
     	return instance;
     }
+    
+    public static OmniKryptecEngine getInstance() {
+        return instance;
+    }
 	
     /**
      * @param args the command line arguments

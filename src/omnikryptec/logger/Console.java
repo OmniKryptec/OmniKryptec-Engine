@@ -234,7 +234,7 @@ public class Console extends JFrame implements ActionListener, ILanguage, KeyLis
     private void checkForExit() {
         if(exitWhenLastOne) {
             try {
-                if(OmniKryptecEngine.instance() == null || OmniKryptecEngine.instance().getState() == OmniKryptecEngine.State.Stopped) {
+                if(OmniKryptecEngine.getInstance() == null || OmniKryptecEngine.getInstance().getState() == OmniKryptecEngine.State.Stopped) {
                     Commands.COMMANDEXIT.run("-java");
                 }
             } catch (Exception ex) {
