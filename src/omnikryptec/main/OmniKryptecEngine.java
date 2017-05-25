@@ -21,6 +21,7 @@ import omnikryptec.storing.Material;
 import omnikryptec.storing.VertexArrayObject;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.InputUtil;
+import omnikryptec.util.NativesLoader;
 import omnikryptec.util.RenderUtil;
 
 /**
@@ -167,6 +168,7 @@ public class OmniKryptecEngine {
     	if(sceneCurrent != null) {
             sceneCurrent.frame(Render.All);
     	}
+    	
     	scenefbo.unbindFrameBuffer();
     	scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);
     	PostProcessing.doPostProcessing(unsampledfbo);

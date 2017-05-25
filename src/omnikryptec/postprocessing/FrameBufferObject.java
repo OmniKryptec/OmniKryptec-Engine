@@ -236,7 +236,7 @@ public class FrameBufferObject implements ITexture{
 	
 	
 	private int createMultisampleColourAttachment(int attachment) {
-		int colourBuffer = GL30.glGenFramebuffers();
+		int colourBuffer = GL30.glGenRenderbuffers();
 		GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, colourBuffer);
 		GL30.glRenderbufferStorageMultisample(GL30.GL_RENDERBUFFER, multisample, GL11.GL_RGBA8, width, height);
 		GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, attachment, GL30.GL_RENDERBUFFER,

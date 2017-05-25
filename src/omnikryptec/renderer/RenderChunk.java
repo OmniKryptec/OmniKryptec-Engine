@@ -130,10 +130,10 @@ public class RenderChunk {
 				r.render(scene, chunk.get(r));
 			}
 		}
-		for(int i=0; i<other.size(); i++){
-			if(other.get(i)!=null&&other.get(i).isActive()){
-				other.get(i).doLogic();
-				other.get(i).checkChunkPos();
+		for(GameObject g : other){
+			if(g!=null&&g.isActive()){
+				g.doLogic();
+			g.checkChunkPos();
 			}
 		}
 	}

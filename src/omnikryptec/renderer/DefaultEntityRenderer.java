@@ -21,7 +21,6 @@ public class DefaultEntityRenderer implements IRenderer{
 	}
 	
 	private List<Entity> stapel;
-	private Entity entity;
 
 	@Override
 	public void render(Scene s, Map<TexturedModel, List<Entity>> entities) {
@@ -32,8 +31,7 @@ public class DefaultEntityRenderer implements IRenderer{
 			model.getModel().getVao().bind(0,1,2,3);
 			model.getTexture().bindToUnit(0);
 			stapel = entities.get(model);
-			for (int i = 0; i < stapel.size(); i++) {
-				entity = stapel.get(i);
+			for (Entity entity : stapel) {
 				entity.doLogic();
 				entity.checkChunkPos();
 				EntityShader.transformation.loadMatrix(MatrixMath.createTransformationMatrix(entity));
