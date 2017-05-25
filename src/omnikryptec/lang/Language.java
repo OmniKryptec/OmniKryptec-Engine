@@ -103,7 +103,12 @@ public class Language extends Properties {
     }
     
     public static final String fileToLanguageCodeShort(File file) {
-        return file.getName().substring(LANGUAGEFILEPREFIX.length(), LANGUAGEFILEPREFIX.length() + CODESHORTLENGTH).toUpperCase();
+        String restName = file.getName().substring(LANGUAGEFILEPREFIX.length());
+        int indexPoint = restName.indexOf(".");
+        if(indexPoint != -1) {
+            restName = restName.substring(0, indexPoint);
+        }
+        return restName.toUpperCase();
     }
     
     public static final Language ofResource(String path) {
