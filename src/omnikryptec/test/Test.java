@@ -34,6 +34,8 @@ public class Test implements ILanguage {
      */
     public static void main(String[] args) {
         Logger.enableLoggerRedirection(true);
+        Test test = new Test();
+        LanguageManager.addLanguageListener(test);
         Logger.CONSOLE.setExitWhenLastOne(true);
         Logger.showConsoleDirect();
         new Thread(() -> {
@@ -46,8 +48,6 @@ public class Test implements ILanguage {
                 Logger.logErr("Error FTW: " + ex, ex);
             }
         }).start();
-        Test test = new Test();
-        LanguageManager.addLanguageListener(test);
         //LanguageManager.collectAllLanguageKeys(new File("lang_TE.txt"));
         System.out.println("Test 1");
         System.err.println("Test 2 " + System.getProperty("user.home"));
