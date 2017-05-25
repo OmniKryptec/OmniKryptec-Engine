@@ -184,7 +184,6 @@ public class LogEntry implements Serializable {
             dt = String.format("[%s]", LocalDateTime.ofInstant(timestamp, ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern(dateTimeFormat)));
         } catch (Exception ex2) {
             dt = null;
-            Logger.OLDSYSERR.println(ex2);
         }
         if(stackTraceElement != null) {
             try {
@@ -250,7 +249,9 @@ public class LogEntry implements Serializable {
                 logEntryFormatTemp = logEntryFormatTemp.substring(remove);
             }
         } catch (Exception ex2) {
-            Logger.OLDSYSERR.println("Error while formattig a LogEntry" + ex2);
+            //Logger.OLDSYSERR.println("Error while formattig a LogEntry: " + ex2);
+            //ex2.printStackTrace(Logger.OLDSYSERR);
+            output = String.valueOf(logEntry);
         }
         if(newLine) {
             output += NEWLINESTRING;
