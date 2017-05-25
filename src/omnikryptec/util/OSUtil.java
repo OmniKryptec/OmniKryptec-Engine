@@ -26,7 +26,7 @@ public class OSUtil {
     public static final OS OS = detectOS();
     public static final File STANDARDAPPDATA = getStandardAppDataFolder();
     
-    public enum OS {
+    public static enum OS {
         WINDOWS ("windows"),
         MAC     ("macosx"),
         UNIX    ("linux"),
