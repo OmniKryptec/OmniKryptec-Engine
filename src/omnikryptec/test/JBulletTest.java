@@ -32,6 +32,7 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.objConverter.ObjLoader;
 import omnikryptec.storing.Entity;
+import omnikryptec.storing.EntityBuilder;
 import omnikryptec.storing.Model;
 import omnikryptec.storing.TexturedModel;
 import omnikryptec.texture.Texture;
@@ -145,7 +146,7 @@ public class JBulletTest {
     }
     
     private static Entity createBallEntity(RigidBody body) {
-        return new Entity(brunnen_tm) {
+        return new Entity(entityBuilder.createTexturedModel()) {
             
             @Override
             public void doLogic() {
@@ -166,9 +167,7 @@ public class JBulletTest {
         return new Vector3f(vector.x, vector.y, vector.z);
     }
     
-    private static Model brunnen_model;
-    private static Texture brunnen_texture;
-    private static TexturedModel brunnen_tm;
+    private static EntityBuilder entityBuilder;
     
     public static void main(String[] args) {
         try {
@@ -189,10 +188,8 @@ public class JBulletTest {
                 }
                 
             }.setPerspectiveProjection(75, 1000, 0.1F)));
-            brunnen_model = new Model(ObjLoader.loadNMOBJ(JBulletTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
-            brunnen_texture = Texture.newTexture(JBulletTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create();
-            brunnen_tm = new TexturedModel(brunnen_model, brunnen_texture);
-            final Entity entity_1 = new Entity(brunnen_tm);
+            entityBuilder = new EntityBuilder("/omnikryptec/test/brunnen.obj", "/omnikryptec/test/brunnen.png");
+            final Entity entity_1 = entityBuilder.create();
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(entity_1);
             OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().y += 3;
             OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativeRotation().x = 40;
