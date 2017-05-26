@@ -19,18 +19,20 @@ public class Light extends GameObject {
 		return vec;
 	}
 	
-	public void setColor(float r, float g, float b){
+	public Light setColor(float r, float g, float b){
 		color.x = r;
 		color.y = g;
 		color.z = b;
+                return this;
 	}
 	
 	public Vector3f getColor(){
 		return color;
 	}
 	
-	public void setRadius(float r){
+	public Light setRadius(float r){
 		this.radius = r;
+                return this;
 	}
 	
 	public float getRadius(){
