@@ -144,10 +144,14 @@ public class JBulletTest {
         createNewShape = InputUtil.isKeyboardKeyDown(Keyboard.KEY_N);
         resetControlBall = InputUtil.isKeyboardKeyDown(Keyboard.KEY_R);
         if(InputUtil.isMouseKeyDown(InputUtil.MOUSE_BUTTON_LEFT)) {
-            float deltaX = InputUtil.getMouseDelta().x / 5;
-            float deltaY = InputUtil.getMouseDelta().y / 5;
-            OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().y += deltaX;
-            OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().x += deltaY;
+            float deltaX = InputUtil.getMouseDelta().x;
+            float deltaY = InputUtil.getMouseDelta().y;
+            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_LCONTROL)) {
+                OmniKryptecEngine.getInstance().getCurrentScene().getCamera().moveNormal(-deltaY / 15, -deltaX / 15, 0);
+            } else {
+                OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().y -= (deltaX / 5);
+                OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().x += (deltaY / 5);
+            }
         }
     }
     
