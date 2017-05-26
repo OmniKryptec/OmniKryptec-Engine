@@ -48,6 +48,13 @@ public class OmniKryptecEngine {
     public static OmniKryptecEngine getInstance() {
         return instance;
     }
+    
+    public static void addShutdownHook(Runnable run) {
+        if(run == null) {
+            return;
+        }
+        Runtime.getRuntime().addShutdownHook(new Thread(run));
+    }
 	
     /**
      * @param args the command line arguments

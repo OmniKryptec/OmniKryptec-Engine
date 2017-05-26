@@ -13,6 +13,9 @@ import omnikryptec.logger.LogEntry.LogLevel;
  */
 public class SystemOutputStream extends PrintStream {
 
+    private static final String[] forbidden_ClassNames = new String[] {SystemOutputStream.class.getName(), Thread.class.getName(), Logger.class.getName(), PrintStream.class.getName(), InputStream.class.getName()};
+    private static final String[] forbidden_ClassAndMethodNames = new String[] {};
+        
     private boolean errorStream = false;
 
     public SystemOutputStream(OutputStream out, boolean errorStream) {
@@ -147,14 +150,16 @@ public class SystemOutputStream extends PrintStream {
     
     protected StackTraceElement getStackTraceElement(Thread thread) {
         int i = 0;
-        final String[] forbidden_names = new String[] {this.getClass().getName(), Logger.class.getName(), SystemOutputStream.class.getName(), SystemInputStream.class.getName(), PrintStream.class.getName(), InputStream.class.getName()};
-        while((thread.getStackTrace().length < i) && containsArray(thread.getStackTrace()[i].getClassName(), forbidden_names)) {
+        while((i < (thread.getStackTrace().length - 1)) && (containsArray(thread.getStackTrace()[i].getClassName(), forbidden_ClassNames) || containsArray(thread.getStackTrace()[i].getClassName() + "." + thread.getStackTrace()[i].getMethodName(), forbidden_ClassAndMethodNames))) {
             i++;
         }
         return thread.getStackTrace()[i];
     }
     
     private boolean containsArray(String g, String[] array) {
+        if(g == null || array.length == 0) {
+            return false;
+        }
         for(String gg : array) {
             if(g.equals(gg)) {
                 return true;

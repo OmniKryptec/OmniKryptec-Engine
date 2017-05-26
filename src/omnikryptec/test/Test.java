@@ -2,10 +2,7 @@ package omnikryptec.test;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.io.File;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Scanner;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
@@ -26,7 +23,21 @@ import omnikryptec.swing.JCheckBoxList;
 public class Test implements ILanguage {
 
     public static String test_data = "Troll";
-
+    
+    public static Thread thread_test = new Thread(() -> {
+        try {
+            for(int i = 0; i < 10; i++) {
+                Thread.sleep(1000);
+                troll();
+                Thread.sleep(1000);
+                troll();
+                troll();
+            }
+        } catch (Exception ex) {
+            Logger.logErr("Error 1: " + ex, ex);
+        }
+    });
+    
     /**
      * Test fuer den VariableChangeListener
      * 
@@ -48,6 +59,9 @@ public class Test implements ILanguage {
                 Logger.logErr("Error FTW: " + ex, ex);
             }
         }).start();
+        VisualThreadMonitor vtm = new VisualThreadMonitor(thread_test);
+        thread_test.start();
+        new Thread(() -> vtm.start()).start();
         //LanguageManager.collectAllLanguageKeys(new File("lang_TE.txt"));
         System.out.println("Test 1");
         System.err.println("Test 2 " + System.getProperty("user.home"));
@@ -139,6 +153,10 @@ public class Test implements ILanguage {
         getLang("add", "Add");
         getLang("exit", "Exit");
         getLang("restart", "Restart");
+    }
+    
+    public static void troll() {
+        Logger.log("troll");
     }
 
 }
