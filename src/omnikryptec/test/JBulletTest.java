@@ -19,7 +19,6 @@ import com.bulletphysics.linearmath.DefaultMotionState;
 import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 import java.util.HashMap;
-import javax.vecmath.Matrix3f;
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
@@ -39,8 +38,6 @@ import omnikryptec.texture.Texture;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.util.glu.Sphere;
 
 /**
  *
@@ -52,11 +49,11 @@ public class JBulletTest {
     
     private static DynamicsWorld dynamicsWorld;
     private static final HashMap<Entity, RigidBody> balls = new HashMap<>();
+    private static Entity controlBallEntity;
     private static RigidBody controlBall;
     private static boolean applyForce = false;
     private static boolean createNewShape = false;
     private static boolean resetControlBall = false;
-    private static Sphere sphere = new Sphere();
     
     private static void setUpPhysics() {
         try {
@@ -81,43 +78,18 @@ public class JBulletTest {
             ballConstructionInfo.angularDamping = 0.95F;
             controlBall = new RigidBody(ballConstructionInfo);
             controlBall.setActivationState(CollisionObject.DISABLE_DEACTIVATION);
-            balls.put(createBallEntity(controlBall), controlBall);
             dynamicsWorld.addRigidBody(controlBall);
+            controlBallEntity = createBallEntity(controlBall);
+            balls.put(controlBallEntity, controlBall);
+            OmniKryptecEngine.instance().getCurrentScene().addGameObject(controlBallEntity);
             
         } catch (Exception ex) {
             Logger.logErr("Error while setting up physics: " + ex, ex);
         }
     }
     
-    private static void render() {
-        Logger.log("Rendering balls");
-        /*
-        for(RigidBody body : balls.values()) {
-            GL11.glPushMatrix();
-            final Vector3f ballPosition = body.getWorldTransform(new Transform()).origin;
-            GL11.glTranslatef(ballPosition.x, ballPosition.y, ballPosition.z);
-            sphere.setDrawStyle(GLU.GLU_SILHOUETTE);
-            if(body.equals(controlBall)) {
-                GL11.glColor4f(0, 1, 0, 1);
-            }
-            sphere.draw(3.0F, 30, 30); //m
-            GL11.glPopMatrix();
-        }
-        */
-        /*//GL11.glBegin(GL11.GL_QUADS);
-        GL11.glColor4f(0.6F, 0.6F, 0.6F, 1);
-        GL11.glVertex3f(-50, 0, -50);
-        GL11.glColor4f(0.85F, 0.85F, 0.85F, 1);
-        GL11.glVertex3f(-50, 0, 50);
-        GL11.glColor4f(0.85F, 0.75F, 0.75F, 1);
-        GL11.glVertex3f(50, 0, 50);
-        GL11.glColor4f(0.5F, 0.5F, 0.5F, 1);
-        GL11.glVertex3f(50, 0, -50);
-        //GL11.glEnd();*/
-    }
-    
     private static void logic() {
-        dynamicsWorld.stepSimulation(1 / DisplayManager.instance().getFPS());
+        dynamicsWorld.stepSimulation(1 / 250.0F/*DisplayManager.instance().getFPS()*/);
         final HashMap<Entity, RigidBody> ballsToBeRemoved = new HashMap<>();
         for(Entity e : balls.keySet()) {
             final RigidBody body = balls.get(e);
@@ -151,7 +123,9 @@ public class JBulletTest {
             constructionInfo.restitution = 0.75F;
             final RigidBody body = new RigidBody(constructionInfo);
             dynamicsWorld.addRigidBody(body);
-            balls.put(createBallEntity(body), body);
+            final Entity entity = createBallEntity(body);
+            balls.put(entity, body);
+            OmniKryptecEngine.instance().getCurrentScene().addGameObject(entity);
             createNewShape = false;
         }
         if(resetControlBall) {
@@ -177,6 +151,9 @@ public class JBulletTest {
                 setRelativePos(ballPosition.x, ballPosition.y, ballPosition.z);
                 final Quat4f ballOrientation = body.getOrientation(new Quat4f());
                 setRotation(new org.lwjgl.util.vector.Vector3f(ballOrientation.x, ballOrientation.y, ballOrientation.z));
+                if(this == controlBallEntity) { 
+                    Logger.CONSOLE.setTitle(toString());
+                }
             }
             
         };
@@ -211,7 +188,7 @@ public class JBulletTest {
                     doCameraLogic(this);
                 }
                 
-            }));
+            }.setPerspectiveProjection(75, 1000, 0.1F)));
             brunnen_model = new Model(ObjLoader.loadNMOBJ(JBulletTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
             brunnen_texture = Texture.newTexture(JBulletTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create();
             brunnen_tm = new TexturedModel(brunnen_model, brunnen_texture);
@@ -230,9 +207,6 @@ public class JBulletTest {
                 
             });*/
             setUpPhysics();
-            for(Entity e : balls.keySet()) {
-                OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
-            }
             OmniKryptecEngine.instance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
         } catch (Exception ex) {
             Logger.logErr("Main Error: " + ex, ex);
@@ -272,7 +246,7 @@ public class JBulletTest {
         if(InputUtil.isKeyDown(Keyboard.KEY_DOWN)) {
             camera.getRelativeRotation().x += deltaRot;
         }
-        Logger.CONSOLE.setTitle(camera.toString());
+        //Logger.CONSOLE.setTitle(camera.toString());
     }
     
 }
