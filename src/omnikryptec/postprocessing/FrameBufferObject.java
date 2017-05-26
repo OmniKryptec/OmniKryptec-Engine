@@ -305,6 +305,11 @@ public class FrameBufferObject implements ITexture{
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, getTexture(info[0]));
 	}
 	
+	public void bindDepthTexture(int unit){
+		GL13.glActiveTexture(GL13.GL_TEXTURE0 + unit);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, getDepthTexture());
+	}
+	
 	
 	public static void cleanup(){
 		for(int i=0; i<fbos.size(); i++){

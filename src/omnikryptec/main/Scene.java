@@ -1,6 +1,8 @@
 package omnikryptec.main;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import omnikryptec.camera.Camera;
@@ -10,12 +12,13 @@ import omnikryptec.renderer.IRenderer;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.Render;
 import omnikryptec.storing.GameObject;
+import omnikryptec.storing.Light;
 
 public class Scene {
 
     private final Map<String, RenderChunk> scene = new HashMap<>();
     private Camera cam;
-    private long cox, coy, coz;
+    private long cox=1, coy=1, coz=1;
 
     public Scene(Camera cam){
         this.cam = cam;
@@ -76,7 +79,7 @@ public class Scene {
             for(long y = -coy + cy; y <= coy + cy; y++){
                 for(long z = -coz + cz; z <= coz + cz; z++){
                     if((tmpc = scene.get(xyzToString(x, y, z))) != null){
-                            tmpc.frame(info, re);
+                    	tmpc.frame(info, re);
                     }
                 }
             }
@@ -86,6 +89,15 @@ public class Scene {
     }
 
 	public void doLogic() {		
+	}
+
+	public List<Light> getRelevantLights() {
+		List<Light> lights = new ArrayList<>();
+		Light l = new Light();
+		l.setColor(1, 1, 1);
+		l.setRadius(100);
+		lights.add(l);
+		return lights;
 	}
 
 }

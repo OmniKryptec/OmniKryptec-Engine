@@ -20,7 +20,6 @@ public class Material {
 	}
 	
 	private float reflectivity;
-	private float shineDamper;
 	
 	private ITexture normalmap;
 	private ITexture specularmap;
@@ -28,16 +27,15 @@ public class Material {
 	private IRenderer renderer = RendererRegistration.DEF_ENTITY_RENDERER;
 	
 	public Material(){
-		this(0, 10);
+		this(0);
 	}
 	
-	public Material(float reflec, float sd){
-		this(null, null, reflec, sd);
+	public Material(float reflec){
+		this(null, null, reflec);
 	}
 	
-	public Material(Texture normalmap, Texture specularmap, float reflec, float shinedamp){
+	public Material(Texture normalmap, Texture specularmap, float reflec){
 		this.reflectivity = reflec;
-		this.shineDamper = shinedamp;
 		if(normalmap!=null){
 			this.normalmap = normalmap;
 		}else{
@@ -58,9 +56,6 @@ public class Material {
 		return reflectivity;
 	}
 	
-	public float getShineDamper(){
-		return shineDamper;
-	}
 	
 	public boolean hasTransparency(){
 		return hasTransparency;
@@ -70,9 +65,7 @@ public class Material {
 		this.reflectivity = reflectivity;
 	}
 
-	public void setShineDamper(float shineDamper) {
-		this.shineDamper = shineDamper;
-	}
+
 
 	public void setNormalmap(Texture normalmap) {
 		if(normalmap!=null){

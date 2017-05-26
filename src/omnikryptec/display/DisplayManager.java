@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL13;
 
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.util.RenderUtil;
 
 /**
  * 
@@ -60,7 +61,7 @@ public class DisplayManager {
 			Display.create(info.getPixelFormat(), info.getAttribs());
 			Display.setTitle(name);
 			if(settings.getMultiSamples()!=GameSettings.NO_MULTISAMPLING){
-				GL11.glEnable(GL13.GL_MULTISAMPLE);
+				RenderUtil.antialias(true);
 			}
 			GL11.glViewport(0, 0, settings.getWidth(), settings.getHeight());
 			lasttime = manager.getCurrentTime();

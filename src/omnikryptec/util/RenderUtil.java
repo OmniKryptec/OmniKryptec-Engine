@@ -1,7 +1,9 @@
 package omnikryptec.util;
 
+import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+import org.lwjgl.util.vector.Vector4f;
 
 public class RenderUtil {
 
@@ -11,7 +13,24 @@ public class RenderUtil {
 	private static boolean additiveBlending = false;
 	private static boolean antialiasing = false;
 	private static boolean depthTesting = false;
-
+	private static boolean scissor = false;
+	
+	
+	public static void enableScissor(boolean b){
+		if(b&&!scissor){
+			GL11.glEnable(GL11.GL_SCISSOR_TEST);
+			scissor = true;
+		}else if(!b&&scissor){
+			GL11.glDisable(GL11.GL_SCISSOR_TEST);
+			scissor = false;
+		}
+	}
+	
+	public static void scissor(int i1, int i2, int i3, int i4){
+		enableScissor(true);
+		GL11.glScissor(i1, i2, i3, i4);
+	}
+	
 	public static void antialias(boolean enable) {
 		if (enable && !antialiasing) {
 			GL11.glEnable(GL13.GL_MULTISAMPLE);
@@ -83,5 +102,19 @@ public class RenderUtil {
 		GL11.glClearColor(r, g, b, a);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 	}
+	
+	
+	
+//	public static void setLightScissor(Vector4f lightpos, int sx, int sy){
+//		int[] rect = {0,0,sx,sy};
+//		float d;
+//		float r = lightpos.w;
+//		float r2 = r*r;
+//		Vector4f l = lightpos;
+//		Vector4f l2 = new Vector4f(l.x*l.x, l.y*l.y, l.z*l.z, l.w*l.w);
+//		float el = 1.2f;
+//		float e2 = 1.2f*((float)Display.getWidth()/(float)Display.getHeight());
+//		
+//	}
 
 }

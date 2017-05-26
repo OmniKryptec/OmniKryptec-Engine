@@ -8,6 +8,8 @@ public interface PostProcessingStage {
 
 	FrameBufferObject getFbo();
 	
+	void resize();
+	
 	default boolean usesDefaultRenderObject(){
 		return true;
 	}
