@@ -141,7 +141,7 @@ public class JBulletTest {
             Logger.showConsoleDirect();
             
             DisplayManager.createDisplay("JBullet Test", new GameSettings("JBulletTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32));
-            OmniKryptecEngine.instance().addAndSetScene("TestScene", new Scene(new Camera(MatrixMath.perspectiveProjection(75, 1000, 0.1F)) {
+            OmniKryptecEngine.instance().addAndSetScene("TestScene", new Scene(new Camera() {
                 
                 @Override
                 public void doLogic() {
