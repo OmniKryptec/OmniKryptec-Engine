@@ -90,7 +90,7 @@ public class JBulletTest {
     }
     
     private static void logic() {
-        dynamicsWorld.stepSimulation(1 / 250.0F/*DisplayManager.instance().getFPS()*/);
+        dynamicsWorld.stepSimulation(1.0F / DisplayManager.instance().getFPSCap()/*DisplayManager.instance().getFPS()*/);
         /*
         final HashMap<Entity, RigidBody> ballsToBeRemoved = new HashMap<>();
         for(Entity e : balls.keySet()) {
