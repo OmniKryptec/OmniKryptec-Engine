@@ -83,10 +83,10 @@ public class GameObject {
      */
     public void moveNormal(float forward, float sideward, float upward) {
         if(forward != 0) {
-            increaseRelativePos((float) ((pos.x + (forward * Math.sin(Math.toRadians(rotation.y))))), pos.y, (float) ((pos.z - (forward * Math.cos(Math.toRadians(rotation.y))))));
+            increaseRelativePos((float) (forward * Math.sin(Math.toRadians(rotation.y))), pos.y, (float) (forward * Math.cos(Math.toRadians(rotation.y))));
         }
         if(sideward != 0) {
-            increaseRelativePos((float) ((pos.x + (sideward * Math.cos(Math.toRadians(rotation.y))))), pos.y, (float) ((pos.z + (sideward * Math.sin(Math.toRadians(rotation.y))))));
+            increaseRelativePos((float) (sideward * Math.cos(Math.toRadians(rotation.y))), pos.y, (float) (sideward * Math.sin(Math.toRadians(rotation.y))));
         }
         if(upward != 0) {
             increaseRelativePos(pos.x, upward, pos.z);
@@ -101,13 +101,13 @@ public class GameObject {
      */
     public void moveSpace(float forward, float sideward, float upward) {
         if(forward != 0) {
-            increaseRelativePos((float) ((pos.x + (forward * Math.sin(Math.toRadians(rotation.y))))), pos.y, (float) ((pos.z - (forward * Math.cos(Math.toRadians(rotation.y))))));
+            increaseRelativePos((float) (forward * Math.sin(Math.toRadians(rotation.y))), pos.y, (float) (forward * Math.cos(Math.toRadians(rotation.y))));
         }
         if(sideward != 0) {
-            increaseRelativePos((float) ((pos.x + (sideward * Math.cos(Math.toRadians(rotation.y))))), pos.y, (float) ((pos.z + (sideward * Math.sin(Math.toRadians(rotation.y))))));
+            increaseRelativePos((float) (sideward * Math.cos(Math.toRadians(rotation.y))), pos.y, (float) (sideward * Math.sin(Math.toRadians(rotation.y))));
         }
         if(upward != 0) {
-            increaseRelativePos(pos.x, upward, pos.z);
+            increaseRelativePos(pos.x, (float) (upward * Math.cos(Math.toRadians(rotation.x)) * Math.cos(Math.toRadians(rotation.z))), pos.z);
         }
     }
 
