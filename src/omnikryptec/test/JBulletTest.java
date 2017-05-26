@@ -239,17 +239,23 @@ public class JBulletTest {
             camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y + deltaPos,   camera.getRelativePos().z);
         }
         */
+        if(InputUtil.isKeyDown(Keyboard.KEY_UP)) {
+            camera.getRelativeRotation().x -= deltaRot;
+        }
+        if(InputUtil.isKeyDown(Keyboard.KEY_DOWN)) {
+            camera.getRelativeRotation().x += deltaRot;
+        }
         if(InputUtil.isKeyDown(Keyboard.KEY_LEFT)) {
             camera.getRelativeRotation().y -= deltaRot;
         }
         if(InputUtil.isKeyDown(Keyboard.KEY_RIGHT)) {
             camera.getRelativeRotation().y += deltaRot;
         }
-        if(InputUtil.isKeyDown(Keyboard.KEY_UP)) {
-            camera.getRelativeRotation().x -= deltaRot;
+        if(InputUtil.isKeyDown(Keyboard.KEY_Q)) {
+            camera.getRelativeRotation().z -= deltaRot;
         }
-        if(InputUtil.isKeyDown(Keyboard.KEY_DOWN)) {
-            camera.getRelativeRotation().x += deltaRot;
+        if(InputUtil.isKeyDown(Keyboard.KEY_E)) {
+            camera.getRelativeRotation().z += deltaRot;
         }
         Logger.CONSOLE.setTitle(camera.toString());
     }

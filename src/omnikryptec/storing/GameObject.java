@@ -101,10 +101,10 @@ public class GameObject {
      */
     public void moveSpace(float forward, float sideward, float upward) {
         if(forward != 0) {
-            increaseRelativePos((float) (forward * Math.sin(Math.toRadians(rotation.y))), 0, (float) (-forward * Math.cos(Math.toRadians(rotation.y))));
+            increaseRelativePos((float) (forward * Math.sin(Math.toRadians(rotation.y))), (float) (-forward * Math.sin(Math.toRadians(rotation.x))), (float) (-forward * Math.cos(Math.toRadians(rotation.y)) * Math.cos(Math.toRadians(rotation.x))));
         }
         if(sideward != 0) {
-            increaseRelativePos((float) (sideward * Math.cos(Math.toRadians(rotation.y))), 0, (float) (sideward * Math.sin(Math.toRadians(rotation.y))));
+            increaseRelativePos((float) (sideward * Math.cos(Math.toRadians(rotation.y)) * Math.cos(Math.toRadians(rotation.z))), (float) (-sideward * Math.sin(Math.toRadians(rotation.z))), (float) (sideward * Math.sin(Math.toRadians(rotation.y))));
         }
         if(upward != 0) {
             increaseRelativePos((float) (upward * Math.sin(Math.toRadians(rotation.z))), (float) (upward * Math.cos(Math.toRadians(rotation.x)) * Math.cos(Math.toRadians(rotation.z))), (float) (-upward * Math.sin(Math.toRadians(rotation.x))));
