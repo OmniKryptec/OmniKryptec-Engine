@@ -5,6 +5,8 @@ import org.lwjgl.util.vector.Vector3f;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.renderer.RenderChunk;
+import omnikryptec.util.InputUtil;
+import org.lwjgl.input.Keyboard;
 
 /**
  * 
@@ -71,6 +73,42 @@ public class GameObject {
     	rotation.x += x;
     	rotation.y += y;
     	rotation.z += z;
+    }
+    
+    /**
+     * Moves the object the given distances, with ignoring the pitch and roll of the object
+     * @param forward  Positive = Forward, Negative = Backward
+     * @param sideward Positive = Right,   Negative = Left
+     * @param upward   Positive = Up,      Negative = Down
+     */
+    public void moveNormal(float forward, float sideward, float upward) {
+        if(forward != 0) {
+            increaseRelativePos((float) ((pos.x + (forward * Math.sin(Math.toRadians(rotation.y))))), pos.y, (float) ((pos.z - (forward * Math.cos(Math.toRadians(rotation.y))))));
+        }
+        if(sideward != 0) {
+            increaseRelativePos((float) ((pos.x + (sideward * Math.cos(Math.toRadians(rotation.y))))), pos.y, (float) ((pos.z + (sideward * Math.sin(Math.toRadians(rotation.y))))));
+        }
+        if(upward != 0) {
+            increaseRelativePos(pos.x, upward, pos.z);
+        }
+    }
+    
+    /**
+     * Moves the object the given distances, with using the pitch and roll of the object
+     * @param forward  Positive = Forward, Negative = Backward
+     * @param sideward Positive = Right,   Negative = Left
+     * @param upward   Positive = Up,      Negative = Down
+     */
+    public void moveSpace(float forward, float sideward, float upward) {
+        if(forward != 0) {
+            increaseRelativePos((float) ((pos.x + (forward * Math.sin(Math.toRadians(rotation.y))))), pos.y, (float) ((pos.z - (forward * Math.cos(Math.toRadians(rotation.y))))));
+        }
+        if(sideward != 0) {
+            increaseRelativePos((float) ((pos.x + (sideward * Math.cos(Math.toRadians(rotation.y))))), pos.y, (float) ((pos.z + (sideward * Math.sin(Math.toRadians(rotation.y))))));
+        }
+        if(upward != 0) {
+            increaseRelativePos(pos.x, upward, pos.z);
+        }
     }
 
     /**
