@@ -42,7 +42,6 @@ float tofloat(vec4 v){
 
 void main(void){
 	vec3 view = normalize(vposf);
-	view = 1- view;
 	
 	float dep = texture(depth, textureCoords).r;
 	

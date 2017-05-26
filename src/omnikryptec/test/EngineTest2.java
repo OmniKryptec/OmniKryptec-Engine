@@ -43,7 +43,7 @@ public class EngineTest2 implements IEventHandler{
             Logger.CONSOLE.setExitWhenLastOne(true);
             Logger.showConsoleDirect();
             
-            DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFpsCap(60));
+            DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFpsCap(DisplayManager.DISABLE_FPS_CAP));
            // PostProcessing.instance().addStage(new LightRenderer());
             EventSystem.instance().addEventHandler(new EngineTest2(), EventType.RENDER_EVENT);
             Model brunnen = new Model(ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
@@ -123,11 +123,14 @@ public class EngineTest2 implements IEventHandler{
             if(InputUtil.isKeyDown(Keyboard.KEY_DOWN)) {
                 camera.getRelativeRotation().x += deltaRot;
             }
+            //camera.moveSpace(forward, sideward, upward);
             Logger.CONSOLE.setTitle(camera.toString());
         }
 
 		@Override
 		public void onEvent(Event ev) {
+			
+			//System.out.println(DisplayManager.instance().getFPS());
 			//System.out.println(DisplayManager.instance().getDeltaTime());
 		}
     

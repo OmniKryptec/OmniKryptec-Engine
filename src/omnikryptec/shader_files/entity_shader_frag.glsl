@@ -28,6 +28,7 @@ void main(void){
 	col = vec4(diffuset);
 	col1 = vec4(normalt.rgb,1.0);
 	
+	
 	if(hasspecular>0.5){
 		col2.rgb = texture(speculartex, pass_texcoords).rgb;
 		col2.a = reflec;

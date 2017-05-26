@@ -20,8 +20,8 @@ public class DisplayManager {
 
 	private static int sync = 240;
 
-	private static float deltatime = 0;
-	private static float lasttime = 0;
+	private static double deltatime = 0;
+	private static double lasttime = 0;
 
 	public static final int DISABLE_FPS_CAP = 0;
 
@@ -139,7 +139,7 @@ public class DisplayManager {
 			GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
 		}
 		long currentFrameTime = getCurrentTime();
-		deltatime = (currentFrameTime - lasttime) / 1000f;
+		deltatime = (currentFrameTime - lasttime) / 1000.0;
 		lasttime = currentFrameTime;
 		Display.update();
 		if (sync > 0) {
@@ -148,7 +148,7 @@ public class DisplayManager {
 	}
 
 	public float getDeltaTime() {
-		return deltatime;
+		return (float)deltatime;
 	}
 
 	public long getFPS() {

@@ -53,6 +53,7 @@ public class EngineTest{
 			Entity ent = new Entity(tm);
 			Entity ent2 = new Entity(tm);
 			Entity ent3 = new Entity(tm);
+			
 			OmniKryptecEngine.instance().getCurrentScene().addGameObject(ent);
 			OmniKryptecEngine.instance().getCurrentScene().addGameObject(ent2);
 			OmniKryptecEngine.instance().getCurrentScene().addGameObject(ent3);
