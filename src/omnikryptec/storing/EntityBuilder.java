@@ -11,6 +11,7 @@ public class EntityBuilder {
     
     private Model model = null;
     private Texture texture = null;
+    private TexturedModel texturedModel = null;
     
     public EntityBuilder() {
     }
@@ -34,7 +35,10 @@ public class EntityBuilder {
     }
     
     public final TexturedModel createTexturedModel() {
-        return new TexturedModel(model, texture);
+        if(texturedModel != null) {
+            return texturedModel;
+        }
+        return (texturedModel = new TexturedModel(model, texture));
     }
     
     public final Entity create() {

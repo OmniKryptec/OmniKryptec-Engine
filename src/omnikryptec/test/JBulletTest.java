@@ -80,7 +80,7 @@ public class JBulletTest {
             controlBall = new RigidBody(ballConstructionInfo);
             controlBall.setActivationState(CollisionObject.DISABLE_DEACTIVATION);
             dynamicsWorld.addRigidBody(controlBall);
-            controlBallEntity = createBallEntity(controlBall);
+            controlBallEntity = createBallEntity(entityBuilder_brunnen, controlBall);
             balls.put(controlBallEntity, controlBall);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(controlBallEntity);
             
@@ -90,7 +90,7 @@ public class JBulletTest {
     }
     
     private static void logic() {
-        dynamicsWorld.stepSimulation(1 / 250.0F/*DisplayManager.instance().getFPS()*/);
+        dynamicsWorld.stepSimulation(1.0F / DisplayManager.instance().getFPSCap()/*DisplayManager.instance().getFPS()*/);
         /*
         final HashMap<Entity, RigidBody> ballsToBeRemoved = new HashMap<>();
         for(Entity e : balls.keySet()) {
@@ -118,17 +118,7 @@ public class JBulletTest {
             controlBall.applyCentralForce(force);
         }
         if(createNewShape) {
-            final CollisionShape shape = new SphereShape(3.0F); //m
-            final DefaultMotionState motionState = new DefaultMotionState(new Transform(new Matrix4f(new Quat4f(0, 0, 0, 1), new Vector3f(OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().x, 35F, OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().z), 1)));
-            final Vector3f inertia = new Vector3f();
-            shape.calculateLocalInertia(1.0F, inertia);
-            final RigidBodyConstructionInfo constructionInfo = new RigidBodyConstructionInfo(1.0F, motionState, shape, inertia);
-            constructionInfo.restitution = 0.75F;
-            final RigidBody body = new RigidBody(constructionInfo);
-            dynamicsWorld.addRigidBody(body);
-            final Entity entity = createBallEntity(body);
-            balls.put(entity, body);
-            OmniKryptecEngine.instance().getCurrentScene().addGameObject(entity);
+            createNewShape(entityBuilder_brunnen);
             createNewShape = false;
         }
         if(resetControlBall) {
@@ -139,13 +129,39 @@ public class JBulletTest {
         }
     }
     
-    private static void input() {
-        applyForce = InputUtil.isKeyDown(Keyboard.KEY_F);
-        createNewShape = InputUtil.isKeyDown(Keyboard.KEY_N);
-        resetControlBall = InputUtil.isKeyDown(Keyboard.KEY_R);
+    private static Entity createNewShape(EntityBuilder entityBuilder) {
+        final CollisionShape shape = new SphereShape(3.0F); //m
+        final DefaultMotionState motionState = new DefaultMotionState(new Transform(new Matrix4f(new Quat4f(0, 0, 0, 1), new Vector3f(OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().x, 35F, OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().z), 1)));
+        final Vector3f inertia = new Vector3f();
+        shape.calculateLocalInertia(1.0F, inertia);
+        final RigidBodyConstructionInfo constructionInfo = new RigidBodyConstructionInfo(1.0F, motionState, shape, inertia);
+        constructionInfo.restitution = 0.75F;
+        final RigidBody body = new RigidBody(constructionInfo);
+        dynamicsWorld.addRigidBody(body);
+        final Entity entity = createBallEntity(entityBuilder, body);
+        balls.put(entity, body);
+        OmniKryptecEngine.instance().getCurrentScene().addGameObject(entity);
+        return entity;
     }
     
-    private static Entity createBallEntity(RigidBody body) {
+    private static void input() {
+        applyForce = InputUtil.isKeyboardKeyDown(Keyboard.KEY_F);
+        createNewShape = InputUtil.isKeyboardKeyDown(Keyboard.KEY_N);
+        resetControlBall = InputUtil.isKeyboardKeyDown(Keyboard.KEY_R);
+        if(InputUtil.isMouseKeyDown(InputUtil.MOUSE_BUTTON_LEFT)) {
+            float deltaX = InputUtil.getMouseDelta().x;
+            float deltaY = InputUtil.getMouseDelta().y;
+            float deltaD = InputUtil.getMouseDelta().z;
+            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_LCONTROL)) {
+                OmniKryptecEngine.getInstance().getCurrentScene().getCamera().moveNormal(-deltaY / 15, -deltaX / 15, deltaD);
+            } else {
+                OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().y -= (deltaX / 5);
+                OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().x += (deltaY / 5);
+            }
+        }
+    }
+    
+    private static Entity createBallEntity(EntityBuilder entityBuilder, RigidBody body) {
         return new Entity(entityBuilder.createTexturedModel()) {
             
             @Override
@@ -167,7 +183,8 @@ public class JBulletTest {
         return new Vector3f(vector.x, vector.y, vector.z);
     }
     
-    private static EntityBuilder entityBuilder;
+    private static EntityBuilder entityBuilder_brunnen;
+    private static EntityBuilder entityBuilder_pine;
     
     public static void main(String[] args) {
         try {
@@ -188,8 +205,9 @@ public class JBulletTest {
                 }
                 
             }.setPerspectiveProjection(75, 1000, 0.1F)));
-            entityBuilder = new EntityBuilder("/omnikryptec/test/brunnen.obj", "/omnikryptec/test/brunnen.png");
-            final Entity entity_1 = entityBuilder.create();
+            entityBuilder_brunnen = new EntityBuilder("/omnikryptec/test/brunnen.obj", "/omnikryptec/test/brunnen.png");
+            entityBuilder_pine = new EntityBuilder("/omnikryptec/test/pine.obj", "/omnikryptec/test/pine2.png");
+            final Entity entity_1 = entityBuilder_brunnen.create();
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(entity_1);
             OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().y += 3;
             OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativeRotation().x = 40;
@@ -204,6 +222,7 @@ public class JBulletTest {
                 
             });*/
             setUpPhysics();
+            final Entity entity_2 = createNewShape(entityBuilder_pine);
             OmniKryptecEngine.instance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
         } catch (Exception ex) {
             Logger.logErr("Main Error: " + ex, ex);
