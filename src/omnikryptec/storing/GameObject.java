@@ -5,8 +5,6 @@ import org.lwjgl.util.vector.Vector3f;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.renderer.RenderChunk;
-import omnikryptec.util.InputUtil;
-import org.lwjgl.input.Keyboard;
 
 /**
  * 

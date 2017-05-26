@@ -3,9 +3,9 @@ package omnikryptec.camera;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.storing.Entity;
+import org.lwjgl.util.vector.Vector3f;
 
 public class MatrixMath {
 
@@ -19,6 +19,16 @@ public class MatrixMath {
 		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().y), Camera.Y, matrix, matrix);
 		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().z), Camera.Z, matrix, matrix);
 		Matrix4f.scale(e.getScale(), matrix, matrix);
+		return matrix;
+	}
+        
+        public static Matrix4f createTransformationMatrix(Vector3f rotation, Vector3f scale) {
+		Matrix4f matrix = new Matrix4f();
+		matrix.setIdentity();
+		Matrix4f.rotate((float) Math.toRadians(rotation.x), Camera.X, matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(rotation.y), Camera.Y, matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(rotation.z), Camera.Z, matrix, matrix);
+		Matrix4f.scale(scale, matrix, matrix);
 		return matrix;
 	}
 	
