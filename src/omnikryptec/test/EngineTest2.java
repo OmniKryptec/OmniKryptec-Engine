@@ -3,7 +3,7 @@ package omnikryptec.test;
 import omnikryptec.camera.Camera;
 import omnikryptec.camera.MatrixMath;
 import omnikryptec.display.DisplayManager;
-import omnikryptec.display.GameSettings;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.event.Event;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;

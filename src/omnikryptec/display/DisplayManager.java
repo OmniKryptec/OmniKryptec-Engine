@@ -1,5 +1,6 @@
 package omnikryptec.display;
 
+import omnikryptec.settings.GameSettings;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;

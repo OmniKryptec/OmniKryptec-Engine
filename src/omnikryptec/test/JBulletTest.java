@@ -24,7 +24,7 @@ import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 import omnikryptec.camera.Camera;
 import omnikryptec.display.DisplayManager;
-import omnikryptec.display.GameSettings;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
 import omnikryptec.logger.Logger;
@@ -184,7 +184,8 @@ public class JBulletTest {
                 
                 @Override
                 public void doLogic() {
-                    doCameraLogic(this);
+                    final float deltaTime = DisplayManager.instance().getDeltaTime();
+                    InputUtil.doCameraLogic(this, DisplayManager.instance().getSettings().getKeySettings(), 1.5F * deltaTime, 15.0F * deltaTime);
                 }
                 
             }.setPerspectiveProjection(75, 1000, 0.1F)));
@@ -210,54 +211,6 @@ public class JBulletTest {
         } catch (Exception ex) {
             Logger.logErr("Main Error: " + ex, ex);
         }
-    }
-    
-    private static void doCameraLogic(Camera camera) {
-        final float deltaPos = (1.5F * DisplayManager.instance().getDeltaTime());
-        final float deltaRot = (15.0F * DisplayManager.instance().getDeltaTime());
-        //Logger.log("rot.y: " + camera.getRelativeRotation().y + ", sin: " + Math.sin(Math.toRadians(camera.getRelativeRotation().y)) + ", cos: " + Math.cos(Math.toRadians(camera.getRelativeRotation().y)));
-        final float deltaForward = (InputUtil.isKeyDown(Keyboard.KEY_W) ? deltaPos : 0) + (InputUtil.isKeyDown(Keyboard.KEY_S) ? -deltaPos : 0);
-        final float deltaSideward = (InputUtil.isKeyDown(Keyboard.KEY_D) ? deltaPos : 0) + (InputUtil.isKeyDown(Keyboard.KEY_A) ? -deltaPos : 0);
-        final float deltaUpward = (InputUtil.isKeyDown(Keyboard.KEY_SPACE) ? deltaPos : 0) + (InputUtil.isKeyDown(Keyboard.KEY_LSHIFT) ? -deltaPos : 0);
-        camera.moveSpace(deltaForward, deltaSideward, deltaUpward);
-        /*if(InputUtil.isKeyDown(Keyboard.KEY_W)) {
-            camera.setRelativePos((float) ((camera.getRelativePos().x + (deltaPos * Math.sin(Math.toRadians(camera.getRelativeRotation().y))))),            camera.getRelativePos().y, (float) ((camera.getRelativePos().z - (deltaPos * Math.cos(Math.toRadians(camera.getRelativeRotation().y))))));
-        }
-        if(InputUtil.isKeyDown(Keyboard.KEY_S)) {
-            camera.setRelativePos((float) ((camera.getRelativePos().x - (deltaPos * Math.sin(Math.toRadians(camera.getRelativeRotation().y))))),            camera.getRelativePos().y, (float) ((camera.getRelativePos().z + (deltaPos * Math.cos(Math.toRadians(camera.getRelativeRotation().y))))));
-        }
-        if(InputUtil.isKeyDown(Keyboard.KEY_A)) {
-            camera.setRelativePos((float) ((camera.getRelativePos().x - (deltaPos * Math.cos(Math.toRadians(camera.getRelativeRotation().y))))), camera.getRelativePos().y,              (float) ((camera.getRelativePos().z - (deltaPos * Math.sin(Math.toRadians(camera.getRelativeRotation().y))))));
-        }
-        if(InputUtil.isKeyDown(Keyboard.KEY_D)) {
-            camera.setRelativePos((float) ((camera.getRelativePos().x + (deltaPos * Math.cos(Math.toRadians(camera.getRelativeRotation().y))))), camera.getRelativePos().y,              (float) ((camera.getRelativePos().z + (deltaPos * Math.sin(Math.toRadians(camera.getRelativeRotation().y))))));
-        }
-        if(InputUtil.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y - deltaPos,   camera.getRelativePos().z);
-        }
-        if(InputUtil.isKeyDown(Keyboard.KEY_SPACE)) {
-            camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y + deltaPos,   camera.getRelativePos().z);
-        }
-        */
-        if(InputUtil.isKeyDown(Keyboard.KEY_UP)) {
-            camera.getRelativeRotation().x -= deltaRot;
-        }
-        if(InputUtil.isKeyDown(Keyboard.KEY_DOWN)) {
-            camera.getRelativeRotation().x += deltaRot;
-        }
-        if(InputUtil.isKeyDown(Keyboard.KEY_LEFT)) {
-            camera.getRelativeRotation().y -= deltaRot;
-        }
-        if(InputUtil.isKeyDown(Keyboard.KEY_RIGHT)) {
-            camera.getRelativeRotation().y += deltaRot;
-        }
-        if(InputUtil.isKeyDown(Keyboard.KEY_Q)) {
-            camera.getRelativeRotation().z -= deltaRot;
-        }
-        if(InputUtil.isKeyDown(Keyboard.KEY_E)) {
-            camera.getRelativeRotation().z += deltaRot;
-        }
-        Logger.CONSOLE.setTitle(camera.toString());
     }
     
 }

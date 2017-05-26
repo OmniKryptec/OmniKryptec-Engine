@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-import omnikryptec.display.GameSettings;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.exceptions.IllegalAccessException;
 import omnikryptec.texture.ITexture;
 
