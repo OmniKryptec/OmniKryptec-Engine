@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import omnikryptec.logger.LogEntry.LogLevel;
+import omnikryptec.entity.Entity;
+import omnikryptec.entity.GameObject;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.Scene;
-import omnikryptec.storing.Entity;
-import omnikryptec.storing.GameObject;
-import omnikryptec.storing.TexturedModel;
+import omnikryptec.model.TexturedModel;
 
 public class RenderChunk {
 

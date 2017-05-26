@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
-
 import omnikryptec.display.DisplayManager;
-import omnikryptec.storing.Model;
+import omnikryptec.model.Model;
 import omnikryptec.util.RenderUtil;
 
 public class PostProcessing {

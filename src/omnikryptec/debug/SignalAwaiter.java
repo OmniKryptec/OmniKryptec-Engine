@@ -26,7 +26,7 @@ public abstract class SignalAwaiter<T> {
         return signal;
     }
     
-    public final SignalAwaiter setSignal(T signal) {
+    public final SignalAwaiter<T> setSignal(T signal) {
         this.signal = signal;
         return this;
     }
@@ -35,7 +35,7 @@ public abstract class SignalAwaiter<T> {
         return amount;
     }
 
-    public SignalAwaiter setAmount(long amount) {
+    public SignalAwaiter<T> setAmount(long amount) {
         this.amount = amount;
         return this;
     }
@@ -44,7 +44,7 @@ public abstract class SignalAwaiter<T> {
         return unit;
     }
 
-    public SignalAwaiter setUnit(TimeUnit unit) {
+    public SignalAwaiter<T> setUnit(TimeUnit unit) {
         this.unit = unit;
         return this;
     }

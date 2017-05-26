@@ -3,6 +3,7 @@ package omnikryptec.util;
 import java.io.File;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
+import omnikryptec.util.OSUtil.OS;
 
 /**
  *
@@ -79,10 +80,10 @@ public class NativesLoader {
     
     private static final boolean extractNatives(File nativesFolder) {
         try {
-            if(OSUtil.OS == null || OSUtil.OS == OSUtil.OS.ERROR) {
+            if(OSUtil.OpSys == null || OSUtil.OpSys == OS.ERROR) {
                 return false;
             }
-            return extractNativesFromPath(nativesFolder, OSUtil.OS.toPathForResource(NATIVESPATH));
+            return extractNativesFromPath(nativesFolder, OSUtil.OpSys.toPathForResource(NATIVESPATH));
         } catch (Exception ex) {
             Logger.logErr("Error while extracting natives: " + ex, ex);
             return false;
@@ -101,7 +102,7 @@ public class NativesLoader {
     private static final File getStandardNativesFolder() {
         boolean appDataCreated = OSUtil.createStandardFolders();
         if(appDataCreated) {
-            return new File(OSUtil.STANDARDAPPDATA.getAbsolutePath() + File.separator + "natives" + File.separator + OSUtil.OS.getName());
+            return new File(OSUtil.STANDARDAPPDATA.getAbsolutePath() + File.separator + "natives" + File.separator + OSUtil.OpSys.getName());
         } else {
             return null;
         }

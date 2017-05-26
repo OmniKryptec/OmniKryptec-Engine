@@ -1,4 +1,4 @@
-package omnikryptec.storing;
+package omnikryptec.model;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;

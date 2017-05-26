@@ -23,7 +23,7 @@ public class OSUtil {
     private static final String FOLDER_NAME = "." + OmniKryptecEngine.class.getSimpleName();
     private static final String PATHSEPARATOR = "/";
     
-    public static final OS OS = detectOS();
+    public static final OS OpSys = detectOS();
     public static final File STANDARDAPPDATA = getStandardAppDataFolder();
     
     public static enum OS {
@@ -54,7 +54,7 @@ public class OSUtil {
     }
     
     public static final OS getOS() {
-        return OS;
+        return OpSys;
     }
     
     private static final OS detectOS() {
@@ -87,7 +87,7 @@ public class OSUtil {
     
     public static final File getAppDataFolder(String folderName) {
         File file = null;
-        switch(OS) {
+        switch(OpSys) {
             case WINDOWS:
                 file = new File(USER_HOME.getAbsolutePath() + File.separator + "AppData" + File.separator + "Roaming" + File.separator + folderName);
                 break;

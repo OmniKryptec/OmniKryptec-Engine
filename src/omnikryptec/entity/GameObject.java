@@ -1,4 +1,4 @@
-package omnikryptec.storing;
+package omnikryptec.entity;
 
 import org.lwjgl.util.vector.Vector3f;
 

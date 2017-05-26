@@ -12,15 +12,15 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector3f;
 
-import omnikryptec.camera.MatrixMath;
+import omnikryptec.entity.Light;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
+import omnikryptec.model.Model;
+import omnikryptec.model.VertexArrayObject;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
 import omnikryptec.shader.Shader;
 import omnikryptec.shader_files.LightShader;
-import omnikryptec.storing.Light;
-import omnikryptec.storing.Model;
-import omnikryptec.storing.VertexArrayObject;
+import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
 
 public class LightRenderer {
@@ -86,7 +86,7 @@ public class LightRenderer {
 		s.getCamera().getProjectionMatrix().store(matrixBuffer2);
 		matrixBuffer2.flip();
 		matrixBuffer.clear();
-		MatrixMath.createEmptyTransformationMatrix().store(matrixBuffer);
+		Maths.createEmptyTransformationMatrix().store(matrixBuffer);
 		matrixBuffer.flip();
 		float[] floatarray = new float[3*4];
 		for(int i=0; i<4; i++){

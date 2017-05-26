@@ -1,4 +1,4 @@
-package omnikryptec.storing;
+package omnikryptec.model;
 
 import omnikryptec.renderer.IRenderer;
 import omnikryptec.renderer.RendererRegistration;

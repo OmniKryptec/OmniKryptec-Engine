@@ -1,5 +1,7 @@
-package omnikryptec.storing;
+package omnikryptec.entity;
 
+import omnikryptec.model.Model;
+import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
 import omnikryptec.texture.Texture;
 

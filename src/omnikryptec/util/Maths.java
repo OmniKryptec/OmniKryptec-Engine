@@ -1,13 +1,13 @@
-package omnikryptec.camera;
+package omnikryptec.util;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
+import omnikryptec.entity.Camera;
+import omnikryptec.entity.Entity;
 
-import omnikryptec.storing.Entity;
 import org.lwjgl.util.vector.Vector3f;
 
-public class MatrixMath {
+public class Maths {
 
 
 	
@@ -61,19 +61,6 @@ public class MatrixMath {
 		projectionMatrix.m32 = -((2 * near * far) / frustum_length);
 		projectionMatrix.m33 = 0;
 		return projectionMatrix;
-	}
-
-	private float near,far,fov;
-	private Vector2f vect = new Vector2f();
-	
-	public float getFOVDeg(){
-		return fov;
-	}
-	
-	public Vector2f getPlanes(){
-		vect.x = near;
-		vect.y = far;
-		return vect;
 	}
 	
 	public static Matrix4f setOrthographicProjection(float left, float right, float bottom, float top, float near,

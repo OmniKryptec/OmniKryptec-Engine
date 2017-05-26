@@ -5,11 +5,11 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
-import omnikryptec.camera.MatrixMath;
+import omnikryptec.entity.Entity;
 import omnikryptec.main.Scene;
+import omnikryptec.model.TexturedModel;
 import omnikryptec.shader_files.EntityShader;
-import omnikryptec.storing.Entity;
-import omnikryptec.storing.TexturedModel;
+import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
 
 public class DefaultEntityRenderer implements IRenderer{
@@ -46,7 +46,7 @@ public class DefaultEntityRenderer implements IRenderer{
 			for (Entity entity : stapel) {
 				entity.doLogic();
 				entity.checkChunkPos();
-				EntityShader.transformation.loadMatrix(MatrixMath.createTransformationMatrix(entity));
+				EntityShader.transformation.loadMatrix(Maths.createTransformationMatrix(entity));
 				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
 			}
 			stapel = null;

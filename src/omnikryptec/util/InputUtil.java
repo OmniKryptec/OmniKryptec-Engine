@@ -1,7 +1,8 @@
 package omnikryptec.util;
 
-import omnikryptec.camera.Camera;
+import omnikryptec.entity.Camera;
 import omnikryptec.settings.KeySettings;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;

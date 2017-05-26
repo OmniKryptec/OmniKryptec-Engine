@@ -5,14 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import omnikryptec.camera.Camera;
 import omnikryptec.logger.LogEntry.LogLevel;
+import omnikryptec.entity.Camera;
+import omnikryptec.entity.GameObject;
+import omnikryptec.entity.Light;
 import omnikryptec.logger.Logger;
 import omnikryptec.renderer.IRenderer;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.Render;
-import omnikryptec.storing.GameObject;
-import omnikryptec.storing.Light;
 
 public class Scene {
 

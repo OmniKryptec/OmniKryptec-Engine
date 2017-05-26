@@ -11,6 +11,8 @@ import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
 import omnikryptec.logger.Commands;
 import omnikryptec.logger.Logger;
+import omnikryptec.model.Material;
+import omnikryptec.model.VertexArrayObject;
 import omnikryptec.postprocessing.FrameBufferObject;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.LightRenderer;
@@ -18,11 +20,8 @@ import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.Render;
 import omnikryptec.renderer.RendererRegistration;
-import omnikryptec.storing.Material;
-import omnikryptec.storing.VertexArrayObject;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.InputUtil;
-import omnikryptec.util.NativesLoader;
 import omnikryptec.util.RenderUtil;
 
 /**

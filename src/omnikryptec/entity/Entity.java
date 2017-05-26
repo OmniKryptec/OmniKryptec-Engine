@@ -1,5 +1,7 @@
-package omnikryptec.storing;
+package omnikryptec.entity;
 
+import omnikryptec.model.Model;
+import omnikryptec.model.TexturedModel;
 import omnikryptec.texture.Texture;
 import org.lwjgl.util.vector.Vector3f;
 

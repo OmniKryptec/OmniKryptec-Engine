@@ -3,9 +3,9 @@ package omnikryptec.renderer;
 import java.util.List;
 import java.util.Map;
 
+import omnikryptec.entity.Entity;
 import omnikryptec.main.Scene;
-import omnikryptec.storing.Entity;
-import omnikryptec.storing.TexturedModel;
+import omnikryptec.model.TexturedModel;
 
 public interface IRenderer {
 	

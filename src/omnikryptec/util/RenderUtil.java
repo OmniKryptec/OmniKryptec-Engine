@@ -1,9 +1,7 @@
 package omnikryptec.util;
 
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.util.vector.Vector4f;
 
 public class RenderUtil {
 

@@ -5,22 +5,22 @@ import java.util.Random;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import omnikryptec.camera.Camera;
-import omnikryptec.camera.MatrixMath;
 import omnikryptec.display.DisplayManager;
+import omnikryptec.entity.Camera;
+import omnikryptec.entity.Entity;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.lang.LanguageManager;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
+import omnikryptec.model.Model;
+import omnikryptec.model.TexturedModel;
 import omnikryptec.main.Scene;
 import omnikryptec.objConverter.ObjLoader;
 import omnikryptec.postprocessing.LightRenderer;
 import omnikryptec.postprocessing.PostProcessing;
-import omnikryptec.storing.Entity;
-import omnikryptec.storing.Model;
-import omnikryptec.storing.TexturedModel;
 import omnikryptec.texture.Texture;
+import omnikryptec.util.Maths;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.RenderUtil;
 

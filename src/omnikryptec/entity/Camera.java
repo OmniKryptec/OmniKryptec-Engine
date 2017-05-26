@@ -1,11 +1,11 @@
-package omnikryptec.camera;
+package omnikryptec.entity;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import omnikryptec.storing.GameObject;
+import omnikryptec.util.Maths;
 
 public class Camera extends GameObject{
 	
@@ -59,7 +59,7 @@ public class Camera extends GameObject{
 		this.near = near;
 		this.far = far;
 		this.fov = fovdeg;
-		projection = MatrixMath.setPerspectiveProjection(fovdeg, far, near, width, height);
+		projection = Maths.setPerspectiveProjection(fovdeg, far, near, width, height);
 		return this;
 	}
 
@@ -81,7 +81,7 @@ public class Camera extends GameObject{
 		this.near = near;
 		this.far = far;
 		this.fov = 180;
-		projection = MatrixMath.setOrthographicProjection(left, right, bottom, top, near, far);
+		projection = Maths.setOrthographicProjection(left, right, bottom, top, near, far);
 		return this;
 	}
 	
