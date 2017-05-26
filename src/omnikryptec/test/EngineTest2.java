@@ -92,35 +92,35 @@ public class EngineTest2 implements IEventHandler{
             final float deltaPos = (0.4F * DisplayManager.instance().getDeltaTime());
             final float deltaRot = (10.0F * DisplayManager.instance().getDeltaTime());
             //camera.increaseRelativeRot(0, 3*deltaRot, 0);
-            if(InputUtil.isKeyDown(Keyboard.KEY_W)) {
+            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_W)) {
                 camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y, camera.getRelativePos().z - deltaPos);
                 camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y, (float) ((camera.getRelativePos().z - deltaPos) * Math.sin(Math.toRadians(camera.getRelativeRotation().y))));
             }
-            if(InputUtil.isKeyDown(Keyboard.KEY_S)) {
+            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_S)) {
                 camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y,              camera.getRelativePos().z + deltaPos);
             }
-            if(InputUtil.isKeyDown(Keyboard.KEY_A)) {
+            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_A)) {
                 camera.setRelativePos(camera.getRelativePos().x - deltaPos, camera.getRelativePos().y,              camera.getRelativePos().z);
             }
-            if(InputUtil.isKeyDown(Keyboard.KEY_D)) {
+            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_D)) {
                 camera.setRelativePos(camera.getRelativePos().x + deltaPos, camera.getRelativePos().y,              camera.getRelativePos().z);
             }
-            if(InputUtil.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_LSHIFT)) {
                 camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y - deltaPos,   camera.getRelativePos().z);
             }
-            if(InputUtil.isKeyDown(Keyboard.KEY_SPACE)) {
+            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_SPACE)) {
                 camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y + deltaPos,   camera.getRelativePos().z);
             }
-            if(InputUtil.isKeyDown(Keyboard.KEY_LEFT)) {
+            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_LEFT)) {
                 camera.increaseRelativeRot(0, -deltaRot, 0);
             }
-            if(InputUtil.isKeyDown(Keyboard.KEY_RIGHT)) {
+            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_RIGHT)) {
                 camera.increaseRelativeRot(0, deltaRot, 0);
             }
-            if(InputUtil.isKeyDown(Keyboard.KEY_UP)) {
+            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_UP)) {
                 camera.getRelativeRotation().x -= deltaRot;
             }
-            if(InputUtil.isKeyDown(Keyboard.KEY_DOWN)) {
+            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_DOWN)) {
                 camera.getRelativeRotation().x += deltaRot;
             }
             Logger.CONSOLE.setTitle(camera.toString());

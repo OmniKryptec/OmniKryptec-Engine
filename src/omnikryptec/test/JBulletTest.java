@@ -140,9 +140,9 @@ public class JBulletTest {
     }
     
     private static void input() {
-        applyForce = InputUtil.isKeyDown(Keyboard.KEY_F);
-        createNewShape = InputUtil.isKeyDown(Keyboard.KEY_N);
-        resetControlBall = InputUtil.isKeyDown(Keyboard.KEY_R);
+        applyForce = InputUtil.isKeyboardKeyDown(Keyboard.KEY_F);
+        createNewShape = InputUtil.isKeyboardKeyDown(Keyboard.KEY_N);
+        resetControlBall = InputUtil.isKeyboardKeyDown(Keyboard.KEY_R);
     }
     
     private static Entity createBallEntity(RigidBody body) {
