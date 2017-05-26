@@ -153,9 +153,6 @@ public class JBulletTest {
                 setRelativePos(ballPosition.x, ballPosition.y, ballPosition.z);
                 final Quat4f ballOrientation = body.getOrientation(new Quat4f());
                 setRotation(new org.lwjgl.util.vector.Vector3f(ballOrientation.x, ballOrientation.y, ballOrientation.z));
-                if(this == controlBallEntity) { 
-                    Logger.CONSOLE.setTitle(toString());
-                }
             }
             
         };
@@ -219,7 +216,11 @@ public class JBulletTest {
         final float deltaPos = (1.5F * DisplayManager.instance().getDeltaTime());
         final float deltaRot = (15.0F * DisplayManager.instance().getDeltaTime());
         //Logger.log("rot.y: " + camera.getRelativeRotation().y + ", sin: " + Math.sin(Math.toRadians(camera.getRelativeRotation().y)) + ", cos: " + Math.cos(Math.toRadians(camera.getRelativeRotation().y)));
-        if(InputUtil.isKeyDown(Keyboard.KEY_W)) {
+        final float deltaForward = (InputUtil.isKeyDown(Keyboard.KEY_W) ? deltaPos : 0) + (InputUtil.isKeyDown(Keyboard.KEY_S) ? -deltaPos : 0);
+        final float deltaSideward = (InputUtil.isKeyDown(Keyboard.KEY_D) ? deltaPos : 0) + (InputUtil.isKeyDown(Keyboard.KEY_A) ? -deltaPos : 0);
+        final float deltaUpward = (InputUtil.isKeyDown(Keyboard.KEY_SPACE) ? deltaPos : 0) + (InputUtil.isKeyDown(Keyboard.KEY_LSHIFT) ? -deltaPos : 0);
+        camera.moveSpace(deltaForward, deltaSideward, deltaUpward);
+        /*if(InputUtil.isKeyDown(Keyboard.KEY_W)) {
             camera.setRelativePos((float) ((camera.getRelativePos().x + (deltaPos * Math.sin(Math.toRadians(camera.getRelativeRotation().y))))),            camera.getRelativePos().y, (float) ((camera.getRelativePos().z - (deltaPos * Math.cos(Math.toRadians(camera.getRelativeRotation().y))))));
         }
         if(InputUtil.isKeyDown(Keyboard.KEY_S)) {
@@ -237,6 +238,7 @@ public class JBulletTest {
         if(InputUtil.isKeyDown(Keyboard.KEY_SPACE)) {
             camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y + deltaPos,   camera.getRelativePos().z);
         }
+        */
         if(InputUtil.isKeyDown(Keyboard.KEY_LEFT)) {
             camera.getRelativeRotation().y -= deltaRot;
         }
@@ -249,7 +251,7 @@ public class JBulletTest {
         if(InputUtil.isKeyDown(Keyboard.KEY_DOWN)) {
             camera.getRelativeRotation().x += deltaRot;
         }
-        //Logger.CONSOLE.setTitle(camera.toString());
+        Logger.CONSOLE.setTitle(camera.toString());
     }
     
 }
