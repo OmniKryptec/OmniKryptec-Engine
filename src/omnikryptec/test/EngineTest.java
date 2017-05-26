@@ -1,6 +1,10 @@
 package omnikryptec.test;
 
 
+import java.util.Random;
+
+import org.lwjgl.util.vector.Vector3f;
+
 import omnikryptec.camera.Camera;
 import omnikryptec.camera.MatrixMath;
 import omnikryptec.display.DisplayManager;
@@ -11,6 +15,8 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;
 import omnikryptec.objConverter.ObjLoader;
+import omnikryptec.postprocessing.LightRenderer;
+import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.storing.Entity;
 import omnikryptec.storing.Model;
 import omnikryptec.storing.TexturedModel;
@@ -33,20 +39,26 @@ public class EngineTest{
 			//Model brunnen = Model.generateQuad();
 			Texture brunnent = Texture.newTexture(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create();
 			TexturedModel tm = new TexturedModel(brunnen, brunnent);
-			OmniKryptecEngine.instance().addAndSetScene("test", new Scene(new Camera(MatrixMath.perspectiveProjection(75, 1000, 0.1f)){
+			tm.getMaterial().setReflectivity(0.5f);
+			OmniKryptecEngine.instance().addAndSetScene("test", new Scene(new Camera(){
 				@Override
 				public void doLogic(){
-					setRelativePos(getRelativePos().x, getRelativePos().y, getRelativePos().z+0.1f*DisplayManager.instance().getDeltaTime());
+					//setRelativePos(getRelativePos().x, getRelativePos().y, getRelativePos().z+1*DisplayManager.instance().getDeltaTime());
+					//increaseRelativeRot(10*DisplayManager.instance().getDeltaTime(), 0,0);
+					
 				}
-			}));
+
+			}.setPerspectiveProjection(75, 1000, 0.1f)));
+			
 			Entity ent = new Entity(tm);
 			Entity ent2 = new Entity(tm);
 			Entity ent3 = new Entity(tm);
 			OmniKryptecEngine.instance().getCurrentScene().addGameObject(ent);
 			OmniKryptecEngine.instance().getCurrentScene().addGameObject(ent2);
 			OmniKryptecEngine.instance().getCurrentScene().addGameObject(ent3);
-			OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().y += 3;
-			OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativeRotation().x = 40;
+			//OmniKryptecEngine.instance().getCurrentScene().getCamera().setRelativePos(0, 100, -5);
+			OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().y += 10;
+			OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativeRotation().x = 90;
 			ent.setRelativePos(0, 0, -5);
 			ent2.setRelativePos(5, 0, -5);
 			ent3.setRelativePos(-5, 0, 2);

@@ -29,4 +29,14 @@ public class PostProcessingGroup implements PostProcessingStage {
 		return fbo;
 	}
 
+	@Override
+	public void resize() {
+		for(PostProcessingStage stage : stages){
+			stage.resize();
+		}
+	}
+
+	
+
+
 }

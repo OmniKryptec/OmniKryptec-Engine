@@ -2,17 +2,31 @@ package omnikryptec.camera;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.storing.Entity;
 
 public class MatrixMath {
 
-	public static Matrix4f perspectiveProjection(float fovdeg, float far, float near) {
-		return perspectiveProjection(fovdeg, far, near, Display.getWidth(), Display.getHeight());
+
+	
+	public static Matrix4f createTransformationMatrix(Entity e) {
+		Matrix4f matrix = new Matrix4f();
+		matrix.setIdentity();
+		Matrix4f.translate(e.getAbsolutePos(), matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().x), new Vector3f(1, 0, 0), matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().y), new Vector3f(0, 1, 0), matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().z), new Vector3f(0, 0, 1), matrix, matrix);
+		Matrix4f.scale(e.getScale(), matrix, matrix);
+		return matrix;
+	}
+	
+	public static Matrix4f setPerspectiveProjection(float fovdeg, float far, float near) {
+		return setPerspectiveProjection(fovdeg, far, near, Display.getWidth(), Display.getHeight());
 	}
 
-	public static Matrix4f perspectiveProjection(float fovdeg, float far, float near, float width, float height) {
+	public static Matrix4f setPerspectiveProjection(float fovdeg, float far, float near, float width, float height) {
 		Matrix4f projectionMatrix = new Matrix4f();
 		float aspectRatio = width / height;
 		float y_scale = (float) ((1f / Math.tan(Math.toRadians(fovdeg / 2f))));
@@ -28,7 +42,20 @@ public class MatrixMath {
 		return projectionMatrix;
 	}
 
-	public static Matrix4f orthographicProjection(float left, float right, float bottom, float top, float near,
+	private float near,far,fov;
+	private Vector2f vect = new Vector2f();
+	
+	public float getFOVDeg(){
+		return fov;
+	}
+	
+	public Vector2f getPlanes(){
+		vect.x = near;
+		vect.y = far;
+		return vect;
+	}
+	
+	public static Matrix4f setOrthographicProjection(float left, float right, float bottom, float top, float near,
 			float far) {
 		Matrix4f m = new Matrix4f();
 		float x_orth = 2 / (right - left);
@@ -58,22 +85,11 @@ public class MatrixMath {
 		return m;
 	}
 	
-	public static Matrix4f orthographicProjection2D(float x, float y, float width, float height) {
-		return orthographicProjection( x, x + width, y + height, y, 1, -1);
+	public static Matrix4f setOrthographicProjection2D(float x, float y, float width, float height) {
+		return setOrthographicProjection( x, x + width, y + height, y, 1, -1);
 	}
 
-	public static Matrix4f orthographicProjection2D(float x, float y, float width, float height, float near, float far) {
-		return orthographicProjection(x, x + width, y, y + height, near, far);
-	}
-	
-	public static Matrix4f createTransformationMatrix(Entity e) {
-		Matrix4f matrix = new Matrix4f();
-		matrix.setIdentity();
-		Matrix4f.translate(e.getAbsolutePos(), matrix, matrix);
-		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().x), new Vector3f(1, 0, 0), matrix, matrix);
-		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().y), new Vector3f(0, 1, 0), matrix, matrix);
-		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().z), new Vector3f(0, 0, 1), matrix, matrix);
-		Matrix4f.scale(e.getScale(), matrix, matrix);
-		return matrix;
+	public static Matrix4f setOrthographicProjection2D(float x, float y, float width, float height, float near, float far) {
+		return setOrthographicProjection(x, x + width, y, y + height, near, far);
 	}
 }

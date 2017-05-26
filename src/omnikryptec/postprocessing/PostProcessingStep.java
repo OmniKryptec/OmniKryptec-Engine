@@ -30,7 +30,7 @@ public abstract class PostProcessingStep implements PostProcessingStage {
 		return target;
 	}
 
-	public abstract void bindTexture(FrameBufferObject texture, List<FrameBufferObject> beforelist, Shader using);
+	public abstract void bindTexture(FrameBufferObject before, List<FrameBufferObject> beforelist, Shader using);
 
 	public abstract void afterRendering();
 
@@ -41,6 +41,13 @@ public abstract class PostProcessingStep implements PostProcessingStage {
 		target.unbindFrameBuffer();
 	}
 
+	public abstract FrameBufferObject getOnResize();
+	
+	@Override
+	public void resize(){
+		target = getOnResize();
+	}
+	
 	public void cleanUp() {
 		target.clear();
 	}

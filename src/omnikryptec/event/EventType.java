@@ -15,7 +15,7 @@ public final class EventType {
 
 
 
-	public static final EventType RESIZED = new EventType("resized");
+	public static final EventType RESIZED = new EventType("resized", true);
 
 
 

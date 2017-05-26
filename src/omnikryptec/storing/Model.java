@@ -25,7 +25,8 @@ public class Model {
 	}
 	
 	private static final int QUAD_VERTEX_COUNT = 4;
-	private static final float[] QUAD_VERTICES = {0, 0, 1, 0, 1, 1, 0, 1};
+	//private static final float[] QUAD_VERTICES = {0, 0, 1, 0, 1, 1, 0, 1};
+	private static final float[] QUAD_VERTICES = { -1, 1, -1, -1, 1, 1, 1, -1 };
 	private static final float[] QUAD_TEX_COORDS = {0,0,0,1,1,1,1,0};
 	private static final int[] QUAD_INDICES = {0,3,1,1,3,2};
 

@@ -7,6 +7,8 @@ import java.util.List;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import omnikryptec.display.DisplayManager;
+import omnikryptec.storing.Model;
 import omnikryptec.util.RenderUtil;
 
 public class PostProcessing {
@@ -17,7 +19,23 @@ public class PostProcessing {
 	private static FrameBufferObject before;
 	private static PostProcessingStage currentStage;
 	
-	public static void doPostProcessing(FrameBufferObject ...fbo) {
+	private static PostProcessing instance;
+	
+	public static PostProcessing instance(){
+		if(instance==null){
+			new PostProcessing(DisplayManager.instance());
+		}
+		return instance;
+	}
+	
+	private PostProcessing(DisplayManager manager){
+		if(manager == null){
+			throw new NullPointerException("DisplayManager is null");
+		}
+		instance = this;
+	}
+	
+	public void doPostProcessing(FrameBufferObject ...fbo) {
 		before = fbo[fbo.length-1];
 		beforelist.addAll(Arrays.asList(fbo));
 		start();
@@ -34,8 +52,13 @@ public class PostProcessing {
 			beforelist.add(before);
 		}
 		end();
-		beforelist.clear();
-		before.resolveToScreen();
+		if(stages.size()>0){
+			beforelist.clear();
+			before.resolveToScreen();
+		}else{
+			beforelist.get(0).resolveToScreen();
+			beforelist.clear();
+		}
 	}
 
 	public static void cleanup() {
@@ -43,17 +66,31 @@ public class PostProcessing {
 			beforelist.get(i).clear();
 		}
 	}
-
-	private static void start() {
-		// GL30.glBindVertexArray(quad.getVaoID());
-		GL20.glEnableVertexAttribArray(0);
+	
+	public void addStage(PostProcessingStage stage){
+		stages.add(stage);
+	}
+	
+	public PostProcessingStage removeStage(PostProcessingStage stage){
+		return stages.remove(stages.indexOf(stage));
+	}
+	
+	private Model quad = Model.generateQuad();
+	
+	private void start() {
+		quad.getVao().bind(0,1);
 		RenderUtil.enableDepthTesting(false);
 	}
 
-	private static void end() {
+	private void end() {
 		RenderUtil.enableDepthTesting(true);
-		GL20.glDisableVertexAttribArray(0);
-		GL30.glBindVertexArray(0);
+		quad.getVao().unbind(0,1);
+	}
+
+	public void resize() {
+		for(PostProcessingStage stage : stages){
+			stage.resize();
+		}
 	}
 
 }

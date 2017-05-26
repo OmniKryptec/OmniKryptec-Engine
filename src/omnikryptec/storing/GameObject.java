@@ -60,7 +60,18 @@ public class GameObject {
     public Vector3f getRelativePos() {
         return pos;
     }
+    
+    public void increaseRelativePos(float x, float y, float z){
+    	pos.x += x;
+    	pos.y += y;
+    	pos.z += z;
+    }
 
+    public void increaseRelativeRot(float x, float y, float z){
+    	rotation.x += x;
+    	rotation.y += y;
+    	rotation.z += z;
+    }
 
     /**
      * the absolute xposition is always absolute
