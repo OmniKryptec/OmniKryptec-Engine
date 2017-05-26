@@ -37,12 +37,13 @@ public class EngineTest2 implements IEventHandler{
 	public static void main(String[] args) {
         try {
             NativesLoader.loadNatives();
+            OmniKryptecEngine.addShutdownHook(() -> NativesLoader.unloadNatives());
             Logger.enableLoggerRedirection(true);
             Logger.setDebugMode(true);
             Logger.CONSOLE.setExitWhenLastOne(true);
             Logger.showConsoleDirect();
             
-            DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFpsCap(DisplayManager.DISABLE_FPS_CAP));
+            DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFpsCap(60));
            // PostProcessing.instance().addStage(new LightRenderer());
             EventSystem.instance().addEventHandler(new EngineTest2(), EventType.RENDER_EVENT);
             Model brunnen = new Model(ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
@@ -82,7 +83,6 @@ public class EngineTest2 implements IEventHandler{
             ent3.setRelativePos(-5, 0, 2);
             //ent.setScale(new Vector3f(1, 1, 1));
             OmniKryptecEngine.instance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
-            NativesLoader.unloadNatives();
         } catch (Exception ex) {
             Logger.logErr("Error: " + ex, ex);
         }
@@ -94,6 +94,7 @@ public class EngineTest2 implements IEventHandler{
             //camera.increaseRelativeRot(0, 3*deltaRot, 0);
             if(InputUtil.isKeyDown(Keyboard.KEY_W)) {
                 camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y, camera.getRelativePos().z - deltaPos);
+                camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y, (float) ((camera.getRelativePos().z - deltaPos) * Math.sin(Math.toRadians(camera.getRelativeRotation().y))));
             }
             if(InputUtil.isKeyDown(Keyboard.KEY_S)) {
                 camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y,              camera.getRelativePos().z + deltaPos);
@@ -122,7 +123,6 @@ public class EngineTest2 implements IEventHandler{
             if(InputUtil.isKeyDown(Keyboard.KEY_DOWN)) {
                 camera.getRelativeRotation().x += deltaRot;
             }
-            
             Logger.CONSOLE.setTitle(camera.toString());
         }
 

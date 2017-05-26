@@ -24,7 +24,12 @@ public class VisualThreadMonitor {
     
     private final ArrayList<StackTraceElement[]> stackTraces = new ArrayList<StackTraceElement[]>() {
         
-        @Override
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -36832397820729877L;
+
+		@Override
         public boolean contains(Object o) {
             if(o instanceof StackTraceElement[]) {
                 final StackTraceElement[] toTest = (StackTraceElement[]) o;

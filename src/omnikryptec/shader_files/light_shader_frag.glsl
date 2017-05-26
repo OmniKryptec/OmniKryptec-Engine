@@ -1,6 +1,9 @@
 #version 330
 
 in vec2 textureCoords;
+in vec3 vposf;
+
+
 
 out vec4 col;
 
@@ -12,8 +15,6 @@ uniform sampler2D depth;
 uniform vec4 light;
 uniform vec3 lightColor;
 uniform vec2 planes;
-uniform mat4 vpos;
-
 float saturate(float value){
 	
 	return clamp(value,0.0,1.0);
@@ -40,12 +41,8 @@ float tofloat(vec4 v){
 }
 
 void main(void){
-	mat3 testm = mat3(
-	vpos[0][0], vpos[0][1], vpos[0][2],
-	vpos[1][0], vpos[1][1], vpos[1][2],
-	vpos[2][0], vpos[2][1], vpos[2][2]
-	);
-	vec3 view = normalize(testm * vec3(1,1,1));
+	vec3 view = normalize(vposf);
+	view = 1- view;
 	
 	float dep = texture(depth, textureCoords).r;
 	

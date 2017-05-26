@@ -15,10 +15,21 @@ public class MatrixMath {
 		Matrix4f matrix = new Matrix4f();
 		matrix.setIdentity();
 		Matrix4f.translate(e.getAbsolutePos(), matrix, matrix);
-		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().x), new Vector3f(1, 0, 0), matrix, matrix);
-		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().y), new Vector3f(0, 1, 0), matrix, matrix);
-		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().z), new Vector3f(0, 0, 1), matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().x), Camera.X, matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().y), Camera.Y, matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().z), Camera.Z, matrix, matrix);
 		Matrix4f.scale(e.getScale(), matrix, matrix);
+		return matrix;
+	}
+	
+	public static Matrix4f createEmptyTransformationMatrix() {
+		Matrix4f matrix = new Matrix4f();
+		matrix.setIdentity();
+		Matrix4f.translate(Camera.ZERO, matrix, matrix);
+		Matrix4f.rotate(0, Camera.X, matrix, matrix);
+		Matrix4f.rotate(0, Camera.Y, matrix, matrix);
+		Matrix4f.rotate(0, Camera.Z, matrix, matrix);
+		Matrix4f.scale(Camera.ZERO, matrix, matrix);
 		return matrix;
 	}
 	

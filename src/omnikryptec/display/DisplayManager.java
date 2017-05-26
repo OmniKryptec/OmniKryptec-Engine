@@ -137,13 +137,13 @@ public class DisplayManager {
 		if (Display.wasResized()) {
 			GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
 		}
+		long currentFrameTime = getCurrentTime();
+		deltatime = (currentFrameTime - lasttime) / 1000f;
+		lasttime = currentFrameTime;
 		Display.update();
 		if (sync > 0) {
 			Display.sync(sync);
 		}
-		long currentFrameTime = getCurrentTime();
-		deltatime = (currentFrameTime - lasttime) / 1000f;
-		lasttime = currentFrameTime;
 	}
 
 	public float getDeltaTime() {

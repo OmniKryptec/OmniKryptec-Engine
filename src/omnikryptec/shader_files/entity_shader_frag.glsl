@@ -32,7 +32,7 @@ void main(void){
 		col2.rgb = texture(speculartex, pass_texcoords).rgb;
 		col2.a = reflec;
 	}else{
-		col2 = vec4(col.r,col.g,col.b,reflec);
+		col2 = vec4(0,0,0,reflec);
 	}
 	if(col.a<0.1){
 		discard;
