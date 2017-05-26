@@ -45,8 +45,47 @@ public class EngineTest2 {
                 }
                 
             }));
-            Entity ent = new Entity(tm);
-            Entity ent2 = new Entity(tm);
+            Entity ent = new Entity(tm) {
+                
+                private boolean up = true;
+                private int temp = 0;
+                
+                @Override
+                public void doLogic() {
+                    final float step = 0.4F * DisplayManager.instance().getDeltaTime();
+                    setRelativePos(getRelativePos().x + (up ? -step : +step), getRelativePos().y, getRelativePos().z + (up ? +step : -step));
+                    if(up) {
+                        temp++;
+                    } else {
+                        temp--;
+                    }
+                    if(temp >= 1000) {
+                        up = false;
+                    } else if(temp <= 0) {
+                        up = true;
+                    }
+                }
+                
+            };
+            Entity ent2 = new Entity(tm) {
+                
+                private int temp = 0;
+                
+                @Override
+                public void doLogic() {
+                    final float step = 0.2F * DisplayManager.instance().getDeltaTime();
+                    setRelativePos((float) (getRelativePos().x + (Math.sin(Math.toRadians(temp)) * step)), getRelativePos().y, (float) (getRelativePos().z + (Math.cos(Math.toRadians(temp)) * step)));
+                    getRotation().y += 0.5;
+                    getRotation().y %= 360;
+                    getRotation().x += 0.5;
+                    getRotation().x %= 360;
+                    getRotation().z += 0.5;
+                    getRotation().z %= 360;
+                    temp++;
+                    temp = temp % 360;
+                }
+                
+            };
             Entity ent3 = new Entity(tm);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(ent);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(ent2);
