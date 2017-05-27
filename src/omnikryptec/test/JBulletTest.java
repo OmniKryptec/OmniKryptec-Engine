@@ -89,8 +89,13 @@ public class JBulletTest {
         }
     }
     
+    private static boolean physicsPause = false;
+    private static float physicsSpeed = 1.0F;
+    
     private static void logic() {
-        dynamicsWorld.stepSimulation(1.0F / DisplayManager.instance().getFPSCap()/*DisplayManager.instance().getFPS()*/);
+        if(!physicsPause && physicsSpeed > 0) {
+            dynamicsWorld.stepSimulation((1.0F / DisplayManager.instance().getFPS()) * physicsSpeed);
+        }
         /*
         final HashMap<Entity, RigidBody> ballsToBeRemoved = new HashMap<>();
         for(Entity e : balls.keySet()) {
@@ -150,10 +155,18 @@ public class JBulletTest {
         return entity;
     }
     
+    private static final float physicsSpeedStep = 0.001F;
+    
     private static void input() {
         applyForce = InputUtil.isKeyboardKeyDown(Keyboard.KEY_F);
         createNewShape = InputUtil.isKeyboardKeyDown(Keyboard.KEY_N);
         resetControlBall = InputUtil.isKeyboardKeyDown(Keyboard.KEY_R);
+        physicsPause = InputUtil.isKeyboardKeyDown(Keyboard.KEY_P);
+        float deltaPhysicsSpeedStep = (InputUtil.isKeyboardKeyDown(Keyboard.KEY_COMMA) ? physicsSpeedStep : 0) + (InputUtil.isKeyboardKeyDown(Keyboard.KEY_PERIOD) ? -physicsSpeedStep : 0);
+        physicsSpeed += deltaPhysicsSpeedStep;
+        if(physicsSpeed < 0) {
+            physicsSpeed = 0;
+        }
         if(!(OmniKryptecEngine.instance().getCurrentScene().getCamera() instanceof FollowingCamera) && OmniKryptecEngine.instance().getDisplayManager().getSettings().getKeySettings().getKey("mouseButtonLeft").isPressed()) {
             float deltaX = InputUtil.getMouseDelta().x;
             float deltaY = InputUtil.getMouseDelta().y;
