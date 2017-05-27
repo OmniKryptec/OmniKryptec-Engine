@@ -198,6 +198,11 @@ public class JBulletTest {
                 setRotation(new org.lwjgl.util.vector.Vector3f(ballOrientation.x, ballOrientation.y, ballOrientation.z));
             }
             
+            @Override
+            public void delete() {
+                dynamicsWorld.removeRigidBody(body);
+            }
+            
         };
     }
     
