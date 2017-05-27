@@ -56,17 +56,17 @@ public class KeySettings {
         return this;
     }
     
-    public final KeySettings setKey(Key key) {
-        return setKey(key.getName(), key.getKey(), key.isKeyboardKey());
+    public final KeySettings setKey(String name, int key, boolean isKeyboardKey) {
+        return setKey(new Key(name, key, isKeyboardKey));
     }
     
-    public final KeySettings setKey(String name, int key, boolean isKeyboardKey) {
-        final Key key_temp = getKey(name);
-        if(key_temp != null) {
-            key_temp.setKey(key);
-            key_temp.setIsKeyboardKey(isKeyboardKey);
+    public final KeySettings setKey(Key key) {
+        final int index = keys.indexOf(key);
+        if(index >= 0) {
+            keys.get(index).setKey(key.getKey());
+            keys.get(index).setIsKeyboardKey(key.isKeyboardKey());
         } else {
-            keys.add(new Key(name, key, isKeyboardKey));
+            keys.add(key);
         }
         return this;
     }
@@ -87,6 +87,26 @@ public class KeySettings {
             }
         }
         return null;
+    }
+    
+    public final KeySettings removeKey(int key, boolean isKeyboardKey) {
+        final Key key_temp = getKey(key, isKeyboardKey);
+        if(key_temp != null) {
+            removeKey(key_temp);
+        }
+        return this;
+    }
+    
+    public final KeySettings removeKey(String name) {
+        return removeKey(new Key(name, -1, true));
+    }
+    
+    public final KeySettings removeKey(Key key) {
+        int index = -1;
+        while((index = keys.indexOf(key)) != -1) {
+            keys.remove(index);
+        }
+        return this;
     }
 
 }

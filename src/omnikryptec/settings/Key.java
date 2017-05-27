@@ -49,6 +49,19 @@ public class Key {
     }
     
     @Override
+    public final boolean equals(Object o) {
+        if(o == null) {
+            return false;
+        }
+        if(o instanceof Key) {
+            final Key key_temp = (Key) o;
+            return key_temp.name.equals(name);
+        } else {
+            return false;
+        }
+    }
+    
+    @Override
     public final String toString() {
         return String.format("Key: \"%s\" == %d, isKeyboardKey: %b", name, key, isKeyboardKey);
     }
