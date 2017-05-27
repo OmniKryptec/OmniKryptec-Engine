@@ -28,22 +28,17 @@ import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.EntityBuilder;
 import omnikryptec.entity.FollowingCamera;
-import omnikryptec.entity.GameObject;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
-import omnikryptec.model.Model;
-import omnikryptec.model.TexturedModel;
-import omnikryptec.objConverter.ObjLoader;
-import omnikryptec.postprocessing.LightStage;
-import omnikryptec.postprocessing.PostProcessing;
-import omnikryptec.texture.Texture;
+import omnikryptec.util.ConverterUtil;
 
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
+import omnikryptec.util.PhysicsUtil;
 import org.lwjgl.input.Keyboard;
 
 /**
@@ -116,7 +111,7 @@ public class JBulletTest {
             final Transform controlBallTransform = new Transform();
             controlBall.getMotionState().getWorldTransform(controlBallTransform);
             final Vector3f controlBallLocation = controlBallTransform.origin;
-            final Vector3f cameraPosition = convertVector3fFromLWJGL((OmniKryptecEngine.instance().getCurrentScene().getCamera() instanceof FollowingCamera) ? ((FollowingCamera) OmniKryptecEngine.instance().getCurrentScene().getCamera()).getFollowedGameObject().getAbsolutePos() : OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getAbsolutePos());
+            final Vector3f cameraPosition = ConverterUtil.convertVector3fFromLWJGL((OmniKryptecEngine.instance().getCurrentScene().getCamera() instanceof FollowingCamera) ? ((FollowingCamera) OmniKryptecEngine.instance().getCurrentScene().getCamera()).getFollowedGameObject().getAbsolutePos() : OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getAbsolutePos());
             final Vector3f force = new Vector3f();
             force.sub(cameraPosition, controlBallLocation);
             controlBall.activate(true);
@@ -135,8 +130,8 @@ public class JBulletTest {
     }
     
     private static RigidBody createNewRigidBody(EntityBuilder entityBuilder) {
-        Logger.log(entityBuilder.getModel().getRadius() / 10);
-        final CollisionShape shape = new SphereShape(entityBuilder.getModel().getRadius() / 10); //Standard 3.0F //m
+        //final CollisionShape shape = new SphereShape(entityBuilder.getModel().getRadius() / 10); //Standard 3.0F //m
+        final CollisionShape shape = PhysicsUtil.createConvexHullShape(entityBuilder.getModel());
         final DefaultMotionState motionState = new DefaultMotionState(new Transform(new Matrix4f(new Quat4f(0, 0, 0, 1), new Vector3f(OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().x, 35F, OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().z), 1)));
         final Vector3f inertia = new Vector3f();
         shape.calculateLocalInertia(1.0F, inertia);
@@ -185,14 +180,6 @@ public class JBulletTest {
             }
             
         };
-    }
-    
-    private static org.lwjgl.util.vector.Vector3f convertVector3fToLWJGL(Vector3f vector) {
-        return new org.lwjgl.util.vector.Vector3f(vector.x, vector.y, vector.z);
-    }
-    
-    private static Vector3f convertVector3fFromLWJGL(org.lwjgl.util.vector.Vector3f vector) {
-        return new Vector3f(vector.x, vector.y, vector.z);
     }
     
     private static EntityBuilder entityBuilder_brunnen;
@@ -244,7 +231,7 @@ public class JBulletTest {
                     @Override
                     public void doLogic() {
                         InputUtil.doThirdPersonController(OmniKryptecEngine.instance().getCurrentScene().getCamera(), this, DisplayManager.instance().getSettings().getKeySettings(), 5.0F, 40.0F); //Standard: 1.5F, 15.0F (But too slow) //5.0F, 40.0F is better
-                        lustig.setCenterOfMassTransform(new Transform(new Matrix4f(new Quat4f(0, 0, 0, 1), convertVector3fFromLWJGL(getAbsolutePos()), 1.0F)));
+                        lustig.setCenterOfMassTransform(new Transform(new Matrix4f(new Quat4f(getAbsoluteRotation().x, getAbsoluteRotation().y, getAbsoluteRotation().z, 1), ConverterUtil.convertVector3fFromLWJGL(getAbsolutePos()), 1.0F)));
                         lustig.setAngularVelocity(new Vector3f(0, 0, 0));
                         lustig.setLinearVelocity(new Vector3f(0, 0, 0));
                     }
