@@ -28,6 +28,7 @@ import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.EntityBuilder;
 import omnikryptec.entity.FollowingCamera;
+import omnikryptec.entity.GameObject;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
@@ -142,8 +143,16 @@ public class JBulletTest {
     
     private static RigidBody createNewRigidBody(EntityBuilder entityBuilder) {
         //final CollisionShape shape = new SphereShape(entityBuilder.getModel().getRadius() / 10); //Standard 3.0F //m
+        GameObject relateTo = OmniKryptecEngine.instance().getCurrentScene().getCamera();
+        if(relateTo instanceof FollowingCamera) {
+            GameObject temp = ((FollowingCamera) relateTo).getFollowedGameObject();
+            if(temp != null) {
+                relateTo = temp;
+            }
+        }
+        final Vector3f position = new Vector3f(relateTo.getAbsolutePos().x, 35F, relateTo.getAbsolutePos().z);
         final CollisionShape shape = PhysicsUtil.createConvexHullShape(entityBuilder.getModel());
-        final DefaultMotionState motionState = new DefaultMotionState(new Transform(new Matrix4f(new Quat4f(0, 0, 0, 1), new Vector3f(OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().x, 35F, OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().z), 1)));
+        final DefaultMotionState motionState = new DefaultMotionState(new Transform(new Matrix4f(new Quat4f(0, 0, 0, 1), position, 1)));
         final Vector3f inertia = new Vector3f();
         shape.calculateLocalInertia(1.0F, inertia);
         final RigidBodyConstructionInfo constructionInfo = new RigidBodyConstructionInfo(1.0F, motionState, shape, inertia);
@@ -162,12 +171,20 @@ public class JBulletTest {
     }
     
     private static final float physicsSpeedStep = 0.001F;
+    private static float lastTime = 0;
     
     private static void input() {
         applyForce = InputUtil.isKeyboardKeyDown(Keyboard.KEY_F);
         createNewShape = InputUtil.isKeyboardKeyDown(Keyboard.KEY_N);
         resetControlBall = InputUtil.isKeyboardKeyDown(Keyboard.KEY_R);
-        physicsPause = InputUtil.isKeyboardKeyDown(Keyboard.KEY_P);
+        if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_P)) {
+            float currentTime = DisplayManager.instance().getCurrentTime();
+            float deltaTime = (currentTime - lastTime);
+            if(deltaTime > 250) {
+                physicsPause = !physicsPause;
+                lastTime = currentTime;
+            }
+        }
         float deltaPhysicsSpeedStep = (InputUtil.isKeyboardKeyDown(Keyboard.KEY_COMMA) ? physicsSpeedStep : 0) + (InputUtil.isKeyboardKeyDown(Keyboard.KEY_PERIOD) ? -physicsSpeedStep : 0);
         physicsSpeed += deltaPhysicsSpeedStep;
         if(physicsSpeed < 0) {
