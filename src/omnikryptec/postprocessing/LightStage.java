@@ -1,6 +1,5 @@
 package omnikryptec.postprocessing;
 
-import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
@@ -8,40 +7,42 @@ import java.util.List;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.entity.Light;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
-import omnikryptec.model.Model;
 import omnikryptec.model.VertexArrayObject;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
-import omnikryptec.shader.Shader;
 import omnikryptec.shader_files.LightShader;
 import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
 
-public class LightRenderer {
+public class LightStage implements PostProcessingStage{
 
-	private static FrameBufferObject target = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
+	private static FrameBufferObject target = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE);
 	private static LightShader shader = new LightShader();
 	
-	private static LightRenderer instance;
 	
 	private VertexArrayObject quad;
 	
-	private LightRenderer(){
-		instance = this;
-	}
+	private int[] list_ind = {0,1,2};
 
-	public static LightRenderer instance() {
-		return instance == null? new LightRenderer() : instance;
+	@Override
+	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist) {
+		render(OmniKryptecEngine.instance().getCurrentScene(), beforelist.get(list_ind[0]),beforelist.get(list_ind[1]),beforelist.get(list_ind[2]));
 	}
-
 	
-	public void render(Scene currentScene, FrameBufferObject unsampledfbo, FrameBufferObject normalfbo, FrameBufferObject specularfbo) {
+	public LightStage setListIndices(int diffuseDepth, int normal, int specular){
+		list_ind[0] = diffuseDepth;
+		list_ind[1] = normal;
+		list_ind[2] = specular;
+		return this;
+	}
+	
+	
+	private void render(Scene currentScene, FrameBufferObject unsampledfbo, FrameBufferObject normalfbo, FrameBufferObject specularfbo) {
 		RenderUtil.enableAdditiveBlending();
 		shader.start();
 		LightShader.planes.loadVec2(currentScene.getCamera().getPlanesForLR());
@@ -114,11 +115,19 @@ public class LightRenderer {
 		return vao;
 	}
 	
+	@Override
 	public void resize(){
-		target = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
+		target = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE);
 	}
 	
-	public FrameBufferObject getTarget(){
+
+	@Override
+	public boolean usesDefaultRenderObject(){
+		return false;
+	}
+
+	@Override
+	public FrameBufferObject getFbo() {
 		return target;
 	}
 

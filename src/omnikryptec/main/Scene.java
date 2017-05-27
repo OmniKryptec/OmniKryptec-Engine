@@ -19,7 +19,10 @@ public class Scene {
     private final Map<String, RenderChunk> scene = new HashMap<>();
     private Camera cam;
     private long cox=1, coy=1, coz=1;
+    private float[] clearcolor = {0,0,0,0};
 
+    
+    
     public Scene(Camera cam){
         this.cam = cam;
     }
@@ -98,6 +101,24 @@ public class Scene {
 		l.setRadius(1000);
 		lights.add(l);
 		return lights;
+	}
+
+	public Scene setClearColor(float r, float g, float b){
+		return setClearColor(r, g, b, 1);
+	}
+	
+	public Scene setClearColor(float r, float g, float b, float a){
+		clearcolor = new float[]{r,g,b,a};
+		return this;
+	}
+	
+	public Scene setClearColor(float[] f){
+		clearcolor = f;
+		return this;
+	}
+	
+	public float[] getClearColor() {
+		return clearcolor;
 	}
 
 }

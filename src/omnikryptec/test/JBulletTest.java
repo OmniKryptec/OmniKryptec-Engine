@@ -35,6 +35,13 @@ import omnikryptec.event.EventType;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
+import omnikryptec.model.Model;
+import omnikryptec.model.TexturedModel;
+import omnikryptec.objConverter.ObjLoader;
+import omnikryptec.postprocessing.LightStage;
+import omnikryptec.postprocessing.PostProcessing;
+import omnikryptec.texture.Texture;
+
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
 import org.lwjgl.input.Keyboard;
@@ -196,6 +203,16 @@ public class JBulletTest {
             Logger.showConsoleDirect();
             
             DisplayManager.createDisplay("JBullet Test", new GameSettings("JBulletTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32));
+
+            //PostProcessing.instance().addStage(new LightRenderer());
+            OmniKryptecEngine.instance().addAndSetScene("TestScene", new Scene(new Camera() {   
+                @Override
+                public void doLogic() {
+                    InputUtil.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(), 1.5F, 15.0F);
+                }
+                
+            }.setPerspectiveProjection(75, 1000, 0.1F)));
+
             OmniKryptecEngine.instance().addAndSetScene("TestScene", new Scene(getCamera(1))); //TODO Set this to 0 for the firstPerson or to 1 for the thirdPerson mode
             entityBuilder_brunnen = new EntityBuilder().loadModel("/omnikryptec/test/brunnen.obj").loadTexture("/omnikryptec/test/brunnen.png");
             entityBuilder_pine = new EntityBuilder().loadModel("/omnikryptec/test/pine.obj").loadTexture("/omnikryptec/test/pine2.png");

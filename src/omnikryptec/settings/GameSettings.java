@@ -1,5 +1,8 @@
 package omnikryptec.settings;
 
+import omnikryptec.postprocessing.FBOFactory;
+import omnikryptec.postprocessing.FrameBufferObject;
+
 public class GameSettings {
 	
     private String name;
@@ -20,6 +23,11 @@ public class GameSettings {
 
     private int eventThreadPoolSize = 2;
 
+    private int[] add_attachments={};
+    private FBOFactory fbo_factory;
+    
+    private float foliageRadius=50;
+    
     public static final int NO_MULTISAMPLING = 0;
 
     public GameSettings(String name, int width, int height) {
@@ -53,7 +61,15 @@ public class GameSettings {
     public boolean wantsFullscreen() {
         return fullscreen;
     }
-
+    
+    public int[] getAddAttachments(){
+    	return add_attachments;
+    }
+    
+    public void setAdditionalAttachments(int...is){
+    	this.add_attachments = is;
+    }
+    
     public GameSettings setResizeable(boolean b) {
         this.resizeable = b;
         return this;
@@ -140,5 +156,31 @@ public class GameSettings {
         this.keySettings = keySettings;
         return this;
     }
+
+    public GameSettings setFBOFactory(FBOFactory fac){
+    	this.fbo_factory = fac;
+    	return this;
+    }
+    
+	public FrameBufferObject[] getAddFBOs() {
+		if(fbo_factory==null){
+			return new FrameBufferObject[]{};
+		}
+		FrameBufferObject[] fbos = fbo_factory.getAllFBOs();
+		if(fbos==null||fbos.length==0){
+			return new FrameBufferObject[]{};
+		}else{
+			return fbos;
+		}
+	}
+
+	public GameSettings setFoliageRadius(float f){
+		this.foliageRadius = f;
+		return this;
+	}
+	
+	public float getFoliageRadius() {
+		return foliageRadius;
+	}
 	
 }

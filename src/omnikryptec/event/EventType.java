@@ -25,6 +25,10 @@ public final class EventType {
 	 * like the frame event but in the renderthread for renderingpurposes
 	 */
 	public static final EventType RENDER_EVENT = new EventType("render_frame", true);
+
+
+
+	public static final EventType COMMAND = new EventType("command_exc");
 	
 	private final String name;
 	private final boolean needsCurrentThread;

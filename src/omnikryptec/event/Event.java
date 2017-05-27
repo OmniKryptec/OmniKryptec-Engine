@@ -12,7 +12,7 @@ public class Event {
 
 	private EventType type;
 	private Scene scene;
-	private Object msg;
+	private Object[] msg;
 
 	/**
 	 * creates an event without a message (= message is null)
@@ -27,7 +27,7 @@ public class Event {
 	 * @param msg
 	 *            the message
 	 */
-	public Event(Object msg) {
+	public Event(Object ...msg) {
 		this.msg = msg;
 	}
 
@@ -39,7 +39,7 @@ public class Event {
 	protected Event(Event ev) {
 		type = ev.getType();
 		scene = ev.getScene() == null ? OmniKryptecEngine.instance().getCurrentScene() : ev.getScene();
-		msg = ev.getMsg();
+		msg = ev.getMsgA();
 	}
 
 	protected void setEventType(EventType type) {
@@ -69,8 +69,16 @@ public class Event {
 	 * 
 	 * @return a message
 	 */
-	public Object getMsg() {
+	public Object[] getMsgA() {
 		return msg;
 	}
-
+	
+	public Object getMsg(){
+		if(msg!=null&&msg.length>0){
+			return msg[0];
+		}else{
+			return null;
+		}
+	}
+	
 }

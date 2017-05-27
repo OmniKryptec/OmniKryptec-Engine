@@ -9,10 +9,7 @@ import omnikryptec.util.Maths;
 
 public class Camera extends GameObject{
 	
-	public static final Vector3f X = new Vector3f(1, 0, 0);
-	public static final Vector3f Y = new Vector3f(0, 1, 0);
-	public static final Vector3f Z = new Vector3f(0, 0, 1);
-	public static final Vector3f ZERO = new Vector3f(0, 0, 0);
+
 	
 	private Matrix4f projection;
 	private Matrix4f view;
@@ -40,9 +37,9 @@ public class Camera extends GameObject{
 		campos = getAbsolutePos();
 		negcampos = new Vector3f(-campos.x, -campos.y, -campos.z);
 		view.setIdentity();
-		Matrix4f.rotate((float) Math.toRadians(absrot.x), X, view, view);
-		Matrix4f.rotate((float) Math.toRadians(absrot.y), Y, view, view);
-		Matrix4f.rotate((float) Math.toRadians(absrot.z), Z, view, view);
+		Matrix4f.rotate((float) Math.toRadians(absrot.x), Maths.X, view, view);
+		Matrix4f.rotate((float) Math.toRadians(absrot.y), Maths.Y, view, view);
+		Matrix4f.rotate((float) Math.toRadians(absrot.z), Maths.Z, view, view);
 		Matrix4f.translate(negcampos, view, view);
 		return view;
 	}

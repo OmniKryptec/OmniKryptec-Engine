@@ -14,7 +14,8 @@ import omnikryptec.main.Scene;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
-import omnikryptec.postprocessing.LightRenderer;
+import omnikryptec.postprocessing.ContrastchangeStage;
+import omnikryptec.postprocessing.LightStage;
 import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.InputUtil;
@@ -44,7 +45,7 @@ public class EngineTest2 implements IEventHandler{
             Logger.showConsoleDirect();
             
             DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFpsCap(DisplayManager.DISABLE_FPS_CAP));
-           // PostProcessing.instance().addStage(new LightRenderer());
+            PostProcessing.instance().addStage(new ContrastchangeStage(0.3f));
             EventSystem.instance().addEventHandler(new EngineTest2(), EventType.RENDER_EVENT);
             Model brunnen = new Model(ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
             //Model brunnen = Model.generateQuad();
@@ -59,7 +60,7 @@ public class EngineTest2 implements IEventHandler{
                     doCameraLogic(this);
                 }
                 
-            }.setPerspectiveProjection(75, 1000, 0.1f)));
+            }.setPerspectiveProjection(90, 1000, 0.01f)));
             Model pine = new Model(ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")));
 			Texture pinet = Texture.newTexture(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine2.png")).create();
 			TexturedModel ptm = new TexturedModel(pine, pinet);
@@ -71,16 +72,24 @@ public class EngineTest2 implements IEventHandler{
 				OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 			}
             Entity ent = new Entity(tm);
-            Entity ent2 = new Entity(tm);
+            //ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
+            Entity ent2 = new Entity(tm){
+            	@Override
+            	public void doLogic(){
+            		increaseRelativeRot(1, 1, 1);
+            		//increaseRelativePos(0, 0.01f, 0);
+            	}
+            };
             Entity ent3 = new Entity(tm);
+            ent3.setParent(ent2);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(ent);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(ent2);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(ent3);
             //OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().y += 10;
            //OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativeRotation().z = 90;
-            ent.setRelativePos(0, 0, 0);
+            ent.setRelativePos(3, -10, 10);
             ent2.setRelativePos(5, 0, -5);
-            ent3.setRelativePos(-5, 0, 2);
+            ent3.setRelativePos(-5, 0, 5);
             //ent.setScale(new Vector3f(1, 1, 1));
             OmniKryptecEngine.instance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
         } catch (Exception ex) {
@@ -89,41 +98,7 @@ public class EngineTest2 implements IEventHandler{
     }
         
         private static void doCameraLogic(Camera camera) {
-            final float deltaPos = (0.4F * DisplayManager.instance().getDeltaTime());
-            final float deltaRot = (10.0F * DisplayManager.instance().getDeltaTime());
-            //camera.increaseRelativeRot(0, 3*deltaRot, 0);
-            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_W)) {
-                camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y, camera.getRelativePos().z - deltaPos);
-                camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y, (float) ((camera.getRelativePos().z - deltaPos) * Math.sin(Math.toRadians(camera.getAbsoluteRotation().y))));
-            }
-            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_S)) {
-                camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y,              camera.getRelativePos().z + deltaPos);
-            }
-            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_A)) {
-                camera.setRelativePos(camera.getRelativePos().x - deltaPos, camera.getRelativePos().y,              camera.getRelativePos().z);
-            }
-            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_D)) {
-                camera.setRelativePos(camera.getRelativePos().x + deltaPos, camera.getRelativePos().y,              camera.getRelativePos().z);
-            }
-            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_LSHIFT)) {
-                camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y - deltaPos,   camera.getRelativePos().z);
-            }
-            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_SPACE)) {
-                camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y + deltaPos,   camera.getRelativePos().z);
-            }
-            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_LEFT)) {
-                camera.increaseRelativeRot(0, -deltaRot, 0);
-            }
-            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_RIGHT)) {
-                camera.increaseRelativeRot(0, deltaRot, 0);
-            }
-            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_UP)) {
-                camera.getRelativeRotation().x -= deltaRot;
-            }
-            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_DOWN)) {
-                camera.getRelativeRotation().x += deltaRot;
-            }
-            //camera.moveSpace(forward, sideward, upward);
+            InputUtil.doFirstPersonController(camera, DisplayManager.instance().getSettings().getKeySettings(), 10, 40);
             Logger.CONSOLE.setTitle(camera.toString());
         }
 

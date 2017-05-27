@@ -6,6 +6,7 @@ import java.util.List;
 
 import omnikryptec.display.DisplayManager;
 import omnikryptec.model.Model;
+import omnikryptec.util.ModelUtil;
 import omnikryptec.util.RenderUtil;
 
 public class PostProcessing {
@@ -32,9 +33,14 @@ public class PostProcessing {
 		instance = this;
 	}
 	
-	public void doPostProcessing(FrameBufferObject ...fbo) {
-		before = fbo[fbo.length-1];
+	public void doPostProcessing(FrameBufferObject[] fbos, FrameBufferObject ...fbo) {
+		if(fbos.length>0){
+			before = fbos[fbos.length-1];
+		}else{
+			before = fbo[fbo.length-1];
+		}
 		beforelist.addAll(Arrays.asList(fbo));
+		beforelist.addAll(Arrays.asList(fbos));
 		start();
 		for (int i = 0; i < stages.size(); i++) {
 			currentStage = stages.get(i);
@@ -72,7 +78,7 @@ public class PostProcessing {
 		return stages.remove(stages.indexOf(stage));
 	}
 	
-	private Model quad = Model.generateQuad();
+	private Model quad = ModelUtil.generateQuad();
 	
 	private void start() {
 		quad.getVao().bind(0,1);

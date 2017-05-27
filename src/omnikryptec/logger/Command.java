@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import omnikryptec.event.Event;
+import omnikryptec.event.EventSystem;
+import omnikryptec.event.EventType;
 import omnikryptec.exceptions.UnsupportedCharacterException;
 
 /**
@@ -123,7 +126,7 @@ public class Command {
                     };
                     Runnable run_2 = () -> {
                         try {
-                            CommandEvent.commandExecuted(new CommandEvent(Command.class, COMMANDS.get(c), arguments));
+                            EventSystem.instance().fireEvent(new Event(COMMANDS.get(c), arguments), EventType.COMMAND);
                         } catch (Exception ex) {
                         }
                     };
