@@ -269,6 +269,7 @@ public class JBulletTest {
                 OmniKryptecEngine.instance().getCurrentScene().addGameObject(followedEntity);
                 ((FollowingCamera) OmniKryptecEngine.getInstance().getCurrentScene().getCamera()).setFollowedGameObject(followedEntity);
             }
+            InputUtil.setCamera(OmniKryptecEngine.instance().getCurrentScene().getCamera());
             OmniKryptecEngine.instance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
         } catch (Exception ex) {
             Logger.logErr("Main Error: " + ex, ex);

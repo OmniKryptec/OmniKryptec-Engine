@@ -62,7 +62,10 @@ public class InputUtil {
             keyboardKeys_buffer += Keyboard.getEventCharacter();
             keys_keyboard[Keyboard.getEventKey()] = Keyboard.getEventKeyState();
         }
-        if(camera != null && invertedProjectionMatrix != null) {
+        if(camera != null) {
+            if(invertedProjectionMatrix == null) {
+                invertedProjectionMatrix = Matrix4f.invert(camera.getProjectionMatrix(), null);
+            }
             Matrix4f.invert(camera.getViewMatrix(), invertedViewMatrix);
             calculateMouseRay();
         }
