@@ -1,13 +1,17 @@
 package omnikryptec.util;
 
 import omnikryptec.display.DisplayManager;
+import omnikryptec.entity.Camera;
 import omnikryptec.entity.GameObject;
 import omnikryptec.settings.KeySettings;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 /**
  * 
@@ -34,6 +38,10 @@ public class InputUtil {
     private static final Vector3f mouseDelta = new Vector3f(0, 0, 0);
     private static boolean isMouseGrabbed = false;
     private static boolean isMouseInsideWindow = false;
+    private static final Vector3f currentRay = new Vector3f(0, 0, 0);
+    private static Camera camera = null;
+    private static Matrix4f invertedProjectionMatrix = null;
+    private static Matrix4f invertedViewMatrix = new Matrix4f();
 
     /**
      * called from the engine; computes keyboardevents
@@ -53,6 +61,10 @@ public class InputUtil {
         while(Keyboard.next()) {
             keyboardKeys_buffer += Keyboard.getEventCharacter();
             keys_keyboard[Keyboard.getEventKey()] = Keyboard.getEventKeyState();
+        }
+        if(camera != null && invertedProjectionMatrix != null) {
+            Matrix4f.invert(camera.getViewMatrix(), invertedViewMatrix);
+            calculateMouseRay();
         }
     }
 
@@ -91,6 +103,47 @@ public class InputUtil {
 
     public static Vector3f getMouseDelta() {
         return mouseDelta;
+    }
+
+    public static Matrix4f getInvertedProjectionMatrix() {
+        return invertedProjectionMatrix;
+    }
+
+    public static void setInvertedProjectionMatrix(Matrix4f invertedProjectionMatrix) {
+        InputUtil.invertedProjectionMatrix = invertedProjectionMatrix;
+    }
+
+    public static Matrix4f getInvertedViewMatrix() {
+        return invertedViewMatrix;
+    }
+
+    public static void setInvertedViewMatrix(Matrix4f invertedViewMatrix) {
+        InputUtil.invertedViewMatrix = invertedViewMatrix;
+    }
+
+    public static Camera getCamera() {
+        return camera;
+    }
+
+    public static void setCamera(Camera camera) {
+        InputUtil.camera = camera;
+    }
+
+    public static Vector3f getCurrentRay() {
+        return currentRay;
+    }
+    
+    private static void calculateMouseRay() {
+        final Vector2f normalizedDevicePosition = new Vector2f((2.0F * mousePosition.x) / Display.getWidth() - 1, (2.0F * mousePosition.y) / Display.getHeight() - 1);
+        final Vector4f clipSpacePosition = new Vector4f(normalizedDevicePosition.x, normalizedDevicePosition.y, -1F, 1F);
+        Matrix4f.transform(invertedProjectionMatrix, clipSpacePosition, clipSpacePosition);
+        final Vector4f eyePosition = new Vector4f(clipSpacePosition.x, clipSpacePosition.y, -1F, 0);
+        Matrix4f.transform(invertedViewMatrix, eyePosition, eyePosition);
+        final Vector3f worldPosition = new Vector3f(eyePosition.x, eyePosition.y, eyePosition.z);
+        worldPosition.normalise();
+        currentRay.x = worldPosition.x;
+        currentRay.y = worldPosition.y;
+        currentRay.z = worldPosition.z;
     }
     
     /**
