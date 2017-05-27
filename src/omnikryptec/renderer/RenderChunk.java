@@ -116,10 +116,10 @@ public class RenderChunk {
                                     }
                                     tmp.delete();
                                 } else if (Logger.isDebugMode()) {
-                                    Logger.log("List is null", LogLevel.WARNING);
+                                    Logger.log("List for Entities is null", LogLevel.WARNING);
                                 }
                             } else if (Logger.isDebugMode()) {
-                                Logger.log("Map is null", LogLevel.WARNING);
+                                Logger.log("Map for TexturedModel and Entities is null", LogLevel.WARNING);
                             }
                         } else if (Logger.isDebugMode()) {
                             Logger.log("IRenderer is null", LogLevel.WARNING);
