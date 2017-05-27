@@ -96,7 +96,6 @@ public class JBulletTest {
         if(!physicsPause && physicsSpeed > 0) {
             dynamicsWorld.stepSimulation((1.0F / DisplayManager.instance().getFPS()) * physicsSpeed);
         }
-        /*
         final HashMap<Entity, RigidBody> ballsToBeRemoved = new HashMap<>();
         for(Entity e : balls.keySet()) {
             final RigidBody body = balls.get(e);
@@ -111,16 +110,12 @@ public class JBulletTest {
             balls.remove(e);
             dynamicsWorld.removeRigidBody(body);
         }
-        */
         if(applyForce) {
-            final Transform controlBallTransform = new Transform();
-            controlBall.getMotionState().getWorldTransform(controlBallTransform);
-            final Vector3f controlBallLocation = controlBallTransform.origin;
-            final Vector3f cameraPosition = ConverterUtil.convertVector3fFromLWJGL((OmniKryptecEngine.instance().getCurrentScene().getCamera() instanceof FollowingCamera) ? ((FollowingCamera) OmniKryptecEngine.instance().getCurrentScene().getCamera()).getFollowedGameObject().getAbsolutePos() : OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getAbsolutePos());
-            final Vector3f force = new Vector3f();
-            force.sub(cameraPosition, controlBallLocation);
-            controlBall.activate(true);
-            controlBall.applyCentralForce(force);
+            final Camera camera = OmniKryptecEngine.instance().getCurrentScene().getCamera();
+            //applyForceToBall(camera, controlBall);
+            for(RigidBody body : balls.values()) {
+                applyForceToBall(camera, body);
+            }
         }
         if(createNewShape) {
             createNewShape(entityBuilder_brunnen);
@@ -132,6 +127,17 @@ public class JBulletTest {
             controlBall.setLinearVelocity(new Vector3f(0, 0, 0));
             resetControlBall = false;
         }
+    }
+    
+    private static void applyForceToBall(Camera camera, RigidBody ball) {
+        final Transform ballTransform = new Transform();
+        ball.getMotionState().getWorldTransform(ballTransform);
+        final Vector3f ballLocation = ballTransform.origin;
+        final Vector3f cameraPosition = ConverterUtil.convertVector3fFromLWJGL((camera instanceof FollowingCamera) ? ((FollowingCamera) camera).getFollowedGameObject().getAbsolutePos() : camera.getAbsolutePos());
+        final Vector3f force = new Vector3f();
+        force.sub(cameraPosition, ballLocation);
+        ball.activate(true);
+        ball.applyCentralForce(force);
     }
     
     private static RigidBody createNewRigidBody(EntityBuilder entityBuilder) {

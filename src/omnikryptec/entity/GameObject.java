@@ -115,6 +115,12 @@ public class GameObject {
     public void doLogic() {
     }
     
+    /**
+     * override this to let your gameobject do its things when deleted
+     * the cam
+     */
+    public void delete() {
+    }
     
     public void checkChunkPos(){
     	if(getMyChunk()!=null){
