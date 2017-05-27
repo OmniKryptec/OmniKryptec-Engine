@@ -175,7 +175,16 @@ public class OmniKryptecEngine {
         
     public final OmniKryptecEngine frame(boolean clear) {
     	try{
-	    	if(Display.wasResized()) {
+	    	if(!Display.isActive()){
+	    		Display.update();
+        		try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					errorOccured(e, "Error occured while sleeping: ");
+				}
+				return this;
+	    	}
+    		if(Display.wasResized()) {
 	            resizeFbos();
 	            PostProcessing.instance().resize();
 	            eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
@@ -203,11 +212,15 @@ public class OmniKryptecEngine {
 	    	eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
 	    	eventsystem.fireEvent(new Event(), EventType.RENDER_EVENT);
     	}catch(Exception e){
-    		state = State.Error;
-    		Logger.logErr("Error in frame: ", e);
-            eventsystem.fireEvent(new Event(e), EventType.ERROR);
+    		errorOccured(e, "Error occured in frame: ");
     	}
     	return this;
+    }
+    
+    private void errorOccured(Exception e, String text){
+    	state = State.Error;
+		Logger.logErr(text, e);
+        eventsystem.fireEvent(new Event(e), EventType.ERROR);
     }
     
     public final OmniKryptecEngine close(ShutdownOption shutdownOption) {

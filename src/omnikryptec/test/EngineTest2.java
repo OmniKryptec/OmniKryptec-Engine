@@ -2,6 +2,8 @@ package omnikryptec.test;
 
 import java.util.Random;
 
+import org.lwjgl.input.Keyboard;
+
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
@@ -20,6 +22,7 @@ import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.InputUtil;
+import omnikryptec.util.Maths;
 import omnikryptec.util.NativesLoader;
 
 /**
@@ -33,7 +36,7 @@ public class EngineTest2 implements IEventHandler{
             NativesLoader.loadNatives();
             OmniKryptecEngine.addShutdownHook(() -> NativesLoader.unloadNatives());
             Logger.enableLoggerRedirection(true);
-            Logger.setDebugMode(true);
+            //Logger.setDebugMode(true);
             Logger.CONSOLE.setExitWhenLastOne(true);
             Logger.showConsoleDirect();
             
@@ -89,9 +92,11 @@ public class EngineTest2 implements IEventHandler{
             Logger.logErr("Error: " + ex, ex);
         }
     }
-        
+        private static float v=20;
         private static void doCameraLogic(Camera camera) {
-            InputUtil.doFirstPersonController(camera, DisplayManager.instance().getSettings().getKeySettings(), 10, 40);
+    		//v += DisplayManager.instance().getDeltaTime()*30;
+            InputUtil.doFirstPersonController(camera, DisplayManager.instance().getSettings().getKeySettings(), v, 40);
+            //camera.setPerspectiveProjection(Maths.alterFOV(10, 179f, v, 1000), 1000, 0.001f);
             Logger.CONSOLE.setTitle(camera.toString());
         }
 
