@@ -201,6 +201,7 @@ public class JBulletTest {
             @Override
             public void delete() {
                 dynamicsWorld.removeRigidBody(body);
+                body.destroy();
             }
             
         };
@@ -263,6 +264,7 @@ public class JBulletTest {
                     @Override
                     public void delete() {
                         dynamicsWorld.removeRigidBody(lustig);
+                        lustig.destroy();
                     }
                     
                 };
