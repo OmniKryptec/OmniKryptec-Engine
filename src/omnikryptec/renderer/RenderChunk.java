@@ -61,27 +61,31 @@ public class RenderChunk {
                 tmp = (Entity) g;
                 TexturedModel tm = null;
                 Material m = null;
-                if(((tm = tmp.getTexturedModel()) != null) && ((m = tm.getMaterial()) != null)) {
-                    if((tmpr = m.getRenderer()) != null) {
-                        if(!allrenderer.contains(tmpr)){
-                            allrenderer.add(tmpr);
+                if((tm = tmp.getTexturedModel()) != null) {
+                    if((m = tm.getMaterial()) != null) {
+                        if((tmpr = m.getRenderer()) != null) {
+                            if(!allrenderer.contains(tmpr)){
+                                allrenderer.add(tmpr);
+                            }
+                            Map<TexturedModel, List<Entity>> map = chunk.get(tmpr);
+                            if(map == null) {
+                                map = new HashMap<>();
+                                chunk.put(tmpr, map);
+                            }
+                            List<Entity> list = map.get(tm);
+                            if(list == null) {
+                                list = new ArrayList<>();
+                                map.put(tm, list);
+                            }
+                            list.add(tmp);
+                        } else if (Logger.isDebugMode()) {
+                            Logger.log("IRenderer is null", LogLevel.WARNING);
                         }
-                        Map<TexturedModel, List<Entity>> map = chunk.get(tmpr);
-                        if(map == null) {
-                            map = new HashMap<>();
-                            chunk.put(tmpr, map);
-                        }
-                        List<Entity> list = map.get(tm);
-                        if(list == null) {
-                            list = new ArrayList<>();
-                            map.put(tm, list);
-                        }
-                        list.add(tmp);
-                    } else if (Logger.isDebugMode()) {
-                        Logger.log("IRenderer is null", LogLevel.WARNING);
+                    } else if(Logger.isDebugMode()) {
+                        Logger.log("Material is null", LogLevel.WARNING);
                     }
                 } else if(Logger.isDebugMode()) {
-                    Logger.log("TexturedModel or Material is null", LogLevel.WARNING);
+                    Logger.log("TexturedModel is null", LogLevel.WARNING);
                 }
             } else {
                 other.add(g);
@@ -96,31 +100,35 @@ public class RenderChunk {
                 tmp = (Entity) g;
                 TexturedModel tm = null;
                 Material m = null;
-                if(((tm = tmp.getTexturedModel()) != null) && ((m = tm.getMaterial()) != null)) {
-                    if((tmpr = m.getRenderer()) != null) {
-                        Map<TexturedModel, List<Entity>> map = chunk.get(tmpr);
-                        if(map != null) {
-                            List<Entity> list = map.get(tm);
-                            if(list != null) {
-                                list.remove(tmp);
-                                if(list.isEmpty()) {
-                                    map.remove(tm);
+                if((tm = tmp.getTexturedModel()) != null) {
+                    if((m = tm.getMaterial()) != null) {
+                        if((tmpr = m.getRenderer()) != null) {
+                            Map<TexturedModel, List<Entity>> map = chunk.get(tmpr);
+                            if(map != null) {
+                                List<Entity> list = map.get(tm);
+                                if(list != null) {
+                                    list.remove(tmp);
+                                    if(list.isEmpty()) {
+                                        map.remove(tm);
+                                    }
+                                    if(map.isEmpty()) {
+                                        chunk.remove(tmpr);
+                                    }
+                                    tmp.delete();
+                                } else if (Logger.isDebugMode()) {
+                                    Logger.log("List is null", LogLevel.WARNING);
                                 }
-                                if(map.isEmpty()) {
-                                    chunk.remove(tmpr);
-                                }
-                                tmp.delete();
                             } else if (Logger.isDebugMode()) {
-                                Logger.log("List is null", LogLevel.WARNING);
+                                Logger.log("Map is null", LogLevel.WARNING);
                             }
                         } else if (Logger.isDebugMode()) {
-                            Logger.log("Map is null", LogLevel.WARNING);
+                            Logger.log("IRenderer is null", LogLevel.WARNING);
                         }
-                    } else if (Logger.isDebugMode()) {
-                        Logger.log("IRenderer is null", LogLevel.WARNING);
+                    } else if(Logger.isDebugMode()) {
+                        Logger.log("Material is null", LogLevel.WARNING);
                     }
                 } else if(Logger.isDebugMode()) {
-                    Logger.log("TexturedModel or Material is null", LogLevel.WARNING);
+                    Logger.log("TexturedModel is null", LogLevel.WARNING);
                 }
             } else {
                 other.remove(g);
