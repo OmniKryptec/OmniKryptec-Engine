@@ -46,13 +46,18 @@ public class Scene {
         }
     }
 
-    public GameObject removeGameObject(GameObject g) {
+    public GameObject removeGameObject(GameObject g){
+    	return removeGameObject(g, true);
+    }
+    
+    public GameObject removeGameObject(GameObject g, boolean delete) {
         if(g != null) {
             if(g.getMyChunk() != null) {
-                g.getMyChunk().removeGameObject(g);
+                g.getMyChunk().removeGameObject(g, delete);
             } else {
                 tmp = xyzToString(g.getChunkX(), g.getChunkY(), g.getChunkZ());
-                scene.get(tmp).removeGameObject(g);
+                scene.get(tmp).removeGameObject(g, delete);
+                g.delete();
             }
         }
         return g;

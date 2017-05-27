@@ -123,10 +123,11 @@ public class GameObject {
     }
     
     public void checkChunkPos(){
-    	if(getMyChunk()!=null){
-    		if(getMyChunk().getChunkX()!=getChunkX()||getMyChunk().getChunkY()!=getChunkY()||getMyChunk().getChunkZ()!=getChunkZ()){
-    			getMyChunk().getScene().addGameObject(this);
-    			getMyChunk().removeGameObject(this);
+    	RenderChunk oldchunk = getMyChunk();
+    	if(oldchunk!=null){
+    		if(oldchunk.getChunkX()!=getChunkX()||oldchunk.getChunkY()!=getChunkY()||oldchunk.getChunkZ()!=getChunkZ()){
+    			oldchunk.getScene().addGameObject(this);
+    			oldchunk.removeGameObject(this, false);
     		}
     	}else{
     		if(Logger.isDebugMode()){

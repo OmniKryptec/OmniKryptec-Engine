@@ -94,7 +94,7 @@ public class RenderChunk {
         }
     }
 
-    public GameObject removeGameObject(GameObject g) {
+    public GameObject removeGameObject(GameObject g, boolean delete) {
         if(g != null) {
             if(g instanceof Entity) {
                 tmp = (Entity) g;
@@ -103,7 +103,7 @@ public class RenderChunk {
                 if((tm = tmp.getTexturedModel()) != null) {
                     if((m = tm.getMaterial()) != null) {
                         if((tmpr = m.getRenderer()) != null) {
-                            Map<TexturedModel, List<Entity>> map = chunk.get(tmpr);
+                        	Map<TexturedModel, List<Entity>> map = chunk.get(tmpr);
                             if(map != null) {
                                 List<Entity> list = map.get(tm);
                                 if(list != null) {
@@ -114,12 +114,15 @@ public class RenderChunk {
                                     if(map.isEmpty()) {
                                         chunk.remove(tmpr);
                                     }
-                                    tmp.delete();
+                                    if(delete){
+                                    	tmp.delete();
+                                    }
                                 } else if (Logger.isDebugMode()) {
                                     Logger.log("List for Entities is null", LogLevel.WARNING);
                                 }
                             } else if (Logger.isDebugMode()) {
-                                Logger.log("Map for TexturedModel and Entities is null", LogLevel.WARNING);
+                                System.out.println(chunk.size());
+                            	Logger.log("Map for TexturedModel and Entities is null", LogLevel.WARNING);
                             }
                         } else if (Logger.isDebugMode()) {
                             Logger.log("IRenderer is null", LogLevel.WARNING);

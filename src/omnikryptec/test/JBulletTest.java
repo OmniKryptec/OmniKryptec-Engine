@@ -266,6 +266,7 @@ public class JBulletTest {
                     }
                     
                 };
+                
                 OmniKryptecEngine.instance().getCurrentScene().addGameObject(followedEntity);
                 ((FollowingCamera) OmniKryptecEngine.getInstance().getCurrentScene().getCamera()).setFollowedGameObject(followedEntity);
             }
