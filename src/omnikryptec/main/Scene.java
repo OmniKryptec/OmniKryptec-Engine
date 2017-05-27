@@ -57,7 +57,7 @@ public class Scene {
             } else {
                 tmp = xyzToString(g.getChunkX(), g.getChunkY(), g.getChunkZ());
                 scene.get(tmp).removeGameObject(g, delete);
-                g.delete();
+                g.deleteOperation();
             }
         }
         return g;
