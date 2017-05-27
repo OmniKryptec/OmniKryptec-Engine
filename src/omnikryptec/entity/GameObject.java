@@ -1,7 +1,11 @@
 package omnikryptec.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.util.vector.Vector3f;
 
+import omnikryptec.component.Component;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.renderer.RenderChunk;
@@ -19,7 +23,8 @@ public class GameObject {
     private Vector3f rotation = new Vector3f();
     //@JsonView(GameObject.class) //To hide this while saving it
     private RenderChunk myChunk;
-
+    private List<Component> components = null;
+    
     /**
      * creates a gameobject with no parent
      */
@@ -108,11 +113,45 @@ public class GameObject {
         return this;
     }
 
+    
+    public final void doLogic0() {
+    	doLogic();
+    	if(components!=null){
+	    	for(Component c : components){
+	    		c.execute(this);
+	    	}
+    	}
+    	checkChunkPos();
+    }
+    
+    public GameObject addComponent(Component c){
+    	if(components==null){
+    		components = new ArrayList<>();
+    	}
+    	components.add(c);
+    	return this;
+    }
+    
+    public GameObject removeComponent(Component c){
+    	components.remove(c);
+    	if(components.isEmpty()){
+    		components = null;
+    	}
+    	return this;
+    }
+    
+    public Component[] getComponents(){
+    	if(components==null){
+    		return new Component[]{};
+    	}
+    	return components.toArray(new Component[components.size()]);
+    }
+    
     /**
      * override this to let your gameobject do its logic then its in sight of
      * the cam
      */
-    public void doLogic() {
+    public void doLogic(){	
     }
     
     /**
@@ -122,7 +161,7 @@ public class GameObject {
     public void delete() {
     }
     
-    public void checkChunkPos(){
+    protected void checkChunkPos(){
     	RenderChunk oldchunk = getMyChunk();
     	if(oldchunk!=null){
     		if(oldchunk.getChunkX()!=getChunkX()||oldchunk.getChunkY()!=getChunkY()||oldchunk.getChunkZ()!=getChunkZ()){

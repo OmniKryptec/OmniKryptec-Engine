@@ -3,6 +3,7 @@ package omnikryptec.entity;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.texture.Texture;
+
 import org.lwjgl.util.vector.Vector3f;
 
 public class Entity extends GameObject{
@@ -14,6 +15,7 @@ public class Entity extends GameObject{
     private TexturedModel model;
     private Vector3f scale = new Vector3f(1, 1, 1);
     private RenderType type = RenderType.NORMAL;
+    
     
     public Entity(TexturedModel model){
         this(model, null);

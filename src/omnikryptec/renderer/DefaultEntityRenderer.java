@@ -47,8 +47,7 @@ public class DefaultEntityRenderer implements IRenderer{
 			for (int j=0; j<stapel.size(); j++) {
 				entity = stapel.get(j);
 				if(RenderUtil.inRenderRange(entity, s.getCamera())){
-					entity.doLogic();
-					entity.checkChunkPos();
+					entity.doLogic0();
 					EntityShader.transformation.loadMatrix(Maths.createTransformationMatrix(entity));
 					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
 				}

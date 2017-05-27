@@ -92,7 +92,7 @@ public class Scene {
                 }
             }
         }
-        cam.doLogic();
+        cam.doLogic0();
         doLogic();
     }
 

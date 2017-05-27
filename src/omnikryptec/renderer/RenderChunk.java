@@ -175,7 +175,7 @@ public class RenderChunk {
         }
         for(GameObject g : other){
             if(g != null && g.isActive()) {
-                g.doLogic();
+                g.doLogic0();
                 g.checkChunkPos();
             }
         }
