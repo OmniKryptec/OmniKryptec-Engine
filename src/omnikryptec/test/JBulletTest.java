@@ -128,7 +128,8 @@ public class JBulletTest {
     }
     
     private static Entity createNewShape(EntityBuilder entityBuilder) {
-        final CollisionShape shape = new SphereShape(3.0F); //m
+        Logger.log(entityBuilder.getModel().getRadius() / 10);
+        final CollisionShape shape = new SphereShape(entityBuilder.getModel().getRadius() / 10); //Standard 3.0F //m
         final DefaultMotionState motionState = new DefaultMotionState(new Transform(new Matrix4f(new Quat4f(0, 0, 0, 1), new Vector3f(OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().x, 35F, OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().z), 1)));
         final Vector3f inertia = new Vector3f();
         shape.calculateLocalInertia(1.0F, inertia);

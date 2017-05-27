@@ -9,6 +9,7 @@ import omnikryptec.objConverter.ObjLoader;
 
 public class Model {
 
+    private float radius;
     private VertexArrayObject vao;	
 //	public Model(ModelData data){
 //		vao = VertexArrayObject.create();
@@ -17,6 +18,7 @@ public class Model {
 //	}
 
     public Model(ModelData data){
+        this.radius = data.getFurthestPoint();
         vao = VertexArrayObject.create();
         vao.storeData(data.getIndices(), data.getVertexCount(), data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getTangents());
     }
@@ -27,6 +29,10 @@ public class Model {
 
     public VertexArrayObject getVao(){
         return vao;
+    }
+    
+    public float getRadius() {
+        return radius;
     }
 
     private static final int QUAD_VERTEX_COUNT = 4;

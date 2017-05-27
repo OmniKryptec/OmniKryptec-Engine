@@ -8,7 +8,7 @@ import omnikryptec.renderer.RenderChunk;
 
 /**
  * 
- * @author pcfreak9000
+ * @author pcfreak9000 & Panzer1119
  *
  */
 public class GameObject {
