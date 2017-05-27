@@ -77,7 +77,7 @@ public class KeySettings {
                 return key;
             }
         }
-        return null;
+        return Key.DEFAULT_NULL_KEY;
     }
     
     public final Key getKey(int key, boolean isKeyboardKey) {
@@ -86,12 +86,12 @@ public class KeySettings {
                 return key_temp;
             }
         }
-        return null;
+        return Key.DEFAULT_NULL_KEY;
     }
     
     public final KeySettings removeKey(int key, boolean isKeyboardKey) {
         final Key key_temp = getKey(key, isKeyboardKey);
-        if(key_temp != null) {
+        if(key_temp != Key.DEFAULT_NULL_KEY) {
             removeKey(key_temp);
         }
         return this;

@@ -8,6 +8,8 @@ import omnikryptec.util.InputUtil;
  */
 public class Key {
     
+    public static final Key DEFAULT_NULL_KEY = new Key("DEFAULT_NULL_KEY", -1, true);
+    
     private final String name;
     private int key = -1;
     private boolean isKeyboardKey = true;
