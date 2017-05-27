@@ -119,7 +119,7 @@ public class RenderChunk {
                                         chunk.remove(tmpr);
                                     }
                                     if(delete){
-                                    	tmp.delete();
+                                    	tmp.deleteOperation();
                                     }
                                 } else if (Logger.isDebugMode()) {
                                     Logger.log("List for Entities is null", LogLevel.WARNING);

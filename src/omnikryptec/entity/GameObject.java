@@ -151,14 +151,23 @@ public class GameObject {
      * override this to let your gameobject do its logic then its in sight of
      * the cam
      */
-    public void doLogic(){	
+    protected void doLogic(){	
+    }
+    
+    public void deleteOperation(){
+    	if(components!=null){
+    		for(Component c : components){
+    			c.onDelete(this);
+    		}
+    	}
+    	delete();
     }
     
     /**
      * override this to let your gameobject do its things when deleted
      * the cam
      */
-    public void delete() {
+    protected void delete() {
     }
     
     protected void checkChunkPos(){
