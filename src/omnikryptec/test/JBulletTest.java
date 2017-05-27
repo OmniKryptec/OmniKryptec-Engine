@@ -116,7 +116,7 @@ public class JBulletTest {
             final Transform controlBallTransform = new Transform();
             controlBall.getMotionState().getWorldTransform(controlBallTransform);
             final Vector3f controlBallLocation = controlBallTransform.origin;
-            final Vector3f cameraPosition = convertVector3fFromLWJGL(OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativePos());
+            final Vector3f cameraPosition = convertVector3fFromLWJGL((OmniKryptecEngine.instance().getCurrentScene().getCamera() instanceof FollowingCamera) ? ((FollowingCamera) OmniKryptecEngine.instance().getCurrentScene().getCamera()).getFollowedGameObject().getAbsolutePos() : OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getAbsolutePos());
             final Vector3f force = new Vector3f();
             force.sub(cameraPosition, controlBallLocation);
             controlBall.activate(true);
@@ -134,7 +134,7 @@ public class JBulletTest {
         }
     }
     
-    private static Entity createNewShape(EntityBuilder entityBuilder) {
+    private static RigidBody createNewRigidBody(EntityBuilder entityBuilder) {
         Logger.log(entityBuilder.getModel().getRadius() / 10);
         final CollisionShape shape = new SphereShape(entityBuilder.getModel().getRadius() / 10); //Standard 3.0F //m
         final DefaultMotionState motionState = new DefaultMotionState(new Transform(new Matrix4f(new Quat4f(0, 0, 0, 1), new Vector3f(OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().x, 35F, OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().z), 1)));
@@ -144,6 +144,11 @@ public class JBulletTest {
         constructionInfo.restitution = 0.75F;
         final RigidBody body = new RigidBody(constructionInfo);
         dynamicsWorld.addRigidBody(body);
+        return body;
+    }
+    
+    private static Entity createNewShape(EntityBuilder entityBuilder) {
+        final RigidBody body = createNewRigidBody(entityBuilder);
         final Entity entity = createBallEntity(entityBuilder, body);
         balls.put(entity, body);
         OmniKryptecEngine.instance().getCurrentScene().addGameObject(entity);
@@ -233,11 +238,15 @@ public class JBulletTest {
             setUpPhysics();
             final Entity entity_2 = createNewShape(entityBuilder_pine);
             if(OmniKryptecEngine.instance().getCurrentScene().getCamera() instanceof FollowingCamera) {
+                RigidBody lustig = createNewRigidBody(entityBuilder_brunnen);
                 Entity followedEntity = new Entity(entityBuilder_brunnen.createTexturedModel()) {
                     
                     @Override
                     public void doLogic() {
-                        InputUtil.doThirdPersonController(OmniKryptecEngine.instance().getCurrentScene().getCamera(), this, DisplayManager.instance().getSettings().getKeySettings(), 1.5F, 15.0F);
+                        InputUtil.doThirdPersonController(OmniKryptecEngine.instance().getCurrentScene().getCamera(), this, DisplayManager.instance().getSettings().getKeySettings(), 5.0F, 40.0F); //Standard: 1.5F, 15.0F (But too slow) //5.0F, 40.0F is better
+                        lustig.setCenterOfMassTransform(new Transform(new Matrix4f(new Quat4f(0, 0, 0, 1), convertVector3fFromLWJGL(getAbsolutePos()), 1.0F)));
+                        lustig.setAngularVelocity(new Vector3f(0, 0, 0));
+                        lustig.setLinearVelocity(new Vector3f(0, 0, 0));
                     }
                     
                 };
