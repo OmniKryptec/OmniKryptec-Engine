@@ -30,7 +30,7 @@ import omnikryptec.util.RenderUtil;
  */
 public class OmniKryptecEngine {
 	
-    private static final String DEFAULT_NORMALMAP = "/omnikryptec/storing/normal.png";
+    private static final String DEFAULT_NORMALMAP = "/omnikryptec/model/normal.png";
 
     private static OmniKryptecEngine instance;
 
