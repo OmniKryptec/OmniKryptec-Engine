@@ -205,8 +205,8 @@ public class JBulletTest {
                 }
                 
             }.setPerspectiveProjection(75, 1000, 0.1F)));
-            entityBuilder_brunnen = new EntityBuilder("/omnikryptec/test/brunnen.obj", "/omnikryptec/test/brunnen.png");
-            entityBuilder_pine = new EntityBuilder("/omnikryptec/test/pine.obj", "/omnikryptec/test/pine2.png");
+            entityBuilder_brunnen = new EntityBuilder().loadModel("/omnikryptec/test/brunnen.obj").loadTexture("/omnikryptec/test/brunnen.png");
+            entityBuilder_pine = new EntityBuilder().loadModel("/omnikryptec/test/pine.obj").loadTexture("/omnikryptec/test/pine2.png");
             final Entity entity_1 = entityBuilder_brunnen.create();
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(entity_1);
             OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().y += 3;

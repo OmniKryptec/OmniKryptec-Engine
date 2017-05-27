@@ -1,5 +1,6 @@
 package omnikryptec.entity;
 
+import java.io.File;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
@@ -29,11 +30,6 @@ public class EntityBuilder {
     public EntityBuilder(Model model, Texture texture) {
         this.model = model;
         this.texture = texture;
-    }
-    
-    public EntityBuilder(String modelPath, String texturePath) {
-        loadModel(modelPath);
-        loadTexture(texturePath);
     }
     
     public final TexturedModel createTexturedModel() {
@@ -66,12 +62,22 @@ public class EntityBuilder {
     }
     
     public final EntityBuilder loadModel(String modelPath) {
-        this.model = new Model(ObjLoader.loadNMOBJ(EntityBuilder.class.getResourceAsStream(modelPath)));
+        this.model = Model.newModel(modelPath);
+        return this;
+    }
+    
+    public final EntityBuilder loadModel(File modelFile) {
+        this.model = Model.newModel(modelFile);
         return this;
     }
     
     public final EntityBuilder loadTexture(String texturePath) {
-        this.texture = Texture.newTexture(EntityBuilder.class.getResourceAsStream(texturePath)).create();
+        this.texture = Texture.newTexture(texturePath).create();
+        return this;
+    }
+    
+    public final EntityBuilder loadTexture(File textureFile) {
+        this.texture = Texture.newTexture(textureFile).create();
         return this;
     }
     
