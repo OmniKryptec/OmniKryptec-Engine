@@ -94,7 +94,7 @@ public class EngineTest2 implements IEventHandler{
             //camera.increaseRelativeRot(0, 3*deltaRot, 0);
             if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_W)) {
                 camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y, camera.getRelativePos().z - deltaPos);
-                camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y, (float) ((camera.getRelativePos().z - deltaPos) * Math.sin(Math.toRadians(camera.getRelativeRotation().y))));
+                camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y, (float) ((camera.getRelativePos().z - deltaPos) * Math.sin(Math.toRadians(camera.getAbsoluteRotation().y))));
             }
             if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_S)) {
                 camera.setRelativePos(camera.getRelativePos().x,            camera.getRelativePos().y,              camera.getRelativePos().z + deltaPos);

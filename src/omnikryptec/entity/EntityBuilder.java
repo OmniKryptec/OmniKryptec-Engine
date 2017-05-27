@@ -3,7 +3,6 @@ package omnikryptec.entity;
 import java.io.File;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
-import omnikryptec.objConverter.ObjLoader;
 import omnikryptec.texture.Texture;
 
 /**

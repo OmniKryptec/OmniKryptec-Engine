@@ -27,18 +27,23 @@ import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.EntityBuilder;
+import omnikryptec.entity.FollowingCamera;
+import omnikryptec.entity.GameObject;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
+<<<<<<< HEAD
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
 import omnikryptec.postprocessing.LightStage;
 import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.texture.Texture;
+=======
+>>>>>>> branch 'test' of https://github.com/OmniKryptec/OmniKryptec-Engine.git
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
 import org.lwjgl.input.Keyboard;
@@ -86,7 +91,6 @@ public class JBulletTest {
             controlBallEntity = createBallEntity(entityBuilder_brunnen, controlBall);
             balls.put(controlBallEntity, controlBall);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(controlBallEntity);
-            
         } catch (Exception ex) {
             Logger.logErr("Error while setting up physics: " + ex, ex);
         }
@@ -151,12 +155,13 @@ public class JBulletTest {
         applyForce = InputUtil.isKeyboardKeyDown(Keyboard.KEY_F);
         createNewShape = InputUtil.isKeyboardKeyDown(Keyboard.KEY_N);
         resetControlBall = InputUtil.isKeyboardKeyDown(Keyboard.KEY_R);
-        if(InputUtil.isMouseKeyDown(InputUtil.MOUSE_BUTTON_LEFT)) {
+        if(!(OmniKryptecEngine.instance().getCurrentScene().getCamera() instanceof FollowingCamera) && OmniKryptecEngine.instance().getDisplayManager().getSettings().getKeySettings().getKey("mouseButtonLeft").isPressed()) {
             float deltaX = InputUtil.getMouseDelta().x;
             float deltaY = InputUtil.getMouseDelta().y;
             float deltaD = InputUtil.getMouseDelta().z;
             if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_LCONTROL)) {
-                InputUtil.moveXZ(OmniKryptecEngine.getInstance().getCurrentScene().getCamera(),-deltaY / 15, -deltaX / 15, deltaD);
+                Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
+                InputUtil.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
             } else {
                 OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().y -= (deltaX / 5);
                 OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().x += (deltaY / 5);
@@ -199,6 +204,7 @@ public class JBulletTest {
             Logger.showConsoleDirect();
             
             DisplayManager.createDisplay("JBullet Test", new GameSettings("JBulletTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32));
+<<<<<<< HEAD
             //PostProcessing.instance().addStage(new LightRenderer());
             OmniKryptecEngine.instance().addAndSetScene("TestScene", new Scene(new Camera() {   
                 @Override
@@ -207,6 +213,9 @@ public class JBulletTest {
                 }
                 
             }.setPerspectiveProjection(75, 1000, 0.1F)));
+=======
+            OmniKryptecEngine.instance().addAndSetScene("TestScene", new Scene(getCamera(1))); //TODO Set this to 0 for the firstPerson or to 1 for the thirdPerson mode
+>>>>>>> branch 'test' of https://github.com/OmniKryptec/OmniKryptec-Engine.git
             entityBuilder_brunnen = new EntityBuilder().loadModel("/omnikryptec/test/brunnen.obj").loadTexture("/omnikryptec/test/brunnen.png");
             entityBuilder_pine = new EntityBuilder().loadModel("/omnikryptec/test/pine.obj").loadTexture("/omnikryptec/test/pine2.png");
             final Entity entity_1 = entityBuilder_brunnen.create();
@@ -225,9 +234,46 @@ public class JBulletTest {
             });*/
             setUpPhysics();
             final Entity entity_2 = createNewShape(entityBuilder_pine);
+            if(OmniKryptecEngine.instance().getCurrentScene().getCamera() instanceof FollowingCamera) {
+                Entity followedEntity = new Entity(entityBuilder_brunnen.createTexturedModel()) {
+                    
+                    @Override
+                    public void doLogic() {
+                        InputUtil.doThirdPersonController(OmniKryptecEngine.instance().getCurrentScene().getCamera(), this, DisplayManager.instance().getSettings().getKeySettings(), 1.5F, 15.0F);
+                    }
+                    
+                };
+                OmniKryptecEngine.instance().getCurrentScene().addGameObject(followedEntity);
+                ((FollowingCamera) OmniKryptecEngine.getInstance().getCurrentScene().getCamera()).setFollowedGameObject(followedEntity);
+            }
             OmniKryptecEngine.instance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
         } catch (Exception ex) {
             Logger.logErr("Main Error: " + ex, ex);
+        }
+    }
+    
+    private static Camera getCamera(int camera) {
+        switch(camera) {
+            case 0:
+                return new Camera() {
+
+                    @Override
+                    public void doLogic() {
+                        InputUtil.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(), 1.5F, 15.0F);
+                    }
+
+                }.setPerspectiveProjection(75, 1000, 0.1F);
+            case 1:
+                return new FollowingCamera() {
+                    
+                    @Override
+                    public void doLogic() {
+                        move();
+                    }
+                    
+                }.setPerspectiveProjection(75, 1000, 0.1F);
+            default:
+                return null;
         }
     }
     
