@@ -9,13 +9,13 @@ import omnikryptec.objConverter.ObjLoader;
 
 public class Model {
 
-    private float radius;
-    private VertexArrayObject vao;	
+    private ModelData modelData = null;
+    private final VertexArrayObject vao;
 
-    public Model(ModelData data){
-        this.radius = data.getFurthestPoint();
+    public Model(ModelData modelData){
+        this.modelData = modelData;
         vao = VertexArrayObject.create();
-        vao.storeData(data.getIndices(), data.getVertexCount(), data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getTangents());
+        vao.storeData(modelData.getIndices(), modelData.getVertexCount(), modelData.getVertices(), modelData.getTextureCoords(), modelData.getNormals(), modelData.getTangents());
     }
 
     public Model(VertexArrayObject vao){
@@ -25,11 +25,10 @@ public class Model {
     public VertexArrayObject getVao(){
         return vao;
     }
-    
-    public float getRadius() {
-        return radius;
-    }
 
+    public ModelData getModelData() {
+        return modelData;
+    }
     
     public static Model newModel(File file) {
         try {
