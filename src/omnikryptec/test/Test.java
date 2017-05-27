@@ -135,12 +135,10 @@ public class Test implements ILanguage {
                 Thread.sleep(1000);
                 test_data = "Troll 5";
                 Thread.sleep(1000 / 0);
-                System.exit(0);
             } catch (Exception ex) {
                 Logger.logErr("Error: " + ex, ex);
                 Logger.log("Test 1", LogLevel.FINE);
                 Logger.log("Test 2", LogLevel.INFO);
-                System.exit(-1);
             }
         }).start();
     }

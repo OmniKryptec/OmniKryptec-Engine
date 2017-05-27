@@ -14,6 +14,8 @@ import org.lwjgl.opengl.GLContext;
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import omnikryptec.display.DisplayManager;
+import omnikryptec.logger.LogEntry;
+import omnikryptec.logger.Logger;
 
 public class TextureUtils {
 
@@ -52,23 +54,21 @@ public class TextureUtils {
 	}
 
 	protected static TextureData decodeTextureFile(InputStream in) {
-		int width = 0;
-		int height = 0;
-		ByteBuffer buffer = null;
-		try {
-			PNGDecoder decoder = new PNGDecoder(in);
-			width = decoder.getWidth();
-			height = decoder.getHeight();
-			buffer = ByteBuffer.allocateDirect(4 * width * height);
-			decoder.decode(buffer, width * 4, Format.BGRA);
-			buffer.flip();
-			in.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("Texture not found");
-			System.exit(-1);
-		}
-		return new TextureData(buffer, width, height);
+            int width = 0;
+            int height = 0;
+            ByteBuffer buffer = null;
+            try {
+                PNGDecoder decoder = new PNGDecoder(in);
+                width = decoder.getWidth();
+                height = decoder.getHeight();
+                buffer = ByteBuffer.allocateDirect(4 * width * height);
+                decoder.decode(buffer, width * 4, Format.BGRA);
+                buffer.flip();
+                in.close();
+            } catch (Exception ex) {
+                Logger.logErr("Texture not found: " + ex, ex);
+            }
+            return new TextureData(buffer, width, height);
 	}
 
 	protected static int loadTextureToOpenGL(TextureData data, TextureBuilder builder) {

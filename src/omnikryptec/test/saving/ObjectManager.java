@@ -85,7 +85,6 @@ public class ObjectManager {
             Logger.log(world_second);
             //saveGameObjects(test_array, new File("test_save.txt"), true);
             //Thread.sleep(1000);
-            System.exit(0);
         } catch (Exception ex) {
         }
     }
