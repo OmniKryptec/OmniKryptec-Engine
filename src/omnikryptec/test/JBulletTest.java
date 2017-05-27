@@ -154,7 +154,7 @@ public class JBulletTest {
             float deltaY = InputUtil.getMouseDelta().y;
             float deltaD = InputUtil.getMouseDelta().z;
             if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_LCONTROL)) {
-                OmniKryptecEngine.getInstance().getCurrentScene().getCamera().moveNormal(-deltaY / 15, -deltaX / 15, deltaD);
+                InputUtil.moveXZ(OmniKryptecEngine.getInstance().getCurrentScene().getCamera(),-deltaY / 15, -deltaX / 15, deltaD);
             } else {
                 OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().y -= (deltaX / 5);
                 OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().x += (deltaY / 5);
@@ -201,8 +201,7 @@ public class JBulletTest {
                 
                 @Override
                 public void doLogic() {
-                    final float deltaTime = DisplayManager.instance().getDeltaTime();
-                    InputUtil.doCameraLogic(this, DisplayManager.instance().getSettings().getKeySettings(), 1.5F * deltaTime, 15.0F * deltaTime);
+                    InputUtil.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(), 1.5F, 15.0F);
                 }
                 
             }.setPerspectiveProjection(75, 1000, 0.1F)));
