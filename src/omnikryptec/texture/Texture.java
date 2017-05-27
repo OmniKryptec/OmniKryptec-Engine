@@ -1,6 +1,9 @@
 package omnikryptec.texture;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
+import omnikryptec.logger.Logger;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -31,6 +34,24 @@ public class Texture implements ITexture{
 	public void delete() {
 		GL11.glDeleteTextures(textureId);
 	}
+        
+        public static TextureBuilder newTexture(File file) {
+            try {
+                return newTexture(new FileInputStream(file));
+            } catch (Exception ex) {
+                Logger.logErr("Error while creating FileInputStream: " + ex, ex);
+                return null;
+            }
+        }
+        
+        public static TextureBuilder newTexture(String path) {
+            try {
+                return newTexture(TextureBuilder.class.getResourceAsStream(path));
+            } catch (Exception ex) {
+                Logger.logErr("Error while creating Stream from path: " + ex, ex);
+                return null;
+            }
+        }
 
 	public static TextureBuilder newTexture(InputStream textureFile) {
 		return new TextureBuilder(textureFile);
