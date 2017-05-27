@@ -10,146 +10,174 @@ import omnikryptec.entity.Entity;
 import omnikryptec.entity.GameObject;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.Scene;
+import omnikryptec.model.Material;
 import omnikryptec.model.TexturedModel;
 
 public class RenderChunk {
 
-	private static int WIDTH = 128;
-	private static int HEIGHT = 128;
-	private static int DEPTH = 128;
+    private static int WIDTH = 128;
+    private static int HEIGHT = 128;
+    private static int DEPTH = 128;
 
-	public static int getWidth() {
-		return WIDTH;
-	}
+    public static int getWidth() {
+        return WIDTH;
+    }
 
-	public static int getHeight() {
-		return HEIGHT;
-	}
+    public static int getHeight() {
+        return HEIGHT;
+    }
 
-	public static int getDepth() {
-		return DEPTH;
-	}
+    public static int getDepth() {
+        return DEPTH;
+    }
 
-	private static List<IRenderer> allrenderer = new ArrayList<>();
-	
-	public static void cleanup(){
-		for(int i=0; i<allrenderer.size(); i++){
-			allrenderer.get(i).cleanup();
-		}
-	}
-	
-	private long x, y, z;
-	private Scene scene;
-	
-	public RenderChunk(long x, long y, long z, Scene s) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.scene = s;
-	}
+    private static final ArrayList<IRenderer> allrenderer = new ArrayList<>();
 
-	private Map<IRenderer, Map<TexturedModel, List<Entity>>> chunk = new HashMap<>();
-	private List<GameObject> other = new ArrayList<>();
+    public static final void cleanup(){
+        for(int i = 0; i < allrenderer.size(); i++){
+            allrenderer.get(i).cleanup();
+        }
+    }
 
-	private Entity tmp;
-	private IRenderer tmpr;
+    private final long x, y, z;
+    private final Scene scene;
 
-	public void addGameObject(GameObject g) {
-		if (g != null) {
-			if (g instanceof Entity) {
-				tmp = (Entity) g;
-				if ((tmpr = tmp.getTexturedModel().getMaterial().getRenderer()) != null) {
-					if(!allrenderer.contains(tmpr)){
-						allrenderer.add(tmpr);
-					}
-					if (!chunk.containsKey(tmpr)) {
-						chunk.put(tmpr, new HashMap<>());
-					}
-					if (!chunk.get(tmpr).containsKey(tmp.getTexturedModel())) {
-						chunk.get(tmpr).put(tmp.getTexturedModel(), new ArrayList<>());
-					}
-					chunk.get(tmpr).get(tmp.getTexturedModel()).add(tmp);
-				} else if (Logger.isDebugMode()) {
-					Logger.log("IRenderer is null", LogLevel.WARNING);
-				}
-			} else {
-				other.add(g);
-			}
-			g.setMyChunk(this);
-		}
-	}
+    public RenderChunk(long x, long y, long z, Scene scene) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.scene = scene;
+    }
 
-	public GameObject removeGameObject(GameObject g) {
-		if (g != null) {
-			if (g instanceof Entity) {
-				tmp = (Entity) g;
-				if ((tmpr = tmp.getTexturedModel().getMaterial().getRenderer()) != null) {
-					chunk.get(tmpr).get(tmp.getTexturedModel()).remove(tmp);
-					if (chunk.get(tmpr).get(tmp.getTexturedModel()).isEmpty()) {
-						chunk.get(tmpr).remove(tmp.getTexturedModel());
-					}
-					if (chunk.get(tmpr).isEmpty()) {
-						chunk.remove(tmpr);
-					}
-				} else if (Logger.isDebugMode()) {
-					Logger.log("IRenderer is null", LogLevel.WARNING);
-				}
-			} else {
-				other.remove(g);
-			}
-			//g.setMyChunk(null);
-		}
-		return g;
-	}
+    private final Map<IRenderer, Map<TexturedModel, List<Entity>>> chunk = new HashMap<>();
+    private final ArrayList<GameObject> other = new ArrayList<>();
 
-	public long getChunkX() {
-		return x;
-	}
+    private Entity tmp;
+    private IRenderer tmpr;
 
-	public long getChunkY() {
-		return y;
-	}
+    public void addGameObject(GameObject g) {
+        if(g != null) {
+            if(g instanceof Entity) {
+                tmp = (Entity) g;
+                TexturedModel tm = null;
+                Material m = null;
+                if(((tm = tmp.getTexturedModel()) != null) && ((m = tm.getMaterial()) != null)) {
+                    if((tmpr = m.getRenderer()) != null) {
+                        if(!allrenderer.contains(tmpr)){
+                            allrenderer.add(tmpr);
+                        }
+                        Map<TexturedModel, List<Entity>> map = chunk.get(tmpr);
+                        if(map == null) {
+                            map = new HashMap<>();
+                            chunk.put(tmpr, map);
+                        }
+                        List<Entity> list = map.get(tm);
+                        if(list == null) {
+                            list = new ArrayList<>();
+                            map.put(tm, list);
+                        }
+                        list.add(tmp);
+                    } else if (Logger.isDebugMode()) {
+                        Logger.log("IRenderer is null", LogLevel.WARNING);
+                    }
+                } else if(Logger.isDebugMode()) {
+                    Logger.log("TexturedModel or Material is null", LogLevel.WARNING);
+                }
+            } else {
+                other.add(g);
+            }
+            g.setMyChunk(this);
+        }
+    }
 
-	public long getChunkZ() {
-		return z;
-	}
+    public GameObject removeGameObject(GameObject g) {
+        if(g != null) {
+            if(g instanceof Entity) {
+                tmp = (Entity) g;
+                TexturedModel tm = null;
+                Material m = null;
+                if(((tm = tmp.getTexturedModel()) != null) && ((m = tm.getMaterial()) != null)) {
+                    if((tmpr = m.getRenderer()) != null) {
+                        Map<TexturedModel, List<Entity>> map = chunk.get(tmpr);
+                        if(map != null) {
+                            List<Entity> list = map.get(tm);
+                            if(list != null) {
+                                list.remove(tmp);
+                                if(list.isEmpty()) {
+                                    map.remove(tm);
+                                }
+                                if(map.isEmpty()) {
+                                    chunk.remove(tmpr);
+                                }
+                                tmp.delete();
+                            } else if (Logger.isDebugMode()) {
+                                Logger.log("List is null", LogLevel.WARNING);
+                            }
+                        } else if (Logger.isDebugMode()) {
+                            Logger.log("Map is null", LogLevel.WARNING);
+                        }
+                    } else if (Logger.isDebugMode()) {
+                        Logger.log("IRenderer is null", LogLevel.WARNING);
+                    }
+                } else if(Logger.isDebugMode()) {
+                    Logger.log("TexturedModel or Material is null", LogLevel.WARNING);
+                }
+            } else {
+                other.remove(g);
+            }
+            //g.setMyChunk(null);
+        }
+        return g;
+    }
 
-	public static enum Render{
-		All, EvElse, OnlThis;
-	}
-	
-	private final IRenderer[] empty_array = new IRenderer[]{null};
-	
-	public void frame(Render type, IRenderer ...rend) {
-		if(rend==null||rend.length==0){
-			rend = empty_array;
-		}
+    public long getChunkX() {
+        return x;
+    }
 
-		for(IRenderer r : chunk.keySet()){
-			if(r!=null&&(type==Render.All||(type==Render.OnlThis&&contains(rend, r))||(type==Render.EvElse&&!contains(rend, r)))){
-				r.render(scene, chunk.get(r));
-			}
-		}
-		for(GameObject g : other){
-			if(g!=null&&g.isActive()){
-				g.doLogic();
-			g.checkChunkPos();
-			}
-		}
-	}
+    public long getChunkY() {
+        return y;
+    }
 
-	private boolean contains(Object[] array, Object obj){
-		for(int i=0; i<array.length; i++){
-			if(array[i]==obj){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	public Scene getScene() {
-		return scene;
-	}
+    public long getChunkZ() {
+        return z;
+    }
 
+    public static enum Render {
+        All,
+        EvElse,
+        OnlThis;
+    }
+
+    private final IRenderer[] empty_array = new IRenderer[] {null};
+
+    public void frame(Render type, IRenderer... rend) {
+        if(rend == null || rend.length == 0){
+            rend = empty_array;
+        }
+        for(IRenderer r : chunk.keySet()){
+            if(r != null && (type == Render.All || (type == Render.OnlThis && contains(rend, r)) || (type == Render.EvElse && !contains(rend, r)))) {
+                r.render(scene, chunk.get(r));
+            }
+        }
+        for(GameObject g : other){
+            if(g != null && g.isActive()) {
+                g.doLogic();
+                g.checkChunkPos();
+            }
+        }
+    }
+
+    private boolean contains(Object[] array, Object obj){
+        for(int i = 0; i < array.length; i++){
+            if(array[i] == obj){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Scene getScene() {
+        return scene;
+    }
 
 }
