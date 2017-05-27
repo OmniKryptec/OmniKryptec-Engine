@@ -22,7 +22,8 @@ public class DefaultEntityRenderer implements IRenderer{
 	}
 	
 	private List<Entity> stapel;
-
+	private Entity entity;
+	
 	@Override
 	public void render(Scene s, Map<TexturedModel, List<Entity>> entities) {
 		shader.start();
@@ -42,12 +43,15 @@ public class DefaultEntityRenderer implements IRenderer{
 				EntityShader.hasspecular.loadBoolean(false);
 			}
 			EntityShader.reflec.loadFloat(model.getMaterial().getReflectivity());
-			stapel = entities.get(model);
-			for (Entity entity : stapel) {
-				entity.doLogic();
-				entity.checkChunkPos();
-				EntityShader.transformation.loadMatrix(Maths.createTransformationMatrix(entity));
-				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
+			stapel = entities.get(model);				
+			for (int i=0; i<stapel.size(); i++) {
+				entity = stapel.get(i);
+				if(RenderUtil.inRenderRange(entity, s.getCamera())){
+					entity.doLogic();
+					entity.checkChunkPos();
+					EntityShader.transformation.loadMatrix(Maths.createTransformationMatrix(entity));
+					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
+				}
 			}
 			stapel = null;
 			model.getModel().getVao().unbind(0,1,2,3);

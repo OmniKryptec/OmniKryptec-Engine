@@ -21,16 +21,24 @@ import omnikryptec.util.RenderUtil;
 
 public class LightStage implements PostProcessingStage{
 
-	private static FrameBufferObject target = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
+	private static FrameBufferObject target = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE);
 	private static LightShader shader = new LightShader();
 	
 	
 	private VertexArrayObject quad;
-
+	
+	private int[] list_ind = {0,1,2};
 
 	@Override
 	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist) {
-		render(OmniKryptecEngine.instance().getCurrentScene(), beforelist.get(0),beforelist.get(1),beforelist.get(2));
+		render(OmniKryptecEngine.instance().getCurrentScene(), beforelist.get(list_ind[0]),beforelist.get(list_ind[1]),beforelist.get(list_ind[2]));
+	}
+	
+	public LightStage setListIndices(int diffuseDepth, int normal, int specular){
+		list_ind[0] = diffuseDepth;
+		list_ind[1] = normal;
+		list_ind[2] = specular;
+		return this;
 	}
 	
 	
@@ -109,7 +117,7 @@ public class LightStage implements PostProcessingStage{
 	
 	@Override
 	public void resize(){
-		target = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
+		target = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE);
 	}
 	
 

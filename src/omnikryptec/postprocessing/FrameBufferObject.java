@@ -81,6 +81,20 @@ public class FrameBufferObject implements ITexture{
 		this.multitarget = targets.length>1;
 		initialiseFrameBuffer(DepthbufferType.DEPTH_RENDER_BUFFER);
 	}
+	public FrameBufferObject(int width, int height, int multisamples, int[] add, int ...targets) {
+		this.width = width;
+		this.height = height;
+		this.multisample = multisamples;
+		this.targets = new int[add.length+targets.length];
+		for(int i=0; i<targets.length; i++){
+			this.targets[i] = targets[i];
+		}
+		for(int i=0; i<add.length; i++){
+			this.targets[i+targets.length] = add[i];
+		}
+		this.multitarget = this.targets.length>1;
+		initialiseFrameBuffer(DepthbufferType.DEPTH_RENDER_BUFFER);
+	}
 	
 	public FrameBufferObject(int width, int height, int multisamples){
 		this(width, height, multisamples, GL30.GL_COLOR_ATTACHMENT0);

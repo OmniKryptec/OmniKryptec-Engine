@@ -15,11 +15,11 @@ import omnikryptec.model.Material;
 import omnikryptec.model.VertexArrayObject;
 import omnikryptec.postprocessing.FrameBufferObject;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
-import omnikryptec.postprocessing.LightStage;
 import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.Render;
 import omnikryptec.renderer.RendererRegistration;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.RenderUtil;
@@ -98,7 +98,6 @@ public class OmniKryptecEngine {
     private final HashMap<String, Scene> scenes = new HashMap<>();
     private String sceneCurrentName;
     private Scene sceneCurrent;
-    
 
     
     private ShutdownOption shutdownOption = ShutdownOption.NOTHING;
@@ -126,12 +125,14 @@ public class OmniKryptecEngine {
     
     private FrameBufferObject scenefbo;
     private FrameBufferObject unsampledfbo,normalfbo,specularfbo;
+    private FrameBufferObject[] add;
     
     private void createFbos() {
-    	scenefbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), manager.getSettings().getMultiSamples(), GL30.GL_COLOR_ATTACHMENT0, GL30.GL_COLOR_ATTACHMENT1, GL30.GL_COLOR_ATTACHMENT2);
+    	scenefbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), manager.getSettings().getMultiSamples(), manager.getSettings().getAddAttachments(), GL30.GL_COLOR_ATTACHMENT0, GL30.GL_COLOR_ATTACHMENT1, GL30.GL_COLOR_ATTACHMENT2);
     	unsampledfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE, GL30.GL_COLOR_ATTACHMENT0);
     	normalfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE, GL30.GL_COLOR_ATTACHMENT0);
     	specularfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE, GL30.GL_COLOR_ATTACHMENT0);
+    	add = manager.getSettings().getAddFBOs();
     }
     
     private void resizeFbos() {
@@ -178,7 +179,7 @@ public class OmniKryptecEngine {
     	requestclose = true;
         return this;
     }
-    
+        
     public final OmniKryptecEngine frame(boolean clear) {
     	if(Display.wasResized()) {
             resizeFbos();
@@ -187,7 +188,7 @@ public class OmniKryptecEngine {
     	}
     	scenefbo.bindFrameBuffer();
     	if(clear) {
-            RenderUtil.clear(0, 0, 0, 0);
+            RenderUtil.clear(sceneCurrent.getClearColor());
     	}
     	if(sceneCurrent != null) {
             sceneCurrent.frame(Render.All);
@@ -197,7 +198,12 @@ public class OmniKryptecEngine {
     	scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);
     	scenefbo.resolveToFbo(normalfbo, GL30.GL_COLOR_ATTACHMENT1);
     	scenefbo.resolveToFbo(specularfbo, GL30.GL_COLOR_ATTACHMENT2);
-    	PostProcessing.instance().doPostProcessing(unsampledfbo, normalfbo, specularfbo);
+    	if(scenefbo.getTargets().length>3){
+    		for(int i=3; i<scenefbo.getTargets().length; i++){
+    			scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i-3]);
+    		}
+    	}
+    	PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo);
     	InputUtil.nextFrame();
     	DisplayManager.instance().updateDisplay();
     	eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);

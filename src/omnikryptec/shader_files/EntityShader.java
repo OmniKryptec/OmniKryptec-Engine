@@ -8,7 +8,6 @@ import omnikryptec.shader.UniformSampler;
 
 public class EntityShader extends Shader {
 
-	private static final String loc = "/omnikryptec/shader_files/";
 
 	public static final UniformMatrix transformation = new UniformMatrix("transmatrix");
 	public static final UniformMatrix view = new UniformMatrix("viewmatrix");
@@ -21,8 +20,8 @@ public class EntityShader extends Shader {
 
 	
 	public EntityShader() {
-		super(EntityShader.class.getResourceAsStream(loc + "entity_shader_vert.glsl"),
-				EntityShader.class.getResourceAsStream(loc + "entity_shader_frag.glsl"), "pos", "texcoords", "normal",
+		super(EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_vert.glsl"),
+				EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_frag.glsl"), "pos", "texcoords", "normal",
 				"tangent", transformation, view, projection, tex, normalmap, specularmap, hasspecular, reflec);
 		start();
 		tex.loadTexUnit(0);

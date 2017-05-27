@@ -9,7 +9,6 @@ import omnikryptec.shader.UniformVec4;
 
 public class LightShader extends Shader {
 
-	private static final String loc = "/omnikryptec/shader_files/";
 
 	
 	public static final UniformSampler diffuse = new UniformSampler("diffuse");
@@ -22,7 +21,7 @@ public class LightShader extends Shader {
 	public static final UniformMatrix viewv = new UniformMatrix("vm");
 	
 	public LightShader() {
-		super(LightShader.class.getResourceAsStream(loc+"postprocessing_vert.glsl"), LightShader.class.getResourceAsStream(loc+"light_shader_frag.glsl"), "position", "vpos", depth,diffuse,specular,normal,light,lightColor,planes, viewv);
+		super(LightShader.class.getResourceAsStream(oc_shader_loc+"light_shader_vert.glsl"), LightShader.class.getResourceAsStream(oc_shader_loc+"light_shader_frag.glsl"), "position", "vpos", depth,diffuse,specular,normal,light,lightColor,planes, viewv);
 		start();
 		diffuse.loadTexUnit(0);
 		normal.loadTexUnit(1);

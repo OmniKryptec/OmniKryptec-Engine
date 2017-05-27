@@ -2,6 +2,12 @@ package omnikryptec.util;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+import org.lwjgl.util.vector.Vector3f;
+
+import omnikryptec.entity.Camera;
+import omnikryptec.entity.Entity;
+import omnikryptec.entity.Entity.RenderType;
+import omnikryptec.main.OmniKryptecEngine;
 
 public class RenderUtil {
 
@@ -101,7 +107,25 @@ public class RenderUtil {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 	}
 	
+	public static void clear(float[] f){
+		clear(f[0], f[1], f[2], f.length>3?f[3]:1);
+	}
 	
+	private static float rad;
+	private static Vector3f pos,cpos;
+	public static boolean inRenderRange(Entity e, Camera c){
+		if(e.getType()==RenderType.NORMAL){
+			return true;
+		}else if(e.getType()==RenderType.FOLIAGE){
+			rad = OmniKryptecEngine.instance().getDisplayManager().getSettings().getFoliageRadius();
+			pos = e.getAbsolutePos();
+			cpos = c.getAbsolutePos();
+			if(pos.lengthSquared()<cpos.lengthSquared()+rad&&pos.lengthSquared()>cpos.lengthSquared()-rad){
+				return true;
+			}
+		}
+		return false;
+	}
 	
 //	public static void setLightScissor(Vector4f lightpos, int sx, int sy){
 //		int[] rect = {0,0,sx,sy};

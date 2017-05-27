@@ -2,32 +2,34 @@ package omnikryptec.util;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
-import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
 
 import org.lwjgl.util.vector.Vector3f;
 
 public class Maths {
 
-
+	public static final Vector3f X = new Vector3f(1, 0, 0);
+	public static final Vector3f Y = new Vector3f(0, 1, 0);
+	public static final Vector3f Z = new Vector3f(0, 0, 1);
+	public static final Vector3f ZERO = new Vector3f(0, 0, 0);
 	
 	public static Matrix4f createTransformationMatrix(Entity e) {
 		Matrix4f matrix = new Matrix4f();
 		matrix.setIdentity();
 		Matrix4f.translate(e.getAbsolutePos(), matrix, matrix);
-		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().x), Camera.X, matrix, matrix);
-		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().y), Camera.Y, matrix, matrix);
-		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().z), Camera.Z, matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().x), X, matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().y), Y, matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(e.getAbsoluteRotation().z), Z, matrix, matrix);
 		Matrix4f.scale(e.getScale(), matrix, matrix);
 		return matrix;
 	}
         
-        public static Matrix4f createTransformationMatrix(Vector3f rotation, Vector3f scale) {
+    public static Matrix4f createTransformationMatrix(Vector3f rotation, Vector3f scale) {
 		Matrix4f matrix = new Matrix4f();
 		matrix.setIdentity();
-		Matrix4f.rotate((float) Math.toRadians(rotation.x), Camera.X, matrix, matrix);
-		Matrix4f.rotate((float) Math.toRadians(rotation.y), Camera.Y, matrix, matrix);
-		Matrix4f.rotate((float) Math.toRadians(rotation.z), Camera.Z, matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(rotation.x), X, matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(rotation.y), Y, matrix, matrix);
+		Matrix4f.rotate((float) Math.toRadians(rotation.z), Z, matrix, matrix);
 		Matrix4f.scale(scale, matrix, matrix);
 		return matrix;
 	}
@@ -35,11 +37,11 @@ public class Maths {
 	public static Matrix4f createEmptyTransformationMatrix() {
 		Matrix4f matrix = new Matrix4f();
 		matrix.setIdentity();
-		Matrix4f.translate(Camera.ZERO, matrix, matrix);
-		Matrix4f.rotate(0, Camera.X, matrix, matrix);
-		Matrix4f.rotate(0, Camera.Y, matrix, matrix);
-		Matrix4f.rotate(0, Camera.Z, matrix, matrix);
-		Matrix4f.scale(Camera.ZERO, matrix, matrix);
+		Matrix4f.translate(ZERO, matrix, matrix);
+		Matrix4f.rotate(0, X, matrix, matrix);
+		Matrix4f.rotate(0, Y, matrix, matrix);
+		Matrix4f.rotate(0, Z, matrix, matrix);
+		Matrix4f.scale(ZERO, matrix, matrix);
 		return matrix;
 	}
 	

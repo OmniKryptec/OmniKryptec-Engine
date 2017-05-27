@@ -33,9 +33,14 @@ public class PostProcessing {
 		instance = this;
 	}
 	
-	public void doPostProcessing(FrameBufferObject ...fbo) {
-		before = fbo[fbo.length-1];
+	public void doPostProcessing(FrameBufferObject[] fbos, FrameBufferObject ...fbo) {
+		if(fbos.length>0){
+			before = fbos[fbos.length-1];
+		}else{
+			before = fbo[fbo.length-1];
+		}
 		beforelist.addAll(Arrays.asList(fbo));
+		beforelist.addAll(Arrays.asList(fbos));
 		start();
 		for (int i = 0; i < stages.size(); i++) {
 			currentStage = stages.get(i);

@@ -15,6 +15,11 @@ import omnikryptec.logger.Logger;
 
 public class Shader {
 	
+	public static final String DEFAULT_PP_VERTEX_SHADER_LOC = "/omnikryptec/shader_files/pp_vert.glsl";
+	public static final String DEFAULT_PP_VERTEX_SHADER_POS_ATTR = "position";
+	public static final String DEFAULT_PP_VERTEX_SHADER_TEXC_OUT = "textureCoords";
+	protected static final String oc_shader_loc = "/omnikryptec/shader_files/";
+
 	
 	private int programID;
 	private int vertexShaderID;
