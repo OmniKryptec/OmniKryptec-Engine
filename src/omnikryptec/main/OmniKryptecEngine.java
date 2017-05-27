@@ -157,16 +157,10 @@ public class OmniKryptecEngine {
     
     public final void startLoop(ShutdownOption shutdownOption) {
         setShutdownOption(shutdownOption);
-    	try {
-            state = State.Running;
-            while(!Display.isCloseRequested() && !requestclose) {
-                    frame(true);
-            }	
-    	} catch (Exception e) {
-            state = State.Error;
-            Logger.logErr("Error while looping: " + e, e);
-            eventsystem.fireEvent(new Event(e), EventType.ERROR);
-    	}
+        state = State.Running;
+        while(!Display.isCloseRequested() && !requestclose) {
+        	frame(true);
+        }	
     	close(this.shutdownOption);
     }
     
@@ -181,33 +175,39 @@ public class OmniKryptecEngine {
     }
         
     public final OmniKryptecEngine frame(boolean clear) {
-    	if(Display.wasResized()) {
-            resizeFbos();
-            PostProcessing.instance().resize();
-            eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
+    	try{
+	    	if(Display.wasResized()) {
+	            resizeFbos();
+	            PostProcessing.instance().resize();
+	            eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
+	    	}
+	    	scenefbo.bindFrameBuffer();
+	    	if(clear) {
+	            RenderUtil.clear(sceneCurrent.getClearColor());
+	    	}
+	    	if(sceneCurrent != null) {
+	            sceneCurrent.frame(Render.All);
+	    	}
+	    	
+	    	scenefbo.unbindFrameBuffer();
+	    	scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);
+	    	scenefbo.resolveToFbo(normalfbo, GL30.GL_COLOR_ATTACHMENT1);
+	    	scenefbo.resolveToFbo(specularfbo, GL30.GL_COLOR_ATTACHMENT2);
+	    	if(scenefbo.getTargets().length>3){
+	    		for(int i=3; i<scenefbo.getTargets().length; i++){
+	    			scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i-3]);
+	    		}
+	    	}
+	    	PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo);
+	    	InputUtil.nextFrame();
+	    	DisplayManager.instance().updateDisplay();
+	    	eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
+	    	eventsystem.fireEvent(new Event(), EventType.RENDER_EVENT);
+    	}catch(Exception e){
+    		state = State.Error;
+    		Logger.logErr("Error in frame: ", e);
+            eventsystem.fireEvent(new Event(e), EventType.ERROR);
     	}
-    	scenefbo.bindFrameBuffer();
-    	if(clear) {
-            RenderUtil.clear(sceneCurrent.getClearColor());
-    	}
-    	if(sceneCurrent != null) {
-            sceneCurrent.frame(Render.All);
-    	}
-    	
-    	scenefbo.unbindFrameBuffer();
-    	scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);
-    	scenefbo.resolveToFbo(normalfbo, GL30.GL_COLOR_ATTACHMENT1);
-    	scenefbo.resolveToFbo(specularfbo, GL30.GL_COLOR_ATTACHMENT2);
-    	if(scenefbo.getTargets().length>3){
-    		for(int i=3; i<scenefbo.getTargets().length; i++){
-    			scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i-3]);
-    		}
-    	}
-    	PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo);
-    	InputUtil.nextFrame();
-    	DisplayManager.instance().updateDisplay();
-    	eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
-    	eventsystem.fireEvent(new Event(), EventType.RENDER_EVENT);
     	return this;
     }
     

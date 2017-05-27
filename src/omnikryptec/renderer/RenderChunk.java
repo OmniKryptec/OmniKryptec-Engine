@@ -49,30 +49,34 @@ public class RenderChunk {
         this.scene = scene;
     }
 
-    private final Map<IRenderer, Map<TexturedModel, List<Entity>>> chunk = new HashMap<>();
+    private final Map<IRenderer, RenderMap> chunk = new HashMap<>();
     private final ArrayList<GameObject> other = new ArrayList<>();
 
     private Entity tmp;
     private IRenderer tmpr;
-
+    private RenderMap map;
+    private List<Entity> list;
+    private Material m;
+    private TexturedModel tm;
+    
     public void addGameObject(GameObject g) {
         if(g != null) {
             if(g instanceof Entity) {
                 tmp = (Entity) g;
-                TexturedModel tm = null;
-                Material m = null;
+                tm = null;
+                m = null;
                 if((tm = tmp.getTexturedModel()) != null) {
                     if((m = tm.getMaterial()) != null) {
                         if((tmpr = m.getRenderer()) != null) {
                             if(!allrenderer.contains(tmpr)){
                                 allrenderer.add(tmpr);
                             }
-                            Map<TexturedModel, List<Entity>> map = chunk.get(tmpr);
+                            map = chunk.get(tmpr);
                             if(map == null) {
-                                map = new HashMap<>();
+                                map = new RenderMap();
                                 chunk.put(tmpr, map);
                             }
-                            List<Entity> list = map.get(tm);
+                            list = map.get(tm);
                             if(list == null) {
                                 list = new ArrayList<>();
                                 map.put(tm, list);
@@ -98,14 +102,14 @@ public class RenderChunk {
         if(g != null) {
             if(g instanceof Entity) {
                 tmp = (Entity) g;
-                TexturedModel tm = null;
-                Material m = null;
+                tm = null;
+                m = null;
                 if((tm = tmp.getTexturedModel()) != null) {
                     if((m = tm.getMaterial()) != null) {
                         if((tmpr = m.getRenderer()) != null) {
-                        	Map<TexturedModel, List<Entity>> map = chunk.get(tmpr);
+                        	map = chunk.get(tmpr);
                             if(map != null) {
-                                List<Entity> list = map.get(tm);
+                               list = map.get(tm);
                                 if(list != null) {
                                     list.remove(tmp);
                                     if(list.isEmpty()) {
@@ -121,7 +125,6 @@ public class RenderChunk {
                                     Logger.log("List for Entities is null", LogLevel.WARNING);
                                 }
                             } else if (Logger.isDebugMode()) {
-                                System.out.println(chunk.size());
                             	Logger.log("Map for TexturedModel and Entities is null", LogLevel.WARNING);
                             }
                         } else if (Logger.isDebugMode()) {
