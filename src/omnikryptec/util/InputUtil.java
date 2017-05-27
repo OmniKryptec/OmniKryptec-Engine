@@ -1,6 +1,7 @@
 package omnikryptec.util;
 
-import omnikryptec.entity.Camera;
+import omnikryptec.display.DisplayManager;
+import omnikryptec.entity.GameObject;
 import omnikryptec.settings.KeySettings;
 
 import org.lwjgl.input.Keyboard;
@@ -109,22 +110,60 @@ public class InputUtil {
     }
     
     /**
-     * Processes keys to a camera
-     * @param camera Camera to be moved
-     * @param deltaPos The delta for the Position
-     * @param deltaRot The delta for the Rotation
+     * Processes keys to a GameObject
+     * @param go GameObject to be moved
+     * @param vps The delta for the Position
+     * @param dps The delta for the Rotation
      * @return 
      */
-    public static Camera doCameraLogic(Camera camera, KeySettings keySettings, final float deltaPos, final float deltaRot) {
-        final float deltaPosForward = (InputUtil.isKeyboardKeyDown(keySettings.getMoveForward()) ? deltaPos : 0) + (InputUtil.isKeyboardKeyDown(keySettings.getMoveBackward()) ? -deltaPos : 0);
-        final float deltaPosSideward = (InputUtil.isKeyboardKeyDown(keySettings.getMoveRight()) ? deltaPos : 0) + (InputUtil.isKeyboardKeyDown(keySettings.getMoveLeft()) ? -deltaPos : 0);
-        final float deltaPosUpward = (InputUtil.isKeyboardKeyDown(keySettings.getMoveUp()) ? deltaPos : 0) + (InputUtil.isKeyboardKeyDown(keySettings.getMoveDown()) ? -deltaPos : 0);
-        camera.moveSpace(deltaPosForward, deltaPosSideward, deltaPosUpward);
-        final float deltaRotX = (InputUtil.isKeyboardKeyDown(keySettings.getTurnPitchUp()) ? -deltaRot : 0) + (InputUtil.isKeyboardKeyDown(keySettings.getTurnPitchDown()) ? deltaRot : 0);
-        final float deltaRotY = (InputUtil.isKeyboardKeyDown(keySettings.getTurnYawLeft()) ? -deltaRot : 0) + (InputUtil.isKeyboardKeyDown(keySettings.getTurnYawRight()) ? deltaRot : 0);
-        final float deltaRotZ = (InputUtil.isKeyboardKeyDown(keySettings.getTurnRollLeft()) ? -deltaRot : 0) + (InputUtil.isKeyboardKeyDown(keySettings.getTurnRollRight()) ? deltaRot : 0);
-        camera.increaseRelativeRot(deltaRotX, deltaRotY, deltaRotZ);
-        return camera;
+    public static GameObject doFirstPersonController(GameObject go, KeySettings keySettings, float vps, float dps) {
+    	final float dt = DisplayManager.instance().getDeltaTime();
+    	vps *= dt;
+    	dps *= dt;
+        final float deltaPosForward = (InputUtil.isKeyboardKeyDown(keySettings.getMoveForward()) ? vps : 0) + (InputUtil.isKeyboardKeyDown(keySettings.getMoveBackward()) ? -vps : 0);
+        final float deltaPosSideward = (InputUtil.isKeyboardKeyDown(keySettings.getMoveRight()) ? vps : 0) + (InputUtil.isKeyboardKeyDown(keySettings.getMoveLeft()) ? -vps : 0);
+        final float deltaPosUpward = (InputUtil.isKeyboardKeyDown(keySettings.getMoveUp()) ? vps : 0) + (InputUtil.isKeyboardKeyDown(keySettings.getMoveDown()) ? -vps : 0);
+        moveXYZ(go, deltaPosForward, deltaPosSideward, deltaPosUpward);
+        final float deltaRotX = (InputUtil.isKeyboardKeyDown(keySettings.getTurnPitchUp()) ? -dps : 0) + (InputUtil.isKeyboardKeyDown(keySettings.getTurnPitchDown()) ? dps : 0);
+        final float deltaRotY = (InputUtil.isKeyboardKeyDown(keySettings.getTurnYawLeft()) ? -dps : 0) + (InputUtil.isKeyboardKeyDown(keySettings.getTurnYawRight()) ? dps : 0);
+        final float deltaRotZ = (InputUtil.isKeyboardKeyDown(keySettings.getTurnRollLeft()) ? -dps : 0) + (InputUtil.isKeyboardKeyDown(keySettings.getTurnRollRight()) ? dps : 0);
+        go.increaseRelativeRot(deltaRotX, deltaRotY, deltaRotZ);
+        return go;
     }
     
+    /**
+     * Moves the object the given distances, with ignoring the pitch and roll of the object
+     * @param forward  Positive = Forward, Negative = Backward
+     * @param sideward Positive = Right,   Negative = Left
+     * @param upward   Positive = Up,      Negative = Down
+     */
+    public static void moveXZ(GameObject go, float forward, float sideward, float upward) {
+        if(forward != 0) {
+            go.increaseRelativePos((float) (forward * Math.sin(Math.toRadians(go.getAbsoluteRotation().y))), 0, (float) (-forward * Math.cos(Math.toRadians(go.getAbsoluteRotation().y))));
+        }
+        if(sideward != 0) {
+            go.increaseRelativePos((float) (sideward * Math.cos(Math.toRadians(go.getAbsoluteRotation().y))), 0, (float) (sideward * Math.sin(Math.toRadians(go.getAbsoluteRotation().y))));
+        }
+        if(upward != 0) {
+            go.increaseRelativePos(0, upward, 0);
+        }
+    }
+    
+    /**
+     * Moves the object the given distances, with using the pitch and roll of the object
+     * @param forward  Positive = Forward, Negative = Backward
+     * @param sideward Positive = Right,   Negative = Left
+     * @param upward   Positive = Up,      Negative = Down
+     */
+    public static void moveXYZ(GameObject go, float forward, float sideward, float upward) {
+        if(forward != 0) {
+            go.increaseRelativePos((float) (forward * Math.sin(Math.toRadians(go.getAbsoluteRotation().y))), (float) (-forward * Math.sin(Math.toRadians(go.getAbsoluteRotation().x))), (float) (-forward * Math.cos(Math.toRadians(go.getAbsoluteRotation().y)) * Math.cos(Math.toRadians(go.getAbsoluteRotation().x))));
+        }
+        if(sideward != 0) {
+            go.increaseRelativePos((float) (sideward * Math.cos(Math.toRadians(go.getAbsoluteRotation().y)) * Math.cos(Math.toRadians(go.getAbsoluteRotation().z))), (float) (-sideward * Math.sin(Math.toRadians(go.getAbsoluteRotation().z))), (float) (sideward * Math.sin(Math.toRadians(go.getAbsoluteRotation().y))));
+        }
+        if(upward != 0) {
+            go.increaseRelativePos((float) (upward * Math.sin(Math.toRadians(go.getAbsoluteRotation().z))), (float) (upward * Math.cos(Math.toRadians(go.getAbsoluteRotation().x)) * Math.cos(Math.toRadians(go.getAbsoluteRotation().z))), (float) (-upward * Math.sin(Math.toRadians(go.getAbsoluteRotation().x))));
+        }
+    }
 }

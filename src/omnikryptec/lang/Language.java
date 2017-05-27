@@ -27,7 +27,11 @@ import omnikryptec.logger.Logger;
  */
 public class Language extends Properties {
     
-    private static final String LANGUAGEFILEPREFIX = "lang_";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5071523675384082116L;
+	private static final String LANGUAGEFILEPREFIX = "lang_";
     private static final int CODESHORTLENGTH = 2;
     private static final String LANGUAGEPATHSEPARATOR = "/";
     
