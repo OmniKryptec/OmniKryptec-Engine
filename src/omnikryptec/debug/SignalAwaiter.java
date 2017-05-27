@@ -3,7 +3,9 @@ package omnikryptec.debug;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
+
 import javax.swing.Timer;
+
 import omnikryptec.logger.Logger;
 
 /**

@@ -3,10 +3,11 @@ package omnikryptec.texture;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import omnikryptec.logger.Logger;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+
+import omnikryptec.logger.Logger;
 
 public class Texture implements ITexture{
 

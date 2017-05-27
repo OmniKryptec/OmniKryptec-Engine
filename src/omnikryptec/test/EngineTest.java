@@ -1,28 +1,19 @@
 package omnikryptec.test;
 
 
-import java.util.Random;
-
-import org.lwjgl.util.vector.Vector3f;
-
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
-import omnikryptec.settings.GameSettings;
-import omnikryptec.lang.LanguageManager;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
+import omnikryptec.main.Scene;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
-import omnikryptec.main.Scene;
 import omnikryptec.objConverter.ObjLoader;
-import omnikryptec.postprocessing.LightStage;
-import omnikryptec.postprocessing.PostProcessing;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.Texture;
-import omnikryptec.util.Maths;
 import omnikryptec.util.NativesLoader;
-import omnikryptec.util.RenderUtil;
 
 public class EngineTest{
 

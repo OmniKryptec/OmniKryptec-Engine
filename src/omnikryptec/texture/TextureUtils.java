@@ -14,7 +14,6 @@ import org.lwjgl.opengl.GLContext;
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import omnikryptec.display.DisplayManager;
-import omnikryptec.logger.LogEntry;
 import omnikryptec.logger.Logger;
 
 public class TextureUtils {

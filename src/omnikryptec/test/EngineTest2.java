@@ -1,9 +1,10 @@
 package omnikryptec.test;
 
+import java.util.Random;
+
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
-import omnikryptec.settings.GameSettings;
 import omnikryptec.event.Event;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
@@ -15,19 +16,11 @@ import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
 import omnikryptec.postprocessing.ContrastchangeStage;
-import omnikryptec.postprocessing.LightStage;
 import omnikryptec.postprocessing.PostProcessing;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.InputUtil;
-import omnikryptec.util.Maths;
 import omnikryptec.util.NativesLoader;
-import omnikryptec.util.RenderUtil;
-
-import java.nio.charset.MalformedInputException;
-import java.util.Random;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 
 /**
  *

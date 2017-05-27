@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.GameObject;
+import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.Scene;
 import omnikryptec.model.Material;
@@ -176,7 +176,6 @@ public class RenderChunk {
         for(GameObject g : other){
             if(g != null && g.isActive()) {
                 g.doLogic0();
-                g.checkChunkPos();
             }
         }
     }

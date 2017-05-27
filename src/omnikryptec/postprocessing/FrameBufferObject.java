@@ -15,8 +15,8 @@ import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-import omnikryptec.settings.GameSettings;
 import omnikryptec.exceptions.IllegalAccessException;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.ITexture;
 
 public class FrameBufferObject implements ITexture{

@@ -2,9 +2,9 @@ package omnikryptec.util;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
-import omnikryptec.entity.Entity;
-
 import org.lwjgl.util.vector.Vector3f;
+
+import omnikryptec.entity.Entity;
 
 public class Maths {
 

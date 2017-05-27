@@ -1,5 +1,13 @@
 package omnikryptec.test;
 
+import java.util.HashMap;
+
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Quat4f;
+import javax.vecmath.Vector3f;
+
+import org.lwjgl.input.Keyboard;
+
 import com.bulletphysics.collision.broadphase.BroadphaseInterface;
 import com.bulletphysics.collision.broadphase.DbvtBroadphase;
 import com.bulletphysics.collision.dispatch.CollisionConfiguration;
@@ -18,10 +26,6 @@ import com.bulletphysics.dynamics.constraintsolver.SequentialImpulseConstraintSo
 import com.bulletphysics.linearmath.DefaultMotionState;
 import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
-import java.util.HashMap;
-import javax.vecmath.Matrix4f;
-import javax.vecmath.Quat4f;
-import javax.vecmath.Vector3f;
 
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
@@ -29,18 +33,16 @@ import omnikryptec.entity.Entity;
 import omnikryptec.entity.EntityBuilder;
 import omnikryptec.entity.FollowingCamera;
 import omnikryptec.entity.GameObject;
-import omnikryptec.settings.GameSettings;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.util.ConverterUtil;
-
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.PhysicsUtil;
-import org.lwjgl.input.Keyboard;
 
 /**
  *

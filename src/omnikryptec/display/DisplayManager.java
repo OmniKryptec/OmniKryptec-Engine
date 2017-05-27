@@ -1,12 +1,13 @@
 package omnikryptec.display;
 
-import omnikryptec.settings.GameSettings;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.util.RenderUtil;
 
 /**

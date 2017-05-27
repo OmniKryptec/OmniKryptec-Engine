@@ -1,10 +1,12 @@
 package omnikryptec.util;
 
+import javax.vecmath.Vector3f;
+
 import com.bulletphysics.collision.shapes.CollisionShape;
 import com.bulletphysics.collision.shapes.ConvexHullShape;
 import com.bulletphysics.collision.shapes.SphereShape;
 import com.bulletphysics.util.ObjectArrayList;
-import javax.vecmath.Vector3f;
+
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.model.Model;

@@ -19,7 +19,6 @@ import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.Render;
 import omnikryptec.renderer.RendererRegistration;
-import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.RenderUtil;

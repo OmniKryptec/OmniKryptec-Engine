@@ -1,10 +1,5 @@
 package omnikryptec.util;
 
-import omnikryptec.display.DisplayManager;
-import omnikryptec.entity.Camera;
-import omnikryptec.entity.GameObject;
-import omnikryptec.settings.KeySettings;
-
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -12,6 +7,11 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+
+import omnikryptec.display.DisplayManager;
+import omnikryptec.entity.Camera;
+import omnikryptec.entity.GameObject;
+import omnikryptec.settings.KeySettings;
 
 /**
  * 

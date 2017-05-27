@@ -22,9 +22,9 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+
 import omnikryptec.lang.ILanguage;
 import omnikryptec.lang.LanguageManager;
-
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.LogEntryFormatter.LogEntryFormatTile;
 import omnikryptec.main.OmniKryptecEngine;

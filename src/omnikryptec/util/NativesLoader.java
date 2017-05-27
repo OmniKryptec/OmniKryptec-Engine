@@ -1,6 +1,7 @@
 package omnikryptec.util;
 
 import java.io.File;
+
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.util.OSUtil.OS;
