@@ -15,10 +15,6 @@ import org.lwjgl.util.vector.Vector3f;
  *
  */
 public class InputUtil {
-
-    public static final int MOUSE_BUTTON_LEFT = 0;
-    public static final int MOUSE_BUTTON_RIGHT = 1;
-    public static final int MOUSE_BUTTON_MIDDLE = 2;
     
     private static String keyboardKeys_buffer = "";
 
@@ -104,19 +100,42 @@ public class InputUtil {
      * @param dps The delta for the Rotation
      * @return 
      */
-    public static GameObject doFirstPersonController(GameObject go, KeySettings keySettings, float vps, float dps) {
+    public static GameObject doFirstPersonController(GameObject gameObject, KeySettings keySettings, float vps, float dps) {
     	final float dt = DisplayManager.instance().getDeltaTime();
     	vps *= dt;
     	dps *= dt;
         final float deltaPosForward = (keySettings.getKey("moveForward").isPressed() ? vps : 0) + (keySettings.getKey("moveBackward").isPressed() ? -vps : 0);
         final float deltaPosSideward = (keySettings.getKey("moveRight").isPressed() ? vps : 0) + (keySettings.getKey("moveLeft").isPressed() ? -vps : 0);
         final float deltaPosUpward = (keySettings.getKey("moveUp").isPressed() ? vps : 0) + (keySettings.getKey("moveDown").isPressed() ? -vps : 0);
-        moveXYZ(go, deltaPosForward, deltaPosSideward, deltaPosUpward);
+        moveXYZ(gameObject, gameObject, deltaPosForward, deltaPosSideward, deltaPosUpward);
         final float deltaRotX = (keySettings.getKey("turnPitchUp").isPressed() ? -dps : 0) + (keySettings.getKey("turnPitchDown").isPressed() ? dps : 0);
         final float deltaRotY = (keySettings.getKey("turnYawLeft").isPressed() ? -dps : 0) + (keySettings.getKey("turnYawRight").isPressed() ? dps : 0);
         final float deltaRotZ = (keySettings.getKey("turnRollLeft").isPressed() ? -dps : 0) + (keySettings.getKey("turnRollRight").isPressed() ? dps : 0);
-        go.increaseRelativeRot(deltaRotX, deltaRotY, deltaRotZ);
-        return go;
+        turnXYZ(gameObject, gameObject, deltaRotX, deltaRotY, deltaRotZ);
+        return gameObject;
+    }
+    
+    /**
+     * Processes keys to a GameObject
+     * @param source GameObject relative to the GameObject which gets moved
+     * @param destination GameObject to be moved
+     * @param vps The delta for the Position
+     * @param dps The delta for the Rotation
+     * @return 
+     */
+    public static GameObject doThirdPersonController(GameObject source, GameObject destination, KeySettings keySettings, float vps, float dps) {
+    	final float dt = DisplayManager.instance().getDeltaTime();
+    	vps *= dt;
+    	dps *= dt;
+        final float deltaPosForward = (keySettings.getKey("moveForward").isPressed() ? vps : 0) + (keySettings.getKey("moveBackward").isPressed() ? -vps : 0);
+        final float deltaPosSideward = (keySettings.getKey("moveRight").isPressed() ? vps : 0) + (keySettings.getKey("moveLeft").isPressed() ? -vps : 0);
+        final float deltaPosUpward = (keySettings.getKey("moveUp").isPressed() ? vps : 0) + (keySettings.getKey("moveDown").isPressed() ? -vps : 0);
+        moveXZ(source, destination, deltaPosForward, deltaPosSideward, deltaPosUpward);
+        final float deltaRotX = (keySettings.getKey("turnPitchUp").isPressed() ? -dps : 0) + (keySettings.getKey("turnPitchDown").isPressed() ? dps : 0);
+        final float deltaRotY = (keySettings.getKey("turnYawLeft").isPressed() ? -dps : 0) + (keySettings.getKey("turnYawRight").isPressed() ? dps : 0);
+        final float deltaRotZ = (keySettings.getKey("turnRollLeft").isPressed() ? -dps : 0) + (keySettings.getKey("turnRollRight").isPressed() ? dps : 0);
+        turnXZ(source, destination, deltaRotX, deltaRotY, deltaRotZ);
+        return destination;
     }
     
     /**
@@ -125,15 +144,15 @@ public class InputUtil {
      * @param sideward Positive = Right,   Negative = Left
      * @param upward   Positive = Up,      Negative = Down
      */
-    public static void moveXZ(GameObject go, float forward, float sideward, float upward) {
+    public static void moveXZ(GameObject source, GameObject destination, float forward, float sideward, float upward) {
         if(forward != 0) {
-            go.increaseRelativePos((float) (forward * Math.sin(Math.toRadians(go.getAbsoluteRotation().y))), 0, (float) (-forward * Math.cos(Math.toRadians(go.getAbsoluteRotation().y))));
+            destination.increaseRelativePos((float) (forward * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))), 0, (float) (-forward * Math.cos(Math.toRadians(source.getAbsoluteRotation().y))));
         }
         if(sideward != 0) {
-            go.increaseRelativePos((float) (sideward * Math.cos(Math.toRadians(go.getAbsoluteRotation().y))), 0, (float) (sideward * Math.sin(Math.toRadians(go.getAbsoluteRotation().y))));
+            destination.increaseRelativePos((float) (sideward * Math.cos(Math.toRadians(source.getAbsoluteRotation().y))), 0, (float) (sideward * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))));
         }
         if(upward != 0) {
-            go.increaseRelativePos(0, upward, 0);
+            destination.increaseRelativePos(0, upward, 0);
         }
     }
     
@@ -143,15 +162,40 @@ public class InputUtil {
      * @param sideward Positive = Right,   Negative = Left
      * @param upward   Positive = Up,      Negative = Down
      */
-    public static void moveXYZ(GameObject go, float forward, float sideward, float upward) {
+    public static void moveXYZ(GameObject source, GameObject destination, float forward, float sideward, float upward) {
         if(forward != 0) {
-            go.increaseRelativePos((float) (forward * Math.sin(Math.toRadians(go.getAbsoluteRotation().y))), (float) (-forward * Math.sin(Math.toRadians(go.getAbsoluteRotation().x))), (float) (-forward * Math.cos(Math.toRadians(go.getAbsoluteRotation().y)) * Math.cos(Math.toRadians(go.getAbsoluteRotation().x))));
+            destination.increaseRelativePos((float) (forward * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))), (float) (-forward * Math.sin(Math.toRadians(source.getAbsoluteRotation().x))), (float) (-forward * Math.cos(Math.toRadians(source.getAbsoluteRotation().y)) * Math.cos(Math.toRadians(source.getAbsoluteRotation().x))));
         }
         if(sideward != 0) {
-            go.increaseRelativePos((float) (sideward * Math.cos(Math.toRadians(go.getAbsoluteRotation().y)) * Math.cos(Math.toRadians(go.getAbsoluteRotation().z))), (float) (-sideward * Math.sin(Math.toRadians(go.getAbsoluteRotation().z))), (float) (sideward * Math.sin(Math.toRadians(go.getAbsoluteRotation().y))));
+            destination.increaseRelativePos((float) (sideward * Math.cos(Math.toRadians(source.getAbsoluteRotation().y)) * Math.cos(Math.toRadians(source.getAbsoluteRotation().z))), (float) (-sideward * Math.sin(Math.toRadians(source.getAbsoluteRotation().z))), (float) (sideward * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))));
         }
         if(upward != 0) {
-            go.increaseRelativePos((float) (upward * Math.sin(Math.toRadians(go.getAbsoluteRotation().z))), (float) (upward * Math.cos(Math.toRadians(go.getAbsoluteRotation().x)) * Math.cos(Math.toRadians(go.getAbsoluteRotation().z))), (float) (-upward * Math.sin(Math.toRadians(go.getAbsoluteRotation().x))));
+            destination.increaseRelativePos((float) (upward * Math.sin(Math.toRadians(source.getAbsoluteRotation().z))), (float) (upward * Math.cos(Math.toRadians(source.getAbsoluteRotation().x)) * Math.cos(Math.toRadians(source.getAbsoluteRotation().z))), (float) (-upward * Math.sin(Math.toRadians(source.getAbsoluteRotation().x))));
         }
     }
+    
+    public static void turnXZ(GameObject source, GameObject destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
+        if(deltaRotZ != 0) {
+            destination.increaseRelativeRot((float) (deltaRotZ * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))), 0, (float) (-deltaRotZ * Math.cos(Math.toRadians(source.getAbsoluteRotation().y))));
+        }
+        if(deltaRotX != 0) {
+            destination.increaseRelativeRot((float) (deltaRotX * Math.cos(Math.toRadians(source.getAbsoluteRotation().y))), 0, (float) (deltaRotX * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))));
+        }
+        if(deltaRotY != 0) {
+            destination.increaseRelativeRot(0, deltaRotY, 0);
+        }
+    }
+    
+    public static void turnXYZ(GameObject source, GameObject destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
+        if(deltaRotZ != 0) {
+            destination.increaseRelativeRot((float) (-deltaRotZ * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))), (float) (deltaRotZ * Math.sin(Math.toRadians(source.getAbsoluteRotation().x))), (float) (deltaRotZ * Math.cos(Math.toRadians(source.getAbsoluteRotation().y)) * Math.cos(Math.toRadians(source.getAbsoluteRotation().x))));
+        }
+        if(deltaRotX != 0) {
+            destination.increaseRelativeRot((float) (deltaRotX * Math.cos(Math.toRadians(source.getAbsoluteRotation().y)) * Math.cos(Math.toRadians(source.getAbsoluteRotation().z))), (float) (-deltaRotX * Math.sin(Math.toRadians(source.getAbsoluteRotation().z))), (float) (deltaRotX * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))));
+        }
+        if(deltaRotY != 0) {
+            destination.increaseRelativeRot((float) (deltaRotY * Math.sin(Math.toRadians(source.getAbsoluteRotation().z))), (float) (deltaRotY * Math.cos(Math.toRadians(source.getAbsoluteRotation().x)) * Math.cos(Math.toRadians(source.getAbsoluteRotation().z))), (float) (-deltaRotY * Math.sin(Math.toRadians(source.getAbsoluteRotation().x))));
+        }
+    }
+    
 }

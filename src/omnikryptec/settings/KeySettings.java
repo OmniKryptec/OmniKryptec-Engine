@@ -9,7 +9,10 @@ import org.lwjgl.input.Keyboard;
  */
 public class KeySettings {
     
-    public static final KeySettings STANDARDKEYSETTINGS = new KeySettings(new Key[] {new Key("moveForward", Keyboard.KEY_W, true), 
+    public static final KeySettings STANDARDKEYSETTINGS = new KeySettings(new Key[] {new Key("mouseButtonLeft", 0, false),
+                                                                                     new Key("mouseButtonRight", 1, false),
+                                                                                     new Key("mouseButtonMiddle", 2, false),
+                                                                                     new Key("moveForward", Keyboard.KEY_W, true), 
                                                                                      new Key("moveBackward", Keyboard.KEY_S, true), 
                                                                                      new Key("moveRight", Keyboard.KEY_D, true), 
                                                                                      new Key("moveLeft", Keyboard.KEY_A, true), 
@@ -30,6 +33,9 @@ public class KeySettings {
     }
     
     private KeySettings initKeys() {
+        keys.add(new Key("mouseButtonLeft", 0, false));
+        keys.add(new Key("mouseButtonRight", 1, false));
+        keys.add(new Key("mouseButtonMiddle", 2, false));
         keys.add(new Key("moveForward", -1, true));
         keys.add(new Key("moveBackward", -1, true));
         keys.add(new Key("moveRight", -1, true));
