@@ -134,7 +134,7 @@ public class InputUtil {
         final float deltaRotX = (keySettings.getKey("turnPitchUp").isPressed() ? -dps : 0) + (keySettings.getKey("turnPitchDown").isPressed() ? dps : 0);
         final float deltaRotY = (keySettings.getKey("turnYawLeft").isPressed() ? -dps : 0) + (keySettings.getKey("turnYawRight").isPressed() ? dps : 0);
         final float deltaRotZ = (keySettings.getKey("turnRollLeft").isPressed() ? -dps : 0) + (keySettings.getKey("turnRollRight").isPressed() ? dps : 0);
-        turnXZ(source, destination, deltaRotX, deltaRotY, deltaRotZ);
+        turnNormal(source, destination, deltaRotX, deltaRotY, deltaRotZ);
         return destination;
     }
     
@@ -186,6 +186,18 @@ public class InputUtil {
         }
     }
     
+    public static void turnXZY(GameObject source, GameObject destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
+        if(deltaRotZ != 0) {
+            destination.increaseRelativeRot((float) (-deltaRotZ * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))), (float) (deltaRotZ * Math.sin(Math.toRadians(source.getAbsoluteRotation().x))), (float) (deltaRotZ * Math.cos(Math.toRadians(source.getAbsoluteRotation().y)) * Math.cos(Math.toRadians(source.getAbsoluteRotation().x))));
+        }
+        if(deltaRotX != 0) {
+            destination.increaseRelativeRot((float) (deltaRotX * Math.cos(Math.toRadians(source.getAbsoluteRotation().y)) * Math.cos(Math.toRadians(source.getAbsoluteRotation().z))), (float) (-deltaRotX * Math.sin(Math.toRadians(source.getAbsoluteRotation().z))), (float) (deltaRotX * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))));
+        }
+        if(deltaRotY != 0) {
+            destination.increaseRelativeRot(0, deltaRotY, 0);
+        }
+    }
+    
     public static void turnXYZ(GameObject source, GameObject destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
         if(deltaRotZ != 0) {
             destination.increaseRelativeRot((float) (-deltaRotZ * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))), (float) (deltaRotZ * Math.sin(Math.toRadians(source.getAbsoluteRotation().x))), (float) (deltaRotZ * Math.cos(Math.toRadians(source.getAbsoluteRotation().y)) * Math.cos(Math.toRadians(source.getAbsoluteRotation().x))));
@@ -196,6 +208,10 @@ public class InputUtil {
         if(deltaRotY != 0) {
             destination.increaseRelativeRot((float) (deltaRotY * Math.sin(Math.toRadians(source.getAbsoluteRotation().z))), (float) (deltaRotY * Math.cos(Math.toRadians(source.getAbsoluteRotation().x)) * Math.cos(Math.toRadians(source.getAbsoluteRotation().z))), (float) (-deltaRotY * Math.sin(Math.toRadians(source.getAbsoluteRotation().x))));
         }
+    }
+    
+    public static void turnNormal(GameObject source, GameObject destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
+        destination.increaseRelativeRot(deltaRotX, deltaRotY, deltaRotZ);
     }
     
 }
