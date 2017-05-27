@@ -6,6 +6,7 @@ import java.util.List;
 
 import omnikryptec.display.DisplayManager;
 import omnikryptec.model.Model;
+import omnikryptec.util.ModelUtil;
 import omnikryptec.util.RenderUtil;
 
 public class PostProcessing {
@@ -72,7 +73,7 @@ public class PostProcessing {
 		return stages.remove(stages.indexOf(stage));
 	}
 	
-	private Model quad = Model.generateQuad();
+	private Model quad = ModelUtil.generateQuad();
 	
 	private void start() {
 		quad.getVao().bind(0,1);

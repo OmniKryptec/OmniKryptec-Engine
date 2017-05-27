@@ -14,7 +14,7 @@ import omnikryptec.main.Scene;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
-import omnikryptec.postprocessing.LightRenderer;
+import omnikryptec.postprocessing.LightStage;
 import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.InputUtil;

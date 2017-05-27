@@ -36,6 +36,8 @@ import omnikryptec.main.Scene;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
+import omnikryptec.postprocessing.LightStage;
+import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
@@ -197,8 +199,8 @@ public class JBulletTest {
             Logger.showConsoleDirect();
             
             DisplayManager.createDisplay("JBullet Test", new GameSettings("JBulletTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32));
-            OmniKryptecEngine.instance().addAndSetScene("TestScene", new Scene(new Camera() {
-                
+            //PostProcessing.instance().addStage(new LightRenderer());
+            OmniKryptecEngine.instance().addAndSetScene("TestScene", new Scene(new Camera() {   
                 @Override
                 public void doLogic() {
                     InputUtil.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(), 1.5F, 15.0F);

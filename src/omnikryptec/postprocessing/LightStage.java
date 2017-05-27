@@ -1,6 +1,5 @@
 package omnikryptec.postprocessing;
 
-import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
@@ -8,40 +7,34 @@ import java.util.List;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.glu.GLU;
 import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.entity.Light;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
-import omnikryptec.model.Model;
 import omnikryptec.model.VertexArrayObject;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
-import omnikryptec.shader.Shader;
 import omnikryptec.shader_files.LightShader;
 import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
 
-public class LightRenderer {
+public class LightStage implements PostProcessingStage{
 
 	private static FrameBufferObject target = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
 	private static LightShader shader = new LightShader();
 	
-	private static LightRenderer instance;
 	
 	private VertexArrayObject quad;
-	
-	private LightRenderer(){
-		instance = this;
-	}
 
-	public static LightRenderer instance() {
-		return instance == null? new LightRenderer() : instance;
-	}
 
+	@Override
+	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist) {
+		render(OmniKryptecEngine.instance().getCurrentScene(), beforelist.get(0),beforelist.get(1),beforelist.get(2));
+	}
 	
-	public void render(Scene currentScene, FrameBufferObject unsampledfbo, FrameBufferObject normalfbo, FrameBufferObject specularfbo) {
+	
+	private void render(Scene currentScene, FrameBufferObject unsampledfbo, FrameBufferObject normalfbo, FrameBufferObject specularfbo) {
 		RenderUtil.enableAdditiveBlending();
 		shader.start();
 		LightShader.planes.loadVec2(currentScene.getCamera().getPlanesForLR());
@@ -114,11 +107,19 @@ public class LightRenderer {
 		return vao;
 	}
 	
+	@Override
 	public void resize(){
 		target = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
 	}
 	
-	public FrameBufferObject getTarget(){
+
+	@Override
+	public boolean usesDefaultRenderObject(){
+		return false;
+	}
+
+	@Override
+	public FrameBufferObject getFbo() {
 		return target;
 	}
 

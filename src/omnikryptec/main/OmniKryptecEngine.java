@@ -15,7 +15,7 @@ import omnikryptec.model.Material;
 import omnikryptec.model.VertexArrayObject;
 import omnikryptec.postprocessing.FrameBufferObject;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
-import omnikryptec.postprocessing.LightRenderer;
+import omnikryptec.postprocessing.LightStage;
 import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.Render;
@@ -182,7 +182,6 @@ public class OmniKryptecEngine {
     public final OmniKryptecEngine frame(boolean clear) {
     	if(Display.wasResized()) {
             resizeFbos();
-            LightRenderer.instance().resize();
             PostProcessing.instance().resize();
             eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
     	}
@@ -198,8 +197,7 @@ public class OmniKryptecEngine {
     	scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);
     	scenefbo.resolveToFbo(normalfbo, GL30.GL_COLOR_ATTACHMENT1);
     	scenefbo.resolveToFbo(specularfbo, GL30.GL_COLOR_ATTACHMENT2);
-    	LightRenderer.instance().render(getCurrentScene(), unsampledfbo, normalfbo, specularfbo);
-    	PostProcessing.instance().doPostProcessing(LightRenderer.instance().getTarget());
+    	PostProcessing.instance().doPostProcessing(unsampledfbo, normalfbo, specularfbo);
     	InputUtil.nextFrame();
     	DisplayManager.instance().updateDisplay();
     	eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
