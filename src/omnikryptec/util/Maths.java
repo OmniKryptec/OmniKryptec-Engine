@@ -1,5 +1,6 @@
 package omnikryptec.util;
 
+import com.bulletphysics.util.ObjectArrayList;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
 import omnikryptec.entity.Entity;
@@ -102,4 +103,16 @@ public class Maths {
 	public static Matrix4f setOrthographicProjection2D(float x, float y, float width, float height, float near, float far) {
 		return setOrthographicProjection(x, x + width, y, y + height, near, far);
 	}
+        
+        public static ObjectArrayList<javax.vecmath.Vector3f> convertToObjectArrayListVector3f(float[] vertices) {
+            final ObjectArrayList<javax.vecmath.Vector3f> objects = new ObjectArrayList<>();
+            if(vertices.length % 3 != 0) {
+                return objects;
+            }
+            for(int i = 0; i < (vertices.length - 2); i += 3) {
+                objects.add(new javax.vecmath.Vector3f(vertices[i], vertices[i + 1], vertices[i + 2]));
+            }
+            return objects;
+        }
+        
 }
