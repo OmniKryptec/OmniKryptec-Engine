@@ -1,8 +1,6 @@
 package omnikryptec.renderer;
 
 import java.util.List;
-import java.util.Map;
-
 import org.lwjgl.opengl.GL11;
 
 import omnikryptec.entity.Entity;
@@ -23,13 +21,15 @@ public class DefaultEntityRenderer implements IRenderer{
 	
 	private List<Entity> stapel;
 	private Entity entity;
+	private TexturedModel model;
 	
 	@Override
-	public void render(Scene s, Map<TexturedModel, List<Entity>> entities) {
+	public void render(Scene s, RenderMap entities) {
 		shader.start();
 		EntityShader.view.loadMatrix(s.getCamera().getViewMatrix());
 		EntityShader.projection.loadMatrix(s.getCamera().getProjectionMatrix());
-		for (TexturedModel model : entities.keySet()) {
+		for (int i=0; i<entities.keysArray().length; i++) {
+			model = entities.keysArray()[i];
 			model.getModel().getVao().bind(0,1,2,3);
 			model.getTexture().bindToUnit(0);
 			model.getMaterial().getNormalmap().bindToUnit(1);
@@ -44,8 +44,8 @@ public class DefaultEntityRenderer implements IRenderer{
 			}
 			EntityShader.reflec.loadFloat(model.getMaterial().getReflectivity());
 			stapel = entities.get(model);				
-			for (int i=0; i<stapel.size(); i++) {
-				entity = stapel.get(i);
+			for (int j=0; j<stapel.size(); j++) {
+				entity = stapel.get(j);
 				if(RenderUtil.inRenderRange(entity, s.getCamera())){
 					entity.doLogic();
 					entity.checkChunkPos();
