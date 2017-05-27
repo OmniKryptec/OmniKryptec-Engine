@@ -260,6 +260,11 @@ public class JBulletTest {
                         lustig.setLinearVelocity(new Vector3f(0, 0, 0));
                     }
                     
+                    @Override
+                    public void delete() {
+                        dynamicsWorld.removeRigidBody(lustig);
+                    }
+                    
                 };
                 OmniKryptecEngine.instance().getCurrentScene().addGameObject(followedEntity);
                 ((FollowingCamera) OmniKryptecEngine.getInstance().getCurrentScene().getCamera()).setFollowedGameObject(followedEntity);
