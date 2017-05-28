@@ -49,7 +49,7 @@ public class RenderChunk {
         this.scene = scene;
     }
 
-    private final Map<IRenderer, RenderMap<TexturedModel, List<Entity>>> chunk = new HashMap<>();
+    private final RenderMap<IRenderer, RenderMap<TexturedModel, List<Entity>>> chunk = new RenderMap<>();
     private final ArrayList<GameObject> other = new ArrayList<>();
 
     private Entity tmp;
@@ -163,12 +163,14 @@ public class RenderChunk {
     }
 
     private final IRenderer[] empty_array = new IRenderer[] {null};
-
+    private IRenderer r;
+    
     public void frame(Render type, IRenderer... rend) {
         if(rend == null || rend.length == 0){
             rend = empty_array;
         }
-        for(IRenderer r : chunk.keySet()){
+        for(int i=0; i<chunk.keysArray().length; i++){
+        	r = chunk.keysArray()[i];
             if(r != null && (type == Render.All || (type == Render.OnlThis && contains(rend, r)) || (type == Render.EvElse && !contains(rend, r)))) {
                 r.render(scene, chunk.get(r));
             }

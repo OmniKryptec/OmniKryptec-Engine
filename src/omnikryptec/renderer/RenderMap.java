@@ -19,7 +19,7 @@ public class RenderMap<K,V>{
 		keysDirty = true;
 	}
 	
-	public V get(TexturedModel key){
+	public V get(K key){
 		return map.get(key);
 	}
 	
