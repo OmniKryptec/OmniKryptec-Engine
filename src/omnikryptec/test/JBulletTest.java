@@ -244,7 +244,7 @@ public class JBulletTest {
             OmniKryptecEngine.instance().addAndSetScene("TestScene", new Scene(new Camera() {   
                 @Override
                 public void doLogic() {
-                    InputUtil.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(), 1.5F, 15.0F);
+                    InputUtil.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(), 3.0F, 1.5F, 15.0F);
                 }
                 
             }.setPerspectiveProjection(75, 1000, 0.1F)));
@@ -274,7 +274,7 @@ public class JBulletTest {
                     
                     @Override
                     public void doLogic() {
-                        InputUtil.doThirdPersonController(OmniKryptecEngine.instance().getCurrentScene().getCamera(), this, DisplayManager.instance().getSettings().getKeySettings(), 5.0F, 40.0F); //Standard: 1.5F, 15.0F (But too slow) //5.0F, 40.0F is better
+                        InputUtil.doThirdPersonController(OmniKryptecEngine.instance().getCurrentScene().getCamera(), this, DisplayManager.instance().getSettings().getKeySettings(), 10.0F, 5.0F, 40.0F); //Standard: 1.5F, 15.0F (But too slow) //5.0F, 40.0F is better
                         lustig.setCenterOfMassTransform(new Transform(new Matrix4f(new Quat4f(getAbsoluteRotation().x, getAbsoluteRotation().y, getAbsoluteRotation().z, 1), ConverterUtil.convertVector3fFromLWJGL(getAbsolutePos()), 1.0F)));
                         lustig.setAngularVelocity(new Vector3f(0, 0, 0));
                         lustig.setLinearVelocity(new Vector3f(0, 0, 0));
@@ -305,7 +305,7 @@ public class JBulletTest {
 
                     @Override
                     public void doLogic() {
-                        InputUtil.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(), 1.5F, 15.0F);
+                        InputUtil.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(), 3.0F, 1.5F, 15.0F);
                     }
 
                 }.setPerspectiveProjection(75, 1000, 0.1F);

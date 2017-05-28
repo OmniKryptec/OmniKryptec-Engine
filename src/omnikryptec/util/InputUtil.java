@@ -156,17 +156,18 @@ public class InputUtil {
      * @param dps The delta for the Rotation
      * @return 
      */
-    public static GameObject doFirstPersonController(GameObject gameObject, KeySettings keySettings, float vps, float dps) {
+    public static GameObject doFirstPersonController(GameObject gameObject, KeySettings keySettings, float deltaPosXZSpeed, float deltaPosYSpeed, float deltaRotXYZSpeed) {
     	final float dt = DisplayManager.instance().getDeltaTime();
-    	vps *= dt;
-    	dps *= dt;
-        final float deltaPosForward = (keySettings.getKey("moveForward").isPressed() ? vps : 0) + (keySettings.getKey("moveBackward").isPressed() ? -vps : 0);
-        final float deltaPosSideward = (keySettings.getKey("moveRight").isPressed() ? vps : 0) + (keySettings.getKey("moveLeft").isPressed() ? -vps : 0);
-        final float deltaPosUpward = (keySettings.getKey("moveUp").isPressed() ? vps : 0) + (keySettings.getKey("moveDown").isPressed() ? -vps : 0);
+    	deltaPosXZSpeed *= dt;
+    	deltaPosYSpeed *= dt;
+        deltaRotXYZSpeed *= dt;
+        final float deltaPosForward = (keySettings.getKey("moveForward").isPressed() ? deltaPosXZSpeed : 0) + (keySettings.getKey("moveBackward").isPressed() ? -deltaPosXZSpeed : 0);
+        final float deltaPosSideward = (keySettings.getKey("moveRight").isPressed() ? deltaPosXZSpeed : 0) + (keySettings.getKey("moveLeft").isPressed() ? -deltaPosXZSpeed : 0);
+        final float deltaPosUpward = (keySettings.getKey("moveUp").isPressed() ? deltaPosYSpeed : 0) + (keySettings.getKey("moveDown").isPressed() ? -deltaPosYSpeed : 0);
         moveXYZ(gameObject, gameObject, deltaPosForward, deltaPosSideward, deltaPosUpward);
-        final float deltaRotX = (keySettings.getKey("turnPitchUp").isPressed() ? -dps : 0) + (keySettings.getKey("turnPitchDown").isPressed() ? dps : 0);
-        final float deltaRotY = (keySettings.getKey("turnYawLeft").isPressed() ? -dps : 0) + (keySettings.getKey("turnYawRight").isPressed() ? dps : 0);
-        final float deltaRotZ = (keySettings.getKey("turnRollLeft").isPressed() ? -dps : 0) + (keySettings.getKey("turnRollRight").isPressed() ? dps : 0);
+        final float deltaRotX = (keySettings.getKey("turnPitchUp").isPressed() ? -deltaRotXYZSpeed : 0) + (keySettings.getKey("turnPitchDown").isPressed() ? deltaRotXYZSpeed : 0);
+        final float deltaRotY = (keySettings.getKey("turnYawLeft").isPressed() ? -deltaRotXYZSpeed : 0) + (keySettings.getKey("turnYawRight").isPressed() ? deltaRotXYZSpeed : 0);
+        final float deltaRotZ = (keySettings.getKey("turnRollLeft").isPressed() ? -deltaRotXYZSpeed : 0) + (keySettings.getKey("turnRollRight").isPressed() ? deltaRotXYZSpeed : 0);
         turnXZ(gameObject, gameObject, deltaRotX, deltaRotY, deltaRotZ);
         return gameObject;
     }
@@ -179,17 +180,18 @@ public class InputUtil {
      * @param dps The delta for the Rotation
      * @return 
      */
-    public static GameObject doThirdPersonController(GameObject source, GameObject destination, KeySettings keySettings, float vps, float dps) {
+    public static GameObject doThirdPersonController(GameObject source, GameObject destination, KeySettings keySettings, float deltaPosXZSpeed, float deltaPosYSpeed, float deltaRotXYZSpeed) {
     	final float dt = DisplayManager.instance().getDeltaTime();
-    	vps *= dt;
-    	dps *= dt;
-        final float deltaPosForward = (keySettings.getKey("moveForward").isPressed() ? vps : 0) + (keySettings.getKey("moveBackward").isPressed() ? -vps : 0);
-        final float deltaPosSideward = (keySettings.getKey("moveRight").isPressed() ? vps : 0) + (keySettings.getKey("moveLeft").isPressed() ? -vps : 0);
-        final float deltaPosUpward = (keySettings.getKey("moveUp").isPressed() ? vps : 0) + (keySettings.getKey("moveDown").isPressed() ? -vps : 0);
+    	deltaPosXZSpeed *= dt;
+    	deltaPosYSpeed *= dt;
+        deltaRotXYZSpeed *= dt;
+        final float deltaPosForward = (keySettings.getKey("moveForward").isPressed() ? deltaPosXZSpeed : 0) + (keySettings.getKey("moveBackward").isPressed() ? -deltaPosXZSpeed : 0);
+        final float deltaPosSideward = (keySettings.getKey("moveRight").isPressed() ? deltaPosXZSpeed : 0) + (keySettings.getKey("moveLeft").isPressed() ? -deltaPosXZSpeed : 0);
+        final float deltaPosUpward = (keySettings.getKey("moveUp").isPressed() ? deltaPosYSpeed : 0) + (keySettings.getKey("moveDown").isPressed() ? -deltaPosYSpeed : 0);
         moveXZ(source, destination, deltaPosForward, deltaPosSideward, deltaPosUpward);
-        final float deltaRotX = (keySettings.getKey("turnPitchUp").isPressed() ? -dps : 0) + (keySettings.getKey("turnPitchDown").isPressed() ? dps : 0);
-        final float deltaRotY = (keySettings.getKey("turnYawLeft").isPressed() ? -dps : 0) + (keySettings.getKey("turnYawRight").isPressed() ? dps : 0);
-        final float deltaRotZ = (keySettings.getKey("turnRollLeft").isPressed() ? -dps : 0) + (keySettings.getKey("turnRollRight").isPressed() ? dps : 0);
+        final float deltaRotX = (keySettings.getKey("turnPitchUp").isPressed() ? -deltaRotXYZSpeed : 0) + (keySettings.getKey("turnPitchDown").isPressed() ? deltaRotXYZSpeed : 0);
+        final float deltaRotY = (keySettings.getKey("turnYawLeft").isPressed() ? -deltaRotXYZSpeed : 0) + (keySettings.getKey("turnYawRight").isPressed() ? deltaRotXYZSpeed : 0);
+        final float deltaRotZ = (keySettings.getKey("turnRollLeft").isPressed() ? -deltaRotXYZSpeed : 0) + (keySettings.getKey("turnRollRight").isPressed() ? deltaRotXYZSpeed : 0);
         turnNormal(source, destination, deltaRotX, deltaRotY, deltaRotZ);
         return destination;
     }
