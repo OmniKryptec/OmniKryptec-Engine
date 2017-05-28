@@ -1,5 +1,6 @@
 package omnikryptec.test;
 
+import com.bulletphysics.collision.broadphase.BroadphaseNativeType;
 import com.bulletphysics.collision.shapes.StaticPlaneShape;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
@@ -38,6 +39,8 @@ public class JBulletTest2 {
     private static Entity entity_attractor;
     private static RigidBodyBuilder rigidBodyBuilder_ball;
     private static RigidBodyBuilder rigidBodyBuilder_attractor;
+    private static RigidBodyBuilder rigidBodyBuilder_terrain;
+    private static Terrain terrain;
     
     public static final void main(String[] args) {
         try {
@@ -64,11 +67,13 @@ public class JBulletTest2 {
             setupRigidBodyBuilder();
             entity_ball = entityBuilder_brunnen.create();
             entity_attractor = entityBuilder_pine.create();
-            OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(new Terrain(0, 0, Texture.newTexture("/omnikryptec/terrain/grass.png").create()));
+            terrain = new Terrain(0, 0, Texture.newTexture("/omnikryptec/terrain/grass.png").create());
+            OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(terrain);
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_ball);
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_attractor);
             OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativePos().y += 3;
             OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().x = 0;
+            terrain.addComponent(new PhysicsComponent(terrain, rigidBodyBuilder_terrain));
             entity_ball.addComponent(new PhysicsComponent(entity_ball, rigidBodyBuilder_ball));
             entity_attractor.addComponent(new PhysicsComponent(entity_attractor, rigidBodyBuilder_attractor));
             EventSystem.instance().addEventHandler(e -> {input(); logic();}, EventType.RENDER_EVENT);
@@ -102,6 +107,10 @@ public class JBulletTest2 {
         rigidBodyBuilder_attractor.setDefaultMotionState(new Vector3f(camera.getAbsolutePos().x, 10.0F, camera.getAbsolutePos().z - 30), new Vector3f(0, 0, 0));
         rigidBodyBuilder_attractor.getCollisionShape().calculateLocalInertia(rigidBodyBuilder_attractor.getMass(), rigidBodyBuilder_attractor.getInertia());
         rigidBodyBuilder_attractor.getRigidBodyConstructionInfo().restitution = 0.75F;
+        rigidBodyBuilder_terrain = new RigidBodyBuilder(0.0F);
+        rigidBodyBuilder_terrain.setCollisionShape(new StaticPlaneShape(new Vector3f(0, 1, 0), 0.25F));
+        rigidBodyBuilder_terrain.setDefaultMotionState(new Vector3f(0, 0, 0), new Vector3f(0, 0, 0));
+        rigidBodyBuilder_terrain.getRigidBodyConstructionInfo().restitution = 0.25F;
     }
     
     private static final void logic() {

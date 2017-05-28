@@ -6,8 +6,11 @@ import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.GameObject;
+import omnikryptec.logger.LogEntry.LogLevel;
+import omnikryptec.logger.Logger;
 import omnikryptec.main.Scene;
 import omnikryptec.physics.RigidBodyBuilder;
+import omnikryptec.renderer.RenderChunk;
 
 /**
  *
@@ -32,7 +35,7 @@ public class PhysicsComponent implements Component {
         }
         rigidBodyBuilder.setMass(mass);
         this.body = rigidBodyBuilder.create();
-        manageRigidBodyStatus(null, instance.getMyChunk().getScene());
+        init();
     }
     
     public PhysicsComponent(GameObject instance, RigidBodyBuilder rigidBodyBuilder) {
@@ -43,7 +46,20 @@ public class PhysicsComponent implements Component {
         }
         this.instance = instance;
         this.body = rigidBodyBuilder.create();
-        manageRigidBodyStatus(null, instance.getMyChunk().getScene());
+        init();
+    }
+    
+    private final void init() {
+        if(instance != null) {
+            RenderChunk chunk = instance.getMyChunk();
+            if(chunk != null) {
+                manageRigidBodyStatus(null, chunk.getScene());
+            } else if(Logger.isDebugMode()) {
+                Logger.log("Chunk must not be null!", LogLevel.WARNING);
+            }
+        } else if(Logger.isDebugMode()) {
+            Logger.log("Instance must not be null!", LogLevel.WARNING);
+        }
     }
     
     private final void manageRigidBodyStatus(Scene oldScene, Scene newScene) {
