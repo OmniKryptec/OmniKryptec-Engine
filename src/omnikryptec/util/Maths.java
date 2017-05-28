@@ -102,5 +102,15 @@ public class Maths {
 	public static Matrix4f setOrthographicProjection2D(float x, float y, float width, float height, float near, float far) {
 		return setOrthographicProjection(x, x + width, y, y + height, near, far);
 	}
-        
+      
+
+//	public static double getRelativizer(double velocity, double maxVelocity){
+//		if(velocity>maxVelocity){
+//			velocity = maxVelocity;
+//		}
+//		if(velocity<0){
+//			velocity = 0;
+//		}
+//		return Math.sqrt(1- (velocity*velocity)/(maxVelocity*maxVelocity));
+//	}
 }
