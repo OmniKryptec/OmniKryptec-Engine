@@ -49,7 +49,11 @@ public class PhysicsUtil {
     }
     
     public static final MotionState createDefaultMotionStateOfPosition(Vector3f position, Vector3f rotation) {
-        return new DefaultMotionState(new Transform(new Matrix4f(new Quat4f(rotation.x, rotation.y, rotation.z, 1), position, 1)));
+        return new DefaultMotionState(createTransform(position, rotation));
+    }
+    
+    public static final Transform createTransform(Vector3f position, Vector3f rotation) {
+        return new Transform(new Matrix4f(new Quat4f(rotation.x, rotation.y, rotation.z, 1), position, 1));
     }
     
     public static final CollisionShape createConvexHullShape(Model model) {

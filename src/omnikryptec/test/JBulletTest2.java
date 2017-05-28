@@ -1,9 +1,10 @@
 package omnikryptec.test;
 
-import com.bulletphysics.collision.shapes.CollisionShape;
 import com.bulletphysics.collision.shapes.StaticPlaneShape;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 import omnikryptec.component.PhysicsComponent;
 import omnikryptec.display.DisplayManager;
@@ -49,9 +50,10 @@ public class JBulletTest2 {
             
             DisplayManager.createDisplay("JBullet Test", new GameSettings("JBulletTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32));
             OmniKryptecEngine.instance().addAndSetScene("Test-Scene", new Scene(new Camera() {   
+                
                 @Override
                 public void doLogic() {
-                    InputUtil.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(), 5.0F, 40.0F);
+                    InputUtil.doThirdPersonController(this, this, DisplayManager.instance().getSettings().getKeySettings(), 5.0F, 40.0F);
                 }
                 
             }.setPerspectiveProjection(75, 1000, 0.1F)));
@@ -78,6 +80,9 @@ public class JBulletTest2 {
     }
     
     private static final void setupStaticPlane() {
+        if(true) {
+            return;
+        }
         RigidBodyBuilder rigidBodyBuilder = new RigidBodyBuilder();
         rigidBodyBuilder.setCollisionShape(new StaticPlaneShape(new Vector3f(0, 1, 0), 0.25F/*m*/));
         rigidBodyBuilder.setDefaultMotionState(new Vector3f(0, 0, 0), new Vector3f(0, 0, 0));
@@ -101,7 +106,7 @@ public class JBulletTest2 {
     
     private static final void logic() {
         //applyCircularForce();
-        if(false) {
+        if(true) {
             return;
         }
         final RigidBody body = entity_ball.getComponent(PhysicsComponent.class).getBody();
@@ -117,15 +122,21 @@ public class JBulletTest2 {
     }
     
     private static final void input() {
+            Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
         if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_F)) {
             applyForce();
+        }
+        if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_C)) {
+            final RigidBody body = entity_ball.getComponent(PhysicsComponent.class).getBody();
+            body.setCenterOfMassTransform(PhysicsUtil.createTransform(ConverterUtil.convertVector3fFromLWJGL(camera.getAbsolutePos()), new Vector3f(0, 0, 0)));
+            body.setAngularVelocity(new Vector3f(0, 0, 0));
+            body.setLinearVelocity(new Vector3f(0, 0, 0));
         }
         final float deltaX = InputUtil.getMouseDelta().x;
         final float deltaY = InputUtil.getMouseDelta().y;
         final float deltaD = InputUtil.getMouseDelta().z;
         if(OmniKryptecEngine.getInstance().getDisplayManager().getSettings().getKeySettings().getKey("mouseButtonLeft").isPressed()) {
             if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_LCONTROL)) {
-                Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
                 InputUtil.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
             } else {
                 OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().y -= (deltaX / 5);
