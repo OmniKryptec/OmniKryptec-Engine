@@ -17,6 +17,8 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.physics.RigidBodyBuilder;
 import omnikryptec.settings.GameSettings;
+import omnikryptec.terrain.Terrain;
+import omnikryptec.texture.Texture;
 import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
@@ -60,6 +62,7 @@ public class JBulletTest2 {
             setupRigidBodyBuilder();
             entity_ball = entityBuilder_brunnen.create();
             entity_attractor = entityBuilder_pine.create();
+            OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(new Terrain(0, 0, Texture.newTexture("/omnikryptec/terrain/grass.png").create()));
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_ball);
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_attractor);
             OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativePos().y += 3;

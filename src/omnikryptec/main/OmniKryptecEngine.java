@@ -219,7 +219,7 @@ public class OmniKryptecEngine {
     
     private void errorOccured(Exception e, String text){
     	state = State.Error;
-		Logger.logErr(text, e);
+        Logger.logErr(text + e, e);
         eventsystem.fireEvent(new Event(e), EventType.ERROR);
     }
     
