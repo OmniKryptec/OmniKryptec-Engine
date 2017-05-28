@@ -1,6 +1,9 @@
 package omnikryptec.settings;
 
 import java.util.ArrayList;
+import omnikryptec.logger.LogEntry;
+import omnikryptec.logger.LogEntry.LogLevel;
+import omnikryptec.logger.Logger;
 
 import org.lwjgl.input.Keyboard;
 
@@ -81,6 +84,12 @@ public class KeySettings {
                 final KeyGroup keyGroup_new_ = (KeyGroup) key;
                 keyGroup_old_.getKeys().clear();
                 keyGroup_old_.addKeys(keyGroup_new_.getKeys());
+            } else {
+                keys.remove(key_old);
+                keys.add(key);
+                if(Logger.isDebugMode()) {
+                    Logger.log("You replaced a Key with a KeyGroup or a KeyGroup with a Key", LogLevel.WARNING);
+                }
             }
         } else {
             keys.add(key);
