@@ -49,7 +49,7 @@ public class GameObject {
      * 
      * @param pos
      */
-    public GameObject setRelativePos(float x, float y, float z) {
+    public final GameObject setRelativePos(float x, float y, float z) {
         this.pos.x = x;
         this.pos.y = y;
         this.pos.z = z;
@@ -62,43 +62,42 @@ public class GameObject {
      * 
      * @return the relative position
      */
-    public Vector3f getRelativePos() {
+    public final Vector3f getRelativePos() {
         return pos;
     }
     
-    public void increaseRelativePos(float x, float y, float z){
+    public final GameObject increaseRelativePos(float x, float y, float z){
     	pos.x += x;
     	pos.y += y;
     	pos.z += z;
+        return this;
     }
 
-    public void increaseRelativeRot(float x, float y, float z){
+    public final GameObject increaseRelativeRot(float x, float y, float z){
     	rotation.x += x;
     	rotation.y += y;
     	rotation.z += z;
+        return this;
     }
-    
-    
 
     /**
      * the absolute xposition is always absolute
      * 
      * @return the absolute xposition
      */
-    public Vector3f getAbsolutePos() {
-        if (parent == null) {
-        	return pos;
+    public final Vector3f getAbsolutePos() {
+        if(parent == null) {
+            return pos;
         }
         return Vector3f.add(parent.getAbsolutePos(), pos, null);
     }
-
-
+    
     /**
      * the parent or null for no parent of this gameobject
      * 
      * @return the parent
      */
-    public GameObject getParent() {
+    public final GameObject getParent() {
         return parent;
     }
 
@@ -108,43 +107,62 @@ public class GameObject {
      * @param go
      *            the parent
      */
-    public GameObject setParent(GameObject go) {
+    public final GameObject setParent(GameObject go) {
         this.parent = go;
         return this;
     }
-
     
-    public final void doLogic0() {
+    public final GameObject doLogic0() {
     	doLogic();
-    	if(components!=null){
-	    	for(Component c : components){
-	    		c.execute(this);
-	    	}
+    	if(components != null){
+            for(Component c : components){
+                c.execute(this);
+            }
     	}
     	checkChunkPos();
+        return this;
     }
     
-    public GameObject addComponent(Component c){
-    	if(components==null){
-    		components = new ArrayList<>();
+    public final GameObject addComponent(Component c) {
+    	if(components == null) {
+            components = new ArrayList<>();
     	}
     	components.add(c);
     	return this;
     }
     
-    public GameObject removeComponent(Component c){
+    public final GameObject removeComponent(Component c) {
     	components.remove(c);
-    	if(components.isEmpty()){
-    		components = null;
+    	if(components.isEmpty()) {
+            components = null;
     	}
     	return this;
     }
     
-    public Component[] getComponents(){
-    	if(components==null){
-    		return new Component[]{};
+    public final Component[] getComponents() {
+    	if(components == null) {
+            return new Component[] {};
     	}
     	return components.toArray(new Component[components.size()]);
+    }
+    
+    public final <T> T getComponent(Class<T> type) {
+        for(Component c : components) {
+            if(c.getClass() == type) {
+                return (T) c;
+            }
+        }
+        return null;
+    }
+    
+    public final <T> ArrayList<T> getComponents(Class<T> type) {
+        final ArrayList<T> cp = new ArrayList<>();
+        for(Component c : components) {
+            if(c.getClass() == type) {
+                cp.add((T) c);
+            }
+        }
+        return cp;
     }
     
     /**
@@ -154,13 +172,14 @@ public class GameObject {
     protected void doLogic(){	
     }
     
-    public void deleteOperation(){
-    	if(components!=null){
-    		for(Component c : components){
-    			c.onDelete(this);
-    		}
+    public final GameObject deleteOperation() {
+    	if(components != null){
+            for(Component c : components){
+                c.onDelete(this);
+            }
     	}
     	delete();
+        return this;
     }
     
     /**
@@ -170,25 +189,26 @@ public class GameObject {
     protected void delete() {
     }
     
-    protected void checkChunkPos(){
+    protected final GameObject checkChunkPos() {
     	RenderChunk oldchunk = getMyChunk();
-    	if(oldchunk!=null){
-    		if(oldchunk.getChunkX()!=getChunkX()||oldchunk.getChunkY()!=getChunkY()||oldchunk.getChunkZ()!=getChunkZ()){
-    			oldchunk.getScene().addGameObject(this);
-    			oldchunk.removeGameObject(this, false);
-    		}
-    	}else{
-    		if(Logger.isDebugMode()){
-    			Logger.log("MyChunk is null (Should not happen -.-)", LogLevel.WARNING);
-    		}
+    	if(oldchunk != null) {
+            if(oldchunk.getChunkX() != getChunkX() || oldchunk.getChunkY() != getChunkY() || oldchunk.getChunkZ() != getChunkZ()) {
+                oldchunk.getScene().addGameObject(this);
+                oldchunk.removeGameObject(this, false);
+            }
+    	} else {
+            if(Logger.isDebugMode()) {
+                Logger.log("MyChunk is null (Should not happen -.-)", LogLevel.WARNING);
+            }
     	}
+        return this;
     }
     
     /**
      * 
      * @return true if a parent is set
      */
-    public boolean hasParent() {
+    public final boolean hasParent() {
         return parent != null;
     }
 
@@ -197,7 +217,7 @@ public class GameObject {
      * 
      * @return chunkx
      */
-    public long getChunkX() {
+    public final long getChunkX() {
         return (long) Math.floor(getAbsolutePos().x / RenderChunk.getWidth());
     }
 
@@ -206,11 +226,11 @@ public class GameObject {
      * 
      * @return chunky
      */
-    public long getChunkY() {
+    public final long getChunkY() {
         return (long) Math.floor(getAbsolutePos().y / RenderChunk.getHeight());
     }
 
-    public long getChunkZ(){
+    public final long getChunkZ(){
         return (long) Math.floor(getAbsolutePos().z / RenderChunk.getDepth());
     }
 
@@ -219,7 +239,7 @@ public class GameObject {
      * 
      * @param b
      */
-    public GameObject setActive(boolean b) {
+    public final GameObject setActive(boolean b) {
         this.active = b;
         return this;
     }
@@ -229,7 +249,7 @@ public class GameObject {
      * 
      * @return
      */
-    public boolean isActive() {
+    public final boolean isActive() {
         return active;
     }
 
@@ -238,7 +258,7 @@ public class GameObject {
      * 
      * @param f
      */
-    public GameObject setRotation(Vector3f vec) {
+    public final GameObject setRotation(Vector3f vec) {
         this.rotation = vec;
         return this;
     }
@@ -249,7 +269,7 @@ public class GameObject {
      * 
      * @return
      */
-    public Vector3f getRelativeRotation() {
+    public final Vector3f getRelativeRotation() {
         return rotation;
     }
 
@@ -258,9 +278,9 @@ public class GameObject {
      * 
      * @return
      */
-    public Vector3f getAbsoluteRotation() {
-        if (parent == null) {
-                return rotation;
+    public final Vector3f getAbsoluteRotation() {
+        if(parent == null) {
+            return rotation;
         }
         return Vector3f.add(parent.getAbsoluteRotation(), rotation, null);
     }
@@ -271,7 +291,7 @@ public class GameObject {
      * @param toCopy
      * @return
      */
-    public static GameObject copy(GameObject toCopy) {
+    public static final GameObject copy(GameObject toCopy) {
         GameObject go = new GameObject();
         go.active = toCopy.active;
         go.parent = toCopy.parent;
@@ -285,31 +305,32 @@ public class GameObject {
      * 
      * @param toCopy
      */
-    public void setValuesFrom(GameObject toCopy) {
+    public final GameObject setValuesFrom(GameObject toCopy) {
         active = toCopy.active;
         parent = toCopy.parent;
         rotation = new Vector3f(toCopy.rotation);
         pos = new Vector3f(toCopy.pos);
+        return this;
     }
 
-    public GameObject setMyChunk(RenderChunk myChunk){
+    public final GameObject setMyChunk(RenderChunk myChunk) {
     	this.myChunk = myChunk;
         return this;
     }
 
-    public RenderChunk getMyChunk(){
+    public final RenderChunk getMyChunk() {
     	return myChunk;
     }
 
-    public Vector3f getPos() {
+    public final Vector3f getPos() {
         return pos;
     }
 
-    public Vector3f getRotation() {
+    public final Vector3f getRotation() {
         return rotation;
     }
 
-    public GameObject setPos(Vector3f pos) {
+    public final GameObject setPos(Vector3f pos) {
         this.pos = pos;
         return this;
     }
