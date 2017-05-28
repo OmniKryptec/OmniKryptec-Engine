@@ -97,6 +97,10 @@ public class JBulletTest2 {
     }
     
     private static final void logic() {
+        //applyCircularForce();
+        if(false) {
+            return;
+        }
         final RigidBody body = entity_ball.getComponent(PhysicsComponent.class).getBody();
         final Transform bodyTransform = new Transform();
         body.getMotionState().getWorldTransform(bodyTransform);
@@ -138,6 +142,23 @@ public class JBulletTest2 {
         force.sub(cameraPosition, bodyLocation);
         body.activate();
         body.applyCentralForce(force);
+    }
+    
+    private static final void applyCircularForce() {
+        final Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
+        final RigidBody body = entity_ball.getComponent(PhysicsComponent.class).getBody();
+        final Transform bodyTransform = new Transform();
+        body.getMotionState().getWorldTransform(bodyTransform);
+        final Vector3f bodyLocation = bodyTransform.origin;
+        final Vector3f cameraPosition = ConverterUtil.convertVector3fFromLWJGL(camera.getAbsolutePos());
+        final Vector3f force = new Vector3f();
+        force.sub(cameraPosition, bodyLocation);
+        Vector3f temp = new Vector3f();
+        temp.cross(bodyLocation, ConverterUtil.convertVector3fFromLWJGL(entity_ball.getAbsoluteRotation()));
+        temp.dot(force);
+        Logger.log(temp);
+        body.activate();
+        //body.applyCentralForce(temp);
     }
     
 }
