@@ -32,7 +32,7 @@ public class TerrainShader extends Shader {
     //public static final UniformSampler specularmap = new UniformSampler("speculartex");
     
     public TerrainShader() {
-        super(TerrainShader.class.getResourceAsStream(SHADER_FOLDER + "terrainVertexShader.txt"), TerrainShader.class.getResourceAsStream(SHADER_FOLDER + "terrainFragmentShader.txt"), "pos", "texcoords", "normal", "tangent", transformationMatrix, projectionMatrix, viewMatrix, lightPosition, modelTexture, lightColour, shineDamper, reflectivity);
+        super(TerrainShader.class.getResourceAsStream(SHADER_FOLDER + "terrainVertexShader.txt"), TerrainShader.class.getResourceAsStream(SHADER_FOLDER + "terrainFragmentShader.txt"), "position", "textureCoordinates", "normal", "tangents", transformationMatrix, projectionMatrix, viewMatrix, lightPosition, modelTexture, lightColour, shineDamper, reflectivity);
         start();
         modelTexture.loadTexUnit(0);
         //normalmap.loadTexUnit(1);

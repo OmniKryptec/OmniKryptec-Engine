@@ -40,7 +40,7 @@ public class TerrainRenderer implements IRenderer {
         TerrainShader.lightPosition.loadVec3(s.getCamera().getAbsolutePos());
         for(int i = 0; i < entities.keysArray().length; i++) {
             model = entities.keysArray()[i];
-            model.getModel().getVao().bind(0/*, 1, 2*/);
+            model.getModel().getVao().bind(0, 1, 2);
             model.getTexture().bindToUnit(0);
             //model.getMaterial().getNormalmap().bindToUnit(1);
             if(model.getMaterial().hasTransparency()) {
@@ -57,7 +57,7 @@ public class TerrainRenderer implements IRenderer {
             TerrainShader.lightColour.loadVec3(1, 1, 1);
             TerrainShader.shineDamper.loadFloat(0);
             TerrainShader.reflectivity.loadFloat(model.getMaterial().getReflectivity());
-            stapel = entities.get(model);				
+            stapel = entities.get(model);
             for(int j = 0; j < stapel.size(); j++) {
                 Entity entity = stapel.get(j);
                 if(entity instanceof Terrain) {
@@ -73,7 +73,7 @@ public class TerrainRenderer implements IRenderer {
                 //}
             }
             stapel = null;
-            model.getModel().getVao().unbind(0/*, 1, 2*/);
+            model.getModel().getVao().unbind(0, 1, 2);
             if(model.getMaterial().hasTransparency()) {
                 RenderUtil.cullBackFaces(true);
             }
