@@ -49,12 +49,12 @@ public class RenderChunk {
         this.scene = scene;
     }
 
-    private final Map<IRenderer, RenderMap> chunk = new HashMap<>();
+    private final Map<IRenderer, RenderMap<TexturedModel, List<Entity>>> chunk = new HashMap<>();
     private final ArrayList<GameObject> other = new ArrayList<>();
 
     private Entity tmp;
     private IRenderer tmpr;
-    private RenderMap map;
+    private RenderMap<TexturedModel, List<Entity>> map;
     private List<Entity> list;
     private Material m;
     private TexturedModel tm;
@@ -73,7 +73,7 @@ public class RenderChunk {
                             }
                             map = chunk.get(tmpr);
                             if(map == null) {
-                                map = new RenderMap();
+                                map = new RenderMap<>();
                                 chunk.put(tmpr, map);
                             }
                             list = map.get(tm);

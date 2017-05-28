@@ -25,7 +25,7 @@ public class DefaultEntityRenderer implements IRenderer{
 	private TexturedModel model;
 	
 	@Override
-	public void render(Scene s, RenderMap entities) {
+	public void render(Scene s, RenderMap<TexturedModel, List<Entity>> entities) {
 		shader.start();
 		EntityShader.view.loadMatrix(s.getCamera().getViewMatrix());
 		EntityShader.projection.loadMatrix(s.getCamera().getProjectionMatrix());
