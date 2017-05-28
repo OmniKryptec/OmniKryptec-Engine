@@ -40,7 +40,7 @@ public class TerrainRenderer implements IRenderer {
         for(int i = 0; i < entities.keysArray().length; i++) {
             model = entities.keysArray()[i];
             model.getModel().getVao().bind(0, 1, 2);
-            model.getTexture().bindToUnit(0);
+            //model.getTexture().bindToUnit(0);
             if(model.getMaterial().hasTransparency()) {
                 RenderUtil.cullBackFaces(false);
             }
@@ -53,7 +53,13 @@ public class TerrainRenderer implements IRenderer {
                     Logger.log("Non-Terrain GameObject tried to be rendered as a Terrain, but it failed", LogLevel.WARNING);
                     continue;
                 }
-                if(RenderUtil.inRenderRange(terrain, s.getCamera())) {
+                TerrainTexturePack texturePack = terrain.getTexturePack();
+                texturePack.getBackgroundTexture().bindToUnit(0);
+                texturePack.getrTexture().bindToUnit(1);
+                texturePack.getgTexture().bindToUnit(2);
+                texturePack.getbTexture().bindToUnit(3);
+                terrain.getBlendMap().bindToUnit(4);
+                if(RenderUtil.inRenderRange(terrain, s.getCamera()) || true) {
                     TerrainShader.transformationMatrix.loadMatrix(Maths.createTransformationMatrix(new Vector3f(terrain.getX(), 0, terrain.getZ()), Constants.MATHS_ZERO, Constants.MATHS_ONE));
                     GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
                 }

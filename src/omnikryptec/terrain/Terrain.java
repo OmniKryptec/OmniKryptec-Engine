@@ -15,19 +15,26 @@ public class Terrain extends Entity {
     private static final float SIZE = 800; //TODO Move this to Constants.java
     private static final int VERTEX_COUNT = 128; //TODO Move this to Constants.java
     
+    
     public static final TerrainRenderer terrainRenderer = new TerrainRenderer();
     
     private final float x;
     private final float z;
+    private final Model model;
+    private final TerrainTexturePack texturePack;
+    private final Texture blendMap;
     
-    public Terrain(int gridX, int gridZ, Texture texture) {
+    public Terrain(int gridX, int gridZ, TerrainTexturePack texturePack, Texture blendMap) {
         this.x = gridX * SIZE;
         this.z = gridZ * SIZE;
-        setTexturedModel(generateTerrain(texture));
+        this.model = generateTerrain();
+        this.texturePack = texturePack;
+        this.blendMap = blendMap;
+        setTexturedModel(new TexturedModel(model, blendMap));
         getTexturedModel().getMaterial().setRenderer(terrainRenderer);
     }
     
-    private final TexturedModel generateTerrain(Texture texture) {
+    private final Model generateTerrain() {
         int count = VERTEX_COUNT * VERTEX_COUNT;
         float[] vertices = new float[count * 3];
         float[] normals = new float[count * 3];
@@ -62,7 +69,7 @@ public class Terrain extends Entity {
                 indices[pointer++] = bottomRight;
             }
         }
-        return new TexturedModel(new Model(new ModelData(vertices, textureCoords, normals, normals, indices, 0F)), texture);
+        return new Model(new ModelData(vertices, textureCoords, normals, normals, indices, 0F));
     }
 
     public final float getX() {
@@ -71,6 +78,18 @@ public class Terrain extends Entity {
 
     public final float getZ() {
         return z;
+    }
+
+    public final Model getModel() {
+        return model;
+    }
+
+    public final TerrainTexturePack getTexturePack() {
+        return texturePack;
+    }
+
+    public final Texture getBlendMap() {
+        return blendMap;
     }
     
 }
