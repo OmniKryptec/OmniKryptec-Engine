@@ -36,7 +36,7 @@ public class PhysicsWorld {
     public final int stepSimulation(int maxSubSteps, float fixedTimeStep) {
         int temp = -1;
         if(!simulationPaused && simulationSpeed > 0) {
-            temp : dynamicsWorld.stepSimulation(getTimeStep(), maxSubSteps, fixedTimeStep);
+            temp = dynamicsWorld.stepSimulation(getTimeStep(), maxSubSteps, fixedTimeStep);
         }
         return temp;
     }
