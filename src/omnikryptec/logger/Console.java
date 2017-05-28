@@ -69,6 +69,7 @@ public class Console extends JFrame implements ActionListener, ILanguage, KeyLis
     private boolean showed = false;
     private boolean exitWhenLastOne = false;
     private WizardSaveAs wizardSaveAs = null;
+    private boolean blockAdding = false;
     
     public Console() {
         initComponents();
@@ -152,6 +153,7 @@ public class Console extends JFrame implements ActionListener, ILanguage, KeyLis
     }
     
     public Console reloadConsole(ArrayList<LogEntry> logEntries, boolean update) {
+        blockAdding = true;
         StyledDocument doc = textPane.getStyledDocument();
         try {
             doc.remove(0, doc.getLength());
@@ -174,10 +176,17 @@ public class Console extends JFrame implements ActionListener, ILanguage, KeyLis
                 }
             }
         }
+        blockAdding = false;
         return this;
     }
     
     public Console addToConsole(LogEntry logEntry, boolean update) {
+        while(blockAdding) {
+            try {
+                Thread.sleep(1);
+            } catch (Exception ex) {
+            }
+        }
         StyledDocument doc = textPane.getStyledDocument();
         final Style style = doc.addStyle("Style", null);
         if(update) {
@@ -295,11 +304,13 @@ public class Console extends JFrame implements ActionListener, ILanguage, KeyLis
     
     public ArrayList<LogEntry> getLogEntriesSorted(boolean update, HashMap<LogLevel, Boolean> logLevels) {
         final ArrayList<LogEntry> logEntries = new ArrayList<>();
+        Logger.blockInput = true;
         for(LogEntry logEntry : Logger.LOG) {
             if(logLevels.get(logEntry.getLogLevel())) {
                 logEntries.add(logEntry);
             }
         }
+        Logger.blockInput = false;
         sortLogEntries(logEntries, true);
         if(update) {
             for(LogEntry logEntry : logEntries) {

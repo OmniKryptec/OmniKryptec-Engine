@@ -1,11 +1,27 @@
 package omnikryptec.util;
 
+import com.bulletphysics.collision.broadphase.BroadphaseInterface;
+import com.bulletphysics.collision.broadphase.DbvtBroadphase;
+import com.bulletphysics.collision.dispatch.CollisionConfiguration;
+import com.bulletphysics.collision.dispatch.CollisionDispatcher;
+import com.bulletphysics.collision.dispatch.DefaultCollisionConfiguration;
 import javax.vecmath.Vector3f;
 
 import com.bulletphysics.collision.shapes.CollisionShape;
 import com.bulletphysics.collision.shapes.ConvexHullShape;
 import com.bulletphysics.collision.shapes.SphereShape;
+import com.bulletphysics.dynamics.DiscreteDynamicsWorld;
+import com.bulletphysics.dynamics.DynamicsWorld;
+import com.bulletphysics.dynamics.RigidBody;
+import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
+import com.bulletphysics.dynamics.constraintsolver.ConstraintSolver;
+import com.bulletphysics.dynamics.constraintsolver.SequentialImpulseConstraintSolver;
+import com.bulletphysics.linearmath.DefaultMotionState;
+import com.bulletphysics.linearmath.MotionState;
+import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Quat4f;
 
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
@@ -17,6 +33,24 @@ import omnikryptec.objConverter.ModelData;
  * @author Panzer1119
  */
 public class PhysicsUtil {
+    
+    public static final DynamicsWorld createDefaultDynamicsWorld() {
+        final BroadphaseInterface broadphase = new DbvtBroadphase();
+        final CollisionConfiguration collisionConfiguration = new DefaultCollisionConfiguration();
+        final CollisionDispatcher dispatcher = new CollisionDispatcher(collisionConfiguration);
+        final ConstraintSolver solver = new SequentialImpulseConstraintSolver();
+        final DynamicsWorld dynamicsWorld = new DiscreteDynamicsWorld(dispatcher, broadphase, solver, collisionConfiguration);
+        dynamicsWorld.setGravity(Constants.GRAVITY_EARTH);
+        return dynamicsWorld;
+    }
+    
+    public static final MotionState createDefaultMotionStateOfPosition(org.lwjgl.util.vector.Vector3f position, org.lwjgl.util.vector.Vector3f rotation) {
+        return createDefaultMotionStateOfPosition(ConverterUtil.convertVector3fFromLWJGL(position), ConverterUtil.convertVector3fFromLWJGL(rotation));
+    }
+    
+    public static final MotionState createDefaultMotionStateOfPosition(Vector3f position, Vector3f rotation) {
+        return new DefaultMotionState(new Transform(new Matrix4f(new Quat4f(rotation.x, rotation.y, rotation.z, 1), position, 1)));
+    }
     
     public static final CollisionShape createConvexHullShape(Model model) {
         if(model == null) {

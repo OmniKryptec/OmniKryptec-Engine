@@ -167,7 +167,7 @@ public class InputUtil {
         final float deltaRotX = (keySettings.getKey("turnPitchUp").isPressed() ? -dps : 0) + (keySettings.getKey("turnPitchDown").isPressed() ? dps : 0);
         final float deltaRotY = (keySettings.getKey("turnYawLeft").isPressed() ? -dps : 0) + (keySettings.getKey("turnYawRight").isPressed() ? dps : 0);
         final float deltaRotZ = (keySettings.getKey("turnRollLeft").isPressed() ? -dps : 0) + (keySettings.getKey("turnRollRight").isPressed() ? dps : 0);
-        turnXYZ(gameObject, gameObject, deltaRotX, deltaRotY, deltaRotZ);
+        turnXZ(gameObject, gameObject, deltaRotX, deltaRotY, deltaRotZ);
         return gameObject;
     }
     

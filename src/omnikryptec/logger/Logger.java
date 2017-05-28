@@ -42,6 +42,7 @@ public class Logger {
     public static LogLevel minimumLogLevel = LogLevel.INFO;
     public static final Console CONSOLE = new Console();
     public static final ArrayList<LogEntry> LOG = new ArrayList<>();
+    protected static boolean blockInput = false;
 
     public static String DATETIMEFORMAT = LogEntry.STANDARD_DATETIMEFORMAT;
     public static String LOGENTRYFORMAT = LogEntry.STANDARD_LOGENTRYFORMAT;
@@ -136,6 +137,12 @@ public class Logger {
                     stream = NEWSYSERR;
                 } else {
                     stream = NEWSYSOUT;
+                }
+                while(blockInput) {
+                    try {
+                        Thread.sleep(1);
+                    } catch (Exception ex) {
+                    }
                 }
                 LOG.add(logEntry);
                 if(logEntry.getLogLevel() == LogLevel.COMMAND && logEntry.getLogEntry() != null) {
