@@ -4,6 +4,7 @@ import omnikryptec.entity.Entity;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ModelData;
+import omnikryptec.texture.ITexture;
 import omnikryptec.texture.Texture;
 
 /**
@@ -22,9 +23,9 @@ public class Terrain extends Entity {
     private final float z;
     private final Model model;
     private final TerrainTexturePack texturePack;
-    private final Texture blendMap;
+    private final ITexture blendMap;
     
-    public Terrain(int gridX, int gridZ, TerrainTexturePack texturePack, Texture blendMap) {
+    public Terrain(int gridX, int gridZ, TerrainTexturePack texturePack, ITexture blendMap) {
         this.x = gridX * SIZE;
         this.z = gridZ * SIZE;
         this.model = generateTerrain();
@@ -88,7 +89,7 @@ public class Terrain extends Entity {
         return texturePack;
     }
 
-    public final Texture getBlendMap() {
+    public final ITexture getBlendMap() {
         return blendMap;
     }
     
