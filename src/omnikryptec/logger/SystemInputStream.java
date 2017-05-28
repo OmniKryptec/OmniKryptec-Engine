@@ -29,7 +29,7 @@ public class SystemInputStream {
     public SystemInputStream(InputStream inputStreamOriginal) {
         this.inputStreamOriginal = inputStreamOriginal;
         this.thread = new Thread(() -> {
-            Logger.log("Thread System-InputStream started");
+            Logger.log("Thread System-InputStream started", LogLevel.FINE);
             try {
                 while(true) {
                     processData((byte) inputStreamOriginal.read());
@@ -37,7 +37,7 @@ public class SystemInputStream {
             } catch (Exception ex) {
                 Logger.logErr("Error while reading the System-InputStream: " + ex, ex);
             }
-            Logger.log("Thread System-InputStream stopped");
+            Logger.log("Thread System-InputStream stopped", LogLevel.WARNING);
         });
         /*
         this.inputStreamNew = new InputStream() {
