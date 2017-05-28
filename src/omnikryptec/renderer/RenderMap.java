@@ -32,7 +32,7 @@ public class RenderMap<K,V>{
 	@SuppressWarnings("unchecked")
 	public K[] keysArray(){
 		if(keysDirty){
-			keys = map.keySet().toArray((K[])Array.newInstance(keyclass, 1));
+			keys = map.keySet().toArray((K[])Array.newInstance(keyclass, map.size()));
 			keysDirty = false;
 		}
 		return keys;
