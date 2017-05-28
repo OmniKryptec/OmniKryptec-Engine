@@ -1,10 +1,12 @@
 package omnikryptec.physics;
 
+import javax.vecmath.Vector3f;
+
 import com.bulletphysics.collision.shapes.CollisionShape;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
 import com.bulletphysics.linearmath.MotionState;
-import javax.vecmath.Vector3f;
+
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.GameObject;
 import omnikryptec.model.Model;

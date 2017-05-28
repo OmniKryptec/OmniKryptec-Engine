@@ -27,6 +27,13 @@ public class GameSettings {
     private FBOFactory fbo_factory;
     
     private float foliageRadius=50;
+    private float mediumRadius=100;
+    private long chunkoffsetx=1;
+    private long chunkoffsety=1;
+    private long chunkoffsetz=1;
+    private int chunkwidth=128;
+    private int chunkheight=128;
+    private int chunkdepth=128;
     
     public static final int NO_MULTISAMPLING = 0;
 
@@ -183,4 +190,67 @@ public class GameSettings {
 		return foliageRadius;
 	}
 	
+	public GameSettings setMediumRadius(float f){
+		this.mediumRadius = f;
+		return this;
+	}
+	
+	public float getMediumRadius(){
+		return mediumRadius;
+	}
+
+	public long getChunkOffsetX() {
+		return chunkoffsetx;
+	}
+	public long getChunkOffsetY() {
+		return chunkoffsety;
+	}
+	public long getChunkOffsetZ() {
+		return chunkoffsetz;
+	}
+	
+	public GameSettings setChunkOffsetX(long o){
+		return setChunkOffsets(o, chunkoffsety, chunkoffsetz);
+	}
+	public GameSettings setChunkOffsetY(long o){
+		return setChunkOffsets(chunkoffsetx, o, chunkoffsetz);
+	}
+	public GameSettings setChunkOffsetZ(long o){
+		return setChunkOffsets(chunkoffsetx, chunkoffsety, o);
+	}
+	public GameSettings setChunkOffsets(long xo, long yo, long zo){
+		this.chunkoffsetx = xo;
+		this.chunkoffsety = yo;
+		this.chunkoffsetz = zo;
+		return this;
+	}
+	
+	
+	public int getChunkWidth(){
+		return chunkwidth;
+	}
+	
+	public int getChunkHeight(){
+		return chunkheight;
+	}
+	
+	public int getChunkDepth(){
+		return chunkdepth;
+	}
+	
+	public GameSettings setChunkSize(int w, int h, int d){
+		chunkwidth = w;
+		chunkheight = h;
+		chunkdepth = d;
+		return this;
+	}
+	public GameSettings setChunkWidth(int i){
+		return setChunkSize(i, chunkheight, chunkdepth);
+	}
+	public GameSettings setChunkHeight(int i){
+		return setChunkSize(chunkwidth, i, chunkdepth);
+	}
+	public GameSettings setChunkDepth(int i){
+		return setChunkSize(chunkwidth, chunkheight, i);
+	}
 }

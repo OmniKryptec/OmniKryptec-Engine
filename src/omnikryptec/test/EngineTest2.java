@@ -2,8 +2,6 @@ package omnikryptec.test;
 
 import java.util.Random;
 
-import org.lwjgl.input.Keyboard;
-
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
@@ -13,18 +11,16 @@ import omnikryptec.event.EventType;
 import omnikryptec.event.IEventHandler;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.Scene;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
+import omnikryptec.main.Scene;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
-import omnikryptec.postprocessing.ContrastchangeStage;
 import omnikryptec.postprocessing.LightStage;
 import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.InputUtil;
-import omnikryptec.util.Maths;
 import omnikryptec.util.NativesLoader;
 
 /**

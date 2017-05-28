@@ -1,6 +1,10 @@
 package omnikryptec.terrain;
 
 import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector3f;
+
 import omnikryptec.entity.Entity;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
@@ -12,8 +16,6 @@ import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.util.Constants;
 import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector3f;
 
 /**
  *

@@ -1,9 +1,11 @@
 package omnikryptec.component;
 
-import com.bulletphysics.dynamics.RigidBody;
-import com.bulletphysics.linearmath.Transform;
 import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
+
+import com.bulletphysics.dynamics.RigidBody;
+import com.bulletphysics.linearmath.Transform;
+
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.GameObject;
 import omnikryptec.logger.LogEntry.LogLevel;

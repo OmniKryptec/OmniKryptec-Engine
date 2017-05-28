@@ -2,11 +2,7 @@ package omnikryptec.renderer;
 
 import java.lang.reflect.Array;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import omnikryptec.entity.Entity;
-import omnikryptec.model.TexturedModel;
 
 public class RenderMap<K,V>{
 	

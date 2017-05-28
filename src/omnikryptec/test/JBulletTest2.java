@@ -1,9 +1,13 @@
 package omnikryptec.test;
 
+import javax.vecmath.Vector3f;
+
+import org.lwjgl.input.Keyboard;
+
 import com.bulletphysics.collision.shapes.StaticPlaneShape;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
-import javax.vecmath.Vector3f;
+
 import omnikryptec.component.PhysicsComponent;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
@@ -23,7 +27,6 @@ import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.PhysicsUtil;
-import org.lwjgl.input.Keyboard;
 
 /**
  *

@@ -1,24 +1,35 @@
 package omnikryptec.renderer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.GameObject;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
+import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.model.Material;
 import omnikryptec.model.TexturedModel;
 
 public class RenderChunk {
 
-    private static int WIDTH = 128;
-    private static int HEIGHT = 128;
-    private static int DEPTH = 128;
-
+    private static int WIDTH = OmniKryptecEngine.instance().getDisplayManager().getSettings().getChunkWidth();
+    private static int HEIGHT = OmniKryptecEngine.instance().getDisplayManager().getSettings().getChunkHeight();
+    private static int DEPTH = OmniKryptecEngine.instance().getDisplayManager().getSettings().getChunkDepth();
+    
+    /**
+     * changing at runtime may cause errors
+     * @param width
+     * @param height
+     * @param depth
+     */
+    public static void setSize(int width, int height, int depth){
+    	WIDTH = width;
+    	HEIGHT = height;
+    	DEPTH = depth;
+    }
+    
     public static int getWidth() {
         return WIDTH;
     }
