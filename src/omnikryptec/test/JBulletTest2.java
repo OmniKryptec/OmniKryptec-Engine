@@ -31,8 +31,10 @@ public class JBulletTest2 {
     
     private static EntityBuilder entityBuilder_brunnen;
     private static EntityBuilder entityBuilder_pine;
-    private static Entity entity_1;
-    private static RigidBodyBuilder rigidBodyBuilder;
+    private static Entity entity_ball;
+    private static Entity entity_attractor;
+    private static RigidBodyBuilder rigidBodyBuilder_ball;
+    private static RigidBodyBuilder rigidBodyBuilder_attractor;
     
     public static final void main(String[] args) {
         try {
@@ -56,12 +58,15 @@ public class JBulletTest2 {
             OmniKryptecEngine.getInstance().getCurrentScene().useDefaultPhysics();
             setupStaticPlane();
             setupRigidBodyBuilder();
-            entity_1 = entityBuilder_brunnen.create();
-            OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_1);
+            entity_ball = entityBuilder_brunnen.create();
+            entity_attractor = entityBuilder_pine.create();
+            OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_ball);
+            OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_attractor);
             OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativePos().y += 3;
             OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().x = 0;
-            entity_1.addComponent(new PhysicsComponent(entity_1, rigidBodyBuilder));
-            EventSystem.instance().addEventHandler(e -> input(), EventType.RENDER_EVENT);
+            entity_ball.addComponent(new PhysicsComponent(entity_ball, rigidBodyBuilder_ball));
+            entity_attractor.addComponent(new PhysicsComponent(entity_attractor, rigidBodyBuilder_attractor));
+            EventSystem.instance().addEventHandler(e -> {input(); logic();}, EventType.RENDER_EVENT);
             InputUtil.setCamera(OmniKryptecEngine.getInstance().getCurrentScene().getCamera());
             OmniKryptecEngine.getInstance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
         } catch (Exception ex) {
@@ -79,11 +84,29 @@ public class JBulletTest2 {
     
     private static final void setupRigidBodyBuilder() {
         final Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
-        rigidBodyBuilder = new RigidBodyBuilder(1.0F);
-        rigidBodyBuilder.setCollisionShape(PhysicsUtil.createConvexHullShape(entityBuilder_brunnen.getModel()));
-        rigidBodyBuilder.setDefaultMotionState(new Vector3f(camera.getAbsolutePos().x, 20.0F, camera.getAbsolutePos().z - 5), new Vector3f(0, 0, 0));
-        rigidBodyBuilder.getCollisionShape().calculateLocalInertia(rigidBodyBuilder.getMass(), rigidBodyBuilder.getInertia());
-        rigidBodyBuilder.getRigidBodyConstructionInfo().restitution = 0.75F;
+        rigidBodyBuilder_ball = new RigidBodyBuilder(1.0F);
+        rigidBodyBuilder_ball.setCollisionShape(PhysicsUtil.createConvexHullShape(entityBuilder_brunnen.getModel()));
+        rigidBodyBuilder_ball.setDefaultMotionState(new Vector3f(camera.getAbsolutePos().x, 20.0F, camera.getAbsolutePos().z - 5), new Vector3f(0, 0, 0));
+        rigidBodyBuilder_ball.getCollisionShape().calculateLocalInertia(rigidBodyBuilder_ball.getMass(), rigidBodyBuilder_ball.getInertia());
+        rigidBodyBuilder_ball.getRigidBodyConstructionInfo().restitution = 0.75F;
+        rigidBodyBuilder_attractor = new RigidBodyBuilder(1000.0F);
+        rigidBodyBuilder_attractor.setCollisionShape(PhysicsUtil.createConvexHullShape(entityBuilder_pine.getModel()));
+        rigidBodyBuilder_attractor.setDefaultMotionState(new Vector3f(camera.getAbsolutePos().x, 10.0F, camera.getAbsolutePos().z - 30), new Vector3f(0, 0, 0));
+        rigidBodyBuilder_attractor.getCollisionShape().calculateLocalInertia(rigidBodyBuilder_attractor.getMass(), rigidBodyBuilder_attractor.getInertia());
+        rigidBodyBuilder_attractor.getRigidBodyConstructionInfo().restitution = 0.75F;
+    }
+    
+    private static final void logic() {
+        final RigidBody body = entity_ball.getComponent(PhysicsComponent.class).getBody();
+        final Transform bodyTransform = new Transform();
+        body.getMotionState().getWorldTransform(bodyTransform);
+        final Vector3f bodyLocation = bodyTransform.origin;
+        final Vector3f attractorPosition = ConverterUtil.convertVector3fFromLWJGL(entity_attractor.getAbsolutePos());
+        final Vector3f force = new Vector3f();
+        force.sub(attractorPosition, bodyLocation);
+        body.activate();
+        final float attractorFactor = 0.5F;
+        body.applyCentralForce(new Vector3f(force.x * attractorFactor, force.y * attractorFactor, force.z * attractorFactor));
     }
     
     private static final void input() {
@@ -106,7 +129,7 @@ public class JBulletTest2 {
     
     private static final void applyForce() {
         final Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
-        final RigidBody body = entity_1.getComponent(PhysicsComponent.class).getBody();
+        final RigidBody body = entity_ball.getComponent(PhysicsComponent.class).getBody();
         final Transform bodyTransform = new Transform();
         body.getMotionState().getWorldTransform(bodyTransform);
         final Vector3f bodyLocation = bodyTransform.origin;
