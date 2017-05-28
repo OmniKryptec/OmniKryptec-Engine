@@ -164,6 +164,7 @@ public class RenderChunk {
 
     private final IRenderer[] empty_array = new IRenderer[] {null};
     private IRenderer r;
+    private GameObject g;
     
     public void frame(Render type, IRenderer... rend) {
         if(rend == null || rend.length == 0){
@@ -175,7 +176,8 @@ public class RenderChunk {
                 r.render(scene, chunk.get(r));
             }
         }
-        for(GameObject g : other){
+        for(int i=0; i<other.size(); i++){
+        	g = other.get(i);
             if(g != null && g.isActive()) {
                 g.doLogic0();
             }
