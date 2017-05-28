@@ -27,6 +27,7 @@ public class KeySettings {
                                                                                      new Key("turnRollLeft", Keyboard.KEY_Q, true)});
     
     private final ArrayList<Key> keys = new ArrayList<>();
+    private final ArrayList<KeyGroup> keyGroups = new ArrayList<>();
     
     public KeySettings(Key... keys) {
         initKeys();
@@ -112,6 +113,46 @@ public class KeySettings {
         int index = -1;
         while((index = keys.indexOf(key)) != -1) {
             keys.remove(index);
+        }
+        return this;
+    }
+    
+    public final KeySettings setKeyGroups(KeyGroup... keyGroups) {
+        for(KeyGroup keyGroup : keyGroups) {
+            setKeyGroup(keyGroup);
+        }
+        return this;
+    }
+    
+    public final KeySettings setKeyGroup(KeyGroup keyGroup) {
+        final int index = keyGroups.indexOf(keyGroup);
+        if(index >= 0) {
+            KeyGroup keyGroup_old = keyGroups.get(index);
+            keyGroup_old.getKeys().clear();
+            keyGroup_old.addKeys(keyGroup.getKeys());
+        } else {
+            keyGroups.add(keyGroup);
+        }
+        return this;
+    }
+    
+    public final KeyGroup getKeyGroup(String name) {
+        for(KeyGroup keyGroup : keyGroups) {
+            if(keyGroup.getName().equals(name)) {
+                return keyGroup;
+            }
+        }
+        return KeyGroup.DEFAULT_NULL_KEYGROUP;
+    }
+    
+    public final KeySettings removeKeyGroup(String name) {
+        return removeKeyGroup(new KeyGroup(name));
+    }
+    
+    public final KeySettings removeKeyGroup(KeyGroup keyGroup) {
+        int index = -1;
+        while((index = keyGroups.indexOf(keyGroup)) != -1) {
+            keyGroups.remove(index);
         }
         return this;
     }
