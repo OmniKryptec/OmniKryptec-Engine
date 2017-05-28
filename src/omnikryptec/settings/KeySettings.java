@@ -136,8 +136,15 @@ public class KeySettings {
     
     public final KeySettings removeKey(IKey key) {
         int index = -1;
+        int lastIndex = -1;
         while((index = keys.indexOf(key)) != -1) {
-            keys.remove(index);
+            if(lastIndex == index) {
+                break;
+            }
+            if(((key instanceof Key) && (keys.get(index) instanceof Key)) || ((key instanceof KeyGroup) && (keys.get(index) instanceof KeyGroup))) {
+                keys.remove(index);
+            }
+            lastIndex = index;
         }
         return this;
     }
