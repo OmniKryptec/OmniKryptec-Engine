@@ -12,6 +12,7 @@ public class Maths {
 	public static final Vector3f Y = new Vector3f(0, 1, 0);
 	public static final Vector3f Z = new Vector3f(0, 0, 1);
 	public static final Vector3f ZERO = new Vector3f(0, 0, 0);
+	public static final Vector3f ONE = new Vector3f(1, 1, 1);
 	
 	public static Matrix4f createTransformationMatrix(Entity e) {
 		Matrix4f matrix = new Matrix4f();
@@ -34,14 +35,18 @@ public class Maths {
 		return matrix;
 	}
 	
-	public static Matrix4f createEmptyTransformationMatrix() {
+    public static Matrix4f createEmptyTransformationMatrix(){
+    	return createEmptyTransformationMatrix(ZERO);
+    }
+    
+	public static Matrix4f createEmptyTransformationMatrix(Vector3f pos) {
 		Matrix4f matrix = new Matrix4f();
 		matrix.setIdentity();
-		Matrix4f.translate(ZERO, matrix, matrix);
+		Matrix4f.translate(pos, matrix, matrix);
 		Matrix4f.rotate(0, X, matrix, matrix);
 		Matrix4f.rotate(0, Y, matrix, matrix);
 		Matrix4f.rotate(0, Z, matrix, matrix);
-		Matrix4f.scale(ZERO, matrix, matrix);
+		Matrix4f.scale(ONE, matrix, matrix);
 		return matrix;
 	}
 	

@@ -14,10 +14,12 @@ import omnikryptec.event.IEventHandler;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
+import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
 import omnikryptec.postprocessing.ContrastchangeStage;
+import omnikryptec.postprocessing.LightStage;
 import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.Texture;
@@ -41,14 +43,15 @@ public class EngineTest2 implements IEventHandler{
             Logger.showConsoleDirect();
             
             DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFpsCap(DisplayManager.DISABLE_FPS_CAP));
-            PostProcessing.instance().addStage(new ContrastchangeStage(0.3f));
+            PostProcessing.instance().addStage(new LightStage());
+            //PostProcessing.instance().addStage(new ContrastchangeStage(0.3f));
             EventSystem.instance().addEventHandler(new EngineTest2(), EventType.RENDER_EVENT);
             Model brunnen = new Model(ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
             //Model brunnen = Model.generateQuad();
             Texture brunnent = Texture.newTexture(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create();
             TexturedModel tm = new TexturedModel(brunnen, brunnent);
             tm.getMaterial().setHasTransparency(true);
-            OmniKryptecEngine.instance().addAndSetScene("test", new Scene(new Camera() {
+            OmniKryptecEngine.instance().addAndSetScene("test", new Scene((Camera) new Camera() {
      
                 @Override
                 public void doLogic(){
@@ -56,7 +59,7 @@ public class EngineTest2 implements IEventHandler{
                     doCameraLogic(this);
                 }
                 
-            }.setPerspectiveProjection(90, 1000, 0.01f)));
+            }.setPerspectiveProjection(90, 1000, 0.01f).setRelativePos(10, 10, 10)));
             Model pine = new Model(ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")));
 			Texture pinet = Texture.newTexture(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine2.png")).create();
 			TexturedModel ptm = new TexturedModel(pine, pinet);
@@ -87,7 +90,7 @@ public class EngineTest2 implements IEventHandler{
             ent2.setRelativePos(5, 0, -5);
             ent3.setRelativePos(-5, 0, 5);
             //ent.setScale(new Vector3f(1, 1, 1));
-            OmniKryptecEngine.instance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
+            OmniKryptecEngine.instance().startLoop(ShutdownOption.JAVA);
         } catch (Exception ex) {
             Logger.logErr("Error: " + ex, ex);
         }

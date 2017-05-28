@@ -90,7 +90,7 @@ public class Material {
     }
     
     public final Material setRenderer(IRenderer renderer) {
-        this.renderer = renderer;
+    	this.renderer = renderer;
         return this;
     }
 	

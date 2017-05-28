@@ -8,6 +8,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.entity.Light;
@@ -47,25 +48,31 @@ public class LightStage implements PostProcessingStage{
 		shader.start();
 		LightShader.planes.loadVec2(currentScene.getCamera().getPlanesForLR());
 		LightShader.viewv.loadMatrix(currentScene.getCamera().getViewMatrix());
+		Matrix4f abc = Matrix4f.load(currentScene.getCamera().getViewMatrix(), null);
+		LightShader.viewv2.loadMatrix(abc.translate(currentScene.getCamera().getAbsolutePos()));
+		LightShader.abc.loadVec3(currentScene.getCamera().getAbsolutePos());
+		//LightShader.viewv2.loadMatrix(currentScene.getCamera().getViewMatrix());
 		unsampledfbo.bindToUnit(0, 0);
 		normalfbo.bindToUnit(1, 0);
 		specularfbo.bindToUnit(2, 0);
 		unsampledfbo.bindDepthTexture(3);
-		float[] kram = createBuffer(currentScene);
-		quad = generateQuad(kram);
-		quad.bind(0,1);
+		
 		target.bindFrameBuffer();
-		RenderUtil.clear(0, 0, 0, 0);
+		RenderUtil.clear(0, 0, 0, 1);
 		List<Light> relevant = currentScene.getRelevantLights();
 		if(relevant!=null){
 			for(Light l : relevant){
+				float[] kram = createBuffer(currentScene, l);
+				quad = generateQuad(kram);
+				quad.bind(0,1);
 				LightShader.light.loadVec4(l.getPosRad());
 				LightShader.lightColor.loadVec3(l.getColor());
 				GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);
+				quad.unbind(0,1);
 			}
 		}
 		target.unbindFrameBuffer();
-		quad.unbind(0,1);
+		//quad.unbind(0,1);
 		RenderUtil.disableBlending();
 		
 	}
@@ -78,7 +85,7 @@ public class LightStage implements PostProcessingStage{
 	private static FloatBuffer matrixBuffer2 = BufferUtils.createFloatBuffer(16);
 
 	
-	private float[] createBuffer(Scene s){
+	private float[] createBuffer(Scene s, Light l){
 		int[][] pixels = {{0,0},{0,Display.getHeight()},{Display.getWidth(), Display.getHeight()},{Display.getWidth(),0}};
 		ib.clear();
 		ib.put(new int[]{0,0, Display.getWidth(), Display.getHeight()});
@@ -87,7 +94,7 @@ public class LightStage implements PostProcessingStage{
 		s.getCamera().getProjectionMatrix().store(matrixBuffer2);
 		matrixBuffer2.flip();
 		matrixBuffer.clear();
-		Maths.createEmptyTransformationMatrix().store(matrixBuffer);
+		Maths.createEmptyTransformationMatrix(l.getAbsolutePos()).store(matrixBuffer);
 		matrixBuffer.flip();
 		float[] floatarray = new float[3*4];
 		for(int i=0; i<4; i++){

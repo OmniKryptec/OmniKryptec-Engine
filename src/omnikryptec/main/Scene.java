@@ -95,7 +95,8 @@ public class Scene {
         List<Light> lights = new ArrayList<>();
         Light l = new Light();
         l.setColor(1, 1, 1);
-        l.setRadius(1000);
+        l.setRadius(100);
+        l.setRelativePos(1, 1, 1);
         lights.add(l);
         return lights;
     }
