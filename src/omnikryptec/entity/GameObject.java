@@ -146,7 +146,8 @@ public class GameObject {
     	return components.toArray(new Component[components.size()]);
     }
     
-    public final <T> T getComponent(Class<T> type) {
+    @SuppressWarnings("unchecked")
+	public final <T> T getComponent(Class<T> type) {
         for(Component c : components) {
             if(c.getClass() == type) {
                 return (T) c;
@@ -155,10 +156,11 @@ public class GameObject {
         return null;
     }
     
-    public final <T> ArrayList<T> getComponents(Class<T> type) {
-        final ArrayList<T> cp = new ArrayList<>();
+    @SuppressWarnings("unchecked")
+	public final <T> ArrayList<T> getComponents(Class<T> type) {
+    	final ArrayList<T> cp = new ArrayList<>();
         for(Component c : components) {
-            if(c.getClass() == type) {
+        	if(c.getClass() == type) {
                 cp.add((T) c);
             }
         }
