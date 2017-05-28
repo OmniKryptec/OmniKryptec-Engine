@@ -43,7 +43,7 @@ public class PhysicsWorld {
     }
     
     private final float getTimeStep() {
-        return (1.0F / DisplayManager.instance().getFPS()) * simulationSpeed;
+        return DisplayManager.instance().getDeltaTime() * simulationSpeed;
     }
     
     public final DynamicsWorld getWorld() {
