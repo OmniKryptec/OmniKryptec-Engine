@@ -26,8 +26,7 @@ public class KeySettings {
                                                                                      new Key("turnRollRight", Keyboard.KEY_E, true), 
                                                                                      new Key("turnRollLeft", Keyboard.KEY_Q, true)});
     
-    private final ArrayList<Key> keys = new ArrayList<>();
-    private final ArrayList<KeyGroup> keyGroups = new ArrayList<>();
+    private final ArrayList<IKey> keys = new ArrayList<>();
     
     public KeySettings(Key... keys) {
         initKeys();
@@ -53,12 +52,12 @@ public class KeySettings {
         return this;
     }
     
-    public final ArrayList<Key> getKeys() {
+    public final ArrayList<IKey> getKeys() {
         return keys;
     }
     
-    public final KeySettings setKeys(Key... keys) {
-        for(Key key : keys) {
+    public final KeySettings setKeys(IKey... keys) {
+        for(IKey key : keys) {
             setKey(key);
         }
         return this;
@@ -68,11 +67,21 @@ public class KeySettings {
         return setKey(new Key(name, key, isKeyboardKey));
     }
     
-    public final KeySettings setKey(Key key) {
+    public final KeySettings setKey(IKey key) {
         final int index = keys.indexOf(key);
         if(index >= 0) {
-            keys.get(index).setKey(key.getKey());
-            keys.get(index).setIsKeyboardKey(key.isKeyboardKey());
+            final IKey key_old = keys.get(index);
+            if(key_old instanceof Key && key instanceof Key) {
+                final Key key_old_ = (Key) key_old;
+                final Key key_new_ = (Key) key;
+                key_old_.setKey(key_new_.getKey());
+                key_old_.setIsKeyboardKey(key_new_.isKeyboardKey());
+            } else if(key_old instanceof KeyGroup && key instanceof KeyGroup) {
+                final KeyGroup keyGroup_old_ = (KeyGroup) key_old;
+                final KeyGroup keyGroup_new_ = (KeyGroup) key;
+                keyGroup_old_.getKeys().clear();
+                keyGroup_old_.addKeys(keyGroup_new_.getKeys());
+            }
         } else {
             keys.add(key);
         }
@@ -80,18 +89,25 @@ public class KeySettings {
     }
     
     public final Key getKey(String name) {
-        for(Key key : keys) {
+        for(IKey key : keys) {
+            if(!(key instanceof Key)) {
+                continue;
+            }
             if(key.getName().equals(name)) {
-                return key;
+                return (Key) key;
             }
         }
         return Key.DEFAULT_NULL_KEY;
     }
     
     public final Key getKey(int key, boolean isKeyboardKey) {
-        for(Key key_temp : keys) {
-            if(key_temp.getKey() == key && key_temp.isKeyboardKey() == isKeyboardKey) {
-                return key_temp;
+        for(IKey key_temp : keys) {
+            if(!(key_temp instanceof Key)) {
+                continue;
+            }
+            final Key key_temp_ = (Key) key_temp;
+            if(key_temp_.getKey() == key && key_temp_.isKeyboardKey() == isKeyboardKey) {
+                return key_temp_;
             }
         }
         return Key.DEFAULT_NULL_KEY;
@@ -109,7 +125,7 @@ public class KeySettings {
         return removeKey(new Key(name, -1, true));
     }
     
-    public final KeySettings removeKey(Key key) {
+    public final KeySettings removeKey(IKey key) {
         int index = -1;
         while((index = keys.indexOf(key)) != -1) {
             keys.remove(index);
@@ -117,44 +133,21 @@ public class KeySettings {
         return this;
     }
     
-    public final KeySettings setKeyGroups(KeyGroup... keyGroups) {
-        for(KeyGroup keyGroup : keyGroups) {
-            setKeyGroup(keyGroup);
-        }
-        return this;
-    }
-    
-    public final KeySettings setKeyGroup(KeyGroup keyGroup) {
-        final int index = keyGroups.indexOf(keyGroup);
-        if(index >= 0) {
-            KeyGroup keyGroup_old = keyGroups.get(index);
-            keyGroup_old.getKeys().clear();
-            keyGroup_old.addKeys(keyGroup.getKeys());
-        } else {
-            keyGroups.add(keyGroup);
-        }
-        return this;
-    }
-    
     public final KeyGroup getKeyGroup(String name) {
-        for(KeyGroup keyGroup : keyGroups) {
-            if(keyGroup.getName().equals(name)) {
-                return keyGroup;
+        for(IKey key : keys) {
+            if(!(key instanceof KeyGroup)) {
+                continue;
+            }
+            final KeyGroup keyGroup_temp = (KeyGroup) key;
+            if(keyGroup_temp.getName().equals(name)) {
+                return keyGroup_temp;
             }
         }
         return KeyGroup.DEFAULT_NULL_KEYGROUP;
     }
     
     public final KeySettings removeKeyGroup(String name) {
-        return removeKeyGroup(new KeyGroup(name));
-    }
-    
-    public final KeySettings removeKeyGroup(KeyGroup keyGroup) {
-        int index = -1;
-        while((index = keyGroups.indexOf(keyGroup)) != -1) {
-            keyGroups.remove(index);
-        }
-        return this;
+        return removeKey(new KeyGroup(name));
     }
 
 }

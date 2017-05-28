@@ -6,7 +6,7 @@ import omnikryptec.util.InputUtil;
  *
  * @author Panzer1119
  */
-public class Key {
+public class Key implements IKey {
     
     public static final Key DEFAULT_NULL_KEY = new Key("DEFAULT_NULL_KEY", -1, true);
     
@@ -20,6 +20,7 @@ public class Key {
         this.isKeyboardKey = isKeyboardKey;
     }
 
+    @Override
     public final String getName() {
         return name;
     }
@@ -38,6 +39,7 @@ public class Key {
         return this;
     }
     
+    @Override
     public boolean isPressed() {
         if(isKeyboardKey) {
             return InputUtil.isKeyboardKeyDown(key);

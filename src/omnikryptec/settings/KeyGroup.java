@@ -7,23 +7,24 @@ import java.util.Arrays;
  *
  * @author Panzer1119
  */
-public class KeyGroup {
+public class KeyGroup implements IKey {
     
     public static final KeyGroup DEFAULT_NULL_KEYGROUP = new KeyGroup("DEFAULT_NULL_KEYGROUP");
     
     private final String name;
-    private final ArrayList<Key> keys = new ArrayList<>();
+    private final ArrayList<IKey> keys = new ArrayList<>();
     
     public KeyGroup(String name, Key... keys) {
         this.name = name;
         addKeys(keys);
     }
     
+    @Override
     public final String getName() {
         return name;
     }
     
-    public final ArrayList<Key> getKeys() {
+    public final ArrayList<IKey> getKeys() {
         return keys;
     }
     
@@ -32,32 +33,33 @@ public class KeyGroup {
         return this;
     }
     
-    public final KeyGroup addKeys(Key[] keys) {
+    public final KeyGroup addKeys(IKey[] keys) {
         if(keys == null || keys.length == 0) {
             return this;
         }
-        for(Key key : keys) {
+        for(IKey key : keys) {
             this.keys.add(key);
         }
         return this;
     }
     
-    public final KeyGroup addKeys(ArrayList<Key> keys) {
+    public final KeyGroup addKeys(ArrayList<IKey> keys) {
         if(keys == null || keys.isEmpty()) {
             return this;
         }
-        for(Key key : keys) {
+        for(IKey key : keys) {
             this.keys.add(key);
         }
         return this;
     }
     
+    @Override
     public final boolean isPressed() {
         if(keys.isEmpty()) {
             return false;
         }
         boolean isPressed = true;
-        for(Key key : keys) {
+        for(IKey key : keys) {
             if(!key.isPressed()) {
                 isPressed = false;
                 break;
