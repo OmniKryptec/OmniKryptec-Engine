@@ -35,6 +35,17 @@ public class PhysicsComponent implements Component {
         manageRigidBodyStatus(null, instance.getMyChunk().getScene());
     }
     
+    public PhysicsComponent(GameObject instance, RigidBodyBuilder rigidBodyBuilder) {
+        if(instance == null) {
+            throw new NullPointerException("Instance must not be null!");
+        } else if(rigidBodyBuilder == null) {
+            throw new NullPointerException("RigidBodyBuilder must not be null!");
+        }
+        this.instance = instance;
+        this.body = rigidBodyBuilder.create();
+        manageRigidBodyStatus(null, instance.getMyChunk().getScene());
+    }
+    
     private final void manageRigidBodyStatus(Scene oldScene, Scene newScene) {
         if(oldScene != null && oldScene.isUsingPhysics()) {
             oldScene.getPhysicsWorld().getWorld().removeRigidBody(body);

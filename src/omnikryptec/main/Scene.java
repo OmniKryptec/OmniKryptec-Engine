@@ -1,5 +1,6 @@
 package omnikryptec.main;
 
+import com.bulletphysics.dynamics.DynamicsWorld;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,26 +11,29 @@ import omnikryptec.entity.GameObject;
 import omnikryptec.entity.Light;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
+import omnikryptec.physics.PhysicsWorld;
 import omnikryptec.renderer.IRenderer;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.Render;
+import omnikryptec.util.PhysicsUtil;
 
 public class Scene {
 
     private final Map<String, RenderChunk> scene = new HashMap<>();
     private Camera cam;
-    private long cox=1, coy=1, coz=1;
-    private float[] clearcolor = {0,0,0,0};
-
-    
+    private long cox = 1, coy = 1, coz = 1;
+    private float[] clearcolor = {0, 0, 0, 0};
+    private PhysicsWorld physicsWorld = null;
+    /*Temp Variables*/
+    private String tmp;
+    private long cx, cy, cz;
+    private RenderChunk tmpc;
     
     public Scene(Camera cam){
         this.cam = cam;
     }
 
-    private String tmp;
-
-    public boolean addGameObject(GameObject g) {
+    public final boolean addGameObject(GameObject g) {
         if(g != null){
             if(g instanceof Camera && Logger.isDebugMode()){
                 Logger.log("A Camera should not be added as a GameObject!", LogLevel.WARNING);
@@ -46,11 +50,11 @@ public class Scene {
         }
     }
 
-    public GameObject removeGameObject(GameObject g){
+    public final GameObject removeGameObject(GameObject g){
     	return removeGameObject(g, true);
     }
     
-    public GameObject removeGameObject(GameObject g, boolean delete) {
+    public final GameObject removeGameObject(GameObject g, boolean delete) {
         if(g != null) {
             if(g.getMyChunk() != null) {
                 g.getMyChunk().removeGameObject(g, delete);
@@ -63,23 +67,10 @@ public class Scene {
         return g;
     }
 
-    private static String xyzToString(long x, long y, long z) {
-        return x + ":" + y + ":" + z;
-    }
-
-
-    public Camera getCamera(){
-        return cam;
-    }
-
-    public void setCamera(Camera cam){
-        this.cam = cam;
-    }
-
-    private long cx, cy, cz;
-    private RenderChunk tmpc;
-
-    public void frame(Render info, IRenderer ...re) {
+    public final Scene frame(Render info, IRenderer ...re) {
+        if(isUsingPhysics()) {
+            physicsWorld.stepSimulation();
+        }
         cx = cam.getChunkX();
         cy = cam.getChunkY();
         cz = cam.getChunkZ();
@@ -94,36 +85,67 @@ public class Scene {
         }
         cam.doLogic0();
         doLogic();
+        return this;
     }
 
-	public void doLogic() {		
-	}
+    public void doLogic() {		
+    }
 
-	public List<Light> getRelevantLights() {
-		List<Light> lights = new ArrayList<>();
-		Light l = new Light();
-		l.setColor(1, 1, 1);
-		l.setRadius(1000);
-		lights.add(l);
-		return lights;
-	}
+    public final List<Light> getRelevantLights() {
+        List<Light> lights = new ArrayList<>();
+        Light l = new Light();
+        l.setColor(1, 1, 1);
+        l.setRadius(1000);
+        lights.add(l);
+        return lights;
+    }
 
-	public Scene setClearColor(float r, float g, float b){
-		return setClearColor(r, g, b, 1);
-	}
-	
-	public Scene setClearColor(float r, float g, float b, float a){
-		clearcolor = new float[]{r,g,b,a};
-		return this;
-	}
-	
-	public Scene setClearColor(float[] f){
-		clearcolor = f;
-		return this;
-	}
-	
-	public float[] getClearColor() {
-		return clearcolor;
-	}
+    public final Camera getCamera(){
+        return cam;
+    }
+
+    public final Scene setCamera(Camera cam){
+        this.cam = cam;
+        return this;
+    }
+
+    public final Scene setClearColor(float r, float g, float b) {
+        return setClearColor(r, g, b, 1);
+    }
+
+    public final Scene setClearColor(float r, float g, float b, float a) {
+        clearcolor = new float[]{r, g, b, a};
+        return this;
+    }
+
+    public final Scene setClearColor(float[] f) {
+        clearcolor = f;
+        return this;
+    }
+
+    public final float[] getClearColor() {
+        return clearcolor;
+    }
+    
+    public final PhysicsWorld getPhysicsWorld() {
+        return physicsWorld;
+    }
+    
+    public final Scene setPhysicsWorld(PhysicsWorld physicsWorld) {
+        this.physicsWorld = physicsWorld;
+        return this;
+    }
+    
+    public final Scene useDefaultPhysics() {
+        return setPhysicsWorld(new PhysicsWorld(PhysicsUtil.createDefaultDynamicsWorld()));
+    }
+    
+    public final boolean isUsingPhysics() {
+        return physicsWorld != null;
+    }
+
+    private static String xyzToString(long x, long y, long z) {
+        return x + ":" + y + ":" + z;
+    }
 
 }

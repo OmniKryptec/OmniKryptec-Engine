@@ -20,6 +20,7 @@ public class RigidBodyBuilder {
     private float mass = 0.0F;
     private MotionState motionState = null;
     private CollisionShape collisionShape = null;
+    private Vector3f inertia = new Vector3f(0, 0, 0);
     private RigidBodyConstructionInfo rigidBodyConstructionInfo = null;
     
     public RigidBodyBuilder() {
@@ -84,6 +85,15 @@ public class RigidBodyBuilder {
         return this;
     }
 
+    public final Vector3f getInertia() {
+        return inertia;
+    }
+
+    public final RigidBodyBuilder setInertia(Vector3f inertia) {
+        this.inertia = inertia;
+        return this;
+    }
+
     public final MotionState getMotionState() {
         return motionState;
     }
@@ -142,7 +152,7 @@ public class RigidBodyBuilder {
     }
     
     private RigidBodyConstructionInfo createRigidBodyConstructionInfo() {
-        return new RigidBodyConstructionInfo(mass, motionState, collisionShape);
+        return new RigidBodyConstructionInfo(mass, motionState, collisionShape, inertia);
     }
     
     public final RigidBodyConstructionInfo getRigidBodyConstructionInfo() {

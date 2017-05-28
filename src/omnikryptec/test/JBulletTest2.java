@@ -20,6 +20,7 @@ import omnikryptec.settings.GameSettings;
 import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
+import omnikryptec.util.PhysicsUtil;
 import org.lwjgl.input.Keyboard;
 
 /**
@@ -31,6 +32,7 @@ public class JBulletTest2 {
     private static EntityBuilder entityBuilder_brunnen;
     private static EntityBuilder entityBuilder_pine;
     private static Entity entity_1;
+    private static RigidBodyBuilder rigidBodyBuilder;
     
     public static final void main(String[] args) {
         try {
@@ -53,12 +55,12 @@ public class JBulletTest2 {
             entityBuilder_pine = new EntityBuilder().loadModel("/omnikryptec/test/pine.obj").loadTexture("/omnikryptec/test/pine2.png");
             OmniKryptecEngine.getInstance().getCurrentScene().useDefaultPhysics();
             setupStaticPlane();
+            setupRigidBodyBuilder();
             entity_1 = entityBuilder_brunnen.create();
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_1);
             OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativePos().y += 3;
-            OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().x = 40;
-            entity_1.addComponent(new PhysicsComponent(entity_1, 10F));
-            entity_1.setRelativePos(0, 10, -5);
+            OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().x = 0;
+            entity_1.addComponent(new PhysicsComponent(entity_1, rigidBodyBuilder));
             EventSystem.instance().addEventHandler(e -> input(), EventType.RENDER_EVENT);
             InputUtil.setCamera(OmniKryptecEngine.getInstance().getCurrentScene().getCamera());
             OmniKryptecEngine.getInstance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
@@ -75,17 +77,36 @@ public class JBulletTest2 {
         OmniKryptecEngine.getInstance().getCurrentScene().getPhysicsWorld().getWorld().addRigidBody(rigidBodyBuilder.create());
     }
     
+    private static final void setupRigidBodyBuilder() {
+        final Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
+        rigidBodyBuilder = new RigidBodyBuilder(1.0F);
+        rigidBodyBuilder.setCollisionShape(PhysicsUtil.createConvexHullShape(entityBuilder_brunnen.getModel()));
+        rigidBodyBuilder.setDefaultMotionState(new Vector3f(camera.getAbsolutePos().x, 20.0F, camera.getAbsolutePos().z - 5), new Vector3f(0, 0, 0));
+        rigidBodyBuilder.getCollisionShape().calculateLocalInertia(rigidBodyBuilder.getMass(), rigidBodyBuilder.getInertia());
+        rigidBodyBuilder.getRigidBodyConstructionInfo().restitution = 0.75F;
+    }
+    
     private static final void input() {
         if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_F)) {
             applyForce();
         }
+        final float deltaX = InputUtil.getMouseDelta().x;
+        final float deltaY = InputUtil.getMouseDelta().y;
+        final float deltaD = InputUtil.getMouseDelta().z;
+        if(OmniKryptecEngine.getInstance().getDisplayManager().getSettings().getKeySettings().getKey("mouseButtonLeft").isPressed()) {
+            if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_LCONTROL)) {
+                Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
+                InputUtil.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
+            } else {
+                OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().y -= (deltaX / 5);
+                OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().x += (deltaY / 5);
+            }
+        }
     }
     
     private static final void applyForce() {
-        Logger.log("applyForce");
         final Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
         final RigidBody body = entity_1.getComponent(PhysicsComponent.class).getBody();
-        Logger.log("body: " + body);
         final Transform bodyTransform = new Transform();
         body.getMotionState().getWorldTransform(bodyTransform);
         final Vector3f bodyLocation = bodyTransform.origin;
