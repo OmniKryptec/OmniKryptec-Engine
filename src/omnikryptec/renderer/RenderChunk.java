@@ -107,7 +107,7 @@ public class RenderChunk {
                 if((tm = tmp.getTexturedModel()) != null) {
                     if((m = tm.getMaterial()) != null) {
                         if((tmpr = m.getRenderer()) != null) {
-                        	map = chunk.get(tmpr);
+                            map = chunk.get(tmpr);
                             if(map != null) {
                                list = map.get(tm);
                                 if(list != null) {
