@@ -8,48 +8,56 @@ import omnikryptec.texture.Texture;
 
 public class Entity extends GameObject{
 
-	public static enum RenderType{
-		NORMAL,FOLIAGE;
-	}
+    public static enum RenderType {
+        NORMAL,
+        FOLIAGE;
+    }
 	
     private TexturedModel model;
     private Vector3f scale = new Vector3f(1, 1, 1);
     private RenderType type = RenderType.NORMAL;
     
+    protected Entity() {
+    }
     
-    public Entity(TexturedModel model){
+    public Entity(TexturedModel model) {
         this(model, null);
     }
 
-    public Entity(TexturedModel model, GameObject parent){
+    public Entity(TexturedModel model, GameObject parent) {
         super(parent);
         this.model = model;
     }
 
-    public Entity(Entity copy){
+    public Entity(Entity copy) {
         setValuesFrom(copy);
         this.model = copy.model;
     }
 
-    public Entity setRenderType(RenderType type){
+    public Entity setRenderType(RenderType type) {
     	this.type = type;
     	return this;
     }
     
-    public RenderType getType(){
+    public RenderType getType() {
     	return type;
     }
     
-    public final Vector3f getScale(){
+    public final Vector3f getScale() {
         return scale;
     }
 
-    public final Entity setScale(Vector3f v){
+    public final Entity setScale(Vector3f v) {
         this.scale = v;
         return this;
     }
+    
+    public final Entity setTexturedModel(TexturedModel model) {
+        this.model = model;
+        return this;
+    }
 
-    public final TexturedModel getTexturedModel(){
+    public final TexturedModel getTexturedModel() {
         return model;
     }
     
