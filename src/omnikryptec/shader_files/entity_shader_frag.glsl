@@ -14,6 +14,8 @@ uniform sampler2D tex;
 uniform sampler2D normaltex;
 uniform sampler2D speculartex;
 
+uniform vec4 colormod;
+
 uniform float hasspecular;
 uniform float reflec;
 
@@ -26,6 +28,7 @@ void main(void){
 	normalt = normalt*0.5+0.5;
 	
 	col = vec4(diffuset);
+	col *= colormod;
 	col1 = vec4(normalt.rgb,1.0);
 	
 	
@@ -35,7 +38,7 @@ void main(void){
 	}else{
 		col2 = vec4(0,0,0,reflec);
 	}
-	if(col.a<0.1){
+	if(col.a<0.2){
 		discard;
 	}
 }

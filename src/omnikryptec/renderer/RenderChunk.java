@@ -42,12 +42,9 @@ public class RenderChunk {
         return DEPTH;
     }
 
-    private static final ArrayList<IRenderer> allrenderer = new ArrayList<>();
 
     public static final void cleanup(){
-        for(int i = 0; i < allrenderer.size(); i++){
-            allrenderer.get(i).cleanup();
-        }
+        
     }
 
     private final long x, y, z;
@@ -79,9 +76,6 @@ public class RenderChunk {
                 if((tm = tmp.getTexturedModel()) != null) {
                     if((m = tm.getMaterial()) != null) {
                         if((tmpr = m.getRenderer()) != null) {
-                            if(!allrenderer.contains(tmpr)){
-                                allrenderer.add(tmpr);
-                            }
                             map = chunk.get(tmpr);
                             if(map == null) {
                                 map = new RenderMap<>(TexturedModel.class);
@@ -167,7 +161,7 @@ public class RenderChunk {
         return z;
     }
 
-    public static enum Render {
+    public static enum AllowedRenderer {
         All,
         EvElse,
         OnlThis;
@@ -177,13 +171,13 @@ public class RenderChunk {
     private IRenderer r;
     private GameObject g;
     
-    public void frame(Render type, IRenderer... rend) {
+    public void frame(float maxExpenLvl, AllowedRenderer type, IRenderer... rend) {
         if(rend == null || rend.length == 0){
             rend = empty_array;
         }
         for(int i=0; i<chunk.keysArray().length; i++){
         	r = chunk.keysArray()[i];
-            if(r != null && (type == Render.All || (type == Render.OnlThis && contains(rend, r)) || (type == Render.EvElse && !contains(rend, r)))) {
+            if(r != null && r.expensiveLevel()<=maxExpenLvl&&(type == AllowedRenderer.All || (type == AllowedRenderer.OnlThis && contains(rend, r)) || (type == AllowedRenderer.EvElse && !contains(rend, r)))) {
                 r.render(scene, chunk.get(r));
             }
         }

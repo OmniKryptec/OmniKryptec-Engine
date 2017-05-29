@@ -25,6 +25,8 @@ void main(void){
 	
 	vec3 surfaceNormal = (modelViewMatrix * vec4(normal,0.0)).xyz;
 	
+	
+	
 	norm = normalize(surfaceNormal);
 	tang = normalize((modelViewMatrix * vec4(tangent, 0.0)).xyz);
 	bitang = normalize(cross(norm, tang));

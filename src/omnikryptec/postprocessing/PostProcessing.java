@@ -5,7 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import omnikryptec.display.DisplayManager;
+import omnikryptec.logger.LogEntry.LogLevel;
+import omnikryptec.logger.Logger;
 import omnikryptec.model.Model;
+import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
 import omnikryptec.util.ModelUtil;
 import omnikryptec.util.RenderUtil;
 
@@ -18,6 +21,8 @@ public class PostProcessing {
 	private static PostProcessingStage currentStage;
 	
 	private static PostProcessing instance;
+	
+	private FrameBufferObject tmp;
 	
 	public static PostProcessing instance(){
 		if(instance==null){
@@ -34,11 +39,7 @@ public class PostProcessing {
 	}
 	
 	public void doPostProcessing(FrameBufferObject[] fbos, FrameBufferObject ...fbo) {
-		if(fbos.length>0){
-			before = fbos[fbos.length-1];
-		}else{
-			before = fbo[fbo.length-1];
-		}
+		before = fbo[0];
 		beforelist.addAll(Arrays.asList(fbo));
 		beforelist.addAll(Arrays.asList(fbos));
 		start();
@@ -47,26 +48,26 @@ public class PostProcessing {
 			if(!currentStage.usesDefaultRenderObject()){
 				end();
 			}
-			currentStage.render(before, beforelist);
+			currentStage.render(before, beforelist, i);
 			if(!currentStage.usesDefaultRenderObject()){
 				start();
 			}
-			before = currentStage.getFbo();
+			tmp = currentStage.getFbo();
+			if(tmp.getDepthbufferType()==DepthbufferType.NONE){
+				Logger.log("FBO of Stage "+i+" (zerobased) has no Depthbufferattachment. Some PostProcessingStages may not work anymore.", LogLevel.WARNING);
+			}
+			before.resolveDepth(tmp);
+			before = tmp;
 			beforelist.add(before);
 		}
 		end();
-		if(stages.size()>0){
-			beforelist.clear();
-			before.resolveToScreen();
-		}else{
-			beforelist.get(0).resolveToScreen();
-			beforelist.clear();
-		}
+		before.resolveToScreen();
+		beforelist.clear();
 	}
 
 	public static void cleanup() {
 		for(int i=0; i<beforelist.size(); i++){
-			beforelist.get(i).clear();
+			beforelist.get(i).delete();
 		}
 	}
 	

@@ -1,7 +1,10 @@
 package omnikryptec.entity;
 
-import org.lwjgl.util.vector.Vector3f;
 
+import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
+
+import omnikryptec.model.Material;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.texture.Texture;
@@ -10,12 +13,16 @@ public class Entity extends GameObject{
 
     public static enum RenderType {
         NORMAL,
+        MEDIUM,
         FOLIAGE;
     }
 	
+    
     private TexturedModel model;
     private Vector3f scale = new Vector3f(1, 1, 1);
     private RenderType type = RenderType.NORMAL;
+    private Vector4f color = new Vector4f(1, 1, 1, 1);
+    
     
     protected Entity() {
     }
@@ -32,6 +39,9 @@ public class Entity extends GameObject{
     public Entity(Entity copy) {
         setValuesFrom(copy);
         this.model = copy.model;
+        this.type = copy.type;
+        this.scale = new Vector3f(copy.scale);
+        this.color = new Vector4f(copy.color);
     }
 
     public Entity setRenderType(RenderType type) {
@@ -59,6 +69,23 @@ public class Entity extends GameObject{
 
     public final TexturedModel getTexturedModel() {
         return model;
+    }
+    
+    public Entity setColor(Vector4f v){
+    	this.color = v;
+    	return this;
+    }
+    
+    public Entity setColor(float r, float g, float b, float a){
+    	color.x = r;
+    	color.y = g;
+    	color.z = b;
+    	color.w = a;
+    	return this;
+    }
+    
+    public Vector4f getColor(){
+    	return color;
     }
     
     public static EntityBuilder newEntity() {

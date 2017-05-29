@@ -21,9 +21,10 @@ public class LightShader extends Shader {
 	public static final UniformMatrix viewv = new UniformMatrix("vm");
 	public static final UniformMatrix viewv2 = new UniformMatrix("vm2");
 	public static final UniformVec3 abc = new UniformVec3("cam");
+	public static final UniformMatrix proj = new UniformMatrix("proj");
 	
 	public LightShader() {
-		super(LightShader.class.getResourceAsStream(oc_shader_loc+"light_shader_vert.glsl"), LightShader.class.getResourceAsStream(oc_shader_loc+"light_shader_frag.glsl"), "position", "vpos", abc,viewv2,depth,diffuse,specular,normal,light,lightColor,planes, viewv);
+		super(LightShader.class.getResourceAsStream(oc_shader_loc+"light_shader_vert.glsl"), LightShader.class.getResourceAsStream(oc_shader_loc+"light_shader_frag.glsl"), "position", "vpos", abc,viewv2,depth,diffuse,specular,normal,light,lightColor,planes, viewv, proj);
 		start();
 		diffuse.loadTexUnit(0);
 		normal.loadTexUnit(1);

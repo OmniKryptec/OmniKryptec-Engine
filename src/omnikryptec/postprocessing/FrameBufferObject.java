@@ -34,6 +34,8 @@ public class FrameBufferObject implements ITexture{
 	private boolean multitarget = false;
 	private int[] targets;
 	
+	private DepthbufferType type;
+	
 	public static enum DepthbufferType {
 		NONE, DEPTH_TEXTURE, DEPTH_RENDER_BUFFER;
 	}
@@ -116,7 +118,7 @@ public class FrameBufferObject implements ITexture{
 	/**
 	 * Deletes the frame buffer and its attachments when the game closes.
 	 */
-	public void clear() {
+	public void delete() {
 		GL30.glDeleteFramebuffers(frameBuffer);
 		GL11.glDeleteTextures(depthTexture);
 		GL30.glDeleteRenderbuffers(depthBuffer);
@@ -175,7 +177,11 @@ public class FrameBufferObject implements ITexture{
 	public int getDepthTexture() {
 		return depthTexture;
 	}
-
+	
+	public DepthbufferType getDepthbufferType(){
+		return type;
+	}
+	
 	public int getTexture(int index){
 		if(multisample!=GameSettings.NO_MULTISAMPLING){
 			throw new IllegalAccessException("This framebuffer is multisampled and has no textures.");
@@ -191,7 +197,16 @@ public class FrameBufferObject implements ITexture{
 				GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT, GL11.GL_NEAREST);
 		unbindFrameBuffer();
 	}
-
+	
+	public void resolveDepth(FrameBufferObject out){
+		GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, out.frameBuffer);
+		GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, frameBuffer);
+		GL11.glReadBuffer(GL30.GL_DEPTH_ATTACHMENT);
+		GL30.glBlitFramebuffer(0, 0, width, height, 0, 0, out.width, out.height,
+				GL11.GL_DEPTH_BUFFER_BIT, GL11.GL_NEAREST);
+		unbindFrameBuffer();
+	}
+	
 	public void resolveToScreen() {
 		GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, 0);
 		GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, frameBuffer);
@@ -210,6 +225,7 @@ public class FrameBufferObject implements ITexture{
 	 *            FBO.
 	 */
 	private void initialiseFrameBuffer(DepthbufferType type) {
+		this.type = type;
 		fbos.add(this);
 		colBuffers = new int[targets.length];
 		createFrameBuffer();
@@ -330,7 +346,7 @@ public class FrameBufferObject implements ITexture{
 	
 	public static void cleanup(){
 		for(int i=0; i<fbos.size(); i++){
-			fbos.get(i).clear();
+			fbos.get(i).delete();
 		}
 		fbos.clear();
 		history.clear();

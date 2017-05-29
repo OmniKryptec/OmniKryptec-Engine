@@ -16,6 +16,11 @@ import omnikryptec.main.Scene;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
+import omnikryptec.postprocessing.ColorSpaceStage;
+import omnikryptec.postprocessing.ContrastchangeStage;
+import omnikryptec.postprocessing.FrameBufferObject;
+import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
+import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.postprocessing.LightStage;
 import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.settings.GameSettings;
@@ -38,9 +43,10 @@ public class EngineTest2 implements IEventHandler{
             Logger.CONSOLE.setExitWhenLastOne(true);
             Logger.showConsoleDirect();
             
-            DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFpsCap(DisplayManager.DISABLE_FPS_CAP));
-            PostProcessing.instance().addStage(new LightStage());
-            //PostProcessing.instance().addStage(new ContrastchangeStage(0.3f));
+            DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFpsCap(60));
+            //PostProcessing.instance().addStage(new ContrastchangeStage(0.5f));
+            //PostProcessing.instance().addStage(new LightStage());
+            PostProcessing.instance().addStage(new ColorSpaceStage(8,8,8));
             EventSystem.instance().addEventHandler(new EngineTest2(), EventType.RENDER_EVENT);
             Model brunnen = new Model(ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
             //Model brunnen = Model.generateQuad();
@@ -62,30 +68,19 @@ public class EngineTest2 implements IEventHandler{
 			ptm.getMaterial().setHasTransparency(true);
 			Random r = new Random();
 			for(int i=0; i<200; i++){
-				Entity e = new Entity(ptm);
+				Entity e = new Entity(tm){
+					@Override
+	            	public void doLogic(){
+	            		//setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(), r.nextFloat());
+						//InputUtil.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(), 1, 1, 1);
+	            	}
+				};
+				e.setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);
 				e.setRelativePos(r.nextInt(100)-50, r.nextInt(100)-50, r.nextInt(100)-50);
 				OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 			}
-            Entity ent = new Entity(tm);
             //ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
-            Entity ent2 = new Entity(tm){
-            	@Override
-            	public void doLogic(){
-            		increaseRelativeRot(1, 1, 1);
-            		//increaseRelativePos(0, 0.01f, 0);
-            	}
-            };
-            Entity ent3 = new Entity(tm);
-            ent3.setParent(ent2);
-            OmniKryptecEngine.instance().getCurrentScene().addGameObject(ent);
-            OmniKryptecEngine.instance().getCurrentScene().addGameObject(ent2);
-            OmniKryptecEngine.instance().getCurrentScene().addGameObject(ent3);
-            //OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().y += 10;
-           //OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativeRotation().z = 90;
-            ent.setRelativePos(3, -10, 10);
-            ent2.setRelativePos(5, 0, -5);
-            ent3.setRelativePos(-5, 0, 5);
-            //ent.setScale(new Vector3f(1, 1, 1));
+            
             OmniKryptecEngine.instance().startLoop(ShutdownOption.JAVA);
         } catch (Exception ex) {
             Logger.logErr("Error: " + ex, ex);

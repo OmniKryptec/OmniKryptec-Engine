@@ -13,7 +13,7 @@ import omnikryptec.logger.Logger;
 import omnikryptec.physics.PhysicsWorld;
 import omnikryptec.renderer.IRenderer;
 import omnikryptec.renderer.RenderChunk;
-import omnikryptec.renderer.RenderChunk.Render;
+import omnikryptec.renderer.RenderChunk.AllowedRenderer;
 import omnikryptec.util.PhysicsUtil;
 
 public class Scene {
@@ -75,7 +75,7 @@ public class Scene {
 		return g;
 	}
 
-	public final Scene frame(Render info, IRenderer... re) {
+	public final Scene frame(float maxexpenlvl, AllowedRenderer info, IRenderer... re) {
 		if (isUsingPhysics()) {
 			physicsWorld.stepSimulation();
 		}
@@ -86,7 +86,7 @@ public class Scene {
 			for (long y = -coy + cy; y <= coy + cy; y++) {
 				for (long z = -coz + cz; z <= coz + cz; z++) {
 					if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
-						tmpc.frame(info, re);
+						tmpc.frame(maxexpenlvl, info, re);
 					}
 				}
 			}

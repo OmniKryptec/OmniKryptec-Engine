@@ -17,7 +17,7 @@ import omnikryptec.postprocessing.FrameBufferObject;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.renderer.RenderChunk;
-import omnikryptec.renderer.RenderChunk.Render;
+import omnikryptec.renderer.RenderChunk.AllowedRenderer;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.InputUtil;
@@ -135,10 +135,10 @@ public class OmniKryptecEngine {
     }
     
     private void resizeFbos() {
-    	scenefbo.clear();
-    	unsampledfbo.clear();
-    	normalfbo.clear();
-    	specularfbo.clear();
+    	scenefbo.delete();
+    	unsampledfbo.delete();
+    	normalfbo.delete();
+    	specularfbo.delete();
     	createFbos();
     }
     
@@ -190,11 +190,11 @@ public class OmniKryptecEngine {
 	            eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
 	    	}
 	    	scenefbo.bindFrameBuffer();
-	    	if(clear) {
-	            RenderUtil.clear(sceneCurrent.getClearColor());
-	    	}
 	    	if(sceneCurrent != null) {
-	            sceneCurrent.frame(Render.All);
+	    		if(clear) {
+		            RenderUtil.clear(sceneCurrent.getClearColor());
+		    	}
+	            sceneCurrent.frame(Float.MAX_VALUE, AllowedRenderer.All);
 	    	}
 	    	
 	    	scenefbo.unbindFrameBuffer();

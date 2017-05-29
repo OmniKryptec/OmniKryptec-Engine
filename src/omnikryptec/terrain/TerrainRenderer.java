@@ -79,4 +79,9 @@ public class TerrainRenderer implements IRenderer {
         shader.cleanup();
     }
 
+	@Override
+	public float expensiveLevel() {
+		return 0;
+	}
+
 }

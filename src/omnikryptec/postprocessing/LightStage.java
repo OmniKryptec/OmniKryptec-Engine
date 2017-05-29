@@ -29,16 +29,20 @@ public class LightStage implements PostProcessingStage{
 	private VertexArrayObject quad;
 	
 	private int[] list_ind = {0,1,2};
-
+	private boolean[] usebefore = {true,false,false};
+	
 	@Override
-	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist) {
-		render(OmniKryptecEngine.instance().getCurrentScene(), beforelist.get(list_ind[0]),beforelist.get(list_ind[1]),beforelist.get(list_ind[2]));
+	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist, int stage) {
+		render(OmniKryptecEngine.instance().getCurrentScene(), usebefore[0]?before:beforelist.get(list_ind[0]),usebefore[1]?before:beforelist.get(list_ind[1]),usebefore[2]?before:beforelist.get(list_ind[2]));
 	}
 	
 	public LightStage setListIndices(int diffuseDepth, int normal, int specular){
 		list_ind[0] = diffuseDepth;
+		usebefore[0] = diffuseDepth < 0;
 		list_ind[1] = normal;
+		usebefore[1] = normal < 0;
 		list_ind[2] = specular;
+		usebefore[2] = specular < 0;
 		return this;
 	}
 	
@@ -51,6 +55,7 @@ public class LightStage implements PostProcessingStage{
 		Matrix4f abc = Matrix4f.load(currentScene.getCamera().getViewMatrix(), null);
 		LightShader.viewv2.loadMatrix(abc.translate(currentScene.getCamera().getAbsolutePos()));
 		LightShader.abc.loadVec3(currentScene.getCamera().getAbsolutePos());
+		LightShader.proj.loadMatrix(currentScene.getCamera().getProjectionMatrix());
 		//LightShader.viewv2.loadMatrix(currentScene.getCamera().getViewMatrix());
 		unsampledfbo.bindToUnit(0, 0);
 		normalfbo.bindToUnit(1, 0);
@@ -94,7 +99,10 @@ public class LightStage implements PostProcessingStage{
 		s.getCamera().getProjectionMatrix().store(matrixBuffer2);
 		matrixBuffer2.flip();
 		matrixBuffer.clear();
-		Maths.createEmptyTransformationMatrix(l.getAbsolutePos()).store(matrixBuffer);
+		Matrix4f test = new Matrix4f();
+		test.setIdentity();
+		test.store(matrixBuffer);
+		//Maths.createEmptyTransformationMatrix(l.getAbsolutePos()).store(matrixBuffer);
 		matrixBuffer.flip();
 		float[] floatarray = new float[3*4];
 		for(int i=0; i<4; i++){
@@ -137,5 +145,6 @@ public class LightStage implements PostProcessingStage{
 	public FrameBufferObject getFbo() {
 		return target;
 	}
+
 
 }

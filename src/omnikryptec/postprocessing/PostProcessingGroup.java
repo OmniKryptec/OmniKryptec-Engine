@@ -14,11 +14,11 @@ public class PostProcessingGroup implements PostProcessingStage {
 	}
 	
 	@Override
-	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist) {
+	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist, int stage) {
 		List<FrameBufferObject> beforel = new ArrayList<>();
 		beforel.add(before);
 		for(int i=0; i<stages.length; i++){
-			stages[i].render(before, beforel);
+			stages[i].render(before, beforel, i);
 			before = stages[i].getFbo();
 			beforel.add(before);
 		}

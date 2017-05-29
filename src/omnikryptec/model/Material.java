@@ -1,5 +1,9 @@
 package omnikryptec.model;
 
+import javax.vecmath.Vector4f;
+
+import omnikryptec.exceptions.OmniKryptecException;
+import omnikryptec.logger.Logger;
 import omnikryptec.renderer.IRenderer;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.texture.ITexture;
@@ -7,8 +11,9 @@ import omnikryptec.texture.Texture;
 
 public class Material {
 	
+	
     private static ITexture defaultNormalMap;
-
+    
     public static final void setDefaultNormalMap(ITexture t) {
         if(t != null){
             defaultNormalMap = t;
@@ -26,6 +31,8 @@ public class Material {
     private boolean hasTransparency = false;
     private IRenderer renderer = RendererRegistration.DEF_ENTITY_RENDERER;
 
+    
+    
     public Material(){
         this(0);
     }
@@ -90,8 +97,13 @@ public class Material {
     }
     
     public final Material setRenderer(IRenderer renderer) {
+    	if(!RendererRegistration.exists(renderer)){
+    		Logger.logErr("This renderer is not registered!", new OmniKryptecException("Renderer is not registered: "+renderer));
+    	}
     	this.renderer = renderer;
         return this;
     }
+    
+ 
 	
 }

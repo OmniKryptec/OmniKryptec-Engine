@@ -50,6 +50,7 @@ public class DefaultEntityRenderer implements IRenderer{
 				if(RenderUtil.inRenderRange(entity, s.getCamera())){
 					entity.doLogic0();
 					EntityShader.transformation.loadMatrix(Maths.createTransformationMatrix(entity));
+					EntityShader.colmod.loadVec4(entity.getColor());
 					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
 				}
 			}
@@ -66,6 +67,13 @@ public class DefaultEntityRenderer implements IRenderer{
 	@Override
 	public void cleanup() {
 		shader.cleanup();
+	}
+
+
+
+	@Override
+	public float expensiveLevel() {
+		return 0;
 	}
 
 }

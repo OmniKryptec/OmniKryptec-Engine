@@ -14,9 +14,6 @@ public class RendererRegistration {
 		DEF_ENTITY_RENDERER = new DefaultEntityRenderer();
 	}
 	
-	
-	
-	
 	public static boolean exists(IRenderer r){
 		return existingRenderers.contains(r);
 	}

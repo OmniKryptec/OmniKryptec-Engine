@@ -12,25 +12,26 @@ public abstract class PostProcessingStep implements PostProcessingStage {
 	private Shader shader;
 	private FrameBufferObject target;
 
-	protected PostProcessingStep(Shader shader, FrameBufferObject target) {
+	protected PostProcessingStep(Shader shader) {
 		this.shader = shader;
-		this.target = target;
+		this.target = getOnResize();
 	}
 
 	@Override
-	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist) {
+	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist, int stage) {
 		shader.start();
-		bindTexture(before, beforelist, shader);
+		bindTexture(before, beforelist, shader, stage);
 		renderQuad();
 		afterRendering();
 	}
-
+	
+	
 	@Override
 	public FrameBufferObject getFbo() {
 		return target;
 	}
 
-	public abstract void bindTexture(FrameBufferObject before, List<FrameBufferObject> beforelist, Shader using);
+	public abstract void bindTexture(FrameBufferObject before, List<FrameBufferObject> beforelist, Shader using, int stage);
 
 	public abstract void afterRendering();
 
@@ -49,6 +50,6 @@ public abstract class PostProcessingStep implements PostProcessingStage {
 	}
 	
 	public void cleanUp() {
-		target.clear();
+		target.delete();
 	}
 }

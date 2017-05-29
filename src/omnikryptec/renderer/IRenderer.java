@@ -10,6 +10,6 @@ public interface IRenderer {
 	
 	void render(Scene s, RenderMap<TexturedModel, List<Entity>> entities);
 	void cleanup();
-	
+	float expensiveLevel();
 	
 }

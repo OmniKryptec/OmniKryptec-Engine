@@ -5,6 +5,7 @@ import omnikryptec.shader.UniformBoolean;
 import omnikryptec.shader.UniformFloat;
 import omnikryptec.shader.UniformMatrix;
 import omnikryptec.shader.UniformSampler;
+import omnikryptec.shader.UniformVec4;
 
 public class EntityShader extends Shader {
 
@@ -17,12 +18,12 @@ public class EntityShader extends Shader {
 	public static final UniformSampler tex = new UniformSampler("tex");
 	public static final UniformSampler normalmap = new UniformSampler("normaltex");
 	public static final UniformSampler specularmap = new UniformSampler("speculartex");
-
+	public static final UniformVec4 colmod = new UniformVec4("colormod");
 	
 	public EntityShader() {
 		super(EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_vert.glsl"),
 				EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_frag.glsl"), "pos", "texcoords", "normal",
-				"tangent", transformation, view, projection, tex, normalmap, specularmap, hasspecular, reflec);
+				"tangent", transformation, view, projection, tex, normalmap, specularmap, hasspecular, reflec,colmod);
 		start();
 		tex.loadTexUnit(0);
 		normalmap.loadTexUnit(1);
