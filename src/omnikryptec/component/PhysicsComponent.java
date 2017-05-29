@@ -1,17 +1,17 @@
-package omnikryptec.physics;
+package omnikryptec.component;
 
 import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
-import omnikryptec.component.Component;
 
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.GameObject;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.Scene;
+import omnikryptec.physics.RigidBodyBuilder;
 import omnikryptec.renderer.RenderChunk;
 
 /**

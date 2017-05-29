@@ -1,10 +1,9 @@
-package omnikryptec.audio;
+package omnikryptec.component;
 
 import java.util.ArrayList;
-import omnikryptec.component.Component;
+import omnikryptec.audio.AudioSource;
 import omnikryptec.entity.GameObject;
 import omnikryptec.main.Scene;
-import omnikryptec.physics.PhysicsComponent;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.util.Blocker;
 import org.lwjgl.util.vector.Vector3f;

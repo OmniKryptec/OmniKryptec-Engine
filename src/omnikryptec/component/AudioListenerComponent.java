@@ -1,11 +1,10 @@
-package omnikryptec.audio;
+package omnikryptec.component;
 
-import omnikryptec.component.Component;
+import omnikryptec.audio.AudioManager;
 import omnikryptec.entity.GameObject;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.Scene;
-import omnikryptec.physics.PhysicsComponent;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.util.ConverterUtil;
 import org.lwjgl.util.vector.Vector3f;
