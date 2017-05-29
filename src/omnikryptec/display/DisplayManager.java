@@ -1,5 +1,6 @@
 package omnikryptec.display;
 
+import omnikryptec.audio.AudioManager;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -64,6 +65,7 @@ public class DisplayManager {
 				RenderUtil.antialias(true);
 			}
 			GL11.glViewport(0, 0, settings.getWidth(), settings.getHeight());
+                        AudioManager.init();
 			lasttime = manager.getCurrentTime();
 			return new OmniKryptecEngine(manager);
 		} catch (Exception e) {
@@ -146,6 +148,10 @@ public class DisplayManager {
 		}
 	}
 
+        /**
+         * Returns the time since the last frame update
+         * @return Float Time in seconds
+         */
 	public float getDeltaTime() {
 		return (float)deltatime;
 	}
@@ -154,6 +160,10 @@ public class DisplayManager {
 		return Math.round(1.0 / deltatime);
 	}
 
+        /**
+         * Returns the actual time
+         * @return Float Time in milliseconds
+         */
 	public long getCurrentTime() {
 		return Sys.getTime() * 1000 / Sys.getTimerResolution();
 	}
@@ -173,6 +183,7 @@ public class DisplayManager {
 
 
 	public void close() {
+                AudioManager.cleanup();
 		Display.destroy();
 	}
 

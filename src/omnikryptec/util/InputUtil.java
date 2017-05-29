@@ -1,5 +1,6 @@
 package omnikryptec.util;
 
+import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -11,6 +12,9 @@ import org.lwjgl.util.vector.Vector4f;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.GameObject;
+import omnikryptec.logger.Logger;
+import omnikryptec.settings.IKey;
+import omnikryptec.settings.Key;
 import omnikryptec.settings.KeySettings;
 
 /**
@@ -32,6 +36,7 @@ public class InputUtil {
         return keyboardKeys_buffer;
     }
 
+    private static boolean longButtonPressEnabled = false;
     private static final boolean[] keys_keyboard = new boolean[Keyboard.KEYBOARD_SIZE];
     private static final boolean[] keys_mouse = new boolean[Mouse.getButtonCount()];
     private static final Vector2f mousePosition = new Vector2f(0, 0);
@@ -42,13 +47,23 @@ public class InputUtil {
     private static Camera camera = null;
     private static Matrix4f invertedProjectionMatrix = null;
     private static Matrix4f invertedViewMatrix = new Matrix4f();
+    private static float currentTime = 0;
 
     /**
      * called from the engine; computes keyboardevents
      */
     public static void nextFrame() {
         for(int i = 0; i < keys_mouse.length; i++) {
-            keys_mouse[i] = Mouse.isButtonDown(i);
+            final boolean temp = Mouse.isButtonDown(i);
+            if(longButtonPressEnabled) {
+                if(keys_mouse[i] != temp) {
+                    final ArrayList<Key> keys_c = DisplayManager.instance().getSettings().getKeySettings().getKeys(i, false);
+                    for(Key key : keys_c) {
+                        key.setLastChange(currentTime);
+                    }
+                }
+            }
+            keys_mouse[i] = temp;
         }
         isMouseGrabbed = Mouse.isGrabbed();
         isMouseInsideWindow = Mouse.isInsideWindow();
@@ -60,7 +75,17 @@ public class InputUtil {
         keyboardKeys_buffer = "";
         while(Keyboard.next()) {
             keyboardKeys_buffer += Keyboard.getEventCharacter();
-            keys_keyboard[Keyboard.getEventKey()] = Keyboard.getEventKeyState();
+            final int eventKey = Keyboard.getEventKey();
+            final boolean eventKeyState = Keyboard.getEventKeyState();
+            if(longButtonPressEnabled) {
+                if(keys_keyboard[eventKey] != eventKeyState) {
+                    final ArrayList<Key> keys_c = DisplayManager.instance().getSettings().getKeySettings().getKeys(eventKey, true);
+                    for(Key key : keys_c) {
+                        key.setLastChange(currentTime);
+                    }
+                }
+            }
+            keys_keyboard[eventKey] = eventKeyState;
         }
         if(camera != null) {
             if(invertedProjectionMatrix == null) {
@@ -69,6 +94,15 @@ public class InputUtil {
             Matrix4f.invert(camera.getViewMatrix(), invertedViewMatrix);
             calculateMouseRay();
         }
+        if(longButtonPressEnabled) {
+            for(IKey ikey : DisplayManager.instance().getSettings().getKeySettings().getKeys()) {
+                if(ikey instanceof Key) {
+                    final Key key = (Key) ikey;
+                    
+                }
+            }
+        }
+        currentTime = DisplayManager.instance().getCurrentTime();
     }
 
     /**
@@ -106,6 +140,14 @@ public class InputUtil {
 
     public static Vector3f getMouseDelta() {
         return mouseDelta;
+    }
+
+    public static boolean isLongButtonPressEnabled() {
+        return longButtonPressEnabled;
+    }
+
+    public static void setLongButtonPressEnabled(boolean longButtonPressEnabled) {
+        InputUtil.longButtonPressEnabled = longButtonPressEnabled;
     }
 
     public static Matrix4f getInvertedProjectionMatrix() {

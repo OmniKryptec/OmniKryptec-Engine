@@ -69,6 +69,21 @@ public class KeyGroup implements IKey {
     }
     
     @Override
+    public final boolean isLongPressed(float time) {
+        if(keys.isEmpty()) {
+            return false;
+        }
+        boolean isLongPressed = true;
+        for(IKey key : keys) {
+            if(!key.isLongPressed(time)) {
+                isLongPressed = false;
+                break;
+            }
+        }
+        return isLongPressed;
+    }
+    
+    @Override
     public final boolean equals(Object o) {
         if(o == null) {
             return false;

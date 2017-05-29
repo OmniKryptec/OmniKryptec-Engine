@@ -122,6 +122,20 @@ public class KeySettings {
         return Key.DEFAULT_NULL_KEY;
     }
     
+    public final ArrayList<Key> getKeys(int key, boolean isKeyboardKey) {
+        final ArrayList<Key> keys_ = new ArrayList<>();
+        for(IKey key_temp : keys) {
+            if(!(key_temp instanceof Key)) {
+                continue;
+            }
+            final Key key_temp_ = (Key) key_temp;
+            if(key_temp_.getKey() == key && key_temp_.isKeyboardKey() == isKeyboardKey) {
+                keys_.add(key_temp_);
+            }
+        }
+        return keys_;
+    }
+    
     public final KeySettings removeKey(int key, boolean isKeyboardKey) {
         final Key key_temp = getKey(key, isKeyboardKey);
         if(key_temp != Key.DEFAULT_NULL_KEY) {
