@@ -82,6 +82,7 @@ public class JBulletTest2 {
             final Texture bTexture = Texture.newTexture("/omnikryptec/terrain/path.png").create();
             final Texture blendMap = Texture.newTexture("/omnikryptec/terrain/blendMap.png").create();
             AudioManager.init();
+            OmniKryptecEngine.addShutdownHook(() -> AudioManager.cleanup());
             AudioManager.loadSound("bounce", "/omnikryptec/audio/bounce.wav");
             OmniKryptecEngine.getInstance().getCurrentScene().useDefaultPhysics();
             setupStaticPlane();
