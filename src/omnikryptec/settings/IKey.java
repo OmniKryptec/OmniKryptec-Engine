@@ -8,5 +8,6 @@ public interface IKey {
     
     public String getName();
     public boolean isPressed();
+    public boolean isLongPressed(float time);
     
 }

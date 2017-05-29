@@ -1,5 +1,7 @@
 package omnikryptec.settings;
 
+import omnikryptec.display.DisplayManager;
+import omnikryptec.logger.Logger;
 import omnikryptec.util.InputUtil;
 
 /**
@@ -13,6 +15,7 @@ public class Key implements IKey {
     private final String name;
     private int key = -1;
     private boolean isKeyboardKey = true;
+    private float lastChange = 0.0F;
     
     public Key(String name, int key, boolean isKeyboardKey) {
         this.name = name;
@@ -34,18 +37,40 @@ public class Key implements IKey {
         return key;
     }
     
-    public Key setIsKeyboardKey(boolean isKeyboardKey) {
+    public final Key setIsKeyboardKey(boolean isKeyboardKey) {
         this.isKeyboardKey = isKeyboardKey;
+        return this;
+    }
+
+    public final float getLastChange() {
+        return lastChange;
+    }
+
+    public final Key setLastChange(float lastChange) {
+        this.lastChange = lastChange;
         return this;
     }
     
     @Override
-    public boolean isPressed() {
+    public final boolean isPressed() {
         if(isKeyboardKey) {
             return InputUtil.isKeyboardKeyDown(key);
         } else {
             return InputUtil.isMouseKeyDown(key);
         }
+    }
+    
+    /**
+     * Returns if the Key is pressed longer then the given time
+     * @param time Float Presstime of the Key in ms
+     * @return Boolean If the Key is pressed for the given time
+     */
+    @Override
+    public final boolean isLongPressed(float time) {
+        final float currentTime = DisplayManager.instance().getCurrentTime();
+        final boolean isLongPressed = isPressed() && ((currentTime - lastChange) > time);
+        lastChange = currentTime;
+        return isLongPressed;
     }
     
     public final boolean isKeyboardKey() {

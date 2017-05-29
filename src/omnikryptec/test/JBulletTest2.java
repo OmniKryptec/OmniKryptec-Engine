@@ -24,6 +24,7 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.physics.RigidBodyBuilder;
 import omnikryptec.settings.GameSettings;
+import omnikryptec.settings.KeySettings;
 import omnikryptec.terrain.Terrain;
 import omnikryptec.terrain.TerrainTexturePack;
 import omnikryptec.texture.Texture;
@@ -57,7 +58,10 @@ public class JBulletTest2 {
             Logger.CONSOLE.setExitWhenLastOne(true);
             Logger.showConsoleDirect();
             
-            DisplayManager.createDisplay("JBullet Test", new GameSettings("JBulletTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32));
+            final GameSettings gameSettings = new GameSettings("JBulletTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32);
+            final KeySettings keySettings = gameSettings.getKeySettings();
+            keySettings.setKey("pauseAudio", Keyboard.KEY_P, true);
+            DisplayManager.createDisplay("JBullet Test", gameSettings);
             DisplayManager.instance().getSettings().getKeySettings().setKey("sprint", Keyboard.KEY_LCONTROL, true);
             OmniKryptecEngine.instance().addAndSetScene("Test-Scene", new Scene((Camera) new Camera() {
                 
@@ -81,8 +85,6 @@ public class JBulletTest2 {
             final Texture gTexture = Texture.newTexture("/omnikryptec/terrain/grassFlowers.png").create();
             final Texture bTexture = Texture.newTexture("/omnikryptec/terrain/path.png").create();
             final Texture blendMap = Texture.newTexture("/omnikryptec/terrain/blendMap.png").create();
-            AudioManager.init();
-            OmniKryptecEngine.addShutdownHook(() -> AudioManager.cleanup());
             AudioManager.loadSound("bounce", "/omnikryptec/audio/bounce.wav");
             OmniKryptecEngine.getInstance().getCurrentScene().useDefaultPhysics();
             setupStaticPlane();
@@ -105,6 +107,7 @@ public class JBulletTest2 {
             entity_attractor.addComponent(new PhysicsComponent(entity_attractor, rigidBodyBuilder_attractor));
             EventSystem.instance().addEventHandler(e -> {input(); logic();}, EventType.RENDER_EVENT);
             InputUtil.setCamera(OmniKryptecEngine.getInstance().getCurrentScene().getCamera());
+            InputUtil.setLongButtonPressEnabled(true);
             OmniKryptecEngine.getInstance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
         } catch (Exception ex) {
             Logger.logErr("Main error: " + ex, ex);
@@ -168,7 +171,7 @@ public class JBulletTest2 {
             body.setAngularVelocity(new Vector3f(0, 0, 0));
             body.setLinearVelocity(new Vector3f(0, 0, 0));
         }
-        if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_P)) {
+        if(DisplayManager.instance().getSettings().getKeySettings().getKey("pauseAudio").isLongPressed(100)) {
             if(bouncer.isPlaying()) {
                 bouncer.pause();
             } else {
