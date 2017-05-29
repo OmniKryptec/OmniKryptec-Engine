@@ -12,7 +12,6 @@ import omnikryptec.entity.GameObject;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.Scene;
-import omnikryptec.physics.RigidBodyBuilder;
 import omnikryptec.renderer.RenderChunk;
 
 /**

@@ -7,6 +7,10 @@ import org.lwjgl.input.Keyboard;
 import com.bulletphysics.collision.shapes.StaticPlaneShape;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
+import omnikryptec.audio.AudioListenerComponent;
+import omnikryptec.audio.AudioManager;
+import omnikryptec.audio.AudioSource;
+import omnikryptec.audio.AudioSourceComponent;
 
 import omnikryptec.physics.PhysicsComponent;
 import omnikryptec.display.DisplayManager;
@@ -42,6 +46,7 @@ public class JBulletTest2 {
     private static RigidBodyBuilder rigidBodyBuilder_attractor;
     private static RigidBodyBuilder rigidBodyBuilder_terrain;
     private static Terrain terrain;
+    private static AudioSource bouncer;
     
     public static final void main(String[] args) {
         try {
@@ -54,7 +59,7 @@ public class JBulletTest2 {
             
             DisplayManager.createDisplay("JBullet Test", new GameSettings("JBulletTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32));
             DisplayManager.instance().getSettings().getKeySettings().setKey("sprint", Keyboard.KEY_LCONTROL, true);
-            OmniKryptecEngine.instance().addAndSetScene("Test-Scene", new Scene(new Camera() {   
+            OmniKryptecEngine.instance().addAndSetScene("Test-Scene", new Scene((Camera) new Camera() {
                 
                 @Override
                 public void doLogic() {
@@ -68,7 +73,7 @@ public class JBulletTest2 {
                     InputUtil.doThirdPersonController(this, this, DisplayManager.instance().getSettings().getKeySettings(), horizontalSpeed, verticalSpeed, turnSpeed);
                 }
                 
-            }.setPerspectiveProjection(75, 1000, 0.1F)));
+            }.setPerspectiveProjection(75, 1000, 0.1F).addComponent(new AudioListenerComponent())));
             entityBuilder_brunnen = new EntityBuilder().loadModel("/omnikryptec/test/brunnen.obj").loadTexture("/omnikryptec/test/brunnen.png");
             entityBuilder_pine = new EntityBuilder().loadModel("/omnikryptec/test/pine.obj").loadTexture("/omnikryptec/test/pine2.png");
             final Texture backgroundTexture = Texture.newTexture("/omnikryptec/terrain/grassy2.png").create();
@@ -76,6 +81,8 @@ public class JBulletTest2 {
             final Texture gTexture = Texture.newTexture("/omnikryptec/terrain/grassFlowers.png").create();
             final Texture bTexture = Texture.newTexture("/omnikryptec/terrain/path.png").create();
             final Texture blendMap = Texture.newTexture("/omnikryptec/terrain/blendMap.png").create();
+            AudioManager.init();
+            AudioManager.loadSound("bounce", "/omnikryptec/audio/bounce.wav");
             OmniKryptecEngine.getInstance().getCurrentScene().useDefaultPhysics();
             setupStaticPlane();
             setupRigidBodyBuilder();
@@ -90,6 +97,10 @@ public class JBulletTest2 {
             OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().y = 90;
             terrain.addComponent(new PhysicsComponent(terrain, rigidBodyBuilder_terrain));
             entity_ball.addComponent(new PhysicsComponent(entity_ball, rigidBodyBuilder_ball));
+            bouncer = new AudioSource().setLooping(true);
+            bouncer.setRollOffFactor(0.5F);
+            bouncer.play("bounce");
+            entity_ball.addComponent(new AudioSourceComponent(bouncer));
             entity_attractor.addComponent(new PhysicsComponent(entity_attractor, rigidBodyBuilder_attractor));
             EventSystem.instance().addEventHandler(e -> {input(); logic();}, EventType.RENDER_EVENT);
             InputUtil.setCamera(OmniKryptecEngine.getInstance().getCurrentScene().getCamera());
@@ -146,7 +157,7 @@ public class JBulletTest2 {
     }
     
     private static final void input() {
-            Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
+        Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
         if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_F)) {
             applyForce();
         }
@@ -155,6 +166,13 @@ public class JBulletTest2 {
             body.setCenterOfMassTransform(PhysicsUtil.createTransform(ConverterUtil.convertVector3fFromLWJGL(camera.getAbsolutePos()), new Vector3f(0, 0, 0)));
             body.setAngularVelocity(new Vector3f(0, 0, 0));
             body.setLinearVelocity(new Vector3f(0, 0, 0));
+        }
+        if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_P)) {
+            if(bouncer.isPlaying()) {
+                bouncer.pause();
+            } else {
+                bouncer.continuePlaying();
+            }
         }
         final float deltaX = InputUtil.getMouseDelta().x;
         final float deltaY = InputUtil.getMouseDelta().y;
