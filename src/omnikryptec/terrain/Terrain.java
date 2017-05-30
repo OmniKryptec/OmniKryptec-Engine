@@ -12,7 +12,7 @@ import omnikryptec.texture.ITexture;
  */
 public class Terrain extends Entity {
     
-    private static final float SIZE = 800; //TODO Move this to Constants.java
+    protected static final float SIZE = 400; //TODO Move this to Constants.java
     private static final int VERTEX_COUNT = 128; //TODO Move this to Constants.java
     
     
@@ -70,6 +70,10 @@ public class Terrain extends Entity {
             }
         }
         return new Model(new ModelData(vertices, textureCoords, normals, normals, indices, 0F));
+    }
+    
+    public final Terrain copy(int gridX, int gridZ) {
+        return new Terrain(gridX, gridZ, texturePack, blendMap);
     }
 
     public final float getX() {

@@ -92,6 +92,9 @@ public class PhysicsComponent implements Component {
     
     @Override
     public final void execute(GameObject instance) {
+        if(pause) {
+            return;
+        }
         final Vector3f ballPosition = body.getMotionState().getWorldTransform(new Transform()).origin;
         instance.setRelativePos(ballPosition.x, ballPosition.y, ballPosition.z);
         final Quat4f ballOrientation = body.getOrientation(new Quat4f());
