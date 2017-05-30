@@ -45,14 +45,22 @@ public class FogStage extends PostProcessingStep {
 		return this;
 	}
 	
+	private int[] l_ind={-1,-1};
+	
+	public FogStage setListIndices(int diff, int depth){
+		l_ind[0] = diff;
+		l_ind[1] = depth;
+		return this;
+	}
+	
 	@Override
 	public void bindTexture(FrameBufferObject before, List<FrameBufferObject> beforelist, Shader using, int stage) {
 		FogShader.test.loadVec2(OmniKryptecEngine.instance().getCurrentScene().getCamera().getPlanesForLR());
 		FogShader.fog.loadVec4(fog);
 		FogShader.density.loadFloat(density);
 		FogShader.gradient.loadFloat(gradient);
-		before.bindToUnit(0);
-		before.bindDepthTexture(1);
+		(l_ind[0]<0?before:beforelist.get(l_ind[0])).bindToUnit(0);
+		(l_ind[1]<0?before:beforelist.get(l_ind[1])).bindDepthTexture(1);
 	}
 
 	@Override

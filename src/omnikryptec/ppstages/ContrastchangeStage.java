@@ -33,18 +33,16 @@ public class ContrastchangeStage extends PostProcessingStep {
 		return this;
 	}
 	
-	private int list_ind=0;
-	private boolean usebefore=true;
+	private int list_ind=-1;
 	
 	public ContrastchangeStage setListIndex(int beforeI){
 		list_ind = beforeI;
-		usebefore = beforeI<0;
 		return this;
 	}
 	
 	@Override
 	public void bindTexture(FrameBufferObject before, List<FrameBufferObject> beforelist, Shader using, int stage) {
-		if(usebefore){
+		if(list_ind<0){
 			before.bindToUnit(0);
 		}else{
 			beforelist.get(list_ind).bindToUnit(0);

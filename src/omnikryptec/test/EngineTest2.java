@@ -17,8 +17,11 @@ import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
 import omnikryptec.postprocessing.PostProcessing;
+import omnikryptec.ppstages.ColorSpaceStage;
+import omnikryptec.ppstages.CompleteGaussianBlurStage;
+import omnikryptec.ppstages.ContrastchangeStage;
 import omnikryptec.ppstages.FogStage;
-import omnikryptec.ppstages.GaussianBlur;
+import omnikryptec.ppstages.SingleGaussianBlurStage;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.InputUtil;
@@ -40,11 +43,10 @@ public class EngineTest2 implements IEventHandler{
             Logger.showConsoleDirect();
             
             DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFpsCap(60).setChunkOffsets(10, 10, 10));
-            //PostProcessing.instance().addStage(new ContrastchangeStage(0.5f));
             //PostProcessing.instance().addStage(new LightStage());
+            //PostProcessing.instance().addStage(new CompleteGaussianBlurStage(false,0.5f,0.5f));
             //PostProcessing.instance().addStage(new ColorSpaceStage(8,8,8));
-            PostProcessing.instance().addStage(new GaussianBlur(true, 0.1f, 0.1f));
-            PostProcessing.instance().addStage(new GaussianBlur(false, 0.1f, 0.1f));
+            //PostProcessing.instance().addStage(new ContrastchangeStage(-0.25f));
             EventSystem.instance().addEventHandler(new EngineTest2(), EventType.RENDER_EVENT);
             Model brunnen = new Model(ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
             //Model brunnen = Model.generateQuad();
