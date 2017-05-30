@@ -35,6 +35,7 @@ import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.PhysicsUtil;
+import omnikryptec.util.RenderUtil;
 
 /**
  *
@@ -51,6 +52,7 @@ public class JBulletTest2 {
     private static RigidBodyBuilder rigidBodyBuilder_terrain;
     private static final ArrayList<Terrain> terrains = new ArrayList<>();
     private static AudioSource bouncer;
+    private static boolean isWireframe = false;
     
     public static final void main(String[] args) {
         try {
@@ -64,6 +66,7 @@ public class JBulletTest2 {
             final GameSettings gameSettings = new GameSettings("JBulletTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32);
             final KeySettings keySettings = gameSettings.getKeySettings();
             keySettings.setKey("pauseAudio", Keyboard.KEY_P, true);
+            keySettings.setKey("toggleWireframe", Keyboard.KEY_T, true);
             keySettings.setKey(new KeyGroup("physicsPause", new Key("leftControl", Keyboard.KEY_LCONTROL, true), new Key("p", Keyboard.KEY_P, true)));
             DisplayManager.createDisplay("JBullet Test", gameSettings);
             DisplayManager.instance().getSettings().getKeySettings().setKey("sprint", Keyboard.KEY_LCONTROL, true);
@@ -205,6 +208,10 @@ public class JBulletTest2 {
         final Scene scene = OmniKryptecEngine.getInstance().getCurrentScene();
         if(scene != null && scene.isUsingPhysics() && DisplayManager.instance().getSettings().getKeySettings().getKeyGroup("physicsPause").isLongPressed(100)) {
             scene.getPhysicsWorld().setSimulationPaused(!scene.getPhysicsWorld().isSimulationPaused());
+        }
+        if(DisplayManager.instance().getSettings().getKeySettings().getKey("toggleWireframe").isLongPressed(100)) {
+            isWireframe = !isWireframe;
+            RenderUtil.goWireframe(isWireframe);
         }
         final float deltaX = InputUtil.getMouseDelta().x;
         final float deltaY = InputUtil.getMouseDelta().y;
