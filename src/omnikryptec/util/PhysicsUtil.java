@@ -32,6 +32,12 @@ import omnikryptec.objConverter.ModelData;
  */
 public class PhysicsUtil {
     
+    public static final Vector3f X = new Vector3f(1, 0, 0);
+    public static final Vector3f Y = new Vector3f(0, 1, 0);
+    public static final Vector3f Z = new Vector3f(0, 0, 1);
+    public static final Vector3f ZERO = new Vector3f(0, 0, 0);
+    public static final Vector3f ONE = new Vector3f(1, 1, 1);
+
     public static final DynamicsWorld createDefaultDynamicsWorld() {
         final BroadphaseInterface broadphase = new DbvtBroadphase();
         final CollisionConfiguration collisionConfiguration = new DefaultCollisionConfiguration();
