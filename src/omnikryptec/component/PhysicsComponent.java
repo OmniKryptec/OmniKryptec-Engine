@@ -1,5 +1,6 @@
 package omnikryptec.component;
 
+import com.bulletphysics.collision.dispatch.CollisionObject;
 import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 
@@ -55,6 +56,7 @@ public class PhysicsComponent implements Component {
         if(instance != null) {
             RenderChunk chunk = instance.getMyChunk();
             if(chunk != null) {
+                body.setActivationState(CollisionObject.DISABLE_DEACTIVATION); //FIXME ONLY FOR TESTING!!!
                 manageRigidBodyStatus(null, chunk.getScene());
             } else if(Logger.isDebugMode()) {
                 Logger.log("Chunk must not be null!", LogLevel.WARNING);
