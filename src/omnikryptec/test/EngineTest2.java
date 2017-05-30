@@ -18,6 +18,7 @@ import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
 import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.ppstages.FogStage;
+import omnikryptec.ppstages.GaussianBlur;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.InputUtil;
@@ -42,7 +43,8 @@ public class EngineTest2 implements IEventHandler{
             //PostProcessing.instance().addStage(new ContrastchangeStage(0.5f));
             //PostProcessing.instance().addStage(new LightStage());
             //PostProcessing.instance().addStage(new ColorSpaceStage(8,8,8));
-            PostProcessing.instance().addStage(new FogStage());
+            PostProcessing.instance().addStage(new GaussianBlur(true, 0.1f, 0.1f));
+            PostProcessing.instance().addStage(new GaussianBlur(false, 0.1f, 0.1f));
             EventSystem.instance().addEventHandler(new EngineTest2(), EventType.RENDER_EVENT);
             Model brunnen = new Model(ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
             //Model brunnen = Model.generateQuad();
