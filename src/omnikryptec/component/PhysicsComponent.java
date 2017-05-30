@@ -106,10 +106,9 @@ public class PhysicsComponent implements Component {
         }
     }
 
-	@Override
-	public float getLvl() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public float getLevel() {
+        return -1.0F;
+    }
     
 }

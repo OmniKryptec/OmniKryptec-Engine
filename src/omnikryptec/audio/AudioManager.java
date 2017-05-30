@@ -12,7 +12,7 @@ import org.lwjgl.openal.AL11;
 import org.lwjgl.util.WaveData;
 import org.lwjgl.util.vector.Vector3f;
 
-import omnikryptec.component.AudioListenerComponent;
+import omnikryptec.component.Component;
 import omnikryptec.logger.Logger;
 
 /**
@@ -24,7 +24,7 @@ public class AudioManager {
     private static final HashMap<String, Integer> sounds = new HashMap<>();
     private static DistanceModel distanceModel = null;
     private static boolean isInitialized = false;
-    private static AudioListenerComponent blockingAudioListenerComponent = null;
+    private static Component blockingAudioListenerComponent = null;
     
     public static final boolean init() {
         if(isInitialized) {
@@ -42,15 +42,15 @@ public class AudioManager {
         }
     }
     
-    public static final boolean setListenerData(AudioListenerComponent component, javax.vecmath.Vector3f position, javax.vecmath.Vector3f velocity) {
+    public static final boolean setListenerData(Component component, javax.vecmath.Vector3f position, javax.vecmath.Vector3f velocity) {
         return setListenerData(component, position.x, position.y, position.z, velocity.x, velocity.y, velocity.z);
     }
     
-    public static final boolean setListenerData(AudioListenerComponent component, Vector3f position, Vector3f velocity) {
+    public static final boolean setListenerData(Component component, Vector3f position, Vector3f velocity) {
         return setListenerData(component, position.x, position.y, position.z, velocity.x, velocity.y, velocity.z);
     }
     
-    public static final boolean setListenerData(AudioListenerComponent component, float posX, float posY, float posZ, float velX, float velY, float velZ) {
+    public static final boolean setListenerData(Component component, float posX, float posY, float posZ, float velX, float velY, float velZ) {
         if(blockingAudioListenerComponent != null && (component == null || blockingAudioListenerComponent != component)) {
             return false;
         }
@@ -59,7 +59,7 @@ public class AudioManager {
         return true;
     }
     
-    public static final boolean setBlockingAudioListenerComponent(AudioListenerComponent component, AudioListenerComponent newComponent) {
+    public static final boolean setBlockingAudioListenerComponent(Component component, Component newComponent) {
         if(blockingAudioListenerComponent != null && (component == null || blockingAudioListenerComponent != component)) {
             return false;
         }
