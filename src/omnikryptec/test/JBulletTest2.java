@@ -7,6 +7,7 @@ import org.lwjgl.input.Keyboard;
 import com.bulletphysics.collision.shapes.StaticPlaneShape;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
+import java.util.ArrayList;
 
 import omnikryptec.audio.AudioManager;
 import omnikryptec.audio.AudioSource;
@@ -23,9 +24,6 @@ import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.physics.RigidBodyBuilder;
-import omnikryptec.postprocessing.PostProcessing;
-import omnikryptec.ppstages.ColorSpaceStage;
-import omnikryptec.ppstages.FogStage;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.Key;
 import omnikryptec.settings.KeyGroup;
@@ -37,6 +35,7 @@ import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.PhysicsUtil;
+import omnikryptec.util.RenderUtil;
 
 /**
  *
@@ -51,8 +50,9 @@ public class JBulletTest2 {
     private static RigidBodyBuilder rigidBodyBuilder_ball;
     private static RigidBodyBuilder rigidBodyBuilder_attractor;
     private static RigidBodyBuilder rigidBodyBuilder_terrain;
-    private static Terrain terrain;
+    private static final ArrayList<Terrain> terrains = new ArrayList<>();
     private static AudioSource bouncer;
+    private static boolean isWireframe = false;
     
     public static final void main(String[] args) {
         try {
@@ -66,6 +66,7 @@ public class JBulletTest2 {
             final GameSettings gameSettings = new GameSettings("JBulletTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32);
             final KeySettings keySettings = gameSettings.getKeySettings();
             keySettings.setKey("pauseAudio", Keyboard.KEY_P, true);
+            keySettings.setKey("toggleWireframe", Keyboard.KEY_T, true);
             keySettings.setKey(new KeyGroup("physicsPause", new Key("leftControl", Keyboard.KEY_LCONTROL, true), new Key("p", Keyboard.KEY_P, true)));
             DisplayManager.createDisplay("JBullet Test", gameSettings);
             DisplayManager.instance().getSettings().getKeySettings().setKey("sprint", Keyboard.KEY_LCONTROL, true);
@@ -98,13 +99,13 @@ public class JBulletTest2 {
             entity_ball = entityBuilder_brunnen.create();
             entity_attractor = entityBuilder_pine.create();
             final TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
-            terrain = new Terrain(0, 0, texturePack, blendMap);
-            OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(terrain);
+            setupTerrains(texturePack, blendMap, 4);
+            addTerrains();
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_ball);
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_attractor);
             OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativePos().y += 3;
             OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().y = 90;
-            terrain.addComponent(new PhysicsComponent(terrain, rigidBodyBuilder_terrain));
+            manageTerrains();
             entity_ball.addComponent(new PhysicsComponent(entity_ball, rigidBodyBuilder_ball));
             bouncer = new AudioSource().setLooping(true);
             bouncer.setRollOffFactor(0.5F);
@@ -117,6 +118,26 @@ public class JBulletTest2 {
             OmniKryptecEngine.getInstance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
         } catch (Exception ex) {
             Logger.logErr("Main error: " + ex, ex);
+        }
+    }
+    
+    private static final void setupTerrains(TerrainTexturePack texturePack, Texture blendMap, int count) {
+        for(int i = 0; i < count; i++) {
+            terrains.add(new Terrain(i, -i, texturePack, blendMap));
+        }
+    }
+    
+    private static final void addTerrains() {
+        for(Terrain terrain : terrains) {
+            OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(terrain);
+        }
+    }
+    
+    private static final void manageTerrains() {
+        for(Terrain terrain : terrains) {
+            rigidBodyBuilder_terrain.setCollisionShape(PhysicsUtil.createConvexHullShape(terrain.getModel()));
+            rigidBodyBuilder_terrain.setDefaultMotionState(new Vector3f(terrain.getX() / 2, 0, terrain.getZ() / 2), new Vector3f(0, 0, 0));
+            terrain.addComponent(new PhysicsComponent(terrain, rigidBodyBuilder_terrain).setPause(true));
         }
     }
     
@@ -187,6 +208,10 @@ public class JBulletTest2 {
         final Scene scene = OmniKryptecEngine.getInstance().getCurrentScene();
         if(scene != null && scene.isUsingPhysics() && DisplayManager.instance().getSettings().getKeySettings().getKeyGroup("physicsPause").isLongPressed(100)) {
             scene.getPhysicsWorld().setSimulationPaused(!scene.getPhysicsWorld().isSimulationPaused());
+        }
+        if(DisplayManager.instance().getSettings().getKeySettings().getKey("toggleWireframe").isLongPressed(100)) {
+            isWireframe = !isWireframe;
+            RenderUtil.goWireframe(isWireframe);
         }
         final float deltaX = InputUtil.getMouseDelta().x;
         final float deltaY = InputUtil.getMouseDelta().y;

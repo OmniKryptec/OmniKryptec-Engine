@@ -84,6 +84,7 @@ public class RigidBodyBuilder {
 
     public final RigidBodyBuilder setMass(float mass) {
         this.mass = mass;
+        rigidBodyConstructionInfo = null;
         return this;
     }
 
@@ -93,6 +94,7 @@ public class RigidBodyBuilder {
 
     public final RigidBodyBuilder setInertia(Vector3f inertia) {
         this.inertia = inertia;
+        rigidBodyConstructionInfo = null;
         return this;
     }
 
@@ -102,6 +104,7 @@ public class RigidBodyBuilder {
 
     public final RigidBodyBuilder setMotionState(MotionState motionState) {
         this.motionState = motionState;
+        rigidBodyConstructionInfo = null;
         return this;
     }
     
@@ -115,11 +118,13 @@ public class RigidBodyBuilder {
     
     public final RigidBodyBuilder setDefaultMotionState(Vector3f position, Vector3f rotation) {
         this.motionState = PhysicsUtil.createDefaultMotionStateOfPosition(position, rotation);
+        rigidBodyConstructionInfo = null;
         return this;
     }
     
     public final RigidBodyBuilder setDefaultMotionState(org.lwjgl.util.vector.Vector3f position, org.lwjgl.util.vector.Vector3f rotation) {
         this.motionState = PhysicsUtil.createDefaultMotionStateOfPosition(position, rotation);
+        rigidBodyConstructionInfo = null;
         return this;
     }
 
@@ -150,6 +155,7 @@ public class RigidBodyBuilder {
     
     public final RigidBodyBuilder loadCollisionShape(Model model) {
         this.collisionShape = PhysicsUtil.createConvexHullShape(model);
+        rigidBodyConstructionInfo = null;
         return this;
     }
     
