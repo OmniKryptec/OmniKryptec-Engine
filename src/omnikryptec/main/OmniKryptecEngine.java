@@ -195,7 +195,7 @@ public class OmniKryptecEngine {
 	    		if(clear) {
 		            RenderUtil.clear(sceneCurrent.getClearColor());
 		    	}
-	            sceneCurrent.frame(Float.MAX_VALUE, Float.MIN_VALUE, AllowedRenderer.All);
+	            sceneCurrent.frame(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, AllowedRenderer.All);
 	    	}
 	    	
 	    	scenefbo.unbindFrameBuffer();

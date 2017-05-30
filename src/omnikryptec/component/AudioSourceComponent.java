@@ -1,12 +1,14 @@
 package omnikryptec.component;
 
 import java.util.ArrayList;
+
+import org.lwjgl.util.vector.Vector3f;
+
 import omnikryptec.audio.AudioSource;
 import omnikryptec.entity.GameObject;
 import omnikryptec.main.Scene;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.util.Blocker;
-import org.lwjgl.util.vector.Vector3f;
 
 /**
  *
@@ -110,5 +112,11 @@ public class AudioSourceComponent implements Component {
         blocker.waitFor();
         deleteAllSources();
     }
+
+	@Override
+	public float getLvl() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
     
 }

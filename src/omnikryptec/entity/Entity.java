@@ -4,7 +4,6 @@ package omnikryptec.entity;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import omnikryptec.model.Material;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.texture.Texture;

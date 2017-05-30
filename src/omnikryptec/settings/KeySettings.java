@@ -1,11 +1,11 @@
 package omnikryptec.settings;
 
 import java.util.ArrayList;
-import omnikryptec.logger.LogEntry;
-import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.logger.Logger;
 
 import org.lwjgl.input.Keyboard;
+
+import omnikryptec.logger.LogEntry.LogLevel;
+import omnikryptec.logger.Logger;
 
 /**
  *

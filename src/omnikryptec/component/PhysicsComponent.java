@@ -105,5 +105,11 @@ public class PhysicsComponent implements Component {
             body.destroy();
         }
     }
+
+	@Override
+	public float getLvl() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
     
 }

@@ -1,8 +1,9 @@
 package omnikryptec.audio;
 
+import org.lwjgl.util.vector.Vector3f;
+
 import omnikryptec.logger.Logger;
 import omnikryptec.util.NativesLoader;
-import org.lwjgl.util.vector.Vector3f;
 
 /**
  *

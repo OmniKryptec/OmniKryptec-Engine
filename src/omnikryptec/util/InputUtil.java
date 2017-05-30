@@ -1,6 +1,7 @@
 package omnikryptec.util;
 
 import java.util.ArrayList;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -12,7 +13,6 @@ import org.lwjgl.util.vector.Vector4f;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.GameObject;
-import omnikryptec.logger.Logger;
 import omnikryptec.settings.IKey;
 import omnikryptec.settings.Key;
 import omnikryptec.settings.KeySettings;

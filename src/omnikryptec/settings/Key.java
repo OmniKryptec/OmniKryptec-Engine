@@ -1,7 +1,6 @@
 package omnikryptec.settings;
 
 import omnikryptec.display.DisplayManager;
-import omnikryptec.logger.Logger;
 import omnikryptec.util.InputUtil;
 
 /**

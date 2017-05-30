@@ -1,5 +1,7 @@
 package omnikryptec.component;
 
+import org.lwjgl.util.vector.Vector3f;
+
 import omnikryptec.audio.AudioManager;
 import omnikryptec.entity.GameObject;
 import omnikryptec.logger.LogEntry.LogLevel;
@@ -7,7 +9,6 @@ import omnikryptec.logger.Logger;
 import omnikryptec.main.Scene;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.util.ConverterUtil;
-import org.lwjgl.util.vector.Vector3f;
 
 /**
  *
@@ -53,5 +54,11 @@ public class AudioListenerComponent implements Component {
     public final void onDelete(GameObject instance) {
         AudioManager.setBlockingAudioListenerComponent(this, null);
     }
+
+	@Override
+	public float getLvl() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
     
 }

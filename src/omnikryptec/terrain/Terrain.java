@@ -5,7 +5,6 @@ import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ModelData;
 import omnikryptec.texture.ITexture;
-import omnikryptec.texture.Texture;
 
 /**
  *

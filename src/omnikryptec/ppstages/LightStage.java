@@ -1,4 +1,4 @@
-package omnikryptec.postprocessing;
+package omnikryptec.ppstages;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -15,9 +15,10 @@ import omnikryptec.entity.Light;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.model.VertexArrayObject;
+import omnikryptec.postprocessing.FrameBufferObject;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
+import omnikryptec.postprocessing.PostProcessingStage;
 import omnikryptec.shader_files.LightShader;
-import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
 
 public class LightStage implements PostProcessingStage{

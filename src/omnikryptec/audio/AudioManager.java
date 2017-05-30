@@ -1,17 +1,19 @@
 package omnikryptec.audio;
 
-import omnikryptec.component.AudioListenerComponent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.HashMap;
-import omnikryptec.logger.Logger;
+
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
 import org.lwjgl.util.WaveData;
 import org.lwjgl.util.vector.Vector3f;
+
+import omnikryptec.component.AudioListenerComponent;
+import omnikryptec.logger.Logger;
 
 /**
  *

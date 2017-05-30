@@ -1,7 +1,5 @@
 package omnikryptec.model;
 
-import javax.vecmath.Vector4f;
-
 import omnikryptec.exceptions.OmniKryptecException;
 import omnikryptec.logger.Logger;
 import omnikryptec.renderer.IRenderer;
