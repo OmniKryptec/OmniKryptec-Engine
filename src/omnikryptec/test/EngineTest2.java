@@ -16,6 +16,8 @@ import omnikryptec.main.Scene;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
+import omnikryptec.postprocessing.PostProcessing;
+import omnikryptec.ppstages.FogStage;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.InputUtil;
@@ -36,11 +38,11 @@ public class EngineTest2 implements IEventHandler{
             Logger.CONSOLE.setExitWhenLastOne(true);
             Logger.showConsoleDirect();
             
-            DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFpsCap(60));
+            DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFpsCap(60).setChunkOffsets(10, 10, 10));
             //PostProcessing.instance().addStage(new ContrastchangeStage(0.5f));
             //PostProcessing.instance().addStage(new LightStage());
             //PostProcessing.instance().addStage(new ColorSpaceStage(8,8,8));
-            //PostProcessing.instance().addStage(new FogStage());
+            PostProcessing.instance().addStage(new FogStage());
             EventSystem.instance().addEventHandler(new EngineTest2(), EventType.RENDER_EVENT);
             Model brunnen = new Model(ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
             //Model brunnen = Model.generateQuad();
@@ -62,7 +64,7 @@ public class EngineTest2 implements IEventHandler{
 			ptm.getMaterial().setHasTransparency(true);
 			Random r = new Random();
 			for(int i=0; i<200; i++){
-				Entity e = new Entity(tm){
+				Entity e = new Entity(ptm){
 					@Override
 	            	public void doLogic(){
 	            		//setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(), r.nextFloat());
