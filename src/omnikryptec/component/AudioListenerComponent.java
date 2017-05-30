@@ -55,10 +55,9 @@ public class AudioListenerComponent implements Component {
         AudioManager.setBlockingAudioListenerComponent(this, null);
     }
 
-	@Override
-	public float getLvl() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public float getLevel() {
+        return 1.1F;
+    }
     
 }

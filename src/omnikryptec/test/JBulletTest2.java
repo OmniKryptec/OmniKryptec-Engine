@@ -27,6 +27,8 @@ import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.ppstages.ColorSpaceStage;
 import omnikryptec.ppstages.FogStage;
 import omnikryptec.settings.GameSettings;
+import omnikryptec.settings.Key;
+import omnikryptec.settings.KeyGroup;
 import omnikryptec.settings.KeySettings;
 import omnikryptec.terrain.Terrain;
 import omnikryptec.terrain.TerrainTexturePack;
@@ -64,6 +66,7 @@ public class JBulletTest2 {
             final GameSettings gameSettings = new GameSettings("JBulletTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32);
             final KeySettings keySettings = gameSettings.getKeySettings();
             keySettings.setKey("pauseAudio", Keyboard.KEY_P, true);
+            keySettings.setKey(new KeyGroup("physicsPause", new Key("leftControl", Keyboard.KEY_LCONTROL, true), new Key("p", Keyboard.KEY_P, true)));
             DisplayManager.createDisplay("JBullet Test", gameSettings);
             DisplayManager.instance().getSettings().getKeySettings().setKey("sprint", Keyboard.KEY_LCONTROL, true);
             OmniKryptecEngine.instance().addAndSetScene("Test-Scene", new Scene((Camera) new Camera() {
@@ -180,6 +183,10 @@ public class JBulletTest2 {
             } else {
                 bouncer.continuePlaying();
             }
+        }
+        final Scene scene = OmniKryptecEngine.getInstance().getCurrentScene();
+        if(scene != null && scene.isUsingPhysics() && DisplayManager.instance().getSettings().getKeySettings().getKeyGroup("physicsPause").isLongPressed(100)) {
+            scene.getPhysicsWorld().setSimulationPaused(!scene.getPhysicsWorld().isSimulationPaused());
         }
         final float deltaX = InputUtil.getMouseDelta().x;
         final float deltaY = InputUtil.getMouseDelta().y;

@@ -113,10 +113,9 @@ public class AudioSourceComponent implements Component {
         deleteAllSources();
     }
 
-	@Override
-	public float getLvl() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public float getLevel() {
+        return 1.0F;
+    }
     
 }

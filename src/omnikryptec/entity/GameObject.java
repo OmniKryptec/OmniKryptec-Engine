@@ -18,15 +18,15 @@ import omnikryptec.renderer.RenderChunk;
  */
 public class GameObject {
 	
-	private static class Sorter implements Comparator<Component>{
+    private static class Sorter implements Comparator<Component> {
 
-		@Override
-		public int compare(Component o1, Component o2) {
-			return o1.getLvl()<o2.getLvl()?-1:(o1.getLvl()>o2.getLvl()?1:0);
-		}
-		
-	}
-	private static final Sorter SORTER = new Sorter();
+            @Override
+            public int compare(Component o1, Component o2) {
+                return ((o1.getLevel() < o2.getLevel()) ? -1 : (o1.getLevel() > o2.getLevel() ? 1 : 0));
+            }
+
+    }
+    private static final Sorter SORTER = new Sorter();
 	
     private Vector3f pos = new Vector3f();
     private GameObject parent = null;
@@ -34,8 +34,8 @@ public class GameObject {
     private Vector3f rotation = new Vector3f();
     //@JsonView(GameObject.class) //To hide this while saving it
     private RenderChunk myChunk;
-    private List<Component> componentsneg = null;
-    private List<Component> componentspos = null;
+    private List<Component> componentsPreLogic = null;
+    private List<Component> componentsPostLogic = null;
     
     /**
      * creates a gameobject with no parent
@@ -125,14 +125,14 @@ public class GameObject {
     }
     
     public final GameObject doLogic0() {
-    	if(componentsneg != null){
-            for(Component c : componentsneg){
+    	if(componentsPreLogic != null){
+            for(Component c : componentsPreLogic){
                 c.execute(this);
             }
     	}
     	doLogic();
-    	if(componentspos != null){
-            for(Component c : componentspos){
+    	if(componentsPostLogic != null){
+            for(Component c : componentsPostLogic){
                 c.execute(this);
             }
     	}
@@ -141,93 +141,93 @@ public class GameObject {
     }
     
     public final GameObject addComponent(Component c) {
-    	if(c.getLvl()<0){
-	    	if(componentsneg == null) {
-	            componentsneg = new ArrayList<>();
-	    	}
-	    	componentsneg.add(c);
-	    	componentsneg.sort(SORTER);
-    	}else{
-    		if(componentspos == null) {
-	            componentspos = new ArrayList<>();
-	    	}
-	    	componentspos.add(c);
-	    	componentspos.sort(SORTER);
+    	if(c.getLevel() < 0) {
+            if(componentsPreLogic == null) {
+                componentsPreLogic = new ArrayList<>();
+            }
+            componentsPreLogic.add(c);
+            componentsPreLogic.sort(SORTER);
+    	} else {
+            if(componentsPostLogic == null) {
+                componentsPostLogic = new ArrayList<>();
+            }
+            componentsPostLogic.add(c);
+            componentsPostLogic.sort(SORTER);
     	}
     	return this;
     }
     
     public final GameObject removeComponent(Component c) {
-    	if(c.getLvl()<0){
-	    	if(componentsneg!=null){
-	    		componentsneg.remove(c);
-		    	if(componentsneg.isEmpty()) {
-		            componentsneg = null;
-		    	}
-	    	}
-    	}else{
-    		if(componentspos!=null){
-	    		componentspos.remove(c);
-		    	if(componentspos.isEmpty()) {
-		            componentspos = null;
-		    	}
-	    	}
+    	if(c.getLevel() < 0){
+            if(componentsPreLogic != null){
+                componentsPreLogic.remove(c);
+                if(componentsPreLogic.isEmpty()) {
+                    componentsPreLogic = null;
+                }
+            }
+    	} else {
+            if(componentsPostLogic != null){
+                componentsPostLogic.remove(c);
+                if(componentsPostLogic.isEmpty()) {
+                    componentsPostLogic = null;
+                }
+            }
     	}
     	return this;
     }
     
     private List<Component> tmp;
     public final Component[] getComponents() {
-    	if(componentsneg == null && componentspos == null) {
+    	if(componentsPreLogic == null && componentsPostLogic == null) {
             return new Component[] {};
     	}
-    	if(tmp==null){
-    		tmp = new ArrayList<>();
+    	if(tmp == null){
+            tmp = new ArrayList<>();
     	}
-    	if(componentsneg!=null){
-    		tmp.addAll(componentsneg);
+    	if(componentsPreLogic != null){
+            tmp.addAll(componentsPreLogic);
     	}
-    	if(componentspos!=null){
-    		tmp.addAll(componentspos);
+    	if(componentsPostLogic != null){
+            tmp.addAll(componentsPostLogic);
     	}
     	return tmp.toArray(new Component[1]);
     }
     
     @SuppressWarnings("unchecked")
-	public final <T> T getComponent(Class<T> type) {
-        if(componentsneg!=null){
-	    	for(Component c : componentsneg) {
-	            if(c.getClass() == type) {
-	                return (T) c;
-	            }
-	        }
+    public final <T> T getComponent(Class<T> type) {
+        if(componentsPreLogic != null){
+            for(Component c : componentsPreLogic) {
+                if(c.getClass() == type) {
+                    return (T) c;
+                }
+            }
         }
-        if(componentspos!=null){
-        	for(Component c : componentspos) {
-	            if(c.getClass() == type) {
-	                return (T) c;
-	            }
-	        }
+        if(componentsPostLogic != null){
+            for(Component c : componentsPostLogic) {
+                if(c.getClass() == type) {
+                    return (T) c;
+                }
+            }
         }
         return null;
     }
     
     @SuppressWarnings("unchecked")
-	public final <T> ArrayList<T> getComponents(Class<T> type) {
+    public final <T> ArrayList<T> getComponents(Class<T> type) {
     	final ArrayList<T> cp = new ArrayList<>();
-    	if(componentsneg!=null){
-	    	for(Component c : componentsneg) {
-	        	if(c.getClass() == type) {
-	                cp.add((T) c);
-	            }
-	        }
+    	if(componentsPreLogic != null){
+            for(Component c : componentsPreLogic) {
+                if(c.getClass() == type) {
+                    cp.add((T) c);
+                }
+            }
     	}
-    	if(componentspos!=null){
-    		for(Component c : componentspos) {
-	        	if(c.getClass() == type) {
-	                cp.add((T) c);
-	            }
-	        }
+    	if(componentsPostLogic != null){
+            for(Component c : componentsPostLogic) {
+                if(c.getClass() == type) {
+                    cp.add((T) c);
+                }
+            }
     	}
         return cp;
     }
@@ -240,13 +240,13 @@ public class GameObject {
     }
     
     public final GameObject deleteOperation() {
-    	if(componentsneg != null){
-            for(Component c : componentsneg){
+    	if(componentsPreLogic != null){
+            for(Component c : componentsPreLogic){
                 c.onDelete(this);
             }
     	}
-    	if(componentspos != null){
-            for(Component c : componentspos){
+    	if(componentsPostLogic != null){
+            for(Component c : componentsPostLogic){
                 c.onDelete(this);
             }
     	}
