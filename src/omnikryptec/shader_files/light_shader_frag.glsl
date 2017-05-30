@@ -31,7 +31,12 @@ vec3 lighting(vec3 Scol, vec3 Spos, float rad, vec3 p, vec3 n, vec3 Mdiff, vec3 
 	vec3 v = normalize(p);
 	vec3 h = normalize(v + l);
 	
-	float att = saturate(1.0 - length(l)/rad);
+	float att=0;
+	if(rad>0){
+		att = saturate(1.0 - length(l)/rad);
+	}else{
+		att = 1;
+	}
 	l = normalize(l);
 	//att = 1;
 	vec3 Idiff = saturate(dot(l,n))*Mdiff*Scol;

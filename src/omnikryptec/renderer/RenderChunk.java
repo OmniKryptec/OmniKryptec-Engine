@@ -171,13 +171,13 @@ public class RenderChunk {
     private IRenderer r;
     private GameObject g;
     
-    public void frame(float maxExpenLvl, AllowedRenderer type, IRenderer... rend) {
+    public void frame(float maxExpenLvl, float minexplvl, AllowedRenderer type, IRenderer... rend) {
         if(rend == null || rend.length == 0){
             rend = empty_array;
         }
         for(int i=0; i<chunk.keysArray().length; i++){
         	r = chunk.keysArray()[i];
-            if(r != null && r.expensiveLevel()<=maxExpenLvl&&(type == AllowedRenderer.All || (type == AllowedRenderer.OnlThis && contains(rend, r)) || (type == AllowedRenderer.EvElse && !contains(rend, r)))) {
+            if(r != null && r.expensiveLevel()<=maxExpenLvl && r.expensiveLevel()>=minexplvl &&(type == AllowedRenderer.All || (type == AllowedRenderer.OnlThis && contains(rend, r)) || (type == AllowedRenderer.EvElse && !contains(rend, r)))) {
                 r.render(scene, chunk.get(r));
             }
         }

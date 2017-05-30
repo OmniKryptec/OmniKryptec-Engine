@@ -67,13 +67,16 @@ public class LightStage implements PostProcessingStage{
 		List<Light> relevant = currentScene.getRelevantLights();
 		if(relevant!=null){
 			for(Light l : relevant){
-				float[] kram = createBuffer(currentScene, l);
-				quad = generateQuad(kram);
-				quad.bind(0,1);
-				LightShader.light.loadVec4(l.getPosRad());
-				LightShader.lightColor.loadVec3(l.getColor());
-				GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);
-				quad.unbind(0,1);
+				if(l.isActive()){
+					l.doLogic0();
+					float[] kram = createBuffer(currentScene, l);
+					quad = generateQuad(kram);
+					quad.bind(0,1);
+					LightShader.light.loadVec4(l.getPosRad());
+					LightShader.lightColor.loadVec3(l.getColor());
+					GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);
+					quad.unbind(0,1);
+				}
 			}
 		}
 		target.unbindFrameBuffer();

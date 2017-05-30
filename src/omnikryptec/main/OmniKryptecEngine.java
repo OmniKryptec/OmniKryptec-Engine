@@ -184,6 +184,7 @@ public class OmniKryptecEngine {
 				}
 				return this;
 	    	}
+	    	InputUtil.nextFrame();
     		if(Display.wasResized()) {
 	            resizeFbos();
 	            PostProcessing.instance().resize();
@@ -194,7 +195,7 @@ public class OmniKryptecEngine {
 	    		if(clear) {
 		            RenderUtil.clear(sceneCurrent.getClearColor());
 		    	}
-	            sceneCurrent.frame(Float.MAX_VALUE, AllowedRenderer.All);
+	            sceneCurrent.frame(Float.MAX_VALUE, Float.MIN_VALUE, AllowedRenderer.All);
 	    	}
 	    	
 	    	scenefbo.unbindFrameBuffer();
@@ -207,10 +208,9 @@ public class OmniKryptecEngine {
 	    		}
 	    	}
 	    	PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo);
-	    	InputUtil.nextFrame();
-	    	DisplayManager.instance().updateDisplay();
 	    	eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
 	    	eventsystem.fireEvent(new Event(), EventType.RENDER_EVENT);
+	    	DisplayManager.instance().updateDisplay();
     	}catch(Exception e){
     		errorOccured(e, "Error occured in frame: ");
     	}

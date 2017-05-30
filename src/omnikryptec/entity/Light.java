@@ -39,4 +39,19 @@ public class Light extends GameObject {
 		return radius;
 	}
 	
+	/**
+	 * Sets this light to be a directional light.
+	 * 
+	 * the radius will be overwritten.
+	 * @return this light
+	 */
+	public Light setDirectional(){
+		radius = -1;
+		return this;
+	}
+	
+	public boolean isDirectional(){
+		return radius<0;
+	}
+	
 }
