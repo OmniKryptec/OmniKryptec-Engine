@@ -25,11 +25,15 @@ public class Scene {
 			coz = OmniKryptecEngine.getInstance().getDisplayManager().getSettings().getChunkOffsetZ();
 	private float[] clearcolor = { 0, 0, 0, 0 };
 	private PhysicsWorld physicsWorld = null;
+	private final List<Light> rel_lights = new ArrayList<>();
+	private final List<Light> shad_lights = new ArrayList<>();
+    private final List<Light> global_lights = new ArrayList<>();
 	/* Temp Variables */
 	private String tmp;
 	private long cx, cy, cz;
 	private RenderChunk tmpc;
-
+	
+	
 	public Scene(Camera cam) {
 		this.cam = cam;
 	}
@@ -76,6 +80,8 @@ public class Scene {
 	}
 
 	public final Scene frame(float maxexpenlvl, float minexplvl,  AllowedRenderer info, IRenderer... re) {
+		rel_lights.clear();
+		rel_lights.addAll(global_lights);
 		if (isUsingPhysics()) {
 			physicsWorld.stepSimulation();
 		}
@@ -87,6 +93,7 @@ public class Scene {
 				for (long z = -coz + cz; z <= coz + cz; z++) {
 					if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
 						tmpc.frame(maxexpenlvl, minexplvl, info, re);
+						rel_lights.addAll(tmpc.getLights());
 					}
 				}
 			}
@@ -96,17 +103,15 @@ public class Scene {
 		return this;
 	}
 
-	public void doLogic() {
+	protected void doLogic() {
 	}
 
-	public final List<Light> getRelevantLights() {
-		List<Light> lights = new ArrayList<>();
-		Light l = new Light();
-		l.setColor(1, 0, 1);
-		l.setRadius(50);
-		l.setRelativePos(1, 30, 1);
-		lights.add(l);
-		return lights;
+	public final List<Light> getRenderLights() {
+		return rel_lights;
+	}
+	
+	public final List<Light> getShadowLights(){
+		return shad_lights;
 	}
 
 	public final Camera getCamera() {

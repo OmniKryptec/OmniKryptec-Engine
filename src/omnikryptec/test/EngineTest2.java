@@ -62,12 +62,12 @@ public class EngineTest2 implements IEventHandler{
                     doCameraLogic(this);
                 }
                 
-            }.setPerspectiveProjection(90, 1000, 0.01f).setRelativePos(10, 10, 10)));
+            }.setPerspectiveProjection(90, 1000, 0.1f).setRelativePos(10, 10, 10)));
             Model pine = new Model(ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")));
 			Texture pinet = Texture.newTexture(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine2.png")).create();
 			TexturedModel ptm = new TexturedModel(pine, pinet);
 			ptm.getMaterial().setHasTransparency(true);
-			ptm.getMaterial().setReflectivity(0.1f);
+			ptm.getMaterial().setReflectivity(1);
 			Random r = new Random();
 			for(int i=0; i<200; i++){
 				Entity e = new Entity(ptm){

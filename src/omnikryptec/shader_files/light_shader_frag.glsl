@@ -1,9 +1,7 @@
 #version 330
 
 in vec2 textureCoords;
-in vec3 vposf;
-
-
+in mat4 invprojv;
 
 out vec4 col;
 
@@ -14,12 +12,9 @@ uniform sampler2D depth;
 
 uniform vec4 lightu;
 uniform vec3 lightColor;
-uniform vec2 planes;
-uniform mat4 vm;
-uniform mat4 vm2;
-uniform vec3 cam;
 
-uniform mat4 proj;
+uniform vec2 pixelSize;
+
 
 float saturate(float value){
 	
@@ -32,7 +27,7 @@ vec3 lighting(vec3 Scol, vec3 Spos, float rad, vec3 p, vec3 n, vec3 Mdiff, vec3 
 	vec3 h = normalize(v + l);
 	
 	float att=0;
-	if(rad>0){
+	if(rad>=0){
 		att = saturate(1.0 - length(l)/rad);
 	}else{
 		att = 1;
@@ -51,63 +46,21 @@ vec3 lighting(vec3 Scol, vec3 Spos, float rad, vec3 p, vec3 n, vec3 Mdiff, vec3 
 	//return normalize(Spos - p)*0.5+0.5;
 }
 
-float tofloat(vec3 v){
-	
-	const vec3 bt = vec3(1.0,1.0/256.0,1.0/(256.0*256.0));  
-	return dot(v, bt);
-	//return v.x+v.y+v.z;
-}
-
-/*vec3 PositionFromDepth_DarkPhoton(float depth) { 
-	vec2 ndc; // Reconstructed NDC-space position 
-	vec3 eye; // Reconstructed EYE-space position
-	eye.z = near * far / ((depth * (far - near)) - far);
-	ndc.x = ((gl_FragCoord.x * widthInv) - 0.5) * 2.0;
-	ndc.y = ((gl_FragCoord.y * heightInv) - 0.5) * 2.0;
-	eye.x = ( (-ndc.x * eye.z) * (right-left)/(2*near) - eye.z * (right+left)/(2*near) );
-	eye.y = ( (-ndc.y * eye.z) * (top-bottom)/(2*near) - eye.z * (top+bottom)/(2*near) );
-	return eye;
-}*/
 
 void main(void){
 	
-	vec4 light = vec4(lightu.xyz-cam, 1.0)*vm;
-	light.w = lightu.w;
-	//light.xyz -= cam;
+	vec3 pos = vec3(( gl_FragCoord.x * pixelSize.x),
+                   (gl_FragCoord.y * pixelSize.y), 0.0);
+	pos.z = texture(depth, textureCoords).r;
 	
-	vec3 view = normalize(vposf);
-	view =  (vec4(view, 1)*(proj)).xyz;
+	vec3 norm = normalize(texture(normal, textureCoords).xyz*2.0-1.0);
 	
-	float dep = texture(depth, textureCoords).r;
-	vec3 pos;
-	pos.z = -planes.y/(planes.x+dep);
-	pos.xy = view.yx/view.z*pos.z;
-	//pos = (vec4(pos, 0)*vm).xyz;
-	//pos = (vec4(pos, 1)*inverse(proj)).xyz;
-	//pos += cam;
-	//pos = pos;
+	vec4 clip = invprojv * vec4(pos * 2.0 - 1.0,  1.0);
+	pos = clip.xyz / clip.w;
 	
-	
-	vec3 norm = texture(normal, textureCoords).rgb-vec3(0.5);
-	float len = length(norm);
-	/*if(len>0.1){
-		norm /= len;
-	}else{
-		norm = vec3(0,0,0);
-	}*/
 	vec4 diff = texture(diffuse, textureCoords);
 	vec4 spec = texture(specular, textureCoords);
 	
-	col.rgb = lighting(lightColor, light.xyz, light.w, pos, norm, diff.rgb, spec.rgb, spec.a);
-	col.a = 1;
-	//col.a = diff.a;
-	//col.rgb = pos*0.5+0.5;
-	//col.rgb = vec3(dep,0,0);
-	//col.rgb = norm+vec3(0.5);
-	//col.rgb = view;
-	//col.rgb = view*0.5+0.5;
-	//col.rgb = pos;
-	//col.rgb = view.xyz;
-	//col.rgb = diff.rgb;
+	col.rgb = lighting(lightColor, lightu.rgb, lightu.w, pos, norm, diff.rgb, spec.rgb, spec.a);
+	col.a = diff.a;
 }
-

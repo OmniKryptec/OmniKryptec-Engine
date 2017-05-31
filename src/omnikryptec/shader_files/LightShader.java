@@ -23,7 +23,7 @@ public class LightShader extends Shader {
 	public static final UniformVec2 pixSizes = new UniformVec2("pixelSize");
 	
 	public LightShader() {
-		super(LightShader.class.getResourceAsStream(oc_shader_loc+"light_shader_vert.glsl"), LightShader.class.getResourceAsStream(oc_shader_loc+"light_shader_frag_2.glsl"), "position", depth,diffuse,specular,normal,light,lightColor, viewv, proj, pixSizes);
+		super(LightShader.class.getResourceAsStream(oc_shader_loc+"light_shader_vert.glsl"), LightShader.class.getResourceAsStream(oc_shader_loc+"light_shader_frag.glsl"), "position", depth,diffuse,specular,normal,light,lightColor, viewv, proj, pixSizes);
 		start();
 		diffuse.loadTexUnit(0);
 		normal.loadTexUnit(1);

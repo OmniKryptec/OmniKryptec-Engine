@@ -1,10 +1,12 @@
 package omnikryptec.renderer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.GameObject;
+import omnikryptec.entity.Light;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
@@ -66,6 +68,8 @@ public class RenderChunk {
     private List<Entity> list;
     private Material m;
     private TexturedModel tm;
+    private List<Light> lights = new ArrayList<>();
+    
     
     public void addGameObject(GameObject g) {
         if(g != null) {
@@ -201,5 +205,9 @@ public class RenderChunk {
     public Scene getScene() {
         return scene;
     }
+
+	public List<Light> getLights() {
+		return lights;
+	}
 
 }
