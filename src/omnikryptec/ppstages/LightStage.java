@@ -32,6 +32,8 @@ public class LightStage implements PostProcessingStage{
 	private int[] list_ind = {0,1,2};
 	private boolean[] usebefore = {true,false,false};
 	
+	private boolean init=false;
+	
 	@Override
 	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist, int stage) {
 		render(OmniKryptecEngine.instance().getCurrentScene(), usebefore[0]?before:beforelist.get(list_ind[0]),usebefore[1]?before:beforelist.get(list_ind[1]),usebefore[2]?before:beforelist.get(list_ind[2]));
@@ -49,20 +51,21 @@ public class LightStage implements PostProcessingStage{
 	
 	
 	private void render(Scene currentScene, FrameBufferObject unsampledfbo, FrameBufferObject normalfbo, FrameBufferObject specularfbo) {
+		
 		RenderUtil.enableAdditiveBlending();
 		shader.start();
-		LightShader.planes.loadVec2(currentScene.getCamera().getPlanesForLR());
 		LightShader.viewv.loadMatrix(currentScene.getCamera().getViewMatrix());
-		Matrix4f abc = Matrix4f.load(currentScene.getCamera().getViewMatrix(), null);
-		LightShader.viewv2.loadMatrix(abc.translate(currentScene.getCamera().getAbsolutePos()));
-		LightShader.abc.loadVec3(currentScene.getCamera().getAbsolutePos());
 		LightShader.proj.loadMatrix(currentScene.getCamera().getProjectionMatrix());
-		//LightShader.viewv2.loadMatrix(currentScene.getCamera().getViewMatrix());
+		LightShader.pixSizes.loadVec2(1.0f/Display.getWidth(), 1.0f/Display.getHeight());
 		unsampledfbo.bindToUnit(0, 0);
 		normalfbo.bindToUnit(1, 0);
 		specularfbo.bindToUnit(2, 0);
 		unsampledfbo.bindDepthTexture(3);
-		
+		if(!init){
+			quad = generateQuad();
+			init = true;
+		}
+		quad.bind(0,1);
 		target.bindFrameBuffer();
 		RenderUtil.clear(0, 0, 0, 1);
 		List<Light> relevant = currentScene.getRelevantLights();
@@ -70,24 +73,20 @@ public class LightStage implements PostProcessingStage{
 			for(Light l : relevant){
 				if(l.isActive()){
 					l.doLogic0();
-					float[] kram = createBuffer(currentScene, l);
-					quad = generateQuad(kram);
-					quad.bind(0,1);
 					LightShader.light.loadVec4(l.getPosRad());
 					LightShader.lightColor.loadVec3(l.getColor());
 					GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);
-					quad.unbind(0,1);
 				}
 			}
 		}
 		target.unbindFrameBuffer();
-		//quad.unbind(0,1);
+		quad.unbind(0,1);
 		RenderUtil.disableBlending();
 		
 	}
 
 
-	private IntBuffer ib = BufferUtils.createIntBuffer(4);
+/*	private IntBuffer ib = BufferUtils.createIntBuffer(4);
 	private FloatBuffer b = BufferUtils.createFloatBuffer(3);
 
 	private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
@@ -122,15 +121,15 @@ public class LightStage implements PostProcessingStage{
 			floatarray[i*3+2] = vec.z;
 		}
 		return floatarray;
-	}
+	}*/
 	
 	private static final int QUAD_VERTEX_COUNT = 4;
 	private static final float[] QUAD_VERTICES = { -1, 1, -1, -1, 1, 1, 1, -1 };
 	private static final int[] QUAD_INDICES = {0,3,1,1,3,2};
 
-	private static VertexArrayObject generateQuad(float[] special) {
+	private static VertexArrayObject generateQuad() {
 		VertexArrayObject vao = VertexArrayObject.create();
-		vao.storeData(QUAD_INDICES, QUAD_VERTEX_COUNT, QUAD_VERTICES, special);
+		vao.storeData(QUAD_INDICES, QUAD_VERTEX_COUNT, QUAD_VERTICES);
 		return vao;
 	}
 	

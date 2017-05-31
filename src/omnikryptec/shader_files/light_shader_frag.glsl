@@ -58,29 +58,35 @@ float tofloat(vec3 v){
 	//return v.x+v.y+v.z;
 }
 
+/*vec3 PositionFromDepth_DarkPhoton(float depth) { 
+	vec2 ndc; // Reconstructed NDC-space position 
+	vec3 eye; // Reconstructed EYE-space position
+	eye.z = near * far / ((depth * (far - near)) - far);
+	ndc.x = ((gl_FragCoord.x * widthInv) - 0.5) * 2.0;
+	ndc.y = ((gl_FragCoord.y * heightInv) - 0.5) * 2.0;
+	eye.x = ( (-ndc.x * eye.z) * (right-left)/(2*near) - eye.z * (right+left)/(2*near) );
+	eye.y = ( (-ndc.y * eye.z) * (top-bottom)/(2*near) - eye.z * (top+bottom)/(2*near) );
+	return eye;
+}*/
+
 void main(void){
 	
-	vec4 light = vec4(lightu.xyz, 1.0);
+	vec4 light = vec4(lightu.xyz-cam, 1.0)*vm;
 	light.w = lightu.w;
+	//light.xyz -= cam;
 	
 	vec3 view = normalize(vposf);
+	view =  (vec4(view, 1)*(proj)).xyz;
 	
 	float dep = texture(depth, textureCoords).r;
-	
 	vec3 pos;
 	pos.z = -planes.y/(planes.x+dep);
-	pos.xy = view.xy/view.z*pos.z;
+	pos.xy = view.yx/view.z*pos.z;
 	//pos = (vec4(pos, 0)*vm).xyz;
+	//pos = (vec4(pos, 1)*inverse(proj)).xyz;
 	//pos += cam;
-	//pos = (vec4(pos, 0)*inverse(vm2)).xyz;
 	//pos = pos;
 	
-	/*float x = textureCoords.x*2-1;
-	float y = textureCoords.y*2-1;
-	vec4 ready = vec4(x,y,dep,1.0);
-	ready = ready * inverse(proj);
-	
-	pos = ready.xyz/ready.w;*/
 	
 	vec3 norm = texture(normal, textureCoords).rgb-vec3(0.5);
 	float len = length(norm);
@@ -93,7 +99,10 @@ void main(void){
 	vec4 spec = texture(specular, textureCoords);
 	
 	col.rgb = lighting(lightColor, light.xyz, light.w, pos, norm, diff.rgb, spec.rgb, spec.a);
-	col.a = diff.a;
+	col.a = 1;
+	//col.a = diff.a;
+	//col.rgb = pos*0.5+0.5;
+	//col.rgb = vec3(dep,0,0);
 	//col.rgb = norm+vec3(0.5);
 	//col.rgb = view;
 	//col.rgb = view*0.5+0.5;

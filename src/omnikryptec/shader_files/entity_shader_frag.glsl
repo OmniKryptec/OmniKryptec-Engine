@@ -24,19 +24,22 @@ void main(void){
 	vec3 normalt = texture(normaltex, pass_texcoords).rgb;
 	vec4 diffuset = texture(tex, pass_texcoords);
 	normalt -= 0.5;
-	normalt = normalize(normalt.x*tang + normalt.y * bitang + normalt.z * norm);
-	normalt = normalt*0.5+0.5;
+	//normalt = normalize(normalt.x*tang + normalt.y * bitang + normalt.z * norm);
+	//normalt = normalt*0.5+0.5;
+	mat3 TBN = mat3(tang, bitang, norm);
+	normalt = normalize(TBN*texture(normaltex, pass_texcoords).rgb*2-1);
+	
 	
 	col = vec4(diffuset);
 	col *= colormod;
-	col1 = vec4(normalt.rgb,1.0);
+	col1 = vec4(normalt.rgb*0.5+0.5,1.0);
 	
 	
 	if(hasspecular>0.5){
 		col2.rgb = texture(speculartex, pass_texcoords).rgb;
 		col2.a = reflec;
 	}else{
-		col2 = vec4(0,0,0,reflec);
+		col2 = vec4(reflec,reflec,reflec,reflec);
 	}
 	if(col.a<0.2){
 		discard;

@@ -21,6 +21,7 @@ import omnikryptec.ppstages.ColorSpaceStage;
 import omnikryptec.ppstages.CompleteGaussianBlurStage;
 import omnikryptec.ppstages.ContrastchangeStage;
 import omnikryptec.ppstages.FogStage;
+import omnikryptec.ppstages.LightStage;
 import omnikryptec.ppstages.SingleGaussianBlurStage;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.Texture;
@@ -43,7 +44,7 @@ public class EngineTest2 implements IEventHandler{
             Logger.showConsoleDirect();
             
             DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFpsCap(60).setChunkOffsets(10, 10, 10));
-            //PostProcessing.instance().addStage(new LightStage());
+            PostProcessing.instance().addStage(new LightStage());
             //PostProcessing.instance().addStage(new CompleteGaussianBlurStage(false,0.5f,0.5f));
             //PostProcessing.instance().addStage(new ColorSpaceStage(8,8,8));
             //PostProcessing.instance().addStage(new ContrastchangeStage(-0.25f));
@@ -66,6 +67,7 @@ public class EngineTest2 implements IEventHandler{
 			Texture pinet = Texture.newTexture(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine2.png")).create();
 			TexturedModel ptm = new TexturedModel(pine, pinet);
 			ptm.getMaterial().setHasTransparency(true);
+			ptm.getMaterial().setReflectivity(0.1f);
 			Random r = new Random();
 			for(int i=0; i<200; i++){
 				Entity e = new Entity(ptm){

@@ -1,0 +1,66 @@
+#version 330
+
+in vec2 textureCoords;
+in mat4 invprojv;
+
+out vec4 col;
+
+uniform sampler2D diffuse;
+uniform sampler2D normal;
+uniform sampler2D specular;
+uniform sampler2D depth;
+
+uniform vec4 lightu;
+uniform vec3 lightColor;
+
+uniform vec2 pixelSize;
+
+
+float saturate(float value){
+	
+	return clamp(value,0.0,1.0);
+}
+
+vec3 lighting(vec3 Scol, vec3 Spos, float rad, vec3 p, vec3 n, vec3 Mdiff, vec3 Mspec, float Mrefl){
+	vec3 l = Spos - p;
+	vec3 v = normalize(p);
+	vec3 h = normalize(v + l);
+	
+	float att=0;
+	if(rad>=0){
+		att = saturate(1.0 - length(l)/rad);
+	}else{
+		att = 1;
+	}
+	l = normalize(l);
+	//att = 1;
+	vec3 Idiff = saturate(dot(l,n))*Mdiff*Scol;
+	vec3 ISpec = pow(saturate(dot(h,n)), Mrefl)*Mspec*Scol;
+	/*if(att>0.5){
+		return vec3(1,0,0);
+	}else{
+		return Mdiff;
+	}*/
+	//return vec3(att,att,att);
+	return att * (Idiff + ISpec);
+	//return normalize(Spos - p)*0.5+0.5;
+}
+
+
+void main(void){
+	
+	vec3 pos = vec3(( gl_FragCoord.x * pixelSize.x),
+                   (gl_FragCoord.y * pixelSize.y), 0.0);
+	pos.z = texture(depth, textureCoords).r;
+	
+	vec3 norm = normalize(texture(normal, textureCoords).xyz*2.0-1.0);
+	
+	vec4 clip = invprojv * vec4(pos * 2.0 - 1.0,  1.0);
+	pos = clip.xyz / clip.w;
+	
+	vec4 diff = texture(diffuse, textureCoords);
+	vec4 spec = texture(specular, textureCoords);
+	
+	col.rgb = lighting(lightColor, lightu.rgb, lightu.w, pos, norm, diff.rgb, spec.rgb, spec.a);
+	col.a = diff.a;
+}
