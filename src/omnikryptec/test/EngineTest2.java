@@ -34,7 +34,7 @@ import omnikryptec.util.NativesLoader;
 public class EngineTest2 implements IEventHandler{
     
 	public static void main(String[] args) {
-        try {
+		try {
             NativesLoader.loadNatives();
             OmniKryptecEngine.addShutdownHook(() -> NativesLoader.unloadNatives());
             Logger.enableLoggerRedirection(true);
