@@ -14,9 +14,7 @@ import omnikryptec.util.NativesLoader;
 public class AudioTest {
     
     private static final Timer timer = new Timer(10, e -> {
-        for(StreamedSound streamedSound : StreamedSound.streamedSounds) {
-            streamedSound.update(0);
-        }
+        AudioManager.update(0);
     });
     
     public static void main(String[] args) {

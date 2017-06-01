@@ -150,6 +150,12 @@ public class AudioManager {
         AL.destroy();
     }
     
+    public static final void update(long currentTime) {
+        for(StreamedSound streamedSound : StreamedSound.streamedSounds) {
+            streamedSound.update(currentTime);
+        }
+    }
+    
     public static final boolean isInitialized() {
         return isInitialized;
     }

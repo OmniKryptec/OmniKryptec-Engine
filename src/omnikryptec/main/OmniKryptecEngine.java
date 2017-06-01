@@ -1,6 +1,7 @@
 package omnikryptec.main;
 
 import java.util.HashMap;
+import omnikryptec.audio.AudioManager;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL30;
@@ -174,6 +175,7 @@ public class OmniKryptecEngine {
     }
         
     public final OmniKryptecEngine frame(boolean clear) {
+        final long currentTime = manager.getCurrentTime();
     	try{
 	    	if(!Display.isActive()){
 	    		Display.update();
@@ -185,6 +187,7 @@ public class OmniKryptecEngine {
 				return this;
 	    	}
 	    	InputUtil.nextFrame();
+                AudioManager.update(currentTime);
     		if(Display.wasResized()) {
 	            resizeFbos();
 	            PostProcessing.instance().resize();
