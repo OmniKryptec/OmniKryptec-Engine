@@ -117,6 +117,21 @@ public class AudioSource {
         return this;
     }
     
+    public final AudioSource setRotation(javax.vecmath.Vector3f rotation) {
+        setRotation(rotation.x, rotation.y, rotation.z);
+        return this;
+    }
+    
+    public final AudioSource setRotation(Vector3f rotation) {
+        setRotation(rotation.x, rotation.y, rotation.z);
+        return this;
+    }
+    
+    public final AudioSource setRotation(float x, float y, float z) {
+        AL10.alSource3f(sourceID, AL10.AL_ORIENTATION, x, y, z);
+        return this;
+    }
+    
     public final AudioSource setVelocity(javax.vecmath.Vector3f velocity) {
         setVelocity(velocity.x, velocity.y, velocity.z);
         return this;

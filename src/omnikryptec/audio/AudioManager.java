@@ -42,19 +42,20 @@ public class AudioManager {
         }
     }
     
-    public static final boolean setListenerData(Component component, javax.vecmath.Vector3f position, javax.vecmath.Vector3f velocity) {
-        return setListenerData(component, position.x, position.y, position.z, velocity.x, velocity.y, velocity.z);
+    public static final boolean setListenerData(Component component, javax.vecmath.Vector3f position, javax.vecmath.Vector3f rotation, javax.vecmath.Vector3f velocity) {
+        return setListenerData(component, position.x, position.y, position.z, rotation.x, rotation.y, rotation.z, velocity.x, velocity.y, velocity.z);
     }
     
-    public static final boolean setListenerData(Component component, Vector3f position, Vector3f velocity) {
-        return setListenerData(component, position.x, position.y, position.z, velocity.x, velocity.y, velocity.z);
+    public static final boolean setListenerData(Component component, Vector3f position, Vector3f rotation, Vector3f velocity) {
+        return setListenerData(component, position.x, position.y, position.z, rotation.x, rotation.y, rotation.z, velocity.x, velocity.y, velocity.z);
     }
     
-    public static final boolean setListenerData(Component component, float posX, float posY, float posZ, float velX, float velY, float velZ) {
+    public static final boolean setListenerData(Component component, float posX, float posY, float posZ, float rotX, float rotY, float rotZ, float velX, float velY, float velZ) {
         if(blockingAudioListenerComponent != null && (component == null || blockingAudioListenerComponent != component)) {
             return false;
         }
         AL10.alListener3f(AL10.AL_POSITION, posX, posY, posZ);
+        AL10.alListener3f(AL10.AL_ORIENTATION, rotX, rotY, rotZ);
         AL10.alListener3f(AL10.AL_VELOCITY, velX, velY, velZ);
         return true;
     }

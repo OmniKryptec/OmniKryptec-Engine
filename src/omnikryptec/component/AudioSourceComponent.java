@@ -100,9 +100,11 @@ public class AudioSourceComponent implements Component {
         if(isUsingPhysics) {
             physicsComponent.getBody().getAngularVelocity(velocity);
         }
+        final Vector3f rotation = instance.getAbsoluteRotation();
         for(AudioSource source : sources) {
             source.setPosition(position);
             source.setVelocity(velocity);
+            source.setRotation(rotation);
         }
         blocker.setBlocked(false);
     }

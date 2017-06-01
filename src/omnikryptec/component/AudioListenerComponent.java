@@ -44,10 +44,11 @@ public class AudioListenerComponent implements Component {
         }
         final Vector3f position = instance.getAbsolutePos();
         final javax.vecmath.Vector3f velocity = new javax.vecmath.Vector3f(0, 0, 0);
+        final Vector3f rotation = instance.getAbsoluteRotation();
         if(isUsingPhysics) {
             physicsComponent.getBody().getAngularVelocity(velocity);
         }
-        AudioManager.setListenerData(this, position, ConverterUtil.convertVector3fToLWJGL(velocity));
+        AudioManager.setListenerData(this, position, rotation, ConverterUtil.convertVector3fToLWJGL(velocity));
     }
 
     @Override
