@@ -17,7 +17,7 @@ import omnikryptec.util.ConverterUtil;
 public class AudioListenerComponent implements Component {
     
     public AudioListenerComponent() {
-        boolean done = AudioManager.setBlockingAudioListenerComponent(this, this);
+        boolean done = AudioManager.setBlockingComponent(this, this);
         if(Logger.isDebugMode()) {
             if(!done) {
                 Logger.log("AudioListenerComponent could not be set as the Main-AudioListenerComponent!", LogLevel.WARNING);
@@ -52,7 +52,7 @@ public class AudioListenerComponent implements Component {
 
     @Override
     public final void onDelete(GameObject instance) {
-        AudioManager.setBlockingAudioListenerComponent(this, null);
+        AudioManager.setBlockingComponent(this, null);
     }
 
     @Override

@@ -30,7 +30,7 @@ public class AudioSourceComponent implements Component {
     
     public final AudioSource getSource(String name) {
         for(AudioSource source : sources) {
-            if(source.getSoundName().equals(name)) {
+            if(source.getSound().getName().equals(name)) {
                 return source;
             }
         }

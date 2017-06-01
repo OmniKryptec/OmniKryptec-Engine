@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
@@ -21,7 +21,7 @@ import omnikryptec.logger.Logger;
  */
 public class AudioManager {
     
-    private static final HashMap<String, Integer> sounds = new HashMap<>();
+    private static final ArrayList<Sound> sounds = new ArrayList<>();
     private static DistanceModel distanceModel = null;
     private static boolean isInitialized = false;
     private static Component blockingAudioListenerComponent = null;
@@ -59,7 +59,7 @@ public class AudioManager {
         return true;
     }
     
-    public static final boolean setBlockingAudioListenerComponent(Component component, Component newComponent) {
+    public static final boolean setBlockingComponent(Component component, Component newComponent) {
         if(blockingAudioListenerComponent != null && (component == null || blockingAudioListenerComponent != component)) {
             return false;
         }
@@ -78,56 +78,75 @@ public class AudioManager {
     public static final int loadSound(String name, InputStream inputStream) {
         deleteSound(name);
         final int bufferID = AL10.alGenBuffers();
-        sounds.put(name, bufferID);
         final WaveData waveData = WaveData.create(inputStream);
         AL10.alBufferData(bufferID, waveData.format, waveData.data, waveData.samplerate);
         waveData.dispose();
+        final Sound sound = new Sound(name, bufferID);
+        sounds.add(sound);
         return bufferID;
     }
     
-    public static final Integer getSound(String name) {
-        return sounds.get(name);
+    public static final Sound getSound(String name) {
+        for(Sound sound : sounds) {
+            if(sound.getName().equals(name)) {
+                return sound;
+            }
+        }
+        return null;
     }
     
     public static final String[] getSoundNames() {
-        return sounds.keySet().toArray(new String[sounds.size()]);
+        final String[] names = new String[sounds.size()];
+        for(int i = 0; i < names.length; i++) {
+            names[i] = sounds.get(i).getName();
+        }
+        return names;
     }
     
-    public static final String getSoundName(Integer bufferID) {
-        if(bufferID == null) {
-            return null;
-        }
-        for(String name : sounds.keySet()) {
-            if(sounds.get(name).equals(bufferID)) {
-                return name;
+    public static final Sound getSound(int bufferID) {
+        for(Sound sound : sounds) {
+            if(sound.getBufferID() == bufferID) {
+                return sound;
             }
         }
         return null;
     }
     
     public static final boolean deleteSound(String name) {
-        final Integer bufferID = sounds.get(name);
-        if(bufferID != null) {
-            try {
-                AL10.alDeleteBuffers(bufferID);
-                sounds.remove(name);
-                return true;
-            } catch (Exception ex) {
-                if(Logger.isDebugMode()) {
-                    Logger.logErr("Error while deleting existing sound: " + ex, ex);
-                }
-                return false;
+        final Sound sound = getSound(name);
+        if(sound != null) {
+            boolean deleted = sound.delete();
+            if(deleted) {
+                sounds.remove(sound);
             }
+            return deleted;
+        } else {
+            return false;
+        }
+    }
+    
+    public static final boolean deleteSound(int bufferID) {
+        final Sound sound = getSound(bufferID);
+        if(sound != null) {
+            boolean deleted = sound.delete();
+            if(deleted) {
+                sounds.remove(sound);
+            }
+            return deleted;
         } else {
             return false;
         }
     }
     
     public static final void cleanup() {
-        for(int bufferID : sounds.values()) {
-            AL10.alDeleteBuffers(bufferID);
+        for(Sound sound : sounds) {
+            sound.delete();
         }
         sounds.clear();
+        for(AudioSource source : AudioSource.audioSources) {
+            source.delete();
+        }
+        AudioSource.audioSources.clear();
         AL.destroy();
     }
     

@@ -1,5 +1,6 @@
 package omnikryptec.audio;
 
+import java.util.ArrayList;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -9,40 +10,36 @@ import org.lwjgl.util.vector.Vector3f;
  */
 public class AudioSource {
     
+    protected static final ArrayList<AudioSource> audioSources = new ArrayList<>();
+    
     private final int sourceID;
-    private int playedBufferID = -1;
+    private ISound sound = null;
     
     public AudioSource() {
         sourceID = AL10.alGenSources();
-        AL10.alSourcef(sourceID, AL10.AL_GAIN, 1);
-        AL10.alSourcef(sourceID, AL10.AL_PITCH, 1);
-        AL10.alSource3f(sourceID, AL10.AL_POSITION, 0, 0, 0);
+        setVolume(1.0F);
+        setPitch(1.0F);
+        setPosition(0, 0, 0);
+        audioSources.add(this);
     }
     
-    public final boolean play(String name) {
-        final Integer bufferID = AudioManager.getSound(name);
-        if(bufferID != null) {
-            play(bufferID);
-            return true;
-        } else {
-            return false;
-        }
+    public final AudioSource play(String name) {
+        return play(AudioManager.getSound(name));
     }
     
-    public final AudioSource play(int bufferID) {
+    public final AudioSource play(ISound sound) {
         stop();
-        AL10.alSourcei(sourceID, AL10.AL_BUFFER, bufferID);
-        this.playedBufferID = bufferID;
+        if(sound == null) {
+            return this;
+        }
+        sound.play(this);
+        this.sound = sound;
         continuePlaying();
         return this;
     }
     
-    public final int getSound() {
-        return playedBufferID;
-    }
-    
-    public final String getSoundName() {
-        return AudioManager.getSoundName(playedBufferID);
+    public final ISound getSound() {
+        return sound;
     }
     
     public final AudioSource setLooping(boolean loop) {
@@ -66,6 +63,9 @@ public class AudioSource {
     
     public final AudioSource stop() {
         AL10.alSourceStop(sourceID);
+        if(sound != null) {
+            sound.stop(this);
+        }
         return this;
     }
     
@@ -78,6 +78,9 @@ public class AudioSource {
     public final AudioSource delete() {
         stop();
         AL10.alDeleteSources(sourceID);
+        if(sound != null) {
+            sound.delete(this);
+        }
         return this;
     }
     
@@ -86,9 +89,17 @@ public class AudioSource {
         return this;
     }
     
+    public final float getVolume() {
+        return AL10.alGetSourcef(sourceID, AL10.AL_GAIN);
+    }
+    
     public final AudioSource setPitch(float pitch) {
         AL10.alSourcef(sourceID, AL10.AL_PITCH, pitch);
         return this;
+    }
+    
+    public final float getPitch() {
+        return AL10.alGetSourcef(sourceID, AL10.AL_PITCH);
     }
     
     public final AudioSource setPosition(javax.vecmath.Vector3f position) {
@@ -134,6 +145,10 @@ public class AudioSource {
     public final AudioSource setMaxDistance(float maxDistance) {
         AL10.alSourcef(sourceID, AL10.AL_MAX_DISTANCE, maxDistance);
         return this;
+    }
+    
+    protected final int getSourceID() {
+        return sourceID;
     }
     
 }
