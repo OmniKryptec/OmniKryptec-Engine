@@ -123,6 +123,13 @@ public class RenderUtil {
 			if(pos.lengthSquared()<cpos.lengthSquared()+rad&&pos.lengthSquared()>cpos.lengthSquared()-rad){
 				return true;
 			}
+		}else if(e.getType()==RenderType.MEDIUM){
+			rad = OmniKryptecEngine.instance().getDisplayManager().getSettings().getMediumRadius();
+			pos = e.getAbsolutePos();
+			cpos = c.getAbsolutePos();
+			if(pos.lengthSquared()<cpos.lengthSquared()+rad&&pos.lengthSquared()>cpos.lengthSquared()-rad){
+				return true;
+			}
 		}
 		return false;
 	}
