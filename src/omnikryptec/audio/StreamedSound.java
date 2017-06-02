@@ -52,8 +52,8 @@ public class StreamedSound implements ISound {
      * @param name Name of the Sound
      * @param source AudioSource component
      * @param audioInputStream AudioInputStream
-     * @param bufferCount Count of the Buffers
-     * @param bufferTime Length of the Buffers in ms
+     * @param bufferCount Number of used Buffers
+     * @param bufferTime Buffered time in milliseconds
      */
     public StreamedSound(String name, AudioSource source, AudioInputStream audioInputStream, int bufferCount, int bufferTime) {
         this.name = name;
@@ -87,10 +87,18 @@ public class StreamedSound implements ISound {
         buffersCreated.clear();
     }
 
+    /**
+     * Returns the AudioInputStream
+     * @return AudioInputStream Audiostream
+     */
     public final AudioInputStream getAudioInputStream() {
         return audioInputStream;
     }
 
+    /**
+     * Returns the AudioFormat
+     * @return AudioFormat Audioformat
+     */
     public final AudioFormat getAudioFormat() {
         return audioFormat;
     }
@@ -194,10 +202,26 @@ public class StreamedSound implements ISound {
         }
     }
     
+    /**
+     * Creates a new StreamSound of an InputStream
+     * @param name String Name of the Sound
+     * @param source AudioSource Destination for this StreamedSound
+     * @param inputStream InputStream Stream to load from
+     * @return StreamedSound Sound
+     */
     public static final StreamedSound ofInputStream(String name, AudioSource source, InputStream inputStream) {
         return ofInputStream(name, source, inputStream, STANDARD_BUFFER_COUNT, STANDARD_BUFFER_LENGTH);
     }
     
+    /**
+     * Creates a new StreamSound of an InputStream
+     * @param name String Name of the Sound
+     * @param source AudioSource Destination for this StreamedSound
+     * @param inputStream InputStream Stream to load from
+     * @param bufferCount Integer Number of used Buffers
+     * @param bufferTime Integer Buffered time in milliseconds
+     * @return StreamedSound Sound
+     */
     public static final StreamedSound ofInputStream(String name, AudioSource source, InputStream inputStream, int bufferCount, int bufferTime) {
         try {
             final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream);
@@ -211,10 +235,12 @@ public class StreamedSound implements ISound {
     }
 
     @Override
-    public void delete(AudioSource source) {
+    public boolean delete(AudioSource source) {
         try {
             audioInputStream.close();
+            return true;
         } catch (Exception ex) {
+            return false;
         }
     }
     

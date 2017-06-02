@@ -104,7 +104,7 @@ public class AudioSourceComponent implements Component {
         for(AudioSource source : sources) {
             source.setPosition(position);
             source.setVelocity(velocity);
-            source.setRotation(rotation);
+            source.setOrientation(rotation);
         }
         blocker.setBlocked(false);
     }

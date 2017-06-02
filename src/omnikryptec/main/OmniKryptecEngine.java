@@ -26,7 +26,7 @@ import omnikryptec.util.RenderUtil;
 
 /**
  *
- * @author Panzer1119 & pcfreak9000
+ * @author Panzer1119 &amp; pcfreak9000
  */
 public class OmniKryptecEngine {
 	

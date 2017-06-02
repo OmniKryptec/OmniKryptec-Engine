@@ -13,7 +13,7 @@ import omnikryptec.renderer.RenderChunk;
 
 /**
  * 
- * @author pcfreak9000 & Panzer1119
+ * @author pcfreak9000 &amp; Panzer1119
  *
  */
 public class GameObject {
@@ -59,7 +59,9 @@ public class GameObject {
      * if no parent is set this is the absolute position else its the postion
      * relative to the parent
      * 
-     * @param pos
+     * @param x
+     * @param y
+     * @param z
      */
     public final GameObject setRelativePos(float x, float y, float z) {
         this.pos.x = x;
@@ -328,7 +330,7 @@ public class GameObject {
     /**
      * sets the rotation of this gameobject in radians
      * 
-     * @param f
+     * @param vec
      */
     public final GameObject setRotation(Vector3f vec) {
         this.rotation = vec;

@@ -18,6 +18,11 @@ public class Sound implements ISound {
     private int frequency;
     private float length;
     
+    /**
+     * Creates a new Sound
+     * @param name String Name of the Sound
+     * @param bufferID Integer BufferID
+     */
     public Sound(String name, int bufferID) {
         this.name = name;
         this.bufferID = bufferID;
@@ -28,7 +33,7 @@ public class Sound implements ISound {
         calculateLength();
     }
     
-    public final float calculateLength() {
+    private final float calculateLength() {
         length = ((((float) size) * 8.0F) / (((float) channels) * ((float) bits))) / ((float) frequency);
         return length;
     }
@@ -68,13 +73,19 @@ public class Sound implements ISound {
         return length;
     }
 
+    /**
+     * Sets the frequency
+     * @param frequency Integer Frequency
+     * @return Sound A reference to this Sound
+     */
     public final Sound setFrequency(int frequency) {
         this.frequency = frequency;
         calculateLength();
         return this;
     }
     
-    public final boolean delete() {
+    @Override
+    public final boolean delete(AudioSource source) {
         if(bufferID == -1) {
             return false;
         }
@@ -89,6 +100,11 @@ public class Sound implements ISound {
         }
     }
     
+    /**
+     * Loads this Sound to an AudioSource
+     * @param source AudioSource Source to be loaded to
+     * @return Sound A reference to this Sound
+     */
     public final Sound loadToAudioSource(AudioSource source) {
         AL10.alSourcei(source.getSourceID(), AL10.AL_BUFFER, bufferID);
         return this;
@@ -122,10 +138,6 @@ public class Sound implements ISound {
 
     @Override
     public void update(long currentTime) {
-    }
-
-    @Override
-    public void delete(AudioSource source) {
     }
     
 }

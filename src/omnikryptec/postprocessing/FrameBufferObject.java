@@ -52,7 +52,7 @@ public class FrameBufferObject implements ITexture{
 	 *            - the width of the FBO.
 	 * @param height
 	 *            - the height of the FBO.
-	 * @param depthBufferType
+	 * @param type
 	 *            - an int indicating the type of depth buffer attachment that
 	 *            this FBO should use.
 	 */
