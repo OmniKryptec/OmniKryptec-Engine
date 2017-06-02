@@ -34,6 +34,7 @@ public class TerrainRenderer implements IRenderer {
     private Terrain terrain;
     private TexturedModel model;
 
+    //TODO change something
     @Override
     public void render(Scene s, RenderMap<TexturedModel, List<Entity>> entities) {
         shader.start();
@@ -62,7 +63,7 @@ public class TerrainRenderer implements IRenderer {
                 texturePack.getbTexture().bindToUnit(3);
                 terrain.getBlendMap().bindToUnit(4);
                 if(RenderUtil.inRenderRange(terrain, s.getCamera()) || true) {
-                    TerrainShader.transformationMatrix.loadMatrix(Maths.createTransformationMatrix(new Vector3f(terrain.getX(), 0, terrain.getZ()), Constants.MATHS_ZERO, Constants.MATHS_ONE));
+                    TerrainShader.transformationMatrix.loadMatrix(Maths.createTransformationMatrix(new Vector3f(terrain.getAbsolutePos().x, 0, terrain.getAbsolutePos().z), Constants.MATHS_ZERO, Constants.MATHS_ONE));
                     GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
                 }
             }

@@ -15,28 +15,91 @@ import omnikryptec.texture.ITexture;
  */
 public class Terrain extends Entity {
     
+	/**
+	 * made variable
+	 */
+	@Deprecated
     protected static final float SIZE = 400; //TODO Move this to Constants.java
-    private static final float MAX_HEIGHT = 40;
+    
+	/**
+	 * use {@link HeightsGeneratorHMap}
+	 */
+	@Deprecated
+	private static final float MAX_HEIGHT = 40;
+    
+    /**
+     * moved to {@link HeightsGeneratorHMap}
+     */
+    @Deprecated
     private static final float MAX_PIXEL_COLOR = 256 * 256 * 256;
     
     public static final TerrainRenderer terrainRenderer = new TerrainRenderer();
     
-    private final float x;
-    private final float z;
-    private final Model model;
-    private final TerrainTexturePack texturePack;
-    private final ITexture blendMap;
+    //private final float x;
+    //private final float z;
     
-    public Terrain(int gridX, int gridZ, TerrainTexturePack texturePack, ITexture blendMap) {
-        this.x = gridX * SIZE;
-        this.z = gridZ * SIZE;
-        this.model = generateTerrain("/omnikryptec/terrain/heightmap.png");
-        this.texturePack = texturePack;
-        this.blendMap = blendMap;
-        setTexturedModel(new TexturedModel(model, blendMap));
+    //private final Model model;
+    private final TerrainTexturePack texturePack;
+    
+    
+    //private final ITexture blendMap;
+    
+    public Terrain(final float worldx, final float worldz, Model model, TerrainTexturePack texturePack, ITexture blendMap){
+    	getRelativePos().x = worldx;
+    	getRelativePos().z = worldz;
+    	this.texturePack = texturePack;
+    	setTexturedModel(new TexturedModel(model, blendMap));
         getTexturedModel().getMaterial().setRenderer(terrainRenderer);
     }
     
+    @Deprecated
+    public Terrain(int gridX, int gridZ, TerrainTexturePack texturePack, ITexture blendMap) {
+    	getRelativePos().x = gridX * SIZE;
+    	getRelativePos().z = gridZ * SIZE;
+        this.texturePack = texturePack;
+        setTexturedModel(new TexturedModel(generateTerrain("/omnikryptec/terrain/heightmap.png"), blendMap));
+        getTexturedModel().getMaterial().setRenderer(terrainRenderer);
+    }
+    
+    public static final ModelData generateTerrain(final float worldx, final float worldz, final HeightsGenerator generator, final float size, final int vertex_count){
+         int count = vertex_count * vertex_count;
+         float[] vertices = new float[count * 3];
+         float[] normals = new float[count * 3];
+         float[] textureCoords = new float[count * 2];
+         int[] indices = new int[6 * (vertex_count - 1) * (vertex_count - 1)];
+         int vertexPointer = 0;
+         for(int i = 0; i < vertex_count; i++){
+             for(int j = 0; j < vertex_count; j++){
+                 vertices[vertexPointer * 3] = (float) (j / ((float) vertex_count - 1) * size);
+                 vertices[vertexPointer * 3 + 1] = generator.generateHeight(worldx, worldz);
+                 vertices[vertexPointer * 3 + 2] = (float) (i / ((float) vertex_count - 1) * size);
+                 normals[vertexPointer * 3] = 0;
+                 normals[vertexPointer * 3 + 1] = 1;
+                 normals[vertexPointer * 3 + 2] = 0;
+                 textureCoords[vertexPointer * 2] = (float) (j / ((float) vertex_count - 1));
+                 textureCoords[vertexPointer * 2 + 1] = (float) (i / ((float) vertex_count - 1));
+                 vertexPointer++;
+             }
+         }
+         int pointer = 0;
+         for(int gz = 0; gz < (vertex_count - 1); gz++){
+             for(int gx = 0; gx < (vertex_count - 1); gx++){
+                 int topLeft = (gz * vertex_count) + gx;
+                 int topRight = topLeft + 1;
+                 int bottomLeft = ((gz + 1) * vertex_count) + gx;
+                 int bottomRight = bottomLeft + 1;
+                 indices[pointer++] = topLeft;
+                 indices[pointer++] = bottomLeft;
+                 indices[pointer++] = topRight;
+                 indices[pointer++] = topRight;
+                 indices[pointer++] = bottomLeft;
+                 indices[pointer++] = bottomRight;
+             }
+         }
+         return new ModelData(vertices, textureCoords, normals, normals, indices, 0F);
+    }
+    
+    @Deprecated
     private final Model generateTerrain(String heightMapPath) {
         BufferedImage heightMap = null;
         try {
@@ -83,6 +146,7 @@ public class Terrain extends Entity {
         return new Model(new ModelData(vertices, textureCoords, normals, normals, indices, 0F));
     }
     
+    @Deprecated
     private final float getHeight(int x, int z, BufferedImage heightMap) {
         if(x < 0 || x >= heightMap.getWidth()|| z < 0 || z >= heightMap.getHeight()) {
             return 0;
@@ -94,6 +158,7 @@ public class Terrain extends Entity {
         return height;
     }
     
+    @Deprecated
     private final Model generateTerrain() {
         final int VERTEX_COUNT = 128;
         int count = VERTEX_COUNT * VERTEX_COUNT;
@@ -134,19 +199,7 @@ public class Terrain extends Entity {
     }
     
     public final Terrain copy(int gridX, int gridZ) {
-        return new Terrain(gridX, gridZ, texturePack, blendMap);
-    }
-
-    public final float getX() {
-        return x;
-    }
-
-    public final float getZ() {
-        return z;
-    }
-
-    public final Model getModel() {
-        return model;
+        return new Terrain(gridX, gridZ, texturePack, getTexturedModel().getTexture());
     }
 
     public final TerrainTexturePack getTexturePack() {
@@ -154,7 +207,7 @@ public class Terrain extends Entity {
     }
 
     public final ITexture getBlendMap() {
-        return blendMap;
+        return getTexturedModel().getTexture();
     }
     
 }
