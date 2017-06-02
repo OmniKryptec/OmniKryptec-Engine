@@ -193,9 +193,8 @@ public class InputUtil {
     
     /**
      * Processes keys to a GameObject
-     * @param go GameObject to be moved
-     * @param vps The delta for the Position
-     * @param dps The delta for the Rotation
+     * @param gameObject GameObject to be moved
+     * 
      * @return 
      */
     public static GameObject doFirstPersonController(GameObject gameObject, KeySettings keySettings, float deltaPosXZSpeed, float deltaPosYSpeed, float deltaRotXYZSpeed) {
@@ -218,8 +217,7 @@ public class InputUtil {
      * Processes keys to a GameObject
      * @param source GameObject relative to the GameObject which gets moved
      * @param destination GameObject to be moved
-     * @param vps The delta for the Position
-     * @param dps The delta for the Rotation
+     * 
      * @return 
      */
     public static GameObject doThirdPersonController(GameObject source, GameObject destination, KeySettings keySettings, float deltaPosXZSpeed, float deltaPosYSpeed, float deltaRotXYZSpeed) {
