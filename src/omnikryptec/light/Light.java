@@ -1,17 +1,16 @@
-package omnikryptec.entity;
+package omnikryptec.light;
 
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import omnikryptec.shader.Shader;
-import omnikryptec.shader_files.LightShader;
+import omnikryptec.entity.GameObject;
 
 public class Light extends GameObject {
 	
 	private Vector4f vec = new Vector4f();
 	private float radius=1;
 	private Vector3f color = new Vector3f();
-    private LightShader mylightshader = LightShader.DEFAULT_ATTENUATION_LIGHTSHADER;
+    private LightPrepare mylightprepare = LightPrepare.DEFAULT_LIGHT_PREPARE;
 
 	
 	private Vector3f tmp;
@@ -60,13 +59,13 @@ public class Light extends GameObject {
 	}
 	
 	
-	public Light setShader(LightShader shader){
-		this.mylightshader = shader;
+	public Light setShader(LightPrepare shader){
+		this.mylightprepare = shader;
 		return this;
 	}
 	
-	public LightShader getShader(){
-		return mylightshader;
+	public LightPrepare getShader(){
+		return mylightprepare;
 	}
 	
 	

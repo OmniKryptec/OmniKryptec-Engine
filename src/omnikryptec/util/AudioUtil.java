@@ -1,6 +1,7 @@
 package omnikryptec.util;
 
 import javax.sound.sampled.AudioFormat;
+
 import org.lwjgl.openal.AL10;
 
 /**

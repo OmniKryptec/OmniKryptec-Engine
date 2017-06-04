@@ -1,30 +1,29 @@
-package omnikryptec.renderer;
+package omnikryptec.light;
 
 import java.util.List;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
-import omnikryptec.entity.Light;
+
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.postprocessing.FrameBufferObject;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.PostProcessingStage;
-import omnikryptec.shader_files.LightShader;
 import omnikryptec.util.RenderUtil;
 
 public class LightStage implements PostProcessingStage{
 
 	private FrameBufferObject target = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE);
-	private LightShader shader;
+	private LightPrepare prepare;
 		
 	
 	public LightStage(){
-		this(LightShader.DEFAULT_ATTENUATION_LIGHTSHADER);
+		this(LightPrepare.DEFAULT_LIGHT_PREPARE);
 	}
 	
-	public LightStage(LightShader shader){
-		this.shader = shader;
+	public LightStage(LightPrepare shader){
+		this.prepare = shader;
 	}
 	
 	
@@ -50,26 +49,22 @@ public class LightStage implements PostProcessingStage{
 	private Light l;
 	private List<Light> relevant;
 	private void render(Scene currentScene, FrameBufferObject unsampledfbo, FrameBufferObject normalfbo, FrameBufferObject specularfbo) {
-		
 		RenderUtil.enableAdditiveBlending();
-		shader.start();
-		shader.viewv.loadMatrix(currentScene.getCamera().getViewMatrix());
-		shader.proj.loadMatrix(currentScene.getCamera().getProjectionMatrix());
-		shader.pixSizes.loadVec2(1.0f/Display.getWidth(), 1.0f/Display.getHeight());
+		prepare.getShader().start();
 		unsampledfbo.bindToUnit(0, 0);
 		normalfbo.bindToUnit(1, 0);
 		specularfbo.bindToUnit(2, 0);
 		unsampledfbo.bindDepthTexture(3);
+		prepare.prepare(currentScene);
 		target.bindFrameBuffer();
 		RenderUtil.clear(0, 0, 0, 1);
-		relevant = currentScene.getRenderLights(shader);
+		relevant = currentScene.getRenderLights(prepare);
 		if(relevant!=null){
 			for(int i=0; i<relevant.size(); i++){
 				l = relevant.get(i);
 				if(l.isActive()){
 					l.doLogic0();
-					shader.light.loadVec4(l.getPosRad());
-					shader.lightColor.loadVec3(l.getColor());
+					prepare.prepareLight(l);
 					GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);
 				}
 			}

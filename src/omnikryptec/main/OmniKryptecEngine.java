@@ -1,11 +1,11 @@
 package omnikryptec.main;
 
 import java.util.HashMap;
-import omnikryptec.audio.AudioManager;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL30;
 
+import omnikryptec.audio.AudioManager;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.event.Event;
 import omnikryptec.event.EventSystem;

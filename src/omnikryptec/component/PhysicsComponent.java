@@ -1,9 +1,9 @@
 package omnikryptec.component;
 
-import com.bulletphysics.collision.dispatch.CollisionObject;
 import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 
+import com.bulletphysics.collision.dispatch.CollisionObject;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
 

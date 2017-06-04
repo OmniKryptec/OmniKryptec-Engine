@@ -7,9 +7,8 @@ import omnikryptec.shader.UniformVec2;
 import omnikryptec.shader.UniformVec3;
 import omnikryptec.shader.UniformVec4;
 
-public class LightShader extends Shader {
+public class QuadLightShader extends Shader {
 
-	
 	public final UniformSampler diffuse = new UniformSampler("diffuse");
 	public final UniformSampler normal = new UniformSampler("normal");
 	public final UniformSampler specular = new UniformSampler("specular");
@@ -21,8 +20,8 @@ public class LightShader extends Shader {
 	
 	public final UniformVec2 pixSizes = new UniformVec2("pixelSize");
 	
-	public LightShader() {
-		super(LightShader.class.getResourceAsStream(oc_shader_loc+"light_shader_vert.glsl"), LightShader.class.getResourceAsStream(oc_shader_loc+"light_shader_frag.glsl"), "position");
+	public QuadLightShader() {
+		super(Shader.class.getResourceAsStream(oc_shader_loc+"light_shader_vert.glsl"), Shader.class.getResourceAsStream(oc_shader_loc+"light_shader_frag_sq.glsl"), Shader.DEFAULT_PP_VERTEX_SHADER_POS_ATTR);
 		registerUniforms(depth,diffuse,specular,normal,light,lightColor, viewv, proj, pixSizes);
 		start();
 		diffuse.loadTexUnit(0);
@@ -30,5 +29,5 @@ public class LightShader extends Shader {
 		specular.loadTexUnit(2);
 		depth.loadTexUnit(3);
 	}
-	
+
 }

@@ -1,9 +1,10 @@
 package omnikryptec.audio;
 
 import javax.swing.Timer;
-import omnikryptec.logger.Commands;
+
 import org.lwjgl.util.vector.Vector3f;
 
+import omnikryptec.logger.Commands;
 import omnikryptec.logger.Logger;
 import omnikryptec.util.NativesLoader;
 

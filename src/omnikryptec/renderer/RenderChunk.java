@@ -1,21 +1,20 @@
 package omnikryptec.renderer;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.GameObject;
-import omnikryptec.entity.Light;
+import omnikryptec.light.Light;
+import omnikryptec.light.LightPrepare;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.model.Material;
 import omnikryptec.model.TexturedModel;
-import omnikryptec.shader_files.LightShader;
 
 public class RenderChunk {
 
@@ -64,7 +63,7 @@ public class RenderChunk {
 
     private final RenderMap<IRenderer, RenderMap<TexturedModel, List<Entity>>> chunk = new RenderMap<>(IRenderer.class);
     private final ArrayList<GameObject> other = new ArrayList<>();
-    private final Map<LightShader, List<Light>> lights = new HashMap<>();
+    private final Map<LightPrepare, List<Light>> lights = new HashMap<>();
 
     
     private Entity tmp;
@@ -75,7 +74,7 @@ public class RenderChunk {
     private TexturedModel tm;
     
     private Light tmpl;
-    private LightShader lightsh;
+    private LightPrepare lightpre;
     private List<Light> lightl;
     
     public void addGameObject(GameObject g) {
@@ -109,11 +108,11 @@ public class RenderChunk {
                 }
             } else if(g instanceof Light){
             	tmpl = (Light)g;
-            	if((lightsh = tmpl.getShader())!=null){
-            		if((lightl = lights.get(lightsh))==null){
-            			lights.put(lightsh, new ArrayList<>());
+            	if((lightpre = tmpl.getShader())!=null){
+            		if((lightl = lights.get(lightpre))==null){
+            			lights.put(lightpre, new ArrayList<>());
             		}
-            		lights.get(lightsh).add(tmpl);
+            		lights.get(lightpre).add(tmpl);
             	}
             } else{
                 other.add(g);
@@ -162,8 +161,8 @@ public class RenderChunk {
                 }
             } else if(g instanceof Light){
             	tmpl = (Light)g;
-            	if((lightsh = tmpl.getShader())!=null){
-            		if((lightl = lights.get(lightsh))!=null){
+            	if((lightpre = tmpl.getShader())!=null){
+            		if((lightl = lights.get(lightpre))!=null){
             			lightl.remove(g);
             			if(lightl.size()==0){
             				lights.remove(lightl);
@@ -233,7 +232,7 @@ public class RenderChunk {
         return scene;
     }
 
-	public Map<LightShader, List<Light>> getLights() {
+	public Map<LightPrepare, List<Light>> getLights() {
 		return lights;
 	}
 

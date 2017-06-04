@@ -54,6 +54,5 @@ void main(void){
 	vec4 spec = texture(specular, textureCoords);
 	
 	col.rgb = lighting(lightColor, lightu.rgb, lightu.w, pos, norm, diff.rgb, spec.rgb, spec.a);
-	//col.a = diff.a;
-	col.a = 1;
+	col.a = diff.a;
 }

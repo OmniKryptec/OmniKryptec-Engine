@@ -1,20 +1,19 @@
 package omnikryptec.main;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.GameObject;
-import omnikryptec.entity.Light;
+import omnikryptec.light.Light;
+import omnikryptec.light.LightPrepare;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.physics.PhysicsWorld;
 import omnikryptec.renderer.IRenderer;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.AllowedRenderer;
-import omnikryptec.shader_files.LightShader;
 import omnikryptec.util.PhysicsUtil;
 
 public class Scene {
@@ -26,8 +25,8 @@ public class Scene {
 			coz = OmniKryptecEngine.getInstance().getDisplayManager().getSettings().getChunkOffsetZ();
 	private float[] clearcolor = { 0, 0, 0, 0 };
 	private PhysicsWorld physicsWorld = null;
-	private final Map<LightShader, List<Light>> rel_lights = new HashMap<>();
-    private final Map<LightShader, List<Light>> global_lights = new HashMap<>();
+	private final Map<LightPrepare, List<Light>> rel_lights = new HashMap<>();
+    private final Map<LightPrepare, List<Light>> global_lights = new HashMap<>();
 	/* Temp Variables */
 	private String tmp;
 	private long cx, cy, cz;
@@ -106,7 +105,7 @@ public class Scene {
 	protected void doLogic() {
 	}
 
-	public final List<Light> getRenderLights(LightShader usingShader) {
+	public final List<Light> getRenderLights(LightPrepare usingShader) {
 		return rel_lights.get(usingShader);
 	}
 	

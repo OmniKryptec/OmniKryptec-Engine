@@ -6,7 +6,6 @@ import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
-import omnikryptec.shader.Shader;
 import omnikryptec.texture.Texture;
 
 public class Entity extends GameObject{

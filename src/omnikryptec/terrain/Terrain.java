@@ -1,7 +1,9 @@
 package omnikryptec.terrain;
 
 import java.awt.image.BufferedImage;
+
 import javax.imageio.ImageIO;
+
 import omnikryptec.entity.Entity;
 import omnikryptec.logger.Logger;
 import omnikryptec.model.Model;

@@ -1,8 +1,9 @@
 package omnikryptec.audio;
 
+import org.lwjgl.openal.AL10;
+
 import omnikryptec.logger.Logger;
 import omnikryptec.util.AudioUtil;
-import org.lwjgl.openal.AL10;
 
 /**
  *

@@ -5,14 +5,17 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+
+import org.lwjgl.BufferUtils;
+import org.lwjgl.openal.AL10;
+
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.util.AudioUtil;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.openal.AL10;
 
 /**
  *

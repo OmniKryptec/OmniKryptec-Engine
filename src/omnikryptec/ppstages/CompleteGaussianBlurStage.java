@@ -2,11 +2,11 @@ package omnikryptec.ppstages;
 
 import java.util.List;
 
-import omnikryptec.logger.Logger;
 import omnikryptec.logger.LogEntry.LogLevel;
+import omnikryptec.logger.Logger;
 import omnikryptec.postprocessing.FrameBufferObject;
-import omnikryptec.postprocessing.PostProcessingStage;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
+import omnikryptec.postprocessing.PostProcessingStage;
 
 public class CompleteGaussianBlurStage implements PostProcessingStage{
 	
