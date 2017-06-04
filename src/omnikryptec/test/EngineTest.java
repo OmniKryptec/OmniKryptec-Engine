@@ -12,7 +12,7 @@ import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
 import omnikryptec.postprocessing.PostProcessing;
-import omnikryptec.ppstages.LightStage;
+import omnikryptec.renderer.LightStage;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.NativesLoader;

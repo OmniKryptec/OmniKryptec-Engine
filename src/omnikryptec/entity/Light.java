@@ -3,11 +3,16 @@ package omnikryptec.entity;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+import omnikryptec.shader.Shader;
+import omnikryptec.shader_files.LightShader;
+
 public class Light extends GameObject {
 	
 	private Vector4f vec = new Vector4f();
 	private float radius=1;
 	private Vector3f color = new Vector3f();
+    private LightShader mylightshader = LightShader.DEFAULT_ATTENUATION_LIGHTSHADER;
+
 	
 	private Vector3f tmp;
 	public Vector4f getPosRad(){
@@ -53,5 +58,16 @@ public class Light extends GameObject {
 	public boolean isDirectional(){
 		return radius<0;
 	}
+	
+	
+	public Light setShader(LightShader shader){
+		this.mylightshader = shader;
+		return this;
+	}
+	
+	public LightShader getShader(){
+		return mylightshader;
+	}
+	
 	
 }

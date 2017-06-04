@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
+import omnikryptec.shader.Shader;
 import omnikryptec.texture.Texture;
 
 public class Entity extends GameObject{
@@ -21,7 +22,6 @@ public class Entity extends GameObject{
     private Vector3f scale = new Vector3f(1, 1, 1);
     private RenderType type = RenderType.NORMAL;
     private Vector4f color = new Vector4f(1, 1, 1, 1);
-    
     
     protected Entity() {
     }

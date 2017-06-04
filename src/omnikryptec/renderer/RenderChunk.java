@@ -2,7 +2,9 @@ package omnikryptec.renderer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.GameObject;
@@ -13,6 +15,7 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.model.Material;
 import omnikryptec.model.TexturedModel;
+import omnikryptec.shader_files.LightShader;
 
 public class RenderChunk {
 
@@ -61,15 +64,19 @@ public class RenderChunk {
 
     private final RenderMap<IRenderer, RenderMap<TexturedModel, List<Entity>>> chunk = new RenderMap<>(IRenderer.class);
     private final ArrayList<GameObject> other = new ArrayList<>();
+    private final Map<LightShader, List<Light>> lights = new HashMap<>();
 
+    
     private Entity tmp;
     private IRenderer tmpr;
     private RenderMap<TexturedModel, List<Entity>> map;
     private List<Entity> list;
     private Material m;
     private TexturedModel tm;
-    private List<Light> lights = new ArrayList<>();
     
+    private Light tmpl;
+    private LightShader lightsh;
+    private List<Light> lightl;
     
     public void addGameObject(GameObject g) {
         if(g != null) {
@@ -100,7 +107,15 @@ public class RenderChunk {
                 } else if(Logger.isDebugMode()) {
                     Logger.log("TexturedModel is null", LogLevel.WARNING);
                 }
-            } else {
+            } else if(g instanceof Light){
+            	tmpl = (Light)g;
+            	if((lightsh = tmpl.getShader())!=null){
+            		if((lightl = lights.get(lightsh))==null){
+            			lights.put(lightsh, new ArrayList<>());
+            		}
+            		lights.get(lightsh).add(tmpl);
+            	}
+            } else{
                 other.add(g);
             }
             g.setMyChunk(this);
@@ -145,10 +160,22 @@ public class RenderChunk {
                 } else if(Logger.isDebugMode()) {
                     Logger.log("TexturedModel is null", LogLevel.WARNING);
                 }
+            } else if(g instanceof Light){
+            	tmpl = (Light)g;
+            	if((lightsh = tmpl.getShader())!=null){
+            		if((lightl = lights.get(lightsh))!=null){
+            			lightl.remove(g);
+            			if(lightl.size()==0){
+            				lights.remove(lightl);
+            			}
+            			if(delete){
+            				tmpl.deleteOperation();
+            			}
+            		}
+            	}
             } else {
                 other.remove(g);
             }
-            //g.setMyChunk(null);
         }
         return g;
     }
@@ -206,7 +233,7 @@ public class RenderChunk {
         return scene;
     }
 
-	public List<Light> getLights() {
+	public Map<LightShader, List<Light>> getLights() {
 		return lights;
 	}
 

@@ -14,6 +14,7 @@ import omnikryptec.physics.PhysicsWorld;
 import omnikryptec.renderer.IRenderer;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.AllowedRenderer;
+import omnikryptec.shader_files.LightShader;
 import omnikryptec.util.PhysicsUtil;
 
 public class Scene {
@@ -25,9 +26,8 @@ public class Scene {
 			coz = OmniKryptecEngine.getInstance().getDisplayManager().getSettings().getChunkOffsetZ();
 	private float[] clearcolor = { 0, 0, 0, 0 };
 	private PhysicsWorld physicsWorld = null;
-	private final List<Light> rel_lights = new ArrayList<>();
-	private final List<Light> shad_lights = new ArrayList<>();
-    private final List<Light> global_lights = new ArrayList<>();
+	private final Map<LightShader, List<Light>> rel_lights = new HashMap<>();
+    private final Map<LightShader, List<Light>> global_lights = new HashMap<>();
 	/* Temp Variables */
 	private String tmp;
 	private long cx, cy, cz;
@@ -81,7 +81,7 @@ public class Scene {
 
 	public final Scene frame(float maxexpenlvl, float minexplvl,  AllowedRenderer info, IRenderer... re) {
 		rel_lights.clear();
-		rel_lights.addAll(global_lights);
+		rel_lights.putAll(global_lights);
 		if (isUsingPhysics()) {
 			physicsWorld.stepSimulation();
 		}
@@ -93,7 +93,7 @@ public class Scene {
 				for (long z = -coz + cz; z <= coz + cz; z++) {
 					if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
 						tmpc.frame(maxexpenlvl, minexplvl, info, re);
-						rel_lights.addAll(tmpc.getLights());
+						rel_lights.putAll(tmpc.getLights());
 					}
 				}
 			}
@@ -106,13 +106,11 @@ public class Scene {
 	protected void doLogic() {
 	}
 
-	public final List<Light> getRenderLights() {
-		return rel_lights;
+	public final List<Light> getRenderLights(LightShader usingShader) {
+		return rel_lights.get(usingShader);
 	}
 	
-	public final List<Light> getShadowLights(){
-		return shad_lights;
-	}
+
 
 	public final Camera getCamera() {
 		return cam;

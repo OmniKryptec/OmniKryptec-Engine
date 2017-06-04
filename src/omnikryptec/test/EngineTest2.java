@@ -5,6 +5,7 @@ import java.util.Random;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
+import omnikryptec.entity.Light;
 import omnikryptec.event.Event;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
@@ -21,8 +22,8 @@ import omnikryptec.ppstages.ColorSpaceStage;
 import omnikryptec.ppstages.CompleteGaussianBlurStage;
 import omnikryptec.ppstages.ContrastchangeStage;
 import omnikryptec.ppstages.FogStage;
-import omnikryptec.ppstages.LightStage;
 import omnikryptec.ppstages.SingleGaussianBlurStage;
+import omnikryptec.renderer.LightStage;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.InputUtil;
@@ -44,7 +45,7 @@ public class EngineTest2 implements IEventHandler{
             Logger.showConsoleDirect();
             
             DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFpsCap(60).setChunkOffsets(10, 10, 10));
-            //PostProcessing.instance().addStage(new LightStage());
+            PostProcessing.instance().addStage(new LightStage());
             //PostProcessing.instance().addStage(new CompleteGaussianBlurStage(false,0.5f,0.5f));
             //PostProcessing.instance().addStage(new ColorSpaceStage(8,8,8));
             //PostProcessing.instance().addStage(new ContrastchangeStage(-0.25f));
@@ -82,7 +83,11 @@ public class EngineTest2 implements IEventHandler{
 				OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 			}
             //ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
-            
+            OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 1, 0).setRadius(100));
+            OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 0, 1).setRadius(100).setRelativePos(50, 50, 50));
+            OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 1, 1).setRadius(100).setRelativePos(50, 0, 50));
+            OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(0, 0, 1).setRadius(100).setRelativePos(50, 50, 0));
+
             OmniKryptecEngine.instance().startLoop(ShutdownOption.JAVA);
         } catch (Exception ex) {
             Logger.logErr("Error: " + ex, ex);

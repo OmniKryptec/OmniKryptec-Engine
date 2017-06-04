@@ -98,8 +98,7 @@ public class OmniKryptecEngine {
     private final HashMap<String, Scene> scenes = new HashMap<>();
     private String sceneCurrentName;
     private Scene sceneCurrent;
-
-    
+        
     private ShutdownOption shutdownOption = ShutdownOption.NOTHING;
     private boolean requestclose = false;
     
