@@ -15,17 +15,16 @@ import omnikryptec.util.RenderUtil;
 public class LightStage implements PostProcessingStage{
 
 	private FrameBufferObject target = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE);
-	private LightPrepare prepare;
+	private LightPrepare[] preparea;
 		
 	
 	public LightStage(){
 		this(LightPrepare.DEFAULT_LIGHT_PREPARE);
 	}
 	
-	public LightStage(LightPrepare shader){
-		this.prepare = shader;
+	public LightStage(LightPrepare...prepares){
+		preparea = prepares;
 	}
-	
 	
 	private int[] l_ind = {0,1,2};
 	private boolean[] u_list = {false, true, true};
@@ -50,22 +49,24 @@ public class LightStage implements PostProcessingStage{
 	private List<Light> relevant;
 	private void render(Scene currentScene, FrameBufferObject unsampledfbo, FrameBufferObject normalfbo, FrameBufferObject specularfbo) {
 		RenderUtil.enableAdditiveBlending();
-		prepare.getShader().start();
-		unsampledfbo.bindToUnit(0, 0);
-		normalfbo.bindToUnit(1, 0);
-		specularfbo.bindToUnit(2, 0);
-		unsampledfbo.bindDepthTexture(3);
-		prepare.prepare(currentScene);
 		target.bindFrameBuffer();
-		RenderUtil.clear(0, 0, 0, 1);
-		relevant = currentScene.getRenderLights(prepare);
-		if(relevant!=null){
-			for(int i=0; i<relevant.size(); i++){
-				l = relevant.get(i);
-				if(l.isActive()){
-					l.doLogic0();
-					prepare.prepareLight(l);
-					GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);
+		for(int i=0; i<preparea.length; i++){
+			preparea[i].getShader().start();
+			unsampledfbo.bindToUnit(0, 0);
+			normalfbo.bindToUnit(1, 0);
+			specularfbo.bindToUnit(2, 0);
+			unsampledfbo.bindDepthTexture(3);
+			preparea[i].prepare(currentScene);
+			RenderUtil.clear(0, 0, 0, 1);
+			relevant = currentScene.getRenderLights(preparea[i]);
+			if(relevant!=null){
+				for(int j=0; j<relevant.size(); j++){
+					l = relevant.get(j);
+					if(l.isActive()){
+						l.doLogic0();
+						preparea[i].prepareLight(l);
+						GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);
+					}
 				}
 			}
 		}

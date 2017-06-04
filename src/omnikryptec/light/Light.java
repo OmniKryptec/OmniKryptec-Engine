@@ -11,7 +11,8 @@ public class Light extends GameObject {
 	private float radius=1;
 	private Vector3f color = new Vector3f();
     private LightPrepare mylightprepare = LightPrepare.DEFAULT_LIGHT_PREPARE;
-
+    
+    private Vector3f att;
 	
 	private Vector3f tmp;
 	public Vector4f getPosRad(){
@@ -27,7 +28,7 @@ public class Light extends GameObject {
 		color.x = r;
 		color.y = g;
 		color.z = b;
-                return this;
+        return this;
 	}
 	
 	public Vector3f getColor(){
@@ -36,7 +37,7 @@ public class Light extends GameObject {
 	
 	public Light setRadius(float r){
 		this.radius = r;
-                return this;
+        return this;
 	}
 	
 	public float getRadius(){
@@ -68,5 +69,24 @@ public class Light extends GameObject {
 		return mylightprepare;
 	}
 	
+	public Vector3f getAttenuation(){
+		return att;
+	}
 	
+	/**
+	 * not supported by all LightPrepare
+	 * @param a
+	 * @param b
+	 * @param c
+	 * @return
+	 */
+	public Light setAttenuation(float a, float b ,float c){
+		if(att==null){
+			att = new Vector3f();
+		}
+		att.x = a;
+		att.y = b;
+		att.z = c;
+		return this;
+	}
 }

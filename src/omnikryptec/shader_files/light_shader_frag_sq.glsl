@@ -15,6 +15,9 @@ uniform vec3 lightColor;
 
 uniform vec2 pixelSize;
 
+uniform vec3 att; 
+uniform mat4 vm;
+
 
 float saturate(float value){
 	
@@ -23,19 +26,31 @@ float saturate(float value){
 
 vec3 lighting(vec3 Scol, vec3 Spos, float rad, vec3 p, vec3 n, vec3 Mdiff, vec3 Mspec, float Mrefl){
 	vec3 l = Spos - p;
-	vec3 v = normalize(p);
-	vec3 h = normalize(v + l);
+	float distance = length(l);
+	vec3 ln = normalize(l);
 	
-	float att=0;
-	if(rad>=0){
-		att = saturate(1.0 - length(l)/rad);
+	vec3 cam = (inverse(vm)*vec4(0.0,0.0,0.0,1.0)).xyz - p;
+	cam = normalize(cam);
+	
+	vec3 ld = -cam;
+	vec3 reflected = reflect(ld, n);
+	
+	float dot2 = saturate(dot(reflected, cam));
+	float damp = pow(dot2, Mrefl);
+	vec3 spec = damp * Scol * Mspec;
+	
+	
+	float dot1 = saturate(dot(n,ln));
+	vec3 diffusev = dot1 * Scol;
+	
+	float attf;
+	if(rad<0){
+		attf = 1;
 	}else{
-		att = 1;
+		attf = att.x + att.y * distance + att.z * distance * distance;
 	}
-	l = normalize(l);
-	vec3 Idiff = saturate(dot(l,n))*Mdiff*Scol;
-	vec3 ISpec = pow(saturate(dot(h,n)), Mrefl)*Mspec*Scol;
-	return att * (Idiff + ISpec);
+	//return diffusev;
+	return (diffusev*Mdiff+spec)/attf;
 }
 
 
@@ -54,5 +69,7 @@ void main(void){
 	vec4 spec = texture(specular, textureCoords);
 	
 	col.rgb = lighting(lightColor, lightu.rgb, lightu.w, pos, norm, diff.rgb, spec.rgb, spec.a);
-	col.a = diff.a;
+	//col.a = diff.a;
+	col.a = 1;
+	//col.rgb = vec3(1,1,1);
 }

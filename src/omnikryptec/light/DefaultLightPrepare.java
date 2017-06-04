@@ -15,6 +15,7 @@ public class DefaultLightPrepare implements LightPrepare {
 		shader.viewv.loadMatrix(cur.getCamera().getViewMatrix());
 		shader.proj.loadMatrix(cur.getCamera().getProjectionMatrix());
 		shader.pixSizes.loadVec2(1.0f/Display.getWidth(), 1.0f/Display.getHeight());
+		shader.cam.loadVec3(cur.getCamera().getAbsolutePos());
 	}
 
 	@Override

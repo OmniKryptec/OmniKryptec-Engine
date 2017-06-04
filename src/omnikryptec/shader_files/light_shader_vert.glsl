@@ -4,6 +4,7 @@ in vec2 position;
 
 out vec2 textureCoords;
 out mat4 invprojv;
+out mat4 vmat;
 
 uniform mat4 proj;
 uniform mat4 vm;

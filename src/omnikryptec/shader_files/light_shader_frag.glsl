@@ -15,6 +15,7 @@ uniform vec3 lightColor;
 
 uniform vec2 pixelSize;
 
+uniform vec3 campos;
 
 float saturate(float value){
 	
@@ -23,7 +24,7 @@ float saturate(float value){
 
 vec3 lighting(vec3 Scol, vec3 Spos, float rad, vec3 p, vec3 n, vec3 Mdiff, vec3 Mspec, float Mrefl){
 	vec3 l = Spos - p;
-	vec3 v = normalize(p);
+	vec3 v = normalize(campos);
 	vec3 h = normalize(v + l);
 	
 	float att=0;
