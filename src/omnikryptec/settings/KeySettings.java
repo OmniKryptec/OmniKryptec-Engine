@@ -123,6 +123,48 @@ public class KeySettings {
     }
     
     /**
+     * Returns if a IKey given by the name is pressed for a specified time and no other IKey with these keys is pressed
+     * @param name String Name of the IKey
+     * @param minTime Float Minimum pressing time
+     * @param maxTime Float Maximum pressing time
+     * @return <tt>true</tt> if the IKey is pressed for the specified time and the only one pressed with its keys
+     */
+    public final boolean isLongPressed(String name, float minTime, float maxTime) {
+        IKey ikey = getKey(name);
+        if(ikey == null || ikey == Key.DEFAULT_NULL_KEY) {
+            ikey = getKeyGroup(name);
+            if(ikey == null || ikey == KeyGroup.DEFAULT_NULL_KEYGROUP) {
+                return false;
+            } else {
+                final KeyGroup keyGroup = (KeyGroup) ikey;
+                if(!keyGroup.isLongPressed(minTime, maxTime)) {
+                    return false;
+                }
+                final ArrayList<IKey> temp = keyGroup.getKeys();
+                final ArrayList<IKey> ikeys = getIKeys(temp);
+                for(IKey ikey_ : ikeys) {
+                    if(ikey_ instanceof KeyGroup) {
+                        final KeyGroup keyGroup_ = (KeyGroup) ikey_;
+                        if(keyGroup_.isPressed() && keyGroup_.getKeys().size() > temp.size() && !keyGroup_.getKeys().equals(temp)) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+        } else {
+            final Key key = (Key) ikey;
+            if(!key.isLongPressed(minTime, maxTime)) {
+                return false;
+            }
+            final ArrayList<Key> temp = new ArrayList<>();
+            temp.add(key);
+            final ArrayList<KeyGroup> keyGroups = getKeyGroups(temp);
+            return keyGroups.isEmpty();
+        }
+    }
+    
+    /**
      * Sets/Adds Key
      * @param name String Name
      * @param key Integer Keyboard/Mouse key reference

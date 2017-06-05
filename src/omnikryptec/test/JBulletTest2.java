@@ -243,7 +243,7 @@ public class JBulletTest2 {
             isWireframe = !isWireframe;
             RenderUtil.goWireframe(isWireframe);
         }
-        if(keySettings.getKey("grabMouse").isLongPressed(100, 400) || keySettings.getKey("grabMouse2").isLongPressed(100, 400)) {
+        if(keySettings.isLongPressed("grabMouse", 100, 400) || keySettings.isLongPressed("grabMouse2", 100, 400)) {
             Mouse.setGrabbed(!Mouse.isGrabbed());
         }
         float deltaX = InputUtil.getMouseDelta().x;
