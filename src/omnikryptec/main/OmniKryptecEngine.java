@@ -123,14 +123,15 @@ public class OmniKryptecEngine {
     }
     
     private FrameBufferObject scenefbo;
-    private FrameBufferObject unsampledfbo,normalfbo,specularfbo;
+    private FrameBufferObject unsampledfbo,normalfbo,specularfbo,extrainfofbo;
     private FrameBufferObject[] add;
     
     private void createFbos() {
-    	scenefbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), manager.getSettings().getMultiSamples(), manager.getSettings().getAddAttachments(), GL30.GL_COLOR_ATTACHMENT0, GL30.GL_COLOR_ATTACHMENT1, GL30.GL_COLOR_ATTACHMENT2);
+    	scenefbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), manager.getSettings().getMultiSamples(), manager.getSettings().getAddAttachments(), GL30.GL_COLOR_ATTACHMENT0, GL30.GL_COLOR_ATTACHMENT1, GL30.GL_COLOR_ATTACHMENT2, GL30.GL_COLOR_ATTACHMENT3);
     	unsampledfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE, GL30.GL_COLOR_ATTACHMENT0);
     	normalfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE, GL30.GL_COLOR_ATTACHMENT0);
     	specularfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE, GL30.GL_COLOR_ATTACHMENT0);
+    	extrainfofbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE, GL30.GL_COLOR_ATTACHMENT0);
     	add = manager.getSettings().getAddFBOs();
     }
     
@@ -139,6 +140,7 @@ public class OmniKryptecEngine {
     	unsampledfbo.delete();
     	normalfbo.delete();
     	specularfbo.delete();
+    	extrainfofbo.delete();
     	createFbos();
     }
     
@@ -204,12 +206,13 @@ public class OmniKryptecEngine {
 	    	scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);
 	    	scenefbo.resolveToFbo(normalfbo, GL30.GL_COLOR_ATTACHMENT1);
 	    	scenefbo.resolveToFbo(specularfbo, GL30.GL_COLOR_ATTACHMENT2);
-	    	if(scenefbo.getTargets().length>3){
-	    		for(int i=3; i<scenefbo.getTargets().length; i++){
-	    			scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i-3]);
+	    	scenefbo.resolveToFbo(extrainfofbo, GL30.GL_COLOR_ATTACHMENT3);
+	    	if(scenefbo.getTargets().length>4){
+	    		for(int i=4; i<scenefbo.getTargets().length; i++){
+	    			scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i-4]);
 	    		}
 	    	}
-	    	PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo);
+	    	PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
 	    	eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
 	    	eventsystem.fireEvent(new Event(), EventType.RENDER_EVENT);
 	    	DisplayManager.instance().updateDisplay();

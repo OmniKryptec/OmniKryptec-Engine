@@ -12,11 +12,19 @@ public abstract class PostProcessingStep implements PostProcessingStage {
 	private Shader shader;
 	private FrameBufferObject target;
 
+	protected PostProcessingStep(){
+		this.target = getOnResize();
+	}
+	
 	protected PostProcessingStep(Shader shader) {
 		this.shader = shader;
 		this.target = getOnResize();
 	}
-
+	
+	protected void setShader(Shader shader){
+		this.shader = shader;
+	}
+	
 	@Override
 	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist, int stage) {
 		shader.start();

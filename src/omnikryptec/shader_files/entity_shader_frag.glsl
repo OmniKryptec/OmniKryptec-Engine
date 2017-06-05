@@ -8,15 +8,19 @@ in vec3 bitang;
 layout (location = 0) out vec4 col;
 layout (location = 1) out vec4 col1;
 layout (location = 2) out vec4 col2;
+layout (location = 3) out vec4 col3;
 
 
 uniform sampler2D tex; 
 uniform sampler2D normaltex;
 uniform sampler2D speculartex;
+uniform sampler2D extra;
 
 uniform vec4 colormod;
 
+uniform float hasextra;
 uniform float hasspecular;
+
 uniform float reflec;
 uniform float damp;
 
@@ -37,14 +41,18 @@ void main(void){
 	col = vec4(diffuset);
 	col *= colormod;
 	col1 = vec4(normalt.rgb*0.5+0.5,1.0);
-	
+	if(col.a<0.2){
+		discard;
+	}
 	if(hasspecular>0.5){
 		col2.rgb = texture(speculartex, pass_texcoords).rgb;
 		col2.a = damp;
 	}else{
 		col2 = vec4(reflec,reflec,reflec,damp);
 	}
-	if(col.a<0.2){
-		discard;
+	if(hasextra>0.5){
+		col3 = texture(extra, pass_texcoords);
+	}else{
+		col3 = vec4(0,0,0,0);
 	}
 }

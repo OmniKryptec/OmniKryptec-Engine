@@ -43,6 +43,12 @@ public class DefaultEntityRenderer implements IRenderer{
 			}else{
 				EntityShader.hasspecular.loadBoolean(false);
 			}
+			if(model.getMaterial().getExtraInfo()!=null){
+				model.getMaterial().getExtraInfo().bindToUnit(3);
+				EntityShader.hasextrainfo.loadBoolean(true);
+			}else{
+				EntityShader.hasextrainfo.loadBoolean(false);
+			}
 			EntityShader.reflec.loadFloat(model.getMaterial().getReflectivity());
 			EntityShader.shinedamper.loadFloat(model.getMaterial().getShineDamper());
 			stapel = entities.get(model);				

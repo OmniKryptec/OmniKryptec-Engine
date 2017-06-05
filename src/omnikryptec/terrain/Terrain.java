@@ -77,7 +77,7 @@ public class Terrain extends Entity {
          for(int i = 0; i < vertex_count; i++){
              for(int j = 0; j < vertex_count; j++){
                  vertices[vertexPointer * 3] = (float) (j / ((float) vertex_count - 1) * size);
-                 vertices[vertexPointer * 3 + 1] = generator.generateHeight(worldx, worldz);
+                 vertices[vertexPointer * 3 + 1] = generator.generateHeight(worldx+j, worldz+i);
                  vertices[vertexPointer * 3 + 2] = (float) (i / ((float) vertex_count - 1) * size);
                  normals[vertexPointer * 3] = 0;
                  normals[vertexPointer * 3 + 1] = 1;

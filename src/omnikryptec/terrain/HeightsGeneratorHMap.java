@@ -31,14 +31,12 @@ public class HeightsGeneratorHMap implements HeightsGenerator{
         }else if(allowModulo){
         	if(x<0){
         		x = width + x%width; 
-        	}else{
-        		x %= width;
         	}
+        	x %= width;
         	if(z<0){
         		z = height + z%height;
-        	}else{
-        		z %= height;
         	}
+    		z %= height;
         }
         float height = map.getRGB((int)x, (int)z);
         height += MAX_PIXEL_COLOR / 2.0F;

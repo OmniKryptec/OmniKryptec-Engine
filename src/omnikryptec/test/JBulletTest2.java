@@ -1,16 +1,17 @@
 package omnikryptec.test;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.vecmath.Vector3f;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 
 import com.bulletphysics.collision.shapes.StaticPlaneShape;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 
 import omnikryptec.audio.AudioManager;
 import omnikryptec.audio.AudioSource;
@@ -26,7 +27,6 @@ import omnikryptec.event.EventType;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
-import omnikryptec.model.Model;
 import omnikryptec.objConverter.ModelData;
 import omnikryptec.physics.RigidBodyBuilder;
 import omnikryptec.settings.GameSettings;
@@ -42,7 +42,6 @@ import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.PhysicsUtil;
 import omnikryptec.util.RenderUtil;
-import org.lwjgl.input.Mouse;
 
 /**
  *
@@ -71,7 +70,7 @@ public class JBulletTest2 {
             Logger.CONSOLE.setExitWhenLastOne(true);
             Logger.showConsoleDirect();
             
-            final GameSettings gameSettings = new GameSettings("JBulletTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32);
+            final GameSettings gameSettings = new GameSettings("JBulletTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setChunkSize(400, 400, 400);
             final KeySettings keySettings = gameSettings.getKeySettings();
             keySettings.setKey("pauseAudio", Keyboard.KEY_P, true);
             keySettings.setKey("toggleWireframe", Keyboard.KEY_T, true);
@@ -140,10 +139,9 @@ public class JBulletTest2 {
     
     private static final void setupTerrains(TerrainTexturePack texturePack, Texture blendMap, int count) {
         for(int i = 0; i < count; i++) {
-            //final ModelData modelData = Terrain.generateTerrain(i, -i, new HeightsGeneratorHMap(heightMap, 40.0F, false), 400, 128);
-            //final Model model = new Model(modelData);
-            //final Terrain terrain = new Terrain(i, -i, model, texturePack, blendMap);
-            final Terrain terrain = new Terrain(i, -i, texturePack, blendMap);
+            final ModelData modelData = Terrain.generateTerrain(i*heightMap.getWidth(), -i*heightMap.getWidth(), new HeightsGeneratorHMap(heightMap, 40.0F, true), heightMap.getWidth(), heightMap.getWidth());
+            final Terrain terrain = new Terrain(i*heightMap.getWidth(), -i*heightMap.getWidth(), modelData, texturePack, blendMap);
+            //final Terrain terrain = new Terrain(i, -i, texturePack, blendMap);
             terrains.add(terrain);
         }
     }

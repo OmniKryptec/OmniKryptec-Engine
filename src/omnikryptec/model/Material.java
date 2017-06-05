@@ -5,7 +5,6 @@ import omnikryptec.logger.Logger;
 import omnikryptec.renderer.IRenderer;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.texture.ITexture;
-import omnikryptec.texture.Texture;
 
 public class Material {
 	
@@ -28,6 +27,7 @@ public class Material {
     
     private ITexture normalmap;
     private ITexture specularmap;
+    private ITexture extrainfo;
     private boolean hasTransparency = false;
     private IRenderer renderer = RendererRegistration.DEF_ENTITY_RENDERER;
 
@@ -52,7 +52,7 @@ public class Material {
     }
 
     public final ITexture getNormalmap() {
-            return normalmap;
+    	return normalmap;
     }
 
     public final ITexture getSpecularmap() {
@@ -78,7 +78,7 @@ public class Material {
         return this;
     }
 
-    public final Material setNormalmap(Texture normalmap) {
+    public final Material setNormalmap(ITexture normalmap) {
         if(normalmap != null) {
             this.normalmap = normalmap;
         } else {
@@ -87,11 +87,21 @@ public class Material {
         return this;
     }
 
-    public final Material setSpecularmap(Texture specularmap) {
+    public final Material setSpecularmap(ITexture specularmap) {
         this.specularmap = specularmap;
         return this;
     }
-
+    
+    public final Material setExtraInfoMap(ITexture info){
+    	this.extrainfo = info;
+    	return this;
+    }
+    
+    public final ITexture getExtraInfo(){
+    	return extrainfo;
+    }
+    
+    
     public final Material setHasTransparency(boolean hasTransparency) {
         this.hasTransparency = hasTransparency;
         return this;
