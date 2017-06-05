@@ -16,7 +16,7 @@ import omnikryptec.physics.RigidBodyBuilder;
 import omnikryptec.renderer.RenderChunk;
 
 /**
- *
+ * Component for physics
  * @author Panzer1119
  */
 public class PhysicsComponent implements Component {
@@ -25,6 +25,11 @@ public class PhysicsComponent implements Component {
     private final RigidBody body;
     private boolean pause = false;
     
+    /**
+     * Constructs this Component with a standard RigidBodyBuilder
+     * @param instance GameObject Parent GameObject
+     * @param mass Float Mass of the GameObject
+     */
     public PhysicsComponent(GameObject instance, float mass) {
         if(instance == null) {
             throw new NullPointerException("Instance must not be null!");
@@ -41,6 +46,11 @@ public class PhysicsComponent implements Component {
         init();
     }
     
+    /**
+     * Constructs this component with a custom RigidBodyBuilder
+     * @param instance GameObject Parent GameObject
+     * @param rigidBodyBuilder RigidBodyBuilder Custom RigidBodyBuilder
+     */
     public PhysicsComponent(GameObject instance, RigidBodyBuilder rigidBodyBuilder) {
         if(instance == null) {
             throw new NullPointerException("Instance must not be null!");
@@ -75,18 +85,35 @@ public class PhysicsComponent implements Component {
         }
     }
 
+    /**
+     * Returns the parent GameObject
+     * @return GameObject Parent GameObject
+     */
     public final GameObject getInstance() {
         return instance;
     }
 
+    /**
+     * Returns the RigidBody
+     * @return RigidBody RigidBody
+     */
     public final RigidBody getBody() {
         return body;
     }
 
+    /**
+     * Returns if this component is paused
+     * @return <tt>true</tt> if this component is paused
+     */
     public final boolean isPause() {
         return pause;
     }
 
+    /**
+     * Sets if the component should be paused
+     * @param pause Boolean Sets if the component is paused
+     * @return PhysicsComponent A reference to this PhysicsComponent
+     */
     public final PhysicsComponent setPause(boolean pause) {
         this.pause = pause;
         return this;
