@@ -165,7 +165,8 @@ public class GameSettings {
     }
 
     /**
-     * Sets the number of multisamples
+     * Sets the number of multisamples,
+     * {@value #NO_MULTISAMPLING} means multisampling is disabled
      * @param multisamples Integer Number of multisamples
      * @return GameSettings A reference to this GameSettings
      */
