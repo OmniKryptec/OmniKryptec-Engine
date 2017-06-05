@@ -50,6 +50,7 @@ public class LightStage implements PostProcessingStage{
 	private void render(Scene currentScene, FrameBufferObject unsampledfbo, FrameBufferObject normalfbo, FrameBufferObject specularfbo) {
 		RenderUtil.enableAdditiveBlending();
 		target.bindFrameBuffer();
+		RenderUtil.clear(0, 0, 0, 1);
 		for(int i=0; i<preparea.length; i++){
 			preparea[i].getShader().start();
 			unsampledfbo.bindToUnit(0, 0);
@@ -57,7 +58,6 @@ public class LightStage implements PostProcessingStage{
 			specularfbo.bindToUnit(2, 0);
 			unsampledfbo.bindDepthTexture(3);
 			preparea[i].prepare(currentScene);
-			RenderUtil.clear(0, 0, 0, 1);
 			relevant = currentScene.getRenderLights(preparea[i]);
 			if(relevant!=null){
 				for(int j=0; j<relevant.size(); j++){

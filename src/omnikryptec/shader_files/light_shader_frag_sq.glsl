@@ -49,8 +49,8 @@ vec3 lighting(vec3 Scol, vec3 Spos, float rad, vec3 p, vec3 n, vec3 Mdiff, vec3 
 	}else{
 		attf = att.x + att.y * distance + att.z * distance * distance;
 	}
-	return diffusev;
-	//return (diffusev*Mdiff+spec)/attf;
+	//return diffusev;
+	return (diffusev*Mdiff)/attf;
 }
 
 
