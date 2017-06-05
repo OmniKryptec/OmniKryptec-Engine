@@ -21,6 +21,7 @@ import omnikryptec.entity.Entity;
 import omnikryptec.entity.EntityBuilder;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
+import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
