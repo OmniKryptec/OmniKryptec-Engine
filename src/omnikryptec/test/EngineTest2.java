@@ -41,7 +41,7 @@ public class EngineTest2 implements IEventHandler{
             Logger.showConsoleDirect();
             
             DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFpsCap(60).setChunkOffsets(10, 10, 10));
-            PostProcessing.instance().addStage(new LightStage(LightPrepare.ATT_LIGHT_PREPARE));
+            PostProcessing.instance().addStage(new LightStage(LightPrepare.ATT_LIGHT_PREPARE, LightPrepare.DEFAULT_LIGHT_PREPARE));
             //PostProcessing.instance().addStage(new CompleteGaussianBlurStage(false,0.5f,0.5f));
             //PostProcessing.instance().addStage(new ColorSpaceStage(8,8,8));
             //PostProcessing.instance().addStage(new ContrastchangeStage(-0.25f));
@@ -72,7 +72,7 @@ public class EngineTest2 implements IEventHandler{
 	            	public void doLogic(){
 	            		//setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(), r.nextFloat());
 						//InputUtil.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(), 1, 1, 1);
-						increaseRelativeRot(0, 1, 0);
+						//increaseRelativeRot(0, 1, 0);
 	            	}
 				};
 				//e.setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);
@@ -82,7 +82,7 @@ public class EngineTest2 implements IEventHandler{
             //ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
             //OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 1, 0).setRadius(100));
             //OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 0, 1).setRadius(100).setRelativePos(50, 50, 50));
-            OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 1, 1).setRadius(100).setShader(LightPrepare.ATT_LIGHT_PREPARE).setAttenuation(1f, 0.01f, 0));
+            OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 1, 1).setRadius(100).setShader(LightPrepare.DEFAULT_LIGHT_PREPARE).setAttenuation(1f, 0.01f, 0));
             //.instance().getCurrentScene().addGameObject(new Light().setColor(0, 0, 1).setRadius(100).setRelativePos(50, 50, 0));
 
             OmniKryptecEngine.instance().startLoop(ShutdownOption.JAVA);

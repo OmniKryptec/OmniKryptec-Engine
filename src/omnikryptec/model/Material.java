@@ -23,7 +23,9 @@ public class Material {
     }
 
     private float reflectivity;
-
+    private float shinedamper;
+    
+    
     private ITexture normalmap;
     private ITexture specularmap;
     private boolean hasTransparency = false;
@@ -39,7 +41,7 @@ public class Material {
         this(null, null, reflec);
     }
 
-    public Material(Texture normalmap, Texture specularmap, float reflec) {
+    public Material(ITexture normalmap, ITexture specularmap, float reflec) {
         this.reflectivity = reflec;
         if(normalmap != null) {
             this.normalmap = normalmap;
