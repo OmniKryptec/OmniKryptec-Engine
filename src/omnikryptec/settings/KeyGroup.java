@@ -16,6 +16,7 @@ public class KeyGroup implements IKey {
     
     private final String name;
     private final ArrayList<IKey> keys = new ArrayList<>();
+    private boolean allKeysNeedToBeActivated = true;
     
     /**
      * Constructs a KeyGroup
@@ -30,6 +31,24 @@ public class KeyGroup implements IKey {
     @Override
     public final String getName() {
         return name;
+    }
+
+    /**
+     * Returns if all Keys in this KeyGroup are needed to be activated
+     * @return <tt>true</tt> if all Keys in this KeyGroup are needed to be activated 
+     */
+    public final boolean isAllKeysNeedToBeActivated() {
+        return allKeysNeedToBeActivated;
+    }
+
+    /**
+     * Sets if all Keys in this KeyGroup are needed to be activated
+     * @param allKeysNeedToBeActivated Boolean If all Keys in this KeyGroup are needed to be activated
+     * @return KeyGroup A reference to this KeyGroup
+     */
+    public final KeyGroup setAllKeysNeedToBeActivated(boolean allKeysNeedToBeActivated) {
+        this.allKeysNeedToBeActivated = allKeysNeedToBeActivated;
+        return this;
     }
     
     /**
@@ -85,10 +104,14 @@ public class KeyGroup implements IKey {
         if(keys.isEmpty()) {
             return false;
         }
-        boolean isPressed = true;
+        boolean isPressed = allKeysNeedToBeActivated;
         for(IKey key : keys) {
-            if(!key.isPressed()) {
+            final boolean isPressed_ = key.isPressed();
+            if(!isPressed_ && allKeysNeedToBeActivated) {
                 isPressed = false;
+                break;
+            } else if(isPressed_ && !allKeysNeedToBeActivated) {
+                isPressed = true;
                 break;
             }
         }
@@ -100,10 +123,14 @@ public class KeyGroup implements IKey {
         if(keys.isEmpty()) {
             return false;
         }
-        boolean isLongPressed = true;
+        boolean isLongPressed = allKeysNeedToBeActivated;
         for(IKey key : keys) {
-            if(!key.isLongPressed(minTime, maxTime)) {
+            final boolean isLongPressed_ = key.isLongPressed(minTime, maxTime);
+            if(!isLongPressed_ && allKeysNeedToBeActivated) {
                 isLongPressed = false;
+                break;
+            } else if(isLongPressed_ && !allKeysNeedToBeActivated) {
+                isLongPressed = true;
                 break;
             }
         }
