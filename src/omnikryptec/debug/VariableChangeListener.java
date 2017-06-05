@@ -3,7 +3,7 @@ package omnikryptec.debug;
 import javax.swing.Timer;
 
 /**
- *
+ * Listener which does something if a variable gets changed
  * @author Panzer1119
  */
 public abstract class VariableChangeListener<T> {
@@ -15,7 +15,6 @@ public abstract class VariableChangeListener<T> {
 
     /**
      * This Object can be used to detect a change within a variable
-     * 
      * @param waittime Integer Delay in ms between every update
      */
     public VariableChangeListener(int waittime) {
@@ -24,22 +23,17 @@ public abstract class VariableChangeListener<T> {
 
     /**
      * This function is used to retrieve the variable which gets monitored
-     * 
      * @return Object New value
      */
     public abstract T getVariable();
 
     /**
      * This function is called if the variable changed its value
-     * 
      * @param oldValue Object Old value
-     * @param newValue Object New Value
+     * @param newValue Object New value
      */
     public abstract void variableChanged(T oldValue, T newValue);
 
-    /**
-     * Update function
-     */
     private synchronized void updateVariable() {
         if(isChecking) {
             return;
@@ -63,8 +57,7 @@ public abstract class VariableChangeListener<T> {
 
     /**
      * Starts the VariableChangeListener
-     * 
-     * @return Boolean True if it worked, False if not
+     * @return <tt>true</tt> if the VariableChangeListener was started successfully
      */
     public final boolean start() {
         if(timer.isRunning()) {
@@ -78,8 +71,7 @@ public abstract class VariableChangeListener<T> {
 
     /**
      * Stops the VariableChangeListener
-     * 
-     * @return Boolean True if it worked, False if not
+     * @return <tt>true</tt> if the VariableChangeListener was stopped successfully
      */
     public final boolean stop() {
         if(!timer.isRunning()) {

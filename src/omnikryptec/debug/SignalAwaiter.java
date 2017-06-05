@@ -9,7 +9,7 @@ import javax.swing.Timer;
 import omnikryptec.logger.Logger;
 
 /**
- *
+ * This object does something if a specified value for a variable is detected
  * @author Panzer1119
  */
 public abstract class SignalAwaiter<T> {
@@ -20,41 +20,81 @@ public abstract class SignalAwaiter<T> {
     private TimeUnit unit = null;
     private Instant instant_started = null;
     
+    /**
+     * Constructs a SignalAwaiter
+     * @param signal Signal on which is waited
+     * @param amount Long Amount of maximum time to be waited for
+     * @param unit TimeUnit Unit for the amount
+     */
     public SignalAwaiter(T signal, long amount, TimeUnit unit) {
         this.signal = signal;
     }
     
+    /**
+     * Returns the signal
+     * @return Signal
+     */
     public final T getSignal() {
         return signal;
     }
     
+    /**
+     * Sets the signal
+     * @param signal Signal
+     * @return SignalAwaiter A reference to this SignalAwaiter
+     */
     public final SignalAwaiter<T> setSignal(T signal) {
         this.signal = signal;
         return this;
     }
 
+    /**
+     * Returns the amount of the maximum waiting time
+     * @return Long Amount
+     */
     public long getAmount() {
         return amount;
     }
 
+    /**
+     * Sets the maximum waiting time
+     * @param amount Long Amount
+     * @return SignalAwaiter A reference to this SignalAwaiter
+     */
     public SignalAwaiter<T> setAmount(long amount) {
         this.amount = amount;
         return this;
     }
 
+    /**
+     * Returns the time unit
+     * @return TimeUnit Time unit
+     */
     public TimeUnit getUnit() {
         return unit;
     }
 
+    /**
+     * Sets the time unit
+     * @param unit TimeUnit Time unit
+     * @return SignalAwaiter A reference to this SignalAwaiter
+     */
     public SignalAwaiter<T> setUnit(TimeUnit unit) {
         this.unit = unit;
         return this;
     }
 
+    /**
+     * Returns the Instant when this was started
+     * @return Instant Started instant
+     */
     public Instant getInstantStarted() {
         return instant_started;
     }
     
+    /**
+     * Starts this SignalAwaiter
+     */
     public final void start() {
         instant_started = Instant.now();
         timer.start();
@@ -77,6 +117,10 @@ public abstract class SignalAwaiter<T> {
         }
     }
     
+    /**
+     * Override this so the SignalAwaiter can retrieve the state of the monitored variable
+     * @return Signal
+     */
     public abstract T checkSignal();
     
 }
