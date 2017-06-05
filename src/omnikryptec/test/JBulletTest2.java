@@ -9,6 +9,8 @@ import org.lwjgl.input.Keyboard;
 import com.bulletphysics.collision.shapes.StaticPlaneShape;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 
 import omnikryptec.audio.AudioManager;
 import omnikryptec.audio.AudioSource;
@@ -24,11 +26,14 @@ import omnikryptec.event.EventType;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
+import omnikryptec.model.Model;
+import omnikryptec.objConverter.ModelData;
 import omnikryptec.physics.RigidBodyBuilder;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.Key;
 import omnikryptec.settings.KeyGroup;
 import omnikryptec.settings.KeySettings;
+import omnikryptec.terrain.HeightsGeneratorHMap;
 import omnikryptec.terrain.Terrain;
 import omnikryptec.terrain.TerrainTexturePack;
 import omnikryptec.texture.Texture;
@@ -55,6 +60,7 @@ public class JBulletTest2 {
     private static final ArrayList<Terrain> terrains = new ArrayList<>();
     private static AudioSource bouncer;
     private static boolean isWireframe = false;
+    private static BufferedImage heightMap = null;
     
     public static final void main(String[] args) {
         try {
@@ -97,6 +103,12 @@ public class JBulletTest2 {
             final Texture gTexture = Texture.newTexture("/omnikryptec/terrain/grassFlowers.png").create();
             final Texture bTexture = Texture.newTexture("/omnikryptec/terrain/path.png").create();
             final Texture blendMap = Texture.newTexture("/omnikryptec/terrain/blendMap.png").create();
+            try {
+                heightMap = ImageIO.read(Terrain.class.getResourceAsStream("/omnikryptec/terrain/heightmap.png"));
+            } catch (Exception ex) {
+                Logger.logErr("Error while loading the heightmap: " + ex, ex);
+                heightMap = null;
+            }
             AudioManager.loadSound("bounce", "/omnikryptec/audio/bounce.wav");
             OmniKryptecEngine.getInstance().getCurrentScene().useDefaultPhysics();
             setupStaticPlane();
@@ -128,7 +140,11 @@ public class JBulletTest2 {
     
     private static final void setupTerrains(TerrainTexturePack texturePack, Texture blendMap, int count) {
         for(int i = 0; i < count; i++) {
-            terrains.add(new Terrain(i, -i, texturePack, blendMap));
+            //final ModelData modelData = Terrain.generateTerrain(i, -i, new HeightsGeneratorHMap(heightMap, 40.0F, false), 400, 128);
+            //final Model model = new Model(modelData);
+            //final Terrain terrain = new Terrain(i, -i, model, texturePack, blendMap);
+            final Terrain terrain = new Terrain(i, -i, texturePack, blendMap);
+            terrains.add(terrain);
         }
     }
     
