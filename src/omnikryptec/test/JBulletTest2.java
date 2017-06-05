@@ -77,8 +77,7 @@ public class JBulletTest2 {
             keySettings.setKey(new KeyGroup("physicsPause", new Key("leftControl", Keyboard.KEY_LCONTROL, true), new Key("p", Keyboard.KEY_P, true)));
             keySettings.setKey(new KeyGroup("test_1", new Key("t_1", Keyboard.KEY_J, true)));
             keySettings.setKey(new KeyGroup("test_2", new Key("t_1", Keyboard.KEY_J, true), new Key("t_2", Keyboard.KEY_K, true)));
-            keySettings.setKey("grabMouse", Keyboard.KEY_G, true);
-            keySettings.setKey("grabMouse2", Keyboard.KEY_Y, true);
+            keySettings.setKey(new KeyGroup("grabMouse", new Key("grabMouse1", Keyboard.KEY_G, true), new Key("grabMouse2", Keyboard.KEY_Y, true)).setAllKeysNeedToBeActivated(false));
             DisplayManager.createDisplay("JBullet Test", gameSettings);
             DisplayManager.instance().getSettings().getKeySettings().setKey("sprint", Keyboard.KEY_LCONTROL, true);
             OmniKryptecEngine.instance().addAndSetScene("Test-Scene", new Scene((Camera) new Camera() {
@@ -239,11 +238,11 @@ public class JBulletTest2 {
         if(scene != null && scene.isUsingPhysics() && keySettings.getKeyGroup("physicsPause").isLongPressed(100, 400)) {
             scene.getPhysicsWorld().setSimulationPaused(!scene.getPhysicsWorld().isSimulationPaused());
         }
-        if(keySettings.getKey("toggleWireframe").isLongPressed(100, 200)) {
+        if(keySettings.getKey("toggleWireframe").isLongPressed(100, 400)) {
             isWireframe = !isWireframe;
             RenderUtil.goWireframe(isWireframe);
         }
-        if(keySettings.isLongPressed("grabMouse", 100, 400) || keySettings.isLongPressed("grabMouse2", 100, 400)) {
+        if(keySettings.isLongPressed("grabMouse", 100, 400)) {
             Mouse.setGrabbed(!Mouse.isGrabbed());
         }
         float deltaX = InputUtil.getMouseDelta().x;
