@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 
 import omnikryptec.entity.Entity;
 import omnikryptec.main.Scene;
+import omnikryptec.model.Material;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.shader_files.EntityShader;
 import omnikryptec.util.Maths;
@@ -23,6 +24,7 @@ public class DefaultEntityRenderer implements IRenderer{
 	private List<Entity> stapel;
 	private Entity entity;
 	private TexturedModel model;
+	private Material mat;
 	
 	@Override
 	public void render(Scene s, RenderMap<TexturedModel, List<Entity>> entities) {
@@ -33,29 +35,30 @@ public class DefaultEntityRenderer implements IRenderer{
 			model = entities.keysArray()[i];
 			model.getModel().getVao().bind(0,1,2,3);
 			model.getTexture().bindToUnit(0);
-			model.getMaterial().getNormalmap().bindToUnit(1);
-			if(model.getMaterial().hasTransparency()){
+			mat = model.getMaterial();
+			mat.getNormalmap().bindToUnit(1);
+			if(mat.hasTransparency()){
 				RenderUtil.cullBackFaces(false);
 			}
-			if(model.getMaterial().getSpecularmap()!=null){
-				model.getMaterial().getSpecularmap().bindToUnit(2);
+			if(mat.getSpecularmap()!=null){
+				mat.getSpecularmap().bindToUnit(2);
 				EntityShader.hasspecular.loadBoolean(true);
 			}else{
 				EntityShader.hasspecular.loadBoolean(false);
 			}
-			if(model.getMaterial().getExtraInfo()!=null){
-				model.getMaterial().getExtraInfo().bindToUnit(3);
+			if(mat.getExtraInfo()!=null){
+				mat.getExtraInfo().bindToUnit(3);
 				EntityShader.hasextrainfomap.loadBoolean(true);
 			}else{
 				EntityShader.hasextrainfomap.loadBoolean(false);
-				if(model.getMaterial().getExtraInfoVec()!=null){
-					EntityShader.extrainfovec.loadVec4(model.getMaterial().getExtraInfoVec());
+				if(mat.getExtraInfoVec()!=null){
+					EntityShader.extrainfovec.loadVec4(mat.getExtraInfoVec());
 				}else{
 					EntityShader.extrainfovec.loadVec4(0, 0, 0, 0);
 				}
 			}
-			EntityShader.reflec.loadFloat(model.getMaterial().getReflectivity());
-			EntityShader.shinedamper.loadFloat(model.getMaterial().getShineDamper());
+			EntityShader.reflec.loadFloat(mat.getReflectivity());
+			EntityShader.shinedamper.loadFloat(mat.getShineDamper());
 			stapel = entities.get(model);				
 			for (int j=0; j<stapel.size(); j++) {
 				entity = stapel.get(j);
