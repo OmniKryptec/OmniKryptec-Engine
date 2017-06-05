@@ -51,12 +51,12 @@ public class EngineTest2 implements IEventHandler{
             DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFPSCap(60).setChunkOffsets(10, 10, 10)); 
             //PostProcessing.instance().addStage(new LightStage(LightPrepare.ATT_LIGHT_PREPARE, LightPrepare.DEFAULT_LIGHT_PREPARE));
             //PostProcessing.instance().addStage(new CompleteGaussianBlurStage(false,0.1f,0.1f));
-            //PostProcessing.instance().addStage(new ColorSpaceStage(8,8,8));
+            //PostProcessing.instance().addStage(new ColorSpaceStage(2,4,8));
             //PostProcessing.instance().addStage(new CompleteGaussianBlurStage(true,0.5f,0.5f));
             //PostProcessing.instance().addStage(new ContrastchangeStage(-0.25f));
             //PostProcessing.instance().addStage(new BrightnessfilterStage(new Vector4f(0, 0, 0, 0)));
-            PostProcessing.instance().addStage(new BloomStage(new CompleteGaussianBlurStage(true, 0.5f, 0.5f), new ColorSpaceStage(4, 4, 4), new Vector2f(1, 5)));
-            //PostProcessing.instance().addStage(new FogStage());
+            //PostProcessing.instance().addStage(new BloomStage(new CompleteGaussianBlurStage(true, 0.5f, 0.5f), new Vector4f(1, 0, 0, 0), new Vector2f(1, 5)));
+            //PostProcessing.instance().addStage(new FogStage().setDensity(0.05f).setFog(0, 0.5f, 0, 0.8f).setGradient(2));
             EventSystem.instance().addEventHandler(new EngineTest2(), EventType.RENDER_EVENT);
             Model brunnen = new Model(ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
             //Model brunnen = Model.generateQuad();
@@ -72,7 +72,7 @@ public class EngineTest2 implements IEventHandler{
                     doCameraLogic(this);
                 }
                 
-            }.setPerspectiveProjection(90, 1000, 0.1f).setRelativePos(0, 0, 0)));
+            }.setPerspectiveProjection(90, 0.1f, 1000).setRelativePos(0, 0, 0)));
             Model pine = new Model(ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")));
 			Texture pinet = Texture.newTexture(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine2.png")).create();
 			TexturedModel ptm = new TexturedModel(pine, pinet);
@@ -85,7 +85,7 @@ public class EngineTest2 implements IEventHandler{
 	            	public void doLogic(){
 	            		//setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(), r.nextFloat());
 						//InputUtil.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(), 1, 1, 1);
-						increaseRelativeRot(0, 1, 0);
+						//increaseRelativeRot(0, 1, 0);
 	            	}
 				};
 				//e.setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);

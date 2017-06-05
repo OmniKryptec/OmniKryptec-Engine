@@ -48,11 +48,11 @@ public class Camera extends GameObject{
 		return Matrix4f.mul(getProjectionMatrix(), getViewMatrix(), null);
 	}
 	
-	public Camera setPerspectiveProjection(float fovdeg, float far, float near) {
-		return setPerspectiveProjection(fovdeg, far, near, Display.getWidth(), Display.getHeight());
+	public Camera setPerspectiveProjection(float fovdeg, float near, float far) {
+		return setPerspectiveProjection(fovdeg, near, far, Display.getWidth(), Display.getHeight());
 	}
 
-	public Camera setPerspectiveProjection(float fovdeg, float far, float near, float width, float height) {
+	public Camera setPerspectiveProjection(float fovdeg, float near, float far, float width, float height) {
 		this.near = near;
 		this.far = far;
 		this.fov = fovdeg;
