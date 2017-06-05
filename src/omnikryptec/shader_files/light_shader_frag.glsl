@@ -22,7 +22,7 @@ float saturate(float value){
 	return clamp(value,0.0,1.0);
 }
 
-vec3 lighting(vec3 Scol, vec3 Spos, float rad, vec3 p, vec3 n, vec3 Mdiff, vec3 Mspec, float Mrefl){
+vec3 lighting(vec3 Scol, vec3 Spos, float rad, vec3 p, vec3 n, vec3 Mdiff, vec3 Mspec, float Mdamp){
 	vec3 l = Spos - p;
 	vec3 v = normalize(p);
 	vec3 h = normalize(v + l);
@@ -35,7 +35,7 @@ vec3 lighting(vec3 Scol, vec3 Spos, float rad, vec3 p, vec3 n, vec3 Mdiff, vec3 
 	}
 	l = normalize(l);
 	vec3 Idiff = saturate(dot(l,n))*Mdiff*Scol;
-	vec3 ISpec = pow(saturate(dot(h,n)), Mrefl)*Mspec*Scol;
+	vec3 ISpec = pow(saturate(dot(h,n)), Mdamp)*Mspec*Scol;
 	return att * (Idiff + ISpec);
 }
 

@@ -24,7 +24,7 @@ float saturate(float value){
 	return clamp(value,0.0,1.0);
 }
 
-vec3 lighting(vec3 Scol, vec3 Spos, float rad, vec3 p, vec3 n, vec3 Mdiff, vec3 Mspec, float Mrefl){
+vec3 lighting(vec3 Scol, vec3 Spos, float rad, vec3 p, vec3 n, vec3 Mdiff, vec3 Mspec, float Mdamp){
 	vec3 l = Spos - p;
 	float distance = length(l);
 	vec3 ln = normalize(l);
@@ -36,7 +36,7 @@ vec3 lighting(vec3 Scol, vec3 Spos, float rad, vec3 p, vec3 n, vec3 Mdiff, vec3 
 	vec3 reflected = reflect(ld, n);
 	
 	float dot2 = saturate(dot(reflected, cam));
-	float damp = pow(dot2, Mrefl);
+	float damp = pow(dot2, Mdamp);
 	vec3 spec = damp * Scol * Mspec;
 	
 	

@@ -68,6 +68,11 @@ public class Material {
         return hasTransparency;
     }
 
+    /**
+     * if no specularmap is present this will be used
+     * @param reflectivity
+     * @return
+     */
     public final Material setReflectivity(float reflectivity) {
         this.reflectivity = reflectivity;
         return this;
@@ -103,6 +108,15 @@ public class Material {
     	this.renderer = renderer;
         return this;
     }
+    
+    public Material setShineDamper(float sh){
+    	shinedamper = sh;
+    	return this;
+    }
+    
+	public float getShineDamper() {
+		return shinedamper;
+	}
     
  
 	

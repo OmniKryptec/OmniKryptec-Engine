@@ -18,6 +18,7 @@ uniform vec4 colormod;
 
 uniform float hasspecular;
 uniform float reflec;
+uniform float damp;
 
 uniform mat4 viewmatrix;
 
@@ -39,9 +40,9 @@ void main(void){
 	
 	if(hasspecular>0.5){
 		col2.rgb = texture(speculartex, pass_texcoords).rgb;
-		col2.a = reflec;
+		col2.a = damp;
 	}else{
-		col2 = vec4(reflec,reflec,reflec,reflec);
+		col2 = vec4(reflec,reflec,reflec,damp);
 	}
 	if(col.a<0.2){
 		discard;

@@ -51,6 +51,7 @@ public class EngineTest2 implements IEventHandler{
             Texture brunnent = Texture.newTexture(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create();
             TexturedModel tm = new TexturedModel(brunnen, brunnent);
             tm.getMaterial().setHasTransparency(true);
+            tm.getMaterial().setReflectivity(1);
             OmniKryptecEngine.instance().addAndSetScene("test", new Scene((Camera) new Camera() {
      
                 @Override
@@ -64,10 +65,10 @@ public class EngineTest2 implements IEventHandler{
 			Texture pinet = Texture.newTexture(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine2.png")).create();
 			TexturedModel ptm = new TexturedModel(pine, pinet);
 			ptm.getMaterial().setHasTransparency(true);
-			ptm.getMaterial().setReflectivity(1);
+			ptm.getMaterial().setReflectivity(0.1f).setShineDamper(0.0001f);
 			Random r = new Random();
 			for(int i=0; i<200; i++){
-				Entity e = new Entity(tm){
+				Entity e = new Entity(ptm){
 					@Override
 	            	public void doLogic(){
 	            		//setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(), r.nextFloat());
@@ -82,7 +83,7 @@ public class EngineTest2 implements IEventHandler{
             //ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
             //OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 1, 0).setRadius(100));
             //OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 0, 1).setRadius(100).setRelativePos(50, 50, 50));
-            OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 1, 1).setRadius(-1).setShader(LightPrepare.ATT_LIGHT_PREPARE).setAttenuation(1f, 0, 0));
+            OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 1, 1).setRadius(-1).setShader(LightPrepare.DEFAULT_LIGHT_PREPARE));
             //.instance().getCurrentScene().addGameObject(new Light().setColor(0, 0, 1).setRadius(100).setRelativePos(50, 50, 0));
 
             OmniKryptecEngine.instance().startLoop(ShutdownOption.JAVA);
