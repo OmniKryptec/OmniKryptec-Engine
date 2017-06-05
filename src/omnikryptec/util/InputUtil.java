@@ -13,6 +13,7 @@ import org.lwjgl.util.vector.Vector4f;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.GameObject;
+import omnikryptec.logger.Logger;
 import omnikryptec.settings.IKey;
 import omnikryptec.settings.Key;
 import omnikryptec.settings.KeySettings;
@@ -48,6 +49,26 @@ public class InputUtil {
     private static Matrix4f invertedProjectionMatrix = null;
     private static Matrix4f invertedViewMatrix = new Matrix4f();
     private static float currentTime = 0;
+    
+    public static final boolean init() {
+        try {
+            Mouse.create();
+            return true;
+        } catch (Exception ex) {
+            Logger.logErr("Error while creating mouse: " + ex, ex);
+            return false;
+        }
+    }
+    
+    public static final boolean cleanUp() {
+        try {
+            Mouse.destroy();
+            return true;
+        } catch (Exception ex) {
+            Logger.logErr("Error while destroying mouse: " + ex, ex);
+            return false;
+        }
+    }
 
     /**
      * called from the engine; computes keyboardevents

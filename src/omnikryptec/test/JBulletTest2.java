@@ -21,7 +21,6 @@ import omnikryptec.entity.Entity;
 import omnikryptec.entity.EntityBuilder;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
-import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
@@ -38,6 +37,7 @@ import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.PhysicsUtil;
 import omnikryptec.util.RenderUtil;
+import org.lwjgl.input.Mouse;
 
 /**
  *
@@ -72,6 +72,7 @@ public class JBulletTest2 {
             keySettings.setKey(new KeyGroup("physicsPause", new Key("leftControl", Keyboard.KEY_LCONTROL, true), new Key("p", Keyboard.KEY_P, true)));
             keySettings.setKey(new KeyGroup("test_1", new Key("t_1", Keyboard.KEY_J, true)));
             keySettings.setKey(new KeyGroup("test_2", new Key("t_1", Keyboard.KEY_J, true), new Key("t_2", Keyboard.KEY_K, true)));
+            keySettings.setKey("grabMouse", Keyboard.KEY_G, true);
             DisplayManager.createDisplay("JBullet Test", gameSettings);
             DisplayManager.instance().getSettings().getKeySettings().setKey("sprint", Keyboard.KEY_LCONTROL, true);
             OmniKryptecEngine.instance().addAndSetScene("Test-Scene", new Scene((Camera) new Camera() {
@@ -218,17 +219,25 @@ public class JBulletTest2 {
             }
         }
         final Scene scene = OmniKryptecEngine.getInstance().getCurrentScene();
-        if(scene != null && scene.isUsingPhysics() && keySettings.getKeyGroup("physicsPause").isLongPressed(100, 200)) {
+        if(scene != null && scene.isUsingPhysics() && keySettings.getKeyGroup("physicsPause").isLongPressed(100, 500)) {
             scene.getPhysicsWorld().setSimulationPaused(!scene.getPhysicsWorld().isSimulationPaused());
         }
         if(keySettings.getKey("toggleWireframe").isLongPressed(100, 200)) {
             isWireframe = !isWireframe;
             RenderUtil.goWireframe(isWireframe);
         }
-        final float deltaX = InputUtil.getMouseDelta().x;
-        final float deltaY = InputUtil.getMouseDelta().y;
-        final float deltaD = InputUtil.getMouseDelta().z;
-        if(keySettings.getKey("mouseButtonLeft").isPressed()) {
+        if(keySettings.getKey("grabMouse").isLongPressed(100, 200)) {
+            Mouse.setGrabbed(!Mouse.isGrabbed());
+        }
+        float deltaX = InputUtil.getMouseDelta().x;
+        float deltaY = InputUtil.getMouseDelta().y;
+        float deltaD = InputUtil.getMouseDelta().z;
+        if(Mouse.isGrabbed()) {
+            deltaX *= -1;
+            deltaY *= -1;
+            deltaD *= 1;
+        }
+        if(keySettings.getKey("mouseButtonLeft").isPressed() || Mouse.isGrabbed()) {
             if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_L)) {
                 InputUtil.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
             } else {
