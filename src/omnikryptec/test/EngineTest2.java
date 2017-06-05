@@ -93,7 +93,7 @@ public class EngineTest2 implements IEventHandler{
         private static float v=20;
         private static void doCameraLogic(Camera camera) {
     		//v += DisplayManager.instance().getDeltaTime()*30;
-            InputUtil.doFirstPersonController(camera, DisplayManager.instance().getSettings().getKeySettings(), v, v, 40);
+            InputUtil.doFirstPersonController(camera, DisplayManager.instance().getSettings().getKeySettings(), v, v, 40, false);
             //camera.setPerspectiveProjection(Maths.alterFOV(10, 179f, v, 1000), 1000, 0.001f);
             Logger.CONSOLE.setTitle(camera.toString());
         }
