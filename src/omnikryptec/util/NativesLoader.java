@@ -5,6 +5,7 @@ import java.io.File;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.util.OSUtil.OS;
+import org.lwjgl.opengl.GLContext;
 
 /**
  *
@@ -15,6 +16,7 @@ public class NativesLoader {
     private static final String NATIVESPATH = "/omnikryptec/natives/";
     private static final String LWJGLLIBRARYPATH = "org.lwjgl.librarypath";
     private static final File NATIVESFOLDER = getStandardNativesFolder();
+    private static String OLDLWJGLLIBRARYPATH = "";
     
     private static boolean nativesLoaded = false;
     
@@ -50,6 +52,7 @@ public class NativesLoader {
                 Logger.log("Unloaded natives not successfully, because there is some error with the standard natives folder", LogLevel.WARNING);
                 return false;
             }
+            unregisterNatives();
             boolean allGood = true;
             for(File file : NATIVESFOLDER.listFiles()) {
                 if(!file.delete()) {
@@ -74,9 +77,29 @@ public class NativesLoader {
         return nativesLoaded;
     }
     
-    private static final void registerNatives() {
-        System.setProperty(LWJGLLIBRARYPATH, NATIVESFOLDER.getAbsolutePath());
-        Logger.log("Registered natives successfully", LogLevel.FINER);
+    private static final boolean registerNatives() {
+        try {
+            OLDLWJGLLIBRARYPATH = System.getProperty(LWJGLLIBRARYPATH, "");
+            System.setProperty(LWJGLLIBRARYPATH, NATIVESFOLDER.getAbsolutePath());
+            Logger.log("Registered natives successfully", LogLevel.FINER);
+            return true;
+        } catch (Exception ex) {
+            Logger.logErr("Error while registering natives: " + ex, ex);
+            return false;
+        }
+    }
+    
+    private static final boolean unregisterNatives() {
+        try {
+            System.setProperty(LWJGLLIBRARYPATH, OLDLWJGLLIBRARYPATH);
+            //GLContext.unloadOpenGLLibrary();
+            System.gc();
+            Logger.log("Unregistered natives successfully", LogLevel.FINER);
+            return true;
+        } catch (Exception ex) {
+            Logger.logErr("Error while unregistering natives: " + ex, ex);
+            return false;
+        }
     }
     
     private static final boolean extractNatives(File nativesFolder) {

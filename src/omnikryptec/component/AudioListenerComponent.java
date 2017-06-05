@@ -11,11 +11,14 @@ import omnikryptec.renderer.RenderChunk;
 import omnikryptec.util.ConverterUtil;
 
 /**
- *
+ * Component for listening the sounds
  * @author Panzer1119
  */
 public class AudioListenerComponent implements Component {
     
+    /**
+     * Normal constructor
+     */
     public AudioListenerComponent() {
         boolean done = AudioManager.setBlockingComponent(this, this);
         if(Logger.isDebugMode()) {

@@ -8,7 +8,7 @@ public class TextureBuilder {
 	
 	private boolean clampEdges = DisplayManager.instance().getSettings().clampEdges();
 	private boolean mipmap = DisplayManager.instance().getSettings().mipmap();
-	private boolean anisotropic = DisplayManager.instance().getSettings().getAnisotropicLvl()>0;
+	private boolean anisotropic = DisplayManager.instance().getSettings().getAnisotropicLevel()>0;
 	private boolean nearest = DisplayManager.instance().getSettings().filterNearest();
 	
 	private InputStream file;

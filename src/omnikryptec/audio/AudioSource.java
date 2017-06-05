@@ -6,7 +6,7 @@ import org.lwjgl.openal.AL10;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- *
+ * Source which plays the sounds
  * @author Panzer1119
  */
 public class AudioSource {

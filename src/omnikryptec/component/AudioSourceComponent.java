@@ -11,7 +11,7 @@ import omnikryptec.renderer.RenderChunk;
 import omnikryptec.util.Blocker;
 
 /**
- *
+ * Component for creating sounds
  * @author Panzer1119
  */
 public class AudioSourceComponent implements Component {
@@ -19,15 +19,28 @@ public class AudioSourceComponent implements Component {
     private final ArrayList<AudioSource> sources = new ArrayList<>();
     private final Blocker blocker = new Blocker(0);
     
+    /**
+     * Normal constructor
+     * @param sources AudioSource Array Initialize this component with AudioSources
+     */
     public AudioSourceComponent(AudioSource... sources) {
         addSources(sources);
     }
     
+    /**
+     * Returns the AudioSources
+     * @return AudioSource ArrayList Sources
+     */
     public final ArrayList<AudioSource> getSources() {
         blocker.waitFor();
         return sources;
     }
     
+    /**
+     * Returns the AudioSource given by the name
+     * @param name String Name
+     * @return AudioSource AudioSource or null
+     */
     public final AudioSource getSource(String name) {
         for(AudioSource source : sources) {
             if(source.getSound().getName().equals(name)) {
@@ -37,6 +50,11 @@ public class AudioSourceComponent implements Component {
         return null;
     }
     
+    /**
+     * Adds AudioSources
+     * @param sources AudioSource Array AudioSources
+     * @return AudioSourceComponent A reference to this AudioSourceComponent
+     */
     public final AudioSourceComponent addSources(AudioSource... sources) {
         if(sources == null || sources.length == 0) {
             return this;
@@ -50,10 +68,21 @@ public class AudioSourceComponent implements Component {
         return this;
     }
     
+    /**
+     * Removes AudioSources
+     * @param sources AudioSource Array AudioSources
+     * @return AudioSourceComponent A reference to this AudioSourceComponent
+     */
     public final AudioSourceComponent removeSources(AudioSource... sources) {
         return removeSources(false, sources);
     }
     
+    /**
+     * Removes and deletes AudioSources
+     * @param delete Boolean <tt>true</tt> if the AudioSources should be deleted
+     * @param sources AudioSource Array AudioSources
+     * @return AudioSourceComponent A reference to this AudioSourceComponent
+     */
     public final AudioSourceComponent removeSources(boolean delete, AudioSource... sources) {
         if(sources == null || sources.length == 0 || this.sources.isEmpty()) {
             return this;
@@ -70,6 +99,10 @@ public class AudioSourceComponent implements Component {
         return this;
     }
     
+    /**
+     * Deletes all AudioSources
+     * @return AudioSourceComponent A reference to this AudioSourceComponent
+     */
     public final AudioSourceComponent deleteAllSources() {
         for(AudioSource source : sources) {
             source.delete();

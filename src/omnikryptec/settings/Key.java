@@ -4,11 +4,14 @@ import omnikryptec.display.DisplayManager;
 import omnikryptec.util.InputUtil;
 
 /**
- *
+ * Key
  * @author Panzer1119
  */
 public class Key implements IKey {
     
+    /**
+     * Default Key which gets returned instead of null
+     */
     public static final Key DEFAULT_NULL_KEY = new Key("DEFAULT_NULL_KEY", -1, true);
     
     private final String name;
@@ -16,6 +19,12 @@ public class Key implements IKey {
     private boolean isKeyboardKey = true;
     private float lastChange = 0.0F;
     
+    /**
+     * Constructs a key
+     * @param name String Name
+     * @param key Integer Key
+     * @param isKeyboardKey Boolean If the key is a keyboard key
+     */
     public Key(String name, int key, boolean isKeyboardKey) {
         this.name = name;
         this.key = key;
@@ -27,24 +36,55 @@ public class Key implements IKey {
         return name;
     }
     
-    public Key setKey(int key) {
+    /**
+     * Sets the key
+     * @param key Integer Keyboard/Mouse key reference
+     * @return Key A reference to this Key
+     */
+    public final Key setKey(int key) {
         this.key = key;
         return this;
     }
 
+    /**
+     * Returns the key
+     * @return Integer Keyboard/Mouse key reference
+     */
     public final int getKey() {
         return key;
     }
     
+    /**
+     * Sets if this Key is a keyboard key
+     * @param isKeyboardKey Boolean If the key is a keyboard key
+     * @return Key A reference to this Key
+     */
     public final Key setIsKeyboardKey(boolean isKeyboardKey) {
         this.isKeyboardKey = isKeyboardKey;
         return this;
     }
-
+    
+    /**
+     * Returns if the key is a keyboard key
+     * @return <tt>true</tt> if the key is a keyboard key
+     */
+    public final boolean isKeyboardKey() {
+        return isKeyboardKey;
+    }
+    
+    /**
+     * Returns the last change of this Key
+     * @return Float Last change
+     */
     public final float getLastChange() {
         return lastChange;
     }
 
+    /**
+     * Sets the last change of this Key
+     * @param lastChange Float Last change
+     * @return Key A reference to this Key
+     */
     public final Key setLastChange(float lastChange) {
         this.lastChange = lastChange;
         return this;
@@ -58,22 +98,14 @@ public class Key implements IKey {
             return InputUtil.isMouseKeyDown(key);
         }
     }
-    
-    /**
-     * Returns if the Key is pressed longer then the given time
-     * @param time Float Presstime of the Key in ms
-     * @return Boolean If the Key is pressed for the given time
-     */
+
     @Override
-    public final boolean isLongPressed(float time) {
+    public boolean isLongPressed(float minTime, float maxTime) {
         final float currentTime = DisplayManager.instance().getCurrentTime();
-        final boolean isLongPressed = isPressed() && ((currentTime - lastChange) > time);
+        final float pessedTime = (currentTime - lastChange);
+        final boolean isLongPressed = isPressed() && (pessedTime >= minTime && pessedTime <= maxTime);
         lastChange = currentTime;
         return isLongPressed;
-    }
-    
-    public final boolean isKeyboardKey() {
-        return isKeyboardKey;
     }
     
     @Override

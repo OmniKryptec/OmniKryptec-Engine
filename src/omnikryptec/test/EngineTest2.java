@@ -40,8 +40,13 @@ public class EngineTest2 implements IEventHandler{
             Logger.CONSOLE.setExitWhenLastOne(true);
             Logger.showConsoleDirect();
             
+<<<<<<< HEAD
             DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFpsCap(60).setChunkOffsets(10, 10, 10));
             PostProcessing.instance().addStage(new LightStage(LightPrepare.ATT_LIGHT_PREPARE, LightPrepare.DEFAULT_LIGHT_PREPARE));
+=======
+            DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFPSCap(60).setChunkOffsets(10, 10, 10));
+            PostProcessing.instance().addStage(new LightStage(LightPrepare.ATT_LIGHT_PREPARE));
+>>>>>>> branch 'test' of https://github.com/OmniKryptec/OmniKryptec-Engine.git
             //PostProcessing.instance().addStage(new CompleteGaussianBlurStage(false,0.5f,0.5f));
             //PostProcessing.instance().addStage(new ColorSpaceStage(8,8,8));
             //PostProcessing.instance().addStage(new ContrastchangeStage(-0.25f));

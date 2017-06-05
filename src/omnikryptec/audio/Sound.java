@@ -6,7 +6,7 @@ import omnikryptec.logger.Logger;
 import omnikryptec.util.AudioUtil;
 
 /**
- *
+ * Cached sound
  * @author Panzer1119
  */
 public class Sound implements ISound {

@@ -16,7 +16,7 @@ import omnikryptec.component.Component;
 import omnikryptec.logger.Logger;
 
 /**
- *
+ * Main audio manager class
  * @author Panzer1119
  */
 public class AudioManager {
@@ -275,6 +275,9 @@ public class AudioManager {
         AudioManager.distanceModel = distanceModel;
     }
     
+    /**
+     * Distance model which calculates the roll off of the volume
+     */
     public static enum DistanceModel {
         EXPONENT            (AL11.AL_EXPONENT_DISTANCE,         false),
         EXPONENT_CLAMPED    (AL11.AL_EXPONENT_DISTANCE_CLAMPED, true),
