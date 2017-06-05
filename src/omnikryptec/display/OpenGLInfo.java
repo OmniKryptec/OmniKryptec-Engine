@@ -5,7 +5,7 @@ import org.lwjgl.opengl.PixelFormat;
 
 /**
  * OpenGLInfo class
- * @author pcfreak9000
+ * @author pcfreak9000 &amp; Panzer1119
  */
 public class OpenGLInfo {
 

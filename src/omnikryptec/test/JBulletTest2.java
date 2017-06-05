@@ -70,6 +70,8 @@ public class JBulletTest2 {
             keySettings.setKey("pauseAudio", Keyboard.KEY_P, true);
             keySettings.setKey("toggleWireframe", Keyboard.KEY_T, true);
             keySettings.setKey(new KeyGroup("physicsPause", new Key("leftControl", Keyboard.KEY_LCONTROL, true), new Key("p", Keyboard.KEY_P, true)));
+            keySettings.setKey(new KeyGroup("test_1", new Key("t_1", Keyboard.KEY_J, true)));
+            keySettings.setKey(new KeyGroup("test_2", new Key("t_1", Keyboard.KEY_J, true), new Key("t_2", Keyboard.KEY_K, true)));
             DisplayManager.createDisplay("JBullet Test", gameSettings);
             DisplayManager.instance().getSettings().getKeySettings().setKey("sprint", Keyboard.KEY_LCONTROL, true);
             OmniKryptecEngine.instance().addAndSetScene("Test-Scene", new Scene((Camera) new Camera() {
@@ -190,6 +192,14 @@ public class JBulletTest2 {
     }
     
     private static final void input() {
+        final GameSettings gameSettings = DisplayManager.instance().getSettings();
+        final KeySettings keySettings = gameSettings.getKeySettings();
+        if(keySettings.isPressed("test_1")) {
+            Logger.log(keySettings.getKeyGroup("test_1"));
+        }
+        if(keySettings.isPressed("test_2")) {
+            Logger.log(keySettings.getKeyGroup("test_2"));
+        }
         Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
         if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_F)) {
             applyForce();
@@ -200,7 +210,7 @@ public class JBulletTest2 {
             body.setAngularVelocity(new Vector3f(0, 0, 0));
             body.setLinearVelocity(new Vector3f(0, 0, 0));
         }
-        if(DisplayManager.instance().getSettings().getKeySettings().getKey("pauseAudio").isLongPressed(100)) {
+        if(keySettings.getKey("pauseAudio").isLongPressed(100, 200)) {
             if(bouncer.isPlaying()) {
                 bouncer.pause();
             } else {
@@ -208,17 +218,17 @@ public class JBulletTest2 {
             }
         }
         final Scene scene = OmniKryptecEngine.getInstance().getCurrentScene();
-        if(scene != null && scene.isUsingPhysics() && DisplayManager.instance().getSettings().getKeySettings().getKeyGroup("physicsPause").isLongPressed(100)) {
+        if(scene != null && scene.isUsingPhysics() && keySettings.getKeyGroup("physicsPause").isLongPressed(100, 200)) {
             scene.getPhysicsWorld().setSimulationPaused(!scene.getPhysicsWorld().isSimulationPaused());
         }
-        if(DisplayManager.instance().getSettings().getKeySettings().getKey("toggleWireframe").isLongPressed(100)) {
+        if(keySettings.getKey("toggleWireframe").isLongPressed(100, 200)) {
             isWireframe = !isWireframe;
             RenderUtil.goWireframe(isWireframe);
         }
         final float deltaX = InputUtil.getMouseDelta().x;
         final float deltaY = InputUtil.getMouseDelta().y;
         final float deltaD = InputUtil.getMouseDelta().z;
-        if(OmniKryptecEngine.getInstance().getDisplayManager().getSettings().getKeySettings().getKey("mouseButtonLeft").isPressed()) {
+        if(keySettings.getKey("mouseButtonLeft").isPressed()) {
             if(InputUtil.isKeyboardKeyDown(Keyboard.KEY_L)) {
                 InputUtil.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
             } else {

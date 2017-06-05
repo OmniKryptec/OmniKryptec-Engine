@@ -4,7 +4,7 @@ import omnikryptec.entity.GameObject;
 
 /**
  * Component interface
- * @author pcfreak9000
+ * @author pcfreak9000 &amp; Panzer1119
  */
 public interface Component {
 

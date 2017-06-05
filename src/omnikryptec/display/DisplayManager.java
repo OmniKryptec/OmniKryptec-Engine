@@ -13,7 +13,7 @@ import omnikryptec.util.RenderUtil;
 
 /**
  * Display managing class
- * @author pcfreak9000
+ * @author pcfreak9000 &amp; Panzer1119
  */
 public class DisplayManager {
 
@@ -70,11 +70,11 @@ public class DisplayManager {
             if(!manager.resize(settings.getWidth(), settings.getHeight(), settings.wantsFullscreen())) {
                 return null;
             }
-            if(settings.getInitialFpsCap() != -1){
-                manager.setSyncFPS(settings.getInitialFpsCap());
+            if(settings.getInitialFPSCap() != -1){
+                manager.setSyncFPS(settings.getInitialFPSCap());
             }
             Display.setLocation(-1, -1);
-            Display.setResizable(settings.wantsResizeable());
+            Display.setResizable(settings.wantsResizable());
             Display.create(info.getPixelFormat(), info.getAttribs());
             Display.setTitle(name);
             if(settings.getMultiSamples() != GameSettings.NO_MULTISAMPLING) {
