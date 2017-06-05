@@ -214,9 +214,9 @@ public class InputUtil {
         final float deltaRotY = (keySettings.getKey("turnYawLeft").isPressed() ? -deltaRotXYZSpeed : 0) + (keySettings.getKey("turnYawRight").isPressed() ? deltaRotXYZSpeed : 0);
         final float deltaRotZ = (keySettings.getKey("turnRollLeft").isPressed() ? -deltaRotXYZSpeed : 0) + (keySettings.getKey("turnRollRight").isPressed() ? deltaRotXYZSpeed : 0);
         if(space) {
-            turnXZ(gameObject, gameObject, deltaRotX, deltaRotY, deltaRotZ);
-        } else {
             turnXYZ(gameObject, gameObject, deltaRotX, deltaRotY, deltaRotZ);
+        } else {
+            turnXZ(gameObject, gameObject, deltaRotX, deltaRotY, deltaRotZ);
         }
         return gameObject;
     }
@@ -281,11 +281,12 @@ public class InputUtil {
     }
     
     public static void turnXZ(GameObject source, GameObject destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
+        final Vector3f rotation = new Vector3f(source.getAbsoluteRotation());
         if(deltaRotZ != 0) {
-            destination.increaseRelativeRot((float) (deltaRotZ * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))), 0, (float) (-deltaRotZ * Math.cos(Math.toRadians(source.getAbsoluteRotation().y))));
+            destination.increaseRelativeRot((float) (-deltaRotZ * Math.sin(Math.toRadians(rotation.y))), 0, (float) (deltaRotZ * Math.cos(Math.toRadians(rotation.y))));
         }
         if(deltaRotX != 0) {
-            destination.increaseRelativeRot((float) (deltaRotX * Math.cos(Math.toRadians(source.getAbsoluteRotation().y))), 0, (float) (deltaRotX * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))));
+            destination.increaseRelativeRot((float) (-deltaRotX * Math.cos(Math.toRadians(rotation.y))), 0, (float) (deltaRotX * Math.sin(Math.toRadians(rotation.y))));
         }
         if(deltaRotY != 0) {
             destination.increaseRelativeRot(0, deltaRotY, 0);
@@ -293,11 +294,12 @@ public class InputUtil {
     }
     
     public static void turnXZY(GameObject source, GameObject destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
+        final Vector3f rotation = new Vector3f(source.getAbsoluteRotation());
         if(deltaRotZ != 0) {
-            destination.increaseRelativeRot((float) (-deltaRotZ * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))), (float) (deltaRotZ * Math.sin(Math.toRadians(source.getAbsoluteRotation().x))), (float) (deltaRotZ * Math.cos(Math.toRadians(source.getAbsoluteRotation().y)) * Math.cos(Math.toRadians(source.getAbsoluteRotation().x))));
+            destination.increaseRelativeRot((float) (-deltaRotZ * Math.sin(Math.toRadians(rotation.y))), (float) (deltaRotZ * Math.sin(Math.toRadians(rotation.x))), (float) (deltaRotZ * Math.cos(Math.toRadians(rotation.y)) * Math.cos(Math.toRadians(rotation.x))));
         }
         if(deltaRotX != 0) {
-            destination.increaseRelativeRot((float) (deltaRotX * Math.cos(Math.toRadians(source.getAbsoluteRotation().y)) * Math.cos(Math.toRadians(source.getAbsoluteRotation().z))), (float) (-deltaRotX * Math.sin(Math.toRadians(source.getAbsoluteRotation().z))), (float) (deltaRotX * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))));
+            destination.increaseRelativeRot((float) (deltaRotX * Math.cos(Math.toRadians(rotation.y)) * Math.cos(Math.toRadians(rotation.z))), (float) (-deltaRotX * Math.sin(Math.toRadians(rotation.z))), (float) (deltaRotX * Math.sin(Math.toRadians(rotation.y))));
         }
         if(deltaRotY != 0) {
             destination.increaseRelativeRot(0, deltaRotY, 0);
@@ -305,14 +307,15 @@ public class InputUtil {
     }
     
     public static void turnXYZ(GameObject source, GameObject destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
+        final Vector3f rotation = new Vector3f(source.getAbsoluteRotation());
         if(deltaRotZ != 0) {
-            destination.increaseRelativeRot((float) (-deltaRotZ * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))), (float) (deltaRotZ * Math.sin(Math.toRadians(source.getAbsoluteRotation().x))), (float) (deltaRotZ * Math.cos(Math.toRadians(source.getAbsoluteRotation().y)) * Math.cos(Math.toRadians(source.getAbsoluteRotation().x))));
+            destination.increaseRelativeRot((float) (-deltaRotZ * Math.sin(Math.toRadians(rotation.y))), (float) (deltaRotZ * Math.sin(Math.toRadians(rotation.x))), (float) (deltaRotZ * Math.cos(Math.toRadians(rotation.y)) * Math.cos(Math.toRadians(rotation.x))));
         }
         if(deltaRotX != 0) {
-            destination.increaseRelativeRot((float) (deltaRotX * Math.cos(Math.toRadians(source.getAbsoluteRotation().y)) * Math.cos(Math.toRadians(source.getAbsoluteRotation().z))), (float) (-deltaRotX * Math.sin(Math.toRadians(source.getAbsoluteRotation().z))), (float) (deltaRotX * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))));
+            destination.increaseRelativeRot((float) (deltaRotX * Math.cos(Math.toRadians(rotation.y)) * Math.cos(Math.toRadians(rotation.z))), (float) (-deltaRotX * Math.sin(Math.toRadians(rotation.z))), (float) (deltaRotX * Math.sin(Math.toRadians(rotation.y))));
         }
         if(deltaRotY != 0) {
-            destination.increaseRelativeRot((float) (deltaRotY * Math.sin(Math.toRadians(source.getAbsoluteRotation().z))), (float) (deltaRotY * Math.cos(Math.toRadians(source.getAbsoluteRotation().x)) * Math.cos(Math.toRadians(source.getAbsoluteRotation().z))), (float) (-deltaRotY * Math.sin(Math.toRadians(source.getAbsoluteRotation().x))));
+            destination.increaseRelativeRot((float) (deltaRotY * Math.sin(Math.toRadians(rotation.z))), (float) (deltaRotY * Math.cos(Math.toRadians(rotation.x)) * Math.cos(Math.toRadians(rotation.z))), (float) (-deltaRotY * Math.sin(Math.toRadians(rotation.x))));
         }
     }
     
