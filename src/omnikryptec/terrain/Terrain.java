@@ -46,6 +46,10 @@ public class Terrain extends Entity {
     
     //private final ITexture blendMap;
     
+    public Terrain(final float worldx, final float worldz, ModelData model, TerrainTexturePack texturePack, ITexture blendMap){
+    	this(worldx, worldz, new Model(model), texturePack, blendMap);
+    }
+    
     public Terrain(final float worldx, final float worldz, Model model, TerrainTexturePack texturePack, ITexture blendMap){
     	getRelativePos().x = worldx;
     	getRelativePos().z = worldz;
