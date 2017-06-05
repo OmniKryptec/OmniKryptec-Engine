@@ -1,5 +1,7 @@
 package omnikryptec.model;
 
+import org.lwjgl.util.vector.Vector4f;
+
 import omnikryptec.exceptions.OmniKryptecException;
 import omnikryptec.logger.Logger;
 import omnikryptec.renderer.IRenderer;
@@ -28,6 +30,7 @@ public class Material {
     private ITexture normalmap;
     private ITexture specularmap;
     private ITexture extrainfo;
+    private Vector4f extrainfovec;
     private boolean hasTransparency = false;
     private IRenderer renderer = RendererRegistration.DEF_ENTITY_RENDERER;
 
@@ -68,6 +71,20 @@ public class Material {
         return hasTransparency;
     }
 
+    /**
+     * setting an extrainfomap overrides this settings
+     * @param vec
+     * @return
+     */
+    public final Material setExtraInfoVec(Vector4f vec){
+    	this.extrainfovec = vec;
+    	return this;
+    }
+    
+    public final Vector4f getExtraInfoVec(){
+    	return extrainfovec;
+    }
+    
     /**
      * if no specularmap is present this will be used
      * @param reflectivity

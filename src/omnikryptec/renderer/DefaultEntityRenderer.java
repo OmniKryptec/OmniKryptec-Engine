@@ -45,9 +45,14 @@ public class DefaultEntityRenderer implements IRenderer{
 			}
 			if(model.getMaterial().getExtraInfo()!=null){
 				model.getMaterial().getExtraInfo().bindToUnit(3);
-				EntityShader.hasextrainfo.loadBoolean(true);
+				EntityShader.hasextrainfomap.loadBoolean(true);
 			}else{
-				EntityShader.hasextrainfo.loadBoolean(false);
+				EntityShader.hasextrainfomap.loadBoolean(false);
+				if(model.getMaterial().getExtraInfoVec()!=null){
+					EntityShader.extrainfovec.loadVec4(model.getMaterial().getExtraInfoVec());
+				}else{
+					EntityShader.extrainfovec.loadVec4(0, 0, 0, 0);
+				}
 			}
 			EntityShader.reflec.loadFloat(model.getMaterial().getReflectivity());
 			EntityShader.shinedamper.loadFloat(model.getMaterial().getShineDamper());

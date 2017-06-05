@@ -12,5 +12,6 @@ uniform vec2 weights;
 void main(void){
 	
 	color = texture(tex1, textureCoords) * weights.x + texture(tex2, textureCoords) * weights.y;
+
 }
 

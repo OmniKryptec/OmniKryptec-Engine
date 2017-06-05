@@ -29,7 +29,7 @@ public abstract class PostProcessingStep implements PostProcessingStage {
 	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist, int stage) {
 		shader.start();
 		bindTexture(before, beforelist, shader, stage);
-		renderQuad();
+		rendermyQuad();
 		afterRendering();
 	}
 	
@@ -43,10 +43,9 @@ public abstract class PostProcessingStep implements PostProcessingStage {
 
 	public abstract void afterRendering();
 
-	private void renderQuad() {
+	private void rendermyQuad() {
 		target.bindFrameBuffer();
-		RenderUtil.clear(0, 0, 0, 1);
-		GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);
+		renderQuad(true);
 		target.unbindFrameBuffer();
 	}
 

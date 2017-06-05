@@ -17,6 +17,7 @@ uniform sampler2D speculartex;
 uniform sampler2D extra;
 
 uniform vec4 colormod;
+uniform vec4 exinfovec;
 
 uniform float hasextra;
 uniform float hasspecular;
@@ -53,6 +54,6 @@ void main(void){
 	if(hasextra>0.5){
 		col3 = texture(extra, pass_texcoords);
 	}else{
-		col3 = vec4(0,0,0,0);
+		col3 = exinfovec;
 	}
 }
