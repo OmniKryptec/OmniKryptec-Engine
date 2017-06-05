@@ -197,7 +197,7 @@ public class InputUtil {
      * 
      * @return 
      */
-    public static GameObject doFirstPersonController(GameObject gameObject, KeySettings keySettings, float deltaPosXZSpeed, float deltaPosYSpeed, float deltaRotXYZSpeed) {
+    public static GameObject doFirstPersonController(GameObject gameObject, KeySettings keySettings, float deltaPosXZSpeed, float deltaPosYSpeed, float deltaRotXYZSpeed, boolean space) {
     	final float dt = DisplayManager.instance().getDeltaTime();
     	deltaPosXZSpeed *= dt;
     	deltaPosYSpeed *= dt;
@@ -205,11 +205,19 @@ public class InputUtil {
         final float deltaPosForward = (keySettings.getKey("moveForward").isPressed() ? deltaPosXZSpeed : 0) + (keySettings.getKey("moveBackward").isPressed() ? -deltaPosXZSpeed : 0);
         final float deltaPosSideward = (keySettings.getKey("moveRight").isPressed() ? deltaPosXZSpeed : 0) + (keySettings.getKey("moveLeft").isPressed() ? -deltaPosXZSpeed : 0);
         final float deltaPosUpward = (keySettings.getKey("moveUp").isPressed() ? deltaPosYSpeed : 0) + (keySettings.getKey("moveDown").isPressed() ? -deltaPosYSpeed : 0);
-        moveXYZ(gameObject, gameObject, deltaPosForward, deltaPosSideward, deltaPosUpward);
+        if(space) {
+            moveXYZ(gameObject, gameObject, deltaPosForward, deltaPosSideward, deltaPosUpward);
+        } else {
+            moveXZ(gameObject, gameObject, deltaPosForward, deltaPosSideward, deltaPosUpward);
+        }
         final float deltaRotX = (keySettings.getKey("turnPitchUp").isPressed() ? -deltaRotXYZSpeed : 0) + (keySettings.getKey("turnPitchDown").isPressed() ? deltaRotXYZSpeed : 0);
         final float deltaRotY = (keySettings.getKey("turnYawLeft").isPressed() ? -deltaRotXYZSpeed : 0) + (keySettings.getKey("turnYawRight").isPressed() ? deltaRotXYZSpeed : 0);
         final float deltaRotZ = (keySettings.getKey("turnRollLeft").isPressed() ? -deltaRotXYZSpeed : 0) + (keySettings.getKey("turnRollRight").isPressed() ? deltaRotXYZSpeed : 0);
-        turnXZ(gameObject, gameObject, deltaRotX, deltaRotY, deltaRotZ);
+        if(space) {
+            turnXZ(gameObject, gameObject, deltaRotX, deltaRotY, deltaRotZ);
+        } else {
+            turnXYZ(gameObject, gameObject, deltaRotX, deltaRotY, deltaRotZ);
+        }
         return gameObject;
     }
     

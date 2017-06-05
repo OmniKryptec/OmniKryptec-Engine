@@ -244,7 +244,7 @@ public class JBulletTest {
             OmniKryptecEngine.instance().addAndSetScene("TestScene", new Scene(new Camera() {   
                 @Override
                 public void doLogic() {
-                    InputUtil.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(), 3.0F, 1.5F, 15.0F);
+                    InputUtil.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(), 3.0F, 1.5F, 15.0F, false);
                 }
                 
             }.setPerspectiveProjection(75, 1000, 0.1F)));
@@ -305,7 +305,7 @@ public class JBulletTest {
 
                     @Override
                     public void doLogic() {
-                        InputUtil.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(), 3.0F, 1.5F, 15.0F);
+                        InputUtil.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(), 3.0F, 1.5F, 15.0F, false);
                     }
 
                 }.setPerspectiveProjection(75, 1000, 0.1F);
