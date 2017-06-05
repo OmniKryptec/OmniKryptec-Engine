@@ -1,11 +1,14 @@
 package omnikryptec.audio;
 
 /**
- *
+ * Sound interface
  * @author Panzer1119
  */
 public interface ISound {
  
+    /**
+     * Sound type (cached or streamed)
+     */
     public static enum SoundType {
         NORMAL,
         STREAM;

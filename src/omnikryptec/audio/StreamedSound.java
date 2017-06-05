@@ -18,7 +18,7 @@ import omnikryptec.logger.Logger;
 import omnikryptec.util.AudioUtil;
 
 /**
- *
+ * Streamed sound
  * @author Panzer1119
  */
 public class StreamedSound implements ISound {
