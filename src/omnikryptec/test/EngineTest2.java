@@ -59,7 +59,7 @@ public class EngineTest2 implements IEventHandler{
                     doCameraLogic(this);
                 }
                 
-            }.setPerspectiveProjection(90, 1000, 0.1f).setRelativePos(10, 10, 10)));
+            }.setPerspectiveProjection(90, 1000, 0.1f).setRelativePos(0, 0, 0)));
             Model pine = new Model(ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")));
 			Texture pinet = Texture.newTexture(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine2.png")).create();
 			TexturedModel ptm = new TexturedModel(pine, pinet);
@@ -82,7 +82,7 @@ public class EngineTest2 implements IEventHandler{
             //ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
             //OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 1, 0).setRadius(100));
             //OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 0, 1).setRadius(100).setRelativePos(50, 50, 50));
-            OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 1, 1).setRadius(100).setShader(LightPrepare.DEFAULT_LIGHT_PREPARE).setAttenuation(1f, 0, 0));
+            OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 1, 1).setRadius(-1).setShader(LightPrepare.ATT_LIGHT_PREPARE).setAttenuation(1f, 0, 0));
             //.instance().getCurrentScene().addGameObject(new Light().setColor(0, 0, 1).setRadius(100).setRelativePos(50, 50, 0));
 
             OmniKryptecEngine.instance().startLoop(ShutdownOption.JAVA);
