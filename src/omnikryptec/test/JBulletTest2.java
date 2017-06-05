@@ -78,6 +78,7 @@ public class JBulletTest2 {
             keySettings.setKey(new KeyGroup("test_1", new Key("t_1", Keyboard.KEY_J, true)));
             keySettings.setKey(new KeyGroup("test_2", new Key("t_1", Keyboard.KEY_J, true), new Key("t_2", Keyboard.KEY_K, true)));
             keySettings.setKey("grabMouse", Keyboard.KEY_G, true);
+            keySettings.setKey("grabMouse2", Keyboard.KEY_Y, true);
             DisplayManager.createDisplay("JBullet Test", gameSettings);
             DisplayManager.instance().getSettings().getKeySettings().setKey("sprint", Keyboard.KEY_LCONTROL, true);
             OmniKryptecEngine.instance().addAndSetScene("Test-Scene", new Scene((Camera) new Camera() {
@@ -138,11 +139,13 @@ public class JBulletTest2 {
     }
     
     private static final void setupTerrains(TerrainTexturePack texturePack, Texture blendMap, int count) {
-        for(int i = 0; i < count; i++) {
-            final ModelData modelData = Terrain.generateTerrain(i*heightMap.getWidth(), -i*heightMap.getWidth(), new HeightsGeneratorHMap(heightMap, 40.0F, true), heightMap.getWidth(), heightMap.getWidth());
-            final Terrain terrain = new Terrain(i*heightMap.getWidth(), -i*heightMap.getWidth(), modelData, texturePack, blendMap);
-            //final Terrain terrain = new Terrain(i, -i, texturePack, blendMap);
-            terrains.add(terrain);
+        for(int x = 0; x < count; x++) {
+            for(int y = 0; y < count; y++) {
+                final ModelData modelData = Terrain.generateTerrain(x * heightMap.getWidth(), y * heightMap.getWidth(), new HeightsGeneratorHMap(heightMap, 40.0F, true), heightMap.getWidth(), heightMap.getWidth());
+                final Terrain terrain = new Terrain(x * heightMap.getWidth(), y * heightMap.getWidth(), modelData, texturePack, blendMap);
+                //final Terrain terrain = new Terrain(i, -i, texturePack, blendMap);
+                terrains.add(terrain);
+            }
         }
     }
     
@@ -233,14 +236,14 @@ public class JBulletTest2 {
             }
         }
         final Scene scene = OmniKryptecEngine.getInstance().getCurrentScene();
-        if(scene != null && scene.isUsingPhysics() && keySettings.getKeyGroup("physicsPause").isLongPressed(100, 500)) {
+        if(scene != null && scene.isUsingPhysics() && keySettings.getKeyGroup("physicsPause").isLongPressed(100, 400)) {
             scene.getPhysicsWorld().setSimulationPaused(!scene.getPhysicsWorld().isSimulationPaused());
         }
         if(keySettings.getKey("toggleWireframe").isLongPressed(100, 200)) {
             isWireframe = !isWireframe;
             RenderUtil.goWireframe(isWireframe);
         }
-        if(keySettings.getKey("grabMouse").isLongPressed(100, 200)) {
+        if(keySettings.getKey("grabMouse").isLongPressed(100, 400) || keySettings.getKey("grabMouse2").isLongPressed(100, 400)) {
             Mouse.setGrabbed(!Mouse.isGrabbed());
         }
         float deltaX = InputUtil.getMouseDelta().x;
