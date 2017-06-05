@@ -20,6 +20,7 @@ import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
 import omnikryptec.postprocessing.PostProcessing;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
@@ -39,6 +40,7 @@ public class EngineTest2 implements IEventHandler{
             Logger.CONSOLE.setExitWhenLastOne(true);
             Logger.showConsoleDirect();
             
+            DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFPSCap(60).setChunkOffsets(10, 10, 10)); 
             PostProcessing.instance().addStage(new LightStage(LightPrepare.ATT_LIGHT_PREPARE, LightPrepare.DEFAULT_LIGHT_PREPARE));
             //PostProcessing.instance().addStage(new CompleteGaussianBlurStage(false,0.5f,0.5f));
             //PostProcessing.instance().addStage(new ColorSpaceStage(8,8,8));
