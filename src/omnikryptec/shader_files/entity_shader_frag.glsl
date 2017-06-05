@@ -23,14 +23,13 @@ void main(void){
 	
 	vec3 normalt = texture(normaltex, pass_texcoords).rgb;
 	vec4 diffuset = texture(tex, pass_texcoords);
-	normalt -= 0.5;
+	//normalt -= 0.5;
+	normalt *= 2.0 - 1.0;
 	normalt = normalize(normalt.x*tang + normalt.y * bitang + normalt.z * norm);
 	//normalt = normalt*0.5+0.5;
-	// TBN = mat3(tang, bitang, norm);
-	// normalt = normalize(TBN*texture(normaltex, pass_texcoords).rgb*2.0-1.0);
-	
-	normalt = vec3(0,1,0);
-	
+	//mat3 TBN = mat3(tang, bitang, norm);
+	//normalt = normalize(TBN*texture(normaltex, pass_texcoords).rgb*2.0-1.0);
+		
 	col = vec4(diffuset);
 	col *= colormod;
 	col1 = vec4(normalt.rgb*0.5+0.5,1.0);

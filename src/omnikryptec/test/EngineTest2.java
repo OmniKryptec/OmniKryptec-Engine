@@ -82,7 +82,7 @@ public class EngineTest2 implements IEventHandler{
             //ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
             //OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 1, 0).setRadius(100));
             //OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 0, 1).setRadius(100).setRelativePos(50, 50, 50));
-            OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 1, 1).setRadius(100).setShader(LightPrepare.ATT_LIGHT_PREPARE).setAttenuation(1f, 0, 0));
+            OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setColor(1, 1, 1).setRadius(100).setShader(LightPrepare.DEFAULT_LIGHT_PREPARE).setAttenuation(1f, 0, 0));
             //.instance().getCurrentScene().addGameObject(new Light().setColor(0, 0, 1).setRadius(100).setRelativePos(50, 50, 0));
 
             OmniKryptecEngine.instance().startLoop(ShutdownOption.JAVA);
