@@ -1,6 +1,6 @@
 package omnikryptec.terrain;
 
-public interface HeightsGenerator {
+public interface HeightGenerator {
 	
     float generateHeight(float worldX, float worldZ);
 	

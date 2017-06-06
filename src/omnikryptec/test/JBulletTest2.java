@@ -33,7 +33,7 @@ import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.Key;
 import omnikryptec.settings.KeyGroup;
 import omnikryptec.settings.KeySettings;
-import omnikryptec.terrain.HeightsGeneratorHMap;
+import omnikryptec.terrain.HeightGeneratorHeightMap;
 import omnikryptec.terrain.Terrain;
 import omnikryptec.terrain.TerrainTexturePack;
 import omnikryptec.texture.Texture;
@@ -140,7 +140,7 @@ public class JBulletTest2 {
     private static final void setupTerrains(TerrainTexturePack texturePack, Texture blendMap, int count) {
         for(int x = 0; x < count; x++) {
             for(int y = 0; y < count; y++) {
-                final ModelData modelData = Terrain.generateTerrain(x * heightMap.getWidth(), y * heightMap.getWidth(), new HeightsGeneratorHMap(heightMap, 40.0F, true), heightMap.getWidth(), heightMap.getWidth());
+                final ModelData modelData = Terrain.generateTerrain(x * heightMap.getWidth(), y * heightMap.getWidth(), new HeightGeneratorHeightMap(heightMap, 40.0F, true), heightMap.getWidth(), heightMap.getWidth());
                 final Terrain terrain = new Terrain(x * heightMap.getWidth(), y * heightMap.getWidth(), modelData, texturePack, blendMap);
                 //final Terrain terrain = new Terrain(i, -i, texturePack, blendMap);
                 terrains.add(terrain);

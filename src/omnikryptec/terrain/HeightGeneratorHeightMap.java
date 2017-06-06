@@ -2,7 +2,7 @@ package omnikryptec.terrain;
 
 import java.awt.image.BufferedImage;
 
-public class HeightsGeneratorHMap implements HeightsGenerator{
+public class HeightGeneratorHeightMap implements HeightGenerator{
 
     private static final float MAX_PIXEL_COLOR = 256 * 256 * 256;
 
@@ -11,7 +11,7 @@ public class HeightsGeneratorHMap implements HeightsGenerator{
     private final boolean allowModulo;
     private final int width, height;
 
-    public HeightsGeneratorHMap(BufferedImage heightsmap, float maxHeight, boolean allowModulo) {
+    public HeightGeneratorHeightMap(BufferedImage heightsmap, float maxHeight, boolean allowModulo) {
         this.map = heightsmap;
         this.maxHeight = maxHeight;
         this.allowModulo = allowModulo;
@@ -32,7 +32,7 @@ public class HeightsGeneratorHMap implements HeightsGenerator{
                 x = width + x % width; 
             }
             x %= width;
-            if(z < 0){
+            if(z < 0) {
                 z = height + z % height;
             }
             z %= height;

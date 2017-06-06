@@ -67,7 +67,7 @@ public class Terrain extends Entity {
         getTexturedModel().getMaterial().setRenderer(terrainRenderer);
     }
     
-    public static final ModelData generateTerrain(final float worldx, final float worldz, final HeightsGenerator generator, final float size, final int vertex_count){
+    public static final ModelData generateTerrain(final float worldx, final float worldz, final HeightGenerator generator, final float size, final int vertex_count){
          int count = vertex_count * vertex_count;
          float[] vertices = new float[count * 3];
          float[] normals = new float[count * 3];
