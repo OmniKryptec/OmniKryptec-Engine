@@ -77,8 +77,9 @@ public class JBulletTest2 {
             keySettings.setKey(new KeyGroup("physicsPause", new Key("leftControl", Keyboard.KEY_LCONTROL, true), new Key("p", Keyboard.KEY_P, true)));
             keySettings.setKey(new KeyGroup("test_1", new Key("t_1", Keyboard.KEY_J, true)));
             keySettings.setKey(new KeyGroup("test_2", new Key("t_1", Keyboard.KEY_J, true), new Key("t_2", Keyboard.KEY_K, true)));
-            keySettings.setKey(new KeyGroup("grabMouse", new Key("grabMouse1", Keyboard.KEY_G, true), new Key("grabMouse2", Keyboard.KEY_Y, true)).setAllKeysNeedToBeActivated(false));
-            DisplayManager.createDisplay("JBullet Test", gameSettings);
+            final KeyGroup grabMouse = new KeyGroup("grabMouse", new Key("grabMouse1", Keyboard.KEY_G, true), new Key("grabMouse2", Keyboard.KEY_Y, true)).setAllKeysNeedToBeActivated(false);
+            keySettings.setKey(grabMouse);
+            DisplayManager.createDisplay("JBullet Test2", gameSettings);
             DisplayManager.instance().getSettings().getKeySettings().setKey("sprint", Keyboard.KEY_LCONTROL, true);
             OmniKryptecEngine.instance().addAndSetScene("Test-Scene", new Scene((Camera) new Camera() {
                 
@@ -94,7 +95,7 @@ public class JBulletTest2 {
                     InputUtil.doThirdPersonController(this, this, DisplayManager.instance().getSettings().getKeySettings(), horizontalSpeed, verticalSpeed, turnSpeed);
                 }
                 
-            }.setPerspectiveProjection(75, 1000, 0.1F).addComponent(new AudioListenerComponent())));
+            }.setPerspectiveProjection(75, 0.1F, 1000).addComponent(new AudioListenerComponent())));
             entityBuilder_brunnen = new EntityBuilder().loadModel("/omnikryptec/test/brunnen.obj").loadTexture("/omnikryptec/test/brunnen.png");
             entityBuilder_pine = new EntityBuilder().loadModel("/omnikryptec/test/pine.obj").loadTexture("/omnikryptec/test/pine2.png");
             final Texture backgroundTexture = Texture.newTexture("/omnikryptec/terrain/grassy2.png").create();
