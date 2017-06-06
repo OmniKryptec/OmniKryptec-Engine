@@ -102,9 +102,11 @@ public class Key implements IKey {
     @Override
     public boolean isLongPressed(float minTime, float maxTime) {
         final float currentTime = DisplayManager.instance().getCurrentTime();
-        final float pessedTime = (currentTime - lastChange);
-        final boolean isLongPressed = isPressed() && (pessedTime >= minTime && pessedTime <= maxTime);
-        lastChange = currentTime;
+        final float pressedTime = (currentTime - lastChange);
+        final boolean isLongPressed = isPressed() && (pressedTime >= minTime && pressedTime <= maxTime);
+        if(isLongPressed) {
+            lastChange = currentTime;
+        }
         return isLongPressed;
     }
     

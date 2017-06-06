@@ -207,6 +207,40 @@ public class KeySettings {
         return this;
     }
     
+    
+    /**
+     * Updates all Keys given by the key and the state
+     * @param currentTime Float Current time
+     * @param key Integer Keyboard/Mouse key reference
+     * @param isKeyboardKey Boolean If the key is a keyboard key
+     * @return KeySettings A reference to this KeySettings
+     */
+    public final KeySettings updateKeys(float currentTime, int key, boolean isKeyboardKey) {
+        return updateKeys(keys, currentTime, key, isKeyboardKey);
+    }
+    
+    /**
+     * Updates all Keys given by the key and the state
+     * @param ikeys ArrayList IKey Keys to be updated
+     * @param currentTime Float Current time
+     * @param key Integer Keyboard/Mouse key reference
+     * @param isKeyboardKey Boolean If the key is a keyboard key
+     * @return KeySettings A reference to this KeySettings
+     */
+    public final KeySettings updateKeys(ArrayList<IKey> ikeys, float currentTime, int key, boolean isKeyboardKey) {
+        for(IKey ikey : ikeys) {
+            if(ikey instanceof Key) {
+                final Key key_ = (Key) ikey;
+                if(key_.getKey() == key && key_.isKeyboardKey() == isKeyboardKey) {
+                    key_.setLastChange(currentTime);
+                }
+            } else if(ikey instanceof KeyGroup) {
+                updateKeys(((KeyGroup) ikey).getKeys(), currentTime, key, isKeyboardKey);
+            }
+        }
+        return this;
+    }
+    
     /**
      * Returns a Key given by the given name
      * @param name String Name
