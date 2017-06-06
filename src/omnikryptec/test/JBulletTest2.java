@@ -94,7 +94,7 @@ public class JBulletTest2 {
                     InputUtil.doThirdPersonController(this, this, DisplayManager.instance().getSettings().getKeySettings(), horizontalSpeed, verticalSpeed, turnSpeed);
                 }
                 
-            }.setPerspectiveProjection(75, 1000, 0.1F).addComponent(new AudioListenerComponent())));
+            }.setPerspectiveProjection(75, 0.1F, 1000).addComponent(new AudioListenerComponent())));
             entityBuilder_brunnen = new EntityBuilder().loadModel("/omnikryptec/test/brunnen.obj").loadTexture("/omnikryptec/test/brunnen.png");
             entityBuilder_pine = new EntityBuilder().loadModel("/omnikryptec/test/pine.obj").loadTexture("/omnikryptec/test/pine2.png");
             final Texture backgroundTexture = Texture.newTexture("/omnikryptec/terrain/grassy2.png").create();
