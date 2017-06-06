@@ -1,5 +1,7 @@
 package omnikryptec.terrain;
 
+import org.lwjgl.util.vector.Vector3f;
+
 import omnikryptec.entity.Entity;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
@@ -35,14 +37,16 @@ public class Terrain extends Entity {
          float[] textureCoords = new float[count * 2];
          int[] indices = new int[6 * (vertex_count - 1) * (vertex_count - 1)];
          int vertexPointer = 0;
+         Vector3f normal;
          for(int i = 0; i < vertex_count; i++){
              for(int j = 0; j < vertex_count; j++){
                  vertices[vertexPointer * 3] = (float) (j / ((float) vertex_count - 1) * size);
                  vertices[vertexPointer * 3 + 1] = generator.generateHeight(worldx + j, worldz + i);
                  vertices[vertexPointer * 3 + 2] = (float) (i / ((float) vertex_count - 1) * size);
-                 normals[vertexPointer * 3] = 0;
-                 normals[vertexPointer * 3 + 1] = 1;
-                 normals[vertexPointer * 3 + 2] = 0;
+                 normal = genNormal(worldx + j, worldz + i, generator);
+                 normals[vertexPointer * 3] = normal.x;
+                 normals[vertexPointer * 3 + 1] = normal.y;
+                 normals[vertexPointer * 3 + 2] = normal.z;
                  textureCoords[vertexPointer * 2] = (float) (j / ((float) vertex_count - 1));
                  textureCoords[vertexPointer * 2 + 1] = (float) (i / ((float) vertex_count - 1));
                  vertexPointer++;
@@ -64,6 +68,14 @@ public class Terrain extends Entity {
              }
          }
          return new ModelData(vertices, textureCoords, normals, normals, indices, 0F);
+    }
+    
+    private static Vector3f genNormal(float x, float z, HeightGenerator gen){
+    	float hL = gen.generateHeight(x-1, z);
+    	float hR = gen.generateHeight(x+1, z);
+    	float hD = gen.generateHeight(x, z-1);
+    	float hU = gen.generateHeight(x, z+1);
+    	return (Vector3f) new Vector3f(hL-hR, 2f, hD-hU).normalise();
     }
     
     public final Terrain copy(int gridX, int gridZ) {
