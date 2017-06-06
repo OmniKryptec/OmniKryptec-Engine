@@ -74,14 +74,12 @@ public class InputUtil {
      * called from the engine; computes keyboardevents
      */
     public static void nextFrame() {
+        final KeySettings keySettings = DisplayManager.instance().getSettings().getKeySettings();
         for(int i = 0; i < keys_mouse.length; i++) {
             final boolean temp = Mouse.isButtonDown(i);
             if(longButtonPressEnabled) {
                 if(keys_mouse[i] != temp) {
-                    final ArrayList<Key> keys_c = DisplayManager.instance().getSettings().getKeySettings().getKeys(i, false);
-                    for(Key key : keys_c) {
-                        key.setLastChange(currentTime);
-                    }
+                    keySettings.updateKeys(currentTime, i, false);
                 }
             }
             keys_mouse[i] = temp;
@@ -100,10 +98,7 @@ public class InputUtil {
             final boolean eventKeyState = Keyboard.getEventKeyState();
             if(longButtonPressEnabled) {
                 if(keys_keyboard[eventKey] != eventKeyState) {
-                    final ArrayList<Key> keys_c = DisplayManager.instance().getSettings().getKeySettings().getKeys(eventKey, true);
-                    for(Key key : keys_c) {
-                        key.setLastChange(currentTime);
-                    }
+                    keySettings.updateKeys(currentTime, eventKey, true);
                 }
             }
             keys_keyboard[eventKey] = eventKeyState;
@@ -114,14 +109,6 @@ public class InputUtil {
             }
             Matrix4f.invert(camera.getViewMatrix(), invertedViewMatrix);
             calculateMouseRay();
-        }
-        if(longButtonPressEnabled) {
-            for(IKey ikey : DisplayManager.instance().getSettings().getKeySettings().getKeys()) {
-                if(ikey instanceof Key) {
-                    final Key key = (Key) ikey;
-                    
-                }
-            }
         }
         currentTime = DisplayManager.instance().getCurrentTime();
     }
