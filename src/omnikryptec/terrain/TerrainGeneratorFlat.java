@@ -1,6 +1,6 @@
 package omnikryptec.terrain;
 
-public class HeightGeneratorFlat implements HeightGenerator {
+public class TerrainGeneratorFlat implements TerrainGenerator {
 
     @Override
     public float generateHeight(float worldX, float worldZ) {

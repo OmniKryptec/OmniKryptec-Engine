@@ -30,7 +30,7 @@ public class Terrain extends Entity {
         getTexturedModel().getMaterial().setRenderer(terrainRenderer);
     }
     
-    public static final ModelData generateTerrain(final float worldx, final float worldz, final HeightGenerator generator, final float size, final int vertex_count){
+    public static final ModelData generateTerrain(final float worldx, final float worldz, final TerrainGenerator generator, final float size, final int vertex_count){
          int count = vertex_count * vertex_count;
          float[] vertices = new float[count * 3];
          float[] normals = new float[count * 3];
@@ -43,7 +43,7 @@ public class Terrain extends Entity {
                  vertices[vertexPointer * 3] = (float) (j / ((float) vertex_count - 1) * size);
                  vertices[vertexPointer * 3 + 1] = generator.generateHeight(worldx + j, worldz + i);
                  vertices[vertexPointer * 3 + 2] = (float) (i / ((float) vertex_count - 1) * size);
-                 normal = genNormal(worldx + j, worldz + i, generator);
+                 normal = generator.generateNormal(worldx + j, worldz + i);
                  normals[vertexPointer * 3] = normal.x;
                  normals[vertexPointer * 3 + 1] = normal.y;
                  normals[vertexPointer * 3 + 2] = normal.z;
@@ -70,13 +70,6 @@ public class Terrain extends Entity {
          return new ModelData(vertices, textureCoords, normals, normals, indices, 0F);
     }
     
-    private static Vector3f genNormal(float x, float z, HeightGenerator gen){
-    	float hL = gen.generateHeight(x-1, z);
-    	float hR = gen.generateHeight(x+1, z);
-    	float hD = gen.generateHeight(x, z-1);
-    	float hU = gen.generateHeight(x, z+1);
-    	return (Vector3f) new Vector3f(hL-hR, 2f, hD-hU).normalise();
-    }
     
     public final Terrain copy(int gridX, int gridZ) {
         return new Terrain(gridX, gridZ, getTexturedModel().getModel(), texturePack, getTexturedModel().getTexture());
