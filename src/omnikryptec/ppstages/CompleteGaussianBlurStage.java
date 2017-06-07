@@ -20,9 +20,8 @@ public class CompleteGaussianBlurStage extends PostProcessingStage {
 
 	@Override
 	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist, int stage) {
-		hb.render(before, beforelist, stage);
-		before.resolveDepth(hb.getFbo());
-		vb.render(hb.getFbo(), beforelist, stage);
+		hb.renderAndResolveDepth(before, beforelist, stage);
+		vb.renderAndResolveDepth(hb.getFbo(), beforelist, stage);
 	}
 
 	@Override

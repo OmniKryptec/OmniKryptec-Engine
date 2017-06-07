@@ -15,7 +15,7 @@ public class StageGroup extends PostProcessingStage {
 	@Override
 	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist, int stage) {
 		for (int i = 0; i < stages.size(); i++) {
-			stages.get(i).render(before, beforelist, stage);
+			stages.get(i).renderAndResolveDepth(before, beforelist, stage);
 			before = stages.get(i).getFbo();
 		}
 		before.resolveToFbo(getFbo(), GL30.GL_COLOR_ATTACHMENT0);

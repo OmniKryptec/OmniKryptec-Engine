@@ -3,8 +3,10 @@ package omnikryptec.ppstages;
 import java.util.List;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
+import omnikryptec.entity.Camera;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.postprocessing.FrameBufferObject;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
@@ -52,12 +54,16 @@ public class FogStage extends PostProcessingStep {
 		return this;
 	}
 
+	private Camera curcam;
 	@Override
 	public void bindTexture(FrameBufferObject before, List<FrameBufferObject> beforelist, Shader using, int stage) {
-		FogShader.test.loadVec2(OmniKryptecEngine.instance().getCurrentScene().getCamera().getPlanesForLR());
-		FogShader.fog.loadVec4(fog);
-		FogShader.density.loadFloat(density);
-		FogShader.gradient.loadFloat(gradient);
+		shader.pixsize.loadVec2(1.0f/Display.getWidth(), 1.0f/Display.getHeight());
+		shader.fog.loadVec4(fog);
+		shader.density.loadFloat(density);
+		shader.gradient.loadFloat(gradient);
+		curcam = OmniKryptecEngine.instance().getCurrentScene().getCamera();
+		shader.invprojv.loadMatrix(Matrix4f.invert(Matrix4f.mul(curcam.getProjectionMatrix(), curcam.getViewMatrix(), null), null));
+		shader.campos.loadVec3(curcam.getAbsolutePos());
 		(l_ind[0] < 0 ? before : beforelist.get(l_ind[0])).bindToUnit(0);
 		(l_ind[1] < 0 ? before : beforelist.get(l_ind[1])).bindDepthTexture(1);
 	}

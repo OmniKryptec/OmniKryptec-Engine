@@ -38,12 +38,24 @@ public abstract class PostProcessingStage {
 	public FrameBufferObject getFbo() {
 		return target;
 	}
-
+	
+	public PostProcessingStage setDepthbuffer(FrameBufferObject fbo){
+		if(target!=null){
+			fbo.resolveDepth(target);
+		}
+		return this;
+	}
+	
 	public final void resize() {
 		target = createFbo();
 		onResize();
 	}
 
+	public final void renderAndResolveDepth(FrameBufferObject before, List<FrameBufferObject> beforelist, int stage){
+		render(before, beforelist, stage);
+		setDepthbuffer(before);
+	}
+	
 	/**
 	 * 
 	 * @param before

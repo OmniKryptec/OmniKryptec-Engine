@@ -51,19 +51,11 @@ public class PostProcessing {
 					if (!currentStage.usesDefaultRenderObject()) {
 						end();
 					}
-					currentStage.render(before, beforelist, i);
+					currentStage.renderAndResolveDepth(before, beforelist, i);
 					if (!currentStage.usesDefaultRenderObject()) {
 						start();
 					}
-					tmp = currentStage.getFbo();
-					if (tmp.getDepthbufferType() == DepthbufferType.NONE) {
-						Logger.log(
-								"FBO of Stage " + i
-										+ " (zerobased) has no Depthbufferattachment. Some PostProcessingStages may not work anymore.",
-								LogLevel.WARNING);
-					}
-					before.resolveDepth(tmp);
-					before = tmp;
+					before = currentStage.getFbo();
 					beforelist.add(before);
 				}
 			}

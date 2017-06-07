@@ -21,7 +21,10 @@ import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
 import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.ppstages.BloomStage;
+import omnikryptec.ppstages.ColorSpaceStage;
 import omnikryptec.ppstages.CompleteGaussianBlurStage;
+import omnikryptec.ppstages.ContrastchangeStage;
+import omnikryptec.ppstages.FogStage;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.InputUtil;
@@ -45,19 +48,19 @@ public class EngineTest2 implements IEventHandler{
             DisplayManager.createDisplay("Test 2", new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setInitialFPSCap(60).setChunkOffsets(10, 10, 10)); 
             //PostProcessing.instance().addStage(new LightStage(LightPrepare.ATT_LIGHT_PREPARE, LightPrepare.DEFAULT_LIGHT_PREPARE));
             //PostProcessing.instance().addStage(new CompleteGaussianBlurStage(false,0.1f,0.1f));
-            //PostProcessing.instance().addStage(new ColorSpaceStage(2,4,8));
+            PostProcessing.instance().addStage(new ColorSpaceStage(2,4,8));
             //PostProcessing.instance().addStage(new CompleteGaussianBlurStage(true,0.5f,0.5f));
-            //PostProcessing.instance().addStage(new ContrastchangeStage(-0.25f));
+            PostProcessing.instance().addStage(new ContrastchangeStage(-0.25f));
             //PostProcessing.instance().addStage(new BrightnessfilterStage(new Vector4f(0, 0, 0, 0)));
             //RenderUtil.goWireframe(true);
             //PostProcessing.instance().setEnabled(false);
-//            PostProcessing.instance().addStage(new CompleteGaussianBlurStage(false, 0.6f, 0.6f));
-//            PostProcessing.instance().addStage(new CompleteGaussianBlurStage(false, 0.3f, 0.3f));
-//            PostProcessing.instance().addStage(new CompleteGaussianBlurStage(false, 0.1f, 0.1f));
-//            PostProcessing.instance().addStage(new CompleteGaussianBlurStage(false, 0.05f, 0.05f));
-
-            PostProcessing.instance().addStage(new BloomStage(new CompleteGaussianBlurStage(true, 0.3f, 0.3f), new Vector4f(1, 0, 0, 0), new Vector2f(1, 5)).setEnabled(true));
             //PostProcessing.instance().addStage(new FogStage().setDensity(0.05f).setFog(0, 0.5f, 0, 0.8f).setGradient(2));
+            //PostProcessing.instance().addStage(new CompleteGaussianBlurStage(false, 0.6f, 0.6f));
+            //PostProcessing.instance().addStage(new CompleteGaussianBlurStage(false, 0.3f, 0.3f));
+            //PostProcessing.instance().addStage(new CompleteGaussianBlurStage(false, 0.1f, 0.1f));
+            //PostProcessing.instance().addStage(new CompleteGaussianBlurStage(false, 0.05f, 0.05f));
+
+            //PostProcessing.instance().addStage(new BloomStage(new CompleteGaussianBlurStage(true, 0.3f, 0.3f), new Vector4f(1, 0, 0, 0), new Vector2f(1, 5)).setEnabled(true));
             EventSystem.instance().addEventHandler(new EngineTest2(), EventType.RENDER_EVENT);
             Model brunnen = new Model(ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
             //Model brunnen = Model.generateQuad();

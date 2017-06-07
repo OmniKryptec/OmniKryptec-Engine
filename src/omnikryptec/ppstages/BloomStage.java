@@ -41,11 +41,9 @@ public class BloomStage extends PostProcessingStage {
 
 	@Override
 	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist, int stage) {
-		brightness.render(before, beforelist, stage);
-		before.resolveDepth(brightness.getFbo());
-		bloomindicator.render(brightness.getFbo(), beforelist, stage);
-		before.resolveDepth(bloomindicator.getFbo());
-		bloomedeffect.render(bloomindicator.getFbo(), beforelist, stage);
+		brightness.renderAndResolveDepth(before, beforelist, stage);
+		bloomindicator.renderAndResolveDepth(brightness.getFbo(), beforelist, stage);
+		bloomedeffect.renderAndResolveDepth(bloomindicator.getFbo(), beforelist, stage);
 		bloomedeffect.getFbo().bindToUnit(1);
 		before.bindToUnit(0);
 		cshader.start();
