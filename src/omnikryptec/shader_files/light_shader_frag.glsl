@@ -1,7 +1,7 @@
 #version 330
 
 in vec2 textureCoords;
-in mat4 invprojv;
+uniform mat4 invprojv;
 
 out vec4 col;
 

@@ -27,7 +27,7 @@ public class Camera extends GameObject{
 		return projection;
 	}
 	
-	private Vector3f absrot,campos,negcampos, lastrot, lastpos;
+	private Vector3f absrot,campos,negcampos, lastrot = new Vector3f(), lastpos = new Vector3f();
 	public Matrix4f getViewMatrix() {
 		if(view==null){
 			view = new Matrix4f();
@@ -41,8 +41,8 @@ public class Camera extends GameObject{
 			Matrix4f.rotate((float) Math.toRadians(absrot.y), Maths.Y, view, view);
 			Matrix4f.rotate((float) Math.toRadians(absrot.z), Maths.Z, view, view);
 			Matrix4f.translate(negcampos, view, view);
-			lastpos = campos;
-			lastrot = absrot;
+			lastpos.set(campos);
+			lastrot.set(absrot);
 		}
 		return view;
 	}

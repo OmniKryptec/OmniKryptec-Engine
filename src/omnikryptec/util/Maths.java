@@ -113,7 +113,7 @@ public class Maths {
 	}
       
 	public static boolean fastEquals3f(Vector3f one, Vector3f sec){
-		return one.x == sec.x && one.y == sec.y && one.z == sec.z;
+		return one!= null && sec != null && one.x == sec.x && one.y == sec.y && one.z == sec.z;
 	}
 	
 	

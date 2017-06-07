@@ -15,9 +15,8 @@ public class LightShader extends Shader {
 	public final UniformSampler depth = new UniformSampler("depth");
 	public final UniformVec4 light = new UniformVec4("lightu");
 	public final UniformVec3 lightColor = new UniformVec3("lightColor");
-	public final UniformMatrix viewv = new UniformMatrix("vm");
-	public final UniformMatrix proj = new UniformMatrix("proj");
-
+	public final UniformMatrix invprojv = new UniformMatrix("invprojv");
+		
 	public final UniformVec2 pixSizes = new UniformVec2("pixelSize");
 
 	public final UniformVec3 cam = new UniformVec3("campos");
@@ -25,7 +24,7 @@ public class LightShader extends Shader {
 	public LightShader() {
 		super(LightShader.class.getResourceAsStream(oc_shader_loc + "light_shader_vert.glsl"),
 				LightShader.class.getResourceAsStream(oc_shader_loc + "light_shader_frag.glsl"), "position");
-		registerUniforms(depth, diffuse, specular, normal, light, lightColor, viewv, proj, pixSizes, cam);
+		registerUniforms(depth, diffuse, specular, normal, light, lightColor, invprojv, pixSizes, cam);
 		start();
 		diffuse.loadTexUnit(0);
 		normal.loadTexUnit(1);
