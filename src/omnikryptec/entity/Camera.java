@@ -27,21 +27,29 @@ public class Camera extends GameObject{
 		return projection;
 	}
 	
-	
-	private Vector3f absrot,campos,negcampos;
+	private Vector3f absrot,campos,negcampos, lastrot, lastpos;
 	public Matrix4f getViewMatrix() {
 		if(view==null){
 			view = new Matrix4f();
 		}
 		absrot = getAbsoluteRotation();
 		campos = getAbsolutePos();
-		negcampos = new Vector3f(-campos.x, -campos.y, -campos.z);
-		view.setIdentity();
-		Matrix4f.rotate((float) Math.toRadians(absrot.x), Maths.X, view, view);
-		Matrix4f.rotate((float) Math.toRadians(absrot.y), Maths.Y, view, view);
-		Matrix4f.rotate((float) Math.toRadians(absrot.z), Maths.Z, view, view);
-		Matrix4f.translate(negcampos, view, view);
+		if(!Maths.fastEquals3f(campos, lastpos)||!Maths.fastEquals3f(lastrot, absrot)){
+			negcampos = new Vector3f(-campos.x, -campos.y, -campos.z);
+			view.setIdentity();
+			Matrix4f.rotate((float) Math.toRadians(absrot.x), Maths.X, view, view);
+			Matrix4f.rotate((float) Math.toRadians(absrot.y), Maths.Y, view, view);
+			Matrix4f.rotate((float) Math.toRadians(absrot.z), Maths.Z, view, view);
+			Matrix4f.translate(negcampos, view, view);
+			lastpos = campos;
+			lastrot = absrot;
+		}
 		return view;
+	}
+	
+	
+	public Matrix4f getInverseProjView(){
+		return Matrix4f.invert(getProjectionViewMatrix(), null);
 	}
 	
 	public Matrix4f getProjectionViewMatrix(){
@@ -53,31 +61,12 @@ public class Camera extends GameObject{
 	}
 
 	public Camera setPerspectiveProjection(float fovdeg, float near, float far, float width, float height) {
-		this.near = near;
-		this.far = far;
-		this.fov = fovdeg;
 		projection = Maths.setPerspectiveProjection(fovdeg, far, near, width, height);
 		return this;
 	}
 
-	private float near,far,fov;
-	private Vector2f vect = new Vector2f();
-	
-	public float getFOVDeg(){
-		return fov;
-	}
-	
-	public Vector2f getPlanesForLR(){
-		vect.x =  -far / (far-near);
-		vect.y = -far * near / (far-near);
-		return vect;
-	}
-	
 	public Camera setOrthographicProjection(float left, float right, float bottom, float top, float near,
 			float far) {
-		this.near = near;
-		this.far = far;
-		this.fov = 180;
 		projection = Maths.setOrthographicProjection(left, right, bottom, top, near, far);
 		return this;
 	}

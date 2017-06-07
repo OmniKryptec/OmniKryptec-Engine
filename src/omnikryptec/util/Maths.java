@@ -112,7 +112,11 @@ public class Maths {
 		return setOrthographicProjection(x, x + width, y, y + height, near, far);
 	}
       
-
+	public static boolean fastEquals3f(Vector3f one, Vector3f sec){
+		return one.x == sec.x && one.y == sec.y && one.z == sec.z;
+	}
+	
+	
 //	public static double getRelativizer(double velocity, double maxVelocity){
 //		if(velocity>maxVelocity){
 //			velocity = maxVelocity;
