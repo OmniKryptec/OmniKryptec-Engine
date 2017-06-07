@@ -13,63 +13,57 @@ import omnikryptec.shader.Shader;
 import omnikryptec.shader_files.FogShader;
 
 public class FogStage extends PostProcessingStep {
-	
+
 	private static FogShader shader = new FogShader();
-	
-	private Vector4f fog = new Vector4f(0.3f,0.3f,0.3f,1);
-	
-	private float density=0.007f;
-	private float gradient=1.5f;
-	
+
+	private Vector4f fog = new Vector4f(0.3f, 0.3f, 0.3f, 1);
+
+	private float density = 0.007f;
+	private float gradient = 1.5f;
+
 	public FogStage() {
 		super(shader);
 	}
 
-	
-	public FogStage setFog(Vector4f v){
+	public FogStage setFog(Vector4f v) {
 		return setFog(v.x, v.y, v.z, v.w);
 	}
-	
-	public FogStage setFog(float r, float g, float b, float a){
+
+	public FogStage setFog(float r, float g, float b, float a) {
 		fog.set(r, g, b, a);
 		return this;
 	}
-	
-	public FogStage setDensity(float d){
+
+	public FogStage setDensity(float d) {
 		density = d;
 		return this;
 	}
-	
-	public FogStage setGradient(float g){
+
+	public FogStage setGradient(float g) {
 		gradient = g;
 		return this;
 	}
-	
-	private int[] l_ind={-1,-1};
-	
-	public FogStage setListIndices(int diff, int depth){
+
+	private int[] l_ind = { -1, -1 };
+
+	public FogStage setListIndices(int diff, int depth) {
 		l_ind[0] = diff;
 		l_ind[1] = depth;
 		return this;
 	}
-	
+
 	@Override
 	public void bindTexture(FrameBufferObject before, List<FrameBufferObject> beforelist, Shader using, int stage) {
 		FogShader.test.loadVec2(OmniKryptecEngine.instance().getCurrentScene().getCamera().getPlanesForLR());
 		FogShader.fog.loadVec4(fog);
 		FogShader.density.loadFloat(density);
 		FogShader.gradient.loadFloat(gradient);
-		(l_ind[0]<0?before:beforelist.get(l_ind[0])).bindToUnit(0);
-		(l_ind[1]<0?before:beforelist.get(l_ind[1])).bindDepthTexture(1);
+		(l_ind[0] < 0 ? before : beforelist.get(l_ind[0])).bindToUnit(0);
+		(l_ind[1] < 0 ? before : beforelist.get(l_ind[1])).bindDepthTexture(1);
 	}
 
 	@Override
-	public void afterRendering() {
-
-	}
-
-	@Override
-	public FrameBufferObject getOnResize() {
+	public FrameBufferObject createFbo() {
 		return new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE);
 	}
 

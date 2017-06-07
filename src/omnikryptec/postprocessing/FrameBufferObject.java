@@ -19,7 +19,7 @@ import omnikryptec.exceptions.IllegalAccessException;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.ITexture;
 
-public class FrameBufferObject implements ITexture{
+public class FrameBufferObject implements ITexture {
 
 	private final int width;
 	private final int height;
@@ -29,21 +29,20 @@ public class FrameBufferObject implements ITexture{
 
 	private int depthBuffer;
 	private int[] colBuffers;
-	
+
 	private int multisample = GameSettings.NO_MULTISAMPLING;
 	private boolean multitarget = false;
 	private int[] targets;
-	
+
 	private DepthbufferType type;
-	
+
 	public static enum DepthbufferType {
 		NONE, DEPTH_TEXTURE, DEPTH_RENDER_BUFFER;
 	}
-	
-	
+
 	private static List<FrameBufferObject> fbos = new ArrayList<>();
 	private static List<FrameBufferObject> history = new ArrayList<>();
-	
+
 	/**
 	 * Creates an FBO of a specified width and height, with the desired type of
 	 * depth buffer attachment.
@@ -56,18 +55,18 @@ public class FrameBufferObject implements ITexture{
 	 *            - an int indicating the type of depth buffer attachment that
 	 *            this FBO should use.
 	 */
-	public FrameBufferObject(int width, int height, DepthbufferType type, int...targets) {
+	public FrameBufferObject(int width, int height, DepthbufferType type, int... targets) {
 		this.width = width;
 		this.height = height;
 		this.targets = targets;
-		this.multitarget = targets.length>1;
+		this.multitarget = targets.length > 1;
 		initialiseFrameBuffer(type);
 	}
-	
-	public FrameBufferObject(int width, int height, DepthbufferType type){
+
+	public FrameBufferObject(int width, int height, DepthbufferType type) {
 		this(width, height, type, GL30.GL_COLOR_ATTACHMENT0);
 	}
-	
+
 	/**
 	 * only for the engine
 	 * 
@@ -75,46 +74,46 @@ public class FrameBufferObject implements ITexture{
 	 * @param height
 	 * @param multisamples
 	 */
-	public FrameBufferObject(int width, int height, int multisamples, int ...targets) {
+	public FrameBufferObject(int width, int height, int multisamples, int... targets) {
 		this.width = width;
 		this.height = height;
 		this.multisample = multisamples;
 		this.targets = targets;
-		this.multitarget = targets.length>1;
+		this.multitarget = targets.length > 1;
 		initialiseFrameBuffer(DepthbufferType.DEPTH_RENDER_BUFFER);
 	}
-	public FrameBufferObject(int width, int height, int multisamples, int[] add, int ...targets) {
+
+	public FrameBufferObject(int width, int height, int multisamples, int[] add, int... targets) {
 		this.width = width;
 		this.height = height;
 		this.multisample = multisamples;
-		this.targets = new int[add.length+targets.length];
-		for(int i=0; i<targets.length; i++){
+		this.targets = new int[add.length + targets.length];
+		for (int i = 0; i < targets.length; i++) {
 			this.targets[i] = targets[i];
 		}
-		for(int i=0; i<add.length; i++){
-			this.targets[i+targets.length] = add[i];
+		for (int i = 0; i < add.length; i++) {
+			this.targets[i + targets.length] = add[i];
 		}
-		this.multitarget = this.targets.length>1;
+		this.multitarget = this.targets.length > 1;
 		initialiseFrameBuffer(DepthbufferType.DEPTH_RENDER_BUFFER);
 	}
-	
-	public FrameBufferObject(int width, int height, int multisamples){
+
+	public FrameBufferObject(int width, int height, int multisamples) {
 		this(width, height, multisamples, GL30.GL_COLOR_ATTACHMENT0);
 	}
-	
-	
-	public boolean isMultisampled(){
+
+	public boolean isMultisampled() {
 		return multisample != GameSettings.NO_MULTISAMPLING;
 	}
-	
-	public boolean isMultitarget(){
+
+	public boolean isMultitarget() {
 		return multitarget;
 	}
-	
-	public int[] getTargets(){
+
+	public int[] getTargets() {
 		return targets;
 	}
-	
+
 	/**
 	 * Deletes the frame buffer and its attachments when the game closes.
 	 */
@@ -122,10 +121,10 @@ public class FrameBufferObject implements ITexture{
 		GL30.glDeleteFramebuffers(frameBuffer);
 		GL11.glDeleteTextures(depthTexture);
 		GL30.glDeleteRenderbuffers(depthBuffer);
-		for(int i=0; i<colBuffers.length; i++){
-			if(multisample!=GameSettings.NO_MULTISAMPLING){
+		for (int i = 0; i < colBuffers.length; i++) {
+			if (multisample != GameSettings.NO_MULTISAMPLING) {
 				GL30.glDeleteRenderbuffers(colBuffers[i]);
-			}else{
+			} else {
 				GL11.glDeleteTextures(colBuffers[i]);
 			}
 		}
@@ -149,19 +148,17 @@ public class FrameBufferObject implements ITexture{
 	public void unbindFrameBuffer() {
 		GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
 		GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
-		if(history.size()>0){
+		if (history.size() > 0) {
 			int i = history.lastIndexOf(this);
-			if(i>=0){
+			if (i >= 0) {
 				history.remove(i);
 			}
 		}
-		if(history.size()>0){
-			history.get(history.size()-1).bindFrameBuffer();
+		if (history.size() > 0) {
+			history.get(history.size() - 1).bindFrameBuffer();
 		}
 	}
-	
-	
-	
+
 	/**
 	 * Binds the current FBO to be read from (not used in tutorial 43).
 	 */
@@ -177,36 +174,43 @@ public class FrameBufferObject implements ITexture{
 	public int getDepthTexture() {
 		return depthTexture;
 	}
-	
-	public DepthbufferType getDepthbufferType(){
+
+	public DepthbufferType getDepthbufferType() {
 		return type;
 	}
-	
-	public int getTexture(int index){
-		if(multisample!=GameSettings.NO_MULTISAMPLING){
+
+	public int getTexture(int index) {
+		if (multisample != GameSettings.NO_MULTISAMPLING) {
 			throw new IllegalAccessException("This framebuffer is multisampled and has no textures.");
 		}
 		return colBuffers[index];
 	}
-	
+
 	public void resolveToFbo(FrameBufferObject out, int attachment) {
+		resolveToFbo(out, attachment, true);
+	}
+
+	public void resolveToFbo(FrameBufferObject out, int attachment, boolean depth) {
 		GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, out.frameBuffer);
 		GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, frameBuffer);
 		GL11.glReadBuffer(attachment);
 		GL30.glBlitFramebuffer(0, 0, width, height, 0, 0, out.width, out.height,
 				GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT, GL11.GL_NEAREST);
 		unbindFrameBuffer();
+		if (depth) {
+			resolveDepth(out);
+		}
 	}
-	
-	public void resolveDepth(FrameBufferObject out){
+
+	public void resolveDepth(FrameBufferObject out) {
 		GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, out.frameBuffer);
 		GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, frameBuffer);
 		GL11.glReadBuffer(GL30.GL_DEPTH_ATTACHMENT);
-		GL30.glBlitFramebuffer(0, 0, width, height, 0, 0, out.width, out.height,
-				GL11.GL_DEPTH_BUFFER_BIT, GL11.GL_NEAREST);
+		GL30.glBlitFramebuffer(0, 0, width, height, 0, 0, out.width, out.height, GL11.GL_DEPTH_BUFFER_BIT,
+				GL11.GL_NEAREST);
 		unbindFrameBuffer();
 	}
-	
+
 	public void resolveToScreen() {
 		GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, 0);
 		GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, frameBuffer);
@@ -230,11 +234,11 @@ public class FrameBufferObject implements ITexture{
 		colBuffers = new int[targets.length];
 		createFrameBuffer();
 		if (multisample != GameSettings.NO_MULTISAMPLING) {
-			for(int i=0; i<targets.length; i++){
+			for (int i = 0; i < targets.length; i++) {
 				colBuffers[i] = createMultisampleColourAttachment(targets[i]);
 			}
 		} else {
-			for(int i=0; i<targets.length; i++){
+			for (int i = 0; i < targets.length; i++) {
 				colBuffers[i] = createTextureAttachment(targets[i]);
 			}
 		}
@@ -258,22 +262,20 @@ public class FrameBufferObject implements ITexture{
 		determineDrawBuffers();
 	}
 
-	private void determineDrawBuffers(){
+	private void determineDrawBuffers() {
 		IntBuffer drawBuffers = BufferUtils.createIntBuffer(targets.length);
-		for(int i=0; i<targets.length; i++){
+		for (int i = 0; i < targets.length; i++) {
 			drawBuffers.put(targets[i]);
 		}
 		drawBuffers.flip();
 		GL20.glDrawBuffers(drawBuffers);
 	}
-	
-	
+
 	private int createMultisampleColourAttachment(int attachment) {
 		int colourBuffer = GL30.glGenRenderbuffers();
 		GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, colourBuffer);
 		GL30.glRenderbufferStorageMultisample(GL30.GL_RENDERBUFFER, multisample, GL11.GL_RGBA8, width, height);
-		GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, attachment, GL30.GL_RENDERBUFFER,
-				colourBuffer);
+		GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, attachment, GL30.GL_RENDERBUFFER, colourBuffer);
 		return colourBuffer;
 	}
 
@@ -290,8 +292,7 @@ public class FrameBufferObject implements ITexture{
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
-		GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, attachment, GL11.GL_TEXTURE_2D, colourTexture,
-				0);
+		GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, attachment, GL11.GL_TEXTURE_2D, colourTexture, 0);
 		return colourTexture;
 	}
 
@@ -331,21 +332,20 @@ public class FrameBufferObject implements ITexture{
 	 */
 	@Override
 	public void bindToUnit(int unit, int... info) {
-		if(info == null || info.length==0){
-			info = new int[]{0};
+		if (info == null || info.length == 0) {
+			info = new int[] { 0 };
 		}
 		GL13.glActiveTexture(GL13.GL_TEXTURE0 + unit);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, getTexture(info[0]));
 	}
-	
-	public void bindDepthTexture(int unit){
+
+	public void bindDepthTexture(int unit) {
 		GL13.glActiveTexture(GL13.GL_TEXTURE0 + unit);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, getDepthTexture());
 	}
-	
-	
-	public static void cleanup(){
-		for(int i=0; i<fbos.size(); i++){
+
+	public static void cleanup() {
+		for (int i = 0; i < fbos.size(); i++) {
 			fbos.get(i).delete();
 		}
 		fbos.clear();

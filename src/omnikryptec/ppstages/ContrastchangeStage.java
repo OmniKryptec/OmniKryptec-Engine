@@ -13,49 +13,45 @@ import omnikryptec.shader_files.ContrastchangeShader;
 public class ContrastchangeStage extends PostProcessingStep {
 
 	private static ContrastchangeShader shader = new ContrastchangeShader();
-	private float change=0;
-	
-	public ContrastchangeStage(){
+	private float change = 0;
+
+	public ContrastchangeStage() {
 		this(0);
 	}
-	
+
 	public ContrastchangeStage(float change) {
 		super(shader);
 		this.change = change;
 	}
 
-	public float getChange(){
+	public float getChange() {
 		return change;
 	}
-	
-	public ContrastchangeStage setChange(float f){
+
+	public ContrastchangeStage setChange(float f) {
 		this.change = f;
 		return this;
 	}
-	
-	private int list_ind=-1;
-	
-	public ContrastchangeStage setListIndex(int beforeI){
+
+	private int list_ind = -1;
+
+	public ContrastchangeStage setListIndex(int beforeI) {
 		list_ind = beforeI;
 		return this;
 	}
-	
+
 	@Override
 	public void bindTexture(FrameBufferObject before, List<FrameBufferObject> beforelist, Shader using, int stage) {
-		if(list_ind<0){
+		if (list_ind < 0) {
 			before.bindToUnit(0);
-		}else{
+		} else {
 			beforelist.get(list_ind).bindToUnit(0);
 		}
 		ContrastchangeShader.change.loadFloat(change);
 	}
 
 	@Override
-	public void afterRendering() {
-	}
-
-	@Override
-	public FrameBufferObject getOnResize() {
+	public FrameBufferObject createFbo() {
 		return new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE);
 	}
 

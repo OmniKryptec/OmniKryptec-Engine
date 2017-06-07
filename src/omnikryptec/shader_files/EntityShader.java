@@ -9,7 +9,6 @@ import omnikryptec.shader.UniformVec4;
 
 public class EntityShader extends Shader {
 
-
 	public static final UniformMatrix transformation = new UniformMatrix("transmatrix");
 	public static final UniformMatrix view = new UniformMatrix("viewmatrix");
 	public static final UniformMatrix projection = new UniformMatrix("projmatrix");
@@ -23,12 +22,12 @@ public class EntityShader extends Shader {
 	public static final UniformBoolean hasextrainfomap = new UniformBoolean("hasextra");
 	public static final UniformSampler extrainfo = new UniformSampler("extra");
 	public static final UniformVec4 extrainfovec = new UniformVec4("exinfovec");
-	
-	
+
 	public EntityShader() {
 		super(EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_vert.glsl"),
-				EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_frag.glsl"), "pos", "texcoords", "normal",
-				"tangent", transformation, view, projection, tex, normalmap, specularmap, hasspecular, reflec,colmod, shinedamper, hasextrainfomap, extrainfo, extrainfovec);
+				EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_frag.glsl"), "pos", "texcoords",
+				"normal", "tangent", transformation, view, projection, tex, normalmap, specularmap, hasspecular, reflec,
+				colmod, shinedamper, hasextrainfomap, extrainfo, extrainfovec);
 		start();
 		tex.loadTexUnit(0);
 		normalmap.loadTexUnit(1);

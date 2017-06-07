@@ -12,9 +12,8 @@ import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.PostProcessingStage;
 import omnikryptec.util.RenderUtil;
 
-public class LightStage implements PostProcessingStage{
+public class LightStage extends PostProcessingStage{
 
-	private FrameBufferObject target = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE);
 	private LightPrepare[] preparea;
 		
 	
@@ -49,7 +48,7 @@ public class LightStage implements PostProcessingStage{
 	private List<Light> relevant;
 	private void render(Scene currentScene, FrameBufferObject unsampledfbo, FrameBufferObject normalfbo, FrameBufferObject specularfbo) {
 		RenderUtil.enableAdditiveBlending();
-		target.bindFrameBuffer();
+		getFbo().bindFrameBuffer();
 		RenderUtil.clear(0, 0, 0, 1);
 		for(int i=0; i<preparea.length; i++){
 			preparea[i].getShader().start();
@@ -70,22 +69,18 @@ public class LightStage implements PostProcessingStage{
 				}
 			}
 		}
-		target.unbindFrameBuffer();
+		getFbo().unbindFrameBuffer();
 		RenderUtil.disableBlending();
 		
 	}
 
 	
 	@Override
-	public void resize(){
-		target = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE);
+	public FrameBufferObject createFbo(){
+		return new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE);
 	}
 	
 	
-	@Override
-	public FrameBufferObject getFbo() {
-		return target;
-	}
 
 
 }

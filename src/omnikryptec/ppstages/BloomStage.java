@@ -8,60 +8,61 @@ import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.postprocessing.FrameBufferObject;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
-import omnikryptec.shader_files.CombineShader;
 import omnikryptec.postprocessing.PostProcessingStage;
+import omnikryptec.postprocessing.SimpleStage;
+import omnikryptec.shader_files.BrightnessHighlighterShader;
+import omnikryptec.shader_files.CombineShader;
 
-public class BloomStage implements PostProcessingStage {
-	
-	private FrameBufferObject target = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE);
-	
+public class BloomStage extends PostProcessingStage {
+
 	private CombineShader cshader = new CombineShader();
 	private Vector2f combine_weights;
-	
-	private PostProcessingStage brightnessfilter;
-	
+
+	private PostProcessingStage bloomindicator;
+
 	private PostProcessingStage bloomedeffect;
-	
-	public BloomStage(PostProcessingStage bloomedeffect, Vector2f weights){
+
+	private SimpleStage brightness = new SimpleStage(new BrightnessHighlighterShader());
+
+	public BloomStage(PostProcessingStage bloomedeffect, Vector2f weights) {
 		this(bloomedeffect, new Vector4f(1, 0, 0, 0), weights);
 	}
-	
-	public BloomStage(PostProcessingStage bloomedeffect, Vector4f bloom_indicator, Vector2f weights){
-		this(bloomedeffect, new BrightnessfilterStage(bloom_indicator), weights);
+
+	public BloomStage(PostProcessingStage bloomedeffect, Vector4f bloom_indicator, Vector2f weights) {
+		this(bloomedeffect, new FilterStage(bloom_indicator), weights);
 	}
-	
-	public BloomStage(PostProcessingStage bloomedeffect, PostProcessingStage bloom_indicator, Vector2f combine_weights) {
-		brightnessfilter = bloom_indicator;
+
+	public BloomStage(PostProcessingStage bloomedeffect, PostProcessingStage bloom_indicator,
+			Vector2f combine_weights) {
+		this.bloomindicator = bloom_indicator;
 		this.combine_weights = combine_weights;
 		this.bloomedeffect = bloomedeffect;
 	}
-	
-	
+
 	@Override
 	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist, int stage) {
-		brightnessfilter.render(before, beforelist, stage);
-		before.resolveDepth(brightnessfilter.getFbo());
-		bloomedeffect.render(brightnessfilter.getFbo(), beforelist, stage);
+		brightness.render(before, beforelist, stage);
+		before.resolveDepth(brightness.getFbo());
+		bloomindicator.render(brightness.getFbo(), beforelist, stage);
+		before.resolveDepth(bloomindicator.getFbo());
+		bloomedeffect.render(bloomindicator.getFbo(), beforelist, stage);
 		bloomedeffect.getFbo().bindToUnit(1);
 		before.bindToUnit(0);
 		cshader.start();
 		cshader.weights.loadVec2(combine_weights);
-		target.bindFrameBuffer();
 		renderQuad(true);
-		target.unbindFrameBuffer();
-		before.resolveDepth(target);
 	}
 
 	@Override
-	public FrameBufferObject getFbo() {
-		return target;
+	public FrameBufferObject createFbo() {
+		return new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE);
 	}
 
 	@Override
-	public void resize() {
-		brightnessfilter.resize();
+	public void onResize() {
+		bloomindicator.resize();
 		bloomedeffect.resize();
-		target = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE);
+		brightness.resize();
 	}
 
 }

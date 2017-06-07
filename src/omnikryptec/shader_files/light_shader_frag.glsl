@@ -46,11 +46,11 @@ void main(void){
                    (gl_FragCoord.y * pixelSize.y), 0.0);
 	pos.z = texture(depth, textureCoords).r;
 	
-	vec3 norm = normalize(texture(normal, textureCoords).xyz*2.0-1.0);
-	
 	vec4 clip = invprojv * vec4(pos * 2.0 - 1.0,  1.0);
 	pos = clip.xyz / clip.w;
+
 	
+	vec3 norm = normalize(texture(normal, textureCoords).xyz*2.0-1.0);	
 	vec4 diff = texture(diffuse, textureCoords);
 	vec4 spec = texture(specular, textureCoords);
 	
