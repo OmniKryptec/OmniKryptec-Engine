@@ -22,7 +22,7 @@ public class LightShader extends Shader {
 	public final UniformVec3 cam = new UniformVec3("campos");
 
 	public LightShader() {
-		super(LightShader.class.getResourceAsStream(oc_shader_loc + "light_shader_vert.glsl"),
+		super(LightShader.class.getResourceAsStream(Shader.DEFAULT_PP_VERTEX_SHADER_LOC),
 				LightShader.class.getResourceAsStream(oc_shader_loc + "light_shader_frag.glsl"), "position");
 		registerUniforms(depth, diffuse, specular, normal, light, lightColor, invprojv, pixSizes, cam);
 		start();
