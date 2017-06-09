@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import omnikryptec.audio.AudioSource;
+import omnikryptec.component.AudioSourceComponent;
 
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.GameObject;
@@ -160,17 +162,17 @@ public class RenderChunk {
                     Logger.log("TexturedModel is null", LogLevel.WARNING);
                 }
             } else if(g instanceof Light){
-            	tmpl = (Light)g;
-            	if((lightpre = tmpl.getShader())!=null){
-            		if((lightl = lights.get(lightpre))!=null){
-            			lightl.remove(g);
-            			if(lightl.size()==0){
-            				lights.remove(lightl);
-            			}
-            			if(delete){
-            				tmpl.deleteOperation();
-            			}
-            		}
+            	tmpl = (Light) g;
+            	if((lightpre = tmpl.getShader()) != null) {
+                    if((lightl = lights.get(lightpre)) != null) {
+                        lightl.remove(tmpl);
+                        if(lightl.isEmpty()) {
+                            lights.remove(lightpre);
+                        }
+                        if(delete) {
+                            tmpl.deleteOperation();
+                        }
+                    }
             	}
             } else {
                 other.remove(g);
@@ -199,21 +201,39 @@ public class RenderChunk {
 
     private final IRenderer[] empty_array = new IRenderer[] {null};
     private IRenderer r;
+    private RenderMap<TexturedModel, List<Entity>> rm;
+    private List<Entity> e;
     private GameObject g;
     
     public void frame(float maxExpenLvl, float minexplvl, AllowedRenderer type, IRenderer... rend) {
-        if(rend == null || rend.length == 0){
+        if(rend == null || rend.length == 0) {
             rend = empty_array;
         }
-        for(int i=0; i<chunk.keysArray().length; i++){
-        	r = chunk.keysArray()[i];
-            if(r != null && r.expensiveLevel()<=maxExpenLvl && r.expensiveLevel()>=minexplvl &&(type == AllowedRenderer.All || (type == AllowedRenderer.OnlThis && contains(rend, r)) || (type == AllowedRenderer.EvElse && !contains(rend, r)))) {
-                r.render(scene, chunk.get(r));
+        for(IRenderer keysArray : chunk.keysArray()) {
+            r = keysArray;
+            if(r != null && r.expensiveLevel() <= maxExpenLvl && r.expensiveLevel() >= minexplvl && (type == AllowedRenderer.All || (type == AllowedRenderer.OnlThis && contains(rend, r)) || (type == AllowedRenderer.EvElse && !contains(rend, r)))) {
+                rm = chunk.get(r);
+                r.render(scene, rm);
+                if(scene.isUsingPhysics()) {
+                    final boolean paused = scene.getPhysicsWorld().isSimulationPaused();
+                    final float newDeltaPitch = scene.getPhysicsWorld().getSimulationSpeed() - 1.0F;
+                    for(TexturedModel tm_ : rm.keysArray()) {
+                        e = rm.get(tm_);
+                        e.stream().forEach((entity) -> {
+                            processAudioSourceComponents(entity, paused, newDeltaPitch);
+                        });
+                    }
+                }
             }
         }
-        for(int i=0; i<other.size(); i++){
-        	g = other.get(i);
+        for(int i = 0; i < other.size(); i++) {
+            g = other.get(i);
             if(g != null && g.isActive()) {
+                if(scene.isUsingPhysics()) {
+                    final boolean paused = scene.getPhysicsWorld().isSimulationPaused();
+                    final float newDeltaPitch = scene.getPhysicsWorld().getSimulationSpeed() - 1.0F;
+                    processAudioSourceComponents(g, paused, newDeltaPitch);
+                }
                 g.doLogic0();
             }
         }
@@ -232,8 +252,21 @@ public class RenderChunk {
         return scene;
     }
 
-	public Map<LightPrepare, List<Light>> getLights() {
-		return lights;
-	}
+    public Map<LightPrepare, List<Light>> getLights() {
+        return lights;
+    }
+    
+    private static final void processAudioSourceComponents(GameObject gameObject, boolean paused, float newDeltaPitch) {
+        gameObject.getComponents(AudioSourceComponent.class).forEach((audioSourceComponent) -> {
+            audioSourceComponent.getSources().stream().forEach((source) -> {
+                if(paused && source.isPlaying()) {
+                    source.pauseTemporarily();
+                } else if(!paused && !source.isPlaying()) {
+                    source.continuePlayingTemporarily();
+                }
+                source.setDeltaPitch(newDeltaPitch);
+            });
+        });
+    }
 
 }

@@ -14,6 +14,9 @@ public class AudioSource {
     protected static final ArrayList<AudioSource> audioSources = new ArrayList<>();
     
     private final int sourceID;
+    private float pitch = 1.0F;
+    private float deltaPitch = 0.0F;
+    private boolean pause = false;
     private ISound sound = null;
     
     /**
@@ -83,6 +86,16 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource pause() {
+        pause = true;
+        pauseTemporarily();
+        return this;
+    }
+    
+    /**
+     * Pauses the AudioSource temporarily
+     * @return AudioSource A reference to this AudioSource
+     */
+    public final AudioSource pauseTemporarily() {
         AL10.alSourcePause(sourceID);
         return this;
     }
@@ -93,6 +106,18 @@ public class AudioSource {
      */
     public final AudioSource continuePlaying() {
         AL10.alSourcePlay(sourceID);
+        pause = false;
+        return this;
+    }
+    
+    /**
+     * Continues the ISound playing temporarily
+     * @return AudioSource A reference to this AudioSource
+     */
+    public final AudioSource continuePlayingTemporarily() {
+        if(!pause && !isPlaying()) {
+            continuePlaying();
+        }
         return this;
     }
     
@@ -101,6 +126,7 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource stop() {
+        pause = true;
         AL10.alSourceStop(sourceID);
         if(sound != null) {
             sound.stop(this);
@@ -150,21 +176,59 @@ public class AudioSource {
     }
     
     /**
+     * Sets the real pitch
+     * @param pitch Float Real pitch (1.0F = Normal)
+     * @return AudioSource A reference to this AudioSource
+     */
+    protected final AudioSource setRealPitch() {
+        AL10.alSourcef(sourceID, AL10.AL_PITCH, pitch + deltaPitch);
+        return this;
+    }
+    
+    /**
+     * Returns the real pitch
+     * @return Float Real pitch
+     */
+    public final float getRealPitch() {
+        return AL10.alGetSourcef(sourceID, AL10.AL_PITCH);
+    }
+    
+    /**
      * Sets the pitch
      * @param pitch Float Pitch (1.0F = Normal)
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setPitch(float pitch) {
-        AL10.alSourcef(sourceID, AL10.AL_PITCH, pitch);
+        this.pitch = pitch;
+        setRealPitch();
         return this;
     }
     
     /**
-     * Returns the pitch
-     * @return Float Pitch
+     * Returns the setted pitch
+     * @return Float Setted pitch
      */
     public final float getPitch() {
-        return AL10.alGetSourcef(sourceID, AL10.AL_PITCH);
+        return pitch;
+    }
+    
+    /**
+     * Sets the delta which gets added to the pitch
+     * @param deltaPitch Float Pitch delta (0.0F = Normal)
+     * @return AudioSource A reference to this AudioSource
+     */
+    public final AudioSource setDeltaPitch(float deltaPitch) {
+        this.deltaPitch = deltaPitch;
+        setRealPitch();
+        return this;
+    }
+    
+    /**
+     * Returns the delta which gets added to the pitch
+     * @return Float Pitch delta
+     */
+    public final float getDeltaPitch() {
+        return deltaPitch;
     }
     
     /**

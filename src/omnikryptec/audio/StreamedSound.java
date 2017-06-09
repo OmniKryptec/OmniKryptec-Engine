@@ -2,7 +2,6 @@ package omnikryptec.audio;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 
@@ -189,7 +188,6 @@ public class StreamedSound implements ISound {
     private final boolean refillBuffer() {
         try {
             Instant now = Instant.now();
-            System.out.println("Time: " + Duration.between(lastTimeT, now));
             lastTimeT = now;
             pcm.clear();
             final byte[] data = new byte[pcm.capacity()];

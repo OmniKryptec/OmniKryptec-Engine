@@ -124,11 +124,15 @@ public class KeyGroup implements IKey {
             return false;
         }
         boolean isLongPressed = allKeysNeedToBeActivated;
+        boolean firstRight = false;
         for(IKey key : keys) {
+            final boolean isPressed = key.isPressed();
             final boolean isLongPressed_ = key.isLongPressed(minTime, maxTime);
-            if(!isLongPressed_ && allKeysNeedToBeActivated) {
+            if(!isLongPressed_ && allKeysNeedToBeActivated && !(firstRight && isPressed)) {
                 isLongPressed = false;
                 break;
+            } else if(isLongPressed_ && allKeysNeedToBeActivated) {
+                firstRight = true;
             } else if(isLongPressed_ && !allKeysNeedToBeActivated) {
                 isLongPressed = true;
                 break;

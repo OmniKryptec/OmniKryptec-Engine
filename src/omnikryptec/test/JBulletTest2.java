@@ -12,9 +12,11 @@ import org.lwjgl.input.Mouse;
 import com.bulletphysics.collision.shapes.StaticPlaneShape;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
+import java.util.Random;
 
 import omnikryptec.audio.AudioManager;
 import omnikryptec.audio.AudioSource;
+import omnikryptec.audio.StreamedSound;
 import omnikryptec.component.AudioListenerComponent;
 import omnikryptec.component.AudioSourceComponent;
 import omnikryptec.component.PhysicsComponent;
@@ -22,6 +24,7 @@ import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.EntityBuilder;
+import omnikryptec.entity.GameObject;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
 import omnikryptec.logger.Logger;
@@ -60,6 +63,7 @@ public class JBulletTest2 {
     private static AudioSource bouncer;
     private static boolean isWireframe = false;
     private static BufferedImage heightMap = null;
+    private static final Random random = new Random();
     
     public static final void main(String[] args) {
         try {
@@ -79,6 +83,8 @@ public class JBulletTest2 {
             keySettings.setKey(new KeyGroup("test_2", new Key("t_1", Keyboard.KEY_J, true), new Key("t_2", Keyboard.KEY_K, true)));
             final KeyGroup grabMouse = new KeyGroup("grabMouse", new Key("grabMouse1", Keyboard.KEY_G, true), new Key("grabMouse2", Keyboard.KEY_Y, true)).setAllKeysNeedToBeActivated(false);
             keySettings.setKey(grabMouse);
+            keySettings.setKey("physicsFaster", Keyboard.KEY_PERIOD, true);
+            keySettings.setKey("physicsSlower", Keyboard.KEY_COMMA, true);
             DisplayManager.createDisplay("JBullet Test2", gameSettings);
             DisplayManager.instance().getSettings().getKeySettings().setKey("sprint", Keyboard.KEY_LCONTROL, true);
             OmniKryptecEngine.instance().addAndSetScene("Test-Scene", new Scene((Camera) new Camera() {
@@ -122,11 +128,15 @@ public class JBulletTest2 {
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_attractor);
             OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativePos().y += 3;
             OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().y = 90;
+            final AudioSource source = new AudioSource();
+            final StreamedSound streamedSound = StreamedSound.ofInputStream("Tobu_-_Infectious_[NCS_Release]", source, JBulletTest2.class.getResourceAsStream("/omnikryptec/audio/Tobu_-_Infectious_[NCS_Release].wav"));
+            source.play(streamedSound);
+            OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(new GameObject().addComponent(new AudioSourceComponent(source)));
             manageTerrains();
             entity_ball.addComponent(new PhysicsComponent(entity_ball, rigidBodyBuilder_ball));
             bouncer = new AudioSource().setLooping(true);
             bouncer.setRollOffFactor(0.5F);
-            bouncer.play("bounce");
+            //bouncer.play("bounce");
             entity_ball.addComponent(new AudioSourceComponent(bouncer));
             entity_attractor.addComponent(new PhysicsComponent(entity_attractor, rigidBodyBuilder_attractor));
             EventSystem.instance().addEventHandler(e -> {input(); logic();}, EventType.RENDER_EVENT);
@@ -236,6 +246,14 @@ public class JBulletTest2 {
             }
         }
         final Scene scene = OmniKryptecEngine.getInstance().getCurrentScene();
+        float deltaPhysicsSpeed = 0;
+        if(keySettings.isPressed("physicsFaster")) {
+            deltaPhysicsSpeed += 0.005;
+        }
+        if(keySettings.isPressed("physicsSlower")) {
+            deltaPhysicsSpeed -= 0.005;
+        }
+        scene.getPhysicsWorld().setSimulationSpeed(scene.getPhysicsWorld().getSimulationSpeed() + deltaPhysicsSpeed);
         if(scene != null && scene.isUsingPhysics() && keySettings.getKeyGroup("physicsPause").isLongPressed(100, 400)) {
             scene.getPhysicsWorld().setSimulationPaused(!scene.getPhysicsWorld().isSimulationPaused());
         }
