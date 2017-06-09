@@ -14,7 +14,7 @@ import omnikryptec.logger.Logger;
  */
 public abstract class SignalAwaiter<T> {
     
-    private final Timer timer = new Timer(100, e -> checkSignalAndTime());
+    private final Timer timer = new Timer(100, (e) -> checkSignalAndTime());
     private T signal = null;
     private long amount = 0L;
     private TimeUnit unit = null;

@@ -177,7 +177,6 @@ public class AudioSource {
     
     /**
      * Sets the real pitch
-     * @param pitch Float Real pitch (1.0F = Normal)
      * @return AudioSource A reference to this AudioSource
      */
     protected final AudioSource setRealPitch() {

@@ -18,7 +18,7 @@ public abstract class VariableChangeListener<T> {
      * @param waittime Integer Delay in ms between every update
      */
     public VariableChangeListener(int waittime) {
-        timer = new Timer(waittime, e -> updateVariable());
+        timer = new Timer(waittime, (e) -> updateVariable());
     }
 
     /**

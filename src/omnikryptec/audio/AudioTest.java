@@ -14,7 +14,7 @@ import omnikryptec.util.NativesLoader;
  */
 public class AudioTest {
     
-    private static final Timer timer = new Timer(10, e -> {
+    private static final Timer timer = new Timer(10, (e) -> {
         AudioManager.update(0);
     });
     

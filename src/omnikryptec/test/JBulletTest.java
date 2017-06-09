@@ -257,7 +257,7 @@ public class JBulletTest {
             OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().y += 3;
             OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativeRotation().x = 40;
             entity_1.setRelativePos(0, 0, -5);
-            EventSystem.instance().addEventHandler(e -> {input(); logic();}, EventType.RENDER_EVENT);
+            EventSystem.instance().addEventHandler((e) -> {input(); logic();}, EventType.RENDER_EVENT);
             /*OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Entity(brunnen_tm) {
                 
                 @Override

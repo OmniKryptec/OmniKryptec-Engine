@@ -139,7 +139,7 @@ public class JBulletTest2 {
             //bouncer.play("bounce");
             entity_ball.addComponent(new AudioSourceComponent(bouncer));
             entity_attractor.addComponent(new PhysicsComponent(entity_attractor, rigidBodyBuilder_attractor));
-            EventSystem.instance().addEventHandler(e -> {input(); logic();}, EventType.RENDER_EVENT);
+            EventSystem.instance().addEventHandler((e) -> {input(); logic();}, EventType.RENDER_EVENT);
             InputUtil.setCamera(OmniKryptecEngine.getInstance().getCurrentScene().getCamera());
             InputUtil.setLongButtonPressEnabled(true);
             OmniKryptecEngine.getInstance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
