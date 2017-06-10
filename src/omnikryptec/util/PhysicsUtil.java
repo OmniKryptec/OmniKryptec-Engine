@@ -27,7 +27,7 @@ import omnikryptec.model.Model;
 import omnikryptec.objConverter.ModelData;
 
 /**
- *
+ * Physics utility class
  * @author Panzer1119
  */
 public class PhysicsUtil {

@@ -130,6 +130,7 @@ public class JBulletTest2 {
             OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().y = 90;
             final AudioSource source = new AudioSource();
             final StreamedSound streamedSound = StreamedSound.ofInputStream("Tobu_-_Infectious_[NCS_Release]", source, JBulletTest2.class.getResourceAsStream("/omnikryptec/audio/Tobu_-_Infectious_[NCS_Release].wav"));
+            source.setAffectedByPhysics(true);
             source.play(streamedSound);
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(new GameObject().addComponent(new AudioSourceComponent(source)));
             manageTerrains();

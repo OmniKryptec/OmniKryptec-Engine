@@ -17,6 +17,7 @@ public class AudioSource {
     private float pitch = 1.0F;
     private float deltaPitch = 0.0F;
     private boolean pause = false;
+    private boolean affectedByPhysics = false;
     private ISound sound = null;
     
     /**
@@ -353,6 +354,24 @@ public class AudioSource {
      */
     public final AudioSource setMaxDistance(float maxDistance) {
         AL10.alSourcef(sourceID, AL10.AL_MAX_DISTANCE, maxDistance);
+        return this;
+    }
+
+    /**
+     * Returns if this AudioSource is affected by the physics speed
+     * @return <tt>true</tt> if this AudioSource is affected by the physics speed
+     */
+    public final boolean isAffectedByPhysics() {
+        return affectedByPhysics;
+    }
+
+    /**
+     * Sets if this AudioSource is affected by the physics speed
+     * @param affectedByPhysics Boolean If this AudioSource is effected by the physics speed
+     * @return AudioSource A reference to this AudioSource
+     */
+    public final AudioSource setAffectedByPhysics(boolean affectedByPhysics) {
+        this.affectedByPhysics = affectedByPhysics;
         return this;
     }
     
