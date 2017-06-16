@@ -145,7 +145,7 @@ public class AudioSourceComponent implements Component {
             sources.stream().forEach((source) -> {
                 if(source.isAffectedByPhysics()) {
                     if(paused && source.isPlaying()) {
-                        source.pauseTemporarily();
+                        source.pauseTemporarily();//FIXME StreamedSound stops forever
                     } else if(!paused && !source.isPlaying()) {
                         source.continuePlayingTemporarily();
                     }
