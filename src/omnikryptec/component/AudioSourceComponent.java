@@ -17,8 +17,55 @@ import omnikryptec.util.Blocker;
  */
 public class AudioSourceComponent implements Component {
 
+<<<<<<< HEAD
 	private final ArrayList<AudioSource> sources = new ArrayList<>();
 	private final Blocker blocker = new Blocker(0);
+=======
+    @Override
+    public final void execute(GameObject instance) {
+        blocker.waitFor();
+        blocker.setBlocked(true);
+        boolean isUsingPhysics = false;
+        RenderChunk chunk = instance.getMyChunk();
+        Scene scene = null;
+        PhysicsComponent physicsComponent = null;
+        if(chunk != null) {
+            scene = instance.getMyChunk().getScene();
+            if(scene != null) {
+                if(scene.isUsingPhysics()) {
+                    physicsComponent = instance.getComponent(PhysicsComponent.class);
+                    isUsingPhysics = ((physicsComponent != null) && (physicsComponent.getBody() != null));
+                }
+            }
+        }
+        final Vector3f position = instance.getAbsolutePos();
+        final javax.vecmath.Vector3f velocity = new javax.vecmath.Vector3f(0, 0, 0);
+        if(isUsingPhysics) {
+            physicsComponent.getBody().getAngularVelocity(velocity);
+        }
+        final Vector3f rotation = instance.getAbsoluteRotation();
+        sources.stream().forEach((source) -> {
+            source.setPosition(position);
+            source.setVelocity(velocity);
+            source.setOrientation(rotation); 
+        });
+        if(scene != null && scene.isUsingPhysics()) {
+            final boolean paused = scene.getPhysicsWorld().isSimulationPaused();
+            final float newDeltaPitch = scene.getPhysicsWorld().getSimulationSpeed() - 1.0F;
+            sources.stream().forEach((source) -> {
+                if(source.isAffectedByPhysics()) {
+                    if(paused && source.isPlaying()) {
+                        source.pauseTemporarily();//FIXME StreamedSound stops forever
+                    } else if(!paused && !source.isPlaying()) {
+                        source.continuePlayingTemporarily();
+                    }
+                    source.setDeltaPitch(newDeltaPitch);
+                }
+            });
+        }
+        blocker.setBlocked(false);
+    }
+>>>>>>> branch 'test' of https://github.com/OmniKryptec/OmniKryptec-Engine.git
 
 	/**
 	 * Normal constructor
