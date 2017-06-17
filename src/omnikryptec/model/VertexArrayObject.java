@@ -9,16 +9,16 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 public class VertexArrayObject {
-	
+
 	private static final int BYTES_PER_FLOAT = 4;
 
 	public final int id;
 	private VertexBufferObject dataVbo;
 	private VertexBufferObject indexVbo;
 	private int indexCount;
-	
+
 	private static List<VertexArrayObject> vaos = new ArrayList<>();
-	
+
 	public static VertexArrayObject create() {
 		int id = GL30.glGenVertexArrays();
 		return new VertexArrayObject(id);
@@ -28,16 +28,16 @@ public class VertexArrayObject {
 		this.id = id;
 		vaos.add(this);
 	}
-	
-	public int getIndexCount(){
+
+	public int getIndexCount() {
 		return indexCount;
 	}
 
 	public void bind() {
 		GL30.glBindVertexArray(id);
 	}
-	
-	public void bind(int... attributes){
+
+	public void bind(int... attributes) {
 		bind();
 		for (int i : attributes) {
 			GL20.glEnableVertexAttribArray(i);
@@ -47,41 +47,41 @@ public class VertexArrayObject {
 	public void unbind() {
 		GL30.glBindVertexArray(0);
 	}
-	
-	public void unbind(int... attributes){
+
+	public void unbind(int... attributes) {
 		for (int i : attributes) {
 			GL20.glDisableVertexAttribArray(i);
 		}
 		unbind();
 	}
-	
-	public void storeData(int[] indices, int vertexCount, float[]... data){
+
+	public void storeData(int[] indices, int vertexCount, float[]... data) {
 		bind();
 		storeData(vertexCount, data);
 		createIndexBuffer(indices);
 		unbind();
 	}
-	
+
 	public void delete() {
 		GL30.glDeleteVertexArrays(id);
 		dataVbo.delete();
 		indexVbo.delete();
 	}
 
-	private void createIndexBuffer(int[] indices){
+	private void createIndexBuffer(int[] indices) {
 		this.indexVbo = VertexBufferObject.create(GL15.GL_ELEMENT_ARRAY_BUFFER);
 		indexVbo.bind();
 		indexVbo.storeData(indices);
 		this.indexCount = indices.length;
 	}
-	
+
 	private void storeData(int vertexCount, float[]... data) {
 		float[] interleavedData = interleaveFloatData(vertexCount, data);
 		int[] lengths = getAttributeLengths(data, vertexCount);
 		storeInterleavedData(interleavedData, lengths);
 	}
-	
-	private int[] getAttributeLengths(float[][] data, int vertexCount){
+
+	private int[] getAttributeLengths(float[][] data, int vertexCount) {
 		int[] lengths = new int[data.length];
 		for (int i = 0; i < data.length; i++) {
 			lengths[i] = data[i].length / vertexCount;
@@ -97,16 +97,16 @@ public class VertexArrayObject {
 		linkVboDataToAttributes(lengths, bytesPerVertex);
 		dataVbo.unbind();
 	}
-	
-	private void linkVboDataToAttributes(int[] lengths, int bytesPerVertex){
+
+	private void linkVboDataToAttributes(int[] lengths, int bytesPerVertex) {
 		int total = 0;
 		for (int i = 0; i < lengths.length; i++) {
 			GL20.glVertexAttribPointer(i, lengths[i], GL11.GL_FLOAT, false, bytesPerVertex, BYTES_PER_FLOAT * total);
 			total += lengths[i];
 		}
 	}
-	
-	private int calculateBytesPerVertex(int[] lengths){
+
+	private int calculateBytesPerVertex(int[] lengths) {
 		int total = 0;
 		for (int i = 0; i < lengths.length; i++) {
 			total += lengths[i];
@@ -135,11 +135,11 @@ public class VertexArrayObject {
 		return interleavedBuffer;
 	}
 
-	public static void cleanup(){
-		for(int i=0; i<vaos.size(); i++){
+	public static void cleanup() {
+		for (int i = 0; i < vaos.size(); i++) {
 			vaos.get(i).delete();
 		}
 		vaos.clear();
 	}
-	
+
 }

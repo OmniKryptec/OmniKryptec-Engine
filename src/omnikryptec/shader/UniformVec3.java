@@ -14,7 +14,7 @@ public class UniformVec3 extends Uniform {
 	}
 
 	public void loadVec3(Vector3f vector) {
-		if(vector!=null){
+		if (vector != null) {
 			loadVec3(vector.x, vector.y, vector.z);
 		}
 	}

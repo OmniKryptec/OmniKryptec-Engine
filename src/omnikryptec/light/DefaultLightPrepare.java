@@ -9,11 +9,11 @@ import omnikryptec.shader_files.LightShader;
 public class DefaultLightPrepare implements LightPrepare {
 
 	private LightShader shader = new LightShader();
-	
+
 	@Override
 	public void prepare(Scene cur) {
 		shader.invprojv.loadMatrix(cur.getCamera().getInverseProjView());
-		shader.pixSizes.loadVec2(1.0f/Display.getWidth(), 1.0f/Display.getHeight());
+		shader.pixSizes.loadVec2(1.0f / Display.getWidth(), 1.0f / Display.getHeight());
 		shader.cam.loadVec3(cur.getCamera().getAbsolutePos());
 	}
 

@@ -13,11 +13,11 @@ public class Maths {
 	public static final Vector3f Z = new Vector3f(0, 0, 1);
 	public static final Vector3f ZERO = new Vector3f(0, 0, 0);
 	public static final Vector3f ONE = new Vector3f(1, 1, 1);
-	
+
 	public static Matrix4f createTransformationMatrix(Entity entity) {
-            return createTransformationMatrix(entity.getAbsolutePos(), entity.getAbsoluteRotation(), entity.getScale());
-        }
-        
+		return createTransformationMatrix(entity.getAbsolutePos(), entity.getAbsoluteRotation(), entity.getScale());
+	}
+
 	public static Matrix4f createTransformationMatrix(Vector3f position, Vector3f rotation, Vector3f scale) {
 		Matrix4f matrix = new Matrix4f();
 		matrix.setIdentity();
@@ -28,8 +28,8 @@ public class Maths {
 		Matrix4f.scale(scale, matrix, matrix);
 		return matrix;
 	}
-        
-    public static Matrix4f createTransformationMatrix(Vector3f rotation, Vector3f scale) {
+
+	public static Matrix4f createTransformationMatrix(Vector3f rotation, Vector3f scale) {
 		Matrix4f matrix = new Matrix4f();
 		matrix.setIdentity();
 		Matrix4f.rotate((float) Math.toRadians(rotation.x), X, matrix, matrix);
@@ -38,11 +38,11 @@ public class Maths {
 		Matrix4f.scale(scale, matrix, matrix);
 		return matrix;
 	}
-	
-    public static Matrix4f createEmptyTransformationMatrix(){
-    	return createEmptyTransformationMatrix(ZERO);
-    }
-    
+
+	public static Matrix4f createEmptyTransformationMatrix() {
+		return createEmptyTransformationMatrix(ZERO);
+	}
+
 	public static Matrix4f createEmptyTransformationMatrix(Vector3f pos) {
 		Matrix4f matrix = new Matrix4f();
 		matrix.setIdentity();
@@ -53,7 +53,7 @@ public class Maths {
 		Matrix4f.scale(ONE, matrix, matrix);
 		return matrix;
 	}
-	
+
 	public static Matrix4f setPerspectiveProjection(float fovdeg, float far, float near) {
 		return setPerspectiveProjection(fovdeg, far, near, Display.getWidth(), Display.getHeight());
 	}
@@ -73,7 +73,7 @@ public class Maths {
 		projectionMatrix.m33 = 0;
 		return projectionMatrix;
 	}
-	
+
 	public static Matrix4f setOrthographicProjection(float left, float right, float bottom, float top, float near,
 			float far) {
 		Matrix4f m = new Matrix4f();
@@ -103,27 +103,27 @@ public class Maths {
 		m.m33 = 1;
 		return m;
 	}
-	
+
 	public static Matrix4f setOrthographicProjection2D(float x, float y, float width, float height) {
-		return setOrthographicProjection( x, x + width, y + height, y, 1, -1);
+		return setOrthographicProjection(x, x + width, y + height, y, 1, -1);
 	}
 
-	public static Matrix4f setOrthographicProjection2D(float x, float y, float width, float height, float near, float far) {
+	public static Matrix4f setOrthographicProjection2D(float x, float y, float width, float height, float near,
+			float far) {
 		return setOrthographicProjection(x, x + width, y, y + height, near, far);
 	}
-      
-	public static boolean fastEquals3f(Vector3f one, Vector3f sec){
-		return one!= null && sec != null && one.x == sec.x && one.y == sec.y && one.z == sec.z;
+
+	public static boolean fastEquals3f(Vector3f one, Vector3f sec) {
+		return one != null && sec != null && one.x == sec.x && one.y == sec.y && one.z == sec.z;
 	}
-	
-	
-//	public static double getRelativizer(double velocity, double maxVelocity){
-//		if(velocity>maxVelocity){
-//			velocity = maxVelocity;
-//		}
-//		if(velocity<0){
-//			velocity = 0;
-//		}
-//		return Math.sqrt(1- (velocity*velocity)/(maxVelocity*maxVelocity));
-//	}
+
+	// public static double getRelativizer(double velocity, double maxVelocity){
+	// if(velocity>maxVelocity){
+	// velocity = maxVelocity;
+	// }
+	// if(velocity<0){
+	// velocity = 0;
+	// }
+	// return Math.sqrt(1- (velocity*velocity)/(maxVelocity*maxVelocity));
+	// }
 }

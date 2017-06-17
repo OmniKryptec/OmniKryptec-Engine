@@ -55,9 +55,10 @@ public class FogStage extends PostProcessingStep {
 	}
 
 	private Camera curcam;
+
 	@Override
 	public void bindTexture(FrameBufferObject before, List<FrameBufferObject> beforelist, Shader using, int stage) {
-		shader.pixsize.loadVec2(1.0f/Display.getWidth(), 1.0f/Display.getHeight());
+		shader.pixsize.loadVec2(1.0f / Display.getWidth(), 1.0f / Display.getHeight());
 		shader.fog.loadVec4(fog);
 		shader.density.loadFloat(density);
 		shader.gradient.loadFloat(gradient);

@@ -1,34 +1,33 @@
 package omnikryptec.model;
 
-import omnikryptec.texture.ITexture;
+import omnikryptec.texture.Texture;
 
 public class TexturedModel {
-	
+
 	private Model model;
-	private ITexture texture;
+	private Texture texture;
 	private Material material;
-	
-	
-	public TexturedModel(Model m, ITexture t){
+
+	public TexturedModel(Model m, Texture t) {
 		this(m, t, new Material());
 	}
-	
-	public TexturedModel (Model m, ITexture t, Material mat){
+
+	public TexturedModel(Model m, Texture t, Material mat) {
 		this.model = m;
 		this.texture = t;
 		this.material = mat;
 	}
-	
-	public Model getModel(){
+
+	public Model getModel() {
 		return model;
 	}
-	
-	public ITexture getTexture(){
+
+	public Texture getTexture() {
 		return texture;
 	}
-	
-	public Material getMaterial(){
+
+	public Material getMaterial() {
 		return material;
 	}
-	
+
 }

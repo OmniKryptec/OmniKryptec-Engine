@@ -5,10 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import omnikryptec.display.DisplayManager;
-import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.logger.Logger;
 import omnikryptec.model.Model;
-import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
 import omnikryptec.util.ModelUtil;
 import omnikryptec.util.RenderUtil;
 
@@ -47,7 +44,7 @@ public class PostProcessing {
 			start();
 			for (int i = 0; i < stages.size(); i++) {
 				currentStage = stages.get(i);
-				if(currentStage.isEnabled()){
+				if (currentStage.isEnabled()) {
 					if (!currentStage.usesDefaultRenderObject()) {
 						end();
 					}

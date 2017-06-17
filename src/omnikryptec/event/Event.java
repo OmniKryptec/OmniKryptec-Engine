@@ -27,7 +27,7 @@ public class Event {
 	 * @param msg
 	 *            the message
 	 */
-	public Event(Object ...msg) {
+	public Event(Object... msg) {
 		this.msg = msg;
 	}
 
@@ -72,13 +72,13 @@ public class Event {
 	public Object[] getMsgA() {
 		return msg;
 	}
-	
-	public Object getMsg(){
-		if(msg!=null&&msg.length>0){
+
+	public Object getMsg() {
+		if (msg != null && msg.length > 0) {
 			return msg[0];
-		}else{
+		} else {
 			return null;
 		}
 	}
-	
+
 }

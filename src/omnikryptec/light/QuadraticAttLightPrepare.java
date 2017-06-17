@@ -9,7 +9,7 @@ import omnikryptec.shader_files.QuadLightShader;
 public class QuadraticAttLightPrepare implements LightPrepare {
 
 	private QuadLightShader shader = new QuadLightShader();
-	
+
 	@Override
 	public Shader getShader() {
 		return shader;
@@ -19,7 +19,7 @@ public class QuadraticAttLightPrepare implements LightPrepare {
 	public void prepare(Scene cur) {
 		shader.viewv.loadMatrix(cur.getCamera().getViewMatrix());
 		shader.proj.loadMatrix(cur.getCamera().getProjectionMatrix());
-		shader.pixSizes.loadVec2(1.0f/Display.getWidth(), 1.0f/Display.getHeight());
+		shader.pixSizes.loadVec2(1.0f / Display.getWidth(), 1.0f / Display.getHeight());
 	}
 
 	@Override

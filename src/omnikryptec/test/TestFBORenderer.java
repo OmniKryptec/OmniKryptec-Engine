@@ -6,16 +6,16 @@ import omnikryptec.entity.Entity;
 import omnikryptec.main.Scene;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.postprocessing.FrameBufferObject;
-import omnikryptec.renderer.IRenderer;
 import omnikryptec.renderer.RenderChunk.AllowedRenderer;
 import omnikryptec.renderer.RenderMap;
+import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.util.RenderUtil;
 
-public class TestFBORenderer implements IRenderer {
-	
+public class TestFBORenderer implements Renderer {
+
 	public FrameBufferObject fbo;
-	
+
 	@Override
 	public void render(Scene s, RenderMap<TexturedModel, List<Entity>> entities) {
 		fbo.bindFrameBuffer();

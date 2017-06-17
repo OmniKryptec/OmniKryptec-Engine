@@ -14,30 +14,28 @@ import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 
 public class Shader {
-	
+
 	public static final String DEFAULT_PP_VERTEX_SHADER_LOC = "/omnikryptec/shader_files/pp_vert.glsl";
 	public static final String DEFAULT_PP_VERTEX_SHADER_POS_ATTR = "position";
 	public static final String DEFAULT_PP_VERTEX_SHADER_TEXC_OUT = "textureCoords";
 	protected static final String oc_shader_loc = "/omnikryptec/shader_files/";
 
-	
 	private int programID;
 	private int vertexShaderID;
 	private int fragmentShaderID;
-	private int geometryShaderID=0;
+	private int geometryShaderID = 0;
 	private List<String> uniforms = new ArrayList<>();
 	private ShaderHolder vertexShaderHolder;
 	private ShaderHolder fragmentShaderHolder;
 	private ShaderHolder geometryShaderHolder;
-	
+
 	// private static FloatBuffer matrixBuffer =
 	// BufferUtils.createFloatBuffer(16);
 
-	public Shader(InputStream vertexFile, InputStream fragmentFile, Object... uniAttr){
+	public Shader(InputStream vertexFile, InputStream fragmentFile, Object... uniAttr) {
 		this(vertexFile, null, fragmentFile, uniAttr);
 	}
-	
-	
+
 	public Shader(InputStream vertexFile, InputStream geometryFile, InputStream fragmentFile, Object... uniAttr) {
 		vertexShaderHolder = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
 		fragmentShaderHolder = loadShader(fragmentFile, GL20.GL_FRAGMENT_SHADER);
@@ -45,7 +43,7 @@ public class Shader {
 		fragmentShaderID = fragmentShaderHolder.getID();
 		programID = GL20.glCreateProgram();
 		GL20.glAttachShader(programID, vertexShaderID);
-		if(geometryFile!=null){
+		if (geometryFile != null) {
 			geometryShaderHolder = loadShader(geometryFile, GL32.GL_GEOMETRY_SHADER);
 			geometryShaderID = geometryShaderHolder.getID();
 			GL20.glAttachShader(programID, geometryShaderID);
@@ -68,7 +66,7 @@ public class Shader {
 		for (int i = 0; i < vertexShaderHolder.getUniformLines().size(); i++) {
 			tmp = vertexShaderHolder.getUniformLines().get(i).split(" ")[2].replace(";", "");
 			if (uniforms.contains(tmp)) {
-				if(Logger.isDebugMode()){
+				if (Logger.isDebugMode()) {
 					Logger.log("Uniform name already in use (vertexshader): " + tmp, LogLevel.WARNING, true);
 				}
 			} else {
@@ -78,18 +76,18 @@ public class Shader {
 		for (int i = 0; i < fragmentShaderHolder.getUniformLines().size(); i++) {
 			tmp = fragmentShaderHolder.getUniformLines().get(i).split(" ")[2].replace(";", "");
 			if (uniforms.contains(tmp)) {
-				if(Logger.isDebugMode()){
+				if (Logger.isDebugMode()) {
 					Logger.log("Uniform name already in use (fragmentshader): " + tmp, LogLevel.WARNING, true);
 				}
 			} else {
 				uniforms.add(tmp);
 			}
 		}
-		if(geometryFile!=null){
+		if (geometryFile != null) {
 			for (int i = 0; i < geometryShaderHolder.getUniformLines().size(); i++) {
 				tmp = geometryShaderHolder.getUniformLines().get(i).split(" ")[2].replace(";", "");
 				if (uniforms.contains(tmp)) {
-					if(Logger.isDebugMode()){
+					if (Logger.isDebugMode()) {
 						Logger.log("Uniform name already in use (geometryshader): " + tmp, LogLevel.WARNING, true);
 					}
 				} else {
@@ -97,19 +95,20 @@ public class Shader {
 				}
 			}
 		}
-//		if (uniformstmp.size() != uniforms.size() && Logger.isDebugMode()) {
-//			Logger.log("Found uniforms: " + uniforms + ";\n		Required uniforms in constructor: " + uniformstmp.size(),
-//					LogLevel.WARNING, false);
-//		}
+		// if (uniformstmp.size() != uniforms.size() && Logger.isDebugMode()) {
+		// Logger.log("Found uniforms: " + uniforms + ";\n Required uniforms in
+		// constructor: " + uniformstmp.size(),
+		// LogLevel.WARNING, false);
+		// }
 	}
-	
-	protected void registerUniforms(Uniform...uniformsarray){
+
+	protected void registerUniforms(Uniform... uniformsarray) {
 		storeUniforms(uniformsarray);
 		String tmp;
 		for (int i = 0; i < vertexShaderHolder.getUniformLines().size(); i++) {
 			tmp = vertexShaderHolder.getUniformLines().get(i).split(" ")[2].replace(";", "");
 			if (uniforms.contains(tmp)) {
-				if(Logger.isDebugMode()){
+				if (Logger.isDebugMode()) {
 					Logger.log("Uniform name already in use (vertexshader): " + tmp, LogLevel.WARNING, true);
 				}
 			} else {
@@ -119,18 +118,18 @@ public class Shader {
 		for (int i = 0; i < fragmentShaderHolder.getUniformLines().size(); i++) {
 			tmp = fragmentShaderHolder.getUniformLines().get(i).split(" ")[2].replace(";", "");
 			if (uniforms.contains(tmp)) {
-				if(Logger.isDebugMode()){
+				if (Logger.isDebugMode()) {
 					Logger.log("Uniform name already in use (fragmentshader): " + tmp, LogLevel.WARNING, true);
 				}
 			} else {
 				uniforms.add(tmp);
 			}
 		}
-		if(geometryShaderHolder!=null){
+		if (geometryShaderHolder != null) {
 			for (int i = 0; i < geometryShaderHolder.getUniformLines().size(); i++) {
 				tmp = geometryShaderHolder.getUniformLines().get(i).split(" ")[2].replace(";", "");
 				if (uniforms.contains(tmp)) {
-					if(Logger.isDebugMode()){
+					if (Logger.isDebugMode()) {
 						Logger.log("Uniform name already in use (geometryshader): " + tmp, LogLevel.WARNING, true);
 					}
 				} else {
@@ -139,8 +138,7 @@ public class Shader {
 			}
 		}
 	}
-	
-	
+
 	public void start() {
 		GL20.glUseProgram(programID);
 	}
@@ -159,7 +157,7 @@ public class Shader {
 		GL20.glDetachShader(programID, fragmentShaderID);
 		GL20.glDeleteShader(vertexShaderID);
 		GL20.glDeleteShader(fragmentShaderID);
-		if(geometryShaderID!=0){
+		if (geometryShaderID != 0) {
 			GL20.glDetachShader(programID, geometryShaderID);
 			GL20.glDeleteShader(geometryShaderID);
 		}
@@ -167,18 +165,18 @@ public class Shader {
 	}
 
 	private void storeUniforms(Uniform... uniforms) {
-		if(uniforms==null||uniforms.length==0){
+		if (uniforms == null || uniforms.length == 0) {
 			return;
 		}
 		for (int i = 0; i < uniforms.length; i++) {
-			if(uniforms[i]!=null){
+			if (uniforms[i] != null) {
 				uniforms[i].storeUniformLocation(programID);
 			}
 		}
 	}
 
 	private void bindAttributes(String... strings) {
-		if(strings==null||strings.length==0){
+		if (strings == null || strings.length == 0) {
 			return;
 		}
 		for (int i = 0; i < strings.length; i++) {

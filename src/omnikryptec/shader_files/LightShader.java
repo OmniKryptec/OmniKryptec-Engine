@@ -16,7 +16,7 @@ public class LightShader extends Shader {
 	public final UniformVec4 light = new UniformVec4("lightu");
 	public final UniformVec3 lightColor = new UniformVec3("lightColor");
 	public final UniformMatrix invprojv = new UniformMatrix("invprojv");
-		
+
 	public final UniformVec2 pixSizes = new UniformVec2("pixelSize");
 
 	public final UniformVec3 cam = new UniformVec3("campos");

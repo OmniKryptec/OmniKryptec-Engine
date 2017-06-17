@@ -21,28 +21,28 @@ public class EventSystem {
 	private static Map<EventType, List<IEventHandler>> eventhandler = new HashMap<>();
 	private static List<EventType> types = new ArrayList<>();
 	private static List<EventType> deftypes = new ArrayList<>();
-	
+
 	private static ExecutorService threadpool = null;
-	
+
 	private static EventSystem instance;
-	
-	static{
-		 Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-	            try {
-	            	if(threadpool!=null){
-		            	threadpool.shutdown();
-		            	threadpool.awaitTermination(1, TimeUnit.MINUTES);
-	            	}
-	            } catch (Exception ex) {
-	            }
-	        }));
+
+	static {
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			try {
+				if (threadpool != null) {
+					threadpool.shutdown();
+					threadpool.awaitTermination(1, TimeUnit.MINUTES);
+				}
+			} catch (Exception ex) {
+			}
+		}));
 	}
-	
+
 	private EventSystem() {
 		Field[] fields = EventType.class.getFields();
-		for(int i=0; i<fields.length; i++){
+		for (int i = 0; i < fields.length; i++) {
 			try {
-				if(fields[i].get(null) instanceof EventType){
+				if (fields[i].get(null) instanceof EventType) {
 					deftypes.add((EventType) fields[i].get(null));
 				}
 			} catch (IllegalArgumentException e) {
@@ -53,16 +53,16 @@ public class EventSystem {
 		}
 	}
 
-	public static EventSystem instance(){
-		if(instance!=null){
+	public static EventSystem instance() {
+		if (instance != null) {
 			return instance;
 		}
-		if(DisplayManager.instance()==null){
+		if (DisplayManager.instance() == null) {
 			throw new NullPointerException("DisplayManager is null");
 		}
-		if(DisplayManager.instance().getSettings().getEventThreadpoolSize()>0){
+		if (DisplayManager.instance().getSettings().getEventThreadpoolSize() > 0) {
 			threadpool = Executors.newFixedThreadPool(DisplayManager.instance().getSettings().getEventThreadpoolSize());
-		}else{
+		} else {
 			threadpool = null;
 		}
 		instance = new EventSystem();
@@ -130,18 +130,18 @@ public class EventSystem {
 			if (!types.contains(type[j]) && !deftypes.contains(type[j])) {
 				throw new IllegalArgumentException("EventType \"" + type[j] + "\" is not registered!");
 			}
-			if(type[j].executeInCurrentThread()||threadpool==null){
+			if (type[j].executeInCurrentThread() || threadpool == null) {
 				event(ev, type[j]);
-			}else{
+			} else {
 				final int jtmp = j;
-				threadpool.submit(()->{
+				threadpool.submit(() -> {
 					event(ev, type[jtmp]);
 				});
 			}
 		}
 	}
 
-	private void event(Event ev, EventType type){
+	private void event(Event ev, EventType type) {
 		if (eventhandler.get(type) != null) {
 			ev.setEventType(type);
 			for (int i = 0; i < eventhandler.get(type).size(); i++) {
@@ -149,7 +149,7 @@ public class EventSystem {
 			}
 		}
 	}
-	
+
 	/**
 	 * removes an eventhandler from one eventtype
 	 * 

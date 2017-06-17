@@ -23,7 +23,7 @@ public class TextureUtils {
 		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texID);
 		for (int i = 0; i < 6; i++) {
 			GL11.glTexImage2D(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL11.GL_RGBA8, size, size, 0, GL11.GL_RGBA,
-					GL11.GL_UNSIGNED_BYTE, (ByteBuffer)null);
+					GL11.GL_UNSIGNED_BYTE, (ByteBuffer) null);
 		}
 		GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 		GL11.glTexParameteri(GL13.GL_TEXTURE_CUBE_MAP, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
@@ -53,21 +53,21 @@ public class TextureUtils {
 	}
 
 	protected static TextureData decodeTextureFile(InputStream in) {
-            int width = 0;
-            int height = 0;
-            ByteBuffer buffer = null;
-            try {
-                PNGDecoder decoder = new PNGDecoder(in);
-                width = decoder.getWidth();
-                height = decoder.getHeight();
-                buffer = ByteBuffer.allocateDirect(4 * width * height);
-                decoder.decode(buffer, width * 4, Format.BGRA);
-                buffer.flip();
-                in.close();
-            } catch (Exception ex) {
-                Logger.logErr("Texture not found: " + ex, ex);
-            }
-            return new TextureData(buffer, width, height);
+		int width = 0;
+		int height = 0;
+		ByteBuffer buffer = null;
+		try {
+			PNGDecoder decoder = new PNGDecoder(in);
+			width = decoder.getWidth();
+			height = decoder.getHeight();
+			buffer = ByteBuffer.allocateDirect(4 * width * height);
+			decoder.decode(buffer, width * 4, Format.BGRA);
+			buffer.flip();
+			in.close();
+		} catch (Exception ex) {
+			Logger.logErr("Texture not found: " + ex, ex);
+		}
+		return new TextureData(buffer, width, height);
 	}
 
 	protected static int loadTextureToOpenGL(TextureData data, TextureBuilder builder) {

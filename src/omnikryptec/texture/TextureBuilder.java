@@ -5,48 +5,48 @@ import java.io.InputStream;
 import omnikryptec.display.DisplayManager;
 
 public class TextureBuilder {
-	
+
 	private boolean clampEdges = DisplayManager.instance().getSettings().clampEdges();
 	private boolean mipmap = DisplayManager.instance().getSettings().mipmap();
-	private boolean anisotropic = DisplayManager.instance().getSettings().getAnisotropicLevel()>0;
+	private boolean anisotropic = DisplayManager.instance().getSettings().getAnisotropicLevel() > 0;
 	private boolean nearest = DisplayManager.instance().getSettings().filterNearest();
-	
+
 	private InputStream file;
-	
-	protected TextureBuilder(InputStream textureFile){
+
+	protected TextureBuilder(InputStream textureFile) {
 		this.file = textureFile;
 	}
-	
-	public Texture create(){
+
+	public SimpleTexture create() {
 		TextureData textureData = TextureUtils.decodeTextureFile(file);
 		int textureId = TextureUtils.loadTextureToOpenGL(textureData, this);
-		return new Texture(textureId, textureData);
+		return new SimpleTexture(textureId, textureData);
 	}
-	
-	public TextureBuilder clampEdges(){
+
+	public TextureBuilder clampEdges() {
 		this.clampEdges = true;
 		return this;
 	}
-	
-	public TextureBuilder normalMipMap(){
+
+	public TextureBuilder normalMipMap() {
 		this.mipmap = true;
 		this.anisotropic = false;
 		return this;
 	}
-	
-	public TextureBuilder nearestFiltering(){
+
+	public TextureBuilder nearestFiltering() {
 		this.mipmap = false;
 		this.anisotropic = false;
 		this.nearest = true;
 		return this;
 	}
-	
-	public TextureBuilder anisotropic(){
+
+	public TextureBuilder anisotropic() {
 		this.mipmap = true;
 		this.anisotropic = true;
 		return this;
 	}
-	
+
 	protected boolean isClampEdges() {
 		return clampEdges;
 	}

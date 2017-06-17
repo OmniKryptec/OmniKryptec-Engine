@@ -19,9 +19,9 @@ public class FogShader extends Shader {
 	public final UniformFloat gradient = new UniformFloat("gradient");
 
 	public final UniformMatrix invprojv = new UniformMatrix("invprojv");
-	
+
 	public final UniformVec3 campos = new UniformVec3("campos");
-	
+
 	public FogShader() {
 		super(FogShader.class.getResourceAsStream(DEFAULT_PP_VERTEX_SHADER_LOC),
 				FogShader.class.getResourceAsStream(oc_shader_loc + "fog_shader_frag.glsl"),

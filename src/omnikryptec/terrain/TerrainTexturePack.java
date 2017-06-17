@@ -1,39 +1,39 @@
 package omnikryptec.terrain;
 
-import omnikryptec.texture.ITexture;
+import omnikryptec.texture.Texture;
 
 /**
  *
  * @author Panzer1119
  */
 public class TerrainTexturePack {
-    
-    private final ITexture backgroundTexture;
-    private final ITexture rTexture;
-    private final ITexture gTexture;
-    private final ITexture bTexture;
 
-    public TerrainTexturePack(ITexture backgroundTexture, ITexture rTexture, ITexture gTexture, ITexture bTexture) {
-        this.backgroundTexture = backgroundTexture;
-        this.rTexture = rTexture;
-        this.gTexture = gTexture;
-        this.bTexture = bTexture;
-    }
+	private final Texture backgroundTexture;
+	private final Texture rTexture;
+	private final Texture gTexture;
+	private final Texture bTexture;
 
-    public ITexture getBackgroundTexture() {
-        return backgroundTexture;
-    }
+	public TerrainTexturePack(Texture backgroundTexture, Texture rTexture, Texture gTexture, Texture bTexture) {
+		this.backgroundTexture = backgroundTexture;
+		this.rTexture = rTexture;
+		this.gTexture = gTexture;
+		this.bTexture = bTexture;
+	}
 
-    public ITexture getrTexture() {
-        return rTexture;
-    }
+	public Texture getBackgroundTexture() {
+		return backgroundTexture;
+	}
 
-    public ITexture getgTexture() {
-        return gTexture;
-    }
+	public Texture getrTexture() {
+		return rTexture;
+	}
 
-    public ITexture getbTexture() {
-        return bTexture;
-    }
-    
+	public Texture getgTexture() {
+		return gTexture;
+	}
+
+	public Texture getbTexture() {
+		return bTexture;
+	}
+
 }
