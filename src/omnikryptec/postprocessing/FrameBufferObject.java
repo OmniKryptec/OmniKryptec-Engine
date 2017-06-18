@@ -19,7 +19,7 @@ import omnikryptec.exceptions.IllegalAccessException;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.Texture;
 
-public class FrameBufferObject implements Texture {
+public class FrameBufferObject extends Texture {
 
 	private final int width;
 	private final int height;
@@ -56,6 +56,7 @@ public class FrameBufferObject implements Texture {
 	 *            this FBO should use.
 	 */
 	public FrameBufferObject(int width, int height, DepthbufferType type, int... targets) {
+		super(true);
 		this.width = width;
 		this.height = height;
 		this.targets = targets;
@@ -75,6 +76,7 @@ public class FrameBufferObject implements Texture {
 	 * @param multisamples
 	 */
 	public FrameBufferObject(int width, int height, int multisamples, int... targets) {
+		super(true);
 		this.width = width;
 		this.height = height;
 		this.multisample = multisamples;
@@ -84,6 +86,7 @@ public class FrameBufferObject implements Texture {
 	}
 
 	public FrameBufferObject(int width, int height, int multisamples, int[] add, int... targets) {
+		super(true);
 		this.width = width;
 		this.height = height;
 		this.multisample = multisamples;
@@ -331,7 +334,7 @@ public class FrameBufferObject implements Texture {
 	 * info[0] is the attachmentindex to use
 	 */
 	@Override
-	public void bindToUnit(int unit, int... info) {
+	public void bindToUnita(int unit, int... info) {
 		if (info == null || info.length == 0) {
 			info = new int[] { 0 };
 		}

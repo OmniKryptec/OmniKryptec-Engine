@@ -22,6 +22,7 @@ public class Shader {
 	
 	private static int shadercount=0;
 	private static Shader shadercurrent;
+	private static int shadercurrentid=-1;
 	
 	public static Shader getActiveShader(){
 		return shadercurrent;
@@ -98,8 +99,11 @@ public class Shader {
 	}
 
 	public void start() {
-		shadercurrent = this;
-		GL20.glUseProgram(programID);
+		if(shadercurrentid!=programID){
+			shadercurrent = this;
+			GL20.glUseProgram(programID);
+			shadercurrentid = programID;
+		}
 	}
 
 	/**
@@ -108,6 +112,7 @@ public class Shader {
 	@Deprecated
 	public void stop() {
 		shadercurrent = null;
+		shadercurrentid = 0;
 		GL20.glUseProgram(0);
 	}
 

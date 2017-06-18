@@ -22,7 +22,7 @@ public class SimpleStage extends PostProcessingStep {
 
 	@Override
 	public void bindTexture(FrameBufferObject before, List<FrameBufferObject> beforelist, Shader using, int stage) {
-		(l_ind < 0 ? before : beforelist.get(l_ind)).bindToUnit(0);
+		(l_ind < 0 ? before : beforelist.get(l_ind)).bindToUnita(0);
 	}
 
 	@Override

@@ -42,9 +42,9 @@ public class ColorSpaceStage extends PostProcessingStep {
 	public void bindTexture(FrameBufferObject before, List<FrameBufferObject> beforelist, Shader using, int stage) {
 		ColorSpaceShader.value.loadVec3(level);
 		if (ind < 0) {
-			before.bindToUnit(0);
+			before.bindToUnita(0);
 		} else {
-			beforelist.get(ind).bindToUnit(0);
+			beforelist.get(ind).bindToUnita(0);
 		}
 	}
 

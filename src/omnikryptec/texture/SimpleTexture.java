@@ -9,30 +9,30 @@ import org.lwjgl.opengl.GL13;
 
 import omnikryptec.logger.Logger;
 
-public class SimpleTexture implements Texture {
+public class SimpleTexture extends Texture {
 
-	public final int textureId;
 	private final TextureData data;
 	private final int type;
-
+	private final int id;
+	
 	protected SimpleTexture(int textureId, TextureData data) {
 		this(textureId, GL11.GL_TEXTURE_2D, data);
 	}
 
 	protected SimpleTexture(int textureId, int type, TextureData data) {
-		this.textureId = textureId;
 		this.data = data;
 		this.type = type;
+		this.id = textureId;
 	}
 
 	@Override
-	public void bindToUnit(int unit, int... info) {
+	public void bindToUnita(int unit, int... info) {
 		GL13.glActiveTexture(GL13.GL_TEXTURE0 + unit);
-		GL11.glBindTexture(type, textureId);
+		GL11.glBindTexture(type, id);
 	}
 
 	public void delete() {
-		GL11.glDeleteTextures(textureId);
+		GL11.glDeleteTextures(id);
 	}
 
 	public static TextureBuilder newTexture(File file) {

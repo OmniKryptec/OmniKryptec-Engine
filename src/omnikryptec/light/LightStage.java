@@ -53,9 +53,9 @@ public class LightStage extends PostProcessingStage {
 		RenderUtil.clear(0, 0, 0, 1);
 		for (int i = 0; i < preparea.length; i++) {
 			preparea[i].getShader().start();
-			unsampledfbo.bindToUnit(0, 0);
-			normalfbo.bindToUnit(1, 0);
-			specularfbo.bindToUnit(2, 0);
+			unsampledfbo.bindToUnita(0, 0);
+			normalfbo.bindToUnita(1, 0);
+			specularfbo.bindToUnita(2, 0);
 			unsampledfbo.bindDepthTexture(3);
 			preparea[i].prepare(currentScene);
 			relevant = currentScene.getRenderLights(preparea[i]);

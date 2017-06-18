@@ -1,12 +1,11 @@
 package omnikryptec.texture;
 
-public class AtlasTexture implements Texture {
+public class AtlasTexture extends Texture {
 	
-	private Texture texture;
-	private float[] uvs;
-	
+	private Texture texture;	
 	
 	public AtlasTexture(Texture t, float u, float v, float u2, float v2){
+		super(t.bindAlways());
 		this.texture = t;
 		if(texture instanceof AtlasTexture){
 			AtlasTexture tmp = (AtlasTexture)texture;
@@ -21,18 +20,18 @@ public class AtlasTexture implements Texture {
 			v += tmp.getUVs()[2];
 			v2 += tmp.getUVs()[3];
 
-		}	
-		uvs = new float[]{u,v,u2,v2};
+		}
+		setUVs(u, v, u2, v2);
 	}
 	
 	@Override
-	public void bindToUnit(int unit, int... info) {
-		texture.bindToUnit(unit, info);
+	public boolean bindAlways() {
+		return texture.bindAlways();
 	}
 	
 	@Override
-	public float[] getUVs(){
-		return uvs;
+	public void bindToUnita(int unit, int... info) {
+		texture.bindToUnita(unit, info);
 	}
 
 }

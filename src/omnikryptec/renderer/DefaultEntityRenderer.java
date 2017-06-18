@@ -75,7 +75,7 @@ public class DefaultEntityRenderer implements Renderer {
 				}
 			}
 			stapel = null;
-			model.getModel().getVao().unbind(0, 1, 2, 3);
+			//model.getModel().getVao().unbind(0, 1, 2, 3);
 			if (model.getMaterial().hasTransparency()) {
 				RenderUtil.cullBackFaces(true);
 			}

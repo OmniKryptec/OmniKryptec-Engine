@@ -35,7 +35,7 @@ public class SingleGaussianBlurStage extends PostProcessingStep {
 	public void bindTexture(FrameBufferObject before, List<FrameBufferObject> beforelist, Shader using, int stage) {
 		GaussianBlurShader.isHor.loadBoolean(isHorizontal);
 		GaussianBlurShader.size.loadFloat(isHorizontal ? Display.getWidth() * w : Display.getHeight() * h);
-		(l_ind < 0 ? before : beforelist.get(l_ind)).bindToUnit(0);
+		(l_ind < 0 ? before : beforelist.get(l_ind)).bindToUnita(0);
 	}
 
 	@Override

@@ -12,6 +12,8 @@ public class VertexArrayObject {
 
 	private static final int BYTES_PER_FLOAT = 4;
 
+	private static int lastBoundId=-1;
+	
 	public final int id;
 	private VertexBufferObject dataVbo;
 	private VertexBufferObject indexVbo;
@@ -34,9 +36,12 @@ public class VertexArrayObject {
 	}
 
 	public void bind() {
-		GL30.glBindVertexArray(id);
+		if(id!=lastBoundId){
+			GL30.glBindVertexArray(id);
+			lastBoundId = id;
+		}
 	}
-
+	
 	public void bind(int... attributes) {
 		bind();
 		for (int i : attributes) {
@@ -44,10 +49,13 @@ public class VertexArrayObject {
 		}
 	}
 
+	@Deprecated
 	public void unbind() {
+		lastBoundId = 0;
 		GL30.glBindVertexArray(0);
 	}
-
+	
+	@Deprecated
 	public void unbind(int... attributes) {
 		for (int i : attributes) {
 			GL20.glDisableVertexAttribArray(i);
