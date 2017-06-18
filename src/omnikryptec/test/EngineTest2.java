@@ -23,6 +23,7 @@ import omnikryptec.objConverter.ObjLoader;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.SimpleAnimation;
 import omnikryptec.texture.SimpleTexture;
+import omnikryptec.texture.AtlasTexture;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
 
@@ -81,7 +82,8 @@ public class EngineTest2 implements IEventHandler {
 			// Model brunnen = ModelUtil.generateQuad();
 			SimpleTexture brunnent = SimpleTexture
 					.newTexture(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create();
-			TexturedModel tm = new TexturedModel(brunnen, brunnent);
+			AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
+			TexturedModel tm = new TexturedModel(brunnen, rmvp);
 			tm.getMaterial().setHasTransparency(true);
 			tm.getMaterial().setReflectivity(1);
 			OmniKryptecEngine.instance().addAndSetScene("test", new Scene((Camera) new Camera() {
@@ -107,7 +109,7 @@ public class EngineTest2 implements IEventHandler {
 			ptm.getMaterial().setReflectivity(0.1f).setShineDamper(0.0001f).setExtraInfoVec(new Vector4f(1, 0, 0, 0));
 			Random r = new Random();
 			for (int i = 0; i < 200; i++) {
-				Entity e = new Entity(ptm) {
+				Entity e = new Entity(tm) {
 					@Override
 					public void doLogic() {
 						// setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(),

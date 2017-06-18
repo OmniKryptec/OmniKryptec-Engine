@@ -14,6 +14,8 @@ uniform mat4 transmatrix;
 uniform mat4 projmatrix;
 uniform mat4 viewmatrix;
 
+uniform vec4 uvs;
+
 void main(void){
 	
 	vec4 worldPosition = transmatrix * vec4(pos,1.0);
@@ -22,6 +24,8 @@ void main(void){
 	gl_Position = projmatrix * positionRelativeToCam;
 	
 	pass_texcoords = texcoords;
+	pass_texcoords *= uvs.zw - uvs.xy;
+	pass_texcoords += uvs.xy;
 	
 	vec3 surfaceNormal = (modelViewMatrix * vec4(normal,0.0)).xyz;
 	

@@ -9,25 +9,27 @@ import omnikryptec.shader.UniformVec4;
 
 public class EntityShader extends Shader {
 
-	public static final UniformMatrix transformation = new UniformMatrix("transmatrix");
-	public static final UniformMatrix view = new UniformMatrix("viewmatrix");
-	public static final UniformMatrix projection = new UniformMatrix("projmatrix");
-	public static final UniformBoolean hasspecular = new UniformBoolean("hasspecular");
-	public static final UniformFloat reflec = new UniformFloat("reflec");
-	public static final UniformSampler tex = new UniformSampler("tex");
-	public static final UniformSampler normalmap = new UniformSampler("normaltex");
-	public static final UniformSampler specularmap = new UniformSampler("speculartex");
-	public static final UniformVec4 colmod = new UniformVec4("colormod");
-	public static final UniformFloat shinedamper = new UniformFloat("damp");
-	public static final UniformBoolean hasextrainfomap = new UniformBoolean("hasextra");
-	public static final UniformSampler extrainfo = new UniformSampler("extra");
-	public static final UniformVec4 extrainfovec = new UniformVec4("exinfovec");
-
+	public final UniformMatrix transformation = new UniformMatrix("transmatrix");
+	public final UniformMatrix view = new UniformMatrix("viewmatrix");
+	public final UniformMatrix projection = new UniformMatrix("projmatrix");
+	public final UniformBoolean hasspecular = new UniformBoolean("hasspecular");
+	public final UniformFloat reflec = new UniformFloat("reflec");
+	public final UniformSampler tex = new UniformSampler("tex");
+	public final UniformSampler normalmap = new UniformSampler("normaltex");
+	public final UniformSampler specularmap = new UniformSampler("speculartex");
+	public final UniformVec4 colmod = new UniformVec4("colormod");
+	public final UniformFloat shinedamper = new UniformFloat("damp");
+	public final UniformBoolean hasextrainfomap = new UniformBoolean("hasextra");
+	public final UniformSampler extrainfo = new UniformSampler("extra");
+	public final UniformVec4 extrainfovec = new UniformVec4("exinfovec");
+	public final UniformVec4 uvs = new UniformVec4("uvs");
+		
 	public EntityShader() {
-		super(EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_vert.glsl"),
+		super("EntityShader", EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_vert.glsl"),
 				EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_frag.glsl"), "pos", "texcoords",
-				"normal", "tangent", transformation, view, projection, tex, normalmap, specularmap, hasspecular, reflec,
-				colmod, shinedamper, hasextrainfomap, extrainfo, extrainfovec);
+				"normal", "tangent");
+		registerUniforms(transformation, view, projection, tex, normalmap, specularmap, hasspecular, reflec,
+				colmod, shinedamper, hasextrainfomap, extrainfo, extrainfovec, uvs);
 		start();
 		tex.loadTexUnit(0);
 		normalmap.loadTexUnit(1);

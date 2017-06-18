@@ -19,24 +19,43 @@ public class Shader {
 	public static final String DEFAULT_PP_VERTEX_SHADER_POS_ATTR = "position";
 	public static final String DEFAULT_PP_VERTEX_SHADER_TEXC_OUT = "textureCoords";
 	protected static final String oc_shader_loc = "/omnikryptec/shader_files/";
-
+	
+	private static int shadercount=0;
+	private static Shader shadercurrent;
+	
+	public static Shader getActiveShader(){
+		return shadercurrent;
+	}
 	private int programID;
 	private int vertexShaderID;
 	private int fragmentShaderID;
 	private int geometryShaderID = 0;
-	private List<String> uniforms = new ArrayList<>();
 	private ShaderHolder vertexShaderHolder;
 	private ShaderHolder fragmentShaderHolder;
 	private ShaderHolder geometryShaderHolder;
-
+	private String name;
+	
 	// private static FloatBuffer matrixBuffer =
 	// BufferUtils.createFloatBuffer(16);
-
-	public Shader(InputStream vertexFile, InputStream fragmentFile, Object... uniAttr) {
-		this(vertexFile, null, fragmentFile, uniAttr);
+	
+	public Shader(InputStream vertexFile, InputStream fragmentFile, Object... uniAttr){
+		this((String)null, vertexFile, fragmentFile, uniAttr);
 	}
-
-	public Shader(InputStream vertexFile, InputStream geometryFile, InputStream fragmentFile, Object... uniAttr) {
+	
+	public Shader(String name, InputStream vertexFile, InputStream fragmentFile, Object... uniAttr) {
+		this(name, vertexFile, null, fragmentFile, uniAttr);
+	}
+	
+	public Shader(InputStream vertexFile, InputStream geometryFile, InputStream fragmentFile, Object... uniAttr){
+		this(null, vertexFile, geometryFile, fragmentFile, uniAttr);
+	}
+	
+	public Shader(String name, InputStream vertexFile, InputStream geometryFile, InputStream fragmentFile, Object... uniAttr) {
+		if(name==null){
+			name = ""+shadercount;
+		}
+		name = "Shader " + name;
+		this.name = name;
 		vertexShaderHolder = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
 		fragmentShaderHolder = loadShader(fragmentFile, GL20.GL_FRAGMENT_SHADER);
 		vertexShaderID = vertexShaderHolder.getID();
@@ -62,39 +81,7 @@ public class Shader {
 		GL20.glLinkProgram(programID);
 		GL20.glValidateProgram(programID);
 		storeUniforms(uniformstmp.toArray(new Uniform[1]));
-		String tmp;
-		for (int i = 0; i < vertexShaderHolder.getUniformLines().size(); i++) {
-			tmp = vertexShaderHolder.getUniformLines().get(i).split(" ")[2].replace(";", "");
-			if (uniforms.contains(tmp)) {
-				if (Logger.isDebugMode()) {
-					Logger.log("Uniform name already in use (vertexshader): " + tmp, LogLevel.WARNING, true);
-				}
-			} else {
-				uniforms.add(tmp);
-			}
-		}
-		for (int i = 0; i < fragmentShaderHolder.getUniformLines().size(); i++) {
-			tmp = fragmentShaderHolder.getUniformLines().get(i).split(" ")[2].replace(";", "");
-			if (uniforms.contains(tmp)) {
-				if (Logger.isDebugMode()) {
-					Logger.log("Uniform name already in use (fragmentshader): " + tmp, LogLevel.WARNING, true);
-				}
-			} else {
-				uniforms.add(tmp);
-			}
-		}
-		if (geometryFile != null) {
-			for (int i = 0; i < geometryShaderHolder.getUniformLines().size(); i++) {
-				tmp = geometryShaderHolder.getUniformLines().get(i).split(" ")[2].replace(";", "");
-				if (uniforms.contains(tmp)) {
-					if (Logger.isDebugMode()) {
-						Logger.log("Uniform name already in use (geometryshader): " + tmp, LogLevel.WARNING, true);
-					}
-				} else {
-					uniforms.add(tmp);
-				}
-			}
-		}
+		shadercount++;
 		// if (uniformstmp.size() != uniforms.size() && Logger.isDebugMode()) {
 		// Logger.log("Found uniforms: " + uniforms + ";\n Required uniforms in
 		// constructor: " + uniformstmp.size(),
@@ -102,44 +89,16 @@ public class Shader {
 		// }
 	}
 
+	public String getName(){
+		return name;
+	}
+	
 	protected void registerUniforms(Uniform... uniformsarray) {
 		storeUniforms(uniformsarray);
-		String tmp;
-		for (int i = 0; i < vertexShaderHolder.getUniformLines().size(); i++) {
-			tmp = vertexShaderHolder.getUniformLines().get(i).split(" ")[2].replace(";", "");
-			if (uniforms.contains(tmp)) {
-				if (Logger.isDebugMode()) {
-					Logger.log("Uniform name already in use (vertexshader): " + tmp, LogLevel.WARNING, true);
-				}
-			} else {
-				uniforms.add(tmp);
-			}
-		}
-		for (int i = 0; i < fragmentShaderHolder.getUniformLines().size(); i++) {
-			tmp = fragmentShaderHolder.getUniformLines().get(i).split(" ")[2].replace(";", "");
-			if (uniforms.contains(tmp)) {
-				if (Logger.isDebugMode()) {
-					Logger.log("Uniform name already in use (fragmentshader): " + tmp, LogLevel.WARNING, true);
-				}
-			} else {
-				uniforms.add(tmp);
-			}
-		}
-		if (geometryShaderHolder != null) {
-			for (int i = 0; i < geometryShaderHolder.getUniformLines().size(); i++) {
-				tmp = geometryShaderHolder.getUniformLines().get(i).split(" ")[2].replace(";", "");
-				if (uniforms.contains(tmp)) {
-					if (Logger.isDebugMode()) {
-						Logger.log("Uniform name already in use (geometryshader): " + tmp, LogLevel.WARNING, true);
-					}
-				} else {
-					uniforms.add(tmp);
-				}
-			}
-		}
 	}
 
 	public void start() {
+		shadercurrent = this;
 		GL20.glUseProgram(programID);
 	}
 
@@ -148,6 +107,7 @@ public class Shader {
 	 */
 	@Deprecated
 	public void stop() {
+		shadercurrent = null;
 		GL20.glUseProgram(0);
 	}
 
@@ -184,13 +144,10 @@ public class Shader {
 		}
 	}
 
-	public boolean testForUniform(String name) {
-		return uniforms.contains(name);
-	}
 
 	// ==============================================LOADINGSECTION=======================================================
 
-	private static ShaderHolder loadShader(InputStream in, int type) {
+	private ShaderHolder loadShader(InputStream in, int type) {
 		StringBuilder shaderSrc = new StringBuilder();
 		List<String> uniforms = new ArrayList<>();
 		try {
@@ -210,18 +167,39 @@ public class Shader {
 		GL20.glShaderSource(shaderID, shaderSrc);
 		GL20.glCompileShader(shaderID);
 		if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-			Logger.log("Shader compilation failed: ", LogLevel.ERROR, true);
+			Logger.log("Shader compilation failed in Shader: "+name, LogLevel.ERROR, true);
 			Logger.log(GL20.glGetShaderInfoLog(shaderID, 500), LogLevel.ERROR, true);
 		}
-		return new ShaderHolder(shaderID, uniforms);
+		return new ShaderHolder(shaderID, uniforms, type);
 	}
-
-	private static class ShaderHolder {
-		private List<String> uniforms;
+	
+	public static String getShaderType(int i){
+		switch(i){
+		case GL20.GL_FRAGMENT_SHADER:
+			return "fragmentshader";
+		case GL20.GL_VERTEX_SHADER:
+			return "vertexshader";
+		case GL32.GL_GEOMETRY_SHADER:
+			return "geometryshader";
+		default:
+			return "unknown_shadertype";
+		}
+	}
+	
+	private class ShaderHolder {
 		private int id;
 
-		private ShaderHolder(int id, List<String> uniformLines) {
-			this.uniforms = uniformLines;
+		private ShaderHolder(int id, List<String> uniformLines, int type) {
+			List<String> tmplist = new ArrayList<>();
+			for(int i=0; i<uniformLines.size(); i++){
+				if(tmplist.contains(uniformLines.get(i))){
+					if (Logger.isDebugMode()) {
+						Logger.log(name+": Uniform name already in use ("+getShaderType(type)+"): " + uniformLines.get(i), LogLevel.WARNING, true);
+					}
+				}else{
+					tmplist.add(uniformLines.get(i));
+				}
+			}
 			this.id = id;
 		}
 
@@ -229,9 +207,6 @@ public class Shader {
 			return id;
 		}
 
-		private List<String> getUniformLines() {
-			return uniforms;
-		}
 	}
 
 	// public int getUniformID(String name) {

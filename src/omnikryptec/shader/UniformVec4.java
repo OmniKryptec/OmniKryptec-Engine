@@ -4,7 +4,10 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Vector4f;
 
 public class UniformVec4 extends Uniform {
-
+	
+	private float[] old = new float[4];
+	private boolean used = false;
+	
 	public UniformVec4(String name) {
 		super(name);
 	}
@@ -14,7 +17,14 @@ public class UniformVec4 extends Uniform {
 	}
 
 	public void loadVec4(float x, float y, float z, float w) {
-		GL20.glUniform4f(super.getLocation(), x, y, z, w);
+		if(!used||x!=old[0]||y!=old[1]||z!=old[2]||w!=old[3]){
+			GL20.glUniform4f(super.getLocation(), x, y, z, w);
+			old[0] = x;
+			old[1] = y;
+			old[2] = z;
+			old[3] = w;
+			used = true;
+		}
 	}
 
 }

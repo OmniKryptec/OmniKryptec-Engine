@@ -9,6 +9,7 @@ import omnikryptec.main.Scene;
 import omnikryptec.model.Material;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.shader_files.EntityShader;
+import omnikryptec.texture.Texture;
 import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
 
@@ -25,16 +26,19 @@ public class DefaultEntityRenderer implements Renderer {
 	private Entity entity;
 	private TexturedModel model;
 	private Material mat;
-
+	private Texture textmp;
+	
 	@Override
 	public void render(Scene s, RenderMap<TexturedModel, List<Entity>> entities) {
 		shader.start();
-		EntityShader.view.loadMatrix(s.getCamera().getViewMatrix());
-		EntityShader.projection.loadMatrix(s.getCamera().getProjectionMatrix());
+		shader.view.loadMatrix(s.getCamera().getViewMatrix());
+		shader.projection.loadMatrix(s.getCamera().getProjectionMatrix());
 		for (int i = 0; i < entities.keysArray().length; i++) {
 			model = entities.keysArray()[i];
 			model.getModel().getVao().bind(0, 1, 2, 3);
-			model.getTexture().bindToUnit(0);
+			textmp = model.getTexture();
+			textmp.bindToUnit(0);
+			shader.uvs.loadVec4(textmp.getUVs()[0], textmp.getUVs()[1], textmp.getUVs()[2], textmp.getUVs()[3]);
 			mat = model.getMaterial();
 			mat.getNormalmap().bindToUnit(1);
 			if (mat.hasTransparency()) {
@@ -42,30 +46,30 @@ public class DefaultEntityRenderer implements Renderer {
 			}
 			if (mat.getSpecularmap() != null) {
 				mat.getSpecularmap().bindToUnit(2);
-				EntityShader.hasspecular.loadBoolean(true);
+				shader.hasspecular.loadBoolean(true);
 			} else {
-				EntityShader.hasspecular.loadBoolean(false);
+				shader.hasspecular.loadBoolean(false);
 			}
 			if (mat.getExtraInfo() != null) {
 				mat.getExtraInfo().bindToUnit(3);
-				EntityShader.hasextrainfomap.loadBoolean(true);
+				shader.hasextrainfomap.loadBoolean(true);
 			} else {
-				EntityShader.hasextrainfomap.loadBoolean(false);
+				shader.hasextrainfomap.loadBoolean(false);
 				if (mat.getExtraInfoVec() != null) {
-					EntityShader.extrainfovec.loadVec4(mat.getExtraInfoVec());
+					shader.extrainfovec.loadVec4(mat.getExtraInfoVec());
 				} else {
-					EntityShader.extrainfovec.loadVec4(0, 0, 0, 0);
+					shader.extrainfovec.loadVec4(0, 0, 0, 0);
 				}
 			}
-			EntityShader.reflec.loadFloat(mat.getReflectivity());
-			EntityShader.shinedamper.loadFloat(mat.getShineDamper());
+			shader.reflec.loadFloat(mat.getReflectivity());
+			shader.shinedamper.loadFloat(mat.getShineDamper());
 			stapel = entities.get(model);
 			for (int j = 0; j < stapel.size(); j++) {
 				entity = stapel.get(j);
 				if (entity.isActive() && RenderUtil.inRenderRange(entity, s.getCamera())) {
 					entity.doLogic0();
-					EntityShader.transformation.loadMatrix(Maths.createTransformationMatrix(entity));
-					EntityShader.colmod.loadVec4(entity.getColor());
+					shader.transformation.loadMatrix(Maths.createTransformationMatrix(entity));
+					shader.colmod.loadVec4(entity.getColor());
 					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(),
 							GL11.GL_UNSIGNED_INT, 0);
 				}
