@@ -31,15 +31,21 @@ public class AudioListenerComponent implements Component {
 			}
 		}
 	}
-
+	
+	private RenderChunk chunk;
+	private	Scene scene;
+	private PhysicsComponent physicsComponent;
+	private boolean isUsingPhysics = false;
+	private Vector3f position, rotation;
+	private javax.vecmath.Vector3f velocity = new javax.vecmath.Vector3f(0, 0, 0);;
+	
 	@Override
 	public final void execute(GameObject instance) {
-		boolean isUsingPhysics = false;
-		RenderChunk chunk = instance.getMyChunk();
-		Scene scene = null;
-		PhysicsComponent physicsComponent = null;
+		isUsingPhysics = false;
+		chunk = instance.getMyChunk();
+		physicsComponent = null;
 		if (chunk != null) {
-			scene = instance.getMyChunk().getScene();
+			scene = chunk.getScene();
 			if (scene != null) {
 				if (scene.isUsingPhysics()) {
 					physicsComponent = instance.getComponent(PhysicsComponent.class);
@@ -47,9 +53,9 @@ public class AudioListenerComponent implements Component {
 				}
 			}
 		}
-		final Vector3f position = instance.getAbsolutePos();
-		final javax.vecmath.Vector3f velocity = new javax.vecmath.Vector3f(0, 0, 0);
-		final Vector3f rotation = instance.getAbsoluteRotation();
+		position = instance.getAbsolutePos();
+		velocity.set(0,0,0);
+		rotation = instance.getAbsoluteRotation();
 		if (isUsingPhysics) {
 			physicsComponent.getBody().getAngularVelocity(velocity);
 		}
@@ -63,7 +69,7 @@ public class AudioListenerComponent implements Component {
 
 	@Override
 	public float getLevel() {
-		return 1.1F;
+		return 2F;
 	}
 
 }

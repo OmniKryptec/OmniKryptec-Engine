@@ -110,17 +110,25 @@ public class AudioSourceComponent implements Component {
         sources.clear();
         return this;
     }
-
+    
+    private float newDeltaPitch;
+    private boolean isUsingPhysics,paused;
+    private RenderChunk chunk;
+    private Scene scene;
+    private PhysicsComponent physicsComponent;
+    private Vector3f position, rotation;
+    private javax.vecmath.Vector3f velocity = new javax.vecmath.Vector3f(0, 0, 0);;
+    
     @Override
     public final void execute(GameObject instance) {
         blocker.waitFor();
         blocker.setBlocked(true);
-        boolean isUsingPhysics = false;
-        RenderChunk chunk = instance.getMyChunk();
-        Scene scene = null;
-        PhysicsComponent physicsComponent = null;
+        isUsingPhysics = false;
+        chunk = instance.getMyChunk();
+        scene = null;
+        physicsComponent = null;
         if(chunk != null) {
-            scene = instance.getMyChunk().getScene();
+            scene = chunk.getScene();
             if(scene != null) {
                 if(scene.isUsingPhysics()) {
                     physicsComponent = instance.getComponent(PhysicsComponent.class);
@@ -128,20 +136,20 @@ public class AudioSourceComponent implements Component {
                 }
             }
         }
-        final Vector3f position = instance.getAbsolutePos();
-        final javax.vecmath.Vector3f velocity = new javax.vecmath.Vector3f(0, 0, 0);
+        position = instance.getAbsolutePos();
+        velocity.set(0, 0, 0);
         if(isUsingPhysics) {
             physicsComponent.getBody().getAngularVelocity(velocity);
         }
-        final Vector3f rotation = instance.getAbsoluteRotation();
+        rotation = instance.getAbsoluteRotation();
         sources.stream().forEach((source) -> {
             source.setPosition(position);
             source.setVelocity(velocity);
             source.setOrientation(rotation); 
         });
         if(scene != null && scene.isUsingPhysics()) {
-            final boolean paused = scene.getPhysicsWorld().isSimulationPaused();
-            final float newDeltaPitch = scene.getPhysicsWorld().getSimulationSpeed() - 1.0F;
+            paused = scene.getPhysicsWorld().isSimulationPaused();
+            newDeltaPitch = scene.getPhysicsWorld().getSimulationSpeed() - 1.0F;
             sources.stream().forEach((source) -> {
                 if(source.isAffectedByPhysics()) {
                     if(paused && source.isPlaying()) {

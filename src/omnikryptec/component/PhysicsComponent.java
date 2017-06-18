@@ -26,6 +26,8 @@ public class PhysicsComponent implements Component {
 	private final RigidBody body;
 	private boolean pause = false;
 
+	
+	private RigidBodyBuilder rigidBodyBuilder;
 	/**
 	 * Constructs this Component with a standard RigidBodyBuilder
 	 * 
@@ -39,7 +41,7 @@ public class PhysicsComponent implements Component {
 			throw new NullPointerException("Instance must not be null!");
 		}
 		this.instance = instance;
-		RigidBodyBuilder rigidBodyBuilder = new RigidBodyBuilder();
+		rigidBodyBuilder = new RigidBodyBuilder();
 		if (instance instanceof Entity) {
 			rigidBodyBuilder.loadFromEntity((Entity) instance);
 		} else {
@@ -68,10 +70,12 @@ public class PhysicsComponent implements Component {
 		this.body = rigidBodyBuilder.create();
 		init();
 	}
-
+	
+	private RenderChunk chunk;
+	
 	private final void init() {
 		if (instance != null) {
-			RenderChunk chunk = instance.getMyChunk();
+			chunk = instance.getMyChunk();
 			if (chunk != null) {
 				body.setActivationState(CollisionObject.DISABLE_DEACTIVATION); // FIXME
 																				// ONLY
@@ -133,17 +137,19 @@ public class PhysicsComponent implements Component {
 		this.pause = pause;
 		return this;
 	}
-
+	
+	private Vector3f ballPosition;
+	private Quat4f ballOrientation;
+	
 	@Override
 	public final void execute(GameObject instance) {
 		if (pause) {
 			return;
 		}
-		final Vector3f ballPosition = body.getMotionState().getWorldTransform(new Transform()).origin;
+		ballPosition = body.getMotionState().getWorldTransform(new Transform()).origin;
 		instance.setRelativePos(ballPosition.x, ballPosition.y, ballPosition.z);
-		final Quat4f ballOrientation = body.getOrientation(new Quat4f());
-		instance.setRotation(
-				new org.lwjgl.util.vector.Vector3f(ballOrientation.x, ballOrientation.y, ballOrientation.z));
+		ballOrientation = body.getOrientation(ballOrientation);
+		instance.getRelativeRotation().set(ballOrientation.x, ballOrientation.y, ballOrientation.z);
 	}
 
 	@Override
