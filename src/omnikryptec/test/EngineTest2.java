@@ -3,6 +3,7 @@ package omnikryptec.test;
 import java.util.Random;
 
 import org.lwjgl.opengl.PixelFormat;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.display.DisplayManager;
@@ -20,10 +21,16 @@ import omnikryptec.main.Scene;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
+import omnikryptec.postprocessing.DebugRenderer;
+import omnikryptec.postprocessing.PostProcessing;
+import omnikryptec.ppstages.BloomStage;
+import omnikryptec.ppstages.ColorSpaceStage;
+import omnikryptec.ppstages.CompleteGaussianBlurStage;
+import omnikryptec.ppstages.ContrastchangeStage;
 import omnikryptec.settings.GameSettings;
+import omnikryptec.texture.AtlasTexture;
 import omnikryptec.texture.SimpleAnimation;
 import omnikryptec.texture.SimpleTexture;
-import omnikryptec.texture.AtlasTexture;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
 
@@ -47,35 +54,34 @@ public class EngineTest2 implements IEventHandler {
 							new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32)
 									.setInitialFPSCap(-1).setChunkOffsets(10, 10, 10),
 							new OpenGLInfo(3, 3, new PixelFormat()));
+			 PostProcessing.instance().addStage(new BloomStage(new CompleteGaussianBlurStage(true, 0.6f, 0.6f), new Vector4f(1, 0, 0, 0), new Vector2f(1, 6)));
 			// PostProcessing.instance().addStage(new
 			// LightStage(LightPrepare.ATT_LIGHT_PREPARE,
 			// LightPrepare.DEFAULT_LIGHT_PREPARE));
-			// PostProcessing.instance().addStage(new
-			// CompleteGaussianBlurStage(false,0.1f,0.1f));
-			// PostProcessing.instance().addStage(new ColorSpaceStage(2,4,8));
-			// PostProcessing.instance().addStage(new
-			// CompleteGaussianBlurStage(true,0.5f,0.5f));
-			// PostProcessing.instance().addStage(new
-			// ContrastchangeStage(-0.25f));
-			// PostProcessing.instance().addStage(new BrightnessfilterStage(new
-			// Vector4f(0, 0, 0, 0)));
+//			 PostProcessing.instance().addStage(new
+//			 CompleteGaussianBlurStage(false,0.1f,0.1f));
+			 PostProcessing.instance().addStage(new ColorSpaceStage(16,4,4));
+//			 PostProcessing.instance().addStage(new
+//			 CompleteGaussianBlurStage(true,0.5f,0.5f));
+			PostProcessing.instance().addStage(new
+			ContrastchangeStage(0.75f));
+
+			 //PostProcessing.instance().addStage(new BrightnessfilterStage(new Vector4f(0, 0, 0, 0)));
 			// RenderUtil.goWireframe(true);
 			// PostProcessing.instance().setEnabled(false);
-			// PostProcessing.instance().addStage(new
-			// FogStage().setDensity(0.05f).setFog(0, 0.5f, 0,
-			// 0.8f).setGradient(2));
-			// PostProcessing.instance().addStage(new
-			// CompleteGaussianBlurStage(false, 0.6f, 0.6f));
-			// PostProcessing.instance().addStage(new
-			// CompleteGaussianBlurStage(false, 0.3f, 0.3f));
-			// PostProcessing.instance().addStage(new
-			// CompleteGaussianBlurStage(false, 0.1f, 0.1f));
-			// PostProcessing.instance().addStage(new
-			// CompleteGaussianBlurStage(false, 0.05f, 0.05f));
+//			 PostProcessing.instance().addStage(new
+//			 FogStage().setDensity(0.05f).setFog(0, 0.5f, 0,
+//			 0.8f).setGradient(2));
+			 PostProcessing.instance().addStage(new
+			 CompleteGaussianBlurStage(false, 0.6f, 0.6f));
+			 PostProcessing.instance().addStage(new
+			 CompleteGaussianBlurStage(false, 0.3f, 0.3f));
+//			 PostProcessing.instance().addStage(new
+//			 CompleteGaussianBlurStage(false, 0.1f, 0.1f));
+//			 PostProcessing.instance().addStage(new
+//			 CompleteGaussianBlurStage(false, 0.05f, 0.05f));
 
-			// PostProcessing.instance().addStage(new BloomStage(new
-			// CompleteGaussianBlurStage(true, 0.3f, 0.3f), new Vector4f(1, 0,
-			// 0, 0), new Vector2f(1, 5)).setEnabled(true));
+			PostProcessing.instance().addStage(new DebugRenderer(0,1,2,3,4,8));
 			EventSystem.instance().addEventHandler(new EngineTest2(), EventType.RENDER_EVENT);
 			Model brunnen = new Model(
 					ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
@@ -104,12 +110,12 @@ public class EngineTest2 implements IEventHandler {
 
 			SimpleAnimation animation = new SimpleAnimation(2, brunnent, pinet);
 
-			TexturedModel ptm = new TexturedModel(pine, animation);
+			TexturedModel ptm = new TexturedModel(pine, pinet);
 			ptm.getMaterial().setHasTransparency(true);
-			ptm.getMaterial().setReflectivity(0.1f).setShineDamper(0.0001f).setExtraInfoVec(new Vector4f(1, 0, 0, 0));
+			ptm.getMaterial().setReflectivity(0.1f).setShineDamper(0.01f).setExtraInfoVec(new Vector4f(1, 1, 0, 0));
 			Random r = new Random();
 			for (int i = 0; i < 200; i++) {
-				Entity e = new Entity(tm) {
+				Entity e = new Entity(ptm) {
 					@Override
 					public void doLogic() {
 						// setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(),

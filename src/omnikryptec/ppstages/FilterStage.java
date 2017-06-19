@@ -36,8 +36,8 @@ public class FilterStage extends PostProcessingStep {
 
 	@Override
 	public void bindTexture(FrameBufferObject before, List<FrameBufferObject> beforelist, Shader using, int stage) {
-		(l_ind[0] < 0 ? before : beforelist.get(l_ind[0])).bindToUnita(0);
-		(l_ind[1] < 0 ? before : beforelist.get(l_ind[1])).bindToUnita(1);
+		(l_ind[0] < 0 ? before : beforelist.get(l_ind[0])).bindToUnit(0);
+		(l_ind[1] < 0 ? before : beforelist.get(l_ind[1])).bindToUnit(1);
 		shader.channels.loadVec4(channels);
 	}
 

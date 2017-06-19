@@ -334,7 +334,7 @@ public class FrameBufferObject extends Texture {
 	 * info[0] is the attachmentindex to use
 	 */
 	@Override
-	public void bindToUnita(int unit, int... info) {
+	protected void bindToUnita(int unit, int... info) {
 		if (info == null || info.length == 0) {
 			info = new int[] { 0 };
 		}
