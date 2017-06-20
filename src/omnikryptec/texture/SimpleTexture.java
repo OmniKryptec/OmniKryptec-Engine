@@ -15,6 +15,7 @@ public class SimpleTexture extends Texture {
 	private final int type;
 	private final int id;
 	
+	
 	protected SimpleTexture(int textureId, TextureData data) {
 		this(textureId, GL11.GL_TEXTURE_2D, data);
 	}

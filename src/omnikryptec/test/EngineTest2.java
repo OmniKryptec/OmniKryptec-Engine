@@ -4,6 +4,7 @@ import java.util.Random;
 
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.display.DisplayManager;
@@ -21,6 +22,8 @@ import omnikryptec.main.Scene;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
+import omnikryptec.particles.ParticleSystem;
+import omnikryptec.particles.ParticleTexture;
 import omnikryptec.postprocessing.DebugRenderer;
 import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.ppstages.BloomStage;
@@ -54,17 +57,17 @@ public class EngineTest2 implements IEventHandler {
 							new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32)
 									.setInitialFPSCap(-1).setChunkOffsets(10, 10, 10),
 							new OpenGLInfo(3, 3, new PixelFormat()));
-			 PostProcessing.instance().addStage(new BloomStage(new CompleteGaussianBlurStage(true, 0.6f, 0.6f), new Vector4f(1, 0, 0, 0), new Vector2f(1, 6)));
+//			 PostProcessing.instance().addStage(new BloomStage(new CompleteGaussianBlurStage(true, 0.6f, 0.6f), new Vector4f(1, 0, 0, 0), new Vector2f(1, 6)));
 			// PostProcessing.instance().addStage(new
 			// LightStage(LightPrepare.ATT_LIGHT_PREPARE,
 			// LightPrepare.DEFAULT_LIGHT_PREPARE));
 //			 PostProcessing.instance().addStage(new
 //			 CompleteGaussianBlurStage(false,0.1f,0.1f));
-			 PostProcessing.instance().addStage(new ColorSpaceStage(16,4,4));
+//			 PostProcessing.instance().addStage(new ColorSpaceStage(16,4,4));
 //			 PostProcessing.instance().addStage(new
 //			 CompleteGaussianBlurStage(true,0.5f,0.5f));
-			PostProcessing.instance().addStage(new
-			ContrastchangeStage(0.75f));
+//			PostProcessing.instance().addStage(new
+//			ContrastchangeStage(0.75f));
 
 			 //PostProcessing.instance().addStage(new BrightnessfilterStage(new Vector4f(0, 0, 0, 0)));
 			// RenderUtil.goWireframe(true);
@@ -72,16 +75,16 @@ public class EngineTest2 implements IEventHandler {
 //			 PostProcessing.instance().addStage(new
 //			 FogStage().setDensity(0.05f).setFog(0, 0.5f, 0,
 //			 0.8f).setGradient(2));
-			 PostProcessing.instance().addStage(new
-			 CompleteGaussianBlurStage(false, 0.6f, 0.6f));
-			 PostProcessing.instance().addStage(new
-			 CompleteGaussianBlurStage(false, 0.3f, 0.3f));
+//			 PostProcessing.instance().addStage(new
+//			 CompleteGaussianBlurStage(false, 0.6f, 0.6f));
+//			 PostProcessing.instance().addStage(new
+//			 CompleteGaussianBlurStage(false, 0.3f, 0.3f));
 //			 PostProcessing.instance().addStage(new
 //			 CompleteGaussianBlurStage(false, 0.1f, 0.1f));
 //			 PostProcessing.instance().addStage(new
 //			 CompleteGaussianBlurStage(false, 0.05f, 0.05f));
 
-			PostProcessing.instance().addStage(new DebugRenderer(0,1,2,3,4,8));
+//			PostProcessing.instance().addStage(new DebugRenderer(0,1,2,3,4,8));
 			EventSystem.instance().addEventHandler(new EngineTest2(), EventType.RENDER_EVENT);
 			Model brunnen = new Model(
 					ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
@@ -130,6 +133,7 @@ public class EngineTest2 implements IEventHandler {
 				e.setRelativePos(r.nextInt(100) - 50, r.nextInt(100) - 50, r.nextInt(100) - 50);
 				OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 			}
+			 system = new ParticleSystem(new Vector3f(0, 10, 0), new ParticleTexture(pinet, 2, true), 10, 10, new Vector3f(0, 1, 0), 10000, 1);
 			// ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
 			// OmniKryptecEngine.instance().getCurrentScene().addGameObject(new
 			// Light().setColor(1, 1, 0).setRadius(100));
@@ -159,10 +163,10 @@ public class EngineTest2 implements IEventHandler {
 		// 1000, 0.001f);
 		Logger.CONSOLE.setTitle(camera.toString());
 	}
-
+	static ParticleSystem system;
 	@Override
 	public void onEvent(Event ev) {
-
+		system.generateParticles(1);
 		// System.out.println(DisplayManager.instance().getFPS());
 		// System.out.println(DisplayManager.instance().getDeltaTime());
 	}

@@ -14,6 +14,7 @@ import omnikryptec.logger.Commands;
 import omnikryptec.logger.Logger;
 import omnikryptec.model.Material;
 import omnikryptec.model.VertexArrayObject;
+import omnikryptec.particles.ParticleMaster;
 import omnikryptec.postprocessing.FrameBufferObject;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.PostProcessing;
@@ -115,6 +116,7 @@ public class OmniKryptecEngine {
 		RenderUtil.cullBackFaces(true);
 		RenderUtil.enableDepthTesting(true);
 		RendererRegistration.init();
+		ParticleMaster.init();
 		createFbos();
 		eventsystem.fireEvent(new Event(), EventType.BOOTING_COMPLETED);
 	}
@@ -205,7 +207,10 @@ public class OmniKryptecEngine {
 				}
 				sceneCurrent.frame(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, AllowedRenderer.All);
 			}
-
+			ParticleMaster.update(getCurrentScene().getCamera());
+			ParticleMaster.renderParticles(getCurrentScene().getCamera());
+			
+			eventsystem.fireEvent(new Event(), EventType.RENDER_EVENT);
 			scenefbo.unbindFrameBuffer();
 			scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);
 			scenefbo.resolveToFbo(normalfbo, GL30.GL_COLOR_ATTACHMENT1);
@@ -218,7 +223,6 @@ public class OmniKryptecEngine {
 			}
 			PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
 			eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
-			eventsystem.fireEvent(new Event(), EventType.RENDER_EVENT);
 			DisplayManager.instance().updateDisplay();
 		} catch (Exception e) {
 			errorOccured(e, "Error occured in frame: ");
@@ -253,6 +257,7 @@ public class OmniKryptecEngine {
 		VertexArrayObject.cleanup();
 		FrameBufferObject.cleanup();
 		RendererRegistration.cleanup();
+		ParticleMaster.cleanup();
 	}
 
 	public final OmniKryptecEngine addAndSetScene(String name, Scene scene) {

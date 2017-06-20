@@ -14,7 +14,7 @@ public class VertexArrayObject {
 
 	private static int lastBoundId=-1;
 	
-	public final int id;
+	public final int ID;
 	private VertexBufferObject dataVbo;
 	private VertexBufferObject indexVbo;
 	private int indexCount;
@@ -27,7 +27,7 @@ public class VertexArrayObject {
 	}
 
 	private VertexArrayObject(int id) {
-		this.id = id;
+		this.ID = id;
 		vaos.add(this);
 	}
 
@@ -36,9 +36,9 @@ public class VertexArrayObject {
 	}
 
 	public void bind() {
-		if(id!=lastBoundId){
-			GL30.glBindVertexArray(id);
-			lastBoundId = id;
+		if(ID!=lastBoundId){
+			GL30.glBindVertexArray(ID);
+			lastBoundId = ID;
 		}
 	}
 	
@@ -71,7 +71,7 @@ public class VertexArrayObject {
 	}
 
 	public void delete() {
-		GL30.glDeleteVertexArrays(id);
+		GL30.glDeleteVertexArrays(ID);
 		dataVbo.delete();
 		indexVbo.delete();
 	}
