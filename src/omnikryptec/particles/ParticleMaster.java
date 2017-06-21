@@ -56,7 +56,11 @@ public class ParticleMaster {
 		}
 		rend.render(particles, cam);
 	}
-
+	
+	public long getRenderedParticlesCount(){
+		return rend.getParticleCount();
+	}
+	
 
 	public static void cleanup() {
 		rend.cleanUp();
