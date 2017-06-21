@@ -55,13 +55,15 @@ public class AnimatedModelRenderer implements Renderer {
                 RenderUtil.enableDepthTesting(true);
                 AnimatedModel animatedModel = (AnimatedModel) entity.getAdvancedModel();
                 
-                Logger.log("Rendered " + entity);
+                Logger.log("Started Rendering: " + entity);
                 
 		animatedModel.getTexture().bindToUnit(0);
 		animatedModel.getModel().getVao().bind(0, 1, 2, 3, 4);
 		shader.jointTransforms.loadMatrixArray(animatedModel.getJointTransforms());
 		GL11.glDrawElements(GL11.GL_TRIANGLES, animatedModel.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
 		animatedModel.getModel().getVao().unbind(0, 1, 2, 3, 4);
+                
+                Logger.log("Finished Rendering: " + entity);
 	}
 
 	private List<Entity> stapel;
@@ -81,7 +83,9 @@ public class AnimatedModelRenderer implements Renderer {
             stapel = entities.get(model);
             if(stapel != null && !stapel.isEmpty()) {
                 stapel.stream().forEach((entity) -> {
-                    render(entity);
+                    if(entity.isActive() && RenderUtil.inRenderRange(entity, camera)) {
+                        render(entity);
+                    }
                 });
             }
         }
