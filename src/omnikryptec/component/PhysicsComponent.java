@@ -138,12 +138,12 @@ public class PhysicsComponent implements Component {
 		return this;
 	}
 	
-	private Vector3f ballPosition;
-	private Quat4f ballOrientation;
+	private Vector3f ballPosition = new Vector3f();
+	private Quat4f ballOrientation = new Quat4f();
 	
 	@Override
 	public final void execute(GameObject instance) {
-		if (pause) {
+		if (pause || body == null) {
 			return;
 		}
 		ballPosition = body.getMotionState().getWorldTransform(new Transform()).origin;

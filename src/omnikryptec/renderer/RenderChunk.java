@@ -13,8 +13,8 @@ import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
+import omnikryptec.model.AdvancedModel;
 import omnikryptec.model.Material;
-import omnikryptec.model.TexturedModel;
 
 public class RenderChunk {
 
@@ -61,16 +61,16 @@ public class RenderChunk {
 		this.scene = scene;
 	}
 
-	private final RenderMap<Renderer, RenderMap<TexturedModel, List<Entity>>> chunk = new RenderMap<>(Renderer.class);
+	private final RenderMap<Renderer, RenderMap<AdvancedModel, List<Entity>>> chunk = new RenderMap<>(Renderer.class);
 	private final ArrayList<GameObject> other = new ArrayList<>();
 	private final Map<LightPrepare, List<Light>> lights = new HashMap<>();
 
 	private Entity tmp;
 	private Renderer tmpr;
-	private RenderMap<TexturedModel, List<Entity>> map;
+	private RenderMap<AdvancedModel, List<Entity>> map;
 	private List<Entity> list;
 	private Material m;
-	private TexturedModel tm;
+	private AdvancedModel am;
 
 	private Light tmpl;
 	private LightPrepare lightpre;
@@ -80,20 +80,20 @@ public class RenderChunk {
 		if (g != null) {
 			if (g instanceof Entity) {
 				tmp = (Entity) g;
-				tm = null;
+				am = null;
 				m = null;
-				if ((tm = tmp.getTexturedModel()) != null) {
-					if ((m = tm.getMaterial()) != null) {
+				if ((am = tmp.getAdvancedModel()) != null) {
+					if ((m = am.getMaterial()) != null) {
 						if ((tmpr = m.getRenderer()) != null) {
 							map = chunk.get(tmpr);
 							if (map == null) {
-								map = new RenderMap<>(TexturedModel.class);
+								map = new RenderMap<>(AdvancedModel.class);
 								chunk.put(tmpr, map);
 							}
-							list = map.get(tm);
+							list = map.get(am);
 							if (list == null) {
 								list = new ArrayList<>();
-								map.put(tm, list);
+								map.put(am, list);
 							}
 							list.add(tmp);
 						} else if (Logger.isDebugMode()) {
@@ -124,18 +124,18 @@ public class RenderChunk {
 		if (g != null) {
 			if (g instanceof Entity) {
 				tmp = (Entity) g;
-				tm = null;
+				am = null;
 				m = null;
-				if ((tm = tmp.getTexturedModel()) != null) {
-					if ((m = tm.getMaterial()) != null) {
+				if ((am = tmp.getAdvancedModel()) != null) {
+					if ((m = am.getMaterial()) != null) {
 						if ((tmpr = m.getRenderer()) != null) {
 							map = chunk.get(tmpr);
 							if (map != null) {
-								list = map.get(tm);
+								list = map.get(am);
 								if (list != null) {
 									list.remove(tmp);
 									if (list.isEmpty()) {
-										map.remove(tm);
+										map.remove(am);
 									}
 									if (map.isEmpty()) {
 										chunk.remove(tmpr);

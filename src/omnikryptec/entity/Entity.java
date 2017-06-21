@@ -4,7 +4,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.model.Model;
-import omnikryptec.model.TexturedModel;
+import omnikryptec.model.AdvancedModel;
 import omnikryptec.texture.SimpleTexture;
 
 public class Entity extends GameObject implements Rangeable{
@@ -13,7 +13,7 @@ public class Entity extends GameObject implements Rangeable{
 		ALWAYS, MEDIUM, FOLIAGE, BIG;
 	}
 
-	private TexturedModel model;
+	private AdvancedModel model;
 	private Vector3f scale = new Vector3f(1, 1, 1);
 	private RenderType type = RenderType.ALWAYS;
 	private Vector4f color = new Vector4f(1, 1, 1, 1);
@@ -21,11 +21,11 @@ public class Entity extends GameObject implements Rangeable{
 	protected Entity() {
 	}
 
-	public Entity(TexturedModel model) {
+	public Entity(AdvancedModel model) {
 		this(model, null);
 	}
 
-	public Entity(TexturedModel model, GameObject parent) {
+	public Entity(AdvancedModel model, GameObject parent) {
 		super(parent);
 		this.model = model;
 	}
@@ -57,12 +57,12 @@ public class Entity extends GameObject implements Rangeable{
 		return this;
 	}
 
-	public final Entity setTexturedModel(TexturedModel model) {
+	public final Entity setAdvancedModel(AdvancedModel model) {
 		this.model = model;
 		return this;
 	}
 
-	public final TexturedModel getTexturedModel() {
+	public final AdvancedModel getAdvancedModel() {
 		return model;
 	}
 

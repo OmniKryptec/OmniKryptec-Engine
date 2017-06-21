@@ -143,7 +143,7 @@ public class RigidBodyBuilder {
 		if (entity == null) {
 			return this;
 		}
-		loadCollisionShape(entity.getTexturedModel());
+		loadCollisionShape((TexturedModel) entity.getAdvancedModel());
 		setDefaultMotionState(entity);
 		return this;
 	}

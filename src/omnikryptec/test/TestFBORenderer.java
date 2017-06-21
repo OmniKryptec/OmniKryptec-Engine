@@ -4,7 +4,7 @@ import java.util.List;
 
 import omnikryptec.entity.Entity;
 import omnikryptec.main.Scene;
-import omnikryptec.model.TexturedModel;
+import omnikryptec.model.AdvancedModel;
 import omnikryptec.postprocessing.FrameBufferObject;
 import omnikryptec.renderer.RenderChunk.AllowedRenderer;
 import omnikryptec.renderer.RenderMap;
@@ -17,7 +17,7 @@ public class TestFBORenderer implements Renderer {
 	public FrameBufferObject fbo;
 
 	@Override
-	public void render(Scene s, RenderMap<TexturedModel, List<Entity>> entities) {
+	public void render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities) {
 		fbo.bindFrameBuffer();
 		RenderUtil.clear(0, 0, 0, 0);
 		s.frame(0, 0, AllowedRenderer.EvElse, this);

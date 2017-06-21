@@ -2,32 +2,35 @@ package omnikryptec.model;
 
 import omnikryptec.texture.Texture;
 
-public class TexturedModel {
+public class TexturedModel implements AdvancedModel {
 
-	private Model model;
-	private Texture texture;
-	private Material material;
+    private Model model;
+    private Texture texture;
+    private Material material;
 
-	public TexturedModel(Model m, Texture t) {
-		this(m, t, new Material());
-	}
+    public TexturedModel(Model m, Texture t) {
+        this(m, t, new Material());
+    }
 
-	public TexturedModel(Model m, Texture t, Material mat) {
-		this.model = m;
-		this.texture = t;
-		this.material = mat;
-	}
+    public TexturedModel(Model m, Texture t, Material mat) {
+        this.model = m;
+        this.texture = t;
+        this.material = mat;
+    }
 
-	public Model getModel() {
-		return model;
-	}
+    @Override
+    public final Model getModel() {
+        return model;
+    }
 
-	public Texture getTexture() {
-		return texture;
-	}
+    @Override
+    public final Texture getTexture() {
+        return texture;
+    }
 
-	public Material getMaterial() {
-		return material;
-	}
+    @Override
+    public final Material getMaterial() {
+        return material;
+    }
 
 }

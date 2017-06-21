@@ -193,7 +193,7 @@ public class JBulletTest2 {
 	private static final void manageTerrains() {
 		for (Terrain terrain : terrains) {
 			rigidBodyBuilder_terrain
-					.setCollisionShape(PhysicsUtil.createConvexHullShape(terrain.getTexturedModel().getModel()));
+					.setCollisionShape(PhysicsUtil.createConvexHullShape(terrain.getAdvancedModel().getModel()));
 			rigidBodyBuilder_terrain.setDefaultMotionState(
 					new Vector3f(terrain.getAbsolutePos().x / 2, 0, terrain.getAbsolutePos().z / 2),
 					new Vector3f(0, 0, 0));

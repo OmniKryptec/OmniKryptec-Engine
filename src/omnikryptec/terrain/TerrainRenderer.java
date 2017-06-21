@@ -9,6 +9,7 @@ import omnikryptec.entity.Entity;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.Scene;
+import omnikryptec.model.AdvancedModel;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.renderer.RenderMap;
 import omnikryptec.renderer.Renderer;
@@ -36,12 +37,15 @@ public class TerrainRenderer implements Renderer {
 
 	// TODO change something
 	@Override
-	public void render(Scene s, RenderMap<TexturedModel, List<Entity>> entities) {
+	public void render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities) {
 		shader.start();
 		TerrainShader.viewMatrix.loadMatrix(s.getCamera().getViewMatrix());
 		TerrainShader.projectionMatrix.loadMatrix(s.getCamera().getProjectionMatrix());
 		for (int i = 0; i < entities.keysArray().length; i++) {
-			model = entities.keysArray()[i];
+                        if(!(entities.keysArray()[i] instanceof TexturedModel)) {
+                            continue;
+                        }
+                        model = (TexturedModel) entities.keysArray()[i];
 			model.getModel().getVao().bind(0, 1, 2);
 			// model.getTexture().bindToUnit(0);
 			if (model.getMaterial().hasTransparency()) {

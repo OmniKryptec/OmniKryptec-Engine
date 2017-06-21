@@ -1,17 +1,23 @@
 package omnikryptec.animation;
 
+import java.util.ArrayList;
+import omnikryptec.model.AdvancedModel;
+import omnikryptec.model.Material;
 import omnikryptec.model.Model;
-import omnikryptec.texture.SimpleTexture;
+import omnikryptec.texture.Texture;
 import org.lwjgl.util.vector.Matrix4f;
 
 /**
  * AnimatedModel
  * @author Panzer1119
  */
-public class AnimatedModel {
+public class AnimatedModel implements AdvancedModel {
+    
+    private static final ArrayList<AnimatedModel> animatedModels = new ArrayList<>();
     
     private final Model model;
-    private final SimpleTexture texture;
+    private final Texture texture;
+    private final Material material;
     
     private final Joint rootJoint;
     private final int jointCount;
@@ -21,32 +27,48 @@ public class AnimatedModel {
     /**
      * Creates an animated model
      * @param model Model Model
-     * @param texture SimpleTexture Texture
+     * @param texture Texture Texture
      * @param rootJoint Joint Root Joint
      * @param jointCount Integer Joint count
      */
-    public AnimatedModel(Model model, SimpleTexture texture, Joint rootJoint, int jointCount) {
+    public AnimatedModel(Model model, Texture texture, Joint rootJoint, int jointCount) {
+        this(model, texture, rootJoint, jointCount, new Material());
+    }
+    
+    /**
+     * Creates an animated model with a custom material
+     * @param model Model Model
+     * @param texture Texture Texture
+     * @param rootJoint Joint Root Joint
+     * @param jointCount Integer Joint count
+     * @param material Material Material
+     */
+    public AnimatedModel(Model model, Texture texture, Joint rootJoint, int jointCount, Material material) {
         this.model = model;
         this.texture = texture;
+        this.material = material;
         this.rootJoint = rootJoint;
         this.jointCount = jointCount;
         this.animator = new Animator(this);
         rootJoint.calculateInverseBindTransform(new Matrix4f());
+        animatedModels.add(this);
     }
     
     /**
      * Returns the model
      * @return Model Model
      */
+    @Override
     public final Model getModel() {
         return model;
     }
     
     /**
      * Returns the texture
-     * @return SimpleTexture Texture
+     * @return Texture Texture
      */
-    public final SimpleTexture getTexture() {
+    @Override
+    public final Texture getTexture() {
         return texture;
     }
     
@@ -64,7 +86,9 @@ public class AnimatedModel {
      */
     public final AnimatedModel delete() {
         model.getVao().delete();
-        texture.delete();
+        //texture.delete();
+        animator.delete();
+        animatedModels.remove(this);
         return this;
     }
     
@@ -103,6 +127,17 @@ public class AnimatedModel {
             addJointsToArray(child, jointMatrices);
         });
         return this;
+    }
+
+    @Override
+    public Material getMaterial() {
+        return material;
+    }
+    
+    public static final void updateAllAnimatedModels() {
+        animatedModels.stream().forEach((animatedModel) -> {
+            animatedModel.update();
+        });
     }
     
 }

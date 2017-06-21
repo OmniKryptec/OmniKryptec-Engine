@@ -29,8 +29,8 @@ public class Terrain extends Entity {
 		getRelativePos().x = worldX;
 		getRelativePos().z = worldZ;
 		this.texturePack = texturePack;
-		setTexturedModel(new TexturedModel(model, blendMap));
-		getTexturedModel().getMaterial().setRenderer(terrainRenderer);
+		setAdvancedModel(new TexturedModel(model, blendMap));
+		getAdvancedModel().getMaterial().setRenderer(terrainRenderer);
 	}
 
 	public static final ModelData generateTerrain(final float worldx, final float worldz,
@@ -75,7 +75,7 @@ public class Terrain extends Entity {
 	}
 
 	public final Terrain copy(int gridX, int gridZ) {
-		return new Terrain(gridX, gridZ, getTexturedModel().getModel(), texturePack, getTexturedModel().getTexture());
+		return new Terrain(gridX, gridZ, getAdvancedModel().getModel(), texturePack, getAdvancedModel().getTexture());
 	}
 
 	public final TerrainTexturePack getTexturePack() {
@@ -83,7 +83,7 @@ public class Terrain extends Entity {
 	}
 
 	public final Texture getBlendMap() {
-		return getTexturedModel().getTexture();
+		return getAdvancedModel().getTexture();
 	}
 
 }
