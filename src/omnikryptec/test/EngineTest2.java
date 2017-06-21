@@ -61,7 +61,7 @@ public class EngineTest2 implements IEventHandler {
 							new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32)
 									.setInitialFPSCap(-1).setChunkOffsets(10, 10, 10),
 							new OpenGLInfo(3, 3, new PixelFormat()));
-//			 PostProcessing.instance().addStage(new BloomStage(new CompleteGaussianBlurStage(true, 0.6f, 0.6f), new Vector4f(1, 0, 0, 0), new Vector2f(1, 6)));
+			 PostProcessing.instance().addStage(new BloomStage(new CompleteGaussianBlurStage(true, 0.6f, 0.6f), new Vector4f(1, 0, 0, 0), new Vector2f(1, 6)));
 			// PostProcessing.instance().addStage(new
 			// LightStage(LightPrepare.ATT_LIGHT_PREPARE,
 			// LightPrepare.DEFAULT_LIGHT_PREPARE));
@@ -88,7 +88,7 @@ public class EngineTest2 implements IEventHandler {
 //			 PostProcessing.instance().addStage(new
 //			 CompleteGaussianBlurStage(false, 0.05f, 0.05f));
 
-//			PostProcessing.instance().addStage(new DebugRenderer(0,1,2,3,4,8));
+			//PostProcessing.instance().addStage(new DebugRenderer());
 			EventSystem.instance().addEventHandler(new EngineTest2(), EventType.RENDER_EVENT);
 			Model brunnen = new Model(
 					ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
@@ -121,7 +121,7 @@ public class EngineTest2 implements IEventHandler {
 			ptm.getMaterial().setHasTransparency(true);
 			ptm.getMaterial().setReflectivity(0.1f).setShineDamper(0.01f).setExtraInfoVec(new Vector4f(1, 1, 0, 0));
 			Random r = new Random();
-			for (int i = 0; i < 200; i++) {
+			for (int i = 0; i < 100; i++) {
 				Entity e = new Entity(ptm) {
 					@Override
 					public void doLogic() {
@@ -138,7 +138,7 @@ public class EngineTest2 implements IEventHandler {
 				OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 			}
 			//ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
-			ParticleSystem system = new ParticleSystem(10,10,10, new ParticleTexture(SimpleTexture.newTexture(Utils.class.getResourceAsStream("/omnikryptec/test/cosmic.png")).create(), 4, false), 3000, 20, new Vector3f(0, 0, 0), 5, 1.25f, RenderType.BIG);
+			system = new ParticleSystem(0,0,0, new ParticleTexture(SimpleTexture.newTexture(Utils.class.getResourceAsStream("/omnikryptec/test/cosmic.png")).create(), 4, false), 50, 5, new Vector3f(0, 0, 0), 4f, 1.25f, RenderType.ALWAYS);
 			OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
 			// ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
 			// OmniKryptecEngine.instance().getCurrentScene().addGameObject(new
@@ -160,7 +160,8 @@ public class EngineTest2 implements IEventHandler {
 	}
 
 	private static float v = 20;
-
+	
+	
 	private static void doCameraLogic(Camera camera) {
 		// v += DisplayManager.instance().getDeltaTime()*30;
 		InputUtil.doFirstPersonController(camera, DisplayManager.instance().getSettings().getKeySettings(), v, v, 40,
@@ -169,6 +170,9 @@ public class EngineTest2 implements IEventHandler {
 		// 1000, 0.001f);
 		Logger.CONSOLE.setTitle(camera.toString());
 	}
+	
+	private static ParticleSystem system;
+
 	@Override
 	public void onEvent(Event ev) {
 		//system.generateParticles(1);
