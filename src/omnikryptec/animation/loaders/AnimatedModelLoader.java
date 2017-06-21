@@ -8,7 +8,6 @@ import omnikryptec.animation.ColladaParser.dataStructures.MeshData;
 import omnikryptec.animation.ColladaParser.dataStructures.SkeletonData;
 import omnikryptec.animation.Joint;
 import omnikryptec.model.Model;
-import omnikryptec.model.VertexArrayObject;
 import omnikryptec.objConverter.ModelData;
 import omnikryptec.texture.SimpleTexture;
 import omnikryptec.texture.Texture;
@@ -73,8 +72,6 @@ public class AnimatedModelLoader {
 	 */
 	private static ModelData createModelData(MeshData data) {
                 ModelData modelData = new ModelData(data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getNormals(), data.getIndices(), 0);
-		VertexArrayObject vertexArrayObject = VertexArrayObject.create();
-                vertexArrayObject.storeData(data.getIndices(), data.getVertexCount(), data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getNormals());
 		return modelData;
 	}
 

@@ -57,10 +57,19 @@ public class AnimatedModelRenderer implements Renderer {
                 
                 Logger.log("Started Rendering: " + entity);
                 
-		animatedModel.getTexture().bindToUnit(0);
 		animatedModel.getModel().getVao().bind(0, 1, 2, 3, 4);
+                Logger.log("Rendering Test 1: " + entity);
+		animatedModel.getTexture().bindToUnit(0);
+                Logger.log("Rendering Test 2: " + entity);
 		shader.jointTransforms.loadMatrixArray(animatedModel.getJointTransforms());
+                Logger.log("Rendering Test 3: " + entity);
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception ex) {
+                    
+                }
 		GL11.glDrawElements(GL11.GL_TRIANGLES, animatedModel.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
+                Logger.log("Rendering Test 4: " + entity);
 		animatedModel.getModel().getVao().unbind(0, 1, 2, 3, 4);
                 
                 Logger.log("Finished Rendering: " + entity);
