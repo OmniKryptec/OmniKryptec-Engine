@@ -12,7 +12,7 @@ public class Particle implements Rangeable{
 
 	private Vector3f pos;
 	private Vector3f vel;
-	private Vector3f gravityEffect;
+	private Vector3f force;
 	private float lifeLength;
 	private float rot;
 	private float scale;
@@ -32,12 +32,12 @@ public class Particle implements Rangeable{
 	
 	private static Vector3f changeable = new Vector3f();
 
-	public Particle(ParticleTexture tex, Vector3f pos, Vector3f vel, Vector3f gravityEffect, float lifeLength, float rot,
+	public Particle(ParticleTexture tex, Vector3f pos, Vector3f vel, Vector3f force, float lifeLength, float rot,
 			float scale, ParticleSystem sys, RenderType type) {
 		this.pos = pos;
 		this.type = type;
 		this.vel = vel;
-		this.gravityEffect = gravityEffect;
+		this.force = force;
 		this.lifeLength = lifeLength;
 		this.elapsedTime = 0;
 		this.rot = rot;
@@ -109,7 +109,7 @@ public class Particle implements Rangeable{
 	private static Vector3f tmp;
 	
 	protected boolean update(Camera cam, float timemultiplier) {
-		Vector3f.add(vel, gravityEffect, vel);
+		Vector3f.add(vel, force, vel);
 		changeable.set(vel);
 		changeable.scale(DisplayManager.instance().getDeltaTime()*timemultiplier);
 		Vector3f.add(changeable, pos, pos);
