@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Vector3f;
 
+import omnikryptec.entity.Rangeable;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.Entity.RenderType;
@@ -145,18 +146,25 @@ public class RenderUtil {
 	private static float rad;
 	private static Vector3f pos, cpos;
 
-	public static boolean inRenderRange(Entity e, Camera c) {
-		if (e.getType() == RenderType.NORMAL) {
+	public static boolean inRenderRange(Rangeable e, Camera c) {
+		if (e.getType() == RenderType.ALWAYS) {
 			return true;
 		} else if (e.getType() == RenderType.FOLIAGE) {
-			rad = OmniKryptecEngine.instance().getDisplayManager().getSettings().getFoliageRadius();
+			rad = OmniKryptecEngine.instance().getDisplayManager().getSettings().getRadiusFoliage();
 			pos = e.getAbsolutePos();
 			cpos = c.getAbsolutePos();
 			if (pos.lengthSquared() < cpos.lengthSquared() + rad && pos.lengthSquared() > cpos.lengthSquared() - rad) {
 				return true;
 			}
 		} else if (e.getType() == RenderType.MEDIUM) {
-			rad = OmniKryptecEngine.instance().getDisplayManager().getSettings().getMediumRadius();
+			rad = OmniKryptecEngine.instance().getDisplayManager().getSettings().getRadiusMedium();
+			pos = e.getAbsolutePos();
+			cpos = c.getAbsolutePos();
+			if (pos.lengthSquared() < cpos.lengthSquared() + rad && pos.lengthSquared() > cpos.lengthSquared() - rad) {
+				return true;
+			}
+		} else if (e.getType() == RenderType.BIG) {
+			rad = OmniKryptecEngine.instance().getDisplayManager().getSettings().getRadiusBig();
 			pos = e.getAbsolutePos();
 			cpos = c.getAbsolutePos();
 			if (pos.lengthSquared() < cpos.lengthSquared() + rad && pos.lengthSquared() > cpos.lengthSquared() - rad) {

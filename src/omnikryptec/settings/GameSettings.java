@@ -33,6 +33,8 @@ public class GameSettings {
 
 	private float foliageRadius = 50;
 	private float mediumRadius = 100;
+	private float bigRadius = 200;
+	
 	private long chunkOffsetX = 1;
 	private long chunkOffsetY = 1;
 	private long chunkOffsetZ = 1;
@@ -379,7 +381,7 @@ public class GameSettings {
 	 *            Float FoliageRadius
 	 * @return GameSettings A reference to this GameSettings
 	 */
-	public final GameSettings setFoliageRadius(float foliageRadius) {
+	public final GameSettings setRadiusFoliage(float foliageRadius) {
 		this.foliageRadius = foliageRadius;
 		return this;
 	}
@@ -389,7 +391,7 @@ public class GameSettings {
 	 * 
 	 * @return Float Foliage radius
 	 */
-	public final float getFoliageRadius() {
+	public final float getRadiusFoliage() {
 		return foliageRadius;
 	}
 
@@ -400,7 +402,7 @@ public class GameSettings {
 	 *            Float Medium radius
 	 * @return GameSettings A reference to this GameSettings
 	 */
-	public final GameSettings setMediumRadius(float mediumRadius) {
+	public final GameSettings setRadiusMedium(float mediumRadius) {
 		this.mediumRadius = mediumRadius;
 		return this;
 	}
@@ -410,7 +412,7 @@ public class GameSettings {
 	 * 
 	 * @return Float Medium radius
 	 */
-	public final float getMediumRadius() {
+	public final float getRadiusMedium() {
 		return mediumRadius;
 	}
 
@@ -568,6 +570,15 @@ public class GameSettings {
 	 */
 	public final GameSettings setChunkDepth(int i) {
 		return setChunkSize(chunkWidth, chunkHeight, i);
+	}
+
+	public float getRadiusBig() {
+		return bigRadius;
+	}
+	
+	public GameSettings setRadiusBig(float r){
+		this.bigRadius = r;
+		return this;
 	}
 
 }

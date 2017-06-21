@@ -12,6 +12,7 @@ import omnikryptec.display.DisplayManager;
 import omnikryptec.display.OpenGLInfo;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
+import omnikryptec.entity.Entity.RenderType;
 import omnikryptec.event.Event;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
@@ -137,7 +138,7 @@ public class EngineTest2 implements IEventHandler {
 				OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 			}
 			//ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
-			ParticleSystem system = new ParticleSystem(10,10,10, new ParticleTexture(SimpleTexture.newTexture(Utils.class.getResourceAsStream("/omnikryptec/test/cosmic.png")).create(), 4, false), 100, 10, new Vector3f(0, 0, 0), 5, 1);
+			ParticleSystem system = new ParticleSystem(10,10,10, new ParticleTexture(SimpleTexture.newTexture(Utils.class.getResourceAsStream("/omnikryptec/test/cosmic.png")).create(), 4, false), 3000, 20, new Vector3f(0, 0, 0), 5, 1.25f, RenderType.BIG);
 			OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
 			// ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
 			// OmniKryptecEngine.instance().getCurrentScene().addGameObject(new
