@@ -70,15 +70,17 @@ public class Shader {
 		}
 		GL20.glAttachShader(programID, fragmentShaderID);
 		List<Uniform> uniformstmp = new ArrayList<>();
-		List<String> attributes = new ArrayList<>();
+		List<Attribute> attributes = new ArrayList<>();
 		for (int i = 0; i < uniAttr.length; i++) {
 			if (uniAttr[i] instanceof Uniform) {
 				uniformstmp.add((Uniform) uniAttr[i]);
-			} else if (uniAttr[i] instanceof String) {
-				attributes.add((String) uniAttr[i]);
+			} else if (uniAttr[i] instanceof Attribute) {
+				attributes.add((Attribute) uniAttr[i]);
+			}else if(uniAttr[i] instanceof String){
+				attributes.add(new Attribute((String)uniAttr[i], i-uniformstmp.size()));
 			}
 		}
-		bindAttributes(attributes.toArray(new String[1]));
+		bindAttributes(attributes.toArray(new Attribute[1]));
 		GL20.glLinkProgram(programID);
 		GL20.glValidateProgram(programID);
 		storeUniforms(uniformstmp.toArray(new Uniform[1]));
@@ -140,15 +142,19 @@ public class Shader {
 		}
 	}
 
-	private void bindAttributes(String... strings) {
+	private void bindAttributes(Attribute... strings) {
 		if (strings == null || strings.length == 0) {
 			return;
 		}
 		for (int i = 0; i < strings.length; i++) {
-			GL20.glBindAttribLocation(programID, i, strings[i]);
+			binAttributeManually(strings[i]);
 		}
 	}
-
+	
+	private void binAttributeManually(Attribute a){
+		GL20.glBindAttribLocation(programID, a.getIndex(), a.getName());
+	}
+	
 
 	// ==============================================LOADINGSECTION=======================================================
 

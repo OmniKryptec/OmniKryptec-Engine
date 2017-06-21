@@ -116,7 +116,6 @@ public class OmniKryptecEngine {
 		RenderUtil.cullBackFaces(true);
 		RenderUtil.enableDepthTesting(true);
 		RendererRegistration.init();
-		ParticleMaster.init();
 		createFbos();
 		eventsystem.fireEvent(new Event(), EventType.BOOTING_COMPLETED);
 	}
@@ -207,9 +206,7 @@ public class OmniKryptecEngine {
 				}
 				sceneCurrent.frame(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, AllowedRenderer.All);
 			}
-			ParticleMaster.update(getCurrentScene().getCamera());
-			ParticleMaster.renderParticles(getCurrentScene().getCamera());
-			
+			ParticleMaster.instance().update(getCurrentScene().getCamera());
 			eventsystem.fireEvent(new Event(), EventType.RENDER_EVENT);
 			scenefbo.unbindFrameBuffer();
 			scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);

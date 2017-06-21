@@ -2,6 +2,7 @@ package omnikryptec.test;
 
 import java.util.Random;
 
+import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -22,6 +23,8 @@ import omnikryptec.main.Scene;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
+import omnikryptec.particles.Particle;
+import omnikryptec.particles.ParticleMaster;
 import omnikryptec.particles.ParticleSystem;
 import omnikryptec.particles.ParticleTexture;
 import omnikryptec.postprocessing.DebugRenderer;
@@ -133,7 +136,9 @@ public class EngineTest2 implements IEventHandler {
 				e.setRelativePos(r.nextInt(100) - 50, r.nextInt(100) - 50, r.nextInt(100) - 50);
 				OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 			}
-			 system = new ParticleSystem(new Vector3f(0, 10, 0), new ParticleTexture(pinet, 2, true), 10, 10, new Vector3f(0, 1, 0), 10000, 1);
+			//ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
+			ParticleSystem system = new ParticleSystem(10,10,10, new ParticleTexture(SimpleTexture.newTexture(Utils.class.getResourceAsStream("/omnikryptec/test/cosmic.png")).create(), 4, false), 100, 10, new Vector3f(0, 0, 0), 5, 1);
+			OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
 			// ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
 			// OmniKryptecEngine.instance().getCurrentScene().addGameObject(new
 			// Light().setColor(1, 1, 0).setRadius(100));
@@ -163,10 +168,10 @@ public class EngineTest2 implements IEventHandler {
 		// 1000, 0.001f);
 		Logger.CONSOLE.setTitle(camera.toString());
 	}
-	static ParticleSystem system;
 	@Override
 	public void onEvent(Event ev) {
-		system.generateParticles(1);
+		//system.generateParticles(1);
+		Display.setTitle("FPS: "+DisplayManager.instance().getFPS());
 		// System.out.println(DisplayManager.instance().getFPS());
 		// System.out.println(DisplayManager.instance().getDeltaTime());
 	}

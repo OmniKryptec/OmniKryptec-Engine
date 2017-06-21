@@ -20,26 +20,32 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.model.Model;
 import omnikryptec.model.VertexBufferObject;
 import omnikryptec.objConverter.ModelData;
+import omnikryptec.util.Maths;
 import omnikryptec.util.ModelUtil;
 import omnikryptec.util.RenderUtil;
 
 public class ParticleRenderer {
 
 //	private static final float[] VERTICES = { -0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f, -0.5f };
-	private static final int MAX_INSTANCES = 10000000;
+	private static int maxInstancesPerSys = 10_000_000;
 	private static final int INSTANCE_DATA_LENGTH = 21;
 
-	private static final FloatBuffer buffer = BufferUtils.createFloatBuffer(MAX_INSTANCES * INSTANCE_DATA_LENGTH);
+	private static FloatBuffer buffer = BufferUtils.createFloatBuffer(maxInstancesPerSys * INSTANCE_DATA_LENGTH);;
 
 	private Model quad;
 	private ParticleShader shader;
 
 	private VertexBufferObject vbo;
 	private int pointer = 0;
-
+	
+	private float[] vboData;
+	private int oldsize=-1;
+	
+	private Camera curCam;
+	
 	protected ParticleRenderer() {
 		quad = ModelUtil.generateQuad();
-		vbo = VertexBufferObject.createEmpty(GL15.GL_ARRAY_BUFFER, MAX_INSTANCES*INSTANCE_DATA_LENGTH);
+		vbo = VertexBufferObject.createEmpty(GL15.GL_ARRAY_BUFFER, maxInstancesPerSys*INSTANCE_DATA_LENGTH);
 		vbo.addInstancedAttribute(quad.getVao(), 1, 4, INSTANCE_DATA_LENGTH, 0);
 		vbo.addInstancedAttribute(quad.getVao(), 2, 4, INSTANCE_DATA_LENGTH, 4);
 		vbo.addInstancedAttribute(quad.getVao(), 3, 4, INSTANCE_DATA_LENGTH, 8);
@@ -48,30 +54,54 @@ public class ParticleRenderer {
 		vbo.addInstancedAttribute(quad.getVao(), 6, 1, INSTANCE_DATA_LENGTH, 20);
 		shader = new ParticleShader();
 	}
-
+	
+	private List<Particle> particleList;
+	private int count;
+	private long globalCount;
+	
 	protected void render(Map<ParticleTexture, List<Particle>> particles, Camera camera) {
-		prepare();
-		for (ParticleTexture texture : particles.keySet()) {
-			bindTexture(texture);
-			List<Particle> particleList = particles.get(texture);
-			pointer = 0;
-			float[] vboData = new float[particleList.size() * INSTANCE_DATA_LENGTH];
-			for (Particle par : particleList) {
-				updateModelViewMatrix(par.getPos(), par.getRot(), par.getScale(), camera.getViewMatrix(), vboData);
-				updateTexCoordInfo(par, vboData);			}
-			vbo.updateData(vboData, buffer);
-			GL31.glDrawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVao().getIndexCount(), particleList.size());
+		curCam = camera;
+		if(buffer==null||buffer.capacity()!=maxInstancesPerSys*INSTANCE_DATA_LENGTH){
+			buffer = BufferUtils.createFloatBuffer(maxInstancesPerSys * INSTANCE_DATA_LENGTH);
 		}
-		finishRendering();
+		shader.start();
+		shader.projMatrix.loadMatrix(curCam.getProjectionMatrix());
+		quad.getVao().bind(0,1,2,3,4,5,6);
+		globalCount = 0;
+		for (ParticleTexture tmpt : particles.keySet()) {
+			bindTexture(tmpt);
+			particleList = particles.get(tmpt);
+			pointer = 0;
+			if(vboData==null||particleList.size() * INSTANCE_DATA_LENGTH!=oldsize){
+				vboData = new float[(oldsize = particleList.size() * INSTANCE_DATA_LENGTH)];
+			}
+			count = 0;
+			for (Particle par : particleList) {
+				if(count>maxInstancesPerSys){
+					break;
+				}
+				updateModelViewMatrix(par.getPos(), par.getRot(), par.getScale(), curCam.getViewMatrix(), vboData);
+				updateTexCoordInfo(par, vboData);
+				count++;
+				globalCount++;
+			}
+			vbo.updateData(vboData, buffer);
+			GL31.glDrawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVao().getIndexCount(), count);
+		}
+		RenderUtil.disableBlending();
 	}
 
+	public long getParticleCount(){
+		return globalCount;
+	}
+	
 	private void bindTexture(ParticleTexture texture) {
 		if (texture.useAlphaBlending()) {
 			RenderUtil.enableAdditiveBlending();
 		} else {
 			RenderUtil.enableAlphaBlending();
 		}
-		texture.getTex().bindToUnit(0);
+		texture.getTexture().bindToUnit(0);
 		shader.nrOfRows.loadFloat(texture.getNumberOfRows());
 	}
 
@@ -82,9 +112,13 @@ public class ParticleRenderer {
 		data[pointer++] = par.getTexOffset2().y;
 		data[pointer++] = par.getBlend();
 	}
-
+	
+	private Vector3f tmp = new Vector3f();
+	private Matrix4f tmpm;
+	private Matrix4f modelMatrix = new Matrix4f();
+	
 	private void updateModelViewMatrix(Vector3f pos, float rot, float scale, Matrix4f viewMatrix, float[] vboData) {
-		Matrix4f modelMatrix = new Matrix4f();
+		modelMatrix.setIdentity();
 		Matrix4f.translate(pos, modelMatrix, modelMatrix);
 		modelMatrix.m00 = viewMatrix.m00;
 		modelMatrix.m01 = viewMatrix.m10;
@@ -95,10 +129,11 @@ public class ParticleRenderer {
 		modelMatrix.m20 = viewMatrix.m02;
 		modelMatrix.m21 = viewMatrix.m12;
 		modelMatrix.m22 = viewMatrix.m22;
-		Matrix4f.rotate((float) Math.toRadians(rot), new Vector3f(0, 0, 1), modelMatrix, modelMatrix);
-		Matrix4f.scale(new Vector3f(scale, scale, scale), modelMatrix, modelMatrix);
-		Matrix4f modelViewMatrix = Matrix4f.mul(viewMatrix, modelMatrix, null);
-		storeMatrixData(modelViewMatrix, vboData);
+		Matrix4f.rotate((float) Math.toRadians(rot), Maths.Z, modelMatrix, modelMatrix);
+		tmp.set(scale, scale, scale);
+		Matrix4f.scale(tmp, modelMatrix, modelMatrix);
+		tmpm = Matrix4f.mul(viewMatrix, modelMatrix, tmpm);
+		storeMatrixData(tmpm, vboData);
 	}
 
 	private void storeMatrixData(Matrix4f matrix, float[] vboData) {
@@ -124,16 +159,5 @@ public class ParticleRenderer {
 		shader.cleanup();
 	}
 
-	private void prepare() {
-		shader.start();
-		shader.projMatrix.loadMatrix(OmniKryptecEngine.instance().getCurrentScene().getCamera().getProjectionMatrix());
-		quad.getVao().bind(0,1,2,3,4,5,6);
-		//GL11.glDepthMask(false);
-	}
-
-	private void finishRendering() {
-		RenderUtil.disableBlending();
-		//GL11.glDepthMask(true);
-	}
 
 }

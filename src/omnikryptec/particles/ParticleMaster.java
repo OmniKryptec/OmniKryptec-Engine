@@ -13,19 +13,29 @@ import omnikryptec.entity.Camera;
 
 public class ParticleMaster {
 	private static Map<ParticleTexture, List<Particle>> particles = new HashMap<ParticleTexture, List<Particle>>();
-	private static ParticleRenderer rend;
+	private static ParticleRenderer rend = new ParticleRenderer();
 
-	public static void init() {
-		rend = new ParticleRenderer();
-	}
 
 	static Particle p;
 	static Entry<ParticleTexture, List<Particle>> entry;
 	static List<Particle> list;
 	static Iterator<Particle> iterator;
 	static Iterator<Entry<ParticleTexture, List<Particle>>> mapIterator;
-
-	public static void update(Camera cam) {
+	
+	private static ParticleMaster instance;
+	
+	public static ParticleMaster instance(){
+		if(instance==null){
+			instance = new ParticleMaster();
+		}
+		return instance;
+	}
+	
+	private ParticleMaster() {
+	}
+	
+	
+	public void update(Camera cam) {
 		mapIterator = particles.entrySet().iterator();
 		while (mapIterator.hasNext()) {
 			entry = mapIterator.next();
@@ -33,7 +43,7 @@ public class ParticleMaster {
 			iterator = list.iterator();
 			while (iterator.hasNext()) {
 				p = iterator.next();
-				if (!p.update(cam, 1)) {
+				if (!p.update(cam, p.getSystem().getTimemultiplier())) {
 					iterator.remove();
 					if (list.isEmpty()) {
 						mapIterator.remove();
@@ -44,11 +54,9 @@ public class ParticleMaster {
 				InsertionSort.sortHighToLow(list);
 			}
 		}
-	}
-
-	public static void renderParticles(Camera cam) {
 		rend.render(particles, cam);
 	}
+
 
 	public static void cleanup() {
 		rend.cleanUp();
@@ -56,11 +64,11 @@ public class ParticleMaster {
 
 	private static List<Particle> list1;
 
-	public static void addParticle(Particle par) {
-		list1 = particles.get(par.getTex());
+	public void addParticle(Particle par) {
+		list1 = particles.get(par.getTexture());
 		if (list1 == null) {
 			list1 = new ArrayList<Particle>();
-			particles.put(par.getTex(), list1);
+			particles.put(par.getTexture(), list1);
 		}
 		list1.add(par);
 	}

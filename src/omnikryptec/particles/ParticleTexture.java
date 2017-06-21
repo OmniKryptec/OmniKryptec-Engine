@@ -4,17 +4,17 @@ import omnikryptec.texture.Texture;
 
 public class ParticleTexture{
 	private int numberOfRows;
-	private boolean durchsichtig;
+	private boolean usealphablending;
 	private Texture tex;
 	
 	public ParticleTexture(Texture t, int numberOfRows, boolean durchsichtig) {
 		this.tex = t;
 		this.numberOfRows = numberOfRows;
-		this.durchsichtig = durchsichtig;
+		this.usealphablending = durchsichtig;
 	}
 
 	public boolean useAlphaBlending() {
-		return durchsichtig;
+		return usealphablending;
 	}
 
 
@@ -22,7 +22,7 @@ public class ParticleTexture{
 		return numberOfRows;
 	}
 	
-	public Texture getTex(){
+	public Texture getTexture(){
 		return tex;
 	}
 

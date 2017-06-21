@@ -7,8 +7,10 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.display.DisplayManager;
+import omnikryptec.entity.GameObject;
+import omnikryptec.util.Maths;
 
-public class ParticleSystem {
+public class ParticleSystem extends GameObject{
 
 	private float pps, averageSpeed, averageLifeLength, averageScale;
 
@@ -16,21 +18,27 @@ public class ParticleSystem {
 	private boolean randomRotation = false;
 	private Vector3f direction, gravityComplient;
 	private float directionDeviation = 0;
-	private Vector3f pos = new Vector3f();
-
+	private float timemultiplier=1;
+	
+	
 	private Random random = new Random();
 
 	private ParticleTexture tex;
-
-	public ParticleSystem(Vector3f pos, ParticleTexture tex, float pps, float speed, Vector3f gravityComplient,
-			float lifeLength, float scale) {
+	
+	public ParticleSystem(float x, float y, float z, ParticleTexture tex, float pps, float speed, Vector3f gravityComplient,
+			float lifeLength, float scale){
 		this.pps = pps;
 		this.averageSpeed = speed;
 		this.gravityComplient = gravityComplient;
 		this.averageLifeLength = lifeLength;
 		this.averageScale = scale;
 		this.tex = tex;
-		this.pos = pos;
+		setRelativePos(x, y, z);
+	}
+	
+	public ParticleSystem(Vector3f pos, ParticleTexture tex, float pps, float speed, Vector3f gravityComplient,
+			float lifeLength, float scale) {
+		this(pos.x, pos.y, pos.z, tex, pps, speed, gravityComplient, lifeLength, scale);
 	}
 
 	/**
@@ -72,24 +80,31 @@ public class ParticleSystem {
 	public void setScaleError(float error) {
 		this.scaleError = error * averageScale;
 	}
-
+	
+	@Override
+	public void doLogic(){
+		generateParticles(timemultiplier);
+	}
+	
+	private static float delta,particlesToCreate,partialParticle;
+	private static int count;
 	public void generateParticles(float timemultiplier) {
-		float delta = DisplayManager.instance().getDeltaTime()*timemultiplier;
-		float particlesToCreate = pps * delta;
-		int count = (int) Math.floor(particlesToCreate);
-		float partialParticle = particlesToCreate % 1;
+		delta = DisplayManager.instance().getDeltaTime()*timemultiplier;
+		particlesToCreate = pps * delta;
+		count = (int) Math.floor(particlesToCreate);
+		partialParticle = particlesToCreate % 1;
 		for (int i = 0; i < count; i++) {
-			emitParticle(pos);
+			emitParticle(getAbsolutePos());
 		}
 		if (Math.random() < partialParticle) {
-			emitParticle(pos);
+			emitParticle(getAbsolutePos());
 		}
 	}
 
-	Vector3f velocity;
-
+	private static Vector3f velocity;
+	private static float scale, lifeLength;
+	
 	private void emitParticle(Vector3f center) {
-		velocity = null;
 		if (direction != null) {
 			velocity = generateRandomUnitVectorWithinCone(direction, directionDeviation);
 		} else {
@@ -97,13 +112,15 @@ public class ParticleSystem {
 		}
 		velocity.normalise();
 		velocity.scale(generateValue(averageSpeed, speedError));
-		float scale = generateValue(averageScale, scaleError);
-		float lifeLength = generateValue(averageLifeLength, lifeError);
-		new Particle(tex, new Vector3f(center), velocity, gravityComplient, lifeLength, generateRotation(), scale);
+		scale = generateValue(averageScale, scaleError);
+		lifeLength = generateValue(averageLifeLength, lifeError);
+		ParticleMaster.instance().addParticle(new Particle(tex, new Vector3f(center), velocity, gravityComplient, lifeLength, generateRotation(), scale, this));
 	}
-
+	
+	
+	private float offset;
 	private float generateValue(float average, float errorMargin) {
-		float offset = (random.nextFloat() - 0.5f) * 2f * errorMargin;
+		offset = (random.nextFloat() - 0.5f) * 2f * errorMargin;
 		return average + offset;
 	}
 
@@ -114,41 +131,53 @@ public class ParticleSystem {
 			return 0;
 		}
 	}
+	
+	private static float cosAngle, rotateAngle;
+	private static Random randoms;
+	private static Vector4f tmp4f = new Vector4f();
+	private static Vector3f rotateAxis;
+	private static Matrix4f rotationMatrix = new Matrix4f();
 
 	private static Vector3f generateRandomUnitVectorWithinCone(Vector3f coneDirection, float angle) {
-		float cosAngle = (float) Math.cos(angle);
-		Random random = new Random();
-		float theta = (float) (random.nextFloat() * 2f * Math.PI);
-		float z = cosAngle + (random.nextFloat() * (1 - cosAngle));
-		float rootOneMinusZSquared = (float) Math.sqrt(1 - z * z);
-		float x = (float) (rootOneMinusZSquared * Math.cos(theta));
-		float y = (float) (rootOneMinusZSquared * Math.sin(theta));
+		cosAngle = (float) Math.cos(angle);
+		randoms = new Random();
+		theta = (float) (randoms.nextFloat() * 2f * Math.PI);
+		z = cosAngle + (randoms.nextFloat() * (1 - cosAngle));
+		rootOneMinusZSquared = (float) Math.sqrt(1 - z * z);
+		x = (float) (rootOneMinusZSquared * Math.cos(theta));
+		y = (float) (rootOneMinusZSquared * Math.sin(theta));
 
-		Vector4f direction = new Vector4f(x, y, z, 1);
+		tmp4f.set(x, y, z, 1);
 		if (coneDirection.x != 0 || coneDirection.y != 0 || (coneDirection.z != 1 && coneDirection.z != -1)) {
-			Vector3f rotateAxis = Vector3f.cross(coneDirection, new Vector3f(0, 0, 1), null);
+			Vector3f.cross(coneDirection, Maths.Z, rotateAxis);
 			rotateAxis.normalise();
-			float rotateAngle = (float) Math.acos(Vector3f.dot(coneDirection, new Vector3f(0, 0, 1)));
-			Matrix4f rotationMatrix = new Matrix4f();
+			rotateAngle = (float) Math.acos(Vector3f.dot(coneDirection, Maths.Z));
+			rotationMatrix.setIdentity();
 			rotationMatrix.rotate(-rotateAngle, rotateAxis);
-			Matrix4f.transform(rotationMatrix, direction, direction);
+			Matrix4f.transform(rotationMatrix, tmp4f, tmp4f);
 		} else if (coneDirection.z == -1) {
-			direction.z *= -1;
+			tmp4f.z *= -1;
 		}
-		return new Vector3f(direction);
+		return new Vector3f(tmp4f);
 	}
 
+	private static float theta,z,rootOneMinusZSquared,x,y;
 	private Vector3f generateRandomUnitVector() {
-		float theta = (float) (random.nextFloat() * 2f * Math.PI);
-		float z = (random.nextFloat() * 2) - 1;
-		float rootOneMinusZSquared = (float) Math.sqrt(1 - z * z);
-		float x = (float) (rootOneMinusZSquared * Math.cos(theta));
-		float y = (float) (rootOneMinusZSquared * Math.sin(theta));
+		theta = (float) (random.nextFloat() * 2f * Math.PI);
+		z = (random.nextFloat() * 2) - 1;
+		rootOneMinusZSquared = (float) Math.sqrt(1 - z * z);
+		x = (float) (rootOneMinusZSquared * Math.cos(theta));
+		y = (float) (rootOneMinusZSquared * Math.sin(theta));
 		return new Vector3f(x, y, z);
 	}
 
-	public Vector3f getPos() {
-		return pos;
+	public float getTimemultiplier() {
+		return timemultiplier;
 	}
+
+	public void setTimemultiplier(float timemultiplier) {
+		this.timemultiplier = timemultiplier;
+	}
+
 
 }

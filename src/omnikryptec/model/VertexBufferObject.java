@@ -2,6 +2,7 @@ package omnikryptec.model;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.Arrays;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -9,6 +10,9 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL33;
+
+import omnikryptec.logger.LogEntry.LogLevel;
+import omnikryptec.logger.Logger;
 
 public class VertexBufferObject {
 
@@ -64,6 +68,12 @@ public class VertexBufferObject {
 
 	public void updateData(float[] data, FloatBuffer buffer){
 		buffer.clear();
+		if(data.length>buffer.capacity()){
+			data = Arrays.copyOf(data, buffer.capacity());
+			if(Logger.isDebugMode()){
+				Logger.log("BufferOverflow", LogLevel.WARNING);
+			}
+		}
 		buffer.put(data);
 		buffer.flip();
 		bind();

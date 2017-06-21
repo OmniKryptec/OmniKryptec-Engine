@@ -19,15 +19,17 @@ public class Particle {
 	private float distance;
 
 	private ParticleTexture tex;
-
+	
+	private ParticleSystem mysystem;
+	
 	private Vector2f texOffset1 = new Vector2f();
 	private Vector2f texOffset2 = new Vector2f();
 	private float blend;
 
-	private Vector3f changeable = new Vector3f();
+	private static Vector3f changeable = new Vector3f();
 
 	public Particle(ParticleTexture tex, Vector3f pos, Vector3f vel, Vector3f gravityEffect, float lifeLength, float rot,
-			float scale) {
+			float scale, ParticleSystem sys) {
 		this.pos = pos;
 		this.vel = vel;
 		this.gravityEffect = gravityEffect;
@@ -36,29 +38,37 @@ public class Particle {
 		this.rot = rot;
 		this.scale = scale;
 		this.tex = tex;
-		ParticleMaster.addParticle(this);
+		this.mysystem = sys;
 	}
 
 	public float getDistance() {
 		return distance;
 	}
-
+	
+	public ParticleSystem getSystem(){
+		return mysystem;
+	}
+	
+	private static float lifeFactor,atlasProg;
+	private static int stageCount, index1,index2;
 	private void updateTexCoordInfo() {
-		float lifeFactor = elapsedTime / lifeLength;
-		int stageCount = tex.getNumberOfRows() * tex.getNumberOfRows();
-		float atlasProg = lifeFactor * stageCount;
-		int index1 = (int) Math.floor(atlasProg);
-		int index2 = index1 < stageCount - 1 ? index1 + 1 : index1;
+		lifeFactor = elapsedTime / lifeLength;
+		stageCount = tex.getNumberOfRows() * tex.getNumberOfRows();
+		atlasProg = lifeFactor * stageCount;
+		index1 = (int) Math.floor(atlasProg);
+		index2 = index1 < stageCount - 1 ? index1 + 1 : index1;
 		this.blend = atlasProg % 1;
-		setTexOffset(texOffset1, index1);
-		setTexOffset(texOffset2, index2);
+		texOffset1 = setTexOffset(texOffset1, index1);
+		texOffset2 = setTexOffset(texOffset2, index2);
 	}
 
-	private void setTexOffset(Vector2f offset, int index) {
-		int column = index % tex.getNumberOfRows();
-		int row = index / tex.getNumberOfRows();
+	private static int column,row;
+	private Vector2f setTexOffset(Vector2f offset, int index) {
+		column = index % tex.getNumberOfRows();
+		row =  index / tex.getNumberOfRows();
 		offset.x = (float) column / tex.getNumberOfRows();
 		offset.y = (float) row / tex.getNumberOfRows();
+		return offset;
 	}
 
 	public Vector2f getTexOffset1() {
@@ -73,7 +83,7 @@ public class Particle {
 		return blend;
 	}
 
-	public ParticleTexture getTex() {
+	public ParticleTexture getTexture() {
 		return tex;
 	}
 
@@ -90,15 +100,14 @@ public class Particle {
 	}
 
 	
-	private Vector3f actgrav = new Vector3f();
+	private static Vector3f tmp;
+	
 	protected boolean update(Camera cam, float timemultiplier) {
-		actgrav.set(gravityEffect);
-		actgrav.scale(timemultiplier*DisplayManager.instance().getDeltaTime());
-		Vector3f.add(vel, actgrav, vel);
+		Vector3f.add(vel, gravityEffect, vel);
 		changeable.set(vel);
 		changeable.scale(DisplayManager.instance().getDeltaTime()*timemultiplier);
 		Vector3f.add(changeable, pos, pos);
-		distance = Vector3f.sub(cam.getPos(), pos, null).lengthSquared();
+		distance = (tmp=Vector3f.sub(cam.getPos(), pos, tmp)).lengthSquared();
 		updateTexCoordInfo();
 		elapsedTime += DisplayManager.instance().getDeltaTime()*timemultiplier;
 		return elapsedTime < lifeLength;

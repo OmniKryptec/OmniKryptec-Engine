@@ -202,7 +202,7 @@ public class DisplayManager {
 	 * 
 	 * @return Float Time in seconds
 	 */
-	public final float getRuntime() {
+	public final float getRunTime() {
 		return runtimef;
 	}
 
