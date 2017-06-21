@@ -5,8 +5,10 @@ import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
+import omnikryptec.entity.Entity.RenderType;
+import omnikryptec.entity.Rangeable;
 
-public class Particle {
+public class Particle implements Rangeable{
 
 	private Vector3f pos;
 	private Vector3f vel;
@@ -25,12 +27,15 @@ public class Particle {
 	private Vector2f texOffset1 = new Vector2f();
 	private Vector2f texOffset2 = new Vector2f();
 	private float blend;
-
+	
+	private RenderType type = RenderType.MEDIUM;
+	
 	private static Vector3f changeable = new Vector3f();
 
 	public Particle(ParticleTexture tex, Vector3f pos, Vector3f vel, Vector3f gravityEffect, float lifeLength, float rot,
-			float scale, ParticleSystem sys) {
+			float scale, ParticleSystem sys, RenderType type) {
 		this.pos = pos;
+		this.type = type;
 		this.vel = vel;
 		this.gravityEffect = gravityEffect;
 		this.lifeLength = lifeLength;
@@ -86,8 +91,9 @@ public class Particle {
 	public ParticleTexture getTexture() {
 		return tex;
 	}
-
-	public Vector3f getPos() {
+	
+	@Override
+	public Vector3f getAbsolutePos() {
 		return pos;
 	}
 
@@ -111,6 +117,11 @@ public class Particle {
 		updateTexCoordInfo();
 		elapsedTime += DisplayManager.instance().getDeltaTime()*timemultiplier;
 		return elapsedTime < lifeLength;
+	}
+
+	@Override
+	public RenderType getType() {
+		return type;
 	}
 
 }

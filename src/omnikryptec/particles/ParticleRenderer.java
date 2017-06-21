@@ -80,10 +80,12 @@ public class ParticleRenderer {
 				if(count>maxInstancesPerSys){
 					break;
 				}
-				updateModelViewMatrix(par.getPos(), par.getRot(), par.getScale(), curCam.getViewMatrix(), vboData);
-				updateTexCoordInfo(par, vboData);
-				count++;
-				globalCount++;
+				if(RenderUtil.inRenderRange(par, curCam)){
+					updateModelViewMatrix(par.getAbsolutePos(), par.getRot(), par.getScale(), curCam.getViewMatrix(), vboData);
+					updateTexCoordInfo(par, vboData);
+					count++;
+					globalCount++;
+				}
 			}
 			vbo.updateData(vboData, buffer);
 			GL31.glDrawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVao().getIndexCount(), count);

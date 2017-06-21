@@ -7,15 +7,15 @@ import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.texture.SimpleTexture;
 
-public class Entity extends GameObject {
+public class Entity extends GameObject implements Rangeable{
 
 	public static enum RenderType {
-		NORMAL, MEDIUM, FOLIAGE;
+		ALWAYS, MEDIUM, FOLIAGE, BIG;
 	}
 
 	private TexturedModel model;
 	private Vector3f scale = new Vector3f(1, 1, 1);
-	private RenderType type = RenderType.NORMAL;
+	private RenderType type = RenderType.ALWAYS;
 	private Vector4f color = new Vector4f(1, 1, 1, 1);
 
 	protected Entity() {
@@ -42,7 +42,8 @@ public class Entity extends GameObject {
 		this.type = type;
 		return this;
 	}
-
+	
+	@Override
 	public RenderType getType() {
 		return type;
 	}

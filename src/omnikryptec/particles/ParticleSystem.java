@@ -7,6 +7,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.display.DisplayManager;
+import omnikryptec.entity.Entity.RenderType;
 import omnikryptec.entity.GameObject;
 import omnikryptec.util.Maths;
 
@@ -19,14 +20,15 @@ public class ParticleSystem extends GameObject{
 	private Vector3f direction, gravityComplient;
 	private float directionDeviation = 0;
 	private float timemultiplier=1;
-	
+	private RenderType type = RenderType.MEDIUM;
 	
 	private Random random = new Random();
 
 	private ParticleTexture tex;
 	
 	public ParticleSystem(float x, float y, float z, ParticleTexture tex, float pps, float speed, Vector3f gravityComplient,
-			float lifeLength, float scale){
+			float lifeLength, float scale, RenderType type){
+		this.type = type;
 		this.pps = pps;
 		this.averageSpeed = speed;
 		this.gravityComplient = gravityComplient;
@@ -37,8 +39,8 @@ public class ParticleSystem extends GameObject{
 	}
 	
 	public ParticleSystem(Vector3f pos, ParticleTexture tex, float pps, float speed, Vector3f gravityComplient,
-			float lifeLength, float scale) {
-		this(pos.x, pos.y, pos.z, tex, pps, speed, gravityComplient, lifeLength, scale);
+			float lifeLength, float scale, RenderType type) {
+		this(pos.x, pos.y, pos.z, tex, pps, speed, gravityComplient, lifeLength, scale, type);
 	}
 
 	/**
@@ -114,7 +116,7 @@ public class ParticleSystem extends GameObject{
 		velocity.scale(generateValue(averageSpeed, speedError));
 		scale = generateValue(averageScale, scaleError);
 		lifeLength = generateValue(averageLifeLength, lifeError);
-		ParticleMaster.instance().addParticle(new Particle(tex, new Vector3f(center), velocity, gravityComplient, lifeLength, generateRotation(), scale, this));
+		ParticleMaster.instance().addParticle(new Particle(tex, new Vector3f(center), velocity, gravityComplient, lifeLength, generateRotation(), scale, this, type));
 	}
 	
 	
