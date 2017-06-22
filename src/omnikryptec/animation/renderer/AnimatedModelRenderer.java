@@ -54,12 +54,8 @@ public class AnimatedModelRenderer implements Renderer {
                 continue;
             }
             animatedModel = (AnimatedModel) model;
-<<<<<<< HEAD
-            model.getModel().getVao().bind(0, 1, 2, 3);
-=======
             model.getModel().getVao().bind(0, 1, 2, 3, 4);
             animatedModel.getTexture().bindToUnit(0);
->>>>>>> branch 'test' of https://github.com/OmniKryptec/OmniKryptec-Engine.git
             RenderUtil.antialias(true);
             RenderUtil.disableBlending();
             RenderUtil.enableDepthTesting(true);
@@ -76,7 +72,7 @@ public class AnimatedModelRenderer implements Renderer {
                 }
             }
             stapel = null;
-            model.getModel().getVao().unbind(0, 1, 2, 3);
+            //model.getModel().getVao().unbind(0, 1, 2, 3);
         }
     }
 
