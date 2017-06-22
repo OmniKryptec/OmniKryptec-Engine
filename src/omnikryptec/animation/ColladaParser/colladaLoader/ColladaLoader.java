@@ -10,7 +10,11 @@ import omnikryptec.animation.ColladaParser.xmlParser.XmlParser;
 import omnikryptec.util.AdvancedFile;
 
 public class ColladaLoader {
-
+	
+	public static MeshData getMeshDataOnly(AdvancedFile colladaFile){
+		return loadColladaModel(colladaFile, 0).getMeshData();
+	}
+	
 	public static AnimatedModelData loadColladaModel(AdvancedFile colladaFile, int maxWeights) {
 		XmlNode node = XmlParser.loadXmlFile(colladaFile);
 

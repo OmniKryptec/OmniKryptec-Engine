@@ -12,6 +12,7 @@ import omnikryptec.animation.ColladaParser.dataStructures.MeshData;
 import omnikryptec.animation.ColladaParser.dataStructures.Vertex;
 import omnikryptec.animation.ColladaParser.dataStructures.VertexSkinData;
 import omnikryptec.animation.ColladaParser.xmlParser.XmlNode;
+import omnikryptec.util.Maths;
 
 /**
  * Loads the mesh data for a model from a collada XML file.
@@ -20,7 +21,7 @@ import omnikryptec.animation.ColladaParser.xmlParser.XmlNode;
  */
 public class GeometryLoader {
 
-	private static final Matrix4f CORRECTION = new Matrix4f().rotate((float) Math.toRadians(-90), new Vector3f(1, 0,0));
+	private static final Matrix4f CORRECTION = new Matrix4f().rotate((float) Math.toRadians(-90), Maths.X);
 	
 	private final XmlNode meshData;
 
