@@ -12,15 +12,15 @@ import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.PostProcessingStage;
 import omnikryptec.util.RenderUtil;
 
-public class LightStage extends PostProcessingStage {
+public class DeferredLightStage extends PostProcessingStage {
 
-	private LightPrepare[] preparea;
+	private DeferredLightPrepare[] preparea;
 
-	public LightStage() {
-		this(LightPrepare.DEFAULT_LIGHT_PREPARE);
+	public DeferredLightStage() {
+		this(DeferredLightPrepare.DEFAULT_LIGHT_PREPARE);
 	}
 
-	public LightStage(LightPrepare... prepares) {
+	public DeferredLightStage(DeferredLightPrepare... prepares) {
 		preparea = prepares;
 	}
 
@@ -33,7 +33,7 @@ public class LightStage extends PostProcessingStage {
 				u_list[1] ? beforelist.get(l_ind[1]) : before, u_list[2] ? beforelist.get(l_ind[2]) : before);
 	}
 
-	public LightStage setListIndices(int diffDepth, int normal, int specular) {
+	public DeferredLightStage setListIndices(int diffDepth, int normal, int specular) {
 		l_ind[0] = diffDepth;
 		u_list[0] = diffDepth < 0;
 		l_ind[1] = normal;
@@ -58,7 +58,7 @@ public class LightStage extends PostProcessingStage {
 			specularfbo.bindToUnit(2, 0);
 			unsampledfbo.bindDepthTexture(3);
 			preparea[i].prepare(currentScene);
-			relevant = currentScene.getRenderLights(preparea[i]);
+			relevant = currentScene.getDeferredRenderLights(preparea[i]);
 			if (relevant != null) {
 				for (int j = 0; j < relevant.size(); j++) {
 					l = relevant.get(j);

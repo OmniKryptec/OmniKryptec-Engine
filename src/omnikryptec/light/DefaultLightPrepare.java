@@ -6,7 +6,7 @@ import omnikryptec.main.Scene;
 import omnikryptec.shader.Shader;
 import omnikryptec.shader_files.LightShader;
 
-public class DefaultLightPrepare implements LightPrepare {
+public class DefaultLightPrepare implements DeferredLightPrepare {
 
 	private LightShader shader = new LightShader();
 

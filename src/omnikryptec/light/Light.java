@@ -10,7 +10,7 @@ public class Light extends GameObject {
 	private Vector4f vec = new Vector4f();
 	private float radius = 1;
 	private Vector3f color = new Vector3f();
-	private LightPrepare mylightprepare = LightPrepare.DEFAULT_LIGHT_PREPARE;
+	private DeferredLightPrepare mylightprepare = DeferredLightPrepare.DEFAULT_LIGHT_PREPARE;
 
 	private Vector3f att;
 
@@ -61,12 +61,12 @@ public class Light extends GameObject {
 		return radius < 0;
 	}
 
-	public Light setShader(LightPrepare shader) {
+	public Light setShader(DeferredLightPrepare shader) {
 		this.mylightprepare = shader;
 		return this;
 	}
 
-	public LightPrepare getShader() {
+	public DeferredLightPrepare getShader() {
 		return mylightprepare;
 	}
 

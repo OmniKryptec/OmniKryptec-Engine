@@ -6,7 +6,7 @@ import omnikryptec.main.Scene;
 import omnikryptec.shader.Shader;
 import omnikryptec.shader_files.QuadLightShader;
 
-public class QuadraticAttLightPrepare implements LightPrepare {
+public class QuadraticAttLightPrepare implements DeferredLightPrepare {
 
 	private QuadLightShader shader = new QuadLightShader();
 

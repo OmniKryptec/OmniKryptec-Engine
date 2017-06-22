@@ -18,7 +18,17 @@ public class RenderUtil {
 	private static boolean antialiasing = false;
 	private static boolean depthTesting = false;
 	private static boolean scissor = false;
-
+	private static boolean depthMask = true;
+	
+	
+	public static void enableDepthMask(boolean b){
+		if(depthMask&&!b){
+			GL11.glDepthMask(b);
+		}else if(!depthMask&&b){
+			GL11.glDepthMask(b);
+		}
+	}
+	
 	public static void enableScissor(boolean b) {
 		if (b && !scissor) {
 			GL11.glEnable(GL11.GL_SCISSOR_TEST);

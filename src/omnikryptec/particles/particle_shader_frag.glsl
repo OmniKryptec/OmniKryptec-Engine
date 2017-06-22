@@ -1,10 +1,10 @@
-#version 140
+#version 330
 
 in vec2 texCoords1;
 in vec2 texCoords2;
 in float blend;
 
-out vec4 out_colour;
+layout (location = 0) out vec4 out_colour;
 
 uniform sampler2D particleTexture;
 

@@ -7,7 +7,7 @@ import java.util.Map;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.GameObject;
 import omnikryptec.light.Light;
-import omnikryptec.light.LightPrepare;
+import omnikryptec.light.DeferredLightPrepare;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.physics.PhysicsWorld;
@@ -20,13 +20,13 @@ public class Scene {
 
 	private final Map<String, RenderChunk> scene = new HashMap<>();
 	private Camera cam;
-	private long cox = OmniKryptecEngine.getInstance().getDisplayManager().getSettings().getChunkOffsetX(),
-			coy = OmniKryptecEngine.getInstance().getDisplayManager().getSettings().getChunkOffsetY(),
-			coz = OmniKryptecEngine.getInstance().getDisplayManager().getSettings().getChunkOffsetZ();
+	private long cox = OmniKryptecEngine.getInstance().getDisplayManager().getSettings().getChunkRenderOffsetX(),
+			coy = OmniKryptecEngine.getInstance().getDisplayManager().getSettings().getChunkRenderOffsetY(),
+			coz = OmniKryptecEngine.getInstance().getDisplayManager().getSettings().getChunkRenderOffsetZ();
 	private float[] clearcolor = { 0, 0, 0, 0 };
 	private PhysicsWorld physicsWorld = null;
-	private final Map<LightPrepare, List<Light>> rel_lights = new HashMap<>();
-	private final Map<LightPrepare, List<Light>> global_lights = new HashMap<>();
+	private final Map<DeferredLightPrepare, List<Light>> rel_lights = new HashMap<>();
+	private final Map<DeferredLightPrepare, List<Light>> global_lights = new HashMap<>();
 	/* Temp Variables */
 	private String tmp;
 	private long cx, cy, cz;
@@ -104,7 +104,7 @@ public class Scene {
 	protected void doLogic() {
 	}
 
-	public final List<Light> getRenderLights(LightPrepare usingShader) {
+	public final List<Light> getDeferredRenderLights(DeferredLightPrepare usingShader) {
 		return rel_lights.get(usingShader);
 	}
 

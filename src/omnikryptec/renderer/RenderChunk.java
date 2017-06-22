@@ -8,7 +8,7 @@ import java.util.Map;
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.GameObject;
 import omnikryptec.light.Light;
-import omnikryptec.light.LightPrepare;
+import omnikryptec.light.DeferredLightPrepare;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
@@ -63,7 +63,7 @@ public class RenderChunk {
 
 	private final RenderMap<Renderer, RenderMap<AdvancedModel, List<Entity>>> chunk = new RenderMap<>(Renderer.class);
 	private final ArrayList<GameObject> other = new ArrayList<>();
-	private final Map<LightPrepare, List<Light>> lights = new HashMap<>();
+	private final Map<DeferredLightPrepare, List<Light>> lights = new HashMap<>();
 
 	private Entity tmp;
 	private Renderer tmpr;
@@ -73,7 +73,7 @@ public class RenderChunk {
 	private AdvancedModel am;
 
 	private Light tmpl;
-	private LightPrepare lightpre;
+	private DeferredLightPrepare lightpre;
 	private List<Light> lightl;
 
 	public void addGameObject(GameObject g) {
@@ -231,7 +231,7 @@ public class RenderChunk {
 		return scene;
 	}
 
-	public Map<LightPrepare, List<Light>> getLights() {
+	public Map<DeferredLightPrepare, List<Light>> getLights() {
 		return lights;
 	}
 
