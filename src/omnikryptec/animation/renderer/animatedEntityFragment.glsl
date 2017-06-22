@@ -1,4 +1,4 @@
-#version 150
+#version 330
 
 const vec2 lightBias = vec2(0.7, 0.6);//just indicates the balance between diffuse and ambient lighting
 

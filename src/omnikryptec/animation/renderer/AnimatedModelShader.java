@@ -15,7 +15,9 @@ public class AnimatedModelShader extends Shader {
     private static final MyFile VERTEX_SHADER = new MyFile("omnikryptec/animation/renderer", "animatedEntityVertex.glsl");
     private static final MyFile FRAGMENT_SHADER = new MyFile("omnikryptec/animation/renderer", "animatedEntityFragment.glsl");
 
-    protected UniformMatrix projectionViewMatrix = new UniformMatrix("projectionViewMatrix");
+    public final UniformMatrix transformationMatrix = new UniformMatrix("transformationMatrix");
+    public final UniformMatrix viewMatrix = new UniformMatrix("viewMatrix");
+    public final UniformMatrix projectionMatrix = new UniformMatrix("projectionMatrix");
     protected UniformVec3 lightDirection = new UniformVec3("lightDirection");
     protected UniformMatrixArray jointTransforms = new UniformMatrixArray("jointTransforms", MAX_JOINTS);
     private UniformSampler diffuseMap = new UniformSampler("diffuseMap");
@@ -28,7 +30,7 @@ public class AnimatedModelShader extends Shader {
      */
     public AnimatedModelShader() {
         super(VERTEX_SHADER.getInputStream(), FRAGMENT_SHADER.getInputStream(), "in_position", "in_textureCoords", "in_normal", "in_jointIndices", "in_weights");
-        registerUniforms(projectionViewMatrix, diffuseMap, lightDirection, jointTransforms);
+        registerUniforms(transformationMatrix, viewMatrix, projectionMatrix, diffuseMap, lightDirection, jointTransforms);
         start();
         diffuseMap.loadTexUnit(0);
     }

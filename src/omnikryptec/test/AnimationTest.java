@@ -15,7 +15,6 @@ import omnikryptec.event.EventType;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
-import omnikryptec.model.Material;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.Key;
 import omnikryptec.settings.KeyGroup;
@@ -43,6 +42,7 @@ public class AnimationTest {
     private static AnimatedModel animatedModel;
     private static Animation animation;
     private static Entity entity_test;
+    private static float speedFactor = 1.0F;
     
     public static final void main(String[] args) {
         try {
@@ -66,6 +66,8 @@ public class AnimationTest {
             keySettings.setKey("toggleWireframe", Keyboard.KEY_T, true);
             keySettings.setKey("reset", Keyboard.KEY_R, true);
             keySettings.setKey("alternativeMouseGrabbed", Keyboard.KEY_L, true);
+            keySettings.setKey("lower", Keyboard.KEY_COMMA, true);
+            keySettings.setKey("higher", Keyboard.KEY_PERIOD, true);
             DisplayManager.createDisplay("Animation Test", gameSettings);
             OmniKryptecEngine.instance().addAndSetScene("Test-Scene", new Scene(camera = ((Camera) new Camera() {
                 
@@ -99,6 +101,7 @@ public class AnimationTest {
             entity_ball.getRelativePos().y += 1;
             EventSystem.instance().addEventHandler((e) -> {
                 input();
+                logic();
                 AnimatedModel.updateAllAnimatedModels();
             }, EventType.RENDER_EVENT);
             InputUtil.setCamera(camera);
@@ -139,6 +142,28 @@ public class AnimationTest {
                 camera.getRelativeRotation().x += (deltaY / 5);
             }
         }
+        float deltaSpeedFactor = 0.0F;
+        if(keySettings.isPressed("lower")) {
+            deltaSpeedFactor -= 0.005F;
+        }
+        if(keySettings.isPressed("higher")) {
+            deltaSpeedFactor += 0.005F;
+        }
+        speedFactor += deltaSpeedFactor;
+        float horizontalSpeed = 30.0F * 0.5F;
+        float verticalSpeed = 10.0F * 0.5F;
+        float turnSpeed = 40.0F * 0.5F;
+        if(keySettings.isPressed("sprint")) {
+            horizontalSpeed *= 10;
+            verticalSpeed *= 10;
+            turnSpeed *= 1;
+        }
+        InputUtil.doThirdPersonController(entity_test, entity_test, keySettings, horizontalSpeed, verticalSpeed, turnSpeed);
+}
+    
+    private static final void logic() {
+        animatedModel.getAnimator().setSpeedFactor(speedFactor);
+        speedFactor = animatedModel.getAnimator().getSpeedFactor();
     }
     
 }

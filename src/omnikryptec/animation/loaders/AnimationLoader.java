@@ -1,7 +1,6 @@
 package omnikryptec.animation.loaders;
 
 import java.util.HashMap;
-import java.util.Map;
 import omnikryptec.animation.Animation;
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
 import omnikryptec.animation.ColladaParser.dataStructures.AnimationData;

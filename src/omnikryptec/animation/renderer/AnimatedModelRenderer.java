@@ -4,12 +4,12 @@ import java.util.List;
 import omnikryptec.animation.AnimatedModel;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
-import omnikryptec.logger.Logger;
 import omnikryptec.main.Scene;
 import omnikryptec.model.AdvancedModel;
 import omnikryptec.renderer.RenderMap;
 import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
+import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
@@ -44,7 +44,8 @@ public class AnimatedModelRenderer implements Renderer {
     public void render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities) {
         final Camera camera = s.getCamera();
         shader.start();
-        shader.projectionViewMatrix.loadMatrix(camera.getProjectionViewMatrix());
+        shader.projectionMatrix.loadMatrix(camera.getProjectionMatrix());
+        shader.viewMatrix.loadMatrix(camera.getViewMatrix());
         shader.lightDirection.loadVec3(LIGHT_DIR);
         for(int i = 0; i < entities.keysArray().length; i++) {
             model = entities.keysArray()[i];
@@ -60,8 +61,10 @@ public class AnimatedModelRenderer implements Renderer {
             if(stapel != null && !stapel.isEmpty()) {
                 stapel.stream().forEach((entity) -> {
                     if(entity.isActive() && RenderUtil.inRenderRange(entity, camera)) {
+                        //entity.doLogic0();
                         animatedModel.getTexture().bindToUnit(0);
                         shader.jointTransforms.loadMatrixArray(animatedModel.getJointTransforms());
+                        shader.transformationMatrix.loadMatrix(Maths.createTransformationMatrix(entity));
                         GL11.glDrawElements(GL11.GL_TRIANGLES, animatedModel.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
                     }
                 });
