@@ -52,7 +52,7 @@ public class AnimatedModelRenderer implements Renderer {
                 continue;
             }
             animatedModel = (AnimatedModel) model;
-            model.getModel().getVao().bind(0, 1, 2, 3, 4);
+            model.getModel().getVao().bind(0, 1, 2, 3);
             RenderUtil.antialias(true);
             RenderUtil.disableBlending();
             RenderUtil.enableDepthTesting(true);
@@ -67,7 +67,7 @@ public class AnimatedModelRenderer implements Renderer {
                 });
             }
             stapel = null;
-            model.getModel().getVao().unbind(0, 1, 2, 3, 4);
+            model.getModel().getVao().unbind(0, 1, 2, 3);
         }
     }
 
