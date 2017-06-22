@@ -44,9 +44,7 @@ public class AnimationTest {
     private static Animation animation;
     private static Entity entity_test;
     private static float speedFactor = 1.0F;
-    private static Entity entity_test_2;
     private static final AdvancedFile RES_FOLDER_1 = new AdvancedFile("res");
-    private static final AdvancedFile RES_FOLDER_2 = new AdvancedFile(new File("E:\\Daten\\NetBeans\\Projekte\\OmniKryptec-Engine\\res\\Sci-Fi_door_3_with_animation"));
     private static final String MODEL_FILE = "model.dae";
     private static final String ANIM_FILE = "model.dae";
     private static final String DIFFUSE_FILE = "diffuse.png";
@@ -100,12 +98,9 @@ public class AnimationTest {
                 }
                 
             };
-            entity_test_2 = new Entity(AnimatedModelLoader.loadModel(new AdvancedFile(RES_FOLDER_2, "Sci-Fi doorAnimated3.dae"), new AdvancedFile(RES_FOLDER_2, "textures", "entry_3_AO.png"), null).doAnimation(AnimationLoader.loadAnimation(new AdvancedFile(RES_FOLDER_2, "Sci-Fi doorAnimated3.dae"))));
             animatedModel.doAnimation(animation);
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_ball);
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_test);
-            OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_test_2);
-            entity_test_2.getRelativePos().z += 10;
             camera.getRelativePos().y += 3;
             camera.getRelativeRotation().y = 90;
             entity_ball.getRelativePos().x += 8;

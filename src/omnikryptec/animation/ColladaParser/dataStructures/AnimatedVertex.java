@@ -1,97 +1,20 @@
 package omnikryptec.animation.ColladaParser.dataStructures;
 
-import java.util.ArrayList;
-import java.util.List;
+import omnikryptec.objConverter.Vertex;
 
 import org.lwjgl.util.vector.Vector3f;
 
-public class AnimatedVertex {
+public class AnimatedVertex extends Vertex {
 	
-	private static final int NO_INDEX = -1;
-	
-	private Vector3f position;
-	private int textureIndex = NO_INDEX;
-	private int normalIndex = NO_INDEX;
-	private AnimatedVertex duplicateVertex = null;
-	private int index;
-	private float length;
-	private List<Vector3f> tangents = new ArrayList<Vector3f>();
-	private Vector3f averagedTangent = new Vector3f(0, 0, 0);
-	
-	
-	private VertexSkinData weightsData;
-	
-	public AnimatedVertex(int index,Vector3f position, VertexSkinData weightsData){
-		this.index = index;
-		this.weightsData = weightsData;
-		this.position = position;
-		this.length = position.length();
-	}
-	
-	public VertexSkinData getWeightsData(){
-		return weightsData;
-	}
-	
-	public void addTangent(Vector3f tangent){
-		tangents.add(tangent);
-	}
-	
-	public void averageTangents(){
-		if(tangents.isEmpty()){
-			return;
-		}
-		for(Vector3f tangent : tangents){
-			Vector3f.add(averagedTangent, tangent, averagedTangent);
-		}
-		averagedTangent.normalise();
-	}
-	
-	public Vector3f getAverageTangent(){
-		return averagedTangent;
-	}
-	
-	public int getIndex(){
-		return index;
-	}
-	
-	public float getLength(){
-		return length;
-	}
-	
-	public boolean isSet(){
-		return textureIndex!=NO_INDEX && normalIndex!=NO_INDEX;
-	}
-	
-	public boolean hasSameTextureAndNormal(int textureIndexOther,int normalIndexOther){
-		return textureIndexOther==textureIndex && normalIndexOther==normalIndex;
-	}
-	
-	public void setTextureIndex(int textureIndex){
-		this.textureIndex = textureIndex;
-	}
-	
-	public void setNormalIndex(int normalIndex){
-		this.normalIndex = normalIndex;
-	}
+    private final VertexSkinData weightsData;
 
-	public Vector3f getPosition() {
-		return position;
-	}
+    public AnimatedVertex(int index, Vector3f position, VertexSkinData weightsData){
+        super(index, position);
+        this.weightsData = weightsData;
+    }
 
-	public int getTextureIndex() {
-		return textureIndex;
-	}
-
-	public int getNormalIndex() {
-		return normalIndex;
-	}
-
-	public AnimatedVertex getDuplicateVertex() {
-		return duplicateVertex;
-	}
-
-	public void setDuplicateVertex(AnimatedVertex duplicateVertex) {
-		this.duplicateVertex = duplicateVertex;
-	}
+    public VertexSkinData getWeightsData(){
+        return weightsData;
+    }
 
 }

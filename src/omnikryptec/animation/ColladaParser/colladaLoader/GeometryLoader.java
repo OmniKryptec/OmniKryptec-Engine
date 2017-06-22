@@ -173,7 +173,7 @@ public class GeometryLoader {
 			indices.add(previousVertex.getIndex());
 			return previousVertex;
 		} else {
-			AnimatedVertex anotherVertex = previousVertex.getDuplicateVertex();
+			AnimatedVertex anotherVertex = (AnimatedVertex) previousVertex.getDuplicateVertex();
 			if (anotherVertex != null) {
 				return dealWithAlreadyProcessedVertex(anotherVertex, newTextureIndex, newNormalIndex);
 			} else {
