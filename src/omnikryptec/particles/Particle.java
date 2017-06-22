@@ -107,8 +107,9 @@ public class Particle implements Rangeable{
 
 	
 	private static Vector3f tmp;
-	
-	protected boolean update(Camera cam, float timemultiplier) {
+	private static float timemultiplier;
+	protected boolean update(Camera cam) {
+		timemultiplier = mysystem.getTimemultiplier();
 		Vector3f.add(vel, force, vel);
 		changeable.set(vel);
 		changeable.scale(DisplayManager.instance().getDeltaTime()*timemultiplier);

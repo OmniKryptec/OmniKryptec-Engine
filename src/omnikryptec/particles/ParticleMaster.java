@@ -43,7 +43,7 @@ public class ParticleMaster {
 			iterator = list.iterator();
 			while (iterator.hasNext()) {
 				p = iterator.next();
-				if (!p.update(cam, p.getSystem().getTimemultiplier())) {
+				if (!p.update(cam)) {
 					iterator.remove();
 					if (list.isEmpty()) {
 						mapIterator.remove();

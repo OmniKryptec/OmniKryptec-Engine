@@ -22,9 +22,24 @@ public class ParticleSystem extends GameObject{
 	private float timemultiplier=1;
 	private RenderType type = RenderType.MEDIUM;
 	
+	private float lifelengthf=-1;
+	private float elapsedtime=0;
+	
 	private Random random = new Random();
 
 	private ParticleTexture tex;
+	
+	
+	public ParticleSystem(Vector3f pos, ParticleTexture tex, float pps, float speed, float lifeLength, float scale, RenderType type){
+		this(pos.x,pos.y,pos.z, tex, pps, speed, lifeLength, scale, type);
+	}
+	
+	
+	public ParticleSystem(float x, float y, float z, ParticleTexture tex, float pps, float speed,
+			float lifeLength, float scale, RenderType type){
+		this(x,y,z,tex,pps,speed,Maths.ZERO, lifeLength, scale, type);
+	}
+	
 	
 	public ParticleSystem(float x, float y, float z, ParticleTexture tex, float pps, float speed, Vector3f gravityComplient,
 			float lifeLength, float scale, RenderType type){
@@ -43,6 +58,12 @@ public class ParticleSystem extends GameObject{
 		this(pos.x, pos.y, pos.z, tex, pps, speed, gravityComplient, lifeLength, scale, type);
 	}
 
+	public ParticleSystem setSystemLifeLength(float f){
+		this.lifelengthf = f;
+		return this;
+	}
+	
+	
 	/**
 	 * @param direction
 	 *            - The average direction in which particles are emitted.
@@ -85,14 +106,33 @@ public class ParticleSystem extends GameObject{
 	
 	@Override
 	public void doLogic(){
-		generateParticles(timemultiplier);
+		if(elapsedtime<=lifelengthf||lifelengthf<0){
+			generateParticles(timemultiplier);
+			elapsedtime+=DisplayManager.instance().getDeltaTime();
+		}
+	}
+	
+	public void resetTime(){
+		elapsedtime = 0;
 	}
 	
 	private static float delta,particlesToCreate,partialParticle;
 	private static int count;
+	
+	/**
+	 * for <1 particle/sec
+	 */
+	private float lastParticlef=0;
 	public void generateParticles(float timemultiplier) {
 		delta = DisplayManager.instance().getDeltaTime()*timemultiplier;
 		particlesToCreate = pps * delta;
+		if(particlesToCreate<1f){
+			lastParticlef+=particlesToCreate;
+			if(lastParticlef>=1f){
+				particlesToCreate++;
+				lastParticlef=0;
+			}
+		}
 		count = (int) Math.floor(particlesToCreate);
 		partialParticle = particlesToCreate % 1;
 		for (int i = 0; i < count; i++) {
