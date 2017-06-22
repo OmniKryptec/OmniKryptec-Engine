@@ -72,12 +72,12 @@ public class EntityBuilder {
 	}
 
 	public final EntityBuilder loadTexture(String texturePath) {
-		this.texture = SimpleTexture.newTexture(texturePath).create();
+		this.texture = SimpleTexture.newTextureb(texturePath).create();
 		return this;
 	}
 
 	public final EntityBuilder loadTexture(File textureFile) {
-		this.texture = SimpleTexture.newTexture(textureFile).create();
+		this.texture = SimpleTexture.newTextureb(textureFile).create();
 		return this;
 	}
 

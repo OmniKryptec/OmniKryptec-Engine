@@ -2,7 +2,9 @@ package omnikryptec.model;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -17,10 +19,13 @@ public class VertexBufferObject {
 
 	private final int vboId;
 	private final int type;
-
+	
+	private static final List<VertexBufferObject> active = new ArrayList<>();
+	
 	private VertexBufferObject(int vboId, int type) {
 		this.vboId = vboId;
 		this.type = type;
+		active.add(this);
 	}
 
 	public static VertexBufferObject create(int type) {
@@ -43,29 +48,37 @@ public class VertexBufferObject {
 	public void unbind() {
 		GL15.glBindBuffer(type, 0);
 	}
-
-	public void storeData(float[] data) {
+	
+	public void storeData(float[] data){
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
 		buffer.put(data);
 		buffer.flip();
 		storeData(buffer);
 	}
+	
+	public void storeData(Float[] data) {
+		storeData(dc(data));
+	}
 
 	public void storeData(FloatBuffer data) {
 		GL15.glBufferData(type, data, GL15.GL_STATIC_DRAW);
 	}
-
-	public void storeData(int[] data) {
+	
+	public void storeData(int[] data){
 		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
 		buffer.put(data);
 		buffer.flip();
 		storeData(buffer);
 	}
-
+	
+	public void storeData(Integer[] data) {
+		storeData(dc(data));
+	}
+	
 	public void storeData(IntBuffer data) {
 		GL15.glBufferData(type, data, GL15.GL_STATIC_DRAW);
 	}
-
+	
 	public void updateData(float[] data, FloatBuffer buffer){
 		buffer.clear();
 		if(data.length>buffer.capacity()){
@@ -92,4 +105,26 @@ public class VertexBufferObject {
 		GL15.glDeleteBuffers(vboId);
 	}
 
+	
+	private static float[] dc(Float[] is){
+		float[] newa = new float[is.length];
+		for(int i=0; i<is.length; i++){
+			newa[i] = is[i].floatValue();
+		}
+		return newa;
+	}
+	
+	private static int[] dc(Integer[] is){
+		int[] newa = new int[is.length];
+		for(int i=0; i<is.length; i++){
+			newa[i] = is[i].intValue();
+		}
+		return newa;
+	}
+	
+	public static void cleanup(){
+		for(int i=0; i<active.size(); i++){
+			active.get(i).delete();
+		}
+	}
 }

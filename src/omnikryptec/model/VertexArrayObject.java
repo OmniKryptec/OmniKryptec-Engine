@@ -16,7 +16,7 @@ public class VertexArrayObject {
     private static int lastBoundId = -1;
 
     public final int ID;
-    private VertexBufferObject dataVbo;
+    private VertexBufferObject dataVboTmp;
     private VertexBufferObject indexVbo;
     private int indexCount;
 
@@ -103,24 +103,31 @@ public class VertexArrayObject {
      * @param data Float Array Array Data
      * @return A reference to this VertexArrayObject
      */
-    public final VertexArrayObject storeData(int[] indices, int vertexCount, float[]... data) {
+    public final VertexArrayObject storeDataf(int[] indices, int vertexCount, float[]... data) {
         bind();
-        storeData(vertexCount, data);
+        storeDataf(vertexCount, data);
         createIndexBuffer(indices);
-        unbind();
         return this;
     }
 
+    public final VertexArrayObject storeData(int[] indices, int vertexCount, DataObject... data) {
+        bind();
+        storeData(vertexCount, data);
+        createIndexBuffer(indices);
+        return this;
+    }
+    
     /**
      * Deletes this VertexArrayObject
      * @return A reference to this VertexArrayObject
      */
     public final VertexArrayObject delete() {
         GL30.glDeleteVertexArrays(ID);
-        dataVbo.delete();
-        indexVbo.delete();
         return this;
     }
+
+    
+//*******************************************************************************************************************
 
     /**
      * Creates an indices buffer
@@ -143,9 +150,9 @@ public class VertexArrayObject {
      * @return A reference to this VertexArrayObject
      */
     public final VertexArrayObject createAttribute(int attribute, float[] data, int attributeSize) {
-        dataVbo = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
-        dataVbo.bind();
-        dataVbo.storeData(data);
+        dataVboTmp = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
+        dataVboTmp.bind();
+        dataVboTmp.storeData(data);
         GL20.glVertexAttribPointer(attribute, attributeSize, GL11.GL_FLOAT, false, attributeSize * BYTES_PER_FLOAT, 0);
         return this;
     }
@@ -158,21 +165,51 @@ public class VertexArrayObject {
      * @return A reference to this VertexArrayObject
      */
     public final VertexArrayObject createIntAttribute(int attribute, int[] data, int attributeSize){
-        dataVbo = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
-        dataVbo.bind();
-        dataVbo.storeData(data);
+        dataVboTmp = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
+        dataVboTmp.bind();
+        dataVboTmp.storeData(data);
         GL30.glVertexAttribIPointer(attribute, attributeSize, GL11.GL_INT, attributeSize * BYTES_PER_INT, 0);
         return this;
     }
-
-    private final VertexArrayObject storeData(int vertexCount, float[]... data) {
-        float[] interleavedData = interleaveFloatData(vertexCount, data);
-        int[] lengths = getAttributeLengths(data, vertexCount);
+//*******************************************************************************************************************
+    
+    
+    private final VertexArrayObject storeData(int vertexCount, DataObject... data) {
+    	int[] lengths = getAttributeLengths(data, vertexCount);
+    	store(lengths, data);
+        return this;
+    }
+    
+    private final VertexArrayObject store(int[] lengths, DataObject[] data){
+    	for(int i=0; i<data.length; i++){
+    		dataVboTmp = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
+    		dataVboTmp.bind();
+    		data[i].store(dataVboTmp);
+            if(data[i].holdsInt()){
+            	GL30.glVertexAttribIPointer(i, lengths[i], data[i].getType(), lengths[i] * BYTES_PER_INT, 0);
+            }else if(data[i].holdsFloat()){
+                GL20.glVertexAttribPointer(i, lengths[i], data[i].getType(), false, lengths[i] * BYTES_PER_FLOAT, 0);
+            }
+    	}
+    	return this;
+    }
+    
+    private final int[] getAttributeLengths(DataObject[] data, int vertexCount) {
+        int[] lengths = new int[data.length];
+        for(int i = 0; i < data.length; i++) {
+            lengths[i] = data[i].getLength() / vertexCount;
+        }
+        return lengths;
+    }
+    
+    private final VertexArrayObject storeDataf(int vertexCount, float[]... data) {
+    	float[] interleavedData = interleaveFloatData(vertexCount, data);
+        int[] lengths = getAttributeLengthsf(data, vertexCount);
         storeInterleavedData(interleavedData, lengths);
         return this;
     }
 
-    private final int[] getAttributeLengths(float[][] data, int vertexCount) {
+    private final int[] getAttributeLengthsf(float[][] data, int vertexCount) {
         int[] lengths = new int[data.length];
         for(int i = 0; i < data.length; i++) {
             lengths[i] = data[i].length / vertexCount;
@@ -181,9 +218,9 @@ public class VertexArrayObject {
     }
 
     private final VertexArrayObject storeInterleavedData(float[] data, int... lengths) {
-        dataVbo = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
-        dataVbo.bind();
-        dataVbo.storeData(data);
+        dataVboTmp = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
+        dataVboTmp.bind();
+        dataVboTmp.storeData(data);
         int bytesPerVertex = calculateBytesPerVertex(lengths);
         linkVboDataToAttributes(lengths, bytesPerVertex);
         return this;

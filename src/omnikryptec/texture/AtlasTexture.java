@@ -7,6 +7,10 @@ public class AtlasTexture extends Texture {
 	public AtlasTexture(Texture t, float u, float v, float u2, float v2){
 		super(t.bindAlways());
 		this.texture = t;
+		setTexCoords(u, v, u2, v2);
+	}
+	
+	public AtlasTexture setTexCoords(float u, float v, float u2, float v2){
 		if(texture instanceof AtlasTexture){
 			AtlasTexture tmp = (AtlasTexture)texture;
 			float tmpf1 = -tmp.getUVs()[0]+tmp.getUVs()[2];
@@ -22,6 +26,21 @@ public class AtlasTexture extends Texture {
 
 		}
 		setUVs(u, v, u2, v2);
+		return this;
+	}
+	
+	/**
+	 * can break the UV-Coords!
+	 * @param t
+	 * @return
+	 */
+	public AtlasTexture setTexture(Texture t){
+		this.texture = t;
+		return this;
+	}
+	
+	public Texture getTexture(){
+		return this.texture;
 	}
 	
 	@Override

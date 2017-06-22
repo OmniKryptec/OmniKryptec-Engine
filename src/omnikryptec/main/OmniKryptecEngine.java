@@ -14,6 +14,7 @@ import omnikryptec.logger.Commands;
 import omnikryptec.logger.Logger;
 import omnikryptec.model.Material;
 import omnikryptec.model.VertexArrayObject;
+import omnikryptec.model.VertexBufferObject;
 import omnikryptec.particles.ParticleMaster;
 import omnikryptec.postprocessing.FrameBufferObject;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
@@ -112,7 +113,7 @@ public class OmniKryptecEngine {
 		eventsystem = EventSystem.instance();
 		postpro = PostProcessing.instance();
 		Material.setDefaultNormalMap(
-				SimpleTexture.newTexture(OmniKryptecEngine.class.getResourceAsStream(DEFAULT_NORMALMAP)).create());
+				SimpleTexture.newTextureb(OmniKryptecEngine.class.getResourceAsStream(DEFAULT_NORMALMAP)).create());
 		RenderUtil.cullBackFaces(true);
 		RenderUtil.enableDepthTesting(true);
 		RendererRegistration.init();
@@ -205,8 +206,8 @@ public class OmniKryptecEngine {
 					RenderUtil.clear(sceneCurrent.getClearColor());
 				}
 				sceneCurrent.frame(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, AllowedRenderer.All);
+				ParticleMaster.instance().update(getCurrentScene().getCamera());
 			}
-			ParticleMaster.instance().update(getCurrentScene().getCamera());
 			eventsystem.fireEvent(new Event(), EventType.RENDER_EVENT);
 			scenefbo.unbindFrameBuffer();
 			scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);
@@ -252,9 +253,11 @@ public class OmniKryptecEngine {
 		RenderChunk.cleanup();
 		PostProcessing.cleanup();
 		VertexArrayObject.cleanup();
+		VertexBufferObject.cleanup();
 		FrameBufferObject.cleanup();
 		RendererRegistration.cleanup();
 		ParticleMaster.cleanup();
+		SimpleTexture.cleanup();
 	}
 
 	public final OmniKryptecEngine addAndSetScene(String name, Scene scene) {

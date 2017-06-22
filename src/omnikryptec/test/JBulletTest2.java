@@ -114,12 +114,12 @@ public class JBulletTest2 {
 					.loadTexture("/omnikryptec/test/brunnen.png");
 			entityBuilder_pine = new EntityBuilder().loadModel("/omnikryptec/test/pine.obj")
 					.loadTexture("/omnikryptec/test/pine2.png");
-			final SimpleTexture backgroundTexture = SimpleTexture.newTexture("/omnikryptec/terrain/grassy2.png")
+			final SimpleTexture backgroundTexture = SimpleTexture.newTextureb("/omnikryptec/terrain/grassy2.png")
 					.create();
-			final SimpleTexture rTexture = SimpleTexture.newTexture("/omnikryptec/terrain/mud.png").create();
-			final SimpleTexture gTexture = SimpleTexture.newTexture("/omnikryptec/terrain/grassFlowers.png").create();
-			final SimpleTexture bTexture = SimpleTexture.newTexture("/omnikryptec/terrain/path.png").create();
-			final SimpleTexture blendMap = SimpleTexture.newTexture("/omnikryptec/terrain/blendMap.png").create();
+			final SimpleTexture rTexture = SimpleTexture.newTextureb("/omnikryptec/terrain/mud.png").create();
+			final SimpleTexture gTexture = SimpleTexture.newTextureb("/omnikryptec/terrain/grassFlowers.png").create();
+			final SimpleTexture bTexture = SimpleTexture.newTextureb("/omnikryptec/terrain/path.png").create();
+			final SimpleTexture blendMap = SimpleTexture.newTextureb("/omnikryptec/terrain/blendMap.png").create();
 			try {
 				heightMap = ImageIO.read(Terrain.class.getResourceAsStream("/omnikryptec/terrain/heightmap.png"));
 			} catch (Exception ex) {

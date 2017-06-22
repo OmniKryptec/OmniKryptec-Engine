@@ -89,7 +89,7 @@ public class EngineTest2 implements IEventHandler {
 					ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
 			// Model brunnen = ModelUtil.generateQuad();
 			SimpleTexture brunnent = SimpleTexture
-					.newTexture(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create();
+					.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create();
 			AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
 			TexturedModel tm = new TexturedModel(brunnen, rmvp);
 			tm.getMaterial().setHasTransparency(true);
@@ -108,7 +108,7 @@ public class EngineTest2 implements IEventHandler {
 			Model pine = new Model(
 					ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")));
 			SimpleTexture pinet = SimpleTexture
-					.newTexture(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine2.png")).create();
+					.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine2.png")).create();
 
 			SimpleAnimation animation = new SimpleAnimation(2, brunnent, pinet);
 
@@ -133,7 +133,7 @@ public class EngineTest2 implements IEventHandler {
 				OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 			}
 			//ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
-			system = new ParticleSystem(0,0,0, new ParticleTexture(SimpleTexture.newTexture(Utils.class.getResourceAsStream("/omnikryptec/test/cosmic.png")).create(), 4, false), 10f, 5, new Vector3f(0, 0, 0), 4f, 1.25f, RenderType.ALWAYS);
+			system = new ParticleSystem(0,0,0, new ParticleTexture(SimpleTexture.newTextureb(Utils.class.getResourceAsStream("/omnikryptec/test/cosmic.png")).create(), 4, false), 20f, 2.5f, new Vector3f(0, 0, 0), 2f, 1.25f, RenderType.ALWAYS);
 			//system.setTimemultiplier(10);
 			OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
 			// ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
@@ -177,4 +177,5 @@ public class EngineTest2 implements IEventHandler {
 		// System.out.println(DisplayManager.instance().getDeltaTime());
 	}
 
+	
 }

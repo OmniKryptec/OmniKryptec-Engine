@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
  * @author Karl
  *
  */
+@Deprecated
 public class MyFile {
 
 	private static final String FILE_SEPARATOR = "/";

@@ -1,8 +1,9 @@
 package omnikryptec.objConverter;
 
+import omnikryptec.util.Constants;
+
 public class ModelData {
 
-	private static final int DIMENSIONS = 3;
 
 	private float[] vertices;
 	private float[] textureCoords;
@@ -22,7 +23,7 @@ public class ModelData {
 	}
 
 	public int getVertexCount() {
-		return vertices.length / DIMENSIONS;
+		return vertices.length / Constants.DIMENSIONS;
 	}
 
 	public float[] getVertices() {
