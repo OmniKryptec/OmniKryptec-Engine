@@ -35,8 +35,8 @@ void main(void){
 	}
 	
 	vec4 positionRelativeToCam = modelViewMatrix * vec4(in_position, 1.0);
-	//gl_Position = projectionMatrix * totalLocalPos * positionRelativeToCam;
-	gl_Position = projectionViewMatrix * totalLocalPos;
+	gl_Position = (projectionMatrix * positionRelativeToCam) + (projectionViewMatrix * totalLocalPos);
+	//gl_Position = projectionViewMatrix * totalLocalPos;
 	pass_normal = totalNormal.xyz;
 	pass_textureCoords = in_textureCoords;
 

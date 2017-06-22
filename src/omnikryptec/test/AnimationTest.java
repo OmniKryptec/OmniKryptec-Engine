@@ -91,7 +91,15 @@ public class AnimationTest {
             animatedModel = AnimatedModelLoader.loadEntity(new MyFile(RES_FOLDER, MODEL_FILE), new MyFile(RES_FOLDER, DIFFUSE_FILE));
             animatedModel.getMaterial().setRenderer(renderer_animation);
             animation = AnimationLoader.loadAnimation(new MyFile(RES_FOLDER, ANIM_FILE));
-            entity_test = new Entity(animatedModel);
+            entity_test = new Entity(animatedModel) {
+                
+                @Override
+                public final void doLogic() {
+                    setRelativePos(camera.getAbsolutePos().x, camera.getAbsolutePos().y, camera.getAbsolutePos().z);
+                    getRelativeRotation().y = camera.getAbsoluteRotation().y;
+                }
+                
+            };
             animatedModel.doAnimation(animation);
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_ball);
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_test);
@@ -150,15 +158,6 @@ public class AnimationTest {
             deltaSpeedFactor += 0.005F;
         }
         speedFactor += deltaSpeedFactor;
-        float horizontalSpeed = 30.0F * 0.5F;
-        float verticalSpeed = 10.0F * 0.5F;
-        float turnSpeed = 40.0F * 0.5F;
-        if(keySettings.isPressed("sprint")) {
-            horizontalSpeed *= 10;
-            verticalSpeed *= 10;
-            turnSpeed *= 1;
-        }
-        InputUtil.doThirdPersonController(entity_test, entity_test, keySettings, horizontalSpeed, verticalSpeed, turnSpeed);
 }
     
     private static final void logic() {
