@@ -98,7 +98,7 @@ public class Animator {
      * @return A reference to this Animator
      */
     public final Animator setSpeedFactor(float speedFactor) {
-        this.speedFactor = Maths.clamp(speedFactor, 0.0F, 10.0F);
+        this.speedFactor = Maths.clamp(speedFactor, -10.0F, 10.0F);
         return this;
     }
     
@@ -106,6 +106,9 @@ public class Animator {
     private final Animator increaseAnimationTime() {
         animationTime += (DisplayManager.instance().getDeltaTime() * speedFactor);
         if(isAnimationOver() && loop) {
+            while(animationTime < 0) {
+                animationTime += currentAnimation.getLengthInSeconds();
+            }
             animationTime %= currentAnimation.getLengthInSeconds();
         }
         return this;
@@ -115,7 +118,7 @@ public class Animator {
         if(currentAnimation == null) {
             return true;
         }
-        return animationTime > currentAnimation.getLengthInSeconds();
+        return animationTime > currentAnimation.getLengthInSeconds() || animationTime < 0;
     }
     
     private final HashMap<String, Matrix4f> calculateCurrentAnimationPose() {

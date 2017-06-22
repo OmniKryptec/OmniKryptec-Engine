@@ -2,15 +2,18 @@ package omnikryptec.renderer;
 
 import java.util.ArrayList;
 import java.util.List;
+import omnikryptec.animation.renderer.AnimatedModelRenderer;
 
 public class RendererRegistration {
 
 	private static final List<Renderer> existingRenderers = new ArrayList<>();
 
 	public static final DefaultEntityRenderer DEF_ENTITY_RENDERER;
+	public static final AnimatedModelRenderer DEF_ANIMATEDMODEL_RENDERER;
 
 	static {
 		DEF_ENTITY_RENDERER = new DefaultEntityRenderer();
+                DEF_ANIMATEDMODEL_RENDERER = new AnimatedModelRenderer();
 	}
 
 	public static boolean exists(Renderer r) {

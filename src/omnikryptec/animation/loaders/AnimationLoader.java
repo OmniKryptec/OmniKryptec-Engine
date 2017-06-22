@@ -12,7 +12,7 @@ import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
 import omnikryptec.animation.ColladaParser.dataStructures.AnimationData;
 import omnikryptec.animation.ColladaParser.dataStructures.JointTransformData;
 import omnikryptec.animation.ColladaParser.dataStructures.KeyFrameData;
-import omnikryptec.util.MyFile;
+import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Quaternion;
 
 /**
@@ -33,7 +33,7 @@ public class AnimationLoader {
 	 *            animation.
 	 * @return The animation made from the data in the file.
 	 */
-	public static Animation loadAnimation(MyFile colladaFile) {
+	public static Animation loadAnimation(AdvancedFile colladaFile) {
 		AnimationData animationData = ColladaLoader.loadColladaAnimation(colladaFile);
 		KeyFrame[] frames = new KeyFrame[animationData.keyFrames.length];
 		for (int i = 0; i < frames.length; i++) {

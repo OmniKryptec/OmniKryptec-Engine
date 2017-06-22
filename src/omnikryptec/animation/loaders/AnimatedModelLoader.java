@@ -9,10 +9,12 @@ import omnikryptec.animation.ColladaParser.dataStructures.MeshData;
 import omnikryptec.animation.ColladaParser.dataStructures.SkeletonData;
 import omnikryptec.model.Model;
 import omnikryptec.model.VertexArrayObject;
+import omnikryptec.renderer.Renderer;
+import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.texture.SimpleTexture;
 import omnikryptec.texture.Texture;
+import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Constants;
-import omnikryptec.util.MyFile;
 
 public class AnimatedModelLoader {
 
@@ -21,17 +23,21 @@ public class AnimatedModelLoader {
      * the collada model data, stores the extracted data in a VAO, sets up the
      * joint heirarchy, and loads up the entity's texture.
      * 
-     * @param entityFile
+     * @param modelFile
+     *            - the file containing the data for the entity.
+     * @param textureFile
      *            - the file containing the data for the entity.
      * @return The animated entity (no animation applied though)
      */
-    public static AnimatedModel loadEntity(MyFile modelFile, MyFile textureFile) {
+    public static AnimatedModel loadEntity(AdvancedFile modelFile, AdvancedFile textureFile, Renderer renderer) {
         AnimatedModelData entityData = ColladaLoader.loadColladaModel(modelFile, Constants.MAX_WEIGHTS);
         Model model = new Model(createVertexArrayObject(entityData.getMeshData()));
         Texture texture = loadTexture(textureFile);
         SkeletonData skeletonData = entityData.getJointsData();
         Joint headJoint = createJoints(skeletonData.headJoint);
-        return new AnimatedModel(model, texture, headJoint, skeletonData.jointCount);
+        AnimatedModel animatedModel = new AnimatedModel(model, texture, headJoint, skeletonData.jointCount);
+        animatedModel.getMaterial().setRenderer(renderer == null ? RendererRegistration.DEF_ANIMATEDMODEL_RENDERER : renderer);
+        return animatedModel;
     }
 
     /**
@@ -41,8 +47,8 @@ public class AnimatedModelLoader {
      *            - the texture file.
      * @return The diffuse texture.
      */
-    private static Texture loadTexture(MyFile textureFile) {
-        Texture diffuseTexture = SimpleTexture.newTextureb(textureFile.getInputStream()).anisotropic().create();
+    private static Texture loadTexture(AdvancedFile textureFile) {
+        Texture diffuseTexture = SimpleTexture.newTextureb(textureFile.createInputStream()).anisotropic().create();
         return diffuseTexture;
     }
 

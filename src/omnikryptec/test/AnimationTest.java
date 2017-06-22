@@ -1,5 +1,6 @@
 package omnikryptec.test;
 
+import java.io.File;
 import java.util.Random;
 
 import org.lwjgl.input.Keyboard;
@@ -9,7 +10,6 @@ import omnikryptec.animation.AnimatedModel;
 import omnikryptec.animation.Animation;
 import omnikryptec.animation.loaders.AnimatedModelLoader;
 import omnikryptec.animation.loaders.AnimationLoader;
-import omnikryptec.animation.renderer.AnimatedModelRenderer;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
@@ -23,8 +23,8 @@ import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.Key;
 import omnikryptec.settings.KeyGroup;
 import omnikryptec.settings.KeySettings;
+import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.InputUtil;
-import omnikryptec.util.MyFile;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.RenderUtil;
 
@@ -34,7 +34,6 @@ import omnikryptec.util.RenderUtil;
  */
 public class AnimationTest {
     
-    private static AnimatedModelRenderer renderer_animation;
     private static EntityBuilder entityBuilder_brunnen;
     private static Entity entity_ball;
     private static final Random random = new Random();
@@ -45,6 +44,12 @@ public class AnimationTest {
     private static Animation animation;
     private static Entity entity_test;
     private static float speedFactor = 1.0F;
+    private static Entity entity_test_2;
+    private static final AdvancedFile RES_FOLDER_1 = new AdvancedFile("res");
+    private static final AdvancedFile RES_FOLDER_2 = new AdvancedFile(new File("E:\\Daten\\NetBeans\\Projekte\\OmniKryptec-Engine\\res\\Sci-Fi_door_3_with_animation"));
+    private static final String MODEL_FILE = "model.dae";
+    private static final String ANIM_FILE = "model.dae";
+    private static final String DIFFUSE_FILE = "diffuse.png";
     
     public static final void main(String[] args) {
         try {
@@ -54,11 +59,6 @@ public class AnimationTest {
             Logger.setDebugMode(true);
             Logger.CONSOLE.setEnabled(true);
             Logger.showConsoleDirect();
-            
-            final MyFile RES_FOLDER = new MyFile("res");
-            final String MODEL_FILE = "model.dae";
-            final String ANIM_FILE = "model.dae";
-            final String DIFFUSE_FILE = "diffuse.png";
             
             gameSettings = new GameSettings("AnimationTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setChunkSize(400, 400, 400);
             keySettings = gameSettings.getKeySettings();
@@ -89,10 +89,8 @@ public class AnimationTest {
             }.setPerspectiveProjection(75, 0.1F, 1000))));
             entityBuilder_brunnen = new EntityBuilder().loadModel("/omnikryptec/test/brunnen.obj").loadTexture("/omnikryptec/test/brunnen.png");
             entity_ball = entityBuilder_brunnen.create();
-            renderer_animation = new AnimatedModelRenderer();
-            animatedModel = AnimatedModelLoader.loadEntity(new MyFile(RES_FOLDER, MODEL_FILE), new MyFile(RES_FOLDER, DIFFUSE_FILE));
-            animatedModel.getMaterial().setRenderer(renderer_animation);
-            animation = AnimationLoader.loadAnimation(new MyFile(RES_FOLDER, ANIM_FILE));
+            animatedModel = AnimatedModelLoader.loadEntity(new AdvancedFile(RES_FOLDER_1, MODEL_FILE), new AdvancedFile(RES_FOLDER_1, DIFFUSE_FILE), null);
+            animation = AnimationLoader.loadAnimation(new AdvancedFile(RES_FOLDER_1, ANIM_FILE));
             entity_test = new Entity(animatedModel) {
                 
                 @Override
@@ -102,9 +100,12 @@ public class AnimationTest {
                 }
                 
             };
+            entity_test_2 = new Entity(AnimatedModelLoader.loadEntity(new AdvancedFile(RES_FOLDER_2, "Sci-Fi doorAnimated3.dae"), new AdvancedFile(RES_FOLDER_2, "textures", "entry_3_AO.png"), null).doAnimation(AnimationLoader.loadAnimation(new AdvancedFile(RES_FOLDER_2, "Sci-Fi doorAnimated3.dae"))));
             animatedModel.doAnimation(animation);
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_ball);
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_test);
+            OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_test_2);
+            entity_test_2.getRelativePos().z += 10;
             camera.getRelativePos().y += 3;
             camera.getRelativeRotation().y = 90;
             entity_ball.getRelativePos().x += 8;

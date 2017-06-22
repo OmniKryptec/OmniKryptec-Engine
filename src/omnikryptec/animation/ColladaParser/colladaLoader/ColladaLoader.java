@@ -7,11 +7,11 @@ import omnikryptec.animation.ColladaParser.dataStructures.SkeletonData;
 import omnikryptec.animation.ColladaParser.dataStructures.SkinningData;
 import omnikryptec.animation.ColladaParser.xmlParser.XmlNode;
 import omnikryptec.animation.ColladaParser.xmlParser.XmlParser;
-import omnikryptec.util.MyFile;
+import omnikryptec.util.AdvancedFile;
 
 public class ColladaLoader {
 
-	public static AnimatedModelData loadColladaModel(MyFile colladaFile, int maxWeights) {
+	public static AnimatedModelData loadColladaModel(AdvancedFile colladaFile, int maxWeights) {
 		XmlNode node = XmlParser.loadXmlFile(colladaFile);
 
 		SkinLoader skinLoader = new SkinLoader(node.getChild("library_controllers"), maxWeights);
@@ -26,7 +26,7 @@ public class ColladaLoader {
 		return new AnimatedModelData(meshData, jointsData);
 	}
 
-	public static AnimationData loadColladaAnimation(MyFile colladaFile) {
+	public static AnimationData loadColladaAnimation(AdvancedFile colladaFile) {
 		XmlNode node = XmlParser.loadXmlFile(colladaFile);
 		XmlNode animNode = node.getChild("library_animations");
 		XmlNode jointsNode = node.getChild("library_visual_scenes");
