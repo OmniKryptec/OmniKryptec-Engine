@@ -214,12 +214,14 @@ public class OmniKryptecEngine {
 			scenefbo.resolveToFbo(normalfbo, GL30.GL_COLOR_ATTACHMENT1);
 			scenefbo.resolveToFbo(specularfbo, GL30.GL_COLOR_ATTACHMENT2);
 			scenefbo.resolveToFbo(extrainfofbo, GL30.GL_COLOR_ATTACHMENT3);
-			if (scenefbo.getTargets().length > 4) {
-				for (int i = 4; i < scenefbo.getTargets().length; i++) {
-					scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i - 4]);
+			if(sceneCurrent!=null){
+				if (scenefbo.getTargets().length > 4) {
+					for (int i = 4; i < scenefbo.getTargets().length; i++) {
+						scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i - 4]);
+					}
 				}
+				PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
 			}
-			PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
 			eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
 			DisplayManager.instance().updateDisplay();
 		} catch (Exception e) {

@@ -42,7 +42,7 @@ void main(void){
 	col = vec4(diffuset);
 	col *= colormod;
 	col1 = vec4(normalt.rgb*0.5+0.5,1.0);
-	if(col.a<0.2){
+	if(col.a<0.5){
 		discard;
 	}
 	if(hasspecular>0.5){

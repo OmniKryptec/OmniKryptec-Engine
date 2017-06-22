@@ -421,7 +421,7 @@ public class GameSettings {
 	 * 
 	 * @return Long X chunk offset
 	 */
-	public final long getChunkOffsetX() {
+	public final long getChunkRenderOffsetX() {
 		return chunkOffsetX;
 	}
 
@@ -430,7 +430,7 @@ public class GameSettings {
 	 * 
 	 * @return Long Y chunk offset
 	 */
-	public final long getChunkOffsetY() {
+	public final long getChunkRenderOffsetY() {
 		return chunkOffsetY;
 	}
 
@@ -439,7 +439,7 @@ public class GameSettings {
 	 * 
 	 * @return Long Z chunk offset
 	 */
-	public final long getChunkOffsetZ() {
+	public final long getChunkRenderOffsetZ() {
 		return chunkOffsetZ;
 	}
 
@@ -450,8 +450,8 @@ public class GameSettings {
 	 *            Long X chunk offset
 	 * @return GameSettings A reference to this GameSettings
 	 */
-	public final GameSettings setChunkOffsetX(long o) {
-		return setChunkOffsets(o, chunkOffsetY, chunkOffsetZ);
+	public final GameSettings setChunkRenderOffsetX(long o) {
+		return setChunkRenderOffsets(o, chunkOffsetY, chunkOffsetZ);
 	}
 
 	/**
@@ -461,8 +461,8 @@ public class GameSettings {
 	 *            Long Y chunk offset
 	 * @return GameSettings A reference to this GameSettings
 	 */
-	public final GameSettings setChunkOffsetY(long o) {
-		return setChunkOffsets(chunkOffsetX, o, chunkOffsetZ);
+	public final GameSettings setChunkRenderOffsetY(long o) {
+		return setChunkRenderOffsets(chunkOffsetX, o, chunkOffsetZ);
 	}
 
 	/**
@@ -472,8 +472,8 @@ public class GameSettings {
 	 *            Long Z chunk offset
 	 * @return GameSettings A reference to this GameSettings
 	 */
-	public final GameSettings setChunkOffsetZ(long o) {
-		return setChunkOffsets(chunkOffsetX, chunkOffsetY, o);
+	public final GameSettings setChunkRenderOffsetZ(long o) {
+		return setChunkRenderOffsets(chunkOffsetX, chunkOffsetY, o);
 	}
 
 	/**
@@ -487,7 +487,7 @@ public class GameSettings {
 	 *            Long Z chunk offset
 	 * @return GameSettings A reference to this GameSettings
 	 */
-	public final GameSettings setChunkOffsets(long xo, long yo, long zo) {
+	public final GameSettings setChunkRenderOffsets(long xo, long yo, long zo) {
 		this.chunkOffsetX = xo;
 		this.chunkOffsetY = yo;
 		this.chunkOffsetZ = zo;

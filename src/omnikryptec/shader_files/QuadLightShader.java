@@ -22,7 +22,7 @@ public class QuadLightShader extends Shader {
 	public final UniformVec2 pixSizes = new UniformVec2("pixelSize");
 
 	public QuadLightShader() {
-		super("LightQuadShader", Shader.class.getResourceAsStream(oc_shader_loc + "light_shader_vert.glsl"),
+		super("LightQuadShader", Shader.class.getResourceAsStream(Shader.DEFAULT_PP_VERTEX_SHADER_LOC),
 				Shader.class.getResourceAsStream(oc_shader_loc + "light_shader_frag_sq.glsl"),
 				Shader.DEFAULT_PP_VERTEX_SHADER_POS_ATTR);
 		registerUniforms(depth, diffuse, specular, normal, light, lightColor, viewv, proj, pixSizes, att);
