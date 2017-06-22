@@ -49,6 +49,10 @@ public class Scene {
 				Logger.log("A Camera should not be added as a GameObject!", LogLevel.WARNING);
 				return false;
 			}
+			if(g instanceof Light && ((Light)g).isGlobal()){
+				//TODO add global light here
+				return true;
+			}
 			tmp = xyzToString(g.getChunkX(), g.getChunkY(), g.getChunkZ());
 			if (!scene.containsKey(tmp)) {
 				scene.put(tmp, new RenderChunk(g.getChunkX(), g.getChunkY(), g.getChunkZ(), this));

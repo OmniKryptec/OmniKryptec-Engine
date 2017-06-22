@@ -27,7 +27,7 @@ public class EngineTest {
 			DisplayManager.createDisplay("Test",
 					new GameSettings("EngineTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32));
 			Model brunnen = new Model(
-					ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
+					ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
 			// Model brunnen = Model.generateQuad();
 			SimpleTexture brunnent = SimpleTexture
 					.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create();

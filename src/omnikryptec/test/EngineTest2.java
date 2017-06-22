@@ -3,6 +3,7 @@ package omnikryptec.test;
 import java.util.Random;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -65,7 +66,7 @@ public class EngineTest2 implements IEventHandler {
 			 DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
 			 DeferredLightPrepare.DEFAULT_LIGHT_PREPARE));
 			 PostProcessing.instance().addStage(new BloomStage(new CompleteGaussianBlurStage(true, 0.6f, 0.6f), new Vector4f(1, 0, 0, 0), new Vector2f(1, 6)));
-			// PostProcessing.instance().addStage(new FogStage().setDensity(0.25f));
+			 // PostProcessing.instance().addStage(new FogStage().setDensity(0.25f));
 //			 PostProcessing.instance().addStage(new
 //			 CompleteGaussianBlurStage(false,0.1f,0.1f));
 //			 PostProcessing.instance().addStage(new ColorSpaceStage(16,4,4));
@@ -92,7 +93,7 @@ public class EngineTest2 implements IEventHandler {
 			//PostProcessing.instance().addStage(new DebugRenderer());
 			EventSystem.instance().addEventHandler(new EngineTest2(), EventType.RENDER_EVENT);
 			Model brunnen = new Model(
-					ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
+					ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
 			// Model brunnen = ModelUtil.generateQuad();
 			SimpleTexture brunnent = SimpleTexture
 					.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create();
@@ -112,7 +113,7 @@ public class EngineTest2 implements IEventHandler {
 
 			}.setPerspectiveProjection(90, 0.1f, 300).setRelativePos(0, 0, 0)));
 			Model pine = new Model(
-					ObjLoader.loadNMOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")));
+					ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")));
 			SimpleTexture pinet = SimpleTexture
 					.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine2.png")).create();
 

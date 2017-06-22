@@ -9,6 +9,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
 import omnikryptec.logger.Logger;
+import omnikryptec.util.AdvancedFile;
 
 public class SimpleTexture extends Texture {
 
@@ -84,7 +85,13 @@ public class SimpleTexture extends Texture {
 		return new TextureBuilder(stream).create();
 	}
 	
+	public static TextureBuilder newTextureb(AdvancedFile file){
+		return new TextureBuilder(file.createInputStream());
+	}
 	
+	public static SimpleTexture newTexture(AdvancedFile file){
+		return new TextureBuilder(file.createInputStream()).create();
+	}
 	
 	public static SimpleTexture newCubeMap(InputStream[] textureFiles) {
 		int cubeMapId = TextureUtils.loadCubeMap(textureFiles);

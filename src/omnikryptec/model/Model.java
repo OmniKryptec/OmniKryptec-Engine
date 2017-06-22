@@ -52,7 +52,7 @@ public class Model {
 	}
 
 	public static Model newModel(InputStream inputStream) {
-		return new Model(ObjLoader.loadNMOBJ(inputStream));
+		return new Model(ObjLoader.loadOBJ(inputStream));
 	}
 
 }

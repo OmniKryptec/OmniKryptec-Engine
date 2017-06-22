@@ -15,7 +15,9 @@ public class Light extends GameObject {
 	private Vector3f att;
 
 	private Vector3f tmp;
-
+	
+	private boolean globalLight=false;
+	
 	public Vector4f getPosRad() {
 		tmp = getAbsolutePos();
 		vec.x = tmp.x;
@@ -44,7 +46,16 @@ public class Light extends GameObject {
 	public float getRadius() {
 		return radius;
 	}
-
+	
+	public Light setGlobal(boolean b){
+		this.globalLight = b;
+		return this;
+	}
+	
+	public boolean isGlobal(){
+		return globalLight;
+	}
+	
 	/**
 	 * Sets this light to be a directional light.
 	 * 

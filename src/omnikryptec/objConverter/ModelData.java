@@ -11,7 +11,7 @@ public class ModelData {
 	private float[] tangents;
 	private int[] indices;
 	private float furthestPoint;
-
+		
 	public ModelData(float[] vertices, float[] textureCoords, float[] normals, float[] tangents, int[] indices,
 			float furthestPoint) {
 		this.vertices = vertices;
