@@ -39,6 +39,7 @@ public class VertexBufferObject {
 		GL15.glBindBuffer(type, vboId);
 	}
 
+	@Deprecated
 	public void unbind() {
 		GL15.glBindBuffer(type, 0);
 	}
@@ -78,7 +79,6 @@ public class VertexBufferObject {
 		bind();
 		GL15.glBufferData(type, buffer.capacity() * 4, GL15.GL_STREAM_DRAW);
 		GL15.glBufferSubData(type, 0, buffer);
-		unbind();
 	}
 	
 	public void addInstancedAttribute(VertexArrayObject vao, int attributNr, int dataSize, int instancedDataSize, int offset) {
@@ -86,8 +86,6 @@ public class VertexBufferObject {
 		vao.bind();
 		GL20.glVertexAttribPointer(attributNr, dataSize, GL11.GL_FLOAT, false, instancedDataSize * 4, offset * 4);
 		GL33.glVertexAttribDivisor(attributNr, 1);
-		unbind();
-		vao.unbind();
 	}
 	
 	public void delete() {

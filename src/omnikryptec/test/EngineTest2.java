@@ -133,7 +133,7 @@ public class EngineTest2 implements IEventHandler {
 				OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 			}
 			//ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
-			system = new ParticleSystem(0,0,0, new ParticleTexture(SimpleTexture.newTexture(Utils.class.getResourceAsStream("/omnikryptec/test/cosmic.png")).create(), 4, false), 1/10f, 5, new Vector3f(0, 0, 0), 4f, 1.25f, RenderType.ALWAYS);
+			system = new ParticleSystem(0,0,0, new ParticleTexture(SimpleTexture.newTexture(Utils.class.getResourceAsStream("/omnikryptec/test/cosmic.png")).create(), 4, false), 10f, 5, new Vector3f(0, 0, 0), 4f, 1.25f, RenderType.ALWAYS);
 			//system.setTimemultiplier(10);
 			OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
 			// ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());

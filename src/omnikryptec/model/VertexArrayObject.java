@@ -147,7 +147,6 @@ public class VertexArrayObject {
         dataVbo.bind();
         dataVbo.storeData(data);
         GL20.glVertexAttribPointer(attribute, attributeSize, GL11.GL_FLOAT, false, attributeSize * BYTES_PER_FLOAT, 0);
-        dataVbo.unbind();
         return this;
     }
 
@@ -163,7 +162,6 @@ public class VertexArrayObject {
         dataVbo.bind();
         dataVbo.storeData(data);
         GL30.glVertexAttribIPointer(attribute, attributeSize, GL11.GL_INT, attributeSize * BYTES_PER_INT, 0);
-        dataVbo.unbind();
         return this;
     }
 
@@ -188,7 +186,6 @@ public class VertexArrayObject {
         dataVbo.storeData(data);
         int bytesPerVertex = calculateBytesPerVertex(lengths);
         linkVboDataToAttributes(lengths, bytesPerVertex);
-        dataVbo.unbind();
         return this;
     }
 
