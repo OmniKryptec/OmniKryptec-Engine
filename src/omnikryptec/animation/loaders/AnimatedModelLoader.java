@@ -1,12 +1,12 @@
 package omnikryptec.animation.loaders;
 
 import omnikryptec.animation.AnimatedModel;
+import omnikryptec.animation.Joint;
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
 import omnikryptec.animation.ColladaParser.dataStructures.AnimatedModelData;
 import omnikryptec.animation.ColladaParser.dataStructures.JointData;
 import omnikryptec.animation.ColladaParser.dataStructures.MeshData;
 import omnikryptec.animation.ColladaParser.dataStructures.SkeletonData;
-import omnikryptec.animation.Joint;
 import omnikryptec.model.Model;
 import omnikryptec.model.VertexArrayObject;
 import omnikryptec.texture.SimpleTexture;

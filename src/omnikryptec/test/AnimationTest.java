@@ -1,6 +1,10 @@
 package omnikryptec.test;
 
 import java.util.Random;
+
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+
 import omnikryptec.animation.AnimatedModel;
 import omnikryptec.animation.Animation;
 import omnikryptec.animation.loaders.AnimatedModelLoader;
@@ -23,8 +27,6 @@ import omnikryptec.util.InputUtil;
 import omnikryptec.util.MyFile;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.RenderUtil;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 
 /**
  * AnimationTest

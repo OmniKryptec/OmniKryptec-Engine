@@ -2,6 +2,7 @@ package omnikryptec.animation.ColladaParser.colladaLoader;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import omnikryptec.animation.ColladaParser.dataStructures.SkinningData;
 import omnikryptec.animation.ColladaParser.dataStructures.VertexSkinData;
 import omnikryptec.animation.ColladaParser.xmlParser.XmlNode;

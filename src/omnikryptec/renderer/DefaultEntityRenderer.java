@@ -6,8 +6,8 @@ import org.lwjgl.opengl.GL11;
 
 import omnikryptec.entity.Entity;
 import omnikryptec.main.Scene;
-import omnikryptec.model.Material;
 import omnikryptec.model.AdvancedModel;
+import omnikryptec.model.Material;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.shader_files.EntityShader;
 import omnikryptec.texture.Texture;

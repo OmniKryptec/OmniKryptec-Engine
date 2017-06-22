@@ -6,27 +6,20 @@ import java.util.Map;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL31;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.entity.Camera;
-import omnikryptec.logger.Logger;
-import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.model.Model;
 import omnikryptec.model.VertexBufferObject;
-import omnikryptec.objConverter.ModelData;
 import omnikryptec.util.Maths;
 import omnikryptec.util.ModelUtil;
 import omnikryptec.util.RenderUtil;
 
 public class ParticleRenderer {
 
-//	private static final float[] VERTICES = { -0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f, -0.5f };
 	private static int maxInstancesPerSys = 10_000_000;
 	private static final int INSTANCE_DATA_LENGTH = 21;
 

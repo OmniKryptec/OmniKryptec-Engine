@@ -1,6 +1,7 @@
 package omnikryptec.animation;
 
 import java.util.ArrayList;
+
 import org.lwjgl.util.vector.Matrix4f;
 
 /**

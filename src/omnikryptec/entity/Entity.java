@@ -3,8 +3,8 @@ package omnikryptec.entity;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import omnikryptec.model.Model;
 import omnikryptec.model.AdvancedModel;
+import omnikryptec.model.Model;
 import omnikryptec.texture.SimpleTexture;
 
 public class Entity extends GameObject implements Rangeable{

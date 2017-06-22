@@ -2,14 +2,15 @@ package omnikryptec.animation.ColladaParser.colladaLoader;
 
 import java.nio.FloatBuffer;
 import java.util.List;
-import omnikryptec.animation.ColladaParser.dataStructures.AnimationData;
-import omnikryptec.animation.ColladaParser.dataStructures.JointTransformData;
-import omnikryptec.animation.ColladaParser.dataStructures.KeyFrameData;
-import omnikryptec.animation.ColladaParser.xmlParser.XmlNode;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+
+import omnikryptec.animation.ColladaParser.dataStructures.AnimationData;
+import omnikryptec.animation.ColladaParser.dataStructures.JointTransformData;
+import omnikryptec.animation.ColladaParser.dataStructures.KeyFrameData;
+import omnikryptec.animation.ColladaParser.xmlParser.XmlNode;
 
 public class AnimationLoader {
 	

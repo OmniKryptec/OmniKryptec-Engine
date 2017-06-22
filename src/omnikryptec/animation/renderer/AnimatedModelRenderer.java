@@ -1,6 +1,10 @@
 package omnikryptec.animation.renderer;
 
 import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector3f;
+
 import omnikryptec.animation.AnimatedModel;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
@@ -11,8 +15,6 @@ import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector3f;
 
 /**
  * 

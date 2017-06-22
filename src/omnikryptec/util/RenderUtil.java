@@ -4,10 +4,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Vector3f;
 
-import omnikryptec.entity.Rangeable;
 import omnikryptec.entity.Camera;
-import omnikryptec.entity.Entity;
 import omnikryptec.entity.Entity.RenderType;
+import omnikryptec.entity.Rangeable;
 import omnikryptec.main.OmniKryptecEngine;
 
 public class RenderUtil {

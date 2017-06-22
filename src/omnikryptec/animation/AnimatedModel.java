@@ -1,11 +1,13 @@
 package omnikryptec.animation;
 
 import java.util.ArrayList;
+
+import org.lwjgl.util.vector.Matrix4f;
+
 import omnikryptec.model.AdvancedModel;
 import omnikryptec.model.Material;
 import omnikryptec.model.Model;
 import omnikryptec.texture.Texture;
-import org.lwjgl.util.vector.Matrix4f;
 
 /**
  * AnimatedModel

@@ -1,9 +1,11 @@
 package omnikryptec.animation;
 
 import java.util.HashMap;
+
+import org.lwjgl.util.vector.Matrix4f;
+
 import omnikryptec.display.DisplayManager;
 import omnikryptec.util.Maths;
-import org.lwjgl.util.vector.Matrix4f;
 
 /**
  * Animator
