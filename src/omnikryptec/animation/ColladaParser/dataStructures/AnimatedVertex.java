@@ -5,14 +5,14 @@ import java.util.List;
 
 import org.lwjgl.util.vector.Vector3f;
 
-public class Vertex {
+public class AnimatedVertex {
 	
 	private static final int NO_INDEX = -1;
 	
 	private Vector3f position;
 	private int textureIndex = NO_INDEX;
 	private int normalIndex = NO_INDEX;
-	private Vertex duplicateVertex = null;
+	private AnimatedVertex duplicateVertex = null;
 	private int index;
 	private float length;
 	private List<Vector3f> tangents = new ArrayList<Vector3f>();
@@ -21,7 +21,7 @@ public class Vertex {
 	
 	private VertexSkinData weightsData;
 	
-	public Vertex(int index,Vector3f position, VertexSkinData weightsData){
+	public AnimatedVertex(int index,Vector3f position, VertexSkinData weightsData){
 		this.index = index;
 		this.weightsData = weightsData;
 		this.position = position;
@@ -86,11 +86,11 @@ public class Vertex {
 		return normalIndex;
 	}
 
-	public Vertex getDuplicateVertex() {
+	public AnimatedVertex getDuplicateVertex() {
 		return duplicateVertex;
 	}
 
-	public void setDuplicateVertex(Vertex duplicateVertex) {
+	public void setDuplicateVertex(AnimatedVertex duplicateVertex) {
 		this.duplicateVertex = duplicateVertex;
 	}
 

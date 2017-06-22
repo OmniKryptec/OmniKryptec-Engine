@@ -8,10 +8,11 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+import omnikryptec.animation.ColladaParser.dataStructures.AnimatedVertex;
 import omnikryptec.animation.ColladaParser.dataStructures.MeshData;
-import omnikryptec.animation.ColladaParser.dataStructures.Vertex;
 import omnikryptec.animation.ColladaParser.dataStructures.VertexSkinData;
 import omnikryptec.animation.ColladaParser.xmlParser.XmlNode;
+
 import omnikryptec.util.Maths;
 
 /**
@@ -34,7 +35,7 @@ public class GeometryLoader {
 	private int[] jointIdsArray;
 	private float[] weightsArray;
 
-	List<Vertex> vertices = new ArrayList<Vertex>();
+	List<AnimatedVertex> vertices = new ArrayList<AnimatedVertex>();
 	List<Vector2f> textures = new ArrayList<Vector2f>();
 	List<Vector3f> normals = new ArrayList<Vector3f>();
 	List<Integer> indices = new ArrayList<Integer>();
@@ -71,7 +72,7 @@ public class GeometryLoader {
 			float z = Float.parseFloat(posData[i * 3 + 2]);
 			Vector4f position = new Vector4f(x, y, z, 1);
 			Matrix4f.transform(CORRECTION, position, position);
-			vertices.add(new Vertex(vertices.size(), new Vector3f(position.x, position.y, position.z), vertexWeights.get(vertices.size())));
+			vertices.add(new AnimatedVertex(vertices.size(), new Vector3f(position.x, position.y, position.z), vertexWeights.get(vertices.size())));
 		}
 	}
 
@@ -117,8 +118,8 @@ public class GeometryLoader {
 	}
 	
 
-	private Vertex processVertex(int posIndex, int normIndex, int texIndex) {
-		Vertex currentVertex = vertices.get(posIndex);
+	private AnimatedVertex processVertex(int posIndex, int normIndex, int texIndex) {
+		AnimatedVertex currentVertex = vertices.get(posIndex);
 		if (!currentVertex.isSet()) {
 			currentVertex.setTextureIndex(texIndex);
 			currentVertex.setNormalIndex(normIndex);
@@ -140,7 +141,7 @@ public class GeometryLoader {
 	private float convertDataToArrays() {
 		float furthestPoint = 0;
 		for (int i = 0; i < vertices.size(); i++) {
-			Vertex currentVertex = vertices.get(i);
+			AnimatedVertex currentVertex = vertices.get(i);
 			if (currentVertex.getLength() > furthestPoint) {
 				furthestPoint = currentVertex.getLength();
 			}
@@ -167,16 +168,16 @@ public class GeometryLoader {
 		return furthestPoint;
 	}
 
-	private Vertex dealWithAlreadyProcessedVertex(Vertex previousVertex, int newTextureIndex, int newNormalIndex) {
+	private AnimatedVertex dealWithAlreadyProcessedVertex(AnimatedVertex previousVertex, int newTextureIndex, int newNormalIndex) {
 		if (previousVertex.hasSameTextureAndNormal(newTextureIndex, newNormalIndex)) {
 			indices.add(previousVertex.getIndex());
 			return previousVertex;
 		} else {
-			Vertex anotherVertex = previousVertex.getDuplicateVertex();
+			AnimatedVertex anotherVertex = previousVertex.getDuplicateVertex();
 			if (anotherVertex != null) {
 				return dealWithAlreadyProcessedVertex(anotherVertex, newTextureIndex, newNormalIndex);
 			} else {
-				Vertex duplicateVertex = new Vertex(vertices.size(), previousVertex.getPosition(), previousVertex.getWeightsData());
+				AnimatedVertex duplicateVertex = new AnimatedVertex(vertices.size(), previousVertex.getPosition(), previousVertex.getWeightsData());
 				duplicateVertex.setTextureIndex(newTextureIndex);
 				duplicateVertex.setNormalIndex(newNormalIndex);
 				previousVertex.setDuplicateVertex(duplicateVertex);
@@ -197,7 +198,7 @@ public class GeometryLoader {
 	}
 
 	private void removeUnusedVertices() {
-		for (Vertex vertex : vertices) {
+		for (AnimatedVertex vertex : vertices) {
 			vertex.averageTangents();
 			if (!vertex.isSet()) {
 				vertex.setTextureIndex(0);
