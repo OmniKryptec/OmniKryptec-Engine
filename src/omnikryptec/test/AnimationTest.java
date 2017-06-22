@@ -89,7 +89,7 @@ public class AnimationTest {
             }.setPerspectiveProjection(75, 0.1F, 1000))));
             entityBuilder_brunnen = new EntityBuilder().loadModel("/omnikryptec/test/brunnen.obj").loadTexture("/omnikryptec/test/brunnen.png");
             entity_ball = entityBuilder_brunnen.create();
-            animatedModel = AnimatedModelLoader.loadEntity(new AdvancedFile(RES_FOLDER_1, MODEL_FILE), new AdvancedFile(RES_FOLDER_1, DIFFUSE_FILE), null);
+            animatedModel = AnimatedModelLoader.loadModel(new AdvancedFile(RES_FOLDER_1, MODEL_FILE), new AdvancedFile(RES_FOLDER_1, DIFFUSE_FILE), null);
             animation = AnimationLoader.loadAnimation(new AdvancedFile(RES_FOLDER_1, ANIM_FILE));
             entity_test = new Entity(animatedModel) {
                 
@@ -100,7 +100,7 @@ public class AnimationTest {
                 }
                 
             };
-            entity_test_2 = new Entity(AnimatedModelLoader.loadEntity(new AdvancedFile(RES_FOLDER_2, "Sci-Fi doorAnimated3.dae"), new AdvancedFile(RES_FOLDER_2, "textures", "entry_3_AO.png"), null).doAnimation(AnimationLoader.loadAnimation(new AdvancedFile(RES_FOLDER_2, "Sci-Fi doorAnimated3.dae"))));
+            entity_test_2 = new Entity(AnimatedModelLoader.loadModel(new AdvancedFile(RES_FOLDER_2, "Sci-Fi doorAnimated3.dae"), new AdvancedFile(RES_FOLDER_2, "textures", "entry_3_AO.png"), null).doAnimation(AnimationLoader.loadAnimation(new AdvancedFile(RES_FOLDER_2, "Sci-Fi doorAnimated3.dae"))));
             animatedModel.doAnimation(animation);
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_ball);
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_test);

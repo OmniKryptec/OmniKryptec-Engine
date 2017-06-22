@@ -29,7 +29,7 @@ public class AnimatedModelLoader {
      *            - the file containing the data for the entity.
      * @return The animated entity (no animation applied though)
      */
-    public static AnimatedModel loadEntity(AdvancedFile modelFile, AdvancedFile textureFile, Renderer renderer) {
+    public static AnimatedModel loadModel(AdvancedFile modelFile, AdvancedFile textureFile, Renderer renderer) {
         AnimatedModelData entityData = ColladaLoader.loadColladaModel(modelFile, Constants.MAX_WEIGHTS);
         Model model = new Model(createVertexArrayObject(entityData.getMeshData()));
         Texture texture = loadTexture(textureFile);
