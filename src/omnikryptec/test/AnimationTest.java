@@ -15,7 +15,6 @@ import omnikryptec.event.EventType;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
-import omnikryptec.model.Material;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.Key;
 import omnikryptec.settings.KeyGroup;
@@ -43,6 +42,7 @@ public class AnimationTest {
     private static AnimatedModel animatedModel;
     private static Animation animation;
     private static Entity entity_test;
+    private static float speedFactor = 1.0F;
     
     public static final void main(String[] args) {
         try {
@@ -66,6 +66,8 @@ public class AnimationTest {
             keySettings.setKey("toggleWireframe", Keyboard.KEY_T, true);
             keySettings.setKey("reset", Keyboard.KEY_R, true);
             keySettings.setKey("alternativeMouseGrabbed", Keyboard.KEY_L, true);
+            keySettings.setKey("lower", Keyboard.KEY_COMMA, true);
+            keySettings.setKey("higher", Keyboard.KEY_PERIOD, true);
             DisplayManager.createDisplay("Animation Test", gameSettings);
             OmniKryptecEngine.instance().addAndSetScene("Test-Scene", new Scene(camera = ((Camera) new Camera() {
                 
@@ -89,7 +91,15 @@ public class AnimationTest {
             animatedModel = AnimatedModelLoader.loadEntity(new MyFile(RES_FOLDER, MODEL_FILE), new MyFile(RES_FOLDER, DIFFUSE_FILE));
             animatedModel.getMaterial().setRenderer(renderer_animation);
             animation = AnimationLoader.loadAnimation(new MyFile(RES_FOLDER, ANIM_FILE));
-            entity_test = new Entity(animatedModel);
+            entity_test = new Entity(animatedModel) {
+                
+                @Override
+                public final void doLogic() {
+                    setRelativePos(camera.getAbsolutePos().x, camera.getAbsolutePos().y, camera.getAbsolutePos().z);
+                    getRelativeRotation().y = camera.getAbsoluteRotation().y;
+                }
+                
+            };
             animatedModel.doAnimation(animation);
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_ball);
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_test);
@@ -99,6 +109,7 @@ public class AnimationTest {
             entity_ball.getRelativePos().y += 1;
             EventSystem.instance().addEventHandler((e) -> {
                 input();
+                logic();
                 AnimatedModel.updateAllAnimatedModels();
             }, EventType.RENDER_EVENT);
             InputUtil.setCamera(camera);
@@ -139,6 +150,19 @@ public class AnimationTest {
                 camera.getRelativeRotation().x += (deltaY / 5);
             }
         }
+        float deltaSpeedFactor = 0.0F;
+        if(keySettings.isPressed("lower")) {
+            deltaSpeedFactor -= 0.005F;
+        }
+        if(keySettings.isPressed("higher")) {
+            deltaSpeedFactor += 0.005F;
+        }
+        speedFactor += deltaSpeedFactor;
+}
+    
+    private static final void logic() {
+        animatedModel.getAnimator().setSpeedFactor(speedFactor);
+        speedFactor = animatedModel.getAnimator().getSpeedFactor();
     }
     
 }

@@ -1,10 +1,8 @@
 package omnikryptec.animation;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import omnikryptec.display.DisplayManager;
-import omnikryptec.logger.LogEntry;
-import omnikryptec.logger.Logger;
+import omnikryptec.util.Maths;
 import org.lwjgl.util.vector.Matrix4f;
 
 /**
@@ -18,6 +16,7 @@ public class Animator {
     private Animation currentAnimation;
     private float animationTime = 0;
     private boolean loop = true;
+    private float speedFactor = 1.0F;
     
     /**
      * Creates an Animator
@@ -72,8 +71,38 @@ public class Animator {
         return this;
     }
     
+    /**
+     * Resets the Animation
+     * @param loop Boolean Set if the animation should get looped
+     * @return A reference to this Animator
+     */
+    public final Animator reset(boolean loop) {
+        this.loop = loop;
+        animationTime = 0;
+        return this;
+    }
+
+    /**
+     * Returns the speed
+     * @return Float Speed
+     */
+    public final float getSpeedFactor() {
+        return speedFactor;
+    }
+
+    /**
+     * Sets the speed
+     * @param speedFactor Float Speed
+     * @return A reference to this Animator
+     */
+    public final Animator setSpeedFactor(float speedFactor) {
+        this.speedFactor = Maths.clamp(speedFactor, 0.0F, 10.0F);
+        return this;
+    }
+    
+    
     private final Animator increaseAnimationTime() {
-        animationTime += DisplayManager.instance().getDeltaTime();
+        animationTime += (DisplayManager.instance().getDeltaTime() * speedFactor);
         if(isAnimationOver() && loop) {
             animationTime %= currentAnimation.getLengthInSeconds();
         }

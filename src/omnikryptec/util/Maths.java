@@ -116,6 +116,30 @@ public class Maths {
 	public static boolean fastEquals3f(Vector3f one, Vector3f sec) {
 		return one != null && sec != null && one.x == sec.x && one.y == sec.y && one.z == sec.z;
 	}
+        
+        public static final float[] intArrayToFloatArray(int[] input) {
+            final float[] output = new float[input.length];
+            for(int i = 0; i < output.length; i++) {
+                output[i] = input[i];
+            }
+            return output;
+        }
+        
+        public static final int[] floatArrayToIntArray(float[] input) {
+            final int[] output = new int[input.length];
+            for(int i = 0; i < output.length; i++) {
+                output[i] = (int) (input[i] + 0.5);
+            }
+            return output;
+        }
+        
+        public static final float clamp(float input, float min, float max) {
+            return Math.min(max, Math.max(min, input));
+        }
+        
+        public static final int clamp(int input, int min, int max) {
+            return Math.min(max, Math.max(min, input));
+        }
 
 	// public static double getRelativizer(double velocity, double maxVelocity){
 	// if(velocity>maxVelocity){

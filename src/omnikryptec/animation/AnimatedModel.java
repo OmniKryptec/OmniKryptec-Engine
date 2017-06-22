@@ -128,12 +128,23 @@ public class AnimatedModel implements AdvancedModel {
         });
         return this;
     }
+    
+    /**
+     * Returns the Animator
+     * @return Animator Animator
+     */
+    public final Animator getAnimator() {
+        return animator;
+    }
 
     @Override
     public Material getMaterial() {
         return material;
     }
     
+    /**
+     * Updates all created AnimatedModels
+     */
     public static final void updateAllAnimatedModels() {
         animatedModels.stream().forEach((animatedModel) -> {
             animatedModel.update();
