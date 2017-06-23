@@ -44,7 +44,7 @@ public class AnimatedModelRenderer implements Renderer {
         private Entity entity;
         
     @Override
-    public void render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities) {
+    public void render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender) {
         final Camera camera = s.getCamera();
         shader.start();
         shader.projectionMatrix.loadMatrix(camera.getProjectionMatrix());
@@ -66,7 +66,9 @@ public class AnimatedModelRenderer implements Renderer {
                 for(int z = 0; z < stapel.size(); z++) {
                     entity = stapel.get(z);
                     if(entity != null && entity.isActive() && RenderUtil.inRenderRange(entity, camera)) {
-                        entity.doLogic0();
+                        if(!onlyRender) {
+                            entity.doLogic0();
+                        }
                         shader.jointTransforms.loadMatrixArray(animatedModel.getJointTransforms());
                         shader.transformationMatrix.loadMatrix(Maths.createTransformationMatrix(entity));
                         GL11.glDrawElements(GL11.GL_TRIANGLES, animatedModel.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
