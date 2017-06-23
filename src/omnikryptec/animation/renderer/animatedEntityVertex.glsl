@@ -6,6 +6,7 @@ const int MAX_WEIGHTS = 3;//max number of joints that can affect a vertex
 in vec3 in_position;
 in vec2 in_textureCoords;
 in vec3 in_normal;
+in vec3 in_tangents;
 in ivec3 in_jointIndices;
 in vec3 in_weights;
 

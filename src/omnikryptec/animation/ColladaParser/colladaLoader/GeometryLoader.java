@@ -30,6 +30,7 @@ public class GeometryLoader {
 	
 	private float[] verticesArray;
 	private float[] normalsArray;
+        private float[] tangentsArray;
 	private float[] texturesArray;
 	private int[] indicesArray;
 	private int[] jointIdsArray;
@@ -50,9 +51,10 @@ public class GeometryLoader {
 		assembleVertices();
 		removeUnusedVertices();
 		initArrays();
+                calculateTangents();
 		convertDataToArrays();
 		convertIndicesListToArray();
-		return new MeshData(verticesArray, texturesArray, normalsArray, indicesArray, jointIdsArray, weightsArray);
+		return new MeshData(verticesArray, texturesArray, normalsArray, tangentsArray, indicesArray, jointIdsArray, weightsArray);
 	}
 
 	private void readRawData() {
@@ -137,6 +139,36 @@ public class GeometryLoader {
 		}
 		return indicesArray;
 	}
+        
+        private void calculateTangents() {
+            for(int i = 0; i < indices.size() - 2; i += 3) {
+                int i_1 = indices.get(i);
+                int i_2 = indices.get(i + 1);
+                int i_3 = indices.get(i + 2);
+                AnimatedVertex v_1 = vertices.get(i_1);
+                AnimatedVertex v_2 = vertices.get(i_2);
+                AnimatedVertex v_3 = vertices.get(i_3);
+                calculateTangents(v_1, v_2, v_3, textures);
+            }
+        }
+        
+	private static void calculateTangents(AnimatedVertex v0, AnimatedVertex v1, AnimatedVertex v2, List<Vector2f> textures) {
+		Vector3f delatPos1 = Vector3f.sub(v1.getPosition(), v0.getPosition(), null);
+		Vector3f delatPos2 = Vector3f.sub(v2.getPosition(), v0.getPosition(), null);
+		Vector2f uv0 = textures.get(v0.getTextureIndex());
+		Vector2f uv1 = textures.get(v1.getTextureIndex());
+		Vector2f uv2 = textures.get(v2.getTextureIndex());
+		Vector2f deltaUv1 = Vector2f.sub(uv1, uv0, null);
+		Vector2f deltaUv2 = Vector2f.sub(uv2, uv0, null);
+		float r = 1.0f / (deltaUv1.x * deltaUv2.y - deltaUv1.y * deltaUv2.x);
+		delatPos1.scale(deltaUv2.y);
+		delatPos2.scale(deltaUv1.y);
+		Vector3f tangent = Vector3f.sub(delatPos1, delatPos2, null);
+		tangent.scale(r);
+		v0.addTangent(tangent);
+		v1.addTangent(tangent);
+		v2.addTangent(tangent);
+	}
 
 	private float convertDataToArrays() {
 		float furthestPoint = 0;
@@ -148,6 +180,7 @@ public class GeometryLoader {
 			Vector3f position = currentVertex.getPosition();
 			Vector2f textureCoord = textures.get(currentVertex.getTextureIndex());
 			Vector3f normalVector = normals.get(currentVertex.getNormalIndex());
+			Vector3f tangentVector = currentVertex.getAverageTangent();
 			verticesArray[i * 3] = position.x;
 			verticesArray[i * 3 + 1] = position.y;
 			verticesArray[i * 3 + 2] = position.z;
@@ -156,6 +189,9 @@ public class GeometryLoader {
 			normalsArray[i * 3] = normalVector.x;
 			normalsArray[i * 3 + 1] = normalVector.y;
 			normalsArray[i * 3 + 2] = normalVector.z;
+                        tangentsArray[i * 3] = tangentVector.x;
+                        tangentsArray[i * 3 + 1] = tangentVector.y;
+                        tangentsArray[i * 3 + 2] = tangentVector.z;
 			VertexSkinData weights = currentVertex.getWeightsData();
 			jointIdsArray[i * 3] = weights.jointIds.get(0);
 			jointIdsArray[i * 3 + 1] = weights.jointIds.get(1);
@@ -193,6 +229,7 @@ public class GeometryLoader {
 		this.verticesArray = new float[vertices.size() * 3];
 		this.texturesArray = new float[vertices.size() * 2];
 		this.normalsArray = new float[vertices.size() * 3];
+		this.tangentsArray = new float[vertices.size() * 3];
 		this.jointIdsArray = new int[vertices.size() * 3];
 		this.weightsArray = new float[vertices.size() * 3];
 	}

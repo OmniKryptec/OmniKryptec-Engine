@@ -29,7 +29,7 @@ public class AnimatedModelShader extends Shader {
      * the diffuse texture will be sampled from texture unit 0.
      */
     public AnimatedModelShader() {
-        super(VERTEX_SHADER.createInputStream(), FRAGMENT_SHADER.createInputStream(), "in_position", "in_textureCoords", "in_normal", "in_jointIndices", "in_weights");
+        super(VERTEX_SHADER.createInputStream(), FRAGMENT_SHADER.createInputStream(), "in_position", "in_textureCoords", "in_normal", "in_tangents", "in_jointIndices", "in_weights");
         registerUniforms(transformationMatrix, viewMatrix, projectionMatrix, diffuseMap, lightDirection, jointTransforms);
         start();
         diffuseMap.loadTexUnit(0);

@@ -56,7 +56,7 @@ public class AnimatedModelRenderer implements Renderer {
                 continue;
             }
             animatedModel = (AnimatedModel) model;
-            model.getModel().getVao().bind(0, 1, 2, 3, 4);
+            model.getModel().getVao().bind(0, 1, 2, 3, 4, 5);
             animatedModel.getTexture().bindToUnit(0);
             RenderUtil.antialias(true);
             RenderUtil.disableBlending();

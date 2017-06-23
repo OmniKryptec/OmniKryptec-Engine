@@ -83,8 +83,9 @@ public class AnimatedModelLoader {
         vao.createAttribute(0, data.getVertices(), 3);
         vao.createAttribute(1, data.getTextureCoords(), 2);
         vao.createAttribute(2, data.getNormals(), 3);
-        vao.createIntAttribute(3, data.getJointIds(), 3);
-        vao.createAttribute(4, data.getVertexWeights(), 3);
+        vao.createAttribute(3, data.getTangents(), 3);
+        vao.createIntAttribute(4, data.getJointIds(), 3);
+        vao.createAttribute(5, data.getVertexWeights(), 3);
         vao.unbind();
         return vao;
     }
