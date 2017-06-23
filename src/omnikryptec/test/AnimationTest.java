@@ -1,6 +1,5 @@
 package omnikryptec.test;
 
-import java.io.File;
 import java.util.Random;
 
 import org.lwjgl.input.Keyboard;
@@ -23,9 +22,12 @@ import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.Key;
 import omnikryptec.settings.KeyGroup;
 import omnikryptec.settings.KeySettings;
+import omnikryptec.test.saving.DataMapSerializer;
+import omnikryptec.test.saving.XMLSerializer;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
+import omnikryptec.util.OSUtil;
 import omnikryptec.util.RenderUtil;
 
 /**
@@ -48,15 +50,22 @@ public class AnimationTest {
     private static final String MODEL_FILE = "model.dae";
     private static final String ANIM_FILE = "model.dae";
     private static final String DIFFUSE_FILE = "diffuse.png";
+    private static final AdvancedFile SAVE = new AdvancedFile(OSUtil.getStandardAppDataFolder(), "saves", "save.xml");
     
     public static final void main(String[] args) {
         try {
             NativesLoader.loadNatives();
-            OmniKryptecEngine.addShutdownHook(() -> NativesLoader.loadNatives());
+            OmniKryptecEngine.addShutdownHook(() -> {
+                save();
+                NativesLoader.loadNatives();
+            });
             Logger.enableLoggerRedirection(true);
             Logger.setDebugMode(true);
             Logger.CONSOLE.setEnabled(true);
             Logger.showConsoleDirect();
+            
+            Logger.log(SAVE);
+            SAVE.createFile();
             
             gameSettings = new GameSettings("AnimationTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setChunkSize(400, 400, 400);
             keySettings = gameSettings.getKeySettings();
@@ -116,6 +125,15 @@ public class AnimationTest {
         } catch (Exception ex) {
             Logger.logErr("Main Error: " + ex, ex);
         }
+    }
+    
+    public static final void save() {
+        final Scene scene = OmniKryptecEngine.getInstance().getCurrentScene();
+        final String sceneName = OmniKryptecEngine.getInstance().getCurrentSceneName();
+        final DataMapSerializer dataMapSerializer = new DataMapSerializer();
+        //dataMapSerializer.addObject(scene);
+        //dataMapSerializer.serialize(sceneName, XMLSerializer.newInstance(), SAVE);
+        Logger.log(String.format("Saved Scene \"%s\" in file \"%s\"", sceneName, SAVE));
     }
     
     private static final void input() {
