@@ -92,6 +92,11 @@ public class Shader {
 		// }
 	}
 
+	
+	public int getId() {
+		return programID;
+	}
+	
 	public String getName(){
 		return name;
 	}
@@ -137,7 +142,7 @@ public class Shader {
 		}
 		for (int i = 0; i < uniforms.length; i++) {
 			if (uniforms[i] != null) {
-				uniforms[i].storeUniformLocation(programID);
+				uniforms[i].storeUniformLocation(this);
 			}
 		}
 	}
@@ -219,6 +224,8 @@ public class Shader {
 		}
 
 	}
+
+	
 
 	// public int getUniformID(String name) {
 	// return uniforms_map.get(name);

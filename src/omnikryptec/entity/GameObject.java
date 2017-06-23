@@ -29,6 +29,7 @@ public class GameObject {
 
 	private static final Sorter SORTER = new Sorter();
 
+	private boolean isglobal=false;
 	private Vector3f pos = new Vector3f();
 	private GameObject parent = null;
 	private boolean active = true;
@@ -413,6 +414,15 @@ public class GameObject {
 		return this;
 	}
 
+	public GameObject setGlobal(boolean b){
+		this.isglobal = b;
+		return this;
+	}
+	
+	public boolean isGlobal(){
+		return isglobal;
+	}
+	
 	@Override
 	public String toString() {
 		return "GameObject [ Pos: " + pos.toString() + " Rot: " + rotation.toString() + " ]";

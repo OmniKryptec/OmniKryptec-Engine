@@ -1,22 +1,21 @@
-package omnikryptec.light;
+package omnikryptec.entity;
 
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
-import omnikryptec.entity.GameObject;
+import omnikryptec.deferredlight.DeferredLightPrepare;
 
 public class Light extends GameObject {
 
 	private Vector4f vec = new Vector4f();
 	private float radius = 1;
 	private Vector3f color = new Vector3f();
-	private DeferredLightPrepare mylightprepare = DeferredLightPrepare.DEFAULT_LIGHT_PREPARE;
+	private DeferredLightPrepare mylightprepare = DeferredLightPrepare.FORWARD_RENDERING;
 
 	private Vector3f att;
 
 	private Vector3f tmp;
 	
-	private boolean globalLight=false;
 	
 	public Vector4f getPosRad() {
 		tmp = getAbsolutePos();
@@ -47,14 +46,6 @@ public class Light extends GameObject {
 		return radius;
 	}
 	
-	public Light setGlobal(boolean b){
-		this.globalLight = b;
-		return this;
-	}
-	
-	public boolean isGlobal(){
-		return globalLight;
-	}
 	
 	/**
 	 * Sets this light to be a directional light.

@@ -1,13 +1,14 @@
 package omnikryptec.main;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import omnikryptec.deferredlight.DeferredLightPrepare;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.GameObject;
-import omnikryptec.light.Light;
-import omnikryptec.light.DeferredLightPrepare;
+import omnikryptec.entity.Light;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.physics.PhysicsWorld;
@@ -25,13 +26,16 @@ public class Scene {
 			coz = OmniKryptecEngine.getInstance().getDisplayManager().getSettings().getChunkRenderOffsetZ();
 	private float[] clearcolor = { 0, 0, 0, 0 };
 	private PhysicsWorld physicsWorld = null;
-	private final Map<DeferredLightPrepare, List<Light>> rel_lights = new HashMap<>();
-	private final Map<DeferredLightPrepare, List<Light>> global_lights = new HashMap<>();
+	private final Map<DeferredLightPrepare, List<Light>> deferred_rel_lights = new HashMap<>();
+	private final List<Light> forward_rel_lights = new ArrayList<>();
+
+	private RenderChunk global = new RenderChunk(0, 0, 0, this);
+	
 	/* Temp Variables */
 	private String tmp;
 	private long cx, cy, cz;
 	private RenderChunk tmpc;
-
+	
 	public Scene(Camera cam) {
 		this.cam = cam;
 	}
@@ -49,8 +53,8 @@ public class Scene {
 				Logger.log("A Camera should not be added as a GameObject!", LogLevel.WARNING);
 				return false;
 			}
-			if(g instanceof Light && ((Light)g).isGlobal()){
-				//TODO add global light here
+			if(g.isGlobal()){
+				global.addGameObject(g);
 				return true;
 			}
 			tmp = xyzToString(g.getChunkX(), g.getChunkY(), g.getChunkZ());
@@ -81,10 +85,12 @@ public class Scene {
 		return g;
 	}
 
-	public final Scene frame(float maxexpenlvl, float minexplvl, AllowedRenderer info, Renderer... re) {
-		rel_lights.clear();
-		rel_lights.putAll(global_lights);
-		if (isUsingPhysics()) {
+	public final Scene frame(float maxexpenlvl, float minexplvl, boolean onlyRender, AllowedRenderer info, Renderer... re) {
+		deferred_rel_lights.clear();
+		deferred_rel_lights.putAll(global.getDeferredLights());
+		forward_rel_lights.clear();
+		forward_rel_lights.addAll(global.getForwardLights());
+		if (!onlyRender&&isUsingPhysics()) {
 			physicsWorld.stepSimulation();
 		}
 		cx = cam.getChunkX();
@@ -94,24 +100,43 @@ public class Scene {
 			for (long y = -coy + cy; y <= coy + cy; y++) {
 				for (long z = -coz + cz; z <= coz + cz; z++) {
 					if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
-						tmpc.frame(maxexpenlvl, minexplvl, info, re);
-						rel_lights.putAll(tmpc.getLights());
+						forward_rel_lights.addAll(tmpc.getForwardLights());
 					}
 				}
 			}
 		}
-		cam.doLogic0();
-		doLogic();
+		for (long x = -cox + cx; x <= cox + cx; x++) {
+			for (long y = -coy + cy; y <= coy + cy; y++) {
+				for (long z = -coz + cz; z <= coz + cz; z++) {
+					if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
+						tmpc.frame(maxexpenlvl, minexplvl, onlyRender, info, re);
+						deferred_rel_lights.putAll(tmpc.getDeferredLights());
+					}
+				}
+			}
+		}
+		global.frame(maxexpenlvl, minexplvl, onlyRender, info, re);
+		if(!onlyRender){
+			cam.doLogic0();
+			doLogic();
+		}
 		return this;
 	}
 
+	/**
+	 * override this to do your scene logic
+	 */
 	protected void doLogic() {
 	}
 
 	public final List<Light> getDeferredRenderLights(DeferredLightPrepare usingShader) {
-		return rel_lights.get(usingShader);
+		return deferred_rel_lights.get(usingShader);
 	}
-
+	
+	public final List<Light> getForwardRenderLights(){
+		return forward_rel_lights;
+	}
+	
 	public final Camera getCamera() {
 		return cam;
 	}

@@ -17,12 +17,12 @@ public class TestFBORenderer implements Renderer {
 	public FrameBufferObject fbo;
 
 	@Override
-	public void render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities) {
+	public void render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean b) {
 		fbo.bindFrameBuffer();
 		RenderUtil.clear(0, 0, 0, 0);
-		s.frame(0, 0, AllowedRenderer.EvElse, this);
+		s.frame(1000, -1000, b, AllowedRenderer.EvElse, this);
 		fbo.unbindFrameBuffer();
-		RendererRegistration.DEF_ENTITY_RENDERER.render(s, entities);
+		RendererRegistration.DEF_ENTITY_RENDERER.render(s, entities, b);
 	}
 
 	@Override

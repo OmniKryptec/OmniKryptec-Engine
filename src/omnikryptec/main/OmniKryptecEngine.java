@@ -205,7 +205,7 @@ public class OmniKryptecEngine {
 				if (clear) {
 					RenderUtil.clear(sceneCurrent.getClearColor());
 				}
-				sceneCurrent.frame(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, AllowedRenderer.All);
+				sceneCurrent.frame(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, false, AllowedRenderer.All);
 				ParticleMaster.instance().update(getCurrentScene().getCamera());
 			}
 			eventsystem.fireEvent(new Event(), EventType.RENDER_EVENT);

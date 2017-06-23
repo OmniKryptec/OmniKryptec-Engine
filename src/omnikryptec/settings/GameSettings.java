@@ -41,7 +41,11 @@ public class GameSettings {
 	private int chunkWidth = 128;
 	private int chunkHeight = 128;
 	private int chunkDepth = 128;
-
+	
+	private boolean deferredlight=false;
+	private boolean forwardlight=false;
+	private int max_forward_lights=4;
+	
 	/**
 	 * Standard value for disabling multisampling
 	 */
@@ -580,5 +584,32 @@ public class GameSettings {
 		this.bigRadius = r;
 		return this;
 	}
-
+	
+	public GameSettings setLightForward(boolean b){
+		this.forwardlight = b;
+		return this;
+	}
+	
+	public boolean isLightForwardAllowed(){
+		return forwardlight;
+	}
+	
+	public GameSettings setLightDeferred(boolean b){
+		this.deferredlight = b;
+		return this;
+	}
+	
+	public boolean isLightDeferredAllowed(){
+		return deferredlight;
+	}
+	
+	public GameSettings setLightMaxForward(int i){
+		this.max_forward_lights = i;
+		return this;
+	}
+	
+	public int getLightMaxForward(){
+		return max_forward_lights;
+	}
+	
 }

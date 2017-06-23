@@ -5,7 +5,7 @@ import org.lwjgl.util.vector.Vector3f;
 import omnikryptec.animation.renderer.AnimatedModelRenderer;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.postprocessing.PostProcessingStage;
-import omnikryptec.renderer.DefaultEntityRenderer;
+import omnikryptec.renderer.EntityRendererNoLight;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.shader.Shader;
@@ -23,7 +23,7 @@ public class Constants {
 
 	public static final String SHADER_DEFAULT_PP_VERTEX_SHADER_LOC = Shader.DEFAULT_PP_VERTEX_SHADER_LOC;
 
-	public static final DefaultEntityRenderer RENDERERREG_DEF_ENTITY_RENDERER = RendererRegistration.DEF_ENTITY_RENDERER;
+	public static final EntityRendererNoLight RENDERERREG_DEF_ENTITY_RENDERER = RendererRegistration.DEF_ENTITY_RENDERER;
 	public static final AnimatedModelRenderer RENDERERREG_DEF_ANIMATEDMODEL_RENDERER = RendererRegistration.DEF_ANIMATEDMODEL_RENDERER;
 
 	public static final int PPS_INDEX_OPTION_USE_LAST_FBO = PostProcessingStage.INDEX_OPTION_USE_LAST_FBO;

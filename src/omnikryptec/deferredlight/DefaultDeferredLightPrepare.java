@@ -1,12 +1,13 @@
-package omnikryptec.light;
+package omnikryptec.deferredlight;
 
 import org.lwjgl.opengl.Display;
 
+import omnikryptec.entity.Light;
 import omnikryptec.main.Scene;
 import omnikryptec.shader.Shader;
 import omnikryptec.shader_files.LightShader;
 
-public class DefaultLightPrepare implements DeferredLightPrepare {
+public class DefaultDeferredLightPrepare implements DeferredLightPrepare {
 
 	private LightShader shader = new LightShader();
 

@@ -1,14 +1,15 @@
 package omnikryptec.renderer;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import omnikryptec.deferredlight.DeferredLightPrepare;
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.GameObject;
-import omnikryptec.light.Light;
-import omnikryptec.light.DeferredLightPrepare;
+import omnikryptec.entity.Light;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
@@ -63,8 +64,10 @@ public class RenderChunk {
 
 	private final RenderMap<Renderer, RenderMap<AdvancedModel, List<Entity>>> chunk = new RenderMap<>(Renderer.class);
 	private final ArrayList<GameObject> other = new ArrayList<>();
-	private final Map<DeferredLightPrepare, List<Light>> lights = new HashMap<>();
-
+	private final Map<DeferredLightPrepare, List<Light>> deferred_lights = new HashMap<>();
+	private final List<Light> forward_lights = new ArrayList<>();
+	
+	
 	private Entity tmp;
 	private Renderer tmpr;
 	private RenderMap<AdvancedModel, List<Entity>> map;
@@ -108,10 +111,12 @@ public class RenderChunk {
 			} else if (g instanceof Light) {
 				tmpl = (Light) g;
 				if ((lightpre = tmpl.getShader()) != null) {
-					if ((lightl = lights.get(lightpre)) == null) {
-						lights.put(lightpre, new ArrayList<>());
+					if ((lightl = deferred_lights.get(lightpre)) == null) {
+						deferred_lights.put(lightpre, new ArrayList<>());
 					}
-					lights.get(lightpre).add(tmpl);
+					deferred_lights.get(lightpre).add(tmpl);
+				}else{
+					forward_lights.add(tmpl);
 				}
 			} else {
 				other.add(g);
@@ -161,15 +166,17 @@ public class RenderChunk {
 			} else if (g instanceof Light) {
 				tmpl = (Light) g;
 				if ((lightpre = tmpl.getShader()) != null) {
-					if ((lightl = lights.get(lightpre)) != null) {
+					if ((lightl = deferred_lights.get(lightpre)) != null) {
 						lightl.remove(tmpl);
 						if (lightl.isEmpty()) {
-							lights.remove(lightpre);
-						}
-						if (delete) {
-							tmpl.deleteOperation();
-						}
+							deferred_lights.remove(lightpre);
+						}	
 					}
+				}else{
+					forward_lights.remove(tmpl);
+				}
+				if (delete) {
+					tmpl.deleteOperation();
 				}
 			} else {
 				other.remove(g);
@@ -198,7 +205,7 @@ public class RenderChunk {
 	private Renderer r;
 	private GameObject g;
 
-	public void frame(float maxExpenLvl, float minexplvl, AllowedRenderer type, Renderer... rend) {
+	public void frame(float maxExpenLvl, float minexplvl, boolean onlyRender, AllowedRenderer type, Renderer... rend) {
 		if (rend == null || rend.length == 0) {
 			rend = empty_array;
 		}
@@ -207,13 +214,21 @@ public class RenderChunk {
 			if (r != null && r.expensiveLevel() <= maxExpenLvl && r.expensiveLevel() >= minexplvl
 					&& (type == AllowedRenderer.All || (type == AllowedRenderer.OnlThis && contains(rend, r))
 							|| (type == AllowedRenderer.EvElse && !contains(rend, r)))) {
-				r.render(scene, chunk.get(r));
+				r.render(scene, chunk.get(r), onlyRender);
 			}
 		}
-		for (int i = 0; i < other.size(); i++) {
-			g = other.get(i);
-			if (g != null && g.isActive()) {
-				g.doLogic0();
+		if(!onlyRender){
+			for (int i = 0; i < other.size(); i++) {
+				g = other.get(i);
+				if (g != null && g.isActive()) {
+					g.doLogic0();
+				}
+			}
+			//deferred lights should be processed in the deferredlight renderer!
+			for(int i=0; i<forward_lights.size(); i++){
+				if(forward_lights.get(i).isActive()){
+					forward_lights.get(i).doLogic0();
+				}
 			}
 		}
 	}
@@ -231,8 +246,12 @@ public class RenderChunk {
 		return scene;
 	}
 
-	public Map<DeferredLightPrepare, List<Light>> getLights() {
-		return lights;
+	public Map<DeferredLightPrepare, List<Light>> getDeferredLights() {
+		return deferred_lights;
+	}
+
+	public List<Light> getForwardLights() {
+		return forward_lights;
 	}
 
 }

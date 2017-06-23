@@ -9,18 +9,19 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
+import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
+import omnikryptec.deferredlight.DeferredLightPrepare;
+import omnikryptec.deferredlight.DeferredLightStage;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.OpenGLInfo;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
+import omnikryptec.entity.Light;
 import omnikryptec.entity.Entity.RenderType;
 import omnikryptec.event.Event;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
 import omnikryptec.event.IEventHandler;
-import omnikryptec.light.Light;
-import omnikryptec.light.DeferredLightPrepare;
-import omnikryptec.light.DeferredLightStage;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
@@ -39,6 +40,7 @@ import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.AtlasTexture;
 import omnikryptec.texture.SimpleAnimation;
 import omnikryptec.texture.SimpleTexture;
+import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
 
@@ -62,10 +64,10 @@ public class EngineTest2 implements IEventHandler {
 							new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32)
 									.setInitialFPSCap(-1).setChunkRenderOffsets(10, 10, 10),
 							new OpenGLInfo(3, 3, new PixelFormat()));
-			 PostProcessing.instance().addStage(new
-			 DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
-			 DeferredLightPrepare.DEFAULT_LIGHT_PREPARE));
-			 PostProcessing.instance().addStage(new BloomStage(new CompleteGaussianBlurStage(true, 0.6f, 0.6f), new Vector4f(1, 0, 0, 0), new Vector2f(1, 6)));
+			 //PostProcessing.instance().addStage(new
+			 //DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
+			 //DeferredLightPrepare.DEFAULT_LIGHT_PREPARE));
+			// PostProcessing.instance().addStage(new BloomStage(new CompleteGaussianBlurStage(true, 0.6f, 0.6f), new Vector4f(1, 0, 0, 0), new Vector2f(1, 6)));
 			 // PostProcessing.instance().addStage(new FogStage().setDensity(0.25f));
 //			 PostProcessing.instance().addStage(new
 //			 CompleteGaussianBlurStage(false,0.1f,0.1f));
@@ -114,12 +116,14 @@ public class EngineTest2 implements IEventHandler {
 			}.setPerspectiveProjection(90, 0.1f, 300).setRelativePos(0, 0, 0)));
 			Model pine = new Model(
 					ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")));
+			Model bauer = new Model(ColladaLoader.loadColladaModel(new AdvancedFile("res", "model.dae"), 50).getMeshData());
+			SimpleTexture bauert = SimpleTexture.newTexture("/res/diffuse.png");
 			SimpleTexture pinet = SimpleTexture
 					.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine2.png")).create();
 
 			SimpleAnimation animation = new SimpleAnimation(2, brunnent, pinet);
 
-			TexturedModel ptm = new TexturedModel(pine, pinet);
+			TexturedModel ptm = new TexturedModel(bauer, animation);
 			ptm.getMaterial().setHasTransparency(true);
 			ptm.getMaterial().setReflectivity(0.1f).setShineDamper(0.01f).setExtraInfoVec(new Vector4f(1, 1, 0, 0));
 			Random r = new Random();

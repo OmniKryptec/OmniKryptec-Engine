@@ -19,7 +19,7 @@ public class UniformMatrixArray extends Uniform {
     }
 
     @Override
-    protected final void storeUniformLocation(int programID) {
+    protected final void storeUniformLocation(Shader programID) {
         for(UniformMatrix uniformMatrix : uniformMatrices) {
             uniformMatrix.storeUniformLocation(programID);
         }

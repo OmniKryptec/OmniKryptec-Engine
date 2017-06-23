@@ -9,7 +9,6 @@ out vec2 pass_texcoords;
 out vec3 norm;
 out vec3 tang;
 out vec3 bitang;
-out vec3 toLightPos[4];
 
 uniform mat4 transmatrix;
 uniform mat4 projmatrix;
@@ -18,7 +17,7 @@ uniform mat4 viewmatrix;
 uniform vec4 uvs;
 
 void main(void){
-	
+	int x = 0;
 	vec4 worldPosition = transmatrix * vec4(pos,1.0);
 	mat4 modelViewMatrix = viewmatrix * transmatrix;
 	vec4 positionRelativeToCam = modelViewMatrix * vec4(pos,1.0);

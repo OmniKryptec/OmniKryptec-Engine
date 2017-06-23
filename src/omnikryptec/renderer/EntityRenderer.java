@@ -4,34 +4,40 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
+import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Entity;
+import omnikryptec.logger.LogEntry.LogLevel;
+import omnikryptec.logger.Logger;
 import omnikryptec.main.Scene;
 import omnikryptec.model.AdvancedModel;
 import omnikryptec.model.Material;
 import omnikryptec.model.TexturedModel;
-import omnikryptec.shader_files.EntityShader;
+import omnikryptec.shader_files.EntityLightShader;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
 
-public class DefaultEntityRenderer implements Renderer {
-
-    private final EntityShader shader;
-
-    public DefaultEntityRenderer() {
-        RendererRegistration.register(this);
-        shader = new EntityShader();
-    }
-
+public class EntityRenderer implements Renderer {
+	
+	private EntityLightShader shader;
+	
+	public EntityRenderer(){
+		RendererRegistration.register(this);
+		shader = new EntityLightShader();
+	}
+	
     private List<Entity> stapel;
     private Entity entity;
     private TexturedModel model;
     private Material mat;
     private Texture textmp;
-
-    @Override
-    public void render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities) {
-        shader.start();
+	@Override
+	public void render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender) {
+		if(!DisplayManager.instance().getSettings().isLightForwardAllowed()&&Logger.isDebugMode()){
+			Logger.log("Forward light is not enabled. Will not render.", LogLevel.WARNING);
+			return;
+		}
+		shader.start();
         shader.view.loadMatrix(s.getCamera().getViewMatrix());
         shader.projection.loadMatrix(s.getCamera().getProjectionMatrix());
         for(int i = 0; i < entities.keysArray().length; i++) {
@@ -71,7 +77,9 @@ public class DefaultEntityRenderer implements Renderer {
             for(int j = 0; j < stapel.size(); j++) {
                 entity = stapel.get(j);
                 if(entity.isActive() && RenderUtil.inRenderRange(entity, s.getCamera())) {
-                    entity.doLogic0();
+                    if(!onlyRender){
+                    	entity.doLogic0();
+                    }
                     shader.transformation.loadMatrix(Maths.createTransformationMatrix(entity));
                     shader.colmod.loadVec4(entity.getColor());
                     GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
@@ -83,16 +91,16 @@ public class DefaultEntityRenderer implements Renderer {
                 RenderUtil.cullBackFaces(true);
             }
         }
-    }
+	}
 
-    @Override
-    public void cleanup() {
-        shader.cleanup();
-    }
+	@Override
+	public void cleanup() {
 
-    @Override
-    public float expensiveLevel() {
-        return 0;
-    }
+	}
+
+	@Override
+	public float expensiveLevel() {
+		return 0;
+	}
 
 }
