@@ -41,6 +41,10 @@ public class Scene implements DataMapSerializable{
 	private String tmp;
 	private long cx, cy, cz;
 	private RenderChunk tmpc;
+        
+        public Scene() {
+            this("", null);
+        }
 	
 	public Scene(String name, Camera cam) {
             this.cam = cam;
