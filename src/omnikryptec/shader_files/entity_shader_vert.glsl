@@ -45,7 +45,7 @@ void main(void){
 	}
 
 	for(int i=0; i<maxlights; i++){
-		toLightVec[i] = (modelViewMatrix * vec4(lightpos[i],1.0)).xyz - positionRelativeToCam.xyz;
+		toLightVec[i] = (viewmatrix * vec4(lightpos[i],1.0)).xyz - positionRelativeToCam.xyz;
 		if(hasnormal>0.5){
 			toLightVec[i] = TBN * toLightVec[i];
 		}

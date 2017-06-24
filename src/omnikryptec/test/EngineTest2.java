@@ -116,7 +116,7 @@ public class EngineTest2 implements IEventHandler {
 					doCameraLogic(this);
 				}
 
-			}.setPerspectiveProjection(90, 0.1f, 300).setRelativePos(0, 0, 0)).setAmbientColor(0.1f,0.1f,0.1f));
+			}.setPerspectiveProjection(90, 0.1f, 300).setRelativePos(0, 0, 0)).setAmbientColor(0,0,0));
 			Model pine = new Model(
 					ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")));
 			Model bauer = new Model(
@@ -132,7 +132,7 @@ public class EngineTest2 implements IEventHandler {
 			ptm.getMaterial().setReflectivity(0.5f).setShineDamper(10).setExtraInfoVec(new Vector3f(1, 1, 0));
 			Random r = new Random();
 			for (int i = 0; i < 100; i++) {
-				Entity e = new Entity(tm) {
+				Entity e = new Entity(ptm) {
 					@Override
 					public void doLogic() {
 						// setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(),
