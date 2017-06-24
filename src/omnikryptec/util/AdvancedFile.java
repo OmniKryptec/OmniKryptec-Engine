@@ -419,7 +419,7 @@ public class AdvancedFile {
     }
     
     public final String getName() {
-        return toFile().getName(); //FIXME Muss noch geaendert werden!!!
+        return toFile().getName();
     }
 
 }
