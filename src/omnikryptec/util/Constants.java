@@ -30,18 +30,16 @@ public class Constants {
 
 	public static final javax.vecmath.Vector3f VECTOR_ZERO = new javax.vecmath.Vector3f(0, 0, 0);
 	public static final javax.vecmath.Vector3f GRAVITY_EARTH = new javax.vecmath.Vector3f(0, -9.81F, 0);
-    
+
 	public static final javax.vecmath.Vector3f PHYSICS_X = PhysicsUtil.X;
 	public static final javax.vecmath.Vector3f PHYSICS_Y = PhysicsUtil.Y;
 	public static final javax.vecmath.Vector3f PHYSICS_Z = PhysicsUtil.Z;
 	public static final javax.vecmath.Vector3f PHYSICS_ZERO = PhysicsUtil.ZERO;
 	public static final javax.vecmath.Vector3f PHYSICS_ONE = PhysicsUtil.ONE;
-	
+
 	public static final int DIMENSIONS = 3;
 
-	
-	
-    public static final int MAX_JOINTS = 50;
-    public static final int MAX_WEIGHTS = 3;
+	public static final int MAX_JOINTS = 50;
+	public static final int MAX_WEIGHTS = 3;
 
 }

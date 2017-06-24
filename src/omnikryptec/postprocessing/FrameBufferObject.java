@@ -60,7 +60,7 @@ public class FrameBufferObject extends Texture {
 		this.width = width;
 		this.height = height;
 		this.targets = targets;
-		this.multitarget = targets.length > 1;		
+		this.multitarget = targets.length > 1;
 		initialiseFrameBuffer(DepthbufferType.DEPTH_RENDER_BUFFER);
 	}
 
@@ -238,11 +238,13 @@ public class FrameBufferObject extends Texture {
 		createFrameBuffer();
 		if (multisample != GameSettings.NO_MULTISAMPLING) {
 			for (int i = 0; i < targets.length; i++) {
-				colBuffers[i] = createMultisampleColourAttachment(targets[i].target, targets[i].extended?GL30.GL_RGBA32F:GL11.GL_RGBA8);
+				colBuffers[i] = createMultisampleColourAttachment(targets[i].target,
+						targets[i].extended ? GL30.GL_RGBA32F : GL11.GL_RGBA8);
 			}
 		} else {
 			for (int i = 0; i < targets.length; i++) {
-				colBuffers[i] = createTextureAttachment(targets[i].target, targets[i].extended?GL30.GL_RGBA32F:GL11.GL_RGBA8);
+				colBuffers[i] = createTextureAttachment(targets[i].target,
+						targets[i].extended ? GL30.GL_RGBA32F : GL11.GL_RGBA8);
 			}
 		}
 		if (type == DepthbufferType.DEPTH_RENDER_BUFFER) {

@@ -13,9 +13,12 @@ import org.lwjgl.util.vector.Matrix4f;
  * but when we need to apply the rotations to anything we'll convert back to a
  * matrix.
  * 
- * @see <a href="https://www.youtube.com/watch?v=SCbpxiCN0U0">A quick introduction video to quaternions: Math for Game Developers - Rotation Quaternions</a>
+ * @see <a href="https://www.youtube.com/watch?v=SCbpxiCN0U0">A quick
+ *      introduction video to quaternions: Math for Game Developers - Rotation
+ *      Quaternions</a>
  * 
- * @see <a href="https://www.youtube.com/watch?v=fKIss4EV6ME&t=0s">and a slightly longer one: Intro to Quaternions</a>
+ * @see <a href="https://www.youtube.com/watch?v=fKIss4EV6ME&t=0s">and a
+ *      slightly longer one: Intro to Quaternions</a>
  * 
  * @author Karl
  *

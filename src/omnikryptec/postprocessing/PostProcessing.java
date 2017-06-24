@@ -18,7 +18,7 @@ public class PostProcessing {
 
 	private static PostProcessing instance;
 
-	//private FrameBufferObject tmp;
+	// private FrameBufferObject tmp;
 
 	private boolean enabled = true;
 

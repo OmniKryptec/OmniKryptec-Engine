@@ -25,13 +25,13 @@ public class EntityShader extends Shader {
 	public final UniformVec3 extrainfovec = new UniformVec3("exinfovec");
 	public final UniformVec4 uvs = new UniformVec4("uvs");
 	public final UniformBoolean hasnormal = new UniformBoolean("hasnormal");
-		
+
 	public EntityShader() {
 		super("EntityShader", EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_nl_shader_vert.glsl"),
-				EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_nl_shader_frag.glsl"), "pos", "texcoords",
-				"normal", "tangent");
-		registerUniforms(transformation, view, projection, tex, normalmap, specularmap, hasspecular, reflec,
-				colmod, shinedamper, hasextrainfomap, extrainfo, extrainfovec, uvs);
+				EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_nl_shader_frag.glsl"), "pos",
+				"texcoords", "normal", "tangent");
+		registerUniforms(transformation, view, projection, tex, normalmap, specularmap, hasspecular, reflec, colmod,
+				shinedamper, hasextrainfomap, extrainfo, extrainfovec, uvs);
 		start();
 		tex.loadTexUnit(0);
 		normalmap.loadTexUnit(1);

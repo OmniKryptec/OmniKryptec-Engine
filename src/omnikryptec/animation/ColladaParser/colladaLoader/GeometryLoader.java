@@ -12,25 +12,25 @@ import omnikryptec.animation.ColladaParser.dataStructures.AnimatedVertex;
 import omnikryptec.animation.ColladaParser.dataStructures.MeshData;
 import omnikryptec.animation.ColladaParser.dataStructures.VertexSkinData;
 import omnikryptec.animation.ColladaParser.xmlParser.XmlNode;
-
 import omnikryptec.util.Maths;
 
 /**
  * Loads the mesh data for a model from a collada XML file.
+ * 
  * @author Karl
  *
  */
 public class GeometryLoader {
 
 	private static final Matrix4f CORRECTION = new Matrix4f().rotate((float) Math.toRadians(-90), Maths.X);
-	
+
 	private final XmlNode meshData;
 
 	private final List<VertexSkinData> vertexWeights;
-	
+
 	private float[] verticesArray;
 	private float[] normalsArray;
-        private float[] tangentsArray;
+	private float[] tangentsArray;
 	private float[] texturesArray;
 	private int[] indicesArray;
 	private int[] jointIdsArray;
@@ -40,21 +40,22 @@ public class GeometryLoader {
 	List<Vector2f> textures = new ArrayList<Vector2f>();
 	List<Vector3f> normals = new ArrayList<Vector3f>();
 	List<Integer> indices = new ArrayList<Integer>();
-	
+
 	public GeometryLoader(XmlNode geometryNode, List<VertexSkinData> vertexWeights) {
 		this.vertexWeights = vertexWeights;
 		this.meshData = geometryNode.getChild("geometry").getChild("mesh");
 	}
-	
-	public MeshData extractModelData(){
+
+	public MeshData extractModelData() {
 		readRawData();
 		assembleVertices();
 		removeUnusedVertices();
 		initArrays();
-                calculateTangents();
+		calculateTangents();
 		convertDataToArrays();
 		convertIndicesListToArray();
-		return new MeshData(verticesArray, texturesArray, normalsArray, tangentsArray, indicesArray, jointIdsArray, weightsArray);
+		return new MeshData(verticesArray, texturesArray, normalsArray, tangentsArray, indicesArray, jointIdsArray,
+				weightsArray);
 	}
 
 	private void readRawData() {
@@ -68,13 +69,14 @@ public class GeometryLoader {
 		XmlNode positionsData = meshData.getChildWithAttribute("source", "id", positionsId).getChild("float_array");
 		int count = Integer.parseInt(positionsData.getAttribute("count"));
 		String[] posData = positionsData.getData().split(" ");
-		for (int i = 0; i < count/3; i++) {
+		for (int i = 0; i < count / 3; i++) {
 			float x = Float.parseFloat(posData[i * 3]);
 			float y = Float.parseFloat(posData[i * 3 + 1]);
 			float z = Float.parseFloat(posData[i * 3 + 2]);
 			Vector4f position = new Vector4f(x, y, z, 1);
 			Matrix4f.transform(CORRECTION, position, position);
-			vertices.add(new AnimatedVertex(vertices.size(), new Vector3f(position.x, position.y, position.z), vertexWeights.get(vertices.size())));
+			vertices.add(new AnimatedVertex(vertices.size(), new Vector3f(position.x, position.y, position.z),
+					vertexWeights.get(vertices.size())));
 		}
 	}
 
@@ -84,7 +86,7 @@ public class GeometryLoader {
 		XmlNode normalsData = meshData.getChildWithAttribute("source", "id", normalsId).getChild("float_array");
 		int count = Integer.parseInt(normalsData.getAttribute("count"));
 		String[] normData = normalsData.getData().split(" ");
-		for (int i = 0; i < count/3; i++) {
+		for (int i = 0; i < count / 3; i++) {
 			float x = Float.parseFloat(normData[i * 3]);
 			float y = Float.parseFloat(normData[i * 3 + 1]);
 			float z = Float.parseFloat(normData[i * 3 + 2]);
@@ -100,25 +102,24 @@ public class GeometryLoader {
 		XmlNode texCoordsData = meshData.getChildWithAttribute("source", "id", texCoordsId).getChild("float_array");
 		int count = Integer.parseInt(texCoordsData.getAttribute("count"));
 		String[] texData = texCoordsData.getData().split(" ");
-		for (int i = 0; i < count/2; i++) {
+		for (int i = 0; i < count / 2; i++) {
 			float s = Float.parseFloat(texData[i * 2]);
 			float t = Float.parseFloat(texData[i * 2 + 1]);
 			textures.add(new Vector2f(s, t));
 		}
 	}
-	
-	private void assembleVertices(){
+
+	private void assembleVertices() {
 		XmlNode poly = meshData.getChild("polylist");
 		int typeCount = poly.getChildren("input").size();
 		String[] indexData = poly.getChild("p").getData().split(" ");
-		for(int i=0;i<indexData.length/typeCount;i++){
+		for (int i = 0; i < indexData.length / typeCount; i++) {
 			int positionIndex = Integer.parseInt(indexData[i * typeCount]);
 			int normalIndex = Integer.parseInt(indexData[i * typeCount + 1]);
 			int texCoordIndex = Integer.parseInt(indexData[i * typeCount + 2]);
 			processVertex(positionIndex, normalIndex, texCoordIndex);
 		}
 	}
-	
 
 	private AnimatedVertex processVertex(int posIndex, int normIndex, int texIndex) {
 		AnimatedVertex currentVertex = vertices.get(posIndex);
@@ -139,20 +140,21 @@ public class GeometryLoader {
 		}
 		return indicesArray;
 	}
-        
-        private void calculateTangents() {
-            for(int i = 0; i < indices.size() - 2; i += 3) {
-                int i_1 = indices.get(i);
-                int i_2 = indices.get(i + 1);
-                int i_3 = indices.get(i + 2);
-                AnimatedVertex v_1 = vertices.get(i_1);
-                AnimatedVertex v_2 = vertices.get(i_2);
-                AnimatedVertex v_3 = vertices.get(i_3);
-                calculateTangents(v_1, v_2, v_3, textures);
-            }
-        }
-        
-	private static void calculateTangents(AnimatedVertex v0, AnimatedVertex v1, AnimatedVertex v2, List<Vector2f> textures) {
+
+	private void calculateTangents() {
+		for (int i = 0; i < indices.size() - 2; i += 3) {
+			int i_1 = indices.get(i);
+			int i_2 = indices.get(i + 1);
+			int i_3 = indices.get(i + 2);
+			AnimatedVertex v_1 = vertices.get(i_1);
+			AnimatedVertex v_2 = vertices.get(i_2);
+			AnimatedVertex v_3 = vertices.get(i_3);
+			calculateTangents(v_1, v_2, v_3, textures);
+		}
+	}
+
+	private static void calculateTangents(AnimatedVertex v0, AnimatedVertex v1, AnimatedVertex v2,
+			List<Vector2f> textures) {
 		Vector3f delatPos1 = Vector3f.sub(v1.getPosition(), v0.getPosition(), null);
 		Vector3f delatPos2 = Vector3f.sub(v2.getPosition(), v0.getPosition(), null);
 		Vector2f uv0 = textures.get(v0.getTextureIndex());
@@ -189,9 +191,9 @@ public class GeometryLoader {
 			normalsArray[i * 3] = normalVector.x;
 			normalsArray[i * 3 + 1] = normalVector.y;
 			normalsArray[i * 3 + 2] = normalVector.z;
-                        tangentsArray[i * 3] = tangentVector.x;
-                        tangentsArray[i * 3 + 1] = tangentVector.y;
-                        tangentsArray[i * 3 + 2] = tangentVector.z;
+			tangentsArray[i * 3] = tangentVector.x;
+			tangentsArray[i * 3 + 1] = tangentVector.y;
+			tangentsArray[i * 3 + 2] = tangentVector.z;
 			VertexSkinData weights = currentVertex.getWeightsData();
 			jointIdsArray[i * 3] = weights.jointIds.get(0);
 			jointIdsArray[i * 3 + 1] = weights.jointIds.get(1);
@@ -204,7 +206,8 @@ public class GeometryLoader {
 		return furthestPoint;
 	}
 
-	private AnimatedVertex dealWithAlreadyProcessedVertex(AnimatedVertex previousVertex, int newTextureIndex, int newNormalIndex) {
+	private AnimatedVertex dealWithAlreadyProcessedVertex(AnimatedVertex previousVertex, int newTextureIndex,
+			int newNormalIndex) {
 		if (previousVertex.hasSameTextureAndNormal(newTextureIndex, newNormalIndex)) {
 			indices.add(previousVertex.getIndex());
 			return previousVertex;
@@ -213,7 +216,8 @@ public class GeometryLoader {
 			if (anotherVertex != null) {
 				return dealWithAlreadyProcessedVertex(anotherVertex, newTextureIndex, newNormalIndex);
 			} else {
-				AnimatedVertex duplicateVertex = new AnimatedVertex(vertices.size(), previousVertex.getPosition(), previousVertex.getWeightsData());
+				AnimatedVertex duplicateVertex = new AnimatedVertex(vertices.size(), previousVertex.getPosition(),
+						previousVertex.getWeightsData());
 				duplicateVertex.setTextureIndex(newTextureIndex);
 				duplicateVertex.setNormalIndex(newNormalIndex);
 				previousVertex.setDuplicateVertex(duplicateVertex);
@@ -224,8 +228,8 @@ public class GeometryLoader {
 
 		}
 	}
-	
-	private void initArrays(){
+
+	private void initArrays() {
 		this.verticesArray = new float[vertices.size() * 3];
 		this.texturesArray = new float[vertices.size() * 2];
 		this.normalsArray = new float[vertices.size() * 3];
@@ -243,5 +247,5 @@ public class GeometryLoader {
 			}
 		}
 	}
-	
+
 }

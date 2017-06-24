@@ -30,15 +30,15 @@ public class ParticleRenderer {
 
 	private VertexBufferObject vbo;
 	private int pointer = 0;
-	
+
 	private float[] vboData;
-	private int oldsize=-1;
-	
+	private int oldsize = -1;
+
 	private Camera curCam;
-	
+
 	protected ParticleRenderer() {
 		quad = ModelUtil.generateQuad();
-		vbo = VertexBufferObject.createEmpty(GL15.GL_ARRAY_BUFFER, maxInstancesPerSys*INSTANCE_DATA_LENGTH);
+		vbo = VertexBufferObject.createEmpty(GL15.GL_ARRAY_BUFFER, maxInstancesPerSys * INSTANCE_DATA_LENGTH);
 		vbo.addInstancedAttribute(quad.getVao(), 1, 4, INSTANCE_DATA_LENGTH, 0);
 		vbo.addInstancedAttribute(quad.getVao(), 2, 4, INSTANCE_DATA_LENGTH, 4);
 		vbo.addInstancedAttribute(quad.getVao(), 3, 4, INSTANCE_DATA_LENGTH, 8);
@@ -47,34 +47,35 @@ public class ParticleRenderer {
 		vbo.addInstancedAttribute(quad.getVao(), 6, 1, INSTANCE_DATA_LENGTH, 20);
 		shader = new ParticleShader();
 	}
-	
+
 	private List<Particle> particleList;
 	private int count;
 	private long globalCount;
-	
+
 	protected void render(Map<ParticleTexture, List<Particle>> particles, Camera camera) {
 		curCam = camera;
-		if(buffer==null||buffer.capacity()!=maxInstancesPerSys*INSTANCE_DATA_LENGTH){
+		if (buffer == null || buffer.capacity() != maxInstancesPerSys * INSTANCE_DATA_LENGTH) {
 			buffer = BufferUtils.createFloatBuffer(maxInstancesPerSys * INSTANCE_DATA_LENGTH);
 		}
 		shader.start();
 		shader.projMatrix.loadMatrix(curCam.getProjectionMatrix());
-		quad.getVao().bind(0,1,2,3,4,5,6);
+		quad.getVao().bind(0, 1, 2, 3, 4, 5, 6);
 		globalCount = 0;
 		for (ParticleTexture tmpt : particles.keySet()) {
 			bindTexture(tmpt);
 			particleList = particles.get(tmpt);
 			pointer = 0;
-			if(vboData==null||particleList.size() * INSTANCE_DATA_LENGTH!=oldsize){
+			if (vboData == null || particleList.size() * INSTANCE_DATA_LENGTH != oldsize) {
 				vboData = new float[(oldsize = particleList.size() * INSTANCE_DATA_LENGTH)];
 			}
 			count = 0;
 			for (Particle par : particleList) {
-				if(count>maxInstancesPerSys){
+				if (count > maxInstancesPerSys) {
 					break;
 				}
-				if(RenderUtil.inRenderRange(par, curCam)){
-					updateModelViewMatrix(par.getAbsolutePos(), par.getRot(), par.getScale(), curCam.getViewMatrix(), vboData);
+				if (RenderUtil.inRenderRange(par, curCam)) {
+					updateModelViewMatrix(par.getAbsolutePos(), par.getRot(), par.getScale(), curCam.getViewMatrix(),
+							vboData);
 					updateTexCoordInfo(par, vboData);
 					count++;
 					globalCount++;
@@ -86,10 +87,10 @@ public class ParticleRenderer {
 		RenderUtil.disableBlending();
 	}
 
-	public long getParticleCount(){
+	public long getParticleCount() {
 		return globalCount;
 	}
-	
+
 	private void bindTexture(ParticleTexture texture) {
 		if (texture.useAlphaBlending()) {
 			RenderUtil.enableAdditiveBlending();
@@ -107,11 +108,11 @@ public class ParticleRenderer {
 		data[pointer++] = par.getTexOffset2().y;
 		data[pointer++] = par.getBlend();
 	}
-	
+
 	private Vector3f tmp = new Vector3f();
 	private Matrix4f tmpm;
 	private Matrix4f modelMatrix = new Matrix4f();
-	
+
 	private void updateModelViewMatrix(Vector3f pos, float rot, float scale, Matrix4f viewMatrix, float[] vboData) {
 		modelMatrix.setIdentity();
 		Matrix4f.translate(pos, modelMatrix, modelMatrix);
@@ -153,6 +154,5 @@ public class ParticleRenderer {
 	protected void cleanUp() {
 		shader.cleanup();
 	}
-
 
 }

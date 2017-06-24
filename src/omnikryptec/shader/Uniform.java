@@ -16,7 +16,7 @@ public abstract class Uniform {
 	protected void storeUniformLocation(Shader shader) {
 		location = GL20.glGetUniformLocation(shader.getId(), name);
 		if (location == NOT_FOUND) {
-			System.err.println(shader.getName()+": No uniform variable called " + name + " found!");
+			System.err.println(shader.getName() + ": No uniform variable called " + name + " found!");
 		}
 	}
 

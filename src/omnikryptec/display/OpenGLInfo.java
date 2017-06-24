@@ -17,11 +17,10 @@ public class OpenGLInfo {
 
 	private PixelFormat format = null;
 
-	
-	public OpenGLInfo(int majVers, int minVers){
+	public OpenGLInfo(int majVers, int minVers) {
 		this(majVers, minVers, new PixelFormat());
 	}
-	
+
 	/**
 	 * Constructs an OpenGLInfo from major/minor version and a PixelFormat
 	 * 

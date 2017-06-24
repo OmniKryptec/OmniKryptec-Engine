@@ -1,7 +1,6 @@
 package omnikryptec.main;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,7 +14,6 @@ import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
 import omnikryptec.logger.Commands;
 import omnikryptec.logger.Logger;
-import omnikryptec.model.Material;
 import omnikryptec.model.VertexArrayObject;
 import omnikryptec.model.VertexBufferObject;
 import omnikryptec.particles.ParticleMaster;
@@ -49,6 +47,7 @@ public class OmniKryptecEngine {
 		return instance;
 	}
 
+	@Deprecated
 	public static OmniKryptecEngine getInstance() {
 		return instance;
 	}
@@ -65,7 +64,7 @@ public class OmniKryptecEngine {
 	 *            the command line arguments
 	 */
 	public static void main(String[] args) {
-
+		// TODO say that this is a library?
 	}
 
 	public static enum State {
@@ -96,7 +95,6 @@ public class OmniKryptecEngine {
 	private EventSystem eventsystem;
 	private PostProcessing postpro;
 	private final ArrayList<Scene> scenes = new ArrayList<>();
-	private String sceneCurrentName;
 	private Scene sceneCurrent;
 
 	private ShutdownOption shutdownOption = ShutdownOption.NOTHING;
@@ -128,8 +126,8 @@ public class OmniKryptecEngine {
 	private void createFbos() {
 		scenefbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(),
 				manager.getSettings().getMultiSamples(), manager.getSettings().getAddAttachments(),
-				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0), new RenderTarget(GL30.GL_COLOR_ATTACHMENT1), new RenderTarget(GL30.GL_COLOR_ATTACHMENT2, true),
-				new RenderTarget(GL30.GL_COLOR_ATTACHMENT3));
+				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0), new RenderTarget(GL30.GL_COLOR_ATTACHMENT1),
+				new RenderTarget(GL30.GL_COLOR_ATTACHMENT2, true), new RenderTarget(GL30.GL_COLOR_ATTACHMENT3));
 		unsampledfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE,
 				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0));
 		normalfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
@@ -165,7 +163,7 @@ public class OmniKryptecEngine {
 	public final void startLoop(ShutdownOption shutdownOption) {
 		setShutdownOption(shutdownOption);
 		state = State.Running;
-		while (!Display.isCloseRequested() && !requestclose) {
+		while (!Display.isCloseRequested() && !requestclose && state != State.Error) {
 			frame(true);
 		}
 		close(this.shutdownOption);
@@ -214,7 +212,7 @@ public class OmniKryptecEngine {
 			scenefbo.resolveToFbo(normalfbo, GL30.GL_COLOR_ATTACHMENT1);
 			scenefbo.resolveToFbo(specularfbo, GL30.GL_COLOR_ATTACHMENT2);
 			scenefbo.resolveToFbo(extrainfofbo, GL30.GL_COLOR_ATTACHMENT3);
-			if(sceneCurrent!=null){
+			if (sceneCurrent != null) {
 				if (scenefbo.getTargets().length > 4) {
 					for (int i = 4; i < scenefbo.getTargets().length; i++) {
 						scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i - 4].target);
@@ -276,20 +274,14 @@ public class OmniKryptecEngine {
 	}
 
 	public final OmniKryptecEngine setScene(String name) {
-                List<Scene> scenesEquals = scenes.stream().filter((scene) -> scene.getName().equals(name)).collect(Collectors.toList());
+		List<Scene> scenesEquals = scenes.stream().filter((scene) -> scene.getName().equals(name))
+				.collect(Collectors.toList());
 		sceneCurrent = (scenesEquals.isEmpty() ? null : scenesEquals.get(0));
-		if (sceneCurrent != null) {
-			sceneCurrentName = name;
-		}
 		return this;
 	}
 
 	public final Scene getCurrentScene() {
 		return sceneCurrent;
-	}
-
-	public final String getCurrentSceneName() {
-		return sceneCurrentName;
 	}
 
 	public final ShutdownOption getShutdownOption() {
@@ -300,9 +292,13 @@ public class OmniKryptecEngine {
 		this.shutdownOption = shutdownOption;
 		return this;
 	}
-        
-        public final ArrayList<Scene> getScenes() {
-            return scenes;
-        }
+
+	public final ArrayList<Scene> getScenes() {
+		return scenes;
+	}
+
+	public String getCurrentSceneName() {
+		return sceneCurrent == null ? null : sceneCurrent.getName();
+	}
 
 }

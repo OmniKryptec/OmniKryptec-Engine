@@ -1,7 +1,6 @@
 package omnikryptec.renderer;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,8 +65,7 @@ public class RenderChunk {
 	private final ArrayList<GameObject> other = new ArrayList<>();
 	private final Map<DeferredLightPrepare, List<Light>> deferred_lights = new HashMap<>();
 	private final List<Light> forward_lights = new ArrayList<>();
-	
-	
+
 	private Entity tmp;
 	private Renderer tmpr;
 	private RenderMap<AdvancedModel, List<Entity>> map;
@@ -115,7 +113,7 @@ public class RenderChunk {
 						deferred_lights.put(lightpre, new ArrayList<>());
 					}
 					deferred_lights.get(lightpre).add(tmpl);
-				}else{
+				} else {
 					forward_lights.add(tmpl);
 				}
 			} else {
@@ -170,9 +168,9 @@ public class RenderChunk {
 						lightl.remove(tmpl);
 						if (lightl.isEmpty()) {
 							deferred_lights.remove(lightpre);
-						}	
+						}
 					}
-				}else{
+				} else {
 					forward_lights.remove(tmpl);
 				}
 				if (delete) {
@@ -217,16 +215,17 @@ public class RenderChunk {
 				r.render(scene, chunk.get(r), onlyRender);
 			}
 		}
-		if(!onlyRender){
+		if (!onlyRender) {
 			for (int i = 0; i < other.size(); i++) {
 				g = other.get(i);
 				if (g != null && g.isActive()) {
 					g.doLogic0();
 				}
 			}
-			//deferred lights should be processed in the deferredlight renderer!
-			for(int i=0; i<forward_lights.size(); i++){
-				if(forward_lights.get(i).isActive()){
+			// deferred lights should be processed in the deferredlight
+			// renderer!
+			for (int i = 0; i < forward_lights.size(); i++) {
+				if (forward_lights.get(i).isActive()) {
 					forward_lights.get(i).doLogic0();
 				}
 			}

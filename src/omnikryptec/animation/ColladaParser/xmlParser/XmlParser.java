@@ -3,6 +3,7 @@ package omnikryptec.animation.ColladaParser.xmlParser;
 import java.io.BufferedReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import omnikryptec.util.AdvancedFile;
 
 /**
@@ -24,7 +25,8 @@ public class XmlParser {
 	 * Reads an XML file and stores all the data in {@link XmlNode} objects,
 	 * allowing for easy access to the data contained in the XML file.
 	 * 
-	 * @param file - the XML file
+	 * @param file
+	 *            - the XML file
 	 * @return The root node of the XML structure.
 	 */
 	public static XmlNode loadXmlFile(AdvancedFile file) {

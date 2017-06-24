@@ -19,9 +19,9 @@ public class VertexBufferObject {
 
 	private final int vboId;
 	private final int type;
-	
+
 	private static final List<VertexBufferObject> active = new ArrayList<>();
-	
+
 	private VertexBufferObject(int vboId, int type) {
 		this.vboId = vboId;
 		this.type = type;
@@ -33,13 +33,13 @@ public class VertexBufferObject {
 		return new VertexBufferObject(id, type);
 	}
 
-	public static VertexBufferObject createEmpty(int type, int floatCount){
+	public static VertexBufferObject createEmpty(int type, int floatCount) {
 		VertexBufferObject vbo = create(type);
 		vbo.bind();
 		GL15.glBufferData(vbo.type, floatCount * 4, GL15.GL_STREAM_DRAW);
 		return vbo;
 	}
-	
+
 	public void bind() {
 		GL15.glBindBuffer(type, vboId);
 	}
@@ -48,14 +48,14 @@ public class VertexBufferObject {
 	public void unbind() {
 		GL15.glBindBuffer(type, 0);
 	}
-	
-	public void storeData(float[] data){
+
+	public void storeData(float[] data) {
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
 		buffer.put(data);
 		buffer.flip();
 		storeData(buffer);
 	}
-	
+
 	public void storeData(Float[] data) {
 		storeData(dc(data));
 	}
@@ -63,27 +63,27 @@ public class VertexBufferObject {
 	public void storeData(FloatBuffer data) {
 		GL15.glBufferData(type, data, GL15.GL_STATIC_DRAW);
 	}
-	
-	public void storeData(int[] data){
+
+	public void storeData(int[] data) {
 		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
 		buffer.put(data);
 		buffer.flip();
 		storeData(buffer);
 	}
-	
+
 	public void storeData(Integer[] data) {
 		storeData(dc(data));
 	}
-	
+
 	public void storeData(IntBuffer data) {
 		GL15.glBufferData(type, data, GL15.GL_STATIC_DRAW);
 	}
-	
-	public void updateData(float[] data, FloatBuffer buffer){
+
+	public void updateData(float[] data, FloatBuffer buffer) {
 		buffer.clear();
-		if(data.length>buffer.capacity()){
+		if (data.length > buffer.capacity()) {
 			data = Arrays.copyOf(data, buffer.capacity());
-			if(Logger.isDebugMode()){
+			if (Logger.isDebugMode()) {
 				Logger.log("BufferOverflow", LogLevel.WARNING);
 			}
 		}
@@ -93,37 +93,37 @@ public class VertexBufferObject {
 		GL15.glBufferData(type, buffer.capacity() * 4, GL15.GL_STREAM_DRAW);
 		GL15.glBufferSubData(type, 0, buffer);
 	}
-	
-	public void addInstancedAttribute(VertexArrayObject vao, int attributNr, int dataSize, int instancedDataSize, int offset) {
+
+	public void addInstancedAttribute(VertexArrayObject vao, int attributNr, int dataSize, int instancedDataSize,
+			int offset) {
 		bind();
 		vao.bind();
 		GL20.glVertexAttribPointer(attributNr, dataSize, GL11.GL_FLOAT, false, instancedDataSize * 4, offset * 4);
 		GL33.glVertexAttribDivisor(attributNr, 1);
 	}
-	
+
 	public void delete() {
 		GL15.glDeleteBuffers(vboId);
 	}
 
-	
-	private static float[] dc(Float[] is){
+	private static float[] dc(Float[] is) {
 		float[] newa = new float[is.length];
-		for(int i=0; i<is.length; i++){
+		for (int i = 0; i < is.length; i++) {
 			newa[i] = is[i].floatValue();
 		}
 		return newa;
 	}
-	
-	private static int[] dc(Integer[] is){
+
+	private static int[] dc(Integer[] is) {
 		int[] newa = new int[is.length];
-		for(int i=0; i<is.length; i++){
+		for (int i = 0; i < is.length; i++) {
 			newa[i] = is[i].intValue();
 		}
 		return newa;
 	}
-	
-	public static void cleanup(){
-		for(int i=0; i<active.size(); i++){
+
+	public static void cleanup() {
+		for (int i = 0; i < active.size(); i++) {
 			active.get(i).delete();
 		}
 	}

@@ -19,10 +19,10 @@ public class UniformVec3 extends Uniform {
 		}
 	}
 
-	public void loadVec3(float[] array){
+	public void loadVec3(float[] array) {
 		loadVec3(array[0], array[1], array[2]);
 	}
-	
+
 	public void loadVec3(float x, float y, float z) {
 		if (!used || x != currentX || y != currentY || z != currentZ) {
 			this.currentX = x;

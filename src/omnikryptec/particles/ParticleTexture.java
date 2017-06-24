@@ -2,11 +2,11 @@ package omnikryptec.particles;
 
 import omnikryptec.texture.Texture;
 
-public class ParticleTexture{
+public class ParticleTexture {
 	private int numberOfRows;
 	private boolean usealphablending;
 	private Texture tex;
-	
+
 	public ParticleTexture(Texture t, int numberOfRows, boolean durchsichtig) {
 		this.tex = t;
 		this.numberOfRows = numberOfRows;
@@ -17,12 +17,11 @@ public class ParticleTexture{
 		return usealphablending;
 	}
 
-
 	public int getNumberOfRows() {
 		return numberOfRows;
 	}
-	
-	public Texture getTexture(){
+
+	public Texture getTexture() {
 		return tex;
 	}
 

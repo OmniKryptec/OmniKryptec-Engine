@@ -15,5 +15,5 @@ public class Utils {
 		return map.entrySet().stream().filter((entry) -> Objects.equals(entry.getValue(), value)).map(Map.Entry::getKey)
 				.collect(Collectors.toSet());
 	}
-		
+
 }

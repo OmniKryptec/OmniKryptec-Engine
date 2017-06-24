@@ -2,6 +2,7 @@ package omnikryptec.renderer;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import omnikryptec.animation.renderer.AnimatedModelRenderer;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
@@ -16,8 +17,8 @@ public class RendererRegistration {
 
 	static {
 		DEF_ENTITY_RENDERER = new EntityRendererNoLight();
-        DEF_ANIMATEDMODEL_RENDERER = new AnimatedModelRenderer();
-        DEF_FORWARD_ENTITY_RENDERER = new EntityRenderer();
+		DEF_ANIMATEDMODEL_RENDERER = new AnimatedModelRenderer();
+		DEF_FORWARD_ENTITY_RENDERER = new EntityRenderer();
 	}
 
 	public static boolean exists(Renderer r) {

@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
@@ -16,10 +17,9 @@ public class SimpleTexture extends Texture {
 	private final TextureData data;
 	private final int type;
 	private final int id;
-	
-	
+
 	private static final List<SimpleTexture> alltex = new ArrayList<>();
-	
+
 	protected SimpleTexture(int textureId, TextureData data) {
 		this(textureId, GL11.GL_TEXTURE_2D, data);
 	}
@@ -62,7 +62,7 @@ public class SimpleTexture extends Texture {
 	public static TextureBuilder newTextureb(InputStream textureFile) {
 		return new TextureBuilder(textureFile);
 	}
-	
+
 	public static SimpleTexture newTexture(File file) {
 		try {
 			return newTexture(new FileInputStream(file));
@@ -80,19 +80,19 @@ public class SimpleTexture extends Texture {
 			return null;
 		}
 	}
-	
-	public static SimpleTexture newTexture(InputStream stream){
+
+	public static SimpleTexture newTexture(InputStream stream) {
 		return new TextureBuilder(stream).create();
 	}
-	
-	public static TextureBuilder newTextureb(AdvancedFile file){
+
+	public static TextureBuilder newTextureb(AdvancedFile file) {
 		return new TextureBuilder(file.createInputStream());
 	}
-	
-	public static SimpleTexture newTexture(AdvancedFile file){
+
+	public static SimpleTexture newTexture(AdvancedFile file) {
 		return new TextureBuilder(file.createInputStream()).create();
 	}
-	
+
 	public static SimpleTexture newCubeMap(InputStream[] textureFiles) {
 		int cubeMapId = TextureUtils.loadCubeMap(textureFiles);
 		return new SimpleTexture(cubeMapId, GL13.GL_TEXTURE_CUBE_MAP, null);
@@ -111,19 +111,19 @@ public class SimpleTexture extends Texture {
 	public TextureData getData() {
 		return data;
 	}
-	
-	public int getID(){
+
+	public int getID() {
 		return id;
 	}
-	
-	public int getType(){
+
+	public int getType() {
 		return type;
 	}
-	
-	public static void cleanup(){
-		for(int i=0; i<alltex.size(); i++){
+
+	public static void cleanup() {
+		for (int i = 0; i < alltex.size(); i++) {
 			alltex.get(i).delete();
 		}
 	}
-	
+
 }

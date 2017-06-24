@@ -13,26 +13,24 @@ public class ParticleMaster {
 	private static Map<ParticleTexture, List<Particle>> particles = new HashMap<ParticleTexture, List<Particle>>();
 	private static ParticleRenderer rend = new ParticleRenderer();
 
-
 	static Particle p;
 	static Entry<ParticleTexture, List<Particle>> entry;
 	static List<Particle> list;
 	static Iterator<Particle> iterator;
 	static Iterator<Entry<ParticleTexture, List<Particle>>> mapIterator;
-	
+
 	private static ParticleMaster instance;
-	
-	public static ParticleMaster instance(){
-		if(instance==null){
+
+	public static ParticleMaster instance() {
+		if (instance == null) {
 			instance = new ParticleMaster();
 		}
 		return instance;
 	}
-	
+
 	private ParticleMaster() {
 	}
-	
-	
+
 	public void update(Camera cam) {
 		mapIterator = particles.entrySet().iterator();
 		while (mapIterator.hasNext()) {
@@ -54,11 +52,10 @@ public class ParticleMaster {
 		}
 		rend.render(particles, cam);
 	}
-	
-	public long getRenderedParticlesCount(){
+
+	public long getRenderedParticlesCount() {
 		return rend.getParticleCount();
 	}
-	
 
 	public static void cleanup() {
 		rend.cleanUp();

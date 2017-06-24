@@ -26,7 +26,7 @@ public class OSUtil {
 
 	public static final OS OpSys = detectOS();
 	public static final File STANDARDAPPDATA = getStandardAppDataFolder();
-        
+
 	public static enum OS {
 		WINDOWS("windows"), MAC("macosx"), UNIX("linux"), SOLARIS("solaris"), ERROR(null);
 

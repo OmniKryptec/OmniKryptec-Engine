@@ -1,7 +1,6 @@
 package omnikryptec.entity;
 
 import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.deferredlight.DeferredLightPrepare;
 import omnikryptec.util.Color;
@@ -9,14 +8,13 @@ import omnikryptec.util.Color;
 public class Light extends GameObject {
 
 	private Vector3f vec = new Vector3f();
-	private Color color = new Color(1,1,1,1);
+	private Color color = new Color(1, 1, 1, 1);
 	private DeferredLightPrepare mylightprepare = DeferredLightPrepare.FORWARD_RENDERING;
 
 	private Vector3f att;
 
 	private Vector3f tmp;
-	
-	
+
 	public Vector3f getPosRad() {
 		tmp = getAbsolutePos();
 		vec.x = tmp.x;
@@ -29,33 +27,31 @@ public class Light extends GameObject {
 		this.color = c;
 		return this;
 	}
-	
-	public Light setColor(float r, float g, float b){
+
+	public Light setColor(float r, float g, float b) {
 		color.set(r, g, b);
 		return this;
 	}
-	
+
 	public Color getColor() {
 		return color;
 	}
 
-	
-	
-//	/**
-//	 * Sets this light to be a directional light.
-//	 * 
-//	 * the radius will be overwritten.
-//	 * 
-//	 * @return this light
-//	 */
-//	public Light setDirectional() {
-//		radius = -1;
-//		return this;
-//	}
-//
-//	public boolean isDirectional() {
-//		return radius < 0;
-//	}
+	// /**
+	// * Sets this light to be a directional light.
+	// *
+	// * the radius will be overwritten.
+	// *
+	// * @return this light
+	// */
+	// public Light setDirectional() {
+	// radius = -1;
+	// return this;
+	// }
+	//
+	// public boolean isDirectional() {
+	// return radius < 0;
+	// }
 
 	public Light setShader(DeferredLightPrepare shader) {
 		this.mylightprepare = shader;

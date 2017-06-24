@@ -8,8 +8,8 @@ import org.lwjgl.opengl.GL30;
 
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Light;
-import omnikryptec.logger.Logger;
 import omnikryptec.logger.LogEntry.LogLevel;
+import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.postprocessing.FrameBufferObject;
@@ -34,7 +34,7 @@ public class DeferredLightStage extends PostProcessingStage {
 
 	@Override
 	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist, int stage) {
-		if(!DisplayManager.instance().getSettings().isLightDeferredAllowed()&&Logger.isDebugMode()){
+		if (!DisplayManager.instance().getSettings().isLightDeferredAllowed() && Logger.isDebugMode()) {
 			Logger.log("Deferred light is not enabled. Will not render lights.", LogLevel.WARNING);
 			before.resolveToFbo(getFbo(), GL30.GL_COLOR_ATTACHMENT0, false);
 			return;

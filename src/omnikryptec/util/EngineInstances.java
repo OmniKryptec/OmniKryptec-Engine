@@ -10,37 +10,37 @@ import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.KeySettings;
 
 public class EngineInstances {
-	
-	public static final OmniKryptecEngine getEngine(){
+
+	public static final OmniKryptecEngine getEngine() {
 		return OmniKryptecEngine.instance();
 	}
-	
-	public static final PostProcessing getPostProcessing(){
+
+	public static final PostProcessing getPostProcessing() {
 		return PostProcessing.instance();
 	}
-	
-	public static final DisplayManager getDisplayManager(){
+
+	public static final DisplayManager getDisplayManager() {
 		return DisplayManager.instance();
 	}
-	
-	public static final Scene getCurrentScene(){
+
+	public static final Scene getCurrentScene() {
 		return getEngine().getCurrentScene();
 	}
-	
-	public static final Camera getCurrentCamera(){
-		return getCurrentScene()==null?null:getCurrentScene().getCamera();
+
+	public static final Camera getCurrentCamera() {
+		return getCurrentScene() == null ? null : getCurrentScene().getCamera();
 	}
-	
-	public static final EventSystem getEventSystem(){
+
+	public static final EventSystem getEventSystem() {
 		return EventSystem.instance();
 	}
-	
-	public static final GameSettings getGameSettings(){
+
+	public static final GameSettings getGameSettings() {
 		return getDisplayManager().getSettings();
 	}
-	
-	public static final KeySettings getKeySettings(){
+
+	public static final KeySettings getKeySettings() {
 		return getGameSettings().getKeySettings();
 	}
-	
+
 }

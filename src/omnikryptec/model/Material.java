@@ -1,7 +1,6 @@
 package omnikryptec.model;
 
 import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.exceptions.OmniKryptecException;
 import omnikryptec.logger.Logger;
@@ -10,7 +9,6 @@ import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.texture.Texture;
 
 public class Material {
-
 
 	private float reflectivity;
 	private float shinedamper;

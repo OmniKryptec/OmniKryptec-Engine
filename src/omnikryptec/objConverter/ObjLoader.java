@@ -12,11 +12,11 @@ import omnikryptec.logger.Logger;
 import omnikryptec.util.AdvancedFile;
 
 public class ObjLoader {
-	
-	public static ModelData loadOBJ(AdvancedFile file){
+
+	public static ModelData loadOBJ(AdvancedFile file) {
 		return loadOBJ(file.createInputStream());
 	}
-	
+
 	public static ModelData loadOBJ(InputStream inputStream) {
 		InputStreamReader inputStreamReader = null;
 		try {

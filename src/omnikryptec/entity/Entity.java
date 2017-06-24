@@ -1,7 +1,6 @@
 package omnikryptec.entity;
 
 import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.model.AdvancedModel;
 import omnikryptec.model.Model;
@@ -20,11 +19,11 @@ public class Entity extends GameObject implements Rangeable {
 	private Color color = new Color(1, 1, 1, 1);
 
 	protected Entity() {
-            super();
+		super();
 	}
-        
+
 	protected Entity(String name) {
-            super(name);
+		super(name);
 	}
 
 	public Entity(AdvancedModel model) {
@@ -36,7 +35,7 @@ public class Entity extends GameObject implements Rangeable {
 	}
 
 	public Entity(AdvancedModel model, GameObject parent) {
-                this("", model, parent);
+		this("", model, parent);
 	}
 
 	public Entity(String name, AdvancedModel model, GameObject parent) {
@@ -45,7 +44,7 @@ public class Entity extends GameObject implements Rangeable {
 	}
 
 	public Entity(Entity copy) {
-                super(copy.getName());
+		super(copy.getName());
 		setValuesFrom(copy);
 		this.model = copy.model;
 		this.type = copy.type;
@@ -57,7 +56,7 @@ public class Entity extends GameObject implements Rangeable {
 		this.type = type;
 		return this;
 	}
-	
+
 	@Override
 	public RenderType getType() {
 		return type;

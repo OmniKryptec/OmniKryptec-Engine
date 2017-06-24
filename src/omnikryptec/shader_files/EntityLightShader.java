@@ -14,7 +14,7 @@ import omnikryptec.shader.UniformVec3;
 import omnikryptec.shader.UniformVec4;
 
 public class EntityLightShader extends Shader {
-	
+
 	public final UniformMatrix transformation = new UniformMatrix("transmatrix");
 	public final UniformMatrix view = new UniformMatrix("viewmatrix");
 	public final UniformMatrix projection = new UniformMatrix("projmatrix");
@@ -30,43 +30,45 @@ public class EntityLightShader extends Shader {
 	public final UniformVec3 extrainfovec = new UniformVec3("exinfovec");
 	public final UniformVec4 uvs = new UniformVec4("uvs");
 	public final UniformBoolean hasnormal = new UniformBoolean("hasnormal");
-	public final UniformVec3[] lightpos,atts,lightcolor; 
-	public final UniformVec3 ambient = new UniformVec3("ambient");	
+	public final UniformVec3[] lightpos, atts, lightcolor;
+	public final UniformVec3 ambient = new UniformVec3("ambient");
 	public final UniformInt activelights = new UniformInt("activelights");
-	
+
 	private static final LineInsert insert = new LineInsert() {
-		
+
 		@Override
 		public String[] get(int type) {
-			if(type==GL20.GL_FRAGMENT_SHADER||type==GL20.GL_VERTEX_SHADER){
-				return new String[]{"#define maxlights "+DisplayManager.instance().getSettings().getLightMaxForward()};
-			}else{
+			if (type == GL20.GL_FRAGMENT_SHADER || type == GL20.GL_VERTEX_SHADER) {
+				return new String[] {
+						"#define maxlights " + DisplayManager.instance().getSettings().getLightMaxForward() };
+			} else {
 				return null;
 			}
 		}
 	};
-	
+
 	public EntityLightShader() {
-		super("EntityLightShader", insert, EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_vert.glsl"),
+		super("EntityLightShader", insert,
+				EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_vert.glsl"),
 				EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_frag.glsl"), "pos", "texcoords",
 				"normal", "tangent");
 		lightpos = new UniformVec3[DisplayManager.instance().getSettings().getLightMaxForward()];
-		for(int i=0; i<lightpos.length; i++){
-			lightpos[i] = new UniformVec3("lightpos["+i+"]");
+		for (int i = 0; i < lightpos.length; i++) {
+			lightpos[i] = new UniformVec3("lightpos[" + i + "]");
 		}
 		registerUniforms(lightpos);
 		atts = new UniformVec3[DisplayManager.instance().getSettings().getLightMaxForward()];
-		for(int i=0; i<atts.length; i++){
-			atts[i] = new UniformVec3("atts["+i+"]");
+		for (int i = 0; i < atts.length; i++) {
+			atts[i] = new UniformVec3("atts[" + i + "]");
 		}
 		registerUniforms(atts);
 		lightcolor = new UniformVec3[DisplayManager.instance().getSettings().getLightMaxForward()];
-		for(int i=0; i<lightcolor.length; i++){
-			lightcolor[i] = new UniformVec3("lightColor["+i+"]");
+		for (int i = 0; i < lightcolor.length; i++) {
+			lightcolor[i] = new UniformVec3("lightColor[" + i + "]");
 		}
 		registerUniforms(lightcolor);
-		registerUniforms(transformation, view, projection, tex, normalmap, specularmap, hasspecular, reflec,
-				colmod, shinedamper, hasextrainfomap, extrainfo, extrainfovec, uvs, hasnormal, activelights, ambient);
+		registerUniforms(transformation, view, projection, tex, normalmap, specularmap, hasspecular, reflec, colmod,
+				shinedamper, hasextrainfomap, extrainfo, extrainfovec, uvs, hasnormal, activelights, ambient);
 		start();
 		tex.loadTexUnit(0);
 		normalmap.loadTexUnit(1);

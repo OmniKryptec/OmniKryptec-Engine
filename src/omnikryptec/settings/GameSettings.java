@@ -35,18 +35,18 @@ public class GameSettings {
 	private float foliageRadius = 50;
 	private float mediumRadius = 100;
 	private float bigRadius = 200;
-	
+
 	private long chunkOffsetX = 1;
 	private long chunkOffsetY = 1;
 	private long chunkOffsetZ = 1;
 	private int chunkWidth = 128;
 	private int chunkHeight = 128;
 	private int chunkDepth = 128;
-	
-	private boolean deferredlight=false;
-	private boolean forwardlight=false;
-	private int max_forward_lights=4;
-	
+
+	private boolean deferredlight = false;
+	private boolean forwardlight = false;
+	private int max_forward_lights = 4;
+
 	/**
 	 * Standard value for disabling multisampling
 	 */
@@ -580,37 +580,37 @@ public class GameSettings {
 	public float getRadiusBig() {
 		return bigRadius;
 	}
-	
-	public GameSettings setRadiusBig(float r){
+
+	public GameSettings setRadiusBig(float r) {
 		this.bigRadius = r;
 		return this;
 	}
-	
-	public GameSettings setLightForward(boolean b){
+
+	public GameSettings setLightForward(boolean b) {
 		this.forwardlight = b;
 		return this;
 	}
-	
-	public boolean isLightForwardAllowed(){
+
+	public boolean isLightForwardAllowed() {
 		return forwardlight;
 	}
-	
-	public GameSettings setLightDeferred(boolean b){
+
+	public GameSettings setLightDeferred(boolean b) {
 		this.deferredlight = b;
 		return this;
 	}
-	
-	public boolean isLightDeferredAllowed(){
+
+	public boolean isLightDeferredAllowed() {
 		return deferredlight;
 	}
-	
-	public GameSettings setLightMaxForward(int i){
+
+	public GameSettings setLightMaxForward(int i) {
 		this.max_forward_lights = i;
 		return this;
 	}
-	
-	public int getLightMaxForward(){
+
+	public int getLightMaxForward() {
 		return max_forward_lights;
 	}
-	
+
 }

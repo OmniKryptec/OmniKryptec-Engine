@@ -4,14 +4,13 @@ import omnikryptec.util.Constants;
 
 public class ModelData {
 
-
 	private float[] vertices;
 	private float[] textureCoords;
 	private float[] normals;
 	private float[] tangents;
 	private int[] indices;
 	private float furthestPoint;
-		
+
 	public ModelData(float[] vertices, float[] textureCoords, float[] normals, float[] tangents, int[] indices,
 			float furthestPoint) {
 		this.vertices = vertices;

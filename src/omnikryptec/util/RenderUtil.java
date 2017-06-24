@@ -19,16 +19,15 @@ public class RenderUtil {
 	private static boolean depthTesting = false;
 	private static boolean scissor = false;
 	private static boolean depthMask = true;
-	
-	
-	public static void enableDepthMask(boolean b){
-		if(depthMask&&!b){
+
+	public static void enableDepthMask(boolean b) {
+		if (depthMask && !b) {
 			GL11.glDepthMask(b);
-		}else if(!depthMask&&b){
+		} else if (!depthMask && b) {
 			GL11.glDepthMask(b);
 		}
 	}
-	
+
 	public static void enableScissor(boolean b) {
 		if (b && !scissor) {
 			GL11.glEnable(GL11.GL_SCISSOR_TEST);
@@ -60,7 +59,7 @@ public class RenderUtil {
 
 	public static void enableAlphaBlending() {
 		if (!isAlphaBlending) {
-			if(!additiveBlending){
+			if (!additiveBlending) {
 				GL11.glEnable(GL11.GL_BLEND);
 			}
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -75,7 +74,7 @@ public class RenderUtil {
 
 	public static void enableAdditiveBlending() {
 		if (!additiveBlending) {
-			if(!isAlphaBlending){
+			if (!isAlphaBlending) {
 				GL11.glEnable(GL11.GL_BLEND);
 			}
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);

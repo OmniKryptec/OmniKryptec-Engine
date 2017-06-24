@@ -11,7 +11,7 @@ import omnikryptec.entity.Entity.RenderType;
 import omnikryptec.entity.GameObject;
 import omnikryptec.util.Maths;
 
-public class ParticleSystem extends GameObject{
+public class ParticleSystem extends GameObject {
 
 	private float pps, averageSpeed, averageLifeLength, averageScale;
 
@@ -19,30 +19,28 @@ public class ParticleSystem extends GameObject{
 	private boolean randomRotation = false;
 	private Vector3f direction, gravityComplient;
 	private float directionDeviation = 0;
-	private float timemultiplier=1;
+	private float timemultiplier = 1;
 	private RenderType type = RenderType.MEDIUM;
-	
-	private float lifelengthf=-1;
-	private float elapsedtime=0;
-	
+
+	private float lifelengthf = -1;
+	private float elapsedtime = 0;
+
 	private Random random = new Random();
 
 	private ParticleTexture tex;
-	
-	
-	public ParticleSystem(Vector3f pos, ParticleTexture tex, float pps, float speed, float lifeLength, float scale, RenderType type){
-		this(pos.x,pos.y,pos.z, tex, pps, speed, lifeLength, scale, type);
+
+	public ParticleSystem(Vector3f pos, ParticleTexture tex, float pps, float speed, float lifeLength, float scale,
+			RenderType type) {
+		this(pos.x, pos.y, pos.z, tex, pps, speed, lifeLength, scale, type);
 	}
-	
-	
+
+	public ParticleSystem(float x, float y, float z, ParticleTexture tex, float pps, float speed, float lifeLength,
+			float scale, RenderType type) {
+		this(x, y, z, tex, pps, speed, Maths.ZERO, lifeLength, scale, type);
+	}
+
 	public ParticleSystem(float x, float y, float z, ParticleTexture tex, float pps, float speed,
-			float lifeLength, float scale, RenderType type){
-		this(x,y,z,tex,pps,speed,Maths.ZERO, lifeLength, scale, type);
-	}
-	
-	
-	public ParticleSystem(float x, float y, float z, ParticleTexture tex, float pps, float speed, Vector3f gravityComplient,
-			float lifeLength, float scale, RenderType type){
+			Vector3f gravityComplient, float lifeLength, float scale, RenderType type) {
 		this.type = type;
 		this.pps = pps;
 		this.averageSpeed = speed;
@@ -52,18 +50,17 @@ public class ParticleSystem extends GameObject{
 		this.tex = tex;
 		setRelativePos(x, y, z);
 	}
-	
+
 	public ParticleSystem(Vector3f pos, ParticleTexture tex, float pps, float speed, Vector3f gravityComplient,
 			float lifeLength, float scale, RenderType type) {
 		this(pos.x, pos.y, pos.z, tex, pps, speed, gravityComplient, lifeLength, scale, type);
 	}
 
-	public ParticleSystem setSystemLifeLength(float f){
+	public ParticleSystem setSystemLifeLength(float f) {
 		this.lifelengthf = f;
 		return this;
 	}
-	
-	
+
 	/**
 	 * @param direction
 	 *            - The average direction in which particles are emitted.
@@ -103,34 +100,35 @@ public class ParticleSystem extends GameObject{
 	public void setScaleError(float error) {
 		this.scaleError = error * averageScale;
 	}
-	
+
 	@Override
-	public void doLogic(){
-		if(elapsedtime<=lifelengthf||lifelengthf<0){
+	public void doLogic() {
+		if (elapsedtime <= lifelengthf || lifelengthf < 0) {
 			generateParticles(timemultiplier);
-			elapsedtime+=DisplayManager.instance().getDeltaTime();
+			elapsedtime += DisplayManager.instance().getDeltaTime();
 		}
 	}
-	
-	public void resetTime(){
+
+	public void resetTime() {
 		elapsedtime = 0;
 	}
-	
-	private static float delta,particlesToCreate,partialParticle;
+
+	private static float delta, particlesToCreate, partialParticle;
 	private static int count;
-	
+
 	/**
 	 * for <1 particle/sec
 	 */
-	private float lastParticlef=0;
+	private float lastParticlef = 0;
+
 	public void generateParticles(float timemultiplier) {
-		delta = DisplayManager.instance().getDeltaTime()*timemultiplier;
+		delta = DisplayManager.instance().getDeltaTime() * timemultiplier;
 		particlesToCreate = pps * delta;
-		if(particlesToCreate<1f){
-			lastParticlef+=particlesToCreate;
-			if(lastParticlef>=1f){
+		if (particlesToCreate < 1f) {
+			lastParticlef += particlesToCreate;
+			if (lastParticlef >= 1f) {
 				particlesToCreate++;
-				lastParticlef=0;
+				lastParticlef = 0;
 			}
 		}
 		count = (int) Math.floor(particlesToCreate);
@@ -145,7 +143,7 @@ public class ParticleSystem extends GameObject{
 
 	private static Vector3f velocity;
 	private static float scale, lifeLength;
-	
+
 	private void emitParticle(Vector3f center) {
 		if (direction != null) {
 			velocity = generateRandomUnitVectorWithinCone(direction, directionDeviation);
@@ -156,11 +154,12 @@ public class ParticleSystem extends GameObject{
 		velocity.scale(generateValue(averageSpeed, speedError));
 		scale = generateValue(averageScale, scaleError);
 		lifeLength = generateValue(averageLifeLength, lifeError);
-		ParticleMaster.instance().addParticle(new Particle(tex, new Vector3f(center), velocity, gravityComplient, lifeLength, generateRotation(), scale, this, type));
+		ParticleMaster.instance().addParticle(new Particle(tex, new Vector3f(center), velocity, gravityComplient,
+				lifeLength, generateRotation(), scale, this, type));
 	}
-	
-	
+
 	private float offset;
+
 	private float generateValue(float average, float errorMargin) {
 		offset = (random.nextFloat() - 0.5f) * 2f * errorMargin;
 		return average + offset;
@@ -173,7 +172,7 @@ public class ParticleSystem extends GameObject{
 			return 0;
 		}
 	}
-	
+
 	private static float cosAngle, rotateAngle;
 	private static Random randoms;
 	private static Vector4f tmp4f = new Vector4f();
@@ -203,7 +202,8 @@ public class ParticleSystem extends GameObject{
 		return new Vector3f(tmp4f);
 	}
 
-	private static float theta,z,rootOneMinusZSquared,x,y;
+	private static float theta, z, rootOneMinusZSquared, x, y;
+
 	private Vector3f generateRandomUnitVector() {
 		theta = (float) (random.nextFloat() * 2f * Math.PI);
 		z = (random.nextFloat() * 2) - 1;
@@ -220,6 +220,5 @@ public class ParticleSystem extends GameObject{
 	public void setTimemultiplier(float timemultiplier) {
 		this.timemultiplier = timemultiplier;
 	}
-
 
 }

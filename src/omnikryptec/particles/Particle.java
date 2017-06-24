@@ -8,7 +8,7 @@ import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity.RenderType;
 import omnikryptec.entity.Rangeable;
 
-public class Particle implements Rangeable{
+public class Particle implements Rangeable {
 
 	private Vector3f pos;
 	private Vector3f vel;
@@ -21,15 +21,15 @@ public class Particle implements Rangeable{
 	private float distance;
 
 	private ParticleTexture tex;
-	
+
 	private ParticleSystem mysystem;
-	
+
 	private Vector2f texOffset1 = new Vector2f();
 	private Vector2f texOffset2 = new Vector2f();
 	private float blend;
-	
+
 	private RenderType type = RenderType.MEDIUM;
-	
+
 	private static Vector3f changeable = new Vector3f();
 
 	public Particle(ParticleTexture tex, Vector3f pos, Vector3f vel, Vector3f force, float lifeLength, float rot,
@@ -49,13 +49,14 @@ public class Particle implements Rangeable{
 	public float getDistance() {
 		return distance;
 	}
-	
-	public ParticleSystem getSystem(){
+
+	public ParticleSystem getSystem() {
 		return mysystem;
 	}
-	
-	private static float lifeFactor,atlasProg;
-	private static int stageCount, index1,index2;
+
+	private static float lifeFactor, atlasProg;
+	private static int stageCount, index1, index2;
+
 	private void updateTexCoordInfo() {
 		lifeFactor = elapsedTime / lifeLength;
 		stageCount = tex.getNumberOfRows() * tex.getNumberOfRows();
@@ -67,10 +68,11 @@ public class Particle implements Rangeable{
 		texOffset2 = setTexOffset(texOffset2, index2);
 	}
 
-	private static int column,row;
+	private static int column, row;
+
 	private Vector2f setTexOffset(Vector2f offset, int index) {
 		column = index % tex.getNumberOfRows();
-		row =  index / tex.getNumberOfRows();
+		row = index / tex.getNumberOfRows();
 		offset.x = (float) column / tex.getNumberOfRows();
 		offset.y = (float) row / tex.getNumberOfRows();
 		return offset;
@@ -91,7 +93,7 @@ public class Particle implements Rangeable{
 	public ParticleTexture getTexture() {
 		return tex;
 	}
-	
+
 	@Override
 	public Vector3f getAbsolutePos() {
 		return pos;
@@ -105,18 +107,18 @@ public class Particle implements Rangeable{
 		return scale;
 	}
 
-	
 	private static Vector3f tmp;
 	private static float timemultiplier;
+
 	protected boolean update(Camera cam) {
 		timemultiplier = mysystem.getTimemultiplier();
 		Vector3f.add(vel, force, vel);
 		changeable.set(vel);
-		changeable.scale(DisplayManager.instance().getDeltaTime()*timemultiplier);
+		changeable.scale(DisplayManager.instance().getDeltaTime() * timemultiplier);
 		Vector3f.add(changeable, pos, pos);
-		distance = (tmp=Vector3f.sub(cam.getPos(), pos, tmp)).lengthSquared();
+		distance = (tmp = Vector3f.sub(cam.getPos(), pos, tmp)).lengthSquared();
 		updateTexCoordInfo();
-		elapsedTime += DisplayManager.instance().getDeltaTime()*timemultiplier;
+		elapsedTime += DisplayManager.instance().getDeltaTime() * timemultiplier;
 		return elapsedTime < lifeLength;
 	}
 

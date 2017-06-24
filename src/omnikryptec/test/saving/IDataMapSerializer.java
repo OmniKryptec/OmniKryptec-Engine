@@ -7,11 +7,14 @@ import java.util.HashMap;
 
 /**
  * IDataMapSerializer
+ * 
  * @author Panzer1119
  */
 public interface IDataMapSerializer {
-    
-    public boolean serialize(String name, HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps, OutputStream outputStream);
-    public HashMap<Class<?>, ArrayList<DataMap>> deserialize(InputStream inputStream);
-    
+
+	public boolean serialize(String name, HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps,
+			OutputStream outputStream);
+
+	public HashMap<Class<?>, ArrayList<DataMap>> deserialize(InputStream inputStream);
+
 }

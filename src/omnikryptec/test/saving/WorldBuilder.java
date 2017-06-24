@@ -6,17 +6,17 @@ package omnikryptec.test.saving;
  */
 public class WorldBuilder implements ObjectBuilder<World> {
 
-    World world = new World();
-    
-    @Override
-    public ObjectBuilder loadDataMap(DataMap data) {
-        world.setName(data.get("name").toString());
-        return this;
-    }
+	World world = new World();
 
-    @Override
-    public World build() {
-        return world;
-    }
-    
+	@Override
+	public ObjectBuilder loadDataMap(DataMap data) {
+		world.setName(data.get("name").toString());
+		return this;
+	}
+
+	@Override
+	public World build() {
+		return world;
+	}
+
 }

@@ -3,18 +3,19 @@ package omnikryptec.animation.ColladaParser.dataStructures;
 import omnikryptec.objConverter.ModelData;
 
 /**
- * This object contains all the mesh data for an animated model that is to be loaded into the VAO.
+ * This object contains all the mesh data for an animated model that is to be
+ * loaded into the VAO.
  * 
  * @author Karl
  *
  */
-public class MeshData extends ModelData{
+public class MeshData extends ModelData {
 
 	private int[] jointIds;
 	private float[] vertexWeights;
 
-	public MeshData(float[] vertices, float[] textureCoords, float[] normals, int[] indices,
-			int[] jointIds, float[] vertexWeights) {
+	public MeshData(float[] vertices, float[] textureCoords, float[] normals, int[] indices, int[] jointIds,
+			float[] vertexWeights) {
 		super(vertices, textureCoords, normals, normals, indices, 0);
 		this.jointIds = jointIds;
 		this.vertexWeights = vertexWeights;
@@ -26,12 +27,12 @@ public class MeshData extends ModelData{
 		this.jointIds = jointIds;
 		this.vertexWeights = vertexWeights;
 	}
-	
+
 	public int[] getJointIds() {
 		return jointIds;
 	}
-	
-	public float[] getVertexWeights(){
+
+	public float[] getVertexWeights() {
 		return vertexWeights;
 	}
 

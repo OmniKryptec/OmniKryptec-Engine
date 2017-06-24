@@ -16,9 +16,13 @@ public class Model {
 	public Model(ModelData modelData) {
 		this.modelData = modelData;
 		vao = VertexArrayObject.create();
-		//vao.storeDataf(modelData.getIndices(), modelData.getVertexCount(), modelData.getVertices(),
-		//		modelData.getTextureCoords(), modelData.getNormals(), modelData.getTangents());
-		vao.storeData(modelData.getIndices(), modelData.getVertexCount(), new DataObject(modelData.getVertices()), new DataObject(modelData.getTextureCoords()), new DataObject(modelData.getNormals()),new DataObject(modelData.getTangents()));
+		// vao.storeDataf(modelData.getIndices(), modelData.getVertexCount(),
+		// modelData.getVertices(),
+		// modelData.getTextureCoords(), modelData.getNormals(),
+		// modelData.getTangents());
+		vao.storeData(modelData.getIndices(), modelData.getVertexCount(), new DataObject(modelData.getVertices()),
+				new DataObject(modelData.getTextureCoords()), new DataObject(modelData.getNormals()),
+				new DataObject(modelData.getTangents()));
 	}
 
 	public Model(VertexArrayObject vao) {

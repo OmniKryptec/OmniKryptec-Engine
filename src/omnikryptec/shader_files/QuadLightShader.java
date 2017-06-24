@@ -5,7 +5,6 @@ import omnikryptec.shader.UniformMatrix;
 import omnikryptec.shader.UniformSampler;
 import omnikryptec.shader.UniformVec2;
 import omnikryptec.shader.UniformVec3;
-import omnikryptec.shader.UniformVec4;
 
 public class QuadLightShader extends Shader {
 

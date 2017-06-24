@@ -31,14 +31,14 @@ public class AudioListenerComponent implements Component {
 			}
 		}
 	}
-	
+
 	private RenderChunk chunk;
-	private	Scene scene;
+	private Scene scene;
 	private PhysicsComponent physicsComponent;
 	private boolean isUsingPhysics = false;
 	private Vector3f position, rotation;
 	private javax.vecmath.Vector3f velocity = new javax.vecmath.Vector3f(0, 0, 0);;
-	
+
 	@Override
 	public final void execute(GameObject instance) {
 		isUsingPhysics = false;
@@ -54,7 +54,7 @@ public class AudioListenerComponent implements Component {
 			}
 		}
 		position = instance.getAbsolutePos();
-		velocity.set(0,0,0);
+		velocity.set(0, 0, 0);
 		rotation = instance.getAbsoluteRotation();
 		if (isUsingPhysics) {
 			physicsComponent.getBody().getAngularVelocity(velocity);

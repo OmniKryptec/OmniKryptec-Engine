@@ -35,7 +35,6 @@ public class SmoothFloat {
 		return actual;
 	}
 
-
 	public float getTarget() {
 		return target;
 	}

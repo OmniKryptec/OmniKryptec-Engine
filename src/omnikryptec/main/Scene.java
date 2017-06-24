@@ -15,14 +15,14 @@ import omnikryptec.physics.PhysicsWorld;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.AllowedRenderer;
 import omnikryptec.renderer.Renderer;
-import omnikryptec.util.Color;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
+import omnikryptec.util.Color;
 import omnikryptec.util.PhysicsUtil;
 
-public class Scene implements DataMapSerializable{
+public class Scene implements DataMapSerializable {
 
-        private String name;
+	private String name;
 	private final Map<String, RenderChunk> scene = new HashMap<>();
 	private Camera cam;
 	private long cox = OmniKryptecEngine.getInstance().getDisplayManager().getSettings().getChunkRenderOffsetX(),
@@ -34,28 +34,28 @@ public class Scene implements DataMapSerializable{
 	private final List<Light> forward_rel_lights = new ArrayList<>();
 
 	private RenderChunk global = new RenderChunk(0, 0, 0, this);
-	
+
 	private Color ambientlight = new Color(0, 0, 0, 0);
-	
+
 	/* Temp Variables */
 	private String tmp;
 	private long cx, cy, cz;
 	private RenderChunk tmpc;
-        
-        public Scene() {
-            this("", null);
-        }
-	
-	public Scene(String name, Camera cam) {
-            this.cam = cam;
-            this.name = name;
+
+	public Scene() {
+		this("", null);
 	}
-	
-	public Scene setAmbientColor(float r, float g, float b){
+
+	public Scene(String name, Camera cam) {
+		this.cam = cam;
+		this.name = name;
+	}
+
+	public Scene setAmbientColor(float r, float g, float b) {
 		ambientlight.set(r, g, b);
 		return this;
 	}
-	
+
 	public Scene setChunkOffsets(long xo, long yo, long zo) {
 		this.cox = xo;
 		this.coy = yo;
@@ -69,7 +69,7 @@ public class Scene implements DataMapSerializable{
 				Logger.log("A Camera should not be added as a GameObject!", LogLevel.WARNING);
 				return false;
 			}
-			if(g.isGlobal()){
+			if (g.isGlobal()) {
 				global.addGameObject(g);
 				return true;
 			}
@@ -101,12 +101,13 @@ public class Scene implements DataMapSerializable{
 		return g;
 	}
 
-	public final Scene frame(float maxexpenlvl, float minexplvl, boolean onlyRender, AllowedRenderer info, Renderer... re) {
+	public final Scene frame(float maxexpenlvl, float minexplvl, boolean onlyRender, AllowedRenderer info,
+			Renderer... re) {
 		deferred_rel_lights.clear();
 		deferred_rel_lights.putAll(global.getDeferredLights());
 		forward_rel_lights.clear();
 		forward_rel_lights.addAll(global.getForwardLights());
-		if (!onlyRender&&isUsingPhysics()) {
+		if (!onlyRender && isUsingPhysics()) {
 			physicsWorld.stepSimulation();
 		}
 		cx = cam.getChunkX();
@@ -132,7 +133,7 @@ public class Scene implements DataMapSerializable{
 			}
 		}
 		global.frame(maxexpenlvl, minexplvl, onlyRender, info, re);
-		if(!onlyRender){
+		if (!onlyRender) {
 			cam.doLogic0();
 			doLogic();
 		}
@@ -148,11 +149,11 @@ public class Scene implements DataMapSerializable{
 	public final List<Light> getDeferredRenderLights(DeferredLightPrepare usingShader) {
 		return deferred_rel_lights.get(usingShader);
 	}
-	
-	public final List<Light> getForwardRenderLights(){
+
+	public final List<Light> getForwardRenderLights() {
 		return forward_rel_lights;
 	}
-	
+
 	public final Camera getCamera() {
 		return cam;
 	}
@@ -196,11 +197,11 @@ public class Scene implements DataMapSerializable{
 	public final boolean isUsingPhysics() {
 		return physicsWorld != null;
 	}
-        
-        public final Scene setName(String name) {
-            this.name = name;
-            return this;
-        }
+
+	public final Scene setName(String name) {
+		this.name = name;
+		return this;
+	}
 
 	private static String xyzToString(long x, long y, long z) {
 		return x + ":" + y + ":" + z;
@@ -209,69 +210,69 @@ public class Scene implements DataMapSerializable{
 	public Color getAmbient() {
 		return ambientlight;
 	}
-        
-        public static final Scene byName(String name) {
-            if(OmniKryptecEngine.getInstance() != null) {
-                for(Scene scene : OmniKryptecEngine.getInstance().getScenes()) {
-                    if(scene.getName() == null ? name == null : scene.getName().equals(name)) {
-                        return scene;
-                    }
-                }
-                return null;
-            } else {
-                return null;
-            }
-        }
 
-    @Override
-    public DataMap toDataMap(DataMap data) {
-        data.put("name", name);
-        data.put("camera", (cam != null ? cam.toDataMap(new DataMap("camera")) : null));
-        return data;
-    }
+	public static final Scene byName(String name) {
+		if (OmniKryptecEngine.getInstance() != null) {
+			for (Scene scene : OmniKryptecEngine.getInstance().getScenes()) {
+				if (scene.getName() == null ? name == null : scene.getName().equals(name)) {
+					return scene;
+				}
+			}
+			return null;
+		} else {
+			return null;
+		}
+	}
 
-    public static Scene newInstanceFromDataMap(DataMap data) {
-        if(data == null) {
-            return null;
-        }
-        final Scene scene = byName(data.getString("name"));
-        return (scene != null ? scene : new Scene()).fromDataMap(data);
-    }
-    
-    @Override
-    public Scene fromDataMap(DataMap data) {
-        if(data == null) {
-            return this;
-        }
-        setName(data.getString("name"));
-        DataMap dataMap_temp = data.getDataMap("camera");
-        if(dataMap_temp != null) {
-            if(cam != null) {
-                cam.fromDataMap(dataMap_temp);
-            } else {
-                Object temp = Camera.newInstanceFromDataMap(dataMap_temp);
-                if(temp != null && temp instanceof Camera) {
-                    setCamera((Camera) temp);
-                }
-            }
-        } else {
-            Logger.log("Camera is null!");
-            setCamera(null);
-        }
-        return this;
-    }
-    
-    @Override
-    public String getName() {
-        return name;
-    }
+	@Override
+	public DataMap toDataMap(DataMap data) {
+		data.put("name", name);
+		data.put("camera", (cam != null ? cam.toDataMap(new DataMap("camera")) : null));
+		return data;
+	}
 
-    public Scene setValuesFrom(Scene scene) {
-        if(scene == null) {
-            return this;
-        }
-        setName(scene.getName());
-        return this;
-    }
-    
+	public static Scene newInstanceFromDataMap(DataMap data) {
+		if (data == null) {
+			return null;
+		}
+		final Scene scene = byName(data.getString("name"));
+		return (scene != null ? scene : new Scene()).fromDataMap(data);
+	}
+
+	@Override
+	public Scene fromDataMap(DataMap data) {
+		if (data == null) {
+			return this;
+		}
+		setName(data.getString("name"));
+		DataMap dataMap_temp = data.getDataMap("camera");
+		if (dataMap_temp != null) {
+			if (cam != null) {
+				cam.fromDataMap(dataMap_temp);
+			} else {
+				Object temp = Camera.newInstanceFromDataMap(dataMap_temp);
+				if (temp != null && temp instanceof Camera) {
+					setCamera((Camera) temp);
+				}
+			}
+		} else {
+			Logger.log("Camera is null!");
+			setCamera(null);
+		}
+		return this;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	public Scene setValuesFrom(Scene scene) {
+		if (scene == null) {
+			return this;
+		}
+		setName(scene.getName());
+		return this;
+	}
+
 }

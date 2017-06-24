@@ -20,20 +20,20 @@ public class SimpleAnimation extends Texture {
 		this.secondsperframe = 1.0f / fps;
 		return this;
 	}
-	
-	public SimpleAnimation setSecondsPerFrame(float f){
+
+	public SimpleAnimation setSecondsPerFrame(float f) {
 		this.secondsperframe = f;
 		return this;
 	}
-	
+
 	public int getCurrentIndex() {
 		return index;
 	}
-	
-	public Texture[] getTextures(){
+
+	public Texture[] getTextures() {
 		return textures;
 	}
-	
+
 	@Override
 	public void bindToUnita(int unit, int... info) {
 		textures[index].bindToUnita(unit, info);

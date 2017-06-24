@@ -31,10 +31,10 @@ public class GameObject implements DataMapSerializable {
 	}
 
 	private static final Sorter SORTER = new Sorter();
-        public static final ArrayList<GameObject> gameObjects = new ArrayList<>();
+	public static final ArrayList<GameObject> gameObjects = new ArrayList<>();
 
-        private String name;
-	private boolean isglobal=false;
+	private String name;
+	private boolean isglobal = false;
 	private Vector3f pos = new Vector3f();
 	private GameObject parent = null;
 	private boolean active = true;
@@ -44,10 +44,10 @@ public class GameObject implements DataMapSerializable {
 	private List<Component> componentsPreLogic = null;
 	private List<Component> componentsPostLogic = null;
 
-        public GameObject() {
-            this("");
-        }
-        
+	public GameObject() {
+		this("");
+	}
+
 	/**
 	 * creates a gameobject with no parent
 	 */
@@ -63,9 +63,9 @@ public class GameObject implements DataMapSerializable {
 	 *            the parent or null for no parent
 	 */
 	public GameObject(String name, GameObject parent) {
-                this.name = name;
+		this.name = name;
 		this.parent = parent;
-                gameObjects.add(this);
+		gameObjects.add(this);
 	}
 
 	/**
@@ -269,7 +269,7 @@ public class GameObject implements DataMapSerializable {
 			}
 		}
 		delete();
-                gameObjects.remove(this);
+		gameObjects.remove(this);
 		return this;
 	}
 
@@ -397,10 +397,10 @@ public class GameObject implements DataMapSerializable {
 	 * @param toCopy
 	 */
 	public final GameObject setValuesFrom(GameObject toCopy) {
-                if(toCopy == null) {
-                    return this;
-                }
-                name = toCopy.name;
+		if (toCopy == null) {
+			return this;
+		}
+		name = toCopy.name;
 		active = toCopy.active;
 		parent = toCopy.parent;
 		rotation = new Vector3f(toCopy.rotation);
@@ -430,78 +430,80 @@ public class GameObject implements DataMapSerializable {
 		return this;
 	}
 
-	public GameObject setGlobal(boolean b){
+	public GameObject setGlobal(boolean b) {
 		this.isglobal = b;
 		return this;
 	}
-	
-	public boolean isGlobal(){
+
+	public boolean isGlobal() {
 		return isglobal;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "GameObject [ Pos: " + pos.toString() + " Rot: " + rotation.toString() + " ]";
 	}
-        
-        public GameObject setName(String name) {
-            this.name = name;
-            return this;
-        }
-        
-        public static final <T> T byName(Class<? extends T> c, String name) {
-            for(GameObject gameObject : gameObjects) {
-                if(gameObject.getClass() == c && gameObject.getName() == null ? name == null : gameObject.getName().equals(name)) {
-                    return (T) gameObject;
-                }
-            }
-            return null;
-        }
 
-    @Override
-    public String getName() {
-        return name;
-    }
+	public GameObject setName(String name) {
+		this.name = name;
+		return this;
+	}
 
-    @Override
-    public DataMap toDataMap(DataMap data) {
-        data.put("name", name);
-        data.put("isglobal", isglobal);
-        data.put("active", active);
-        if(parent != null) {
-            data.put("parent", parent.toDataMap(new DataMap("parent")));
-        }
-        data.put("position", SerializationUtil.vector3fToString(pos));
-        data.put("rotation", SerializationUtil.vector3fToString(rotation));
-        return data;
-    }
-    
-    public static GameObject newInstanceFromDataMap(DataMap data) {
-        if(data == null) {
-            return null;
-        }
-        final GameObject gameObject = byName(GameObject.class, data.getString("name"));
-        return (gameObject != null ? gameObject : new GameObject()).fromDataMap(data);
-    }
-    
-    @Override
-    public GameObject fromDataMap(DataMap data) {
-        if(data == null) {
-            return null;
-        }
-        setName(data.getString("name"));
-        setGlobal(data.getBoolean("isglobal"));
-        setActive(data.getBoolean("isActive"));
-        DataMap dataMap_temp = data.getDataMap("parent");
-        if(parent == null) {
-            Object parent_ = newInstanceFromDataMap(dataMap_temp);
-            setParent((parent_ != null ? (GameObject) parent_ : null));
-        } else {
-            parent.fromDataMap(dataMap_temp); //FIXME Hmmm ist die Frage weil die Parents und id und so
-        }
-        setPos(SerializationUtil.stringToVector3f(data.getString("position")));
-        setRotation(SerializationUtil.stringToVector3f(data.getString("rotation")));
-        return this;
-    }
+	public static final <T> T byName(Class<? extends T> c, String name) {
+		for (GameObject gameObject : gameObjects) {
+			if (gameObject.getClass() == c && gameObject.getName() == null ? name == null
+					: gameObject.getName().equals(name)) {
+				return (T) gameObject;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public DataMap toDataMap(DataMap data) {
+		data.put("name", name);
+		data.put("isglobal", isglobal);
+		data.put("active", active);
+		if (parent != null) {
+			data.put("parent", parent.toDataMap(new DataMap("parent")));
+		}
+		data.put("position", SerializationUtil.vector3fToString(pos));
+		data.put("rotation", SerializationUtil.vector3fToString(rotation));
+		return data;
+	}
+
+	public static GameObject newInstanceFromDataMap(DataMap data) {
+		if (data == null) {
+			return null;
+		}
+		final GameObject gameObject = byName(GameObject.class, data.getString("name"));
+		return (gameObject != null ? gameObject : new GameObject()).fromDataMap(data);
+	}
+
+	@Override
+	public GameObject fromDataMap(DataMap data) {
+		if (data == null) {
+			return null;
+		}
+		setName(data.getString("name"));
+		setGlobal(data.getBoolean("isglobal"));
+		setActive(data.getBoolean("isActive"));
+		DataMap dataMap_temp = data.getDataMap("parent");
+		if (parent == null) {
+			Object parent_ = newInstanceFromDataMap(dataMap_temp);
+			setParent((parent_ != null ? (GameObject) parent_ : null));
+		} else {
+			parent.fromDataMap(dataMap_temp); // FIXME Hmmm ist die Frage weil
+												// die Parents und id und so
+		}
+		setPos(SerializationUtil.stringToVector3f(data.getString("position")));
+		setRotation(SerializationUtil.stringToVector3f(data.getString("rotation")));
+		return this;
+	}
 
 }

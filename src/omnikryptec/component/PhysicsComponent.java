@@ -26,8 +26,8 @@ public class PhysicsComponent implements Component {
 	private final RigidBody body;
 	private boolean pause = false;
 
-	
 	private RigidBodyBuilder rigidBodyBuilder;
+
 	/**
 	 * Constructs this Component with a standard RigidBodyBuilder
 	 * 
@@ -70,9 +70,9 @@ public class PhysicsComponent implements Component {
 		this.body = rigidBodyBuilder.create();
 		init();
 	}
-	
+
 	private RenderChunk chunk;
-	
+
 	private final void init() {
 		if (instance != null) {
 			chunk = instance.getMyChunk();
@@ -137,10 +137,10 @@ public class PhysicsComponent implements Component {
 		this.pause = pause;
 		return this;
 	}
-	
+
 	private Vector3f ballPosition = new Vector3f();
 	private Quat4f ballOrientation = new Quat4f();
-	
+
 	@Override
 	public final void execute(GameObject instance) {
 		if (pause || body == null) {
