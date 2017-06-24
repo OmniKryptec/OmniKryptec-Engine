@@ -33,7 +33,7 @@ public class EngineTest {
 					.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create();
 			TexturedModel tm = new TexturedModel(brunnen, brunnent);
 			tm.getMaterial().setReflectivity(0.5f);
-			OmniKryptecEngine.instance().addAndSetScene("test", new Scene(new Camera() {
+			OmniKryptecEngine.instance().addAndSetScene(new Scene("test", new Camera() {
 				@Override
 				public void doLogic() {
 					// setRelativePos(getRelativePos().x, getRelativePos().y,

@@ -39,6 +39,10 @@ public class EntityBuilder {
 		return (texturedModel = new TexturedModel(model, texture));
 	}
 
+	public final Entity create(String name) {
+		return new Entity(name, createTexturedModel());
+	}
+
 	public final Entity create() {
 		return new Entity(createTexturedModel());
 	}

@@ -19,18 +19,32 @@ public class Entity extends GameObject implements Rangeable{
 	private Vector4f color = new Vector4f(1, 1, 1, 1);
 
 	protected Entity() {
+            super();
+	}
+        
+	protected Entity(String name) {
+            super(name);
 	}
 
 	public Entity(AdvancedModel model) {
-		this(model, null);
+		this("", model, null);
+	}
+
+	public Entity(String name, AdvancedModel model) {
+		this(name, model, null);
 	}
 
 	public Entity(AdvancedModel model, GameObject parent) {
-		super(parent);
+                this("", model, parent);
+	}
+
+	public Entity(String name, AdvancedModel model, GameObject parent) {
+		super(name, parent);
 		this.model = model;
 	}
 
 	public Entity(Entity copy) {
+                super(copy.getName());
 		setValuesFrom(copy);
 		this.model = copy.model;
 		this.type = copy.type;

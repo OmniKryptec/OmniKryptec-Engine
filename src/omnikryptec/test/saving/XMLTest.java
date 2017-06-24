@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import omnikryptec.logger.Logger;
 import omnikryptec.util.AdvancedFile;
+import omnikryptec.util.SerializationUtil;
+import org.lwjgl.util.vector.Matrix3f;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 
 /**
  * XMLTest
@@ -52,13 +57,20 @@ public class XMLTest {
                         Logger.log("Found World: " + world);
                     }
                     */
+                    Matrix3f matrix3f = new Matrix3f();
+                    Matrix4f matrix4f = new Matrix4f();
+                    Vector3f vector3f = new Vector3f(1, 2, 3);
+                    Vector2f vector2f = new Vector2f(1, 2);
+                    String temp = "";
+                    Logger.log((temp = vector2f.toString()));
+                    Logger.log((vector2f = SerializationUtil.stringToVector2f(temp)));
                     AdvancedFile file = new AdvancedFile(new File("E:\\Daten\\NetBeans\\Projekte\\OmniKryptec-Engine\\temp"), "Test.xml");
                     //Logger.log("file == " + file);
                     //Logger.log("file.toFile() == " + file.toFile());
                     //Logger.log("file.createFile() == " + file.createFile());
                     dataMapSerializer.serialize("Welt_1", XMLSerializer.newInstance(), file);
                     Logger.log("file.exists() == " + file.exists());
-                    HashMap<Class<?>, ArrayList<DataMapSerializable>> xmlsc = DataMapSerializer.unserializeToDDataMapSerializable(file, XMLSerializer.newInstance());
+                    HashMap<Class<?>, ArrayList<DataMapSerializable>> xmlsc = dataMapSerializer.unserializeToDataMapSerializable(file, XMLSerializer.newInstance());
                 }
             }
             System.exit(0);

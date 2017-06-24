@@ -1,5 +1,6 @@
 package omnikryptec.test.saving;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import omnikryptec.logger.Logger;
@@ -22,16 +23,16 @@ public class DataMapSerializer {
         final HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps = new HashMap<>();
         for(Class<?> c : classesDataMapSerializables.keySet()) {
             try {
-                for(DataMapSerializable dataMapSerializables : classesDataMapSerializables.get(c)) {
+                for(DataMapSerializable dataMapSerializable : classesDataMapSerializables.get(c)) {
                     try {
                         ArrayList<DataMap> data = classesDataMaps.get(c);
                         if(data == null) {
                             data = new ArrayList<>();
                             classesDataMaps.put(c, data);
                         }
-                        data.add(dataMapSerializables.toDataMap(new DataMap(c.getName())));
+                        data.add(dataMapSerializable.toDataMap(new DataMap("" + dataMapSerializable.getName())));
                     } catch (Exception ex) {
-                        Logger.logErr(String.format("Error while serializing data from (inner) \"%s\": %s", dataMapSerializables, ex), ex);
+                        Logger.logErr(String.format("Error while serializing data from (inner) \"%s\": %s", dataMapSerializable, ex), ex);
                     }
                 }
             } catch (Exception ex) {
@@ -61,8 +62,10 @@ public class DataMapSerializer {
                         } else {
                             Logger.log(String.format("Not unserialized (\"%s\"): \"%s\"", c.getSimpleName(), d));
                         }
-                    } catch (Exception ex) {
+                    } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException ex) {
                         Logger.logErr(String.format("Error while unserializing data from (inner) \"%s\": %s", d, ex), ex);
+                    } catch (InvocationTargetException ex) {
+                        Logger.logErr("Error: " + ex.getCause(), new Exception(ex.getCause()));
                     }
                 }
             } catch (Exception ex) {
@@ -91,15 +94,19 @@ public class DataMapSerializer {
         return serialize(name, serialize(), dataMapSerializer, file);
     }
     
-    public static final HashMap<Class<?>, ArrayList<DataMap>> unserializeToDataMap(AdvancedFile file, IDataMapSerializer dataMapSerializer) {
+    public static final HashMap<Class<?>, ArrayList<DataMap>> unserializeThisToDataMap(AdvancedFile file, IDataMapSerializer dataMapSerializer) {
         if(file == null || !file.exists() || dataMapSerializer == null) {
             return null;
         }
         return dataMapSerializer.unserialize(file.createInputStream());
     }
     
-    public static final HashMap<Class<?>, ArrayList<DataMapSerializable>> unserializeToDDataMapSerializable(AdvancedFile file, IDataMapSerializer dataMapSerializer) {
-        return unserialize(unserializeToDataMap(file, dataMapSerializer));
+    public static final HashMap<Class<?>, ArrayList<DataMapSerializable>> unserializeThisToDataMapSerializable(AdvancedFile file, IDataMapSerializer dataMapSerializer) {
+        return unserialize(unserializeThisToDataMap(file, dataMapSerializer));
+    }
+    
+    public final HashMap<Class<?>, ArrayList<DataMapSerializable>> unserializeToDataMapSerializable(AdvancedFile file, IDataMapSerializer dataMapSerializer) {
+        return (classesDataMapSerializables = unserializeThisToDataMapSerializable(file, dataMapSerializer));
     }
     
     public static final HashMap<Class<?>, ArrayList<DataMapSerializable>> addDataMapSerializable(HashMap<Class<?>, ArrayList<DataMapSerializable>> classesDataMapSerializables, Class<?> c, DataMapSerializable dataMapSerializable) {
@@ -147,6 +154,16 @@ public class DataMapSerializer {
 
     public final DataMapSerializer setClassesDataMaps(HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps) {
         this.classesDataMaps = classesDataMaps;
+        return this;
+    }
+    
+    public final DataMapSerializer reset() {
+        if(this.classesDataMapSerializables != null) {
+            this.classesDataMapSerializables.clear();
+        }
+        if(this.classesDataMaps != null) {
+            this.classesDataMaps.clear();
+        }
         return this;
     }
     

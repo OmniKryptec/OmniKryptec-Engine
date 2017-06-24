@@ -34,6 +34,7 @@ public class World implements DataMapSerializable {
 		this.gameObjects = gameObjects;
 	}
 
+        @Override
 	public String getName() {
 		return name;
 	}
@@ -88,6 +89,7 @@ public class World implements DataMapSerializable {
         }
         data.put("weights", weights);
         data.put("test", test);
+        data.put("array", new int[] {1, 2, 4545, 45});
         return data;
     }
 

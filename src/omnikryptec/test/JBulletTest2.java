@@ -93,7 +93,7 @@ public class JBulletTest2 {
 			keySettings.setKey("physicsSlower", Keyboard.KEY_COMMA, true);
 			DisplayManager.createDisplay("JBullet Test2", gameSettings);
 			DisplayManager.instance().getSettings().getKeySettings().setKey("sprint", Keyboard.KEY_LCONTROL, true);
-			OmniKryptecEngine.instance().addAndSetScene("Test-Scene", new Scene((Camera) new Camera() {
+			OmniKryptecEngine.instance().addAndSetScene(new Scene("Test-Scene", (Camera) new Camera() {
 
 				@Override
 				public void doLogic() {
