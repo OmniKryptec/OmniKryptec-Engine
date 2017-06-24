@@ -135,7 +135,7 @@ public class AnimationTest {
     
     public static final void load() {
         dataMapSerializer.reset();
-        dataMapSerializer.unserializeToDataMap(SAVE, XMLSerializer.newInstance());
+        dataMapSerializer.deserializeToDataMap(SAVE, XMLSerializer.newInstance());
         scene.fromDataMap(dataMapSerializer.getDataMaps(Scene.class).get(0));
     }
     

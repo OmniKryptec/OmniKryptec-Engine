@@ -41,7 +41,7 @@ public class XMLTest {
                 }
             } else {
                 if(false) {
-                    DataMapSerializer.unserialize(data_complete);
+                    DataMapSerializer.deserialize(data_complete);
                     HashMap<Class<?>, ArrayList<DataMapSerializable>> xmlsc = dataMapSerializer.getClassesDataMapSerializables();
                     Logger.log("xmlsc.size() == " + xmlsc.size());
                     ArrayList<DataMapSerializable> xmls = xmlsc.get(World.class);
@@ -70,7 +70,7 @@ public class XMLTest {
                     //Logger.log("file.createFile() == " + file.createFile());
                     dataMapSerializer.serialize("Welt_1", XMLSerializer.newInstance(), file);
                     Logger.log("file.exists() == " + file.exists());
-                    HashMap<Class<?>, ArrayList<DataMapSerializable>> xmlsc = dataMapSerializer.unserializeToDataMapSerializable(file, XMLSerializer.newInstance());
+                    HashMap<Class<?>, ArrayList<DataMapSerializable>> xmlsc = dataMapSerializer.deserializeToDataMapSerializable(file, XMLSerializer.newInstance());
                 }
             }
             System.exit(0);

@@ -224,7 +224,7 @@ public class XMLSerializer implements IDataMapSerializer {
     }
 
     @Override
-    public final HashMap<Class<?>, ArrayList<DataMap>> unserialize(InputStream inputStream) {
+    public final HashMap<Class<?>, ArrayList<DataMap>> deserialize(InputStream inputStream) {
         try {
             final HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps = new HashMap<>();
             document = saxBuilder.build(inputStream);

@@ -42,7 +42,7 @@ public class DataMapSerializer {
         return classesDataMaps;
     }
     
-    public static final HashMap<Class<?>, ArrayList<DataMapSerializable>> unserialize(HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps) {
+    public static final HashMap<Class<?>, ArrayList<DataMapSerializable>> deserialize(HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps) {
         if(classesDataMaps == null) {
             return null;
         }
@@ -60,7 +60,7 @@ public class DataMapSerializer {
                         if(object != null) {
                             addDataMapSerializable(classesDataMapSerializables, c, (DataMapSerializable) object);
                         } else {
-                            Logger.log(String.format("Not unserialized (\"%s\"): \"%s\"", c.getSimpleName(), d));
+                            Logger.log(String.format("Not deserialized (\"%s\"): \"%s\"", c.getSimpleName(), d));
                         }
                     } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException ex) {
                         Logger.logErr(String.format("Error while unserializing data from (inner) \"%s\": %s", d, ex), ex);
@@ -79,8 +79,8 @@ public class DataMapSerializer {
         return (classesDataMaps = serialize(classesDataMapSerializables));
     }
     
-    public final HashMap<Class<?>, ArrayList<DataMapSerializable>> unserialize() {
-        return (classesDataMapSerializables = unserialize(classesDataMaps));
+    public final HashMap<Class<?>, ArrayList<DataMapSerializable>> deserialize() {
+        return (classesDataMapSerializables = deserialize(classesDataMaps));
     }
     
     public static final boolean serialize(String name, HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps, IDataMapSerializer dataMapSerializer, AdvancedFile file) {
@@ -94,23 +94,23 @@ public class DataMapSerializer {
         return serialize(name, serialize(), dataMapSerializer, file);
     }
     
-    public static final HashMap<Class<?>, ArrayList<DataMap>> unserializeThisToDataMap(AdvancedFile file, IDataMapSerializer dataMapSerializer) {
+    public static final HashMap<Class<?>, ArrayList<DataMap>> deserializeThisToDataMap(AdvancedFile file, IDataMapSerializer dataMapSerializer) {
         if(file == null || !file.exists() || dataMapSerializer == null) {
             return null;
         }
-        return dataMapSerializer.unserialize(file.createInputStream());
+        return dataMapSerializer.deserialize(file.createInputStream());
     }
     
-    public static final HashMap<Class<?>, ArrayList<DataMapSerializable>> unserializeThisToDataMapSerializable(AdvancedFile file, IDataMapSerializer dataMapSerializer) {
-        return unserialize(unserializeThisToDataMap(file, dataMapSerializer));
+    public static final HashMap<Class<?>, ArrayList<DataMapSerializable>> deserializeThisToDataMapSerializable(AdvancedFile file, IDataMapSerializer dataMapSerializer) {
+        return deserialize(deserializeThisToDataMap(file, dataMapSerializer));
     }
     
-    public final HashMap<Class<?>, ArrayList<DataMap>> unserializeToDataMap(AdvancedFile file, IDataMapSerializer dataMapSerializer) {
-        return (classesDataMaps = unserializeThisToDataMap(file, dataMapSerializer));
+    public final HashMap<Class<?>, ArrayList<DataMap>> deserializeToDataMap(AdvancedFile file, IDataMapSerializer dataMapSerializer) {
+        return (classesDataMaps = deserializeThisToDataMap(file, dataMapSerializer));
     }
     
-    public final HashMap<Class<?>, ArrayList<DataMapSerializable>> unserializeToDataMapSerializable(AdvancedFile file, IDataMapSerializer dataMapSerializer) {
-        return (classesDataMapSerializables = unserializeThisToDataMapSerializable(file, dataMapSerializer));
+    public final HashMap<Class<?>, ArrayList<DataMapSerializable>> deserializeToDataMapSerializable(AdvancedFile file, IDataMapSerializer dataMapSerializer) {
+        return (classesDataMapSerializables = deserializeThisToDataMapSerializable(file, dataMapSerializer));
     }
     
     public static final HashMap<Class<?>, ArrayList<DataMapSerializable>> addDataMapSerializable(HashMap<Class<?>, ArrayList<DataMapSerializable>> classesDataMapSerializables, Class<?> c, DataMapSerializable dataMapSerializable) {
