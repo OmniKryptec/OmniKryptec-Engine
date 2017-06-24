@@ -116,7 +116,7 @@ public class EngineTest2 implements IEventHandler {
 					doCameraLogic(this);
 				}
 
-			}.setPerspectiveProjection(90, 0.1f, 300).setRelativePos(0, 0, 0)).setAmbientColor(0.3f, 0.3f, 0.3f));
+			}.setPerspectiveProjection(90, 0.1f, 300).setRelativePos(0, 0, 0)).setAmbientColor(0.1f,0.1f,0.1f));
 			Model pine = new Model(
 					ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")));
 			Model bauer = new Model(
@@ -127,7 +127,7 @@ public class EngineTest2 implements IEventHandler {
 
 			SimpleAnimation animation = new SimpleAnimation(2, brunnent, pinet);
 
-			TexturedModel ptm = new TexturedModel(pine, jd);
+			TexturedModel ptm = new TexturedModel(pine,pinet);
 			ptm.getMaterial().setHasTransparency(true).setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER);
 			ptm.getMaterial().setReflectivity(0.5f).setShineDamper(10).setExtraInfoVec(new Vector3f(1, 1, 0));
 			Random r = new Random();
@@ -154,7 +154,7 @@ public class EngineTest2 implements IEventHandler {
 			// system.setTimemultiplier(10);
 			OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
 			OmniKryptecEngine.instance().getCurrentScene()
-					.addGameObject(new Light().setAttenuation(1, 0.5f, 0).setColor(1, 1, 1).setRelativePos(0, 0, 0));
+					.addGameObject(new Light().setAttenuation(0,0.001f, 0).setColor(1, 1, 1).setRelativePos(0, 0, 0));
 			// ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
 			// OmniKryptecEngine.instance().getCurrentScene().addGameObject(new
 			// Light().setColor(1, 1, 0).setRadius(100));

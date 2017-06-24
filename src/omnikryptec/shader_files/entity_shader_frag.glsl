@@ -58,6 +58,7 @@ vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 M
 	vec3 diffusev = dot1 * Scol + ambient;
 
 	float attenu = (att.x + (att.y * distance) + (att.z * distance * distance));
+	attenu = max(attenu, 1);
 	return (diffusev*Mdiff+spec)/attenu;
 }
 
