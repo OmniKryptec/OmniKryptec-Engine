@@ -15,6 +15,10 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
 import omnikryptec.logger.Logger;
+import omnikryptec.util.SerializationUtil;
+import static omnikryptec.util.SerializationUtil.cast;
+import static omnikryptec.util.SerializationUtil.castArray;
+import static omnikryptec.util.SerializationUtil.classForName;
 
 /**
  * XMLSerializer
@@ -455,92 +459,6 @@ public class XMLSerializer implements IDataMapSerializer {
                 Logger.logErr("Error while processing map while unserializing: " + ex, ex);
             }
         });
-    }
-
-    private final Class<?> classForName(String className) {
-        try {
-            return Class.forName(className);
-        } catch (Exception ex) {
-            Logger.logErr("Failed to resolve class for \"" + className + "\": " + ex, ex);
-            return null;
-        }
-    }
-
-    private final Object cast(Class<?> c, Object toCast) {
-        if (toCast == null) {
-            return null;
-        }
-        if (c == null) {
-            return toCast;
-        }
-        if (toCast.getClass().isArray()) {
-            return cast((Object[]) toCast, c);
-        }
-        if (toCast instanceof String) {
-            String temp = (String) toCast;
-            if (c == Long.class) {
-                return Long.parseLong(temp);
-            } else if (c == Float.class) {
-                return Float.parseFloat(temp);
-            } else if (c == Double.class) {
-                return Double.parseDouble(temp);
-            } else if (c == Integer.class) {
-                return Integer.parseInt(temp);
-            } else if (c == Short.class) {
-                return Short.parseShort(temp);
-            } else if (c == Boolean.class) {
-                return Boolean.parseBoolean(temp);
-            } else if (c == Byte.class) {
-                return Byte.parseByte(temp);
-            } else if (c == Character.class) {
-                if (temp.length() >= 1) {
-                    return temp.charAt(0);
-                } else {
-                    return null;
-                }
-            }
-        }
-        return c.cast(toCast);
-    }
-
-    private final Object[] cast(Object[] toCast, Class<?>... c) {
-        if (toCast == null) {
-            return null;
-        }
-        if (c == null || toCast.length == 0) {
-            return toCast;
-        }
-        for (int i = 0; i < toCast.length; i++) {
-            toCast[i] = cast(c[i % c.length], toCast[i]);
-        }
-        return toCast;
-    }
-
-    private final <T> T[] castArray(Object[] toCast, Class<? extends T> c) {
-        if (toCast == null) {
-            return null;
-        }
-        if (c == null || toCast.length == 0) {
-            return (T[]) toCast;
-        }
-        T[] casted = (T[]) Array.newInstance(c, toCast.length);
-        for (int i = 0; i < toCast.length; i++) {
-            Object o = toCast[i];
-            casted[i] = o.getClass().isArray() ? (T) castArray((Object[]) o, c) : (T) o;
-        }
-        return casted;
-    }
-
-    private final Class<?> arrayClass(Class<?> c, int dimensions) {
-        if (dimensions == 0) {
-            return c;
-        }
-        int[] dims = new int[dimensions];
-        return Array.newInstance(c, dims).getClass();
-    }
-
-    private final Object makeArray(Class<?> c, int dimensions, int length) {
-        return Array.newInstance(arrayClass(c, dimensions - 1), length);
     }
 
     public static final String NAME = "name";

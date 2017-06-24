@@ -62,8 +62,7 @@ public class DataMapSerializer {
                 final ArrayList<DataMap> data = classesDataMaps.get(c);
                 for (DataMap d : data) {
                     try {
-                        final Object object = c.getDeclaredMethod("newInstanceFromDataMap", d.getClass())
-                                .invoke(c.newInstance(), d);
+                        final Object object = c.getMethod("newInstanceFromDataMap", d.getClass()).invoke(c.newInstance(), d);
                         if (object != null) {
                             addDataMapSerializable(classesDataMapSerializables, c, (DataMapSerializable) object);
                         } else {
@@ -154,12 +153,30 @@ public class DataMapSerializer {
         return getObjects(classesDataMapSerializables, type);
     }
 
+    public static final ArrayList<DataMap> getDataMaps(HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps, Class<?> type, boolean onlySame) {
+        if(onlySame) {
+            return classesDataMaps.get(type);
+        } else {
+            final ArrayList<DataMap> dataMaps = new ArrayList<>();
+            classesDataMaps.keySet().stream().forEach((c) -> {
+                if (/*c.isAssignableFrom(type) || */type.isAssignableFrom(c)) { //FIXME Das auskommentierte kann eigentlich weg, aber noch nicht, falls es wichtig ist
+                    dataMaps.addAll(classesDataMaps.get(c));
+                }
+            });
+            return dataMaps;
+        }
+    }
+    
     public static final ArrayList<DataMap> getDataMaps(HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps, Class<?> type) {
-        return classesDataMaps.get(type);
+        return getDataMaps(classesDataMaps, type, true);
+    }
+
+    public final ArrayList<DataMap> getDataMaps(Class<?> type, boolean onlySame) {
+        return getDataMaps(classesDataMaps, type, onlySame);
     }
 
     public final ArrayList<DataMap> getDataMaps(Class<?> type) {
-        return getDataMaps(classesDataMaps, type);
+        return getDataMaps(classesDataMaps, type, true);
     }
 
     public final HashMap<Class<?>, ArrayList<DataMapSerializable>> getClassesDataMapSerializables() {
