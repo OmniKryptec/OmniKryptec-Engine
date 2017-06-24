@@ -85,6 +85,7 @@ void main(void){
 	}
 	if(hasspecular>0.5){
 		col2.rgb = texture(speculartex, pass_texcoords).rgb;
+		col2.rgb = col2.rgb * reflec;
 		col2.a = damp;
 	}else{
 		col2 = vec4(reflec,reflec,reflec,damp);

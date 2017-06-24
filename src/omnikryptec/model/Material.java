@@ -67,12 +67,6 @@ public class Material {
 		return extrainfovec;
 	}
 
-	/**
-	 * if no specularmap is present this will be used
-	 * 
-	 * @param reflectivity
-	 * @return
-	 */
 	public final Material setReflectivity(float reflectivity) {
 		this.reflectivity = reflectivity;
 		return this;
