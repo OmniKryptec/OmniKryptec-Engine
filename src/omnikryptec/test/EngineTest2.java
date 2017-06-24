@@ -157,7 +157,7 @@ public class EngineTest2 implements IEventHandler {
 			system = new ParticleSystem(0,0,0, new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false), 20f, 2.5f, new Vector3f(0, 0, 0), 2f, 1.25f, RenderType.ALWAYS);
 			//system.setTimemultiplier(10);
 			OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
-			OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setAttenuation(1, 0, 0).setColor(2, 2,2).setRelativePos(0, 0, 0).setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera()));
+			OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setAttenuation(1, 0, 0).setColor(1, 1, 1).setRelativePos(0, 0, 0).setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera()));
 			// ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
 			// OmniKryptecEngine.instance().getCurrentScene().addGameObject(new
 			// Light().setColor(1, 1, 0).setRadius(100));
