@@ -106,11 +106,13 @@ public class EngineTest2 implements IEventHandler {
 			// Model brunnen = ModelUtil.generateQuad();
 			SimpleTexture brunnent = SimpleTexture
 					.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create();
+			SimpleTexture brunnen_norm = SimpleTexture
+					.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen_normal.png")).create();
 			AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
-			TexturedModel tm = new TexturedModel(brunnen, jd);
-			tm.getMaterial().setSpecularmap(js).setNormalmap(jn);
+			TexturedModel tm = new TexturedModel(brunnen, brunnent);
+			tm.getMaterial().setNormalmap(brunnen_norm);
 			tm.getMaterial().setHasTransparency(true);
-			tm.getMaterial().setReflectivity(1).setShineDamper(1).setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER);
+			tm.getMaterial().setReflectivity(0.5f).setShineDamper(10).setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER);
 			OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
 				@Override
@@ -155,7 +157,7 @@ public class EngineTest2 implements IEventHandler {
 			system = new ParticleSystem(0,0,0, new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false), 20f, 2.5f, new Vector3f(0, 0, 0), 2f, 1.25f, RenderType.ALWAYS);
 			//system.setTimemultiplier(10);
 			OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
-			OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setAttenuation(1, 0, 0).setColor(1, 1, 1).setRelativePos(0, 0, 0));
+			OmniKryptecEngine.instance().getCurrentScene().addGameObject(new Light().setAttenuation(1, 0, 0).setColor(1, 1, 1).setRelativePos(0, 0, 0).setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera()));
 			// ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
 			// OmniKryptecEngine.instance().getCurrentScene().addGameObject(new
 			// Light().setColor(1, 1, 0).setRadius(100));
