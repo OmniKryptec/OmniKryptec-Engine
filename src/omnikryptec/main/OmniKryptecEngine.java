@@ -1,6 +1,9 @@
 package omnikryptec.main;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL30;
@@ -91,7 +94,7 @@ public class OmniKryptecEngine {
 	private DisplayManager manager;
 	private EventSystem eventsystem;
 	private PostProcessing postpro;
-	private final HashMap<String, Scene> scenes = new HashMap<>();
+	private final ArrayList<Scene> scenes = new ArrayList<>();
 	private String sceneCurrentName;
 	private Scene sceneCurrent;
 
@@ -258,21 +261,22 @@ public class OmniKryptecEngine {
 		SimpleTexture.cleanup();
 	}
 
-	public final OmniKryptecEngine addAndSetScene(String name, Scene scene) {
-		addScene(name, scene);
-		setScene(name);
+	public final OmniKryptecEngine addAndSetScene(Scene scene) {
+		addScene(scene);
+		setScene(scene.getName());
 		return this;
 	}
 
-	public final OmniKryptecEngine addScene(String name, Scene scene) {
-		if (name != null && scene != null) {
-			scenes.put(name, scene);
+	public final OmniKryptecEngine addScene(Scene scene) {
+		if (scene != null) {
+			scenes.add(scene);
 		}
 		return this;
 	}
 
 	public final OmniKryptecEngine setScene(String name) {
-		sceneCurrent = scenes.get(name);
+                List<Scene> scenesEquals = scenes.stream().filter((scene) -> scene.getName().equals(name)).collect(Collectors.toList());
+		sceneCurrent = (scenesEquals.isEmpty() ? null : scenesEquals.get(0));
 		if (sceneCurrent != null) {
 			sceneCurrentName = name;
 		}

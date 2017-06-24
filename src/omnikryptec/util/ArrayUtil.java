@@ -20,4 +20,19 @@ public class ArrayUtil {
         return copy;
     }
     
+    public static <T> boolean contains(T[] array, T toTest) {
+        if(array.length == 0 || toTest == null) {
+            return false;
+        }
+        for(T t : array) {
+            if(t == null) {
+                continue;
+            }
+            if(t.equals(toTest) || t == toTest) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
 }

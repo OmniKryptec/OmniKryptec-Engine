@@ -257,7 +257,7 @@ public class JBulletTest {
 					new GameSettings("JBulletTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32));
 
 			// PostProcessing.instance().addStage(new LightRenderer());
-			OmniKryptecEngine.instance().addAndSetScene("TestScene", new Scene(new Camera() {
+			OmniKryptecEngine.instance().addAndSetScene(new Scene("TestScene", new Camera() {
 				@Override
 				public void doLogic() {
 					InputUtil.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(),
@@ -266,7 +266,7 @@ public class JBulletTest {
 
 			}.setPerspectiveProjection(75, 1000, 0.1F)));
 
-			OmniKryptecEngine.instance().addAndSetScene("TestScene", new Scene(getCamera(1))); // TODO
+			OmniKryptecEngine.instance().addAndSetScene(new Scene("TestScene", getCamera(1))); // TODO
 																								// Set
 																								// this
 																								// to

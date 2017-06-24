@@ -10,13 +10,16 @@ import omnikryptec.component.Component;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.renderer.RenderChunk;
+import omnikryptec.test.saving.DataMap;
+import omnikryptec.test.saving.DataMapSerializable;
+import omnikryptec.util.SerializationUtil;
 
 /**
  * 
  * @author pcfreak9000 &amp; Panzer1119
  *
  */
-public class GameObject {
+public class GameObject implements DataMapSerializable {
 
 	private static class Sorter implements Comparator<Component> {
 
@@ -29,6 +32,7 @@ public class GameObject {
 
 	private static final Sorter SORTER = new Sorter();
 
+        private String name;
 	private boolean isglobal=false;
 	private Vector3f pos = new Vector3f();
 	private GameObject parent = null;
@@ -39,11 +43,15 @@ public class GameObject {
 	private List<Component> componentsPreLogic = null;
 	private List<Component> componentsPostLogic = null;
 
+        public GameObject() {
+            this("");
+        }
+        
 	/**
 	 * creates a gameobject with no parent
 	 */
-	public GameObject() {
-		this(null);
+	public GameObject(String name) {
+		this(name, null);
 	}
 
 	/**
@@ -53,7 +61,8 @@ public class GameObject {
 	 * @param parent
 	 *            the parent or null for no parent
 	 */
-	public GameObject(GameObject parent) {
+	public GameObject(String name, GameObject parent) {
+                this.name = name;
 		this.parent = parent;
 	}
 
@@ -370,8 +379,8 @@ public class GameObject {
 	 * @param toCopy
 	 * @return
 	 */
-	public static final GameObject copy(GameObject toCopy) {
-		GameObject go = new GameObject();
+	public static GameObject copy(GameObject toCopy) {
+		GameObject go = new GameObject(toCopy.name);
 		go.active = toCopy.active;
 		go.parent = toCopy.parent;
 		go.rotation = new Vector3f(toCopy.rotation);
@@ -385,6 +394,10 @@ public class GameObject {
 	 * @param toCopy
 	 */
 	public final GameObject setValuesFrom(GameObject toCopy) {
+                if(toCopy == null) {
+                    return this;
+                }
+                name = toCopy.name;
 		active = toCopy.active;
 		parent = toCopy.parent;
 		rotation = new Vector3f(toCopy.rotation);
@@ -427,5 +440,41 @@ public class GameObject {
 	public String toString() {
 		return "GameObject [ Pos: " + pos.toString() + " Rot: " + rotation.toString() + " ]";
 	}
+        
+        public GameObject setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public DataMap toDataMap(DataMap data) {
+        data.put("isglobal", isglobal);
+        data.put("active", active);
+        if(parent != null) {
+            data.put("parent", parent.toDataMap(new DataMap("parent")));
+        }
+        data.put("position", SerializationUtil.vector3fToString(pos));
+        data.put("rotation", SerializationUtil.vector3fToString(rotation));
+        return data;
+    }
+    
+    public static Object fromDataMap(DataMap data) {
+        if(data == null) {
+            return null;
+        }
+        final GameObject gameObject = new GameObject(data.getName());
+        gameObject.setGlobal(data.getBoolean("isglobal"));
+        gameObject.setActive(data.getBoolean("isActive"));
+        Object parent = fromDataMap(data.getDataMap("parent"));
+        gameObject.setParent((parent != null ? (GameObject) parent : null));
+        gameObject.setPos(SerializationUtil.stringToVector3f(data.getString("position")));
+        gameObject.setRotation(SerializationUtil.stringToVector3f(data.getString("rotation")));
+        return gameObject;
+    }
 
 }

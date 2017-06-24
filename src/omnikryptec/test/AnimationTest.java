@@ -1,6 +1,5 @@
 package omnikryptec.test;
 
-import java.io.File;
 import java.util.Random;
 
 import org.lwjgl.input.Keyboard;
@@ -23,9 +22,12 @@ import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.Key;
 import omnikryptec.settings.KeyGroup;
 import omnikryptec.settings.KeySettings;
+import omnikryptec.test.saving.DataMapSerializer;
+import omnikryptec.test.saving.XMLSerializer;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
+import omnikryptec.util.OSUtil;
 import omnikryptec.util.RenderUtil;
 
 /**
@@ -34,12 +36,14 @@ import omnikryptec.util.RenderUtil;
  */
 public class AnimationTest {
     
+    private static final DataMapSerializer dataMapSerializer = new DataMapSerializer();
     private static EntityBuilder entityBuilder_brunnen;
     private static Entity entity_ball;
     private static final Random random = new Random();
     private static GameSettings gameSettings;
     private static KeySettings keySettings;
-    private static Camera camera;
+    private static Scene scene = null;
+    private static Camera camera = null;
     private static AnimatedModel animatedModel;
     private static Animation animation;
     private static Entity entity_test;
@@ -48,15 +52,21 @@ public class AnimationTest {
     private static final String MODEL_FILE = "model.dae";
     private static final String ANIM_FILE = "model.dae";
     private static final String DIFFUSE_FILE = "diffuse.png";
+    private static final AdvancedFile SAVE = new AdvancedFile(OSUtil.getStandardAppDataFolder(), "saves", "save.xml");
     
     public static final void main(String[] args) {
         try {
             NativesLoader.loadNatives();
-            OmniKryptecEngine.addShutdownHook(() -> NativesLoader.loadNatives());
+            OmniKryptecEngine.addShutdownHook(() -> {
+                save();
+                NativesLoader.loadNatives();
+            });
             Logger.enableLoggerRedirection(true);
             Logger.setDebugMode(true);
             Logger.CONSOLE.setEnabled(true);
             Logger.showConsoleDirect();
+            
+            Logger.log(SAVE);
             
             gameSettings = new GameSettings("AnimationTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32).setChunkSize(400, 400, 400);
             keySettings = gameSettings.getKeySettings();
@@ -69,8 +79,11 @@ public class AnimationTest {
             keySettings.setKey("lower", Keyboard.KEY_COMMA, true);
             keySettings.setKey("higher", Keyboard.KEY_PERIOD, true);
             DisplayManager.createDisplay("Animation Test", gameSettings);
-            OmniKryptecEngine.instance().addAndSetScene("Test-Scene", new Scene(camera = ((Camera) new Camera() {
-                
+            if(SAVE.exists()) {
+                load();
+            }
+            OmniKryptecEngine.instance().addAndSetScene((scene = new Scene("Test-Scene", camera = ((Camera) new Camera() {
+
                 @Override
                 public final void doLogic() {
                     float horizontalSpeed = 30.0F * 0.5F;
@@ -83,8 +96,8 @@ public class AnimationTest {
                     }
                     InputUtil.doThirdPersonController(this, this, keySettings, horizontalSpeed, verticalSpeed, turnSpeed);
                 }
-                
-            }.setPerspectiveProjection(75, 0.1F, 1000))));
+
+            }.setPerspectiveProjection(75, 0.1F, 1000).setValuesFrom(camera)))).setValuesFrom(scene));
             entityBuilder_brunnen = new EntityBuilder().loadModel("/omnikryptec/test/brunnen.obj").loadTexture("/omnikryptec/test/brunnen.png");
             entity_ball = entityBuilder_brunnen.create();
             animatedModel = AnimatedModelLoader.loadModel(new AdvancedFile(RES_FOLDER_1, MODEL_FILE), new AdvancedFile(RES_FOLDER_1, DIFFUSE_FILE), null);
@@ -101,8 +114,10 @@ public class AnimationTest {
             animatedModel.doAnimation(animation);
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_ball);
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_test);
-            camera.getRelativePos().y += 3;
-            camera.getRelativeRotation().y = 90;
+            if(!SAVE.exists()) {
+                camera.getRelativePos().y += 3;
+                camera.getRelativeRotation().y = 90;
+            }
             entity_ball.getRelativePos().x += 8;
             entity_ball.getRelativePos().y += 1;
             EventSystem.instance().addEventHandler((e) -> {
@@ -116,6 +131,23 @@ public class AnimationTest {
         } catch (Exception ex) {
             Logger.logErr("Main Error: " + ex, ex);
         }
+    }
+    
+    public static final void load() {
+        dataMapSerializer.reset();
+        dataMapSerializer.unserializeToDataMapSerializable(SAVE, XMLSerializer.newInstance());
+        scene = dataMapSerializer.getObjects(Scene.class).get(0);
+        camera = scene.getCamera();
+    }
+    
+    public static final void save() {
+        SAVE.createFile();
+        final Scene scene = OmniKryptecEngine.getInstance().getCurrentScene();
+        final String sceneName = OmniKryptecEngine.getInstance().getCurrentSceneName();
+        dataMapSerializer.reset();
+        dataMapSerializer.addObject(scene);
+        dataMapSerializer.serialize(sceneName, XMLSerializer.newInstance(), SAVE);
+        Logger.log(String.format("Saved Scene \"%s\" in file \"%s\"", sceneName, SAVE));
     }
     
     private static final void input() {

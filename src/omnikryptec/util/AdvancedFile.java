@@ -1,10 +1,14 @@
 package omnikryptec.util;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.Arrays;
 import omnikryptec.logger.Logger;
 
@@ -185,7 +189,7 @@ public class AdvancedFile {
      * @return File File
      */
     public final File toFile() {
-        return new File(folder, getPath());
+        return new File(getPath());
     }
     
     /**
@@ -277,6 +281,45 @@ public class AdvancedFile {
     }
     
     /**
+     * Creates the file
+     * @return <tt>true</tt> if the file was successfully created or already exists
+     */
+    public final boolean createFile() {
+        if(isRelative()) {
+            return false;
+        }
+        try {
+            final File file = toFile();
+            if(file.exists() && file.isFile()) {
+                return true;
+            } else if(file.exists() && file.isDirectory()) {
+                return false;
+            }
+            file.getParentFile().mkdirs();
+            if(file.getParentFile().exists()) {
+                file.createNewFile();
+            }
+            return exists();
+        } catch (Exception ex) {
+            Logger.logErr("Error while creating file: " + ex, ex);
+            return false;
+        }
+    }
+    
+    public final boolean exists() {
+        if(isRelative()) {
+            return false; //FIXME Hier kann man noch gucken, ob das File auch in der Jar existiert
+        }
+        try {
+            final File file = toFile();
+            return file.exists();
+        } catch (Exception ex) {
+            Logger.logErr("Error while checking file existance: " + ex, ex);
+            return false;
+        }
+    }
+    
+    /**
      * Creates an InputStream
      * @return InputStream InputStream
      */
@@ -301,6 +344,35 @@ public class AdvancedFile {
         InputStreamReader isr = new InputStreamReader(createInputStream());
         BufferedReader br = new BufferedReader(isr);
         return br;
+    }
+    
+    /**
+     * Creates an OutputStream
+     * @param append Boolean If anything should be added to file or should it overwrite it
+     * @return OutputStream OutputStream
+     */
+    public final OutputStream createOutputstream(boolean append) {
+        if(isRelative()) {
+            return null;
+        } else {
+            try {
+                return new FileOutputStream(getPath(), append);
+            } catch (Exception ex) {
+                Logger.logErr("Could not create a FileOutputStream for \"" + getPath() + "\": " + ex, ex);
+                return null;
+            }
+        }
+    }
+    
+    /**
+     * Returns a BufferedWriter
+     * @param append Boolean If anything should be added to file or should it overwrite it
+     * @return BufferedWriter BufferedWriter
+     */
+    public final BufferedWriter getWriter(boolean append) {
+        OutputStreamWriter osw = new OutputStreamWriter(createOutputstream(append));
+        BufferedWriter bw = new BufferedWriter(osw);
+        return bw;
     }
 
     @Override

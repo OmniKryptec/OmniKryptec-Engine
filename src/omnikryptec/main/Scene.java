@@ -15,11 +15,17 @@ import omnikryptec.physics.PhysicsWorld;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.AllowedRenderer;
 import omnikryptec.renderer.Renderer;
+<<<<<<< HEAD
 import omnikryptec.util.Color;
+=======
+import omnikryptec.test.saving.DataMap;
+import omnikryptec.test.saving.DataMapSerializable;
+>>>>>>> branch 'test' of https://github.com/OmniKryptec/OmniKryptec-Engine.git
 import omnikryptec.util.PhysicsUtil;
 
-public class Scene {
+public class Scene implements DataMapSerializable {
 
+        private String name;
 	private final Map<String, RenderChunk> scene = new HashMap<>();
 	private Camera cam;
 	private long cox = OmniKryptecEngine.getInstance().getDisplayManager().getSettings().getChunkRenderOffsetX(),
@@ -38,9 +44,14 @@ public class Scene {
 	private String tmp;
 	private long cx, cy, cz;
 	private RenderChunk tmpc;
+        
+        public Scene() {
+            this("", null);
+        }
 	
-	public Scene(Camera cam) {
-		this.cam = cam;
+	public Scene(String name, Camera cam) {
+            this.cam = cam;
+            this.name = name;
 	}
 	
 	public Scene setAmbientColor(float r, float g, float b){
@@ -188,13 +199,54 @@ public class Scene {
 	public final boolean isUsingPhysics() {
 		return physicsWorld != null;
 	}
+        
+        public final Scene setName(String name) {
+            this.name = name;
+            return this;
+        }
 
 	private static String xyzToString(long x, long y, long z) {
 		return x + ":" + y + ":" + z;
 	}
 
+<<<<<<< HEAD
 	public Color getAmbient() {
 		return ambientlight;
 	}
 
+=======
+    @Override
+    public DataMap toDataMap(DataMap data) {
+        data.put("camera", (cam != null ? cam.toDataMap(new DataMap("camera")) : null));
+        return data;
+    }
+
+    public static Object fromDataMap(DataMap data) {
+        final Scene scene = new Scene(data.getName(), null);
+        DataMap data_temp = data.getDataMap("camera");
+        Object temp = Camera.fromDataMap(data_temp);
+        if(temp != null && temp instanceof Camera) {
+            final Camera camera = (Camera) temp;
+            scene.setCamera(camera);
+        } else {
+            Logger.log("temp is null!");
+            scene.setCamera(null);
+        }
+        return scene;
+    }
+    
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    public Scene setValuesFrom(Scene scene) {
+        if(scene == null) {
+            return this;
+        }
+        setName(scene.getName());
+        return this;
+    }
+    
+>>>>>>> branch 'test' of https://github.com/OmniKryptec/OmniKryptec-Engine.git
 }
