@@ -286,15 +286,20 @@ public class Scene implements DataMapSerializable {
         final List<Entity> entities = getEntities();
         final List<String> entityNames = data.getList("entityNames", String.class);
         for(String entitiyName : entityNames) {
-            final Entity entity = Entity.byName(Entity.class, entitiyName, false);
-            if(entity != null) {
-                for(Entity e : entities) {
-                    if(e.getName().equals(entity.getName())) {
-                        e.setValuesFrom(entity);
-                        break;
+            try {
+                final Entity entity = Entity.byName(Entity.class, entitiyName, false);
+                if(entity != null) {
+                    for(Entity e : entities) {
+                        if(e.getName().equals(entity.getName())) {
+                            e.setValuesFrom(entity);
+                            break;
+                        }
                     }
+                    Logger.log("Added: " + entity.getAdvancedModel().getMaterial().getRenderer());
+                    addGameObject(entity);
                 }
-                addGameObject(entity);
+            } catch(Exception ex) {
+                Logger.logErr("Error while adding entity: " + ex, ex);
             }
         }
         /*

@@ -21,19 +21,32 @@ public class AdvancedFile {
 
     public static final String PATH_SEPARATOR = "/";
     public static final String FILE_SEPARATOR = File.separator;
+    public static final String EXTENSION_SEPARATOR = "\\.";
 
     private File folder = null;
     private String[] paths = null;
     private String path = null;
     private String separator = PATH_SEPARATOR;
-
+    private boolean shouldBeFile = true;
+    
     /**
      * Creates an AdvancedFile which is relative
      *
      * @param paths String Array Paths
      */
     public AdvancedFile(String... paths) {
-        this(null, paths);
+        this(true, paths);
+        parseShouldBeFile();
+    }
+    
+    /**
+     * Creates an AdvancedFile which is relative
+     *
+     * @param shouldBeFile Boolean if this AdvancedFile should be a file or a directory
+     * @param paths String Array Paths
+     */
+    public AdvancedFile(boolean shouldBeFile, String... paths) {
+        this(shouldBeFile, null, paths);
     }
 
     /**
@@ -46,8 +59,24 @@ public class AdvancedFile {
      * @param paths String Array Paths
      */
     public AdvancedFile(Object parent, String... paths) {
+        this(true, parent, paths);
+        parseShouldBeFile();
+    }
+    
+    /**
+     * Creates an AdvancedFile which can be relative or absolute
+     *
+     * @param shouldBeFile Boolean if this AdvancedFile should be a file or a directory
+     * @param parent Object If File than it can be the Folder, where the Paths
+     * is in (If null then this AdvancedFile is a relative path) or if it is an
+     * AndvancedFile than this AdvancedFile is a child of the parent
+     * AdvancedFile
+     * @param paths String Array Paths
+     */
+    public AdvancedFile(boolean shouldBeFile, Object parent, String... paths) {
         setParent(parent);
         addPaths(paths);
+        this.shouldBeFile = shouldBeFile;
     }
 
     /**
@@ -56,7 +85,7 @@ public class AdvancedFile {
      * @return AdvancedFile AdvancedFile
      */
     public final AdvancedFile copy() {
-        return new AdvancedFile(folder, paths);
+        return new AdvancedFile(shouldBeFile, folder, paths);
     }
 
     /**
@@ -217,11 +246,11 @@ public class AdvancedFile {
      */
     public final AdvancedFile getParent() {
         if (paths != null && paths.length > 1) {
-            return new AdvancedFile(folder, ArrayUtil.copyOf(paths, paths.length - 1));
+            return new AdvancedFile(false, folder, ArrayUtil.copyOf(paths, paths.length - 1));
         } else if (paths != null && paths.length == 1 && !isRelative()) {
-            return new AdvancedFile(folder);
+            return new AdvancedFile(false, folder);
         } else if (!isRelative()) {
-            return new AdvancedFile(folder.getParentFile());
+            return new AdvancedFile(false, folder.getParentFile());
         } else {
             return null;
         }
@@ -310,7 +339,7 @@ public class AdvancedFile {
     }
 
     /**
-     * Creates the file
+     * Creates the file or folder
      *
      * @return <tt>true</tt> if the file was successfully created or already
      * exists
@@ -321,14 +350,17 @@ public class AdvancedFile {
         }
         try {
             final File file = toFile();
-            if (file.exists() && file.isFile()) {
-                return true;
-            } else if (file.exists() && file.isDirectory()) {
-                return false;
+            if (file.exists()) {
+                return file.isFile() == shouldBeFile;
             }
             file.getParentFile().mkdirs();
             if (file.getParentFile().exists()) {
-                file.createNewFile();
+                if(shouldBeFile) {
+                    file.createNewFile();
+                }
+            }
+            if(!shouldBeFile) {
+                file.mkdirs();
             }
             return exists();
         } catch (Exception ex) {
@@ -336,11 +368,46 @@ public class AdvancedFile {
             return false;
         }
     }
+    
+    /**
+     * Returns if this AdvancedFile exists and is a file
+     * @return <tt>true</tt> if this AdvancedFile exists and is a file
+     */
+    public final boolean isFile() {
+        if(isRelative()) {
+            return false; // FIXME Hier kann man noch gucken, ob das File auch in der Jar existiert
+        } else {
+            final File file = toFile();
+            if(!file.exists()) {
+                return false;
+            }
+            return file.isFile();
+        }
+    }
+    
+    /**
+     * Returns if this AdvancedFile exists and is a directory
+     * @return <tt>true</tt> if this AdvancedFile exists and is a file
+     */
+    public final boolean isDirectory() {
+        if(isRelative()) {
+            return false; // FIXME Hier kann man noch gucken, ob das File auch in der Jar existiert
+        } else {
+            final File file = toFile();
+            if(!file.exists()) {
+                return false;
+            }
+            return file.isDirectory();
+        }
+    }
 
+    /**
+     * Returns if this AdvancedFile exists
+     * @return <tt>true</tt> if this AdvancedFile exists
+     */
     public final boolean exists() {
         if (isRelative()) {
-            return false; // FIXME Hier kann man noch gucken, ob das File auch
-            // in der Jar existiert
+            return false; // FIXME Hier kann man noch gucken, ob das File auch in der Jar existiert
         }
         try {
             final File file = toFile();
@@ -414,12 +481,34 @@ public class AdvancedFile {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return getPath();
     }
     
     public final String getName() {
         return toFile().getName();
+    }
+
+    /**
+     * Returns if this AdvancedFile should be a file or a directory
+     * @return <tt>true</tt> if this AdvancedFile should be a file
+     */
+    public final boolean shouldBeFile() {
+        return shouldBeFile;
+    }
+
+    /**
+     * Sets if this AdvancedFile should be a file or a directory
+     * @param file Boolean If this AdvancedFile should be a file
+     * @return A reference to this AdvancedFile
+     */
+    public final AdvancedFile setShouldBeFile(boolean shouldBeFile) {
+        this.shouldBeFile = shouldBeFile;
+        return this;
+    }
+    
+    public final boolean parseShouldBeFile() {
+        return (shouldBeFile = toFile().getName().contains(EXTENSION_SEPARATOR));
     }
 
 }

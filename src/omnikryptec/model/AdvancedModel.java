@@ -36,5 +36,19 @@ public interface AdvancedModel {
      * @return String Name
      */
     public String getName();
+    
+    /**
+     * Deletes the Model
+     * 
+     * @return A reference to this AdvancedModel
+     */
+    public AdvancedModel delete();
+    
+    /**
+     * Copies this AdvancedModel
+     * 
+     * @return A copy of this AdvancedModel
+     */
+    public AdvancedModel copy();
 
 }

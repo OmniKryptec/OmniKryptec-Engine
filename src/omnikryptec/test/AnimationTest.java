@@ -60,7 +60,7 @@ public class AnimationTest {
     private static final String MODEL_FILE = "model.dae";
     private static final String ANIM_FILE = "model.dae";
     private static final String DIFFUSE_FILE = "diffuse.png";
-    private static final AdvancedFile SAVE = new AdvancedFile(OSUtil.getStandardAppDataFolder(), "saves", "save.xml");
+    private static final AdvancedFile SAVE = new AdvancedFile(OSUtil.getStandardAppDataEngineFolder(), "saves", "save.xml");
     private static final Deflater deflater = new Deflater(Deflater.BEST_COMPRESSION);
 
     public static final void main(String[] args) {
@@ -106,7 +106,7 @@ public class AnimationTest {
                 }
 
             }.setPerspectiveProjection(75, 0.1F, 1000)))));
-            entityBuilder_brunnen = new EntityBuilder().loadModel("/omnikryptec/test/brunnen.obj").loadTexture("/omnikryptec/test/brunnen.png");
+            entityBuilder_brunnen = new EntityBuilder().setTexturedModelName("brunnen").loadModel("/omnikryptec/test/brunnen.obj").loadTexture("/omnikryptec/test/brunnen.png");
             entity_brunnen = entityBuilder_brunnen.create("entity_brunnen");
             animatedModel = AnimatedModelLoader.loadModel(new AdvancedFile(RES_FOLDER_1, MODEL_FILE), new AdvancedFile(RES_FOLDER_1, DIFFUSE_FILE), null);
             animation = AnimationLoader.loadAnimation(new AdvancedFile(RES_FOLDER_1, ANIM_FILE));

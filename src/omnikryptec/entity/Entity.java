@@ -133,6 +133,8 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
         data.put("color", SerializationUtil.colorToString(color));
         data.put("scale", SerializationUtil.vector3fToString(scale));
         data.put("type", type.name());
+        data.put("modelName", model.getName());
+        data.put("modelClass", model.getClass().getName());
         return data;
     }
 
@@ -164,6 +166,24 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
             type = RenderType.valueOf(temp);
         } else {
             type = RenderType.ALWAYS;
+        }
+        final String modelName = data.getString("modelName");
+        final String modelClass_string = data.getString("modelClass");
+        final Class<?> modelClass = SerializationUtil.classForName(modelClass_string);
+        if(modelClass != null && AdvancedModel.class.isAssignableFrom(modelClass)) {
+            Logger.log("Toll!: " + modelClass.getName());
+            try {
+                Object object = modelClass.getMethod("byName", String.class).invoke(modelClass.newInstance(), modelName);
+                Logger.log("Toller: " + object);
+                if(object != null && object instanceof AdvancedModel) {
+                    model = (AdvancedModel) object;
+                    Logger.log("Am bestesteN: " + model.getMaterial().getRenderer());
+                }
+            } catch (Exception ex) {
+                Logger.logErr("Error while getting advanced model: " + ex, ex);
+            }
+        } else {
+            Logger.log("Nicht Toll: " + AdvancedModel.class.isAssignableFrom(modelClass));
         }
         return this;
     }

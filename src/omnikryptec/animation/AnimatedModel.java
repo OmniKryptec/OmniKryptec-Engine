@@ -28,6 +28,16 @@ public class AnimatedModel implements AdvancedModel {
     private final int jointCount;
 
     private final Animator animator;
+    
+    public AnimatedModel() {
+        this.name = null;
+        this.model = null;
+        this.texture = null;
+        this.material = null;
+        this.rootJoint = null;
+        this.jointCount = -1;
+        this.animator = null;
+    }
 
     /**
      * Creates an animated model
@@ -101,6 +111,7 @@ public class AnimatedModel implements AdvancedModel {
      *
      * @return A reference to this AnimatedModel
      */
+    @Override
     public final AnimatedModel delete() {
         model.getVao().delete();
         //texture.delete();
@@ -194,6 +205,7 @@ public class AnimatedModel implements AdvancedModel {
         return name;
     }
     
+    @Override
     public final AnimatedModel copy() {
         return new AnimatedModel(name, model, texture, rootJoint, jointCount, material);
     }
