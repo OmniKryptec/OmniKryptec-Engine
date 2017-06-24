@@ -44,8 +44,12 @@ public class EntityRendererNoLight implements Renderer {
             textmp.bindToUnit(0);
             shader.uvs.loadVec4(textmp.getUVs()[0], textmp.getUVs()[1], textmp.getUVs()[2], textmp.getUVs()[3]);
             mat = model.getMaterial();
-            mat.getNormalmap().bindToUnit(1);
-            if(mat.hasTransparency()) {
+            if(mat.getNormalmap()!=null){
+            	mat.getNormalmap().bindToUnit(1);
+            	shader.hasnormal.loadBoolean(true);
+            }else{
+            	shader.hasnormal.loadBoolean(false);
+            }            if(mat.hasTransparency()) {
                 RenderUtil.cullBackFaces(false);
             }
             if(mat.getSpecularmap() != null) {
@@ -60,9 +64,9 @@ public class EntityRendererNoLight implements Renderer {
             } else {
                 shader.hasextrainfomap.loadBoolean(false);
                 if(mat.getExtraInfoVec() != null) {
-                    shader.extrainfovec.loadVec4(mat.getExtraInfoVec());
+                    shader.extrainfovec.loadVec3(mat.getExtraInfoVec());
                 } else {
-                    shader.extrainfovec.loadVec4(0, 0, 0, 0);
+                    shader.extrainfovec.loadVec3(0, 0, 0);
                 }
             }
             shader.reflec.loadFloat(mat.getReflectivity());
@@ -75,7 +79,7 @@ public class EntityRendererNoLight implements Renderer {
                     	entity.doLogic0();
                     }
                     shader.transformation.loadMatrix(Maths.createTransformationMatrix(entity));
-                    shader.colmod.loadVec4(entity.getColor());
+                    shader.colmod.loadVec4(entity.getColor().getVector4f());
                     GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
                 }
             }

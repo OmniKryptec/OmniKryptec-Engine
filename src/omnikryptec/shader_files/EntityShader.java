@@ -5,6 +5,7 @@ import omnikryptec.shader.UniformBoolean;
 import omnikryptec.shader.UniformFloat;
 import omnikryptec.shader.UniformMatrix;
 import omnikryptec.shader.UniformSampler;
+import omnikryptec.shader.UniformVec3;
 import omnikryptec.shader.UniformVec4;
 
 public class EntityShader extends Shader {
@@ -21,8 +22,9 @@ public class EntityShader extends Shader {
 	public final UniformFloat shinedamper = new UniformFloat("damp");
 	public final UniformBoolean hasextrainfomap = new UniformBoolean("hasextra");
 	public final UniformSampler extrainfo = new UniformSampler("extra");
-	public final UniformVec4 extrainfovec = new UniformVec4("exinfovec");
+	public final UniformVec3 extrainfovec = new UniformVec3("exinfovec");
 	public final UniformVec4 uvs = new UniformVec4("uvs");
+	public final UniformBoolean hasnormal = new UniformBoolean("hasnormal");
 		
 	public EntityShader() {
 		super("EntityShader", EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_nl_shader_vert.glsl"),

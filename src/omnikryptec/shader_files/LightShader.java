@@ -13,7 +13,7 @@ public class LightShader extends Shader {
 	public final UniformSampler normal = new UniformSampler("normal");
 	public final UniformSampler specular = new UniformSampler("specular");
 	public final UniformSampler depth = new UniformSampler("depth");
-	public final UniformVec4 light = new UniformVec4("lightu");
+	public final UniformVec3 light = new UniformVec3("lightu");
 	public final UniformVec3 lightColor = new UniformVec3("lightColor");
 	public final UniformMatrix invprojv = new UniformMatrix("invprojv");
 

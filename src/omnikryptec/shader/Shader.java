@@ -35,27 +35,46 @@ public class Shader {
 	private ShaderHolder fragmentShaderHolder;
 	private ShaderHolder geometryShaderHolder;
 	private String name;
+	private LineInsert insert;
 	
 	// private static FloatBuffer matrixBuffer =
 	// BufferUtils.createFloatBuffer(16);
 	
 	public Shader(InputStream vertexFile, InputStream fragmentFile, Object... uniAttr){
-		this((String)null, vertexFile, fragmentFile, uniAttr);
+		this((String)null, (LineInsert)null, vertexFile, fragmentFile, uniAttr);
+	}
+	
+	public Shader(LineInsert insert, InputStream vertexFile, InputStream fragmentFile, Object... uniAttr){
+		this((String)null, insert, vertexFile, fragmentFile, uniAttr);
 	}
 	
 	public Shader(String name, InputStream vertexFile, InputStream fragmentFile, Object... uniAttr) {
-		this(name, vertexFile, null, fragmentFile, uniAttr);
+		this(name, (LineInsert)null, vertexFile, null, fragmentFile, uniAttr);
+	}
+	
+	public Shader(String name, LineInsert insert, InputStream vertexFile, InputStream fragmentFile, Object... uniAttr) {
+		this(name, insert, vertexFile, null, fragmentFile, uniAttr);
 	}
 	
 	public Shader(InputStream vertexFile, InputStream geometryFile, InputStream fragmentFile, Object... uniAttr){
-		this(null, vertexFile, geometryFile, fragmentFile, uniAttr);
+		this((String)null, (LineInsert)null, vertexFile, geometryFile, fragmentFile, uniAttr);
+	}
+	
+	public Shader(LineInsert insert, InputStream vertexFile, InputStream geometryFile, InputStream fragmentFile, Object... uniAttr){
+		this(null, insert, vertexFile, geometryFile, fragmentFile, uniAttr);
 	}
 	
 	public Shader(String name, InputStream vertexFile, InputStream geometryFile, InputStream fragmentFile, Object... uniAttr) {
+		this(name, (LineInsert)null, vertexFile, geometryFile, fragmentFile, uniAttr);
+	}
+
+	
+	public Shader(String name, LineInsert insert, InputStream vertexFile, InputStream geometryFile, InputStream fragmentFile, Object... uniAttr) {
 		if(name==null){
 			name = ""+shadercount;
 		}
 		name = "Shader " + name;
+		this.insert = insert;
 		this.name = name;
 		vertexShaderHolder = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
 		fragmentShaderHolder = loadShader(fragmentFile, GL20.GL_FRAGMENT_SHADER);
@@ -101,7 +120,12 @@ public class Shader {
 		return name;
 	}
 	
-	protected void registerUniforms(Uniform... uniformsarray) {
+	protected void registerUniforms(Uniform...uniformsarray){
+		registerUniformsa(uniformsarray);
+	}
+	
+	protected void registerUniformsa(Uniform[] array, Uniform... uniformsarray) {
+		storeUniforms(array);
 		storeUniforms(uniformsarray);
 	}
 
@@ -166,14 +190,25 @@ public class Shader {
 	private ShaderHolder loadShader(InputStream in, int type) {
 		StringBuilder shaderSrc = new StringBuilder();
 		List<String> uniforms = new ArrayList<>();
+		int linenr=0;
 		try {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			String line;
 			while ((line = reader.readLine()) != null) {
+				if(insert!=null&&linenr==1){
+					String[] lines = insert.get(type);
+					if(lines!=null){
+						for(int i=0; i<lines.length; i++){
+							shaderSrc.append(lines[i]).append("\n");
+							linenr++;
+						}
+					}
+				}
 				shaderSrc.append(line).append("\n");
 				if (line.toLowerCase().trim().startsWith("uniform")) {
 					uniforms.add(line);
 				}
+				linenr++;
 			}
 			reader.close();
 		} catch (Exception e) {
@@ -184,7 +219,7 @@ public class Shader {
 		GL20.glCompileShader(shaderID);
 		if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
 			Logger.log("Shader compilation failed in Shader: "+name, LogLevel.ERROR, true);
-			Logger.log(GL20.glGetShaderInfoLog(shaderID, 500), LogLevel.ERROR, true);
+			Logger.log("(Lines with LineInsertion!): "+GL20.glGetShaderInfoLog(shaderID, 500), LogLevel.ERROR, true);
 		}
 		return new ShaderHolder(shaderID, uniforms, type);
 	}

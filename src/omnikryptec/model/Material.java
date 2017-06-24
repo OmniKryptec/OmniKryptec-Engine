@@ -1,5 +1,6 @@
 package omnikryptec.model;
 
+import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.exceptions.OmniKryptecException;
@@ -10,17 +11,6 @@ import omnikryptec.texture.Texture;
 
 public class Material {
 
-	private static Texture defaultNormalMap;
-
-	public static final void setDefaultNormalMap(Texture t) {
-		if (t != null) {
-			defaultNormalMap = t;
-		}
-	}
-
-	public static final Texture getDefaultNormalMap() {
-		return defaultNormalMap;
-	}
 
 	private float reflectivity;
 	private float shinedamper;
@@ -28,7 +18,7 @@ public class Material {
 	private Texture normalmap;
 	private Texture specularmap;
 	private Texture extrainfo;
-	private Vector4f extrainfovec;
+	private Vector3f extrainfovec;
 	private boolean hasTransparency = false;
 	private Renderer renderer = RendererRegistration.DEF_ENTITY_RENDERER;
 
@@ -42,11 +32,7 @@ public class Material {
 
 	public Material(Texture normalmap, Texture specularmap, float reflec) {
 		this.reflectivity = reflec;
-		if (normalmap != null) {
-			this.normalmap = normalmap;
-		} else {
-			this.normalmap = getDefaultNormalMap();
-		}
+		this.normalmap = normalmap;
 		this.specularmap = specularmap;
 	}
 
@@ -72,12 +58,12 @@ public class Material {
 	 * @param vec
 	 * @return
 	 */
-	public final Material setExtraInfoVec(Vector4f vec) {
+	public final Material setExtraInfoVec(Vector3f vec) {
 		this.extrainfovec = vec;
 		return this;
 	}
 
-	public final Vector4f getExtraInfoVec() {
+	public final Vector3f getExtraInfoVec() {
 		return extrainfovec;
 	}
 
@@ -93,11 +79,7 @@ public class Material {
 	}
 
 	public final Material setNormalmap(Texture normalmap) {
-		if (normalmap != null) {
-			this.normalmap = normalmap;
-		} else {
-			this.normalmap = getDefaultNormalMap();
-		}
+		this.normalmap = normalmap;
 		return this;
 	}
 

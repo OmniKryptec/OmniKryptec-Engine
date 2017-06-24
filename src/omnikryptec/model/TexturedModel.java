@@ -32,5 +32,10 @@ public class TexturedModel implements AdvancedModel {
     public final Material getMaterial() {
         return material;
     }
+    
+    public final TexturedModel setMaterial(Material m){
+    	this.material = m;
+    	return this;
+    }
 
 }

@@ -25,8 +25,8 @@ public class QuadraticAttLightPrepare implements DeferredLightPrepare {
 
 	@Override
 	public void prepareLight(Light l) {
-		shader.light.loadVec4(l.getPosRad());
-		shader.lightColor.loadVec3(l.getColor());
+		shader.light.loadVec3(l.getPosRad());
+		shader.lightColor.loadVec3(l.getColor().getArray());
 		shader.att.loadVec3(l.getAttenuation());
 	}
 

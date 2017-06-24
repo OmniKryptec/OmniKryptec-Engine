@@ -15,11 +15,12 @@ import omnikryptec.physics.PhysicsWorld;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.AllowedRenderer;
 import omnikryptec.renderer.Renderer;
+import omnikryptec.util.Color;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.PhysicsUtil;
 
-public class Scene implements DataMapSerializable {
+public class Scene implements DataMapSerializable{
 
         private String name;
 	private final Map<String, RenderChunk> scene = new HashMap<>();
@@ -34,20 +35,23 @@ public class Scene implements DataMapSerializable {
 
 	private RenderChunk global = new RenderChunk(0, 0, 0, this);
 	
+	private Color ambientlight = new Color(0, 0, 0, 0);
+	
 	/* Temp Variables */
 	private String tmp;
 	private long cx, cy, cz;
 	private RenderChunk tmpc;
-        
-        public Scene() {
-            this("", null);
-        }
 	
 	public Scene(String name, Camera cam) {
             this.cam = cam;
             this.name = name;
 	}
-
+	
+	public Scene setAmbientColor(float r, float g, float b){
+		ambientlight.set(r, g, b);
+		return this;
+	}
+	
 	public Scene setChunkOffsets(long xo, long yo, long zo) {
 		this.cox = xo;
 		this.coy = yo;
@@ -196,6 +200,10 @@ public class Scene implements DataMapSerializable {
 
 	private static String xyzToString(long x, long y, long z) {
 		return x + ":" + y + ":" + z;
+	}
+
+	public Color getAmbient() {
+		return ambientlight;
 	}
 
     @Override
