@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import omnikryptec.logger.Logger;
-import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.ArrayUtil;
 
 /**

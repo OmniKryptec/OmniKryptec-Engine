@@ -14,7 +14,7 @@ import omnikryptec.model.TexturedModel;
 import omnikryptec.renderer.RenderMap;
 import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
-import omnikryptec.util.Constants;
+import omnikryptec.util.Instance;
 import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
 
@@ -70,7 +70,7 @@ public class TerrainRenderer implements Renderer {
 				if (RenderUtil.inRenderRange(terrain, s.getCamera()) || true) {
 					TerrainShader.transformationMatrix.loadMatrix(Maths.createTransformationMatrix(
 							new Vector3f(terrain.getAbsolutePos().x, 0, terrain.getAbsolutePos().z),
-							Constants.MATHS_ZERO, Constants.MATHS_ONE));
+							Instance.MATHS_ZERO, Instance.MATHS_ONE));
 					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(),
 							GL11.GL_UNSIGNED_INT, 0);
 				}
