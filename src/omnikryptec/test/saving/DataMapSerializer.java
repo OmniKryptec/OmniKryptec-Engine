@@ -56,7 +56,7 @@ public class DataMapSerializer {
                 final ArrayList<DataMap> data = classesDataMaps.get(c);
                 for(DataMap d : data) {
                     try {
-                        final Object object = c.getDeclaredMethod("newInstancefromDataMap", d.getClass()).invoke(c.newInstance(), d);
+                        final Object object = c.getDeclaredMethod("newInstanceFromDataMap", d.getClass()).invoke(c.newInstance(), d);
                         if(object != null) {
                             addDataMapSerializable(classesDataMapSerializables, c, (DataMapSerializable) object);
                         } else {

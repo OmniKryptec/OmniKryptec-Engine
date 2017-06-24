@@ -476,7 +476,7 @@ public class GameObject implements DataMapSerializable {
         return data;
     }
     
-    public static GameObject newInstancefromDataMap(DataMap data) {
+    public static GameObject newInstanceFromDataMap(DataMap data) {
         if(data == null) {
             return null;
         }
@@ -494,7 +494,7 @@ public class GameObject implements DataMapSerializable {
         setActive(data.getBoolean("isActive"));
         DataMap dataMap_temp = data.getDataMap("parent");
         if(parent == null) {
-            Object parent_ = newInstancefromDataMap(dataMap_temp);
+            Object parent_ = newInstanceFromDataMap(dataMap_temp);
             setParent((parent_ != null ? (GameObject) parent_ : null));
         } else {
             parent.fromDataMap(dataMap_temp); //FIXME Hmmm ist die Frage weil die Parents und id und so

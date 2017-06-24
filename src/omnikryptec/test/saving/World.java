@@ -7,6 +7,7 @@ package omnikryptec.test.saving;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import omnikryptec.entity.GameObject;
@@ -89,20 +90,32 @@ public class World implements DataMapSerializable {
         }
         data.put("weights", weights);
         data.put("test", test);
-        data.put("array", new int[] {1, 2, 4545, 45});
+        int[] array_1d = new int[] {1, 2, 4545, 45};
+        int[][] array_2d = new int[][] {array_1d, array_1d};
+        int[][][] array_3d = new int[][][] {array_2d, array_2d};
+        data.put("array_1d", array_1d);
+        data.put("array_2d", array_2d);
+        data.put("array_3d", array_3d);
         return data;
     }
 
     public static World newInstanceFromDataMap(DataMap data) {
-        return (World) new World().fromDataMap(data);
+        return new World().fromDataMap(data);
     }
 
     @Override
-    public Object fromDataMap(DataMap data) {
+    public World fromDataMap(DataMap data) {
         Logger.log("Created World data.size() == " + data.size());
         for(String g : data.keySet()) {
-            Logger.log(g + " " + data.get(g).getClass().getName() + " " + data.get(g));
+            Object object = data.get(g);
+            String text = "" + object;
+            Class<?> c = object.getClass();
+            if(c.isArray()) {
+                text = Arrays.deepToString((Object[]) object);
+            }
+            Logger.log(g + " " + c.getName() + " " + text);
         }
+        Logger.log(((Object[]) ((Object[]) ((Object[]) data.get("array_3d"))[0])[0]).getClass());
         setName(data.getString("name"));
         return this;
     }

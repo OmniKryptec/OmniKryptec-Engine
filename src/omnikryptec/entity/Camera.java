@@ -134,7 +134,7 @@ public class Camera extends GameObject {
         return data;
     }
     
-    public static Camera newInstancefromDataMap(DataMap data) {
+    public static Camera newInstanceFromDataMap(DataMap data) {
         if(data == null) {
             return null;
         }

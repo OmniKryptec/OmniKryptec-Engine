@@ -230,7 +230,7 @@ public class Scene implements DataMapSerializable{
         return data;
     }
 
-    public static Scene newInstancefromDataMap(DataMap data) {
+    public static Scene newInstanceFromDataMap(DataMap data) {
         if(data == null) {
             return null;
         }
@@ -249,7 +249,7 @@ public class Scene implements DataMapSerializable{
             if(cam != null) {
                 cam.fromDataMap(dataMap_temp);
             } else {
-                Object temp = Camera.newInstancefromDataMap(dataMap_temp);
+                Object temp = Camera.newInstanceFromDataMap(dataMap_temp);
                 if(temp != null && temp instanceof Camera) {
                     setCamera((Camera) temp);
                 }

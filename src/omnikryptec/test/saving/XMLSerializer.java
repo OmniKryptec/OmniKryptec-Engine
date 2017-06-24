@@ -2,6 +2,7 @@ package omnikryptec.test.saving;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map;
 import omnikryptec.logger.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
@@ -49,10 +51,10 @@ public class XMLSerializer implements IDataMapSerializer {
         }
     }
     
-    private final void processObjectSerialize(Element element, Object name, Object object, int depth, Type lastType) {
+    private final void processObjectSerialize(Element element, Object name, Object object, int depth, Type lastType, Object... objects) {
         try {
             if(object != null && object.getClass().isArray()) {
-                processArraySerialize(element, name, object, depth + 1);
+                processArraySerialize(element, name, object, depth + 1, objects);
             } else if(object != null && object instanceof DataMap) {
                 final DataMap dataMap_temp = (DataMap) object;
                 processDataMapsSerialize(element, name, dataMap_temp, depth + 1);
@@ -118,73 +120,93 @@ public class XMLSerializer implements IDataMapSerializer {
         element.addContent(element_temp);
     }
     
-    private final void processArraySerialize(Element element, Object name, Object array, int depth) {
+    private final void processArraySerialize(Element element, Object name, Object array, int depth, Object... objects) {
         final Element element_temp = new Element(Type.Array.name()).setAttribute(NAME, "" + name).setAttribute(DEPTH, "" + (depth - 1));
+        Element arrayElement = null;
+        int arrayDepth = 1;
+        if(objects.length == 2) {
+            if(objects[1] != null && objects[1] instanceof Integer) {
+                arrayDepth = (Integer) objects[1];
+            }
+            if(objects[0] != null && objects[0] instanceof Element) {
+                arrayElement = (Element) objects[0];
+            } else {
+                arrayElement = element_temp;
+                arrayDepth = 1;
+            }
+        } else {
+            arrayElement = element_temp;
+            arrayDepth = 1;
+        }
+        if(arrayElement != null) {
+            arrayElement.setAttribute(DIMENSIONS, "" + arrayDepth);
+            arrayDepth++;
+        }
         if(array != null) {
             final Class<?> c = array.getClass();
             if(c.isArray()) {
                 if(c == byte[].class) {
                     final byte[] array_temp = (byte[]) array;
-                    element_temp.setAttribute(CLASS, Byte.class.getName());
+                    element_temp.setAttribute(CLASS, Byte.class.getName()).setAttribute(COUNT, "" + array_temp.length);
                     for(int i = 0; i < array_temp.length; i++) {
                         final Object object = array_temp[i];
-                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData);
+                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, arrayElement, arrayDepth );
                     }
                 } else if (c == short[].class) {
                     final short[] array_temp = (short[]) array;
-                    element_temp.setAttribute(CLASS, Short.class.getName());
+                    element_temp.setAttribute(CLASS, Short.class.getName()).setAttribute(COUNT, "" + array_temp.length);
                     for(int i = 0; i < array_temp.length; i++) {
                         final Object object = array_temp[i];
-                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData);
+                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, arrayElement, arrayDepth);
                     }
                 } else if (c == int[].class) {
                     final int[] array_temp = (int[]) array;
-                    element_temp.setAttribute(CLASS, Integer.class.getName());
+                    element_temp.setAttribute(CLASS, Integer.class.getName()).setAttribute(COUNT, "" + array_temp.length);
                     for(int i = 0; i < array_temp.length; i++) {
                         final Object object = array_temp[i];
-                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData);
+                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, arrayElement, arrayDepth);
                     }
                 } else if (c == long[].class) {
                     final long[] array_temp = (long[]) array;
-                    element_temp.setAttribute(CLASS, Long.class.getName());
+                    element_temp.setAttribute(CLASS, Long.class.getName()).setAttribute(COUNT, "" + array_temp.length);
                     for(int i = 0; i < array_temp.length; i++) {
                         final Object object = array_temp[i];
-                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData);
+                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, arrayElement, arrayDepth);
                     }
                 } else if (c == char[].class) {
                     final char[] array_temp = (char[]) array;
-                    element_temp.setAttribute(CLASS, Character.class.getName());
+                    element_temp.setAttribute(CLASS, Character.class.getName()).setAttribute(COUNT, "" + array_temp.length);
                     for(int i = 0; i < array_temp.length; i++) {
                         final Object object = array_temp[i];
-                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData);
+                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, arrayElement, arrayDepth);
                     }
                 } else if (c == float[].class) {
                     final float[] array_temp = (float[]) array;
-                    element_temp.setAttribute(CLASS, Float.class.getName());
+                    element_temp.setAttribute(CLASS, Float.class.getName()).setAttribute(COUNT, "" + array_temp.length);
                     for(int i = 0; i < array_temp.length; i++) {
                         final Object object = array_temp[i];
-                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData);
+                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, arrayElement, arrayDepth);
                     }
                 } else if (c == double[].class) {
                     final double[] array_temp = (double[]) array;
-                    element_temp.setAttribute(CLASS, Double.class.getName());
+                    element_temp.setAttribute(CLASS, Double.class.getName()).setAttribute(COUNT, "" + array_temp.length);
                     for(int i = 0; i < array_temp.length; i++) {
                         final Object object = array_temp[i];
-                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData);
+                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, arrayElement, arrayDepth);
                     }
                 } else if (c == boolean[].class) {
                     final boolean[] array_temp = (boolean[]) array;
-                    element_temp.setAttribute(CLASS, Boolean.class.getName());
+                    element_temp.setAttribute(CLASS, Boolean.class.getName()).setAttribute(COUNT, "" + array_temp.length);
                     for(int i = 0; i < array_temp.length; i++) {
                         final Object object = array_temp[i];
-                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData);
+                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, arrayElement, arrayDepth);
                     }
                 } else {
                     final Object[] array_temp = (Object[]) array;
-                    element_temp.setAttribute(CLASS, Object.class.getName());
+                    element_temp.setAttribute(CLASS, Object.class.getName()).setAttribute(COUNT, "" + array_temp.length);
                     for(int i = 0; i < array_temp.length; i++) {
                         final Object object = array_temp[i];
-                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData);
+                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, arrayElement, arrayDepth);
                     }
                 }
             } else {
@@ -254,7 +276,9 @@ public class XMLSerializer implements IDataMapSerializer {
     private final void processElementInDataMapUnserialize(Element element, DataMap dataMap) {
         try {
             Class<?> c = null;
-            if(element.getName().equals(Type.Data.name())) {
+            if(element.getName().equals(Type.Array.name())) {
+                dataMap.put(element.getAttributeValue(NAME), processArrayUnserialize(element));
+            } else if(element.getName().equals(Type.Data.name())) {
                 c = classForName(element.getAttributeValue(CLASS));
                 dataMap.put(element.getAttributeValue(NAME), cast(c, element.getText()));
             } else if(element.getName().equals(Type.DataMap.name())) {
@@ -280,12 +304,62 @@ public class XMLSerializer implements IDataMapSerializer {
         }
     }
     
+    private final Object[] processArrayUnserialize(Element element) {
+        final int count = Integer.parseInt(element.getAttributeValue(COUNT));
+        final Class<?> c = classForName(element.getAttributeValue(CLASS));
+        Object[] array = new Object[count];
+        element.getChildren().stream().forEach((element_temp) -> {
+            processDataInArrayUnserialize(element_temp, array);
+        });
+        return castArray(array, c);
+    }
+    
+    private final void processDataInArrayUnserialize(Element element, Object[] array) {
+        try {
+            int index = -1;
+            Class<?> c = null;
+            if(element.getName().equals(Type.Array.name())) {
+                index = Integer.parseInt(element.getAttributeValue(NAME));
+                array[index] = processArrayUnserialize(element);
+            } else if(element.getName().equals(Type.ArrayData.name())) {
+                index = Integer.parseInt(element.getAttributeValue(Type.ArrayData.nameAttribute()));
+                c = classForName(element.getAttributeValue(CLASS));
+                array[index] = cast(c, element.getText());
+            } else if(element.getName().equals(Type.DataMap.name())) {
+                index = Integer.parseInt(element.getAttributeValue(NAME));
+                final DataMap dataMap_temp = new DataMap(element.getAttributeValue(NAME));
+                processDataMapsUnserialize(element, dataMap_temp);
+                array[index] = dataMap_temp;
+            } else if(element.getName().equals(Type.List.name())) {
+                index = Integer.parseInt(element.getAttributeValue(NAME));
+                final HashMap<Integer, Object> collectorMap = new HashMap<>();
+                processListUnserialize(element, collectorMap);
+                final List list = new ArrayList<>();
+                collectorMap.keySet().stream().sorted((i1, i2) -> i2 - i1).forEach((i) -> {
+                    list.add(collectorMap.get(i));
+                });
+                collectorMap.clear();
+                array[index] = list;
+            } else if(element.getName().equals(Type.Map.name())) {
+                index = Integer.parseInt(element.getAttributeValue(NAME));
+                final Map map = new HashMap();
+                processMapUnserialize(element, map);
+                array[index] = map;
+            }
+        } catch (Exception ex) {
+            Logger.logErr("Error while processing array: " + ex, ex);
+        }
+    }
+    
     private final void processListUnserialize(Element element, HashMap<Integer, Object> collectorMap) {
         element.getChildren().stream().forEach((element_temp) -> {
             try {
                 final Class<?> c = classForName(element_temp.getAttributeValue(CLASS));
                 Integer index = -1;
-                if(element_temp.getName().equals(Type.ListData.name())) {
+                if(element.getName().equals(Type.Array.name())) {
+                    index = Integer.parseInt(element_temp.getAttributeValue(NAME));
+                    collectorMap.put(index, processArrayUnserialize(element));
+                } else if(element_temp.getName().equals(Type.ListData.name())) {
                     index = Integer.parseInt(element_temp.getAttributeValue(Type.ListData.nameAttribute()));
                     collectorMap.put(index, cast(c, element_temp.getText()));
                 } else if(element_temp.getName().equals(Type.DataMap.name())) {
@@ -321,7 +395,10 @@ public class XMLSerializer implements IDataMapSerializer {
             try {
                 final Class<?> c_value = classForName(element_temp.getAttributeValue(CLASS));
                 Object key = null;
-                if(element_temp.getName().equals(Type.MapData.name())) {
+                if(element.getName().equals(Type.Array.name())) {
+                    key = cast(c_key, element_temp.getAttributeValue(NAME));
+                    map.put(key, processArrayUnserialize(element));
+                } else if(element_temp.getName().equals(Type.MapData.name())) {
                     key = cast(c_key, element_temp.getAttributeValue(Type.MapData.nameAttribute()));
                     map.put(key, cast(c_value, element_temp.getText()));
                 } else if(element_temp.getName().equals(Type.DataMap.name())) {
@@ -367,6 +444,9 @@ public class XMLSerializer implements IDataMapSerializer {
         if(c == null) {
             return toCast;
         }
+        if(toCast.getClass().isArray()) {
+            return cast((Object[]) toCast, c);
+        }
         if(toCast instanceof String) {
             String temp = (String) toCast;
             if(c == Long.class) {
@@ -407,10 +487,38 @@ public class XMLSerializer implements IDataMapSerializer {
         return toCast;
     }
     
+    private final <T> T[] castArray(Object[] toCast, Class<? extends T> c) {
+        if(toCast == null) {
+            return null;
+        }
+        if(c == null || toCast.length == 0) {
+            return (T[]) toCast;
+        }
+        T[] casted = (T[]) Array.newInstance(c, toCast.length);
+        for(int i = 0; i < toCast.length; i++) {
+            Object o = toCast[i];
+            casted[i] = o.getClass().isArray() ? (T) castArray((Object[]) o, c) : (T) o;
+        }
+        return casted;
+    }
+    
+    private final Class<?> arrayClass(Class<?> c, int dimensions) {
+        if(dimensions == 0) {
+            return c;
+        }
+        int[] dims = new int[dimensions];
+        return Array.newInstance(c, dims).getClass();
+    }
+    
+    private final Object makeArray(Class<?> c, int dimensions, int length) {
+        return Array.newInstance(arrayClass(c, dimensions - 1), length);
+    }
+    
     public static final String NAME = "name";
     public static final String COUNT = "count";
     public static final String CLASS = "class";
     public static final String DEPTH = "depth";
+    public static final String DIMENSIONS = "dimensions";
     
     public static enum Type {
         Array       ("", "", ""),
