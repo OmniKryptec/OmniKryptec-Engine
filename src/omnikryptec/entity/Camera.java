@@ -138,7 +138,8 @@ public class Camera extends GameObject {
         if(data == null) {
             return null;
         }
-        return new Camera().fromDataMap(data);
+        final Camera camera = byName(Camera.class, data.getString("name"));
+        return (camera != null ? camera : new Camera()).fromDataMap(data);
     }
     
     @Override
