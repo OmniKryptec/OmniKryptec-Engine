@@ -17,6 +17,10 @@ public class UniformVec2 extends Uniform {
 		loadVec2(vector.x, vector.y);
 	}
 
+	public void loadVec2(float[] array){
+		loadVec2(array[0], array[1]);
+	}
+	
 	public void loadVec2(float x, float y) {
 		if (!used || x != currentX || y != currentY) {
 			this.currentX = x;

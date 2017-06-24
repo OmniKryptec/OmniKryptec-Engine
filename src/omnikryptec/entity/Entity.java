@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Vector4f;
 import omnikryptec.model.AdvancedModel;
 import omnikryptec.model.Model;
 import omnikryptec.texture.SimpleTexture;
+import omnikryptec.util.Color;
 
 public class Entity extends GameObject implements Rangeable{
 
@@ -16,7 +17,7 @@ public class Entity extends GameObject implements Rangeable{
 	private AdvancedModel model;
 	private Vector3f scale = new Vector3f(1, 1, 1);
 	private RenderType type = RenderType.ALWAYS;
-	private Vector4f color = new Vector4f(1, 1, 1, 1);
+	private Color color = new Color(1, 1, 1, 1);
 
 	protected Entity() {
 	}
@@ -35,7 +36,7 @@ public class Entity extends GameObject implements Rangeable{
 		this.model = copy.model;
 		this.type = copy.type;
 		this.scale = new Vector3f(copy.scale);
-		this.color = new Vector4f(copy.color);
+		this.color = new Color(copy.color);
 	}
 
 	public Entity setRenderType(RenderType type) {
@@ -66,20 +67,17 @@ public class Entity extends GameObject implements Rangeable{
 		return model;
 	}
 
-	public Entity setColor(Vector4f v) {
-		this.color = v;
+	public Entity setColor(Color c) {
+		this.color = c;
 		return this;
 	}
 
 	public Entity setColor(float r, float g, float b, float a) {
-		color.x = r;
-		color.y = g;
-		color.z = b;
-		color.w = a;
+		color.set(r, g, b, a);
 		return this;
 	}
 
-	public Vector4f getColor() {
+	public Color getColor() {
 		return color;
 	}
 

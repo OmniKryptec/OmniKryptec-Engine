@@ -15,6 +15,7 @@ import omnikryptec.physics.PhysicsWorld;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.AllowedRenderer;
 import omnikryptec.renderer.Renderer;
+import omnikryptec.util.Color;
 import omnikryptec.util.PhysicsUtil;
 
 public class Scene {
@@ -31,6 +32,8 @@ public class Scene {
 
 	private RenderChunk global = new RenderChunk(0, 0, 0, this);
 	
+	private Color ambientlight = new Color(0, 0, 0, 0);
+	
 	/* Temp Variables */
 	private String tmp;
 	private long cx, cy, cz;
@@ -39,7 +42,12 @@ public class Scene {
 	public Scene(Camera cam) {
 		this.cam = cam;
 	}
-
+	
+	public Scene setAmbientColor(float r, float g, float b){
+		ambientlight.set(r, g, b);
+		return this;
+	}
+	
 	public Scene setChunkOffsets(long xo, long yo, long zo) {
 		this.cox = xo;
 		this.coy = yo;
@@ -183,6 +191,10 @@ public class Scene {
 
 	private static String xyzToString(long x, long y, long z) {
 		return x + ":" + y + ":" + z;
+	}
+
+	public Color getAmbient() {
+		return ambientlight;
 	}
 
 }

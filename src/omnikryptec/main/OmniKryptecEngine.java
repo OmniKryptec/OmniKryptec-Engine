@@ -32,8 +32,6 @@ import omnikryptec.util.RenderUtil;
  */
 public class OmniKryptecEngine {
 
-	private static final String DEFAULT_NORMALMAP = "/omnikryptec/model/normal.png";
-
 	private static OmniKryptecEngine instance;
 
 	public static OmniKryptecEngine instance() {
@@ -112,8 +110,6 @@ public class OmniKryptecEngine {
 		instance = this;
 		eventsystem = EventSystem.instance();
 		postpro = PostProcessing.instance();
-		Material.setDefaultNormalMap(
-				SimpleTexture.newTextureb(OmniKryptecEngine.class.getResourceAsStream(DEFAULT_NORMALMAP)).create());
 		RenderUtil.cullBackFaces(true);
 		RenderUtil.enableDepthTesting(true);
 		RendererRegistration.init();

@@ -40,6 +40,14 @@ public class EntityRenderer implements Renderer {
 		shader.start();
         shader.view.loadMatrix(s.getCamera().getViewMatrix());
         shader.projection.loadMatrix(s.getCamera().getProjectionMatrix());
+        shader.ambient.loadVec3(s.getAmbient().getArray());
+        int lights = Math.min(DisplayManager.instance().getSettings().getLightMaxForward(), s.getForwardRenderLights().size());
+        shader.activelights.loadInt(lights);
+        for(int i=0; i<lights; i++){
+        	shader.lightpos[i].loadVec3(s.getForwardRenderLights().get(i).getAbsolutePos());
+        	shader.lightcolor[i].loadVec3(s.getForwardRenderLights().get(i).getColor().getArray());
+        	shader.atts[i].loadVec3(s.getForwardRenderLights().get(i).getAttenuation());
+        }
         for(int i = 0; i < entities.keysArray().length; i++) {
             if(!(entities.keysArray()[i] instanceof TexturedModel)) {
                 continue;
@@ -50,7 +58,12 @@ public class EntityRenderer implements Renderer {
             textmp.bindToUnit(0);
             shader.uvs.loadVec4(textmp.getUVs()[0], textmp.getUVs()[1], textmp.getUVs()[2], textmp.getUVs()[3]);
             mat = model.getMaterial();
-            mat.getNormalmap().bindToUnit(1);
+            if(mat.getNormalmap()!=null){
+            	mat.getNormalmap().bindToUnit(1);
+            	shader.hasnormal.loadBoolean(true);
+            }else{
+            	shader.hasnormal.loadBoolean(false);
+            }
             if(mat.hasTransparency()) {
                 RenderUtil.cullBackFaces(false);
             }
@@ -66,9 +79,9 @@ public class EntityRenderer implements Renderer {
             } else {
                 shader.hasextrainfomap.loadBoolean(false);
                 if(mat.getExtraInfoVec() != null) {
-                    shader.extrainfovec.loadVec4(mat.getExtraInfoVec());
+                    shader.extrainfovec.loadVec3(mat.getExtraInfoVec());
                 } else {
-                    shader.extrainfovec.loadVec4(0, 0, 0, 0);
+                    shader.extrainfovec.loadVec3(0, 0, 0);
                 }
             }
             shader.reflec.loadFloat(mat.getReflectivity());
@@ -81,7 +94,7 @@ public class EntityRenderer implements Renderer {
                     	entity.doLogic0();
                     }
                     shader.transformation.loadMatrix(Maths.createTransformationMatrix(entity));
-                    shader.colmod.loadVec4(entity.getColor());
+                    shader.colmod.loadVec4(entity.getColor().getVector4f());
                     GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
                 }
             }
