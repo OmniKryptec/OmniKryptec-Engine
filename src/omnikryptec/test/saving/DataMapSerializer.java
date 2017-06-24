@@ -1,5 +1,7 @@
 package omnikryptec.test.saving;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,8 +20,7 @@ public class DataMapSerializer {
     private HashMap<Class<?>, ArrayList<DataMapSerializable>> classesDataMapSerializables = new HashMap<>();
     private HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps = new HashMap<>();
 
-    public static final HashMap<Class<?>, ArrayList<DataMap>> serialize(
-            HashMap<Class<?>, ArrayList<DataMapSerializable>> classesDataMapSerializables) {
+    public static final HashMap<Class<?>, ArrayList<DataMap>> serialize(HashMap<Class<?>, ArrayList<DataMapSerializable>> classesDataMapSerializables) {
         if (classesDataMapSerializables == null) {
             return null;
         }
@@ -47,8 +48,7 @@ public class DataMapSerializer {
         return classesDataMaps;
     }
 
-    public static final HashMap<Class<?>, ArrayList<DataMapSerializable>> deserialize(
-            HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps) {
+    public static final HashMap<Class<?>, ArrayList<DataMapSerializable>> deserialize(HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps) {
         if (classesDataMaps == null) {
             return null;
         }
@@ -93,43 +93,37 @@ public class DataMapSerializer {
         return (classesDataMapSerializables = deserialize(classesDataMaps));
     }
 
-    public static final boolean serialize(String name, HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps,
-            IDataMapSerializer dataMapSerializer, AdvancedFile file) {
-        if (classesDataMaps == null || dataMapSerializer == null || file == null || !file.createFile()) {
+    public static final boolean serialize(String name, HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps, IDataMapSerializer dataMapSerializer, OutputStream outputStream) {
+        if (classesDataMaps == null || dataMapSerializer == null || outputStream == null) {
             return false;
         }
-        return dataMapSerializer.serialize(name, classesDataMaps, file.createOutputstream(false));
+        return dataMapSerializer.serialize(name, classesDataMaps, outputStream);
     }
 
-    public final boolean serialize(String name, IDataMapSerializer dataMapSerializer, AdvancedFile file) {
-        return serialize(name, serialize(), dataMapSerializer, file);
+    public final boolean serialize(String name, IDataMapSerializer dataMapSerializer, OutputStream outputStream) {
+        return serialize(name, serialize(), dataMapSerializer, outputStream);
     }
 
-    public static final HashMap<Class<?>, ArrayList<DataMap>> deserializeThisToDataMap(AdvancedFile file,
-            IDataMapSerializer dataMapSerializer) {
-        if (file == null || !file.exists() || dataMapSerializer == null) {
+    public static final HashMap<Class<?>, ArrayList<DataMap>> deserializeThisToDataMap(InputStream inputStream, IDataMapSerializer dataMapSerializer) {
+        if (inputStream == null || dataMapSerializer == null) {
             return null;
         }
-        return dataMapSerializer.deserialize(file.createInputStream());
+        return dataMapSerializer.deserialize(inputStream);
     }
 
-    public static final HashMap<Class<?>, ArrayList<DataMapSerializable>> deserializeThisToDataMapSerializable(
-            AdvancedFile file, IDataMapSerializer dataMapSerializer) {
-        return deserialize(deserializeThisToDataMap(file, dataMapSerializer));
+    public static final HashMap<Class<?>, ArrayList<DataMapSerializable>> deserializeThisToDataMapSerializable(InputStream inputStream, IDataMapSerializer dataMapSerializer) {
+        return deserialize(deserializeThisToDataMap(inputStream, dataMapSerializer));
     }
 
-    public final HashMap<Class<?>, ArrayList<DataMap>> deserializeToDataMap(AdvancedFile file,
-            IDataMapSerializer dataMapSerializer) {
-        return (classesDataMaps = deserializeThisToDataMap(file, dataMapSerializer));
+    public final HashMap<Class<?>, ArrayList<DataMap>> deserializeToDataMap(InputStream inputStream, IDataMapSerializer dataMapSerializer) {
+        return (classesDataMaps = deserializeThisToDataMap(inputStream, dataMapSerializer));
     }
 
-    public final HashMap<Class<?>, ArrayList<DataMapSerializable>> deserializeToDataMapSerializable(AdvancedFile file,
-            IDataMapSerializer dataMapSerializer) {
-        return (classesDataMapSerializables = deserializeThisToDataMapSerializable(file, dataMapSerializer));
+    public final HashMap<Class<?>, ArrayList<DataMapSerializable>> deserializeToDataMapSerializable(InputStream inputStream, IDataMapSerializer dataMapSerializer) {
+        return (classesDataMapSerializables = deserializeThisToDataMapSerializable(inputStream, dataMapSerializer));
     }
 
-    public static final HashMap<Class<?>, ArrayList<DataMapSerializable>> addDataMapSerializable(
-            HashMap<Class<?>, ArrayList<DataMapSerializable>> classesDataMapSerializables, Class<?> c,
+    public static final HashMap<Class<?>, ArrayList<DataMapSerializable>> addDataMapSerializable(HashMap<Class<?>, ArrayList<DataMapSerializable>> classesDataMapSerializables, Class<?> c,
             DataMapSerializable dataMapSerializable) {
         ArrayList<DataMapSerializable> dataMapSerializables = classesDataMapSerializables.get(c);
         if (dataMapSerializables == null) {
@@ -140,13 +134,11 @@ public class DataMapSerializer {
         return classesDataMapSerializables;
     }
 
-    public final HashMap<Class<?>, ArrayList<DataMapSerializable>> addDataMapSerializable(Class<?> c,
-            DataMapSerializable dataMapSerializable) {
+    public final HashMap<Class<?>, ArrayList<DataMapSerializable>> addDataMapSerializable(Class<?> c, DataMapSerializable dataMapSerializable) {
         return DataMapSerializer.addDataMapSerializable(classesDataMapSerializables, c, dataMapSerializable);
     }
 
-    public static final void addObject(HashMap<Class<?>, ArrayList<DataMapSerializable>> classesDataMapSerializables,
-            Object object) {
+    public static final void addObject(HashMap<Class<?>, ArrayList<DataMapSerializable>> classesDataMapSerializables, Object object) {
         DataMapSerializer.addDataMapSerializable(classesDataMapSerializables, object.getClass(),
                 (DataMapSerializable) object);
     }
@@ -155,8 +147,7 @@ public class DataMapSerializer {
         addDataMapSerializable(object.getClass(), (DataMapSerializable) object);
     }
 
-    public static final <T> ArrayList<T> getObjects(
-            HashMap<Class<?>, ArrayList<DataMapSerializable>> classesDataMapSerializables, Class<? extends T> type) {
+    public static final <T> ArrayList<T> getObjects(HashMap<Class<?>, ArrayList<DataMapSerializable>> classesDataMapSerializables, Class<? extends T> type) {
         return (ArrayList<T>) (ArrayList<?>) classesDataMapSerializables.get(type);
     }
 
@@ -164,8 +155,7 @@ public class DataMapSerializer {
         return getObjects(classesDataMapSerializables, type);
     }
 
-    public static final ArrayList<DataMap> getDataMaps(HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps,
-            Class<?> type) {
+    public static final ArrayList<DataMap> getDataMaps(HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps, Class<?> type) {
         return classesDataMaps.get(type);
     }
 

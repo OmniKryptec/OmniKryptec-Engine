@@ -72,10 +72,9 @@ public class XMLTest {
                 // Logger.log("file == " + file);
                 // Logger.log("file.toFile() == " + file.toFile());
                 // Logger.log("file.createFile() == " + file.createFile());
-                dataMapSerializer.serialize("Welt_1", XMLSerializer.newInstance(), file);
+                dataMapSerializer.serialize("Welt_1", XMLSerializer.newInstance(), file.createOutputstream(false));
                 Logger.log("file.exists() == " + file.exists());
-                HashMap<Class<?>, ArrayList<DataMapSerializable>> xmlsc = dataMapSerializer
-                        .deserializeToDataMapSerializable(file, XMLSerializer.newInstance());
+                HashMap<Class<?>, ArrayList<DataMapSerializable>> xmlsc = dataMapSerializer.deserializeToDataMapSerializable(file.createInputStream(), XMLSerializer.newInstance());
             }
             System.exit(0);
         } catch (Exception ex) {

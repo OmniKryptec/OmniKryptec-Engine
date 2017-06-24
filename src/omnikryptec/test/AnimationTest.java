@@ -142,7 +142,7 @@ public class AnimationTest {
 
 	public static final void load() {
 		dataMapSerializer.reset();
-		dataMapSerializer.deserializeToDataMap(SAVE, XMLSerializer.newInstance());
+		dataMapSerializer.deserializeToDataMap(SAVE.createInputStream(), XMLSerializer.newInstance());
 		scene.fromDataMap(dataMapSerializer.getDataMaps(Scene.class).get(0));
 	}
 
@@ -152,7 +152,7 @@ public class AnimationTest {
 		final String sceneName = OmniKryptecEngine.getInstance().getCurrentSceneName();
 		dataMapSerializer.reset();
 		dataMapSerializer.addObject(scene);
-		dataMapSerializer.serialize(sceneName, XMLSerializer.newInstance(), SAVE);
+		dataMapSerializer.serialize(sceneName, XMLSerializer.newInstance(), SAVE.createOutputstream(false));
 		Logger.log(String.format("Saved Scene \"%s\" in file \"%s\"", sceneName, SAVE));
 	}
 
