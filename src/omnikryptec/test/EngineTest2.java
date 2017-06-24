@@ -126,10 +126,12 @@ public class EngineTest2 implements IEventHandler {
 					.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine2.png")).create();
 
 			SimpleAnimation animation = new SimpleAnimation(2, brunnent, pinet);
+			SimpleTexture pine_normal = SimpleTexture.newTexture("/omnikryptec/test/pine2_normal.png");
 
 			TexturedModel ptm = new TexturedModel(pine,pinet);
+			ptm.getMaterial().setNormalmap(pine_normal);
 			ptm.getMaterial().setHasTransparency(true).setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER);
-			ptm.getMaterial().setReflectivity(0.5f).setShineDamper(10).setExtraInfoVec(new Vector3f(1, 1, 0));
+			ptm.getMaterial().setReflectivity(0.1f).setShineDamper(10).setExtraInfoVec(new Vector3f(1, 1, 0));
 			Random r = new Random();
 			for (int i = 0; i < 100; i++) {
 				Entity e = new Entity(ptm) {
