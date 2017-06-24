@@ -100,11 +100,12 @@ public class EngineTest2 implements IEventHandler {
 					.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create();
 			SimpleTexture brunnen_norm = SimpleTexture
 					.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen_normal.png")).create();
+			SimpleTexture brunnen_specular = SimpleTexture.newTexture("/omnikryptec/test/brunnen_specular.png");
 			AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
 			TexturedModel tm = new TexturedModel(brunnen, brunnent);
-			tm.getMaterial().setNormalmap(brunnen_norm);
+			tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
 			tm.getMaterial().setHasTransparency(true);
-			tm.getMaterial().setReflectivity(0.5f).setShineDamper(10)
+			tm.getMaterial().setReflectivity(1).setShineDamper(5)
 					.setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER);
 			OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
@@ -133,8 +134,8 @@ public class EngineTest2 implements IEventHandler {
 			ptm.getMaterial().setHasTransparency(true).setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER);
 			ptm.getMaterial().setReflectivity(0.1f).setShineDamper(10).setExtraInfoVec(new Vector3f(1, 1, 0));
 			Random r = new Random();
-			for (int i = 0; i < 100; i++) {
-				Entity e = new Entity(ptm) {
+			for (int i = 0; i < 1; i++) {
+				Entity e = new Entity(tm) {
 					@Override
 					public void doLogic() {
 						// setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(),
@@ -145,8 +146,9 @@ public class EngineTest2 implements IEventHandler {
 						// increaseRelativeRot(0, 1, 0);
 					}
 				}.setScale(new Vector3f(3, 3, 3));
+				e.setRelativePos(5, -10, 10);
 				// e.setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);
-				e.setRelativePos(r.nextInt(100) - 50, r.nextInt(100) - 50, r.nextInt(100) - 50);
+				//e.setRelativePos(r.nextInt(100) - 50, r.nextInt(100) - 50, r.nextInt(100) - 50);
 				OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 			}
 			// ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
