@@ -71,7 +71,7 @@ void main(void){
 	vec3 normalt;
 	if(hasnormal>0.5){
 		normalt = texture(normaltex, pass_texcoords).rgb;
-		normalt = normalize(TBN*((normalt.rgb)*2.0-1.0));
+		normalt = normalize(((normalt.rgb)*2.0-1.0));
 	}else{
 		normalt = normalize(norm);
 	}

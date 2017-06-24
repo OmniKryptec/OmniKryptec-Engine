@@ -110,7 +110,7 @@ public class EngineTest2 implements IEventHandler {
 			TexturedModel tm = new TexturedModel(brunnen, jd);
 			//tm.getMaterial().setSpecularmap(js).setNormalmap(jn);
 			tm.getMaterial().setHasTransparency(true);
-			tm.getMaterial().setReflectivity(0.5f).setShineDamper(3).setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER);
+			tm.getMaterial().setReflectivity(0.5f).setShineDamper(0.1f).setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER);
 			OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
 				@Override
