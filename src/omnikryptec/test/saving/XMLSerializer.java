@@ -2,7 +2,6 @@ package omnikryptec.test.saving;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +14,6 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
 import omnikryptec.logger.Logger;
-import omnikryptec.util.SerializationUtil;
 import static omnikryptec.util.SerializationUtil.cast;
 import static omnikryptec.util.SerializationUtil.castArray;
 import static omnikryptec.util.SerializationUtil.classForName;
@@ -35,8 +33,7 @@ public class XMLSerializer implements IDataMapSerializer {
     private Element rootElement = null;
 
     @Override
-    public final boolean serialize(String name, HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps,
-            OutputStream outputStream) {
+    public final boolean serialize(String name, HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps, OutputStream outputStream) {
         try {
             rootElement = new Element(name);
             document = new Document(rootElement);
@@ -58,8 +55,7 @@ public class XMLSerializer implements IDataMapSerializer {
         }
     }
 
-    private final void processObjectSerialize(Element element, Object name, Object object, int depth, Type lastType,
-            Object... objects) {
+    private final void processObjectSerialize(Element element, Object name, Object object, int depth, Type lastType, Object... objects) {
         try {
             if (object != null && object.getClass().isArray()) {
                 processArraySerialize(element, name, object, depth + 1, objects);

@@ -5,66 +5,67 @@ import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.animation.ColladaParser.dataStructures.JointData;
 import omnikryptec.animation.ColladaParser.dataStructures.SkeletonData;
-import omnikryptec.animation.ColladaParser.xmlParser.XmlNode;
+import omnikryptec.util.XMLUtil;
+import org.jdom2.Element;
 
+/**
+ * Loads the Skeleton
+ * @author Karl &amp; Panzer1119
+ */
 public class SkeletonLoader {
 
-	private XmlNode armatureData;
+    private final Element armatureData;
 
-	private List<String> boneOrder;
+    private final List<String> boneOrder;
 
-	private int jointCount = 0;
+    private int jointCount = 0;
 
-	private static final Matrix4f CORRECTION = new Matrix4f().rotate((float) Math.toRadians(-90),
-			new Vector3f(1, 0, 0));
+    public SkeletonLoader(Element visualSceneNode, List<String> boneOrder) {
+        this.armatureData = XMLUtil.getChildWithAttribute(XMLUtil.getChild(visualSceneNode, "visual_scene"), "node", "id", "Armature");
+        this.boneOrder = boneOrder;
+    }
 
-	public SkeletonLoader(XmlNode visualSceneNode, List<String> boneOrder) {
-		this.armatureData = visualSceneNode.getChild("visual_scene").getChildWithAttribute("node", "id", "Armature");
-		this.boneOrder = boneOrder;
-	}
+    public final SkeletonData extractBoneData() {
+        final Element headNode = XMLUtil.getChild(armatureData, "node");
+        final JointData headJoint = loadJointData(headNode, true);
+        return new SkeletonData(jointCount, headJoint);
+    }
 
-	public SkeletonData extractBoneData() {
-		XmlNode headNode = armatureData.getChild("node");
-		JointData headJoint = loadJointData(headNode, true);
-		return new SkeletonData(jointCount, headJoint);
-	}
+    private JointData loadJointData(Element jointNode, boolean isRoot) {
+        final JointData joint = extractMainJointData(jointNode, isRoot);
+        XMLUtil.getChildren(jointNode, "node").stream().forEach((childNode) -> {
+            joint.addChild(loadJointData(childNode, false));
+        });
+        return joint;
+    }
 
-	private JointData loadJointData(XmlNode jointNode, boolean isRoot) {
-		JointData joint = extractMainJointData(jointNode, isRoot);
-		for (XmlNode childNode : jointNode.getChildren("node")) {
-			joint.addChild(loadJointData(childNode, false));
-		}
-		return joint;
-	}
+    private JointData extractMainJointData(Element jointNode, boolean isRoot) {
+        final String nameId = jointNode.getAttributeValue("id");
+        final int index = boneOrder.indexOf(nameId);
+        final String[] matrixData = XMLUtil.getChild(jointNode, "matrix").getText().split(" ");
+        final Matrix4f matrix = new Matrix4f();
+        matrix.load(convertData(matrixData));
+        matrix.transpose();
+        if (isRoot) {
+            // because in Blender z is up, but in our game y is up.
+            Matrix4f.mul(ColladaLoader.CORRECTION, matrix, matrix);
+        }
+        jointCount++;
+        return new JointData(index, nameId, matrix);
+    }
 
-	private JointData extractMainJointData(XmlNode jointNode, boolean isRoot) {
-		String nameId = jointNode.getAttribute("id");
-		int index = boneOrder.indexOf(nameId);
-		String[] matrixData = jointNode.getChild("matrix").getData().split(" ");
-		Matrix4f matrix = new Matrix4f();
-		matrix.load(convertData(matrixData));
-		matrix.transpose();
-		if (isRoot) {
-			// because in Blender z is up, but in our game y is up.
-			Matrix4f.mul(CORRECTION, matrix, matrix);
-		}
-		jointCount++;
-		return new JointData(index, nameId, matrix);
-	}
-
-	private FloatBuffer convertData(String[] rawData) {
-		float[] matrixData = new float[16];
-		for (int i = 0; i < matrixData.length; i++) {
-			matrixData[i] = Float.parseFloat(rawData[i]);
-		}
-		FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
-		buffer.put(matrixData);
-		buffer.flip();
-		return buffer;
-	}
+    private FloatBuffer convertData(String[] rawData) {
+        final float[] matrixData = new float[16];
+        for (int i = 0; i < matrixData.length; i++) {
+            matrixData[i] = Float.parseFloat(rawData[i]);
+        }
+        final FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
+        buffer.put(matrixData);
+        buffer.flip();
+        return buffer;
+    }
 
 }

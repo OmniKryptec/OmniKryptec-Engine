@@ -5,39 +5,51 @@ import omnikryptec.animation.ColladaParser.dataStructures.AnimationData;
 import omnikryptec.animation.ColladaParser.dataStructures.MeshData;
 import omnikryptec.animation.ColladaParser.dataStructures.SkeletonData;
 import omnikryptec.animation.ColladaParser.dataStructures.SkinningData;
-import omnikryptec.animation.ColladaParser.xmlParser.XmlNode;
-import omnikryptec.animation.ColladaParser.xmlParser.XmlParser;
 import omnikryptec.util.AdvancedFile;
+import omnikryptec.util.XMLUtil;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
 
+/**
+ * Loads a model from a collada XML file.
+ * @author Karl &amp; Panzer1119
+ */
 public class ColladaLoader {
+    
+    public  static final Matrix4f CORRECTION = new Matrix4f().rotate((float) Math.toRadians(-90), new Vector3f(1, 0, 0));
 
-	public static MeshData getMeshDataOnly(AdvancedFile colladaFile) {
-		return loadColladaModel(colladaFile, 0).getMeshData();
-	}
+    public static final MeshData getMeshDataOnly(AdvancedFile colladaFile) {
+        return loadColladaModel(colladaFile, 0).getMeshData();
+    }
 
-	public static AnimatedModelData loadColladaModel(AdvancedFile colladaFile, int maxWeights) {
-		XmlNode node = XmlParser.loadXmlFile(colladaFile);
+    public static final AnimatedModelData loadColladaModel(AdvancedFile colladaFile, int maxWeights) {
+        final Document document = XMLUtil.getDocument(colladaFile.createInputStream());
+        if(document == null) {
+            return null;
+        }
+        final Element node = document.getRootElement();
+        final SkinLoader skinLoader = new SkinLoader(XMLUtil.getChild(node, "library_controllers"), maxWeights);
+        final SkinningData skinningData = skinLoader.extractSkinData();
+        final SkeletonLoader jointsLoader = new SkeletonLoader(XMLUtil.getChild(node, "library_visual_scenes"), skinningData.jointOrder);
+        final SkeletonData jointsData = jointsLoader.extractBoneData();
+        final GeometryLoader g = new GeometryLoader(XMLUtil.getChild(node, "library_geometries"), skinningData.verticesSkinData);
+        final MeshData meshData = g.extractModelData();
+        return new AnimatedModelData(meshData, jointsData);
+    }
 
-		SkinLoader skinLoader = new SkinLoader(node.getChild("library_controllers"), maxWeights);
-		SkinningData skinningData = skinLoader.extractSkinData();
-
-		SkeletonLoader jointsLoader = new SkeletonLoader(node.getChild("library_visual_scenes"),
-				skinningData.jointOrder);
-		SkeletonData jointsData = jointsLoader.extractBoneData();
-
-		GeometryLoader g = new GeometryLoader(node.getChild("library_geometries"), skinningData.verticesSkinData);
-		MeshData meshData = g.extractModelData();
-
-		return new AnimatedModelData(meshData, jointsData);
-	}
-
-	public static AnimationData loadColladaAnimation(AdvancedFile colladaFile) {
-		XmlNode node = XmlParser.loadXmlFile(colladaFile);
-		XmlNode animNode = node.getChild("library_animations");
-		XmlNode jointsNode = node.getChild("library_visual_scenes");
-		AnimationLoader loader = new AnimationLoader(animNode, jointsNode);
-		AnimationData animData = loader.extractAnimation();
-		return animData;
-	}
+    public static final AnimationData loadColladaAnimation(AdvancedFile colladaFile) {
+        final Document document = XMLUtil.getDocument(colladaFile.createInputStream());
+        if(document == null) {
+            return null;
+        }
+        final Element node = document.getRootElement();
+        final Element animNode = XMLUtil.getChild(node, "library_animations");
+        final Element jointsNode = XMLUtil.getChild(node, "library_visual_scenes");
+        final AnimationLoader loader = new AnimationLoader(animNode, jointsNode);
+        final AnimationData animData = loader.extractAnimation();
+        return animData;
+    }
 
 }
