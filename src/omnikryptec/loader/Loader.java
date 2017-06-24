@@ -1,15 +1,17 @@
 package omnikryptec.loader;
 
+import omnikryptec.util.AdvancedFile;
+
 /**
  *
  * @author Panzer1119
  */
 public interface Loader {
     
-    public Object load(Object object);
+    public Data load(AdvancedFile advancedFile);
     
     public String[] getExtensions();
     
-    public String[] getBlackList();
+    public String[] getBlacklist();
     
 }

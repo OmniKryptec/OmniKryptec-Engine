@@ -19,9 +19,13 @@ import omnikryptec.logger.Logger;
  */
 public class AdvancedFile {
 
+    public static final String UNIX_SEPARATOR = "/";
     public static final String PATH_SEPARATOR = "/";
-    public static final String FILE_SEPARATOR = File.separator;
-    public static final String EXTENSION_SEPARATOR = "\\.";
+    public static final String WINDOWS_SEPARATOR = "\\";
+    public static final String SYSTEM_SEPARATOR = File.separator;
+    public static final String OTHER_SEPARATOR = (SYSTEM_SEPARATOR.equals(WINDOWS_SEPARATOR) ? UNIX_SEPARATOR : WINDOWS_SEPARATOR);
+    public static final char EXTENSION_CHAR = '.';
+    public static final String EXTENSION_SEPARATOR = Character.toString(EXTENSION_CHAR);
 
     private File folder = null;
     private String[] paths = null;
@@ -217,7 +221,7 @@ public class AdvancedFile {
     public final AdvancedFile setFolder(File folder) {
         this.path = null;
         this.folder = folder;
-        separator = (folder == null ? PATH_SEPARATOR : FILE_SEPARATOR);
+        separator = (folder == null ? PATH_SEPARATOR : SYSTEM_SEPARATOR);
         return this;
     }
 
@@ -278,7 +282,7 @@ public class AdvancedFile {
                 setFolder(file);
             }
             if (withPaths && !file.isAbsolute()) {
-                addPrePaths(file.getPath().split("\\" + FILE_SEPARATOR));
+                addPrePaths(file.getPath().split("\\" + SYSTEM_SEPARATOR));
             }
         } else if (parent instanceof AdvancedFile) {
             final AdvancedFile advancedFile = (AdvancedFile) parent;
@@ -509,6 +513,32 @@ public class AdvancedFile {
     
     public final boolean parseShouldBeFile() {
         return (shouldBeFile = toFile().getName().contains(EXTENSION_SEPARATOR));
+    }
+    
+    public final String getBasename() {
+        final File file = toFile();
+        return removeExtension(file.getName());
+    }
+    
+    public final String getExtension() {
+        final File file = toFile();
+        int index = file.getName().indexOf(EXTENSION_SEPARATOR);
+        if(index != -1) {
+            return file.getName().substring(index + EXTENSION_SEPARATOR.length());
+        }
+        return null;
+    }
+    
+    public static final String removeExtension(String filename) {
+        if (filename == null) {
+            return null;
+        }
+
+        final int index = filename.indexOf(EXTENSION_SEPARATOR);
+        if (index != -1) {
+            return filename.substring(0, index);
+        }
+        return filename;
     }
 
 }
