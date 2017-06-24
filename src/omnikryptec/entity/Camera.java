@@ -1,6 +1,5 @@
 package omnikryptec.entity;
 
-import omnikryptec.logger.Logger;
 import omnikryptec.test.saving.DataMap;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
@@ -135,25 +134,28 @@ public class Camera extends GameObject {
         return data;
     }
     
-    public static Object fromDataMap(DataMap data) {
+    public static Camera newInstancefromDataMap(DataMap data) {
         if(data == null) {
             return null;
         }
-        Object temp = GameObject.fromDataMap(data.getDataMap("gameObject"));
-        Camera camera = new Camera();
-        if(temp != null && temp instanceof GameObject) {
-            camera = Camera.copy((GameObject) temp);
-        } else {
-            Logger.log("temp is null!");
+        return new Camera().fromDataMap(data);
+    }
+    
+    @Override
+    public Camera fromDataMap(DataMap data) {
+        if(data == null) {
+            return this;
         }
-        camera.absrot = SerializationUtil.stringToVector3f(data.getString("absrot"));
-        camera.campos = SerializationUtil.stringToVector3f(data.getString("campos"));
-        camera.lastpos = SerializationUtil.stringToVector3f(data.getString("lastpos"));
-        camera.lastrot = SerializationUtil.stringToVector3f(data.getString("lastrot"));
-        camera.negcampos = SerializationUtil.stringToVector3f(data.getString("negcampos"));
-        camera.projection = SerializationUtil.stringToMatrix4f(data.getString("projection"));
-        camera.view = SerializationUtil.stringToMatrix4f(data.getString("view"));
-        return camera;
+        DataMap dataMap_temp = data.getDataMap("gameObject");
+        super.fromDataMap(dataMap_temp);
+        absrot = SerializationUtil.stringToVector3f(data.getString("absrot"));
+        campos = SerializationUtil.stringToVector3f(data.getString("campos"));
+        lastpos = SerializationUtil.stringToVector3f(data.getString("lastpos"));
+        lastrot = SerializationUtil.stringToVector3f(data.getString("lastrot"));
+        negcampos = SerializationUtil.stringToVector3f(data.getString("negcampos"));
+        projection = SerializationUtil.stringToMatrix4f(data.getString("projection"));
+        view = SerializationUtil.stringToMatrix4f(data.getString("view"));
+        return this;
     }
 
 }

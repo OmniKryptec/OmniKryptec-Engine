@@ -204,18 +204,34 @@ public class Scene implements DataMapSerializable {
         return data;
     }
 
-    public static Object fromDataMap(DataMap data) {
-        final Scene scene = new Scene(data.getName(), null);
-        DataMap data_temp = data.getDataMap("camera");
-        Object temp = Camera.fromDataMap(data_temp);
-        if(temp != null && temp instanceof Camera) {
-            final Camera camera = (Camera) temp;
-            scene.setCamera(camera);
-        } else {
-            Logger.log("temp is null!");
-            scene.setCamera(null);
+    public static Scene newInstancefromDataMap(DataMap data) {
+        if(data == null) {
+            return null;
         }
-        return scene;
+        return new Scene().fromDataMap(data);
+    }
+    
+    @Override
+    public Scene fromDataMap(DataMap data) {
+        if(data == null) {
+            return this;
+        }
+        setName(data.getName());
+        DataMap dataMap_temp = data.getDataMap("camera");
+        if(dataMap_temp != null) {
+            if(cam != null) {
+                cam.fromDataMap(dataMap_temp);
+            } else {
+                Object temp = Camera.newInstancefromDataMap(dataMap_temp);
+                if(temp != null && temp instanceof Camera) {
+                    setCamera((Camera) temp);
+                }
+            }
+        } else {
+            Logger.log("Camera is null!");
+            setCamera(null);
+        }
+        return this;
     }
     
     @Override

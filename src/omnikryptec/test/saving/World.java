@@ -93,12 +93,18 @@ public class World implements DataMapSerializable {
         return data;
     }
 
-    public static World fromDataMap(DataMap data) {
+    public static World newInstanceFromDataMap(DataMap data) {
+        return (World) new World().fromDataMap(data);
+    }
+
+    @Override
+    public Object fromDataMap(DataMap data) {
         Logger.log("Created World data.size() == " + data.size());
         for(String g : data.keySet()) {
             Logger.log(g + " " + data.get(g).getClass().getName() + " " + data.get(g));
         }
-        return new World(data.get("name").toString());
+        setName(data.getString("name"));
+        return this;
     }
 
 }

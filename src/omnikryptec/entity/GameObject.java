@@ -463,18 +463,31 @@ public class GameObject implements DataMapSerializable {
         return data;
     }
     
-    public static Object fromDataMap(DataMap data) {
+    public static GameObject newInstancefromDataMap(DataMap data) {
         if(data == null) {
             return null;
         }
-        final GameObject gameObject = new GameObject(data.getName());
-        gameObject.setGlobal(data.getBoolean("isglobal"));
-        gameObject.setActive(data.getBoolean("isActive"));
-        Object parent = fromDataMap(data.getDataMap("parent"));
-        gameObject.setParent((parent != null ? (GameObject) parent : null));
-        gameObject.setPos(SerializationUtil.stringToVector3f(data.getString("position")));
-        gameObject.setRotation(SerializationUtil.stringToVector3f(data.getString("rotation")));
-        return gameObject;
+        return new GameObject().fromDataMap(data);
+    }
+    
+    @Override
+    public GameObject fromDataMap(DataMap data) {
+        if(data == null) {
+            return null;
+        }
+        setName(data.getName());
+        setGlobal(data.getBoolean("isglobal"));
+        setActive(data.getBoolean("isActive"));
+        DataMap dataMap_temp = data.getDataMap("parent");
+        if(parent == null) {
+            Object parent_ = fromDataMap(dataMap_temp);
+            setParent((parent_ != null ? (GameObject) parent_ : null));
+        } else {
+            parent.fromDataMap(dataMap_temp); //FIXME Hmmm ist die Frage weil die Parents und id und so
+        }
+        setPos(SerializationUtil.stringToVector3f(data.getString("position")));
+        setRotation(SerializationUtil.stringToVector3f(data.getString("rotation")));
+        return this;
     }
 
 }

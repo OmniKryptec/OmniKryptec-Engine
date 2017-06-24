@@ -56,7 +56,7 @@ public class DataMapSerializer {
                 final ArrayList<DataMap> data = classesDataMaps.get(c);
                 for(DataMap d : data) {
                     try {
-                        final Object object = c.getDeclaredMethod("fromDataMap", d.getClass()).invoke(c.newInstance(), d);
+                        final Object object = c.getDeclaredMethod("newInstancefromDataMap", d.getClass()).invoke(c.newInstance(), d);
                         if(object != null) {
                             addDataMapSerializable(classesDataMapSerializables, c, (DataMapSerializable) object);
                         } else {
@@ -105,6 +105,10 @@ public class DataMapSerializer {
         return unserialize(unserializeThisToDataMap(file, dataMapSerializer));
     }
     
+    public final HashMap<Class<?>, ArrayList<DataMap>> unserializeToDataMap(AdvancedFile file, IDataMapSerializer dataMapSerializer) {
+        return (classesDataMaps = unserializeThisToDataMap(file, dataMapSerializer));
+    }
+    
     public final HashMap<Class<?>, ArrayList<DataMapSerializable>> unserializeToDataMapSerializable(AdvancedFile file, IDataMapSerializer dataMapSerializer) {
         return (classesDataMapSerializables = unserializeThisToDataMapSerializable(file, dataMapSerializer));
     }
@@ -131,12 +135,20 @@ public class DataMapSerializer {
         addDataMapSerializable(object.getClass(), (DataMapSerializable) object);
     }
     
-    public final <T> ArrayList<T> getObjects(HashMap<Class<?>, ArrayList<DataMapSerializable>> classesDataMapSerializables, Class<? extends T> type) {
+    public static final <T> ArrayList<T> getObjects(HashMap<Class<?>, ArrayList<DataMapSerializable>> classesDataMapSerializables, Class<? extends T> type) {
         return (ArrayList<T>) (ArrayList<?>) classesDataMapSerializables.get(type);
     }
     
     public final <T> ArrayList<T> getObjects(Class<? extends T> type) {
         return getObjects(classesDataMapSerializables, type);
+    }
+    
+    public static final ArrayList<DataMap> getDataMaps(HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps, Class<?> type) {
+        return classesDataMaps.get(type);
+    }
+    
+    public final ArrayList<DataMap> getDataMaps(Class<?> type) {
+        return getDataMaps(classesDataMaps, type);
     }
 
     public final HashMap<Class<?>, ArrayList<DataMapSerializable>> getClassesDataMapSerializables() {

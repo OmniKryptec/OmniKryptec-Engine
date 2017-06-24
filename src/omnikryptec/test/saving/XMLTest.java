@@ -36,7 +36,7 @@ public class XMLTest {
                 Logger.log("data.size() == " + data.size());
                 for(DataMap d : data) {
                     Logger.log("DataMap found: " + d.getName());
-                    World world = World.fromDataMap(d);
+                    World world = World.newInstanceFromDataMap(d);
                     Logger.log("World unserialized: " + world);
                 }
             } else {

@@ -79,9 +79,6 @@ public class AnimationTest {
             keySettings.setKey("lower", Keyboard.KEY_COMMA, true);
             keySettings.setKey("higher", Keyboard.KEY_PERIOD, true);
             DisplayManager.createDisplay("Animation Test", gameSettings);
-            if(SAVE.exists()) {
-                load();
-            }
             OmniKryptecEngine.instance().addAndSetScene((scene = new Scene("Test-Scene", camera = ((Camera) new Camera() {
 
                 @Override
@@ -97,7 +94,10 @@ public class AnimationTest {
                     InputUtil.doThirdPersonController(this, this, keySettings, horizontalSpeed, verticalSpeed, turnSpeed);
                 }
 
-            }.setPerspectiveProjection(75, 0.1F, 1000).setValuesFrom(camera)))).setValuesFrom(scene));
+            }.setPerspectiveProjection(75, 0.1F, 1000)))));
+            if(SAVE.exists()) {
+                load();
+            }
             entityBuilder_brunnen = new EntityBuilder().loadModel("/omnikryptec/test/brunnen.obj").loadTexture("/omnikryptec/test/brunnen.png");
             entity_ball = entityBuilder_brunnen.create();
             animatedModel = AnimatedModelLoader.loadModel(new AdvancedFile(RES_FOLDER_1, MODEL_FILE), new AdvancedFile(RES_FOLDER_1, DIFFUSE_FILE), null);
@@ -135,9 +135,8 @@ public class AnimationTest {
     
     public static final void load() {
         dataMapSerializer.reset();
-        dataMapSerializer.unserializeToDataMapSerializable(SAVE, XMLSerializer.newInstance());
-        scene = dataMapSerializer.getObjects(Scene.class).get(0);
-        camera = scene.getCamera();
+        dataMapSerializer.unserializeToDataMap(SAVE, XMLSerializer.newInstance());
+        scene.fromDataMap(dataMapSerializer.getDataMaps(Scene.class).get(0));
     }
     
     public static final void save() {

@@ -7,7 +7,7 @@ import omnikryptec.model.AdvancedModel;
 import omnikryptec.model.Model;
 import omnikryptec.texture.SimpleTexture;
 
-public class Entity extends GameObject implements Rangeable{
+public class Entity extends GameObject implements Rangeable {
 
 	public static enum RenderType {
 		ALWAYS, MEDIUM, FOLIAGE, BIG;
