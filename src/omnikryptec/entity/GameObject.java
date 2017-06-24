@@ -31,6 +31,7 @@ public class GameObject implements DataMapSerializable {
 	}
 
 	private static final Sorter SORTER = new Sorter();
+        public static final ArrayList<GameObject> gameObjects = new ArrayList<>();
 
         private String name;
 	private boolean isglobal=false;
@@ -64,6 +65,7 @@ public class GameObject implements DataMapSerializable {
 	public GameObject(String name, GameObject parent) {
                 this.name = name;
 		this.parent = parent;
+                gameObjects.add(this);
 	}
 
 	/**
@@ -267,6 +269,7 @@ public class GameObject implements DataMapSerializable {
 			}
 		}
 		delete();
+                gameObjects.remove(this);
 		return this;
 	}
 
@@ -445,6 +448,15 @@ public class GameObject implements DataMapSerializable {
             this.name = name;
             return this;
         }
+        
+        public static final <T> T byName(Class<? extends T> c, String name) {
+            for(GameObject gameObject : gameObjects) {
+                if(gameObject.getClass() == c && gameObject.getName() == null ? name == null : gameObject.getName().equals(name)) {
+                    return (T) gameObject;
+                }
+            }
+            return null;
+        }
 
     @Override
     public String getName() {
@@ -453,6 +465,7 @@ public class GameObject implements DataMapSerializable {
 
     @Override
     public DataMap toDataMap(DataMap data) {
+        data.put("name", name);
         data.put("isglobal", isglobal);
         data.put("active", active);
         if(parent != null) {
@@ -467,7 +480,8 @@ public class GameObject implements DataMapSerializable {
         if(data == null) {
             return null;
         }
-        return new GameObject().fromDataMap(data);
+        final GameObject gameObject = byName(GameObject.class, data.getString("name"));
+        return (gameObject != null ? gameObject : new GameObject()).fromDataMap(data);
     }
     
     @Override
@@ -475,7 +489,7 @@ public class GameObject implements DataMapSerializable {
         if(data == null) {
             return null;
         }
-        setName(data.getName());
+        setName(data.getString("name"));
         setGlobal(data.getBoolean("isglobal"));
         setActive(data.getBoolean("isActive"));
         DataMap dataMap_temp = data.getDataMap("parent");

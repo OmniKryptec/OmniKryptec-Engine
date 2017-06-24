@@ -209,9 +209,23 @@ public class Scene implements DataMapSerializable{
 	public Color getAmbient() {
 		return ambientlight;
 	}
+        
+        public static final Scene byName(String name) {
+            if(OmniKryptecEngine.getInstance() != null) {
+                for(Scene scene : OmniKryptecEngine.getInstance().getScenes()) {
+                    if(scene.getName() == null ? name == null : scene.getName().equals(name)) {
+                        return scene;
+                    }
+                }
+                return null;
+            } else {
+                return null;
+            }
+        }
 
     @Override
     public DataMap toDataMap(DataMap data) {
+        data.put("name", name);
         data.put("camera", (cam != null ? cam.toDataMap(new DataMap("camera")) : null));
         return data;
     }
@@ -220,7 +234,8 @@ public class Scene implements DataMapSerializable{
         if(data == null) {
             return null;
         }
-        return new Scene().fromDataMap(data);
+        final Scene scene = byName(data.getString("name"));
+        return (scene != null ? scene : new Scene()).fromDataMap(data);
     }
     
     @Override
@@ -228,7 +243,7 @@ public class Scene implements DataMapSerializable{
         if(data == null) {
             return this;
         }
-        setName(data.getName());
+        setName(data.getString("name"));
         DataMap dataMap_temp = data.getDataMap("camera");
         if(dataMap_temp != null) {
             if(cam != null) {
