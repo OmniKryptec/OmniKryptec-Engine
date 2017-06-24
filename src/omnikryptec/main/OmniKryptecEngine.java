@@ -300,5 +300,9 @@ public class OmniKryptecEngine {
 		this.shutdownOption = shutdownOption;
 		return this;
 	}
+        
+        public final ArrayList<Scene> getScenes() {
+            return scenes;
+        }
 
 }
