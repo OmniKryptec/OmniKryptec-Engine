@@ -22,6 +22,7 @@ import omnikryptec.particles.ParticleMaster;
 import omnikryptec.postprocessing.FrameBufferObject;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.PostProcessing;
+import omnikryptec.postprocessing.RenderTarget;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.AllowedRenderer;
 import omnikryptec.renderer.RendererRegistration;
@@ -127,16 +128,16 @@ public class OmniKryptecEngine {
 	private void createFbos() {
 		scenefbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(),
 				manager.getSettings().getMultiSamples(), manager.getSettings().getAddAttachments(),
-				GL30.GL_COLOR_ATTACHMENT0, GL30.GL_COLOR_ATTACHMENT1, GL30.GL_COLOR_ATTACHMENT2,
-				GL30.GL_COLOR_ATTACHMENT3);
+				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0), new RenderTarget(GL30.GL_COLOR_ATTACHMENT1), new RenderTarget(GL30.GL_COLOR_ATTACHMENT2, true),
+				new RenderTarget(GL30.GL_COLOR_ATTACHMENT3));
 		unsampledfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE,
-				GL30.GL_COLOR_ATTACHMENT0);
+				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0));
 		normalfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
-				GL30.GL_COLOR_ATTACHMENT0);
+				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0));
 		specularfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
-				GL30.GL_COLOR_ATTACHMENT0);
+				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0, true));
 		extrainfofbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
-				GL30.GL_COLOR_ATTACHMENT0);
+				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0));
 		add = manager.getSettings().getAddFBOs();
 	}
 
@@ -216,7 +217,7 @@ public class OmniKryptecEngine {
 			if(sceneCurrent!=null){
 				if (scenefbo.getTargets().length > 4) {
 					for (int i = 4; i < scenefbo.getTargets().length; i++) {
-						scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i - 4]);
+						scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i - 4].target);
 					}
 				}
 				PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);

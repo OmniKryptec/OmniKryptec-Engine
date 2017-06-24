@@ -32,7 +32,7 @@ public class FrameBufferObject extends Texture {
 
 	private int multisample = GameSettings.NO_MULTISAMPLING;
 	private boolean multitarget = false;
-	private int[] targets;
+	private RenderTarget[] targets;
 
 	private DepthbufferType type;
 
@@ -55,17 +55,17 @@ public class FrameBufferObject extends Texture {
 	 *            - an int indicating the type of depth buffer attachment that
 	 *            this FBO should use.
 	 */
-	public FrameBufferObject(int width, int height, DepthbufferType type, int... targets) {
+	public FrameBufferObject(int width, int height, DepthbufferType type, RenderTarget... targets) {
 		super(true);
 		this.width = width;
 		this.height = height;
 		this.targets = targets;
-		this.multitarget = targets.length > 1;
-		initialiseFrameBuffer(type);
+		this.multitarget = targets.length > 1;		
+		initialiseFrameBuffer(DepthbufferType.DEPTH_RENDER_BUFFER);
 	}
 
 	public FrameBufferObject(int width, int height, DepthbufferType type) {
-		this(width, height, type, GL30.GL_COLOR_ATTACHMENT0);
+		this(width, height, type, new RenderTarget(GL30.GL_COLOR_ATTACHMENT0));
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class FrameBufferObject extends Texture {
 	 * @param height
 	 * @param multisamples
 	 */
-	public FrameBufferObject(int width, int height, int multisamples, int... targets) {
+	public FrameBufferObject(int width, int height, int multisamples, RenderTarget... targets) {
 		super(true);
 		this.width = width;
 		this.height = height;
@@ -85,12 +85,12 @@ public class FrameBufferObject extends Texture {
 		initialiseFrameBuffer(DepthbufferType.DEPTH_RENDER_BUFFER);
 	}
 
-	public FrameBufferObject(int width, int height, int multisamples, int[] add, int... targets) {
+	public FrameBufferObject(int width, int height, int multisamples, RenderTarget[] add, RenderTarget... targets) {
 		super(true);
 		this.width = width;
 		this.height = height;
 		this.multisample = multisamples;
-		this.targets = new int[add.length + targets.length];
+		this.targets = new RenderTarget[add.length + targets.length];
 		for (int i = 0; i < targets.length; i++) {
 			this.targets[i] = targets[i];
 		}
@@ -102,7 +102,7 @@ public class FrameBufferObject extends Texture {
 	}
 
 	public FrameBufferObject(int width, int height, int multisamples) {
-		this(width, height, multisamples, GL30.GL_COLOR_ATTACHMENT0);
+		this(width, height, multisamples, new RenderTarget(GL30.GL_COLOR_ATTACHMENT0));
 	}
 
 	public boolean isMultisampled() {
@@ -113,7 +113,7 @@ public class FrameBufferObject extends Texture {
 		return multitarget;
 	}
 
-	public int[] getTargets() {
+	public RenderTarget[] getTargets() {
 		return targets;
 	}
 
@@ -238,11 +238,11 @@ public class FrameBufferObject extends Texture {
 		createFrameBuffer();
 		if (multisample != GameSettings.NO_MULTISAMPLING) {
 			for (int i = 0; i < targets.length; i++) {
-				colBuffers[i] = createMultisampleColourAttachment(targets[i]);
+				colBuffers[i] = createMultisampleColourAttachment(targets[i].target, targets[i].extended?GL30.GL_RGBA32F:GL11.GL_RGBA8);
 			}
 		} else {
 			for (int i = 0; i < targets.length; i++) {
-				colBuffers[i] = createTextureAttachment(targets[i]);
+				colBuffers[i] = createTextureAttachment(targets[i].target, targets[i].extended?GL30.GL_RGBA32F:GL11.GL_RGBA8);
 			}
 		}
 		if (type == DepthbufferType.DEPTH_RENDER_BUFFER) {
@@ -268,16 +268,16 @@ public class FrameBufferObject extends Texture {
 	private void determineDrawBuffers() {
 		IntBuffer drawBuffers = BufferUtils.createIntBuffer(targets.length);
 		for (int i = 0; i < targets.length; i++) {
-			drawBuffers.put(targets[i]);
+			drawBuffers.put(targets[i].target);
 		}
 		drawBuffers.flip();
 		GL20.glDrawBuffers(drawBuffers);
 	}
 
-	private int createMultisampleColourAttachment(int attachment) {
+	private int createMultisampleColourAttachment(int attachment, int level) {
 		int colourBuffer = GL30.glGenRenderbuffers();
 		GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, colourBuffer);
-		GL30.glRenderbufferStorageMultisample(GL30.GL_RENDERBUFFER, multisample, GL11.GL_RGBA8, width, height);
+		GL30.glRenderbufferStorageMultisample(GL30.GL_RENDERBUFFER, multisample, level, width, height);
 		GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, attachment, GL30.GL_RENDERBUFFER, colourBuffer);
 		return colourBuffer;
 	}
@@ -286,10 +286,10 @@ public class FrameBufferObject extends Texture {
 	 * Creates a texture and sets it as the colour buffer attachment for this
 	 * FBO.
 	 */
-	private int createTextureAttachment(int attachment) {
+	private int createTextureAttachment(int attachment, int level) {
 		int colourTexture = GL11.glGenTextures();
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, colourTexture);
-		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE,
+		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, level, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE,
 				(ByteBuffer) null);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);

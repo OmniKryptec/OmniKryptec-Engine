@@ -2,6 +2,7 @@ package omnikryptec.settings;
 
 import omnikryptec.postprocessing.FBOFactory;
 import omnikryptec.postprocessing.FrameBufferObject;
+import omnikryptec.postprocessing.RenderTarget;
 
 /**
  * Game settings object
@@ -28,7 +29,7 @@ public class GameSettings {
 
 	private int eventThreadPoolSize = 2;
 
-	private int[] add_attachments = {};
+	private RenderTarget[] add_attachments = {};
 	private FBOFactory fbo_factory;
 
 	private float foliageRadius = 50;
@@ -137,7 +138,7 @@ public class GameSettings {
 	 * 
 	 * @return Integer Array Added attachments
 	 */
-	public final int[] getAddAttachments() {
+	public final RenderTarget[] getAddAttachments() {
 		return add_attachments;
 	}
 
@@ -148,7 +149,7 @@ public class GameSettings {
 	 *            Added attachments
 	 * @return GameSettings A reference to this GameSettings
 	 */
-	public final GameSettings setAdditionalAttachments(int... add_attachments) {
+	public final GameSettings setAdditionalAttachments(RenderTarget... add_attachments) {
 		this.add_attachments = add_attachments;
 		return this;
 	}
