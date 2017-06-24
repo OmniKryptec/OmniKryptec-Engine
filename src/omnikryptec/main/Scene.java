@@ -20,7 +20,7 @@ import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.PhysicsUtil;
 
-public class Scene {
+public class Scene implements DataMapSerializable{
 
         private String name;
 	private final Map<String, RenderChunk> scene = new HashMap<>();
