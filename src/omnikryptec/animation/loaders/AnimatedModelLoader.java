@@ -33,7 +33,7 @@ public class AnimatedModelLoader {
         Texture texture = loadTexture(textureFile);
         SkeletonData skeletonData = entityData.getJointsData();
         Joint headJoint = createJoints(skeletonData.headJoint);
-        AnimatedModel animatedModel = new AnimatedModel(model, texture, headJoint, skeletonData.jointCount);
+        AnimatedModel animatedModel = new AnimatedModel(modelFile.getName(), model, texture, headJoint, skeletonData.jointCount);
         animatedModel.getMaterial().setRenderer(renderer == null ? RendererRegistration.DEF_ANIMATEDMODEL_RENDERER : renderer);
         return animatedModel;
     }
