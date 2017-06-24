@@ -154,7 +154,7 @@ public class EngineTest2 implements IEventHandler {
 			// system.setTimemultiplier(10);
 			OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
 			OmniKryptecEngine.instance().getCurrentScene()
-					.addGameObject(new Light().setAttenuation(1, 0, 0).setColor(1, 1, 1).setRelativePos(0, 0, 0)
+					.addGameObject(new Light().setAttenuation(0,1, 0).setColor(1, 1, 1).setRelativePos(0, 0, 0)
 							.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera()));
 			// ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
 			// OmniKryptecEngine.instance().getCurrentScene().addGameObject(new

@@ -1,6 +1,6 @@
 package omnikryptec.objConverter;
 
-import omnikryptec.util.Constants;
+import omnikryptec.util.Instance;
 
 public class ModelData {
 
@@ -22,7 +22,7 @@ public class ModelData {
 	}
 
 	public int getVertexCount() {
-		return vertices.length / Constants.DIMENSIONS;
+		return vertices.length / Instance.DIMENSIONS;
 	}
 
 	public float[] getVertices() {

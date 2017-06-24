@@ -14,7 +14,7 @@ import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.texture.SimpleTexture;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.AdvancedFile;
-import omnikryptec.util.Constants;
+import omnikryptec.util.Instance;
 
 public class AnimatedModelLoader {
 
@@ -30,7 +30,7 @@ public class AnimatedModelLoader {
 	 * @return The animated entity (no animation applied though)
 	 */
 	public static AnimatedModel loadModel(AdvancedFile modelFile, AdvancedFile textureFile, Renderer renderer) {
-		AnimatedModelData entityData = ColladaLoader.loadColladaModel(modelFile, Constants.MAX_WEIGHTS);
+		AnimatedModelData entityData = ColladaLoader.loadColladaModel(modelFile, Instance.MAX_WEIGHTS);
 		Model model = new Model(createVertexArrayObject(entityData.getMeshData()));
 		Texture texture = loadTexture(textureFile);
 		SkeletonData skeletonData = entityData.getJointsData();

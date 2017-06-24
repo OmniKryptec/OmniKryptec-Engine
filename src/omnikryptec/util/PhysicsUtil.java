@@ -46,7 +46,7 @@ public class PhysicsUtil {
 		final ConstraintSolver solver = new SequentialImpulseConstraintSolver();
 		final DynamicsWorld dynamicsWorld = new DiscreteDynamicsWorld(dispatcher, broadphase, solver,
 				collisionConfiguration);
-		dynamicsWorld.setGravity(Constants.GRAVITY_EARTH);
+		dynamicsWorld.setGravity(Instance.GRAVITY_EARTH);
 		return dynamicsWorld;
 	}
 
