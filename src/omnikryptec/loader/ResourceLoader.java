@@ -29,8 +29,9 @@ public class ResourceLoader implements Loader {
     	return loadp(advancedFile, advancedFile);
     }
     
-    public void addRessourceObject(String name, ResourceObject obj){
+    public ResourceLoader addRessourceObject(String name, ResourceObject obj){
     	loadedData.put(name, obj);
+    	return this;
     }
     
     final ResourceObject loadp(AdvancedFile advancedFile, AdvancedFile superfile) {
