@@ -36,8 +36,9 @@ public class ResourceLoader implements Loader {
         if(name != null && !name.isEmpty() && resourceObject != null) {
             loadedData.put(name, resourceObject);
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     final boolean loadIntern(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
@@ -52,6 +53,10 @@ public class ResourceLoader implements Loader {
                 return true;
             } else {
                 final List<Loader> loadersForExtension = getLoaderForExtensions(advancedFile.getExtension());
+                if(loadersForExtension.isEmpty()) {
+                    Logger.log(String.format("Failed to load, no Loaders available: \"%s\"%s", advancedFile, (AdvancedFile.isEqual(advancedFile, superFile) ? "" : String.format(" (in \"%s\")", superFile))), LogLevel.WARNING);
+                    return false;
+                }
                 boolean loaded = false;
                 for (Loader loader : loadersForExtension) {
                     try {

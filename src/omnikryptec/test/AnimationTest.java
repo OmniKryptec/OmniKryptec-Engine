@@ -13,6 +13,11 @@ import omnikryptec.entity.EntityBuilder;
 import omnikryptec.entity.GameObject;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
+import omnikryptec.loader.DefaultAnimatedModelDataLoader;
+import omnikryptec.loader.DefaultAnimationLoader;
+import omnikryptec.loader.DefaultTextureLoader;
+import omnikryptec.loader.ResourceLoader;
+import omnikryptec.loader.ResourceObject;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
@@ -50,11 +55,12 @@ public class AnimationTest {
     private static Entity entity_test;
     private static float speedFactor = 1.0F;
     private static final AdvancedFile RES_FOLDER_1 = new AdvancedFile("res");
-    private static final String MODEL_FILE = "model.dae";
-    private static final String ANIM_FILE = "model.dae";
-    private static final String DIFFUSE_FILE = "diffuse.png";
+    private static final AdvancedFile MODEL_FILE = new AdvancedFile(RES_FOLDER_1, "model.dae");
+    private static final AdvancedFile ANIM_FILE = new AdvancedFile(RES_FOLDER_1, "model.dae");
+    private static final AdvancedFile DIFFUSE_FILE = new AdvancedFile(RES_FOLDER_1, "diffuse.png");
     private static final AdvancedFile SAVE = new AdvancedFile(OSUtil.getStandardAppDataEngineFolder(), "saves", "save.xml");
     private static final Deflater deflater = new Deflater(Deflater.BEST_COMPRESSION);
+    private static final ResourceLoader resourceLoader = new ResourceLoader();
 
     public static final void main(String[] args) {
         try {
@@ -105,20 +111,19 @@ public class AnimationTest {
             
             
             //FIXME Only for testing DELETE TIHS!!! START
-            AdvancedFile ttt = new AdvancedFile(RES_FOLDER_1, MODEL_FILE);
-            Logger.log("ttt.exists() == " + new AdvancedFile(ttt.getParent(), "model.ppg").exists());
-            Logger.log("ttt.shouldBeFile() == " + ttt.shouldBeFile());
-            Logger.log("ttt.getFileType() == " + ttt.getFileType());
-            ttt = new AdvancedFile("omnikryptec", "animation");
-            Logger.log("Parent: " + ttt);
-            ttt.listAdvancedFiles().stream().forEach((af) -> {
-                Logger.log("Child: " + af);
+            resourceLoader.addLoader(new DefaultTextureLoader());
+            resourceLoader.addLoader(new DefaultAnimationLoader());
+            resourceLoader.addLoader(new DefaultAnimatedModelDataLoader());
+            resourceLoader.stageAdvancedFiles(DIFFUSE_FILE);
+            resourceLoader.loadStagedAdvancedFiles(true);
+            resourceLoader.getAllData(ResourceObject.class).stream().forEach((resourceObject) -> {
+                Logger.log("Found: " + resourceObject);
             });
             //FIXME Only for testing DELETE TIHS!!! END
             
             
-            animatedModel = AnimatedModelLoader.loadModel(new AdvancedFile(RES_FOLDER_1, MODEL_FILE), new AdvancedFile(RES_FOLDER_1, DIFFUSE_FILE), null);
-            animation = AnimationLoader.loadAnimation(new AdvancedFile(RES_FOLDER_1, ANIM_FILE));
+            animatedModel = AnimatedModelLoader.loadModel(MODEL_FILE, DIFFUSE_FILE, null);
+            animation = AnimationLoader.loadAnimation(ANIM_FILE);
             entity_test = new Entity("entity_test", animatedModel) {
 
                 @Override
