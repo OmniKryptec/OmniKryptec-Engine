@@ -11,10 +11,12 @@ import omnikryptec.loader.ResourceObject;
  */
 public class AnimatedModelData implements ResourceObject {
 
+    private final String name;
     private final SkeletonData joints;
     private final MeshData mesh;
 
-    public AnimatedModelData(MeshData mesh, SkeletonData joints) {
+    public AnimatedModelData(String name, MeshData mesh, SkeletonData joints) {
+        this.name = name;
         this.joints = joints;
         this.mesh = mesh;
     }
@@ -25,6 +27,11 @@ public class AnimatedModelData implements ResourceObject {
 
     public MeshData getMeshData() {
         return mesh;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
 }

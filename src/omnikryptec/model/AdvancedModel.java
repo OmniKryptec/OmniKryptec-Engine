@@ -1,5 +1,7 @@
 package omnikryptec.model;
 
+import omnikryptec.loader.ResourceObject;
+import omnikryptec.test.saving.DataMap;
 import omnikryptec.texture.Texture;
 
 /**
@@ -7,7 +9,7 @@ import omnikryptec.texture.Texture;
  *
  * @author Panzer1119
  */
-public interface AdvancedModel {
+public interface AdvancedModel extends ResourceObject {
 
     /**
      * Returns the model
@@ -50,5 +52,21 @@ public interface AdvancedModel {
      * @return A copy of this AdvancedModel
      */
     public AdvancedModel copy();
+    
+    /**
+     * Returns a representation of this object in a DataMap
+     * 
+     * @param data DataMap Data
+     * @return DataMap Data
+     */
+    public DataMap toDataMap(DataMap data);
+    
+    /**
+     * Loads values from a DataMap
+     * 
+     * @param data DataMap Data
+     * @return A reference to this AdvancedModel
+     */
+    public AdvancedModel fromDataMap(DataMap data);
 
 }

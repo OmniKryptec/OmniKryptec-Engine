@@ -9,6 +9,7 @@ import omnikryptec.loader.ResourceObject;
  */
 public class Animation implements ResourceObject {
 
+    private final String name;
     private final float lengthInSeconds;
     private final KeyFrame[] keyFrames;
 
@@ -18,7 +19,8 @@ public class Animation implements ResourceObject {
      * @param lengthInSeconds Float Length in seconds
      * @param keyFrames KeyFrame Array KeyFrames
      */
-    public Animation(float lengthInSeconds, KeyFrame[] keyFrames) {
+    public Animation(String name, float lengthInSeconds, KeyFrame[] keyFrames) {
+        this.name = name;
         this.lengthInSeconds = lengthInSeconds;
         this.keyFrames = keyFrames;
     }
@@ -39,6 +41,11 @@ public class Animation implements ResourceObject {
      */
     public final KeyFrame[] getKeyFrames() {
         return keyFrames;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
 }

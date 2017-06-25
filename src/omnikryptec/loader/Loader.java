@@ -14,8 +14,12 @@ public interface Loader {
 
     public String[] getBlacklist();
 
-    default String generateName(AdvancedFile advancedFile, AdvancedFile superfile) {
-        String s = advancedFile.getPath().replace(superfile.getPath(), "").replace(AdvancedFile.PATH_SEPARATOR, ":");
+    default String generateName(AdvancedFile advancedFile, AdvancedFile superFile) {
+        String path = advancedFile.getPath();
+        if(superFile.isDirectory() && !superFile.isRelative()) {
+            path = path.replace(superFile.getPath(), "");
+        }
+        String s = path.replace(AdvancedFile.PATH_SEPARATOR, ":");
         if (s.startsWith(":")) {
             s = s.substring(1, s.length());
         }
@@ -24,4 +28,5 @@ public interface Loader {
         }
         return s;
     }
+    
 }

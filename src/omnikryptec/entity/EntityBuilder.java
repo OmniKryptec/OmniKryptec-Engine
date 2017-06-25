@@ -64,11 +64,11 @@ public class EntityBuilder {
         this.texture = texture;
         return this;
     }
-    
+
     public final String getTexturedModelName() {
         return texturedModelName;
     }
-    
+
     public final EntityBuilder setTexturedModelName(String texturedModelName) {
         this.texturedModelName = texturedModelName;
         return this;
@@ -85,12 +85,20 @@ public class EntityBuilder {
     }
 
     public final EntityBuilder loadTexture(String texturePath) {
-        this.texture = SimpleTexture.newTextureb(texturePath).create();
+        return loadTexture("", texturePath);
+    }
+    
+    public final EntityBuilder loadTexture(String name, String texturePath) {
+        this.texture = SimpleTexture.newTextureb(name, texturePath).create();
         return this;
     }
 
     public final EntityBuilder loadTexture(AdvancedFile textureFile) {
-        this.texture = SimpleTexture.newTextureb(textureFile).create();
+        return loadTexture("", textureFile);
+    }
+    
+    public final EntityBuilder loadTexture(String name, AdvancedFile textureFile) {
+        this.texture = SimpleTexture.newTextureb(name, textureFile).create();
         return this;
     }
 

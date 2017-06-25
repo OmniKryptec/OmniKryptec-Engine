@@ -2,12 +2,14 @@ package omnikryptec.animation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import omnikryptec.loader.ResourceLoader;
 
 import org.lwjgl.util.vector.Matrix4f;
 
 import omnikryptec.model.AdvancedModel;
 import omnikryptec.model.Material;
 import omnikryptec.model.Model;
+import omnikryptec.test.saving.DataMap;
 import omnikryptec.texture.Texture;
 
 /**
@@ -134,7 +136,7 @@ public class AnimatedModel implements AdvancedModel {
         }
         return this;
     }
-
+    
     /**
      * Carrys out an animation
      *
@@ -143,6 +145,31 @@ public class AnimatedModel implements AdvancedModel {
      */
     public final AnimatedModel doAnimation(Animation animation) {
         animator.doAnimation(animation);
+        return this;
+    }
+
+    /**
+     * Carrys out an animation
+     *
+     * @param animation Animation Animation
+     * @param animationTime Float Time
+     * @return A reference to this AnimatedModel
+     */
+    public final AnimatedModel doAnimation(Animation animation, float animationTime) {
+        animator.doAnimation(animation, animationTime);
+        return this;
+    }
+    
+    /**
+     * Carrys out an animation
+     *
+     * @param animation Animation Animation
+     * @param animationTime Float Time
+     * @param loop Boolean Set if the animation should get looped
+     * @return A reference to this AnimatedModel
+     */
+    public final AnimatedModel doAnimation(Animation animation, float animationTime, boolean loop) {
+        animator.doAnimation(animation, animationTime, loop);
         return this;
     }
 
@@ -217,5 +244,37 @@ public class AnimatedModel implements AdvancedModel {
         }
         return null;
     }
+    
+    public final Animation getAnimation() {
+        return animator.getAnimation();
+    }
 
+    @Override
+    public DataMap toDataMap(DataMap data) {
+        final Animation animation = getAnimation();
+        if(animation != null) {
+            data.put("animation", animation.getName());
+        }
+        data.put("speedFactor", animator.getSpeedFactor());
+        data.put("animationTime", animator.getAnimationTime());
+        data.put("loop", animator.isLoop());
+        data.put("name", name);
+        return data;
+    }
+
+    @Override
+    public AnimatedModel fromDataMap(DataMap data) {
+        final String name_animation = data.getString("animation");
+        final float speedFactor = data.getFloat("speedFactor");
+        final float animationTime = data.getFloat("animationTime");
+        final boolean loop = data.getBoolean("loop");
+        animator.setSpeedFactor(speedFactor);
+        animator.setAnimationTime(animationTime);
+        animator.setLoop(loop);
+        if(name_animation != null) {
+            doAnimation(ResourceLoader.getInstance().getData(Animation.class, name_animation), animationTime, loop);
+        }
+        return this;
+    }
+    
 }

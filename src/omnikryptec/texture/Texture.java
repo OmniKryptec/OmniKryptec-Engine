@@ -6,22 +6,24 @@ public abstract class Texture implements ResourceObject {
 
     private static Texture lastBoundTexture;
 
+    private final String name;
     private boolean alwaysBind = false;
     private float[] uvs = {0, 0, 1, 1};
 
-    public Texture() {
-        this(false);
+    public Texture(String name) {
+        this(name, false);
     }
 
-    public Texture(float u, float v, float u2, float v2) {
-        this(false, u, v, u2, v2);
+    public Texture(String name, float u, float v, float u2, float v2) {
+        this(name, false, u, v, u2, v2);
     }
 
-    public Texture(boolean alwaysBind) {
-        this(alwaysBind, 0, 0, 1, 1);
+    public Texture(String name, boolean alwaysBind) {
+        this(name, alwaysBind, 0, 0, 1, 1);
     }
 
-    public Texture(boolean alwaysBind, float u, float v, float u2, float v2) {
+    public Texture(String name, boolean alwaysBind, float u, float v, float u2, float v2) {
+        this.name = name;
         this.alwaysBind = alwaysBind;
         uvs[0] = u;
         uvs[1] = v;
@@ -51,6 +53,11 @@ public abstract class Texture implements ResourceObject {
 
     public boolean bindAlways() {
         return alwaysBind;
+    }
+
+    @Override
+    public final String getName() {
+        return name;
     }
 
 }

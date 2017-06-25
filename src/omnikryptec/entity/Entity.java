@@ -1,5 +1,9 @@
 package omnikryptec.entity;
 
+import java.util.Arrays;
+import omnikryptec.loader.ResourceLoader;
+import omnikryptec.logger.LogEntry;
+import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -133,8 +137,9 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
         data.put("color", SerializationUtil.colorToString(color));
         data.put("scale", SerializationUtil.vector3fToString(scale));
         data.put("type", type.name());
-        data.put("modelName", model.getName());
-        data.put("modelClass", model.getClass().getName());
+        if(model != null) {
+            data.put("model", model.toDataMap(new DataMap(model.getName())));
+        }
         return data;
     }
 
@@ -156,7 +161,7 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
         if (data == null) {
             return null;
         }
-        Logger.log("Creating Entity from DataMap");
+        Logger.log("Creating Entity from DataMap: " + data.getName());
         DataMap dataMap_temp = data.getDataMap("gameObject");
         super.fromDataMap(dataMap_temp);
         color = SerializationUtil.stringToColor(data.getString("color"));
@@ -167,23 +172,22 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
         } else {
             type = RenderType.ALWAYS;
         }
-        final String modelName = data.getString("modelName");
-        final String modelClass_string = data.getString("modelClass");
-        final Class<?> modelClass = SerializationUtil.classForName(modelClass_string);
-        if(modelClass != null && AdvancedModel.class.isAssignableFrom(modelClass)) {
-            Logger.log("Toll!: " + modelClass.getName());
+        dataMap_temp = data.getDataMap("model");
+        if(dataMap_temp != null) {
+            final String modelName = dataMap_temp.getString("name");
+            Logger.log("Loading AdvancedModel: " + modelName);
             try {
-                Object object = modelClass.getMethod("byName", String.class).invoke(modelClass.newInstance(), modelName);
-                Logger.log("Toller: " + object);
-                if(object != null && object instanceof AdvancedModel) {
-                    model = (AdvancedModel) object;
-                    Logger.log("Am bestesteN: " + model.getMaterial().getRenderer());
+                model = ResourceLoader.getInstance().getData(AdvancedModel.class, modelName);
+                if(model != null) {
+                    model.fromDataMap(dataMap_temp);
+                } else if(Logger.isDebugMode()) {
+                    Logger.log("AdvancedModel is null!", LogLevel.WARNING);
                 }
             } catch (Exception ex) {
-                Logger.logErr("Error while getting advanced model: " + ex, ex);
+                Logger.logErr("Error while setting up the advanced model: " + ex, ex);
             }
-        } else {
-            Logger.log("Nicht Toll: " + AdvancedModel.class.isAssignableFrom(modelClass));
+        } else if(Logger.isDebugMode()) {
+            Logger.log("AdvancedModel DataMap is null!", LogLevel.WARNING);
         }
         return this;
     }

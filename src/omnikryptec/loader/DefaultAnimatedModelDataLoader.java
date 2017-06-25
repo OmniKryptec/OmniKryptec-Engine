@@ -2,6 +2,7 @@ package omnikryptec.loader;
 
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
 import omnikryptec.animation.ColladaParser.dataStructures.AnimatedModelData;
+import omnikryptec.logger.Logger;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Instance;
 
@@ -13,8 +14,9 @@ public class DefaultAnimatedModelDataLoader implements Loader {
 
     @Override
     public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
-        final AnimatedModelData entityData = ColladaLoader.loadColladaModel(advancedFile, Instance.MAX_WEIGHTS);
         final String name = generateName(advancedFile, superFile) + ":AnimatedModelData";
+        final AnimatedModelData entityData = ColladaLoader.loadColladaModel(name, advancedFile, Instance.MAX_WEIGHTS);
+        Logger.log(String.format("Loaded AnimatedModelData \"%s\" from \"%s\" (in \"%s\")", name, advancedFile, superFile)); //TODO Only for testing!!! DELETE THIS!
         return resourceLoader.addRessourceObject(name, entityData);
     }
 

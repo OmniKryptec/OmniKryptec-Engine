@@ -274,4 +274,11 @@ public class ResourceLoader implements Loader {
 //        executor = Executors.newFixedThreadPool(10);
 //        return this;
 //    }
+    
+    public static final ResourceLoader resourceLoader = new ResourceLoader();
+    
+    public static final ResourceLoader getInstance() {
+        return resourceLoader;
+    }
+    
 }

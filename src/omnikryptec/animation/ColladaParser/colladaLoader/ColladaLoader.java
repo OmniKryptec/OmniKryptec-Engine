@@ -21,10 +21,14 @@ public class ColladaLoader {
     public  static final Matrix4f CORRECTION = new Matrix4f().rotate((float) Math.toRadians(-90), new Vector3f(1, 0, 0));
 
     public static final MeshData getMeshDataOnly(AdvancedFile colladaFile) {
-        return loadColladaModel(colladaFile, 0).getMeshData();
+        return loadColladaModel("", colladaFile, 0).getMeshData();
     }
 
     public static final AnimatedModelData loadColladaModel(AdvancedFile colladaFile, int maxWeights) {
+        return loadColladaModel("", colladaFile, maxWeights);
+    }
+    
+    public static final AnimatedModelData loadColladaModel(String name, AdvancedFile colladaFile, int maxWeights) {
         final Document document = XMLUtil.getDocument(colladaFile.createInputStream());
         if(document == null) {
             return null;
@@ -36,7 +40,7 @@ public class ColladaLoader {
         final SkeletonData jointsData = jointsLoader.extractBoneData();
         final GeometryLoader g = new GeometryLoader(XMLUtil.getChild(node, "library_geometries"), skinningData.verticesSkinData);
         final MeshData meshData = g.extractModelData();
-        return new AnimatedModelData(meshData, jointsData);
+        return new AnimatedModelData(name, meshData, jointsData);
     }
 
     public static final AnimationData loadColladaAnimation(AdvancedFile colladaFile) {

@@ -32,13 +32,13 @@ public class AnimationLoader {
      * animation.
      * @return The animation made from the data in the file.
      */
-    public static Animation loadAnimation(AdvancedFile colladaFile) {
+    public static Animation loadAnimation(String name, AdvancedFile colladaFile) {
         AnimationData animationData = ColladaLoader.loadColladaAnimation(colladaFile);
         KeyFrame[] frames = new KeyFrame[animationData.keyFrames.length];
         for (int i = 0; i < frames.length; i++) {
             frames[i] = createKeyFrame(animationData.keyFrames[i]);
         }
-        return new Animation(animationData.lengthSeconds, frames);
+        return new Animation(name, animationData.lengthSeconds, frames);
     }
 
     /**

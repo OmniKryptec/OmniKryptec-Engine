@@ -18,11 +18,12 @@ public class SimpleTexture extends Texture {
 
     private static final List<SimpleTexture> alltex = new ArrayList<>();
 
-    protected SimpleTexture(int textureId, TextureData data) {
-        this(textureId, GL11.GL_TEXTURE_2D, data);
+    protected SimpleTexture(String name, int textureId, TextureData data) {
+        this(name, textureId, GL11.GL_TEXTURE_2D, data);
     }
 
-    protected SimpleTexture(int textureId, int type, TextureData data) {
+    protected SimpleTexture(String name, int textureId, int type, TextureData data) {
+        super(name);
         alltex.add(this);
         this.data = data;
         this.type = type;
@@ -40,30 +41,46 @@ public class SimpleTexture extends Texture {
     }
 
     public static TextureBuilder newTextureb(AdvancedFile file) {
+        return newTextureb("", file);
+    }
+    
+    public static TextureBuilder newTextureb(String name, AdvancedFile file) {
         try {
-            return newTextureb(file.createInputStream());
+            return newTextureb(name, file.createInputStream());
         } catch (Exception ex) {
             Logger.logErr("Error while creating FileInputStream: " + ex, ex);
             return null;
         }
     }
-
+    
     public static TextureBuilder newTextureb(String path) {
+        return newTextureb("", path);
+    }
+
+    public static TextureBuilder newTextureb(String name, String path) {
         try {
-            return newTextureb(TextureBuilder.class.getResourceAsStream(path));
+            return newTextureb(name, TextureBuilder.class.getResourceAsStream(path));
         } catch (Exception ex) {
             Logger.logErr("Error while creating Stream from path: " + ex, ex);
             return null;
         }
     }
-
+    
     public static TextureBuilder newTextureb(InputStream textureFile) {
-        return new TextureBuilder(textureFile);
+        return newTextureb("", textureFile);
+    }
+
+    public static TextureBuilder newTextureb(String name, InputStream textureFile) {
+        return new TextureBuilder(name, textureFile);
     }
 
     public static SimpleTexture newTexture(AdvancedFile file) {
+        return newTexture("", file);
+    }
+    
+    public static SimpleTexture newTexture(String name, AdvancedFile file) {
         try {
-            return newTexture(file.createInputStream());
+            return newTexture(name, file.createInputStream());
         } catch (Exception ex) {
             Logger.logErr("Error while creating FileInputStream: " + ex, ex);
             return null;
@@ -71,8 +88,12 @@ public class SimpleTexture extends Texture {
     }
 
     public static SimpleTexture newTexture(String path) {
+        return newTexture("", path);
+    }
+    
+    public static SimpleTexture newTexture(String name, String path) {
         try {
-            return newTexture(TextureBuilder.class.getResourceAsStream(path));
+            return newTexture(name, TextureBuilder.class.getResourceAsStream(path));
         } catch (Exception ex) {
             Logger.logErr("Error while creating Stream from path: " + ex, ex);
             return null;
@@ -80,17 +101,29 @@ public class SimpleTexture extends Texture {
     }
 
     public static SimpleTexture newTexture(InputStream stream) {
-        return new TextureBuilder(stream).create();
+        return newTexture("", stream);
+    }
+    
+    public static SimpleTexture newTexture(String name, InputStream stream) {
+        return new TextureBuilder(name, stream).create();
     }
 
     public static SimpleTexture newCubeMap(InputStream[] textureFiles) {
+        return newCubeMap("", textureFiles);
+    }
+    
+    public static SimpleTexture newCubeMap(String name, InputStream[] textureFiles) {
         int cubeMapId = TextureUtils.loadCubeMap(textureFiles);
-        return new SimpleTexture(cubeMapId, GL13.GL_TEXTURE_CUBE_MAP, null);
+        return new SimpleTexture(name, cubeMapId, GL13.GL_TEXTURE_CUBE_MAP, null);
     }
 
     public static SimpleTexture newEmptyCubeMap(int size) {
+        return newEmptyCubeMap("", size);
+    }
+    
+    public static SimpleTexture newEmptyCubeMap(String name, int size) {
         int cubeMapId = TextureUtils.createEmptyCubeMap(size);
-        return new SimpleTexture(cubeMapId, GL13.GL_TEXTURE_CUBE_MAP, null);
+        return new SimpleTexture(name, cubeMapId, GL13.GL_TEXTURE_CUBE_MAP, null);
     }
 
     /**

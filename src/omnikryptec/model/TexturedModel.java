@@ -2,6 +2,7 @@ package omnikryptec.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import omnikryptec.test.saving.DataMap;
 import omnikryptec.texture.Texture;
 
 public class TexturedModel implements AdvancedModel {
@@ -96,6 +97,16 @@ public class TexturedModel implements AdvancedModel {
             return tms.get(0).copy();
         }
         return null;
+    }
+
+    @Override
+    public DataMap toDataMap(DataMap data) {
+        return null;
+    }
+
+    @Override
+    public TexturedModel fromDataMap(DataMap data) {
+        return this;
     }
 
 }

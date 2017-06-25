@@ -2,6 +2,7 @@ package omnikryptec.loader;
 
 import omnikryptec.animation.Animation;
 import omnikryptec.animation.loaders.AnimationLoader;
+import omnikryptec.logger.Logger;
 import omnikryptec.util.AdvancedFile;
 
 /**
@@ -12,8 +13,9 @@ public class DefaultAnimationLoader implements Loader {
 
     @Override
     public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
-        final Animation animation = AnimationLoader.loadAnimation(advancedFile);
         final String name = generateName(advancedFile, superFile) + ":Animation";
+        final Animation animation = AnimationLoader.loadAnimation(name, advancedFile);
+        Logger.log(String.format("Loaded Animation \"%s\" from \"%s\" (in \"%s\")", name, advancedFile, superFile)); //TODO Only for testing!!! DELETE THIS!
         return resourceLoader.addRessourceObject(name, animation);
     }
 

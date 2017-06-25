@@ -27,10 +27,10 @@ public class AnimatedModelLoader {
      * @param textureFile - the file containing the data for the entity.
      * @return The animated entity (no animation applied though)
      */
-    public static AnimatedModel loadModel(AdvancedFile modelFile, AdvancedFile textureFile, Renderer renderer) {
-        AnimatedModelData entityData = ColladaLoader.loadColladaModel(modelFile, Instance.MAX_WEIGHTS);
+    public static AnimatedModel loadModel(String name, AdvancedFile modelFile, AdvancedFile textureFile, Renderer renderer) {
+        AnimatedModelData entityData = ColladaLoader.loadColladaModel(name, modelFile, Instance.MAX_WEIGHTS);
         Model model = new Model(createVertexArrayObject(entityData.getMeshData()));
-        Texture texture = loadTexture(textureFile);
+        Texture texture = loadTexture(name, textureFile);
         SkeletonData skeletonData = entityData.getJointsData();
         Joint headJoint = createJoints(skeletonData.headJoint);
         AnimatedModel animatedModel = new AnimatedModel(modelFile.getName(), model, texture, headJoint, skeletonData.jointCount);
@@ -53,8 +53,8 @@ public class AnimatedModelLoader {
      * @param textureFile - the texture file.
      * @return The diffuse texture.
      */
-    private static Texture loadTexture(AdvancedFile textureFile) {
-        Texture diffuseTexture = SimpleTexture.newTextureb(textureFile.createInputStream()).anisotropic().create();
+    private static Texture loadTexture(String name, AdvancedFile textureFile) {
+        Texture diffuseTexture = SimpleTexture.newTextureb(name, textureFile.createInputStream()).anisotropic().create();
         return diffuseTexture;
     }
 

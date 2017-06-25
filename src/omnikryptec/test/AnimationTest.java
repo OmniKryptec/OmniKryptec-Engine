@@ -4,8 +4,8 @@ import java.util.Random;
 import java.util.zip.Deflater;
 import omnikryptec.animation.AnimatedModel;
 import omnikryptec.animation.Animation;
+import omnikryptec.animation.ColladaParser.dataStructures.AnimatedModelData;
 import omnikryptec.animation.loaders.AnimatedModelLoader;
-import omnikryptec.animation.loaders.AnimationLoader;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
@@ -17,7 +17,6 @@ import omnikryptec.loader.DefaultAnimatedModelDataLoader;
 import omnikryptec.loader.DefaultAnimationLoader;
 import omnikryptec.loader.DefaultTextureLoader;
 import omnikryptec.loader.ResourceLoader;
-import omnikryptec.loader.ResourceObject;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
@@ -27,6 +26,7 @@ import omnikryptec.settings.KeyGroup;
 import omnikryptec.settings.KeySettings;
 import omnikryptec.test.saving.DataMapSerializer;
 import omnikryptec.test.saving.XMLSerializer;
+import omnikryptec.texture.Texture;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
@@ -60,7 +60,6 @@ public class AnimationTest {
     private static final AdvancedFile DIFFUSE_FILE = new AdvancedFile(RES_FOLDER_1, "diffuse.png");
     private static final AdvancedFile SAVE = new AdvancedFile(OSUtil.getStandardAppDataEngineFolder(), "saves", "save.xml");
     private static final Deflater deflater = new Deflater(Deflater.BEST_COMPRESSION);
-    private static final ResourceLoader resourceLoader = new ResourceLoader();
 
     public static final void main(String[] args) {
         try {
@@ -105,25 +104,25 @@ public class AnimationTest {
                 }
 
             }.setPerspectiveProjection(75, 0.1F, 1000)))));
-            entityBuilder_brunnen = new EntityBuilder().setTexturedModelName("brunnen").loadModel("/omnikryptec/test/brunnen.obj").loadTexture("/omnikryptec/test/brunnen.png");
+            entityBuilder_brunnen = new EntityBuilder().setTexturedModelName("brunnen").loadModel("/omnikryptec/test/brunnen.obj").loadTexture("brunnen.png", "/omnikryptec/test/brunnen.png");
             entity_brunnen = entityBuilder_brunnen.create("entity_brunnen");
             
             
             
             //FIXME Only for testing DELETE TIHS!!! START
-            resourceLoader.addLoader(new DefaultTextureLoader());
-            resourceLoader.addLoader(new DefaultAnimationLoader());
-            resourceLoader.addLoader(new DefaultAnimatedModelDataLoader());
-            resourceLoader.stageAdvancedFiles(DIFFUSE_FILE);
-            resourceLoader.loadStagedAdvancedFiles(true);
-            resourceLoader.getAllData(ResourceObject.class).stream().forEach((resourceObject) -> {
-                Logger.log("Found: " + resourceObject);
-            });
+            ResourceLoader.getInstance().addLoader(new DefaultTextureLoader());
+            ResourceLoader.getInstance().addLoader(new DefaultAnimationLoader());
+            ResourceLoader.getInstance().addLoader(new DefaultAnimatedModelDataLoader());
+            ResourceLoader.getInstance().stageAdvancedFiles(-1, DIFFUSE_FILE);
+            ResourceLoader.getInstance().stageAdvancedFiles(MODEL_FILE);
+            ResourceLoader.getInstance().loadStagedAdvancedFiles(true);
             //FIXME Only for testing DELETE TIHS!!! END
             
             
-            animatedModel = AnimatedModelLoader.loadModel(MODEL_FILE, DIFFUSE_FILE, null);
-            animation = AnimationLoader.loadAnimation(ANIM_FILE);
+            
+            animatedModel = AnimatedModelLoader.createModel("res:model.dae:AnimatedModelData", ResourceLoader.getInstance().getData(AnimatedModelData.class, "res:model.dae:AnimatedModelData"), ResourceLoader.getInstance().getData(Texture.class, "res:diffuse.png"), null);
+            animation = ResourceLoader.getInstance().getData(Animation.class, "res:model.dae:Animation");
+            Logger.log("");
             entity_test = new Entity("entity_test", animatedModel) {
 
                 @Override
@@ -133,7 +132,7 @@ public class AnimationTest {
                 }
 
             };
-            animatedModel.doAnimation(animation);
+            //animatedModel.doAnimation(animation);
             if (SAVE.exists()) {
                 load();
             }
@@ -165,6 +164,7 @@ public class AnimationTest {
             //dataMapSerializer.deserializeToDataMap(new InflaterInputStream(SAVE.createInputStream()), XMLSerializer.newInstance());
             dataMapSerializer.getClassesDataMaps().keySet().stream().filter((c) -> (c != null && c != Camera.class && !c.isAnonymousClass() && GameObject.class.isAssignableFrom(c))).forEach((c) -> {
                 dataMapSerializer.getClassesDataMaps().get(c).stream().forEach((dataMap) -> {
+                    Logger.log(c + " creating " + dataMap);
                     try {
                         c.getMethod("newInstanceFromDataMap", dataMap.getClass()).invoke(c.newInstance(), dataMap);
                     } catch (Exception ex) {
