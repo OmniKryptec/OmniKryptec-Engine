@@ -172,10 +172,7 @@ public class ResourceLoader implements Loader {
     }
     
     @SuppressWarnings("unchecked")
-	public final <T> T getData(Class<? extends T> c, String name) {
-    	if(!RessourceObject.class.isAssignableFrom(c)){
-    		return null;
-    	}
+	public final <T extends RessourceObject> T getData(Class<? extends T> c, String name) {
     	if(c == null || name == null || name.isEmpty()) {
             return null;
         }
@@ -187,10 +184,7 @@ public class ResourceLoader implements Loader {
     }
     
     @SuppressWarnings("unchecked")
-	public final <T> ArrayList<T> getAllData(Class<? extends T> c) {
-    	if(RessourceObject.class.isAssignableFrom(c)){
-    		return new ArrayList<T>();
-    	}
+	public final <T extends RessourceObject> ArrayList<T> getAllData(Class<? extends T> c) {
     	final ArrayList<T> data = new ArrayList<>();
         List<RessourceObject> d = loadedData.values().stream().filter((object) -> (object != null && c.isAssignableFrom(object.getClass()))).collect(Collectors.toList()); //TODO Gucken ob das isAssignableFrom so richtig herum ist
         d.stream().forEach((object) -> {

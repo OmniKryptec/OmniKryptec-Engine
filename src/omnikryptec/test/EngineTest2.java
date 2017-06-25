@@ -43,7 +43,7 @@ public class EngineTest2 implements IEventHandler {
 
     public static void main(String[] args) {
         try {
-            NativesLoader.loadNatives();
+        	NativesLoader.loadNatives();
             OmniKryptecEngine.addShutdownHook(() -> NativesLoader.unloadNatives());
             Logger.enableLoggerRedirection(true);
             Logger.setDebugMode(true);
@@ -133,7 +133,7 @@ public class EngineTest2 implements IEventHandler {
             ptm.getMaterial().setHasTransparency(true).setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER);
             ptm.getMaterial().setReflectivity(0.1f).setShineDamper(10).setExtraInfoVec(new Vector3f(1, 1, 0));
             Random r = new Random();
-            for (int i = 0; i < 1; i++) {
+            for (int i = 0; i < 100; i++) {
                 Entity e = new Entity(tm) {
                     @Override
                     public void doLogic() {
@@ -145,9 +145,9 @@ public class EngineTest2 implements IEventHandler {
                         // increaseRelativeRot(0, 1, 0);
                     }
                 }.setScale(new Vector3f(3, 3, 3));
-                e.setRelativePos(5, -10, 10);
+                //e.setRelativePos(5, -10, 10);
                 // e.setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);
-                //e.setRelativePos(r.nextInt(100) - 50, r.nextInt(100) - 50, r.nextInt(100) - 50);
+               e.setRelativePos(r.nextInt(100) - 50, r.nextInt(100) - 50, r.nextInt(100) - 50);
                 OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
             }
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
@@ -157,7 +157,7 @@ public class EngineTest2 implements IEventHandler {
             // system.setTimemultiplier(10);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             OmniKryptecEngine.instance().getCurrentScene()
-                    .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(1, 1, 1).setConeDegrees(170).setConeDirection(5, -10, 10).setRelativePos(0, 0, 0));
+                    .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(2, 2, 2).setDirectional().setRelativePos(1,0.5f, 0));
             // ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
             // OmniKryptecEngine.instance().getCurrentScene().addGameObject(new
             // Light().setColor(1, 1, 0).setRadius(100));
@@ -177,7 +177,7 @@ public class EngineTest2 implements IEventHandler {
         }
     }
 
-    private static float v = 20;
+    private static float v =30;
 
     private static void doCameraLogic(Camera camera) {
         // v += DisplayManager.instance().getDeltaTime()*30;
@@ -197,5 +197,9 @@ public class EngineTest2 implements IEventHandler {
         // System.out.println(DisplayManager.instance().getFPS());
         // System.out.println(DisplayManager.instance().getDeltaTime());
     }
-
+    
+    public static <T extends Object> T get(){
+    	return null;
+    }
+    
 }
