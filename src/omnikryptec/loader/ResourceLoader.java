@@ -200,16 +200,13 @@ public class ResourceLoader implements Loader {
     }
 
     
-    public final <T extends ResourceObject> ArrayList<T> getAllData(Class<? extends T> c, ArrayList<T> data) {
-    	if(data == null){
-    		data = new ArrayList<>();
-    	}
-    	return getAllDatap(c, data);
-    }
-    
     @SuppressWarnings("unchecked")
-	private final <T extends ResourceObject> ArrayList<T> getAllDatap(Class<? extends T> c, ArrayList<T> data) {
-        List<ResourceObject> d = loadedData.values().stream().filter((object) -> (object != null && c.isAssignableFrom(object.getClass()))).collect(Collectors.toList()); //TODO Gucken ob das isAssignableFrom so richtig herum ist
+	private final <T extends ResourceObject> ArrayList<T> getAllData(Class<? extends T> c, ArrayList<T> dataa) {
+        if(dataa==null){
+        	dataa = new ArrayList<>();
+        }
+        final ArrayList<T> data = dataa;
+    	List<ResourceObject> d = loadedData.values().stream().filter((object) -> (object != null && c.isAssignableFrom(object.getClass()))).collect(Collectors.toList()); //TODO Gucken ob das isAssignableFrom so richtig herum ist
         d.stream().forEach((object) -> {
             data.add((T) object);
         });
