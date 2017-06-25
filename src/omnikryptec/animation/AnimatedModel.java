@@ -258,7 +258,6 @@ public class AnimatedModel implements AdvancedModel {
         data.put("speedFactor", animator.getSpeedFactor());
         data.put("animationTime", animator.getAnimationTime());
         data.put("loop", animator.isLoop());
-        data.put("name", name);
         return data;
     }
 

@@ -1,6 +1,7 @@
 package omnikryptec.main;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -239,6 +240,7 @@ public class Scene implements DataMapSerializable {
         data.put("name", name);
         data.put("camera", (cam != null ? cam.toDataMap(new DataMap("camera")) : null));
         final List<Entity> entities = getEntities();
+        Logger.log("SCENE: " + name + " ENTITIES: " + Arrays.toString(entities.toArray()));
         final List<String> entityNames = new ArrayList<>();
         entities.stream().forEach((entity) -> {
             entityNames.add(entity.getName());
@@ -286,6 +288,10 @@ public class Scene implements DataMapSerializable {
         }
         final List<Entity> entities = getEntities();
         final List<String> entityNames = data.getList("entityNames", String.class);
+        if(entityNames == null) {
+            Logger.log("Entity name list is null!", LogLevel.WARNING);
+            return this;
+        }
         for(String entitiyName : entityNames) {
             try {
                 final Entity entity = Entity.byName(Entity.class, entitiyName, false);
@@ -298,6 +304,8 @@ public class Scene implements DataMapSerializable {
                     }
                     Logger.log("Added: " + entity.getAdvancedModel().getMaterial().getRenderer());
                     addGameObject(entity);
+                } else {
+                    Logger.log("Entity not found!", LogLevel.WARNING);
                 }
             } catch(Exception ex) {
                 Logger.logErr("Error while adding entity: " + ex, ex);

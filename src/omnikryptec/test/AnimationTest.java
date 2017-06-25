@@ -120,7 +120,8 @@ public class AnimationTest {
             
             
             
-            animatedModel = AnimatedModelLoader.createModel("res:model.dae:AnimatedModelData", ResourceLoader.getInstance().getData(AnimatedModelData.class, "res:model.dae:AnimatedModelData"), ResourceLoader.getInstance().getData(Texture.class, "res:diffuse.png"), null);
+            animatedModel = AnimatedModelLoader.createModel("res:model.dae:AnimatedModel", ResourceLoader.getInstance().getData(AnimatedModelData.class, "res:model.dae:AnimatedModelData"), ResourceLoader.getInstance().getData(Texture.class, "res:diffuse.png"), null);
+            ResourceLoader.getInstance().addRessourceObject("res:model.dae:AnimatedModel", animatedModel);
             animation = ResourceLoader.getInstance().getData(Animation.class, "res:model.dae:Animation");
             Logger.log("");
             entity_test = new Entity("entity_test", animatedModel) {

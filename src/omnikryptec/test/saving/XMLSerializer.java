@@ -39,7 +39,7 @@ public class XMLSerializer implements IDataMapSerializer {
                 final Element element = new Element(Type.Class.name()).setAttribute(NAME, c.getName());
                 final ArrayList<DataMap> dataMaps = classesDataMaps.get(c);
                 dataMaps.stream().forEach((dataMap) -> {
-                    processDataMapsSerialize(element, dataMap.getName(), dataMap, 0);
+                    processDataMapsSerialize(element, dataMap.getName(), null, dataMap, 0);
                 });
                 rootElement.addContent(element);
             }
@@ -53,19 +53,19 @@ public class XMLSerializer implements IDataMapSerializer {
         }
     }
 
-    private final void processObjectSerialize(Element element, Object name, Object object, int depth, Type lastType, Object... objects) {
+    private final void processObjectSerialize(Element element, Object name, Object object, int depth, Type lastType, Type lastOperationType, Object... objects) {
         try {
             if (object != null && object.getClass().isArray()) {
-                processArraySerialize(element, name, object, depth + 1, objects);
+                processArraySerialize(element, name, lastOperationType, object, depth + 1, objects);
             } else if (object != null && object instanceof DataMap) {
                 final DataMap dataMap_temp = (DataMap) object;
-                processDataMapsSerialize(element, name, dataMap_temp, depth + 1);
+                processDataMapsSerialize(element, name, lastOperationType, dataMap_temp, depth + 1);
             } else if (object != null && object instanceof List) {
                 final List list = (List) object;
-                processListSerialize(element, name, list, depth + 1);
+                processListSerialize(element, name, lastOperationType, list, depth + 1);
             } else if (object != null && object instanceof Map) {
                 final Map map = (Map) object;
-                processMapSerialize(element, name, map, depth + 1);
+                processMapSerialize(element, name, lastOperationType,  map, depth + 1);
             } else {
                 final Type usedType = (lastType != null ? lastType : Type.Data);
                 if (usedType != Type.Data) {
@@ -82,36 +82,54 @@ public class XMLSerializer implements IDataMapSerializer {
         }
     }
 
-    private final void processDataMapsSerialize(Element element, Object name, DataMap dataMap, int depth) {
-        final Element element_temp = new Element(Type.DataMap.name()).setAttribute(NAME, "" + name)
-                .setAttribute(COUNT, Type.DataMap.serializeKey((dataMap != null ? dataMap.size() : 0)))
+    private final void processDataMapsSerialize(Element element, Object name, Type lastOperationType, DataMap dataMap, int depth) {
+        final Element element_temp = new Element(Type.DataMap.name())
+                .setAttribute(COUNT, Type.DataMap.serializeKey((dataMap != null ? "" + dataMap.size() : 0)))
                 .setAttribute(CLASS, String.class.getName()).setAttribute(DEPTH, "" + (depth - 1));
+        if((lastOperationType != null) && (lastOperationType == Type.DataMap || lastOperationType == Type.Map)) {
+            element_temp.setAttribute(KEY, "" + name);
+            if(dataMap != null) {
+                element_temp.setAttribute(NAME, "" + dataMap.getName());
+            }
+        } else {
+            element_temp.setAttribute(NAME, "" + name);
+        }
         if (dataMap != null) {
             dataMap.keySet().stream().forEach((g) -> {
                 final Object object = dataMap.get(g);
-                processObjectSerialize(element_temp, g, object, depth, Type.Data);
+                processObjectSerialize(element_temp, g, object, depth, Type.Data, Type.DataMap);
             });
         }
         element.addContent(element_temp);
     }
 
-    private final void processListSerialize(Element element, Object name, List list, int depth) {
-        final Element element_temp = new Element(Type.List.name()).setAttribute(NAME, "" + name)
-                .setAttribute(COUNT, Type.List.serializeKey((list != null ? list.size() : 0)))
+    private final void processListSerialize(Element element, Object name, Type lastOperationType, List list, int depth) {
+        final Element element_temp = new Element(Type.List.name())
+                .setAttribute(COUNT, Type.List.serializeKey((list != null ? "" + list.size() : 0)))
                 .setAttribute(CLASS, Integer.class.getName()).setAttribute(DEPTH, "" + (depth - 1));
+        if((lastOperationType != null) && (lastOperationType == Type.DataMap || lastOperationType == Type.Map)) {
+            element_temp.setAttribute(KEY, "" + name);
+        } else {
+            element_temp.setAttribute(NAME, "" + name);
+        }
         if (list != null) {
             for (int i = 0; i < list.size(); i++) {
                 final Object object = list.get(i);
-                processObjectSerialize(element_temp, i, object, depth, Type.ListData);
+                processObjectSerialize(element_temp, i, object, depth, Type.ListData, Type.List);
             }
         }
         element.addContent(element_temp);
     }
 
-    private final void processMapSerialize(Element element, Object name, Map map, int depth) {
-        final Element element_temp = new Element(Type.Map.name()).setAttribute(NAME, "" + name)
-                .setAttribute(COUNT, Type.Map.serializeKey((map != null ? map.size() : 0)))
+    private final void processMapSerialize(Element element, Object name, Type lastOperationType, Map map, int depth) {
+        final Element element_temp = new Element(Type.Map.name())
+                .setAttribute(COUNT, Type.Map.serializeKey((map != null ? "" + map.size() : 0)))
                 .setAttribute(DEPTH, "" + (depth - 1));
+        if((lastOperationType != null) && (lastOperationType == Type.DataMap || lastOperationType == Type.Map)) {
+            element_temp.setAttribute(KEY, "" + name);
+        } else {
+            element_temp.setAttribute(NAME, "" + name);
+        }
         Object temp = null;
         boolean foundType = true;
         if (map != null) {
@@ -124,16 +142,21 @@ public class XMLSerializer implements IDataMapSerializer {
                     temp = key;
                 }
                 final Object value = map.get(key);
-                processObjectSerialize(element_temp, key, value, depth, Type.MapData);
+                processObjectSerialize(element_temp, key, value, depth, Type.MapData, Type.Map);
             }
         }
         element_temp.setAttribute(CLASS, getClassName(temp));
         element.addContent(element_temp);
     }
 
-    private final void processArraySerialize(Element element, Object name, Object array, int depth, Object... objects) {
-        final Element element_temp = new Element(Type.Array.name()).setAttribute(NAME, "" + name).setAttribute(DEPTH,
+    private final void processArraySerialize(Element element, Object name, Type lastOperationType, Object array, int depth, Object... objects) {
+        final Element element_temp = new Element(Type.Array.name()).setAttribute(DEPTH,
                 "" + (depth - 1));
+        if((lastOperationType != null) && (lastOperationType == Type.DataMap || lastOperationType == Type.Map)) {
+            element_temp.setAttribute(KEY, "" + name);
+        } else {
+            element_temp.setAttribute(NAME, "" + name);
+        }
         Element arrayElement = null;
         int arrayDepth = 1;
         if (objects.length == 2) {
@@ -162,7 +185,7 @@ public class XMLSerializer implements IDataMapSerializer {
                     element_temp.setAttribute(CLASS, Byte.class.getName()).setAttribute(COUNT, "" + array_temp.length);
                     for (int i = 0; i < array_temp.length; i++) {
                         final Object object = array_temp[i];
-                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, arrayElement,
+                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, Type.Array, arrayElement,
                                 arrayDepth);
                     }
                 } else if (c == short[].class) {
@@ -170,7 +193,7 @@ public class XMLSerializer implements IDataMapSerializer {
                     element_temp.setAttribute(CLASS, Short.class.getName()).setAttribute(COUNT, "" + array_temp.length);
                     for (int i = 0; i < array_temp.length; i++) {
                         final Object object = array_temp[i];
-                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, arrayElement,
+                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, Type.Array, arrayElement,
                                 arrayDepth);
                     }
                 } else if (c == int[].class) {
@@ -179,7 +202,7 @@ public class XMLSerializer implements IDataMapSerializer {
                             "" + array_temp.length);
                     for (int i = 0; i < array_temp.length; i++) {
                         final Object object = array_temp[i];
-                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, arrayElement,
+                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, Type.Array, arrayElement,
                                 arrayDepth);
                     }
                 } else if (c == long[].class) {
@@ -187,7 +210,7 @@ public class XMLSerializer implements IDataMapSerializer {
                     element_temp.setAttribute(CLASS, Long.class.getName()).setAttribute(COUNT, "" + array_temp.length);
                     for (int i = 0; i < array_temp.length; i++) {
                         final Object object = array_temp[i];
-                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, arrayElement,
+                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, Type.Array, arrayElement,
                                 arrayDepth);
                     }
                 } else if (c == char[].class) {
@@ -196,7 +219,7 @@ public class XMLSerializer implements IDataMapSerializer {
                             "" + array_temp.length);
                     for (int i = 0; i < array_temp.length; i++) {
                         final Object object = array_temp[i];
-                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, arrayElement,
+                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, Type.Array, arrayElement,
                                 arrayDepth);
                     }
                 } else if (c == float[].class) {
@@ -204,7 +227,7 @@ public class XMLSerializer implements IDataMapSerializer {
                     element_temp.setAttribute(CLASS, Float.class.getName()).setAttribute(COUNT, "" + array_temp.length);
                     for (int i = 0; i < array_temp.length; i++) {
                         final Object object = array_temp[i];
-                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, arrayElement,
+                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, Type.Array, arrayElement,
                                 arrayDepth);
                     }
                 } else if (c == double[].class) {
@@ -213,7 +236,7 @@ public class XMLSerializer implements IDataMapSerializer {
                             "" + array_temp.length);
                     for (int i = 0; i < array_temp.length; i++) {
                         final Object object = array_temp[i];
-                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, arrayElement,
+                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, Type.Array, arrayElement,
                                 arrayDepth);
                     }
                 } else if (c == boolean[].class) {
@@ -222,7 +245,7 @@ public class XMLSerializer implements IDataMapSerializer {
                             "" + array_temp.length);
                     for (int i = 0; i < array_temp.length; i++) {
                         final Object object = array_temp[i];
-                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, arrayElement,
+                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, Type.Array, arrayElement,
                                 arrayDepth);
                     }
                 } else {
@@ -231,12 +254,12 @@ public class XMLSerializer implements IDataMapSerializer {
                             "" + array_temp.length);
                     for (int i = 0; i < array_temp.length; i++) {
                         final Object object = array_temp[i];
-                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, arrayElement,
+                        processObjectSerialize(element_temp, i, object, depth, Type.ArrayData, Type.Array, arrayElement,
                                 arrayDepth);
                     }
                 }
             } else {
-                processObjectSerialize(element, name, name, depth - 1, Type.Data);
+                processObjectSerialize(element, name, name, depth - 1, Type.Data, Type.Array);
             }
         }
         element.addContent(element_temp);
@@ -311,7 +334,7 @@ public class XMLSerializer implements IDataMapSerializer {
             } else if (element.getName().equals(Type.DataMap.name())) {
                 final DataMap dataMap_temp = new DataMap(element.getAttributeValue(NAME));
                 processDataMapsUnserialize(element, dataMap_temp);
-                dataMap.put(dataMap_temp.getName(), dataMap_temp);
+                dataMap.put(element.getAttributeValue(KEY), dataMap_temp);
             } else if (element.getName().equals(Type.List.name())) {
                 final HashMap<Integer, Object> collectorMap = new HashMap<>();
                 processListUnserialize(element, collectorMap);
@@ -320,11 +343,11 @@ public class XMLSerializer implements IDataMapSerializer {
                     list.add(collectorMap.get(i));
                 });
                 collectorMap.clear();
-                dataMap.put(element.getAttributeValue(NAME), list);
+                dataMap.put(element.getAttributeValue(KEY), list);
             } else if (element.getName().equals(Type.Map.name())) {
                 final Map map = new HashMap();
                 processMapUnserialize(element, map);
-                dataMap.put(element.getAttributeValue(NAME), map);
+                dataMap.put(element.getAttributeValue(KEY), map);
             }
         } catch (Exception ex) {
             Logger.logErr("Error while processing data maps while unserializing: " + ex, ex);
@@ -429,8 +452,8 @@ public class XMLSerializer implements IDataMapSerializer {
                     key = cast(c_key, element_temp.getAttributeValue(Type.MapData.nameAttribute()));
                     map.put(key, cast(c_value, element_temp.getText()));
                 } else if (element_temp.getName().equals(Type.DataMap.name())) {
-                    key = cast(c_key, element_temp.getAttributeValue(NAME));
-                    final DataMap dataMap_temp = new DataMap("" + key);
+                    key = cast(c_key, element_temp.getAttributeValue(KEY));
+                    final DataMap dataMap_temp = new DataMap(element.getAttributeValue(NAME));
                     processDataMapsUnserialize(element_temp, dataMap_temp);
                     map.put(key, dataMap_temp);
                 } else if (element_temp.getName().equals(Type.List.name())) {
@@ -460,10 +483,18 @@ public class XMLSerializer implements IDataMapSerializer {
     public static final String CLASS = "class";
     public static final String DEPTH = "depth";
     public static final String DIMENSIONS = "dimensions";
+    public static final String KEY = "key";
 
     public static enum Type {
-        Array("", "", ""), ArrayData("%s", "%s", "index"), Class("", "", ""), Data("", "%s", ""), DataMap("%s", "",
-                ""), List("%s", "", ""), ListData("%s", "%s", "index"), Map("", "", ""), MapData("%s", "%s", "key");
+        Array       ("", "", ""),
+        ArrayData   ("%s", "%s", "index"),
+        Class       ("", "", ""),
+        Data        ("", "%s", ""),
+        DataMap     ("%s", "", ""),
+        List        ("%s", "", ""),
+        ListData    ("%s", "%s", "index"),
+        Map         ("", "", ""),
+        MapData     ("%s", "%s", "key");
 
         private final String serializeKey;
         private final String serializeValue;

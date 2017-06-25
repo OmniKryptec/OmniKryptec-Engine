@@ -202,7 +202,9 @@ public class ResourceLoader implements Loader {
             return null;
         }
         ResourceObject data = loadedData.get(name);
+        Logger.log("FOUND: " + data + " FOR: " + name);
         if (data == null || !c.isAssignableFrom(data.getClass())) { //TODO Gucken ob das isAssignableFrom so richtig herum ist
+            Logger.log("BUT  NOT GOOOD!");
             return null;
         }
         return (T) data;
