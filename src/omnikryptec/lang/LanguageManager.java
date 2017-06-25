@@ -1,13 +1,12 @@
 package omnikryptec.lang;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
+import omnikryptec.util.AdvancedFile;
 
 /**
  *
@@ -112,7 +111,7 @@ public class LanguageManager {
         LANGUAGEINTERFACES.remove(l);
     }
 
-    public static final void collectAllLanguageKeys(File file) {
+    public static final void collectAllLanguageKeys(AdvancedFile file) {
         if (file == null || (file.exists() && !file.isFile())) {
             return;
         }
@@ -122,14 +121,12 @@ public class LanguageManager {
                 isCollecting = true;
                 notifyAllILanguageInterfaces();
                 isCollecting = false;
-                FileWriter fw = new FileWriter(file);
-                BufferedWriter bw = new BufferedWriter(fw);
+                BufferedWriter bw = file.getWriter(false);
                 for (String key : languageDefault.keySet()) {
                     bw.write(key + "=" + languageDefault.get(key));
                     bw.newLine();
                 }
                 bw.close();
-                fw.close();
             } catch (Exception ex) {
                 Logger.logErr("Error while collecting all Language keys: " + ex, ex);
             }

@@ -49,6 +49,7 @@ public class AdvancedFile {
     public static final String NOT_FOUND_STRING = String.valueOf(NOT_FOUND);
 
     private final AdvancedFile ME;
+    private File file = null;
     private File folder = null;
     private String[] paths = null;
     private String path = null;
@@ -116,6 +117,25 @@ public class AdvancedFile {
     public final AdvancedFile copy() {
         return new AdvancedFile(shouldBeFile, folder, paths);
     }
+    
+    /**
+     * Returns a copy of this AdvancedFile in absolute form
+     * @return AdvancedFile AdvancedFile
+     */
+    public final AdvancedFile getAbsoluteAdvancedFile() {
+        if(shouldBeFile) {
+            final File file = toFile();
+            return new AdvancedFile(true, file.getParentFile(), file.getName());
+        } else {
+            return new AdvancedFile(false, toFile());
+        }
+    }
+    
+    public final AdvancedFile resetValues() {
+        path = null;
+        file = null;
+        return this;
+    }
 
     /**
      * Adds Paths
@@ -124,14 +144,14 @@ public class AdvancedFile {
      * @return A reference to this AdvancedFile
      */
     public final AdvancedFile addPaths(String... paths) {
-        this.path = null;
+        resetValues();
         if (paths == null) {
             return this;
         }
         if (this.paths != null) {
             final String[] paths_new = Arrays.copyOf(this.paths, this.paths.length + paths.length);
             for (int i = this.paths.length; i < paths_new.length; i++) {
-                paths_new[i] = paths[i - this.paths.length];
+                paths_new[i] = paths[i - this.paths.length].replace(WINDOWS_SEPARATOR, PATH_SEPARATOR);
             }
             this.paths = paths_new;
         } else {
@@ -157,7 +177,7 @@ public class AdvancedFile {
      * @return A reference to this AdvancedFile
      */
     public final AdvancedFile addPrePaths(String... paths) {
-        this.path = null;
+        resetValues();
         if (paths == null) {
             return this;
         }
@@ -190,7 +210,7 @@ public class AdvancedFile {
      * @return A reference to this AdvancedFile
      */
     public final AdvancedFile setPaths(String... paths) {
-        this.path = null;
+        resetValues();
         this.paths = paths;
         return this;
     }
@@ -201,7 +221,7 @@ public class AdvancedFile {
      * @return Stirng Array Paths
      */
     public final String[] getPaths() {
-        this.path = null;
+        resetValues();
         return paths;
     }
 
@@ -221,7 +241,7 @@ public class AdvancedFile {
         String path_new = (isRelative() ? "" : folder.getAbsolutePath());
         if (paths != null) {
             for (String path_temp : paths) {
-                path_new += separator + path_temp;
+                path_new += (path_temp.startsWith(separator) ? "" : separator) + path_temp;
             }
         }
         return path_new;
@@ -244,7 +264,7 @@ public class AdvancedFile {
      * @return A reference to this AdvancedFile
      */
     public final AdvancedFile setFolder(File folder) {
-        this.path = null;
+        resetValues();
         this.folder = folder;
         separator = (folder == null ? PATH_SEPARATOR : SYSTEM_SEPARATOR);
         return this;
@@ -265,7 +285,10 @@ public class AdvancedFile {
      * @return File File
      */
     public final File toFile() {
-        return new File(getPath());
+        if(file == null || path == null) {
+            file = new File(getPath());
+        }
+        return file;
     }
 
     /**
@@ -280,8 +303,10 @@ public class AdvancedFile {
             return new AdvancedFile(false, folder);
         } else if (!isRelative()) {
             return new AdvancedFile(false, folder.getParentFile());
-        } else {
+        } else if (isRelative()) {
             return new AdvancedFile(false, folder, "");
+        } else {
+            return null;
         }
     }
 
@@ -454,16 +479,20 @@ public class AdvancedFile {
                 Logger.logErr("Error while checking file existance: " + ex, ex);
                 return false;
             }
-        }
-        try {
-            final File file = toFile();
-            return file.exists();
-        } catch (Exception ex) {
-            Logger.logErr("Error while checking file existance: " + ex, ex);
-            return false;
+        } else {
+            try {
+                return toFile().exists();
+            } catch (Exception ex) {
+                Logger.logErr("Error while checking file existance: " + ex, ex);
+                return false;
+            }
         }
     }
     
+    /**
+     * Returns the FileType
+     * @return FileType (NON, FILE or DIRECTORY)
+     */
     public final FileType getFileType() {
         return FileType.of(isFile(), isDirectory());
     }
@@ -597,6 +626,10 @@ public class AdvancedFile {
         return getPath();
     }
 
+    /**
+     * Returns the name of the file
+     * @return String name
+     */
     public final String getName() {
         return toFile().getName();
     }
@@ -613,22 +646,34 @@ public class AdvancedFile {
     /**
      * Sets if this AdvancedFile should be a file or a directory
      *
-     * @param file Boolean If this AdvancedFile should be a file
+     * @param shouldBeFile Boolean If this AdvancedFile should be a file
      * @return A reference to this AdvancedFile
      */
     public final AdvancedFile setShouldBeFile(boolean shouldBeFile) {
         this.shouldBeFile = shouldBeFile;
         return this;
     }
-
+    
+    /**
+     * Sets if this AdvancedFile should be a file through analyzing the path extension
+     * @return <tt>true</tt> if this AdvancedFile should be a file
+     */
     public final boolean generateShouldBeFile() {
         return (shouldBeFile = (indexOfExtension(toFile().getName()) != NOT_FOUND));
     }
 
+    /**
+     * Returns the base name (without the extension) of this AdvancedFile
+     * @return String Base name
+     */
     public final String getBaseName() {
         return getBaseName(toFile().getName());
     }
 
+    /**
+     * Returns the extension of this AdvancedFile
+     * @return String Extension
+     */
     public final String getExtension() {
         return getExtension(toFile().getName());
     }
@@ -686,14 +731,29 @@ public class AdvancedFile {
         return lastSeparator > extensionPos ? NOT_FOUND : extensionPos;
     }
 
+    /**
+     * Lists all direct children
+     * @return ArrayList AdvancedFile Direct children
+     */
     public final ArrayList<AdvancedFile> listAdvancedFiles() {
         return listAdvancedFiles(null);
     }
     
+    /**
+     * Lists all direct children that matches the AdvancedFileFilter
+     * @param advancedFileFilter AdvancedFileFilter File filter
+     * @return ArrayList AdvancedFile Direct children matching AdvancedFileFilter
+     */
     public final ArrayList<AdvancedFile> listAdvancedFiles(AdvancedFileFilter advancedFileFilter) {
         return listAdvancedFiles(advancedFileFilter, false);
     }
 
+    /**
+     * Lists all children (recursiv if set) that matches the AdvancedFileFilter
+     * @param advancedFileFilter AdvancedFileFilter File filter
+     * @param recursiv Boolean if children should be listed recursivly
+     * @return ArrayList AdvancedFile Children matching AdvancedFileFilter (recursiv if set)
+     */
     public final ArrayList<AdvancedFile> listAdvancedFiles(AdvancedFileFilter advancedFileFilter, boolean recursiv) {
         final ArrayList<AdvancedFile> files = new ArrayList<>();
         if (!exists() || !isDirectory() || shouldBeFile()) {
@@ -769,6 +829,10 @@ public class AdvancedFile {
         return files;
     }
 
+    /**
+     * Returns the URI
+     * @return URI URI
+     */
     public final URI getURI() {
         try {
             if (isRelative()) {
@@ -784,6 +848,26 @@ public class AdvancedFile {
             }
             return null;
         }
+    }
+    
+    /**
+     * Deletes this AdvancedFile
+     * @return <tt>true</tt> if this AdvancedFile does not exists
+     */
+    public final boolean delete() {
+        if(!exists()) {
+            return true;
+        }
+        toFile().delete();
+        return exists();
+    }
+    
+    public static final AdvancedFile fileOfPath(String path) {
+        return new AdvancedFile(path).setShouldBeFile(true).getAbsoluteAdvancedFile();
+    }
+    
+    public static final AdvancedFile folderOfPath(String path) {
+        return new AdvancedFile(path).setShouldBeFile(false).getAbsoluteAdvancedFile();
     }
 
     private static enum FileType {

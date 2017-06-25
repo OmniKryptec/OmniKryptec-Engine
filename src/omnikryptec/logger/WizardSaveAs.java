@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
 import java.time.Instant;
 import java.util.HashMap;
 
@@ -21,6 +20,7 @@ import omnikryptec.lang.LanguageManager;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.LogEntryFormatter.LogEntryFormatTile;
 import omnikryptec.swing.JCheckBoxList;
+import omnikryptec.util.AdvancedFile;
 
 /**
  *
@@ -28,140 +28,139 @@ import omnikryptec.swing.JCheckBoxList;
  */
 public class WizardSaveAs extends javax.swing.JDialog implements ActionListener, ILanguage, WindowListener {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2124926401011599655L;
-	private final Console console;
-	private LogEntry logEntry = null;
-	private File file = null;
-	private File folder = null;
-	private final JFileChooser fileChooser = new JFileChooser();
-	private final JCheckBoxList checkBoxList = new JCheckBoxList();
+    /**
+     *
+     */
+    private static final long serialVersionUID = 2124926401011599655L;
+    private final Console console;
+    private LogEntry logEntry = null;
+    private AdvancedFile file = null;
+    private AdvancedFile folder = null;
+    private final JFileChooser fileChooser = new JFileChooser();
+    private final JCheckBoxList checkBoxList = new JCheckBoxList();
 
-	/**
-	 * Creates new form WizardSaveAs
-	 */
-	public WizardSaveAs(Console console) {
-		this.console = console;
-		initComponents();
-		init();
-	}
+    /**
+     * Creates new form WizardSaveAs
+     */
+    public WizardSaveAs(Console console) {
+        this.console = console;
+        initComponents();
+        init();
+    }
 
-	private void init() {
-		addWindowListener(this);
-		setModal(true);
-		fileChooser.setMultiSelectionEnabled(false);
-		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		folder = new File(System.getProperty("user.dir"));
-		reloadInfo();
-		LanguageManager.addLanguageListener(this);
-		reloadLanguage();
-	}
+    private void init() {
+        addWindowListener(this);
+        setModal(true);
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        folder = AdvancedFile.folderOfPath(System.getProperty("user.dir"));
+        reloadInfo();
+        LanguageManager.addLanguageListener(this);
+        reloadLanguage();
+    }
 
-	private void reloadInfo() {
-		checkBoxList.setModel(getCheckBoxListModel());
-		checkBox_save_infos_appearance
-				.setSelected(LogEntryFormatter.isPrinting(Logger.LOGENTRYFORMAT, LogEntryFormatTile.CLASSLINE));
-		checkBox_save_infos_timestamp
-				.setSelected(LogEntryFormatter.isPrinting(Logger.LOGENTRYFORMAT, LogEntryFormatTile.DATETIME));
-		checkBox_save_infos_logLevel
-				.setSelected(LogEntryFormatter.isPrinting(Logger.LOGENTRYFORMAT, LogEntryFormatTile.LOGLEVEL));
-		checkBox_save_infos_thread
-				.setSelected(LogEntryFormatter.isPrinting(Logger.LOGENTRYFORMAT, LogEntryFormatTile.THREAD));
-	}
+    private void reloadInfo() {
+        checkBoxList.setModel(getCheckBoxListModel());
+        checkBox_save_infos_appearance
+                .setSelected(LogEntryFormatter.isPrinting(Logger.LOGENTRYFORMAT, LogEntryFormatTile.CLASSLINE));
+        checkBox_save_infos_timestamp
+                .setSelected(LogEntryFormatter.isPrinting(Logger.LOGENTRYFORMAT, LogEntryFormatTile.DATETIME));
+        checkBox_save_infos_logLevel
+                .setSelected(LogEntryFormatter.isPrinting(Logger.LOGENTRYFORMAT, LogEntryFormatTile.LOGLEVEL));
+        checkBox_save_infos_thread
+                .setSelected(LogEntryFormatter.isPrinting(Logger.LOGENTRYFORMAT, LogEntryFormatTile.THREAD));
+    }
 
-	public LogEntry showSaveAsDialog(Component c) {
-		reloadInfo();
-		try {
-			textField_center_path.setText("");
-			if (folder != null && folder.exists() && folder.isDirectory()) {
-				fileChooser.setCurrentDirectory(folder);
-			} else {
-				folder = new File(System.getProperty("user.dir"));
-				fileChooser.setCurrentDirectory(folder);
-			}
-			fileChooser.setSelectedFile(new File(""));
-		} catch (Exception ex) {
-			Logger.logErr("Error while setting showSaveAsDialog: " + ex, ex);
-		}
-		setLocationRelativeTo(c);
-		setVisible(true);
-		return finish();
-	}
+    public LogEntry showSaveAsDialog(Component c) {
+        reloadInfo();
+        try {
+            textField_center_path.setText("");
+            if (folder != null && folder.exists() && folder.isDirectory()) {
+                fileChooser.setCurrentDirectory(folder.toFile());
+            } else {
+                folder = AdvancedFile.folderOfPath(System.getProperty("user.dir"));
+                fileChooser.setCurrentDirectory(folder.toFile());
+            }
+            fileChooser.setSelectedFile(new AdvancedFile().toFile());
+        } catch (Exception ex) {
+            Logger.logErr("Error while setting showSaveAsDialog: " + ex, ex);
+        }
+        setLocationRelativeTo(c);
+        setVisible(true);
+        return finish();
+    }
 
-	private LogEntry finish() {
-		try {
-			file = new File(textField_center_path.getText());
-			logEntry = new LogEntry(file, Instant.now(), LogEntry.LogLevel.INPUT);
-			logEntry.setLogEntryFormat(getLogEntryFormat());
-			folder = file.getParentFile();
-		} catch (Exception ex) {
-			logEntry = null;
-			Logger.logErr("Error while finishing save as: " + ex, ex);
-		}
-		dispose();
-		return logEntry;
-	}
+    private LogEntry finish() {
+        try {
+            file = AdvancedFile.fileOfPath(textField_center_path.getText());
+            logEntry = new LogEntry(file, Instant.now(), LogEntry.LogLevel.INPUT);
+            logEntry.setLogEntryFormat(getLogEntryFormat());
+            folder = file.getParent();
+        } catch (Exception ex) {
+            logEntry = null;
+            Logger.logErr("Error while finishing save as: " + ex, ex);
+        }
+        dispose();
+        return logEntry;
+    }
 
-	private void close() {
-		logEntry = null;
-		file = null;
-		textField_center_path.setText("");
-		dispose();
-	}
+    private void close() {
+        logEntry = null;
+        file = null;
+        textField_center_path.setText("");
+        dispose();
+    }
 
-	public void searchComputer(Component c) {
-		int result = fileChooser.showSaveDialog(c);
-		File file_temp = fileChooser.getSelectedFile();
-		if (result == JFileChooser.APPROVE_OPTION && file_temp != null) {
-			file = file_temp;
-			textField_center_path.setText(file.getAbsolutePath());
-		}
-	}
+    public void searchComputer(Component c) {
+        int result = fileChooser.showSaveDialog(c);
+        AdvancedFile file_temp = new AdvancedFile(fileChooser.getSelectedFile());
+        if (result == JFileChooser.APPROVE_OPTION && !file_temp.isRelative()) {
+            file = file_temp;
+            textField_center_path.setText(file.toFile().getAbsolutePath());
+        }
+    }
 
-	public File getFile() {
-		return file;
-	}
+    public AdvancedFile getFile() {
+        return file;
+    }
 
-	public WizardSaveAs setFile(File file) {
-		this.file = file;
-		return this;
-	}
+    public WizardSaveAs setFile(AdvancedFile file) {
+        this.file = file;
+        return this;
+    }
 
-	private DefaultListModel<JCheckBox> getCheckBoxListModel() {
-		final DefaultListModel<JCheckBox> model = new DefaultListModel<>();
-		for (LogLevel ll : console.getLogLevels()) {
-			JCheckBox checkBox = new JCheckBox(ll.toLocalizedText());
-			checkBox.setSelected(console.logLevelVisibilities.get(ll));
-			model.addElement(checkBox);
-		}
-		return model;
-	}
+    private DefaultListModel<JCheckBox> getCheckBoxListModel() {
+        final DefaultListModel<JCheckBox> model = new DefaultListModel<>();
+        for (LogLevel ll : console.getLogLevels()) {
+            JCheckBox checkBox = new JCheckBox(ll.toLocalizedText());
+            checkBox.setSelected(console.logLevelVisibilities.get(ll));
+            model.addElement(checkBox);
+        }
+        return model;
+    }
 
-	public String getLogEntryFormat() {
-		return LogEntryFormatter.toggleFormat(LogEntry.STANDARD_LOGENTRYFORMAT,
-				checkBox_save_infos_timestamp.isSelected(), checkBox_save_infos_appearance.isSelected(),
-				checkBox_save_infos_thread.isSelected(), checkBox_save_infos_logLevel.isSelected(), true, true);
-	}
+    public String getLogEntryFormat() {
+        return LogEntryFormatter.toggleFormat(LogEntry.STANDARD_LOGENTRYFORMAT,
+                checkBox_save_infos_timestamp.isSelected(), checkBox_save_infos_appearance.isSelected(),
+                checkBox_save_infos_thread.isSelected(), checkBox_save_infos_logLevel.isSelected(), true, true);
+    }
 
-	public HashMap<LogLevel, Boolean> getLogLevels() {
-		final HashMap<LogLevel, Boolean> logLevels = new HashMap<>();
-		int i = 0;
-		for (LogLevel ll : console.getLogLevels()) {
-			logLevels.put(ll, checkBoxList.getModel().getElementAt(i).isSelected());
-			i++;
-		}
-		return logLevels;
-	}
+    public HashMap<LogLevel, Boolean> getLogLevels() {
+        final HashMap<LogLevel, Boolean> logLevels = new HashMap<>();
+        int i = 0;
+        for (LogLevel ll : console.getLogLevels()) {
+            logLevels.put(ll, checkBoxList.getModel().getElementAt(i).isSelected());
+            i++;
+        }
+        return logLevels;
+    }
 
-	/**
-	 * This method is called from within the constructor to initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is always
-	 * regenerated by the Form Editor.
-	 */
-
-	// <editor-fold defaultstate="collapsed" desc="Generated
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    // <editor-fold defaultstate="collapsed" desc="Generated
 	// Code">//GEN-BEGIN:initComponents
 	private void initComponents() {
 
@@ -353,65 +352,64 @@ public class WizardSaveAs extends javax.swing.JDialog implements ActionListener,
 		pack();
 	}// </editor-fold>//GEN-END:initComponents
 
-	private void button_bottom_cancelActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_button_bottom_cancelActionPerformed
-		close();
-	}// GEN-LAST:event_button_bottom_cancelActionPerformed
+    private void button_bottom_cancelActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_button_bottom_cancelActionPerformed
+        close();
+    }// GEN-LAST:event_button_bottom_cancelActionPerformed
 
-	private void button_bottom_finishActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_button_bottom_finishActionPerformed
-		if (textField_center_path.getText().isEmpty()) {
-			return;
-		}
-		finish();
-	}// GEN-LAST:event_button_bottom_finishActionPerformed
+    private void button_bottom_finishActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_button_bottom_finishActionPerformed
+        if (textField_center_path.getText().isEmpty()) {
+            return;
+        }
+        finish();
+    }// GEN-LAST:event_button_bottom_finishActionPerformed
 
-	private void button_center_pathActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_button_center_pathActionPerformed
-		searchComputer(this);
-	}// GEN-LAST:event_button_center_pathActionPerformed
+    private void button_center_pathActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_button_center_pathActionPerformed
+        searchComputer(this);
+    }// GEN-LAST:event_button_center_pathActionPerformed
 
-	/**
-	 * @param args
-	 *            the command line arguments
-	 */
-	public static void main(String args[]) {
-		/* Set the Nimbus look and feel */
-		// <editor-fold defaultstate="collapsed" desc=" Look and feel setting
-		// code (optional) ">
-		/*
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting
+        // code (optional) ">
+        /*
 		 * If Nimbus (introduced in Java SE 6) is not available, stay with the
 		 * default look and feel. For details see
 		 * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.
 		 * html
-		 */
-		try {
-			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-				if ("Nimbus".equals(info.getName())) {
-					javax.swing.UIManager.setLookAndFeel(info.getClassName());
-					break;
-				}
-			}
-		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(WizardSaveAs.class.getName()).log(java.util.logging.Level.SEVERE, null,
-					ex);
-		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(WizardSaveAs.class.getName()).log(java.util.logging.Level.SEVERE, null,
-					ex);
-		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(WizardSaveAs.class.getName()).log(java.util.logging.Level.SEVERE, null,
-					ex);
-		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(WizardSaveAs.class.getName()).log(java.util.logging.Level.SEVERE, null,
-					ex);
-		}
-		// </editor-fold>
-		// </editor-fold>
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(WizardSaveAs.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(WizardSaveAs.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(WizardSaveAs.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(WizardSaveAs.class.getName()).log(java.util.logging.Level.SEVERE, null,
+                    ex);
+        }
+        // </editor-fold>
+        // </editor-fold>
 
-		/* Create and display the form */
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				new WizardSaveAs(Logger.CONSOLE).setVisible(true);
-			}
-		});
-	}
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new WizardSaveAs(Logger.CONSOLE).setVisible(true);
+            }
+        });
+    }
 
 	// Variables declaration - do not modify//GEN-BEGIN:variables
 	public javax.swing.JButton button_bottom_back;
@@ -436,64 +434,64 @@ public class WizardSaveAs extends javax.swing.JDialog implements ActionListener,
 	public javax.swing.JTextField textField_center_path;
 	// End of variables declaration//GEN-END:variables
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
+    @Override
+    public void actionPerformed(ActionEvent e) {
 
-	}
+    }
 
-	@Override
-	public void windowOpened(WindowEvent e) {
-	}
+    @Override
+    public void windowOpened(WindowEvent e) {
+    }
 
-	@Override
-	public void windowClosing(WindowEvent e) {
-		if (e.getSource() == this) {
-			close();
-		}
-	}
+    @Override
+    public void windowClosing(WindowEvent e) {
+        if (e.getSource() == this) {
+            close();
+        }
+    }
 
-	@Override
-	public void windowClosed(WindowEvent e) {
-	}
+    @Override
+    public void windowClosed(WindowEvent e) {
+    }
 
-	@Override
-	public void windowIconified(WindowEvent e) {
-	}
+    @Override
+    public void windowIconified(WindowEvent e) {
+    }
 
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-	}
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+    }
 
-	@Override
-	public void windowActivated(WindowEvent e) {
-	}
+    @Override
+    public void windowActivated(WindowEvent e) {
+    }
 
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-	}
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+    }
 
-	@Override
-	public void reloadLanguage() {
-		setTitle(getLang("save_as", "Save as"));
-		button_center_path.setText(getLang("search_computer", "Search Computer"));
-		button_bottom_back.setText(getLang("wizard_back", "< Back"));
-		button_bottom_next.setText(getLang("wizard_next", "Next >"));
-		button_bottom_finish.setText(getLang("finish", "Finish"));
-		button_bottom_cancel.setText(getLang("cancel", "Cancel"));
-		label_center_path.setText(getLang("file", "File"));
-		label_save_infos.setText(getLang("save_infos", "Save Infos"));
-		label_save_level.setText(getLang("save_level", "Save Level"));
-		checkBox_save_infos_appearance.setText(getLang("appearance", "Appearance"));
-		checkBox_save_infos_logLevel.setText(getLang("level", "Level"));
-		checkBox_save_infos_thread.setText(getLang("thread", "Thread"));
-		checkBox_save_infos_timestamp.setText(getLang("timestamp", "Timestamp"));
-		panel_settings_settings
-				.setBorder(BorderFactory.createTitledBorder(new EtchedBorder(), getLang("settings", "Settings")));
-		int i = 0;
-		for (LogLevel ll : console.getLogLevels()) {
-			checkBoxList.getModel().getElementAt(i).setText(ll.toLocalizedText());
-			i++;
-		}
-	}
+    @Override
+    public void reloadLanguage() {
+        setTitle(getLang("save_as", "Save as"));
+        button_center_path.setText(getLang("search_computer", "Search Computer"));
+        button_bottom_back.setText(getLang("wizard_back", "< Back"));
+        button_bottom_next.setText(getLang("wizard_next", "Next >"));
+        button_bottom_finish.setText(getLang("finish", "Finish"));
+        button_bottom_cancel.setText(getLang("cancel", "Cancel"));
+        label_center_path.setText(getLang("file", "File"));
+        label_save_infos.setText(getLang("save_infos", "Save Infos"));
+        label_save_level.setText(getLang("save_level", "Save Level"));
+        checkBox_save_infos_appearance.setText(getLang("appearance", "Appearance"));
+        checkBox_save_infos_logLevel.setText(getLang("level", "Level"));
+        checkBox_save_infos_thread.setText(getLang("thread", "Thread"));
+        checkBox_save_infos_timestamp.setText(getLang("timestamp", "Timestamp"));
+        panel_settings_settings
+                .setBorder(BorderFactory.createTitledBorder(new EtchedBorder(), getLang("settings", "Settings")));
+        int i = 0;
+        for (LogLevel ll : console.getLogLevels()) {
+            checkBoxList.getModel().getElementAt(i).setText(ll.toLocalizedText());
+            i++;
+        }
+    }
 
 }

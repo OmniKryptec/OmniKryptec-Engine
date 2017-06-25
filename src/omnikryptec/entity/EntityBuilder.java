@@ -1,10 +1,9 @@
 package omnikryptec.entity;
 
-import java.io.File;
-
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.texture.SimpleTexture;
+import omnikryptec.util.AdvancedFile;
 
 /**
  *
@@ -80,7 +79,7 @@ public class EntityBuilder {
         return this;
     }
 
-    public final EntityBuilder loadModel(File modelFile) {
+    public final EntityBuilder loadModel(AdvancedFile modelFile) {
         this.model = Model.newModel(modelFile);
         return this;
     }
@@ -90,7 +89,7 @@ public class EntityBuilder {
         return this;
     }
 
-    public final EntityBuilder loadTexture(File textureFile) {
+    public final EntityBuilder loadTexture(AdvancedFile textureFile) {
         this.texture = SimpleTexture.newTextureb(textureFile).create();
         return this;
     }

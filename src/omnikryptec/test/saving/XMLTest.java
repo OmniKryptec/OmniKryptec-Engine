@@ -1,6 +1,5 @@
 package omnikryptec.test.saving;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -67,8 +66,7 @@ public class XMLTest {
                 String temp = "";
                 Logger.log((temp = vector2f.toString()));
                 Logger.log((vector2f = SerializationUtil.stringToVector2f(temp)));
-                AdvancedFile file = new AdvancedFile(
-                        new File("E:\\Daten\\NetBeans\\Projekte\\OmniKryptec-Engine\\temp"), "Test.xml");
+                AdvancedFile file = AdvancedFile.fileOfPath("E:\\Daten\\NetBeans\\Projekte\\OmniKryptec-Engine\\temp").addPaths("Test.xml");
                 // Logger.log("file == " + file);
                 // Logger.log("file.toFile() == " + file.toFile());
                 // Logger.log("file.createFile() == " + file.createFile());

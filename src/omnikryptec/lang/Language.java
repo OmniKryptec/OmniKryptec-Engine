@@ -1,8 +1,6 @@
 package omnikryptec.lang;
 
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -21,6 +19,7 @@ import java.util.Properties;
 
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
+import omnikryptec.util.AdvancedFile;
 
 /**
  *
@@ -107,7 +106,7 @@ public class Language extends Properties {
         return String.format("%s (%s)", getLanguageName(), getLanguageCodeShort());
     }
 
-    public static final String fileToLanguageCodeShort(File file) {
+    public static final String fileToLanguageCodeShort(AdvancedFile file) {
         String restName = file.getName().substring(LANGUAGEFILEPREFIX.length());
         int indexPoint = restName.indexOf(".");
         if (indexPoint != -1) {
@@ -122,7 +121,7 @@ public class Language extends Properties {
             return null;
         }
         try {
-            String languageCodeShort = fileToLanguageCodeShort(new File(path));
+            String languageCodeShort = fileToLanguageCodeShort(new AdvancedFile(path));
             final Language language = loadLanguageFromInputStream(LanguageManager.class.getResourceAsStream(path));
             language.setLanguageCodeShort(languageCodeShort);
             language.setLanguageRawName(language.getProperty(languageCodeShort, languageCodeShort));
@@ -154,7 +153,7 @@ public class Language extends Properties {
         }
     }
 
-    public static final Language ofFile(File file) {
+    public static final Language ofFile(AdvancedFile file) {
         if (file == null) {
             return null;
         } else if (!file.exists()) {
@@ -166,13 +165,11 @@ public class Language extends Properties {
         }
         try {
             final String languageCodeShort = fileToLanguageCodeShort(file);
-            final FileInputStream fis = new FileInputStream(file);
-            final BufferedInputStream bis = new BufferedInputStream(fis);
+            final BufferedInputStream bis = new BufferedInputStream(file.createInputStream());
             final Language language = loadLanguageFromInputStream(bis);
             language.setLanguageCodeShort(languageCodeShort);
             language.setLanguageRawName(language.getProperty(languageCodeShort, languageCodeShort));
             bis.close();
-            fis.close();
             Logger.log(String.format("Loaded Language \"%s\" from file", language.toString()), LogLevel.FINE);
             return language;
         } catch (Exception ex) {
@@ -181,7 +178,7 @@ public class Language extends Properties {
         }
     }
 
-    public static final ArrayList<Language> ofFiles(File folder) {
+    public static final ArrayList<Language> ofFiles(AdvancedFile folder) {
         if (folder == null) {
             return null;
         } else if (!folder.exists()) {
@@ -193,9 +190,9 @@ public class Language extends Properties {
         }
         try {
             final ArrayList<Language> languagesLoaded = new ArrayList<>();
-            for (File file : folder.listFiles()) {
+            folder.listAdvancedFiles().stream().forEach((file) -> {
                 languagesLoaded.add(ofFile(file));
-            }
+            });
             Logger.log(String.format("Loaded %d Language%s", languagesLoaded.size(),
                     (languagesLoaded.size() != 1 ? "s" : "")), LogLevel.FINE);
             return languagesLoaded;
@@ -240,11 +237,8 @@ public class Language extends Properties {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                     String path_temp = file.toString();
-                    if (path_temp.contains(path.replaceAll(LANGUAGEPATHSEPARATOR, File.separator + File.separator))) {
-                        path_temp = path_temp.substring(path_temp
-                                .indexOf(path.replaceAll(LANGUAGEPATHSEPARATOR, File.separator + File.separator))
-                                + path.replaceAll(LANGUAGEPATHSEPARATOR, File.separator + File.separator).length() + 1)
-                                .replaceAll(File.separator + File.separator, LANGUAGEPATHSEPARATOR);
+                    if (path_temp.contains(path.replaceAll(LANGUAGEPATHSEPARATOR, "\\" + AdvancedFile.WINDOWS_SEPARATOR))) {
+                        path_temp = path_temp.substring(path_temp.indexOf(path.replaceAll(LANGUAGEPATHSEPARATOR, "\\" + AdvancedFile.WINDOWS_SEPARATOR)) + path.replaceAll(LANGUAGEPATHSEPARATOR, "\\" + AdvancedFile.WINDOWS_SEPARATOR).length() + 1).replaceAll("\\" + AdvancedFile.WINDOWS_SEPARATOR, LANGUAGEPATHSEPARATOR);
                     }
                     if (path_temp.startsWith(path)) {
                         path_temp = path_temp.substring(path.length() + 1);

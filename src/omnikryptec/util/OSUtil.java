@@ -1,6 +1,5 @@
 package omnikryptec.util;
 
-import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
@@ -20,12 +19,12 @@ import omnikryptec.main.OmniKryptecEngine;
 public class OSUtil {
 
     private static final String OS_NAME = System.getProperty("os.name").toLowerCase();
-    private static final File USER_HOME = new File(System.getProperty("user.home"));
+    private static final AdvancedFile USER_HOME = AdvancedFile.folderOfPath(System.getProperty("user.home"));
     private static final String ENGINE_FOLDER_NAME = "." + OmniKryptecEngine.class.getSimpleName();
     private static final String PATHSEPARATOR = "/";
 
     public static final OS OpSys = detectOS();
-    public static final File STANDARDAPPDATA = getStandardAppDataEngineFolder();
+    public static final AdvancedFile STANDARDAPPDATA = getStandardAppDataEngineFolder();
 
     public static enum OS {
         WINDOWS("windows"), MAC("macosx"), UNIX("linux"), SOLARIS("solaris"), ERROR(null);
@@ -71,7 +70,7 @@ public class OSUtil {
 
     public static final boolean createStandardFolders() {
         try {
-            STANDARDAPPDATA.mkdirs();
+            STANDARDAPPDATA.createFile();
             return (STANDARDAPPDATA.exists() && STANDARDAPPDATA.isDirectory());
         } catch (Exception ex) {
             Logger.logErr("Error while creating standard folders: " + ex, ex);
@@ -79,28 +78,24 @@ public class OSUtil {
         }
     }
 
-    public static final File getStandardAppDataEngineFolder() {
+    public static final AdvancedFile getStandardAppDataEngineFolder() {
         return getAppDataFolder(ENGINE_FOLDER_NAME);
     }
 
-    public static final File getAppDataFolder(String folderName) {
-        File file = null;
+    public static final AdvancedFile getAppDataFolder(String folderName) {
+        AdvancedFile file = null;
         switch (OpSys) {
             case WINDOWS:
-                file = new File(USER_HOME.getAbsolutePath() + File.separator + "AppData" + File.separator + "Roaming"
-                        + File.separator + folderName);
+                file = new AdvancedFile(USER_HOME, "AppData", "Roaming", folderName);
                 break;
             case MAC:
-                file = new File(USER_HOME.getAbsolutePath() + File.separator + "Library" + File.separator
-                        + "Application Support" + File.separator + folderName); // TODO
-                // Needs
-                // confirmation!
+                file = new AdvancedFile(USER_HOME, "Library", "Application Support", folderName); // TODO Needs confirmation!
                 break;
             case UNIX:
-                file = new File(USER_HOME.getAbsolutePath() + File.separator + folderName);
+                file = new AdvancedFile(USER_HOME, folderName);
                 break;
             case SOLARIS:
-                file = new File(USER_HOME.getAbsolutePath() + File.separator + folderName);
+                file = new AdvancedFile(USER_HOME, folderName);
                 break;
             case ERROR:
                 break;
@@ -110,13 +105,13 @@ public class OSUtil {
         return file;
     }
 
-    public static final boolean extractFileFromJar(File file, String path) {
+    public static final boolean extractFileFromJar(AdvancedFile file, String path) {
         if (file.exists()) {
             return true;
         }
         try {
             final InputStream inputStream = OSUtil.class.getResourceAsStream(path);
-            Files.copy(inputStream, file.getAbsoluteFile().toPath());
+            Files.copy(inputStream, file.toFile().getAbsoluteFile().toPath());
             inputStream.close();
             return file.exists();
         } catch (Exception ex) {
@@ -125,12 +120,12 @@ public class OSUtil {
         }
     }
 
-    public static final boolean extractFolderFromJar(File folder, String path) {
+    public static final boolean extractFolderFromJar(AdvancedFile folder, String path) {
         try {
             boolean allGood = true;
-            final File jarFile = getJarFile();
+            final AdvancedFile jarFile = getJarFile();
             if (jarFile.isFile()) {
-                final JarFile jar = new JarFile(jarFile);
+                final JarFile jar = new JarFile(jarFile.toFile());
                 final Enumeration<JarEntry> entries = jar.entries();
                 while (entries.hasMoreElements()) {
                     final JarEntry jarEntry = entries.nextElement();
@@ -146,12 +141,10 @@ public class OSUtil {
             } else {
                 final URL url = OSUtil.class.getResource(path);
                 if (url != null) {
-                    final File apps = new File(url.toURI());
-                    for (File app : apps.listFiles()) {
+                    final AdvancedFile apps = AdvancedFile.folderOfPath(url.toURI().getPath());
+                    for (AdvancedFile app : apps.listAdvancedFiles()) {
                         try {
-                            Files.copy(app.toPath(),
-                                    new File(folder.getAbsolutePath() + File.separator + app.getName()).toPath(),
-                                    StandardCopyOption.COPY_ATTRIBUTES);
+                            Files.copy(app.toFile().toPath(), new AdvancedFile(folder, app.getName()).toFile().toPath(), StandardCopyOption.COPY_ATTRIBUTES);
                         } catch (java.nio.file.FileAlreadyExistsException faex) {
                         } catch (Exception ex) {
                             allGood = false;
@@ -169,16 +162,16 @@ public class OSUtil {
         }
     }
 
-    public static final File getFileOfPath(File folder, String path) {
+    public static final AdvancedFile getFileOfPath(AdvancedFile folder, String path) {
         String name = path;
         if (path.contains(PATHSEPARATOR)) {
             name = name.substring(name.lastIndexOf(PATHSEPARATOR) + PATHSEPARATOR.length());
         }
-        return new File(folder.getAbsolutePath() + File.separator + name);
+        return new AdvancedFile(folder, name);
     }
 
-    public static final File getJarFile() {
-        return new File(OSUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+    public static final AdvancedFile getJarFile() {
+        return AdvancedFile.fileOfPath(OSUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath());
     }
 
     public static final boolean isJarFile() {
