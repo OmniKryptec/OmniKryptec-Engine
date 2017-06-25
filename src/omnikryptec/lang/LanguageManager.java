@@ -25,7 +25,7 @@ public class LanguageManager {
 
     static {
         loadLanguages();
-        setLanguage("DE");
+        setLanguage("EN");
     }
 
     public static final void initialize() {
