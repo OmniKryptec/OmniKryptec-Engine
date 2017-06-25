@@ -862,6 +862,29 @@ public class AdvancedFile {
         toFile().delete();
         return exists();
     }
+
+    @Override
+    public final boolean equals(Object object) {
+        if(object == null) {
+            return false;
+        }
+        if(object instanceof AdvancedFile) {
+            return getPath().equals(((AdvancedFile) object).getPath());
+        } else if(object instanceof File) {
+            return getPath().equals(((File) object).toString());
+        } else if(object instanceof String) {
+            return getPath().equals((String) object);
+        } else {
+            return false;
+        }
+    }
+    
+    public static final boolean isEqual(AdvancedFile af_1, AdvancedFile af_2) {
+        if(af_1 == null || af_2 == null) {
+            return false;
+        }
+        return af_1.equals(af_2);
+    }
     
     public static final AdvancedFile fileOfPath(String path) {
         return new AdvancedFile(path).setShouldBeFile(true).getAbsoluteAdvancedFile();

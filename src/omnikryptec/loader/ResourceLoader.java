@@ -59,7 +59,7 @@ public class ResourceLoader implements Loader {
                 if (resourceObject != null && name != null && !name.isEmpty()) {
                     addRessourceObject(name, resourceObject);
                 } else {
-                    Logger.log(String.format("Failed to load: \"%s\"%s", advancedFile, (advancedFile.getPath().equals(superFile.getPath()) ? "" : String.format(" (in \"%s\")", superFile))), LogLevel.WARNING);
+                    Logger.log(String.format("Failed to load: \"%s\"%s", advancedFile, (advancedFile.equals(superFile) ? "" : String.format(" (in \"%s\")", superFile))), LogLevel.WARNING);
                 }
                 return resourceObject;
             }
