@@ -6,6 +6,7 @@ import omnikryptec.animation.renderer.AnimatedModelRenderer;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.event.EventSystem;
+import omnikryptec.loader.ResourceLoader;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.postprocessing.PostProcessing;
@@ -79,5 +80,9 @@ public class Instance {
 
 	public static final KeySettings getKeySettings() {
 		return getGameSettings().getKeySettings();
+	}
+	
+	public static final ResourceLoader getLoader(){
+		return ResourceLoader.getInstance();
 	}
 }
