@@ -6,6 +6,7 @@ import omnikryptec.animation.renderer.AnimatedModelRenderer;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.event.EventSystem;
+import omnikryptec.loader.ResourceLoader;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.postprocessing.PostProcessing;
@@ -34,7 +35,6 @@ public class Instance {
 
 	public static final int PPS_INDEX_OPTION_USE_LAST_FBO = PostProcessingStage.INDEX_OPTION_USE_LAST_FBO;
 
-	public static final javax.vecmath.Vector3f VECTOR_ZERO = new javax.vecmath.Vector3f(0, 0, 0);
 	public static final javax.vecmath.Vector3f GRAVITY_EARTH = new javax.vecmath.Vector3f(0, -9.81F, 0);
 
 	public static final javax.vecmath.Vector3f PHYSICS_X = PhysicsUtil.X;
@@ -79,5 +79,9 @@ public class Instance {
 
 	public static final KeySettings getKeySettings() {
 		return getGameSettings().getKeySettings();
+	}
+	
+	public static final ResourceLoader getLoader(){
+		return ResourceLoader.getInstance();
 	}
 }
