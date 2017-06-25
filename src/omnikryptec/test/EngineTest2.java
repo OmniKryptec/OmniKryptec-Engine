@@ -198,8 +198,5 @@ public class EngineTest2 implements IEventHandler {
         // System.out.println(DisplayManager.instance().getDeltaTime());
     }
     
-    public static <T extends Object> T get(){
-    	return null;
-    }
     
 }
