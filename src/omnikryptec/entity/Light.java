@@ -1,6 +1,7 @@
 package omnikryptec.entity;
 
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.deferredlight.DeferredLightPrepare;
 import omnikryptec.util.Color;
@@ -10,7 +11,8 @@ public class Light extends GameObject {
 	private Vector3f vec = new Vector3f();
 	private Color color = new Color(1, 1, 1, 1);
 	private DeferredLightPrepare mylightprepare = DeferredLightPrepare.FORWARD_RENDERING;
-
+	private Vector4f coneinfo = new Vector4f(1, 1, 1, 180);
+	
 	private Vector3f att;
 
 	private Vector3f tmp;
@@ -36,22 +38,30 @@ public class Light extends GameObject {
 	public Color getColor() {
 		return color;
 	}
-
-	// /**
-	// * Sets this light to be a directional light.
-	// *
-	// * the radius will be overwritten.
-	// *
-	// * @return this light
-	// */
-	// public Light setDirectional() {
-	// radius = -1;
-	// return this;
-	// }
-	//
-	// public boolean isDirectional() {
-	// return radius < 0;
-	// }
+	
+	public Light setConeDirection(float x, float y, float z){
+		coneinfo.set(x, y, z);
+		return this;
+	}
+	
+	public Light setConeDegrees(float d){
+		coneinfo.w = d;
+		return this;
+	}
+	
+	public Vector4f getConeInfo(){
+		return coneinfo;
+	}
+	
+	public Light setDirectional(){
+		coneinfo.w = 0;
+		return this;
+	}
+	
+	public Light setPointLight(){
+		coneinfo.w = 180;
+		return this;
+	}
 
 	public Light setShader(DeferredLightPrepare shader) {
 		this.mylightprepare = shader;

@@ -7,9 +7,9 @@ package omnikryptec.loader;
 public class Data {
     
     private final String name;
-    private final Object data;
+    private final RessourceObject data;
     
-    public Data(String name, Object data) {
+    public Data(String name, RessourceObject data) {
         this.name = name;
         this.data = data;
     }
@@ -18,7 +18,7 @@ public class Data {
         return name;
     }
 
-    public final Object getData() {
+    public final RessourceObject getData() {
         return data;
     }
     

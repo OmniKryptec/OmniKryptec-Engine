@@ -49,6 +49,7 @@ public class EntityRenderer implements Renderer {
 			shader.lightpos[i].loadVec3(s.getForwardRenderLights().get(i).getAbsolutePos());
 			shader.lightcolor[i].loadVec3(s.getForwardRenderLights().get(i).getColor().getArray());
 			shader.atts[i].loadVec3(s.getForwardRenderLights().get(i).getAttenuation());
+			shader.coneinfo[i].loadVec4(s.getForwardRenderLights().get(i).getConeInfo());
 		}
 		for (int i = 0; i < entities.keysArray().length; i++) {
 			if (!(entities.keysArray()[i] instanceof TexturedModel)) {

@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.util.AdvancedFile;
@@ -19,39 +17,45 @@ import omnikryptec.util.ArrayUtil;
  */
 public class ResourceLoader implements Loader {
     
-    private ExecutorService executor = null;
-    private final HashMap<String, Object> loadedData = new HashMap<>();
+//    private ExecutorService executor = null;
+    private final HashMap<String, RessourceObject> loadedData = new HashMap<>();
     private final HashMap<Integer, ArrayList<AdvancedFile>> priorityStagedAdvancedFiles = new HashMap<>();
     private final ArrayList<Loader> loaders = new ArrayList<>();
     private String[] extensions = null;
     private String[] blacklist = null;
-
+    
     @Override
-    public final Data load(AdvancedFile advancedFile) {
+    public RessourceObject load(AdvancedFile advancedFile){
+    	return loadp(advancedFile, advancedFile);
+    }
+    
+    
+    final RessourceObject loadp(AdvancedFile advancedFile, AdvancedFile superfile) {
         try {
             if(advancedFile == null || !advancedFile.exists()) {
                 return null;
             }
             if(advancedFile.isDirectory()) {
                 advancedFile.listAdvancedFiles().stream().forEach((af) -> {
-                    load(af);
+                    loadp(af, superfile);
                 });
                 return null;
             } else {
                 final List<Loader> loadersForExtension = getLoaderForExtensions(advancedFile.getExtension());
-                Data data = null;
+                RessourceObject dataObj = null;
                 for(Loader loader : loadersForExtension) {
-                    data = loader.load(advancedFile);
-                    if(data != null) {
+                	dataObj = loader.load(advancedFile);
+                    if(dataObj != null) {
                         break;
                     }
                 }
+                final Data data = new Data(generateName(advancedFile, superfile), dataObj);
                 if(data != null && data.getName() != null && !data.getName().isEmpty() && data.getData() != null) {
                     loadedData.put(data.getName(), data.getData());
                 } else {
                     Logger.log("Failed to load: " + advancedFile, LogLevel.WARNING);
                 }
-                return data;
+                return data.getData();
             }
         } catch (Exception ex) {
             Logger.logErr("Error while loading staged advanced file: " + ex, ex);
@@ -59,18 +63,32 @@ public class ResourceLoader implements Loader {
         }
     }
     
-    public final void loadStagedAdvancedFiles(long timeout, TimeUnit unit) {
+    private String generateName(AdvancedFile advancedFile, AdvancedFile superfile) {
+		String s = advancedFile.getPath().replace(superfile.getPath(), "").replace(AdvancedFile.PATH_SEPARATOR, ":");
+		if(s.startsWith(":")){
+			s = s.substring(1, s.length());
+		}
+		if(s.endsWith(":")){
+			s = s.substring(0, s.length()-1);
+		}
+		return s;
+	}
+
+	public final void loadStagedAdvancedFiles(boolean clearData/*, long timeout, TimeUnit unit*/) {
         try {
-            resetExecutor();
-            loadedData.clear();
+//         	resetExecutor();
+            if(clearData){
+            	loadedData.clear();
+            }
             final ArrayList<AdvancedFile> stagedAdvancedFiles = getStagedAdvancedFilesSorted();
             stagedAdvancedFiles.stream().forEach((advancedFile) -> {
-                executor.submit(() -> {
-                    final Data data = load(advancedFile);
-                });
+            	load(advancedFile);
+//                executor.submit(() -> {
+//                    load(advancedFile);
+//                });
             });
-            executor.shutdown();
-            executor.awaitTermination(timeout, unit);
+//          executor.shutdown();
+//          executor.awaitTermination(timeout, unit);
         } catch (Exception ex) {
             Logger.logErr("Error while loading staged advanced files: " + ex, ex);
         }
@@ -150,20 +168,22 @@ public class ResourceLoader implements Loader {
         return loaders.stream().filter((loader) -> ArrayUtil.contains(loader.getExtensions(), extensions)).collect(Collectors.toList());
     }
     
-    public final <T> T getData(Class<? extends T> c, String name) {
+    @SuppressWarnings("unchecked")
+	public final <T> T getData(Class<? extends T> c, String name) {
         if(c == null || name == null || name.isEmpty()) {
             return null;
         }
-        Object data = loadedData.get(name);
+        RessourceObject data = loadedData.get(name);
         if(data == null || !c.isAssignableFrom(data.getClass())) { //TODO Gucken ob das isAssignableFrom so richtig herum ist
             return null;
         }
         return (T) data;
     }
     
-    public final <T> ArrayList<T> getAllData(Class<? extends T> c) {
+    @SuppressWarnings("unchecked")
+	public final <T> ArrayList<T> getAllData(Class<? extends T> c) {
         final ArrayList<T> data = new ArrayList<>();
-        List<Object> d = loadedData.values().stream().filter((object) -> (object != null && c.isAssignableFrom(object.getClass()))).collect(Collectors.toList()); //TODO Gucken ob das isAssignableFrom so richtig herum ist
+        List<RessourceObject> d = loadedData.values().stream().filter((object) -> (object != null && c.isAssignableFrom(object.getClass()))).collect(Collectors.toList()); //TODO Gucken ob das isAssignableFrom so richtig herum ist
         d.stream().forEach((object) -> {
             data.add((T) object);
         });
@@ -206,13 +226,13 @@ public class ResourceLoader implements Loader {
         return blacklist_temp.toArray(new String[blacklist_temp.size()]);
     }
     
-    private final Loader resetExecutor() {
-        if(executor != null) {
-            executor.shutdownNow();
-        }
-        executor = Executors.newFixedThreadPool(10);
-        return this;
-    }
+//    private final Loader resetExecutor() {
+//        if(executor != null) {
+//            executor.shutdownNow();
+//        }
+//        executor = Executors.newFixedThreadPool(10);
+//        return this;
+//    }
     
     
 }

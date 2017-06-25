@@ -887,7 +887,7 @@ public class AdvancedFile {
             return isFile;
         }
 
-        public final  boolean isDirectory() {
+        public final boolean isDirectory() {
             return isDirectory;
         }
         

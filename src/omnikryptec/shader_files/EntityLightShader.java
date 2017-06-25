@@ -31,6 +31,7 @@ public class EntityLightShader extends Shader {
 	public final UniformVec4 uvs = new UniformVec4("uvs");
 	public final UniformBoolean hasnormal = new UniformBoolean("hasnormal");
 	public final UniformVec3[] lightpos, atts, lightcolor;
+	public final UniformVec4[] coneinfo;
 	public final UniformVec3 ambient = new UniformVec3("ambient");
 	public final UniformInt activelights = new UniformInt("activelights");
 
@@ -67,6 +68,11 @@ public class EntityLightShader extends Shader {
 			lightcolor[i] = new UniformVec3("lightColor[" + i + "]");
 		}
 		registerUniforms(lightcolor);
+		coneinfo = new UniformVec4[DisplayManager.instance().getSettings().getLightMaxForward()];
+		for (int i = 0; i < coneinfo.length; i++) {
+			coneinfo[i] = new UniformVec4("coneInfo[" + i + "]");
+		}
+		registerUniforms(coneinfo);
 		registerUniforms(transformation, view, projection, tex, normalmap, specularmap, hasspecular, reflec, colmod,
 				shinedamper, hasextrainfomap, extrainfo, extrainfovec, uvs, hasnormal, activelights, ambient);
 		start();

@@ -30,36 +30,59 @@ uniform float damp;
 
 uniform vec3 lightColor[maxlights];
 uniform vec3 atts[maxlights];
+uniform vec4 coneInfo[maxlights];
+uniform vec3 lightpos[maxlights];
 
 
 uniform int activelights;
 uniform vec3 ambient;
-
 
 float saturate(float value){
 
 	return clamp(value,0.0,1.0);
 }
 
-vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 Mspec, float Mdamp, vec3 att){
+vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 Mspec, float Mdamp, vec3 att, vec4 conei, vec3 pos){
 	float distance = length(tlvec);
+	//directional light -> lightpos is the light direction
+	if(conei.w==0.0){
+		tlvec = pos;
+	}
 	vec3 toLightNormalized = normalize(tlvec);
 	vec3 unitCam = normalize(tcvec);
 	vec3 fromLight = -toLightNormalized;
 
-	vec3 reflected = reflect(fromLight, normal);
 
+	float dot1 = saturate(dot(normal,toLightNormalized));
+	vec3 diffusev = dot1 * Scol;
+
+	vec3 reflected = reflect(fromLight, normal);
 	float dot2 = saturate(dot(reflected, unitCam));
-	float damp = pow(dot2, Mdamp);
+	float damp = 0;
+
+	//if no diffuselight there will be no specular light
+	if(dot1>0.0){
+		damp = pow(dot2, Mdamp);
+	}
 	vec3 spec = damp * Scol * Mspec;
 
 
-	float dot1 = saturate(dot(normal,toLightNormalized));
-	vec3 diffusev = dot1 * Scol + ambient;
 
-	float attenu = (att.x + (att.y * distance) + (att.z * distance * distance));
-	attenu = max(attenu, 1);
-	return (diffusev*Mdiff+spec)/attenu;
+
+	float attenu = 1/(att.x + (att.y * distance) + (att.z * distance * distance));
+	attenu = min(attenu, 1);
+	//directional light
+	if(conei.w==0.0){
+		attenu = 1;
+	}else{
+		//point- or spotlight
+		float ltsa = degrees(acos(dot(fromLight, normalize(conei.xyz))));
+		//current point is outside the lightcone
+		if(ltsa > conei.w){
+			attenu = 0;
+		}
+	}
+	return ambient + (diffusev*Mdiff+spec)*attenu;
 }
 
 void main(void){
@@ -93,9 +116,8 @@ void main(void){
 	}
 
 	colf = vec4(0,0,0,col.a);
-	int minimum = min(maxlights, activelights);
-	for(int i=0; i<minimum; i++){
-		colf = colf+vec4(lighting(lightColor[i], toCamVec, toLightVec[i], normalt, col.rgb, col2.xyz, col2.w, atts[i]),0);
+	for(int i=0; i<activelights; i++){
+		colf = colf+vec4(lighting(lightColor[i], toCamVec, toLightVec[i], normalt, col.rgb, col2.xyz, col2.w, atts[i], coneInfo[i], lightpos[i]),0);
 	}
 	if(hasextra>0.5){
 		col3.rgb = texture(extra, pass_texcoords).rgb;
