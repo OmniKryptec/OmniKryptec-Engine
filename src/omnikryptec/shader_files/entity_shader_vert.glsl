@@ -9,6 +9,7 @@ out vec2 pass_texcoords;
 out mat3 TBN;
 out vec3 norm;
 out vec3 toLightVec[maxlights];
+out vec4 coneDeg[maxlights];
 out vec3 toCamVec;
 
 uniform mat4 transmatrix;
@@ -18,12 +19,13 @@ uniform mat4 viewmatrix;
 uniform vec4 uvs;
 
 uniform vec3 lightpos[maxlights];
+uniform vec4 coneInfo[maxlights];
+
 
 uniform float hasnormal;
 
 void main(void){
 	
-	vec4 worldPosition = transmatrix * vec4(pos,1.0);
 	mat4 modelViewMatrix = viewmatrix * transmatrix;
 	vec4 positionRelativeToCam = modelViewMatrix * vec4(pos,1.0);
 	gl_Position = projmatrix * positionRelativeToCam;
@@ -46,13 +48,15 @@ void main(void){
 
 	for(int i=0; i<maxlights; i++){
 		toLightVec[i] = (viewmatrix * vec4(lightpos[i],1.0)).xyz - positionRelativeToCam.xyz;
+		coneDeg[i].xyz = normalize(viewmatrix*vec4(coneInfo[i].xyz,0)).xyz;
+		coneDeg[i].w = coneInfo[i].w;
 		if(hasnormal>0.5){
 			toLightVec[i] = TBN * toLightVec[i];
+			coneDeg[i].xyz = TBN * coneDeg[i].xyz;
 		}
 	}
 	toCamVec = - positionRelativeToCam.xyz;
 	if(hasnormal>0.5){
 		toCamVec = TBN * toCamVec;
 	}
-
 }

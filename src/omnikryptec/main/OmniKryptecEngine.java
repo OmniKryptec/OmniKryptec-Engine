@@ -47,7 +47,6 @@ public class OmniKryptecEngine {
 		return instance;
 	}
 
-	@Deprecated
 	public static OmniKryptecEngine getInstance() {
 		return instance;
 	}
@@ -97,7 +96,7 @@ public class OmniKryptecEngine {
 	private final ArrayList<Scene> scenes = new ArrayList<>();
 	private Scene sceneCurrent;
 
-	private ShutdownOption shutdownOption = ShutdownOption.NOTHING;
+	private ShutdownOption shutdownOption = ShutdownOption.JAVA;
 	private boolean requestclose = false;
 
 	public OmniKryptecEngine(DisplayManager manager) {
@@ -228,7 +227,7 @@ public class OmniKryptecEngine {
 		return this;
 	}
 
-	private void errorOccured(Exception e, String text) {
+	public void errorOccured(Exception e, String text) {
 		state = State.Error;
 		Logger.logErr(text + e, e);
 		eventsystem.fireEvent(new Event(e), EventType.ERROR);
