@@ -172,11 +172,16 @@ public class ResourceLoader implements Loader {
     }
     
     @SuppressWarnings("unchecked")
-	public final <T extends RessourceObject> T getDataUnchecked(String name) {
+	public final <T extends RessourceObject> T getData(String name) {
     	if(name == null || name.isEmpty()) {
             return null;
         }
-    	return (T) loadedData.get(name);
+    	try{
+    		return (T) loadedData.get(name);
+    	}catch(ClassCastException ex){
+    		return null;
+    	}
+    	
     }
     
     @SuppressWarnings("unchecked")
