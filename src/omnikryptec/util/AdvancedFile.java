@@ -49,12 +49,13 @@ public class AdvancedFile {
     public static final String NOT_FOUND_STRING = String.valueOf(NOT_FOUND);
 
     private final AdvancedFile ME;
-    private File file = null;
     private File folder = null;
     private String[] paths = null;
-    private String path = null;
     private String separator = PATH_SEPARATOR;
     private boolean shouldBeFile = true;
+    //Regenerated things
+    private String path = null;
+    private File file = null;
 
     /**
      * Creates an AdvancedFile which is relative
@@ -115,7 +116,8 @@ public class AdvancedFile {
      * @return AdvancedFile AdvancedFile
      */
     public final AdvancedFile copy() {
-        return new AdvancedFile(shouldBeFile, folder, paths);
+        resetValues();
+        return new AdvancedFile(shouldBeFile, folder, ArrayUtil.copyOf(paths, paths.length));
     }
     
     /**
@@ -124,8 +126,7 @@ public class AdvancedFile {
      */
     public final AdvancedFile getAbsoluteAdvancedFile() {
         if(shouldBeFile) {
-            final File file = toFile();
-            return new AdvancedFile(true, file.getParentFile(), file.getName());
+            return new AdvancedFile(true, toFile().getParentFile(), toFile().getName());
         } else {
             return new AdvancedFile(false, toFile());
         }
@@ -297,6 +298,7 @@ public class AdvancedFile {
      * @return AdvancedFile Parent AdvancedFile
      */
     public final AdvancedFile getParent() {
+        resetValues();
         if (paths != null && paths.length > 1) {
             return new AdvancedFile(false, folder, ArrayUtil.copyOf(paths, paths.length - 1));
         } else if (paths != null && paths.length == 1 && !isRelative()) {
@@ -324,6 +326,7 @@ public class AdvancedFile {
     }
 
     private final AdvancedFile setParent(Object parent, boolean withFolder, boolean withPaths) {
+        resetValues();
         if (withFolder && parent == null) {
             setFolder(null);
         } else if (parent instanceof File) {
@@ -403,18 +406,17 @@ public class AdvancedFile {
             return false;
         }
         try {
-            final File file = toFile();
-            if (file.exists()) {
-                return file.isFile() == shouldBeFile;
+            if (toFile().exists()) {
+                return toFile().isFile() == shouldBeFile;
             }
-            file.getParentFile().mkdirs();
-            if (file.getParentFile().exists()) {
+            toFile().getParentFile().mkdirs();
+            if (toFile().getParentFile().exists()) {
                 if (shouldBeFile) {
-                    file.createNewFile();
+                    toFile().createNewFile();
                 }
             }
             if (!shouldBeFile) {
-                file.mkdirs();
+                toFile().mkdirs();
             }
             return exists();
         } catch (Exception ex) {
@@ -436,11 +438,10 @@ public class AdvancedFile {
                 return (getRelativeFileType() == FileType.FILE);
             }
         } else {
-            final File file = toFile();
-            if (!file.exists()) {
+            if (!toFile().exists()) {
                 return false;
             }
-            return file.isFile();
+            return toFile().isFile();
         }
     }
 
@@ -457,11 +458,10 @@ public class AdvancedFile {
                 return (getRelativeFileType() == FileType.DIRECTORY);
             }
         } else {
-            final File file = toFile();
-            if (!file.exists()) {
+            if (!toFile().exists()) {
                 return false;
             }
-            return file.isDirectory();
+            return toFile().isDirectory();
         }
     }
 
@@ -650,6 +650,7 @@ public class AdvancedFile {
      * @return A reference to this AdvancedFile
      */
     public final AdvancedFile setShouldBeFile(boolean shouldBeFile) {
+        resetValues();
         this.shouldBeFile = shouldBeFile;
         return this;
     }
@@ -659,6 +660,7 @@ public class AdvancedFile {
      * @return <tt>true</tt> if this AdvancedFile should be a file
      */
     public final boolean generateShouldBeFile() {
+        resetValues();
         return (shouldBeFile = (indexOfExtension(toFile().getName()) != NOT_FOUND));
     }
 
@@ -760,7 +762,6 @@ public class AdvancedFile {
             return files;
         }
         try {
-            final File file = toFile();
             if (isRelative()) {
                 final URI uri = getURI();
                 if (uri == null) {
@@ -813,7 +814,7 @@ public class AdvancedFile {
                     fileSystem.close();
                 }
             } else {
-                for (File f : file.listFiles()) {
+                for (File f : toFile().listFiles()) {
                     if(advancedFileFilter == null || advancedFileFilter.accept(ME, f.getName())) {
                         AdvancedFile advancedFile = new AdvancedFile(f.isFile(), this, f.getName());
                         files.add(advancedFile);
