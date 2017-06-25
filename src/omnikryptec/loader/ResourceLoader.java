@@ -52,13 +52,12 @@ public class ResourceLoader implements Loader {
                         break;
                     }
                 }
-                final ResourceData data = new ResourceData(generateName(advancedFile, superfile), dataObj);
-                if(data != null && data.getName() != null && !data.getName().isEmpty() && data.getData() != null) {
-                	addRessourceObject(data.getName(), data.getData());
+                if(dataObj!=null) {
+                	addRessourceObject(generateName(advancedFile, superfile), dataObj);
                 } else {
                     Logger.log("Failed to load: " + advancedFile, LogLevel.WARNING);
                 }
-                return data.getData();
+                return dataObj;
             }
         } catch (Exception ex) {
             Logger.logErr("Error while loading staged advanced file: " + ex, ex);
