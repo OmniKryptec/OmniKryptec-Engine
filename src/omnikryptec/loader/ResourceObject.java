@@ -1,5 +1,5 @@
 package omnikryptec.loader;
 
-public interface RessourceObject {
+public interface ResourceObject {
 
 }

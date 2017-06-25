@@ -6,7 +6,7 @@ import omnikryptec.util.AdvancedFile;
 public class DefaultTextureLoader implements Loader {
 
 	@Override
-	public RessourceObject load(AdvancedFile advancedFile) {
+	public ResourceObject load(AdvancedFile advancedFile) {
 		return SimpleTexture.newTexture(advancedFile);
 	}
 

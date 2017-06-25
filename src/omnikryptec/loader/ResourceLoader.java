@@ -18,22 +18,22 @@ import omnikryptec.util.ArrayUtil;
 public class ResourceLoader implements Loader {
     
 //    private ExecutorService executor = null;
-    private final HashMap<String, RessourceObject> loadedData = new HashMap<>();
+    private final HashMap<String, ResourceObject> loadedData = new HashMap<>();
     private final HashMap<Integer, ArrayList<AdvancedFile>> priorityStagedAdvancedFiles = new HashMap<>();
     private final ArrayList<Loader> loaders = new ArrayList<>();
     private String[] extensions = null;
     private String[] blacklist = null;
     
     @Override
-    public RessourceObject load(AdvancedFile advancedFile){
+    public ResourceObject load(AdvancedFile advancedFile){
     	return loadp(advancedFile, advancedFile);
     }
     
-    public void addRessourceObject(String name, RessourceObject obj){
+    public void addRessourceObject(String name, ResourceObject obj){
     	loadedData.put(name, obj);
     }
     
-    final RessourceObject loadp(AdvancedFile advancedFile, AdvancedFile superfile) {
+    final ResourceObject loadp(AdvancedFile advancedFile, AdvancedFile superfile) {
         try {
             if(advancedFile == null || !advancedFile.exists()) {
                 return null;
@@ -45,7 +45,7 @@ public class ResourceLoader implements Loader {
                 return null;
             } else {
                 final List<Loader> loadersForExtension = getLoaderForExtensions(advancedFile.getExtension());
-                RessourceObject dataObj = null;
+                ResourceObject dataObj = null;
                 for(Loader loader : loadersForExtension) {
                 	dataObj = loader.load(advancedFile);
                     if(dataObj != null) {
@@ -172,7 +172,7 @@ public class ResourceLoader implements Loader {
     }
     
     @SuppressWarnings("unchecked")
-	public final <T extends RessourceObject> T getData(String name) {
+	public final <T extends ResourceObject> T getData(String name) {
     	if(name == null || name.isEmpty()) {
             return null;
         }
@@ -185,23 +185,23 @@ public class ResourceLoader implements Loader {
     }
     
     @SuppressWarnings("unchecked")
-	public final <T extends RessourceObject> T getData(Class<? extends T> c, String name) {
+	public final <T extends ResourceObject> T getData(Class<? extends T> c, String name) {
     	if(c == null || name == null || name.isEmpty()) {
             return null;
         }
-        RessourceObject data = loadedData.get(name);
+        ResourceObject data = loadedData.get(name);
         if(data == null || !c.isAssignableFrom(data.getClass())) { //TODO Gucken ob das isAssignableFrom so richtig herum ist
             return null;
         }
         return (T) data;
     }
     
-    public final <T extends RessourceObject> ArrayList<T> getAllData(Class<? extends T> c) {
+    public final <T extends ResourceObject> ArrayList<T> getAllData(Class<? extends T> c) {
     	return getAllData(c, null);
     }
 
     
-    public final <T extends RessourceObject> ArrayList<T> getAllData(Class<? extends T> c, ArrayList<T> data) {
+    public final <T extends ResourceObject> ArrayList<T> getAllData(Class<? extends T> c, ArrayList<T> data) {
     	if(data == null){
     		data = new ArrayList<>();
     	}
@@ -209,8 +209,8 @@ public class ResourceLoader implements Loader {
     }
     
     @SuppressWarnings("unchecked")
-	private final <T extends RessourceObject> ArrayList<T> getAllDatap(Class<? extends T> c, ArrayList<T> data) {
-        List<RessourceObject> d = loadedData.values().stream().filter((object) -> (object != null && c.isAssignableFrom(object.getClass()))).collect(Collectors.toList()); //TODO Gucken ob das isAssignableFrom so richtig herum ist
+	private final <T extends ResourceObject> ArrayList<T> getAllDatap(Class<? extends T> c, ArrayList<T> data) {
+        List<ResourceObject> d = loadedData.values().stream().filter((object) -> (object != null && c.isAssignableFrom(object.getClass()))).collect(Collectors.toList()); //TODO Gucken ob das isAssignableFrom so richtig herum ist
         d.stream().forEach((object) -> {
             data.add((T) object);
         });
