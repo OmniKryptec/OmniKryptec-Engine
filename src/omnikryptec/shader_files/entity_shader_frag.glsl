@@ -73,16 +73,16 @@ vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 M
 	attenu = min(attenu, 1);
 	//directional light
 	if(conei.w==0.0){
-		attenu = 1;
+		attenu = 1.0;
 	}else{
 		//point- or spotlight
 		float ltsa = degrees(acos(dot(fromLight, normalize(conei.xyz))));
 		//current point is outside the lightcone
 		if(ltsa > conei.w){
-			attenu = 0;
+			attenu = 0.0;
 		}
 	}
-	return ambient + (diffusev*Mdiff+spec)*attenu;
+	return (diffusev*Mdiff+spec)*attenu;
 }
 
 void main(void){
@@ -115,7 +115,7 @@ void main(void){
 		col2 = vec4(reflec,reflec,reflec,damp);
 	}
 
-	colf = vec4(0,0,0,col.a);
+	colf = vec4(ambient*col.rgb,col.a);
 	for(int i=0; i<activelights; i++){
 		colf = colf+vec4(lighting(lightColor[i], toCamVec, toLightVec[i], normalt, col.rgb, col2.xyz, col2.w, atts[i], coneInfo[i], lightpos[i]),0);
 	}
