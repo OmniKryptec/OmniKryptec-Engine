@@ -7,11 +7,10 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
-import omnikryptec.loader.ResourceObject;
 import omnikryptec.logger.Logger;
 import omnikryptec.util.AdvancedFile;
 
-public class SimpleTexture extends Texture implements ResourceObject{
+public class SimpleTexture extends Texture {
 
     private final TextureData data;
     private final int type;
