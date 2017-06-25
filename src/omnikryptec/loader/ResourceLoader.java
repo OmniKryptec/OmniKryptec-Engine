@@ -46,14 +46,16 @@ public class ResourceLoader implements Loader {
             } else {
                 final List<Loader> loadersForExtension = getLoaderForExtensions(advancedFile.getExtension());
                 ResourceObject dataObj = null;
+                String name = null;
                 for(Loader loader : loadersForExtension) {
                 	dataObj = loader.load(advancedFile);
+                	name = loader.generateName(advancedFile, superfile);
                     if(dataObj != null) {
                         break;
                     }
                 }
-                if(dataObj!=null) {
-                	addRessourceObject(generateName(advancedFile, superfile), dataObj);
+                if(dataObj!=null && name!=null) {
+                	addRessourceObject(name, dataObj);
                 } else {
                     Logger.log("Failed to load: " + advancedFile, LogLevel.WARNING);
                 }
@@ -64,17 +66,6 @@ public class ResourceLoader implements Loader {
             return null;
         }
     }
-    
-    private String generateName(AdvancedFile advancedFile, AdvancedFile superfile) {
-		String s = advancedFile.getPath().replace(superfile.getPath(), "").replace(AdvancedFile.PATH_SEPARATOR, ":");
-		if(s.startsWith(":")){
-			s = s.substring(1, s.length());
-		}
-		if(s.endsWith(":")){
-			s = s.substring(0, s.length()-1);
-		}
-		return s;
-	}
 
 	public final void loadStagedAdvancedFiles(boolean clearData/*, long timeout, TimeUnit unit*/) {
         try {
