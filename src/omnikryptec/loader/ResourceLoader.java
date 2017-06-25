@@ -25,52 +25,58 @@ public class ResourceLoader implements Loader {
     private final ArrayList<Loader> loaders = new ArrayList<>();
     private String[] extensions = null;
     private String[] blacklist = null;
+    private boolean isLoading = false;
 
     @Override
-    public ResourceObject load(AdvancedFile advancedFile) {
-        return loadIntern(advancedFile, advancedFile);
+    public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
+        return loadIntern(advancedFile, superFile, resourceLoader);
     }
 
-    public ResourceLoader addRessourceObject(String name, ResourceObject resourceObject) {
-        loadedData.put(name, resourceObject);
-        return this;
+    public boolean addRessourceObject(String name, ResourceObject resourceObject) {
+        if(name != null && !name.isEmpty() && resourceObject != null) {
+            loadedData.put(name, resourceObject);
+            return true;
+        }
+        return false;
     }
 
-    final ResourceObject loadIntern(AdvancedFile advancedFile, AdvancedFile superFile) {
+    final boolean loadIntern(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
         try {
             if (advancedFile == null || !advancedFile.exists()) {
-                return null;
+                return false;
             }
             if (advancedFile.isDirectory()) {
                 advancedFile.listAdvancedFiles().stream().forEach((af) -> {
-                    loadIntern(af, superFile);
+                    loadIntern(af, superFile, resourceLoader);
                 });
-                return null;
+                return true;
             } else {
                 final List<Loader> loadersForExtension = getLoaderForExtensions(advancedFile.getExtension());
-                ResourceObject resourceObject = null;
-                String name = null;
+                boolean loaded = false;
                 for (Loader loader : loadersForExtension) {
-                    resourceObject = loader.load(advancedFile);
-                    name = loader.generateName(advancedFile, superFile);
-                    if (resourceObject != null && name != null && !name.isEmpty()) {
-                        break;
+                    try {
+                        if(loader.load(advancedFile, superFile, resourceLoader)) {
+                            loaded = true;
+                        }
+                    } catch (Exception ex) {
+                        if(Logger.isDebugMode()) {
+                            Logger.logErr("Error while loading: " + ex, ex);
+                        }
                     }
                 }
-                if (resourceObject != null && name != null && !name.isEmpty()) {
-                    addRessourceObject(name, resourceObject);
-                } else {
+                if (!loaded) {
                     Logger.log(String.format("Failed to load: \"%s\"%s", advancedFile, (AdvancedFile.isEqual(advancedFile, superFile) ? "" : String.format(" (in \"%s\")", superFile))), LogLevel.WARNING);
                 }
-                return resourceObject;
+                return loaded;
             }
         } catch (Exception ex) {
             Logger.logErr("Error while loading staged advanced file: " + ex, ex);
-            return null;
+            return false;
         }
     }
 
     public final void loadStagedAdvancedFiles(boolean clearData/*, long timeout, TimeUnit unit*/) {
+        isLoading = true;
         try {
 //         	resetExecutor();
             if (clearData) {
@@ -78,7 +84,7 @@ public class ResourceLoader implements Loader {
             }
             final ArrayList<AdvancedFile> stagedAdvancedFiles = getStagedAdvancedFilesSorted();
             stagedAdvancedFiles.stream().forEach((advancedFile) -> {
-                load(advancedFile);
+                load(advancedFile, advancedFile, this);
 //                executor.submit(() -> {
 //                    loadIntern(advancedFile, advancedFile);
 //                });
@@ -88,6 +94,11 @@ public class ResourceLoader implements Loader {
         } catch (Exception ex) {
             Logger.logErr("Error while loading staged advanced files: " + ex, ex);
         }
+        isLoading = false;
+    }
+    
+    public final boolean isLoading() {
+        return isLoading;
     }
 
     @Override
@@ -107,7 +118,7 @@ public class ResourceLoader implements Loader {
     }
 
     public final Loader addLoader(Loader loader) {
-        if (loader == null || loader.equals(this) || loader instanceof ResourceLoader) {
+        if (isLoading || loader == null || loader.equals(this) || loader instanceof ResourceLoader) {
             return this;
         }
         resetValues();
@@ -116,7 +127,7 @@ public class ResourceLoader implements Loader {
     }
 
     public final Loader removeLoader(Loader loader) {
-        if (loader == null || loader.equals(this) || loader instanceof ResourceLoader) {
+        if (isLoading || loader == null || loader.equals(this) || loader instanceof ResourceLoader) {
             return this;
         }
         resetValues();
@@ -125,6 +136,9 @@ public class ResourceLoader implements Loader {
     }
 
     public final Loader clearLoaders() {
+        if(isLoading) {
+            return this;
+        }
         resetValues();
         loaders.clear();
         return this;
@@ -135,7 +149,7 @@ public class ResourceLoader implements Loader {
     }
 
     public final Loader stageAdvancedFiles(int priority, AdvancedFile... advancedFiles) {
-        if (advancedFiles == null || advancedFiles.length == 0) {
+        if (isLoading || advancedFiles == null || advancedFiles.length == 0) {
             return this;
         }
         ArrayList<AdvancedFile> stagedAdvancedFiles = priorityStagedAdvancedFiles.get(priority);
@@ -198,6 +212,9 @@ public class ResourceLoader implements Loader {
         if (dataOld == null) {
             dataOld = new ArrayList<>();
         }
+        if(isLoading) {
+            return dataOld;
+        }
         final ArrayList<T> data = dataOld;
         List<ResourceObject> d = loadedData.values().stream().filter((object) -> (object != null && c.isAssignableFrom(object.getClass()))).collect(Collectors.toList()); //TODO Gucken ob das isAssignableFrom so richtig herum ist
         d.stream().forEach((object) -> {
@@ -243,6 +260,9 @@ public class ResourceLoader implements Loader {
     }
 
 //    private final Loader resetExecutor() {
+//        if(isLoading) {
+//          return this;
+//        }
 //        if(executor != null) {
 //            executor.shutdownNow();
 //        }

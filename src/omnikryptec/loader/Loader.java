@@ -8,7 +8,7 @@ import omnikryptec.util.AdvancedFile;
  */
 public interface Loader {
 
-    public ResourceObject load(AdvancedFile advancedFile);
+    public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader);
 
     public String[] getExtensions();
 

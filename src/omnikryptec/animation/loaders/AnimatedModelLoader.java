@@ -37,6 +37,15 @@ public class AnimatedModelLoader {
         animatedModel.getMaterial().setRenderer(renderer == null ? RendererRegistration.DEF_ANIMATEDMODEL_RENDERER : renderer);
         return animatedModel;
     }
+    
+    public static AnimatedModel createModel(String name, AnimatedModelData entityData, Texture texture, Renderer renderer) {
+        Model model = new Model(createVertexArrayObject(entityData.getMeshData()));
+        SkeletonData skeletonData = entityData.getJointsData();
+        Joint headJoint = createJoints(skeletonData.headJoint);
+        AnimatedModel animatedModel = new AnimatedModel(name, model, texture, headJoint, skeletonData.jointCount);
+        animatedModel.getMaterial().setRenderer(renderer == null ? RendererRegistration.DEF_ANIMATEDMODEL_RENDERER : renderer);
+        return animatedModel;
+    }
 
     /**
      * Loads up the diffuse texture for the model.
