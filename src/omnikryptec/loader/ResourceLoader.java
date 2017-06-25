@@ -10,6 +10,7 @@ import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.ArrayUtil;
+import omnikryptec.util.ArrayUtil.Filter;
 
 /**
  * ResourceLoader
@@ -160,7 +161,7 @@ public class ResourceLoader implements Loader {
     }
 
     public final List<Loader> getLoaderForExtensions(String... extensions) {
-        return loaders.stream().filter((loader) -> ArrayUtil.contains(loader.getExtensions(), extensions)).collect(Collectors.toList());
+        return loaders.stream().filter((loader) -> ArrayUtil.contains(loader.getExtensions(), Filter.createStringFilterEqualsIgnoreCase(), extensions)).collect(Collectors.toList());
     }
 
     @SuppressWarnings("unchecked")

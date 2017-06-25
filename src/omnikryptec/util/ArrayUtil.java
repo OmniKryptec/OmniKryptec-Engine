@@ -37,22 +37,23 @@ public class ArrayUtil {
     }
 
     public static <T> boolean contains(T[] array, T... toTest) {
+        return contains(array, null, toTest);
+    }
+    
+    public static <T> boolean contains(T[] array, Filter<T> filter, T... toTest) {
         if (array == null || array.length == 0 || toTest == null) {
             return false;
+        }
+        if (filter == null) {
+            filter = Filter.createFilterEquals();
         }
         if(toTest.length == 0) {
             return true;
         }
         for (T t_1 : toTest) {
-            if(t_1 == null) {
-                continue;
-            }
             boolean found = false;
             for(T t_2 : array) {
-                if(t_2 == null) {
-                    continue;
-                }
-                if(t_1.equals(t_2) || t_1 == t_2) {
+                if(filter.filter(t_1, t_2)) {
                     found = true;
                     break;
                 }
@@ -62,6 +63,42 @@ public class ArrayUtil {
             }
         }
         return true;
+    }
+    
+    public interface Filter<T> {
+        
+        public boolean filter(T arrayEntry, T toTestEntry);
+        
+        public static <T> Filter<T> createFilterEquals() {
+            return (T arrayEntry, T toTestEntry) -> {
+                if(arrayEntry == null || toTestEntry == null) {
+                    return false;
+                }
+                return (arrayEntry == toTestEntry || arrayEntry.equals(toTestEntry) || toTestEntry.equals(arrayEntry));
+            };
+        }
+        
+        public static Filter<String> createStringFilterEqualsIgnoreCase() {
+            return (String arrayEntry, String toTestEntry) -> {
+                if(arrayEntry == null || toTestEntry == null) {
+                    return false;
+                }
+                return (arrayEntry.equalsIgnoreCase(toTestEntry) || toTestEntry.equalsIgnoreCase(arrayEntry));
+            };
+        }
+        
+        public static <T> Filter<T> createFilterAlways() {
+            return (T arrayEntry, T toTestEntry) -> {
+                return true;
+            };
+        }
+        
+        public static <T> Filter<T> createFilterNever() {
+            return (T arrayEntry, T toTestEntry) -> {
+                return false;
+            };
+        }
+        
     }
 
 }
