@@ -52,7 +52,7 @@ public class ResourceLoader implements Loader {
                         break;
                     }
                 }
-                final RessourceData data = new RessourceData(generateName(advancedFile, superfile), dataObj);
+                final ResourceData data = new ResourceData(generateName(advancedFile, superfile), dataObj);
                 if(data != null && data.getName() != null && !data.getName().isEmpty() && data.getData() != null) {
                 	addRessourceObject(data.getName(), data.getData());
                 } else {

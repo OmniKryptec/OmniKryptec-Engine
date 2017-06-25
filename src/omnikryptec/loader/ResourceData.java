@@ -4,12 +4,12 @@ package omnikryptec.loader;
  *
  * @author Panzer1119
  */
-public class RessourceData {
+public class ResourceData {
     
     private final String name;
     private final ResourceObject data;
     
-    public RessourceData(String name, ResourceObject data) {
+    public ResourceData(String name, ResourceObject data) {
         this.name = name;
         this.data = data;
     }
