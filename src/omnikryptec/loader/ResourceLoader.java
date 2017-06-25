@@ -29,6 +29,9 @@ public class ResourceLoader implements Loader {
     	return loadp(advancedFile, advancedFile);
     }
     
+    public void addRessourceObject(String name, RessourceObject obj){
+    	loadedData.put(name, obj);
+    }
     
     final RessourceObject loadp(AdvancedFile advancedFile, AdvancedFile superfile) {
         try {
@@ -49,9 +52,9 @@ public class ResourceLoader implements Loader {
                         break;
                     }
                 }
-                final Data data = new Data(generateName(advancedFile, superfile), dataObj);
+                final RessourceData data = new RessourceData(generateName(advancedFile, superfile), dataObj);
                 if(data != null && data.getName() != null && !data.getName().isEmpty() && data.getData() != null) {
-                    loadedData.put(data.getName(), data.getData());
+                	addRessourceObject(data.getName(), data.getData());
                 } else {
                     Logger.log("Failed to load: " + advancedFile, LogLevel.WARNING);
                 }
@@ -170,7 +173,10 @@ public class ResourceLoader implements Loader {
     
     @SuppressWarnings("unchecked")
 	public final <T> T getData(Class<? extends T> c, String name) {
-        if(c == null || name == null || name.isEmpty()) {
+    	if(!RessourceObject.class.isAssignableFrom(c)){
+    		return null;
+    	}
+    	if(c == null || name == null || name.isEmpty()) {
             return null;
         }
         RessourceObject data = loadedData.get(name);
@@ -182,7 +188,10 @@ public class ResourceLoader implements Loader {
     
     @SuppressWarnings("unchecked")
 	public final <T> ArrayList<T> getAllData(Class<? extends T> c) {
-        final ArrayList<T> data = new ArrayList<>();
+    	if(RessourceObject.class.isAssignableFrom(c)){
+    		return new ArrayList<T>();
+    	}
+    	final ArrayList<T> data = new ArrayList<>();
         List<RessourceObject> d = loadedData.values().stream().filter((object) -> (object != null && c.isAssignableFrom(object.getClass()))).collect(Collectors.toList()); //TODO Gucken ob das isAssignableFrom so richtig herum ist
         d.stream().forEach((object) -> {
             data.add((T) object);
