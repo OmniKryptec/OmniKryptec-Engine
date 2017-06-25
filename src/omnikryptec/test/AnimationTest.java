@@ -108,6 +108,22 @@ public class AnimationTest {
             }.setPerspectiveProjection(75, 0.1F, 1000)))));
             entityBuilder_brunnen = new EntityBuilder().setTexturedModelName("brunnen").loadModel("/omnikryptec/test/brunnen.obj").loadTexture("/omnikryptec/test/brunnen.png");
             entity_brunnen = entityBuilder_brunnen.create("entity_brunnen");
+            
+            
+            
+            //FIXME Only for testing DELETE TIHS!!! START
+            AdvancedFile ttt = new AdvancedFile(RES_FOLDER_1, MODEL_FILE);
+            Logger.log("ttt.exists() == " + new AdvancedFile(ttt.getParent(), "model.ppg").exists());
+            Logger.log("ttt.shouldBeFile() == " + ttt.shouldBeFile());
+            Logger.log("ttt.getFileType() == " + ttt.getFileType());
+            ttt = new AdvancedFile("omnikryptec", "animation");
+            Logger.log("Parent: " + ttt);
+            ttt.listAdvancedFiles().stream().forEach((af) -> {
+                Logger.log("Child: " + af);
+            });
+            //FIXME Only for testing DELETE TIHS!!! END
+            
+            
             animatedModel = AnimatedModelLoader.loadModel(new AdvancedFile(RES_FOLDER_1, MODEL_FILE), new AdvancedFile(RES_FOLDER_1, DIFFUSE_FILE), null);
             animation = AnimationLoader.loadAnimation(new AdvancedFile(RES_FOLDER_1, ANIM_FILE));
             entity_test = new Entity("entity_test", animatedModel) {

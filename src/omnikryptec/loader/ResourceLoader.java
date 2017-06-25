@@ -8,12 +8,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.ArrayUtil;
 
 /**
- *
+ * ResourceLoader
  * @author Panzer1119 &amp; pcfreak9000
  */
 public class ResourceLoader implements Loader {
@@ -28,15 +29,30 @@ public class ResourceLoader implements Loader {
     @Override
     public final Data load(AdvancedFile advancedFile) {
         try {
-            final List<Loader> loadersForExtension = getLoaderForExtensions(advancedFile.getExtension());
-            Data data = null;
-            for(Loader loader : loadersForExtension) {
-                data = loader.load(advancedFile);
-                if(data != null) {
-                    break;
-                }
+            if(advancedFile == null || !advancedFile.exists()) {
+                return null;
             }
-            return data;
+            if(advancedFile.isDirectory()) {
+                advancedFile.listAdvancedFiles().stream().forEach((af) -> {
+                    load(af);
+                });
+                return null;
+            } else {
+                final List<Loader> loadersForExtension = getLoaderForExtensions(advancedFile.getExtension());
+                Data data = null;
+                for(Loader loader : loadersForExtension) {
+                    data = loader.load(advancedFile);
+                    if(data != null) {
+                        break;
+                    }
+                }
+                if(data != null && data.getName() != null && !data.getName().isEmpty() && data.getData() != null) {
+                    loadedData.put(data.getName(), data.getData());
+                } else {
+                    Logger.log("Failed to load: " + advancedFile, LogLevel.WARNING);
+                }
+                return data;
+            }
         } catch (Exception ex) {
             Logger.logErr("Error while loading staged advanced file: " + ex, ex);
             return null;
@@ -51,9 +67,6 @@ public class ResourceLoader implements Loader {
             stagedAdvancedFiles.stream().forEach((advancedFile) -> {
                 executor.submit(() -> {
                     final Data data = load(advancedFile);
-                    if(data != null && data.getName() != null && !data.getName().isEmpty() && data.getData() != null) {
-                        loadedData.put(data.getName(), data.getData());
-                    }
                 });
             });
             executor.shutdown();
