@@ -19,6 +19,7 @@ import omnikryptec.renderer.Renderer;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.Color;
+import omnikryptec.util.Instance;
 import omnikryptec.util.PhysicsUtil;
 
 public class Scene implements DataMapSerializable {
@@ -26,16 +27,16 @@ public class Scene implements DataMapSerializable {
     private String name;
     private final Map<String, RenderChunk> scene = new HashMap<>();
     private Camera cam;
-    private long cox = OmniKryptecEngine.getInstance().getDisplayManager().getSettings().getChunkRenderOffsetX(),
-            coy = OmniKryptecEngine.getInstance().getDisplayManager().getSettings().getChunkRenderOffsetY(),
-            coz = OmniKryptecEngine.getInstance().getDisplayManager().getSettings().getChunkRenderOffsetZ();
-    private float[] clearcolor = {0, 0, 0, 0};
+    private long cox = Instance.getGameSettings().getChunkRenderOffsetX(),
+            coy = Instance.getGameSettings().getChunkRenderOffsetY(),
+            coz = Instance.getGameSettings().getChunkRenderOffsetZ();
     private PhysicsWorld physicsWorld = null;
     private final Map<DeferredLightPrepare, List<Light>> deferred_rel_lights = new HashMap<>();
     private final List<Light> forward_rel_lights = new ArrayList<>();
 
     private RenderChunk global = new RenderChunk(0, 0, 0, this);
 
+    private Color clearcolor = new Color(0, 0, 0, 0);
     private Color ambientlight = new Color(0, 0, 0, 0);
 
     /* Temp Variables */
@@ -169,16 +170,16 @@ public class Scene implements DataMapSerializable {
     }
 
     public final Scene setClearColor(float r, float g, float b, float a) {
-        clearcolor = new float[]{r, g, b, a};
+        clearcolor.set(r, g, b, a);
         return this;
     }
 
-    public final Scene setClearColor(float[] f) {
+    public final Scene setClearColor(Color f) {
         clearcolor = f;
         return this;
     }
 
-    public final float[] getClearColor() {
+    public final Color getClearColor() {
         return clearcolor;
     }
 

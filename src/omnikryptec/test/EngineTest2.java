@@ -151,7 +151,7 @@ public class EngineTest2 implements IEventHandler {
 //               e.setRelativePos(r.nextInt(100) - 50, r.nextInt(100) - 50, r.nextInt(100) - 50);
 //                OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 //            }
-            int cube=50;
+            int cube=100;
             int abstand=15;
             float scale=3;
             for(int x=-cube; x<cube; x+=abstand){
@@ -168,9 +168,9 @@ public class EngineTest2 implements IEventHandler {
             // system.setTimemultiplier(10);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             OmniKryptecEngine.instance().getCurrentScene()
-                    .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(1, 0, 0).setConeDegrees(35).setConeDirection(0, 1, 0).setRelativePos(1,0.5f, 0));
+                    .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(1, 0, 0).setConeDegrees(15).setConeDirection(0, -1, 0).setRelativePos(1,0.5f, 0));
             OmniKryptecEngine.instance().getCurrentScene()
-            .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(0, 1, 0).setConeDegrees(15).setConeDirection(0, 1, 0).setRelativePos(1,0.5f, 0));
+            .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(0, 1, 0).setConeDegrees(5).setConeDirection(0, -1, 0).setRelativePos(1,0.5f, 0));
 
             // ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
             // OmniKryptecEngine.instance().getCurrentScene().addGameObject(new

@@ -45,7 +45,7 @@ public class Light extends GameObject {
 	}
 	
 	public Light setConeDegrees(float d){
-		coneinfo.w = d;
+		coneinfo.w = (float) Math.cos(Math.toRadians(d));
 		return this;
 	}
 	
@@ -54,12 +54,12 @@ public class Light extends GameObject {
 	}
 	
 	public Light setDirectional(){
-		coneinfo.w = 0;
+		coneinfo.w = 1.0f;
 		return this;
 	}
 	
 	public Light setPointLight(){
-		coneinfo.w = 180;
+		coneinfo.w = (float) Math.cos(Math.toRadians(180));
 		return this;
 	}
 

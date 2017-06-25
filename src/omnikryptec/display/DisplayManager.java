@@ -39,7 +39,7 @@ public class DisplayManager {
 	private static DisplayManager manager;
 
 	private DisplayManager() {
-
+		manager = this;
 	}
 
 	/**
@@ -80,7 +80,7 @@ public class DisplayManager {
 			throw new IllegalStateException("The DisplayManager is already created!");
 		}
 		DisplayManager.settings = settings;
-		manager = new DisplayManager();
+		new DisplayManager();
 		if (name == null) {
 			name = "";
 		}

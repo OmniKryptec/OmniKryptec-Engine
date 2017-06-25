@@ -10,7 +10,10 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
+import omnikryptec.exceptions.OmniKryptecException;
 import omnikryptec.logger.LogEntry.LogLevel;
+import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
+import omnikryptec.util.Instance;
 import omnikryptec.logger.Logger;
 
 public class Shader {
@@ -219,8 +222,9 @@ public class Shader {
 		GL20.glShaderSource(shaderID, shaderSrc);
 		GL20.glCompileShader(shaderID);
 		if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-			Logger.log("Shader compilation failed in Shader: " + name, LogLevel.ERROR, true);
-			Logger.log("(Lines with LineInsertion!): " + GL20.glGetShaderInfoLog(shaderID, 500), LogLevel.ERROR, true);
+			Instance.getEngine().errorOccured(new OmniKryptecException("Shadercreation"), "Shader compilation failed in Shader: " + name);
+			Logger.log("(Lines with LineInsertion!): " + GL20.glGetShaderInfoLog(shaderID, 1024), LogLevel.ERROR, true);
+			Instance.getEngine().close(ShutdownOption.JAVA);
 		}
 		return new ShaderHolder(shaderID, uniforms, type);
 	}
