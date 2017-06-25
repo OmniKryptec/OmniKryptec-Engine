@@ -87,7 +87,7 @@ public class ResourceLoader implements Loader {
             stagedAdvancedFiles.stream().forEach((advancedFile) -> {
             	load(advancedFile);
 //                executor.submit(() -> {
-//                    load(advancedFile);
+//                    loadp(advancedFile, advancedFile);
 //                });
             });
 //          executor.shutdown();
