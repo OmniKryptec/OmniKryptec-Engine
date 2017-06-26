@@ -420,6 +420,7 @@ public class FrameBufferObject extends Texture {
             int i = 1;
             while(file == null || file.exists()) {
                 file = new AdvancedFile(folder, String.format("%s_%d.%s", name, i, format));
+                i++;
             }
         }
         return saveAsScreenshot(file, format, withTransparency);
