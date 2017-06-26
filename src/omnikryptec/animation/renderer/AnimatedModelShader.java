@@ -6,12 +6,13 @@ import omnikryptec.shader.UniformMatrixArray;
 import omnikryptec.shader.UniformSampler;
 import omnikryptec.shader.UniformVec3;
 import omnikryptec.util.AdvancedFile;
+import omnikryptec.util.Instance;
 
 public class AnimatedModelShader extends Shader {
 
-	private static final int MAX_JOINTS = 50;// max number of joints in a
+	//private static final int MAX_JOINTS = 50;// max number of joints in a
 												// skeleton
-	private static final int DIFFUSE_TEX_UNIT = 0;
+	//private static final int DIFFUSE_TEX_UNIT = 0;
 
 	private static final AdvancedFile VERTEX_SHADER = new AdvancedFile("omnikryptec", "animation", "renderer",
 			"animatedEntityVertex.glsl");
@@ -22,7 +23,7 @@ public class AnimatedModelShader extends Shader {
 	public final UniformMatrix viewMatrix = new UniformMatrix("viewMatrix");
 	public final UniformMatrix projectionMatrix = new UniformMatrix("projectionMatrix");
 	protected UniformVec3 lightDirection = new UniformVec3("lightDirection");
-	protected UniformMatrixArray jointTransforms = new UniformMatrixArray("jointTransforms", MAX_JOINTS);
+	protected UniformMatrixArray jointTransforms = new UniformMatrixArray("jointTransforms", Instance.MAX_JOINTS);
 	private UniformSampler diffuseMap = new UniformSampler("diffuseMap");
 
 	/**

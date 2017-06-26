@@ -90,7 +90,6 @@ public class AnimatedModelLoader {
         vao.createAttribute(3, data.getTangents(), 3);
         vao.createIntAttribute(4, data.getJointIds(), 3);
         vao.createAttribute(5, data.getVertexWeights(), 3);
-        vao.unbind();
         return vao;
     }
 

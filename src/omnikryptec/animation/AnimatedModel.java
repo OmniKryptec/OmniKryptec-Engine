@@ -122,7 +122,8 @@ public class AnimatedModel implements AdvancedModel {
         return this;
     }
     
-    private final AnimatedModel deleteAll(boolean all) {
+    @SuppressWarnings("unchecked")
+	private final AnimatedModel deleteAll(boolean all) {
         ArrayList<AnimatedModel> ams = (ArrayList<AnimatedModel>) animatedModels.get(name).clone();
         if(ams != null) {
             ams.remove(this);
