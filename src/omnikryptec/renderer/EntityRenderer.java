@@ -3,7 +3,7 @@ package omnikryptec.renderer;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL40;
+import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Entity;
@@ -33,6 +33,7 @@ public class EntityRenderer implements Renderer {
 	private Material mat;
 	private Texture textmp;
 	private long vertcount=0;
+	private Vector3f pos;
 	
 	@Override
 	public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender) {
@@ -49,7 +50,8 @@ public class EntityRenderer implements Renderer {
 				s.getForwardRenderLights().size());
 		shader.activelights.loadInt(lights);
 		for (int i = 0; i < lights; i++) {
-			shader.lightpos[i].loadVec3(s.getForwardRenderLights().get(i).getAbsolutePos());
+			pos = s.getForwardRenderLights().get(i).getAbsolutePos();
+			shader.lightpos[i].loadVec4(pos.x, pos.y, pos.z, s.getForwardRenderLights().get(i).isDirectional()?0.0f:1.0f);
 			shader.lightcolor[i].loadVec3(s.getForwardRenderLights().get(i).getColor().getArray());
 			shader.atts[i].loadVec3(s.getForwardRenderLights().get(i).getAttenuation());
 			shader.coneinfo[i].loadVec4(s.getForwardRenderLights().get(i).getConeInfo());

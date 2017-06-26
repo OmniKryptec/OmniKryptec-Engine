@@ -10,6 +10,7 @@ out mat3 TBN;
 out vec3 norm;
 out vec3 toLightVec[maxlights];
 out vec4 coneDeg[maxlights];
+out vec4 lightPosO[maxlights];
 out vec3 toCamVec;
 
 uniform mat4 transmatrix;
@@ -18,7 +19,7 @@ uniform mat4 viewmatrix;
 
 uniform vec4 uvs;
 
-uniform vec3 lightpos[maxlights];
+uniform vec4 lightpos[maxlights];
 uniform vec4 coneInfo[maxlights];
 
 
@@ -47,12 +48,15 @@ void main(void){
 	}
 
 	for(int i=0; i<maxlights; i++){
-		toLightVec[i] = (viewmatrix * vec4(lightpos[i],1.0)).xyz - positionRelativeToCam.xyz;
+		toLightVec[i] = (viewmatrix * lightpos[i]).xyz - positionRelativeToCam.xyz;
 		coneDeg[i].xyz = normalize(viewmatrix*vec4(coneInfo[i].xyz,0)).xyz;
 		coneDeg[i].w = coneInfo[i].w;
+		lightPosO[i].xyz = (viewmatrix * vec4(lightpos[i].xyz,1)).xyz;
+		lightPosO[i].w = lightpos[i].w;
 		if(hasnormal>0.5){
 			toLightVec[i] = TBN * toLightVec[i];
 			coneDeg[i].xyz = TBN * coneDeg[i].xyz;
+			lightPosO[i].xyz = TBN * lightPosO[i].xyz;
 		}
 	}
 	toCamVec = - positionRelativeToCam.xyz;

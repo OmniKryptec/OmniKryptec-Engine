@@ -4,13 +4,15 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
-import omnikryptec.entity.GameObject;
-import omnikryptec.logger.Logger;
+
 import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+
+import omnikryptec.entity.GameObject;
+import omnikryptec.logger.Logger;
 
 /**
  *

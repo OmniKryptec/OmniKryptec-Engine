@@ -2,10 +2,10 @@ package omnikryptec.animation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import omnikryptec.loader.ResourceLoader;
 
 import org.lwjgl.util.vector.Matrix4f;
 
+import omnikryptec.loader.ResourceLoader;
 import omnikryptec.model.AdvancedModel;
 import omnikryptec.model.Material;
 import omnikryptec.model.Model;

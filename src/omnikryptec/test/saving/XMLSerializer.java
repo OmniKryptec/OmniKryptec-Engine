@@ -1,20 +1,23 @@
 package omnikryptec.test.saving;
 
+import static omnikryptec.util.SerializationUtil.cast;
+import static omnikryptec.util.SerializationUtil.castArray;
+import static omnikryptec.util.SerializationUtil.classForName;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import omnikryptec.logger.Logger;
-import static omnikryptec.util.SerializationUtil.cast;
-import static omnikryptec.util.SerializationUtil.castArray;
-import static omnikryptec.util.SerializationUtil.classForName;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+
+import omnikryptec.logger.Logger;
 
 /**
  * XMLSerializer

@@ -7,6 +7,9 @@ in vec3 norm;
 in vec3 toLightVec[maxlights];
 in vec3 toCamVec;
 in vec4 coneDeg[maxlights];
+in vec4 lightPosO[maxlights];
+
+
 layout (location = 0) out vec4 colf;
 layout (location = 1) out vec4 col1;
 layout (location = 2) out vec4 col2;
@@ -25,12 +28,10 @@ uniform float hasextra;
 uniform float hasspecular;
 uniform float hasnormal;
 
-
 uniform vec4 matData;
 
 uniform vec3 lightColor[maxlights];
 uniform vec3 atts[maxlights];
-uniform vec3 lightpos[maxlights];
 
 
 uniform int activelights;
@@ -43,11 +44,11 @@ float saturate(float value){
 	return clamp(value,0.0,1.0);
 }
 
-vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 Mspec, float Mdamp, vec3 att, vec4 conei, vec3 pos){
+vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 Mspec, float Mdamp, vec3 att, vec4 conei, vec4 pos){
 	float distance = length(tlvec);
 	//directional light -> lightpos is the light direction
-	if(conei.w==1.0){
-		tlvec = pos;
+	if(pos.w==0.0){
+		tlvec = pos.xyz;
 	}
 	vec3 toLightNormalized = normalize(tlvec);
 	vec3 unitCam = normalize(tcvec);
@@ -72,7 +73,7 @@ vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 M
 	float attenu = 1.0/(att.x + (att.y * distance) + (att.z * distance * distance));
 	attenu = min(attenu, 1.0);
 	//directional light
-	if(conei.w==1.0){
+	if(pos.w==0.0){
 		attenu = 1.0;
 	}else{
 		//point- or spotlight
@@ -113,7 +114,7 @@ void main(void){
 	}
 	colf = vec4(ambient*col.rgb,col.a);
 	for(int i=0; i<activelights; i++){
-		colf = colf+vec4(lighting(lightColor[i], toCamVec, toLightVec[i], normalt, col.rgb, col2.xyz, col2.w, atts[i], coneDeg[i], lightpos[i]),0);
+		colf = colf+vec4(lighting(lightColor[i], toCamVec, toLightVec[i], normalt, col.rgb, col2.xyz, col2.w, atts[i], coneDeg[i], lightPosO[i]),0);
 	}
 	if(hasextra>0.5){
 		col3.rgb = texture(extra, pass_texcoords).rgb;

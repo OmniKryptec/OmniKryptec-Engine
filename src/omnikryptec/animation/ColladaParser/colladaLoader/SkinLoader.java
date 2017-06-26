@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jdom2.Element;
+
 import omnikryptec.animation.ColladaParser.dataStructures.SkinningData;
 import omnikryptec.animation.ColladaParser.dataStructures.VertexSkinData;
 import omnikryptec.util.XMLUtil;
-import org.jdom2.Element;
 
 /**
  * Loads a Skin

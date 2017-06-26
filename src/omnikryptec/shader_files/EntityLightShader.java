@@ -6,7 +6,6 @@ import omnikryptec.display.DisplayManager;
 import omnikryptec.shader.LineInsert;
 import omnikryptec.shader.Shader;
 import omnikryptec.shader.UniformBoolean;
-import omnikryptec.shader.UniformFloat;
 import omnikryptec.shader.UniformInt;
 import omnikryptec.shader.UniformMatrix;
 import omnikryptec.shader.UniformSampler;
@@ -28,8 +27,8 @@ public class EntityLightShader extends Shader {
 	public final UniformVec3 extrainfovec = new UniformVec3("exinfovec");
 	public final UniformVec4 uvs = new UniformVec4("uvs");
 	public final UniformBoolean hasnormal = new UniformBoolean("hasnormal");
-	public final UniformVec3[] lightpos, atts, lightcolor;
-	public final UniformVec4[] coneinfo;
+	public final UniformVec3[] atts, lightcolor;
+	public final UniformVec4[] coneinfo, lightpos;
 	public final UniformVec3 ambient = new UniformVec3("ambient");
 	public final UniformInt activelights = new UniformInt("activelights");
 	public final UniformVec4 matData = new UniformVec4("matData");
@@ -52,9 +51,9 @@ public class EntityLightShader extends Shader {
 				EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_vert.glsl"),
 				EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_frag.glsl"), "pos", "texcoords",
 				"normal", "tangent");
-		lightpos = new UniformVec3[DisplayManager.instance().getSettings().getLightMaxForward()];
+		lightpos = new UniformVec4[DisplayManager.instance().getSettings().getLightMaxForward()];
 		for (int i = 0; i < lightpos.length; i++) {
-			lightpos[i] = new UniformVec3("lightpos[" + i + "]");
+			lightpos[i] = new UniformVec4("lightpos[" + i + "]");
 		}
 		registerUniforms(lightpos);
 		atts = new UniformVec3[DisplayManager.instance().getSettings().getLightMaxForward()];

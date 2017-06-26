@@ -3,6 +3,7 @@ package omnikryptec.animation.ColladaParser.colladaLoader;
 import java.nio.FloatBuffer;
 import java.util.List;
 
+import org.jdom2.Element;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Matrix4f;
 
@@ -10,7 +11,6 @@ import omnikryptec.animation.ColladaParser.dataStructures.AnimationData;
 import omnikryptec.animation.ColladaParser.dataStructures.JointTransformData;
 import omnikryptec.animation.ColladaParser.dataStructures.KeyFrameData;
 import omnikryptec.util.XMLUtil;
-import org.jdom2.Element;
 
 /**
  * Loads an animation for a model from a collada XML file.

@@ -12,9 +12,9 @@ import org.lwjgl.opengl.GL32;
 
 import omnikryptec.exceptions.OmniKryptecException;
 import omnikryptec.logger.LogEntry.LogLevel;
+import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.util.Instance;
-import omnikryptec.logger.Logger;
 
 public class Shader {
 

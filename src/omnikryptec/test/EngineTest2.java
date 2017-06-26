@@ -35,7 +35,6 @@ import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
-import omnikryptec.util.RenderUtil;
 
 /**
  *
@@ -108,7 +107,7 @@ public class EngineTest2 implements IEventHandler {
             AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
             TexturedModel tm = new TexturedModel("brunnen", brunnen, brunnent);
             tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
-            tm.getMaterial().setHasTransparency(true).setReflectivity(new Vector3f(0.1f, 1, 0.01f)).setShineDamper(10)
+            tm.getMaterial().setHasTransparency(true).setReflectivity(new Vector3f(1, 1, 1)).setShineDamper(10)
                     .setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER);
             OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
@@ -173,7 +172,7 @@ public class EngineTest2 implements IEventHandler {
             OmniKryptecEngine.instance().getCurrentScene()
                     .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(1, 0, 0).setConeDegrees(15).setConeDirection(0, -1, 0).setRelativePos(1,0.5f, 0));
             OmniKryptecEngine.instance().getCurrentScene()
-            .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(0, 1, 0).setConeDegrees(5).setConeDirection(0, -1, 0).setRelativePos(1,0.5f, 0));
+            .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(1, 1, 1).setDirectional(true).setConeDegrees(5).setConeDirection(0, -1, 0).setRelativePos(0,0.5f, 0));
 
             // ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
             // OmniKryptecEngine.instance().getCurrentScene().addGameObject(new

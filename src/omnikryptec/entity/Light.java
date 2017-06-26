@@ -12,9 +12,10 @@ public class Light extends GameObject {
 	private Color color = new Color(1, 1, 1, 1);
 	private DeferredLightPrepare mylightprepare = DeferredLightPrepare.FORWARD_RENDERING;
 	private Vector4f coneinfo = new Vector4f(1, 1, 1, 180);
-	
+	private boolean directional = false;	
 	private Vector3f att;
 
+	
 	private Vector3f tmp;
 
 	public Vector3f getPosRad() {
@@ -53,8 +54,8 @@ public class Light extends GameObject {
 		return coneinfo;
 	}
 	
-	public Light setDirectional(){
-		coneinfo.w = 1.0f;
+	public Light setDirectional(boolean b){
+		directional = b;
 		return this;
 	}
 	
@@ -92,5 +93,9 @@ public class Light extends GameObject {
 		att.y = b;
 		att.z = c;
 		return this;
+	}
+
+	public final boolean isDirectional() {
+		return directional;
 	}
 }

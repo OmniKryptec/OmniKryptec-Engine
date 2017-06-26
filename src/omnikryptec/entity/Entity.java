@@ -1,12 +1,10 @@
 package omnikryptec.entity;
 
-import java.util.Arrays;
-import omnikryptec.loader.ResourceLoader;
-import omnikryptec.logger.LogEntry;
-import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.logger.Logger;
 import org.lwjgl.util.vector.Vector3f;
 
+import omnikryptec.loader.ResourceLoader;
+import omnikryptec.logger.LogEntry.LogLevel;
+import omnikryptec.logger.Logger;
 import omnikryptec.model.AdvancedModel;
 import omnikryptec.model.Model;
 import omnikryptec.test.saving.DataMap;

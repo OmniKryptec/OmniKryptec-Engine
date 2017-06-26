@@ -3,13 +3,13 @@ package omnikryptec.animation.ColladaParser.colladaLoader;
 import java.nio.FloatBuffer;
 import java.util.List;
 
+import org.jdom2.Element;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Matrix4f;
 
 import omnikryptec.animation.ColladaParser.dataStructures.JointData;
 import omnikryptec.animation.ColladaParser.dataStructures.SkeletonData;
 import omnikryptec.util.XMLUtil;
-import org.jdom2.Element;
 
 /**
  * Loads the Skeleton

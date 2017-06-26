@@ -3,6 +3,7 @@ package omnikryptec.animation.ColladaParser.colladaLoader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jdom2.Element;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -13,7 +14,6 @@ import omnikryptec.animation.ColladaParser.dataStructures.MeshData;
 import omnikryptec.animation.ColladaParser.dataStructures.VertexSkinData;
 import omnikryptec.util.Maths;
 import omnikryptec.util.XMLUtil;
-import org.jdom2.Element;
 
 /**
  * Loads the mesh data for a model from a collada XML file.

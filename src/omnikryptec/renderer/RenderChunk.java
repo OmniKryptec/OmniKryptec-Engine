@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
+import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.deferredlight.DeferredLightPrepare;
 import omnikryptec.entity.Entity;
@@ -18,9 +19,7 @@ import omnikryptec.model.AdvancedModel;
 import omnikryptec.model.Material;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
-import omnikryptec.util.ArrayUtil;
 import omnikryptec.util.SerializationUtil;
-import org.lwjgl.util.vector.Vector3f;
 
 public class RenderChunk implements DataMapSerializable {
 
