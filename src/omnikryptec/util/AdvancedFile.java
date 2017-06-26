@@ -286,7 +286,9 @@ public class AdvancedFile {
         for(String path_temp : paths) {
             path_new += (path_temp.startsWith(separator) ? "" : separator) + path_temp;
         }
-        path_new = path_new.substring(separator.length());
+        if(path_new.length() >= separator.length()) {
+            path_new = path_new.substring(separator.length());
+        }
         return path_new;
     }
     
