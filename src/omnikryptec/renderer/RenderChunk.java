@@ -336,7 +336,7 @@ public class RenderChunk implements DataMapSerializable {
             z = (long) temp_v.z;
         }
         other.clear();
-        final Map<Class, Object> other_classes_gameObjects = data.getMap("other_classes_gameObjects", Class.class, Object.class);
+        final Map<Class<? extends Class<?>>, Object> other_classes_gameObjects = data.getMap("other_classes_gameObjects", Class.class, Object.class);
         if(other_classes_gameObjects != null) {
             other_classes_gameObjects.keySet().stream().forEach((c) -> {
                 final Object object = other_classes_gameObjects.get(c);
