@@ -121,7 +121,7 @@ public class AnimationTest {
             ResourceLoader.getInstance().addLoader(new DefaultAnimatedModelDataLoader());
             ResourceLoader.getInstance().stageAdvancedFiles(-1, DIFFUSE_FILE);
             ResourceLoader.getInstance().stageAdvancedFiles(MODEL_FILE);
-            //ResourceLoader.getInstance().stageAdvancedFiles(new AdvancedFile(res_test, "brunnen.obj")); //TODO Make Loader for .obj's
+            ResourceLoader.getInstance().stageAdvancedFiles(new AdvancedFile(res_test, "brunnen.obj"));
             ResourceLoader.getInstance().stageAdvancedFiles(new AdvancedFile(res_test, "brunnen.png"));
             ResourceLoader.getInstance().loadStagedAdvancedFiles(true);
             Logger.log("Local Folder: " + new AdvancedFile("").getAbsoluteAdvancedFile());
@@ -132,7 +132,7 @@ public class AnimationTest {
             
             animatedModel = AnimatedModelLoader.createModel("res:model.dae:AnimatedModel", ResourceLoader.getInstance().getData(AnimatedModelData.class, "res:model.dae:AnimatedModelData"), ResourceLoader.getInstance().getData(Texture.class, "res:diffuse.png"), null);
             ResourceLoader.getInstance().addRessourceObject("res:model.dae:AnimatedModel", animatedModel);
-            ResourceLoader.getInstance().addRessourceObject("omnikryptec:test:brunnen", new TexturedModel("omnikryptec:test:brunnen", Model.newModel("/omnikryptec/test/brunnen.obj"), ResourceLoader.getInstance().getData(SimpleTexture.class, "omnikryptec:test:brunnen.png")));
+            ResourceLoader.getInstance().addRessourceObject("omnikryptec:test:brunnen", new TexturedModel("omnikryptec:test:brunnen", ResourceLoader.getInstance().getData(Model.class, "omnikryptec:test:brunnen.obj"), ResourceLoader.getInstance().getData(SimpleTexture.class, "omnikryptec:test:brunnen.png")));
             
             //entityBuilder_brunnen = new EntityBuilder().setTexturedModelName("omnikryptec:test:brunnen.png").loadModel("/omnikryptec/test/brunnen.obj").setTexture(ResourceLoader.getInstance().getData(SimpleTexture.class, "omnikryptec:test:brunnen.png"))/*.loadTexture("brunnen.png", "/omnikryptec/test/brunnen.png")*/;
             entityBuilder_brunnen = new EntityBuilder().setTexturedModel(ResourceLoader.getInstance().getData(TexturedModel.class, "omnikryptec:test:brunnen"));
