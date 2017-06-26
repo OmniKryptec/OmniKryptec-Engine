@@ -212,17 +212,19 @@ public class RenderChunk implements DataMapSerializable {
     private final Renderer[] empty_array = new Renderer[]{null};
     private Renderer r;
     private GameObject g;
-
-    public void frame(float maxExpenLvl, float minexplvl, boolean onlyRender, AllowedRenderer type, Renderer... rend) {
+    private long vertcount=0;
+    
+    public long frame(float maxExpenLvl, float minexplvl, boolean onlyRender, AllowedRenderer type, Renderer... rend) {
         if (rend == null || rend.length == 0) {
             rend = empty_array;
         }
+        vertcount = 0;
         for (Renderer keysArray : chunk.keysArray()) {
             r = keysArray;
             if (r != null && r.expensiveLevel() <= maxExpenLvl && r.expensiveLevel() >= minexplvl
                     && (type == AllowedRenderer.All || (type == AllowedRenderer.OnlThis && contains(rend, r))
                     || (type == AllowedRenderer.EvElse && !contains(rend, r)))) {
-                r.render(scene, chunk.get(r), onlyRender);
+                vertcount += r.render(scene, chunk.get(r), onlyRender);
             }
         }
         if (!onlyRender) {
@@ -240,6 +242,7 @@ public class RenderChunk implements DataMapSerializable {
                 }
             }
         }
+        return vertcount;
     }
 
     private boolean contains(Object[] array, Object obj) {

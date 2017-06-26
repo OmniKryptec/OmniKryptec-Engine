@@ -42,10 +42,12 @@ public class AnimatedModelRenderer implements Renderer {
 	private AdvancedModel model;
 	private AnimatedModel animatedModel;
 	private Entity entity;
-
+	private long vertcount=0;
+	
 	@Override
-	public void render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender) {
+	public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender) {
 		final Camera camera = s.getCamera();
+		vertcount = 0;
 		shader.start();
 		shader.projectionMatrix.loadMatrix(camera.getProjectionMatrix());
 		shader.viewMatrix.loadMatrix(camera.getViewMatrix());
@@ -73,12 +75,14 @@ public class AnimatedModelRenderer implements Renderer {
 						shader.transformationMatrix.loadMatrix(Maths.createTransformationMatrix(entity));
 						GL11.glDrawElements(GL11.GL_TRIANGLES, animatedModel.getModel().getVao().getIndexCount(),
 								GL11.GL_UNSIGNED_INT, 0);
+						vertcount += animatedModel.getModel().getModelData().getVertexCount();
 					}
 				}
 			}
 			stapel = null;
 			// model.getModel().getVao().unbind(0, 1, 2, 3);
 		}
+		return vertcount;
 	}
 
 	@Override

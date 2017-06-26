@@ -95,7 +95,8 @@ public class OmniKryptecEngine {
 	private PostProcessing postpro;
 	private final ArrayList<Scene> scenes = new ArrayList<>();
 	private Scene sceneCurrent;
-
+	private long vertsCountCurrent=0;
+	
 	private ShutdownOption shutdownOption = ShutdownOption.JAVA;
 	private boolean requestclose = false;
 
@@ -202,7 +203,7 @@ public class OmniKryptecEngine {
 				if (clear) {
 					RenderUtil.clear(sceneCurrent.getClearColor());
 				}
-				sceneCurrent.frame(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, false, AllowedRenderer.All);
+				vertsCountCurrent = sceneCurrent.frame(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, false, AllowedRenderer.All);
 				ParticleMaster.instance().update(getCurrentScene().getCamera());
 			}
 			eventsystem.fireEvent(new Event(), EventType.RENDER_EVENT);
@@ -233,6 +234,10 @@ public class OmniKryptecEngine {
 		eventsystem.fireEvent(new Event(e), EventType.ERROR);
 	}
 
+	public final long getMaxRenderedVertsCount(){
+		return vertsCountCurrent;
+	}
+	
 	public final OmniKryptecEngine close(ShutdownOption shutdownOption) {
 		if (shutdownOption.getLevel() >= ShutdownOption.ENGINE.getLevel()) {
 			state = State.Stopping;

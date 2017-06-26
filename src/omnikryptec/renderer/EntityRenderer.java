@@ -31,13 +31,15 @@ public class EntityRenderer implements Renderer {
 	private TexturedModel model;
 	private Material mat;
 	private Texture textmp;
-
+	private long vertcount=0;
+	
 	@Override
-	public void render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender) {
+	public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender) {
 		if (!DisplayManager.instance().getSettings().isLightForwardAllowed() && Logger.isDebugMode()) {
 			Logger.log("Forward light is not enabled. Will not render.", LogLevel.WARNING);
-			return;
+			return 0;
 		}
+		vertcount = 0;
 		shader.start();
 		shader.view.loadMatrix(s.getCamera().getViewMatrix());
 		shader.projection.loadMatrix(s.getCamera().getProjectionMatrix());
@@ -100,6 +102,7 @@ public class EntityRenderer implements Renderer {
 					shader.colmod.loadVec4(entity.getColor().getVector4f());
 					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(),
 							GL11.GL_UNSIGNED_INT, 0);
+					vertcount += model.getModel().getModelData().getVertexCount();
 				}
 			}
 			stapel = null;
@@ -108,6 +111,7 @@ public class EntityRenderer implements Renderer {
 				RenderUtil.cullBackFaces(true);
 			}
 		}
+		return vertcount;
 	}
 
 	@Override

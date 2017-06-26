@@ -8,7 +8,7 @@ import omnikryptec.model.AdvancedModel;
 
 public interface Renderer {
 
-	void render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender);
+	long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender);
 
 	void cleanup();
 

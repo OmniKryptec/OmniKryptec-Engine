@@ -44,7 +44,8 @@ public class Scene implements DataMapSerializable {
     private String tmp;
     private long cx, cy, cz;
     private RenderChunk tmpc;
-
+    private long vertcount=0;
+    
     public Scene() {
         this("", null);
     }
@@ -104,7 +105,7 @@ public class Scene implements DataMapSerializable {
         return g;
     }
 
-    public final Scene frame(float maxexpenlvl, float minexplvl, boolean onlyRender, AllowedRenderer info,
+    public final long frame(float maxexpenlvl, float minexplvl, boolean onlyRender, AllowedRenderer info,
             Renderer... re) {
         deferred_rel_lights.clear();
         deferred_rel_lights.putAll(global.getDeferredLights());
@@ -116,6 +117,7 @@ public class Scene implements DataMapSerializable {
         cx = cam.getChunkX();
         cy = cam.getChunkY();
         cz = cam.getChunkZ();
+        vertcount = 0;
         for (long x = -cox + cx; x <= cox + cx; x++) {
             for (long y = -coy + cy; y <= coy + cy; y++) {
                 for (long z = -coz + cz; z <= coz + cz; z++) {
@@ -129,18 +131,18 @@ public class Scene implements DataMapSerializable {
             for (long y = -coy + cy; y <= coy + cy; y++) {
                 for (long z = -coz + cz; z <= coz + cz; z++) {
                     if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
-                        tmpc.frame(maxexpenlvl, minexplvl, onlyRender, info, re);
+                        vertcount += tmpc.frame(maxexpenlvl, minexplvl, onlyRender, info, re);
                         deferred_rel_lights.putAll(tmpc.getDeferredLights());
                     }
                 }
             }
         }
-        global.frame(maxexpenlvl, minexplvl, onlyRender, info, re);
+        vertcount += global.frame(maxexpenlvl, minexplvl, onlyRender, info, re);
         if (!onlyRender) {
             cam.doLogic0();
             doLogic();
         }
-        return this;
+        return vertcount;
     }
 
     /**

@@ -34,10 +34,12 @@ public class TerrainRenderer implements Renderer {
     private List<Entity> stapel;
     private Terrain terrain;
     private TexturedModel model;
-
+    private long vertcount=0;
+    	
     // TODO change something
     @Override
-    public void render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender) {
+    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender) {
+    	vertcount = 0;
         shader.start();
         TerrainShader.viewMatrix.loadMatrix(s.getCamera().getViewMatrix());
         TerrainShader.projectionMatrix.loadMatrix(s.getCamera().getProjectionMatrix());
@@ -73,14 +75,15 @@ public class TerrainRenderer implements Renderer {
                             Instance.MATHS_ZERO, Instance.MATHS_ONE));
                     GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(),
                             GL11.GL_UNSIGNED_INT, 0);
+                    vertcount += model.getModel().getModelData().getVertexCount();
                 }
             }
             stapel = null;
-            model.getModel().getVao().unbind(0, 1, 2);
             if (model.getMaterial().hasTransparency()) {
                 RenderUtil.cullBackFaces(true);
             }
         }
+        return vertcount;
     }
 
     @Override

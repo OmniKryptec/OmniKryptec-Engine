@@ -28,9 +28,11 @@ public class EntityRendererNoLight implements Renderer {
 	private TexturedModel model;
 	private Material mat;
 	private Texture textmp;
-
+	private long vertcount = 0;
+	
 	@Override
-	public void render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender) {
+	public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender) {
+		vertcount = 0;
 		shader.start();
 		shader.view.loadMatrix(s.getCamera().getViewMatrix());
 		shader.projection.loadMatrix(s.getCamera().getProjectionMatrix());
@@ -83,6 +85,7 @@ public class EntityRendererNoLight implements Renderer {
 					shader.colmod.loadVec4(entity.getColor().getVector4f());
 					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(),
 							GL11.GL_UNSIGNED_INT, 0);
+					vertcount += model.getModel().getModelData().getVertexCount();
 				}
 			}
 			stapel = null;
@@ -91,6 +94,7 @@ public class EntityRendererNoLight implements Renderer {
 				RenderUtil.cullBackFaces(true);
 			}
 		}
+		return vertcount;
 	}
 
 	@Override
