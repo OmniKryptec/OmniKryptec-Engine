@@ -72,8 +72,8 @@ public class EntityRendererNoLight implements Renderer {
 					shader.extrainfovec.loadVec3(0, 0, 0);
 				}
 			}
-			shader.reflec.loadFloat(mat.getReflectivity());
-			shader.shinedamper.loadFloat(mat.getShineDamper());
+			//TODO shader.reflec.loadFloat(mat.getReflectivity());
+			//shader.shinedamper.loadFloat(mat.getShineDamper());
 			stapel = entities.get(model);
 			for (int j = 0; j < stapel.size(); j++) {
 				entity = stapel.get(j);

@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 
 import omnikryptec.audio.AudioManager;
 import omnikryptec.logger.Logger;
+import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.RenderUtil;
@@ -24,6 +25,10 @@ public class DisplayManager {
 	private static double lasttime = 0;
 	private static double runtime = 0;
 
+	private static boolean smootheddelteenabled = false;
+	private static double[] smootheddelta = new double[60];
+	private static int deltapointer = 0;
+	
 	private static long framecount = 0;
 
 	/**
@@ -32,6 +37,8 @@ public class DisplayManager {
 	private static float runtimef = 0;
 	private static float deltatimef = 0;
 
+	
+	
 	public static final int DISABLE_FPS_CAP = 0;
 
 	private static GameSettings settings;
@@ -50,7 +57,7 @@ public class DisplayManager {
 	public static final DisplayManager instance() {
 		return manager;
 	}
-
+	
 	/**
 	 * Creates a OmniKryptecEngine and a DisplayManager
 	 * 
@@ -179,6 +186,11 @@ public class DisplayManager {
 		runtime += deltatime;
 		lasttime = currentFrameTime;
 		deltatimef = (float) deltatime;
+		if (smootheddelteenabled) {
+			smootheddelta[deltapointer] = deltatime;
+			deltapointer++;
+			deltapointer %= smootheddelta.length;
+		}
 		runtimef = (float) runtime;
 		framecount++;
 		Display.update();
@@ -261,5 +273,30 @@ public class DisplayManager {
 		Display.destroy();
 		return this;
 	}
+	
+	public final DisplayManager setSmoothedDeltatime(boolean b){
+		smootheddelteenabled = b;
+		return this;
+	}
+	
+	public final DisplayManager setSmoothedFrames(int i){
+		smootheddelta = new double[i];
+		deltapointer = 0;
+		return this;
+	}
+	
+	public final double getSmoothedDeltaTime() {
+		if (!smootheddelteenabled) {
+			Logger.log("Smoothed deltatime is not enabled!", LogLevel.WARNING);
+		}
+		double del = 0;
+		for (int i = 0; i < smootheddelta.length; i++) {
+			del += smootheddelta[i];
+		}
+		return del / smootheddelta.length;
+	}
 
+	public final long getSmoothedFPS() {
+		return Math.round(1.0 / (getSmoothedDeltaTime()));
+	}
 }

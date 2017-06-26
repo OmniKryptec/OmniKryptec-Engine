@@ -35,6 +35,7 @@ import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
+import omnikryptec.util.RenderUtil;
 
 /**
  *
@@ -55,6 +56,8 @@ public class EngineTest2 implements IEventHandler {
                     new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32)
                     .setInitialFPSCap(-1).setChunkRenderOffsets(10, 10, 10).setLightForward(true),
                     new OpenGLInfo(3, 3, new PixelFormat()));
+            DisplayManager.instance().setSmoothedDeltatime(true);
+    		DisplayManager.instance().setSmoothedFrames(1000);
             // PostProcessing.instance().addStage(new
             // DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
             // DeferredLightPrepare.DEFAULT_LIGHT_PREPARE));
@@ -91,8 +94,9 @@ public class EngineTest2 implements IEventHandler {
             SimpleTexture jd = SimpleTexture.newTexture(new AdvancedFile(res, "jd.png"));
             SimpleTexture js = SimpleTexture.newTexture(new AdvancedFile(res, "js.png"));
             SimpleTexture jn = SimpleTexture.newTexture(new AdvancedFile(res, "jn.png"));
-
             EventSystem.instance().addEventHandler(new EngineTest2(), EventType.RENDER_EVENT);
+            
+
             Model brunnen = new Model(
                     ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
             // Model brunnen = ModelUtil.generateQuad();
@@ -104,8 +108,7 @@ public class EngineTest2 implements IEventHandler {
             AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
             TexturedModel tm = new TexturedModel("brunnen", brunnen, brunnent);
             tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
-            tm.getMaterial().setHasTransparency(true);
-            tm.getMaterial().setReflectivity(1).setShineDamper(5)
+            tm.getMaterial().setHasTransparency(true).setReflectivity(new Vector3f(0.1f, 1, 0.01f)).setShineDamper(10)
                     .setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER);
             OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
@@ -203,11 +206,11 @@ public class EngineTest2 implements IEventHandler {
     }
 
     private static ParticleSystem system;
-
+        
     @Override
     public void onEvent(Event ev) {
         // system.generateParticles(1);
-        Display.setTitle("FPS: " + DisplayManager.instance().getFPS());
+        Display.setTitle("FPS: " + DisplayManager.instance().getFPS()+" / SFPS: " + DisplayManager.instance().getSmoothedFPS());
         // System.out.println(DisplayManager.instance().getFPS());
         // System.out.println(DisplayManager.instance().getDeltaTime());
     }

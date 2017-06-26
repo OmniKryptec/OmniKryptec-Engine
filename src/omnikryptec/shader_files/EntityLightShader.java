@@ -19,12 +19,10 @@ public class EntityLightShader extends Shader {
 	public final UniformMatrix view = new UniformMatrix("viewmatrix");
 	public final UniformMatrix projection = new UniformMatrix("projmatrix");
 	public final UniformBoolean hasspecular = new UniformBoolean("hasspecular");
-	public final UniformFloat reflec = new UniformFloat("reflec");
 	public final UniformSampler tex = new UniformSampler("tex");
 	public final UniformSampler normalmap = new UniformSampler("normaltex");
 	public final UniformSampler specularmap = new UniformSampler("speculartex");
 	public final UniformVec4 colmod = new UniformVec4("colormod");
-	public final UniformFloat shinedamper = new UniformFloat("damp");
 	public final UniformBoolean hasextrainfomap = new UniformBoolean("hasextra");
 	public final UniformSampler extrainfo = new UniformSampler("extra");
 	public final UniformVec3 extrainfovec = new UniformVec3("exinfovec");
@@ -34,7 +32,8 @@ public class EntityLightShader extends Shader {
 	public final UniformVec4[] coneinfo;
 	public final UniformVec3 ambient = new UniformVec3("ambient");
 	public final UniformInt activelights = new UniformInt("activelights");
-
+	public final UniformVec4 matData = new UniformVec4("matData");
+	
 	private static final LineInsert insert = new LineInsert() {
 
 		@Override
@@ -73,8 +72,8 @@ public class EntityLightShader extends Shader {
 			coneinfo[i] = new UniformVec4("coneInfo[" + i + "]");
 		}
 		registerUniforms(coneinfo);
-		registerUniforms(transformation, view, projection, tex, normalmap, specularmap, hasspecular, reflec, colmod,
-				shinedamper, hasextrainfomap, extrainfo, extrainfovec, uvs, hasnormal, activelights, ambient);
+		registerUniforms(transformation, view, projection, tex, normalmap, specularmap, hasspecular, colmod,
+				matData, hasextrainfomap, extrainfo, extrainfovec, uvs, hasnormal, activelights, ambient);
 		start();
 		tex.loadTexUnit(0);
 		normalmap.loadTexUnit(1);

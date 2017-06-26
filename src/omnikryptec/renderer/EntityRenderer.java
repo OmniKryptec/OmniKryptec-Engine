@@ -3,6 +3,7 @@ package omnikryptec.renderer;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL40;
 
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Entity;
@@ -89,8 +90,7 @@ public class EntityRenderer implements Renderer {
 					shader.extrainfovec.loadVec3(0, 0, 0);
 				}
 			}
-			shader.reflec.loadFloat(mat.getReflectivity());
-			shader.shinedamper.loadFloat(mat.getShineDamper());
+			shader.matData.loadVec4(mat.getMData());
 			stapel = entities.get(model);
 			for (int j = 0; j < stapel.size(); j++) {
 				entity = stapel.get(j);

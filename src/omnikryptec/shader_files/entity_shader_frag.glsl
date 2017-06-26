@@ -26,8 +26,7 @@ uniform float hasspecular;
 uniform float hasnormal;
 
 
-uniform float reflec;
-uniform float damp;
+uniform vec4 matData;
 
 uniform vec3 lightColor[maxlights];
 uniform vec3 atts[maxlights];
@@ -107,10 +106,10 @@ void main(void){
 	}
 	if(hasspecular>0.5){
 		col2.rgb = texture(speculartex, pass_texcoords).rgb;
-		col2.rgb = col2.rgb * reflec;
-		col2.a = damp;
+		col2.rgb = col2.rgb * matData.rgb;
+		col2.a = matData.a;
 	}else{
-		col2 = vec4(reflec,reflec,reflec,damp);
+		col2 = matData;
 	}
 	colf = vec4(ambient*col.rgb,col.a);
 	for(int i=0; i<activelights; i++){
@@ -121,7 +120,6 @@ void main(void){
 	}else{
 		col3.rgb = exinfovec;
 	}
-	//col3.a = 1.0;
 }
 
 

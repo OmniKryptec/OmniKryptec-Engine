@@ -1,6 +1,7 @@
 package omnikryptec.model;
 
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.exceptions.OmniKryptecException;
 import omnikryptec.logger.Logger;
@@ -10,8 +11,7 @@ import omnikryptec.texture.Texture;
 
 public class Material {
 
-	private float reflectivity;
-	private float shinedamper;
+	private Vector4f mdata;
 
 	private Texture normalmap;
 	private Texture specularmap;
@@ -21,19 +21,27 @@ public class Material {
 	private Renderer renderer = RendererRegistration.DEF_ENTITY_RENDERER;
 
 	public Material() {
-		this(0);
+		this(0, 1);
 	}
 
-	public Material(float reflec) {
-		this(null, null, reflec);
+	public Material(float reflec, float shinedamper) {
+		this(null, null, reflec, shinedamper);
 	}
 
-	public Material(Texture normalmap, Texture specularmap, float reflec) {
-		this.reflectivity = reflec;
+	public Material(Texture normalmap, Texture specularmap, float reflec, float shinedamper) {
+		this(normalmap, specularmap, new Vector3f(reflec, reflec, reflec), shinedamper);
+	}
+
+	public Material(Texture normalmap, Texture specularmap, Vector3f reflec, float shinedamper) {
+		this(normalmap, specularmap, new Vector4f(reflec.x, reflec.y, reflec.z, shinedamper));
+	}
+	
+	public Material(Texture normalmap, Texture specularmap, Vector4f mdata) {
+		this.mdata = mdata;
 		this.normalmap = normalmap;
 		this.specularmap = specularmap;
 	}
-
+	
 	public final Texture getNormalmap() {
 		return normalmap;
 	}
@@ -42,9 +50,6 @@ public class Material {
 		return specularmap;
 	}
 
-	public final float getReflectivity() {
-		return reflectivity;
-	}
 
 	public final boolean hasTransparency() {
 		return hasTransparency;
@@ -64,9 +69,13 @@ public class Material {
 	public final Vector3f getExtraInfoVec() {
 		return extrainfovec;
 	}
-
-	public final Material setReflectivity(float reflectivity) {
-		this.reflectivity = reflectivity;
+	
+	public final Material setReflectivity(float f){
+		return setReflectivity(new Vector3f(f, f, f));
+	}
+	
+	public final Material setReflectivity(Vector3f reflectivity) {
+		mdata.set(reflectivity.x, reflectivity.y, reflectivity.z);
 		return this;
 	}
 
@@ -108,12 +117,21 @@ public class Material {
 	}
 
 	public Material setShineDamper(float sh) {
-		shinedamper = sh;
+		mdata.w = sh;
 		return this;
 	}
 
 	public float getShineDamper() {
-		return shinedamper;
+		return mdata.w;
+	}
+	
+	public final Material setLightData(Vector4f mdata){
+		this.mdata = mdata;
+		return this;
+	}
+	
+	public final Vector4f getMData(){
+		return mdata;
 	}
 
 }
