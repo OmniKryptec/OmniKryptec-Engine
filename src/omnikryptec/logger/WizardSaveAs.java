@@ -114,7 +114,7 @@ public class WizardSaveAs extends javax.swing.JDialog implements ActionListener,
     public void searchComputer(Component c) {
         int result = fileChooser.showSaveDialog(c);
         AdvancedFile file_temp = new AdvancedFile(fileChooser.getSelectedFile());
-        if (result == JFileChooser.APPROVE_OPTION && !file_temp.isRelative()) {
+        if (result == JFileChooser.APPROVE_OPTION && !file_temp.isIntern()) {
             file = file_temp;
             textField_center_path.setText(file.toFile().getAbsolutePath());
         }

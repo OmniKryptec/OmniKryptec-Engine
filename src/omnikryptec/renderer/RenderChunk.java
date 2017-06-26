@@ -336,12 +336,12 @@ public class RenderChunk implements DataMapSerializable {
             z = (long) temp_v.z;
         }
         other.clear();
-        final Map<Class<?>, Object> other_classes_gameObjects = data.getMap("other_classes_gameObjects", Class.class, Object.class);
+        final Map<Class, Object> other_classes_gameObjects = data.getMap("other_classes_gameObjects", Class.class, Object.class);
         if(other_classes_gameObjects != null) {
             other_classes_gameObjects.keySet().stream().forEach((c) -> {
                 final Object object = other_classes_gameObjects.get(c);
                 if(object != null && object instanceof List) {
-                    ((List<Object>) object).stream().forEach((name) -> {
+                    ((List) object).stream().forEach((name) -> {
                         try {
                             Object gameObject = c.getDeclaredMethod("byName", Class.class, String.class).invoke(c, "" + name);
                             if(gameObject != null && gameObject.getClass() == c) {
@@ -364,7 +364,7 @@ public class RenderChunk implements DataMapSerializable {
                 final RenderMap<AdvancedModel, List<Entity>> rendererModels = new RenderMap<>(AdvancedModel.class);
                 final Object object = chunk_renderer_entities.get(c);
                 if(object != null && object instanceof List) {
-                    ((List<Object>) object).stream().forEach((name) -> {
+                    ((List) object).stream().forEach((name) -> {
                         try {
                             Entity entity = GameObject.byName(Entity.class, "" + name, false);
                             if(entity != null) {

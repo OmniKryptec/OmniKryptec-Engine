@@ -50,7 +50,7 @@ public class AdvancedFile {
 
     private final AdvancedFile ME;
     private File folder = null;
-    private String[] paths = null;
+    private ArrayList<String> paths = null;
     private String separator = PATH_SEPARATOR;
     private boolean shouldBeFile = true;
     //Regenerated things
@@ -108,6 +108,7 @@ public class AdvancedFile {
         this.shouldBeFile = shouldBeFile;
         setParent(parent);
         addPaths(paths);
+        correctAbsoluteness();
     }
 
     /**
@@ -117,21 +118,43 @@ public class AdvancedFile {
      */
     public final AdvancedFile copy() {
         resetValues();
-        return new AdvancedFile(shouldBeFile, folder, ArrayUtil.copyOf(paths, paths.length));
+        return new AdvancedFile(shouldBeFile, folder, getPaths());
     }
     
+    public final AdvancedFile copyFrom(AdvancedFile advancedFile) {
+        this.file = advancedFile.file;
+        this.folder = advancedFile.folder;
+        this.path = advancedFile.path;
+        this.paths = advancedFile.paths;
+        this.separator = advancedFile.separator;
+        this.shouldBeFile = advancedFile.shouldBeFile;
+        resetValues();
+        return this;
+    }
+
     /**
      * Returns a copy of this AdvancedFile in absolute form
+     *
      * @return AdvancedFile AdvancedFile
      */
     public final AdvancedFile getAbsoluteAdvancedFile() {
-        if(shouldBeFile) {
-            return new AdvancedFile(true, toFile().getParentFile(), toFile().getName());
+        if (shouldBeFile) {
+            return new AdvancedFile(new File("").getAbsolutePath() + PATH_SEPARATOR + getPath());
         } else {
-            return new AdvancedFile(false, toFile());
+            return new AdvancedFile(false, toFile().getAbsoluteFile());
         }
     }
     
+    public final AdvancedFile correctAbsoluteness() {
+        if(isIntern()) {
+            final File file_temp = new File(concatSystemPath());
+            if(file_temp.isAbsolute()) {
+                return copyFrom(new AdvancedFile(file_temp.getParentFile(), file_temp.getName()));
+            }
+        }
+        return this;
+    }
+
     public final AdvancedFile resetValues() {
         path = null;
         file = null;
@@ -150,13 +173,18 @@ public class AdvancedFile {
             return this;
         }
         if (this.paths != null) {
-            final String[] paths_new = Arrays.copyOf(this.paths, this.paths.length + paths.length);
-            for (int i = this.paths.length; i < paths_new.length; i++) {
-                paths_new[i] = paths[i - this.paths.length].replace(WINDOWS_SEPARATOR, PATH_SEPARATOR);
+            for(String path_toAdd : paths) {
+                path_toAdd = path_toAdd.replace(WINDOWS_SEPARATOR_CHAR, PATH_SEPARATOR_CHAR);
+                final String[] split = path_toAdd.split(PATH_SEPARATOR);
+                for(String g : split) {
+                    if(!g.isEmpty()) {
+                        this.paths.add(g);
+                    }
+                }
             }
-            this.paths = paths_new;
         } else {
-            this.paths = paths;
+            this.paths = new ArrayList<>();
+            return addPaths(paths);
         }
         return this;
     }
@@ -183,13 +211,22 @@ public class AdvancedFile {
             return this;
         }
         if (this.paths != null) {
-            final String[] paths_new = Arrays.copyOf(paths, paths.length + this.paths.length);
-            for (int i = paths.length; i < paths_new.length; i++) {
-                paths_new[i] = this.paths[i - paths.length];
+            final ArrayList<String> paths_new = new ArrayList<>();
+            for(String path_toAdd : paths) {
+                path_toAdd = path_toAdd.replace(WINDOWS_SEPARATOR_CHAR, PATH_SEPARATOR_CHAR);
+                final String[] split = path_toAdd.split(PATH_SEPARATOR);
+                for(String g : split) {
+                    if(!g.isEmpty()) {
+                        paths_new.add(g);
+                    }
+                }
             }
+            paths_new.addAll(this.paths);
+            this.paths.clear();
             this.paths = paths_new;
         } else {
-            this.paths = paths;
+            this.paths = new ArrayList<>();
+            return addPrePaths(paths);
         }
         return this;
     }
@@ -212,7 +249,8 @@ public class AdvancedFile {
      */
     public final AdvancedFile setPaths(String... paths) {
         resetValues();
-        this.paths = paths;
+        this.paths = null;
+        addPaths(paths);
         return this;
     }
 
@@ -223,7 +261,37 @@ public class AdvancedFile {
      */
     public final String[] getPaths() {
         resetValues();
-        return paths;
+        return ((ArrayList<String>) paths.clone()).toArray(new String[paths.size()]);
+    }
+    
+    /**
+     * Returns the Paths but only the given ones
+     * @param max_path_count Integer Maximum number of Paths returned
+     * @return String Array Paths
+     */
+    public final String[] getPaths(int max_path_count) {
+        if(paths.size() <= max_path_count || max_path_count == -1) {
+            return getPaths();
+        } else {
+            return ArrayUtil.copyOf(getPaths(), max_path_count);
+        }
+    }
+    
+    protected final String concatSystemPath() {
+        return concatPath().replace(PATH_SEPARATOR_CHAR, SYSTEM_SEPARATOR_CHAR);
+    }
+    
+    protected final String concatPath() {
+        String path_new = "";
+        for(String path_temp : paths) {
+            path_new += (path_temp.startsWith(separator) ? "" : separator) + path_temp;
+        }
+        path_new = path_new.substring(separator.length());
+        return path_new;
+    }
+    
+    public final String getSystemPath() {
+        return getPath().replace(PATH_SEPARATOR_CHAR, SYSTEM_SEPARATOR_CHAR);
     }
 
     /**
@@ -239,7 +307,7 @@ public class AdvancedFile {
     }
 
     private final String createPath() {
-        String path_new = (isRelative() ? "" : folder.getAbsolutePath());
+        String path_new = (isIntern() ? "" : folder.getAbsolutePath());
         if (paths != null) {
             for (String path_temp : paths) {
                 path_new += (path_temp.startsWith(separator) ? "" : separator) + path_temp;
@@ -249,11 +317,25 @@ public class AdvancedFile {
     }
 
     /**
-     * Returns if this AdvancedFile is a relative path
+     * Returns if this AdvancedFile is an absolute path
      *
-     * @return <tt>true</tt> if this AdvancedFile is a relative path
+     * @return <tt>true</tt> if this AdvancedFile is an absolute path
      */
-    public final boolean isRelative() {
+    public final boolean isAbsolute() {
+        if (isIntern()) {
+            return false;
+        } else {
+            return toFile().isAbsolute();
+        }
+    }
+
+    /**
+     * Returns if this AdvancedFile is located in the current running jar file
+     *
+     * @return <tt>true</tt> if this AdvancedFile is located in the current
+     * running jar file
+     */
+    public final boolean isIntern() {
         return folder == null;
     }
 
@@ -286,7 +368,7 @@ public class AdvancedFile {
      * @return File File
      */
     public final File toFile() {
-        if(file == null || path == null) {
+        if (file == null || path == null) {
             file = new File(getPath());
         }
         return file;
@@ -299,13 +381,13 @@ public class AdvancedFile {
      */
     public final AdvancedFile getParent() {
         resetValues();
-        if (paths != null && paths.length > 1) {
-            return new AdvancedFile(false, folder, ArrayUtil.copyOf(paths, paths.length - 1));
-        } else if (paths != null && paths.length == 1 && !isRelative()) {
+        if (paths != null && paths.size() > 1) {
+            return new AdvancedFile(false, folder, getPaths(paths.size() - 1));
+        } else if (paths != null && paths.size() == 1 && !isIntern()) {
             return new AdvancedFile(false, folder);
-        } else if (!isRelative()) {
+        } else if (!isIntern()) {
             return new AdvancedFile(false, folder.getParentFile());
-        } else if (isRelative()) {
+        } else if (isIntern()) {
             return new AdvancedFile(false, folder, "");
         } else {
             return null;
@@ -402,7 +484,7 @@ public class AdvancedFile {
      * exists
      */
     public final boolean createFile() {
-        if (isRelative()) {
+        if (isIntern()) {
             return false;
         }
         try {
@@ -431,11 +513,11 @@ public class AdvancedFile {
      * @return <tt>true</tt> if this AdvancedFile exists and is a file
      */
     public final boolean isFile() {
-        if (isRelative()) {
+        if (isIntern()) {
             if (!exists()) {
                 return false;
             } else {
-                return (getRelativeFileType() == FileType.FILE);
+                return (getInternFileType() == FileType.FILE);
             }
         } else {
             if (!toFile().exists()) {
@@ -451,11 +533,11 @@ public class AdvancedFile {
      * @return <tt>true</tt> if this AdvancedFile exists and is a file
      */
     public final boolean isDirectory() {
-        if (isRelative()) {
+        if (isIntern()) {
             if (!exists()) {
                 return false;
             } else {
-                return (getRelativeFileType() == FileType.DIRECTORY);
+                return (getInternFileType() == FileType.DIRECTORY);
             }
         } else {
             if (!toFile().exists()) {
@@ -471,7 +553,7 @@ public class AdvancedFile {
      * @return <tt>true</tt> if this AdvancedFile exists
      */
     public final boolean exists() {
-        if (isRelative()) {
+        if (isIntern()) {
             try {
                 final URI uri = getURI();
                 return uri != null;
@@ -488,16 +570,26 @@ public class AdvancedFile {
             }
         }
     }
-    
+
+    /**
+     * Returns the PathType
+     *
+     * @return PathType (ABSOLUTE, RELATIVE or INTERN)
+     */
+    public final PathType getPathType() {
+        return PathType.of(isAbsolute(), isIntern());
+    }
+
     /**
      * Returns the FileType
+     *
      * @return FileType (NON, FILE or DIRECTORY)
      */
     public final FileType getFileType() {
         return FileType.of(isFile(), isDirectory());
     }
 
-    private final FileType getRelativeFileType() {
+    private final FileType getInternFileType() {
         try {
             final URI uri = getParent().getURI();
             if (uri == null) {
@@ -524,11 +616,11 @@ public class AdvancedFile {
                 return FileType.NON;
             }
             final FileVisitor<Path> fileVisitor = new SimpleFileVisitor<Path>() {
-                
+
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                     final String name = file.toString().replace(WINDOWS_SEPARATOR_CHAR, PATH_SEPARATOR_CHAR);
-                    if(name.endsWith(getPath())) {
+                    if (name.endsWith(getPath())) {
                         isFile.setData(true);
                         return FileVisitResult.TERMINATE;
                     } else {
@@ -539,7 +631,7 @@ public class AdvancedFile {
                 @Override
                 public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
                     final String name = dir.toString().replace(WINDOWS_SEPARATOR_CHAR, PATH_SEPARATOR_CHAR);
-                    if(name.endsWith(getPath())) {
+                    if (name.endsWith(getPath())) {
                         isDirectory.setData(true);
                         return FileVisitResult.TERMINATE;
                     } else {
@@ -565,7 +657,7 @@ public class AdvancedFile {
      * @return InputStream InputStream
      */
     public final InputStream createInputStream() {
-        if (isRelative()) {
+        if (isIntern()) {
             return AdvancedFile.class.getResourceAsStream(getPath());
         } else {
             try {
@@ -596,7 +688,7 @@ public class AdvancedFile {
      * @return OutputStream OutputStream
      */
     public final OutputStream createOutputstream(boolean append) {
-        if (isRelative()) {
+        if (isIntern()) {
             return null;
         } else {
             try {
@@ -628,6 +720,7 @@ public class AdvancedFile {
 
     /**
      * Returns the name of the file
+     *
      * @return String name
      */
     public final String getName() {
@@ -654,9 +747,11 @@ public class AdvancedFile {
         this.shouldBeFile = shouldBeFile;
         return this;
     }
-    
+
     /**
-     * Sets if this AdvancedFile should be a file through analyzing the path extension
+     * Sets if this AdvancedFile should be a file through analyzing the path
+     * extension
+     *
      * @return <tt>true</tt> if this AdvancedFile should be a file
      */
     public final boolean generateShouldBeFile() {
@@ -666,6 +761,7 @@ public class AdvancedFile {
 
     /**
      * Returns the base name (without the extension) of this AdvancedFile
+     *
      * @return String Base name
      */
     public final String getBaseName() {
@@ -674,6 +770,7 @@ public class AdvancedFile {
 
     /**
      * Returns the extension of this AdvancedFile
+     *
      * @return String Extension
      */
     public final String getExtension() {
@@ -735,16 +832,19 @@ public class AdvancedFile {
 
     /**
      * Lists all direct children
+     *
      * @return ArrayList AdvancedFile Direct children
      */
     public final ArrayList<AdvancedFile> listAdvancedFiles() {
         return listAdvancedFiles(null);
     }
-    
+
     /**
      * Lists all direct children that matches the AdvancedFileFilter
+     *
      * @param advancedFileFilter AdvancedFileFilter File filter
-     * @return ArrayList AdvancedFile Direct children matching AdvancedFileFilter
+     * @return ArrayList AdvancedFile Direct children matching
+     * AdvancedFileFilter
      */
     public final ArrayList<AdvancedFile> listAdvancedFiles(AdvancedFileFilter advancedFileFilter) {
         return listAdvancedFiles(advancedFileFilter, false);
@@ -752,9 +852,11 @@ public class AdvancedFile {
 
     /**
      * Lists all children (recursiv if set) that matches the AdvancedFileFilter
+     *
      * @param advancedFileFilter AdvancedFileFilter File filter
      * @param recursiv Boolean if children should be listed recursivly
-     * @return ArrayList AdvancedFile Children matching AdvancedFileFilter (recursiv if set)
+     * @return ArrayList AdvancedFile Children matching AdvancedFileFilter
+     * (recursiv if set)
      */
     public final ArrayList<AdvancedFile> listAdvancedFiles(AdvancedFileFilter advancedFileFilter, boolean recursiv) {
         final ArrayList<AdvancedFile> files = new ArrayList<>();
@@ -762,7 +864,7 @@ public class AdvancedFile {
             return files;
         }
         try {
-            if (isRelative()) {
+            if (isIntern()) {
                 final URI uri = getURI();
                 if (uri == null) {
                     return files;
@@ -815,10 +917,10 @@ public class AdvancedFile {
                 }
             } else {
                 for (File f : toFile().listFiles()) {
-                    if(advancedFileFilter == null || advancedFileFilter.accept(ME, f.getName())) {
+                    if (advancedFileFilter == null || advancedFileFilter.accept(ME, f.getName())) {
                         AdvancedFile advancedFile = new AdvancedFile(f.isFile(), this, f.getName());
                         files.add(advancedFile);
-                        if(recursiv && f.isDirectory()) {
+                        if (recursiv && f.isDirectory()) {
                             files.addAll(advancedFile.listAdvancedFiles(advancedFileFilter, recursiv));
                         }
                     }
@@ -832,11 +934,12 @@ public class AdvancedFile {
 
     /**
      * Returns the URI
+     *
      * @return URI URI
      */
     public final URI getURI() {
         try {
-            if (isRelative()) {
+            if (isIntern()) {
                 return AdvancedFile.class.getResource(getPath()).toURI();
             } else {
                 return toFile().toURI();
@@ -850,13 +953,14 @@ public class AdvancedFile {
             return null;
         }
     }
-    
+
     /**
      * Deletes this AdvancedFile
+     *
      * @return <tt>true</tt> if this AdvancedFile does not exists
      */
     public final boolean delete() {
-        if(!exists()) {
+        if (!exists()) {
             return true;
         }
         toFile().delete();
@@ -865,43 +969,43 @@ public class AdvancedFile {
 
     @Override
     public final boolean equals(Object object) {
-        if(object == null) {
+        if (object == null) {
             return false;
         }
-        if(object instanceof AdvancedFile) {
+        if (object instanceof AdvancedFile) {
             return getPath().equals(((AdvancedFile) object).getPath());
-        } else if(object instanceof File) {
+        } else if (object instanceof File) {
             return getPath().equals(((File) object).toString());
-        } else if(object instanceof String) {
+        } else if (object instanceof String) {
             return getPath().equals((String) object);
         } else {
             return false;
         }
     }
-    
+
     public static final boolean isEqual(AdvancedFile af_1, AdvancedFile af_2) {
-        if(af_1 == null || af_2 == null) {
+        if (af_1 == null || af_2 == null) {
             return false;
         }
         return af_1.equals(af_2);
     }
-    
+
     public static final AdvancedFile fileOfPath(String path) {
         return new AdvancedFile(path).setShouldBeFile(true).getAbsoluteAdvancedFile();
     }
-    
+
     public static final AdvancedFile folderOfPath(String path) {
         return new AdvancedFile(path).setShouldBeFile(false).getAbsoluteAdvancedFile();
     }
 
-    private static enum FileType {
-        NON         (false, false),
-        FILE        (true, false),
-        DIRECTORY   (false, true);
-        
+    public static enum FileType {
+        NON(false, false),
+        FILE(true, false),
+        DIRECTORY(false, true);
+
         private final boolean isFile;
         private final boolean isDirectory;
-        
+
         FileType(boolean isFile, boolean isDirectory) {
             this.isFile = isFile;
             this.isDirectory = isDirectory;
@@ -914,18 +1018,40 @@ public class AdvancedFile {
         public final boolean isDirectory() {
             return isDirectory;
         }
-        
+
         public static FileType of(boolean isFile, boolean isDirectory) {
-            if(!isFile && !isDirectory) {
+            if (!isFile && !isDirectory) {
                 return NON;
-            } else if(isFile && !isDirectory) {
+            } else if (isFile && !isDirectory) {
                 return FILE;
-            } else if(!isFile && isDirectory) {
+            } else if (!isFile && isDirectory) {
                 return DIRECTORY;
+            } else if (isFile && isDirectory) {
+                return null;
             } else {
                 return null;
             }
         }
     }
-    
+
+    public static enum PathType {
+        ABSOLUTE,
+        RELATIVE,
+        INTERN;
+
+        public static final PathType of(boolean isAbsolute, boolean isIntern) {
+            if (!isAbsolute && !isIntern) {
+                return RELATIVE;
+            } else if (isAbsolute && !isIntern) {
+                return ABSOLUTE;
+            } else if (!isAbsolute && isIntern) {
+                return INTERN;
+            } else if (isAbsolute && isIntern) {
+                return null;
+            } else {
+                return null;
+            }
+        }
+    }
+
 }

@@ -118,6 +118,7 @@ public class AnimationTest {
             ResourceLoader.getInstance().stageAdvancedFiles(-1, DIFFUSE_FILE);
             ResourceLoader.getInstance().stageAdvancedFiles(MODEL_FILE);
             ResourceLoader.getInstance().loadStagedAdvancedFiles(true);
+            //file = new AdvancedFile("pictures", String.format("test_%s%d.png", (withTransparency ? "withTransparency_" : ""), JBulletTest2.imagesTaken)).getAbsoluteAdvancedFile();
             //FIXME Only for testing DELETE TIHS!!! END
             
             
