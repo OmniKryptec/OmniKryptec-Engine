@@ -96,6 +96,11 @@ public class VertexBufferObject {
 
 	public void addInstancedAttribute(VertexArrayObject vao, int attributNr, int dataSize, int instancedDataSize,
 			int offset) {
+		addInstancedAttribute(vao, attributNr, dataSize, instancedDataSize, offset, 1);
+	}
+	
+	public void addInstancedAttribute(VertexArrayObject vao, int attributNr, int dataSize, int instancedDataSize,
+			int offset, int divisor) {
 		bind();
 		vao.bind();
 		GL20.glVertexAttribPointer(attributNr, dataSize, GL11.GL_FLOAT, false, instancedDataSize * 4, offset * 4);

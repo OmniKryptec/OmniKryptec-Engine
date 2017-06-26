@@ -323,7 +323,7 @@ public class RenderChunk implements DataMapSerializable {
         return new RenderChunk().fromDataMap(data);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
     public RenderChunk fromDataMap(DataMap data) {
         if(data == null) {
