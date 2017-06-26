@@ -95,7 +95,7 @@ public class EngineTest2 implements IEventHandler {
             // CompleteGaussianBlurStage(false, 0.1f, 0.1f));
             // PostProcessing.instance().addStage(new
             // CompleteGaussianBlurStage(false, 0.05f, 0.05f));
-            PostProcessing.instance().addStage(new DebugRenderer().enableIndex(0));
+            //PostProcessing.instance().addStage(new DebugRenderer());
             AdvancedFile res = new AdvancedFile("res");
             SimpleTexture jd = SimpleTexture.newTexture(new AdvancedFile(res, "jd.png"));
             SimpleTexture js = SimpleTexture.newTexture(new AdvancedFile(res, "js.png"));
@@ -116,9 +116,9 @@ public class EngineTest2 implements IEventHandler {
             AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
             TexturedModel tm = new TexturedModel("brunnen", baumM, baum);
             //tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
-            tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
+            //tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
             tm.getMaterial().setHasTransparency(false).setReflectivity(new Vector3f(0, 1, 1)).setShineDamper(10)
-                    .setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER);
+                    .setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER).setExtraInfoVec(new Vector3f(1, 1, 1));
             OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
                 @Override

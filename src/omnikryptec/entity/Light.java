@@ -7,23 +7,23 @@ import omnikryptec.deferredlight.DeferredLightPrepare;
 import omnikryptec.util.Color;
 
 public class Light extends GameObject {
-
-	private Vector3f vec = new Vector3f();
+	
+	public static final float NO_CUTOFF_RANGE = -1;
+	
 	private Color color = new Color(1, 1, 1, 1);
 	private DeferredLightPrepare mylightprepare = DeferredLightPrepare.FORWARD_RENDERING;
 	private Vector4f coneinfo = new Vector4f(1, 1, 1, 180);
 	private boolean directional = false;	
-	private Vector3f att;
-
+	private Vector4f att = new Vector4f(1, 1, 1, NO_CUTOFF_RANGE);
+	private Vector3f coneAtt = new Vector3f(1, 0, 0);
 	
-	private Vector3f tmp;
-
-	public Vector3f getPosRad() {
-		tmp = getAbsolutePos();
-		vec.x = tmp.x;
-		vec.y = tmp.y;
-		vec.z = tmp.z;
-		return vec;
+	public Light setConeAttenuation(float a, float b, float c){
+		coneAtt.set(a, b, c);
+		return this;
+	}
+	
+	public Vector3f getConeAttenuation(){
+		return coneAtt;
 	}
 
 	public Light setColor(Color c) {
@@ -60,7 +60,8 @@ public class Light extends GameObject {
 	}
 	
 	public Light setPointLight(){
-		coneinfo.w = (float) Math.cos(Math.toRadians(180));
+		setConeDegrees(180);
+		setConeAttenuation(1, 0, 0);
 		return this;
 	}
 
@@ -73,7 +74,7 @@ public class Light extends GameObject {
 		return mylightprepare;
 	}
 
-	public Vector3f getAttenuation() {
+	public Vector4f getAttenuation() {
 		return att;
 	}
 
@@ -86,15 +87,17 @@ public class Light extends GameObject {
 	 * @return
 	 */
 	public Light setAttenuation(float a, float b, float c) {
-		if (att == null) {
-			att = new Vector3f();
-		}
 		att.x = a;
 		att.y = b;
 		att.z = c;
 		return this;
 	}
-
+	
+	public Light setCuttOffRange(float r){
+		att.w = r;
+		return this;
+	}
+	
 	public final boolean isDirectional() {
 		return directional;
 	}

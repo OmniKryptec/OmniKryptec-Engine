@@ -7,6 +7,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Entity;
+import omnikryptec.entity.Light;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.Scene;
@@ -34,6 +35,7 @@ public class EntityRenderer implements Renderer {
 	private Texture textmp;
 	private long vertcount=0;
 	private Vector3f pos;
+	private Light l;
 	
 	@Override
 	public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender) {
@@ -50,11 +52,13 @@ public class EntityRenderer implements Renderer {
 				s.getForwardRenderLights().size());
 		shader.activelights.loadInt(lights);
 		for (int i = 0; i < lights; i++) {
-			pos = s.getForwardRenderLights().get(i).getAbsolutePos();
-			shader.lightpos[i].loadVec4(pos.x, pos.y, pos.z, s.getForwardRenderLights().get(i).isDirectional()?0.0f:1.0f);
-			shader.lightcolor[i].loadVec3(s.getForwardRenderLights().get(i).getColor().getArray());
-			shader.atts[i].loadVec3(s.getForwardRenderLights().get(i).getAttenuation());
-			shader.coneinfo[i].loadVec4(s.getForwardRenderLights().get(i).getConeInfo());
+			l = s.getForwardRenderLights().get(i);
+			pos = l.getAbsolutePos();
+			shader.lightpos[i].loadVec4(pos.x, pos.y, pos.z, l.isDirectional()?0.0f:1.0f);
+			shader.lightcolor[i].loadVec3(l.getColor().getArray());
+			shader.atts[i].loadVec4(l.getAttenuation());
+			shader.coneinfo[i].loadVec4(l.getConeInfo());
+			shader.catts[i].loadVec3(l.getConeAttenuation());
 		}
 		for (int i = 0; i < entities.keysArray().length; i++) {
 			if (!(entities.keysArray()[i] instanceof TexturedModel)) {

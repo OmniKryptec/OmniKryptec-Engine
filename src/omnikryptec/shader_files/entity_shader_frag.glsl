@@ -31,7 +31,8 @@ uniform float hasnormal;
 uniform vec4 matData;
 
 uniform vec3 lightColor[maxlights];
-uniform vec3 atts[maxlights];
+uniform vec4 atts[maxlights];
+uniform vec3 catts[maxlights];
 
 
 uniform int activelights;
@@ -44,7 +45,7 @@ float saturate(float value){
 	return clamp(value,0.0,1.0);
 }
 
-vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 Mspec, float Mdamp, vec3 att, vec4 conei, vec4 pos){
+vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 Mspec, float Mdamp, vec4 att, vec4 conei, vec4 pos, vec3 catt){
 	float distance = length(tlvec);
 	//directional light -> lightpos is the light direction
 	if(pos.w==0.0){
@@ -71,7 +72,9 @@ vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 M
 
 
 	float attenu = 1.0/(att.x + (att.y * distance) + (att.z * distance * distance));
-	attenu = min(attenu, 1.0);
+	if(att.w>-1&&distance>att.w){
+		attenu = 0;
+	}
 	//directional light
 	if(pos.w==0.0){
 		attenu = 1.0;
@@ -81,8 +84,13 @@ vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 M
 		//current point is outside the lightcone
 		if(ltsa < conei.w){
 			attenu = 0.0;
+		}else{
+			float disfac = (ltsa - conei.w)/(1.0 - conei.w);
+			disfac = catt.x + catt.y * disfac + catt.z * disfac * disfac;
+			attenu = attenu * disfac;
 		}
 	}
+	attenu = min(attenu, 1.0);
 	return (diffusev*Mdiff+spec)*attenu;
 }
 
@@ -114,7 +122,7 @@ void main(void){
 	}
 	colf = vec4(ambient*col.rgb,col.a);
 	for(int i=0; i<activelights; i++){
-		colf = colf+vec4(lighting(lightColor[i], toCamVec, toLightVec[i], normalt, col.rgb, col2.xyz, col2.w, atts[i], coneDeg[i], lightPosO[i]),0);
+		colf = colf+vec4(lighting(lightColor[i], toCamVec, toLightVec[i], normalt, col.rgb, col2.xyz, col2.w, atts[i], coneDeg[i], lightPosO[i], catts[i]),0);
 	}
 	if(hasextra>0.5){
 		col3.rgb = texture(extra, pass_texcoords).rgb;
