@@ -68,7 +68,7 @@ public class DeferredLightStage extends PostProcessingStage {
 			specularfbo.bindToUnit(2, 0);
 			unsampledfbo.bindDepthTexture(3);
 			preparea[i].prepare(currentScene);
-			relevant = currentScene.getDeferredRenderLights(preparea[i]);
+			relevant = currentScene.getDeferredRenderLights();
 			if (relevant != null) {
 				for (int j = 0; j < relevant.size(); j++) {
 					l = relevant.get(j);

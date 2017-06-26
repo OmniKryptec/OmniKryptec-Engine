@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import omnikryptec.deferredlight.DeferredLightPrepare;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.GameObject;
@@ -32,9 +31,10 @@ public class Scene implements DataMapSerializable {
             coy = Instance.getGameSettings().getChunkRenderOffsetY(),
             coz = Instance.getGameSettings().getChunkRenderOffsetZ();
     private PhysicsWorld physicsWorld = null;
-    private final Map<DeferredLightPrepare, List<Light>> deferred_rel_lights = new HashMap<>();
+    private final List<Light> deferred_rel_lights = new ArrayList<>();
     private final List<Light> forward_rel_lights = new ArrayList<>();
-
+    private final List<Light> both = new ArrayList<>();
+    
     private RenderChunk global = new RenderChunk(0, 0, 0, this);
 
     private Color clearcolor = new Color(0, 0, 0, 0);
@@ -108,7 +108,7 @@ public class Scene implements DataMapSerializable {
     public final long frame(float maxexpenlvl, float minexplvl, boolean onlyRender, AllowedRenderer info,
             Renderer... re) {
         deferred_rel_lights.clear();
-        deferred_rel_lights.putAll(global.getDeferredLights());
+        deferred_rel_lights.addAll(global.getDeferredLights());
         forward_rel_lights.clear();
         forward_rel_lights.addAll(global.getForwardLights());
         if (!onlyRender && isUsingPhysics()) {
@@ -132,7 +132,7 @@ public class Scene implements DataMapSerializable {
                 for (long z = -coz + cz; z <= coz + cz; z++) {
                     if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
                         vertcount += tmpc.frame(maxexpenlvl, minexplvl, onlyRender, info, re);
-                        deferred_rel_lights.putAll(tmpc.getDeferredLights());
+                        deferred_rel_lights.addAll(tmpc.getDeferredLights());
                     }
                 }
             }
@@ -151,8 +151,8 @@ public class Scene implements DataMapSerializable {
     protected void doLogic() {
     }
 
-    public final List<Light> getDeferredRenderLights(DeferredLightPrepare usingShader) {
-        return deferred_rel_lights.get(usingShader);
+    public final List<Light> getDeferredRenderLights() {
+        return deferred_rel_lights;
     }
 
     public final List<Light> getForwardRenderLights() {

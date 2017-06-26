@@ -53,6 +53,9 @@ public class EntityRenderer implements Renderer {
 		shader.activelights.loadInt(lights);
 		for (int i = 0; i < lights; i++) {
 			l = s.getForwardRenderLights().get(i);
+			if(!onlyRender){
+				l.doLogic0();
+			}
 			pos = l.getAbsolutePos();
 			shader.lightpos[i].loadVec4(pos.x, pos.y, pos.z, l.isDirectional()?0.0f:1.0f);
 			shader.lightcolor[i].loadVec3(l.getColor().getArray());

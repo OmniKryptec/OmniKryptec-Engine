@@ -67,9 +67,9 @@ public class EngineTest2 implements IEventHandler {
             //PostProcessing.instance().addStage(new
             // DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
             // DeferredLightPrepare.DEFAULT_LIGHT_PREPARE));
-             PostProcessing.instance().addStage(new BloomStage(new
-             CompleteGaussianBlurStage(true, 0.4f, 0.4f), new Vector4f(1, 0,
-             0, 0), new Vector2f(1, 6)));
+            // PostProcessing.instance().addStage(new BloomStage(new
+            // CompleteGaussianBlurStage(true, 0.4f, 0.4f), new Vector4f(1, 0,
+            // 0, 0), new Vector2f(1, 6)));
             // PostProcessing.instance().addStage(new
             // FogStage().setDensity(0.25f));
             // PostProcessing.instance().addStage(new
@@ -180,9 +180,9 @@ public class EngineTest2 implements IEventHandler {
             // system.setTimemultiplier(10);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             OmniKryptecEngine.instance().getCurrentScene()
-                    .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(1, 0, 0).setConeDegrees(15).setConeDirection(0, -1, 0).setRelativePos(1,0.5f, 0));
-            OmniKryptecEngine.instance().getCurrentScene()
-            .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(1, 1, 1).setDirectional(true).setConeDegrees(5).setConeDirection(0, 1, 0).setRelativePos(0,100, 0));
+                    .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setCuttOffRange(50).setColor(3, 0, 0).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0, -1, 0).setRelativePos(0,10, 0));
+            //OmniKryptecEngine.instance().getCurrentScene()
+            //.addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(1, 1, 1).setDirectional(true).setConeDegrees(5).setConeDirection(0, 1, 0).setRelativePos(0,1, 0));
 
             // ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
             // OmniKryptecEngine.instance().getCurrentScene().addGameObject(new

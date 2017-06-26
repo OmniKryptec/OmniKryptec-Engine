@@ -12,7 +12,7 @@ public class Light extends GameObject {
 	
 	private Color color = new Color(1, 1, 1, 1);
 	private DeferredLightPrepare mylightprepare = DeferredLightPrepare.FORWARD_RENDERING;
-	private Vector4f coneinfo = new Vector4f(1, 1, 1, 180);
+	private Vector4f coneinfo = new Vector4f(1, 1, 1, -1);
 	private boolean directional = false;	
 	private Vector4f att = new Vector4f(1, 1, 1, NO_CUTOFF_RANGE);
 	private Vector3f coneAtt = new Vector3f(1, 0, 0);
@@ -62,6 +62,7 @@ public class Light extends GameObject {
 	public Light setPointLight(){
 		setConeDegrees(180);
 		setConeAttenuation(1, 0, 0);
+		setDirectional(false);
 		return this;
 	}
 
