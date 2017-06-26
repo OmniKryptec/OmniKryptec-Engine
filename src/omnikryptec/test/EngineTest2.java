@@ -104,10 +104,12 @@ public class EngineTest2 implements IEventHandler {
             SimpleTexture brunnen_norm = SimpleTexture
                     .newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen_normal.png")).create();
             SimpleTexture brunnen_specular = SimpleTexture.newTexture("/omnikryptec/test/brunnen_specular.png");
+            SimpleTexture baum = SimpleTexture.newTexture(new AdvancedFile(res, "final_tree_1.png"));
+            Model baumM = Model.newModel(new AdvancedFile(res, "final_tree_1.obj"));
             AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
-            TexturedModel tm = new TexturedModel("brunnen", brunnen, brunnent);
+            TexturedModel tm = new TexturedModel("brunnen", baumM, baum);
             tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
-            tm.getMaterial().setHasTransparency(true).setReflectivity(new Vector3f(1, 1, 1)).setShineDamper(10)
+            tm.getMaterial().setHasTransparency(false).setReflectivity(new Vector3f(1, 1, 1)).setShineDamper(10)
                     .setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER);
             OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
@@ -154,7 +156,7 @@ public class EngineTest2 implements IEventHandler {
 //                OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 //            }
             int cube=100;
-            int abstand=15;
+            int abstand=40;
             float scale=3;
             for(int x=-cube; x<cube; x+=abstand){
             	for(int y=-cube; y<cube; y+=abstand){
@@ -172,7 +174,7 @@ public class EngineTest2 implements IEventHandler {
             OmniKryptecEngine.instance().getCurrentScene()
                     .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(1, 0, 0).setConeDegrees(15).setConeDirection(0, -1, 0).setRelativePos(1,0.5f, 0));
             OmniKryptecEngine.instance().getCurrentScene()
-            .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(1, 1, 1).setDirectional(true).setConeDegrees(5).setConeDirection(0, -1, 0).setRelativePos(0,0.5f, 0));
+            .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(1, 1, 1).setDirectional(true).setConeDegrees(5).setConeDirection(0, 1, 0).setRelativePos(0,100, 0));
 
             // ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
             // OmniKryptecEngine.instance().getCurrentScene().addGameObject(new
