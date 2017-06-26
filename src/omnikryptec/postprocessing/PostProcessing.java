@@ -21,7 +21,8 @@ public class PostProcessing {
 	// private FrameBufferObject tmp;
 
 	private boolean enabled = true;
-
+	private int stagecountactive=0;
+	
 	public static PostProcessing instance() {
 		if (instance == null) {
 			new PostProcessing(DisplayManager.instance());
@@ -38,6 +39,7 @@ public class PostProcessing {
 
 	public void doPostProcessing(FrameBufferObject[] fbos, FrameBufferObject... fbo) {
 		before = fbo[0];
+		stagecountactive = 0;
 		if (enabled) {
 			beforelist.addAll(Arrays.asList(fbo));
 			beforelist.addAll(Arrays.asList(fbos));
@@ -54,6 +56,7 @@ public class PostProcessing {
 					}
 					before = currentStage.getFbo();
 					beforelist.add(before);
+					stagecountactive++;
 				}
 			}
 			end();
@@ -96,7 +99,11 @@ public class PostProcessing {
 		RenderUtil.enableDepthTesting(true);
 		quad.getVao().unbind(0, 1);
 	}
-
+	
+	public int getActiveStageCount(){
+		return stagecountactive;
+	}
+	
 	public void resize() {
 		for (PostProcessingStage stage : stages) {
 			stage.resize();

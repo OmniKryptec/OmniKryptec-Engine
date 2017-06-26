@@ -4,7 +4,9 @@ import java.util.Random;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.PixelFormat;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
 import omnikryptec.display.DisplayManager;
@@ -24,8 +26,13 @@ import omnikryptec.main.Scene;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
+import omnikryptec.particles.ParticleMaster;
 import omnikryptec.particles.ParticleSystem;
 import omnikryptec.particles.ParticleTexture;
+import omnikryptec.postprocessing.DebugRenderer;
+import omnikryptec.postprocessing.PostProcessing;
+import omnikryptec.ppstages.BloomStage;
+import omnikryptec.ppstages.CompleteGaussianBlurStage;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.AtlasTexture;
@@ -53,16 +60,16 @@ public class EngineTest2 implements IEventHandler {
 
             DisplayManager.createDisplay("Test 2",
                     new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32)
-                    .setInitialFPSCap(-1).setChunkRenderOffsets(10, 10, 10).setLightForward(true),
+                    .setInitialFPSCap(-1).setChunkRenderOffsets(2, 2, 2).setLightForward(true),
                     new OpenGLInfo(3, 3, new PixelFormat()));
             DisplayManager.instance().setSmoothedDeltatime(true);
     		DisplayManager.instance().setSmoothedFrames(1000);
-            // PostProcessing.instance().addStage(new
+            //PostProcessing.instance().addStage(new
             // DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
             // DeferredLightPrepare.DEFAULT_LIGHT_PREPARE));
-            // PostProcessing.instance().addStage(new BloomStage(new
-            // CompleteGaussianBlurStage(true, 0.6f, 0.6f), new Vector4f(1, 0,
-            // 0, 0), new Vector2f(1, 6)));
+             PostProcessing.instance().addStage(new BloomStage(new
+             CompleteGaussianBlurStage(true, 0.4f, 0.4f), new Vector4f(1, 0,
+             0, 0), new Vector2f(1, 6)));
             // PostProcessing.instance().addStage(new
             // FogStage().setDensity(0.25f));
             // PostProcessing.instance().addStage(new
@@ -88,7 +95,7 @@ public class EngineTest2 implements IEventHandler {
             // CompleteGaussianBlurStage(false, 0.1f, 0.1f));
             // PostProcessing.instance().addStage(new
             // CompleteGaussianBlurStage(false, 0.05f, 0.05f));
-            // PostProcessing.instance().addStage(new DebugRenderer());
+            PostProcessing.instance().addStage(new DebugRenderer().enableIndex(0));
             AdvancedFile res = new AdvancedFile("res");
             SimpleTexture jd = SimpleTexture.newTexture(new AdvancedFile(res, "jd.png"));
             SimpleTexture js = SimpleTexture.newTexture(new AdvancedFile(res, "js.png"));
@@ -108,8 +115,9 @@ public class EngineTest2 implements IEventHandler {
             Model baumM = Model.newModel(new AdvancedFile(res, "final_tree_1.obj"));
             AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
             TexturedModel tm = new TexturedModel("brunnen", baumM, baum);
-            tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
-            tm.getMaterial().setHasTransparency(false).setReflectivity(new Vector3f(1, 1, 1)).setShineDamper(10)
+            //tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
+            tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
+            tm.getMaterial().setHasTransparency(false).setReflectivity(new Vector3f(0, 1, 1)).setShineDamper(10)
                     .setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER);
             OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
@@ -211,7 +219,7 @@ public class EngineTest2 implements IEventHandler {
     @Override
     public void onEvent(Event ev) {
         // system.generateParticles(1);
-        Display.setTitle("FPS: " + DisplayManager.instance().getFPS()+" / SFPS: " + DisplayManager.instance().getSmoothedFPS());
+        Display.setTitle("FPS: " + DisplayManager.instance().getFPS()+" / SFPS: " + DisplayManager.instance().getSmoothedFPS()+" / Vertices: "+OmniKryptecEngine.instance().getModelVertsCount()+" / PPStages: "+PostProcessing.instance().getActiveStageCount()+ " / Renderer P.: "+ParticleMaster.instance().getRenderedParticlesCount()+"  (updated P.: "+ParticleMaster.instance().getUpdatedParticlesCount()+") ");
         // System.out.println(DisplayManager.instance().getFPS());
         // System.out.println(DisplayManager.instance().getDeltaTime());
     }

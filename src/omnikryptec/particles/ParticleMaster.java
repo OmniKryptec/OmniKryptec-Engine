@@ -20,7 +20,8 @@ public class ParticleMaster {
 	static Iterator<Entry<ParticleTexture, List<Particle>>> mapIterator;
 
 	private static ParticleMaster instance;
-
+	private long updatedParticlesCount=0;
+	
 	public static ParticleMaster instance() {
 		if (instance == null) {
 			instance = new ParticleMaster();
@@ -32,6 +33,7 @@ public class ParticleMaster {
 	}
 
 	public void update(Camera cam) {
+		updatedParticlesCount = 0;
 		mapIterator = particles.entrySet().iterator();
 		while (mapIterator.hasNext()) {
 			entry = mapIterator.next();
@@ -44,6 +46,8 @@ public class ParticleMaster {
 					if (list.isEmpty()) {
 						mapIterator.remove();
 					}
+				}else{
+					updatedParticlesCount++;
 				}
 			}
 			if (!entry.getKey().useAlphaBlending()) {
@@ -56,7 +60,11 @@ public class ParticleMaster {
 	public long getRenderedParticlesCount() {
 		return rend.getParticleCount();
 	}
-
+	
+	public long getUpdatedParticlesCount(){
+		return updatedParticlesCount;
+	}
+	
 	public static void cleanup() {
 		rend.cleanUp();
 	}

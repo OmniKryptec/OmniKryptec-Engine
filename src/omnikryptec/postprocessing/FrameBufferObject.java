@@ -57,7 +57,7 @@ public class FrameBufferObject extends Texture {
         this.height = height;
         this.targets = targets;
         this.multitarget = targets.length > 1;
-        initialiseFrameBuffer(DepthbufferType.DEPTH_RENDER_BUFFER);
+        initialiseFrameBuffer(type);
     }
 
     public FrameBufferObject(int width, int height, DepthbufferType type) {

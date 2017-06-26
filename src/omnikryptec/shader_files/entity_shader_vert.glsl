@@ -51,7 +51,7 @@ void main(void){
 		toLightVec[i] = (viewmatrix * lightpos[i]).xyz - positionRelativeToCam.xyz;
 		coneDeg[i].xyz = normalize(viewmatrix*vec4(coneInfo[i].xyz,0)).xyz;
 		coneDeg[i].w = coneInfo[i].w;
-		lightPosO[i].xyz = (vec4(lightpos[i].xyz,1)).xyz;
+		lightPosO[i].xyz = (viewmatrix * vec4(lightpos[i].xyz,0)).xyz;
 		lightPosO[i].w = lightpos[i].w;
 		if(hasnormal>0.5){
 			toLightVec[i] = TBN * toLightVec[i];

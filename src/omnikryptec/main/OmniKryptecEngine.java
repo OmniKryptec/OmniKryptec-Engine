@@ -234,7 +234,7 @@ public class OmniKryptecEngine {
 		eventsystem.fireEvent(new Event(e), EventType.ERROR);
 	}
 
-	public final long getMaxRenderedVertsCount(){
+	public final long getModelVertsCount(){
 		return vertsCountCurrent;
 	}
 	
