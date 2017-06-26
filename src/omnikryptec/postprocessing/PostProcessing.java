@@ -69,7 +69,11 @@ public class PostProcessing {
 		enabled = b;
 		return this;
 	}
-
+	
+	public FrameBufferObject getDisplayedFBO(){
+		return before;
+	}
+	
 	public boolean isEnabled() {
 		return enabled;
 	}
