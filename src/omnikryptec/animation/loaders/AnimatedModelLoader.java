@@ -29,7 +29,7 @@ public class AnimatedModelLoader {
      */
     public static AnimatedModel loadModel(String name, AdvancedFile modelFile, AdvancedFile textureFile, Renderer renderer) {
         AnimatedModelData entityData = ColladaLoader.loadColladaModel(name, modelFile, Instance.MAX_WEIGHTS);
-        Model model = new Model(createVertexArrayObject(entityData.getMeshData()));
+        Model model = new Model(name, createVertexArrayObject(entityData.getMeshData()));
         Texture texture = loadTexture(name, textureFile);
         SkeletonData skeletonData = entityData.getJointsData();
         Joint headJoint = createJoints(skeletonData.headJoint);
@@ -39,7 +39,7 @@ public class AnimatedModelLoader {
     }
     
     public static AnimatedModel createModel(String name, AnimatedModelData entityData, Texture texture, Renderer renderer) {
-        Model model = new Model(createVertexArrayObject(entityData.getMeshData()));
+        Model model = new Model(name, createVertexArrayObject(entityData.getMeshData()));
         SkeletonData skeletonData = entityData.getJointsData();
         Joint headJoint = createJoints(skeletonData.headJoint);
         AnimatedModel animatedModel = new AnimatedModel(name, model, texture, headJoint, skeletonData.jointCount);

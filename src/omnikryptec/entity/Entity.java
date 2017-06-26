@@ -173,7 +173,7 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
         dataMap_temp = data.getDataMap("model");
         if(dataMap_temp != null) {
             final String modelName = dataMap_temp.getName();
-            Logger.log("Loading AdvancedModel: " + modelName);
+            Logger.log("Loading AdvancedModel: " + modelName + ", for: " + this);
             try {
                 model = ResourceLoader.getInstance().getData(AdvancedModel.class, modelName);
                 if(model != null) {
@@ -182,9 +182,11 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
                     Logger.log("AdvancedModel is null!", LogLevel.WARNING);
                 }
             } catch (Exception ex) {
+                model = null;
                 Logger.logErr("Error while setting up the advanced model: " + ex, ex);
             }
         } else if(Logger.isDebugMode()) {
+            model = null;
             Logger.log("AdvancedModel DataMap is null!", LogLevel.WARNING);
         }
         return this;

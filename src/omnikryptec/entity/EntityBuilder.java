@@ -102,4 +102,9 @@ public class EntityBuilder {
         return this;
     }
 
+    public final EntityBuilder setTexturedModel(TexturedModel texturedModel) {
+        this.texturedModel = texturedModel;
+        return this;
+    }
+
 }

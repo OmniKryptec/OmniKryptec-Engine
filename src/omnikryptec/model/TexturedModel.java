@@ -102,9 +102,9 @@ public class TexturedModel implements AdvancedModel {
 
     @Override
     public DataMap toDataMap(DataMap data) {
-        return null;
+        return data;
     }
-
+    
     @Override
     public TexturedModel fromDataMap(DataMap data) {
         return this;
