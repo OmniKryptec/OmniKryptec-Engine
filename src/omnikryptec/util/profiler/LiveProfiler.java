@@ -11,6 +11,7 @@ import javax.swing.Timer;
 import omnikryptec.logger.Logger;
 import omnikryptec.swing.ChartData;
 import omnikryptec.swing.PieChartGenerator;
+import omnikryptec.util.Color;
 
 /**
  * LiveProfiler
@@ -27,6 +28,7 @@ public class LiveProfiler {
         }
         
     };
+    private final ArrayList<Color> colors = new ArrayList<>();
     private final ArrayList<ChartData> chartDatas = new ArrayList<>();
     private Timer timer = null;
     
@@ -63,21 +65,20 @@ public class LiveProfiler {
     }
     
     private final LiveProfiler updateData() {
+        while(colors.size() < chartDatas.size()) {
+            colors.add(PieChartGenerator.generateRandomColor());
+        }
         chartDatas.clear();
-        chartDatas.add(new ChartData(Profiler.OVERALL_FRAME_TIME, Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME)));
-        chartDatas.add(new ChartData(Profiler.OVERALL_RENDERER_TIME, Profiler.currentTimeByName(Profiler.OVERALL_RENDERER_TIME)));
-        chartDatas.add(new ChartData(Profiler.PARTICLE_RENDERER, Profiler.currentTimeByName(Profiler.PARTICLE_RENDERER)));
-        chartDatas.add(new ChartData(Profiler.PARTICLE_UPDATER, Profiler.currentTimeByName(Profiler.PARTICLE_UPDATER)));
-        chartDatas.add(new ChartData(Profiler.POSTPROCESSOR, Profiler.currentTimeByName(Profiler.POSTPROCESSOR)));
-        chartDatas.stream().forEach((chartData) -> {
-            Logger.log(chartData);
-        });
-        Logger.log("Added ChartData");
+        chartDatas.add(new ChartData(Profiler.OVERALL_FRAME_TIME, Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME)).setColor((colors.size() > 0 ? colors.get(0) : null)));
+        chartDatas.add(new ChartData(Profiler.OVERALL_RENDERER_TIME, Profiler.currentTimeByName(Profiler.OVERALL_RENDERER_TIME)).setColor((colors.size() > 1 ? colors.get(1) : null)));
+        chartDatas.add(new ChartData(Profiler.PARTICLE_RENDERER, Profiler.currentTimeByName(Profiler.PARTICLE_RENDERER)).setColor((colors.size() > 2 ? colors.get(2) : null)));
+        chartDatas.add(new ChartData(Profiler.PARTICLE_UPDATER, Profiler.currentTimeByName(Profiler.PARTICLE_UPDATER)).setColor((colors.size() > 3 ? colors.get(3) : null)));
+        chartDatas.add(new ChartData(Profiler.POSTPROCESSOR, Profiler.currentTimeByName(Profiler.POSTPROCESSOR)).setColor((colors.size() > 4 ? colors.get(4) : null)));
         return updateImage();
     }
     
     private final LiveProfiler updateImage() {
-        image = PieChartGenerator.createPieChart(chartDatas, 800, 800, 0.9F, 0.5F, true);
+        image = PieChartGenerator.createPieChart(chartDatas, 800, 800, 0.9F, 0.2F, true);
         panel_image.revalidate();
         panel_image.repaint();
         return this;
