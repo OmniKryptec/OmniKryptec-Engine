@@ -36,9 +36,11 @@ public class LiveProfiler {
         new ChartData(Profiler.PARTICLE_UPDATER, 0),
         new ChartData(Profiler.POSTPROCESSOR, 0)};
     private final HashMap<ChartData, LinkedList<Float>> data = new HashMap<>();
+    private float[] sqrts = null;
     private Timer timer = null;
     private int lastSeconds = 30;
     final Dimension size;
+    private int maxValuesSize = 0;
     
     public LiveProfiler(int width, int height) {
         this.size = new Dimension(width, height);
@@ -58,7 +60,12 @@ public class LiveProfiler {
     
     public final LiveProfiler startTimer(int delay) {
         if(timer == null) {
-            timer = new Timer(delay, (e) -> new Thread(() -> updateData(lastSeconds)).start());
+            timer = new Timer(delay, (e) -> new Thread(() -> updateData()).start());
+        }
+        maxValuesSize = (timer != null ? ((lastSeconds * 1000) / timer.getInitialDelay()) : 0);
+        sqrts = new float[maxValuesSize];
+        for(int i = 1; i <= maxValuesSize; i++) {
+            sqrts[i - 1] = (float) Math.sqrt(i * 1.0);
         }
         timer.start();
         return this;
@@ -80,20 +87,21 @@ public class LiveProfiler {
         return this;
     }
     
-    private final LiveProfiler updateData(int lastSeconds) {
-        final int valuesMaxSize = (timer != null ? ((lastSeconds * 1000) / timer.getInitialDelay()) : 0);
+    private final LiveProfiler updateData() {
         frame.setTitle(String.format("LiveProfiler - %s: %d ms", Profiler.OVERALL_FRAME_TIME, (Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME))));
         for (ChartData chartData : data.keySet()) {
             final LinkedList<Float> values = data.get(chartData);
             final float addValue = Math.max(Profiler.currentTimeByName(chartData.getName()), 0.0F);
             values.addFirst(addValue);
-            while(values.size() > valuesMaxSize) {
+            while(values.size() > maxValuesSize) {
                 values.removeLast();
             }
             float completeValue = 0.0F;
-            Iterator<Float> i = values.iterator();
-            while(i.hasNext()) {
-                completeValue += i.next();
+            final Iterator<Float> floats = values.iterator();
+            int i = 0;
+            while(floats.hasNext()) {
+                completeValue += (floats.next() / sqrts[i]);
+                i++;
             }
             chartData.setValue(Math.max((completeValue / values.size()), 0.0F));
         }
