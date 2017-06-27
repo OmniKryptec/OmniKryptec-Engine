@@ -35,7 +35,7 @@ import omnikryptec.util.profiler.Profiler;
  *
  * @author Panzer1119 &amp; pcfreak9000
  */
-public class OmniKryptecEngine implements Profilable{
+public class OmniKryptecEngine implements Profilable {
 
     private static OmniKryptecEngine instance;
 
@@ -92,41 +92,39 @@ public class OmniKryptecEngine implements Profilable{
         return state;
     }
 
-	private DisplayManager manager;
-	private EventSystem eventsystem;
-	private PostProcessing postpro;
-	private final ArrayList<Scene> scenes = new ArrayList<>();
-	private Scene sceneCurrent;
-	private long vertsCountCurrent=0;
-	
-	private ShutdownOption shutdownOption = ShutdownOption.JAVA;
-	private boolean requestclose = false;
-	
-	private long rendertime=0;
-	private long tmptime=0;
-	private long frametime=0;
-	
-	public OmniKryptecEngine(DisplayManager manager) {
-		if (manager == null) {
-			throw new NullPointerException("DisplayManager is null");
-		}
-		if (instance != null) {
-			throw new IllegalStateException("OmniKryptec-Engine was already created!");
-		}
-		Profiler.addProfilable(this, 0);
-		this.manager = manager;
-		state = State.Starting;
-		instance = this;
-		eventsystem = EventSystem.instance();
-		postpro = PostProcessing.instance();
-		RenderUtil.cullBackFaces(true);
-		RenderUtil.enableDepthTesting(true);
-		RendererRegistration.init();
-		createFbos();
-		eventsystem.fireEvent(new Event(), EventType.BOOTING_COMPLETED);
-	}
+    private DisplayManager manager;
+    private EventSystem eventsystem;
+    private PostProcessing postpro;
+    private final ArrayList<Scene> scenes = new ArrayList<>();
+    private Scene sceneCurrent;
+    private long vertsCountCurrent = 0;
 
+    private ShutdownOption shutdownOption = ShutdownOption.JAVA;
+    private boolean requestclose = false;
 
+    private long rendertime = 0;
+    private long tmptime = 0;
+    private long frametime = 0;
+
+    public OmniKryptecEngine(DisplayManager manager) {
+        if (manager == null) {
+            throw new NullPointerException("DisplayManager is null");
+        }
+        if (instance != null) {
+            throw new IllegalStateException("OmniKryptec-Engine was already created!");
+        }
+        Profiler.addProfilable(this, 0);
+        this.manager = manager;
+        state = State.Starting;
+        instance = this;
+        eventsystem = EventSystem.instance();
+        postpro = PostProcessing.instance();
+        RenderUtil.cullBackFaces(true);
+        RenderUtil.enableDepthTesting(true);
+        RendererRegistration.init();
+        createFbos();
+        eventsystem.fireEvent(new Event(), EventType.BOOTING_COMPLETED);
+    }
 
     private FrameBufferObject scenefbo;
     private FrameBufferObject unsampledfbo, normalfbo, specularfbo, extrainfofbo;
@@ -149,11 +147,21 @@ public class OmniKryptecEngine implements Profilable{
     }
 
     private void resizeFbos() {
-        scenefbo.delete();
-        unsampledfbo.delete();
-        normalfbo.delete();
-        specularfbo.delete();
-        extrainfofbo.delete();
+        if(scenefbo != null) {
+            scenefbo.delete();
+        }
+        if(unsampledfbo != null) {
+            unsampledfbo.delete();
+        }
+        if(normalfbo != null) {
+            normalfbo.delete();
+        }
+        if(specularfbo != null) {
+            specularfbo.delete();
+        }
+        if(extrainfofbo != null) {
+            extrainfofbo.delete();
+        }
         createFbos();
     }
 
@@ -182,58 +190,60 @@ public class OmniKryptecEngine implements Profilable{
         return requestClose(shutdownOption);
     }
 
-	public final OmniKryptecEngine frame(boolean clear) {
-		final long currentTime = manager.getCurrentTime();
-		try {
-			if (!Display.isActive()) {
-				Display.update();
-				try {
-					Thread.sleep(1);
-				} catch (InterruptedException e) {
-					errorOccured(e, "Error occured while sleeping: ");
-				}
-				return this;
-			}
-			InputUtil.nextFrame();
-			AudioManager.update(currentTime);
-			if (Display.wasResized()) {
-				resizeFbos();
-				PostProcessing.instance().resize();
-				eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
-			}
-			scenefbo.bindFrameBuffer();
-			if (sceneCurrent != null) {
-				if (clear) {
-					RenderUtil.clear(sceneCurrent.getClearColor());
-				}
-				tmptime = manager.getCurrentTime();
-				vertsCountCurrent = sceneCurrent.frame(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, false, AllowedRenderer.All);
-				rendertime = manager.getCurrentTime() - tmptime;
-				ParticleMaster.instance().update(getCurrentScene().getCamera());
-			}
-			eventsystem.fireEvent(new Event(), EventType.RENDER_EVENT);
-			scenefbo.unbindFrameBuffer();
-			scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);
-			scenefbo.resolveToFbo(normalfbo, GL30.GL_COLOR_ATTACHMENT1);
-			scenefbo.resolveToFbo(specularfbo, GL30.GL_COLOR_ATTACHMENT2);
-			scenefbo.resolveToFbo(extrainfofbo, GL30.GL_COLOR_ATTACHMENT3);
-			if (sceneCurrent != null) {
-				if (scenefbo.getTargets().length > 4) {
-					for (int i = 4; i < scenefbo.getTargets().length; i++) {
-						scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i - 4].target);
-					}
-				}
-				PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
-			}
-			eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
-			manager.updateDisplay();
-			frametime = manager.getCurrentTime() - currentTime;
-		} catch (Exception e) {
-			errorOccured(e, "Error occured in frame: ");
-		}
-		eventsystem.fireEvent(new Event(), EventType.AFTER_FRAME);
-		return this;
-	}    public final OmniKryptecEngine requestClose(ShutdownOption shutdownOption) {
+    public final OmniKryptecEngine frame(boolean clear) {
+        final long currentTime = manager.getCurrentTime();
+        try {
+            if (!Display.isActive()) {
+                Display.update();
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {
+                    errorOccured(e, "Error occured while sleeping: ");
+                }
+                return this;
+            }
+            InputUtil.nextFrame();
+            AudioManager.update(currentTime);
+            if (Display.wasResized()) {
+                resizeFbos();
+                PostProcessing.instance().resize();
+                eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
+            }
+            scenefbo.bindFrameBuffer();
+            if (sceneCurrent != null) {
+                if (clear) {
+                    RenderUtil.clear(sceneCurrent.getClearColor());
+                }
+                tmptime = manager.getCurrentTime();
+                vertsCountCurrent = sceneCurrent.frame(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, false, AllowedRenderer.All);
+                rendertime = manager.getCurrentTime() - tmptime;
+                ParticleMaster.instance().update(getCurrentScene().getCamera());
+            }
+            eventsystem.fireEvent(new Event(), EventType.RENDER_EVENT);
+            scenefbo.unbindFrameBuffer();
+            scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);
+            scenefbo.resolveToFbo(normalfbo, GL30.GL_COLOR_ATTACHMENT1);
+            scenefbo.resolveToFbo(specularfbo, GL30.GL_COLOR_ATTACHMENT2);
+            scenefbo.resolveToFbo(extrainfofbo, GL30.GL_COLOR_ATTACHMENT3);
+            if (sceneCurrent != null) {
+                if (scenefbo.getTargets().length > 4) {
+                    for (int i = 4; i < scenefbo.getTargets().length; i++) {
+                        scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i - 4].target);
+                    }
+                }
+                PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
+            }
+            eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
+            manager.updateDisplay();
+            frametime = manager.getCurrentTime() - currentTime;
+        } catch (Exception e) {
+            errorOccured(e, "Error occured in frame: ");
+        }
+        eventsystem.fireEvent(new Event(), EventType.AFTER_FRAME);
+        return this;
+    }
+
+    public final OmniKryptecEngine requestClose(ShutdownOption shutdownOption) {
         setShutdownOption(shutdownOption);
         requestclose = true;
         return this;
@@ -287,33 +297,33 @@ public class OmniKryptecEngine implements Profilable{
 //        }
 //        return this;
 //    }
+    public final long getModelVertsCount() {
+        return vertsCountCurrent;
+    }
 
-	public final long getModelVertsCount(){
-		return vertsCountCurrent;
-	}
-	
-	public final long getRenderTimeMS(){
-		return rendertime;
-	}
-	
-	public final long getFrameTimeMS(){
-		return frametime;
-	}
-	
-	public final OmniKryptecEngine close(ShutdownOption shutdownOption) {
-		if (shutdownOption.getLevel() >= ShutdownOption.ENGINE.getLevel()) {
-			state = State.Stopping;
-			cleanup();
-			manager.close();
-			state = State.Stopped;
-			if (shutdownOption.getLevel() >= ShutdownOption.JAVA.getLevel()) {
-				Commands.COMMANDEXIT.run("-java");
-			}
-			return null;
-		} else {
-			return this;
-		}
-	}
+    public final long getRenderTimeMS() {
+        return rendertime;
+    }
+
+    public final long getFrameTimeMS() {
+        return frametime;
+    }
+
+    public final OmniKryptecEngine close(ShutdownOption shutdownOption) {
+        if (shutdownOption.getLevel() >= ShutdownOption.ENGINE.getLevel()) {
+            state = State.Stopping;
+            cleanup();
+            manager.close();
+            state = State.Stopped;
+            if (shutdownOption.getLevel() >= ShutdownOption.JAVA.getLevel()) {
+                Commands.COMMANDEXIT.run("-java");
+            }
+            return null;
+        } else {
+            return this;
+        }
+    }
+
     public void errorOccured(Exception e, String text) {
         state = State.Error;
         Logger.logErr(text + e, e);
@@ -372,9 +382,9 @@ public class OmniKryptecEngine implements Profilable{
         return sceneCurrent == null ? null : sceneCurrent.getName();
     }
 
-	@Override
-	public ProfileContainer[] getProfiles() {
-		return new ProfileContainer[]{new ProfileContainer(Profiler.OVERALL_FRAME_TIME, getFrameTimeMS()), new ProfileContainer(Profiler.OVERALL_RENDERER_TIME, getRenderTimeMS())};
-	}
+    @Override
+    public ProfileContainer[] getProfiles() {
+        return new ProfileContainer[]{new ProfileContainer(Profiler.OVERALL_FRAME_TIME, getFrameTimeMS()), new ProfileContainer(Profiler.OVERALL_RENDERER_TIME, getRenderTimeMS())};
+    }
 
 }
