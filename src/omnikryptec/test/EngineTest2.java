@@ -42,6 +42,8 @@ import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
+import omnikryptec.util.Util;
+import omnikryptec.util.profiler.Profiler;
 
 /**
  *
@@ -50,7 +52,7 @@ import omnikryptec.util.NativesLoader;
 public class EngineTest2 implements IEventHandler {
 
     public static void main(String[] args) {
-        try {
+    	try {
         	NativesLoader.loadNatives();
             OmniKryptecEngine.addShutdownHook(() -> NativesLoader.unloadNatives());
             Logger.enableLoggerRedirection(true);
@@ -96,11 +98,12 @@ public class EngineTest2 implements IEventHandler {
             // PostProcessing.instance().addStage(new
             // CompleteGaussianBlurStage(false, 0.05f, 0.05f));
             //PostProcessing.instance().addStage(new DebugRenderer());
-            AdvancedFile res = new AdvancedFile("res");
+    		
+    		AdvancedFile res = new AdvancedFile("res");
             SimpleTexture jd = SimpleTexture.newTexture(new AdvancedFile(res, "jd.png"));
             SimpleTexture js = SimpleTexture.newTexture(new AdvancedFile(res, "js.png"));
             SimpleTexture jn = SimpleTexture.newTexture(new AdvancedFile(res, "jn.png"));
-            EventSystem.instance().addEventHandler(new EngineTest2(), EventType.RENDER_EVENT);
+            EventSystem.instance().addEventHandler(new EngineTest2(), EventType.AFTER_FRAME);
             
 
             Model brunnen = new Model(
@@ -175,7 +178,7 @@ public class EngineTest2 implements IEventHandler {
             }
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
             system = new ParticleSystem(0, 0, 0,
-                    new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false), 20f, 2.5f,
+                    new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false), 20000f, 2.5f,
                     new Vector3f(0, 0, 0), 2f, 1.25f, RenderType.ALWAYS);
             // system.setTimemultiplier(10);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
@@ -218,8 +221,11 @@ public class EngineTest2 implements IEventHandler {
         
     @Override
     public void onEvent(Event ev) {
+    	
         // system.generateParticles(1);
         Display.setTitle("FPS: " + DisplayManager.instance().getFPS()+" / SFPS: " + DisplayManager.instance().getSmoothedFPS()+" / Vertices: "+OmniKryptecEngine.instance().getModelVertsCount()+" / PPStages: "+PostProcessing.instance().getActiveStageCount()+ " / Renderer P.: "+ParticleMaster.instance().getRenderedParticlesCount()+"  (updated P.: "+ParticleMaster.instance().getUpdatedParticlesCount()+") ");
+        //System.out.println("(Rendertime: "+Instance.getEngine().getRenderTimeMS()+" Particletime: "+ParticleMaster.instance().getOverallParticleTimeMS()+" PPTime: "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());
+        System.out.println(new Profiler().createTimesString(50, true, false));
         // System.out.println(DisplayManager.instance().getFPS());
         // System.out.println(DisplayManager.instance().getDeltaTime());
     }

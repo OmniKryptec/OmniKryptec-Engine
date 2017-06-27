@@ -48,7 +48,7 @@ public class SimpleAnimation extends Texture {
                 index %= textures.length;
                 time = 0;
             } else {
-                time += DisplayManager.instance().getDeltaTime();
+                time += DisplayManager.instance().getDeltaTimef();
             }
         }
     }

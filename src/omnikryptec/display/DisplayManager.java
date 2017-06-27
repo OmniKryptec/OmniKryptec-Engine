@@ -205,8 +205,12 @@ public class DisplayManager {
 	 * 
 	 * @return Float Time in seconds
 	 */
-	public final float getDeltaTime() {
+	public final float getDeltaTimef() {
 		return deltatimef;
+	}
+	
+	public final double getDeltaTime(){
+		return deltatime;
 	}
 
 	/**

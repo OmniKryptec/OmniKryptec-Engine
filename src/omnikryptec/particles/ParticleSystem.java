@@ -105,7 +105,7 @@ public class ParticleSystem extends GameObject {
 	public void doLogic() {
 		if (elapsedtime <= lifelengthf || lifelengthf < 0) {
 			generateParticles(timemultiplier);
-			elapsedtime += DisplayManager.instance().getDeltaTime();
+			elapsedtime += DisplayManager.instance().getDeltaTimef();
 		}
 	}
 
@@ -122,7 +122,7 @@ public class ParticleSystem extends GameObject {
 	private float lastParticlef = 0;
 
 	public void generateParticles(float timemultiplier) {
-		delta = DisplayManager.instance().getDeltaTime() * timemultiplier;
+		delta = DisplayManager.instance().getDeltaTimef() * timemultiplier;
 		particlesToCreate = pps * delta;
 		if (particlesToCreate < 1f) {
 			lastParticlef += particlesToCreate;

@@ -6,10 +6,14 @@ import java.util.List;
 
 import omnikryptec.display.DisplayManager;
 import omnikryptec.model.Model;
+import omnikryptec.util.Instance;
 import omnikryptec.util.ModelUtil;
 import omnikryptec.util.RenderUtil;
+import omnikryptec.util.profiler.Profilable;
+import omnikryptec.util.profiler.ProfileContainer;
+import omnikryptec.util.profiler.Profiler;
 
-public class PostProcessing {
+public class PostProcessing implements Profilable{
 
 	private static List<PostProcessingStage> stages = new ArrayList<>();
 	private static List<FrameBufferObject> beforelist = new ArrayList<>();
@@ -34,13 +38,19 @@ public class PostProcessing {
 		if (manager == null) {
 			throw new NullPointerException("DisplayManager is null");
 		}
+		Profiler.addProfilable(this, 2);
 		instance = this;
 	}
-
+	
+	private long tmptime = 0;
+	private long rendertime=0;
+	
 	public void doPostProcessing(FrameBufferObject[] fbos, FrameBufferObject... fbo) {
 		before = fbo[0];
 		stagecountactive = 0;
+		rendertime = 0;
 		if (enabled) {
+			tmptime = Instance.getDisplayManager().getCurrentTime();
 			beforelist.addAll(Arrays.asList(fbo));
 			beforelist.addAll(Arrays.asList(fbos));
 			start();
@@ -60,11 +70,16 @@ public class PostProcessing {
 				}
 			}
 			end();
+			rendertime = Instance.getDisplayManager().getCurrentTime() - tmptime;
 		}
 		before.resolveToScreen();
 		beforelist.clear();
 	}
 
+	public long getRenderTimeMS(){
+		return rendertime;
+	}
+	
 	public PostProcessing setEnabled(boolean b) {
 		enabled = b;
 		return this;
@@ -112,6 +127,11 @@ public class PostProcessing {
 		for (PostProcessingStage stage : stages) {
 			stage.resize();
 		}
+	}
+
+	@Override
+	public ProfileContainer[] getProfiles() {
+		return new ProfileContainer[]{new ProfileContainer(Profiler.POSTPROCESSOR, getRenderTimeMS())};
 	}
 
 }

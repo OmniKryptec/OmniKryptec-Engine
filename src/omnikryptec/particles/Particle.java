@@ -114,11 +114,11 @@ public class Particle implements Rangeable {
 		timemultiplier = mysystem.getTimemultiplier();
 		Vector3f.add(vel, force, vel);
 		changeable.set(vel);
-		changeable.scale(DisplayManager.instance().getDeltaTime() * timemultiplier);
+		changeable.scale(DisplayManager.instance().getDeltaTimef() * timemultiplier);
 		Vector3f.add(changeable, pos, pos);
 		distance = (tmp = Vector3f.sub(cam.getPos(), pos, tmp)).lengthSquared();
 		updateTexCoordInfo();
-		elapsedTime += DisplayManager.instance().getDeltaTime() * timemultiplier;
+		elapsedTime += DisplayManager.instance().getDeltaTimef() * timemultiplier;
 		return elapsedTime < lifeLength;
 	}
 

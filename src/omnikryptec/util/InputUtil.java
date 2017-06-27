@@ -207,7 +207,7 @@ public class InputUtil {
 	 */
 	public static GameObject doFirstPersonController(GameObject gameObject, KeySettings keySettings,
 			float deltaPosXZSpeed, float deltaPosYSpeed, float deltaRotXYZSpeed, boolean space) {
-		final float dt = DisplayManager.instance().getDeltaTime();
+		final float dt = DisplayManager.instance().getDeltaTimef();
 		deltaPosXZSpeed *= dt;
 		deltaPosYSpeed *= dt;
 		deltaRotXYZSpeed *= dt;
@@ -248,7 +248,7 @@ public class InputUtil {
 	 */
 	public static GameObject doThirdPersonController(GameObject source, GameObject destination, KeySettings keySettings,
 			float deltaPosXZSpeed, float deltaPosYSpeed, float deltaRotXYZSpeed) {
-		final float dt = DisplayManager.instance().getDeltaTime();
+		final float dt = DisplayManager.instance().getDeltaTimef();
 		deltaPosXZSpeed *= dt;
 		deltaPosYSpeed *= dt;
 		deltaRotXYZSpeed *= dt;

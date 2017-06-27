@@ -27,12 +27,15 @@ import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.texture.SimpleTexture;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.RenderUtil;
+import omnikryptec.util.profiler.Profilable;
+import omnikryptec.util.profiler.ProfileContainer;
+import omnikryptec.util.profiler.Profiler;
 
 /**
  *
  * @author Panzer1119 &amp; pcfreak9000
  */
-public class OmniKryptecEngine {
+public class OmniKryptecEngine implements Profilable{
 
 	private static OmniKryptecEngine instance;
 
@@ -99,7 +102,11 @@ public class OmniKryptecEngine {
 	
 	private ShutdownOption shutdownOption = ShutdownOption.JAVA;
 	private boolean requestclose = false;
-
+	
+	private long rendertime=0;
+	private long tmptime=0;
+	private long frametime=0;
+	
 	public OmniKryptecEngine(DisplayManager manager) {
 		if (manager == null) {
 			throw new NullPointerException("DisplayManager is null");
@@ -107,6 +114,7 @@ public class OmniKryptecEngine {
 		if (instance != null) {
 			throw new IllegalStateException("OmniKryptec-Engine was already created!");
 		}
+		Profiler.addProfilable(this, 0);
 		this.manager = manager;
 		state = State.Starting;
 		instance = this;
@@ -203,7 +211,9 @@ public class OmniKryptecEngine {
 				if (clear) {
 					RenderUtil.clear(sceneCurrent.getClearColor());
 				}
+				tmptime = manager.getCurrentTime();
 				vertsCountCurrent = sceneCurrent.frame(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, false, AllowedRenderer.All);
+				rendertime = manager.getCurrentTime() - tmptime;
 				ParticleMaster.instance().update(getCurrentScene().getCamera());
 			}
 			eventsystem.fireEvent(new Event(), EventType.RENDER_EVENT);
@@ -221,10 +231,12 @@ public class OmniKryptecEngine {
 				PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
 			}
 			eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
-			DisplayManager.instance().updateDisplay();
+			manager.updateDisplay();
+			frametime = manager.getCurrentTime() - currentTime;
 		} catch (Exception e) {
 			errorOccured(e, "Error occured in frame: ");
 		}
+		eventsystem.fireEvent(new Event(), EventType.AFTER_FRAME);
 		return this;
 	}
 
@@ -236,6 +248,14 @@ public class OmniKryptecEngine {
 
 	public final long getModelVertsCount(){
 		return vertsCountCurrent;
+	}
+	
+	public final long getRenderTimeMS(){
+		return rendertime;
+	}
+	
+	public final long getFrameTimeMS(){
+		return frametime;
 	}
 	
 	public final OmniKryptecEngine close(ShutdownOption shutdownOption) {
@@ -303,6 +323,11 @@ public class OmniKryptecEngine {
 
 	public String getCurrentSceneName() {
 		return sceneCurrent == null ? null : sceneCurrent.getName();
+	}
+
+	@Override
+	public ProfileContainer[] getProfiles() {
+		return new ProfileContainer[]{new ProfileContainer(Profiler.OVERALL_FRAME_TIME, getFrameTimeMS()), new ProfileContainer(Profiler.OVERALL_RENDERER_TIME, getRenderTimeMS())};
 	}
 
 }

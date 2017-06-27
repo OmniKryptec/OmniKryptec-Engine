@@ -10,6 +10,7 @@ import omnikryptec.event.EventSystem;
 import omnikryptec.loader.ResourceLoader;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
+import omnikryptec.particles.ParticleMaster;
 import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.postprocessing.PostProcessingStage;
 import omnikryptec.renderer.EntityRendererNoLight;
@@ -86,4 +87,9 @@ public class Instance {
     public static final ResourceLoader getLoader() {
         return ResourceLoader.getInstance();
     }
+
+	public static final ParticleMaster getParticleController() {
+		return ParticleMaster.instance();
+	}
+    
 }

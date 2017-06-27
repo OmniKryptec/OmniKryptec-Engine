@@ -8,8 +8,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import omnikryptec.entity.Camera;
+import omnikryptec.util.Instance;
+import omnikryptec.util.profiler.Profilable;
+import omnikryptec.util.profiler.ProfileContainer;
+import omnikryptec.util.profiler.Profiler;
 
-public class ParticleMaster {
+public class ParticleMaster implements Profilable{
 	private static Map<ParticleTexture, List<Particle>> particles = new HashMap<ParticleTexture, List<Particle>>();
 	private static ParticleRenderer rend = new ParticleRenderer();
 
@@ -30,10 +34,16 @@ public class ParticleMaster {
 	}
 
 	private ParticleMaster() {
+		Profiler.addProfilable(this, 1);
 	}
 
+	private long rendertime=0;
+	private long tmptime=0,tmptime2;
+	private long updatetime=0; 
+	
 	public void update(Camera cam) {
 		updatedParticlesCount = 0;
+		tmptime2 = Instance.getDisplayManager().getCurrentTime();
 		mapIterator = particles.entrySet().iterator();
 		while (mapIterator.hasNext()) {
 			entry = mapIterator.next();
@@ -54,9 +64,24 @@ public class ParticleMaster {
 				InsertionSort.sortHighToLow(list);
 			}
 		}
+		updatetime = Instance.getDisplayManager().getCurrentTime() - tmptime2;
+		tmptime = Instance.getDisplayManager().getCurrentTime();
 		rend.render(particles, cam);
+		rendertime = Instance.getDisplayManager().getCurrentTime() - tmptime;
 	}
-
+	
+	public long getRenderTimeMS(){
+		return rendertime;
+	}
+	
+	public long getUpdateTimeMS(){
+		return updatetime;
+	}
+	
+	public long getOverallParticleTimeMS(){
+		return getRenderTimeMS()+getUpdateTimeMS();
+	}
+	
 	public long getRenderedParticlesCount() {
 		return rend.getParticleCount();
 	}
@@ -78,5 +103,10 @@ public class ParticleMaster {
 			particles.put(par.getTexture(), list1);
 		}
 		list1.add(par);
+	}
+
+	@Override
+	public ProfileContainer[] getProfiles() {
+		return new ProfileContainer[]{new ProfileContainer(Profiler.PARTICLE_RENDERER, getRenderTimeMS()), new ProfileContainer(Profiler.PARTICLE_UPDATER, getUpdateTimeMS())};
 	}
 }

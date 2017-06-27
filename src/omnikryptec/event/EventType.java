@@ -15,6 +15,8 @@ public final class EventType {
 
 	public static final EventType FRAME_EVENT = new EventType("frame");
 
+	public static final EventType AFTER_FRAME = new EventType("after_frame", true);
+	
 	/**
 	 * like the frame event but in the renderthread for renderingpurposes
 	 */
