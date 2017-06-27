@@ -377,7 +377,7 @@ public class FrameBufferObject extends Texture {
                     final int r = (int) (buffer.get() * 255) << 16;
                     final int g = (int) (buffer.get() * 255) << 8;
                     final int b = (int) (buffer.get() * 255);
-                    int a = 0;
+                    int a = (255 << 24);
                     if(withTransparency) {
                         a = (int) (buffer.get() * 255) << 24;
                     }

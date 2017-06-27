@@ -18,7 +18,7 @@ public class ModelUtil {
 	public static Model generateQuad(float[] texcoords) {
 		VertexArrayObject vao = VertexArrayObject.create();
 		vao.storeDataf(QUAD_INDICES, QUAD_VERTEX_COUNT, QUAD_VERTICES, texcoords);
-		return new Model(vao);
+		return new Model("", vao);
 	}
 
 }

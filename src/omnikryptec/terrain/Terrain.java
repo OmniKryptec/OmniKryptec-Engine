@@ -24,7 +24,7 @@ public class Terrain extends Entity {
     private final TerrainTexturePack texturePack;
 
     public Terrain(final float worldX, final float worldZ, String texturedModelName, ModelData model, TerrainTexturePack texturePack, Texture blendMap) {
-        this(worldX, worldZ, texturedModelName, new Model(model), texturePack, blendMap);
+        this(worldX, worldZ, texturedModelName, new Model("Terrain_worldX_" + worldX + "_worldZ_" + worldZ, model), texturePack, blendMap);
     }
 
     public Terrain(final float worldX, final float worldZ, String texturedModelName, Model model, TerrainTexturePack texturePack, Texture blendMap) {

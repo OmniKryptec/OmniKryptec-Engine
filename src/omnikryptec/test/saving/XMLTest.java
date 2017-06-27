@@ -2,6 +2,7 @@ package omnikryptec.test.saving;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import omnikryptec.logger.Commands;
 
 import org.lwjgl.util.vector.Matrix3f;
 import org.lwjgl.util.vector.Matrix4f;
@@ -74,10 +75,10 @@ public class XMLTest {
                 Logger.log("file.exists() == " + file.exists());
                 HashMap<Class<?>, ArrayList<DataMapSerializable>> xmlsc = dataMapSerializer.deserializeToDataMapSerializable(file.createInputStream(), XMLSerializer.newInstance());
             }
-            System.exit(0);
+            Commands.COMMANDEXIT.run("-java");
         } catch (Exception ex) {
             Logger.logErr("Main error: " + ex, ex);
-            System.exit(-1);
+            Commands.COMMANDEXIT.run("-java");
         }
     }
 

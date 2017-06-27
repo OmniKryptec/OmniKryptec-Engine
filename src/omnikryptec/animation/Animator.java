@@ -45,7 +45,6 @@ public class Animator {
      * Carrys out an animation
      *
      * @param animation Animation Animation
-     * @param animationTime Float Time
      * @return A reference to this Animator
      */
     public final Animator doAnimation(Animation animation) {

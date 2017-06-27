@@ -106,7 +106,7 @@ public class EngineTest2 implements IEventHandler {
             EventSystem.instance().addEventHandler(new EngineTest2(), EventType.AFTER_FRAME);
             
 
-            Model brunnen = new Model(
+            Model brunnen = new Model("",
                     ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
             // Model brunnen = ModelUtil.generateQuad();
             SimpleTexture brunnent = SimpleTexture
@@ -133,9 +133,9 @@ public class EngineTest2 implements IEventHandler {
                 }
 
             }.setPerspectiveProjection(90, 0.1f, 300).setRelativePos(0, 0, 0)).setAmbientColor(0.1f, 0.1f, 0.1f));
-            Model pine = new Model(
+            Model pine = new Model("",
                     ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")));
-            Model bauer = new Model(
+            Model bauer = new Model("",
                     ColladaLoader.loadColladaModel(new AdvancedFile("res", "model.dae"), 50).getMeshData());
             SimpleTexture bauert = SimpleTexture.newTexture("/res/diffuse.png");
             SimpleTexture pinet = SimpleTexture

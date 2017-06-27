@@ -304,7 +304,7 @@ public class Scene implements DataMapSerializable {
                             break;
                         }
                     }
-                    Logger.log("Added: " + entity.getAdvancedModel().getMaterial().getRenderer());
+                    Logger.log("Added: " + entity);
                     addGameObject(entity);
                 } else {
                     Logger.log("Entity not found!", LogLevel.WARNING);

@@ -21,7 +21,6 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import omnikryptec.logger.LogEntry.LogLevel;
@@ -177,7 +176,7 @@ public class AdvancedFile {
                 path_toAdd = path_toAdd.replace(WINDOWS_SEPARATOR_CHAR, PATH_SEPARATOR_CHAR);
                 final String[] split = path_toAdd.split(PATH_SEPARATOR);
                 for(String g : split) {
-                    if(!g.isEmpty()) {
+                    if(!g.isEmpty() || this.paths.isEmpty()) { //TODO Maybe allow always empty Strings??
                         this.paths.add(g);
                     }
                 }
@@ -216,7 +215,7 @@ public class AdvancedFile {
                 path_toAdd = path_toAdd.replace(WINDOWS_SEPARATOR_CHAR, PATH_SEPARATOR_CHAR);
                 final String[] split = path_toAdd.split(PATH_SEPARATOR);
                 for(String g : split) {
-                    if(!g.isEmpty()) {
+                    if(!g.isEmpty() || (this.paths.isEmpty() || !this.paths.get(0).isEmpty())) { //TODO Maybe allow always empty Strings??
                         paths_new.add(g);
                     }
                 }
@@ -270,7 +269,9 @@ public class AdvancedFile {
      * @return String Array Paths
      */
     public final String[] getPaths(int max_path_count) {
-        if(paths.size() <= max_path_count || max_path_count == -1) {
+        if(max_path_count == 0) {
+            return new String[] {""};
+        } else if(paths.size() <= max_path_count || max_path_count == -1) {
             return getPaths();
         } else {
             return ArrayUtil.copyOf(getPaths(), max_path_count);
@@ -617,12 +618,13 @@ public class AdvancedFile {
             if (myPath == null) {
                 return FileType.NON;
             }
-            final FileVisitor<Path> fileVisitor = new SimpleFileVisitor<Path>() {
+            final Path myPathTest = myPath;
+            final FileVisitor<Path> fileVisitor = new SimpleFileVisitor<Path>() { //TODO Maybe listAdvancedFiles from parent and then searching for this is a better option???
 
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                     final String name = file.toString().replace(WINDOWS_SEPARATOR_CHAR, PATH_SEPARATOR_CHAR);
-                    if (name.endsWith(getPath())) {
+                    if (file.getParent().equals(myPathTest) && name.endsWith(getPath())) {
                         isFile.setData(true);
                         return FileVisitResult.TERMINATE;
                     } else {
@@ -633,7 +635,7 @@ public class AdvancedFile {
                 @Override
                 public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
                     final String name = dir.toString().replace(WINDOWS_SEPARATOR_CHAR, PATH_SEPARATOR_CHAR);
-                    if (name.endsWith(getPath())) {
+                    if (dir.getParent().equals(myPathTest) && name.endsWith(getPath())) {
                         isDirectory.setData(true);
                         return FileVisitResult.TERMINATE;
                     } else {
@@ -897,7 +899,7 @@ public class AdvancedFile {
                         final String path_temp = file.toString();
                         final String path_name = AdvancedFile.getName(path_temp);
                         if ((advancedFileFilter == null || advancedFileFilter.accept(ME, path_name)) && (recursiv || file.getParent().equals(myPathTest))) {
-                            files.add(new AdvancedFile(true, this, path_name));
+                            files.add(new AdvancedFile(true, ME, path_name));
                         }
                         return FileVisitResult.CONTINUE;
                     }
@@ -907,7 +909,7 @@ public class AdvancedFile {
                         final String path_temp = dir.toString();
                         final String path_name = AdvancedFile.getName(path_temp);
                         if ((advancedFileFilter == null || advancedFileFilter.accept(ME, path_name)) && (recursiv || dir.getParent().equals(myPathTest))) {
-                            files.add(new AdvancedFile(false, this, path_name));
+                            files.add(new AdvancedFile(false, ME, path_name));
                         }
                         return FileVisitResult.CONTINUE;
                     }
