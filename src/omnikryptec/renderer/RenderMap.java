@@ -7,7 +7,7 @@ import java.util.Map;
 public class RenderMap<K, V> {
 
     private Class<K> keyclass;
-    private Map<K, V> map = new HashMap<>();
+    private Map<K, V> map = new HashMap<>(RenderChunk.DEFAULT_CAPACITY, 0.7f);
     private K[] keys;
 
     private boolean keysDirty = true;

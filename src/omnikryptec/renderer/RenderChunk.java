@@ -21,7 +21,9 @@ import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.SerializationUtil;
 
 public class RenderChunk implements DataMapSerializable {
-
+	
+	static final int DEFAULT_CAPACITY=50;
+	
     private static int WIDTH = OmniKryptecEngine.instance().getDisplayManager().getSettings().getChunkWidth();
     private static int HEIGHT = OmniKryptecEngine.instance().getDisplayManager().getSettings().getChunkHeight();
     private static int DEPTH = OmniKryptecEngine.instance().getDisplayManager().getSettings().getChunkDepth();
@@ -99,7 +101,7 @@ public class RenderChunk implements DataMapSerializable {
                             }
                             list = map.get(am);
                             if (list == null) {
-                                list = new ArrayList<>();
+                                list = new ArrayList<>(DEFAULT_CAPACITY);
                                 map.put(am, list);
                             }
                             list.add(tmp);
