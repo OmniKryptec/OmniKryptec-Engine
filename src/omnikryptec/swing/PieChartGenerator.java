@@ -23,7 +23,7 @@ public class PieChartGenerator {
         for(int i = 0; i < 20; i++) {
             chartDatas.add(new ChartData("Test " + i, (float) (Math.random() * 10.0F)));
         }
-        final BufferedImage image = createPieChart(chartDatas, 1600, 1600, 0.9F, 0.7F);
+        final BufferedImage image = createPieChart(chartDatas, 1600, 1600, 0.9F, 0.65F, true);
         try {
             final AdvancedFile file = new AdvancedFile("test.png").getAbsoluteAdvancedFile();
             file.createFile();
@@ -40,9 +40,10 @@ public class PieChartGenerator {
      * @param height Integer Height of the Image
      * @param diameterFactor Float Quotient of (diameter / (Math.min(width, height))) (1.0F = (diameter == Math.min(width, height)))
      * @param fontSizeFactor Float Factor for the Fonts size (1.0F = normal size)
+     * @param withPercentage Boolean If the percentage of each ChartData should be shown beside the name
      * @return BufferedImage Created PieChart
      */
-    public static final BufferedImage createPieChart(ArrayList<ChartData> chartDatas, int width, int height, float diameterFactor, float fontSizeFactor) {
+    public static final BufferedImage createPieChart(ArrayList<ChartData> chartDatas, int width, int height, float diameterFactor, float fontSizeFactor, boolean withPercentage) {
         if(chartDatas.isEmpty() || width <= 0 || height <= 0) {
             return null;
         }
@@ -109,10 +110,16 @@ public class PieChartGenerator {
             floored = !floored;
             int x_middle_text = (int) (width_half - (Math.sin(angle_half_radians) * radius * 0.9F));
             int y_middle_text = (int) (height_half - (Math.cos(angle_half_radians) * radius * 0.9F));
-            graphics.setColor(java.awt.Color.BLACK);
-            final Font font = new Font("TimesRoman", Font.PLAIN, (int) (300 * Math.pow(chartData.getPercentage(), 0.25F) / Math.pow(chartData.getName().length(), 0.25F) * fontSizeFactor));
+            final Color color = chartData.getColor();
+            if(color.getVector4f().lengthSquared() < 1.2F) {
+                graphics.setColor(java.awt.Color.WHITE);
+            } else {
+                graphics.setColor(java.awt.Color.BLACK);
+            }
+            final String name = chartData.getName() + (withPercentage ? String.format(" (%.2f%%)", (chartData.getPercentage() * 100.0F)) : "");
+            final Font font = new Font("TimesRoman", Font.PLAIN, (int) (300 * Math.pow(chartData.getPercentage(), 0.25F) / Math.pow(name.length(), 0.25F) * fontSizeFactor));
             graphics.setFont(font);
-            final int name_width = graphics.getFontMetrics().stringWidth(chartData.getName());
+            final int name_width = graphics.getFontMetrics().stringWidth(name);
             final int name_height = graphics.getFontMetrics().getAscent() - graphics.getFontMetrics().getDescent();
             if((x_middle_text - (name_width / 2)) < 0) {
                 x_middle_text += ((name_width / 2) - x_middle_text);
@@ -125,8 +132,8 @@ public class PieChartGenerator {
                 y_middle_text -= (y_middle_text + name_height - height);
             }
             graphics.fillRect(x_middle_text - (name_width / 2), y_middle_text - name_height - 5, name_width, name_height + 15);
-            graphics.setColor(chartData.getColor().getAWTColor());
-            graphics.drawString(chartData.getName(), x_middle_text - (name_width / 2), y_middle_text);
+            graphics.setColor(color.getAWTColor());
+            graphics.drawString(name, x_middle_text - (name_width / 2), y_middle_text);
             last_startAngle += (int) angle;
         }
         return image;
