@@ -208,7 +208,7 @@ public class DisplayManager implements Profilable{
 		}
 		idletime = getCurrentTime() - tmptime2;
 		Display.update();
-		updateTime = getCurrentTime() - tmptime;
+		updateTime = getCurrentTime() - tmptime - idletime;
 		return this;
 	}
 
