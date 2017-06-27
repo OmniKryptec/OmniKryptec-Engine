@@ -119,8 +119,9 @@ public class AnimationTest {
             ResourceLoader.getInstance().addLoader(new DefaultTextureLoader());
             ResourceLoader.getInstance().addLoader(new DefaultAnimationLoader());
             ResourceLoader.getInstance().addLoader(new DefaultAnimatedModelDataLoader());
-            ResourceLoader.getInstance().stageAdvancedFiles(-1, DIFFUSE_FILE);
-            ResourceLoader.getInstance().stageAdvancedFiles(MODEL_FILE);
+            //ResourceLoader.getInstance().stageAdvancedFiles(-1, DIFFUSE_FILE);
+            //ResourceLoader.getInstance().stageAdvancedFiles(MODEL_FILE);
+            ResourceLoader.getInstance().stageAdvancedFiles(1, RES_FOLDER_1);
             ResourceLoader.getInstance().stageAdvancedFiles(new AdvancedFile(res_test, "brunnen.obj"));
             ResourceLoader.getInstance().stageAdvancedFiles(new AdvancedFile(res_test, "brunnen.png"));
             ResourceLoader.getInstance().loadStagedAdvancedFiles(true);
