@@ -14,12 +14,18 @@ public class Maths {
     public static final Vector3f ZERO = new Vector3f(0, 0, 0);
     public static final Vector3f ONE = new Vector3f(1, 1, 1);
 
-    public static Matrix4f createTransformationMatrix(Entity entity) {
-        return createTransformationMatrix(entity.getAbsolutePos(), entity.getAbsoluteRotation(), entity.getScale());
+    public static Matrix4f createTransformationMatrix(Entity entity, Matrix4f old) {
+        return createTransformationMatrix(entity.getAbsolutePos(), entity.getAbsoluteRotation(), entity.getScale(), old);
+    }
+    public static Matrix4f createTransformationMatrix(Vector3f position, Vector3f rotation, Vector3f scale) {
+    	return createTransformationMatrix(position, rotation, scale, null);
     }
 
-    public static Matrix4f createTransformationMatrix(Vector3f position, Vector3f rotation, Vector3f scale) {
-        Matrix4f matrix = new Matrix4f();
+    
+    public static Matrix4f createTransformationMatrix(Vector3f position, Vector3f rotation, Vector3f scale, Matrix4f matrix) {
+        if(matrix==null){
+        	matrix = new Matrix4f();
+        }
         matrix.setIdentity();
         Matrix4f.translate(position, matrix, matrix);
         Matrix4f.rotate((float) Math.toRadians(rotation.x), X, matrix, matrix);

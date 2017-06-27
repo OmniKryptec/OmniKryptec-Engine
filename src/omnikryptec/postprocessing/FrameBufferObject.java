@@ -156,9 +156,11 @@ public class FrameBufferObject extends Texture {
     public void unbindFrameBuffer() {
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
         GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
-        history.pop();
-        if(history.peek()!=null){
-        	history.peek().bindFrameBuffer();
+        if(!history.isEmpty()){
+	        history.pop();
+	        if(!history.isEmpty()&&history.peek()!=null){
+	        	history.peek().bindFrameBuffer();
+	        }
         }
     }
 

@@ -1,7 +1,11 @@
 package omnikryptec.entity;
 
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
+import com.fasterxml.jackson.databind.AnnotationIntrospector.ReferenceProperty.Type;
+
+import omnikryptec.display.DisplayManager;
 import omnikryptec.loader.ResourceLoader;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
@@ -11,6 +15,8 @@ import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.texture.SimpleTexture;
 import omnikryptec.util.Color;
+import omnikryptec.util.Maths;
+import omnikryptec.util.RenderUtil;
 import omnikryptec.util.SerializationUtil;
 
 public class Entity extends GameObject implements DataMapSerializable, Rangeable {
@@ -19,9 +25,14 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
         ALWAYS, MEDIUM, FOLIAGE, BIG;
     }
 
+    public static enum UpdateType{
+    	DYNAMIC, STATIC;
+    }
+    
     private AdvancedModel model;
     private Vector3f scale = new Vector3f(1, 1, 1);
     private RenderType type = RenderType.ALWAYS;
+    private UpdateType uptype= UpdateType.DYNAMIC;
     private Color color = new Color(1, 1, 1, 1);
 
     public Entity() {
@@ -100,6 +111,29 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
         return color;
     }
 
+    public Entity setUpdateType(UpdateType t){
+    	uptype = t;
+    	return this;
+    }
+    
+    public UpdateType getUpdateType(){
+    	return uptype;
+    }
+    
+    private Vector3f lastpos = new Vector3f(), lastrot = new Vector3f(), lastscale = new Vector3f();
+    private Matrix4f trans;
+    private long lastframe=-1;
+    public Matrix4f getTransformationMatrix(){
+    	if(RenderUtil.needsUpdate(lastframe, 1, getUpdateType())&&(!Maths.fastEquals3f(lastpos, getAbsolutePos())||!Maths.fastEquals3f(lastrot, getAbsoluteRotation())||!Maths.fastEquals3f(lastscale, getScale()))){	
+    		lastframe = DisplayManager.instance().getFramecount();
+    		lastpos.set(getAbsolutePos());
+    		lastrot.set(getAbsoluteRotation());
+    		lastscale.set(getScale());
+    		trans = Maths.createTransformationMatrix(this, trans);
+    	}
+    	return trans;
+    }
+    
     public static EntityBuilder newEntity() {
         return new EntityBuilder();
     }
@@ -112,6 +146,8 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
         return new EntityBuilder(texture);
     }
 
+    
+    
     public Entity setValuesFrom(Entity toCopy) {
         if (toCopy == null) {
             return this;
@@ -127,7 +163,7 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
         type = toCopy.type;
         return this;
     }
-
+    
     @Override
     public DataMap toDataMap(DataMap data) {
         DataMap data_temp = super.toDataMap(new DataMap("gameObject"));
