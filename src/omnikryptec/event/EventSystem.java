@@ -31,8 +31,8 @@ public class EventSystem {
         OmniKryptecEngine.addShutdownHook(() -> {
             try {
                 if (threadpool != null) {
-                    threadpool.shutdown();
-                    threadpool.awaitTermination(1, TimeUnit.MINUTES);
+                    threadpool.shutdownNow();
+                    threadpool = null;
                 }
             } catch (Exception ex) {
             }
