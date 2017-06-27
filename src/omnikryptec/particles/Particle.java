@@ -61,7 +61,7 @@ public class Particle implements Rangeable {
 		lifeFactor = elapsedTime / lifeLength;
 		stageCount = tex.getNumberOfRows() * tex.getNumberOfRows();
 		atlasProg = lifeFactor * stageCount;
-		index1 = (int) Math.floor(atlasProg);
+		index1 = (int) atlasProg;
 		index2 = index1 < stageCount - 1 ? index1 + 1 : index1;
 		this.blend = atlasProg % 1;
 		texOffset1 = setTexOffset(texOffset1, index1);
@@ -111,14 +111,14 @@ public class Particle implements Rangeable {
 	private static float timemultiplier;
 
 	protected boolean update(Camera cam) {
-		timemultiplier = mysystem.getTimemultiplier();
+		timemultiplier = mysystem.getTimemultiplier() * DisplayManager.instance().getDeltaTimef();
 		Vector3f.add(vel, force, vel);
 		changeable.set(vel);
-		changeable.scale(DisplayManager.instance().getDeltaTimef() * timemultiplier);
+		changeable.scale(timemultiplier);
 		Vector3f.add(changeable, pos, pos);
 		distance = (tmp = Vector3f.sub(cam.getPos(), pos, tmp)).lengthSquared();
 		updateTexCoordInfo();
-		elapsedTime += DisplayManager.instance().getDeltaTimef() * timemultiplier;
+		elapsedTime += timemultiplier;
 		return elapsedTime < lifeLength;
 	}
 

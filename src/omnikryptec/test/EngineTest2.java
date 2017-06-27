@@ -32,7 +32,10 @@ import omnikryptec.particles.ParticleTexture;
 import omnikryptec.postprocessing.DebugRenderer;
 import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.ppstages.BloomStage;
+import omnikryptec.ppstages.ColorSpaceStage;
 import omnikryptec.ppstages.CompleteGaussianBlurStage;
+import omnikryptec.ppstages.ContrastchangeStage;
+import omnikryptec.ppstages.FogStage;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.AtlasTexture;
@@ -72,35 +75,35 @@ public class EngineTest2 implements IEventHandler {
             //PostProcessing.instance().addStage(new
             // DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
             // DeferredLightPrepare.DEFAULT_LIGHT_PREPARE));
-            // PostProcessing.instance().addStage(new BloomStage(new
-            // CompleteGaussianBlurStage(true, 0.4f, 0.4f), new Vector4f(1, 0,
-            // 0, 0), new Vector2f(1, 6)));
-            // PostProcessing.instance().addStage(new
-            // FogStage().setDensity(0.25f));
-            // PostProcessing.instance().addStage(new
-            // CompleteGaussianBlurStage(false,0.1f,0.1f));
-            // PostProcessing.instance().addStage(new ColorSpaceStage(16,4,4));
-            // PostProcessing.instance().addStage(new
-            // CompleteGaussianBlurStage(true,0.5f,0.5f));
-            // PostProcessing.instance().addStage(new
-            // ContrastchangeStage(0.75f));
-
-            // PostProcessing.instance().addStage(new BrightnessfilterStage(new
-            // Vector4f(0, 0, 0, 0)));
-            // RenderUtil.goWireframe(true);
-            // PostProcessing.instance().setEnabled(false);
-            // PostProcessing.instance().addStage(new
-            // FogStage().setDensity(0.05f).setFog(0, 0.5f, 0,
-            // 0.8f).setGradient(2));
-            // PostProcessing.instance().addStage(new
-            // CompleteGaussianBlurStage(false, 0.6f, 0.6f));
-            // PostProcessing.instance().addStage(new
-            // CompleteGaussianBlurStage(false, 0.3f, 0.3f));
-            // PostProcessing.instance().addStage(new
-            // CompleteGaussianBlurStage(false, 0.1f, 0.1f));
-            // PostProcessing.instance().addStage(new
-            // CompleteGaussianBlurStage(false, 0.05f, 0.05f));
-            //PostProcessing.instance().addStage(new DebugRenderer());
+//             PostProcessing.instance().addStage(new BloomStage(new
+//             CompleteGaussianBlurStage(true, 0.4f, 0.4f), new Vector4f(1, 0,
+//             0, 0), new Vector2f(1, 6)));
+//             PostProcessing.instance().addStage(new
+//             FogStage().setDensity(0.25f));
+//             PostProcessing.instance().addStage(new
+//             CompleteGaussianBlurStage(false,0.1f,0.1f));
+//             PostProcessing.instance().addStage(new ColorSpaceStage(16,4,4));
+//             PostProcessing.instance().addStage(new
+//             CompleteGaussianBlurStage(true,0.5f,0.5f));
+//             PostProcessing.instance().addStage(new
+//             ContrastchangeStage(0.75f));
+//
+//            // PostProcessing.instance().addStage(new BrightnessfilterStage(new
+//            // Vector4f(0, 0, 0, 0)));
+//            // RenderUtil.goWireframe(true);
+//             PostProcessing.instance().setEnabled(false);
+//             PostProcessing.instance().addStage(new
+//             FogStage().setDensity(0.05f).setFog(0, 0.5f, 0,
+//             0.8f).setGradient(2));
+//             PostProcessing.instance().addStage(new
+//             CompleteGaussianBlurStage(false, 0.6f, 0.6f));
+//             PostProcessing.instance().addStage(new
+//             CompleteGaussianBlurStage(false, 0.3f, 0.3f));
+//             PostProcessing.instance().addStage(new
+//             CompleteGaussianBlurStage(false, 0.1f, 0.1f));
+//             PostProcessing.instance().addStage(new
+//             CompleteGaussianBlurStage(false, 0.05f, 0.05f));
+//            PostProcessing.instance().addStage(new DebugRenderer());
     		
     		AdvancedFile res = new AdvancedFile("res");
             SimpleTexture jd = SimpleTexture.newTexture(new AdvancedFile(res, "jd.png"));
@@ -124,7 +127,7 @@ public class EngineTest2 implements IEventHandler {
             //tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
             //tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
             tm.getMaterial().setHasTransparency(false).setReflectivity(new Vector3f(0, 1, 1)).setShineDamper(10)
-                    .setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER).setExtraInfoVec(new Vector3f(1, 1, 1));
+                    .setRenderer(RendererRegistration.DEF_ENTITY_RENDERER).setExtraInfoVec(new Vector3f(1, 1, 1));
             OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
                 @Override
@@ -169,7 +172,7 @@ public class EngineTest2 implements IEventHandler {
 //               e.setRelativePos(r.nextInt(100) - 50, r.nextInt(100) - 50, r.nextInt(100) - 50);
 //                OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 //            }
-            int cube=1000;
+            int cube=0;
             int abstand=30;
             float scale=3;
             for(int x=-cube; x<cube; x+=abstand){
@@ -181,7 +184,7 @@ public class EngineTest2 implements IEventHandler {
             }
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
             system = new ParticleSystem(0, 0, 0,
-                    new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false), 2000f, 2.5f,
+                    new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false), 20f, 2.5f,
                     new Vector3f(0, 0, 0), 2f, 1.25f, RenderType.ALWAYS);
             // system.setTimemultiplier(10);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
@@ -231,7 +234,7 @@ public class EngineTest2 implements IEventHandler {
         }
         //System.out.println("(Rendertime: "+Instance.getEngine().getRenderTimeMS()+" Particletime: "+ParticleMaster.instance().getOverallParticleTimeMS()+" PPTime: "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());
         if(ev.getType() == EventType.AFTER_FRAME){
-        	System.out.println(new Profiler().createTimesString(50, true, false));
+        	//System.out.println(new Profiler().createTimesString(50, true, false));
         }
         // System.out.println(DisplayManager.instance().getFPS());
         // System.out.println(DisplayManager.instance().getDeltaTime());

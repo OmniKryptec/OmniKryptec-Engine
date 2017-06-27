@@ -61,7 +61,7 @@ public class ParticleMaster implements Profilable{
 				}
 			}
 			if (!entry.getKey().useAlphaBlending()) {
-				InsertionSort.sortHighToLow(list);
+				list.sort(Sorting.PARTICLE_COMPARATOR);
 			}
 		}
 		updatetime = Instance.getDisplayManager().getCurrentTime() - tmptime2;
@@ -99,7 +99,7 @@ public class ParticleMaster implements Profilable{
 	public void addParticle(Particle par) {
 		list1 = particles.get(par.getTexture());
 		if (list1 == null) {
-			list1 = new ArrayList<Particle>();
+			list1 = new ArrayList<Particle>(100);
 			particles.put(par.getTexture(), list1);
 		}
 		list1.add(par);
