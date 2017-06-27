@@ -47,7 +47,21 @@ public class PieChartGenerator {
      * @return BufferedImage Created PieChart
      */
     public static final BufferedImage createPieChart(ArrayList<ChartData> chartDatas, int width, int height, float diameterFactor, float fontSizeFactor, boolean withPercentage) {
-        if(chartDatas.isEmpty() || width <= 0 || height <= 0) {
+        return createPieChart(chartDatas.toArray(new ChartData[chartDatas.size()]), width, height, diameterFactor, fontSizeFactor, withPercentage);
+    }
+    
+    /**
+     * Creates a PieChart based on the given ChartDatas
+     * @param chartDatas ChartData Array Data
+     * @param width Integer Width of the Image
+     * @param height Integer Height of the Image
+     * @param diameterFactor Float Quotient of (diameter / (Math.min(width, height))) (1.0F = (diameter == Math.min(width, height)))
+     * @param fontSizeFactor Float Factor for the Fonts size (1.0F = normal size)
+     * @param withPercentage Boolean If the percentage of each ChartData should be shown beside the name
+     * @return BufferedImage Created PieChart
+     */
+    public static final BufferedImage createPieChart(ChartData[] chartDatas, int width, int height, float diameterFactor, float fontSizeFactor, boolean withPercentage) {
+        if(chartDatas.length == 0 || width <= 0 || height <= 0) {
             return null;
         }
         final int width_half = width / 2;
@@ -64,18 +78,18 @@ public class PieChartGenerator {
             if(chartData.getColor() == null) {
                 chartData.setColor(generateRandomColor());
             }
-            max_data += chartData.getValue();
+            max_data += Math.max(chartData.getValue(), 0.0F);
         }
         for(ChartData chartData : chartDatas) {
-            chartData.setPercentage(chartData.getValue() / max_data);
+            chartData.setPercentage(Math.max(chartData.getValue(), 0) / max_data);
         }
         int last_startAngle = 0;
         boolean floored = false;
-        for(int i = 0; i < chartDatas.size(); i++) {
-            final ChartData chartData = chartDatas.get(i);
+        for(int i = 0; i < chartDatas.length; i++) {
+            final ChartData chartData = chartDatas[i];
             float angle = 360.0F * chartData.getPercentage();
             float startAngle = last_startAngle;
-            if(i == chartDatas.size() - 1) {
+            if(i == chartDatas.length - 1) {
                 startAngle += 0.5;
                 angle = 360.0F - last_startAngle + 0.5F;
             } else {
@@ -94,11 +108,11 @@ public class PieChartGenerator {
             last_startAngle += angle_int;
         }
         last_startAngle = 0;
-        for(int i = 0; i < chartDatas.size(); i++) {
-            final ChartData chartData = chartDatas.get(i);
+        for(int i = 0; i < chartDatas.length; i++) {
+            final ChartData chartData = chartDatas[i];
             float angle = 360.0F * chartData.getPercentage();
             float startAngle = last_startAngle;
-            if(i == chartDatas.size() - 1) {
+            if(i == chartDatas.length - 1) {
                 startAngle += 0.5;
                 angle = 360.0F - last_startAngle + 0.5F;
             } else {

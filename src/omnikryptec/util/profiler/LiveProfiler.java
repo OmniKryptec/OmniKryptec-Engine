@@ -4,14 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import omnikryptec.logger.Logger;
 import omnikryptec.swing.ChartData;
 import omnikryptec.swing.PieChartGenerator;
-import omnikryptec.util.Color;
 
 /**
  * LiveProfiler
@@ -28,8 +25,11 @@ public class LiveProfiler {
         }
         
     };
-    private final ArrayList<Color> colors = new ArrayList<>();
-    private final ArrayList<ChartData> chartDatas = new ArrayList<>();
+    private final ChartData[] chartDatas = new ChartData[] {
+        new ChartData(Profiler.OVERALL_RENDERER_TIME, 0),
+        new ChartData(Profiler.PARTICLE_RENDERER, 0),
+        new ChartData(Profiler.PARTICLE_UPDATER, 0),
+        new ChartData(Profiler.POSTPROCESSOR, 0)};
     private Timer timer = null;
     
     public LiveProfiler() {
@@ -41,6 +41,7 @@ public class LiveProfiler {
         frame.add(panel_image, BorderLayout.CENTER);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        init();
         updateData();
     }
     
@@ -50,7 +51,7 @@ public class LiveProfiler {
     
     public final LiveProfiler startTimer(int delay) {
         if(timer == null) {
-            timer = new Timer(delay, (e) -> updateData());
+            timer = new Timer(delay, (e) -> new Thread(() -> updateData()).start());
         }
         timer.start();
         return this;
@@ -64,16 +65,19 @@ public class LiveProfiler {
         return this;
     }
     
-    private final LiveProfiler updateData() {
-        while(colors.size() < chartDatas.size()) {
-            colors.add(PieChartGenerator.generateRandomColor());
+    private final LiveProfiler init() {
+        for(ChartData chartData : chartDatas) {
+            chartData.setColor(PieChartGenerator.generateRandomColor());
         }
-        chartDatas.clear();
-        //chartDatas.add(new ChartData(Profiler.OVERALL_FRAME_TIME, Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME)).setColor((colors.size() > 0 ? colors.get(0) : null)));
-        chartDatas.add(new ChartData(Profiler.OVERALL_RENDERER_TIME, Profiler.currentTimeByName(Profiler.OVERALL_RENDERER_TIME)).setColor((colors.size() > 1 ? colors.get(1) : null)));
-        chartDatas.add(new ChartData(Profiler.PARTICLE_RENDERER, Profiler.currentTimeByName(Profiler.PARTICLE_RENDERER)).setColor((colors.size() > 2 ? colors.get(2) : null)));
-        chartDatas.add(new ChartData(Profiler.PARTICLE_UPDATER, Profiler.currentTimeByName(Profiler.PARTICLE_UPDATER)).setColor((colors.size() > 3 ? colors.get(3) : null)));
-        chartDatas.add(new ChartData(Profiler.POSTPROCESSOR, Profiler.currentTimeByName(Profiler.POSTPROCESSOR)).setColor((colors.size() > 4 ? colors.get(4) : null)));
+        return this;
+    }
+    
+    private final LiveProfiler updateData() {
+        frame.setTitle(String.format("LiveProfiler - %s: %d", Profiler.OVERALL_FRAME_TIME, Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME)));
+        chartDatas[0].setValue(Profiler.currentTimeByName(Profiler.OVERALL_RENDERER_TIME));
+        chartDatas[1].setValue(Profiler.currentTimeByName(Profiler.PARTICLE_RENDERER));
+        chartDatas[2].setValue(Profiler.currentTimeByName(Profiler.PARTICLE_UPDATER));
+        chartDatas[3].setValue(Profiler.currentTimeByName(Profiler.POSTPROCESSOR));
         return updateImage();
     }
     

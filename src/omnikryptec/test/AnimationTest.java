@@ -83,7 +83,7 @@ public class AnimationTest {
             Logger.log(SAVE);
 
             LiveProfiler liveProfiler = new LiveProfiler();
-            liveProfiler.startTimer();
+            liveProfiler.startTimer(1000);
             
             gameSettings = new GameSettings("AnimationTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32)
                     .setChunkSize(400, 400, 400);
