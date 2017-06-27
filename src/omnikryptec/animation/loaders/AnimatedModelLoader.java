@@ -29,7 +29,12 @@ public class AnimatedModelLoader {
      */
     public static AnimatedModel loadModel(String name, AdvancedFile modelFile, AdvancedFile textureFile, Renderer renderer) {
         AnimatedModelData entityData = ColladaLoader.loadColladaModel(name, modelFile, Instance.MAX_WEIGHTS);
-        Model model = new Model(name, createVertexArrayObject(entityData.getMeshData()));
+        MeshData meshData = entityData.getMeshData();
+        Model model = new Model(name, meshData);
+        VertexArrayObject vao = model.getVao();
+        vao.bind();
+        vao.createIntAttribute(4, meshData.getJointIds(), 3);
+        vao.createAttribute(5, meshData.getVertexWeights(), 3);
         Texture texture = loadTexture(name, textureFile);
         SkeletonData skeletonData = entityData.getJointsData();
         Joint headJoint = createJoints(skeletonData.headJoint);
@@ -39,7 +44,12 @@ public class AnimatedModelLoader {
     }
     
     public static AnimatedModel createModel(String name, AnimatedModelData entityData, Texture texture, Renderer renderer) {
-        Model model = new Model(name, createVertexArrayObject(entityData.getMeshData()));
+        MeshData meshData = entityData.getMeshData();
+        Model model = new Model(name, meshData);
+        VertexArrayObject vao = model.getVao();
+        vao.bind();
+        vao.createIntAttribute(4, meshData.getJointIds(), 3);
+        vao.createAttribute(5, meshData.getVertexWeights(), 3);
         SkeletonData skeletonData = entityData.getJointsData();
         Joint headJoint = createJoints(skeletonData.headJoint);
         AnimatedModel animatedModel = new AnimatedModel(name, model, texture, headJoint, skeletonData.jointCount);
