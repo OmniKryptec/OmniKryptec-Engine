@@ -269,6 +269,7 @@ public class DisplayManager implements Profilable{
 		return Sys.getTime() * 1000 / Sys.getTimerResolution();
 	}
 
+	
 	/**
 	 * Returns the FPS cap, if it is DISABLE_FPS_CAP, the cap is disabled
 	 * 
