@@ -1,9 +1,12 @@
 package omnikryptec.util;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
- *
+ * ArrayUtil for Arrays, Lists and Maps
  * @author Panzer1119
  */
 public class ArrayUtil {
@@ -99,6 +102,21 @@ public class ArrayUtil {
             };
         }
         
+    }
+    
+    @Deprecated
+    public static final <T> void sortArrayListAsArray(ArrayList<T> arrayList, Comparator<? super T> c) {
+        final T[] array = (T[]) arrayList.toArray();
+        arrayList.clear();
+        Arrays.sort(array, c);
+        arrayList.addAll(Arrays.asList(array));
+    }
+    
+    public static final <T> void parallelSortArrayListAsArray(ArrayList<T> arrayList, Comparator<? super T> c) {
+        final T[] array = (T[]) arrayList.toArray();
+        arrayList.clear();
+        Arrays.parallelSort(array, c);
+        arrayList.addAll(Arrays.asList(array));
     }
 
 }
