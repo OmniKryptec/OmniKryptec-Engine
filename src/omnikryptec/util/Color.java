@@ -18,6 +18,14 @@ public class Color {
         color.set(r, g, b, a);
     }
 
+    public Color(int rgb) {
+        this(rgb, false);
+    }
+
+    public Color(int rgba, boolean hasAlpha) {
+        setRGBA(rgba, hasAlpha);
+    }
+
     public Color(float[] array) {
         setFrom(array);
     }
@@ -34,89 +42,160 @@ public class Color {
         this(color.getRGBComponents(null));
     }
 
-    public Vector4f getNewVector4f() {
+    public final Vector4f getNewVector4f() {
         return new Vector4f(color);
     }
 
-    public Vector4f getVector4f() {
+    public final Vector4f getVector4f() {
         return color;
     }
 
-    public float[] getArray() {
+    public final float[] getArray() {
         return new float[]{color.getX(), color.getY(), color.getZ(), color.getW()};
     }
 
-    public float getR() {
+    public final float getR() {
         return color.x;
     }
 
-    public float getG() {
+    public final float getG() {
         return color.y;
     }
 
-    public float getB() {
+    public final float getB() {
         return color.z;
     }
 
-    public float getA() {
+    public final float getA() {
         return color.w;
     }
 
-    public void setFrom(Vector4f v) {
+    public final Color setFrom(Vector4f v) {
         color.set(v);
+        return this;
     }
 
-    public void set(Vector4f v) {
+    public final Color set(Vector4f v) {
         this.color = v;
+        return this;
     }
 
-    public void setFrom(float[] array) {
+    public final Color setFrom(float[] array) {
         setR(array[0]);
         setG(array[1]);
         setB(array[2]);
         setA(array.length > 3 ? array[3] : 1);
+        return this;
     }
 
-    public void setR(float r) {
+    public final Color setR(float r) {
         color.setX(r);
+        return this;
     }
 
-    public void setG(float g) {
+    public final Color setG(float g) {
         color.setY(g);
+        return this;
     }
 
-    public void setB(float b) {
+    public final Color setB(float b) {
         color.setZ(b);
+        return this;
     }
 
-    public void setA(float a) {
+    public final Color setA(float a) {
         color.setW(a);
+        return this;
     }
 
-    public void setFrom(Color c) {
+    public final Color setFrom(Color c) {
         setFrom(c.getArray());
+        return this;
     }
 
-    public void setFrom(java.awt.Color color) {
+    public final Color setFrom(java.awt.Color color) {
         setFrom(color.getRGBComponents(null));
+        return this;
     }
 
-    public java.awt.Color getAWTColor() {
+    public final java.awt.Color getAWTColor() {
         return new java.awt.Color(getR(), getG(), getB(), getA());
     }
 
-    public Color getClone() {
+    public final Color getClone() {
         return new Color(this);
     }
 
-    public void set(float r, float g, float b) {
+    public final Color set(float r, float g, float b) {
         set(r, g, b, 1);
+        return this;
     }
 
-    public void set(float r, float g, float b, float a) {
+    public final Color set(float r, float g, float b, float a) {
         setR(r);
         setG(g);
         setB(b);
         setA(a);
+        return this;
     }
+
+    public final Color setRGB(int rgb) {
+        return setRGBA(rgb, false);
+    }
+
+    public final Color setRGBA(int rgba, boolean hasAlpha) {
+        if (hasAlpha) {
+            setA(((rgba >> 24) & 0xFF) / 255.0F);
+        } else {
+            setA(1.0F);
+        }
+        setR(((rgba >> 16) & 0xFF) / 255.0F);
+        setG(((rgba >> 8) & 0xFF) / 255.0F);
+        setB(((rgba) & 0xFF) / 255.0F);
+        return this;
+    }
+
+    public final int getRGB() {
+        return getRGBA(false);
+    }
+
+    public final int getRGBA(boolean withAlpha) {
+        final int r = (int) (getR() * 255) << 16;
+        final int g = (int) (getG() * 255) << 8;
+        final int b = (int) (getB() * 255);
+        int a = (255 << 24);
+        if (withAlpha) {
+            a = (int) (getA() * 255) << 24;
+        }
+        return (r + g + b + a);
+    }
+    
+    public final Color blendWith(Color color, float ratio) {
+        return blend(this, color, ratio);
+    }
+
+    public static final Color blend(Color color_1, Color color_2, float ratio) {
+        if (ratio > 1.0f) {
+            ratio = 1.0f;
+        } else if (ratio < 0f) {
+            ratio = 0.0f;
+        }
+        final float iRatio = 1.0f - ratio;
+        final int i1 = color_1.getRGBA(true);
+        final int i2 = color_2.getRGBA(true);
+        final int a1 = (i1 >> 24 & 0xff);
+        final int r1 = ((i1 & 0xff0000) >> 16);
+        final int g1 = ((i1 & 0xff00) >> 8);
+        final int b1 = (i1 & 0xff);
+        final int a2 = (i2 >> 24 & 0xff);
+        final int r2 = ((i2 & 0xff0000) >> 16);
+        final int g2 = ((i2 & 0xff00) >> 8);
+        final int b2 = (i2 & 0xff);
+        final int a = (int) ((a1 * iRatio) + (a2 * ratio));
+        final int r = (int) ((r1 * iRatio) + (r2 * ratio));
+        final int g = (int) ((g1 * iRatio) + (g2 * ratio));
+        final int b = (int) ((b1 * iRatio) + (b2 * ratio));
+        return new Color(a << 24 | r << 16 | g << 8 | b);
+    }
+
 }
