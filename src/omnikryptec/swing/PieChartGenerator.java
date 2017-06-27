@@ -40,7 +40,7 @@ public class PieChartGenerator {
      * @param height Integer Height of the Image
      * @param diameterFactor Float Factor of the quotient diameter / (Math.min(width, height)) (1.0F = Diameter == Math.min(width, height))
      * @param fontSizeFactor Float Factor for the Fonts size (1.0F = normal)
-     * @return 
+     * @return BufferedImage Created PieChart
      */
     public static final BufferedImage createPieChart(ArrayList<ChartData> chartDatas, int width, int height, float diameterFactor, float fontSizeFactor) {
         if(chartDatas.isEmpty() || width <= 0 || height <= 0) {
