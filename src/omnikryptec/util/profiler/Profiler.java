@@ -6,7 +6,6 @@ import java.util.List;
 
 import omnikryptec.logger.Logger;
 import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.util.Instance;
 import omnikryptec.util.Util;
 
 public class Profiler {
@@ -23,10 +22,17 @@ public class Profiler {
 
     public static long currentTimeByName(String name) {
         for (int i = 0; i < PROFILABLES.size(); i++) {
-            ProfileContainer[] c = PROFILABLES.get(i).getProfiles();
-            for (int j = 0; j < c.length; j++) {
-                if (c[i].getName().equals(name)) {
-                    return c[i].getTime();
+            Profilable p = PROFILABLES.get(i);
+            if(p == null) {
+                continue;
+            }
+            ProfileContainer[] cs = p.getProfiles();
+            if(cs == null) {
+                continue;
+            }
+            for (ProfileContainer c : cs) {
+                if (c.getName().equals(name)) {
+                    return c.getTime();
                 }
             }
         }
@@ -37,8 +43,9 @@ public class Profiler {
         if (PROFILABLES.contains(p)) {
             Logger.log("The Profilable \"" + p + "\" is already registered!", LogLevel.WARNING);
         }
-        PROFILABLES.ensureCapacity(12);
-        System.out.println(PROFILABLES.size());
+        while(PROFILABLES.size() < index + 1) {
+            PROFILABLES.add(null);
+        }
         PROFILABLES.add(index, p);
     }
 
@@ -55,17 +62,21 @@ public class Profiler {
 
     public Profiler() {
         for (int i = 0; i < PROFILABLES.size(); i++) {
-            ProfileContainer[] c = PROFILABLES.get(i).getProfiles();
-            for (int j = 0; j < c.length; j++) {
-                container.add(c[j]);
+            Profilable p = PROFILABLES.get(i);
+            if(p == null) {
+                continue;
+            }
+            ProfileContainer[] c = p.getProfiles();
+            if(c != null) {
+                container.addAll(Arrays.asList(c));
             }
         }
     }
 
     public long profiledTimeByName(String name) {
-        for (int i = 0; i < container.size(); i++) {
-            if (container.get(i).getName().equals(name)) {
-                return container.get(i).getTime();
+        for (ProfileContainer c : container) {
+            if(c != null && c.getName().equals(name)) {
+                return c.getTime();
             }
         }
         return NAME_NOT_FOUND;
@@ -95,7 +106,11 @@ public class Profiler {
     private String[] createNames() {
         String[] newone = new String[container.size()];
         for (int i = 0; i < newone.length; i++) {
-            newone[i] = container.get(i).getName();
+            ProfileContainer c = container.get(i);
+            if(c == null) {
+                continue;
+            }
+            newone[i] = c.getName();
         }
         return Util.adjustLength(newone, false);
     }
@@ -103,7 +118,11 @@ public class Profiler {
     private String[] createPerc(long maxtime) {
         String[] array = new String[container.size()];
         for (int i = 0; i < container.size(); i++) {
-            array[i] = container.get(i).getPercentage(maxtime);
+            ProfileContainer c = container.get(i);
+            if(c == null) {
+                continue;
+            }
+            array[i] = c.getPercentage(maxtime);
         }
         return Util.adjustLength(array, false);
     }
@@ -111,7 +130,11 @@ public class Profiler {
     private String[] createRelativeTo(long maxtime) {
         String[] array = new String[container.size()];
         for (int i = 0; i < container.size(); i++) {
-            array[i] = container.get(i).getReletiveTo(maxtime);
+            ProfileContainer c = container.get(i);
+            if(c == null) {
+                continue;
+            }
+            array[i] = c.getReletiveTo(maxtime);
         }
         return Util.adjustLength(array, false);
     }

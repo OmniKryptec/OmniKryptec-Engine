@@ -40,6 +40,7 @@ import omnikryptec.util.InputUtil;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.OSUtil;
 import omnikryptec.util.RenderUtil;
+import omnikryptec.util.profiler.LiveProfiler;
 
 /**
  * AnimationTest
@@ -81,6 +82,9 @@ public class AnimationTest {
 
             Logger.log(SAVE);
 
+            LiveProfiler liveProfiler = new LiveProfiler();
+            liveProfiler.startTimer();
+            
             gameSettings = new GameSettings("AnimationTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32)
                     .setChunkSize(400, 400, 400);
             keySettings = gameSettings.getKeySettings();
