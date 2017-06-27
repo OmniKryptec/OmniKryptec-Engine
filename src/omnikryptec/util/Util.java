@@ -41,7 +41,6 @@ public class Util {
     
     public static final String[] merge(Object... b){
     	String[][] array=createString2d(b); 
-    	System.out.println(array[0].length);
     	String[] newone = new String[]{""};
     	for(int i=0; i<array.length; i++){
     		newone = mergeS(newone, array[i]);
