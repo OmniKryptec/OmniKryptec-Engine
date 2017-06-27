@@ -103,9 +103,10 @@ public class OmniKryptecEngine implements Profilable {
     private boolean requestclose = false;
 
     private long rendertime = 0;
-    private long tmptime = 0;
+    private long tmptime = 0, tmptime2 = 0;
     private long frametime = 0;
-
+    private long displayupdatetime = 0;
+    
     public OmniKryptecEngine(DisplayManager manager) {
         if (manager == null) {
             throw new NullPointerException("DisplayManager is null");
@@ -225,16 +226,18 @@ public class OmniKryptecEngine implements Profilable {
             scenefbo.resolveToFbo(normalfbo, GL30.GL_COLOR_ATTACHMENT1);
             scenefbo.resolveToFbo(specularfbo, GL30.GL_COLOR_ATTACHMENT2);
             scenefbo.resolveToFbo(extrainfofbo, GL30.GL_COLOR_ATTACHMENT3);
-            if (sceneCurrent != null) {
-                if (scenefbo.getTargets().length > 4) {
-                    for (int i = 4; i < scenefbo.getTargets().length; i++) {
-                        scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i - 4].target);
-                    }
+            if (scenefbo.getTargets().length > 4) {
+                for (int i = 4; i < scenefbo.getTargets().length; i++) {
+                    scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i - 4].target);
                 }
+            }
+            if (sceneCurrent != null) {
                 PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
             }
             eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
+            tmptime2 = manager.getCurrentTime();
             manager.updateDisplay();
+            displayupdatetime = manager.getCurrentTime() - tmptime2;
             frametime = manager.getCurrentTime() - currentTime;
         } catch (Exception e) {
             errorOccured(e, "Error occured in frame: ");

@@ -193,10 +193,10 @@ public class DisplayManager {
 		}
 		runtimef = (float) runtime;
 		framecount++;
-		Display.update();
 		if (sync > DISABLE_FPS_CAP) {
 			Display.sync(sync);
 		}
+		Display.update();
 		return this;
 	}
 
