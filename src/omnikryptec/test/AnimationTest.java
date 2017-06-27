@@ -83,10 +83,11 @@ public class AnimationTest {
             Logger.log(SAVE);
 
             LiveProfiler liveProfiler = new LiveProfiler(1000, 1000);
-            liveProfiler.startTimer(1000);
+            liveProfiler.setLastSeconds(10);
+            liveProfiler.startTimer(200);
             
             gameSettings = new GameSettings("AnimationTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32)
-                    .setChunkSize(400, 400, 400);
+                    .setChunkSize(400, 400, 400).setInitialFPSCap(60);
             keySettings = gameSettings.getKeySettings();
             final KeyGroup grabMouse = new KeyGroup("grabMouse", new Key("grabMouse1", Keyboard.KEY_G, true),
                     new Key("grabMouse2", Keyboard.KEY_Y, true)).setAllKeysNeedToBeActivated(false);
