@@ -7,6 +7,8 @@ import java.nio.IntBuffer;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
+
 import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
@@ -47,7 +49,7 @@ public class FrameBufferObject extends Texture {
     }
 
     private static List<FrameBufferObject> fbos = new ArrayList<>();
-    private static List<FrameBufferObject> history = new ArrayList<>();
+    private static Stack<FrameBufferObject> history = new Stack<>();
 
     /**
      * Creates an FBO of a specified width and height, with the desired type of
@@ -141,7 +143,7 @@ public class FrameBufferObject extends Texture {
      * rendered after this will be rendered to this FBO, and not to the screen.
      */
     public void bindFrameBuffer() {
-        history.add(this);
+        history.push(this);
         GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, frameBuffer);
         GL11.glViewport(0, 0, width, height);
     }
@@ -154,14 +156,9 @@ public class FrameBufferObject extends Texture {
     public void unbindFrameBuffer() {
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
         GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
-        if (history.size() > 0) {
-            int i = history.lastIndexOf(this);
-            if (i >= 0) {
-                history.remove(i);
-            }
-        }
-        if (history.size() > 0) {
-            history.get(history.size() - 1).bindFrameBuffer();
+        history.pop();
+        if(history.peek()!=null){
+        	history.peek().bindFrameBuffer();
         }
     }
 
@@ -364,12 +361,16 @@ public class FrameBufferObject extends Texture {
     }
     
     public final BufferedImage toBufferedImage(boolean withTransparency) {
-        if(multisample != GameSettings.NO_MULTISAMPLING) {
-            throw new UnsupportedOperationException("Multisampled FBOs are not supported!"); //TODO Weil muessen erst auf ein einziges gerendert werden
-        }
+//        if(multisample != GameSettings.NO_MULTISAMPLING) {
+//            throw new UnsupportedOperationException("Multisampled FBOs are not supported!"); //DONE Weil muessen erst auf ein einziges gerendert werden
+//        }
+        FrameBufferObject my = new FrameBufferObject(this.width, this.height, DepthbufferType.NONE);
+        this.resolveToFbo(my, GL30.GL_COLOR_ATTACHMENT0);
         try {
             final FloatBuffer buffer = BufferUtils.createFloatBuffer(width * height * (withTransparency ? 4 : 3));
+            my.bindToRead(GL30.GL_COLOR_ATTACHMENT0);
             GL11.glReadPixels(0, 0, width, height, (withTransparency ? GL11.GL_RGBA : GL11.GL_RGB), GL11.GL_FLOAT, buffer);
+            my.unbindFrameBuffer();
             buffer.rewind();
             final int[] rgbArray = new int[width * height];
             for(int y = 0; y < height; y++) {

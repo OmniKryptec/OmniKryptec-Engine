@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Vector3f;
 
+import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity.RenderType;
 import omnikryptec.entity.Rangeable;
@@ -186,6 +187,13 @@ public class RenderUtil {
 		return false;
 	}
 
+	public static boolean needsUpdate(long lastUpdate, int frequenzy){
+		if(lastUpdate<0){
+			return true;
+		}
+		return DisplayManager.instance().getFramecount()-frequenzy>=lastUpdate;
+	}
+	
 	// public static void setLightScissor(Vector4f lightpos, int sx, int sy){
 	// int[] rect = {0,0,sx,sy};
 	// float d;
