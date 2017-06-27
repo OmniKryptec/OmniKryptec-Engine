@@ -24,7 +24,7 @@ public class PieChartGenerator {
         for(int i = 0; i < 20; i++) {
             chartDatas.add(new ChartData("Test " + i, (float) (Math.random() * 10.0F)));
         }
-        final BufferedImage image = createPieChart(chartDatas, 1600, 1600, 0.9F, 0.65F, true);
+        final BufferedImage image = createPieChart(chartDatas, 1600, 1600, 0.9F, 0.65F, true, "%s %.2f");
         try {
             final AdvancedFile file = new AdvancedFile("test.png").getAbsoluteAdvancedFile();
             file.createFile();
@@ -46,8 +46,8 @@ public class PieChartGenerator {
      * @param withPercentage Boolean If the percentage of each ChartData should be shown beside the name
      * @return BufferedImage Created PieChart
      */
-    public static final BufferedImage createPieChart(ArrayList<ChartData> chartDatas, int width, int height, float diameterFactor, float fontSizeFactor, boolean withPercentage) {
-        return createPieChart(chartDatas.toArray(new ChartData[chartDatas.size()]), width, height, diameterFactor, fontSizeFactor, withPercentage);
+    public static final BufferedImage createPieChart(ArrayList<ChartData> chartDatas, int width, int height, float diameterFactor, float fontSizeFactor, boolean withPercentage, String format) {
+        return createPieChart(chartDatas.toArray(new ChartData[chartDatas.size()]), width, height, diameterFactor, fontSizeFactor, withPercentage, format);
     }
     
     /**
@@ -60,7 +60,7 @@ public class PieChartGenerator {
      * @param withPercentage Boolean If the percentage of each ChartData should be shown beside the name
      * @return BufferedImage Created PieChart
      */
-    public static final BufferedImage createPieChart(ChartData[] chartDatas, int width, int height, float diameterFactor, float fontSizeFactor, boolean withPercentage) {
+    public static final BufferedImage createPieChart(ChartData[] chartDatas, int width, int height, float diameterFactor, float fontSizeFactor, boolean withPercentage, String format) {
         if(chartDatas.length == 0 || width <= 0 || height <= 0) {
             return null;
         }
@@ -133,7 +133,7 @@ public class PieChartGenerator {
             } else {
                 graphics.setColor(java.awt.Color.BLACK);
             }
-            final String name = chartData.getName() + (withPercentage ? String.format(" (%.2f%%)", (chartData.getPercentage() * 100.0F)) : "");
+            final String name = String.format("%s%s", String.format(format, chartData.getName(), chartData.getValue()), (withPercentage ? String.format(" (%.2f%%)", (chartData.getPercentage() * 100.0F)) : ""));
             final Font font = new Font("TimesRoman", Font.PLAIN, (int) (300 * Math.pow(chartData.getPercentage(), 0.25F) / Math.pow(name.length(), 0.25F) * fontSizeFactor));
             graphics.setFont(font);
             final int name_width = graphics.getFontMetrics().stringWidth(name);

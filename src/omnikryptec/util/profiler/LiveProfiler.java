@@ -26,15 +26,18 @@ public class LiveProfiler {
         
     };
     private final ChartData[] chartDatas = new ChartData[] {
+        new ChartData(Profiler.DISPLAY_IDLE_TIME, 0),
+        new ChartData(Profiler.DISPLAY_UPDATE_TIME, 0),
         new ChartData(Profiler.OVERALL_RENDERER_TIME, 0),
         new ChartData(Profiler.PARTICLE_RENDERER, 0),
         new ChartData(Profiler.PARTICLE_UPDATER, 0),
         new ChartData(Profiler.POSTPROCESSOR, 0)};
     private Timer timer = null;
+    final Dimension size;
     
-    public LiveProfiler() {
+    public LiveProfiler(int width, int height) {
+        this.size = new Dimension(width, height);
         frame.setLayout(new BorderLayout());
-        final Dimension size = new Dimension(1000, 1000);
         frame.setSize(size);
         frame.setPreferredSize(size);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -73,23 +76,22 @@ public class LiveProfiler {
     }
     
     private final LiveProfiler updateData() {
-        frame.setTitle(String.format("LiveProfiler - %s: %d", Profiler.OVERALL_FRAME_TIME, Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME)));
-        chartDatas[0].setValue(Profiler.currentTimeByName(Profiler.OVERALL_RENDERER_TIME));
-        chartDatas[1].setValue(Profiler.currentTimeByName(Profiler.PARTICLE_RENDERER));
-        chartDatas[2].setValue(Profiler.currentTimeByName(Profiler.PARTICLE_UPDATER));
-        chartDatas[3].setValue(Profiler.currentTimeByName(Profiler.POSTPROCESSOR));
+        frame.setTitle(String.format("LiveProfiler - %s: %d ms", Profiler.OVERALL_FRAME_TIME, Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME)));
+        for (ChartData chartData : chartDatas) {
+            chartData.setValue(Profiler.currentTimeByName(chartData.getName()));
+        }
         return updateImage();
     }
     
     private final LiveProfiler updateImage() {
-        image = PieChartGenerator.createPieChart(chartDatas, 800, 800, 0.9F, 0.2F, true);
+        image = PieChartGenerator.createPieChart(chartDatas, size.width, size.height, 0.9F, 0.2F, true, "%s %.2f ms");
         panel_image.revalidate();
         panel_image.repaint();
         return this;
     }
     
     public static final void main(String[] args) {
-        final LiveProfiler liveProfiler = new LiveProfiler();
+        final LiveProfiler liveProfiler = new LiveProfiler(1000, 1000);
     }
     
 }

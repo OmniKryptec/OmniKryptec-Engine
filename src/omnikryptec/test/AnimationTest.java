@@ -82,7 +82,7 @@ public class AnimationTest {
 
             Logger.log(SAVE);
 
-            LiveProfiler liveProfiler = new LiveProfiler();
+            LiveProfiler liveProfiler = new LiveProfiler(1000, 1000);
             liveProfiler.startTimer(1000);
             
             gameSettings = new GameSettings("AnimationTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32)
