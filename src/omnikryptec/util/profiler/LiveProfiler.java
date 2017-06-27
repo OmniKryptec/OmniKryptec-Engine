@@ -69,7 +69,7 @@ public class LiveProfiler {
             colors.add(PieChartGenerator.generateRandomColor());
         }
         chartDatas.clear();
-        chartDatas.add(new ChartData(Profiler.OVERALL_FRAME_TIME, Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME)).setColor((colors.size() > 0 ? colors.get(0) : null)));
+        //chartDatas.add(new ChartData(Profiler.OVERALL_FRAME_TIME, Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME)).setColor((colors.size() > 0 ? colors.get(0) : null)));
         chartDatas.add(new ChartData(Profiler.OVERALL_RENDERER_TIME, Profiler.currentTimeByName(Profiler.OVERALL_RENDERER_TIME)).setColor((colors.size() > 1 ? colors.get(1) : null)));
         chartDatas.add(new ChartData(Profiler.PARTICLE_RENDERER, Profiler.currentTimeByName(Profiler.PARTICLE_RENDERER)).setColor((colors.size() > 2 ? colors.get(2) : null)));
         chartDatas.add(new ChartData(Profiler.PARTICLE_UPDATER, Profiler.currentTimeByName(Profiler.PARTICLE_UPDATER)).setColor((colors.size() > 3 ? colors.get(3) : null)));
