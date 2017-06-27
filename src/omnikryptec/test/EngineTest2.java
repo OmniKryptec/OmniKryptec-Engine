@@ -132,7 +132,7 @@ public class EngineTest2 implements IEventHandler {
                     doCameraLogic(this);
                 }
 
-            }.setPerspectiveProjection(90, 0.1f, 300).setRelativePos(0, 0, 0)).setAmbientColor(0.1f, 0.1f, 0.1f));
+            }.setPerspectiveProjection(90, 0.1f, 1000).setRelativePos(0, 0, 0)).setAmbientColor(0.1f, 0.1f, 0.1f));
             Model pine = new Model("",
                     ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")));
             Model bauer = new Model("",
@@ -178,7 +178,7 @@ public class EngineTest2 implements IEventHandler {
             }
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
             system = new ParticleSystem(0, 0, 0,
-                    new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false), 20000f, 2.5f,
+                    new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false), 20f, 2.5f,
                     new Vector3f(0, 0, 0), 2f, 1.25f, RenderType.ALWAYS);
             // system.setTimemultiplier(10);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
