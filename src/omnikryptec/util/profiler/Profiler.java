@@ -11,7 +11,7 @@ import omnikryptec.util.Util;
 
 public class Profiler {
 		
-	public static final long NAME_NOT_FOUND=-1;
+	public static final long NAME_NOT_FOUND = -1;
 	public static final String OVERALL_FRAME_TIME = "OVERALL_FRAME_TIME";
 	public static final String OVERALL_RENDERER_TIME = "OVERALL_RENDERER_TIME";
 	public static final String PARTICLE_RENDERER = "PARTICLE_RENDERER";
@@ -38,7 +38,6 @@ public class Profiler {
 			Logger.log("The Profilable \""+p+"\" is already registered!", LogLevel.WARNING);
 		}
 		PROFILABLES.ensureCapacity(12);
-		System.out.println(PROFILABLES.size());
 		PROFILABLES.add(index, p);
 	}
 	
