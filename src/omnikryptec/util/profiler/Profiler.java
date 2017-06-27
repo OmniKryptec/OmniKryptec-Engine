@@ -17,7 +17,8 @@ public class Profiler {
     public static final String PARTICLE_UPDATER = "PARTICLE_UPDATER";
     public static final String POSTPROCESSOR = "POSTPROCESSOR";
     public static final String DISPLAY_UPDATE_TIME = "DISPLAY_UPDATE_TIME";
-    
+    public static final String DISPLAY_IDLE_TIME = "DISPLAY_IDLE_TIME";
+
     
     private static final ArrayList<Profilable> PROFILABLES = new ArrayList<>();
     private final List<ProfileContainer> container = new ArrayList<>();

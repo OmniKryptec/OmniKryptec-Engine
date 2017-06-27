@@ -175,8 +175,10 @@ public class DisplayManager implements Profilable{
 	}
 	
 	private long currentFrameTime=0;
-	private long tmptime=0;
+	private long tmptime=0, tmptime2;
 	private long updateTime=0;
+	private long idletime=0;
+	
 	
 	/**
 	 * Updates the display
@@ -200,9 +202,11 @@ public class DisplayManager implements Profilable{
 		}
 		runtimef = (float) runtime;
 		framecount++;
+		tmptime2 = getCurrentTime();
 		if (sync > DISABLE_FPS_CAP) {
 			Display.sync(sync);
 		}
+		idletime = getCurrentTime() - tmptime2;
 		Display.update();
 		updateTime = getCurrentTime() - tmptime;
 		return this;
@@ -210,6 +214,10 @@ public class DisplayManager implements Profilable{
 
 	public final long getUpdateTimeMS(){
 		return updateTime;
+	}
+	
+	public final long getIdleTimeMS(){
+		return idletime;
 	}
 	
 	/**
@@ -318,6 +326,6 @@ public class DisplayManager implements Profilable{
 
 	@Override
 	public ProfileContainer[] getProfiles() {
-		return new ProfileContainer[]{new ProfileContainer(Profiler.DISPLAY_UPDATE_TIME, getUpdateTimeMS())};
+		return new ProfileContainer[]{new ProfileContainer(Profiler.DISPLAY_UPDATE_TIME, getUpdateTimeMS()), new ProfileContainer(Profiler.DISPLAY_IDLE_TIME, getIdleTimeMS())};
 	}
 }
