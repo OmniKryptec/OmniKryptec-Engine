@@ -36,12 +36,17 @@ public class DebugRenderer extends PostProcessingStage {
 		disabled.remove((Integer) i);
 		return this;
 	}
-
+	
+	private int last=-1;
+	private int side=0;
+	
 	@Override
 	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist, int stage) {
 		notr = 0;
 		shader.start();
-		int side = calcQuadratic(beforelist.size() + 1 - disabled.size());
+		if(last!=beforelist.size() + 1 - disabled.size()){
+			side = calcQuadratic(last = beforelist.size() + 1 - disabled.size());
+		}
 		getFbo().bindFrameBuffer();
 		RenderUtil.clear(0, 0, 0, 0);
 		if (tmp = !disabled.contains(0)) {
