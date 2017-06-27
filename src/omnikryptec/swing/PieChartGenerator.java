@@ -28,6 +28,7 @@ public class PieChartGenerator {
             final AdvancedFile file = new AdvancedFile("test.png").getAbsoluteAdvancedFile();
             file.createFile();
             ImageIO.write(image, "png", file.createOutputstream(false));
+            Logger.log("Saved file: " + file);
         } catch (Exception ex) {
             Logger.logErr("Error while writing Image to File: " + ex, ex);
         }
