@@ -82,10 +82,10 @@ public class LiveProfiler {
     
     private final LiveProfiler updateData(int lastSeconds) {
         final int valuesMaxSize = (timer != null ? ((lastSeconds * 1000) / timer.getInitialDelay()) : 0);
-        frame.setTitle(String.format("LiveProfiler - %s: %d µs", Profiler.OVERALL_FRAME_TIME, (Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME) * 1000)));
+        frame.setTitle(String.format("LiveProfiler - %s: %d ms", Profiler.OVERALL_FRAME_TIME, (Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME))));
         for (ChartData chartData : data.keySet()) {
             final LinkedList<Float> values = data.get(chartData);
-            final float addValue = Math.max(Profiler.currentTimeByName(chartData.getName()) * 1000.0F, 0.0F);
+            final float addValue = Math.max(Profiler.currentTimeByName(chartData.getName()), 0.0F);
             values.addFirst(addValue);
             while(values.size() > valuesMaxSize) {
                 values.removeLast();
@@ -101,7 +101,7 @@ public class LiveProfiler {
     }
     
     private final LiveProfiler updateImage() {
-        image = PieChartGenerator.createPieChart(chartDatas, size.width, size.height, 0.9F, 0.275F, true, "%s %.2f µs");
+        image = PieChartGenerator.createPieChart(chartDatas, size.width, size.height, 0.9F, 0.275F, true, "%s %.2f ms");
         panel_image.revalidate();
         panel_image.repaint();
         return this;
