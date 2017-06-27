@@ -12,7 +12,7 @@ public class Profiler {
 
     public static final long NAME_NOT_FOUND = -1;
     public static final String OVERALL_FRAME_TIME = "OVERALL_FRAME_TIME";
-    public static final String OVERALL_RENDERER_TIME = "OVERALL_RENDERER_TIME";
+    public static final String SCENE_TIME = "SCENE_TIME";
     public static final String PARTICLE_RENDERER = "PARTICLE_RENDERER";
     public static final String PARTICLE_UPDATER = "PARTICLE_UPDATER";
     public static final String POSTPROCESSOR = "POSTPROCESSOR";

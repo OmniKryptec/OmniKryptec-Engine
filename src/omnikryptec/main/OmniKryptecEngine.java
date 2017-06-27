@@ -385,7 +385,7 @@ public class OmniKryptecEngine implements Profilable {
 
     @Override
     public ProfileContainer[] getProfiles() {
-        return new ProfileContainer[]{new ProfileContainer(Profiler.OVERALL_FRAME_TIME, getFrameTimeMS()), new ProfileContainer(Profiler.OVERALL_RENDERER_TIME, getRenderTimeMS())};
+        return new ProfileContainer[]{new ProfileContainer(Profiler.OVERALL_FRAME_TIME, getFrameTimeMS()), new ProfileContainer(Profiler.SCENE_TIME, getRenderTimeMS())};
     }
 
 }
