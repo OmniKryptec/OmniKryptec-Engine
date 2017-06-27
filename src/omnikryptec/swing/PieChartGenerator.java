@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.imageio.ImageIO;
+import omnikryptec.logger.Commands;
 import omnikryptec.logger.Logger;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Color;
@@ -29,6 +30,7 @@ public class PieChartGenerator {
             file.createFile();
             ImageIO.write(image, "png", file.createOutputstream(false));
             Logger.log("Saved file: " + file);
+            Commands.COMMANDEXIT.run("-java");
         } catch (Exception ex) {
             Logger.logErr("Error while writing Image to File: " + ex, ex);
         }
