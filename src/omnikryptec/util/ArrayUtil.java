@@ -4,6 +4,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * ArrayUtil for Arrays, Lists and Maps
@@ -105,18 +106,18 @@ public class ArrayUtil {
     }
     
     @Deprecated
-    public static final <T> void sortArrayListAsArray(ArrayList<T> arrayList, Comparator<? super T> c) {
-        final T[] array = (T[]) arrayList.toArray();
-        arrayList.clear();
+    public static final <T> void sortArrayListAsArray(List<T> list, Comparator<? super T> c) {
+        final T[] array = (T[]) list.toArray();
+        list.clear();
         Arrays.sort(array, c);
-        arrayList.addAll(Arrays.asList(array));
+        list.addAll(Arrays.asList(array));
     }
     
-    public static final <T> void parallelSortArrayListAsArray(ArrayList<T> arrayList, Comparator<? super T> c) {
-        final T[] array = (T[]) arrayList.toArray();
-        arrayList.clear();
+    public static final <T> void parallelSortArrayListAsArray(List<T> list, Comparator<? super T> c) {
+        final T[] array = (T[]) list.toArray();
+        list.clear();
         Arrays.parallelSort(array, c);
-        arrayList.addAll(Arrays.asList(array));
+        list.addAll(Arrays.asList(array));
     }
 
 }
