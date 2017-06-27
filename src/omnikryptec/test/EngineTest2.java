@@ -43,6 +43,7 @@ import omnikryptec.util.InputUtil;
 import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.Util;
+import omnikryptec.util.profiler.LiveProfiler;
 import omnikryptec.util.profiler.Profiler;
 
 /**
@@ -62,10 +63,12 @@ public class EngineTest2 implements IEventHandler {
 
             DisplayManager.createDisplay("Test 2",
                     new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32)
-                    .setInitialFPSCap(10).setChunkRenderOffsets(2, 2, 2).setLightForward(true),
+                    .setInitialFPSCap(-1).setChunkRenderOffsets(2, 2, 2).setLightForward(true),
                     new OpenGLInfo(3, 3, new PixelFormat()));
             DisplayManager.instance().setSmoothedDeltatime(true);
             DisplayManager.instance().setSmoothedFrames(1000);
+            LiveProfiler liveProfiler = new LiveProfiler(1000, 1000);
+            liveProfiler.startTimer(2500);
             //PostProcessing.instance().addStage(new
             // DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
             // DeferredLightPrepare.DEFAULT_LIGHT_PREPARE));
@@ -178,7 +181,7 @@ public class EngineTest2 implements IEventHandler {
             }
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
             system = new ParticleSystem(0, 0, 0,
-                    new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false), 20f, 2.5f,
+                    new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false), 2000f, 2.5f,
                     new Vector3f(0, 0, 0), 2f, 1.25f, RenderType.ALWAYS);
             // system.setTimemultiplier(10);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
