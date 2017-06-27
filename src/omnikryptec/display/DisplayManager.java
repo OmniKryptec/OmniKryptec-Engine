@@ -11,13 +11,16 @@ import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.RenderUtil;
+import omnikryptec.util.profiler.Profilable;
+import omnikryptec.util.profiler.ProfileContainer;
+import omnikryptec.util.profiler.Profiler;
 
 /**
  * Display managing class
  * 
  * @author pcfreak9000 &amp; Panzer1119
  */
-public class DisplayManager {
+public class DisplayManager implements Profilable{
 
 	private static int sync = 240;
 
@@ -47,6 +50,7 @@ public class DisplayManager {
 
 	private DisplayManager() {
 		manager = this;
+		Profiler.addProfilable(this, 5);
 	}
 
 	/**
@@ -95,9 +99,7 @@ public class DisplayManager {
 			if (!manager.resize(settings.getWidth(), settings.getHeight(), settings.wantsFullscreen())) {
 				return null;
 			}
-			if (settings.getInitialFPSCap() != -1) {
-				manager.setSyncFPS(settings.getInitialFPSCap());
-			}
+			manager.setSyncFPS(settings.getInitialFPSCap());
 			Display.setLocation(-1, -1);
 			Display.setResizable(settings.wantsResizable());
 			Display.create(info.getPixelFormat(), info.getAttribs());
@@ -171,17 +173,22 @@ public class DisplayManager {
 		sync = fps;
 		return this;
 	}
-
+	
+	private long currentFrameTime=0;
+	private long tmptime=0;
+	private long updateTime=0;
+	
 	/**
 	 * Updates the display
 	 * 
 	 * @return DisplayManager A reference to this DisplayManager
 	 */
 	public final DisplayManager updateDisplay() {
+		tmptime = getCurrentTime();
 		if (Display.wasResized()) {
 			GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
 		}
-		long currentFrameTime = getCurrentTime();
+		currentFrameTime = getCurrentTime();
 		deltatime = (currentFrameTime - lasttime) / 1000.0;
 		runtime += deltatime;
 		lasttime = currentFrameTime;
@@ -197,9 +204,14 @@ public class DisplayManager {
 			Display.sync(sync);
 		}
 		Display.update();
+		updateTime = getCurrentTime() - tmptime;
 		return this;
 	}
 
+	public final long getUpdateTimeMS(){
+		return updateTime;
+	}
+	
 	/**
 	 * Returns the time since the last frame update
 	 * 
@@ -302,5 +314,10 @@ public class DisplayManager {
 
 	public final long getSmoothedFPS() {
 		return Math.round(1.0 / (getSmoothedDeltaTime()));
+	}
+
+	@Override
+	public ProfileContainer[] getProfiles() {
+		return new ProfileContainer[]{new ProfileContainer(Profiler.DISPLAY_UPDATE_TIME, getUpdateTimeMS())};
 	}
 }

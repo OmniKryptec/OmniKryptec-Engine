@@ -65,7 +65,7 @@ public class EngineTest2 implements IEventHandler {
                     .setInitialFPSCap(-1).setChunkRenderOffsets(2, 2, 2).setLightForward(true),
                     new OpenGLInfo(3, 3, new PixelFormat()));
             DisplayManager.instance().setSmoothedDeltatime(true);
-    		DisplayManager.instance().setSmoothedFrames(1000);
+            DisplayManager.instance().setSmoothedFrames(1000);
             //PostProcessing.instance().addStage(new
             // DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
             // DeferredLightPrepare.DEFAULT_LIGHT_PREPARE));

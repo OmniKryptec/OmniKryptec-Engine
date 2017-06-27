@@ -235,9 +235,7 @@ public class OmniKryptecEngine implements Profilable {
                 PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
             }
             eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
-            tmptime2 = manager.getCurrentTime();
             manager.updateDisplay();
-            displayupdatetime = manager.getCurrentTime() - tmptime2;
             frametime = manager.getCurrentTime() - currentTime;
         } catch (Exception e) {
             errorOccured(e, "Error occured in frame: ");
