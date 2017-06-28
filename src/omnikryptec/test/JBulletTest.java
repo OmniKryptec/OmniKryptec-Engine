@@ -40,7 +40,7 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.ConverterUtil;
-import omnikryptec.input.InputHandler;
+import omnikryptec.input.InputManager;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.PhysicsUtil;
 
@@ -187,10 +187,10 @@ public class JBulletTest {
 	private static float lastTime = 0;
 
 	private static void input() {
-		applyForce = InputHandler.isKeyboardKeyDown(Keyboard.KEY_F);
-		createNewShape = InputHandler.isKeyboardKeyDown(Keyboard.KEY_N);
-		resetControlBall = InputHandler.isKeyboardKeyDown(Keyboard.KEY_R);
-		if (InputHandler.isKeyboardKeyDown(Keyboard.KEY_P)) {
+		applyForce = InputManager.isKeyboardKeyDown(Keyboard.KEY_F);
+		createNewShape = InputManager.isKeyboardKeyDown(Keyboard.KEY_N);
+		resetControlBall = InputManager.isKeyboardKeyDown(Keyboard.KEY_R);
+		if (InputManager.isKeyboardKeyDown(Keyboard.KEY_P)) {
 			float currentTime = DisplayManager.instance().getCurrentTime();
 			float deltaTime = (currentTime - lastTime);
 			if (deltaTime > 250) {
@@ -198,8 +198,8 @@ public class JBulletTest {
 				lastTime = currentTime;
 			}
 		}
-		float deltaPhysicsSpeedStep = (InputHandler.isKeyboardKeyDown(Keyboard.KEY_COMMA) ? physicsSpeedStep : 0)
-				+ (InputHandler.isKeyboardKeyDown(Keyboard.KEY_PERIOD) ? -physicsSpeedStep : 0);
+		float deltaPhysicsSpeedStep = (InputManager.isKeyboardKeyDown(Keyboard.KEY_COMMA) ? physicsSpeedStep : 0)
+				+ (InputManager.isKeyboardKeyDown(Keyboard.KEY_PERIOD) ? -physicsSpeedStep : 0);
 		physicsSpeed += deltaPhysicsSpeedStep;
 		if (physicsSpeed < 0) {
 			physicsSpeed = 0;
@@ -207,12 +207,12 @@ public class JBulletTest {
 		if (!(OmniKryptecEngine.instance().getCurrentScene().getCamera() instanceof FollowingCamera)
 				&& OmniKryptecEngine.instance().getDisplayManager().getSettings().getKeySettings()
 						.getKey("mouseButtonLeft").isPressed()) {
-			float deltaX = InputHandler.getMouseDelta().x;
-			float deltaY = InputHandler.getMouseDelta().y;
-			float deltaD = InputHandler.getMouseDelta().z;
-			if (InputHandler.isKeyboardKeyDown(Keyboard.KEY_LCONTROL)) {
+			float deltaX = InputManager.getMouseDelta().x;
+			float deltaY = InputManager.getMouseDelta().y;
+			float deltaD = InputManager.getMouseDelta().z;
+			if (InputManager.isKeyboardKeyDown(Keyboard.KEY_LCONTROL)) {
 				Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
-				InputHandler.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
+				InputManager.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
 			} else {
 				OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().y -= (deltaX / 5);
 				OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().x += (deltaY / 5);
@@ -260,7 +260,7 @@ public class JBulletTest {
 			OmniKryptecEngine.instance().addAndSetScene(new Scene("TestScene", new Camera() {
 				@Override
 				public void doLogic() {
-					InputHandler.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(),
+					InputManager.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(),
 							3.0F, 1.5F, 15.0F, false);
 				}
 
@@ -310,7 +310,7 @@ public class JBulletTest {
 
 					@Override
 					public void doLogic() {
-						InputHandler.doThirdPersonController(OmniKryptecEngine.instance().getCurrentScene().getCamera(),
+						InputManager.doThirdPersonController(OmniKryptecEngine.instance().getCurrentScene().getCamera(),
 								this, DisplayManager.instance().getSettings().getKeySettings(), 10.0F, 5.0F, 40.0F); // Standard:
 																														// 1.5F,
 																														// 15.0F
@@ -342,7 +342,7 @@ public class JBulletTest {
 				((FollowingCamera) OmniKryptecEngine.getInstance().getCurrentScene().getCamera())
 						.setFollowedGameObject(followedEntity);
 			}
-			InputHandler.setCamera(OmniKryptecEngine.instance().getCurrentScene().getCamera());
+			InputManager.setCamera(OmniKryptecEngine.instance().getCurrentScene().getCamera());
 			OmniKryptecEngine.instance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
 		} catch (Exception ex) {
 			Logger.logErr("Main Error: " + ex, ex);
@@ -356,7 +356,7 @@ public class JBulletTest {
 
 				@Override
 				public void doLogic() {
-					InputHandler.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(),
+					InputManager.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(),
 							3.0F, 1.5F, 15.0F, false);
 				}
 

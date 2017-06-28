@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import omnikryptec.settings.KeySettings;
 import org.lwjgl.glfw.GLFW;
 
 /**
@@ -11,15 +12,15 @@ import org.lwjgl.glfw.GLFW;
  *
  * @author Panzer1119
  */
-public class JoystickHandler {
+public class JoystickHandler implements InputHandler {
 
     private static final ArrayList<JoystickHandler> joystickHandlers = new ArrayList<>();
 
     private final JoystickHandler ME = this;
     private final int joystick;
-    private FloatBuffer dataAxes = null;
-    private ByteBuffer dataButtons = null;
-    private ByteBuffer dataHats = null;
+    protected FloatBuffer dataAxes = null;
+    protected ByteBuffer dataButtons = null;
+    protected ByteBuffer dataHats = null;
 
     public JoystickHandler(int joystick) {
         this.joystick = joystick;
@@ -42,6 +43,7 @@ public class JoystickHandler {
         return this;
     }
 
+    @Override
     public final JoystickHandler close() {
         joystickHandlers.remove(this);
         return this;
@@ -105,6 +107,25 @@ public class JoystickHandler {
         joystickHandlers.stream().forEach((joystickHandler) -> {
             joystickHandler.update();
         });
+    }
+    
+    protected static final void updateAll(double currentTime, KeySettings keySettings) {
+        if(joystickHandlers.isEmpty()) {
+            return;
+        }
+        joystickHandlers.stream().forEach((joystickHandler) -> {
+            joystickHandler.updateKeySettings(currentTime, keySettings);
+        });
+    }
+
+    @Override
+    public final JoystickHandler preUpdate() {
+        return this;
+    }
+    
+    @Override
+    public final JoystickHandler updateKeySettings(double currentTime, KeySettings keySettings) {
+        return this;
     }
 
 }

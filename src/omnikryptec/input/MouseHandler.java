@@ -1,5 +1,7 @@
 package omnikryptec.input;
 
+import java.util.Arrays;
+import omnikryptec.settings.KeySettings;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorEnterCallback;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
@@ -12,7 +14,7 @@ import org.lwjgl.util.vector.Vector2f;
  *
  * @author Panzer1119
  */
-public class MouseHandler {
+public class MouseHandler implements InputHandler {
 
     private final MouseHandler ME = this;
     private final long window;
@@ -20,10 +22,11 @@ public class MouseHandler {
     private final GLFWCursorPosCallback cursorPosCallback;
     private final GLFWScrollCallback scrollCallback;
     private final GLFWCursorEnterCallback cursorEnterCallback;
-    public final InputState[] buttons = new InputState[100];
-    public final Vector2f position = new Vector2f();
-    public final Vector2f scrollOffset = new Vector2f();
-    public boolean entered = false;
+    protected final InputState[] buttons = new InputState[100];
+    private InputState[] buttons_lastTime = null;
+    protected final Vector2f position = new Vector2f();
+    protected final Vector2f scrollOffset = new Vector2f();
+    protected boolean insideWindow = false;
 
     public MouseHandler(long window) {
         this.window = window;
@@ -62,7 +65,7 @@ public class MouseHandler {
                 if (ME.window != window) {
                     return;
                 }
-                ME.entered = entered;
+                insideWindow = entered;
             }
         };
     }
@@ -82,6 +85,7 @@ public class MouseHandler {
         return scrollCallback;
     }
 
+    @Override
     public final MouseHandler close() {
         mouseButtonCallback.close();
         cursorPosCallback.close();
@@ -117,8 +121,24 @@ public class MouseHandler {
         return scrollOffset;
     }
 
-    public final boolean isEntered() {
-        return entered;
+    public final boolean isInsideWindow() {
+        return insideWindow;
+    }
+    
+    @Override
+    public final MouseHandler preUpdate() {
+        buttons_lastTime = Arrays.copyOf(buttons, buttons.length);
+        return this;
+    }
+
+    @Override
+    public final MouseHandler updateKeySettings(double currentTime, KeySettings keySettings) {
+        for (int i = 0; i < buttons.length; i++) {
+            if (buttons_lastTime[i] != buttons[i]) {
+                keySettings.updateKeys(currentTime, i, false);
+            }
+        }
+        return this;
     }
 
 }

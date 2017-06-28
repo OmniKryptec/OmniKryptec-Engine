@@ -32,7 +32,7 @@ import omnikryptec.texture.AtlasTexture;
 import omnikryptec.texture.SimpleAnimation;
 import omnikryptec.texture.SimpleTexture;
 import omnikryptec.util.AdvancedFile;
-import omnikryptec.input.InputHandler;
+import omnikryptec.input.InputManager;
 import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.profiler.LiveProfiler;
@@ -151,7 +151,7 @@ public class EngineTest2 implements IEventHandler {
 //                    public void doLogic() {
 //                        // setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(),
 //                        // r.nextFloat());
-//                        // InputHandler.doFirstPersonController(this,
+//                        // InputManager.doFirstPersonController(this,
 //                        // DisplayManager.instance().getSettings().getKeySettings(),
 //                        // 1, 1, 1);
 //                        // increaseRelativeRot(0, 1, 0);

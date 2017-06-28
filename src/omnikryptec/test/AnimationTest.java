@@ -36,7 +36,7 @@ import omnikryptec.test.saving.XMLSerializer;
 import omnikryptec.texture.SimpleTexture;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.AdvancedFile;
-import omnikryptec.input.InputHandler;
+import omnikryptec.input.InputManager;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.OSUtil;
 import omnikryptec.util.RenderUtil;
@@ -111,7 +111,7 @@ public class AnimationTest {
                         verticalSpeed *= 10;
                         turnSpeed *= 1;
                     }
-                    InputHandler.doThirdPersonController(this, this, keySettings, horizontalSpeed, verticalSpeed, turnSpeed);
+                    InputManager.doThirdPersonController(this, this, keySettings, horizontalSpeed, verticalSpeed, turnSpeed);
                 }
 
             }.setPerspectiveProjection(75, 0.1F, 1000)))));
@@ -172,8 +172,8 @@ public class AnimationTest {
                 logic();
                 AnimatedModel.updateAllAnimatedModels();
             }, EventType.RENDER_EVENT);
-            InputHandler.setCamera(camera);
-            InputHandler.setLongButtonPressEnabled(true);
+            InputManager.setCamera(camera);
+            InputManager.setLongButtonPressEnabled(true);
             OmniKryptecEngine.getInstance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
         } catch (Exception ex) {
             Logger.logErr("Main Error: " + ex, ex);
@@ -234,9 +234,9 @@ public class AnimationTest {
             camera.getRelativePos().y += 3;
             camera.getRelativeRotation().y = 90;
         }
-        float deltaX = InputHandler.getMouseDelta().x;
-        float deltaY = InputHandler.getMouseDelta().y;
-        float deltaD = InputHandler.getMouseDelta().z;
+        float deltaX = InputManager.getMouseDelta().x;
+        float deltaY = InputManager.getMouseDelta().y;
+        float deltaD = InputManager.getMouseDelta().z;
         if (Mouse.isGrabbed()) {
             deltaX *= -1;
             deltaY *= -1;
@@ -244,7 +244,7 @@ public class AnimationTest {
         }
         if (keySettings.isPressed("mouseButtonLeft") || Mouse.isGrabbed()) {
             if (keySettings.isPressed("alternativeMouseGrabbed")) {
-                InputHandler.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
+                InputManager.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
             } else {
                 camera.getRelativeRotation().y -= (deltaX / 5);
                 camera.getRelativeRotation().x += (deltaY / 5);

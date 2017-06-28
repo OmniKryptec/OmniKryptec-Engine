@@ -1,5 +1,7 @@
 package omnikryptec.input;
 
+import java.util.Arrays;
+import omnikryptec.settings.KeySettings;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWKeyCallback;
 
@@ -8,12 +10,13 @@ import org.lwjgl.glfw.GLFWKeyCallback;
  *
  * @author Panzer1119
  */
-public class KeyboardHandler {
+public class KeyboardHandler implements InputHandler {
 
     private final KeyboardHandler ME = this;
     private final long window;
     private final GLFWKeyCallback keyCallback;
-    public final InputState[] keys = new InputState[65536];
+    protected final InputState[] keys = new InputState[65536];
+    private InputState[] keys_lastTime = null;
 
     public KeyboardHandler(long window) {
         this.window = window;
@@ -33,6 +36,7 @@ public class KeyboardHandler {
         return keyCallback;
     }
     
+    @Override
     public final KeyboardHandler close() {
         keyCallback.close();
         return this;
@@ -56,6 +60,22 @@ public class KeyboardHandler {
 
     public final boolean isKeyRepeated(int keyCode) {
         return keys[keyCode] == InputState.REPEATED;
+    }
+
+    @Override
+    public final KeyboardHandler preUpdate() {
+        keys_lastTime = Arrays.copyOf(keys, keys.length);
+        return this;
+    }
+    
+    @Override
+    public final KeyboardHandler updateKeySettings(double currentTime, KeySettings keySettings) {
+        for (int i = 0; i < keys.length; i++) {
+            if (keys_lastTime[i] != keys[i]) {
+                keySettings.updateKeys(currentTime, i, true);
+            }
+        }
+        return this;
     }
 
 }

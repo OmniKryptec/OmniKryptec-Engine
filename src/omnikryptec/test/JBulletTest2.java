@@ -43,7 +43,7 @@ import omnikryptec.terrain.TerrainGenerator;
 import omnikryptec.terrain.TerrainTexturePack;
 import omnikryptec.texture.SimpleTexture;
 import omnikryptec.util.ConverterUtil;
-import omnikryptec.input.InputHandler;
+import omnikryptec.input.InputManager;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.PhysicsUtil;
 import omnikryptec.util.RenderUtil;
@@ -104,7 +104,7 @@ public class JBulletTest2 {
                         horizontalSpeed *= 10;
                         verticalSpeed *= 10;
                     }
-                    InputHandler.doThirdPersonController(this, this,
+                    InputManager.doThirdPersonController(this, this,
                             DisplayManager.instance().getSettings().getKeySettings(), horizontalSpeed, verticalSpeed,
                             turnSpeed);
                 }
@@ -158,8 +158,8 @@ public class JBulletTest2 {
                 input();
                 logic();
             }, EventType.RENDER_EVENT);
-            InputHandler.setCamera(OmniKryptecEngine.getInstance().getCurrentScene().getCamera());
-            InputHandler.setLongButtonPressEnabled(true);
+            InputManager.setCamera(OmniKryptecEngine.getInstance().getCurrentScene().getCamera());
+            InputManager.setLongButtonPressEnabled(true);
             OmniKryptecEngine.getInstance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
         } catch (Exception ex) {
             Logger.logErr("Main error: " + ex, ex);
@@ -262,10 +262,10 @@ public class JBulletTest2 {
             Logger.log(keySettings.getKeyGroup("test_2"));
         }
         Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
-        if (InputHandler.isKeyboardKeyDown(Keyboard.KEY_F)) {
+        if (InputManager.isKeyboardKeyDown(Keyboard.KEY_F)) {
             applyForce();
         }
-        if (InputHandler.isKeyboardKeyDown(Keyboard.KEY_C)) {
+        if (InputManager.isKeyboardKeyDown(Keyboard.KEY_C)) {
             final RigidBody body = entity_ball.getComponent(PhysicsComponent.class).getBody();
             body.setCenterOfMassTransform(PhysicsUtil.createTransform(
                     ConverterUtil.convertVector3fFromLWJGL(camera.getAbsolutePos()), new Vector3f(0, 0, 0)));
@@ -299,17 +299,17 @@ public class JBulletTest2 {
         if (keySettings.isLongPressed("grabMouse", 100, 400)) {
             Mouse.setGrabbed(!Mouse.isGrabbed());
         }
-        float deltaX = InputHandler.getMouseDelta().x;
-        float deltaY = InputHandler.getMouseDelta().y;
-        float deltaD = InputHandler.getMouseDelta().z;
+        float deltaX = InputManager.getMouseDelta().x;
+        float deltaY = InputManager.getMouseDelta().y;
+        float deltaD = InputManager.getMouseDelta().z;
         if (Mouse.isGrabbed()) {
             deltaX *= -1;
             deltaY *= -1;
             deltaD *= 1;
         }
         if (keySettings.getKey("mouseButtonLeft").isPressed() || Mouse.isGrabbed()) {
-            if (InputHandler.isKeyboardKeyDown(Keyboard.KEY_L)) {
-                InputHandler.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
+            if (InputManager.isKeyboardKeyDown(Keyboard.KEY_L)) {
+                InputManager.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
             } else {
                 OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().y -= (deltaX / 5);
                 OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().x += (deltaY / 5);
