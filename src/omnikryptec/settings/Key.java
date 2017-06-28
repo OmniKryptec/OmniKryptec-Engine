@@ -101,9 +101,9 @@ public class Key implements IKey {
     @Override
     public final boolean isPressed() {
         if (isKeyboardKey) {
-            return InputManager.isKeyboardKeyDown(key);
+            return InputManager.isKeyboardKeyPressed(key);
         } else {
-            return InputManager.isMouseKeyDown(key);
+            return InputManager.isMouseButtonPressed(key);
         }
     }
 

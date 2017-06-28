@@ -212,8 +212,7 @@ public class EngineTest2 implements IEventHandler {
 
     private static void doCameraLogic(Camera camera) {
         // v += DisplayManager.instance().getDeltaTime()*30;
-        //InputUtil.doFirstPersonController(camera, DisplayManager.instance().getSettings().getKeySettings(), v, v, 40,
-        //        false);
+        InputManager.doFirstPersonController(camera, DisplayManager.instance().getSettings().getKeySettings(), v, v, 40, false);
         // camera.setPerspectiveProjection(Maths.alterFOV(10, 179f, v, 1000),
         // 1000, 0.001f);
         Logger.CONSOLE.setTitle(camera.toString());
@@ -231,7 +230,7 @@ public class EngineTest2 implements IEventHandler {
         //System.out.println("(Rendertime: "+Instance.getEngine().getRenderTimeMS()+" Particletime: "+ParticleMaster.instance().getOverallParticleTimeMS()+" PPTime: "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());
         if(ev.getType() == EventType.AFTER_FRAME){
         }
-    	Logger.log(new Profiler().createTimesString(50, true, false));
+        //Logger.log(new Profiler().createTimesString(50, true, false));
         //System.out.println(DisplayManager.instance().getFPS());
         // System.out.println(DisplayManager.instance().getDeltaTime());
     }

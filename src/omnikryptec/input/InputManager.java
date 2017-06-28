@@ -72,8 +72,8 @@ public class InputManager {
         mouseDelta.y = (mousePosition.y - mousePosition_lastTime.y);
         mouseDelta.z = (mouseScrollOffset.x - mouseScrollOffset_lastTime.x);
         mouseDelta.w = (mouseScrollOffset.y - mouseScrollOffset_lastTime.y);
+        final KeySettings keySettings = DisplayManager.instance().getSettings().getKeySettings();
         if (longButtonPressEnabled) {
-            final KeySettings keySettings = DisplayManager.instance().getSettings().getKeySettings();
             keyboardHandler.updateKeySettings(currentTime, keySettings);
             mouseHandler.updateKeySettings(currentTime, keySettings);
             JoystickHandler.updateAll(currentTime, keySettings);
