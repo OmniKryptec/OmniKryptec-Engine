@@ -181,11 +181,11 @@ public class Shader {
 			return;
 		}
 		for (int i = 0; i < strings.length; i++) {
-			binAttributeManually(strings[i]);
+			bindAttributeManually(strings[i]);
 		}
 	}
 
-	private void binAttributeManually(Attribute a) {
+	private void bindAttributeManually(Attribute a) {
 		GL20.glBindAttribLocation(programID, a.getIndex(), a.getName());
 	}
 

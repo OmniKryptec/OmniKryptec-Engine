@@ -33,10 +33,10 @@ public class VertexBufferObject {
 		return new VertexBufferObject(id, type);
 	}
 
-	public static VertexBufferObject createEmpty(int type, int floatCount) {
+	public static VertexBufferObject createEmpty(int type) {
 		VertexBufferObject vbo = create(type);
-		vbo.bind();
-		GL15.glBufferData(vbo.type, floatCount * 4, GL15.GL_STREAM_DRAW);
+//		vbo.bind();
+//		GL15.glBufferData(vbo.type, floatCount * 4, GL15.GL_STREAM_DRAW);
 		return vbo;
 	}
 
@@ -78,7 +78,7 @@ public class VertexBufferObject {
 	public void storeData(IntBuffer data) {
 		GL15.glBufferData(type, data, GL15.GL_STATIC_DRAW);
 	}
-
+	
 	public void updateData(float[] data, FloatBuffer buffer) {
 		buffer.clear();
 		if (data.length > buffer.capacity()) {
@@ -104,7 +104,7 @@ public class VertexBufferObject {
 		bind();
 		vao.bind();
 		GL20.glVertexAttribPointer(attributNr, dataSize, GL11.GL_FLOAT, false, instancedDataSize * 4, offset * 4);
-		GL33.glVertexAttribDivisor(attributNr, 1);
+		GL33.glVertexAttribDivisor(attributNr, divisor);
 	}
 
 	public void delete() {

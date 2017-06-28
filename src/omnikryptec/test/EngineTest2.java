@@ -3,6 +3,8 @@ package omnikryptec.test;
 import java.util.Random;
 
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -71,8 +73,8 @@ public class EngineTest2 implements IEventHandler {
                     new OpenGLInfo(3, 3, new PixelFormat()));
             DisplayManager.instance().setSmoothedDeltatime(true);
             DisplayManager.instance().setSmoothedFrames(1000);
-            LiveProfiler liveProfiler = new LiveProfiler(1000, 1000);
-            liveProfiler.startTimer(2500);
+            LiveProfiler liveProfiler = new LiveProfiler(750, 750);
+            liveProfiler.startTimer(1000);
             //PostProcessing.instance().addStage(new
             // DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
             // DeferredLightPrepare.DEFAULT_LIGHT_PREPARE));
@@ -150,7 +152,8 @@ public class EngineTest2 implements IEventHandler {
 
             SimpleAnimation animation = new SimpleAnimation(2, brunnent, pinet);
             SimpleTexture pine_normal = SimpleTexture.newTexture("/omnikryptec/test/pine2_normal.png");
-
+            
+            
             TexturedModel ptm = new TexturedModel("pine", pine, pinet);
             ptm.getMaterial().setNormalmap(pine_normal);
             ptm.getMaterial().setHasTransparency(true).setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER);
@@ -183,6 +186,8 @@ public class EngineTest2 implements IEventHandler {
             		}
                 }
             }
+			//Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0, 1).setUpdateType(UpdateType.STATIC).setScale(new Vector3f(scale,scale,scale)).setRelativePos(0, 10, 0));
+
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
             system = new ParticleSystem(0, 0, 0,
                     new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false), 20000f, 2.5f,
@@ -191,7 +196,7 @@ public class EngineTest2 implements IEventHandler {
             //OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             //OmniKryptecEngine.instance().getCurrentScene()
               //      .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setCuttOffRange(50).setColor(3, 0, 0).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0, -1, 0).setRelativePos(0,10, 0));
-            //OmniKryptecEngine.instance().getCurrentScene()
+           // OmniKryptecEngine.instance().getCurrentScene()
             //.addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(1, 1, 1).setDirectional(true).setConeDegrees(5).setConeDirection(0, 1, 0).setRelativePos(0,1, 0));
 
             // ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());

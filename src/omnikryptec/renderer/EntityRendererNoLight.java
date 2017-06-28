@@ -81,7 +81,7 @@ public class EntityRendererNoLight implements Renderer {
 					if (!onlyRender) {
 						entity.doLogic0();
 					}
-					shader.transformation.loadMatrix(Maths.createTransformationMatrix(entity));
+					shader.transformation.loadMatrix(entity.getTransformationMatrix());
 					shader.colmod.loadVec4(entity.getColor().getVector4f());
 					GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(),
 							GL11.GL_UNSIGNED_INT, 0);

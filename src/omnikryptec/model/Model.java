@@ -1,6 +1,9 @@
 package omnikryptec.model;
 
 import java.io.InputStream;
+
+import org.lwjgl.opengl.GL15;
+
 import omnikryptec.loader.ResourceObject;
 
 import omnikryptec.logger.Logger;
@@ -13,25 +16,38 @@ public class Model implements ResourceObject {
     private final String name;
     private ModelData modelData = null;
     private final VertexArrayObject vao;
-
+    private VertexBufferObject vbo_updateable;
+    
     public Model(String name, ModelData modelData) {
         this.modelData = modelData;
         vao = VertexArrayObject.create();
-        // vao.storeDataf(modelData.getIndices(), modelData.getVertexCount(),
-        // modelData.getVertices(),
-        // modelData.getTextureCoords(), modelData.getNormals(),
-        // modelData.getTangents());
         vao.storeData(modelData.getIndices(), modelData.getVertexCount(), new DataObject(modelData.getVertices()),
                 new DataObject(modelData.getTextureCoords()), new DataObject(modelData.getNormals()),
                 new DataObject(modelData.getTangents()));
         this.name = name;
+        createVBO();
     }
 
-    public Model(String name, VertexArrayObject vao) {
+    //für instanced rendering
+    private void createVBO() {
+    	vbo_updateable = VertexBufferObject.createEmpty(GL15.GL_ARRAY_BUFFER);
+    	vbo_updateable.addInstancedAttribute(getVao(), 4, 4, 20, 0);
+    	vbo_updateable.addInstancedAttribute(getVao(), 5, 4, 20, 4);
+    	vbo_updateable.addInstancedAttribute(getVao(), 6, 4, 20, 8);
+    	vbo_updateable.addInstancedAttribute(getVao(), 7, 4, 20, 12);
+    	vbo_updateable.addInstancedAttribute(getVao(), 8, 4, 20, 16);
+	}
+
+	public Model(String name, VertexArrayObject vao) {
         this.name = name;
         this.vao = vao;
+        createVBO();
     }
 
+	public VertexBufferObject getUpdateableVBO(){
+		return vbo_updateable;
+	}
+	
     public VertexArrayObject getVao() {
         return vao;
     }

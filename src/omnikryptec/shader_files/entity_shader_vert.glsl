@@ -13,10 +13,11 @@ out vec4 coneDeg[maxlights];
 out vec4 lightPosO[maxlights];
 out vec3 toCamVec;
 
-uniform mat4 transmatrix;
+in mat4 transmatrix;
 uniform mat4 projmatrix;
 uniform mat4 viewmatrix;
-
+in vec4 colour;
+out vec4 colormod;
 uniform vec4 uvs;
 
 uniform vec4 lightpos[maxlights];
@@ -26,7 +27,8 @@ uniform vec4 coneInfo[maxlights];
 uniform float hasnormal;
 
 void main(void){
-	
+	colormod = colour;
+
 	mat4 modelViewMatrix = viewmatrix * transmatrix;
 	vec4 positionRelativeToCam = modelViewMatrix * vec4(pos,1.0);
 	gl_Position = projmatrix * positionRelativeToCam;

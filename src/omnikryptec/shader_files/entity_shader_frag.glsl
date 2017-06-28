@@ -21,7 +21,7 @@ uniform sampler2D normaltex;
 uniform sampler2D speculartex;
 uniform sampler2D extra;
 
-uniform vec4 colormod;
+in vec4 colormod;
 uniform vec3 exinfovec;
 
 uniform float hasextra;

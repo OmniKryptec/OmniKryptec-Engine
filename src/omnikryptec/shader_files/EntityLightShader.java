@@ -3,6 +3,7 @@ package omnikryptec.shader_files;
 import org.lwjgl.opengl.GL20;
 
 import omnikryptec.display.DisplayManager;
+import omnikryptec.shader.Attribute;
 import omnikryptec.shader.LineInsert;
 import omnikryptec.shader.Shader;
 import omnikryptec.shader.UniformBoolean;
@@ -14,14 +15,12 @@ import omnikryptec.shader.UniformVec4;
 
 public class EntityLightShader extends Shader {
 
-	public final UniformMatrix transformation = new UniformMatrix("transmatrix");
 	public final UniformMatrix view = new UniformMatrix("viewmatrix");
 	public final UniformMatrix projection = new UniformMatrix("projmatrix");
 	public final UniformBoolean hasspecular = new UniformBoolean("hasspecular");
 	public final UniformSampler tex = new UniformSampler("tex");
 	public final UniformSampler normalmap = new UniformSampler("normaltex");
 	public final UniformSampler specularmap = new UniformSampler("speculartex");
-	public final UniformVec4 colmod = new UniformVec4("colormod");
 	public final UniformBoolean hasextrainfomap = new UniformBoolean("hasextra");
 	public final UniformSampler extrainfo = new UniformSampler("extra");
 	public final UniformVec3 extrainfovec = new UniformVec3("exinfovec");
@@ -32,6 +31,9 @@ public class EntityLightShader extends Shader {
 	public final UniformVec3 ambient = new UniformVec3("ambient");
 	public final UniformInt activelights = new UniformInt("activelights");
 	public final UniformVec4 matData = new UniformVec4("matData");
+	//public final UniformMatrix transformation = new UniformMatrix("transmatrix");
+	//public final UniformVec4 colmod = new UniformVec4("colormod");
+
 	
 	private static final LineInsert insert = new LineInsert() {
 
@@ -49,8 +51,8 @@ public class EntityLightShader extends Shader {
 	public EntityLightShader() {
 		super("EntityLightShader", insert,
 				EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_vert.glsl"),
-				EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_frag.glsl"), "pos", "texcoords",
-				"normal", "tangent");
+				EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_frag.glsl"), new Attribute("pos", 0), new Attribute("texcoords", 1),
+				new Attribute("normal", 2), new Attribute("tangent",3), new Attribute("transmatrix", 4), new Attribute("colour", 8));
 		lightpos = new UniformVec4[DisplayManager.instance().getSettings().getLightMaxForward()];
 		for (int i = 0; i < lightpos.length; i++) {
 			lightpos[i] = new UniformVec4("lightpos[" + i + "]");
@@ -76,7 +78,7 @@ public class EntityLightShader extends Shader {
 			catts[i] = new UniformVec3("catts[" + i + "]");
 		}
 		registerUniforms(catts);
-		registerUniforms(transformation, view, projection, tex, normalmap, specularmap, hasspecular, colmod,
+		registerUniforms(view, projection, tex, normalmap, specularmap, hasspecular,
 				matData, hasextrainfomap, extrainfo, extrainfovec, uvs, hasnormal, activelights, ambient);
 		start();
 		tex.loadTexUnit(0);

@@ -43,7 +43,7 @@ public class ParticleRenderer {
 
 	protected ParticleRenderer() {
 		quad = ModelUtil.generateQuad();
-		vbo = VertexBufferObject.createEmpty(GL15.GL_ARRAY_BUFFER, maxInstancesPerSys * INSTANCE_DATA_LENGTH);
+		vbo = VertexBufferObject.createEmpty(GL15.GL_ARRAY_BUFFER);
 		vbo.addInstancedAttribute(quad.getVao(), 1, 4, INSTANCE_DATA_LENGTH, 0);
 		vbo.addInstancedAttribute(quad.getVao(), 2, 4, INSTANCE_DATA_LENGTH, 4);
 		vbo.addInstancedAttribute(quad.getVao(), 3, 4, INSTANCE_DATA_LENGTH, 8);
