@@ -3,9 +3,9 @@ package omnikryptec.postprocessing;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL30;
 
+import omnikryptec.display.Display;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
 
 public class StageGroup extends PostProcessingStage {

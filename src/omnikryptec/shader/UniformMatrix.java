@@ -17,7 +17,7 @@ public class UniformMatrix extends Uniform {
 	public void loadMatrix(Matrix4f matrix) {
 		matrix.store(matrixBuffer);
 		matrixBuffer.flip();
-		GL20.glUniformMatrix4(super.getLocation(), false, matrixBuffer);
+		GL20.glUniformMatrix4fv(super.getLocation(), false, matrixBuffer);
 	}
 
 }

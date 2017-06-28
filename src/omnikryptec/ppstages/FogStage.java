@@ -2,10 +2,10 @@ package omnikryptec.ppstages;
 
 import java.util.List;
 
-import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 
+import omnikryptec.display.Display;
 import omnikryptec.entity.Camera;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.postprocessing.FrameBufferObject;

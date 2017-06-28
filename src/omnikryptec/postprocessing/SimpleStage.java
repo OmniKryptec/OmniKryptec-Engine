@@ -2,8 +2,7 @@ package omnikryptec.postprocessing;
 
 import java.util.List;
 
-import org.lwjgl.opengl.Display;
-
+import omnikryptec.display.Display;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
 import omnikryptec.shader.Shader;
 

@@ -12,7 +12,6 @@ import java.util.Stack;
 import javax.imageio.ImageIO;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
@@ -20,6 +19,7 @@ import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import omnikryptec.display.Display;
 import omnikryptec.exceptions.IllegalAccessException;
 import omnikryptec.logger.Logger;
 import omnikryptec.settings.GameSettings;

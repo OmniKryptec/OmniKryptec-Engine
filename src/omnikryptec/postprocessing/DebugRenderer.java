@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
+import omnikryptec.display.Display;
 import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
 import omnikryptec.shader_files.DebugShader;
 import omnikryptec.util.RenderUtil;

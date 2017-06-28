@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL30;
 
 import omnikryptec.audio.AudioManager;
+import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.event.Event;
 import omnikryptec.event.EventSystem;
