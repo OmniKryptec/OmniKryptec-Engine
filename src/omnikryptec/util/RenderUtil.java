@@ -7,7 +7,7 @@ import org.lwjgl.util.vector.Vector3f;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity.RenderType;
-import omnikryptec.entity.Entity.UpdateType;
+import omnikryptec.entity.GameObject.UpdateType;
 import omnikryptec.entity.Rangeable;
 import omnikryptec.main.OmniKryptecEngine;
 
