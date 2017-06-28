@@ -40,7 +40,7 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.ConverterUtil;
-import omnikryptec.util.InputUtil;
+import omnikryptec.input.InputUtil;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.PhysicsUtil;
 

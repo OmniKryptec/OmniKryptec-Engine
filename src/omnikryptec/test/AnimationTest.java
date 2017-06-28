@@ -36,7 +36,7 @@ import omnikryptec.test.saving.XMLSerializer;
 import omnikryptec.texture.SimpleTexture;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.AdvancedFile;
-import omnikryptec.util.InputUtil;
+import omnikryptec.input.InputUtil;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.OSUtil;
 import omnikryptec.util.RenderUtil;
