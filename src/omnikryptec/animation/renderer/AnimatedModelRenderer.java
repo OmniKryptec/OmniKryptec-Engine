@@ -72,7 +72,7 @@ public class AnimatedModelRenderer implements Renderer {
                             entity.doLogic0();
                         }
                         shader.jointTransforms.loadMatrixArray(animatedModel.getJointTransforms());
-                        shader.transformationMatrix.loadMatrix(Maths.createTransformationMatrix(entity));
+                        shader.transformationMatrix.loadMatrix(entity.getTransformationMatrix());
                         GL11.glDrawElements(GL11.GL_TRIANGLES, animatedModel.getModel().getVao().getIndexCount(),
                                 GL11.GL_UNSIGNED_INT, 0);
                         vertcount += animatedModel.getModel().getModelData().getVertexCount();
