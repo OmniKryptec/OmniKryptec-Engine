@@ -2,6 +2,7 @@ package omnikryptec.display;
 
 import java.awt.DisplayMode;
 
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import omnikryptec.audio.AudioManager;
@@ -71,7 +72,7 @@ public class DisplayManager implements Profilable{
 	 * @return OmniKryptecEngine OmniKryptecEngine
 	 */
 	public static final OmniKryptecEngine createDisplay(String name, GameSettings settings) {
-		return createDisplay(name, settings, new OpenGLInfo());
+		return createDisplay(name, settings, new GLFWInfo());
 	}
 
 	/**
@@ -85,7 +86,7 @@ public class DisplayManager implements Profilable{
 	 *            OpenGLInfo Info
 	 * @return OmniKryptecEngine OmniKryptecEngine
 	 */
-	public static final OmniKryptecEngine createDisplay(String name, GameSettings settings, OpenGLInfo info) {
+	public static final OmniKryptecEngine createDisplay(String name, GameSettings settings, GLFWInfo info) {
 		if (manager != null) {
 			throw new IllegalStateException("The DisplayManager is already created!");
 		}
@@ -99,10 +100,7 @@ public class DisplayManager implements Profilable{
 				return null;
 			}
 			manager.setSyncFPS(settings.getInitialFPSCap());
-			Display.setLocation(-1, -1);
-			Display.setResizable(settings.wantsResizable());
-			Display.create(info.getPixelFormat(), info.getAttribs());
-			Display.setTitle(name);
+			Display.create(name, info);
 			if (settings.getMultiSamples() != GameSettings.NO_MULTISAMPLING) {
 				RenderUtil.antialias(true);
 			}
@@ -130,35 +128,36 @@ public class DisplayManager implements Profilable{
 	 * @return <tt>false</tt> if the resizing failed
 	 */
 	public final boolean resize(int width, int height, boolean fullscreen) {
-		try {
-			boolean found = false;
-			DisplayMode displayMode = null;
-			if (fullscreen) {
-				DisplayMode[] modes = Display.getAvailableDisplayModes();
-				for (int i = 0; i < modes.length; i++) {
-					if (modes[i].getWidth() == width && modes[i].getHeight() == height
-							&& modes[i].isFullscreenCapable()) {
-						displayMode = modes[i];
-						found = true;
-					}
-				}
-				if (found) {
-					Display.setFullscreen(fullscreen);
-				} else {
-					Display.setFullscreen(false);
-					displayMode = new DisplayMode(width, height);
-				}
-			} else {
-				displayMode = new DisplayMode(width, height);
-			}
-			Display.setDisplayMode(displayMode);
-			if (Display.isCreated()) {
-				GL11.glViewport(0, 0, width, height);
-			}
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+		return true;
+//		try {
+//			boolean found = false;
+//			DisplayMode displayMode = null;
+//			if (fullscreen) {
+//				DisplayMode[] modes = Display.getAvailableDisplayModes();
+//				for (int i = 0; i < modes.length; i++) {
+//					if (modes[i].getWidth() == width && modes[i].getHeight() == height
+//							&& modes[i].isFullscreenCapable()) {
+//						displayMode = modes[i];
+//						found = true;
+//					}
+//				}
+//				if (found) {
+//					Display.setFullscreen(fullscreen);
+//				} else {
+//					Display.setFullscreen(false);
+//					displayMode = new DisplayMode(width, height);
+//				}
+//			} else {
+//				displayMode = new DisplayMode(width, height);
+//			}
+//			Display.setDisplayMode(displayMode);
+//			if (Display.isCreated()) {
+//				GL11.glViewport(0, 0, width, height);
+//			}
+//			return true;
+//		} catch (Exception e) {
+//			return false;
+//		}
 	}
 
 	/**
@@ -265,7 +264,7 @@ public class DisplayManager implements Profilable{
 	 * @return Float Time in milliseconds
 	 */
 	public final long getCurrentTime() {
-		return Sys.getTime() * 1000 / Sys.getTimerResolution();
+		return Display.getCurrentTime();
 	}
 
 	

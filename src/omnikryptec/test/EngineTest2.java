@@ -12,7 +12,7 @@ import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
 import omnikryptec.display.DisplayManager;
-import omnikryptec.display.OpenGLInfo;
+import omnikryptec.display.GLFWInfo;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.Entity.RenderType;
@@ -70,7 +70,7 @@ public class EngineTest2 implements IEventHandler {
             DisplayManager.createDisplay("Test 2",
                     new GameSettings("EngineTest2", 1280, 720).setAnisotropicLevel(32).setMultisamples(32)
                     .setInitialFPSCap(30).setChunkRenderOffsets(2, 2, 2).setLightForward(true),
-                    new OpenGLInfo(3, 3, new PixelFormat()));
+                    new GLFWInfo(3, 3, new PixelFormat()));
             DisplayManager.instance().setSmoothedDeltatime(true);
             DisplayManager.instance().setSmoothedFrames(1000);
             LiveProfiler liveProfiler = new LiveProfiler(750, 750);
