@@ -7,9 +7,6 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.vecmath.Vector3f;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-
 import com.bulletphysics.collision.shapes.StaticPlaneShape;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
@@ -23,12 +20,14 @@ import omnikryptec.component.AudioListenerComponent;
 import omnikryptec.component.AudioSourceComponent;
 import omnikryptec.component.PhysicsComponent;
 import omnikryptec.display.DisplayManager;
+import omnikryptec.display.GLFWInfo;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.EntityBuilder;
 import omnikryptec.entity.GameObject;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
+import omnikryptec.input.CursorType;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
@@ -47,6 +46,7 @@ import omnikryptec.input.InputManager;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.PhysicsUtil;
 import omnikryptec.util.RenderUtil;
+import org.lwjgl.glfw.GLFW;
 
 /**
  *
@@ -76,23 +76,22 @@ public class JBulletTest2 {
             Logger.CONSOLE.setExitWhenLastOne(true);
             Logger.showConsoleDirect();
 
-            final GameSettings gameSettings = new GameSettings("JBulletTest", 1280, 720).setAnisotropicLevel(32)
-                    .setMultisamples(32).setChunkSize(400, 400, 400);
+            final GameSettings gameSettings = new GameSettings().setAnisotropicLevel(32).setMultisamples(32).setChunkSize(400, 400, 400);
             final KeySettings keySettings = gameSettings.getKeySettings();
-            keySettings.setKey("pauseAudio", Keyboard.KEY_P, true);
-            keySettings.setKey("toggleWireframe", Keyboard.KEY_T, true);
-            keySettings.setKey(new KeyGroup("physicsPause", new Key("leftControl", Keyboard.KEY_LCONTROL, true),
-                    new Key("p", Keyboard.KEY_P, true)));
-            keySettings.setKey(new KeyGroup("test_1", new Key("t_1", Keyboard.KEY_J, true)));
+            keySettings.setKey("pauseAudio", GLFW.GLFW_KEY_P, true);
+            keySettings.setKey("toggleWireframe", GLFW.GLFW_KEY_T, true);
+            keySettings.setKey(new KeyGroup("physicsPause", new Key("leftControl", GLFW.GLFW_KEY_LEFT_CONTROL, true),
+                    new Key("p", GLFW.GLFW_KEY_P, true)));
+            keySettings.setKey(new KeyGroup("test_1", new Key("t_1", GLFW.GLFW_KEY_J, true)));
             keySettings.setKey(
-                    new KeyGroup("test_2", new Key("t_1", Keyboard.KEY_J, true), new Key("t_2", Keyboard.KEY_K, true)));
-            final KeyGroup grabMouse = new KeyGroup("grabMouse", new Key("grabMouse1", Keyboard.KEY_G, true),
-                    new Key("grabMouse2", Keyboard.KEY_Y, true)).setAllKeysNeedToBeActivated(false);
+                    new KeyGroup("test_2", new Key("t_1", GLFW.GLFW_KEY_J, true), new Key("t_2", GLFW.GLFW_KEY_K, true)));
+            final KeyGroup grabMouse = new KeyGroup("grabMouse", new Key("grabMouse1", GLFW.GLFW_KEY_G, true),
+                    new Key("grabMouse2", GLFW.GLFW_KEY_Y, true)).setAllKeysNeedToBeActivated(false);
             keySettings.setKey(grabMouse);
-            keySettings.setKey("physicsFaster", Keyboard.KEY_PERIOD, true);
-            keySettings.setKey("physicsSlower", Keyboard.KEY_COMMA, true);
-            DisplayManager.createDisplay("JBullet Test2", gameSettings);
-            DisplayManager.instance().getSettings().getKeySettings().setKey("sprint", Keyboard.KEY_LCONTROL, true);
+            keySettings.setKey("physicsFaster", GLFW.GLFW_KEY_PERIOD, true);
+            keySettings.setKey("physicsSlower", GLFW.GLFW_KEY_COMMA, true);
+            DisplayManager.createDisplay("JBullet Test2", gameSettings, new GLFWInfo(4, 3, false, false, 1280, 720));
+            DisplayManager.instance().getSettings().getKeySettings().setKey("sprint", GLFW.GLFW_KEY_LEFT_CONTROL, true);
             OmniKryptecEngine.instance().addAndSetScene(new Scene("Test-Scene", (Camera) new Camera() {
 
                 @Override
@@ -262,10 +261,10 @@ public class JBulletTest2 {
             Logger.log(keySettings.getKeyGroup("test_2"));
         }
         Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
-        if (InputManager.isKeyboardKeyDown(Keyboard.KEY_F)) {
+        if (InputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_F)) {
             applyForce();
         }
-        if (InputManager.isKeyboardKeyDown(Keyboard.KEY_C)) {
+        if (InputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_C)) {
             final RigidBody body = entity_ball.getComponent(PhysicsComponent.class).getBody();
             body.setCenterOfMassTransform(PhysicsUtil.createTransform(
                     ConverterUtil.convertVector3fFromLWJGL(camera.getAbsolutePos()), new Vector3f(0, 0, 0)));
@@ -297,18 +296,18 @@ public class JBulletTest2 {
             RenderUtil.goWireframe(isWireframe);
         }
         if (keySettings.isLongPressed("grabMouse", 100, 400)) {
-            Mouse.setGrabbed(!Mouse.isGrabbed());
+            InputManager.setCursorType(((InputManager.getCursorType() == CursorType.DISABLED) ? CursorType.NORMAL : CursorType.DISABLED));
         }
         float deltaX = InputManager.getMouseDelta().x;
         float deltaY = InputManager.getMouseDelta().y;
         float deltaD = InputManager.getMouseDelta().z;
-        if (Mouse.isGrabbed()) {
+        if (InputManager.getCursorType() == CursorType.DISABLED) {
             deltaX *= -1;
-            deltaY *= -1;
+            deltaY *= 1;
             deltaD *= 1;
         }
-        if (keySettings.getKey("mouseButtonLeft").isPressed() || Mouse.isGrabbed()) {
-            if (InputManager.isKeyboardKeyDown(Keyboard.KEY_L)) {
+        if (keySettings.getKey("mouseButtonLeft").isPressed() || (InputManager.getCursorType() == CursorType.DISABLED)) {
+            if (InputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_L)) {
                 InputManager.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
             } else {
                 OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().y -= (deltaX / 5);

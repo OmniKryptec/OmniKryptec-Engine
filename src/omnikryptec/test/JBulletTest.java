@@ -6,8 +6,6 @@ import javax.vecmath.Matrix4f;
 import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 
-import org.lwjgl.input.Keyboard;
-
 import com.bulletphysics.collision.broadphase.BroadphaseInterface;
 import com.bulletphysics.collision.broadphase.DbvtBroadphase;
 import com.bulletphysics.collision.dispatch.CollisionConfiguration;
@@ -28,6 +26,7 @@ import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 
 import omnikryptec.display.DisplayManager;
+import omnikryptec.display.GLFWInfo;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.EntityBuilder;
@@ -43,6 +42,7 @@ import omnikryptec.util.ConverterUtil;
 import omnikryptec.input.InputManager;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.PhysicsUtil;
+import org.lwjgl.glfw.GLFW;
 
 /**
  *
@@ -184,22 +184,22 @@ public class JBulletTest {
 	}
 
 	private static final float physicsSpeedStep = 0.001F;
-	private static float lastTime = 0;
+	private static double lastTime = 0;
 
 	private static void input() {
-		applyForce = InputManager.isKeyboardKeyDown(Keyboard.KEY_F);
-		createNewShape = InputManager.isKeyboardKeyDown(Keyboard.KEY_N);
-		resetControlBall = InputManager.isKeyboardKeyDown(Keyboard.KEY_R);
-		if (InputManager.isKeyboardKeyDown(Keyboard.KEY_P)) {
-			float currentTime = DisplayManager.instance().getCurrentTime();
-			float deltaTime = (currentTime - lastTime);
+		applyForce = InputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_F);
+		createNewShape = InputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_N);
+		resetControlBall = InputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_R);
+		if (InputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_P)) {
+			double currentTime = DisplayManager.instance().getCurrentTime();
+			double deltaTime = (currentTime - lastTime);
 			if (deltaTime > 250) {
 				physicsPause = !physicsPause;
 				lastTime = currentTime;
 			}
 		}
-		float deltaPhysicsSpeedStep = (InputManager.isKeyboardKeyDown(Keyboard.KEY_COMMA) ? physicsSpeedStep : 0)
-				+ (InputManager.isKeyboardKeyDown(Keyboard.KEY_PERIOD) ? -physicsSpeedStep : 0);
+		float deltaPhysicsSpeedStep = (InputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_COMMA) ? physicsSpeedStep : 0)
+				+ (InputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_PERIOD) ? -physicsSpeedStep : 0);
 		physicsSpeed += deltaPhysicsSpeedStep;
 		if (physicsSpeed < 0) {
 			physicsSpeed = 0;
@@ -210,7 +210,7 @@ public class JBulletTest {
 			float deltaX = InputManager.getMouseDelta().x;
 			float deltaY = InputManager.getMouseDelta().y;
 			float deltaD = InputManager.getMouseDelta().z;
-			if (InputManager.isKeyboardKeyDown(Keyboard.KEY_LCONTROL)) {
+			if (InputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_LEFT_CONTROL)) {
 				Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
 				InputManager.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
 			} else {
@@ -253,9 +253,8 @@ public class JBulletTest {
 			Logger.CONSOLE.setExitWhenLastOne(true);
 			Logger.showConsoleDirect();
 
-			DisplayManager.createDisplay("JBullet Test",
-					new GameSettings("JBulletTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32));
-
+                        DisplayManager.createDisplay("JBulletTest", new GameSettings().setAnisotropicLevel(32).setMultisamples(32).setInitialFPSCap(30).setChunkRenderOffsets(2, 2, 2).setLightForward(true), new GLFWInfo(4, 3, false, false, 1280, 720));
+                        
 			// PostProcessing.instance().addStage(new LightRenderer());
 			OmniKryptecEngine.instance().addAndSetScene(new Scene("TestScene", new Camera() {
 				@Override
