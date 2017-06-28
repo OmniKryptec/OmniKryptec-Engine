@@ -127,7 +127,7 @@ public class ParticleRenderer {
 		modelMatrix.rotate((float) Math.toRadians(rot), Maths.Z);
 		tmp.set(scale, scale, scale);
 		modelMatrix.scale(tmp);
-		tmpm = viewMatrix.mul(modelMatrix);
+		tmpm = viewMatrix.mul(modelMatrix, tmpm);
 		storeMatrixData(tmpm, vboData);
 	}
 
