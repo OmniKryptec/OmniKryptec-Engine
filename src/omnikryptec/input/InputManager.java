@@ -84,9 +84,9 @@ public class InputManager {
         }
         if (camera != null) {
             if (invertedProjectionMatrix == null) {
-                invertedProjectionMatrix = camera.getProjectionMatrix().invert();
+                invertedProjectionMatrix = camera.getProjectionMatrix().invert(new Matrix4f());
             }
-            invertedViewMatrix = camera.getViewMatrix().invert();
+            invertedViewMatrix = camera.getViewMatrix().invert(new Matrix4f());
             calculateMouseRay();
         }
         mousePosition_lastTime.x = mousePosition.x;
