@@ -9,7 +9,6 @@ import omnikryptec.logger.LogEntry.LogLevel;
 
 public class Display {
 
-
     private static GLFWErrorCallback errorCallback;
     private static Window window;
     private static double lastsynced;
@@ -26,7 +25,7 @@ public class Display {
     static GLFWErrorCallback getErrorCallback() {
         return errorCallback;
     }
-    
+
     public static boolean shouldBeFullscreen() {
         return window.shouldBeFullscreen();
     }
@@ -41,7 +40,7 @@ public class Display {
     }
 
     static void destroy() {
-    	window.dispose();
+        window.dispose();
         InputManager.closeCallbacks();
         GLFW.glfwTerminate();
     }
@@ -51,24 +50,23 @@ public class Display {
     }
 
     static void sync(int fps) {
-//        long target = lastsynced + (long)(1000.0/fps) + 1000;
-//        try {
-//            while (getCurrentTime() < target) {
-//                Thread.sleep(1);
-//            }
-//        }
-//        catch (InterruptedException ignore) {}
-//        lastsynced = getCurrentTime();
+        double target = lastsynced + (1000.0 / fps);
+        try {
+            while ((lastsynced = getCurrentTime()) < target) {
+                Thread.sleep(1);
+            }
+        } catch (InterruptedException ex) {
+        }
     }
 
     public static boolean isCloseRequested() {
         return window.isCloseRequested();
     }
 
-    public static boolean isActive(){
-    	return window.isActive();
+    public static boolean isActive() {
+        return window.isActive();
     }
-    
+
     public static int getWidth() {
         return window.getWidth();
     }
@@ -89,8 +87,8 @@ public class Display {
         return window.getID();
     }
 
-	public static final void show() {
-		window.show();
-	}
+    public static final void show() {
+        window.show();
+    }
 
 }

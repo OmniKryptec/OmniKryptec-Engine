@@ -166,6 +166,11 @@ public class AudioManager {
     public static final int loadSound(String name, String path) {
         return loadSound(name, AudioManager.class.getResourceAsStream(path));
     }
+    
+    public static final int loadSound(String name, InputStream inputStream) {
+        
+        return -1;
+    }
 
     /**
      * Loads a sound from an InputStream to the static Soundbuffer
@@ -174,7 +179,8 @@ public class AudioManager {
      * @param inputStream InputStream Stream where should be read from
      * @return Integer BufferID where the sound was saved
      */
-    public static final int loadSound(String name, InputStream inputStream) {
+    @Deprecated
+    public static final int loadSoundOLD(String name, InputStream inputStream) {
         deleteSound(name);
         final int bufferID = AL10.alGenBuffers();
         final WaveData waveData = WaveData.create(inputStream);

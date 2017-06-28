@@ -168,7 +168,7 @@ public class EngineTest2 implements IEventHandler {
 //               e.setRelativePos(r.nextInt(100) - 50, r.nextInt(100) - 50, r.nextInt(100) - 50);
 //                OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 //            }
-            int cube=1000;
+            int cube=10;
             int abstand=20;
             float scale=2;
             for(int x=-cube; x<cube; x+=abstand){
