@@ -2,7 +2,7 @@ package omnikryptec.ppstages;
 
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector4f;
+import org.joml.Vector4f;
 
 import omnikryptec.display.Display;
 import omnikryptec.postprocessing.FrameBufferObject;

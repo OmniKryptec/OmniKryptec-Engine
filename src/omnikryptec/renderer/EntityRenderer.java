@@ -3,12 +3,11 @@ package omnikryptec.renderer;
 import java.nio.FloatBuffer;
 import java.util.List;
 
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL31;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
-
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.Light;
@@ -181,22 +180,22 @@ public class EntityRenderer implements Renderer {
 	}
 
 	private void storeMatrixData(Matrix4f matrix, float[] vboData) {
-		vboData[pointer++] = matrix.m00;
-		vboData[pointer++] = matrix.m01;
-		vboData[pointer++] = matrix.m02;
-		vboData[pointer++] = matrix.m03;
-		vboData[pointer++] = matrix.m10;
-		vboData[pointer++] = matrix.m11;
-		vboData[pointer++] = matrix.m12;
-		vboData[pointer++] = matrix.m13;
-		vboData[pointer++] = matrix.m20;
-		vboData[pointer++] = matrix.m21;
-		vboData[pointer++] = matrix.m22;
-		vboData[pointer++] = matrix.m23;
-		vboData[pointer++] = matrix.m30;
-		vboData[pointer++] = matrix.m31;
-		vboData[pointer++] = matrix.m32;
-		vboData[pointer++] = matrix.m33;
+		vboData[pointer++] = matrix.m00();
+		vboData[pointer++] = matrix.m01();
+		vboData[pointer++] = matrix.m02();
+		vboData[pointer++] = matrix.m03();
+		vboData[pointer++] = matrix.m10();
+		vboData[pointer++] = matrix.m11();
+		vboData[pointer++] = matrix.m12();
+		vboData[pointer++] = matrix.m13();
+		vboData[pointer++] = matrix.m20();
+		vboData[pointer++] = matrix.m21();
+		vboData[pointer++] = matrix.m22();
+		vboData[pointer++] = matrix.m23();
+		vboData[pointer++] = matrix.m30();
+		vboData[pointer++] = matrix.m31();
+		vboData[pointer++] = matrix.m32();
+		vboData[pointer++] = matrix.m33();
 	}
 	
 	@Override

@@ -1,7 +1,7 @@
 package omnikryptec.particles;
 
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
@@ -112,11 +112,11 @@ public class Particle implements Rangeable {
 
 	protected boolean update(Camera cam) {
 		timemultiplier = mysystem.getTimemultiplier() * DisplayManager.instance().getDeltaTimef();
-		Vector3f.add(vel, force, vel);
+		vel.add(force);
 		changeable.set(vel);
-		changeable.scale(timemultiplier);
-		Vector3f.add(changeable, pos, pos);
-		distance = (tmp = Vector3f.sub(cam.getPos(), pos, tmp)).lengthSquared();
+		changeable.mul(timemultiplier);
+		changeable.add(pos);
+		distance = (tmp = cam.getPos().sub(pos)).lengthSquared();
 		updateTexCoordInfo();
 		elapsedTime += timemultiplier;
 		return elapsedTime < lifeLength;

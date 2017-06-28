@@ -1,6 +1,6 @@
 package omnikryptec.shader;
 
-import org.lwjgl.util.vector.Matrix4f;
+import org.joml.Matrix4f;
 
 /**
  * UniformMatrixArray

@@ -2,9 +2,9 @@ package omnikryptec.shader;
 
 import java.nio.FloatBuffer;
 
+import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.util.vector.Matrix4f;
 
 public class UniformMatrix extends Uniform {
 
@@ -15,7 +15,7 @@ public class UniformMatrix extends Uniform {
 	}
 
 	public void loadMatrix(Matrix4f matrix) {
-		matrix.store(matrixBuffer);
+		matrix.get(matrixBuffer);
 		matrixBuffer.flip();
 		GL20.glUniformMatrix4fv(super.getLocation(), false, matrixBuffer);
 	}

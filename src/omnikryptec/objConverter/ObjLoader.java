@@ -154,18 +154,18 @@ public class ObjLoader {
     }
 
     private static void calculateTangents(Vertex v0, Vertex v1, Vertex v2, ArrayList<Vector2f> textures) {
-        Vector3f delatPos1 = Vector3f.sub(v1.getPosition(), v0.getPosition(), null);
-        Vector3f delatPos2 = Vector3f.sub(v2.getPosition(), v0.getPosition(), null);
+        Vector3f delatPos1 = v1.getPosition().sub(v0.getPosition());
+        Vector3f delatPos2 = v2.getPosition().sub(v0.getPosition());
         Vector2f uv0 = textures.get(v0.getTextureIndex());
         Vector2f uv1 = textures.get(v1.getTextureIndex());
         Vector2f uv2 = textures.get(v2.getTextureIndex());
-        Vector2f deltaUv1 = Vector2f.sub(uv1, uv0, null);
-        Vector2f deltaUv2 = Vector2f.sub(uv2, uv0, null);
+        Vector2f deltaUv1 = uv1.sub(uv0);
+        Vector2f deltaUv2 = uv2.sub(uv0);
         float r = 1.0f / (deltaUv1.x * deltaUv2.y - deltaUv1.y * deltaUv2.x);
-        delatPos1.scale(deltaUv2.y);
-        delatPos2.scale(deltaUv1.y);
-        Vector3f tangent = Vector3f.sub(delatPos1, delatPos2, null);
-        tangent.scale(r);
+        delatPos1.mul(deltaUv2.y);
+        delatPos2.mul(deltaUv1.y);
+        Vector3f tangent = delatPos1.sub(delatPos2);
+        tangent.mul(r);
         v0.addTangent(tangent);
         v1.addTangent(tangent);
         v2.addTangent(tangent);

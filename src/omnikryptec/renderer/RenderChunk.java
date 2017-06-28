@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.lwjgl.util.vector.Vector3f;
+import org.joml.Vector3f;
 
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.GameObject;

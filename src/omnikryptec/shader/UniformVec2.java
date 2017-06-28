@@ -1,7 +1,7 @@
 package omnikryptec.shader;
 
+import org.joml.Vector2f;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.util.vector.Vector2f;
 
 public class UniformVec2 extends Uniform {
 

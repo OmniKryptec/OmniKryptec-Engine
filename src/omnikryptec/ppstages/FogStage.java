@@ -2,8 +2,7 @@ package omnikryptec.ppstages;
 
 import java.util.List;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector4f;
+import org.joml.Vector4f;
 
 import omnikryptec.display.Display;
 import omnikryptec.entity.Camera;
@@ -63,7 +62,7 @@ public class FogStage extends PostProcessingStep {
 		shader.density.loadFloat(density);
 		shader.gradient.loadFloat(gradient);
 		curcam = OmniKryptecEngine.instance().getCurrentScene().getCamera();
-		shader.invprojv.loadMatrix(Matrix4f.invert(curcam.getProjectionViewMatrix(), null));
+		shader.invprojv.loadMatrix(curcam.getProjectionViewMatrix().invert());
 		shader.campos.loadVec3(curcam.getAbsolutePos());
 		(l_ind[0] < 0 ? before : beforelist.get(l_ind[0])).bindToUnit(0);
 		(l_ind[1] < 0 ? before : beforelist.get(l_ind[1])).bindDepthTexture(1);

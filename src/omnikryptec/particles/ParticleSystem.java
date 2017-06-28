@@ -2,9 +2,9 @@ package omnikryptec.particles;
 
 import java.util.Random;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Entity.RenderType;
@@ -150,8 +150,8 @@ public class ParticleSystem extends GameObject {
 		} else {
 			velocity = generateRandomUnitVector();
 		}
-		velocity.normalise();
-		velocity.scale(generateValue(averageSpeed, speedError));
+		velocity.normalize();
+		velocity.mul(generateValue(averageSpeed, speedError));
 		scale = generateValue(averageScale, scaleError);
 		lifeLength = generateValue(averageLifeLength, lifeError);
 		ParticleMaster.instance().addParticle(new Particle(tex, new Vector3f(center), velocity, gravityComplient,
@@ -190,16 +190,16 @@ public class ParticleSystem extends GameObject {
 
 		tmp4f.set(x, y, z, 1);
 		if (coneDirection.x != 0 || coneDirection.y != 0 || (coneDirection.z != 1 && coneDirection.z != -1)) {
-			Vector3f.cross(coneDirection, Maths.Z, rotateAxis);
-			rotateAxis.normalise();
-			rotateAngle = (float) Math.acos(Vector3f.dot(coneDirection, Maths.Z));
-			rotationMatrix.setIdentity();
+			coneDirection.cross(Maths.Z);
+			rotateAxis.normalize();
+			rotateAngle = (float) Math.acos(coneDirection.dot(Maths.Z));
+			rotationMatrix.identity();
 			rotationMatrix.rotate(-rotateAngle, rotateAxis);
-			Matrix4f.transform(rotationMatrix, tmp4f, tmp4f);
+			rotationMatrix.transform(tmp4f);
 		} else if (coneDirection.z == -1) {
 			tmp4f.z *= -1;
 		}
-		return new Vector3f(tmp4f);
+		return new Vector3f(tmp4f.x, tmp4f.y, tmp4f.z);
 	}
 
 	private static float theta, z, rootOneMinusZSquared, x, y;
