@@ -10,12 +10,11 @@ import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.GameObject;
 import omnikryptec.settings.KeySettings;
-import org.lwjgl.glfw.GLFW;
 
 /**
+ * InputManager
  *
  * @author Panzer1119 &amp; pcfreak9000
- *
  */
 public class InputManager {
 
@@ -25,6 +24,17 @@ public class InputManager {
 
     private static final KeyboardHandler keyboardHandler;
     private static final MouseHandler mouseHandler;
+    private static final Vector2f mousePosition = new Vector2f(0, 0);
+    private static final Vector2f mouseScrollOffset = new Vector2f(0, 0);
+    private static final Vector2f mousePosition_lastTime = new Vector2f(0, 0);
+    private static final Vector2f mouseScrollOffset_lastTime = new Vector2f(0, 0);
+    /**
+     * x = Mouse Pos X Delta
+     * y = Mouse Pos Y Delta
+     * z = Mouse Scroll X Delta
+     * w = Mouse Scroll Y Delta
+     */
+    private static final Vector4f mouseDelta = new Vector4f(0, 0, 0, 0);
 
     private static Camera camera = null;
     private static Matrix4f invertedProjectionMatrix = null;
@@ -36,17 +46,17 @@ public class InputManager {
         keyboardHandler = new KeyboardHandler(window);
         mouseHandler = new MouseHandler(window);
     }
-    
+
     public static final void initCallbacks() {
         keyboardHandler.initKeybCallback();
         mouseHandler.initCallbacks();
     }
-    
+
     public static final void closeCallbacks() {
         keyboardHandler.close();
         mouseHandler.close();
     }
-    
+
     public static final void prePollEvents() {
         keyboardHandler.preUpdate();
         mouseHandler.preUpdate();
@@ -54,6 +64,14 @@ public class InputManager {
 
     public static final void nextFrame() {
         currentTime = DisplayManager.instance().getCurrentTime();
+        mousePosition.x = mouseHandler.position.x;
+        mousePosition.y = mouseHandler.position.y;
+        mouseScrollOffset.x = mouseHandler.scrollOffset.x;
+        mouseScrollOffset.y = mouseHandler.scrollOffset.y;
+        mouseDelta.x = (mousePosition.x - mousePosition_lastTime.x);
+        mouseDelta.y = (mousePosition.y - mousePosition_lastTime.y);
+        mouseDelta.z = (mouseScrollOffset.x - mouseScrollOffset_lastTime.x);
+        mouseDelta.w = (mouseScrollOffset.y - mouseScrollOffset_lastTime.y);
         if (longButtonPressEnabled) {
             final KeySettings keySettings = DisplayManager.instance().getSettings().getKeySettings();
             keyboardHandler.updateKeySettings(currentTime, keySettings);
@@ -69,10 +87,14 @@ public class InputManager {
             Matrix4f.invert(camera.getViewMatrix(), invertedViewMatrix);
             calculateMouseRay();
         }
+        mousePosition_lastTime.x = mousePosition.x;
+        mousePosition_lastTime.y = mousePosition.y;
+        mouseScrollOffset_lastTime.x = mouseScrollOffset.x;
+        mouseScrollOffset_lastTime.y = mouseScrollOffset.y;
     }
-    
+
     public static final InputState getKeyboardKeyInputState(int keyCode) {
-        if(keyCode < 0 || keyCode >= keyboardHandler.keys.length) {
+        if (keyCode < 0 || keyCode >= keyboardHandler.keys.length) {
             return null;
         }
         return keyboardHandler.getKeyState(keyCode);
@@ -96,14 +118,6 @@ public class InputManager {
         return mouseHandler.insideWindow;
     }
 
-    public static final Vector2f getMousePosition() {
-        return mouseHandler.position;
-    }
-    
-    public static final Vector2f getMouseScrollOffset() {
-        return mouseHandler.scrollOffset;
-    }
-
     public static final boolean isLongButtonPressEnabled() {
         return longButtonPressEnabled;
     }
@@ -113,7 +127,7 @@ public class InputManager {
     }
 
     public static final Matrix4f getInvertedProjectionMatrix() {
-        return invertedProjectionMatrix;
+        return new Matrix4f(invertedProjectionMatrix);
     }
 
     public static final void setInvertedProjectionMatrix(Matrix4f invertedProjectionMatrix) {
@@ -121,7 +135,7 @@ public class InputManager {
     }
 
     public static final Matrix4f getInvertedViewMatrix() {
-        return invertedViewMatrix;
+        return new Matrix4f(invertedViewMatrix);
     }
 
     public static final void setInvertedViewMatrix(Matrix4f invertedViewMatrix) {
@@ -154,6 +168,18 @@ public class InputManager {
 
     public static final MouseHandler getMouseHandler() {
         return mouseHandler;
+    }
+
+    public static final Vector2f getMousePosition_lastTime() {
+        return new Vector2f(mousePosition_lastTime);
+    }
+
+    public static final Vector2f getMouseScrollOffset_lastTime() {
+        return new Vector2f(mouseScrollOffset_lastTime);
+    }
+
+    public static final Vector4f getMouseDelta() {
+        return new Vector4f(mouseDelta);
     }
 
     private static final void calculateMouseRay() {

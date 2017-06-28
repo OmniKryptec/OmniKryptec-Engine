@@ -50,7 +50,7 @@ public class FollowingCamera extends Camera {
 	}
 
 	private void calculateZoom() {
-		distanceFromGameObject -= (InputManager.getMouseDelta().z * 0.01F);
+		distanceFromGameObject -= (InputManager.getMouseDelta().w * 0.01F);
 	}
 
 	private void calculatePitch() {
