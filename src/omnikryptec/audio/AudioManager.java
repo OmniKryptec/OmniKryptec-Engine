@@ -1,6 +1,8 @@
 package omnikryptec.audio;
 
 import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 
 import org.lwjgl.openal.AL;
@@ -12,6 +14,11 @@ import org.lwjgl.util.vector.Vector3f;
 import omnikryptec.component.Component;
 import omnikryptec.logger.Logger;
 import omnikryptec.util.AdvancedFile;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.openal.ALC;
+import org.lwjgl.openal.ALC10;
+import org.lwjgl.openal.ALCCapabilities;
+import static org.lwjgl.openal.EXTEfx.ALC_MAX_AUXILIARY_SENDS;
 
 /**
  * Main audio manager class
@@ -24,6 +31,9 @@ public class AudioManager {
     private static DistanceModel distanceModel = null;
     private static boolean isInitialized = false;
     private static Component blockingAudioListenerComponent = null;
+    private static long defaultDevice = -1;
+    private static long context = -1;
+    private static ALCCapabilities deviceCapabilities = null;
 
     /**
      * Initializes the OpenAL AudioSystem
@@ -35,7 +45,22 @@ public class AudioManager {
             return false;
         }
         try {
-            AL.create();
+            defaultDevice = ALC10.alcOpenDevice((ByteBuffer) null);
+            deviceCapabilities = ALC.createCapabilities(defaultDevice);
+            final IntBuffer contextAttributeList = BufferUtils.createIntBuffer(16);
+            contextAttributeList.put(ALC10.ALC_REFRESH);
+            contextAttributeList.put(60);
+            contextAttributeList.put(ALC10.ALC_SYNC);
+            contextAttributeList.put(ALC10.ALC_FALSE);
+            contextAttributeList.put(ALC_MAX_AUXILIARY_SENDS);
+            contextAttributeList.put(2);
+            contextAttributeList.put(0);
+            contextAttributeList.flip();
+            context = ALC10.alcCreateContext(defaultDevice, contextAttributeList);
+            if(!ALC10.alcMakeContextCurrent(context)) {
+                throw new Exception("Failed to set current OpenAL Context!");
+            }
+            AL.createCapabilities(deviceCapabilities);
             setDistanceModel(DistanceModel.EXPONENT_CLAMPED);
             isInitialized = true;
             return true;
@@ -252,7 +277,9 @@ public class AudioManager {
             sound.delete(null);
         }
         sounds.clear();
-        AL.destroy();
+        ALC10.alcMakeContextCurrent(0);
+        ALC10.alcDestroyContext(context);
+        ALC10.alcCloseDevice(defaultDevice);
     }
 
     /**
