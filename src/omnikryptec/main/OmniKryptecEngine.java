@@ -196,7 +196,7 @@ public class OmniKryptecEngine implements Profilable {
         final long currentTime = manager.getCurrentTime();
         try {
             if (!Display.isActive()) {
-                Display.update();
+            	Display.update();
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException e) {
@@ -204,7 +204,7 @@ public class OmniKryptecEngine implements Profilable {
                 }
                 return this;
             }
-            InputUtil.nextFrame();
+            //InputUtil.nextFrame();
             AudioManager.update(currentTime);
             if (Display.wasResized()) {
                 GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());

@@ -134,10 +134,10 @@ public class DisplayManager implements Profilable{
 		return this;
 	}
 	
-	private long currentFrameTime=0;
-	private long tmptime=0, tmptime2;
-	private long updateTime=0;
-	private long idletime=0;
+	private double currentFrameTime=0;
+	private double tmptime=0, tmptime2;
+	private double updateTime=0;
+	private double idletime=0;
 	
 	
 	/**
@@ -172,11 +172,11 @@ public class DisplayManager implements Profilable{
 		return this;
 	}
 
-	public final long getUpdateTimeMS(){
+	public final double getUpdateTimeMS(){
 		return updateTime;
 	}
 	
-	public final long getIdleTimeMS(){
+	public final double getIdleTimeMS(){
 		return idletime;
 	}
 	
@@ -223,9 +223,9 @@ public class DisplayManager implements Profilable{
 	/**
 	 * Returns the actual time
 	 * 
-	 * @return Float Time in milliseconds
+	 * @return double Time in milliseconds
 	 */
-	public final long getCurrentTime() {
+	public final double getCurrentTime() {
 		return Display.getCurrentTime();
 	}
 

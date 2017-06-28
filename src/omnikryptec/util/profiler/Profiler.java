@@ -23,7 +23,7 @@ public class Profiler {
     private static final ArrayList<Profilable> PROFILABLES = new ArrayList<>();
     private final List<ProfileContainer> container = new ArrayList<>();
 
-    public static long currentTimeByName(String name) {
+    public static double currentTimeByName(String name) {
         for (int i = 0; i < PROFILABLES.size(); i++) {
             Profilable p = PROFILABLES.get(i);
             if(p == null) {
@@ -76,7 +76,7 @@ public class Profiler {
         }
     }
 
-    public long profiledTimeByName(String name) {
+    public double profiledTimeByName(String name) {
         for (ProfileContainer c : container) {
             if(c != null && c.getName().equals(name)) {
                 return c.getTime();
@@ -90,7 +90,7 @@ public class Profiler {
             Logger.log("No Profiler are registered!", LogLevel.INFO);
             return "";
         }
-        long maxtime = profiledTimeByName(OVERALL_FRAME_TIME);
+        double maxtime = profiledTimeByName(OVERALL_FRAME_TIME);
         String[] relatives = createRelativeTo(maxtime);
         String[] mergedlines = Util.merge(createNames(), " |", relatives, "|", createPerc(maxtime), "|", createLines(relatives, maxchars, maxtime), "|");
         StringBuilder str = new StringBuilder();
@@ -118,7 +118,7 @@ public class Profiler {
         return Util.adjustLength(newone, false);
     }
 
-    private String[] createPerc(long maxtime) {
+    private String[] createPerc(double maxtime) {
         String[] array = new String[container.size()];
         for (int i = 0; i < container.size(); i++) {
             ProfileContainer c = container.get(i);
@@ -130,7 +130,7 @@ public class Profiler {
         return Util.adjustLength(array, false);
     }
 
-    private String[] createRelativeTo(long maxtime) {
+    private String[] createRelativeTo(double maxtime) {
         String[] array = new String[container.size()];
         for (int i = 0; i < container.size(); i++) {
             ProfileContainer c = container.get(i);
@@ -142,8 +142,8 @@ public class Profiler {
         return Util.adjustLength(array, false);
     }
 
-    private String[] createLines(String[] relatives, int maxchars, long maxtime) {
-        float f = (float) maxchars / maxtime;
+    private String[] createLines(String[] relatives, int maxchars, double maxtime) {
+    	double f = maxchars / maxtime;
         String[] newone = new String[relatives.length];
         for (int i = 0; i < newone.length; i++) {
             newone[i] = appendLine(Long.parseLong(relatives[i].split("/")[0].replace("ms", "")), f, maxchars);
@@ -151,9 +151,9 @@ public class Profiler {
         return newone;
     }
 
-    private String appendLine(long time, float mult, int max) {
+    private String appendLine(double time, double mult, int max) {
         StringBuilder b = new StringBuilder();
-        int amount = Math.round(time * mult);
+        long amount = Math.round(time * mult);
         for (int i = 0; i < max; i++) {
             if (i < amount) {
                 b.append('=');

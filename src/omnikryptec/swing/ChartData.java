@@ -9,11 +9,11 @@ import omnikryptec.util.Color;
 public class ChartData {
     
     private final String name;
-    private float value = 0.0F;
+    private double value = 0.0F;
     private Color color = null;
     private float percentage = -1.0F;
     
-    public ChartData(String name, float value) {
+    public ChartData(String name, double value) {
         this.name = name;
         this.value = value;
     }
@@ -22,11 +22,11 @@ public class ChartData {
         return name;
     }
 
-    public final float getValue() {
+    public final double getValue() {
         return value;
     }
     
-    public final ChartData setValue(float value) {
+    public final ChartData setValue(double value) {
         this.value = value;
         return this;
     }

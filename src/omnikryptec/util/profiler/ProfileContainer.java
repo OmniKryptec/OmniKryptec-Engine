@@ -4,15 +4,15 @@ import omnikryptec.swing.ChartData;
 
 public class ProfileContainer {
 
-    private long time;
+    private double time;
     private String name;
 
-    public ProfileContainer(String name, long time) {
+    public ProfileContainer(String name, double time) {
         this.time = time;
         this.name = name;
     }
 
-    long getTime() {
+    double getTime() {
         return time;
     }
 
@@ -20,11 +20,11 @@ public class ProfileContainer {
         return name;
     }
 
-    String getPercentage(long maxtime) {
-        return new StringBuilder().append(String.format("%.1f", ((float) getTime() / maxtime) * 100)).append("%").toString();
+    String getPercentage(double maxtime) {
+        return new StringBuilder().append(String.format("%.1f", (getTime() / maxtime) * 100)).append("%").toString();
     }
 
-    String getReletiveTo(long maxtime) {
+    String getReletiveTo(double maxtime) {
         return new StringBuilder().append(time).append("ms/").append(maxtime).append("ms").toString();
     }
 

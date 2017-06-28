@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 
 import omnikryptec.logger.Logger;
+import omnikryptec.logger.LogEntry.LogLevel;
 
 public class Display {
 	
@@ -49,6 +50,7 @@ public class Display {
 		GLFW.glfwSwapInterval(1);
 		lastsynced = getCurrentTime();
 		GLFW.glfwShowWindow(window);
+		Logger.log("Successfully created GLContext and the Window!", LogLevel.FINEST);
 	}
 	
 	public static GLFWErrorCallback getErrorCallback(){
@@ -84,19 +86,19 @@ public class Display {
 		GLFW.glfwTerminate();
 	}
 	
-	static final long getCurrentTime() { //TODO do microseconds
-		return (long) (GLFW.glfwGetTime()*1000);
+	static final double getCurrentTime() {
+		return GLFW.glfwGetTime()*1000;
 	}
 	
 	static void sync(int fps) {
-        long target = lastsynced + (long)(1000.0/fps) + 1000;
-        try {
-            while (getCurrentTime() < target) {
-                Thread.sleep(1);
-            }
-        }
-        catch (InterruptedException ignore) {}
-        lastsynced = getCurrentTime();
+//        long target = lastsynced + (long)(1000.0/fps) + 1000;
+//        try {
+//            while (getCurrentTime() < target) {
+//                Thread.sleep(1);
+//            }
+//        }
+//        catch (InterruptedException ignore) {}
+//        lastsynced = getCurrentTime();
     }
 	
 	public static boolean isCloseRequested(){
