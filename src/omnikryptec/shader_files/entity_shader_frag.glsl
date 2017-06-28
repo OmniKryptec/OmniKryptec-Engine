@@ -8,6 +8,7 @@ in vec3 toLightVec[maxlights];
 in vec3 toCamVec;
 in vec4 coneDeg[maxlights];
 in vec4 lightPosO[maxlights];
+in vec4 colormod;
 
 
 layout (location = 0) out vec4 colf;
@@ -21,7 +22,6 @@ uniform sampler2D normaltex;
 uniform sampler2D speculartex;
 uniform sampler2D extra;
 
-in vec4 colormod;
 uniform vec3 exinfovec;
 
 uniform float hasextra;

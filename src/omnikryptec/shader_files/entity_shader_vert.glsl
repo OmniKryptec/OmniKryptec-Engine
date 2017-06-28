@@ -14,10 +14,12 @@ out vec4 lightPosO[maxlights];
 out vec3 toCamVec;
 
 in mat4 transmatrix;
-uniform mat4 projmatrix;
-uniform mat4 viewmatrix;
 in vec4 colour;
 out vec4 colormod;
+
+
+uniform mat4 projmatrix;
+uniform mat4 viewmatrix;
 uniform vec4 uvs;
 
 uniform vec4 lightpos[maxlights];

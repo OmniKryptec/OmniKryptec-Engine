@@ -202,12 +202,12 @@ public class DisplayManager implements Profilable{
 		}
 		runtimef = (float) runtime;
 		framecount++;
+		Display.update();
 		tmptime2 = getCurrentTime();
 		if (sync > DISABLE_FPS_CAP) {
 			Display.sync(sync);
 		}
 		idletime = getCurrentTime() - tmptime2;
-		Display.update();
 		updateTime = getCurrentTime() - tmptime - idletime;
 		return this;
 	}
