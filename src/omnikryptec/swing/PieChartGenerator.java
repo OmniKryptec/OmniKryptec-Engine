@@ -89,7 +89,7 @@ public class PieChartGenerator {
         boolean floored = false;
         for(int i = 0; i < chartDatas.length; i++) {
             final ChartData chartData = chartDatas[i];
-            float angle = 360.0F * chartData.getPercentage();
+            double angle = 360.0 * chartData.getPercentage();
             float startAngle = last_startAngle;
             if(i == chartDatas.length - 1) {
                 startAngle += 0.5;
@@ -112,7 +112,7 @@ public class PieChartGenerator {
         last_startAngle = 0;
         for(int i = 0; i < chartDatas.length; i++) {
             final ChartData chartData = chartDatas[i];
-            float angle = 360.0F * chartData.getPercentage();
+            double angle = 360.0 * chartData.getPercentage();
             float startAngle = last_startAngle;
             if(i == chartDatas.length - 1) {
                 startAngle += 0.5;

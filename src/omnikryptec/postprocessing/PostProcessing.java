@@ -42,8 +42,8 @@ public class PostProcessing implements Profilable{
 		instance = this;
 	}
 	
-	private long tmptime = 0;
-	private long rendertime=0;
+	private double tmptime = 0;
+	private double rendertime=0;
 	
 	public void doPostProcessing(FrameBufferObject[] fbos, FrameBufferObject... fbo) {
 		before = fbo[0];
@@ -76,7 +76,7 @@ public class PostProcessing implements Profilable{
 		beforelist.clear();
 	}
 
-	public long getRenderTimeMS(){
+	public double getRenderTimeMS(){
 		return rendertime;
 	}
 	
@@ -116,7 +116,6 @@ public class PostProcessing implements Profilable{
 
 	private void end() {
 		RenderUtil.enableDepthTesting(true);
-		quad.getVao().unbind(0, 1);
 	}
 	
 	public int getActiveStageCount(){

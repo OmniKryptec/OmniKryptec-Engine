@@ -39,9 +39,9 @@ public class ParticleMaster implements Profilable {
         Profiler.addProfilable(this, 1);
     }
 
-    private long rendertime = 0;
-    private long tmptime = 0, tmptime2;
-    private long updatetime = 0;
+    private double rendertime = 0;
+    private double tmptime = 0, tmptime2;
+    private double updatetime = 0;
 
     public void update(Camera cam) {
         updatedParticlesCount = 0;
@@ -73,15 +73,15 @@ public class ParticleMaster implements Profilable {
         rendertime = Instance.getDisplayManager().getCurrentTime() - tmptime;
     }
 
-    public long getRenderTimeMS() {
+    public double getRenderTimeMS() {
         return rendertime;
     }
 
-    public long getUpdateTimeMS() {
+    public double getUpdateTimeMS() {
         return updatetime;
     }
 
-    public long getOverallParticleTimeMS() {
+    public double getOverallParticleTimeMS() {
         return getRenderTimeMS() + getUpdateTimeMS();
     }
 

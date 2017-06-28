@@ -36,7 +36,7 @@ public class StreamedSound implements ISound {
 	private final int bufferCount;
 	private final int bufferTime;
 	private final int format;
-	private long lastTime = 0;
+	private double lastTime = 0;
 
 	private Instant lastTimeT = Instant.now();
 
@@ -177,11 +177,11 @@ public class StreamedSound implements ISound {
 	}
 
 	@Override
-	public final void update(long currentTime) {
+	public final void update(double currentTime) {
 		if (buffersCreated.isEmpty()) {
 			return;
 		}
-		final long duration = currentTime - lastTime;
+		final double duration = currentTime - lastTime;
 		lastTime = currentTime;
 		int bufferProcessedID = 0;
 		while ((bufferProcessedID = AL10.alGetSourcei(source.getSourceID(), AL10.AL_BUFFERS_PROCESSED)) != 0) {

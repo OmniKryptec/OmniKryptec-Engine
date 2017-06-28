@@ -11,7 +11,7 @@ public class ChartData {
     private final String name;
     private double value = 0.0F;
     private Color color = null;
-    private float percentage = -1.0F;
+    private double percentage = -1.0F;
     
     public ChartData(String name, double value) {
         this.name = name;
@@ -40,11 +40,11 @@ public class ChartData {
         return this;
     }
 
-    public final float getPercentage() {
+    public final double getPercentage() {
         return percentage;
     }
 
-    public final ChartData setPercentage(float percentage) {
+    public final ChartData setPercentage(double percentage) {
         this.percentage = percentage;
         return this;
     }

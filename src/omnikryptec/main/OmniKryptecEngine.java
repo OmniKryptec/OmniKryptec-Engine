@@ -103,10 +103,10 @@ public class OmniKryptecEngine implements Profilable {
     private ShutdownOption shutdownOption = ShutdownOption.JAVA;
     private boolean requestclose = false;
 
-    private long rendertime = 0;
-    private long tmptime = 0, tmptime2 = 0;
-    private long frametime = 0;
-    private long displayupdatetime = 0;
+    private double rendertime = 0;
+    private double tmptime = 0, tmptime2 = 0;
+    private double frametime = 0;
+    private double displayupdatetime = 0;
     
     public OmniKryptecEngine(DisplayManager manager) {
         if (manager == null) {
@@ -193,7 +193,7 @@ public class OmniKryptecEngine implements Profilable {
     }
 
     public final OmniKryptecEngine frame(boolean clear) {
-        final long currentTime = manager.getCurrentTime();
+        final double currentTime = manager.getCurrentTime();
         try {
             if (!Display.isActive()) {
             	Display.update();
@@ -304,11 +304,11 @@ public class OmniKryptecEngine implements Profilable {
         return vertsCountCurrent;
     }
 
-    public final long getRenderTimeMS() {
+    public final double getRenderTimeMS() {
         return rendertime;
     }
 
-    public final long getFrameTimeMS() {
+    public final double getFrameTimeMS() {
         return frametime;
     }
 

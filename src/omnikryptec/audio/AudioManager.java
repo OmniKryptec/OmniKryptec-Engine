@@ -288,7 +288,7 @@ public class AudioManager {
      *
      * @param currentTime Long Current time in milliseconds
      */
-    public static final void update(long currentTime) {
+    public static final void update(double currentTime) {
         for (StreamedSound streamedSound : StreamedSound.streamedSounds) {
             streamedSound.update(currentTime);
         }

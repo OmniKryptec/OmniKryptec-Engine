@@ -38,7 +38,7 @@ public interface ISound {
 	 * @param currentTime
 	 *            Long Current time in milliseconds
 	 */
-	public void update(long currentTime);
+	public void update(double currentTime);
 
 	/**
 	 * This function gets called when this ISound is deleted
