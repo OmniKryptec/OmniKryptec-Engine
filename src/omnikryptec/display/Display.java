@@ -13,12 +13,13 @@ import omnikryptec.logger.LogEntry.LogLevel;
 public class Display {
 	
 	private static long window=0;
-	private static int width,height;
+	private static int width,height,fwidth,fheight;
 	private static GLFWErrorCallback errorCallback;
 	private static GLFWFramebufferSizeCallback framebufferSizeCallback;
 	private static boolean resized=false;
 	
-	private static long lastsynced;
+	private static boolean isfullscreen=false;
+	private static double lastsynced;
 	
 	static void create(String name, GLFWInfo info){
 		width = info.getWidth();
@@ -34,6 +35,7 @@ public class Display {
 			 GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
 		     width = vidMode.width();
 		     height = vidMode.height();
+		     isfullscreen = true;
 		}
 		window = GLFW.glfwCreateWindow(width, height, name, info.wantsFullscreen()?GLFW.glfwGetPrimaryMonitor():0, 0);
 		if(window == 0) {
@@ -53,11 +55,15 @@ public class Display {
 		Logger.log("Successfully created GLContext and the Window!", LogLevel.FINEST);
 	}
 	
-	public static GLFWErrorCallback getErrorCallback(){
+	public static boolean shouldBeFullscreen(){
+		return isfullscreen;
+	}
+	
+	static GLFWErrorCallback getErrorCallback(){
 		return errorCallback;
 	}
 	
-	public static GLFWFramebufferSizeCallback getDisplaySizeCallback(){
+	static GLFWFramebufferSizeCallback getDisplaySizeCallback(){
 		return framebufferSizeCallback;
 	}
 	
@@ -106,11 +112,11 @@ public class Display {
 	}
 	
 	public static int getWidth(){
-		return 0;
+		return width;
 	}
 	
 	public static int getHeight(){
-		return 0;
+		return height;
 	}
 	
 }

@@ -37,7 +37,7 @@ public class LiveProfiler {
         new ChartData(Profiler.PARTICLE_RENDERER, 0),
         new ChartData(Profiler.PARTICLE_UPDATER, 0),
         new ChartData(Profiler.POSTPROCESSOR, 0)};
-    private final HashMap<ChartData, LinkedList<Float>> data = new HashMap<>();
+    private final HashMap<ChartData, LinkedList<Double>> data = new HashMap<>();
     private float[] sqrts = null;
     private Timer timer = null;
     private int lastSeconds = 30;
@@ -92,14 +92,14 @@ public class LiveProfiler {
     private final LiveProfiler updateData() {
         frame.setTitle(String.format("LiveProfiler - %s: %d ms", Profiler.OVERALL_FRAME_TIME, (Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME))));
         for (ChartData chartData : data.keySet()) {
-            final LinkedList<Float> values = data.get(chartData);
-            final float addValue = Math.max(Profiler.currentTimeByName(chartData.getName()), 0.0F);
+            final LinkedList<Double> values = data.get(chartData);
+            final double addValue = Math.max(Profiler.currentTimeByName(chartData.getName()), 0.0F);
             values.addFirst(addValue);
             while(values.size() > maxValuesSize) {
                 values.removeLast();
             }
             float completeValue = 0.0F;
-            final Iterator<Float> floats = values.iterator();
+            final Iterator<Double> floats = values.iterator();
             int i = 0;
             while(floats.hasNext()) {
                 completeValue += (floats.next() / sqrts[i]);
