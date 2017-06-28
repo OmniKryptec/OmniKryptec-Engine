@@ -46,7 +46,9 @@ public class Profiler {
 		                continue;
 		            }
 		            for (int j=(i==0?1:0); j<cs.length; j++) {
-		            	max -= cs[i].getTime();
+		            	if(j<cs.length){
+		            		max -= cs[i].getTime();
+		            	}
 		            }
 		        }
 				return max;
