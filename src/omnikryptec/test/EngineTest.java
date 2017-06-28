@@ -25,7 +25,7 @@ public class EngineTest {
             Logger.showConsoleDirect();
 
             DisplayManager.createDisplay("Test",
-                    new GameSettings("EngineTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32));
+                    new GameSettings().setAnisotropicLevel(32).setMultisamples(32));
             Model brunnen = new Model("",
                     ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
             // Model brunnen = Model.generateQuad();

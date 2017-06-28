@@ -1,5 +1,6 @@
 package omnikryptec.deferredlight;
 
+import omnikryptec.display.Display;
 import omnikryptec.entity.Light;
 import omnikryptec.main.Scene;
 import omnikryptec.shader.Shader;

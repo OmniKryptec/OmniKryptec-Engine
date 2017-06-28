@@ -5,6 +5,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
+import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Light;
 import omnikryptec.logger.LogEntry.LogLevel;
