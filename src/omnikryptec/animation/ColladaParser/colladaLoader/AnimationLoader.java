@@ -5,12 +5,12 @@ import java.util.List;
 
 import org.jdom2.Element;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.util.vector.Matrix4f;
 
 import omnikryptec.animation.ColladaParser.dataStructures.AnimationData;
 import omnikryptec.animation.ColladaParser.dataStructures.JointTransformData;
 import omnikryptec.animation.ColladaParser.dataStructures.KeyFrameData;
 import omnikryptec.util.XMLUtil;
+import org.joml.Matrix4f;
 
 /**
  * Loads an animation for a model from a collada XML file.
@@ -86,11 +86,11 @@ public class AnimationLoader {
             buffer.put(matrixData);
             buffer.flip();
             final Matrix4f transform = new Matrix4f();
-            transform.load(buffer);
+            transform.set(buffer);
             transform.transpose();
             if (root) {
                 // because up axis in Blender is different to up axis in game
-                Matrix4f.mul(ColladaLoader.CORRECTION, transform, transform);
+                ColladaLoader.CORRECTION.mul(transform, transform);
             }
             keyFrames[i].addJointTransform(new JointTransformData(jointName, transform));
         }

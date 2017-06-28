@@ -4,16 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom2.Element;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.animation.ColladaParser.dataStructures.AnimatedVertex;
 import omnikryptec.animation.ColladaParser.dataStructures.MeshData;
 import omnikryptec.animation.ColladaParser.dataStructures.VertexSkinData;
-import omnikryptec.util.Maths;
 import omnikryptec.util.XMLUtil;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 /**
  * Loads the mesh data for a model from a collada XML file.
@@ -21,8 +19,6 @@ import omnikryptec.util.XMLUtil;
  * @author Karl &amp; Panzer1119
  */
 public class GeometryLoader {
-
-    private static final Matrix4f CORRECTION = new Matrix4f().rotate((float) Math.toRadians(-90), Maths.X);
 
     private final Element meshData;
 
@@ -73,7 +69,7 @@ public class GeometryLoader {
             float y = Float.parseFloat(posData[i * 3 + 1]);
             float z = Float.parseFloat(posData[i * 3 + 2]);
             Vector4f position = new Vector4f(x, y, z, 1);
-            Matrix4f.transform(CORRECTION, position, position);
+            ColladaLoader.CORRECTION.transform(position, position);
             vertices.add(new AnimatedVertex(vertices.size(), new Vector3f(position.x, position.y, position.z), vertexWeights.get(vertices.size())));
         }
     }
@@ -88,7 +84,7 @@ public class GeometryLoader {
             float y = Float.parseFloat(normData[i * 3 + 1]);
             float z = Float.parseFloat(normData[i * 3 + 2]);
             Vector4f norm = new Vector4f(x, y, z, 0f);
-            Matrix4f.transform(CORRECTION, norm, norm);
+            ColladaLoader.CORRECTION.transform(norm, norm);
             normals.add(new Vector3f(norm.x, norm.y, norm.z));
         }
     }
@@ -150,18 +146,23 @@ public class GeometryLoader {
     }
 
     private static void calculateTangents(AnimatedVertex v0, AnimatedVertex v1, AnimatedVertex v2, List<Vector2f> textures) {
-        Vector3f delatPos1 = Vector3f.sub(v1.getPosition(), v0.getPosition(), null);
-        Vector3f delatPos2 = Vector3f.sub(v2.getPosition(), v0.getPosition(), null);
+        Vector3f deltaPos1 = new Vector3f();
+        v1.getPosition().sub(v0.getPosition(), deltaPos1);
+        Vector3f deltaPos2 = new Vector3f();
+        v2.getPosition().sub(v0.getPosition(), deltaPos2);
         Vector2f uv0 = textures.get(v0.getTextureIndex());
         Vector2f uv1 = textures.get(v1.getTextureIndex());
         Vector2f uv2 = textures.get(v2.getTextureIndex());
-        Vector2f deltaUv1 = Vector2f.sub(uv1, uv0, null);
-        Vector2f deltaUv2 = Vector2f.sub(uv2, uv0, null);
+        Vector2f deltaUv1 = new Vector2f();
+        uv1.sub(uv0, deltaUv1);
+        Vector2f deltaUv2 = new Vector2f();
+        uv2.sub(uv0, deltaUv2);
         float r = 1.0f / (deltaUv1.x * deltaUv2.y - deltaUv1.y * deltaUv2.x);
-        delatPos1.scale(deltaUv2.y);
-        delatPos2.scale(deltaUv1.y);
-        Vector3f tangent = Vector3f.sub(delatPos1, delatPos2, null);
-        tangent.scale(r);
+        deltaPos1.mul(deltaUv2.y);
+        deltaPos2.mul(deltaUv1.y);
+        Vector3f tangent = new Vector3f();
+        deltaPos1.sub(deltaPos2, tangent);
+        tangent.mul(r);
         v0.addTangent(tangent);
         v1.addTangent(tangent);
         v2.addTangent(tangent);

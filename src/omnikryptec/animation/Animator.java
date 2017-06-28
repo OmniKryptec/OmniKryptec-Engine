@@ -2,10 +2,9 @@ package omnikryptec.animation;
 
 import java.util.HashMap;
 
-import org.lwjgl.util.vector.Matrix4f;
-
 import omnikryptec.display.DisplayManager;
 import omnikryptec.util.Maths;
+import org.joml.Matrix4f;
 
 /**
  * Animator
@@ -162,11 +161,12 @@ public class Animator {
     private final Animator applyPoseToJoints(HashMap<String, Matrix4f> currentPose, Joint joint,
             Matrix4f parentTransform) {
         final Matrix4f currentLocalTransform = currentPose.get(joint.getName());
-        final Matrix4f currentTransform = Matrix4f.mul(parentTransform, currentLocalTransform, null);
+        final Matrix4f currentTransform = new Matrix4f();
+        parentTransform.mul(currentLocalTransform, currentTransform);
         joint.getChildren().stream().forEach((child) -> {
             applyPoseToJoints(currentPose, child, currentTransform);
         });
-        Matrix4f.mul(currentTransform, joint.getInverseBindTransform(), currentTransform);
+        currentTransform.mul(joint.getInverseBindTransform(), currentTransform);
         joint.setAnimationTransform(currentTransform);
         return this;
     }

@@ -2,12 +2,12 @@ package omnikryptec.input;
 
 import java.util.Arrays;
 import omnikryptec.settings.KeySettings;
+import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWCursorEnterCallback;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
-import org.lwjgl.util.vector.Vector2f;
 
 /**
  * MouseHandler

@@ -1,15 +1,15 @@
 package omnikryptec.input;
 
 import omnikryptec.display.Display;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.GameObject;
 import omnikryptec.settings.KeySettings;
+import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 
 /**
@@ -84,9 +84,9 @@ public class InputManager {
         }
         if (camera != null) {
             if (invertedProjectionMatrix == null) {
-                invertedProjectionMatrix = Matrix4f.invert(camera.getProjectionMatrix(), null);
+                camera.getProjectionMatrix().invert(invertedProjectionMatrix);
             }
-            Matrix4f.invert(camera.getViewMatrix(), invertedViewMatrix);
+            camera.getViewMatrix().invert(invertedViewMatrix);
             calculateMouseRay();
         }
         mousePosition_lastTime.x = mousePosition.x;
@@ -197,11 +197,11 @@ public class InputManager {
     private static final void calculateMouseRay() {
         final Vector2f normalizedDevicePosition = new Vector2f((2.0F * mouseHandler.position.x) / Display.getWidth() - 1, (2.0F * mouseHandler.position.y) / Display.getHeight() - 1);
         final Vector4f clipSpacePosition = new Vector4f(normalizedDevicePosition.x, normalizedDevicePosition.y, -1F, 1F);
-        Matrix4f.transform(invertedProjectionMatrix, clipSpacePosition, clipSpacePosition);
+        invertedProjectionMatrix.transform(clipSpacePosition, clipSpacePosition);
         final Vector4f eyePosition = new Vector4f(clipSpacePosition.x, clipSpacePosition.y, -1F, 0);
-        Matrix4f.transform(invertedViewMatrix, eyePosition, eyePosition);
+        invertedViewMatrix.transform(eyePosition, eyePosition);
         final Vector3f worldPosition = new Vector3f(eyePosition.x, eyePosition.y, eyePosition.z);
-        worldPosition.normalise();
+        worldPosition.normalize();
         currentRay.x = worldPosition.x;
         currentRay.y = worldPosition.y;
         currentRay.z = worldPosition.z;

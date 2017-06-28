@@ -15,7 +15,7 @@
 * KIND, either express or implied.  See the License for the
 * specific language governing permissions and limitations
 * under the License.
-*/
+ */
 package omnikryptec.audio;
 
 import static org.lwjgl.openal.EXTEfx.ALC_MAX_AUXILIARY_SENDS;
@@ -36,14 +36,13 @@ import org.lwjgl.openal.AL11;
 import org.lwjgl.openal.ALC;
 import org.lwjgl.openal.ALC10;
 import org.lwjgl.openal.ALCCapabilities;
-import org.lwjgl.util.WaveData;
-import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.component.Component;
 import omnikryptec.logger.Logger;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.AudioUtil;
 import org.apache.commons.io.IOUtils;
+import org.joml.Vector3f;
 
 /**
  * Main audio manager class
@@ -82,7 +81,7 @@ public class AudioManager {
             contextAttributeList.put(0);
             contextAttributeList.flip();
             context = ALC10.alcCreateContext(defaultDevice, contextAttributeList);
-            if(!ALC10.alcMakeContextCurrent(context)) {
+            if (!ALC10.alcMakeContextCurrent(context)) {
                 throw new Exception("Failed to set current OpenAL Context!");
             }
             AL.createCapabilities(deviceCapabilities);
@@ -190,15 +189,15 @@ public class AudioManager {
     public static final int loadSound(String name, String path) {
         return loadSound(name, AudioManager.class.getResourceAsStream(path));
     }
-    
+
     public static final int loadSound(String name, InputStream inputStream) {
         try {
             final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream);
-            if(audioInputStream == null) {
+            if (audioInputStream == null) {
                 return 0;
             }
             final AudioFormat audioFormat = audioInputStream.getFormat();
-            if(audioFormat.isBigEndian()) {
+            if (audioFormat.isBigEndian()) {
                 throw new UnsupportedAudioFileException("Can not handle Big Endian formats yet"); //TODO Implement Big Endian formats
             }
             final int openALFormat = AudioUtil.audioFormatToOpenALFormat(audioFormat);
@@ -229,9 +228,9 @@ public class AudioManager {
     public static final int loadSoundOLD(String name, InputStream inputStream) {
         deleteSound(name);
         final int bufferID = AL10.alGenBuffers();
-        final WaveData waveData = WaveData.create(inputStream);
-        AL10.alBufferData(bufferID, waveData.format, waveData.data, waveData.samplerate);
-        waveData.dispose();
+        //final WaveData waveData = WaveData.create(inputStream);
+        //AL10.alBufferData(bufferID, waveData.format, waveData.data, waveData.samplerate);
+        //waveData.dispose();
         final Sound sound = new Sound(name, bufferID);
         sounds.add(sound);
         return bufferID;

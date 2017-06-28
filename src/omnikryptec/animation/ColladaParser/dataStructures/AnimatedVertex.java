@@ -1,20 +1,19 @@
 package omnikryptec.animation.ColladaParser.dataStructures;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import omnikryptec.objConverter.Vertex;
+import org.joml.Vector3f;
 
 public class AnimatedVertex extends Vertex {
 
-	private final VertexSkinData weightsData;
+    private final VertexSkinData weightsData;
 
-	public AnimatedVertex(int index, Vector3f position, VertexSkinData weightsData) {
-		super(index, position);
-		this.weightsData = weightsData;
-	}
+    public AnimatedVertex(int index, Vector3f position, VertexSkinData weightsData) {
+        super(index, position);
+        this.weightsData = weightsData;
+    }
 
-	public VertexSkinData getWeightsData() {
-		return weightsData;
-	}
+    public VertexSkinData getWeightsData() {
+        return weightsData;
+    }
 
 }

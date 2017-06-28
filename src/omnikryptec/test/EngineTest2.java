@@ -2,9 +2,6 @@ package omnikryptec.test;
 
 import java.util.Random;
 
-import org.lwjgl.opengl.GL;
-import org.lwjgl.util.vector.Vector3f;
-
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
@@ -25,10 +22,8 @@ import omnikryptec.main.Scene;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ObjLoader;
-import omnikryptec.particles.ParticleMaster;
 import omnikryptec.particles.ParticleSystem;
 import omnikryptec.particles.ParticleTexture;
-import omnikryptec.postprocessing.PostProcessing;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.AtlasTexture;
@@ -41,6 +36,7 @@ import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.profiler.LiveProfiler;
 import omnikryptec.util.profiler.Profiler;
+import org.joml.Vector3f;
 
 /**
  *
@@ -49,21 +45,21 @@ import omnikryptec.util.profiler.Profiler;
 public class EngineTest2 implements IEventHandler {
 
     public static void main(String[] args) {
-    	try {
-        	NativesLoader.loadNatives();
+        try {
+            NativesLoader.loadNatives();
             OmniKryptecEngine.addShutdownHook(() -> NativesLoader.unloadNatives());
             Logger.setMinimumLogLevel(LogLevel.FINEST);
             Logger.enableLoggerRedirection(true);
             Logger.setDebugMode(true);
             Logger.CONSOLE.setExitWhenLastOne(true);
             Logger.showConsoleDirect();
-            
+
             LanguageManager.setLanguage("DE");
 
             DisplayManager.createDisplay("Test 2",
                     new GameSettings().setAnisotropicLevel(32).setMultisamples(32)
                     .setInitialFPSCap(30).setChunkRenderOffsets(2, 2, 2).setLightForward(true),
-                    new GLFWInfo(4,3,false,false,1280, 720));
+                    new GLFWInfo(4, 3, false, false, 1280, 720));
             DisplayManager.instance().setSmoothedDeltatime(true);
             DisplayManager.instance().setSmoothedFrames(1000);
             LiveProfiler liveProfiler = new LiveProfiler(750, 750);
@@ -100,13 +96,12 @@ public class EngineTest2 implements IEventHandler {
 //             PostProcessing.instance().addStage(new
 //             CompleteGaussianBlurStage(false, 0.05f, 0.05f));
 //            PostProcessing.instance().addStage(new DebugRenderer());
-    		
-    		AdvancedFile res = new AdvancedFile("res");
+
+            AdvancedFile res = new AdvancedFile("res");
             SimpleTexture jd = SimpleTexture.newTexture(new AdvancedFile(res, "jd.png"));
             SimpleTexture js = SimpleTexture.newTexture(new AdvancedFile(res, "js.png"));
             SimpleTexture jn = SimpleTexture.newTexture(new AdvancedFile(res, "jn.png"));
             EventSystem.instance().addEventHandler(new EngineTest2(), EventType.AFTER_FRAME, EventType.RENDER_EVENT);
-            
 
             Model brunnen = new Model("",
                     ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
@@ -145,8 +140,7 @@ public class EngineTest2 implements IEventHandler {
 
             SimpleAnimation animation = new SimpleAnimation(2, brunnent, pinet);
             SimpleTexture pine_normal = SimpleTexture.newTexture("/omnikryptec/test/pine2_normal.png");
-            
-            
+
             TexturedModel ptm = new TexturedModel("pine", pine, pinet);
             ptm.getMaterial().setNormalmap(pine_normal);
             ptm.getMaterial().setHasTransparency(true).setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER);
@@ -169,17 +163,17 @@ public class EngineTest2 implements IEventHandler {
 //               e.setRelativePos(r.nextInt(100) - 50, r.nextInt(100) - 50, r.nextInt(100) - 50);
 //                OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 //            }
-            int cube=10;
-            int abstand=20;
-            float scale=2;
-            for(int x=-cube; x<cube; x+=abstand){
-            	for(int y=-cube; y<cube; y+=abstand){
-            		for(int z=-cube; z<cube; z+=abstand){
-            			Instance.getCurrentScene().addGameObject(new Entity(tm).setScale(new Vector3f(scale,scale,scale)).setUpdateType(UpdateType.STATIC).setRelativePos(x, y, z));
-            		}
+            int cube = 10;
+            int abstand = 20;
+            float scale = 2;
+            for (int x = -cube; x < cube; x += abstand) {
+                for (int y = -cube; y < cube; y += abstand) {
+                    for (int z = -cube; z < cube; z += abstand) {
+                        Instance.getCurrentScene().addGameObject(new Entity(tm).setScale(new Vector3f(scale, scale, scale)).setUpdateType(UpdateType.STATIC).setRelativePos(x, y, z));
+                    }
                 }
             }
-			//Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0, 1).setUpdateType(UpdateType.STATIC).setScale(new Vector3f(scale,scale,scale)).setRelativePos(0, 10, 0));
+            //Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0, 1).setUpdateType(UpdateType.STATIC).setScale(new Vector3f(scale,scale,scale)).setRelativePos(0, 10, 0));
 
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
             system = new ParticleSystem(0, 0, 0,
@@ -188,9 +182,9 @@ public class EngineTest2 implements IEventHandler {
             // system.setTimemultiplier(10);
             //OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             //OmniKryptecEngine.instance().getCurrentScene()
-              //      .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setCuttOffRange(50).setColor(3, 0, 0).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0, -1, 0).setRelativePos(0,10, 0));
+            //      .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setCuttOffRange(50).setColor(3, 0, 0).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0, -1, 0).setRelativePos(0,10, 0));
             OmniKryptecEngine.instance().getCurrentScene()
-            .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(1, 1, 1).setDirectional(true).setConeDegrees(5).setConeDirection(0, 1, 0).setRelativePos(0,1, 0));
+                    .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(1, 1, 1).setDirectional(true).setConeDegrees(5).setConeDirection(0, 1, 0).setRelativePos(0, 1, 0));
 
             // ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
             // OmniKryptecEngine.instance().getCurrentScene().addGameObject(new
@@ -204,14 +198,13 @@ public class EngineTest2 implements IEventHandler {
             // .instance().getCurrentScene().addGameObject(new
             // Light().setColor(0, 0, 1).setRadius(100).setRelativePos(50, 50,
             // 0));
-
             OmniKryptecEngine.instance().startLoop(ShutdownOption.JAVA);
         } catch (Exception ex) {
             Logger.logErr("Error: " + ex, ex);
         }
     }
 
-    private static float v =30;
+    private static float v = 30;
 
     private static void doCameraLogic(Camera camera) {
         // v += DisplayManager.instance().getDeltaTime()*30;
@@ -222,22 +215,21 @@ public class EngineTest2 implements IEventHandler {
     }
 
     private static ParticleSystem system;
-        
+
     @Override
     public void onEvent(Event ev) {
-    	
+
         // system.generateParticles(1);
-        if(ev.getType() == EventType.RENDER_EVENT){
-        	//Display.setTitle("FPS: " + DisplayManager.instance().getFPS()+" / SFPS: " + DisplayManager.instance().getSmoothedFPS()+" / Vertices: "+OmniKryptecEngine.instance().getModelVertsCount()+" / PPStages: "+PostProcessing.instance().getActiveStageCount()+ " / Renderer P.: "+ParticleMaster.instance().getRenderedParticlesCount()+"  (updated P.: "+ParticleMaster.instance().getUpdatedParticlesCount()+") ");
+        if (ev.getType() == EventType.RENDER_EVENT) {
+            //Display.setTitle("FPS: " + DisplayManager.instance().getFPS()+" / SFPS: " + DisplayManager.instance().getSmoothedFPS()+" / Vertices: "+OmniKryptecEngine.instance().getModelVertsCount()+" / PPStages: "+PostProcessing.instance().getActiveStageCount()+ " / Renderer P.: "+ParticleMaster.instance().getRenderedParticlesCount()+"  (updated P.: "+ParticleMaster.instance().getUpdatedParticlesCount()+") ");
         }
         //System.out.println("(Rendertime: "+Instance.getEngine().getRenderTimeMS()+" Particletime: "+ParticleMaster.instance().getOverallParticleTimeMS()+" PPTime: "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());
-        if(ev.getType() == EventType.AFTER_FRAME){
-        	Logger.log(new Profiler().createTimesString(50, true, false));
+        if (ev.getType() == EventType.AFTER_FRAME) {
+            Logger.log(new Profiler().createTimesString(50, true, false));
         }
         //Logger.log(new Profiler().createTimesString(50, true, false));
         //System.out.println(DisplayManager.instance().getFPS());
         // System.out.println(DisplayManager.instance().getDeltaTime());
     }
-    
-    
+
 }

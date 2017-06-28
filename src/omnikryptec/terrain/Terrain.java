@@ -2,15 +2,14 @@ package omnikryptec.terrain;
 
 import java.util.ArrayList;
 
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-
 import omnikryptec.entity.Entity;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.objConverter.ModelData;
 import omnikryptec.objConverter.Vertex;
 import omnikryptec.texture.Texture;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 /**
  * Terrain
@@ -110,20 +109,25 @@ public class Terrain extends Entity {
             }
         }
     }
-
-    private static final void calculateTangents(Vertex v0, Vertex v1, Vertex v2, ArrayList<Vector2f> textures) {
-        Vector3f delatPos1 = Vector3f.sub(v1.getPosition(), v0.getPosition(), null);
-        Vector3f delatPos2 = Vector3f.sub(v2.getPosition(), v0.getPosition(), null);
+    
+    private static void calculateTangents(Vertex v0, Vertex v1, Vertex v2, ArrayList<Vector2f> textures) {
+        Vector3f deltaPos1 = new Vector3f();
+        v1.getPosition().sub(v0.getPosition(), deltaPos1);
+        Vector3f deltaPos2 = new Vector3f();
+        v2.getPosition().sub(v0.getPosition(), deltaPos2);
         Vector2f uv0 = textures.get(v0.getTextureIndex());
         Vector2f uv1 = textures.get(v1.getTextureIndex());
         Vector2f uv2 = textures.get(v2.getTextureIndex());
-        Vector2f deltaUv1 = Vector2f.sub(uv1, uv0, null);
-        Vector2f deltaUv2 = Vector2f.sub(uv2, uv0, null);
+        Vector2f deltaUv1 = new Vector2f();
+        uv1.sub(uv0, deltaUv1);
+        Vector2f deltaUv2 = new Vector2f();
+        uv2.sub(uv0, deltaUv2);
         float r = 1.0f / (deltaUv1.x * deltaUv2.y - deltaUv1.y * deltaUv2.x);
-        delatPos1.scale(deltaUv2.y);
-        delatPos2.scale(deltaUv1.y);
-        Vector3f tangent = Vector3f.sub(delatPos1, delatPos2, null);
-        tangent.scale(r);
+        deltaPos1.mul(deltaUv2.y);
+        deltaPos2.mul(deltaUv1.y);
+        Vector3f tangent = new Vector3f();
+        deltaPos1.sub(deltaPos2, tangent);
+        tangent.mul(r);
         v0.addTangent(tangent);
         v1.addTangent(tangent);
         v2.addTangent(tangent);

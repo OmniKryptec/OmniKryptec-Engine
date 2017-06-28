@@ -2,9 +2,6 @@ package omnikryptec.animation.loaders;
 
 import java.util.HashMap;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
-
 import omnikryptec.animation.Animation;
 import omnikryptec.animation.JointTransform;
 import omnikryptec.animation.KeyFrame;
@@ -14,6 +11,8 @@ import omnikryptec.animation.ColladaParser.dataStructures.JointTransformData;
 import omnikryptec.animation.ColladaParser.dataStructures.KeyFrameData;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Quaternion;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 /**
  * This class loads up an animation collada file, gets the information from it,
@@ -65,7 +64,7 @@ public class AnimationLoader {
      */
     private static JointTransform createTransform(JointTransformData data) {
         Matrix4f mat = data.jointLocalTransform;
-        Vector3f translation = new Vector3f(mat.m30, mat.m31, mat.m32);
+        Vector3f translation = new Vector3f(mat.m30(), mat.m31(), mat.m32());
         Quaternion rotation = Quaternion.fromMatrix(mat);
         return new JointTransform(translation, rotation);
     }

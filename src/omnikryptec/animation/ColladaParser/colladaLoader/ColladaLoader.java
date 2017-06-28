@@ -2,8 +2,6 @@ package omnikryptec.animation.ColladaParser.colladaLoader;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.animation.ColladaParser.dataStructures.AnimatedModelData;
 import omnikryptec.animation.ColladaParser.dataStructures.AnimationData;
@@ -12,14 +10,17 @@ import omnikryptec.animation.ColladaParser.dataStructures.SkeletonData;
 import omnikryptec.animation.ColladaParser.dataStructures.SkinningData;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.XMLUtil;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 /**
  * Loads a model from a collada XML file.
+ *
  * @author Karl &amp; Panzer1119
  */
 public class ColladaLoader {
-    
-    public  static final Matrix4f CORRECTION = new Matrix4f().rotate((float) Math.toRadians(-90), new Vector3f(1, 0, 0));
+
+    public static final Matrix4f CORRECTION = new Matrix4f().rotate((float) Math.toRadians(-90), new Vector3f(1, 0, 0));
 
     public static final MeshData getMeshDataOnly(AdvancedFile colladaFile) {
         return loadColladaModel("", colladaFile, 0).getMeshData();
@@ -28,10 +29,10 @@ public class ColladaLoader {
     public static final AnimatedModelData loadColladaModel(AdvancedFile colladaFile, int maxWeights) {
         return loadColladaModel("", colladaFile, maxWeights);
     }
-    
+
     public static final AnimatedModelData loadColladaModel(String name, AdvancedFile colladaFile, int maxWeights) {
         final Document document = XMLUtil.getDocument(colladaFile.createInputStream());
-        if(document == null) {
+        if (document == null) {
             return null;
         }
         final Element node = document.getRootElement();
@@ -46,7 +47,7 @@ public class ColladaLoader {
 
     public static final AnimationData loadColladaAnimation(AdvancedFile colladaFile) {
         final Document document = XMLUtil.getDocument(colladaFile.createInputStream());
-        if(document == null) {
+        if (document == null) {
             return null;
         }
         final Element node = document.getRootElement();

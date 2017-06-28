@@ -5,14 +5,15 @@ import java.util.List;
 
 import org.jdom2.Element;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.util.vector.Matrix4f;
 
 import omnikryptec.animation.ColladaParser.dataStructures.JointData;
 import omnikryptec.animation.ColladaParser.dataStructures.SkeletonData;
 import omnikryptec.util.XMLUtil;
+import org.joml.Matrix4f;
 
 /**
  * Loads the Skeleton
+ *
  * @author Karl &amp; Panzer1119
  */
 public class SkeletonLoader {
@@ -47,11 +48,11 @@ public class SkeletonLoader {
         final int index = boneOrder.indexOf(nameId);
         final String[] matrixData = XMLUtil.getChild(jointNode, "matrix").getText().split(" ");
         final Matrix4f matrix = new Matrix4f();
-        matrix.load(convertData(matrixData));
+        matrix.set(convertData(matrixData));
         matrix.transpose();
         if (isRoot) {
             // because in Blender z is up, but in our game y is up.
-            Matrix4f.mul(ColladaLoader.CORRECTION, matrix, matrix);
+            ColladaLoader.CORRECTION.mul(matrix, matrix);
         }
         jointCount++;
         return new JointData(index, nameId, matrix);

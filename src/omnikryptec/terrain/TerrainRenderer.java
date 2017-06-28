@@ -3,7 +3,6 @@ package omnikryptec.terrain;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.entity.Entity;
 import omnikryptec.logger.LogEntry.LogLevel;
@@ -17,6 +16,7 @@ import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.util.Instance;
 import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
+import org.joml.Vector3f;
 
 /**
  *
@@ -34,12 +34,12 @@ public class TerrainRenderer implements Renderer {
     private List<Entity> stapel;
     private Terrain terrain;
     private TexturedModel model;
-    private long vertcount=0;
-    	
+    private long vertcount = 0;
+
     // TODO change something
     @Override
     public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender) {
-    	vertcount = 0;
+        vertcount = 0;
         shader.start();
         TerrainShader.viewMatrix.loadMatrix(s.getCamera().getViewMatrix());
         TerrainShader.projectionMatrix.loadMatrix(s.getCamera().getProjectionMatrix());
