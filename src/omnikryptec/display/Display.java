@@ -119,4 +119,8 @@ public class Display {
 		return height;
 	}
 	
+	public static final long getID(){
+		return window;
+	}
+	
 }
