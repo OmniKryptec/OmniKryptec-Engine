@@ -125,6 +125,7 @@ public class OmniKryptecEngine implements Profilable {
         RenderUtil.enableDepthTesting(true);
         RendererRegistration.init();
         createFbos();
+        Display.show();
         eventsystem.fireEvent(new Event(), EventType.BOOTING_COMPLETED);
     }
 

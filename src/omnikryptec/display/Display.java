@@ -1,105 +1,48 @@
 package omnikryptec.display;
 
-import java.nio.IntBuffer;
 import omnikryptec.input.InputManager;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
-import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
-
 import omnikryptec.logger.Logger;
 import omnikryptec.logger.LogEntry.LogLevel;
 
 public class Display {
 
-    private static long window = 0;
-    private static int width, height, fwidth, fheight;
-    private static GLFWErrorCallback errorCallback;
-    private static GLFWFramebufferSizeCallback framebufferSizeCallback;
-    private static boolean resized = false;
 
-    private static boolean isfullscreen = false;
+    private static GLFWErrorCallback errorCallback;
+    private static Window window;
     private static double lastsynced;
 
     static void create(String name, GLFWInfo info) {
-        width = info.getWidth();
-        height = info.getHeight();
         GLFW.glfwInit();
         GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(Logger.NEWSYSERR));
-        GLFW.glfwDefaultWindowHints();
-        GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, info.wantsResizeable() ? GL11.GL_TRUE : GL11.GL_FALSE);
-        GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, info.getMajorVersion());
-        GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, info.getMinorVersion());
-        GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
-        if (info.wantsFullscreen()) {
-            GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
-            width = vidMode.width();
-            height = vidMode.height();
-            isfullscreen = true;
-        }
-        window = GLFW.glfwCreateWindow(width, height, name, info.wantsFullscreen() ? GLFW.glfwGetPrimaryMonitor() : 0, 0);
-        if (window == 0) {
-            throw new RuntimeException("Failed to create window");
-        }
-        GLFW.glfwSetFramebufferSizeCallback(window, (framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
-            @Override
-            public void invoke(long window, int width, int height) {
-                onResize(width, height);
-            }
-        }));
-        GLFW.glfwMakeContextCurrent(window);
-        GL.createCapabilities();
+        window = new Window(name, info);
         InputManager.initCallbacks();
-        //GLFW.glfwSwapInterval(-1);
         lastsynced = getCurrentTime();
-        GLFW.glfwShowWindow(window);
         Logger.log("Successfully created GLContext and the Window!", LogLevel.FINEST);
-    }
-
-    public static boolean shouldBeFullscreen() {
-        return isfullscreen;
     }
 
     static GLFWErrorCallback getErrorCallback() {
         return errorCallback;
     }
-
-    static GLFWFramebufferSizeCallback getDisplaySizeCallback() {
-        return framebufferSizeCallback;
-    }
-
-    private static void onResize(int w, int h) {
-        width = w;
-        height = h;
-        resized = true;
-        IntBuffer framebufferWidth = BufferUtils.createIntBuffer(1),
-                framebufferHeight = BufferUtils.createIntBuffer(1);
-        GLFW.glfwGetFramebufferSize(window, framebufferWidth, framebufferHeight);
-        fwidth = framebufferWidth.get();
-        fheight = framebufferHeight.get();
+    
+    public static boolean shouldBeFullscreen() {
+        return window.shouldBeFullscreen();
     }
 
     public static boolean wasResized() {
-        return resized;
-    }
-
-    public static boolean isActive() {
-        return GLFW.glfwGetWindowAttrib(window, GLFW.GLFW_FOCUSED) == GL11.GL_TRUE;
+        return window.wasResized();
     }
 
     public static void update() {
-        resized = false;
+        window.swapBuffers();
         GLFW.glfwPollEvents();
-        GLFW.glfwSwapBuffers(window);
     }
 
     static void destroy() {
+    	window.dispose();
         InputManager.closeCallbacks();
-        GLFW.glfwDestroyWindow(window);
         GLFW.glfwTerminate();
     }
 
@@ -119,27 +62,31 @@ public class Display {
     }
 
     public static boolean isCloseRequested() {
-        return GLFW.glfwWindowShouldClose(window);
+        return window.isCloseRequested();
     }
 
     public static int getWidth() {
-        return width;
+        return window.getWidth();
     }
 
     public static int getHeight() {
-        return height;
+        return window.getHeight();
     }
 
     public static int getBufferWidth() {
-        return fwidth;
+        return window.getBufferWidth();
     }
 
     public static int getBufferHeight() {
-        return fheight;
+        return window.getBufferHeight();
     }
 
     public static final long getID() {
-        return window;
+        return window.getID();
     }
+
+	public static final void show() {
+		window.show();
+	}
 
 }
