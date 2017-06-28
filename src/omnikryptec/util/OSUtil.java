@@ -20,7 +20,7 @@ public class OSUtil {
 
     private static final String OS_NAME = System.getProperty("os.name").toLowerCase();
     private static final AdvancedFile USER_HOME = AdvancedFile.folderOfPath(System.getProperty("user.home"));
-    private static final String ENGINE_FOLDER_NAME = "." + OmniKryptecEngine.class.getSimpleName();
+    private static final String ENGINE_FOLDER_NAME = "." + OmniKryptecEngine.class.getSimpleName() + "_3.1.2";
     private static final String PATHSEPARATOR = "/";
 
     public static final OS OpSys = detectOS();
