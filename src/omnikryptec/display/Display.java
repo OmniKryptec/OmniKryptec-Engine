@@ -65,6 +65,10 @@ public class Display {
         return window.isCloseRequested();
     }
 
+    public static boolean isActive(){
+    	return window.isActive();
+    }
+    
     public static int getWidth() {
         return window.getWidth();
     }
