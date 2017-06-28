@@ -52,7 +52,7 @@ public class Display {
 		}));
 		GLFW.glfwMakeContextCurrent(window);
 		GL.createCapabilities();
-		GLFW.glfwSwapInterval(1);
+		//GLFW.glfwSwapInterval(-1);
 		lastsynced = getCurrentTime();
 		GLFW.glfwShowWindow(window);
 		Logger.log("Successfully created GLContext and the Window!", LogLevel.FINEST);

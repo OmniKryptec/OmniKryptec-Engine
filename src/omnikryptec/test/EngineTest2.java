@@ -2,6 +2,7 @@ package omnikryptec.test;
 
 import java.util.Random;
 
+import org.lwjgl.opengl.GL;
 import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
@@ -226,8 +227,8 @@ public class EngineTest2 implements IEventHandler {
         }
         //System.out.println("(Rendertime: "+Instance.getEngine().getRenderTimeMS()+" Particletime: "+ParticleMaster.instance().getOverallParticleTimeMS()+" PPTime: "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());
         if(ev.getType() == EventType.AFTER_FRAME){
-        	System.out.println(new Profiler().createTimesString(50, true, false));
         }
+    	System.out.println(new Profiler().createTimesString(50, true, false));
         //System.out.println(DisplayManager.instance().getFPS());
         // System.out.println(DisplayManager.instance().getDeltaTime());
     }
