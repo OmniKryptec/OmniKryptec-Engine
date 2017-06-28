@@ -1,7 +1,7 @@
 package omnikryptec.entity;
 
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.input.InputUtil;
+import omnikryptec.input.InputHandler;
 
 /**
  *
@@ -50,20 +50,20 @@ public class FollowingCamera extends Camera {
 	}
 
 	private void calculateZoom() {
-		distanceFromGameObject -= (InputUtil.getMouseDelta().z * 0.01F);
+		distanceFromGameObject -= (InputHandler.getMouseDelta().z * 0.01F);
 	}
 
 	private void calculatePitch() {
 		if (OmniKryptecEngine.instance().getDisplayManager().getSettings().getKeySettings().getKey("mouseButtonRight")
 				.isPressed()) {
-			getRelativeRotation().x -= (InputUtil.getMouseDelta().y * 0.1F);
+			getRelativeRotation().x -= (InputHandler.getMouseDelta().y * 0.1F);
 		}
 	}
 
 	private void calculateAngleAround() {
 		if (OmniKryptecEngine.instance().getDisplayManager().getSettings().getKeySettings().getKey("mouseButtonLeft")
 				.isPressed()) {
-			angleAroundGameObject -= (InputUtil.getMouseDelta().x * 0.3F);
+			angleAroundGameObject -= (InputHandler.getMouseDelta().x * 0.3F);
 		}
 	}
 

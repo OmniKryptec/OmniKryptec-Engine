@@ -1,8 +1,6 @@
 package omnikryptec.input;
 
 import omnikryptec.display.Display;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -11,70 +9,28 @@ import org.lwjgl.util.vector.Vector4f;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.GameObject;
-import omnikryptec.logger.Logger;
 import omnikryptec.settings.KeySettings;
+import org.lwjgl.glfw.GLFW;
 
 /**
  *
- * @author pcfreak9000
+ * @author Panzer1119 &amp; pcfreak9000
  *
  */
-public class InputUtil {
+public class InputHandler {
 
-    private static String keyboardKeys_buffer = "";
-
-    /**
-     * all keys that are down this frame only active if
-     * <code>isAutoKeyboardEventReadDisabled</code> is false
-     *
-     * @return
-     */
-    public static String keyboardKeysDown() {
-        return keyboardKeys_buffer;
-    }
-
+    private static long window = -1;
     private static boolean longButtonPressEnabled = false;
-    private static final boolean[] keys_keyboard = new boolean[Keyboard.KEYBOARD_SIZE];
-    private static final boolean[] keys_mouse = new boolean[Mouse.getButtonCount()];
-    private static final Vector2f mousePosition = new Vector2f(0, 0);
-    private static final Vector3f mouseDelta = new Vector3f(0, 0, 0);
-    private static boolean isMouseGrabbed = false;
-    private static boolean isMouseInsideWindow = false;
-    private static final Vector3f currentRay = new Vector3f(0, 0, 0);
-    private static Camera camera = null;
-    private static Matrix4f invertedProjectionMatrix = null;
-    private static Matrix4f invertedViewMatrix = new Matrix4f();
     private static float currentTime = 0;
-    private static float window = -1;
 
     static {
         window = Display.getID();
     }
-
-    public static final boolean init() {
-        try {
-            Mouse.create();
-            return true;
-        } catch (Exception ex) {
-            Logger.logErr("Error while creating mouse: " + ex, ex);
-            return false;
-        }
-    }
-
-    public static final boolean cleanUp() {
-        try {
-            Mouse.destroy();
-            return true;
-        } catch (Exception ex) {
-            Logger.logErr("Error while destroying mouse: " + ex, ex);
-            return false;
-        }
-    }
-
-    /**
-     * called from the engine; computes keyboardevents
-     */
+    
     public static void nextFrame() {
+        GLFW.glfwPollEvents();
+        JoystickHandler.updateAll();
+        /*
         final KeySettings keySettings = DisplayManager.instance().getSettings().getKeySettings();
         for (int i = 0; i < keys_mouse.length; i++) {
             final boolean temp = Mouse.isButtonDown(i);
@@ -112,15 +68,9 @@ public class InputUtil {
             calculateMouseRay();
         }
         currentTime = DisplayManager.instance().getCurrentTime();
+        */
     }
-
-    /**
-     * is the specified key down? only active if
-     * <code>isAutoKeyboardEventReadDisabled</code> is false
-     *
-     * @param key
-     * @return
-     */
+    
     public static boolean isKeyboardKeyDown(int key) {
         if (key < 0 || key >= keys_keyboard.length) {
             return false;
@@ -156,7 +106,7 @@ public class InputUtil {
     }
 
     public static void setLongButtonPressEnabled(boolean longButtonPressEnabled) {
-        InputUtil.longButtonPressEnabled = longButtonPressEnabled;
+        InputHandler.longButtonPressEnabled = longButtonPressEnabled;
     }
 
     public static Matrix4f getInvertedProjectionMatrix() {
@@ -164,7 +114,7 @@ public class InputUtil {
     }
 
     public static void setInvertedProjectionMatrix(Matrix4f invertedProjectionMatrix) {
-        InputUtil.invertedProjectionMatrix = invertedProjectionMatrix;
+        InputHandler.invertedProjectionMatrix = invertedProjectionMatrix;
     }
 
     public static Matrix4f getInvertedViewMatrix() {
@@ -172,7 +122,7 @@ public class InputUtil {
     }
 
     public static void setInvertedViewMatrix(Matrix4f invertedViewMatrix) {
-        InputUtil.invertedViewMatrix = invertedViewMatrix;
+        InputHandler.invertedViewMatrix = invertedViewMatrix;
     }
 
     public static Camera getCamera() {
@@ -180,7 +130,7 @@ public class InputUtil {
     }
 
     public static void setCamera(Camera camera) {
-        InputUtil.camera = camera;
+        InputHandler.camera = camera;
     }
 
     public static Vector3f getCurrentRay() {

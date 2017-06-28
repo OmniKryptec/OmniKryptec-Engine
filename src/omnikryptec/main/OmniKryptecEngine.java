@@ -26,7 +26,7 @@ import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.AllowedRenderer;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.texture.SimpleTexture;
-import omnikryptec.input.InputUtil;
+import omnikryptec.input.InputHandler;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.profiler.Profilable;
 import omnikryptec.util.profiler.ProfileContainer;
@@ -264,7 +264,7 @@ public class OmniKryptecEngine implements Profilable {
 //                }
 //                return this;
 //            }
-//            InputUtil.nextFrame();
+//            InputHandler.nextFrame();
 //            AudioManager.update(currentTime);
 //            if (Display.wasResized()) {
 //                resizeFbos();

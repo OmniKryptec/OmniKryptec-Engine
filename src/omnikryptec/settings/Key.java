@@ -1,7 +1,7 @@
 package omnikryptec.settings;
 
 import omnikryptec.display.DisplayManager;
-import omnikryptec.input.InputUtil;
+import omnikryptec.input.InputHandler;
 
 /**
  * Key
@@ -107,9 +107,9 @@ public class Key implements IKey {
 	@Override
 	public final boolean isPressed() {
 		if (isKeyboardKey) {
-			return InputUtil.isKeyboardKeyDown(key);
+			return InputHandler.isKeyboardKeyDown(key);
 		} else {
-			return InputUtil.isMouseKeyDown(key);
+			return InputHandler.isMouseKeyDown(key);
 		}
 	}
 
