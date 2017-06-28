@@ -1,7 +1,7 @@
 package omnikryptec.entity;
 
-import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.input.InputManager;
+import omnikryptec.main.OmniKryptecEngine;
 
 /**
  *

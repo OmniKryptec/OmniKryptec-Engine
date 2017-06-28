@@ -50,8 +50,8 @@ public class PhysicsUtil {
 		return dynamicsWorld;
 	}
 
-	public static final MotionState createDefaultMotionStateOfPosition(org.lwjgl.util.vector.Vector3f position,
-			org.lwjgl.util.vector.Vector3f rotation) {
+	public static final MotionState createDefaultMotionStateOfPosition(org.joml.Vector3f position,
+			org.joml.Vector3f rotation) {
 		return createDefaultMotionStateOfPosition(ConverterUtil.convertVector3fFromLWJGL(position),
 				ConverterUtil.convertVector3fFromLWJGL(rotation));
 	}

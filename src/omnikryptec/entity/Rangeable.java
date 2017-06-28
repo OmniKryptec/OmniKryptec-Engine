@@ -1,6 +1,6 @@
 package omnikryptec.entity;
 
-import org.lwjgl.util.vector.Vector3f;
+import org.joml.Vector3f;
 
 import omnikryptec.entity.Entity.RenderType;
 

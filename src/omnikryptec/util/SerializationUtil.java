@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
-import org.lwjgl.util.vector.Matrix3f;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import omnikryptec.entity.GameObject;
 import omnikryptec.logger.Logger;
@@ -57,11 +57,11 @@ public class SerializationUtil {
         if (matrix == null) {
             return null;
         }
-        return matrix.m00 + MATRIX_SPLITTER + matrix.m01 + MATRIX_SPLITTER + matrix.m02 + MATRIX_SPLITTER + matrix.m03
-                + MATRIX_SPLITTER + matrix.m10 + MATRIX_SPLITTER + matrix.m11 + MATRIX_SPLITTER + matrix.m12
-                + MATRIX_SPLITTER + matrix.m13 + MATRIX_SPLITTER + matrix.m20 + MATRIX_SPLITTER + matrix.m21
-                + MATRIX_SPLITTER + matrix.m22 + MATRIX_SPLITTER + matrix.m23 + MATRIX_SPLITTER + matrix.m30
-                + MATRIX_SPLITTER + matrix.m31 + MATRIX_SPLITTER + matrix.m32 + MATRIX_SPLITTER + matrix.m33;
+        return matrix.m00() + MATRIX_SPLITTER + matrix.m01() + MATRIX_SPLITTER + matrix.m02() + MATRIX_SPLITTER + matrix.m03()
+                + MATRIX_SPLITTER + matrix.m10() + MATRIX_SPLITTER + matrix.m11() + MATRIX_SPLITTER + matrix.m12()
+                + MATRIX_SPLITTER + matrix.m13() + MATRIX_SPLITTER + matrix.m20() + MATRIX_SPLITTER + matrix.m21()
+                + MATRIX_SPLITTER + matrix.m22() + MATRIX_SPLITTER + matrix.m23() + MATRIX_SPLITTER + matrix.m30()
+                + MATRIX_SPLITTER + matrix.m31() + MATRIX_SPLITTER + matrix.m32() + MATRIX_SPLITTER + matrix.m33();
     }
 
     public static final Matrix4f stringToMatrix4f(String temp) {
@@ -73,22 +73,22 @@ public class SerializationUtil {
             return null;
         }
         final Matrix4f matrix = new Matrix4f();
-        matrix.m00 = Float.parseFloat(split[0]);
-        matrix.m01 = Float.parseFloat(split[1]);
-        matrix.m02 = Float.parseFloat(split[2]);
-        matrix.m03 = Float.parseFloat(split[3]);
-        matrix.m10 = Float.parseFloat(split[4]);
-        matrix.m11 = Float.parseFloat(split[5]);
-        matrix.m12 = Float.parseFloat(split[6]);
-        matrix.m13 = Float.parseFloat(split[7]);
-        matrix.m20 = Float.parseFloat(split[8]);
-        matrix.m21 = Float.parseFloat(split[9]);
-        matrix.m22 = Float.parseFloat(split[10]);
-        matrix.m23 = Float.parseFloat(split[11]);
-        matrix.m30 = Float.parseFloat(split[12]);
-        matrix.m31 = Float.parseFloat(split[13]);
-        matrix.m32 = Float.parseFloat(split[14]);
-        matrix.m33 = Float.parseFloat(split[15]);
+        matrix.m00( Float.parseFloat(split[0]));
+        matrix.m01(  Float.parseFloat(split[1]));
+        matrix.m02( Float.parseFloat(split[2]));
+        matrix.m03 ( Float.parseFloat(split[3]));
+        matrix.m10 ( Float.parseFloat(split[4]));
+        matrix.m11 ( Float.parseFloat(split[5]));
+        matrix.m12 ( Float.parseFloat(split[6]));
+        matrix.m13 ( Float.parseFloat(split[7]));
+        matrix.m20 ( Float.parseFloat(split[8]));
+        matrix.m21 ( Float.parseFloat(split[9]));
+        matrix.m22 ( Float.parseFloat(split[10]));
+        matrix.m23 ( Float.parseFloat(split[11]));
+        matrix.m30 ( Float.parseFloat(split[12]));
+        matrix.m31 ( Float.parseFloat(split[13]));
+        matrix.m32 (Float.parseFloat(split[14]));
+        matrix.m33 ( Float.parseFloat(split[15]));
         return matrix;
     }
 

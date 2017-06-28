@@ -1,6 +1,6 @@
 package omnikryptec.util;
 
-import org.lwjgl.util.vector.Vector4f;
+import org.joml.Vector4f;
 
 public class Color {
 
@@ -51,7 +51,7 @@ public class Color {
     }
 
     public final float[] getArray() {
-        return new float[]{color.getX(), color.getY(), color.getZ(), color.getW()};
+        return new float[]{color.x(), color.y(), color.z(), color.w()};
     }
 
     public final float getR() {
@@ -89,22 +89,22 @@ public class Color {
     }
 
     public final Color setR(float r) {
-        color.setX(r);
+        color.x = r;
         return this;
     }
 
     public final Color setG(float g) {
-        color.setY(g);
+        color.y = g;
         return this;
     }
 
     public final Color setB(float b) {
-        color.setZ(b);
+        color.z = b;
         return this;
     }
 
     public final Color setA(float a) {
-        color.setW(a);
+        color.w = a;
         return this;
     }
 

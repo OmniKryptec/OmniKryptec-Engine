@@ -12,6 +12,7 @@ import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.Entity.RenderType;
 import omnikryptec.entity.GameObject.UpdateType;
+import omnikryptec.entity.Light;
 import omnikryptec.event.Event;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
@@ -133,7 +134,7 @@ public class EngineTest2 implements IEventHandler {
                     doCameraLogic(this);
                 }
 
-            }.setPerspectiveProjection(90, 0.1f, 1000).setRelativePos(0, 0, 0)).setAmbientColor(0.3f, 0.3f, 0.3f));
+            }.setPerspectiveProjection(90, 0.1f, 1000).setRelativePos(0, 0, 0)).setAmbientColor(0.2f, 0.2f, 0.2f));
             Model pine = new Model("",
                     ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")));
             Model bauer = new Model("",
@@ -188,8 +189,8 @@ public class EngineTest2 implements IEventHandler {
             //OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             //OmniKryptecEngine.instance().getCurrentScene()
               //      .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setCuttOffRange(50).setColor(3, 0, 0).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0, -1, 0).setRelativePos(0,10, 0));
-           // OmniKryptecEngine.instance().getCurrentScene()
-            //.addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(1, 1, 1).setDirectional(true).setConeDegrees(5).setConeDirection(0, 1, 0).setRelativePos(0,1, 0));
+            OmniKryptecEngine.instance().getCurrentScene()
+            .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(1, 1, 1).setDirectional(true).setConeDegrees(5).setConeDirection(0, 1, 0).setRelativePos(0,1, 0));
 
             // ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
             // OmniKryptecEngine.instance().getCurrentScene().addGameObject(new

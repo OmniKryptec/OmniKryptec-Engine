@@ -1,8 +1,8 @@
 package omnikryptec.entity;
 
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
-
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 import omnikryptec.display.Display;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.util.Maths;
@@ -36,7 +36,7 @@ public class Camera extends GameObject {
         campos = getAbsolutePos();
         if (!Maths.fastEquals3f(campos, lastpos) || !Maths.fastEquals3f(lastrot, absrot)) {
             negcampos = new Vector3f(-campos.x, -campos.y, -campos.z);
-            view.setIdentity();
+            view.identity();
             Matrix4f.rotate((float) Math.toRadians(absrot.x), Maths.X, view, view);
             Matrix4f.rotate((float) Math.toRadians(absrot.y), Maths.Y, view, view);
             Matrix4f.rotate((float) Math.toRadians(absrot.z), Maths.Z, view, view);
@@ -47,8 +47,13 @@ public class Camera extends GameObject {
         return view;
     }
 
+    private Vector4f vec4 = new Vector4f();
+    public Vector4f getFacingTo(){
+    	return vec4.mul(getViewMatrix()).normalize();
+    }
+    
     public Matrix4f getInverseProjView() {
-        return Matrix4f.invert(getProjectionViewMatrix(), null);
+        return getProjectionViewMatrix().invert();
     }
 
     public Matrix4f getProjectionViewMatrix() {

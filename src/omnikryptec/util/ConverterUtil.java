@@ -18,11 +18,11 @@ public class ConverterUtil {
 		return objects;
 	}
 
-	public static final org.lwjgl.util.vector.Vector3f convertVector3fToLWJGL(javax.vecmath.Vector3f vector) {
-		return new org.lwjgl.util.vector.Vector3f(vector.x, vector.y, vector.z);
+	public static final org.joml.Vector3f convertVector3fToLWJGL(javax.vecmath.Vector3f vector) {
+		return new org.joml.Vector3f(vector.x, vector.y, vector.z);
 	}
 
-	public static final javax.vecmath.Vector3f convertVector3fFromLWJGL(org.lwjgl.util.vector.Vector3f vector) {
+	public static final javax.vecmath.Vector3f convertVector3fFromLWJGL(org.joml.Vector3f vector) {
 		return new javax.vecmath.Vector3f(vector.x, vector.y, vector.z);
 	}
 

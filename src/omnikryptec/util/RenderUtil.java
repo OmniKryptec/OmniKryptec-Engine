@@ -1,9 +1,8 @@
 package omnikryptec.util;
 
+import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
-import org.lwjgl.util.vector.Vector3f;
-
 import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity.RenderType;

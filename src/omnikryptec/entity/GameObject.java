@@ -5,10 +5,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector3f;
+import org.joml.Vector3f;
 
 import omnikryptec.component.Component;
-import omnikryptec.entity.GameObject.UpdateType;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.renderer.RenderChunk;
@@ -137,7 +136,7 @@ public class GameObject implements DataMapSerializable {
         if (parent == null) {
             return pos;
         }
-        return Vector3f.add(parent.getAbsolutePos(), pos, null);
+        return parent.getAbsolutePos().add(pos);
     }
 
     /**
@@ -389,7 +388,7 @@ public class GameObject implements DataMapSerializable {
         if (parent == null) {
             return rotation;
         }
-        return Vector3f.add(parent.getAbsoluteRotation(), rotation, null);
+        return parent.getAbsoluteRotation().add(rotation);
     }
 
     /**
