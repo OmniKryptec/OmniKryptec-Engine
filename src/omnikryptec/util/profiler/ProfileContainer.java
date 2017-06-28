@@ -25,12 +25,12 @@ public class ProfileContainer {
     }
 
     String getReletiveTo(double maxtime) {
-        return new StringBuilder().append(time).append("ms/").append(maxtime).append("ms").toString();
+        return new StringBuilder().append(String.format("%.1f", getTime())).append("ms/").append(String.format("%.1f", maxtime)).append("ms").toString();
     }
 
     @Override
     public String toString() {
-        return getName() + ": " + getTime() + "ms";
+        return getName() + ": " + String.format("%.1f", getTime()) + "ms";
     }
     
     public ChartData toChartData() {

@@ -91,8 +91,9 @@ public class Profiler {
             return "";
         }
         double maxtime = profiledTimeByName(OVERALL_FRAME_TIME);
+        double[] times = getAllTimes();
         String[] relatives = createRelativeTo(maxtime);
-        String[] mergedlines = Util.merge(createNames(), " |", relatives, "|", createPerc(maxtime), "|", createLines(relatives, maxchars, maxtime), "|");
+        String[] mergedlines = Util.merge(createNames(), " |", relatives, "|", createPerc(maxtime), "|", createLines(times, maxchars, maxtime), "|");
         StringBuilder str = new StringBuilder();
         if (newline) {
             str.append("\n");
@@ -106,7 +107,15 @@ public class Profiler {
         return str.toString();
     }
 
-    private String[] createNames() {
+    private double[] getAllTimes() {
+    	double[] array = new double[container.size()];
+    	for(int i=0; i<array.length; i++){
+    		array[i] = container.get(i).getTime();
+    	}
+    	return array;
+	}
+
+	private String[] createNames() {
         String[] newone = new String[container.size()];
         for (int i = 0; i < newone.length; i++) {
             ProfileContainer c = container.get(i);
@@ -142,11 +151,11 @@ public class Profiler {
         return Util.adjustLength(array, false);
     }
 
-    private String[] createLines(String[] relatives, int maxchars, double maxtime) {
+    private String[] createLines(double[] relatives, int maxchars, double maxtime) {
     	double f = maxchars / maxtime;
         String[] newone = new String[relatives.length];
         for (int i = 0; i < newone.length; i++) {
-            newone[i] = appendLine(Double.parseDouble(relatives[i].split("/")[0].replace("ms", "")), f, maxchars);
+            newone[i] = appendLine(relatives[i], f, maxchars);
         }
         return newone;
     }

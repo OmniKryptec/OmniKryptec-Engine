@@ -226,8 +226,8 @@ public class EngineTest2 implements IEventHandler {
         }
         //System.out.println("(Rendertime: "+Instance.getEngine().getRenderTimeMS()+" Particletime: "+ParticleMaster.instance().getOverallParticleTimeMS()+" PPTime: "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());
         if(ev.getType() == EventType.AFTER_FRAME){
-        	System.out.println(new Profiler().createTimesString(50, true, false));
         }
+    	System.out.println(new Profiler().createTimesString(50, true, false));
         //System.out.println(DisplayManager.instance().getFPS());
         // System.out.println(DisplayManager.instance().getDeltaTime());
     }
