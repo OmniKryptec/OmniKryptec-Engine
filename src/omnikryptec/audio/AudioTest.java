@@ -1,11 +1,13 @@
 package omnikryptec.audio;
 
+import java.io.File;
 import javax.swing.Timer;
 
 import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.logger.Commands;
 import omnikryptec.logger.Logger;
+import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.NativesLoader;
 
 /**
@@ -30,9 +32,8 @@ public class AudioTest {
 		timer.start();
 		// source.setLooping(true);
 		// source.play("bounce");
-		StreamedSound streamedSound = StreamedSound.ofInputStream("Tobu_-_Infectious_[NCS_Release]", source,
-				AudioTest.class.getResourceAsStream("/omnikryptec/audio/Tobu_-_Infectious_[NCS_Release].wav"));
-		source.play(streamedSound);
+		StreamedSound streamedSound = StreamedSound.ofAdvancedFile("Tobu_-_Infectious_[NCS_Release]", source, new AdvancedFile("omnikryptec", "audio", "Tobu_-_Infectious_[NCS_Release].wav"));
+                source.play(streamedSound);
 		// source.play("Tobu_-_Infectious_[NCS_Release]");
 		final int startX = 100;
 		Vector3f position = new Vector3f(startX, 0, 2);

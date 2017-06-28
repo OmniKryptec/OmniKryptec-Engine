@@ -1,3 +1,21 @@
+/*
+* Licensed to the Apache Software Foundation (ASF) under one
+* or more contributor license agreements.  See the NOTICE file
+* distributed with this work for additional information
+* regarding copyright ownership.  The ASF licenses this file
+* to you under the Apache License, Version 2.0 (the
+* "License"); you may not use this file except in compliance
+* with the License.  You may obtain a copy of the License at
+* 
+*   http://www.apache.org/licenses/LICENSE-2.0
+* 
+* Unless required by applicable law or agreed to in writing,
+* software distributed under the License is distributed on an
+* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+* KIND, either express or implied.  See the License for the
+* specific language governing permissions and limitations
+* under the License.
+*/
 package omnikryptec.audio;
 
 import static org.lwjgl.openal.EXTEfx.ALC_MAX_AUXILIARY_SENDS;
@@ -6,6 +24,10 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL;
@@ -20,6 +42,8 @@ import org.lwjgl.util.vector.Vector3f;
 import omnikryptec.component.Component;
 import omnikryptec.logger.Logger;
 import omnikryptec.util.AdvancedFile;
+import omnikryptec.util.AudioUtil;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Main audio manager class
@@ -168,8 +192,30 @@ public class AudioManager {
     }
     
     public static final int loadSound(String name, InputStream inputStream) {
-        
-        return -1;
+        try {
+            final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream);
+            if(audioInputStream == null) {
+                return 0;
+            }
+            final AudioFormat audioFormat = audioInputStream.getFormat();
+            if(audioFormat.isBigEndian()) {
+                throw new UnsupportedAudioFileException("Can not handle Big Endian formats yet"); //TODO Implement Big Endian formats
+            }
+            final int openALFormat = AudioUtil.audioFormatToOpenALFormat(audioFormat);
+            final byte[] bytes = IOUtils.toByteArray(audioInputStream);
+            final ByteBuffer data = BufferUtils.createByteBuffer(bytes.length).put(bytes);
+            data.flip();
+            deleteSound(name);
+            final int bufferID = AL10.alGenBuffers();
+            AL10.alBufferData(bufferID, openALFormat, data, (int) audioFormat.getSampleRate());
+            final Sound sound = new Sound(name, bufferID);
+            sound.setFrequency((int) audioFormat.getFrameRate());
+            sounds.add(sound);
+            return bufferID;
+        } catch (Exception ex) {
+            Logger.logErr("Error while loading a Sound: " + ex, ex);
+            return 0;
+        }
     }
 
     /**
