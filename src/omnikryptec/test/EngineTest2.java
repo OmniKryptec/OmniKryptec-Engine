@@ -32,7 +32,7 @@ import omnikryptec.texture.AtlasTexture;
 import omnikryptec.texture.SimpleAnimation;
 import omnikryptec.texture.SimpleTexture;
 import omnikryptec.util.AdvancedFile;
-import omnikryptec.util.InputUtil;
+import omnikryptec.input.InputUtil;
 import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.profiler.LiveProfiler;

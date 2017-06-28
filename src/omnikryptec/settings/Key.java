@@ -1,7 +1,7 @@
 package omnikryptec.settings;
 
 import omnikryptec.display.DisplayManager;
-import omnikryptec.util.InputUtil;
+import omnikryptec.input.InputUtil;
 
 /**
  * Key

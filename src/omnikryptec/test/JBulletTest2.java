@@ -43,7 +43,7 @@ import omnikryptec.terrain.TerrainGenerator;
 import omnikryptec.terrain.TerrainTexturePack;
 import omnikryptec.texture.SimpleTexture;
 import omnikryptec.util.ConverterUtil;
-import omnikryptec.util.InputUtil;
+import omnikryptec.input.InputUtil;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.PhysicsUtil;
 import omnikryptec.util.RenderUtil;
