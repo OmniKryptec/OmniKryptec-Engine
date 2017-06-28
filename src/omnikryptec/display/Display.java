@@ -51,6 +51,14 @@ public class Display {
 		GLFW.glfwShowWindow(window);
 	}
 	
+	public static GLFWErrorCallback getErrorCallback(){
+		return errorCallback;
+	}
+	
+	public static GLFWFramebufferSizeCallback getDisplaySizeCallback(){
+		return framebufferSizeCallback;
+	}
+	
 	private static void onResize(int w, int h){
 		width = w;
 		height = h;
