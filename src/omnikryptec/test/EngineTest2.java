@@ -53,7 +53,7 @@ public class EngineTest2 implements IEventHandler {
             Logger.showConsoleDirect();
 
             DisplayManager.createDisplay("Test 2",
-                    new GameSettings("EngineTest2").setAnisotropicLevel(32).setMultisamples(32)
+                    new GameSettings().setAnisotropicLevel(32).setMultisamples(32)
                     .setInitialFPSCap(30).setChunkRenderOffsets(2, 2, 2).setLightForward(true),
                     new GLFWInfo(1280, 720));
             DisplayManager.instance().setSmoothedDeltatime(true);
