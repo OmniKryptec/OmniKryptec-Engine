@@ -2,13 +2,8 @@ package omnikryptec.test;
 
 import java.util.Random;
 
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.PixelFormat;
-import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
 import omnikryptec.display.DisplayManager;
@@ -17,7 +12,6 @@ import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.Entity.RenderType;
 import omnikryptec.entity.Entity.UpdateType;
-import omnikryptec.entity.Light;
 import omnikryptec.event.Event;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
@@ -32,13 +26,7 @@ import omnikryptec.objConverter.ObjLoader;
 import omnikryptec.particles.ParticleMaster;
 import omnikryptec.particles.ParticleSystem;
 import omnikryptec.particles.ParticleTexture;
-import omnikryptec.postprocessing.DebugRenderer;
 import omnikryptec.postprocessing.PostProcessing;
-import omnikryptec.ppstages.BloomStage;
-import omnikryptec.ppstages.ColorSpaceStage;
-import omnikryptec.ppstages.CompleteGaussianBlurStage;
-import omnikryptec.ppstages.ContrastchangeStage;
-import omnikryptec.ppstages.FogStage;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.texture.AtlasTexture;
@@ -48,9 +36,7 @@ import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.InputUtil;
 import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
-import omnikryptec.util.Util;
 import omnikryptec.util.profiler.LiveProfiler;
-import omnikryptec.util.profiler.Profiler;
 
 /**
  *

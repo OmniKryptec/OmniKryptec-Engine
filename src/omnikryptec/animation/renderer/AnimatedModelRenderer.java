@@ -13,7 +13,6 @@ import omnikryptec.model.AdvancedModel;
 import omnikryptec.renderer.RenderMap;
 import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
-import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
 
 /**

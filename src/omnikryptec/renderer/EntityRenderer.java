@@ -1,12 +1,10 @@
 package omnikryptec.renderer;
 
-import java.awt.BufferCapabilities;
 import java.nio.FloatBuffer;
 import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL31;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -21,11 +19,9 @@ import omnikryptec.model.AdvancedModel;
 import omnikryptec.model.Material;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
-import omnikryptec.model.VertexBufferObject;
 import omnikryptec.shader_files.EntityLightShader;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.Color;
-import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
 
 public class EntityRenderer implements Renderer {

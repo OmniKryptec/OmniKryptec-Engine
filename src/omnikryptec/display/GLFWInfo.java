@@ -11,12 +11,22 @@ public class GLFWInfo {
 	private int minVers = 3;
 	private boolean resizeable;
 	private int width=0,height=0;
-	
+	private boolean fullscreen=false;
 	
 	public GLFWInfo(){
-		width = 800;
-		height = 600;
-		resizeable = false;
+		this(800, 600);
+	}
+	
+	public GLFWInfo(int width, int height){
+		this(false, width, height);
+	}
+	
+	public GLFWInfo(boolean fullscreen, int width, int height){
+		this(true, fullscreen, width, height);
+	}
+	
+	public GLFWInfo(boolean resizeable, boolean fullscreen, int width, int height){
+		this(3, 3, resizeable, fullscreen, width, height);
 	}
 	
 	/**
@@ -29,9 +39,13 @@ public class GLFWInfo {
 	 * @param format
 	 *            PixelFormat Pixel format
 	 */
-	public GLFWInfo(int majVers, int minVers) {
+	public GLFWInfo(int majVers, int minVers, boolean resizeable, boolean fullscreen, int width, int height) {
 		this.majVers = majVers;
 		this.minVers = minVers;
+		this.resizeable = resizeable;
+		this.fullscreen = fullscreen;
+		this.width = width;
+		this.height = height;
 	}
 
 	int getMajorVersion(){
@@ -44,6 +58,10 @@ public class GLFWInfo {
 	
 	boolean wantsResizeable(){
 		return resizeable;
+	}
+	
+	boolean wantsFullscreen(){
+		return fullscreen;
 	}
 	
 	int getWidth(){

@@ -1,8 +1,5 @@
 package omnikryptec.display;
 
-import java.awt.DisplayMode;
-
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import omnikryptec.audio.AudioManager;
@@ -96,15 +93,12 @@ public class DisplayManager implements Profilable{
 			name = "";
 		}
 		try {
-			if (!manager.resize(settings.getWidth(), settings.getHeight(), settings.wantsFullscreen())) {
-				return null;
-			}
 			manager.setSyncFPS(settings.getInitialFPSCap());
 			Display.create(name, info);
 			if (settings.getMultiSamples() != GameSettings.NO_MULTISAMPLING) {
 				RenderUtil.antialias(true);
 			}
-			GL11.glViewport(0, 0, settings.getWidth(), settings.getHeight());
+			GL11.glViewport(0, 0, info.getWidth(), info.getHeight());
 			AudioManager.init();
 			lasttime = manager.getCurrentTime();
 			return new OmniKryptecEngine(manager);
@@ -127,38 +121,6 @@ public class DisplayManager implements Profilable{
 	 *            Boolean Tries to make a fullscreen display
 	 * @return <tt>false</tt> if the resizing failed
 	 */
-	public final boolean resize(int width, int height, boolean fullscreen) {
-		return true;
-//		try {
-//			boolean found = false;
-//			DisplayMode displayMode = null;
-//			if (fullscreen) {
-//				DisplayMode[] modes = Display.getAvailableDisplayModes();
-//				for (int i = 0; i < modes.length; i++) {
-//					if (modes[i].getWidth() == width && modes[i].getHeight() == height
-//							&& modes[i].isFullscreenCapable()) {
-//						displayMode = modes[i];
-//						found = true;
-//					}
-//				}
-//				if (found) {
-//					Display.setFullscreen(fullscreen);
-//				} else {
-//					Display.setFullscreen(false);
-//					displayMode = new DisplayMode(width, height);
-//				}
-//			} else {
-//				displayMode = new DisplayMode(width, height);
-//			}
-//			Display.setDisplayMode(displayMode);
-//			if (Display.isCreated()) {
-//				GL11.glViewport(0, 0, width, height);
-//			}
-//			return true;
-//		} catch (Exception e) {
-//			return false;
-//		}
-	}
 
 	/**
 	 * Sets the FPS cap Default is 240, DISABLE_FPS_CAP disables the cap

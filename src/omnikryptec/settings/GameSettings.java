@@ -12,10 +12,6 @@ import omnikryptec.postprocessing.RenderTarget;
 public class GameSettings {
 
 	private String name;
-	private int width;
-	private int height;
-	private boolean fullscreen = false;
-	private boolean resizable = true;
 	private int initialFPSCap = -1;
 	/**
 	 * 0 means no multisampling
@@ -62,8 +58,8 @@ public class GameSettings {
 	 * @param height
 	 *            Integer Display height
 	 */
-	public GameSettings(String name, int width, int height) {
-		this(name, width, height, KeySettings.STANDARDKEYSETTINGS);
+	public GameSettings(String name) {
+		this(name, KeySettings.STANDARDKEYSETTINGS);
 	}
 
 	/**
@@ -78,30 +74,11 @@ public class GameSettings {
 	 * @param keySettings
 	 *            KeySettings Key settings
 	 */
-	public GameSettings(String name, int width, int height, KeySettings keySettings) {
+	public GameSettings(String name, KeySettings keySettings) {
 		this.name = name;
-		this.width = width;
-		this.height = height;
 		this.keySettings = keySettings;
 	}
 
-	/**
-	 * Returns the display width
-	 * 
-	 * @return Integer Display width
-	 */
-	public final int getWidth() {
-		return width;
-	}
-
-	/**
-	 * Returns the display height
-	 * 
-	 * @return Integer Display height
-	 */
-	public final int getHeight() {
-		return height;
-	}
 
 	/**
 	 * Returns the name
@@ -112,26 +89,6 @@ public class GameSettings {
 		return name;
 	}
 
-	/**
-	 * Sets wheter the display should be in fullscreen mode or not
-	 * 
-	 * @param fullscreen
-	 *            Boolean <tt>true</tt> if fullscreen mode should be enabled
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setFullscreen(boolean fullscreen) {
-		this.fullscreen = fullscreen;
-		return this;
-	}
-
-	/**
-	 * Returns if the display should be displayed in fullscreen
-	 * 
-	 * @return <tt>true</tt> if the display should be in fullscreen
-	 */
-	public final boolean wantsFullscreen() {
-		return fullscreen;
-	}
 
 	/**
 	 * Returns the added attachments
@@ -152,27 +109,6 @@ public class GameSettings {
 	public final GameSettings setAdditionalAttachments(RenderTarget... add_attachments) {
 		this.add_attachments = add_attachments;
 		return this;
-	}
-
-	/**
-	 * Sets if the display should be resizable
-	 * 
-	 * @param resizable
-	 *            Boolean Sets if the display should be resizable
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setResizable(boolean resizable) {
-		this.resizable = resizable;
-		return this;
-	}
-
-	/**
-	 * Returns if the display should be resizable
-	 * 
-	 * @return <tt>true</tt> if the display should be resizable
-	 */
-	public final boolean wantsResizable() {
-		return resizable;
 	}
 
 	/**

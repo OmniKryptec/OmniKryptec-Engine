@@ -1,9 +1,9 @@
 package omnikryptec.entity;
 
-import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
+import omnikryptec.display.Display;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.util.Maths;
 import omnikryptec.util.SerializationUtil;

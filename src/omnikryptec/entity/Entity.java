@@ -3,8 +3,6 @@ package omnikryptec.entity;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-import com.fasterxml.jackson.databind.AnnotationIntrospector.ReferenceProperty.Type;
-
 import omnikryptec.display.DisplayManager;
 import omnikryptec.loader.ResourceLoader;
 import omnikryptec.logger.LogEntry.LogLevel;

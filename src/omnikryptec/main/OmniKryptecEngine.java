@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
 import omnikryptec.audio.AudioManager;
@@ -206,7 +207,8 @@ public class OmniKryptecEngine implements Profilable {
             InputUtil.nextFrame();
             AudioManager.update(currentTime);
             if (Display.wasResized()) {
-                resizeFbos();
+                GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
+            	resizeFbos();
                 PostProcessing.instance().resize();
                 eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
             }

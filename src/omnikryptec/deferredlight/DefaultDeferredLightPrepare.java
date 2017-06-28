@@ -1,7 +1,5 @@
 package omnikryptec.deferredlight;
 
-import org.lwjgl.opengl.Display;
-
 import omnikryptec.entity.Light;
 import omnikryptec.main.Scene;
 import omnikryptec.shader.Shader;

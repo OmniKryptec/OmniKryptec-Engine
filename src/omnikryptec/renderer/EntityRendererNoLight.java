@@ -11,7 +11,6 @@ import omnikryptec.model.Material;
 import omnikryptec.model.TexturedModel;
 import omnikryptec.shader_files.EntityShader;
 import omnikryptec.texture.Texture;
-import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
 
 public class EntityRendererNoLight implements Renderer {

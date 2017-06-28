@@ -5,7 +5,6 @@ import java.io.InputStream;
 import org.lwjgl.opengl.GL15;
 
 import omnikryptec.loader.ResourceObject;
-
 import omnikryptec.logger.Logger;
 import omnikryptec.objConverter.ModelData;
 import omnikryptec.objConverter.ObjLoader;

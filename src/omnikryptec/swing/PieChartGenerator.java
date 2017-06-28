@@ -5,7 +5,9 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Random;
+
 import javax.imageio.ImageIO;
+
 import omnikryptec.logger.Commands;
 import omnikryptec.logger.Logger;
 import omnikryptec.util.AdvancedFile;

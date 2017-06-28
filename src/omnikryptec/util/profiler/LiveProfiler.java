@@ -7,9 +7,11 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
 import omnikryptec.swing.ChartData;
 import omnikryptec.swing.PieChartGenerator;
 

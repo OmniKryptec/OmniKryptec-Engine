@@ -3,8 +3,11 @@ package omnikryptec.display;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
+import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
+
+import omnikryptec.logger.Logger;
 
 public class Display {
 	
@@ -20,12 +23,18 @@ public class Display {
 		width = info.getWidth();
 		height = info.getHeight();
 		GLFW.glfwInit();
-		GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
+		GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(Logger.NEWSYSERR));
+		GLFW.glfwDefaultWindowHints();
 		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, info.wantsResizeable()?GL11.GL_TRUE:GL11.GL_FALSE);
 		GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, info.getMajorVersion());
 		GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, info.getMinorVersion());
 		GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE); 
-		window = GLFW.glfwCreateWindow(width, height, name, 0, 0);
+		if(info.wantsFullscreen()){
+			 GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+		     width = vidMode.width();
+		     height = vidMode.height();
+		}
+		window = GLFW.glfwCreateWindow(width, height, name, info.wantsFullscreen()?GLFW.glfwGetPrimaryMonitor():0, 0);
 		if(window == 0) {
 		    throw new RuntimeException("Failed to create window");
 		}
@@ -37,7 +46,9 @@ public class Display {
 		}));
 		GLFW.glfwMakeContextCurrent(window);
 		GL.createCapabilities();
+		GLFW.glfwSwapInterval(1);
 		lastsynced = getCurrentTime();
+		GLFW.glfwShowWindow(window);
 	}
 	
 	private static void onResize(int w, int h){
@@ -49,7 +60,11 @@ public class Display {
 		return resized;
 	}
 	
-	static void update(){
+	public static boolean isActive(){
+		return GLFW.glfwGetWindowAttrib(window, GLFW.GLFW_FOCUSED)==GL11.GL_TRUE;
+	}
+	
+	public static void update(){
 		resized = false;
 		GLFW.glfwPollEvents();
 		GLFW.glfwSwapBuffers(window);

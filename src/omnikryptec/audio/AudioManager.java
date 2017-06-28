@@ -1,24 +1,25 @@
 package omnikryptec.audio;
 
+import static org.lwjgl.openal.EXTEfx.ALC_MAX_AUXILIARY_SENDS;
+
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
+import org.lwjgl.openal.ALC;
+import org.lwjgl.openal.ALC10;
+import org.lwjgl.openal.ALCCapabilities;
 import org.lwjgl.util.WaveData;
 import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.component.Component;
 import omnikryptec.logger.Logger;
 import omnikryptec.util.AdvancedFile;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.openal.ALC;
-import org.lwjgl.openal.ALC10;
-import org.lwjgl.openal.ALCCapabilities;
-import static org.lwjgl.openal.EXTEfx.ALC_MAX_AUXILIARY_SENDS;
 
 /**
  * Main audio manager class
