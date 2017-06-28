@@ -20,7 +20,7 @@ public class OSUtil {
 
     private static final String OS_NAME = System.getProperty("os.name").toLowerCase();
     private static final AdvancedFile USER_HOME = AdvancedFile.folderOfPath(System.getProperty("user.home"));
-    private static final String ENGINE_FOLDER_NAME = "." + OmniKryptecEngine.class.getSimpleName() + "_3.1.2";
+    private static final String ENGINE_FOLDER_NAME = "." + OmniKryptecEngine.class.getSimpleName() + "_3-1-2";
     private static final String PATHSEPARATOR = "/";
 
     public static final OS OpSys = detectOS();
@@ -70,8 +70,7 @@ public class OSUtil {
 
     public static final boolean createStandardFolders() {
         try {
-            STANDARDAPPDATA.createFile();
-            return (STANDARDAPPDATA.exists() && STANDARDAPPDATA.isDirectory());
+            return (STANDARDAPPDATA.createFile() && STANDARDAPPDATA.isDirectory());
         } catch (Exception ex) {
             Logger.logErr("Error while creating standard folders: " + ex, ex);
             return false;
@@ -101,6 +100,9 @@ public class OSUtil {
                 break;
             default:
                 break;
+        }
+        if(file != null) {
+            file.setShouldBeFile(false);
         }
         return file;
     }
