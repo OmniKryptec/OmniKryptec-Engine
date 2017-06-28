@@ -172,8 +172,8 @@ public class GeometryLoader {
         float furthestPoint = 0;
         for (int i = 0; i < vertices.size(); i++) {
             AnimatedVertex currentVertex = vertices.get(i);
-            if (currentVertex.getLength() > furthestPoint) {
-                furthestPoint = currentVertex.getLength();
+            if (currentVertex.getLengthSquared() > furthestPoint) {
+                furthestPoint = currentVertex.getLengthSquared();
             }
             Vector3f position = currentVertex.getPosition();
             Vector2f textureCoord = textures.get(currentVertex.getTextureIndex());

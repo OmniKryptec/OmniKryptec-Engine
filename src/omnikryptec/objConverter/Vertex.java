@@ -21,7 +21,7 @@ public class Vertex {
     public Vertex(int index, Vector3f position) {
         this.index = index;
         this.position = position;
-        this.length = position.length();
+        this.length = position.lengthSquared();
     }
 
     public void addTangent(Vector3f tangent) {
@@ -53,8 +53,12 @@ public class Vertex {
         return index;
     }
 
-    public float getLength() {
+    public float getLengthSquared() {
         return length;
+    }
+    
+    public float getLength() {
+        return (float) Math.sqrt(getLengthSquared());
     }
 
     public boolean isSet() {
