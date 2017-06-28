@@ -1,6 +1,7 @@
 package omnikryptec.display;
 
 import java.nio.IntBuffer;
+import omnikryptec.input.InputManager;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
@@ -52,6 +53,7 @@ public class Display {
         }));
         GLFW.glfwMakeContextCurrent(window);
         GL.createCapabilities();
+        InputManager.initCallbacks();
         //GLFW.glfwSwapInterval(-1);
         lastsynced = getCurrentTime();
         GLFW.glfwShowWindow(window);
@@ -96,6 +98,7 @@ public class Display {
     }
 
     static void destroy() {
+        InputManager.closeCallbacks();
         GLFW.glfwDestroyWindow(window);
         GLFW.glfwTerminate();
     }
