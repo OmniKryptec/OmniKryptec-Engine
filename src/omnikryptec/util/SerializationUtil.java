@@ -7,6 +7,7 @@ import java.util.Locale;
 
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -53,7 +54,7 @@ public class SerializationUtil {
         return matrix;
     }
 
-    public static final String matrix4fToString(Matrix4f matrix) {
+    public static final String matrix4fToString(Matrix4fc matrix) {
         if (matrix == null) {
             return null;
         }

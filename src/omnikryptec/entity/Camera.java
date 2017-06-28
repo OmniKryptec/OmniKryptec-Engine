@@ -1,6 +1,7 @@
 package omnikryptec.entity;
 
 import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import omnikryptec.display.Display;
@@ -10,7 +11,7 @@ import omnikryptec.util.SerializationUtil;
 
 public class Camera extends GameObject {
 
-    private Matrix4f projection;
+    private Matrix4fc projection;
     private Matrix4f view;
 
     public Camera() {
@@ -19,10 +20,10 @@ public class Camera extends GameObject {
 
     public Camera(Matrix4f proj) {
         super();
-        projection = proj;
+        projection = proj.toImmutable();
     }
 
-    public Matrix4f getProjectionMatrix() {
+    public Matrix4fc getProjectionMatrix() {
         return projection;
     }
 
@@ -60,12 +61,12 @@ public class Camera extends GameObject {
     }
 
     public Camera setPerspectiveProjection(float fovdeg, float near, float far, float width, float height) {
-        projection = Maths.setPerspectiveProjection(fovdeg, far, near, width, height);
+        projection = Maths.setPerspectiveProjection(fovdeg, far, near, width, height).toImmutable();
         return this;
     }
 
     public Camera setOrthographicProjection(float left, float right, float bottom, float top, float near, float far) {
-        projection = Maths.setOrthographicProjection(left, right, bottom, top, near, far);
+        projection = Maths.setOrthographicProjection(left, right, bottom, top, near, far).toImmutable();
         return this;
     }
 
