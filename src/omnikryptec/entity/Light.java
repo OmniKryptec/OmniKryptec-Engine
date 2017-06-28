@@ -1,7 +1,7 @@
 package omnikryptec.entity;
 
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import omnikryptec.deferredlight.DeferredLightPrepare;
 import omnikryptec.util.Color;
@@ -41,7 +41,9 @@ public class Light extends GameObject {
 	}
 	
 	public Light setConeDirection(float x, float y, float z){
-		coneinfo.set(x, y, z);
+		coneinfo.x = x;
+		coneinfo.y = y;
+		coneinfo.z = z;
 		return this;
 	}
 	

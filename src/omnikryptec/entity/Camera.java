@@ -37,10 +37,10 @@ public class Camera extends GameObject {
         if (!Maths.fastEquals3f(campos, lastpos) || !Maths.fastEquals3f(lastrot, absrot)) {
             negcampos = new Vector3f(-campos.x, -campos.y, -campos.z);
             view.identity();
-            Matrix4f.rotate((float) Math.toRadians(absrot.x), Maths.X, view, view);
-            Matrix4f.rotate((float) Math.toRadians(absrot.y), Maths.Y, view, view);
-            Matrix4f.rotate((float) Math.toRadians(absrot.z), Maths.Z, view, view);
-            Matrix4f.translate(negcampos, view, view);
+            view.rotate((float) Math.toRadians(absrot.x), Maths.X);
+            view.rotate((float) Math.toRadians(absrot.y), Maths.Y);
+            view.rotate((float) Math.toRadians(absrot.z), Maths.Z);
+            view.translate(negcampos);
             lastpos.set(campos);
             lastrot.set(absrot);
         }
@@ -57,7 +57,7 @@ public class Camera extends GameObject {
     }
 
     public Matrix4f getProjectionViewMatrix() {
-        return Matrix4f.mul(getProjectionMatrix(), getViewMatrix(), null);
+        return getProjectionMatrix().mul(getViewMatrix());
     }
 
     public Camera setPerspectiveProjection(float fovdeg, float near, float far) {

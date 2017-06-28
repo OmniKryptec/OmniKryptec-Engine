@@ -1,7 +1,7 @@
 package omnikryptec.model;
 
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import omnikryptec.exceptions.OmniKryptecException;
 import omnikryptec.logger.Logger;
@@ -75,7 +75,7 @@ public class Material {
 	}
 	
 	public final Material setReflectivity(Vector3f reflectivity) {
-		mdata.set(reflectivity.x, reflectivity.y, reflectivity.z);
+		mdata.set(reflectivity, mdata.w);
 		return this;
 	}
 
