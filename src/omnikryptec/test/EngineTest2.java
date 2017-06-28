@@ -2,6 +2,7 @@ package omnikryptec.test;
 
 import java.util.Random;
 
+import org.lwjgl.opengl.GL;
 import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
