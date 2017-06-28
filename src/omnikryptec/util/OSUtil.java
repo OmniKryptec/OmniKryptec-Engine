@@ -70,8 +70,7 @@ public class OSUtil {
 
     public static final boolean createStandardFolders() {
         try {
-            STANDARDAPPDATA.createFile();
-            return (STANDARDAPPDATA.exists() && STANDARDAPPDATA.isDirectory());
+            return (STANDARDAPPDATA.createFile() && STANDARDAPPDATA.isDirectory());
         } catch (Exception ex) {
             Logger.logErr("Error while creating standard folders: " + ex, ex);
             return false;
