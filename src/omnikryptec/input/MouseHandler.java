@@ -69,6 +69,13 @@ public class MouseHandler implements InputHandler {
             }
         };
     }
+    
+    public final MouseHandler initCallbacks() {
+        initMouseButtonCallback();
+        initCursorPosCallback();
+        initScrollCallback();
+        return this;
+    }
 
     public final GLFWMouseButtonCallback initMouseButtonCallback() {
         GLFW.glfwSetMouseButtonCallback(window, mouseButtonCallback);
@@ -87,8 +94,23 @@ public class MouseHandler implements InputHandler {
 
     @Override
     public final MouseHandler close() {
+        closeMouseButtonCallback();
+        closeCursorPosCallback();
+        closeScrollCallback();
+        return this;
+    }
+    
+    public final MouseHandler closeMouseButtonCallback() {
         mouseButtonCallback.close();
+        return this;
+    }
+    
+    public final MouseHandler closeCursorPosCallback() {
         cursorPosCallback.close();
+        return this;
+    }
+    
+    public final MouseHandler closeScrollCallback() {
         scrollCallback.close();
         return this;
     }

@@ -36,6 +36,16 @@ public class InputManager {
         keyboardHandler = new KeyboardHandler(window);
         mouseHandler = new MouseHandler(window);
     }
+    
+    public static final void initCallbacks() {
+        keyboardHandler.initKeybCallback();
+        mouseHandler.initCallbacks();
+    }
+    
+    public static final void closeCallbacks() {
+        keyboardHandler.close();
+        mouseHandler.close();
+    }
 
     public static final void nextFrame() {
         currentTime = DisplayManager.instance().getCurrentTime();
