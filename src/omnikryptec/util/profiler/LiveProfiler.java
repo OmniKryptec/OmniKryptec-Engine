@@ -90,7 +90,7 @@ public class LiveProfiler {
     }
     
     private final LiveProfiler updateData() {
-        frame.setTitle(String.format("LiveProfiler - %s: %d ms", Profiler.OVERALL_FRAME_TIME, (Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME))));
+        frame.setTitle(String.format("LiveProfiler - %s: %f ms", Profiler.OVERALL_FRAME_TIME, (Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME))));
         for (ChartData chartData : data.keySet()) {
             final LinkedList<Double> values = data.get(chartData);
             final double addValue = Math.max(Profiler.currentTimeByName(chartData.getName()), 0.0F);
