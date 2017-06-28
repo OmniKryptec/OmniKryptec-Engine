@@ -101,6 +101,9 @@ public class OSUtil {
             default:
                 break;
         }
+        if(file != null) {
+            file.setShouldBeFile(false);
+        }
         return file;
     }
 

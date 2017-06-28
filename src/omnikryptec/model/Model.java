@@ -28,7 +28,7 @@ public class Model implements ResourceObject {
         createVBO();
     }
 
-    //für instanced rendering
+    //fuer instanced rendering
     private void createVBO() {
     	vbo_updateable = VertexBufferObject.createEmpty(GL15.GL_ARRAY_BUFFER);
     	vbo_updateable.addInstancedAttribute(getVao(), 4, 4, 20, 0);

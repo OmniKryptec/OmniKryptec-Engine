@@ -155,7 +155,7 @@ public class AnimationTest {
                 }
 
             };
-            //animatedModel.doAnimation(animation);
+            animatedModel.doAnimation(animation);
             if (SAVE.exists()) {
                 load();
             }
