@@ -77,6 +77,13 @@
                 <Property name="text" type="java.lang.String" value="Enable Debug Mode"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="M2S3">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="M2I1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Change Font Size"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
       </SubComponents>

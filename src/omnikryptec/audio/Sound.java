@@ -148,7 +148,7 @@ public class Sound implements ISound {
 	}
 
 	@Override
-	public void update(long currentTime) {
+	public void update(double currentTime) {
 	}
 
 }

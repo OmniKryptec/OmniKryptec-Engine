@@ -34,6 +34,7 @@ import omnikryptec.texture.SimpleAnimation;
 import omnikryptec.texture.SimpleTexture;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.input.InputManager;
+import omnikryptec.lang.LanguageManager;
 import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.profiler.LiveProfiler;
@@ -53,6 +54,8 @@ public class EngineTest2 implements IEventHandler {
             Logger.setDebugMode(true);
             Logger.CONSOLE.setExitWhenLastOne(true);
             Logger.showConsoleDirect();
+            
+            LanguageManager.setLanguage("DE");
 
             DisplayManager.createDisplay("Test 2",
                     new GameSettings().setAnisotropicLevel(32).setMultisamples(32)
@@ -228,7 +231,7 @@ public class EngineTest2 implements IEventHandler {
         //System.out.println("(Rendertime: "+Instance.getEngine().getRenderTimeMS()+" Particletime: "+ParticleMaster.instance().getOverallParticleTimeMS()+" PPTime: "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());
         if(ev.getType() == EventType.AFTER_FRAME){
         }
-    	System.out.println(new Profiler().createTimesString(50, true, false));
+    	Logger.log(new Profiler().createTimesString(50, true, false));
         //System.out.println(DisplayManager.instance().getFPS());
         // System.out.println(DisplayManager.instance().getDeltaTime());
     }

@@ -32,3 +32,5 @@ wizard_back=< Zurück
 wizard_next=Weiter >
 finish=Fertig
 cancel=Abbrechen
+console_change_font_size_q=Gib neue Schriftgröße ein
+console_change_font_size=Schriftgröße ändern
