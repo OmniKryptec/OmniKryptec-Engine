@@ -107,7 +107,7 @@ public class OmniKryptecEngine implements Profilable {
     private double tmptime = 0, tmptime2 = 0;
     private double frametime = 0;
     private double displayupdatetime = 0;
-    
+
     public OmniKryptecEngine(DisplayManager manager) {
         if (manager == null) {
             throw new NullPointerException("DisplayManager is null");
@@ -149,19 +149,19 @@ public class OmniKryptecEngine implements Profilable {
     }
 
     private void resizeFbos() {
-        if(scenefbo != null) {
+        if (scenefbo != null) {
             scenefbo.delete();
         }
-        if(unsampledfbo != null) {
+        if (unsampledfbo != null) {
             unsampledfbo.delete();
         }
-        if(normalfbo != null) {
+        if (normalfbo != null) {
             normalfbo.delete();
         }
-        if(specularfbo != null) {
+        if (specularfbo != null) {
             specularfbo.delete();
         }
-        if(extrainfofbo != null) {
+        if (extrainfofbo != null) {
             extrainfofbo.delete();
         }
         createFbos();
@@ -196,7 +196,7 @@ public class OmniKryptecEngine implements Profilable {
         final double currentTime = manager.getCurrentTime();
         try {
             if (!Display.isActive()) {
-            	Display.update();
+                Display.update();
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException e) {
@@ -204,11 +204,10 @@ public class OmniKryptecEngine implements Profilable {
                 }
                 return this;
             }
-            //InputUtil.nextFrame();
             AudioManager.update(currentTime);
             if (Display.wasResized()) {
                 GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
-            	resizeFbos();
+                resizeFbos();
                 PostProcessing.instance().resize();
                 eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
             }
@@ -237,7 +236,9 @@ public class OmniKryptecEngine implements Profilable {
                 PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
             }
             eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
+            InputManager.prePollEvents();
             manager.updateDisplay();
+            InputManager.nextFrame();
             frametime = manager.getCurrentTime() - currentTime;
         } catch (Exception e) {
             errorOccured(e, "Error occured in frame: ");
