@@ -136,7 +136,7 @@ public class GameObject implements DataMapSerializable {
         if (parent == null) {
             return pos;
         }
-        return parent.getAbsolutePos().add(pos);
+        return parent.getAbsolutePos().add(pos, new Vector3f());
     }
 
     /**
@@ -388,7 +388,7 @@ public class GameObject implements DataMapSerializable {
         if (parent == null) {
             return rotation;
         }
-        return parent.getAbsoluteRotation().add(rotation);
+        return parent.getAbsoluteRotation().add(rotation, new Vector3f());
     }
 
     /**

@@ -46,18 +46,13 @@ public class Camera extends GameObject {
         }
         return view;
     }
-
-    private Vector4f vec4 = new Vector4f();
-    public Vector4f getFacingTo(){
-    	return vec4.mul(getViewMatrix()).normalize();
-    }
     
     public Matrix4f getInverseProjView() {
-        return getProjectionViewMatrix().invert();
+        return getProjectionViewMatrix().invert(new Matrix4f());
     }
 
     public Matrix4f getProjectionViewMatrix() {
-        return getProjectionMatrix().mul(getViewMatrix());
+        return getProjectionMatrix().mul(getViewMatrix(), new Matrix4f());
     }
 
     public Camera setPerspectiveProjection(float fovdeg, float near, float far) {

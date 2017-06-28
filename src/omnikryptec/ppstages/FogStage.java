@@ -62,7 +62,7 @@ public class FogStage extends PostProcessingStep {
 		shader.density.loadFloat(density);
 		shader.gradient.loadFloat(gradient);
 		curcam = OmniKryptecEngine.instance().getCurrentScene().getCamera();
-		shader.invprojv.loadMatrix(curcam.getProjectionViewMatrix().invert());
+		shader.invprojv.loadMatrix(curcam.getInverseProjView());
 		shader.campos.loadVec3(curcam.getAbsolutePos());
 		(l_ind[0] < 0 ? before : beforelist.get(l_ind[0])).bindToUnit(0);
 		(l_ind[1] < 0 ? before : beforelist.get(l_ind[1])).bindDepthTexture(1);

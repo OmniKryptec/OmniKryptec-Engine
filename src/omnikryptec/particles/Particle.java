@@ -107,7 +107,7 @@ public class Particle implements Rangeable {
 		return scale;
 	}
 
-	private static Vector3f tmp;
+	private static Vector3f tmp = new Vector3f();
 	private static float timemultiplier;
 
 	protected boolean update(Camera cam) {
@@ -115,8 +115,8 @@ public class Particle implements Rangeable {
 		vel.add(force);
 		changeable.set(vel);
 		changeable.mul(timemultiplier);
-		changeable.add(pos);
-		distance = (tmp = cam.getPos().sub(pos)).lengthSquared();
+		pos.add(changeable);
+		distance = (cam.getPos().sub(pos, tmp)).lengthSquared();
 		updateTexCoordInfo();
 		elapsedTime += timemultiplier;
 		return elapsedTime < lifeLength;

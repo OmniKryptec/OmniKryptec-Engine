@@ -190,7 +190,7 @@ public class ParticleSystem extends GameObject {
 
 		tmp4f.set(x, y, z, 1);
 		if (coneDirection.x != 0 || coneDirection.y != 0 || (coneDirection.z != 1 && coneDirection.z != -1)) {
-			coneDirection.cross(Maths.Z);
+			coneDirection.cross(Maths.Z, rotateAxis);
 			rotateAxis.normalize();
 			rotateAngle = (float) Math.acos(coneDirection.dot(Maths.Z));
 			rotationMatrix.identity();

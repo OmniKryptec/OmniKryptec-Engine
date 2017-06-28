@@ -18,13 +18,45 @@ public class Profiler {
     public static final String POSTPROCESSOR = "POSTPROCESSOR";
     public static final String DISPLAY_UPDATE_TIME = "DISPLAY_UPDATE_TIME";
     public static final String DISPLAY_IDLE_TIME = "DISPLAY_IDLE_TIME";
-
+    
+    public static final String OTHER_TIME = "OTHER_TIME";
     
     private static final ArrayList<Profilable> PROFILABLES = new ArrayList<>();
     private final List<ProfileContainer> container = new ArrayList<>();
-
+    
+    
+    private static Profilable rest_time;
+    static{
+    	rest_time = new Profilable() {
+			
+			@Override
+			public ProfileContainer[] getProfiles() {
+				return new ProfileContainer[]{new ProfileContainer(OTHER_TIME, get())};
+			}
+			
+			private double get(){
+				double max = PROFILABLES.get(0).getProfiles()[0].getTime();
+				for (int i = 0; i < PROFILABLES.size(); i++) {
+		            Profilable p = PROFILABLES.get(i);
+		            if(p == null || p == this) {
+		                continue;
+		            }
+		            ProfileContainer[] cs = p.getProfiles();
+		            if(cs == null) {
+		                continue;
+		            }
+		            for (int j=(i==0?1:0); j<cs.length; j++) {
+		            	max -= cs[i].getTime();
+		            }
+		        }
+				return max;
+			}
+		};
+    }
+    
     public static double currentTimeByName(String name) {
-        for (int i = 0; i < PROFILABLES.size(); i++) {
+        PROFILABLES.add(rest_time);
+    	for (int i = 0; i < PROFILABLES.size(); i++) {
             Profilable p = PROFILABLES.get(i);
             if(p == null) {
                 continue;
@@ -35,10 +67,12 @@ public class Profiler {
             }
             for (ProfileContainer c : cs) {
                 if (c.getName().equals(name)) {
-                    return c.getTime();
+                    PROFILABLES.remove(rest_time);
+                	return c.getTime();
                 }
             }
         }
+        PROFILABLES.remove(rest_time);
         return NAME_NOT_FOUND;
     }
 
@@ -64,7 +98,8 @@ public class Profiler {
     }
 
     public Profiler() {
-        for (int i = 0; i < PROFILABLES.size(); i++) {
+        PROFILABLES.add(rest_time);
+    	for (int i = 0; i < PROFILABLES.size(); i++) {
             Profilable p = PROFILABLES.get(i);
             if(p == null) {
                 continue;
@@ -74,6 +109,7 @@ public class Profiler {
                 container.addAll(Arrays.asList(c));
             }
         }
+        PROFILABLES.remove(rest_time);
     }
 
     public double profiledTimeByName(String name) {
@@ -114,6 +150,7 @@ public class Profiler {
     	}
     	return array;
 	}
+
 
 	private String[] createNames() {
         String[] newone = new String[container.size()];
