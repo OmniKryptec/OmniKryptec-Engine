@@ -3,20 +3,19 @@ package omnikryptec.test;
 import java.util.Random;
 import java.util.zip.Deflater;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-
 import omnikryptec.animation.AnimatedModel;
 import omnikryptec.animation.Animation;
 import omnikryptec.animation.ColladaParser.dataStructures.AnimatedModelData;
 import omnikryptec.animation.loaders.AnimatedModelLoader;
 import omnikryptec.display.DisplayManager;
+import omnikryptec.display.GLFWInfo;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.EntityBuilder;
 import omnikryptec.entity.GameObject;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
+import omnikryptec.input.CursorType;
 import omnikryptec.loader.DefaultAnimatedModelDataLoader;
 import omnikryptec.loader.DefaultAnimationLoader;
 import omnikryptec.loader.DefaultModelLoader;
@@ -41,6 +40,7 @@ import omnikryptec.util.NativesLoader;
 import omnikryptec.util.OSUtil;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.profiler.LiveProfiler;
+import org.lwjgl.glfw.GLFW;
 
 /**
  * AnimationTest
@@ -85,20 +85,18 @@ public class AnimationTest {
             LiveProfiler liveProfiler = new LiveProfiler(1000, 1000);
             liveProfiler.setLastSeconds(10);
             liveProfiler.startTimer(100);
-            
-            gameSettings = new GameSettings("AnimationTest", 1280, 720).setAnisotropicLevel(32).setMultisamples(32)
-                    .setChunkSize(400, 400, 400).setInitialFPSCap(60);
+
+            gameSettings = new GameSettings().setAnisotropicLevel(32).setMultisamples(32).setInitialFPSCap(30).setChunkRenderOffsets(2, 2, 2).setLightForward(true);
             keySettings = gameSettings.getKeySettings();
-            final KeyGroup grabMouse = new KeyGroup("grabMouse", new Key("grabMouse1", Keyboard.KEY_G, true),
-                    new Key("grabMouse2", Keyboard.KEY_Y, true)).setAllKeysNeedToBeActivated(false);
+            final KeyGroup grabMouse = new KeyGroup("grabMouse", new Key("grabMouse1", GLFW.GLFW_KEY_G, true), new Key("grabMouse2", GLFW.GLFW_KEY_Y, true)).setAllKeysNeedToBeActivated(false);
             keySettings.setKey(grabMouse);
-            keySettings.setKey("sprint", Keyboard.KEY_LCONTROL, true);
-            keySettings.setKey("toggleWireframe", Keyboard.KEY_T, true);
-            keySettings.setKey("reset", Keyboard.KEY_R, true);
-            keySettings.setKey("alternativeMouseGrabbed", Keyboard.KEY_L, true);
-            keySettings.setKey("lower", Keyboard.KEY_COMMA, true);
-            keySettings.setKey("higher", Keyboard.KEY_PERIOD, true);
-            DisplayManager.createDisplay("Animation Test", gameSettings);
+            keySettings.setKey("sprint", GLFW.GLFW_KEY_LEFT_CONTROL, true);
+            keySettings.setKey("toggleWireframe", GLFW.GLFW_KEY_T, true);
+            keySettings.setKey("reset", GLFW.GLFW_KEY_R, true);
+            keySettings.setKey("alternativeMouseGrabbed", GLFW.GLFW_KEY_L, true);
+            keySettings.setKey("lower", GLFW.GLFW_KEY_COMMA, true);
+            keySettings.setKey("higher", GLFW.GLFW_KEY_PERIOD, true);
+            DisplayManager.createDisplay("Animation Test", gameSettings, new GLFWInfo(4, 3, false, false, 1280, 720));
             OmniKryptecEngine.instance().addAndSetScene((scene = new Scene("Test-Scene", camera = ((Camera) new Camera() {
 
                 @Override
@@ -115,9 +113,7 @@ public class AnimationTest {
                 }
 
             }.setPerspectiveProjection(75, 0.1F, 1000)))));
-            
-            
-            
+
             //FIXME Only for testing DON'T DELETE TIHS!!! START
             AdvancedFile res_test = new AdvancedFile("omnikryptec", "test");
             ResourceLoader.getInstance().addLoader(new DefaultModelLoader());
@@ -133,17 +129,15 @@ public class AnimationTest {
             Logger.log("Local Folder: " + new AdvancedFile("").getAbsoluteAdvancedFile());
             //file = new AdvancedFile("pictures", String.format("test_%s%d.png", (withTransparency ? "withTransparency_" : ""), JBulletTest2.imagesTaken)).getAbsoluteAdvancedFile();
             //FIXME Only for testing DON'T DELETE TIHS!!! END
-            
-            
-            
+
             animatedModel = AnimatedModelLoader.createModel("res:model.dae:AnimatedModel", ResourceLoader.getInstance().getData(AnimatedModelData.class, "res:model.dae:AnimatedModelData"), ResourceLoader.getInstance().getData(Texture.class, "res:diffuse.png"), null);
             ResourceLoader.getInstance().addRessourceObject("res:model.dae:AnimatedModel", animatedModel);
             ResourceLoader.getInstance().addRessourceObject("omnikryptec:test:brunnen", new TexturedModel("omnikryptec:test:brunnen", ResourceLoader.getInstance().getData(Model.class, "omnikryptec:test:brunnen.obj"), ResourceLoader.getInstance().getData(SimpleTexture.class, "omnikryptec:test:brunnen.png")));
-            
+
             //entityBuilder_brunnen = new EntityBuilder().setTexturedModelName("omnikryptec:test:brunnen.png").loadModel("/omnikryptec/test/brunnen.obj").setTexture(ResourceLoader.getInstance().getData(SimpleTexture.class, "omnikryptec:test:brunnen.png"))/*.loadTexture("brunnen.png", "/omnikryptec/test/brunnen.png")*/;
             entityBuilder_brunnen = new EntityBuilder().setTexturedModel(ResourceLoader.getInstance().getData(TexturedModel.class, "omnikryptec:test:brunnen"));
             entity_brunnen = entityBuilder_brunnen.create("entity_brunnen");
-            
+
             animation = ResourceLoader.getInstance().getData(Animation.class, "res:model.dae:Animation");
             Logger.log("");
             entity_test = new Entity("entity_test", animatedModel) {
@@ -225,7 +219,7 @@ public class AnimationTest {
             RenderUtil.goWireframe(!RenderUtil.isWireframe());
         }
         if (keySettings.isLongPressed("grabMouse", 100, 400)) {
-            Mouse.setGrabbed(!Mouse.isGrabbed());
+            InputManager.setCursorType(((InputManager.getCursorType() == CursorType.DISABLED) ? CursorType.NORMAL : CursorType.DISABLED));
         }
         if (keySettings.isPressed("reset")) {
             camera.getRelativePos().x = 0;
@@ -237,12 +231,12 @@ public class AnimationTest {
         float deltaX = InputManager.getMouseDelta().x;
         float deltaY = InputManager.getMouseDelta().y;
         float deltaD = InputManager.getMouseDelta().z;
-        if (Mouse.isGrabbed()) {
+        if (InputManager.getCursorType() == CursorType.DISABLED) {
             deltaX *= -1;
-            deltaY *= -1;
+            deltaY *= 1;
             deltaD *= 1;
         }
-        if (keySettings.isPressed("mouseButtonLeft") || Mouse.isGrabbed()) {
+        if (keySettings.isPressed("mouseButtonLeft") || (InputManager.getCursorType() == CursorType.DISABLED)) {
             if (keySettings.isPressed("alternativeMouseGrabbed")) {
                 InputManager.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
             } else {
@@ -265,9 +259,9 @@ public class AnimationTest {
         speedFactor = animatedModel.getAnimator().getSpeedFactor();
         swapTexture();
     }
-    
+
     private static final void swapTexture() {
-        
+
     }
 
 }

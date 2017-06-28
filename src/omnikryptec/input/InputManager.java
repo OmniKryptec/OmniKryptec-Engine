@@ -10,6 +10,7 @@ import omnikryptec.display.DisplayManager;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.GameObject;
 import omnikryptec.settings.KeySettings;
+import org.lwjgl.glfw.GLFW;
 
 /**
  * InputManager
@@ -35,6 +36,7 @@ public class InputManager {
      * w = Mouse Scroll Y Delta
      */
     private static final Vector4f mouseDelta = new Vector4f(0, 0, 0, 0);
+    private static CursorType cursorType = CursorType.NORMAL;
 
     private static Camera camera = null;
     private static Matrix4f invertedProjectionMatrix = null;
@@ -69,7 +71,7 @@ public class InputManager {
         mouseScrollOffset.x = mouseHandler.scrollOffset.x;
         mouseScrollOffset.y = mouseHandler.scrollOffset.y;
         mouseDelta.x = (mousePosition.x - mousePosition_lastTime.x);
-        mouseDelta.y = (mousePosition.y - mousePosition_lastTime.y);
+        mouseDelta.y = (mousePosition_lastTime.y - mousePosition.y);
         mouseDelta.z = (mouseScrollOffset.x - mouseScrollOffset_lastTime.x);
         mouseDelta.w = (mouseScrollOffset.y - mouseScrollOffset_lastTime.y);
         final KeySettings keySettings = DisplayManager.instance().getSettings().getKeySettings();
@@ -91,6 +93,16 @@ public class InputManager {
         mousePosition_lastTime.y = mousePosition.y;
         mouseScrollOffset_lastTime.x = mouseScrollOffset.x;
         mouseScrollOffset_lastTime.y = mouseScrollOffset.y;
+    }
+    
+    public static final CursorType setCursorType(CursorType cursorType) {
+        GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, cursorType.getState());
+        InputManager.cursorType = cursorType;
+        return InputManager.cursorType;
+    }
+    
+    public static final CursorType getCursorType() {
+        return cursorType;
     }
 
     public static final InputState getKeyboardKeyInputState(int keyCode) {
