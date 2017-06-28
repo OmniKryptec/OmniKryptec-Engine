@@ -11,7 +11,6 @@ import omnikryptec.postprocessing.RenderTarget;
  */
 public class GameSettings {
 
-	private String name;
 	private int initialFPSCap = -1;
 	/**
 	 * 0 means no multisampling
@@ -47,21 +46,12 @@ public class GameSettings {
 	 * Standard value for disabling multisampling
 	 */
 	public static final int NO_MULTISAMPLING = 0;
-
-	/**
-	 * Constructs a GameSettings object with standard KeySettings
-	 * 
-	 * @param name
-	 *            String Name
-	 * @param width
-	 *            Integer Display width
-	 * @param height
-	 *            Integer Display height
-	 */
-	public GameSettings(String name) {
-		this(name, KeySettings.STANDARDKEYSETTINGS);
+	
+	
+	public GameSettings(){
+		this(KeySettings.STANDARDKEYSETTINGS);
 	}
-
+	
 	/**
 	 * Constructs a GameSettings object with custom KeySettings
 	 * 
@@ -74,20 +64,10 @@ public class GameSettings {
 	 * @param keySettings
 	 *            KeySettings Key settings
 	 */
-	public GameSettings(String name, KeySettings keySettings) {
-		this.name = name;
+	public GameSettings(KeySettings keySettings) {
 		this.keySettings = keySettings;
 	}
 
-
-	/**
-	 * Returns the name
-	 * 
-	 * @return String Name
-	 */
-	public final String getName() {
-		return name;
-	}
 
 
 	/**

@@ -48,6 +48,7 @@ public class GLFWInfo {
 		this.height = height;
 	}
 
+	
 	int getMajorVersion(){
 		return majVers;
 	}
@@ -71,5 +72,6 @@ public class GLFWInfo {
 	int getHeight(){
 		return height;
 	}
+	
 
 }

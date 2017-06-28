@@ -146,7 +146,7 @@ public class Profiler {
     	double f = maxchars / maxtime;
         String[] newone = new String[relatives.length];
         for (int i = 0; i < newone.length; i++) {
-            newone[i] = appendLine(Long.parseLong(relatives[i].split("/")[0].replace("ms", "")), f, maxchars);
+            newone[i] = appendLine(Double.parseDouble(relatives[i].split("/")[0].replace("ms", "")), f, maxchars);
         }
         return newone;
     }

@@ -1,5 +1,8 @@
 package omnikryptec.display;
 
+import java.nio.IntBuffer;
+
+import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
@@ -71,6 +74,11 @@ public class Display {
 		width = w;
 		height = h;
 		resized = true;
+		IntBuffer framebufferWidth = BufferUtils.createIntBuffer(1), 
+                framebufferHeight = BufferUtils.createIntBuffer(1);
+		GLFW.glfwGetFramebufferSize(window, framebufferWidth, framebufferHeight);
+		fwidth = framebufferWidth.get();
+		fheight = framebufferHeight.get();
 	}
 	public static boolean wasResized(){
 		return resized;
@@ -117,6 +125,14 @@ public class Display {
 	
 	public static int getHeight(){
 		return height;
+	}
+	
+	public static int getBufferWidth(){
+		return fwidth;
+	}
+	
+	public static int getBufferHeight(){
+		return fheight;
 	}
 	
 	public static final long getID(){
