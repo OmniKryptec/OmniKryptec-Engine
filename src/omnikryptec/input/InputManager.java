@@ -46,12 +46,14 @@ public class InputManager {
         keyboardHandler.close();
         mouseHandler.close();
     }
+    
+    public static final void prePollEvents() {
+        keyboardHandler.preUpdate();
+        mouseHandler.preUpdate();
+    }
 
     public static final void nextFrame() {
         currentTime = DisplayManager.instance().getCurrentTime();
-        keyboardHandler.preUpdate();
-        mouseHandler.preUpdate();
-        GLFW.glfwPollEvents();
         if (longButtonPressEnabled) {
             final KeySettings keySettings = DisplayManager.instance().getSettings().getKeySettings();
             keyboardHandler.updateKeySettings(currentTime, keySettings);
