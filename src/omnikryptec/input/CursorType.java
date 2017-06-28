@@ -8,9 +8,9 @@ import org.lwjgl.glfw.GLFW;
  * @author Panzer1119
  */
 public enum CursorType {
-    NORMAL(GLFW.GLFW_CURSOR_NORMAL),
-    HIDDEN(GLFW.GLFW_CURSOR_HIDDEN),
-    DISABLED(GLFW.GLFW_CURSOR_DISABLED);
+    NORMAL      (GLFW.GLFW_CURSOR_NORMAL),
+    HIDDEN      (GLFW.GLFW_CURSOR_HIDDEN),
+    DISABLED    (GLFW.GLFW_CURSOR_DISABLED);
 
     private final int state;
 
