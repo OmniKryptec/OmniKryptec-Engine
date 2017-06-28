@@ -11,11 +11,12 @@ import omnikryptec.display.GLFWInfo;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
 import omnikryptec.entity.Entity.RenderType;
-import omnikryptec.entity.Entity.UpdateType;
+import omnikryptec.entity.GameObject.UpdateType;
 import omnikryptec.event.Event;
 import omnikryptec.event.EventSystem;
 import omnikryptec.event.EventType;
 import omnikryptec.event.IEventHandler;
+import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
@@ -50,6 +51,7 @@ public class EngineTest2 implements IEventHandler {
     	try {
         	NativesLoader.loadNatives();
             OmniKryptecEngine.addShutdownHook(() -> NativesLoader.unloadNatives());
+            Logger.setMinimumLogLevel(LogLevel.FINEST);
             Logger.enableLoggerRedirection(true);
             Logger.setDebugMode(true);
             Logger.CONSOLE.setExitWhenLastOne(true);
@@ -60,7 +62,7 @@ public class EngineTest2 implements IEventHandler {
             DisplayManager.createDisplay("Test 2",
                     new GameSettings().setAnisotropicLevel(32).setMultisamples(32)
                     .setInitialFPSCap(30).setChunkRenderOffsets(2, 2, 2).setLightForward(true),
-                    new GLFWInfo(1280, 720));
+                    new GLFWInfo(4,3,false,false,1280, 720));
             DisplayManager.instance().setSmoothedDeltatime(true);
             DisplayManager.instance().setSmoothedFrames(1000);
             LiveProfiler liveProfiler = new LiveProfiler(750, 750);
@@ -172,7 +174,7 @@ public class EngineTest2 implements IEventHandler {
             for(int x=-cube; x<cube; x+=abstand){
             	for(int y=-cube; y<cube; y+=abstand){
             		for(int z=-cube; z<cube; z+=abstand){
-            			Instance.getCurrentScene().addGameObject(new Entity(tm).setUpdateType(UpdateType.STATIC).setScale(new Vector3f(scale,scale,scale)).setRelativePos(x, y, z));
+            			Instance.getCurrentScene().addGameObject(new Entity(tm).setScale(new Vector3f(scale,scale,scale)).setUpdateType(UpdateType.STATIC).setRelativePos(x, y, z));
             		}
                 }
             }
@@ -229,6 +231,7 @@ public class EngineTest2 implements IEventHandler {
         }
         //System.out.println("(Rendertime: "+Instance.getEngine().getRenderTimeMS()+" Particletime: "+ParticleMaster.instance().getOverallParticleTimeMS()+" PPTime: "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());
         if(ev.getType() == EventType.AFTER_FRAME){
+        	Logger.log(new Profiler().createTimesString(50, true, false));
         }
         //Logger.log(new Profiler().createTimesString(50, true, false));
         //System.out.println(DisplayManager.instance().getFPS());

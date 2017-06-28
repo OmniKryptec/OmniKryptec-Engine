@@ -8,6 +8,7 @@ import java.util.List;
 import org.lwjgl.util.vector.Vector3f;
 
 import omnikryptec.component.Component;
+import omnikryptec.entity.GameObject.UpdateType;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.renderer.RenderChunk;
@@ -22,6 +23,12 @@ import omnikryptec.util.SerializationUtil;
  */
 public class GameObject implements DataMapSerializable {
 
+
+    public static enum UpdateType{
+    	DYNAMIC, STATIC;
+    }
+	
+	
     private static class Sorter implements Comparator<Component> {
 
         @Override
@@ -46,7 +53,17 @@ public class GameObject implements DataMapSerializable {
     private List<Component> componentsPostLogic = null;
     
     private final Instant ULTIMATE_IDENTIFIER = Instant.now();
+    private UpdateType uptype= UpdateType.DYNAMIC;
 
+    public GameObject setUpdateType(UpdateType t){
+    	uptype = t;
+    	return this;
+    }
+    
+    public UpdateType getUpdateType(){
+    	return uptype;
+    }
+    
     public GameObject() {
         this("");
     }
@@ -154,7 +171,7 @@ public class GameObject implements DataMapSerializable {
                 c.execute(this);
             }
         }
-        if (!(this instanceof Camera)) {
+        if (getUpdateType()==UpdateType.DYNAMIC&&!(this instanceof Camera)) {
             checkChunkPos();
         }
         return this;

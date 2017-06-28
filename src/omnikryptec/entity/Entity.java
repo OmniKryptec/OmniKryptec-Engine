@@ -23,14 +23,10 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
         ALWAYS, MEDIUM, FOLIAGE, BIG;
     }
 
-    public static enum UpdateType{
-    	DYNAMIC, STATIC;
-    }
     
     private AdvancedModel model;
     private Vector3f scale = new Vector3f(1, 1, 1);
     private RenderType type = RenderType.ALWAYS;
-    private UpdateType uptype= UpdateType.DYNAMIC;
     private Color color = new Color(1, 1, 1, 1);
 
     public Entity() {
@@ -109,14 +105,7 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
         return color;
     }
 
-    public Entity setUpdateType(UpdateType t){
-    	uptype = t;
-    	return this;
-    }
-    
-    public UpdateType getUpdateType(){
-    	return uptype;
-    }
+
     
     private Vector3f lastpos = new Vector3f(), lastrot = new Vector3f(), lastscale = new Vector3f();
     private Matrix4f trans;
