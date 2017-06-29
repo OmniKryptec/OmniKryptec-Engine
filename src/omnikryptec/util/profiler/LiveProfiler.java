@@ -17,10 +17,11 @@ import omnikryptec.swing.PieChartGenerator;
 
 /**
  * LiveProfiler
+ *
  * @author Panzer1119
  */
 public class LiveProfiler {
-    
+
     private BufferedImage image = null;
     private final JFrame frame = new JFrame("LiveProfiler");
     private final JPanel panel_image = new JPanel() {
@@ -28,9 +29,9 @@ public class LiveProfiler {
         protected void paintComponent(Graphics g) {
             g.drawImage(image, 0, 0, null);
         }
-        
+
     };
-    private final ChartData[] chartDatas = new ChartData[] {
+    private final ChartData[] chartDatas = new ChartData[]{
         new ChartData(Profiler.DISPLAY_IDLE_TIME, 0),
         new ChartData(Profiler.DISPLAY_UPDATE_TIME, 0),
         new ChartData(Profiler.SCENE_TIME, 0),
@@ -41,10 +42,10 @@ public class LiveProfiler {
     private final HashMap<ChartData, LinkedList<Double>> data = new HashMap<>();
     private float[] sqrts = null;
     private Timer timer = null;
-    private int lastSeconds = 30;
+    private int lastSeconds = 10;
     final Dimension size;
     private int maxValuesSize = 0;
-    
+
     public LiveProfiler(int width, int height) {
         this.size = new Dimension(width, height);
         frame.setLayout(new BorderLayout());
@@ -56,66 +57,62 @@ public class LiveProfiler {
         frame.setVisible(true);
         init();
     }
-    
+
     public final LiveProfiler startTimer() {
         return startTimer(250);
     }
-    
+
     public final LiveProfiler startTimer(int delay) {
-        if(timer == null) {
+        if (timer == null) {
             timer = new Timer(delay, (e) -> new Thread(() -> updateData()).start());
         }
         maxValuesSize = (timer != null ? ((lastSeconds * 1000) / timer.getInitialDelay()) : 0);
         sqrts = new float[maxValuesSize];
-        for(int i = 1; i <= maxValuesSize; i++) {
+        for (int i = 1; i <= maxValuesSize; i++) {
             sqrts[i - 1] = (float) Math.sqrt(i * 1.0);
         }
         timer.start();
         return this;
     }
-    
+
     public final LiveProfiler stopTimer() {
-        if(timer != null) {
+        if (timer != null) {
             timer.stop();
             timer = null;
         }
         return this;
     }
-    
+
     private final LiveProfiler init() {
-        for(ChartData chartData : chartDatas) {
+        for (ChartData chartData : chartDatas) {
             chartData.setColor(PieChartGenerator.generateRandomColor());
             data.put(chartData, new LinkedList<>());
         }
         return this;
     }
-    
+
     private final LiveProfiler updateData() {
-        frame.setTitle(String.format("LiveProfiler - %s: %f ms", Profiler.OVERALL_FRAME_TIME, (Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME))));
         double max = 0.0;
         for (ChartData chartData : data.keySet()) {
             final LinkedList<Double> values = data.get(chartData);
             final double addValue = Math.max(Profiler.currentTimeByName(chartData.getName()), 0.0F);
             values.addFirst(addValue);
-            while(values.size() > maxValuesSize) {
+            while (values.size() > maxValuesSize) {
                 values.removeLast();
             }
             float completeValue = 0.0F;
             final Iterator<Double> floats = values.iterator();
-            int i = 0;
-            while(floats.hasNext()) {
-                completeValue += (floats.next() / sqrts[i]);
-                i++;
+            while (floats.hasNext()) {
+                completeValue += (floats.next());
             }
             chartData.setValue(Math.max((completeValue / values.size()), 0.0F));
-            chartData.setValue(addValue);
             max += chartData.getValue();
         }
-        double average = max / data.size();
-        frame.setTitle(String.format("LiveProfiler - %s: %f ms - Max %s: %f ms - Average: %f ms", Profiler.OVERALL_FRAME_TIME, (Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME)), Profiler.OVERALL_FRAME_TIME, max, average));
+        final double average = max / data.size();
+        frame.setTitle(String.format("LiveProfiler - %s: %f ms - Max %s: %f ms", Profiler.OVERALL_FRAME_TIME, (Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME)), Profiler.OVERALL_FRAME_TIME, max));
         return updateImage();
     }
-    
+
     private final LiveProfiler updateImage() {
         image = PieChartGenerator.createPieChart(chartDatas, size.width, size.height, 0.9F, 0.275F, true, "%s %.2f ms");
         panel_image.revalidate();
@@ -131,9 +128,9 @@ public class LiveProfiler {
         this.lastSeconds = lastSeconds;
         return this;
     }
-    
+
     public static final void main(String[] args) {
         final LiveProfiler liveProfiler = new LiveProfiler(1000, 1000);
     }
-    
+
 }

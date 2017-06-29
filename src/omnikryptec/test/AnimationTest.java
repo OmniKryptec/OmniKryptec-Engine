@@ -84,7 +84,7 @@ public class AnimationTest {
 
             new Thread(() -> {
                 LiveProfiler liveProfiler = new LiveProfiler(1000, 1000);
-                liveProfiler.setLastSeconds(10);
+                liveProfiler.setLastSeconds(5);
                 liveProfiler.startTimer(100);
             }).start();
 
