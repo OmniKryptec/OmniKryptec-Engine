@@ -80,6 +80,7 @@ public class EntityLightShader extends Shader {
 		registerUniforms(catts);
 		registerUniforms(view, projection, tex, normalmap, specularmap, hasspecular,
 				matData, hasextrainfomap, extrainfo, extrainfovec, uvs, hasnormal, activelights, ambient);
+		//registerUniforms(transformation, colmod);
 		start();
 		tex.loadTexUnit(0);
 		normalmap.loadTexUnit(1);

@@ -21,6 +21,7 @@ import omnikryptec.model.TexturedModel;
 import omnikryptec.shader_files.EntityLightShader;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.Color;
+import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
 
 public class EntityRenderer implements Renderer {
@@ -118,6 +119,7 @@ public class EntityRenderer implements Renderer {
 			for(int j=0; j<stapel.size(); j+=INSTANCES_PER_DRAWCALL){
 				newRender(onlyRender, s, j);
 			}
+//			oldRender(onlyRender, s);
 			if (textmodel.getMaterial().hasTransparency()) {
 				RenderUtil.cullBackFaces(true);
 			}
@@ -164,9 +166,9 @@ public class EntityRenderer implements Renderer {
 //				}
 //				shader.transformation.loadMatrix(entity.getTransformationMatrix());
 //				shader.colmod.loadVec4(entity.getColor().getVector4f());
-//				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(),
+//				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getVao().getIndexCount(),
 //						GL11.GL_UNSIGNED_INT, 0);
-//				vertcount += model.getModel().getModelData().getVertexCount();
+//				vertcount += model.getModelData().getVertexCount();
 //			}
 //		}
 //	}
