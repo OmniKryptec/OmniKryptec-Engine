@@ -116,7 +116,7 @@ public class InputManager {
         if (keyCode < 0 || keyCode >= keyboardHandler.keys.length) {
             return false;
         }
-        return keyboardHandler.isKeyPressed(keyCode);
+        return keyboardHandler.isKeyPressed(keyCode) || keyboardHandler.isKeyRepeated(keyCode);
     }
 
     public static final boolean isMouseButtonPressed(int buttonCode) {

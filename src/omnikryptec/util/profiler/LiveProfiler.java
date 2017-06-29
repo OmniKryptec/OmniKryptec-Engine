@@ -92,6 +92,7 @@ public class LiveProfiler {
     
     private final LiveProfiler updateData() {
         frame.setTitle(String.format("LiveProfiler - %s: %f ms", Profiler.OVERALL_FRAME_TIME, (Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME))));
+        double max = 0.0;
         for (ChartData chartData : data.keySet()) {
             final LinkedList<Double> values = data.get(chartData);
             final double addValue = Math.max(Profiler.currentTimeByName(chartData.getName()), 0.0F);
@@ -107,7 +108,11 @@ public class LiveProfiler {
                 i++;
             }
             chartData.setValue(Math.max((completeValue / values.size()), 0.0F));
+            chartData.setValue(addValue);
+            max += chartData.getValue();
         }
+        double average = max / data.size();
+        frame.setTitle(String.format("LiveProfiler - %s: %f ms - Max %s: %f ms - Average: %f ms", Profiler.OVERALL_FRAME_TIME, (Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME)), Profiler.OVERALL_FRAME_TIME, max, average));
         return updateImage();
     }
     
