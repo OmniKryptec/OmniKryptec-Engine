@@ -104,9 +104,8 @@ public class OmniKryptecEngine implements Profilable {
     private boolean requestclose = false;
 
     private double rendertime = 0;
-    private double tmptime = 0, tmptime2 = 0;
+    private double tmptime = 0;
     private double frametime = 0;
-    private double displayupdatetime = 0;
 
     public OmniKryptecEngine(DisplayManager manager) {
         if (manager == null) {
@@ -180,23 +179,28 @@ public class OmniKryptecEngine implements Profilable {
         return postpro;
     }
 
+    private final LoopObject obj = new LoopObject();
     public final void startLoop(ShutdownOption shutdownOption) {
         setShutdownOption(shutdownOption);
         state = State.Running;
         while (!Display.isCloseRequested() && !requestclose && state != State.Error) {
-            frame(true);
+            frame(obj.clear, obj.onlyRender, obj.sleepWhenInactive);
         }
         close(this.shutdownOption);
     }
 
+    public final LoopObject getLoopObject(){
+    	return obj;
+    }
+    
     public final OmniKryptecEngine requestClose() {
         return requestClose(shutdownOption);
     }
 
-    public final OmniKryptecEngine frame(boolean clear) {
+    public final OmniKryptecEngine frame(boolean clear, boolean onlyrender, boolean sleepwheninactive) {
         final double currentTime = manager.getCurrentTime();
         try {
-            if (!Display.isActive()) {
+            if (!Display.isActive()&&sleepwheninactive) {
                 Display.update();
                 try {
                     Thread.sleep(1);
@@ -218,7 +222,7 @@ public class OmniKryptecEngine implements Profilable {
                     RenderUtil.clear(sceneCurrent.getClearColor());
                 }
                 tmptime = manager.getCurrentTime();
-                vertsCountCurrent = sceneCurrent.frame(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, false, AllowedRenderer.All);
+                vertsCountCurrent = sceneCurrent.frame(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, onlyrender, AllowedRenderer.All);
                 rendertime = manager.getCurrentTime() - tmptime;
                 ParticleMaster.instance().update(getCurrentScene().getCamera());
             }
@@ -390,6 +394,12 @@ public class OmniKryptecEngine implements Profilable {
     @Override
     public ProfileContainer[] getProfiles() {
         return new ProfileContainer[]{new ProfileContainer(Profiler.OVERALL_FRAME_TIME, getFrameTimeMS()), new ProfileContainer(Profiler.SCENE_TIME, getRenderTimeMS())};
+    }
+    
+    public static class LoopObject{
+    	public boolean onlyRender=false;
+    	public boolean clear=true;
+    	public boolean sleepWhenInactive=true;
     }
 
 }

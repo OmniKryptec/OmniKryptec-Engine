@@ -73,7 +73,7 @@ public class Scene implements DataMapSerializable {
                 Logger.log("A Camera should not be added as a GameObject!", LogLevel.WARNING);
                 return false;
             }
-            if (g.isGlobal()) {
+            if (g.isGlobal()||!Instance.getGameSettings().usesRenderChunking()) {
                 global.addGameObject(g);
                 return true;
             }
@@ -114,28 +114,30 @@ public class Scene implements DataMapSerializable {
         if (!onlyRender && isUsingPhysics()) {
             physicsWorld.stepSimulation();
         }
-        cx = cam.getChunkX();
-        cy = cam.getChunkY();
-        cz = cam.getChunkZ();
         vertcount = 0;
-        for (long x = -cox + cx; x <= cox + cx; x++) {
-            for (long y = -coy + cy; y <= coy + cy; y++) {
-                for (long z = -coz + cz; z <= coz + cz; z++) {
-                    if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
-                        forward_rel_lights.addAll(tmpc.getForwardLights());
-                    }
-                }
-            }
-        }
-        for (long x = -cox + cx; x <= cox + cx; x++) {
-            for (long y = -coy + cy; y <= coy + cy; y++) {
-                for (long z = -coz + cz; z <= coz + cz; z++) {
-                    if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
-                        vertcount += tmpc.frame(maxexpenlvl, minexplvl, onlyRender, info, re);
-                        deferred_rel_lights.addAll(tmpc.getDeferredLights());
-                    }
-                }
-            }
+        if(Instance.getGameSettings().usesRenderChunking()){
+	        cx = cam.getChunkX();
+	        cy = cam.getChunkY();
+	        cz = cam.getChunkZ();
+	        for (long x = -cox + cx; x <= cox + cx; x++) {
+	            for (long y = -coy + cy; y <= coy + cy; y++) {
+	                for (long z = -coz + cz; z <= coz + cz; z++) {
+	                    if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
+	                        forward_rel_lights.addAll(tmpc.getForwardLights());
+	                    }
+	                }
+	            }
+	        }
+	        for (long x = -cox + cx; x <= cox + cx; x++) {
+	            for (long y = -coy + cy; y <= coy + cy; y++) {
+	                for (long z = -coz + cz; z <= coz + cz; z++) {
+	                    if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
+	                        vertcount += tmpc.frame(maxexpenlvl, minexplvl, onlyRender, info, re);
+	                        deferred_rel_lights.addAll(tmpc.getDeferredLights());
+	                    }
+	                }
+	            }
+	        }
         }
         vertcount += global.frame(maxexpenlvl, minexplvl, onlyRender, info, re);
         if (!onlyRender) {
