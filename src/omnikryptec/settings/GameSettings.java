@@ -41,7 +41,9 @@ public class GameSettings {
     private boolean deferredlight = false;
     private boolean forwardlight = false;
     private int max_forward_lights = 4;
-
+    
+    private boolean enable_chunks=true;
+    
     /**
      * Standard value for disabling multisampling
      */
@@ -121,6 +123,16 @@ public class GameSettings {
         return multisamples;
     }
 
+    public final boolean usesRenderChunking(){
+    	return enable_chunks;
+    }
+    
+    public final GameSettings setUseRenderChunking(boolean b){
+    	this.enable_chunks = b;
+    	return this;
+    }
+    
+    
     /**
      * Returns the anisotropic filtering level
      *
