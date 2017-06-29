@@ -82,9 +82,11 @@ public class AnimationTest {
 
             Logger.log(SAVE);
 
-            LiveProfiler liveProfiler = new LiveProfiler(1000, 1000);
-            liveProfiler.setLastSeconds(10);
-            liveProfiler.startTimer(100);
+            new Thread(() -> {
+                LiveProfiler liveProfiler = new LiveProfiler(1000, 1000);
+                liveProfiler.setLastSeconds(10);
+                liveProfiler.startTimer(100);
+            }).start();
 
             gameSettings = new GameSettings().setAnisotropicLevel(32).setMultisamples(32).setInitialFPSCap(30).setChunkRenderOffsets(2, 2, 2).setLightForward(true);
             keySettings = gameSettings.getKeySettings();
