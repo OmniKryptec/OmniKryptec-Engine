@@ -36,7 +36,8 @@ public class LiveProfiler {
         new ChartData(Profiler.SCENE_TIME, 0),
         new ChartData(Profiler.PARTICLE_RENDERER, 0),
         new ChartData(Profiler.PARTICLE_UPDATER, 0),
-        new ChartData(Profiler.POSTPROCESSOR, 0)};
+        new ChartData(Profiler.POSTPROCESSOR, 0),
+        new ChartData(Profiler.OTHER_TIME, 0)};
     private final HashMap<ChartData, LinkedList<Double>> data = new HashMap<>();
     private float[] sqrts = null;
     private Timer timer = null;
