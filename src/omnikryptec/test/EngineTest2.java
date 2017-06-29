@@ -173,7 +173,7 @@ public class EngineTest2 implements IEventHandler {
                     }
                 }
             }
-            //Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0, 1).setUpdateType(UpdateType.STATIC).setScale(new Vector3f(scale,scale,scale)).setRelativePos(0, 10, 0));
+            Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0, 1).setScale(new Vector3f(scale,scale,scale)).setUpdateType(UpdateType.STATIC).setRelativePos(0, 10, 0));
 
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
             system = new ParticleSystem(0, 0, 0,
@@ -225,7 +225,7 @@ public class EngineTest2 implements IEventHandler {
         }
         //System.out.println("(Rendertime: "+Instance.getEngine().getRenderTimeMS()+" Particletime: "+ParticleMaster.instance().getOverallParticleTimeMS()+" PPTime: "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());
         if (ev.getType() == EventType.AFTER_FRAME) {
-            Logger.log(new Profiler().createTimesString(50, true, false));
+            //Logger.log(new Profiler().createTimesString(50, true, false));
         }
         //Logger.log(new Profiler().createTimesString(50, true, false));
         //System.out.println(DisplayManager.instance().getFPS());

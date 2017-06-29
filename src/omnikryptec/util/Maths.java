@@ -63,6 +63,32 @@ public class Maths {
     public static Matrix4f setPerspectiveProjection(float fovdeg, float far, float near, float width, float height) {
         float aspectRatio = width / height;
         return new Matrix4f().setPerspective((float) Math.toRadians(fovdeg), aspectRatio, near, far);
+//    	Matrix4f projectionMatrix = new Matrix4f();
+//    	 
+//        float aspectRatio = width / height;
+// 
+//        float y_scale = (float) ((1f / Math.tan(Math.toRadians(fovdeg / 2f))));
+// 
+//        float x_scale = y_scale / aspectRatio;
+// 
+//        float frustum_length = far - near;
+// 
+//
+// 
+//        projectionMatrix.m00( x_scale);
+// 
+//        projectionMatrix.m11 ( y_scale);
+// 
+//        projectionMatrix.m22 ( -((far + near) / frustum_length));
+// 
+//        projectionMatrix.m23 ( -1);
+// 
+//        projectionMatrix.m32 ( -((2 * near * far) / frustum_length));
+// 
+//        projectionMatrix.m33 (0);
+// 
+//        return projectionMatrix;
+ 
     }
 
     public static Matrix4f setOrthographicProjection(float left, float right, float bottom, float top, float near,
