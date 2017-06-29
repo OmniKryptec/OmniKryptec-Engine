@@ -60,10 +60,10 @@ public class EntityRenderer implements Renderer {
 		shader.projection.loadMatrix(s.getCamera().getProjectionMatrix());
 		shader.ambient.loadVec3(s.getAmbient().getArray());
 		int lights = Math.min(DisplayManager.instance().getSettings().getLightMaxForward(),
-				s.getForwardRenderLights().size());
+				s.getLights().size());
 		shader.activelights.loadInt(lights);
 		for (int i = 0; i < lights; i++) {
-			l = s.getForwardRenderLights().get(i);
+			l = s.getLights().get(i);
 			if(!onlyRender){
 				l.doLogic0();
 			}

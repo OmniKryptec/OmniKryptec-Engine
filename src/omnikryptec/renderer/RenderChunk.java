@@ -73,8 +73,7 @@ public class RenderChunk implements DataMapSerializable {
 
     private final RenderMap<Renderer, RenderMap<AdvancedModel, List<Entity>>> chunk = new RenderMap<>(Renderer.class);
     private final ArrayList<GameObject> other = new ArrayList<>();
-    private final List<Light> deferred_lights = new ArrayList<>();
-    private final List<Light> forward_lights = new ArrayList<>();
+    private final List<Light> lights = new ArrayList<>();
 
     private Entity tmp;
     private Renderer tmpr;
@@ -115,12 +114,7 @@ public class RenderChunk implements DataMapSerializable {
                     Logger.log("TexturedModel is null", LogLevel.WARNING);
                 }
             } else if (g instanceof Light) {
-                tmpl = (Light) g;
-                if ((tmpl.getShader()) != null) {
-                    deferred_lights.add(tmpl);
-                } else {
-                    forward_lights.add(tmpl);
-                }
+               lights.add((Light)g);
             } else {
                 other.add(g);
             }
@@ -164,12 +158,7 @@ public class RenderChunk implements DataMapSerializable {
                     Logger.log("TexturedModel is null", LogLevel.WARNING);
                 }
             } else if (g instanceof Light) {
-                tmpl = (Light) g;
-                if ((tmpl.getShader()) != null) {
-                    deferred_lights.remove(tmpl);
-                } else {
-                    forward_lights.remove(tmpl);
-                }
+               lights.remove((Light)g);
             } else {
                 other.remove(g);
             }
@@ -222,16 +211,10 @@ public class RenderChunk implements DataMapSerializable {
                 }
             }
             if(type == AllowedRenderer.All){
-            	toreturnf.clear();
-            	for(int i=0; i<forward_lights.size(); i++){
-            		if(forward_lights.get(i).isActive()){
-            			toreturnf.add(tmpl);
-            		}
-            	}
-            	toreturnd.clear();
-            	for(int i=0; i<deferred_lights.size(); i++){
-            		if(deferred_lights.get(i).isActive()){
-            			toreturnd.add(tmpl);
+            	lightstoreturn.clear();
+            	for(int i=0; i<lights.size(); i++){
+            		if(lights.get(i).isActive()){
+            			lightstoreturn.add(tmpl);
             		}
             	}
             }
@@ -252,14 +235,10 @@ public class RenderChunk implements DataMapSerializable {
         return scene;
     }
     
-    private final List<Light> toreturnd = new ArrayList<>();
-    public List<Light> getDeferredLights() {
-        return toreturnd;
-    }
-
-    private final List<Light> toreturnf = new ArrayList<>();
-    public List<Light> getForwardLights() {
-        return toreturnf;
+    //TODO seperate all lights and important lights!
+    private final List<Light> lightstoreturn = new ArrayList<>();
+    public List<Light> getImportantLights() {
+        return lights;
     }
     
     public List<Entity> getEntities() {

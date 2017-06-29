@@ -80,7 +80,7 @@ vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 M
 		attenu = 1.0;
 	}else{
 		//point- or spotlight
-		float ltsa = dot(fromLight, conei.xyz);
+		float ltsa = dot(fromLight, normalize(conei.xyz));
 		//current point is outside the lightcone
 		if(ltsa < conei.w){
 			attenu = 0.0;

@@ -31,9 +31,7 @@ public class Scene implements DataMapSerializable {
             coy = Instance.getGameSettings().getChunkRenderOffsetY(),
             coz = Instance.getGameSettings().getChunkRenderOffsetZ();
     private PhysicsWorld physicsWorld = null;
-    private final List<Light> deferred_rel_lights = new ArrayList<>();
-    private final List<Light> forward_rel_lights = new ArrayList<>();
-    private final List<Light> both = new ArrayList<>();
+    private final List<Light> lights = new ArrayList<>();
     
     private RenderChunk global = new RenderChunk(0, 0, 0, this);
 
@@ -107,10 +105,8 @@ public class Scene implements DataMapSerializable {
 
     public final long frame(float maxexpenlvl, float minexplvl, boolean onlyRender, AllowedRenderer info,
             Renderer... re) {
-        deferred_rel_lights.clear();
-        deferred_rel_lights.addAll(global.getDeferredLights());
-        forward_rel_lights.clear();
-        forward_rel_lights.addAll(global.getForwardLights());
+        lights.clear();
+        lights.addAll(global.getImportantLights());
         if (!onlyRender && isUsingPhysics()) {
             physicsWorld.stepSimulation();
         }
@@ -123,7 +119,7 @@ public class Scene implements DataMapSerializable {
 	            for (long y = -coy + cy; y <= coy + cy; y++) {
 	                for (long z = -coz + cz; z <= coz + cz; z++) {
 	                    if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
-	                        forward_rel_lights.addAll(tmpc.getForwardLights());
+	                        lights.addAll(tmpc.getImportantLights());
 	                    }
 	                }
 	            }
@@ -133,7 +129,6 @@ public class Scene implements DataMapSerializable {
 	                for (long z = -coz + cz; z <= coz + cz; z++) {
 	                    if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
 	                        vertcount += tmpc.frame(maxexpenlvl, minexplvl, onlyRender, info, re);
-	                        deferred_rel_lights.addAll(tmpc.getDeferredLights());
 	                    }
 	                }
 	            }
@@ -153,12 +148,9 @@ public class Scene implements DataMapSerializable {
     protected void doLogic() {
     }
 
-    public final List<Light> getDeferredRenderLights() {
-        return deferred_rel_lights;
-    }
 
-    public final List<Light> getForwardRenderLights() {
-        return forward_rel_lights;
+    public final List<Light> getLights() {
+        return lights;
     }
 
     public final Camera getCamera() {
