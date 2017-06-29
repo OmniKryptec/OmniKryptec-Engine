@@ -43,6 +43,8 @@ public class GameSettings {
     private int max_forward_lights = 4;
     
     private boolean enable_chunks=true;
+    private int maxinstancespdc = 10000;
+    
     
     /**
      * Standard value for disabling multisampling
@@ -507,4 +509,13 @@ public class GameSettings {
         return max_forward_lights;
     }
 
+	public int getMaxInstancesPerDrawcall() {
+		return maxinstancespdc;
+	}
+	
+	public GameSettings setMaxInstancesPerDrawcall(int i){
+		this.maxinstancespdc = i;
+		return this;
+	}
+	
 }

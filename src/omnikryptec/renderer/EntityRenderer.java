@@ -21,13 +21,14 @@ import omnikryptec.model.TexturedModel;
 import omnikryptec.shader_files.EntityLightShader;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.Color;
+import omnikryptec.util.Instance;
 import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
 
 public class EntityRenderer implements Renderer {
 	
 	public static final int INSTANCED_DATA_LENGTH=20;
-	private static final int INSTANCES_PER_DRAWCALL=1000000; //TODO einstellbar
+	private static final int INSTANCES_PER_DRAWCALL=Instance.getGameSettings().getMaxInstancesPerDrawcall();
 	
 	private EntityLightShader shader;
 
@@ -47,7 +48,6 @@ public class EntityRenderer implements Renderer {
 	private Light l;
 	private Model model;
 	
-	private int tmp;
 	@Override
 	public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender) {
 		if (!DisplayManager.instance().getSettings().isLightForwardAllowed() && Logger.isDebugMode()) {
@@ -119,7 +119,6 @@ public class EntityRenderer implements Renderer {
 			for(int j=0; j<stapel.size(); j+=INSTANCES_PER_DRAWCALL){
 				newRender(onlyRender, s, j);
 			}
-//			oldRender(onlyRender, s);
 			if (textmodel.getMaterial().hasTransparency()) {
 				RenderUtil.cullBackFaces(true);
 			}
