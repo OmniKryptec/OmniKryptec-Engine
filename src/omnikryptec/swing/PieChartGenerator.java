@@ -136,19 +136,19 @@ public class PieChartGenerator {
                 graphics.setColor(java.awt.Color.BLACK);
             }
             final String name = String.format("%s%s", String.format(format, chartData.getName(), chartData.getValue()), (withPercentage ? String.format(" (%.2f%%)", (chartData.getPercentage() * 100.0F)) : ""));
-            final Font font = new Font("TimesRoman", Font.PLAIN, (int) (300 * Math.pow(chartData.getPercentage(), 0.25F) / Math.pow(name.length(), 0.25F) * fontSizeFactor));
+            final Font font = new Font(Font.MONOSPACED, Font.PLAIN, (int) (300 * Math.pow(chartData.getPercentage(), 0.25F) / Math.pow(name.length(), 0.25F) * fontSizeFactor));
             graphics.setFont(font);
             final int name_width = graphics.getFontMetrics().stringWidth(name);
             final int name_height = graphics.getFontMetrics().getAscent() - graphics.getFontMetrics().getDescent();
             if((x_middle_text - (name_width / 2)) < 0) {
-                x_middle_text += ((name_width / 2) - x_middle_text);
+                x_middle_text = (name_width / 2);
             } else if((x_middle_text + (name_width / 2)) > width) {
-                x_middle_text -= (x_middle_text + (name_width / 2) - width);
+                x_middle_text = width - (name_width / 2) - (3 * graphics.getFontMetrics().stringWidth("_"));
             }
             if((y_middle_text - name_height) < 0) {
-                y_middle_text += ((name_height) - y_middle_text);
+                y_middle_text = (name_height);
             } else if((y_middle_text + name_height) > height) {
-                y_middle_text -= (y_middle_text + name_height - height);
+                y_middle_text = height - name_height;
             }
             graphics.fillRect(x_middle_text - (name_width / 2), y_middle_text - name_height - 5, name_width, name_height + 15);
             graphics.setColor(color.getAWTColor());
