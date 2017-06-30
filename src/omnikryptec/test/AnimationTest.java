@@ -36,10 +36,14 @@ import omnikryptec.texture.SimpleTexture;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.input.InputManager;
+import omnikryptec.util.Maths;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.OSUtil;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.profiler.LiveProfiler;
+import org.joml.Matrix3f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 
 /**
@@ -112,6 +116,14 @@ public class AnimationTest {
                         turnSpeed *= 1;
                     }
                     InputManager.doThirdPersonController(this, this, keySettings, horizontalSpeed, verticalSpeed, turnSpeed);
+                    final Vector4f camera_ray = getViewMatrix().transform(new Vector4f(0, 0, 0, 0));
+                    Vector3f absrot = getAbsoluteRotation();
+                    Matrix3f view = new Matrix3f();
+                    view.rotate((float) Math.toRadians(absrot.x), Maths.X);
+                    view.rotate((float) Math.toRadians(absrot.y), Maths.Y);
+                    view.rotate((float) Math.toRadians(absrot.z), Maths.Z);
+                    
+                    Logger.log("camera_ray == " + camera_ray);
                 }
 
             }.setPerspectiveProjection(75, 0.1F, 1000)))));
