@@ -14,7 +14,12 @@ public class Network {
     
     private static final ArrayList<Integer> registeredPorts = new ArrayList<>();
     
-    public static final int THREADPOOL_SIZE_MAX_CLIENT = 10;
+    public static final int THREADPOOL_SIZE_CLIENT_MAX = 10;
+    public static final int STREAM_DELAY_TIME = 10;
+    public static final int STREAM_TIMES_MAX = 1000;
+    
+    public static final int CONNECTION_TIMES_MAX_STANDARD = 10;
+    public static final int CONNECTION_DELAY_TIME_STANDARD = 1000;
     
     
     public static final long generateID() {
