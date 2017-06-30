@@ -48,4 +48,15 @@ public class Animation implements ResourceObject {
         return name;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 1;
+        hash = hash * 2 + name.hashCode();
+        hash = (int) (hash * 3 + lengthInSeconds + 0.5);
+        for(KeyFrame keyFrame : keyFrames) {
+            hash += keyFrame.hashCode();
+        }
+        return hash;
+    }
+
 }

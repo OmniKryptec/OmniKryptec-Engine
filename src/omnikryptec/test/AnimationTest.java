@@ -166,7 +166,8 @@ public class AnimationTest {
                 }
 
             };
-            //animatedModel.doAnimation(animation);
+            Logger.log("Animation HashCode: " + animation.hashCode());
+            animatedModel.doAnimation(animation);
             if (SAVE.exists()) {
                 load();
             }

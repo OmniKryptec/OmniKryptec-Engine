@@ -106,7 +106,8 @@ public class Joint {
      * @return A reference to this Joint
      */
     protected Joint calculateInverseBindTransform(Matrix4f parentBindTransform) {
-        final Matrix4f bindTransform = parentBindTransform.mul(localBindTransform);
+        final Matrix4f bindTransform = new Matrix4f();
+        parentBindTransform.mul(localBindTransform, bindTransform);
         bindTransform.invert(inverseBindTransform);
         children.stream().forEach((child) -> {
             child.calculateInverseBindTransform(bindTransform);

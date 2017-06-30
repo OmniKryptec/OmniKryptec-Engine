@@ -39,7 +39,7 @@ public class Animator {
         this.animatedModel = animatedModel;
         this.loop = loop;
     }
-    
+
     /**
      * Carrys out an animation
      *
@@ -60,7 +60,7 @@ public class Animator {
     public final Animator doAnimation(Animation animation, float animationTime) {
         return doAnimation(animation, animationTime, loop);
     }
-    
+
     /**
      * Carrys out an animation
      *
@@ -158,8 +158,7 @@ public class Animator {
         return interpolatePoses(frames[0], frames[1], progression);
     }
 
-    private final Animator applyPoseToJoints(HashMap<String, Matrix4f> currentPose, Joint joint,
-            Matrix4f parentTransform) {
+    private final Animator applyPoseToJoints(HashMap<String, Matrix4f> currentPose, Joint joint, Matrix4f parentTransform) {
         final Matrix4f currentLocalTransform = currentPose.get(joint.getName());
         final Matrix4f currentTransform = new Matrix4f();
         parentTransform.mul(currentLocalTransform, currentTransform);
@@ -191,8 +190,7 @@ public class Animator {
         return currentTime / totalTime;
     }
 
-    private final HashMap<String, Matrix4f> interpolatePoses(KeyFrame previousFrame, KeyFrame nextFrame,
-            float progression) {
+    private final HashMap<String, Matrix4f> interpolatePoses(KeyFrame previousFrame, KeyFrame nextFrame, float progression) {
         final HashMap<String, Matrix4f> currentPose = new HashMap<>();
         previousFrame.getJointKeyFrames().keySet().stream().forEach((name) -> {
             final JointTransform previousTransform = previousFrame.getJointKeyFrames().get(name);
@@ -203,7 +201,7 @@ public class Animator {
         });
         return currentPose;
     }
-    
+
     public final Animation getAnimation() {
         return currentAnimation;
     }

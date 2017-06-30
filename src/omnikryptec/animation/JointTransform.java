@@ -32,8 +32,7 @@ public class JointTransform {
         return matrix;
     }
 
-    protected static final JointTransform interpolate(JointTransform frame_1, JointTransform frame_2,
-            float progression) {
+    protected static final JointTransform interpolate(JointTransform frame_1, JointTransform frame_2, float progression) {
         final Vector3f pos = interpolate(frame_1.position, frame_2.position, progression);
         final Quaternion rot = Quaternion.interpolate(frame_1.rotation, frame_2.rotation, progression);
         return new JointTransform(pos, rot);
@@ -44,6 +43,14 @@ public class JointTransform {
         final float y = start.y + (end.y - start.y) * progression;
         final float z = start.z + (end.z - start.z) * progression;
         return new Vector3f(x, y, z);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 1;
+        hash = hash * 2 + position.hashCode();
+        hash = hash * 3 + rotation.toRotationMatrix().hashCode();
+        return hash;
     }
 
 }

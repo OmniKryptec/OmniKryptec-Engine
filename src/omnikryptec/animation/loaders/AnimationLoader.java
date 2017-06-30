@@ -49,10 +49,10 @@ public class AnimationLoader {
      */
     private static KeyFrame createKeyFrame(KeyFrameData data) {
         HashMap<String, JointTransform> map = new HashMap<String, JointTransform>();
-        for (JointTransformData jointData : data.jointTransforms) {
+        data.jointTransforms.stream().forEach((jointData) -> {
             JointTransform jointTransform = createTransform(jointData);
             map.put(jointData.jointNameId, jointTransform);
-        }
+        });
         return new KeyFrame(data.time, map);
     }
 

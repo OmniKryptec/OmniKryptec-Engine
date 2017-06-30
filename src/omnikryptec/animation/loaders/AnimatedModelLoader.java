@@ -42,7 +42,7 @@ public class AnimatedModelLoader {
         animatedModel.getMaterial().setRenderer(renderer == null ? RendererRegistration.DEF_ANIMATEDMODEL_RENDERER : renderer);
         return animatedModel;
     }
-    
+
     public static AnimatedModel createModel(String name, AnimatedModelData entityData, Texture texture, Renderer renderer) {
         MeshData meshData = entityData.getMeshData();
         Model model = new Model(name, meshData);
@@ -77,9 +77,9 @@ public class AnimatedModelLoader {
      */
     private static Joint createJoints(JointData data) {
         Joint joint = new Joint(data.index, data.nameId, data.bindLocalTransform);
-        for (JointData child : data.children) {
+        data.children.stream().forEach((child) -> {
             joint.addChild(createJoints(child));
-        }
+        });
         return joint;
     }
 
