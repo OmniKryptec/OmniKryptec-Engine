@@ -728,6 +728,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
 
     /**
      * Returns the Timestamp when the connection was established or null
+     *
      * @return Timestamp of connection opening
      */
     public final Instant getInstantConnected() {
@@ -736,6 +737,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
 
     /**
      * Returns the Timestamp when the connection was closed or null
+     *
      * @return Timestamp of connection closing
      */
     public final Instant getInstantDisconnected() {
@@ -744,6 +746,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
 
     /**
      * Returns the Duration how long the connection is/was open
+     *
      * @return Duration of the connection time
      */
     public final Duration getConnectionDuration() {
@@ -760,6 +763,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
 
     /**
      * Returns when the last Pong was received
+     *
      * @return Timestamp of the last Pong
      */
     public final Instant getLastPong() {
@@ -768,6 +772,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
 
     /**
      * Returns the maximum number of tries per connection checks
+     *
      * @return Maximum number of tries per connection checks
      */
     public int getConnectionCheckTriesMax() {
@@ -776,7 +781,9 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
 
     /**
      * Sets the maximum number of tries per connection checks
-     * @param connectionCheckTriesMax Maximum number of tries per connection checks
+     *
+     * @param connectionCheckTriesMax Maximum number of tries per connection
+     * checks
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setConnectionCheckTriesMax(int connectionCheckTriesMax) {
@@ -785,16 +792,22 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
     }
 
     /**
-     * Returns the maximum time between sending the Ping and receiving the Pong in milliseconds
-     * @return Maximum time between sending the Ping and receiving the Pong in milliseconds
+     * Returns the maximum time between sending the Ping and receiving the Pong
+     * in milliseconds
+     *
+     * @return Maximum time between sending the Ping and receiving the Pong in
+     * milliseconds
      */
     public int getConnectionCheckAnswerTimeMax() {
         return connectionCheckAnswerTimeMax;
     }
 
     /**
-     * Sets the maximum time between sending the Ping and receiving the Pong in milliseconds
-     * @param connectionCheckAnswerTimeMax Maximum time between sending the Ping and receiving the Pong in milliseconds
+     * Sets the maximum time between sending the Ping and receiving the Pong in
+     * milliseconds
+     *
+     * @param connectionCheckAnswerTimeMax Maximum time between sending the Ping
+     * and receiving the Pong in milliseconds
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setConnectionCheckAnswerTimeMax(int connectionCheckAnswerTimeMax) {
@@ -804,6 +817,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
 
     /**
      * Returns the delay time between each answer check in milliseconds
+     *
      * @return Delay time between each answer check in milliseconds
      */
     public int getConnectionCheckAnswerDelayTime() {
@@ -812,7 +826,9 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
 
     /**
      * Sets the delay time between each answer check in milliseconds
-     * @param connectionCheckAnswerDelayTime Delay time between each answer check in milliseconds
+     *
+     * @param connectionCheckAnswerDelayTime Delay time between each answer
+     * check in milliseconds
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setConnectionCheckAnswerDelayTime(int connectionCheckAnswerDelayTime) {
@@ -821,7 +837,9 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
     }
 
     /**
-     * Returns the delay time between each running connection check in milliseconds
+     * Returns the delay time between each running connection check in
+     * milliseconds
+     *
      * @return Delay time between each running connection check in milliseconds
      */
     public int getConnectionCheckDelayTime() {
@@ -830,7 +848,9 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
 
     /**
      * Sets the delay time between each running connection check in milliseconds
-     * @param connectionCheckDelayTime Delay time between each running connection check in milliseconds
+     *
+     * @param connectionCheckDelayTime Delay time between each running
+     * connection check in milliseconds
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setConnectionCheckDelayTime(int connectionCheckDelayTime) {
@@ -840,6 +860,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
 
     /**
      * Returns the delay time between each new connection check in milliseconds
+     *
      * @return Delay time between each new connection check in milliseconds
      */
     public int getConnectionCheckTimerDelay() {
@@ -848,7 +869,9 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
 
     /**
      * Sets the delay time between each new connection check in milliseconds
-     * @param connectionCheckTimerDelay Delay time between each new connection check in milliseconds
+     *
+     * @param connectionCheckTimerDelay Delay time between each new connection
+     * check in milliseconds
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setConnectionCheckTimerDelay(int connectionCheckTimerDelay) {
@@ -858,6 +881,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
 
     /**
      * Returns if the AdvancedSocket is connected
+     *
      * @return <tt>true</tt> if the connection is open
      */
     public final boolean isConnected() {
@@ -866,6 +890,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
 
     /**
      * Returns if the AdvancedSocket is disconnected
+     *
      * @return <tt>true</tt> if the connection was closed
      */
     public final boolean isDisconnected() {
