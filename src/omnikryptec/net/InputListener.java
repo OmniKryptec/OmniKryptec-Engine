@@ -6,6 +6,10 @@ package omnikryptec.net;
  */
 public interface InputListener {
     
+    /**
+     * Called on received Inputs
+     * @param event InputEvent
+     */
     public void inputReceived(InputEvent event);
     
 }

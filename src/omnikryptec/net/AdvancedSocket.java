@@ -166,9 +166,9 @@ public abstract class AdvancedSocket implements Serializable {
                 try {
                     if((!isFromServerSocket && createNewSocket) || socket == null) {
                         resetExecutor(true);
-                        Logger.log(String.format("Started new connection to \"%s:%d\"", inetAddress.getHostAddress(), port), LogLevel.FINE);
+                        Logger.log("Started new connection to " + Network.formatInetAddressAndPort(inetAddress, port), LogLevel.FINE);
                         socket = new Socket(inetAddress, port);
-                        Logger.log(String.format("Connected successfully to \"%s:%d\"", inetAddress.getHostAddress(), port), LogLevel.FINE);
+                        Logger.log("Connected successfully to " + Network.formatInetAddressAndPort(inetAddress, port), LogLevel.FINE);
                     }
                     oos = new ObjectOutputStream(socket.getOutputStream());
                     ois = new ObjectInputStream(socket.getInputStream());
@@ -183,7 +183,7 @@ public abstract class AdvancedSocket implements Serializable {
                                 }
                             });
                         } catch (IOException ex) {
-                            Logger.log(String.format("Disconnected from Server \"%s:%d\"", inetAddress.getHostAddress(), port), LogLevel.FINE);
+                            Logger.log("Disconnected from Server " + Network.formatInetAddressAndPort(inetAddress, port), LogLevel.FINE);
                             disconnected = true;
                             break;
                         }
@@ -194,7 +194,7 @@ public abstract class AdvancedSocket implements Serializable {
                     run = false;
                     break;
                 } catch (Exception ex) {
-                    Logger.logErr(String.format("Error while connecting to \"%s:%d\": %s", inetAddress.getHostAddress(), port, ex), null);
+                    Logger.logErr(String.format("Error while connecting to %s: %s", Network.formatInetAddressAndPort(inetAddress, port), ex), null);
                 }
                 try {
                     Thread.sleep(connectionDelayTime);
