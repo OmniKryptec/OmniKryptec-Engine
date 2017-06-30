@@ -7,6 +7,8 @@ import org.lwjgl.opengl.GL11;
 import omnikryptec.animation.AnimatedModel;
 import omnikryptec.entity.Camera;
 import omnikryptec.entity.Entity;
+import omnikryptec.logger.LogEntry.LogLevel;
+import omnikryptec.logger.Logger;
 import omnikryptec.main.Scene;
 import omnikryptec.model.AdvancedModel;
 import omnikryptec.renderer.RenderMap;
@@ -38,7 +40,6 @@ public class AnimatedModelRenderer implements Renderer {
     }
 
     private List<Entity> stapel;
-    private AdvancedModel model;
     private AnimatedModel animatedModel;
     private Entity entity;
     private long vertcount = 0;
@@ -51,18 +52,20 @@ public class AnimatedModelRenderer implements Renderer {
         shader.projectionMatrix.loadMatrix(camera.getProjectionMatrix());
         shader.viewMatrix.loadMatrix(camera.getViewMatrix());
         shader.lightDirection.loadVec3(LIGHT_DIR);
-        for (int i = 0; i < entities.keysArray().length; i++) {
-            model = entities.keysArray()[i];
-            if (!(model instanceof AnimatedModel) || model == null) {
+        for (AdvancedModel advancedModel : entities.keysArray()) {
+            if (advancedModel == null || !(advancedModel instanceof AnimatedModel)) {
+                if (Logger.isDebugMode()) {
+                    Logger.log("Wrong renderer for AdvancedModel set! (" + advancedModel + ")", LogLevel.WARNING);
+                }
                 continue;
             }
-            animatedModel = (AnimatedModel) model;
-            model.getModel().getVao().bind(0, 1, 2, 3, 4, 5);
+            animatedModel = (AnimatedModel) advancedModel;
+            animatedModel.getModel().getVao().bind(0, 1, 2, 3, 4, 5);
             animatedModel.getTexture().bindToUnit(0);
             RenderUtil.antialias(true);
             RenderUtil.disableBlending();
             RenderUtil.enableDepthTesting(true);
-            stapel = entities.get(model);
+            stapel = entities.get(animatedModel);
             if (stapel != null && !stapel.isEmpty()) {
                 for (int z = 0; z < stapel.size(); z++) {
                     entity = stapel.get(z);
