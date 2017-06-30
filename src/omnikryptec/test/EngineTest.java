@@ -1,18 +1,18 @@
 package omnikryptec.test;
 
 import omnikryptec.display.DisplayManager;
-import omnikryptec.entity.Camera;
-import omnikryptec.entity.Entity;
-import omnikryptec.logger.Logger;
+import omnikryptec.gameobject.gameobject.Camera;
+import omnikryptec.gameobject.gameobject.Entity;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;
-import omnikryptec.model.Model;
-import omnikryptec.model.TexturedModel;
-import omnikryptec.objConverter.ObjLoader;
+import omnikryptec.resource.model.Model;
+import omnikryptec.resource.model.TexturedModel;
+import omnikryptec.resource.objConverter.ObjLoader;
+import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.settings.GameSettings;
-import omnikryptec.texture.SimpleTexture;
 import omnikryptec.util.NativesLoader;
+import omnikryptec.util.logger.Logger;
 
 public class EngineTest {
 

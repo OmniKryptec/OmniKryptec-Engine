@@ -1,7 +1,7 @@
 package omnikryptec.util;
 
-import omnikryptec.model.Model;
-import omnikryptec.model.VertexArrayObject;
+import omnikryptec.resource.model.Model;
+import omnikryptec.resource.model.VertexArrayObject;
 
 public class ModelUtil {
 

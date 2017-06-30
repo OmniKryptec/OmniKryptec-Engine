@@ -1,8 +1,8 @@
 package omnikryptec.util;
 
-import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.logger.Logger;
 import omnikryptec.util.OSUtil.OS;
+import omnikryptec.util.logger.Logger;
+import omnikryptec.util.logger.LogEntry.LogLevel;
 
 /**
  *

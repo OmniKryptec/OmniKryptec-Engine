@@ -7,8 +7,8 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import omnikryptec.display.DisplayManager;
-import omnikryptec.entity.Entity.RenderType;
-import omnikryptec.entity.GameObject;
+import omnikryptec.gameobject.gameobject.GameObject;
+import omnikryptec.gameobject.gameobject.Entity.RenderType;
 import omnikryptec.util.Maths;
 
 public class ParticleSystem extends GameObject {

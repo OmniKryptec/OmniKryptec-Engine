@@ -10,9 +10,10 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL31;
-import omnikryptec.entity.Camera;
-import omnikryptec.model.Model;
-import omnikryptec.model.VertexBufferObject;
+
+import omnikryptec.gameobject.gameobject.Camera;
+import omnikryptec.resource.model.Model;
+import omnikryptec.resource.model.VertexBufferObject;
 import omnikryptec.util.Maths;
 import omnikryptec.util.ModelUtil;
 import omnikryptec.util.RenderUtil;

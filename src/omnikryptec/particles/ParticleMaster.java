@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import omnikryptec.entity.Camera;
+import omnikryptec.gameobject.gameobject.Camera;
 import omnikryptec.util.ArrayUtil;
 import omnikryptec.util.Instance;
 import omnikryptec.util.profiler.Profilable;

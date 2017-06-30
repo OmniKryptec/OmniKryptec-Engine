@@ -3,11 +3,12 @@ package omnikryptec.input;
 import omnikryptec.display.Display;
 
 import omnikryptec.display.DisplayManager;
-import omnikryptec.entity.Camera;
-import omnikryptec.entity.GameObject;
-import omnikryptec.logger.Logger;
+import omnikryptec.gameobject.gameobject.Camera;
+import omnikryptec.gameobject.gameobject.GameObject;
 import omnikryptec.settings.KeySettings;
 import omnikryptec.util.Maths;
+import omnikryptec.util.logger.Logger;
+
 import org.joml.AxisAngle4f;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;

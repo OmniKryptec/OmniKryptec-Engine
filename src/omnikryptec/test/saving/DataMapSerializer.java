@@ -6,8 +6,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import omnikryptec.logger.Logger;
 import omnikryptec.util.ArrayUtil;
+import omnikryptec.util.logger.Logger;
 
 /**
  * DataMapSerializer

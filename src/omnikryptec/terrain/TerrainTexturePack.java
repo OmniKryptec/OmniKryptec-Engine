@@ -1,6 +1,6 @@
 package omnikryptec.terrain;
 
-import omnikryptec.texture.Texture;
+import omnikryptec.resource.texture.Texture;
 
 /**
  *

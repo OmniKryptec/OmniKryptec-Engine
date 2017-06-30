@@ -4,9 +4,9 @@ import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.logger.Logger;
 import omnikryptec.util.AdvancedFile;
+import omnikryptec.util.logger.Logger;
+import omnikryptec.util.logger.LogEntry.LogLevel;
 
 /**
  *

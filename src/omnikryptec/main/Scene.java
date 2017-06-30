@@ -6,12 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import omnikryptec.entity.Camera;
-import omnikryptec.entity.Entity;
-import omnikryptec.entity.GameObject;
-import omnikryptec.entity.Light;
-import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.logger.Logger;
+import omnikryptec.gameobject.gameobject.Camera;
+import omnikryptec.gameobject.gameobject.Entity;
+import omnikryptec.gameobject.gameobject.GameObject;
+import omnikryptec.gameobject.gameobject.Light;
 import omnikryptec.physics.PhysicsWorld;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.AllowedRenderer;
@@ -21,6 +19,8 @@ import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.Color;
 import omnikryptec.util.Instance;
 import omnikryptec.util.PhysicsUtil;
+import omnikryptec.util.logger.Logger;
+import omnikryptec.util.logger.LogEntry.LogLevel;
 
 public class Scene implements DataMapSerializable {
 

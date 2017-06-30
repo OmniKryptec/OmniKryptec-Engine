@@ -12,10 +12,10 @@ import javax.sound.sampled.AudioSystem;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL10;
 
-import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.logger.Logger;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.AudioUtil;
+import omnikryptec.util.logger.Logger;
+import omnikryptec.util.logger.LogEntry.LogLevel;
 
 /**
  * Streamed sound

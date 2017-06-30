@@ -4,18 +4,19 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import omnikryptec.entity.Entity;
-import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.logger.Logger;
+import omnikryptec.gameobject.gameobject.Entity;
 import omnikryptec.main.Scene;
-import omnikryptec.model.AdvancedModel;
-import omnikryptec.model.TexturedModel;
 import omnikryptec.renderer.RenderMap;
 import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
+import omnikryptec.resource.model.AdvancedModel;
+import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.util.Instance;
 import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
+import omnikryptec.util.logger.Logger;
+import omnikryptec.util.logger.LogEntry.LogLevel;
+
 import org.joml.Vector3f;
 
 /**

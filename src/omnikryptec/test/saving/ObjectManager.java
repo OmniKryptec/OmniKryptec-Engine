@@ -7,9 +7,10 @@ package omnikryptec.test.saving;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import omnikryptec.entity.GameObject;
-import omnikryptec.logger.Logger;
+import omnikryptec.gameobject.gameobject.GameObject;
 import omnikryptec.util.AdvancedFile;
+import omnikryptec.util.logger.Logger;
+
 import org.joml.Vector3f;
 
 /**

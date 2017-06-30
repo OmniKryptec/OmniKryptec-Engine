@@ -4,7 +4,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import omnikryptec.display.Display;
-import omnikryptec.entity.Entity;
+import omnikryptec.gameobject.gameobject.Entity;
 
 public class Maths {
 

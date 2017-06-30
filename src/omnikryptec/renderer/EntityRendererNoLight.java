@@ -4,16 +4,16 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import omnikryptec.entity.Entity;
-import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.logger.Logger;
+import omnikryptec.gameobject.gameobject.Entity;
 import omnikryptec.main.Scene;
-import omnikryptec.model.AdvancedModel;
-import omnikryptec.model.Material;
-import omnikryptec.model.TexturedModel;
+import omnikryptec.resource.model.AdvancedModel;
+import omnikryptec.resource.model.Material;
+import omnikryptec.resource.model.TexturedModel;
+import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.files.EntityShader;
-import omnikryptec.texture.Texture;
 import omnikryptec.util.RenderUtil;
+import omnikryptec.util.logger.Logger;
+import omnikryptec.util.logger.LogEntry.LogLevel;
 
 public class EntityRendererNoLight implements Renderer {
 

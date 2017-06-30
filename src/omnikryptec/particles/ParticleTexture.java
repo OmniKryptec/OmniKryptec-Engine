@@ -1,6 +1,6 @@
 package omnikryptec.particles;
 
-import omnikryptec.texture.Texture;
+import omnikryptec.resource.texture.Texture;
 
 public class ParticleTexture {
 	private int numberOfRows;

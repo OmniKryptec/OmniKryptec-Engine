@@ -4,9 +4,9 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import omnikryptec.display.DisplayManager;
-import omnikryptec.entity.Camera;
-import omnikryptec.entity.Entity.RenderType;
-import omnikryptec.entity.Rangeable;
+import omnikryptec.gameobject.gameobject.Camera;
+import omnikryptec.gameobject.gameobject.Rangeable;
+import omnikryptec.gameobject.gameobject.Entity.RenderType;
 
 public class Particle implements Rangeable {
 

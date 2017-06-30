@@ -1,11 +1,11 @@
 package omnikryptec.display;
 
 import omnikryptec.input.InputManager;
+import omnikryptec.util.logger.Logger;
+import omnikryptec.util.logger.LogEntry.LogLevel;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
-import omnikryptec.logger.Logger;
-import omnikryptec.logger.LogEntry.LogLevel;
 
 public class Display {
 

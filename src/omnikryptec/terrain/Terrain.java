@@ -2,12 +2,13 @@ package omnikryptec.terrain;
 
 import java.util.ArrayList;
 
-import omnikryptec.entity.Entity;
-import omnikryptec.model.Model;
-import omnikryptec.model.TexturedModel;
-import omnikryptec.objConverter.ModelData;
-import omnikryptec.objConverter.Vertex;
-import omnikryptec.texture.Texture;
+import omnikryptec.gameobject.gameobject.Entity;
+import omnikryptec.resource.model.Model;
+import omnikryptec.resource.model.TexturedModel;
+import omnikryptec.resource.objConverter.ModelData;
+import omnikryptec.resource.objConverter.Vertex;
+import omnikryptec.resource.texture.Texture;
+
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 

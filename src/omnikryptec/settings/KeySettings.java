@@ -2,9 +2,10 @@ package omnikryptec.settings;
 
 import java.util.ArrayList;
 
-import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.logger.Logger;
 import org.lwjgl.glfw.GLFW;
+
+import omnikryptec.util.logger.Logger;
+import omnikryptec.util.logger.LogEntry.LogLevel;
 
 /**
  * KeySettings

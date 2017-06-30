@@ -37,10 +37,11 @@ import org.lwjgl.openal.ALC;
 import org.lwjgl.openal.ALC10;
 import org.lwjgl.openal.ALCCapabilities;
 
-import omnikryptec.component.Component;
-import omnikryptec.logger.Logger;
+import omnikryptec.gameobject.component.Component;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.AudioUtil;
+import omnikryptec.util.logger.Logger;
+
 import org.apache.commons.io.IOUtils;
 import org.joml.Vector3f;
 

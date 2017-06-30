@@ -16,7 +16,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import omnikryptec.logger.Logger;
+import omnikryptec.util.logger.Logger;
 
 /**
  *

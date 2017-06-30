@@ -1,7 +1,7 @@
 package omnikryptec.util.error;
 
-import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.logger.Logger;
+import omnikryptec.util.logger.Logger;
+import omnikryptec.util.logger.LogEntry.LogLevel;
 import omnikryptec.util.profiler.Profiler;
 
 public class OmnikryptecError implements ErrorItem{

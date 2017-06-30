@@ -2,11 +2,11 @@ package omnikryptec.test;
 
 import java.util.List;
 
-import omnikryptec.entity.Entity;
+import omnikryptec.gameobject.gameobject.Entity;
 import omnikryptec.main.Scene;
-import omnikryptec.model.AdvancedModel;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.renderer.RenderChunk.AllowedRenderer;
+import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.renderer.RenderMap;
 import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;

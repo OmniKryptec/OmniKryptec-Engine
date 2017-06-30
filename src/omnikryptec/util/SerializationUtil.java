@@ -12,8 +12,8 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import omnikryptec.entity.GameObject;
-import omnikryptec.logger.Logger;
+import omnikryptec.gameobject.gameobject.GameObject;
+import omnikryptec.util.logger.Logger;
 
 /**
  *

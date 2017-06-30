@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import omnikryptec.display.DisplayManager;
-import omnikryptec.model.Model;
+import omnikryptec.resource.model.Model;
 import omnikryptec.util.Instance;
 import omnikryptec.util.ModelUtil;
 import omnikryptec.util.RenderUtil;
