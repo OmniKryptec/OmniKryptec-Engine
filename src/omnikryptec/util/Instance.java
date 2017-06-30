@@ -6,11 +6,11 @@ import org.joml.Vector3f;
 
 import omnikryptec.animation.renderer.AnimatedModelRenderer;
 import omnikryptec.display.DisplayManager;
-import omnikryptec.event.EventSystem;
+import omnikryptec.event.event.EventSystem;
 import omnikryptec.gameobject.gameobject.Camera;
+import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
-import omnikryptec.particles.ParticleMaster;
 import omnikryptec.postprocessing.main.PostProcessing;
 import omnikryptec.postprocessing.main.PostProcessingStage;
 import omnikryptec.renderer.EntityRendererNoLight;

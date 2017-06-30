@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-import omnikryptec.lang.LanguageManager;
+import omnikryptec.util.lang.LanguageManager;
 
 /**
  *

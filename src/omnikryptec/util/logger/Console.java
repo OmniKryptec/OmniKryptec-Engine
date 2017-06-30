@@ -25,10 +25,10 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import omnikryptec.lang.ILanguage;
-import omnikryptec.lang.LanguageManager;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.AdvancedFile;
+import omnikryptec.util.lang.ILanguage;
+import omnikryptec.util.lang.LanguageManager;
 import omnikryptec.util.logger.LogEntry.LogLevel;
 import omnikryptec.util.logger.LogEntryFormatter.LogEntryFormatTile;
 

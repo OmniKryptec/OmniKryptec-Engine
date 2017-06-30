@@ -1,6 +1,6 @@
 package omnikryptec.gameobject.gameobject;
 
-import omnikryptec.input.InputManager;
+import omnikryptec.event.input.InputManager;
 import omnikryptec.main.OmniKryptecEngine;
 
 /**

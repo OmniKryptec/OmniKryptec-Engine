@@ -10,9 +10,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
-import omnikryptec.exceptions.OmniKryptecException;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.util.Instance;
+import omnikryptec.util.exceptions.OmniKryptecException;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogEntry.LogLevel;
 

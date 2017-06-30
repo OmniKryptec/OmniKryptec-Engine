@@ -1,6 +1,6 @@
 package omnikryptec.display;
 
-import omnikryptec.input.InputManager;
+import omnikryptec.event.input.InputManager;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogEntry.LogLevel;
 

@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import omnikryptec.event.Event;
-import omnikryptec.event.EventSystem;
-import omnikryptec.event.EventType;
-import omnikryptec.exceptions.UnsupportedCharacterException;
+import omnikryptec.event.event.Event;
+import omnikryptec.event.event.EventSystem;
+import omnikryptec.event.event.EventType;
+import omnikryptec.util.exceptions.UnsupportedCharacterException;
 
 /**
  *

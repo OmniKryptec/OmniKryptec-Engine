@@ -3,10 +3,10 @@ package omnikryptec.resource.model;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import omnikryptec.exceptions.OmniKryptecException;
 import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.texture.Texture;
+import omnikryptec.util.exceptions.OmniKryptecException;
 import omnikryptec.util.logger.Logger;
 
 public class Material {

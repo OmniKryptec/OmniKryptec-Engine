@@ -20,11 +20,11 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import omnikryptec.display.Display;
-import omnikryptec.exceptions.IllegalAccessException;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Instance;
+import omnikryptec.util.exceptions.IllegalAccessException;
 import omnikryptec.util.logger.Logger;
 
 public class FrameBufferObject extends Texture {

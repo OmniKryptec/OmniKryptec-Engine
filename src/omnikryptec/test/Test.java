@@ -8,10 +8,10 @@ import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 
-import omnikryptec.lang.ILanguage;
-import omnikryptec.lang.LanguageManager;
 import omnikryptec.swing.JCheckBoxList;
 import omnikryptec.util.debug.VariableChangeListener;
+import omnikryptec.util.lang.ILanguage;
+import omnikryptec.util.lang.LanguageManager;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.SystemInputStream;
 import omnikryptec.util.logger.LogEntry.LogLevel;
