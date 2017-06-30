@@ -116,6 +116,9 @@ public class AnimationTest {
                         turnSpeed *= 1;
                     }
                     InputManager.doThirdPersonController(this, this, keySettings, horizontalSpeed, verticalSpeed, turnSpeed);
+                    if(true) {
+                        return;
+                    }
                     final Vector4f camera_ray = getViewMatrix().transform(new Vector4f(0, 0, 0, 0));
                     Vector3f absrot = getAbsoluteRotation();
                     Matrix3f view = new Matrix3f();
