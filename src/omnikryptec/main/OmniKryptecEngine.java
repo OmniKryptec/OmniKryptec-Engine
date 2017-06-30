@@ -219,7 +219,6 @@ public class OmniKryptecEngine implements Profilable {
                 eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
             }
             scenefbo.bindFrameBuffer();
-            ((FrameBufferObject)null).bindFrameBuffer();
             if (sceneCurrent != null) {
                 if (clear) {
                     RenderUtil.clear(sceneCurrent.getClearColor());
@@ -261,54 +260,6 @@ public class OmniKryptecEngine implements Profilable {
         return this;
     }
 
-//    public final OmniKryptecEngine frame(boolean clear) {
-//        final long currentTime = manager.getCurrentTime();
-//        try {
-//            if (!Display.isActive()) {
-//                Display.update();
-//                try {
-//                    Thread.sleep(1);
-//                } catch (InterruptedException e) {
-//                    errorOccured(e, "Error occured while sleeping: ");
-//                }
-//                return this;
-//            }
-//            InputManager.nextFrame();
-//            AudioManager.update(currentTime);
-//            if (Display.wasResized()) {
-//                resizeFbos();
-//                PostProcessing.instance().resize();
-//                eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
-//            }
-//            scenefbo.bindFrameBuffer();
-//            if (sceneCurrent != null) {
-//                if (clear) {
-//                    RenderUtil.clear(sceneCurrent.getClearColor());
-//                }
-//                vertsCountCurrent = sceneCurrent.frame(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, false, AllowedRenderer.All);
-//                ParticleMaster.instance().update(getCurrentScene().getCamera());
-//            }
-//            eventsystem.fireEvent(new Event(), EventType.RENDER_EVENT);
-//            scenefbo.unbindFrameBuffer();
-//            scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);
-//            scenefbo.resolveToFbo(normalfbo, GL30.GL_COLOR_ATTACHMENT1);
-//            scenefbo.resolveToFbo(specularfbo, GL30.GL_COLOR_ATTACHMENT2);
-//            scenefbo.resolveToFbo(extrainfofbo, GL30.GL_COLOR_ATTACHMENT3);
-//            if (sceneCurrent != null) {
-//                if (scenefbo.getTargets().length > 4) {
-//                    for (int i = 4; i < scenefbo.getTargets().length; i++) {
-//                        scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i - 4].target);
-//                    }
-//                }
-//                PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
-//            }
-//            eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
-//            DisplayManager.instance().updateDisplay();
-//        } catch (Exception e) {
-//            errorOccured(e, "Error occured in frame: ");
-//        }
-//        return this;
-//    }
     public final long getModelVertsCount() {
         return vertsCountCurrent;
     }
