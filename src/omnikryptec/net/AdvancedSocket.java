@@ -9,8 +9,8 @@ import java.time.Instant;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.logger.Logger;
+import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 /**
  * AdvancedSocket
@@ -32,7 +32,7 @@ public abstract class AdvancedSocket {
     private boolean stopped = false;
     private boolean isFromServerSocket = false;
     private boolean run = false;
-    //private static Instant instantLast = Instant.now();
+    private static Instant instantLast = Instant.now();
     
     public AdvancedSocket(Socket socket, int threadPoolSize) {
         this(socket.getInetAddress(), socket.getPort(), threadPoolSize);
