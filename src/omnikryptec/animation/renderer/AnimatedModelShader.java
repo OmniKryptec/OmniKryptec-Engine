@@ -1,10 +1,10 @@
 package omnikryptec.animation.renderer;
 
-import omnikryptec.shader.Shader;
-import omnikryptec.shader.UniformMatrix;
-import omnikryptec.shader.UniformMatrixArray;
-import omnikryptec.shader.UniformSampler;
-import omnikryptec.shader.UniformVec3;
+import omnikryptec.shader.base.Shader;
+import omnikryptec.shader.base.UniformMatrix;
+import omnikryptec.shader.base.UniformMatrixArray;
+import omnikryptec.shader.base.UniformSampler;
+import omnikryptec.shader.base.UniformVec3;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Instance;
 

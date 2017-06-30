@@ -18,7 +18,7 @@ import omnikryptec.model.AdvancedModel;
 import omnikryptec.model.Material;
 import omnikryptec.model.Model;
 import omnikryptec.model.TexturedModel;
-import omnikryptec.shader_files.EntityLightShader;
+import omnikryptec.shader.files.EntityLightShader;
 import omnikryptec.texture.Texture;
 import omnikryptec.util.Color;
 import omnikryptec.util.Instance;

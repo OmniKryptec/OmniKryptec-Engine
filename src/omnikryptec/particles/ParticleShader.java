@@ -1,9 +1,9 @@
 package omnikryptec.particles;
 
-import omnikryptec.shader.Attribute;
-import omnikryptec.shader.Shader;
-import omnikryptec.shader.UniformFloat;
-import omnikryptec.shader.UniformMatrix;
+import omnikryptec.shader.base.Attribute;
+import omnikryptec.shader.base.Shader;
+import omnikryptec.shader.base.UniformFloat;
+import omnikryptec.shader.base.UniformMatrix;
 
 public class ParticleShader extends Shader {
 

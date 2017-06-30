@@ -12,9 +12,9 @@ import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
-import omnikryptec.postprocessing.FrameBufferObject;
-import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
-import omnikryptec.postprocessing.PostProcessingStage;
+import omnikryptec.postprocessing.main.FrameBufferObject;
+import omnikryptec.postprocessing.main.PostProcessingStage;
+import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.util.RenderUtil;
 
 public class DeferredLightStage extends PostProcessingStage {

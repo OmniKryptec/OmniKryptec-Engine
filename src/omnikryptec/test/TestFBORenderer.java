@@ -5,7 +5,7 @@ import java.util.List;
 import omnikryptec.entity.Entity;
 import omnikryptec.main.Scene;
 import omnikryptec.model.AdvancedModel;
-import omnikryptec.postprocessing.FrameBufferObject;
+import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.renderer.RenderChunk.AllowedRenderer;
 import omnikryptec.renderer.RenderMap;
 import omnikryptec.renderer.Renderer;

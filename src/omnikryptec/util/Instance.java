@@ -12,13 +12,13 @@ import omnikryptec.loader.ResourceLoader;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.particles.ParticleMaster;
-import omnikryptec.postprocessing.PostProcessing;
-import omnikryptec.postprocessing.PostProcessingStage;
+import omnikryptec.postprocessing.main.PostProcessing;
+import omnikryptec.postprocessing.main.PostProcessingStage;
 import omnikryptec.renderer.EntityRendererNoLight;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.KeySettings;
-import omnikryptec.shader.Shader;
+import omnikryptec.shader.base.Shader;
 
 public class Instance {
 
