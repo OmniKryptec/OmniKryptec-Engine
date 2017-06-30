@@ -7,8 +7,9 @@ import java.util.List;
 import omnikryptec.logger.LogEntry.LogLevel;
 import omnikryptec.logger.Logger;
 import omnikryptec.util.Util;
+import omnikryptec.util.error.ErrorItem;
 
-public class Profiler {
+public class Profiler implements ErrorItem{
 
     public static final long NAME_NOT_FOUND = -1;
     public static final String OVERALL_FRAME_TIME = "OVERALL_FRAME_TIME";
@@ -231,5 +232,10 @@ public class Profiler {
         }
         return b.toString();
     }
+
+	@Override
+	public String getError() {
+		return "Profiled times: \n"+createTimesString(50, false, false);
+	}
 
 }

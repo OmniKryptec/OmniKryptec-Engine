@@ -138,12 +138,14 @@ public class EntityRenderer implements Renderer {
 		count = 0;
 		for(int j=offset; j<instances; j++){
 			entity = stapel.get(j);
-			if (entity.isActive() && RenderUtil.inRenderRange(entity, s.getCamera())) {
+			if (entity.isActive()) {
 				if (!onlyRender) {
 					entity.doLogic0();
 				}
-				updateArray(entity.getTransformationMatrix(), entity.getColor(), array);
-				count++;
+				if(RenderUtil.inRenderRange(entity, s.getCamera())){
+					updateArray(entity.getTransformationMatrix(), entity.getColor(), array);
+					count++;
+				}
 			}
 		}
 		if(buffer == null || buffer.capacity()<array.length){
