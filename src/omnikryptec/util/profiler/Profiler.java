@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.logger.Logger;
 import omnikryptec.util.Util;
 import omnikryptec.util.error.ErrorItem;
+import omnikryptec.util.logger.Logger;
+import omnikryptec.util.logger.LogEntry.LogLevel;
 
 public class Profiler implements ErrorItem{
 

@@ -27,21 +27,22 @@ import com.bulletphysics.linearmath.Transform;
 
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
-import omnikryptec.entity.Camera;
-import omnikryptec.entity.Entity;
-import omnikryptec.entity.EntityBuilder;
-import omnikryptec.entity.FollowingCamera;
-import omnikryptec.entity.GameObject;
-import omnikryptec.event.EventSystem;
-import omnikryptec.event.EventType;
-import omnikryptec.logger.Logger;
+import omnikryptec.event.event.EventSystem;
+import omnikryptec.event.event.EventType;
+import omnikryptec.event.input.InputManager;
+import omnikryptec.gameobject.gameobject.Camera;
+import omnikryptec.gameobject.gameobject.Entity;
+import omnikryptec.gameobject.gameobject.EntityBuilder;
+import omnikryptec.gameobject.gameobject.FollowingCamera;
+import omnikryptec.gameobject.gameobject.GameObject;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.ConverterUtil;
-import omnikryptec.input.InputManager;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.PhysicsUtil;
+import omnikryptec.util.logger.Logger;
+
 import org.lwjgl.glfw.GLFW;
 
 /**

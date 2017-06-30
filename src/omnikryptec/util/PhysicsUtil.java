@@ -21,10 +21,10 @@ import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 import com.bulletphysics.util.ObjectArrayList;
 
-import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.logger.Logger;
-import omnikryptec.model.Model;
-import omnikryptec.objConverter.ModelData;
+import omnikryptec.resource.model.Model;
+import omnikryptec.resource.objConverter.ModelData;
+import omnikryptec.util.logger.Logger;
+import omnikryptec.util.logger.LogEntry.LogLevel;
 
 /**
  * Physics utility class

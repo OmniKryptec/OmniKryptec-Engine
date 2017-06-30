@@ -7,15 +7,15 @@ import org.lwjgl.opengl.GL30;
 
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
-import omnikryptec.entity.Light;
-import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.logger.Logger;
+import omnikryptec.gameobject.gameobject.Light;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
-import omnikryptec.postprocessing.FrameBufferObject;
-import omnikryptec.postprocessing.FrameBufferObject.DepthbufferType;
-import omnikryptec.postprocessing.PostProcessingStage;
+import omnikryptec.postprocessing.main.FrameBufferObject;
+import omnikryptec.postprocessing.main.PostProcessingStage;
+import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.util.RenderUtil;
+import omnikryptec.util.logger.Logger;
+import omnikryptec.util.logger.LogEntry.LogLevel;
 
 public class DeferredLightStage extends PostProcessingStage {
 

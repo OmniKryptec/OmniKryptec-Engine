@@ -7,12 +7,12 @@ import omnikryptec.animation.ColladaParser.dataStructures.AnimatedModelData;
 import omnikryptec.animation.ColladaParser.dataStructures.JointData;
 import omnikryptec.animation.ColladaParser.dataStructures.MeshData;
 import omnikryptec.animation.ColladaParser.dataStructures.SkeletonData;
-import omnikryptec.model.Model;
-import omnikryptec.model.VertexArrayObject;
 import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
-import omnikryptec.texture.SimpleTexture;
-import omnikryptec.texture.Texture;
+import omnikryptec.resource.model.Model;
+import omnikryptec.resource.model.VertexArrayObject;
+import omnikryptec.resource.texture.SimpleTexture;
+import omnikryptec.resource.texture.Texture;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Instance;
 

@@ -2,9 +2,9 @@ package omnikryptec.renderer;
 
 import java.util.List;
 
-import omnikryptec.entity.Entity;
+import omnikryptec.gameobject.gameobject.Entity;
 import omnikryptec.main.Scene;
-import omnikryptec.model.AdvancedModel;
+import omnikryptec.resource.model.AdvancedModel;
 
 public interface Renderer {
 

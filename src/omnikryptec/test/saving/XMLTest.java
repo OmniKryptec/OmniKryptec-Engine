@@ -3,10 +3,11 @@ package omnikryptec.test.saving;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import omnikryptec.logger.Commands;
-import omnikryptec.logger.Logger;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.SerializationUtil;
+import omnikryptec.util.logger.Commands;
+import omnikryptec.util.logger.Logger;
+
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;

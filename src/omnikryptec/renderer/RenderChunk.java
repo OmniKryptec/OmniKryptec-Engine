@@ -7,18 +7,18 @@ import java.util.Map;
 
 import org.joml.Vector3f;
 
-import omnikryptec.entity.Entity;
-import omnikryptec.entity.GameObject;
-import omnikryptec.entity.Light;
-import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.logger.Logger;
+import omnikryptec.gameobject.gameobject.Entity;
+import omnikryptec.gameobject.gameobject.GameObject;
+import omnikryptec.gameobject.gameobject.Light;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
-import omnikryptec.model.AdvancedModel;
-import omnikryptec.model.Material;
+import omnikryptec.resource.model.AdvancedModel;
+import omnikryptec.resource.model.Material;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.SerializationUtil;
+import omnikryptec.util.logger.Logger;
+import omnikryptec.util.logger.LogEntry.LogLevel;
 
 public class RenderChunk implements DataMapSerializable {
 	

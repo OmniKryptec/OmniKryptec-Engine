@@ -9,20 +9,20 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL31;
 import omnikryptec.display.DisplayManager;
-import omnikryptec.entity.Entity;
-import omnikryptec.entity.Light;
-import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.logger.Logger;
+import omnikryptec.gameobject.gameobject.Entity;
+import omnikryptec.gameobject.gameobject.Light;
 import omnikryptec.main.Scene;
-import omnikryptec.model.AdvancedModel;
-import omnikryptec.model.Material;
-import omnikryptec.model.Model;
-import omnikryptec.model.TexturedModel;
-import omnikryptec.shader_files.EntityLightShader;
-import omnikryptec.texture.Texture;
+import omnikryptec.resource.model.AdvancedModel;
+import omnikryptec.resource.model.Material;
+import omnikryptec.resource.model.Model;
+import omnikryptec.resource.model.TexturedModel;
+import omnikryptec.resource.texture.Texture;
+import omnikryptec.shader.files.EntityLightShader;
 import omnikryptec.util.Color;
 import omnikryptec.util.Instance;
 import omnikryptec.util.RenderUtil;
+import omnikryptec.util.logger.Logger;
+import omnikryptec.util.logger.LogEntry.LogLevel;
 
 public class EntityRenderer implements Renderer {
 

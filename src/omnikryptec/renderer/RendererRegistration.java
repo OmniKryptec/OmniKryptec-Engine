@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import omnikryptec.animation.renderer.AnimatedModelRenderer;
-import omnikryptec.logger.LogEntry.LogLevel;
-import omnikryptec.logger.Logger;
 import omnikryptec.util.SerializationUtil;
+import omnikryptec.util.logger.Logger;
+import omnikryptec.util.logger.LogEntry.LogLevel;
 
 public class RendererRegistration {
 

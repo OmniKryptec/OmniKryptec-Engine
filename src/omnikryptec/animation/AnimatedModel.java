@@ -3,12 +3,13 @@ package omnikryptec.animation;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import omnikryptec.loader.ResourceLoader;
-import omnikryptec.model.AdvancedModel;
-import omnikryptec.model.Material;
-import omnikryptec.model.Model;
+import omnikryptec.resource.loader.ResourceLoader;
+import omnikryptec.resource.model.AdvancedModel;
+import omnikryptec.resource.model.Material;
+import omnikryptec.resource.model.Model;
+import omnikryptec.resource.texture.Texture;
 import omnikryptec.test.saving.DataMap;
-import omnikryptec.texture.Texture;
+
 import org.joml.Matrix4f;
 
 /**

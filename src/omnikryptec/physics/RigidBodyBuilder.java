@@ -7,10 +7,10 @@ import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
 import com.bulletphysics.linearmath.MotionState;
 
-import omnikryptec.entity.Entity;
-import omnikryptec.entity.GameObject;
-import omnikryptec.model.Model;
-import omnikryptec.model.TexturedModel;
+import omnikryptec.gameobject.gameobject.Entity;
+import omnikryptec.gameobject.gameobject.GameObject;
+import omnikryptec.resource.model.Model;
+import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.util.PhysicsUtil;
 
 /**

@@ -1,10 +1,10 @@
 package omnikryptec.deferredlight;
 
 import omnikryptec.display.Display;
-import omnikryptec.entity.Light;
+import omnikryptec.gameobject.gameobject.Light;
 import omnikryptec.main.Scene;
-import omnikryptec.shader.Shader;
-import omnikryptec.shader_files.LightShader;
+import omnikryptec.shader.base.Shader;
+import omnikryptec.shader.files.LightShader;
 
 public class DefaultDeferredLightPrepare implements DeferredLightPrepare {
 

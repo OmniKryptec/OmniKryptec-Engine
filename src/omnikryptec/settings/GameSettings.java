@@ -1,8 +1,8 @@
 package omnikryptec.settings;
 
-import omnikryptec.postprocessing.FBOFactory;
-import omnikryptec.postprocessing.FrameBufferObject;
-import omnikryptec.postprocessing.RenderTarget;
+import omnikryptec.postprocessing.main.FBOFactory;
+import omnikryptec.postprocessing.main.FrameBufferObject;
+import omnikryptec.postprocessing.main.RenderTarget;
 
 /**
  * Game settings object

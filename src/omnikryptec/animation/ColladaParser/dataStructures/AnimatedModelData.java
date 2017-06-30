@@ -1,6 +1,6 @@
 package omnikryptec.animation.ColladaParser.dataStructures;
 
-import omnikryptec.loader.ResourceObject;
+import omnikryptec.resource.loader.ResourceObject;
 
 /**
  * Contains the extracted data for an animated model, which includes the mesh
