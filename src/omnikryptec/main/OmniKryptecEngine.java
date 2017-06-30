@@ -28,6 +28,8 @@ import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.texture.SimpleTexture;
 import omnikryptec.input.InputManager;
 import omnikryptec.util.RenderUtil;
+import omnikryptec.util.error.ErrorObject;
+import omnikryptec.util.error.OmnikryptecError;
 import omnikryptec.util.profiler.Profilable;
 import omnikryptec.util.profiler.ProfileContainer;
 import omnikryptec.util.profiler.Profiler;
@@ -217,6 +219,7 @@ public class OmniKryptecEngine implements Profilable {
                 eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
             }
             scenefbo.bindFrameBuffer();
+            ((FrameBufferObject)null).bindFrameBuffer();
             if (sceneCurrent != null) {
                 if (clear) {
                     RenderUtil.clear(sceneCurrent.getClearColor());
@@ -334,8 +337,8 @@ public class OmniKryptecEngine implements Profilable {
     }
 
     public void errorOccured(Exception e, String text) {
-        state = State.Error;
-        Logger.logErr(text + e, e);
+    	state = State.Error;
+    	new OmnikryptecError(e).print();
         eventsystem.fireEvent(new Event(e), EventType.ERROR);
     }
 
