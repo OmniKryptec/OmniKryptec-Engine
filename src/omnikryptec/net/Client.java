@@ -2,6 +2,7 @@ package omnikryptec.net;
 
 import java.net.InetAddress;
 import java.net.Socket;
+import java.time.Instant;
 
 /**
  * Client
@@ -16,13 +17,19 @@ public class Client extends AdvancedSocket {
     public Client(InetAddress inetAddress, int port, int threadPoolSize) {
         super(inetAddress, port, threadPoolSize);
     }
-
-    public Client(InetAddress inetAddress, int port, boolean connectDirect, int threadPoolSize) {
-        super(inetAddress, port, connectDirect, threadPoolSize);
+    
+    @Override
+    public void processInput(Object object, Instant timestamp) {
+        
     }
 
     @Override
-    public void processInput(Object object) {
+    public void onConnected(Instant timestamp) {
+        
+    }
+
+    @Override
+    public void onDisconnected(Instant timestamp) {
         
     }
     

@@ -24,11 +24,7 @@ public class InputEvent implements Serializable {
     /**
      * InputType of this Input
      */
-    private transient InputType inputType;
-    /**
-     * InputType of this Input in Integer form
-     */
-    private int inputTypeValue;
+    private InputType inputType;
     /**
      * Data
      */
@@ -79,7 +75,6 @@ public class InputEvent implements Serializable {
         this.timestamp = timestamp;
         this.client = client;
         this.inputType = inputType;
-        this.inputTypeValue = (inputType != null ? inputType.getValue() : -1);
         this.data = data;
     }
 
@@ -142,9 +137,6 @@ public class InputEvent implements Serializable {
      * @return InputType
      */
     public final InputType getInputType() {
-        if(inputType == null) {
-            inputType = InputType.ofValue(inputTypeValue);
-        }
         return inputType;
     }
 

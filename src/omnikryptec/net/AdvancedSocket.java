@@ -1,24 +1,30 @@
 package omnikryptec.net;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import javax.swing.Timer;
+import omnikryptec.util.Util;
 import omnikryptec.util.logger.LogEntry.LogLevel;
 import omnikryptec.util.logger.Logger;
 
 /**
  * AdvancedSocket
+ *
  * @author Panzer1119
  */
-public abstract class AdvancedSocket implements Serializable {
-    
+public abstract class AdvancedSocket implements ActionListener, Serializable {
+
     /**
      * A reference to this AdvancedSocket
      */
@@ -48,275 +54,598 @@ public abstract class AdvancedSocket implements Serializable {
      */
     private final int threadPoolSize;
     /**
-     * ThreadPool
+     * ThreadPool Receiving Side
      */
-    private ExecutorService executor = null;
+    private ExecutorService executorReceiver = null;
     /**
-     * Listener Thread
+     * ThreadPool Transmitting Side
      */
-    private Thread thread = null;
+    private ExecutorService executorTransmitter = null;
     /**
      * Maximum number of tries to (re)connect to a ServerSocket
      */
-    private int connectionTimesMax = Network.CONNECTION_TIMES_MAX_STANDARD;
+    private int connectionTriesMax = Network.CONNECTION_TRIES_MAX_STANDARD;
     /**
      * Milliseconds to wait between each (re)connection try
      */
     private int connectionDelayTime = Network.CONNECTION_DELAY_TIME_STANDARD;
     /**
-     * If this AdvancedSocket is stopped
+     * Maximum number of tries per connection checks
      */
-    private boolean stopped = false;
+    private int connectionCheckTriesMax = Network.CONNECTION_CHECK_TRIES_MAX_STANDARD;
+    /**
+     * Maximum time between sending the Ping and receiving the Pong in
+     * milliseconds
+     */
+    private int connectionCheckAnswerTimeMax = Network.CONNECTION_ANSWER_TIME_STANDARD;
+    /**
+     * Delay time between each answer check in milliseconds
+     */
+    private int connectionCheckAnswerDelayTime = Network.CONNECTION_ANSWER_DELAY_TIME_STANDARD;
+    /**
+     * Delay time between each running connection check in milliseconds
+     */
+    private int connectionCheckDelayTime = Network.CONNECTION_CHECK_DELAY_TIME_STANDARD;
+    /**
+     * Delay time between each new connection check in milliseconds
+     */
+    private int connectionCheckTimerDelay = Network.CONNECTION_CHECK_TIMER_DELAY_STANDARD;
     /**
      * If this AdvancedSocket is an AdvancedSocket created from a Server
      */
     private boolean isFromServerSocket = false;
     /**
-     * If this AdvancedSocket is running
+     * Receiver Thread
      */
-    private boolean run = false;
+    private Thread threadReceiver = null;
     /**
-     * Last Check
+     * Timer which calls the checkConnection every seconds
      */
-    private static Instant instantLast = Instant.now();
-    
+    private Timer timer = null;
+    /**
+     * If the AdvancedSocket is connected
+     */
+    private boolean connected = false;
+    /**
+     * If the AdvancedSocket is disconnected
+     */
+    private boolean disconnected = true;
+    /**
+     * Timestamp when the AdvancedSocket was connected
+     */
+    private Instant instantConnected = null;
+    /**
+     * Timestamp when the AdvancedSocket was disconnected
+     */
+    private Instant instantDisconnected = null;
+    /**
+     * Timestamp when the lastPong did happen
+     */
+    private Instant lastPong = null;
+
     /**
      * Creates an AdvancedSocket from a Socket
+     *
      * @param socket Socket
      * @param threadPoolSize ThreadPool size
      */
     public AdvancedSocket(Socket socket, int threadPoolSize) {
-        this(socket.getInetAddress(), socket.getPort(), threadPoolSize);
-        this.socket = socket;
-        connect(false);
+        this.threadPoolSize = Math.min(threadPoolSize, Network.THREADPOOL_SIZE_CLIENT_MAX);
+        init();
+        setSocket(socket);
     }
-    
+
     /**
      * Creates an AdvancedSocket which does not connect immediately
+     *
      * @param inetAddress InetAddress
      * @param port Port
      * @param threadPoolSize ThreadPool size
      */
     public AdvancedSocket(InetAddress inetAddress, int port, int threadPoolSize) {
-        this(inetAddress, port, false, threadPoolSize);
-    }
-    
-    /**
-     * Creates an AdvancedSocket
-     * @param inetAddress InetAddress
-     * @param port Port
-     * @param connectDirect If the connection should be established immediately
-     * @param threadPoolSize ThreadPool size
-     */
-    public AdvancedSocket(InetAddress inetAddress, int port, boolean connectDirect, int threadPoolSize) {
         this.threadPoolSize = Math.min(threadPoolSize, Network.THREADPOOL_SIZE_CLIENT_MAX);
-        resetExecutor(true);
+        init();
         setInetAddress(inetAddress);
         setPort(port);
-        if(connectDirect) {
-            connect(true);
-        }
     }
-    
+
     /**
-     * Resets the ThreadPool
+     * Initialize the AdvancedSocket
+     *
+     * @return A reference to this AdvancedSocket
+     */
+    private final AdvancedSocket init() {
+        resetReceiverThread();
+        return this;
+    }
+
+    /**
+     * Resets both ExecutorServices
+     *
      * @param immediately If the running Threads should be killed immediately
      * @return A reference to this AdvancedSocket
      */
-    protected final AdvancedSocket resetExecutor(boolean immediately) {
+    private final AdvancedSocket resetExecutors(boolean immediately) {
+        executorReceiver = resetExecutor(executorReceiver, immediately);
+        executorTransmitter = resetExecutor(executorTransmitter, immediately);
+        return this;
+    }
+
+    /**
+     * Resets a ThreadPool
+     *
+     * @param immediately If the running Threads should be killed immediately
+     * @return New ThreadPool
+     */
+    private final ExecutorService resetExecutor(ExecutorService executor, boolean immediately) {
         try {
-            if(executor != null) {
-                if(immediately) {
+            if (executor != null) {
+                if (immediately) {
                     executor.shutdownNow();
                 } else {
                     executor.shutdown();
                     executor.awaitTermination(1, TimeUnit.MINUTES);
                 }
             }
-            this.executor = Executors.newFixedThreadPool(threadPoolSize);
+            return Executors.newFixedThreadPool(threadPoolSize);
         } catch (Exception ex) {
-            Logger.logErr("Error while resetting executor: " + ex, ex);
+            if (Logger.isDebugMode()) {
+                Logger.logErr("Error while resetting executor: " + ex, ex);
+            }
+            return null;
         }
+    }
+
+    /**
+     * Resets the receiver Thread
+     *
+     * @return A reference to this AdvancedSocket
+     */
+    private final AdvancedSocket resetReceiverThread() {
+        Util.killThread(threadReceiver, Network.THREAD_KILL_DELAY_TIME_STANDARD, Network.THREAD_KILL_MAX_TIME_STANDARD);
+        threadReceiver = new Thread(() -> {
+            while (connected) {
+                try {
+                    final Object object = ois.readObject();
+                    final Instant instantNow = Instant.now();
+                    if (object instanceof NetworkCommand) {
+                        final NetworkCommand command = (NetworkCommand) object;
+                        switch (command) {
+                            case PING:
+                                send(NetworkCommand.PONG);
+                                break;
+                            case PONG:
+                                lastPong = instantNow;
+                                break;
+                        }
+                    } else {
+                        executorReceiver.execute(() -> {
+                            processInput(object, instantNow);
+                        });
+                    }
+                } catch (IOException ex) {
+                    if (Logger.isDebugMode()) {
+                        Logger.log(formatAddressAndPort() + " disconnected!", LogLevel.WARNING);
+                    }
+                    connected = false;
+                } catch (Exception ex) {
+                    if (Logger.isDebugMode()) {
+                        Logger.logErr(String.format("Error while receiving from %s: %s", formatAddressAndPort(), ex), ex);
+                    }
+                }
+            }
+        });
         return this;
     }
-    
+
+    /**
+     * Checks the connection
+     *
+     * @return <tt>true</tt> if the connection is open
+     */
+    private final boolean checkConnection() {
+        try {
+            final Instant lastPongOld = lastPong;
+            boolean isConnected = true;
+            for (int i = 0; i < connectionCheckTriesMax; i++) {
+                final Instant instantNow = Instant.now();
+                send(NetworkCommand.PING);
+                while (lastPongOld != lastPong) {
+                    if (Duration.between(instantNow, Instant.now()).toMillis() > connectionCheckAnswerTimeMax) {
+                        isConnected = false;
+                        break;
+                    }
+                    try {
+                        Thread.sleep(connectionCheckAnswerDelayTime);
+                    } catch (Exception ex) {
+                    }
+                }
+                if (isConnected) {
+                    break;
+                } else {
+                    try {
+                        Thread.sleep(connectionCheckDelayTime);
+                    } catch (Exception ex) {
+                    }
+                }
+            }
+            return (connected = isConnected);
+        } catch (Exception ex) {
+            if (Logger.isDebugMode()) {
+                Logger.logErr(String.format("Error while checking connection to %s: %s", formatAddressAndPort(), ex), ex);
+            }
+            return false;
+        }
+    }
+
+    /**
+     * Resets the Timer
+     *
+     * @param delay Delay
+     */
+    private final void resetTimer(int delay) {
+        if (timer != null) {
+            timer.stop();
+            timer = null;
+        }
+        if (timer == null) {
+            timer = new Timer(delay, this);
+        }
+    }
+
     /**
      * Processes Inputs
+     *
      * @param object Input
+     * @param timestamp Timestamp
      */
-    public abstract void processInput(Object object);
-    
+    public abstract void processInput(Object object, Instant timestamp);
+
     /**
-     * Connects this AdvancedSocket to the given Address
+     * Called when a connection was successfully established
+     *
+     * @param timestamp Timestamp
+     */
+    public abstract void onConnected(Instant timestamp);
+
+    /**
+     * Called when a connection was successfully disconnected
+     *
+     * @param timestamp Timestamp
+     */
+    public abstract void onDisconnected(Instant timestamp);
+
+    /**
+     * Connects the AdvancedSocket
+     *
+     * @return <tt>true</tt> if the connection was successfully established
+     */
+    public final boolean connect() {
+        return connect(false);
+    }
+
+    /**
+     * Connects the AdvancedSocket
+     *
      * @param createNewSocket If a new Socket should be created
      * @return <tt>true</tt> if the connection was successfully established
      */
     public final boolean connect(boolean createNewSocket) {
-        if(thread != null && thread.isAlive()) {
-            if(Logger.isDebugMode()) {
-                Logger.log("Can not create new Thread for AdvancedSocket, because there is already a Thread running!", LogLevel.WARNING);
+        return connect(createNewSocket, 0);
+    }
+
+    /**
+     * Connects the AdvancedSocket
+     *
+     * @param createNewSocket If a new Socket should be created
+     * @param tries How many tries it took till now
+     * @return <tt>true</tt> if the connection was successfully established
+     */
+    private final boolean connect(boolean createNewSocket, int tries) {
+        if (connected) {
+            if (Logger.isDebugMode()) {
+                Logger.log("Can not connect to " + formatAddressAndPort() + ", because there is already a connection established!", LogLevel.WARNING);
             }
             return false;
         }
-        thread = new Thread(() -> {
-            stopped = false;
-            run = true;
-            int i = 0;
-            while(run) {
-                try {
-                    if((!isFromServerSocket && createNewSocket) || socket == null) {
-                        resetExecutor(true);
-                        Logger.log("Started new connection to " + Network.formatInetAddressAndPort(inetAddress, port), LogLevel.FINE);
-                        socket = new Socket(inetAddress, port);
-                        Logger.log("Connected successfully to " + Network.formatInetAddressAndPort(inetAddress, port), LogLevel.FINE);
-                    }
-                    oos = new ObjectOutputStream(socket.getOutputStream());
-                    ois = new ObjectInputStream(socket.getInputStream());
-                    boolean disconnected = false;
-                    while(!disconnected) {
-                        try {
-                            final Object object = ois.readObject();
-                            executor.execute(() -> {
-                                try {
-                                    processInput(object);
-                                } catch (Exception ex) {
-                                }
-                            });
-                        } catch (IOException ex) {
-                            Logger.log("Disconnected from Server " + Network.formatInetAddressAndPort(inetAddress, port), LogLevel.FINE);
-                            disconnected = true;
-                            break;
-                        }
-                    }
-                    if(disconnected && !stopped) {
-                        connect(true);
-                    }
-                    run = false;
-                    break;
-                } catch (Exception ex) {
-                    Logger.logErr(String.format("Error while connecting to %s: %s", Network.formatInetAddressAndPort(inetAddress, port), ex), null);
+        tries++;
+        if (tries > connectionTriesMax) {
+            return false;
+        }
+        try {
+            resetReceiverThread();
+            resetExecutors(true);
+            resetTimer(connectionCheckTimerDelay);
+            closeStreams();
+            connected = connectSocket(createNewSocket);
+            if (connected) {
+                if (Logger.isDebugMode()) {
+                    Logger.log("Connected successfully to " + formatAddressAndPort(), LogLevel.FINE);
                 }
+                instantDisconnected = null;
+                onConnected((instantConnected = Instant.now()));
+            }
+            disconnected = !connected;
+            if (!checkConnection()) {
                 try {
                     Thread.sleep(connectionDelayTime);
                 } catch (Exception ex) {
                 }
-                i++;
-                if(i >= connectionTimesMax || isFromServerSocket) {
-                    break;
+                return connect(createNewSocket, tries);
+            }
+            return connected;
+        } catch (Exception ex) {
+            if (Logger.isDebugMode()) {
+                Logger.logErr(String.format("Error while connecting to %s: %s", formatAddressAndPort(), ex), ex);
+            }
+            return false;
+        }
+    }
+
+    /**
+     * Disconnects the AdvancedSocket
+     *
+     * @param immediately If the AdvancedSocket should be disconnected
+     * immediately
+     * @return <tt>true</tt> if the connection was successfully closed
+     */
+    public final boolean disconnect(boolean immediately) {
+        if (disconnected) {
+            if (Logger.isDebugMode()) {
+                Logger.log("Can not disconnect from " + formatAddressAndPort() + ", because there is no connection established!", LogLevel.WARNING);
+            }
+            return false;
+        }
+        try {
+            onDisconnected((instantDisconnected = Instant.now()));
+            resetTimer(0);
+            resetReceiverThread();
+            resetExecutors(immediately);
+            closeStreams();
+            if (Network.closeSocket(socket)) {
+                socket = null;
+                disconnected = true;
+            }
+            connected = !disconnected;
+            return disconnected;
+        } catch (Exception ex) {
+            if (Logger.isDebugMode()) {
+                Logger.logErr(String.format("Error while disconnecting from %s: %s", formatAddressAndPort(), ex), ex);
+            }
+            return false;
+        }
+    }
+
+    /**
+     * Connects the Socket
+     *
+     * @param createNewSocket If a new Socket should be created
+     * @return <tt>true</tt> if the connection was successfully established
+     */
+    private final boolean connectSocket(boolean createNewSocket) {
+        try {
+            if (Logger.isDebugMode()) {
+                Logger.log("Started connecting to " + formatAddressAndPort(), LogLevel.FINE);
+            }
+            if ((!isFromServerSocket && createNewSocket) || socket == null) {
+                Network.closeSocket(socket);
+                socket = new Socket(inetAddress, port);
+            }
+            setSocket(socket);
+            return true;
+        } catch (Exception ex) {
+            if (Logger.isDebugMode()) {
+                Logger.logErr(String.format("Error while connecting Socket to %s: %s", formatAddressAndPort(), ex), ex);
+            }
+            return false;
+        }
+    }
+
+    /**
+     * Sends an Object to the connect ServerSocket
+     *
+     * @param object Data
+     * @return A reference to this AdvancedSocket
+     */
+    public final AdvancedSocket send(Object object) {
+        if (socket == null || !connected) {
+            return this;
+        }
+        executorTransmitter.execute(() -> {
+            try {
+                getObjectOutputStream().writeObject(object);
+                getObjectOutputStream().flush();
+            } catch (Exception ex) {
+                if (Logger.isDebugMode()) {
+                    Logger.logErr(String.format("Error while sending to %s: %s", formatAddressAndPort(), ex), ex);
                 }
             }
         });
-        thread.start();
-        return true;
+        return this;
     }
-    
+
     /**
-     * Disconnects this AdvancedSocket
-     * @return <tt>true</tt> if the connection was successfully disconnected
+     * Returns the InetAddress formatted
+     *
+     * @return Formatted InetAddress
      */
-    public final boolean disconnect() {
-        
-        return true;
+    public final String formatAddress() {
+        return Network.formatInetAddress(inetAddress);
     }
-    
+
+    /**
+     * Returns the InetAddress and Port formatted
+     *
+     * @return Formatted InetAddress and Port
+     */
+    public final String formatAddressAndPort() {
+        return Network.formatInetAddressAndPort(inetAddress, port);
+    }
+
     /**
      * Returns the ObjectOutputStream
+     *
      * @return ObjectOutputStream
      */
     public final ObjectOutputStream getObjectOutputStream() {
         waitForStream(oos);
         return oos;
     }
-    
+
     /**
      * Returns the ObjectInputStream
+     *
      * @return ObjectInputStream
      */
     public final ObjectInputStream getObjectInputStream() {
         waitForStream(ois);
         return ois;
     }
-    
+
     /**
      * Waits until the stream is no longer null
+     *
      * @param object Stream
      */
     protected final void waitForStream(Object object) {
+        if (object != null) {
+            return;
+        }
         int i = 0;
-        while(object == null) {
+        while (object == null) {
             try {
                 Thread.sleep(Network.STREAM_DELAY_TIME);
             } catch (Exception ex) {
             }
             i++;
-            if((i * Network.STREAM_DELAY_TIME) >= Network.STREAM_TIME_MAX) {
+            if ((i * Network.STREAM_DELAY_TIME) >= Network.STREAM_TIME_MAX) {
                 break;
             }
         }
     }
-    
+
+    /**
+     * Closes the Streams
+     *
+     * @return A reference to this AdvancedSocket
+     */
+    private final AdvancedSocket closeStreams() {
+        try {
+            if (oos != null) {
+                oos.close();
+            }
+        } catch (Exception ex) {
+            if (Logger.isDebugMode()) {
+                Logger.logErr("Error while closing old ObjectOutputStream: " + ex, ex);
+            }
+        }
+        oos = null;
+        try {
+            if (ois != null) {
+                ois.close();
+            }
+        } catch (Exception ex) {
+            if (Logger.isDebugMode()) {
+                Logger.logErr("Error while closing old ObjectInputStream: " + ex, ex);
+            }
+        }
+        ois = null;
+        return this;
+    }
+
+    /**
+     * Sets the Streams
+     *
+     * @param socket Socket from where the new Streams are coming
+     * @return A reference to this AdvancedSocket
+     */
+    private final AdvancedSocket setStreams(Socket socket) {
+        closeStreams();
+        try {
+            oos = new ObjectOutputStream(socket.getOutputStream());
+        } catch (Exception ex) {
+            if (Logger.isDebugMode()) {
+                Logger.logErr("Error while setting ObjectOutputStream: " + ex, ex);
+            }
+        }
+        try {
+            ois = new ObjectInputStream(socket.getInputStream());
+        } catch (Exception ex) {
+            if (Logger.isDebugMode()) {
+                Logger.logErr("Error while setting ObjectInputStream: " + ex, ex);
+            }
+        }
+        return this;
+    }
+
     /**
      * Returns the Socket
+     *
      * @return Socket
      */
     public final Socket getSocket() {
         return socket;
     }
-    
+
     /**
      * Sets the Socket and Address
+     *
      * @param socket Socket
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setSocket(Socket socket) {
-        this.socket = socket;
-        if(socket != null) {
+        if (socket != null) {
+            this.socket = socket;
+            setStreams(socket);
             setInetAddress(socket.getInetAddress());
             setPort(socket.getPort());
-        } else {
-            setInetAddress(null);
-            setPort(-1);
         }
         return this;
     }
-    
+
     public final InetAddress getInetAddress() {
         return inetAddress;
     }
-    
+
     /**
      * Sets the InetAddress
+     *
      * @param inetAddress InetAddress to connect to
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setInetAddress(InetAddress inetAddress) {
-        if(inetAddress != null) {
+        if (inetAddress != null) {
             this.inetAddress = inetAddress;
         } else {
             try {
                 this.inetAddress = InetAddress.getLocalHost();
             } catch (Exception ex) {
                 this.inetAddress = null;
+                if (Logger.isDebugMode()) {
+                    Logger.logErr("Can not resolve LocalHost from InetAddress: " + ex, ex);
+                }
             }
         }
         return this;
     }
-    
+
     /**
      * Returns the Port
+     *
      * @return Port
      */
     public final int getPort() {
         return port;
     }
-    
+
     /**
      * Sets the Port
+     *
      * @param port Port to connect to
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setPort(int port) {
-        if(!Network.checkPort(port)) {
+        if (!Network.checkPort(port)) {
             this.port = Network.PORT_STANDARD;
             return this;
         }
@@ -326,24 +655,28 @@ public abstract class AdvancedSocket implements Serializable {
 
     /**
      * Returns the maximum number of tries to (re)connect to a ServerSocket
+     *
      * @return Maximum number of tries to (re)connect to a ServerSocket
      */
-    public final int getConnectionTimesMax() {
-        return connectionTimesMax;
+    public final int getConnectionTriesMax() {
+        return connectionTriesMax;
     }
 
     /**
      * Sets the maximum number of tries to (re)connect to a ServerSocket
-     * @param connectionTimesMax Maximum number of tries to (re)connect to a ServerSocket
+     *
+     * @param connectionTimesMax Maximum number of tries to (re)connect to a
+     * ServerSocket
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setConnectionTimesMax(int connectionTimesMax) {
-        this.connectionTimesMax = connectionTimesMax;
+        this.connectionTriesMax = connectionTimesMax;
         return this;
     }
 
     /**
      * Returns the milliseconds to wait between each (re)connection try
+     *
      * @return Milliseconds to wait between each (re)connection try
      */
     public final int getConnectionDelayTime() {
@@ -352,7 +685,9 @@ public abstract class AdvancedSocket implements Serializable {
 
     /**
      * Sets the milliseconds to wait between each (re)connection try
-     * @param connectionDelayTime Milliseconds to wait between each (re)connection try
+     *
+     * @param connectionDelayTime Milliseconds to wait between each
+     * (re)connection try
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setConnectionDelayTime(int connectionDelayTime) {
@@ -362,7 +697,9 @@ public abstract class AdvancedSocket implements Serializable {
 
     /**
      * Returns if this AdvancedSocket is an AdvancedSocket created from a Server
-     * @return <tt>true</tt> if this AdvancedSocket is an AdvancedSocket created from a Server
+     *
+     * @return <tt>true</tt> if this AdvancedSocket is an AdvancedSocket created
+     * from a Server
      */
     public final boolean isFromServerSocket() {
         return isFromServerSocket;
@@ -370,7 +707,9 @@ public abstract class AdvancedSocket implements Serializable {
 
     /**
      * Sets if this AdvancedSocket is an AdvancedSocket created from a Server
-     * @param isFromServerSocket If this AdvancedSocket is an AdvancedSocket created from a Server
+     *
+     * @param isFromServerSocket If this AdvancedSocket is an AdvancedSocket
+     * created from a Server
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setFromServerSocket(boolean isFromServerSocket) {
@@ -380,10 +719,164 @@ public abstract class AdvancedSocket implements Serializable {
 
     /**
      * Returns the ThreadPool size
+     *
      * @return ThreadPool size
      */
     public final int getThreadPoolSize() {
         return threadPoolSize;
     }
-    
+
+    /**
+     * Returns the Timestamp when the connection was established or null
+     * @return Timestamp of connection opening
+     */
+    public final Instant getInstantConnected() {
+        return instantConnected;
+    }
+
+    /**
+     * Returns the Timestamp when the connection was closed or null
+     * @return Timestamp of connection closing
+     */
+    public final Instant getInstantDisconnected() {
+        return instantDisconnected;
+    }
+
+    /**
+     * Returns the Duration how long the connection is/was open
+     * @return Duration of the connection time
+     */
+    public final Duration getConnectionDuration() {
+        if (instantConnected != null) {
+            if (instantDisconnected != null) {
+                return Duration.between(instantConnected, instantDisconnected);
+            } else {
+                return Duration.between(instantConnected, Instant.now());
+            }
+        } else {
+            return Duration.ZERO;
+        }
+    }
+
+    /**
+     * Returns when the last Pong was received
+     * @return Timestamp of the last Pong
+     */
+    public final Instant getLastPong() {
+        return lastPong;
+    }
+
+    /**
+     * Returns the maximum number of tries per connection checks
+     * @return Maximum number of tries per connection checks
+     */
+    public int getConnectionCheckTriesMax() {
+        return connectionCheckTriesMax;
+    }
+
+    /**
+     * Sets the maximum number of tries per connection checks
+     * @param connectionCheckTriesMax Maximum number of tries per connection checks
+     * @return A reference to this AdvancedSocket
+     */
+    public final AdvancedSocket setConnectionCheckTriesMax(int connectionCheckTriesMax) {
+        this.connectionCheckTriesMax = connectionCheckTriesMax;
+        return this;
+    }
+
+    /**
+     * Returns the maximum time between sending the Ping and receiving the Pong in milliseconds
+     * @return Maximum time between sending the Ping and receiving the Pong in milliseconds
+     */
+    public int getConnectionCheckAnswerTimeMax() {
+        return connectionCheckAnswerTimeMax;
+    }
+
+    /**
+     * Sets the maximum time between sending the Ping and receiving the Pong in milliseconds
+     * @param connectionCheckAnswerTimeMax Maximum time between sending the Ping and receiving the Pong in milliseconds
+     * @return A reference to this AdvancedSocket
+     */
+    public final AdvancedSocket setConnectionCheckAnswerTimeMax(int connectionCheckAnswerTimeMax) {
+        this.connectionCheckAnswerTimeMax = connectionCheckAnswerTimeMax;
+        return this;
+    }
+
+    /**
+     * Returns the delay time between each answer check in milliseconds
+     * @return Delay time between each answer check in milliseconds
+     */
+    public int getConnectionCheckAnswerDelayTime() {
+        return connectionCheckAnswerDelayTime;
+    }
+
+    /**
+     * Sets the delay time between each answer check in milliseconds
+     * @param connectionCheckAnswerDelayTime Delay time between each answer check in milliseconds
+     * @return A reference to this AdvancedSocket
+     */
+    public final AdvancedSocket setConnectionCheckAnswerDelayTime(int connectionCheckAnswerDelayTime) {
+        this.connectionCheckAnswerDelayTime = connectionCheckAnswerDelayTime;
+        return this;
+    }
+
+    /**
+     * Returns the delay time between each running connection check in milliseconds
+     * @return Delay time between each running connection check in milliseconds
+     */
+    public int getConnectionCheckDelayTime() {
+        return connectionCheckDelayTime;
+    }
+
+    /**
+     * Sets the delay time between each running connection check in milliseconds
+     * @param connectionCheckDelayTime Delay time between each running connection check in milliseconds
+     * @return A reference to this AdvancedSocket
+     */
+    public final AdvancedSocket setConnectionCheckDelayTime(int connectionCheckDelayTime) {
+        this.connectionCheckDelayTime = connectionCheckDelayTime;
+        return this;
+    }
+
+    /**
+     * Returns the delay time between each new connection check in milliseconds
+     * @return Delay time between each new connection check in milliseconds
+     */
+    public int getConnectionCheckTimerDelay() {
+        return connectionCheckTimerDelay;
+    }
+
+    /**
+     * Sets the delay time between each new connection check in milliseconds
+     * @param connectionCheckTimerDelay Delay time between each new connection check in milliseconds
+     * @return A reference to this AdvancedSocket
+     */
+    public final AdvancedSocket setConnectionCheckTimerDelay(int connectionCheckTimerDelay) {
+        this.connectionCheckTimerDelay = connectionCheckTimerDelay;
+        return this;
+    }
+
+    /**
+     * Returns if the AdvancedSocket is connected
+     * @return <tt>true</tt> if the connection is open
+     */
+    public final boolean isConnected() {
+        return connected;
+    }
+
+    /**
+     * Returns if the AdvancedSocket is disconnected
+     * @return <tt>true</tt> if the connection was closed
+     */
+    public final boolean isDisconnected() {
+        return disconnected;
+    }
+
+    @Override
+    public final void actionPerformed(ActionEvent e) {
+        if (e.getSource() == timer) {
+
+        }
+    }
+
 }

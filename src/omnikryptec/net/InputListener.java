@@ -1,10 +1,12 @@
 package omnikryptec.net;
 
+import java.io.Serializable;
+
 /**
  * InputListener
  * @author Panzer1119
  */
-public interface InputListener {
+public interface InputListener extends Serializable {
     
     /**
      * Called on received Inputs

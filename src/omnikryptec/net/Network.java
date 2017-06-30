@@ -1,7 +1,9 @@
 package omnikryptec.net;
 
 import java.net.InetAddress;
+import java.net.Socket;
 import java.util.ArrayList;
+import omnikryptec.util.logger.Logger;
 
 /**
  * Some Network Constants and methods
@@ -43,11 +45,40 @@ public class Network {
     /**
      * Standard maximum number of (re)connections
      */
-    public static final int CONNECTION_TIMES_MAX_STANDARD = 3;
+    public static final int CONNECTION_TRIES_MAX_STANDARD = 3;
     /**
-     * Standard delay time between each (re)connection try
+     * Standard delay time between each (re)connection try in milliseconds
      */
     public static final int CONNECTION_DELAY_TIME_STANDARD = 1000;
+    /**
+     * Standard maximum number of tries per connection checks
+     */
+    public static final int CONNECTION_CHECK_TRIES_MAX_STANDARD = 3;
+    /**
+     * Standard maximum time between sending the Ping and receiving the Pong in milliseconds
+     */
+    public static final int CONNECTION_ANSWER_TIME_STANDARD = 1000;
+    /**
+     * Standard delay time between each answer check in milliseconds
+     */
+    public static final int CONNECTION_ANSWER_DELAY_TIME_STANDARD = 100;
+    /**
+     * Standard delay time between each connection check in milliseconds
+     */
+    public static final int CONNECTION_CHECK_DELAY_TIME_STANDARD = 500;
+    /**
+     * Standard delay time between each new connection check in milliseconds
+     */
+    public static final int CONNECTION_CHECK_TIMER_DELAY_STANDARD = 5000;
+    
+    /**
+     * Standard delay time between each try to kill the Thread
+     */
+    public static final int THREAD_KILL_DELAY_TIME_STANDARD = 10;
+    /**
+     * Standard maximum time to wait for a Thread to die
+     */
+    public static final int THREAD_KILL_MAX_TIME_STANDARD = 100;
     
     /**
      * Generates a (hopefully) unique ID for Messages
@@ -121,6 +152,24 @@ public class Network {
      */
     public final static String formatInetAddressAndPort(InetAddress inetAddress, int port) {
         return String.format("\"%s:%d\"", ((inetAddress != null) ? inetAddress.getHostAddress() : ""), port);
+    }
+    
+    public static final boolean closeSocket(Socket socket) {
+        if(socket == null) {
+            return true;
+        }
+        try {
+            socket.close();
+            while(!socket.isClosed()) {
+                socket.close();
+            }
+            return true;
+        } catch (Exception ex) {
+            if(Logger.isDebugMode()) {
+                Logger.logErr("Error while closing Socket: " + ex, ex);
+            }
+            return false;
+        }
     }
     
 }

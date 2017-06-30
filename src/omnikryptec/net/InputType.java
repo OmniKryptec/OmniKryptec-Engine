@@ -1,10 +1,12 @@
 package omnikryptec.net;
 
+import java.io.Serializable;
+
 /**
  * InputType
  * @author Panzer1119
  */
-public enum InputType {
+public enum InputType implements Serializable {
     MESSAGE_RECEIVED    (0),
     CLIENT_LOGGED_IN    (1),
     CLIENT_LOGGED_OUT   (2);
