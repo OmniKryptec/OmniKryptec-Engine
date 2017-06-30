@@ -1,12 +1,13 @@
 package omnikryptec.net;
 
+import java.io.Serializable;
 import java.time.Instant;
 
 /**
  * InputEvent
  * @author Panzer1119
  */
-public class InputEvent {
+public class InputEvent implements Serializable {
     
     /**
      * (Unique) ID
@@ -23,7 +24,11 @@ public class InputEvent {
     /**
      * InputType of this Input
      */
-    private InputType inputType;
+    private transient InputType inputType;
+    /**
+     * InputType of this Input in Integer form
+     */
+    private int inputTypeValue;
     /**
      * Data
      */
@@ -74,6 +79,7 @@ public class InputEvent {
         this.timestamp = timestamp;
         this.client = client;
         this.inputType = inputType;
+        this.inputTypeValue = (inputType != null ? inputType.getValue() : -1);
         this.data = data;
     }
 
@@ -136,6 +142,9 @@ public class InputEvent {
      * @return InputType
      */
     public final InputType getInputType() {
+        if(inputType == null) {
+            inputType = InputType.ofValue(inputTypeValue);
+        }
         return inputType;
     }
 
