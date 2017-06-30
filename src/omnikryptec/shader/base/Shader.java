@@ -18,10 +18,10 @@ import omnikryptec.util.logger.LogEntry.LogLevel;
 
 public class Shader {
 
-	public static final String DEFAULT_PP_VERTEX_SHADER_LOC = "/omnikryptec/shader_files/pp_vert.glsl";
+	public static final String DEFAULT_PP_VERTEX_SHADER_LOC = "/omnikryptec/shader/files/pp_vert.glsl";
 	public static final String DEFAULT_PP_VERTEX_SHADER_POS_ATTR = "position";
 	public static final String DEFAULT_PP_VERTEX_SHADER_TEXC_OUT = "textureCoords";
-	protected static final String oc_shader_loc = "/omnikryptec/shader_files/";
+	protected static final String oc_shader_loc = "/omnikryptec/shader/files/";
 
 	private static int shadercount = 0;
 	private static Shader shadercurrent;
