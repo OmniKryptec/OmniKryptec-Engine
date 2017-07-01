@@ -68,6 +68,7 @@ public class InputManager {
     }
 
     public static final void nextFrame() {
+        keyboardHandler.resetInputString();
         currentTime = DisplayManager.instance().getCurrentTime();
         mousePosition.x = mouseHandler.position.x;
         mousePosition.y = mouseHandler.position.y;

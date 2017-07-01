@@ -86,10 +86,13 @@ public class KeyboardHandler implements InputHandler {
         return this;
     }
     
-    public final synchronized String getInputString() {
-        String temp = inputString;
+    public final synchronized KeyboardHandler resetInputString() {
         inputString = "";
-        return temp;
+        return this;
+    }
+    
+    public final synchronized String getInputString() {
+        return inputString;
     }
 
 }
