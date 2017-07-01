@@ -17,16 +17,24 @@ public class KeyboardHandler implements InputHandler {
     private final GLFWKeyCallback keyCallback;
     protected final InputState[] keys = new InputState[65536];
     private InputState[] keys_lastTime = null;
+    private String inputString = "";
 
     public KeyboardHandler(long window) {
         this.window = window;
         this.keyCallback = new GLFWKeyCallback() {
             @Override
-            public void invoke(long window, int key, int scancode, int action, int mods) {
+            public final synchronized void invoke(long window, int key, int scancode, int action, int mods) {
                 if (ME.window != window) {
                     return;
                 }
-                keys[key] = InputState.ofState(action);
+                final InputState inputState = InputState.ofState(action);
+                keys[key] = inputState;
+                if(inputState == InputState.PRESSED || inputState == InputState.REPEATED) {
+                    final String keyString = GLFW.glfwGetKeyName(key, scancode); //FIXME Da stand irgendwas von, dass man das nicht benutzen soll?
+                    if(keyString != null) {
+                        inputString += keyString;
+                    }
+                }
             }
         };
     }
@@ -76,6 +84,12 @@ public class KeyboardHandler implements InputHandler {
             }
         }
         return this;
+    }
+    
+    public final synchronized String getInputString() {
+        String temp = inputString;
+        inputString = "";
+        return temp;
     }
 
 }

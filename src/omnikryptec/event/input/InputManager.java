@@ -184,6 +184,10 @@ public class InputManager {
     public static final MouseHandler getMouseHandler() {
         return mouseHandler;
     }
+    
+    public static final String getInputString() {
+        return keyboardHandler.getInputString();
+    }
 
     public static final Vector2f getMousePosition_lastTime() {
         return new Vector2f(mousePosition_lastTime);
