@@ -17,13 +17,32 @@ import omnikryptec.util.logger.Logger;
  */
 public class Client extends AdvancedSocket implements InputListenerManager {
 
+    /**
+     * HashMap that is used to wait for answers
+     */
     private final HashMap<Long, InputEvent> waitingAnswers = new HashMap<>();
+    /**
+     * ThreadPool for processing InputEvents
+     */
     private final ExecutorService executorInputProcessor = Executors.newFixedThreadPool(1);
 
+    /**
+     * Creates a Client from a Socket
+     *
+     * @param socket Socket
+     * @param threadPoolSize ThreadPool size
+     */
     public Client(Socket socket, int threadPoolSize) {
         super(socket, threadPoolSize);
     }
 
+    /**
+     * Creates a Client
+     *
+     * @param inetAddress InetAddress
+     * @param port Port
+     * @param threadPoolSize ThreadPool size
+     */
     public Client(InetAddress inetAddress, int port, int threadPoolSize) {
         super(inetAddress, port, threadPoolSize);
     }
@@ -52,31 +71,71 @@ public class Client extends AdvancedSocket implements InputListenerManager {
         send(InputType.CLIENT_LOGGED_OUT);
     }
 
+    /**
+     * Sends an answer on base of the given InputEvent
+     * @param message Message to be answered
+     * @param answer Answer
+     * @return A reference to this Client
+     */
     public final synchronized Client answer(InputEvent message, Object... answer) {
         return this.answer(message, Instant.now(), answer);
     }
 
+    /**
+     * Sends an answer on base of the given InputEvent
+     * @param message Message to be answered
+     * @param timestamp Timestamp
+     * @param answer Answer
+     * @return A reference to this Client
+     */
     public final synchronized Client answer(InputEvent message, Instant timestamp, Object... answer) {
         return this.send(new InputEvent(message.getID(), timestamp, this, InputType.ANSWER, answer));
     }
 
-    public final synchronized Client send(Object object, Object... data) {
-        return this.send(object, Instant.now(), data);
+    /**
+     * Sends data
+     * @param data Data
+     * @return A reference to this Client
+     */
+    public final synchronized Client send(Object... data) {
+        return this.send(Instant.now(), data);
     }
 
-    public final synchronized Client send(Object object, Instant timestamp, Object... data) {
+    /**
+     * Sends data
+     * @param timestamp Timestamp
+     * @param data Data
+     * @return A reference to this Client
+     */
+    public final synchronized Client send(Instant timestamp, Object... data) {
         return this.send(new InputEvent(timestamp, this, InputType.MESSAGE_RECEIVED, data));
     }
 
+    /**
+     * Sends an InputEvent
+     * @param event InputEvent
+     * @return A reference to this Client
+     */
     public final synchronized Client send(InputEvent event) {
         super.send(event);
         return this;
     }
 
+    /**
+     * Waits for an answer with the given ID (waits about 10 seconds, then returning null)
+     * @param id ID
+     * @return Answer or null
+     */
     public final synchronized InputEvent getAnswer(long id) {
         return getAnswer(id, Duration.ofSeconds(10));
     }
 
+    /**
+     * Waits for an answer with the given ID
+     * @param id ID
+     * @param maxWaitingDuration Maximum time to wait for the answer
+     * @return Answer or null
+     */
     public final synchronized InputEvent getAnswer(long id, Duration maxWaitingDuration) {
         if (waitingAnswers.containsKey(id)) {
             Logger.log(String.format("For \"%d\" is already an answer expected!", id), LogLevel.WARNING);
@@ -95,6 +154,21 @@ public class Client extends AdvancedSocket implements InputListenerManager {
         return event;
     }
 
+    /**
+     * Sends an InputEvent and then waits for an answer on the sent InputEvent (waits about 10 seconds, then returning null)
+     * @param event InputEvent
+     * @return Answer or null
+     */
+    public final synchronized InputEvent sendAndGetAnswer(InputEvent event) {
+        return sendAndGetAnswer(event, Duration.ofSeconds(10));
+    }
+    
+    /**
+     * Sends an InputEvent and then waits for an answer on the sent InputEvent
+     * @param event InputEvent
+     * @param maxWaitingDuration Maximum time to wait for the answer
+     * @return Answer or null
+     */
     public final synchronized InputEvent sendAndGetAnswer(InputEvent event, Duration maxWaitingDuration) {
         if (event == null) {
             return null;

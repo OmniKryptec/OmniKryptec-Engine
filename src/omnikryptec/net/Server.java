@@ -12,8 +12,6 @@ public class Server extends AdvancedServerSocket {
 
     public Server(int port, int threadPoolSize) {
         super(port, threadPoolSize);
-        AdvancedSocket socket = null;
-        Client client = (Client) socket;
     }
 
     @Override

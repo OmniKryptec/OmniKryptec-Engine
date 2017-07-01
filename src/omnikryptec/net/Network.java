@@ -196,6 +196,11 @@ public class Network {
         return String.format("\"%s:%d\"", ((inetAddress != null) ? inetAddress.getHostAddress() : ""), port);
     }
 
+    /**
+     * Closes a Socket until its really closed
+     * @param socket Socket to close
+     * @return <tt>true</tt> if the Socket was successfully closed
+     */
     public static final boolean closeSocket(Socket socket) {
         if (socket == null) {
             return true;
@@ -214,6 +219,11 @@ public class Network {
         }
     }
 
+    /**
+     * Closes a ServerSocket until its really closed
+     * @param serverSocket ServerSocket to close
+     * @return <tt>true</tt> if the ServerSocket was successfully closed
+     */
     public static final boolean closeServerSocket(ServerSocket serverSocket) {
         if (serverSocket == null) {
             return true;
