@@ -30,8 +30,9 @@ public class Client extends AdvancedSocket implements InputListenerManager {
             final InputEvent event = (InputEvent) object;
             if((event.getInputType() == InputType.ANSWER) && waitingAnswers.containsKey(event.getID())) {
                 waitingAnswers.put(event.getID(), event);
+            } else {
+                fireInputEvent(event);
             }
-            fireInputEvent(event);
         } else {
             fireInputEvent(new InputEvent(timestamp, InputType.MESSAGE_RECEIVED, object));
         }
