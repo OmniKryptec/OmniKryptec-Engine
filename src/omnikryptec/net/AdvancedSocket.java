@@ -775,7 +775,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      *
      * @return Maximum number of tries per connection checks
      */
-    public int getConnectionCheckTriesMax() {
+    public final int getConnectionCheckTriesMax() {
         return connectionCheckTriesMax;
     }
 
@@ -798,7 +798,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return Maximum time between sending the Ping and receiving the Pong in
      * milliseconds
      */
-    public int getConnectionCheckAnswerTimeMax() {
+    public final int getConnectionCheckAnswerTimeMax() {
         return connectionCheckAnswerTimeMax;
     }
 
@@ -820,7 +820,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      *
      * @return Delay time between each answer check in milliseconds
      */
-    public int getConnectionCheckAnswerDelayTime() {
+    public final int getConnectionCheckAnswerDelayTime() {
         return connectionCheckAnswerDelayTime;
     }
 
@@ -842,7 +842,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      *
      * @return Delay time between each running connection check in milliseconds
      */
-    public int getConnectionCheckDelayTime() {
+    public final int getConnectionCheckDelayTime() {
         return connectionCheckDelayTime;
     }
 
@@ -863,7 +863,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      *
      * @return Delay time between each new connection check in milliseconds
      */
-    public int getConnectionCheckTimerDelay() {
+    public final int getConnectionCheckTimerDelay() {
         return connectionCheckTimerDelay;
     }
 
