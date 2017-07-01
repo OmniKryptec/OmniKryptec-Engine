@@ -421,7 +421,7 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      *
      * @return <tt>true</tt> if the AdvancedServerSocket is started
      */
-    public boolean isStarted() {
+    public final boolean isStarted() {
         return started;
     }
 
@@ -430,7 +430,7 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      *
      * @return <tt>true</tt> if the AdvancedServerSocket is stopped
      */
-    public boolean isStopped() {
+    public final boolean isStopped() {
         return stopped;
     }
 
@@ -439,7 +439,7 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      *
      * @return Timestamp of starting
      */
-    public Instant getInstantStarted() {
+    public final Instant getInstantStarted() {
         return instantStarted;
     }
 
@@ -448,7 +448,7 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      *
      * @return Timestamp of stopping
      */
-    public Instant getInstantStopped() {
+    public final Instant getInstantStopped() {
         return instantStopped;
     }
 
@@ -474,7 +474,7 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      *
      * @return Delay time between each new connection check in milliseconds
      */
-    public int getConnectionCheckTimerDelay() {
+    public final int getConnectionCheckTimerDelay() {
         return connectionCheckTimerDelay;
     }
 
@@ -483,10 +483,11 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      *
      * @param connectionCheckTimerDelay Delay time between each new connection
      * check in milliseconds
-     * @return A reference to this AdvancedSocket
+     * @return A reference to this AdvancedServerSocket
      */
-    public void setConnectionCheckTimerDelay(int connectionCheckTimerDelay) {
+    public final AdvancedServerSocket setConnectionCheckTimerDelay(int connectionCheckTimerDelay) {
         this.connectionCheckTimerDelay = connectionCheckTimerDelay;
+        return this;
     }
 
     @Override
