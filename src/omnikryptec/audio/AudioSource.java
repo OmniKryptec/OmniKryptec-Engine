@@ -1,6 +1,7 @@
 package omnikryptec.audio;
 
 import java.util.ArrayList;
+import omnikryptec.main.OmniKryptecEngine;
 import org.joml.Vector3f;
 
 import org.lwjgl.openal.AL10;
@@ -19,7 +20,12 @@ public class AudioSource {
     private float deltaPitch = 0.0F;
     private boolean pause = false;
     private boolean affectedByPhysics = false;
+    private AudioEffectState effectState = AudioEffectState.NOTHING;
     private ISound sound = null;
+    private float fadeTimeComplete = 1000.0F;
+    private float fadeTime = 0.0F;
+    private float volumeStart = 0.0F;
+    private float volumeTarget = 1.0F;
 
     /**
      * Creates an empty AudioSource
@@ -170,6 +176,24 @@ public class AudioSource {
             sound.delete(this);
         }
         return this;
+    }
+
+    /**
+     * Fades one frame
+     *
+     * @param out If fading out or fading in
+     * @return <tt>true</tt> if next frame also needs to be faded again
+     */
+    public final boolean fadeOneFrame() {
+        final boolean out = (Math.max(volumeStart, volumeTarget) == volumeStart);
+        float newVolume = AudioManager.getDistanceModel().getFade(fadeTime, fadeTimeComplete / 1000.0F, Math.max(volumeStart, volumeTarget), Math.min(volumeStart, volumeTarget));
+        fadeTime += (OmniKryptecEngine.getInstance().getDisplayManager().getDeltaTimef() * (out ? 1.0F : -1.0F));
+        setVolume(newVolume);
+        if (out) {
+            return (getVolume() - volumeTarget) > 0.0F;
+        } else {
+            return (volumeTarget - getVolume()) > 0.0F;
+        }
     }
 
     /**
@@ -411,6 +435,88 @@ public class AudioSource {
      */
     public final AudioSource setAffectedByPhysics(boolean affectedByPhysics) {
         this.affectedByPhysics = affectedByPhysics;
+        return this;
+    }
+
+    /**
+     * Returns the AudioEffectState
+     *
+     * @return AudioEffectState
+     */
+    public final AudioEffectState getEffectState() {
+        return effectState;
+    }
+
+    /**
+     * Sets the AudioEffectState
+     *
+     * @param effectState AudioEffectState
+     * @return A reference to this AudioSource
+     */
+    public final AudioSource setEffectState(AudioEffectState effectState) {
+        if (this.effectState != effectState) {
+            switch (effectState) {
+                case NOTHING:
+                    break;
+                case FADE_IN:
+                    volumeStart = 0.0F;
+                    volumeTarget = 1.0F;
+                    fadeTime = fadeTimeComplete / 1000.0F;
+                    break;
+                case FADE_OUT:
+                    volumeStart = getVolume();
+                    volumeTarget = 0.0F;
+                    fadeTime = 0.0F;
+                    break;
+            }
+        }
+        this.effectState = effectState;
+        return this;
+    }
+
+    /**
+     * Updates the AudioEffectState
+     *
+     * @return A reference to this AudioSource
+     */
+    public final AudioSource updateState() {
+        switch (effectState) {
+            case NOTHING:
+                break;
+            case FADE_IN:
+                if (!fadeOneFrame()) {
+                    effectState = AudioEffectState.NOTHING;
+                    setVolume(volumeTarget);
+                }
+                break;
+            case FADE_OUT:
+                if (!fadeOneFrame()) {
+                    effectState = AudioEffectState.NOTHING;
+                    setVolume(volumeTarget);
+                }
+                break;
+
+        }
+        return this;
+    }
+
+    /**
+     * Returns the Fade tim
+     *
+     * @return Fading in and out time
+     */
+    public final float getFadeTimeComplete() {
+        return fadeTimeComplete;
+    }
+
+    /**
+     * Sets the fading in and out time
+     *
+     * @param fadeTime Fade time in milliseconds
+     * @return A reference to this AudioSource
+     */
+    public final AudioSource setFadeTimeComplete(float fadeTimeComplete) {
+        this.fadeTimeComplete = fadeTimeComplete;
         return this;
     }
 

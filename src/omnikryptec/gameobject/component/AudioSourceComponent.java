@@ -1,6 +1,7 @@
 package omnikryptec.gameobject.component;
 
 import java.util.ArrayList;
+import omnikryptec.audio.AudioEffectState;
 
 import omnikryptec.audio.AudioSource;
 import omnikryptec.gameobject.gameobject.GameObject;
@@ -170,6 +171,7 @@ public class AudioSourceComponent implements Component {
                     }
                     source.setDeltaPitch(newDeltaPitch);
                 }
+                source.updateState();
             });
         }
         blocker.setBlocked(false);

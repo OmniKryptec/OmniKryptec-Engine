@@ -38,6 +38,7 @@ import org.lwjgl.openal.ALC10;
 import org.lwjgl.openal.ALCCapabilities;
 
 import omnikryptec.gameobject.component.Component;
+import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.AudioUtil;
 import omnikryptec.util.logger.Logger;
@@ -383,9 +384,12 @@ public class AudioManager {
      * Distance model which calculates the roll off of the volume
      */
     public static enum DistanceModel {
-        EXPONENT(AL11.AL_EXPONENT_DISTANCE, false), EXPONENT_CLAMPED(AL11.AL_EXPONENT_DISTANCE_CLAMPED, true), INVERSE(
-                AL10.AL_INVERSE_DISTANCE, false), INVERSE_CLAMPED(AL10.AL_INVERSE_DISTANCE_CLAMPED, true), LINEAR(
-                AL11.AL_LINEAR_DISTANCE, false), LINEAR_CLAMPED(AL11.AL_LINEAR_DISTANCE_CLAMPED, true);
+        EXPONENT            (AL11.AL_EXPONENT_DISTANCE,         false),
+        EXPONENT_CLAMPED    (AL11.AL_EXPONENT_DISTANCE_CLAMPED, true),
+        INVERSE             (AL10.AL_INVERSE_DISTANCE,          false),
+        INVERSE_CLAMPED     (AL10.AL_INVERSE_DISTANCE_CLAMPED,  true),
+        LINEAR              (AL11.AL_LINEAR_DISTANCE,           false),
+        LINEAR_CLAMPED      (AL11.AL_LINEAR_DISTANCE_CLAMPED,   true);
 
         private final int distanceModel;
         private final boolean clamped;
@@ -417,6 +421,24 @@ public class AudioManager {
          */
         public final boolean isClamped() {
             return clamped;
+        }
+        
+        public final float getFade(float fadeTime, float fadeTimeComplete, float volumeStart, float volumeTarget) {
+            float newVolume = 0;
+            switch (this) {
+                case EXPONENT:
+                case EXPONENT_CLAMPED:
+                case INVERSE:
+                case INVERSE_CLAMPED:
+                    newVolume = (1.0F / (fadeTime + (1 / volumeStart))) + volumeTarget - (1.0F / (fadeTimeComplete + (1.0F / volumeStart)));
+                    break;
+                case LINEAR:
+                case LINEAR_CLAMPED:
+                    newVolume = fadeTime * ((volumeTarget - volumeStart) / fadeTimeComplete) + volumeStart;
+                    break;
+                
+            }
+            return Math.max(newVolume, 0.0F);
         }
     }
 

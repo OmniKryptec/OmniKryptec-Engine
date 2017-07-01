@@ -13,6 +13,7 @@ import com.bulletphysics.linearmath.Transform;
 
 import de.pcfreak9000.noise.components.NoiseWrapper;
 import de.pcfreak9000.noise.noises.OpenSimplexNoise;
+import omnikryptec.audio.AudioEffectState;
 import omnikryptec.audio.AudioManager;
 import omnikryptec.audio.AudioSource;
 import omnikryptec.audio.StreamedSound;
@@ -145,6 +146,8 @@ public class JBulletTest2 {
                     JBulletTest2.class.getResourceAsStream("/omnikryptec/audio/Tobu_-_Infectious_[NCS_Release].wav"));
             source.setAffectedByPhysics(true);
             source.play(streamedSound);
+            source.setFadeTimeComplete(10000);
+            source.setEffectState(AudioEffectState.FADE_OUT);
             OmniKryptecEngine.getInstance().getCurrentScene()
                     .addGameObject(new GameObject().addComponent(new AudioSourceComponent(source)));
             manageTerrains();
