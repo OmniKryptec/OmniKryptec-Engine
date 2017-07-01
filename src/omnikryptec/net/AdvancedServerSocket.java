@@ -16,7 +16,7 @@ public abstract class AdvancedServerSocket implements Serializable {
     private int port = -1;
 
     public AdvancedServerSocket() {
-        
+        //TODO Immer wenn ein Socket accepted wird, wird ein AdvancedSocket darauf angesetzt, der dann automatisch alles Pings mit einem Pong beantwortet
     }
 
     /**
