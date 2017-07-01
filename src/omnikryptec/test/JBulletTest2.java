@@ -114,14 +114,14 @@ public class JBulletTest2 {
                     .loadTexture("/omnikryptec/test/brunnen.png");
             entityBuilder_pine = new EntityBuilder().loadModel("/omnikryptec/test/pine.obj")
                     .loadTexture("/omnikryptec/test/pine2.png");
-            final SimpleTexture backgroundTexture = SimpleTexture.newTextureb("/omnikryptec/terrain/grassy2.png")
+            final SimpleTexture backgroundTexture = SimpleTexture.newTextureb("/omnikryptec/gameobject/terrain/grassy2.png")
                     .create();
-            final SimpleTexture rTexture = SimpleTexture.newTextureb("/omnikryptec/terrain/mud.png").create();
-            final SimpleTexture gTexture = SimpleTexture.newTextureb("/omnikryptec/terrain/grassFlowers.png").create();
-            final SimpleTexture bTexture = SimpleTexture.newTextureb("/omnikryptec/terrain/path.png").create();
-            final SimpleTexture blendMap = SimpleTexture.newTextureb("/omnikryptec/terrain/blendMap.png").create();
+            final SimpleTexture rTexture = SimpleTexture.newTextureb("/omnikryptec/gameobject/terrain/mud.png").create();
+            final SimpleTexture gTexture = SimpleTexture.newTextureb("/omnikryptec/gameobject/terrain/grassFlowers.png").create();
+            final SimpleTexture bTexture = SimpleTexture.newTextureb("/omnikryptec/gameobject/terrain/path.png").create();
+            final SimpleTexture blendMap = SimpleTexture.newTextureb("/omnikryptec/gameobject/terrain/blendMap.png").create();
             try {
-                heightMap = ImageIO.read(Terrain.class.getResourceAsStream("/omnikryptec/terrain/heightmap.png"));
+                heightMap = ImageIO.read(Terrain.class.getResourceAsStream("/omnikryptec/gameobject/terrain/heightmap.png"));
             } catch (Exception ex) {
                 Logger.logErr("Error while loading the heightmap: " + ex, ex);
                 heightMap = null;

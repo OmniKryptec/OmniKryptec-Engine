@@ -14,7 +14,7 @@ import omnikryptec.util.logger.LogEntry.LogLevel;
  */
 public class LanguageManager {
 
-    public static final String STANDARDLANGUAGEPATH = "/omnikryptec/lang";
+    public static final String STANDARDLANGUAGEPATH = "/omnikryptec/util/lang";
 
     private static final ArrayList<ILanguage> LANGUAGEINTERFACES = new ArrayList<>();
     public static final ArrayList<Language> LANGUAGES = new ArrayList<>();
