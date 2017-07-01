@@ -372,8 +372,10 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
                 } catch (Exception ex) {
                 }
                 return connect(createNewSocket, tries);
+            } else {
+                threadReceiver.start();
+                return connected;
             }
-            return connected;
         } catch (Exception ex) {
             if (Logger.isDebugMode()) {
                 Logger.logErr(String.format("Error while connecting to %s: %s", formatAddressAndPort(), ex), ex);
