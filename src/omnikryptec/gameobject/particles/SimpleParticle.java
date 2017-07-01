@@ -11,11 +11,11 @@ public class SimpleParticle extends Particle {
 	private Vector3f force;
 	private float lifeLength;
 	private float elapsedTime = 0;
-	private ParticleSystem mysystem;
+	private SimpleParticleSystem mysystem;
 
 
 	public SimpleParticle(ParticleTexture tex, Vector3f pos, Vector3f vel, Vector3f force, float lifeLength, float rot,
-			float scale, ParticleSystem sys, RenderType type) {
+			float scale, SimpleParticleSystem sys, RenderType type) {
 		super(pos,tex,type);
 		setRotation(rot);
 		setScale(scale);
@@ -26,7 +26,7 @@ public class SimpleParticle extends Particle {
 		this.mysystem = sys;
 	}
 
-	public ParticleSystem getSystem() {
+	public SimpleParticleSystem getSystem() {
 		return mysystem;
 	}
 

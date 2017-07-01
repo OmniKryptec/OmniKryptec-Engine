@@ -15,8 +15,9 @@ import omnikryptec.gameobject.gameobject.Entity;
 import omnikryptec.gameobject.gameobject.Light;
 import omnikryptec.gameobject.gameobject.Entity.RenderType;
 import omnikryptec.gameobject.gameobject.GameObject.UpdateType;
+import omnikryptec.gameobject.particles.Particle;
 import omnikryptec.gameobject.particles.ParticleMaster;
-import omnikryptec.gameobject.particles.ParticleSystem;
+import omnikryptec.gameobject.particles.SimpleParticleSystem;
 import omnikryptec.gameobject.particles.ParticleTexture;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
@@ -181,12 +182,13 @@ public class EngineTest2 implements IEventHandler {
             //Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0, 1).setScale(new Vector3f(scale,scale,scale)).setUpdateType(UpdateType.STATIC).setRelativePos(0, 0, 0));
 
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
-            system = new ParticleSystem(0, 0, 0,
+            system = new SimpleParticleSystem(0, 0, 0,
                     new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true), 300f, 2.5f,
                     new Vector3f(0, 1, 0),75f, 1f, RenderType.ALWAYS);
             //system.setParent(Instance.getCurrentCamera());
             system.setTimemultiplier(1);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
+            //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));
             //OmniKryptecEngine.instance().getCurrentScene()
             //      .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setCuttOffRange(50).setColor(3, 0, 0).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0, -1, 0).setRelativePos(0,10, 0));
             OmniKryptecEngine.instance().getCurrentScene()
@@ -220,7 +222,7 @@ public class EngineTest2 implements IEventHandler {
         Logger.CONSOLE.setTitle(camera.toString());
     }
 
-    private static ParticleSystem system;
+    private static SimpleParticleSystem system;
     private Random ra = new Random();
 	private double d=0;
 

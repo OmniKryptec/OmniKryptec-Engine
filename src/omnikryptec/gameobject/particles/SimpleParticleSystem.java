@@ -11,7 +11,7 @@ import omnikryptec.gameobject.gameobject.GameObject;
 import omnikryptec.gameobject.gameobject.Entity.RenderType;
 import omnikryptec.util.Maths;
 
-public class ParticleSystem extends GameObject {
+public class SimpleParticleSystem extends GameObject {
 
 	private float pps, averageSpeed, averageLifeLength, averageScale;
 
@@ -29,17 +29,17 @@ public class ParticleSystem extends GameObject {
 
 	private ParticleTexture tex;
 
-	public ParticleSystem(Vector3f pos, ParticleTexture tex, float pps, float speed, float lifeLength, float scale,
+	public SimpleParticleSystem(Vector3f pos, ParticleTexture tex, float pps, float speed, float lifeLength, float scale,
 			RenderType type) {
 		this(pos.x, pos.y, pos.z, tex, pps, speed, lifeLength, scale, type);
 	}
 
-	public ParticleSystem(float x, float y, float z, ParticleTexture tex, float pps, float speed, float lifeLength,
+	public SimpleParticleSystem(float x, float y, float z, ParticleTexture tex, float pps, float speed, float lifeLength,
 			float scale, RenderType type) {
 		this(x, y, z, tex, pps, speed, Maths.ZERO, lifeLength, scale, type);
 	}
 
-	public ParticleSystem(float x, float y, float z, ParticleTexture tex, float pps, float speed,
+	public SimpleParticleSystem(float x, float y, float z, ParticleTexture tex, float pps, float speed,
 			Vector3f gravityComplient, float lifeLength, float scale, RenderType type) {
 		this.type = type;
 		this.pps = pps;
@@ -51,12 +51,12 @@ public class ParticleSystem extends GameObject {
 		setRelativePos(x, y, z);
 	}
 
-	public ParticleSystem(Vector3f pos, ParticleTexture tex, float pps, float speed, Vector3f gravityComplient,
+	public SimpleParticleSystem(Vector3f pos, ParticleTexture tex, float pps, float speed, Vector3f gravityComplient,
 			float lifeLength, float scale, RenderType type) {
 		this(pos.x, pos.y, pos.z, tex, pps, speed, gravityComplient, lifeLength, scale, type);
 	}
 
-	public ParticleSystem setSystemLifeLength(float f) {
+	public SimpleParticleSystem setSystemLifeLength(float f) {
 		this.lifelengthf = f;
 		return this;
 	}
@@ -68,13 +68,15 @@ public class ParticleSystem extends GameObject {
 	 *            - A value between 0 and 1 indicating how far from the chosen
 	 *            direction particles can deviate.
 	 */
-	public void setDirection(Vector3f direction, float deviation) {
+	public SimpleParticleSystem setDirection(Vector3f direction, float angel) {
 		this.direction = new Vector3f(direction);
-		this.directionDeviation = (float) (deviation * Math.PI);
+		this.directionDeviation = angel;
+		return this;
 	}
 
-	public void randomizeRotation() {
-		randomRotation = true;
+	public SimpleParticleSystem randomizeRotation(boolean b) {
+		randomRotation = b;
+		return this;
 	}
 
 	/**
@@ -101,6 +103,21 @@ public class ParticleSystem extends GameObject {
 		this.scaleError = error * averageScale;
 	}
 
+
+	public void resetTime() {
+		elapsedtime = 0;
+	}
+	
+	public float getTimemultiplier() {
+		return timemultiplier;
+	}
+
+	public SimpleParticleSystem setTimemultiplier(float timemultiplier) {
+		this.timemultiplier = timemultiplier;
+		return this;
+	}
+	
+	
 	@Override
 	public void doLogic() {
 		if (elapsedtime <= lifelengthf || lifelengthf < 0) {
@@ -108,20 +125,17 @@ public class ParticleSystem extends GameObject {
 			elapsedtime += DisplayManager.instance().getDeltaTimef()*timemultiplier;
 		}
 	}
-
-	public void resetTime() {
-		elapsedtime = 0;
-	}
-
+	
+	
 	private static float delta, particlesToCreate, partialParticle;
 	private static int count;
-
+	private static Vector3f pos;
 	/**
 	 * for <1 particle/sec
 	 */
 	private float lastParticlef = 0;
 
-	public void generateParticles(float timemultiplier) {
+	public SimpleParticleSystem generateParticles(float timemultiplier) {
 		delta = DisplayManager.instance().getDeltaTimef() * timemultiplier;
 		particlesToCreate = pps * delta;
 		if (particlesToCreate < 1f) {
@@ -133,18 +147,25 @@ public class ParticleSystem extends GameObject {
 		}
 		count = (int) Math.floor(particlesToCreate);
 		partialParticle = particlesToCreate % 1;
+		pos = getAbsolutePos();
 		for (int i = 0; i < count; i++) {
-			emitParticle(getAbsolutePos());
+			emitAndAdd(pos);
 		}
 		if (Math.random() < partialParticle) {
-			emitParticle(getAbsolutePos());
+			emitAndAdd(pos);
 		}
+		return this;
 	}
 
+	private void emitAndAdd(Vector3f center){
+		ParticleMaster.instance().addParticle(emitParticle(center));
+	}
+	
+	
 	private static Vector3f velocity;
 	private static float scale, lifeLength;
 
-	private void emitParticle(Vector3f center) {
+	protected Particle emitParticle(Vector3f center) {
 		if (direction != null) {
 			velocity = generateRandomUnitVectorWithinCone(direction, directionDeviation);
 		} else {
@@ -154,8 +175,8 @@ public class ParticleSystem extends GameObject {
 		velocity.mul(generateValue(averageSpeed, speedError));
 		scale = generateValue(averageScale, scaleError);
 		lifeLength = generateValue(averageLifeLength, lifeError);
-		ParticleMaster.instance().addParticle(new SimpleParticle(tex, new Vector3f(center), velocity, gravityComplient,
-				lifeLength, generateRotation(), scale, this, type));
+		return new SimpleParticle(tex, new Vector3f(center), velocity, gravityComplient,
+				lifeLength, generateRotation(), scale, this, type);
 	}
 
 	private float offset;
@@ -211,14 +232,6 @@ public class ParticleSystem extends GameObject {
 		x = (float) (rootOneMinusZSquared * Math.cos(theta));
 		y = (float) (rootOneMinusZSquared * Math.sin(theta));
 		return new Vector3f(x, y, z);
-	}
-
-	public float getTimemultiplier() {
-		return timemultiplier;
-	}
-
-	public void setTimemultiplier(float timemultiplier) {
-		this.timemultiplier = timemultiplier;
 	}
 
 }
