@@ -3,7 +3,7 @@ package omnikryptec.audio;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.swing.Timer;
-import omnikryptec.display.DisplayManager;
+import omnikryptec.util.Util;
 import omnikryptec.util.logger.LogEntry.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -77,9 +77,10 @@ public class AudioPlaylist {
         if (sound == null) {
             stop();
         }
-        playStarted = DisplayManager.instance().getCurrentTime();
+        Logger.log("Playing: " + sound);
+        playStarted = Util.getCurrentTime();
         getWaitingAudioSource().stop();
-        getWaitingAudioSource().setVolume(0.0F);
+        //getWaitingAudioSource().setVolume(0.0F);
         getWaitingAudioSource().play(sound);
         getWaitingAudioSource().setEffectState(AudioEffectState.FADE_IN);
         playerIsSource1 = !playerIsSource1;
@@ -156,7 +157,7 @@ public class AudioPlaylist {
     }
 
     /**
-     * Returns how much seconds before a track ends its fading out
+     * Returns how many seconds before a track ends its fading out
      *
      * @return Fading start
      */
@@ -193,10 +194,13 @@ public class AudioPlaylist {
         if (!isPlaying) {
             return this;
         }
-        final double deltaTime = DisplayManager.instance().getCurrentTime() - playStarted;
+        final double deltaTime = (Util.getCurrentTime() - playStarted) / 1000.0;
+        Logger.log("Length: " + getPlayingAudioSource().getSound().getLength());
         if (deltaTime >= getPlayingAudioSource().getSound().getLength() - fadingStart) {
             startFading();
         }
+        source_1.updateState(timer.getDelay() / 1000.0F);
+        source_2.updateState(timer.getDelay() / 1000.0F);
         return this;
     }
 

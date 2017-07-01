@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import omnikryptec.audio.AudioEffectState;
 
 import omnikryptec.audio.AudioSource;
+import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.gameobject.GameObject;
 import omnikryptec.main.Scene;
 import omnikryptec.renderer.RenderChunk;
@@ -171,7 +172,7 @@ public class AudioSourceComponent implements Component {
                     }
                     source.setDeltaPitch(newDeltaPitch);
                 }
-                source.updateState();
+                source.updateState(DisplayManager.instance().getDeltaTimef());
             });
         }
         blocker.setBlocked(false);

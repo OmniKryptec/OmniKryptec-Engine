@@ -184,10 +184,10 @@ public class AudioSource {
      * @param out If fading out or fading in
      * @return <tt>true</tt> if next frame also needs to be faded again
      */
-    public final boolean fadeOneFrame() {
+    public final boolean fadeOneFrame(float deltaTime) {
         final boolean out = (Math.max(volumeStart, volumeTarget) == volumeStart);
         float newVolume = AudioManager.getDistanceModel().getFade(fadeTime, fadeTimeComplete / 1000.0F, Math.max(volumeStart, volumeTarget), Math.min(volumeStart, volumeTarget));
-        fadeTime += (OmniKryptecEngine.getInstance().getDisplayManager().getDeltaTimef() * (out ? 1.0F : -1.0F));
+        fadeTime += (deltaTime * (out ? 1.0F : -1.0F));
         setVolume(newVolume);
         if (out) {
             return (getVolume() - volumeTarget) > 0.0F;
@@ -479,18 +479,18 @@ public class AudioSource {
      *
      * @return A reference to this AudioSource
      */
-    public final AudioSource updateState() {
+    public final AudioSource updateState(float deltaTime) {
         switch (effectState) {
             case NOTHING:
                 break;
             case FADE_IN:
-                if (!fadeOneFrame()) {
+                if (!fadeOneFrame(deltaTime)) {
                     effectState = AudioEffectState.NOTHING;
                     setVolume(volumeTarget);
                 }
                 break;
             case FADE_OUT:
-                if (!fadeOneFrame()) {
+                if (!fadeOneFrame(deltaTime)) {
                     effectState = AudioEffectState.NOTHING;
                     setVolume(volumeTarget);
                 }

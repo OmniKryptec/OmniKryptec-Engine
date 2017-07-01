@@ -1,10 +1,12 @@
 package omnikryptec.audio;
 
+import java.util.Arrays;
 import javax.swing.Timer;
 
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.logger.Commands;
+import omnikryptec.util.logger.LogEntry.LogLevel;
 import omnikryptec.util.logger.Logger;
 
 import org.joml.Vector3f;
@@ -22,17 +24,30 @@ public class AudioTest {
 
     public static void main(String[] args) {
         NativesLoader.loadNatives();
+        Logger.setDebugMode(true);
+        Logger.setMinimumLogLevel(LogLevel.FINEST);
         AudioManager.init();
         AudioManager.setListenerData(null, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(0, 0, 0));
         AudioManager.loadSound("bounce", "/omnikryptec/audio/bounce.wav");
-        // AudioManager.loadSound("Tobu_-_Infectious_[NCS_Release]",
-        // "/omnikryptec/audio/Tobu_-_Infectious_[NCS_Release].wav");
+        //AudioManager.loadSound("Tobu_-_Infectious_[NCS_Release]", "/omnikryptec/audio/Tobu_-_Infectious_[NCS_Release].wav");
         final AudioSource source = new AudioSource();
         timer.start();
         // source.setLooping(true);
         // source.play("bounce");
-        StreamedSound streamedSound = StreamedSound.ofAdvancedFile("Tobu_-_Infectious_[NCS_Release]", source, new AdvancedFile("omnikryptec", "audio", "Tobu_-_Infectious_[NCS_Release].wav"));
-        source.play(streamedSound);
+        final AdvancedFile file = new AdvancedFile("omnikryptec", "audio", "Tobu_-_Infectious_[NCS_Release].wav");
+        final StreamedSound streamedSound = StreamedSound.ofAdvancedFile("Tobu_-_Infectious_[NCS_Release]_streamed", source, file);
+        AudioManager.loadSound("Tobu_-_Infectious_[NCS_Release]_cached", file);
+        final Sound sound = AudioManager.getSound("Tobu_-_Infectious_[NCS_Release]_cached");
+        //source.play(streamedSound);
+        
+        AudioPlaylist playlist = new AudioPlaylist(AudioManager.getSound("bounce"), sound, streamedSound);
+        
+        Logger.log(Arrays.toString(playlist.getSounds()));
+        playlist.shuffle();
+        Logger.log(Arrays.toString(playlist.getSounds()));
+        
+        playlist.start();
+        
         // source.play("Tobu_-_Infectious_[NCS_Release]");
         final int startX = 100;
         Vector3f position = new Vector3f(startX, 0, 2);

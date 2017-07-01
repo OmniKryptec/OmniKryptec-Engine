@@ -1,5 +1,6 @@
 package omnikryptec.util;
 
+import omnikryptec.display.DisplayManager;
 import static omnikryptec.util.AdvancedFile.NOT_FOUND;
 import omnikryptec.util.logger.Logger;
 
@@ -98,6 +99,14 @@ public class Util {
                 }
             }
             times++;
+        }
+    }
+    
+    public static final double getCurrentTime() {
+        try {
+            return DisplayManager.instance().getCurrentTime();
+        } catch (Exception ex) {
+            return System.currentTimeMillis();
         }
     }
 
