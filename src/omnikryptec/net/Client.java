@@ -28,7 +28,7 @@ public class Client extends AdvancedSocket implements InputListenerManager {
     public final synchronized void processInput(Object object, Instant timestamp) {
         if(object instanceof InputEvent) {
             final InputEvent event = (InputEvent) object;
-            if(waitingAnswers.containsKey(event.getID())) {
+            if((event.getInputType() == InputType.ANSWER) && waitingAnswers.containsKey(event.getID())) {
                 waitingAnswers.put(event.getID(), event);
             }
             fireInputEvent(event);
@@ -46,9 +46,25 @@ public class Client extends AdvancedSocket implements InputListenerManager {
     public final void onDisconnected(Instant timestamp) {
         send(InputType.CLIENT_LOGGED_OUT);
     }
+    
+    public final Client answer(InputEvent message, Object... answer) {
+        return this.answer(message, Instant.now(), answer);
+    }
+    
+    public final Client answer(InputEvent message, Instant timestamp, Object... answer) {
+        return this.send(new InputEvent(message.getID(), timestamp, this, InputType.ANSWER, answer));
+    }
 
+    public final Client send(Object object, Object... data) {
+        return this.send(object, Instant.now(), data);
+    }
+    
     public final Client send(Object object, Instant timestamp, Object... data) {
-        send(new InputEvent(timestamp, this, InputType.MESSAGE_RECEIVED, data));
+        return this.send(new InputEvent(timestamp, this, InputType.MESSAGE_RECEIVED, data));
+    }
+    
+    public final Client send(InputEvent event) {
+        super.send(event);
         return this;
     }
     

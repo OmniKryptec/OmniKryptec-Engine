@@ -9,7 +9,8 @@ import java.io.Serializable;
 public enum InputType implements Serializable {
     MESSAGE_RECEIVED    (0),
     CLIENT_LOGGED_IN    (1),
-    CLIENT_LOGGED_OUT   (2);
+    CLIENT_LOGGED_OUT   (2),
+    ANSWER              (3);
     
     /**
      * Value to serialize
