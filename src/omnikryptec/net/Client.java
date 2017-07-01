@@ -5,6 +5,8 @@ import java.net.Socket;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import omnikryptec.util.logger.LogEntry.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -15,6 +17,7 @@ import omnikryptec.util.logger.Logger;
 public class Client extends AdvancedSocket implements InputListenerManager {
     
     private final HashMap<Long, InputEvent> waitingAnswers = new HashMap<>();
+    private final ExecutorService executorInputProcessor = Executors.newFixedThreadPool(1);
     
     public Client(Socket socket, int threadPoolSize) {
         super(socket, threadPoolSize);
@@ -31,10 +34,10 @@ public class Client extends AdvancedSocket implements InputListenerManager {
             if((event.getInputType() == InputType.ANSWER) && waitingAnswers.containsKey(event.getID())) {
                 waitingAnswers.put(event.getID(), event);
             } else {
-                fireInputEvent(event);
+                fireInputEvent(event, executorInputProcessor);
             }
         } else {
-            fireInputEvent(new InputEvent(timestamp, InputType.MESSAGE_RECEIVED, object));
+            fireInputEvent(new InputEvent(timestamp, InputType.RAW_MESSAGE_RECEIVED, object), executorInputProcessor);
         }
     }
 

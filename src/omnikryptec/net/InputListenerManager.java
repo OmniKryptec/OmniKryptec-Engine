@@ -1,6 +1,7 @@
 package omnikryptec.net;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
 
 /**
  * InputListenerManager
@@ -26,9 +27,11 @@ public interface InputListenerManager {
         return this;
     }
     
-    default InputListenerManager fireInputEvent(InputEvent event) {
+    default InputListenerManager fireInputEvent(InputEvent event, ExecutorService executor) {
         inputListeners.stream().forEach((inputListener) -> {
-            inputListener.inputReceived(event);
+            executor.execute(() -> {
+                inputListener.inputReceived(event);
+            });
         });
         return this;
     }
