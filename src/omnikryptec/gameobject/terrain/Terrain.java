@@ -8,6 +8,8 @@ import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.resource.objConverter.ModelData;
 import omnikryptec.resource.objConverter.Vertex;
 import omnikryptec.resource.texture.Texture;
+import omnikryptec.util.Instance;
+import omnikryptec.util.Maths;
 
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -23,19 +25,84 @@ public class Terrain extends Entity {
 
     private final TerrainTexturePack texturePack;
 
-    public Terrain(final float worldX, final float worldZ, String texturedModelName, ModelData model, TerrainTexturePack texturePack, Texture blendMap) {
-        this(worldX, worldZ, texturedModelName, new Model("Terrain_worldX_" + worldX + "_worldZ_" + worldZ, model), texturePack, blendMap);
+    private float[][] heights;
+    
+    private float size;
+    
+    public Terrain(final float size, final float worldX, final float worldZ, String texturedModelName, ModelData model, TerrainTexturePack texturePack, Texture blendMap) {
+        this(size, worldX, worldZ, texturedModelName, new Model("Terrain_worldX_" + worldX + "_worldZ_" + worldZ, model), texturePack, blendMap);
     }
 
-    public Terrain(final float worldX, final float worldZ, String texturedModelName, Model model, TerrainTexturePack texturePack, Texture blendMap) {
+    public Terrain(TerrainCreator tc){
+    	this(tc.size, tc.worldx, tc.worldz, tc.texmname, dealwithtc(tc), tc.texturePack, tc.blendMap);
+    }
+    
+    private static Model dealwithtc(TerrainCreator tc) {
+    	if(!tc.isgenerated){
+    		tc.generate();
+    	}
+    	if(!tc.ismodelcreated){
+    		tc.createModel();
+    	}
+		return tc.getModel();
+	}
+
+	public Terrain(final float size, final float worldX, final float worldZ, String texturedModelName, Model model, TerrainTexturePack texturePack, Texture blendMap) {
         getRelativePos().x = worldX;
         getRelativePos().z = worldZ;
         this.texturePack = texturePack;
         setAdvancedModel(new TexturedModel(texturedModelName, model, blendMap));
         getAdvancedModel().getMaterial().setRenderer(terrainRenderer);
+        this.size = size;
+        createHeights(model.getModelData());
     }
 
-    public static final ModelData generateTerrain(final float worldx, final float worldz, final TerrainGenerator generator, final float size, final int vertex_count) {
+    private void createHeights(ModelData model) {
+    	if(model==null){
+    		return;
+    	}
+    	int vs = (int) Math.sqrt(model.getVertexCount());
+    	heights = new float[vs][vs];
+    	for(int i=0; i<vs; i++){
+    		for(int j=0; j<vs; j++){
+    			heights[j][i] = model.getVertices()[(i*vs+j)*3+1];
+    		}
+    	}
+	}
+    
+    public float getHeightOfTerrain(float wx, float wz){
+    	return getHeightOfTerrain(wx, wz, size);
+    }
+    
+    //TODO to be tested!!
+    public float getHeightOfTerrain(float worldX, float worldZ, float size) {
+		if(heights==null||heights.length==0){
+			return getAbsolutePos().y;
+		}
+    	float terrainX = worldX - getAbsolutePos().x;
+		float terrainZ = worldZ - getAbsolutePos().z;
+		float gridSquareSize = size / ((float) heights.length - 1);
+		int gridX = (int) Math.floor(terrainX / gridSquareSize);
+		int gridZ = (int) Math.floor(terrainZ / gridSquareSize);
+		if (gridX >= heights.length - 1 || gridZ >= heights.length - 1 || gridX < 0 || gridZ < 0) {
+			return 0;
+		}
+		float xCoord = (terrainX % gridSquareSize) / gridSquareSize;
+		float zCoord = (terrainZ % gridSquareSize) / gridSquareSize;
+		float answer;
+		if (xCoord <= (1 - zCoord)) {
+			answer = Maths.barryCentric(new Vector3f(0, heights[gridX][gridZ], 0),
+					new Vector3f(1, heights[gridX + 1][gridZ], 0), new Vector3f(0, heights[gridX][gridZ + 1], 1),
+					new Vector2f(xCoord, zCoord));
+		} else {
+			answer = Maths.barryCentric(new Vector3f(1, heights[gridX + 1][gridZ], 0),
+					new Vector3f(1, heights[gridX + 1][gridZ + 1], 1), new Vector3f(0, heights[gridX][gridZ + 1], 1),
+					new Vector2f(xCoord, zCoord));
+		}
+		return answer+getAbsolutePos().y;
+	}
+    
+	public static final ModelData generateTerrain(final float worldx, final float worldz, final TerrainGenerator generator, final float size, final int vertex_count) {
         final ArrayList<Vertex> vertices = new ArrayList<>();
         final ArrayList<Vector2f> textures = new ArrayList<>();
         final ArrayList<Vector3f> normals = new ArrayList<>();
@@ -81,10 +148,10 @@ public class Terrain extends Entity {
             }
         }
         removeUnusedVertices(vertices);
-        final float[] verticesArray = new float[vertices.size() * 3];
+        final float[] verticesArray = new float[vertices.size() * Instance.DIMENSIONS];
         final float[] texturesArray = new float[vertices.size() * 2];
-        final float[] normalsArray = new float[vertices.size() * 3];
-        final float[] tangentsArray = new float[vertices.size() * 3];
+        final float[] normalsArray = new float[vertices.size() * Instance.DIMENSIONS];
+        final float[] tangentsArray = new float[vertices.size() * Instance.DIMENSIONS];
         final float furthest = convertDataToArrays(vertices, textures, normals, verticesArray, texturesArray,
                 normalsArray, tangentsArray);
         final int[] indicesArray = convertIndicesArrayListToArray(indices);
@@ -146,8 +213,8 @@ public class Terrain extends Entity {
         float furthestPoint = 0;
         for (int i = 0; i < vertices.size(); i++) {
             Vertex currentVertex = vertices.get(i);
-            if (currentVertex.getLengthSquared() > furthestPoint) {
-                furthestPoint = currentVertex.getLengthSquared();
+            if (currentVertex.getLength() > furthestPoint) {
+                furthestPoint = currentVertex.getLength();
             }
             Vector3f position = currentVertex.getPosition();
             Vector2f textureCoord = textures.get(currentVertex.getTextureIndex());
@@ -179,7 +246,7 @@ public class Terrain extends Entity {
     }
 
     public final Terrain copy(int gridX, int gridZ) {
-        return new Terrain(gridX, gridZ, getAdvancedModel().getName(), getAdvancedModel().getModel(), texturePack, getAdvancedModel().getTexture());
+        return new Terrain(size, gridX, gridZ, getAdvancedModel().getName(), getAdvancedModel().getModel(), texturePack, getAdvancedModel().getTexture());
     }
 
     public final TerrainTexturePack getTexturePack() {

@@ -57,6 +57,7 @@ class Window {
     }
     
     void swapBuffers(){
+    	active = GLFW.glfwGetWindowAttrib(window, GLFW.GLFW_FOCUSED) == GL11.GL_TRUE;
     	resized = false;
         GLFW.glfwSwapBuffers(window);
     }
@@ -69,8 +70,9 @@ class Window {
     	return resized;
     }
     
+    private boolean active=false;
     boolean isActive() {
-        return GLFW.glfwGetWindowAttrib(window, GLFW.GLFW_FOCUSED) == GL11.GL_TRUE;
+        return active;
     }
     
     boolean isCloseRequested(){

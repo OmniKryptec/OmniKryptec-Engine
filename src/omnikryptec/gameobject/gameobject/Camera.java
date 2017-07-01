@@ -78,6 +78,15 @@ public class Camera extends GameObject {
         return setOrthographicProjection(x, x + width, y, y + height, near, far);
     }
 
+    public Camera setProjectionMatrix(Matrix4f proj){
+    	this.projection = proj.toImmutable();
+    	return this;
+    }
+    
+    private final void projMset(){
+    	
+    }
+    
     public final Camera setValuesFrom(Camera toCopy) {
         if (toCopy == null) {
             return this;

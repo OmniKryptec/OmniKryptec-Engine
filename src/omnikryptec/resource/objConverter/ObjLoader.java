@@ -200,8 +200,8 @@ public class ObjLoader {
         float furthestPoint = 0;
         for (int i = 0; i < vertices.size(); i++) {
             Vertex currentVertex = vertices.get(i);
-            if (currentVertex.getLengthSquared() > furthestPoint) {
-                furthestPoint = currentVertex.getLengthSquared();
+            if (currentVertex.getLength() > furthestPoint) {
+                furthestPoint = currentVertex.getLength();
             }
             Vector3f position = currentVertex.getPosition();
             Vector2f textureCoord = textures.get(currentVertex.getTextureIndex());

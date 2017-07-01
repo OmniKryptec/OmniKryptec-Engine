@@ -139,13 +139,17 @@ public class DisplayManager implements Profilable{
 	private double updateTime=0;
 	private double idletime=0;
 	
-	
+	private boolean isfirst=true;
 	/**
 	 * Updates the display
 	 * 
 	 * @return DisplayManager A reference to this DisplayManager
 	 */
 	public final DisplayManager updateDisplay() {
+		if(isfirst){
+			lasttime = manager.getCurrentTime();
+			isfirst = false;
+		}
 		tmptime = getCurrentTime();
 		if (Display.wasResized()) {
 			GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());

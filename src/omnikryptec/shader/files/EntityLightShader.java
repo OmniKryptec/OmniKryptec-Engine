@@ -12,6 +12,7 @@ import omnikryptec.shader.base.UniformMatrix;
 import omnikryptec.shader.base.UniformSampler;
 import omnikryptec.shader.base.UniformVec3;
 import omnikryptec.shader.base.UniformVec4;
+import omnikryptec.util.AdvancedFile;
 
 public class EntityLightShader extends Shader {
 
@@ -35,6 +36,7 @@ public class EntityLightShader extends Shader {
 	//public final UniformVec4 colmod = new UniformVec4("colormod");
 
 	
+	
 	private static final LineInsert insert = new LineInsert() {
 
 		@Override
@@ -47,11 +49,15 @@ public class EntityLightShader extends Shader {
 			}
 		}
 	};
-
-	public EntityLightShader() {
+	
+	public EntityLightShader(){
+		this(new AdvancedFile(oc_shader_loc.substring(1) + "entity_shader_vert.glsl"), new AdvancedFile(oc_shader_loc.substring(1) + "entity_shader_frag.glsl"));
+	}
+	
+	public EntityLightShader(AdvancedFile vertexshader, AdvancedFile fragmentshader) {
 		super("EntityLightShader", insert,
-				EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_vert.glsl"),
-				EntityShader.class.getResourceAsStream(oc_shader_loc + "entity_shader_frag.glsl"), new Attribute("pos", 0), new Attribute("texcoords", 1),
+				vertexshader.createInputStream(),
+				fragmentshader.createInputStream(), new Attribute("pos", 0), new Attribute("texcoords", 1),
 				new Attribute("normal", 2), new Attribute("tangent",3), new Attribute("transmatrix", 4), new Attribute("colour", 8));
 		lightpos = new UniformVec4[DisplayManager.instance().getSettings().getLightMaxForward()];
 		for (int i = 0; i < lightpos.length; i++) {

@@ -7,8 +7,8 @@ import omnikryptec.shader.base.UniformMatrix;
 
 public class ParticleShader extends Shader {
 
-	private static final String VERTEX_FILE = "/omnikryptec/particles/particle_shader_vert.glsl";
-	private static final String FRAGMENT_FILE = "/omnikryptec/particles/particle_shader_frag.glsl";
+	private static final String VERTEX_FILE = "/omnikryptec/gameobject/particles/particle_shader_vert.glsl";
+	private static final String FRAGMENT_FILE = "/omnikryptec/gameobject/particles/particle_shader_frag.glsl";
 
 	public final UniformFloat nrOfRows = new UniformFloat("nrRows");
 	public final UniformMatrix projMatrix = new UniformMatrix("projectionMatrix");

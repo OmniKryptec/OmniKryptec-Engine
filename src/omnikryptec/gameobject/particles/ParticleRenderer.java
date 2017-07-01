@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL31;
 import omnikryptec.gameobject.gameobject.Camera;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.VertexBufferObject;
+import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.Maths;
 import omnikryptec.util.ModelUtil;
 import omnikryptec.util.RenderUtil;
@@ -35,7 +36,9 @@ public class ParticleRenderer {
 	private int oldsize = -1;
 
 	private Camera curCam;
-
+	
+	private Vector3f curparpos;
+	
 	protected ParticleRenderer() {
 		quad = ModelUtil.generateQuad();
 		vbo = VertexBufferObject.createEmpty(GL15.GL_ARRAY_BUFFER);
@@ -59,6 +62,7 @@ public class ParticleRenderer {
 		}
 		shader.start();
 		shader.projMatrix.loadMatrix(curCam.getProjectionMatrix());
+		FrustrumFilter.setProjViewMatrices(curCam.getProjectionViewMatrix());
 		quad.getVao().bind(0, 1, 2, 3, 4, 5, 6);
 		globalCount = 0;
 		for (ParticleTexture tmpt : particles.keySet()) {
@@ -73,8 +77,9 @@ public class ParticleRenderer {
 				if (count > maxInstancesPerSys) {
 					break;
 				}
-				if (RenderUtil.inRenderRange(par, curCam)) {
-					updateModelViewMatrix(par.getAbsolutePos(), par.getRot(), par.getScale(), curCam.getViewMatrix(),
+				curparpos = par.getAbsolutePos();
+				if (FrustrumFilter.intersects(curparpos.x, curparpos.y, curparpos.z, par.getScale()) && RenderUtil.inRenderRange(par, curCam)) {
+					updateModelViewMatrix(par.getAbsolutePos(), par.getRotation(), par.getScale(), curCam.getViewMatrix(),
 							vboData);
 					updateTexCoordInfo(par, vboData);
 					count++;
@@ -110,7 +115,7 @@ public class ParticleRenderer {
 	}
 
 	private Vector3f tmp = new Vector3f();
-	private Matrix4f tmpm;
+	private Matrix4f tmpm = new Matrix4f();
 	private Matrix4f modelMatrix = new Matrix4f();
 
 	private void updateModelViewMatrix(Vector3f pos, float rot, float scale, Matrix4f viewMatrix, float[] vboData) {
