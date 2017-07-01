@@ -1,5 +1,6 @@
 package omnikryptec.net;
 
+import java.net.Socket;
 import java.time.Instant;
 
 /**
@@ -9,8 +10,10 @@ import java.time.Instant;
  */
 public class Server extends AdvancedServerSocket {
 
-    public Server() {
-
+    public Server(int port, int threadPoolSize) {
+        super(port, threadPoolSize);
+        AdvancedSocket socket = null;
+        Client client = (Client) socket;
     }
 
     @Override
@@ -19,8 +22,8 @@ public class Server extends AdvancedServerSocket {
     }
 
     @Override
-    public void onConnected(AdvancedSocket socket, Instant timestamp) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public AdvancedSocket onConnected(Socket socket, Instant timestamp) {
+        return super.onConnected(socket, timestamp); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

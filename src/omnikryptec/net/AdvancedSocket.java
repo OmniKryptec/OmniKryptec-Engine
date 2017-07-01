@@ -28,7 +28,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
     /**
      * A reference to this AdvancedSocket
      */
-    public final AdvancedSocket ME = this;
+    public final AdvancedSocket ADVANCEDSOCKET = this;
     /**
      * java.net.Socket Socket which connects to the ServerSocket
      */
@@ -374,6 +374,9 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
                 return connect(createNewSocket, tries);
             } else {
                 threadReceiver.start();
+                if (connectionCheckTimerDelay > 0) {
+                    timer.start();
+                }
                 return connected;
             }
         } catch (Exception ex) {
@@ -382,6 +385,15 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
             }
             return false;
         }
+    }
+
+    /**
+     * Disconnects immediately the AdvancedSocket
+     *
+     * @return <tt>true</tt> if the connection was successfully closed
+     */
+    public final boolean disconnect() {
+        return disconnect(true);
     }
 
     /**
@@ -902,7 +914,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
     @Override
     public final void actionPerformed(ActionEvent e) {
         if (e.getSource() == timer) {
-
+            checkConnection();
         }
     }
 
