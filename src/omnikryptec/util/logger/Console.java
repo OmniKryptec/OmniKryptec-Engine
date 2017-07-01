@@ -43,7 +43,7 @@ public class Console extends JFrame implements ActionListener, ILanguage, KeyLis
      */
     private static final long serialVersionUID = 6039442939368637162L;
 
-    public static final String ICON = "/omnikryptec/icons/Farm-Fresh_application_xp_terminal.png";
+    public static final String ICON = "/omnikryptec/res/icons/Farm-Fresh_application_xp_terminal.png";
 
     protected final HashMap<LogLevel, Boolean> logLevelVisibilities = new HashMap<LogLevel, Boolean>() {
         /**
