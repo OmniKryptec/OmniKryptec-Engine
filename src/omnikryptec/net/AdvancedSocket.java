@@ -243,7 +243,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      *
      * @return <tt>true</tt> if the connection is open
      */
-    private final boolean checkConnection() {
+    public final boolean checkConnection() {
         try {
             final Instant lastPongOld = lastPong;
             boolean isConnected = true;

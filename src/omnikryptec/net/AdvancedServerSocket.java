@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -76,6 +77,10 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      * Timer which calls the checkConnection every seconds
      */
     private Timer timer = null;
+    /**
+     * If disconnected AdvancedSockets should be deleted from the ArrayList
+     */
+    private boolean deleteDisconnectedAdvancedSockets = true;
 
     /**
      * Creates an AdvancedServerSocket from a ServerSocket
@@ -125,7 +130,11 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
                     Instant instantNow = Instant.now();
                     executorReceiver.execute(() -> {
                         synchronized (socketsAccepted) {
-                            socketsAccepted.add(onConnected(socket, instantNow));
+                            final AdvancedSocket advancedSocket = onConnected(socket, instantNow);
+                            if(advancedSocket != null) {
+                                advancedSocket.setConnectionCheckTimerDelay(-1);
+                                socketsAccepted.add(advancedSocket);
+                            }
                         }
                     });
                 } catch (IOException ex) {
@@ -319,6 +328,26 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
             return false;
         }
     }
+    
+    /**
+     * Checks all connections to the accepted Sockets
+     * @return A reference to thos AdvancedServerSocket
+     */
+    private final AdvancedServerSocket checkConnections() {
+        synchronized (socketsAccepted) {
+            final Iterator<AdvancedSocket> i = socketsAccepted.iterator();
+            while(i.hasNext()) {
+                final AdvancedSocket socket = i.next();
+                if (!socket.checkConnection()) {
+                    socket.disconnect(true);
+                    if (deleteDisconnectedAdvancedSockets) {
+                        i.remove();
+                    }
+                }
+            }
+        }
+        return this;
+    }
 
     /**
      * Closes all accepted sockets
@@ -499,10 +528,28 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
         return this;
     }
 
+    /**
+     * Returns if disconnected AdvancedSockets should be deleted from the ArrayList
+     * @return <tt>true</tt> if disconnected AdvancedSockets should be deleted from the ArrayList
+     */
+    public final boolean isDeletingDisconnectedAdvancedSockets() {
+        return deleteDisconnectedAdvancedSockets;
+    }
+
+    /**
+     * Sets if disconnected AdvancedSockets should be deleted from the ArrayList
+     * @param deleteDisconnectedAdvancedSockets If disconnected AdvancedSockets should be deleted from the ArrayList
+     * @return A reference to this AdvancedServerSocket
+     */
+    public final AdvancedServerSocket setDeleteDisconnectedAdvancedSockets(boolean deleteDisconnectedAdvancedSockets) {
+        this.deleteDisconnectedAdvancedSockets = deleteDisconnectedAdvancedSockets;
+        return this;
+    }
+
     @Override
     public final void actionPerformed(ActionEvent e) {
         if (e.getSource() == timer) {
-            //checkConnections(); //FIXME Ausproggen und alle disconnecteten aus socketsAccepted löschen
+            checkConnections();
         }
     }
 
