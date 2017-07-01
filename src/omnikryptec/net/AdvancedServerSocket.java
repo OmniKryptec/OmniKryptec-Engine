@@ -24,29 +24,77 @@ import omnikryptec.util.logger.Logger;
  */
 public abstract class AdvancedServerSocket implements ActionListener, Serializable {
 
+    /**
+     * A reference to this AdvancedServerSocket
+     */
     public final AdvancedServerSocket ADVANCEDSERVERSOCKET = this;
+    /**
+     * java.net.ServerSocket ServerSocket which accepts all Sockets
+     */
     private ServerSocket serverSocket = null;
+    /**
+     * Port to start on
+     */
     private int port = -1;
+    /**
+     * List with all accepted AdvancedSockets
+     */
     private final ArrayList<AdvancedSocket> socketsAccepted = new ArrayList<>();
+    /**
+     * ThreadPool size
+     */
     private final int threadPoolSize;
+    /**
+     * ThreadPool Acceptor
+     */
     private ExecutorService executorReceiver = null;
-    private Thread threadReceiver = null;
+    /**
+     * Acceptor Thread
+     */
+    private Thread threadAcceptor = null;
+    /**
+     * If the AdvancedServerSocket is started
+     */
     private boolean started = false;
+    /**
+     * If the AdvancedServerSocket is stopped
+     */
     private boolean stopped = true;
+    /**
+     * Timestamp when the AdvancedServerSocket was started
+     */
     private Instant instantStarted = null;
+    /**
+     * Timestamp when the AdvancedServerSocket was stopped
+     */
     private Instant instantStopped = null;
+    /**
+     * Delay time between each new connection check in milliseconds
+     */
     private int connectionCheckTimerDelay = Network.CONNECTION_CHECK_TIMER_DELAY_STANDARD;
     /**
      * Timer which calls the checkConnection every seconds
      */
     private Timer timer = null;
 
+    /**
+     * Creates an AdvancedServerSocket from a ServerSocket
+     *
+     * @param serverSocket ServerSocket
+     * @param threadPoolSize ThreadPool size
+     */
     public AdvancedServerSocket(ServerSocket serverSocket, int threadPoolSize) {
         this.threadPoolSize = Math.min(threadPoolSize, Network.THREADPOOL_SIZE_SERVER_MAX);
         init();
         setServerSocket(serverSocket);
     }
 
+    /**
+     * Creates an AdvancedServerSocket
+     *
+     * @param port Port
+     * @param threadPoolSize ThreadPool size
+     */
     public AdvancedServerSocket(int port, int threadPoolSize) {
         this.threadPoolSize = Math.min(threadPoolSize, Network.THREADPOOL_SIZE_SERVER_MAX);
         init();
@@ -69,8 +117,8 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      * @return A reference to this AdvancedServerSocket
      */
     private final AdvancedServerSocket resetReceiverThread() {
-        Util.killThread(threadReceiver, Network.THREAD_KILL_DELAY_TIME_STANDARD, Network.THREAD_KILL_MAX_TIME_STANDARD);
-        threadReceiver = new Thread(() -> {
+        Util.killThread(threadAcceptor, Network.THREAD_KILL_DELAY_TIME_STANDARD, Network.THREAD_KILL_MAX_TIME_STANDARD);
+        threadAcceptor = new Thread(() -> {
             while (started) {
                 try {
                     final Socket socket = serverSocket.accept();
@@ -146,10 +194,21 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
         }
     }
 
+    /**
+     * Starts the AdvancedServerSocket
+     *
+     * @return <tt>true</tt> if the ServerSocket was successfully started
+     */
     public final boolean start() {
         return start(false);
     }
 
+    /**
+     * Starts the AdvancedServerSocket
+     *
+     * @param createNewServerSocket If a new ServerSocket should be created
+     * @return <tt>true</tt> if the ServerSocket was successfully started
+     */
     public final boolean start(boolean createNewServerSocket) {
         if (started) {
             if (Logger.isDebugMode()) {
@@ -172,7 +231,7 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
             }
             stopped = !started;
             if (started) {
-                threadReceiver.start();
+                threadAcceptor.start();
                 if (connectionCheckTimerDelay > 0) {
                     timer.start();
                 }
@@ -252,10 +311,17 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
         }
     }
 
+    /**
+     * Closes all accepted sockets
+     *
+     * @return A reference to this AdvancedServerSocket
+     */
     private final AdvancedServerSocket closeSockets() {
         synchronized (socketsAccepted) {
             socketsAccepted.stream().forEach((socket) -> {
-                socket.disconnect(true);
+                if (socket != null) {
+                    socket.disconnect(true);
+                }
             });
             socketsAccepted.clear();
         }
@@ -327,6 +393,12 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
         return this;
     }
 
+    /**
+     * Sets the ServerSocket
+     *
+     * @param serverSocket ServerSocket
+     * @return A reference to this AdvancedServerSocket
+     */
     public final AdvancedServerSocket setServerSocket(ServerSocket serverSocket) {
         if (serverSocket != null) {
             this.serverSocket = serverSocket;
@@ -420,7 +492,7 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
     @Override
     public final void actionPerformed(ActionEvent e) {
         if (e.getSource() == timer) {
-            //checkConnections(); //FIXME Ausproggen
+            //checkConnections(); //FIXME Ausproggen und alle disconnecteten aus socketsAccepted löschen
         }
     }
 

@@ -136,7 +136,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
     }
 
     /**
-     * Creates an AdvancedSocket which does not connect immediately
+     * Creates an AdvancedSocket
      *
      * @param inetAddress InetAddress
      * @param port Port
@@ -617,6 +617,10 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
         return this;
     }
 
+    /**
+     * Returns the InetAddress
+     * @return InetAddress
+     */
     public final InetAddress getInetAddress() {
         return inetAddress;
     }
