@@ -26,7 +26,7 @@ public class Sorting {
         }
     };
 
-    private static Particle item1;
+    private static SimpleParticle item1;
     private static int attemptPos, i;
     private static float dist;
 
@@ -38,7 +38,7 @@ public class Sorting {
      * @param list - the list of particles needing sorting.
      */
     @Deprecated
-    public static void sortHighToLow(List<Particle> list) {
+    public static void sortHighToLow(List<SimpleParticle> list) {
         for (i = 1; i < list.size(); i++) {
             item1 = list.get(i);
             if ((dist = item1.getDistance()) > list.get(i - 1).getDistance()) {

@@ -175,7 +175,7 @@ public class JBulletTest2 {
             for (int y = 0; y < count; y++) {
                 final ModelData modelData = Terrain.generateTerrain(x * heightMap.getWidth(), y * heightMap.getWidth(),
                         tgn, heightMap.getWidth(), heightMap.getWidth());
-                final Terrain terrain = new Terrain(x * heightMap.getWidth(), y * heightMap.getWidth(), "terrain", modelData, texturePack, blendMap);
+                final Terrain terrain = new Terrain(heightMap.getWidth(), x * heightMap.getWidth(), y * heightMap.getWidth(), "terrain", modelData, texturePack, blendMap);
                 // final Terrain terrain = new Terrain(i, -i, texturePack,
                 // blendMap);
                 terrains.add(terrain);

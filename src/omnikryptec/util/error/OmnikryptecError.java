@@ -13,13 +13,26 @@ public class OmnikryptecError implements ErrorItem{
 		this(125, info);
 	}
 	
-	public OmnikryptecError(Throwable t){
-		this(new NameItem(), new ThroweableItem(t), new Profiler(), new SystemInfoItem());
+	public OmnikryptecError(Throwable t, ErrorItem...array){
+		this(125, array, new NameItem(), new ThroweableItem(t), new Profiler(), new SystemInfoItem());
 	}
 	
-	public OmnikryptecError(int limiterlimit, ErrorItem...info){
+	public OmnikryptecError(int limiterlimit, ErrorItem[] array, ErrorItem...info){
 		this.limiterlimit = limiterlimit;
-		this.info = info;
+		if(array == null) {
+			array = new ErrorItem[0];
+		}
+		if(info == null) {
+			info = new ErrorItem[0];
+		}
+		ErrorItem[] fa = new ErrorItem[array.length+info.length];
+		for(int i=0; i<info.length; i++){
+			fa[i] = info[i];
+		}
+		for(int i=info.length; i<fa.length; i++){
+			fa[i] = array[i-info.length];
+		}
+		this.info = fa;
 	}
 	
 	public void print(){

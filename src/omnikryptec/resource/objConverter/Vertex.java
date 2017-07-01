@@ -21,7 +21,7 @@ public class Vertex {
     public Vertex(int index, Vector3f position) {
         this.index = index;
         this.position = position;
-        this.length = position.lengthSquared();
+        this.length = position.length();
     }
 
     public void addTangent(Vector3f tangent) {

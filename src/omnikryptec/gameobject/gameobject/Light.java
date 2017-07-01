@@ -3,7 +3,6 @@ package omnikryptec.gameobject.gameobject;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import omnikryptec.deferredlight.DeferredLightPrepare;
 import omnikryptec.util.Color;
 
 public class Light extends GameObject {

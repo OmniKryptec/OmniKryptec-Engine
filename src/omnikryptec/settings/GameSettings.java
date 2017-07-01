@@ -45,6 +45,7 @@ public class GameSettings {
     private boolean enable_chunks=true;
     private int maxinstancespdc = 10000;
     
+    private boolean frustrumCulling=true;
     
     /**
      * Standard value for disabling multisampling
@@ -517,5 +518,13 @@ public class GameSettings {
 		this.maxinstancespdc = i;
 		return this;
 	}
+
+	public boolean useFrustrumCulling() {
+		return frustrumCulling;
+	}
 	
+	public GameSettings setUseFrustrumCulling(boolean b){
+		this.frustrumCulling = b;
+		return this;
+	}
 }

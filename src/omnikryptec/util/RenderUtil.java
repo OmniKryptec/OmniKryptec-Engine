@@ -1,10 +1,12 @@
 package omnikryptec.util;
 
+import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.gameobject.Camera;
+import omnikryptec.gameobject.gameobject.GameObject;
 import omnikryptec.gameobject.gameobject.Rangeable;
 import omnikryptec.gameobject.gameobject.Entity.RenderType;
 import omnikryptec.gameobject.gameobject.GameObject.UpdateType;

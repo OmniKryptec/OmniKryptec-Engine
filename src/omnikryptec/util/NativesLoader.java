@@ -10,7 +10,7 @@ import omnikryptec.util.logger.LogEntry.LogLevel;
  */
 public class NativesLoader {
 
-    private static final String NATIVESPATH = "/omnikryptec/natives/";
+    private static final String NATIVESPATH = "/omnikryptec/res/natives/";
     private static final String LWJGLLIBRARYPATH = "org.lwjgl.librarypath";
     private static final AdvancedFile NATIVESFOLDER = getStandardNativesFolder();
     private static String OLDLWJGLLIBRARYPATH = "";

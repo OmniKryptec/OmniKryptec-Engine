@@ -100,10 +100,10 @@ public class ParticleMaster implements Profilable {
     private static List<Particle> list1;
 
     public void addParticle(Particle par) {
-        list1 = particles.get(par.getTexture());
+        list1 = particles.get(par.getParticleTexture());
         if (list1 == null) {
             list1 = new ArrayList<Particle>(100);
-            particles.put(par.getTexture(), list1);
+            particles.put(par.getParticleTexture(), list1);
         }
         list1.add(par);
     }

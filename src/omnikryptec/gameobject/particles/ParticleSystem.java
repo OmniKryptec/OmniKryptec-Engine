@@ -105,7 +105,7 @@ public class ParticleSystem extends GameObject {
 	public void doLogic() {
 		if (elapsedtime <= lifelengthf || lifelengthf < 0) {
 			generateParticles(timemultiplier);
-			elapsedtime += DisplayManager.instance().getDeltaTimef();
+			elapsedtime += DisplayManager.instance().getDeltaTimef()*timemultiplier;
 		}
 	}
 
@@ -154,7 +154,7 @@ public class ParticleSystem extends GameObject {
 		velocity.mul(generateValue(averageSpeed, speedError));
 		scale = generateValue(averageScale, scaleError);
 		lifeLength = generateValue(averageLifeLength, lifeError);
-		ParticleMaster.instance().addParticle(new Particle(tex, new Vector3f(center), velocity, gravityComplient,
+		ParticleMaster.instance().addParticle(new SimpleParticle(tex, new Vector3f(center), velocity, gravityComplient,
 				lifeLength, generateRotation(), scale, this, type));
 	}
 

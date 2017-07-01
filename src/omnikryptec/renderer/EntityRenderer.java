@@ -18,7 +18,9 @@ import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.files.EntityLightShader;
+import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Color;
+import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.Instance;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.logger.Logger;
@@ -34,7 +36,11 @@ public class EntityRenderer implements Renderer {
     public EntityRenderer() {
         RendererRegistration.register(this);
         shader = new EntityLightShader();
-
+    }
+    
+    public EntityRenderer(AdvancedFile vertexshader, AdvancedFile fragmentshader){
+        RendererRegistration.register(this);
+        shader = new EntityLightShader(vertexshader, fragmentshader);
     }
 
     private List<Entity> stapel;
@@ -57,6 +63,7 @@ public class EntityRenderer implements Renderer {
         shader.start();
         shader.view.loadMatrix(s.getCamera().getViewMatrix());
         shader.projection.loadMatrix(s.getCamera().getProjectionMatrix());
+        FrustrumFilter.setProjViewMatrices(s.getCamera().getProjectionViewMatrix());
         shader.ambient.loadVec3(s.getAmbient().getArray());
         int lights = Math.min(DisplayManager.instance().getSettings().getLightMaxForward(),
                 s.getLights().size());
@@ -142,7 +149,7 @@ public class EntityRenderer implements Renderer {
                 if (!onlyRender) {
                     entity.doLogic0();
                 }
-                if (RenderUtil.inRenderRange(entity, s.getCamera())) {
+                if (FrustrumFilter.intersects(entity)&&RenderUtil.inRenderRange(entity, s.getCamera())) {
                     updateArray(entity.getTransformationMatrix(), entity.getColor(), array);
                     count++;
                 }
