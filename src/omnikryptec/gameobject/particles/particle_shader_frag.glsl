@@ -17,7 +17,7 @@ void main(void){
 	
 	out_colour = mix(col1, col2, blend);
 	
-	if(out_colour.a<0.5){
+	if(out_colour.a<0.3){
 		discard;
 	}
 }
