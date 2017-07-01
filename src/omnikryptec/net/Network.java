@@ -2,7 +2,7 @@ package omnikryptec.net;
 
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.HashMap;
 import omnikryptec.util.logger.Logger;
 
 /**
@@ -23,11 +23,15 @@ public class Network {
      * Highest possible Port number
      */
     public static final int PORT_MAX = 0xFFFF;
+    /**
+     * Standard UDP Port for a local network
+     */
+    public static final int PORT_LOCAL_NETWORK_STANDARD = 8888;
     
     /**
      * All Ports that are currently in use
      */
-    private static final ArrayList<Integer> registeredPorts = new ArrayList<>();
+    private static final HashMap<Integer, AdvancedServerSocket> registeredPorts = new HashMap<>();
     
     /**
      * Maximum number of Threads in a Client ThreadPool
@@ -94,7 +98,7 @@ public class Network {
      * @return <tt>true</tt> if the Port is already in use
      */
     public static final boolean portExists(int port) {
-        return registeredPorts.contains(port);
+        return registeredPorts.containsKey(port);
     }
     
     /**
@@ -115,10 +119,20 @@ public class Network {
      * @return <tt>true</tt> if the Port was successfully registered
      */
     public static final boolean registerPort(int port) {
+        return registerPort(port, null);
+    }
+    
+    /**
+     * Registers a Port to be used from now
+     * @param port Port to get registered
+     * @param serverSocket AdvancedServerSocket
+     * @return <tt>true</tt> if the Port was successfully registered
+     */
+    public static final boolean registerPort(int port, AdvancedServerSocket serverSocket) {
         if(!checkPort(port)) {
             return false;
         }
-        registeredPorts.add(port);
+        registeredPorts.put(port, serverSocket);
         return true;
     }
     
@@ -131,8 +145,17 @@ public class Network {
         if(!portExists(port)) {
             return false;
         }
-        registeredPorts.remove(registeredPorts.indexOf(port));
+        registeredPorts.remove(port);
         return true;
+    }
+    
+    /**
+     * Returns the AdvancedServerSocket associated with the given Port
+     * @param port Port
+     * @return AdvancedServerSocket
+     */
+    public static final AdvancedServerSocket getAdvancedServerSocketFromPort(int port) {
+        return registeredPorts.get(port);
     }
     
     /**
