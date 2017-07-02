@@ -29,8 +29,6 @@ public class SimpleParticleSystem extends ParticleSystem {
 	protected float elapsedtime = 0;
 
 	protected ParticleAtlas particletexture;
-	protected GameObject attractor=null;
-	protected Vector4f attractorData=null;
 	protected ParticleSpawnArea spawnarea = new ParticleSpawnArea(ParticleSpawnAreaType.POINT, 0);
 	
 	public SimpleParticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float speed, float lifeLength, float scale,
@@ -119,24 +117,6 @@ public class SimpleParticleSystem extends ParticleSystem {
 	public SimpleParticleSystem setSpawnArea(ParticleSpawnArea area){
 		this.spawnarea = area;
 		return this;
-	}
-	
-	public SimpleParticleSystem setAttractor(GameObject go, float v, float a){
-		return setAttractor(go, v, a, false, 0);
-	}
-	
-	public SimpleParticleSystem setAttractor(GameObject go, float v, float a, boolean dieonreach, float tolerance){
-		this.attractorData = new Vector4f(v, a, dieonreach?1f:0f, tolerance);
-		this.attractor = go;
-		return this;
-	}
-	
-	public GameObject getAttractor(){
-		return attractor;
-	}
-	
-	public Vector4f getAttractorData(){
-		return attractorData;
 	}
 	
 	@Override
