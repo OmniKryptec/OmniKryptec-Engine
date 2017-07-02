@@ -1,12 +1,8 @@
 package omnikryptec.gameobject.particles;
 
-import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
-
 import omnikryptec.display.DisplayManager;
 import omnikryptec.resource.texture.ParticleAtlas;
-import omnikryptec.gameobject.gameobject.GameObject;
 import omnikryptec.gameobject.gameobject.Entity.RenderType;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
 import omnikryptec.util.Maths;

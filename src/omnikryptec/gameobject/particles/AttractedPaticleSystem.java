@@ -1,6 +1,5 @@
 package omnikryptec.gameobject.particles;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.gameobject.Entity;

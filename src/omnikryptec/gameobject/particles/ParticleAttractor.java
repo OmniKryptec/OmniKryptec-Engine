@@ -1,17 +1,21 @@
 package omnikryptec.gameobject.particles;
 
+import org.joml.Vector3f;
+
 import omnikryptec.gameobject.gameobject.GameObject;
 
-public class ParticleAttractor extends GameObject{
+public class ParticleAttractor {
 	
 	protected float acceleration=0, tolerance=0;
 	protected boolean dieOnReach=false, infinite=true;
+	protected GameObject positionable;
 	
-	public ParticleAttractor(){
+	public ParticleAttractor(GameObject p){
+		this.positionable = p;
 	}
 	
 	public ParticleAttractor(float x, float y, float z){
-		super.setRelativePos(x, y, z);
+		this.positionable = new GameObject().setRelativePos(x, y, z);
 	}
 	
 	public float getAcceleration() {
@@ -50,6 +54,13 @@ public class ParticleAttractor extends GameObject{
 		return this;
 	}
 	
+	public GameObject getAttractor(){
+		return positionable;
+	}
+	
+	public Vector3f getAbsolutePos(){
+		return positionable.getAbsolutePos();
+	}
 	
 	
 }

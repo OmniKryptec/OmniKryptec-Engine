@@ -1,6 +1,5 @@
 package omnikryptec.gameobject.particles;
 
-import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.gameobject.Entity.RenderType;
 import omnikryptec.resource.texture.ParticleAtlas;
 import org.joml.Vector3f;
