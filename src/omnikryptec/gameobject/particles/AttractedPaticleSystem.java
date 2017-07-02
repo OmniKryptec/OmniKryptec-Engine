@@ -1,6 +1,7 @@
 package omnikryptec.gameobject.particles;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.gameobject.Entity;
 import omnikryptec.resource.texture.ParticleAtlas;
@@ -35,7 +36,7 @@ public class AttractedPaticleSystem extends ParticleSystem {
      * 5 = Die on Reach;
      * 6 = Infinite;
      */
-    protected final ArrayList<Float[]> attractorData = new ArrayList<>();
+    protected final LinkedList<Float[]> attractorData = new LinkedList<>();
     protected ParticleSpawnArea spawnarea = new ParticleSpawnArea(ParticleSpawnArea.ParticleSpawnAreaType.POINT, 0);
 
     public AttractedPaticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float speed, float lifeLength, float scale, Entity.RenderType type) {
@@ -127,7 +128,7 @@ public class AttractedPaticleSystem extends ParticleSystem {
      * 5 = Die on Reach;
      * 6 = Infinite;
      */
-    public ArrayList<Float[]> getAttractorData() {
+    public LinkedList<Float[]> getAttractorData() {
         return attractorData;
     }
 
