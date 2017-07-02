@@ -189,11 +189,11 @@ public class EngineTest2 implements IEventHandler {
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
             system = new SimpleParticleSystem(0, 0, 0,
                     new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true), new Vector3f(0, 0, 0), 300f, 0,
-                   7.5f, 1f, RenderType.ALWAYS);
+                  30f, 1f, RenderType.ALWAYS);
             //system.setParent(Instance.getCurrentCamera());
-            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.CIRCLE, new Vector3f(0,0,1), 10)).setDirection(new Vector3f(0, 1, 0), Math.PI/2);
+            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.SHPERE, new Vector3f(0,0,1), 100)).setDirection(new Vector3f(0, 1, 0), Math.PI/2);
             system.setTimeMultiplier(1);
-            system.setAttractor(system,-40,0, false, 0);
+            system.setAttractor(system,0,100, false,0);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));
             //OmniKryptecEngine.instance().getCurrentScene()
@@ -219,7 +219,7 @@ public class EngineTest2 implements IEventHandler {
         }
     }
 
-    private static float v = 50;
+    private static float v = 100;
 
     private static void doCameraLogic(Camera camera) {
         // v += DisplayManager.instance().getDeltaTime()*30;

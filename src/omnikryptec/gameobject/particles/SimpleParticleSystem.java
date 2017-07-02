@@ -194,7 +194,7 @@ public class SimpleParticleSystem extends ParticleSystem {
 		}
 		velocity.mul(getErroredValue(averageSpeed, speedError));
 		scale = getErroredValue(averageScale, scaleError);
-		lifeLength = getErroredValue(averageLifeLength, lifeError);
+		lifeLength = averageLifeLength==-1?-1:getErroredValue(averageLifeLength, lifeError);
 		return new SimpleParticle(particletexture,	calcNewSpawnPos(center), velocity, force,
 				lifeLength, generateRotation(), scale, this, type);
 	}
