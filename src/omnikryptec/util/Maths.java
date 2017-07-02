@@ -156,12 +156,11 @@ public class Maths {
     
     
 	private static Vector4f tmp4f = new Vector4f();
-	private static Vector3f rotateAxis;
+	private static Vector3f rotateAxis = new Vector3f();
 	private static Matrix4f rotationMatrix = new Matrix4f();
-
 	private static Matrix3f helpmatrix = new Matrix3f();
 	
-	public static Vector3f generateRandomUnitVectorWithinCone(Random random, Vector3f coneDirection, float coneangle) {
+	public static Vector3f generateRandomUnitVectorWithinCone(Random random, Vector3f coneDirection, double coneangle) {
 		float cosAngle = (float) Math.cos(coneangle);
 		double theta = getRandomRotationf(random);
 		float z = cosAngle + (random.nextFloat() * (1 - cosAngle));

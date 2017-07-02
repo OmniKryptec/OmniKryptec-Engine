@@ -1,8 +1,12 @@
 package omnikryptec.gameobject.particles;
 
+import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
+
 import omnikryptec.display.DisplayManager;
 import omnikryptec.resource.texture.ParticleAtlas;
+import omnikryptec.gameobject.gameobject.GameObject;
 import omnikryptec.gameobject.gameobject.Entity.RenderType;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
 import omnikryptec.util.Maths;
@@ -18,14 +22,15 @@ public class SimpleParticleSystem extends ParticleSystem {
 	 * direction can be null
 	 */
 	protected Vector3f direction, force;
-	protected float directionAngel = 0;
+	protected double directionAngel = 0;
 	private RenderType type = RenderType.MEDIUM;
 
 	protected float lifelengthsystem = -1;
 	protected float elapsedtime = 0;
 
 	protected ParticleAtlas particletexture;
-	
+	protected GameObject attractor=null;
+	protected Vector4f attractorData=null;
 	protected ParticleSpawnArea spawnarea = new ParticleSpawnArea(ParticleSpawnAreaType.POINT, 0);
 	
 	public SimpleParticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float speed, float lifeLength, float scale,
@@ -35,11 +40,11 @@ public class SimpleParticleSystem extends ParticleSystem {
 
 	public SimpleParticleSystem(float x, float y, float z, ParticleAtlas tex, float pps, float speed, float lifeLength,
 			float scale, RenderType type) {
-		this(x, y, z, tex, pps, speed, Maths.ZERO, lifeLength, scale, type);
+		this(x, y, z, tex, Maths.ZERO, pps, speed, lifeLength, scale, type);
 	}
 
-	public SimpleParticleSystem(float x, float y, float z, ParticleAtlas tex, float pps, float speed,
-			Vector3f gravityComplient, float lifeLength, float scale, RenderType type) {
+	public SimpleParticleSystem(float x, float y, float z, ParticleAtlas tex, Vector3f gravityComplient, float pps, float speed,
+			float lifeLength, float scale, RenderType type) {
 		this.type = type;
 		this.particlepersec = pps;
 		this.averageSpeed = speed;
@@ -50,9 +55,9 @@ public class SimpleParticleSystem extends ParticleSystem {
 		setRelativePos(x, y, z);
 	}
 
-	public SimpleParticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float speed, Vector3f gravityComplient,
+	public SimpleParticleSystem(Vector3f pos, ParticleAtlas tex, Vector3f gravityComplient, float pps, float speed,
 			float lifeLength, float scale, RenderType type) {
-		this(pos.x, pos.y, pos.z, tex, pps, speed, gravityComplient, lifeLength, scale, type);
+		this(pos.x, pos.y, pos.z, tex, gravityComplient, pps, speed, lifeLength, scale, type);
 	}
 
 	public SimpleParticleSystem setSystemLifeLength(float f) {
@@ -67,7 +72,7 @@ public class SimpleParticleSystem extends ParticleSystem {
 	 *            - A value between 0 and 1 indicating how far from the chosen
 	 *            direction particles can deviate.
 	 */
-	public SimpleParticleSystem setDirection(Vector3f direction, float angel) {
+	public SimpleParticleSystem setDirection(Vector3f direction, double angel) {
 		this.direction = new Vector3f(direction);
 		this.directionAngel = angel;
 		return this;
@@ -114,6 +119,24 @@ public class SimpleParticleSystem extends ParticleSystem {
 	public SimpleParticleSystem setSpawnArea(ParticleSpawnArea area){
 		this.spawnarea = area;
 		return this;
+	}
+	
+	public SimpleParticleSystem setAttractor(GameObject go, float v, float a){
+		return setAttractor(go, v, a, false, 0);
+	}
+	
+	public SimpleParticleSystem setAttractor(GameObject go, float v, float a, boolean dieonreach, float tolerance){
+		this.attractorData = new Vector4f(v, a, dieonreach?1f:0f, tolerance);
+		this.attractor = go;
+		return this;
+	}
+	
+	public GameObject getAttractor(){
+		return attractor;
+	}
+	
+	public Vector4f getAttractorData(){
+		return attractorData;
 	}
 	
 	@Override

@@ -26,7 +26,7 @@ public class ParticleSystem extends GameObject{
 		return DisplayManager.instance().getDeltaTimef()*getTimeMultiplier();
 	}
 	
-	protected Vector3f generateRandomUnitVectorWithinCone(Vector3f coneDirection, float coneangle) {
+	protected Vector3f generateRandomUnitVectorWithinCone(Vector3f coneDirection, double coneangle) {
 		return Maths.generateRandomUnitVectorWithinCone(random, coneDirection, coneangle);
 	}
 

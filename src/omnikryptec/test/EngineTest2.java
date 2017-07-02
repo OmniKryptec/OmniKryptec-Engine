@@ -12,6 +12,7 @@ import omnikryptec.event.event.IEventHandler;
 import omnikryptec.event.input.InputManager;
 import omnikryptec.gameobject.gameobject.Camera;
 import omnikryptec.gameobject.gameobject.Entity;
+import omnikryptec.gameobject.gameobject.GameObject;
 import omnikryptec.gameobject.gameobject.Light;
 import omnikryptec.gameobject.gameobject.Entity.RenderType;
 import omnikryptec.gameobject.gameobject.GameObject.UpdateType;
@@ -42,6 +43,8 @@ import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogEntry.LogLevel;
 import omnikryptec.util.profiler.LiveProfiler;
 import omnikryptec.util.profiler.Profiler;
+
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 /**
@@ -185,11 +188,12 @@ public class EngineTest2 implements IEventHandler {
 
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
             system = new SimpleParticleSystem(0, 0, 0,
-                    new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true), 300f, 2f,
-                    new Vector3f(0, -100, 0),7.5f, 1f, RenderType.ALWAYS);
+                    new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true), new Vector3f(0, 0, 0), 300f, 0,
+                   7.5f, 1f, RenderType.ALWAYS);
             //system.setParent(Instance.getCurrentCamera());
-            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.DIRECTION, new Vector3f(0,0,0), 100));
+            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.CIRCLE, new Vector3f(0,0,1), 10)).setDirection(new Vector3f(0, 1, 0), Math.PI/2);
             system.setTimeMultiplier(1);
+            system.setAttractor(system,-40,0, false, 0);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));
             //OmniKryptecEngine.instance().getCurrentScene()
@@ -235,8 +239,8 @@ public class EngineTest2 implements IEventHandler {
 
         // system.generateParticles(1);
         if (ev.getType() == EventType.RENDER_EVENT) {
-           // system.setActive(ra.nextInt(100)<40);
-            //d += 0.025*system.getTimeMultiplier();
+           //system.setActive(ra.nextInt(100)<40);
+        	//d += 0.025*system.getTimeMultiplier();
     		//system.setRelativePos((float)(50*Math.sin(d)), -25, (float) (50*Math.cos(d/2)));
             //Display.setTitle("FPS: " + DisplayManager.instance().getFPS()+" / SFPS: " + DisplayManager.instance().getSmoothedFPS()+" / Vertices: "+OmniKryptecEngine.instance().getModelVertsCount()+" / PPStages: "+PostProcessing.instance().getActiveStageCount()+ " / Renderer P.: "+ParticleMaster.instance().getRenderedParticlesCount()+"  (updated P.: "+ParticleMaster.instance().getUpdatedParticlesCount()+") ");
         }
