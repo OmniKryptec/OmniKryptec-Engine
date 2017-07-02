@@ -1,6 +1,5 @@
 package omnikryptec.gameobject.particles;
 
-import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.gameobject.Entity.RenderType;
 import omnikryptec.resource.texture.ParticleAtlas;
 import org.joml.Vector3f;
@@ -40,26 +39,23 @@ public class AttractedParticle extends Particle {
 
     @Override
     protected boolean update() {
-        timemultiplier = system.getTimeMultiplier() * DisplayManager.instance().getDeltaTimef();
+        timemultiplier = system.getScaledDeltatime();
         elapsedTime += timemultiplier;
         final Vector3f acceleration = new Vector3f(0, 0, 0);
         final Vector3f acceleration_temp = new Vector3f(0, 0, 0);
-        for (Float[] attractorData : system.getAttractorData()) {
-            if (attractorData[6] == 0.0F) {
-                acceleration_temp.x = (attractorData[0] - position.x);
-                acceleration_temp.y = (attractorData[1] - position.y);
-                acceleration_temp.z = (attractorData[2] - position.z);
-            } else if (attractorData[6] == 1.0F) {
-                acceleration_temp.x = attractorData[0];
-                acceleration_temp.y = attractorData[1];
-                acceleration_temp.z = attractorData[2];
+        for (ParticleAttractor attractorData : system.getAttractorData()) {
+        	changeable = attractorData.getAbsolutePos();
+            if (!attractorData.isInfinite()) {
+            	acceleration_temp.set(changeable).sub(position);
+            } else {
+                acceleration_temp.set(changeable);
             }
-            if ((attractorData[5] == 1.0F) && (acceleration_temp.lengthSquared() <= (attractorData[4] * attractorData[4]))) {
+            if ((attractorData.isDieOnReach()) && (acceleration_temp.lengthSquared() <= (attractorData.getTolerance()*attractorData.getTolerance()))) {
                 elapsedTime = lifeLength;
                 break;
             } else {
                 acceleration_temp.normalize();
-                acceleration_temp.mul(attractorData[3]);
+                acceleration_temp.mul(attractorData.getAcceleration());
                 acceleration.add(acceleration_temp);
             }
         }

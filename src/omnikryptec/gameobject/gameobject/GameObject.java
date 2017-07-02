@@ -20,7 +20,7 @@ import omnikryptec.util.logger.LogEntry.LogLevel;
  * @author pcfreak9000 &amp; Panzer1119
  *
  */
-public class GameObject implements DataMapSerializable {
+public class GameObject implements DataMapSerializable, Positionable  {
 
 
     public static enum UpdateType{

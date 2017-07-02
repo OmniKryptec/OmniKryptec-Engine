@@ -44,17 +44,6 @@ public class SimpleParticle extends Particle {
 		elapsedTime += timemultiplier;
 		velocity.add(acceleration.mul(timemultiplier, changeable));
 		position.add(velocity.mul(timemultiplier, changeable));
-		if(mysystem.getAttractor()!=null&&mysystem.getAttractorData()!=null){
-			changeable = mysystem.getAttractor().getAbsolutePos().sub(position, changeable);
-			if(changeable.lengthSquared()>mysystem.getAttractorData().w*mysystem.getAttractorData().w){
-				changeable.normalize().mul(mysystem.getAttractorData().x*timemultiplier+mysystem.getAttractorData().y*elapsedTime*elapsedTime*0.5f);
-				position.add(changeable);
-			}else{
-				if(mysystem.getAttractorData().z==1){
-					elapsedTime = lifeLength;
-				}
-			}
-		}
 		return lifeLength==-1||elapsedTime < lifeLength;
 	}
 
