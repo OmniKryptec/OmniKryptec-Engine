@@ -225,7 +225,7 @@ public class JBulletTest {
         return new Entity(entityBuilder.createTexturedModel()) {
 
             @Override
-            public void doLogic() {
+            public void update() {
                 final Vector3f ballPosition = body.getMotionState().getWorldTransform(new Transform()).origin;
                 setRelativePos(ballPosition.x, ballPosition.y, ballPosition.z);
                 final Quat4f ballOrientation = body.getOrientation(new Quat4f());
@@ -259,7 +259,7 @@ public class JBulletTest {
             // PostProcessing.instance().addStage(new LightRenderer());
             OmniKryptecEngine.instance().addAndSetScene(new Scene("TestScene", new Camera() {
                 @Override
-                public void doLogic() {
+                public void update() {
                     InputManager.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(),
                             3.0F, 1.5F, 15.0F, false);
                 }
@@ -309,7 +309,7 @@ public class JBulletTest {
                 Entity followedEntity = new Entity(entityBuilder_brunnen.createTexturedModel()) {
 
                     @Override
-                    public void doLogic() {
+                    public void update() {
                         InputManager.doThirdPersonController(OmniKryptecEngine.instance().getCurrentScene().getCamera(),
                                 this, DisplayManager.instance().getSettings().getKeySettings(), 10.0F, 5.0F, 40.0F); // Standard:
                         // 1.5F,
@@ -355,7 +355,7 @@ public class JBulletTest {
                 return new Camera() {
 
                     @Override
-                    public void doLogic() {
+                    public void update() {
                         InputManager.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(),
                                 3.0F, 1.5F, 15.0F, false);
                     }
@@ -365,7 +365,7 @@ public class JBulletTest {
                 return new FollowingCamera() {
 
                     @Override
-                    public void doLogic() {
+                    public void update() {
                         move();
                     }
 

@@ -97,7 +97,7 @@ public class JBulletTest2 {
             OmniKryptecEngine.instance().addAndSetScene(new Scene("Test-Scene", (Camera) new Camera() {
 
                 @Override
-                public void doLogic() {
+                public void update() {
                     float horizontalSpeed = 30.0F;
                     float verticalSpeed = 10.0F;
                     float turnSpeed = 40.0F;

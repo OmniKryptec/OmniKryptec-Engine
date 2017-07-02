@@ -1,0 +1,40 @@
+package omnikryptec.gameobject.particles;
+
+import java.util.Random;
+
+import org.joml.Vector3f;
+import omnikryptec.display.DisplayManager;
+import omnikryptec.gameobject.gameobject.GameObject;
+import omnikryptec.util.Maths;
+
+public class ParticleSystem extends GameObject{
+	
+	protected float timemultiplier=1;
+	protected Random random = new Random();
+
+	
+	public ParticleSystem setTimeMultiplier(float f){
+		this.timemultiplier = f;
+		return this;
+	}
+	
+	public float getTimeMultiplier(){
+		return timemultiplier;
+	}
+	
+	protected float getScaledDeltatime(){
+		return DisplayManager.instance().getDeltaTimef()*getTimeMultiplier();
+	}
+	
+	protected Vector3f generateRandomUnitVectorWithinCone(Vector3f coneDirection, float coneangle) {
+		return Maths.generateRandomUnitVectorWithinCone(random, coneDirection, coneangle);
+	}
+
+	protected Vector3f generateRandomUnitVector() {
+		return Maths.generateRandomUnitVector(random);
+	}
+	
+	protected float getErroredValue(float average, float errorMargin) {
+		return Maths.getErroredValue(random, average, errorMargin);
+	}
+}

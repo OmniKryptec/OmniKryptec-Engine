@@ -7,39 +7,40 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import omnikryptec.gameobject.gameobject.Entity.RenderType;
+import omnikryptec.resource.texture.ParticleAtlas;
 
 public class Particle implements Rangeable{
 	
-	protected ParticleTexture texture;
+	protected ParticleAtlas particletexture;
 	private RenderType type;
-	private Vector3f pos = new Vector3f(0);
-	private float scale=1, rot=0;
+	protected Vector3f position = new Vector3f(0);
+	protected float scale=1, rot=0;
 	protected Vector2f texOffset1 = new Vector2f(), texOffset2 = new Vector2f();
-	protected float blend;
+	protected float textureblend;
 	private float distance;
 	
-	public Particle(ParticleTexture texture){
+	public Particle(ParticleAtlas texture){
 		this(texture, RenderType.ALWAYS);
 	}
 	
-	public Particle(ParticleTexture texture, RenderType type){
+	public Particle(ParticleAtlas texture, RenderType type){
 		this(null, texture, type);
 	}
 	
-	public Particle(Vector3f pos, ParticleTexture texture, RenderType type){
-		this.texture = texture;
+	public Particle(Vector3f pos, ParticleAtlas texture, RenderType type){
+		this.particletexture = texture;
 		this.type = type;
 		if(pos!=null){
-			this.pos = pos;
+			this.position = pos;
 		}
 	}
 	
-	public final ParticleTexture getParticleTexture(){
-		return texture;
+	public final ParticleAtlas getParticleTexture(){
+		return particletexture;
 	}
 
 	public final Particle setPos(float x, float y, float z){
-		pos.set(x, y, z);
+		position.set(x, y, z);
 		return this;
 	}
 	
@@ -63,7 +64,7 @@ public class Particle implements Rangeable{
 	
 	@Override
 	public final Vector3f getAbsolutePos() {
-		return pos;
+		return position;
 	}
 
 	@Override
@@ -75,7 +76,7 @@ public class Particle implements Rangeable{
 	private static Vector3f tmp = new Vector3f();
 
 	final boolean update(Camera cam) {
-		distance = (cam.getAbsolutePos().sub(pos, tmp)).lengthSquared();
+		distance = (cam.getAbsolutePos().sub(position, tmp)).lengthSquared();
 		updateTexCoordInfo();
 		return update();
 	}
@@ -95,18 +96,18 @@ public class Particle implements Rangeable{
 	private static float lifeFactor, atlasProg;
 	private static int stageCount, index1, index2;
 
-	private void updateTexCoordInfo() {
+	protected void updateTexCoordInfo() {
 		lifeFactor = getLifeFactor();
 		if(lifeFactor==-1){
-			blend = 0;
+			textureblend = 0;
 			texOffset1.set(0, 0);
 			texOffset2.set(0, 0);
 		}else{
-			stageCount = texture.getNumberOfRows() * texture.getNumberOfRows();
+			stageCount = particletexture.getNumberOfRows() * particletexture.getNumberOfRows();
 			atlasProg = lifeFactor * stageCount;
 			index1 = (int) atlasProg;
 			index2 = index1 < stageCount - 1 ? index1 + 1 : index1;
-			this.blend = atlasProg % 1;
+			this.textureblend = atlasProg % 1;
 			if(index1==0){
 				texOffset1.set(0);
 			}else{
@@ -122,11 +123,11 @@ public class Particle implements Rangeable{
 
 	private static int column, row;
 
-	private Vector2f setTexOffset(Vector2f offset, int index) {
-		column = index % texture.getNumberOfRows();
-		row = index / texture.getNumberOfRows();
-		offset.x = (float) column / texture.getNumberOfRows();
-		offset.y = (float) row / texture.getNumberOfRows();
+	protected Vector2f setTexOffset(Vector2f offset, int index) {
+		column = index % particletexture.getNumberOfRows();
+		row = index / particletexture.getNumberOfRows();
+		offset.x = (float) column / particletexture.getNumberOfRows();
+		offset.y = (float) row / particletexture.getNumberOfRows();
 		return offset;
 	}
 
@@ -139,7 +140,7 @@ public class Particle implements Rangeable{
 	}
 
 	public float getBlend() {
-		return blend;
+		return textureblend;
 	}
 	
 	public float getDistance(){

@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import omnikryptec.gameobject.gameobject.Camera;
+import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.util.ArrayUtil;
 import omnikryptec.util.Instance;
 import omnikryptec.util.profiler.Profilable;
@@ -16,14 +17,14 @@ import omnikryptec.util.profiler.Profiler;
 
 public class ParticleMaster implements Profilable {
 
-    private static Map<ParticleTexture, List<Particle>> particles = new HashMap<ParticleTexture, List<Particle>>();
+    private static Map<ParticleAtlas, List<Particle>> particles = new HashMap<ParticleAtlas, List<Particle>>();
     private static ParticleRenderer rend = new ParticleRenderer();
 
     static Particle p;
-    static Entry<ParticleTexture, List<Particle>> entry;
+    static Entry<ParticleAtlas, List<Particle>> entry;
     static List<Particle> list;
     static Iterator<Particle> iterator;
-    static Iterator<Entry<ParticleTexture, List<Particle>>> mapIterator;
+    static Iterator<Entry<ParticleAtlas, List<Particle>>> mapIterator;
 
     private static ParticleMaster instance;
     private long updatedParticlesCount = 0;

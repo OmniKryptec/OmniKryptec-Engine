@@ -106,7 +106,7 @@ public class AnimationTest {
             OmniKryptecEngine.instance().addAndSetScene((scene = new Scene("Test-Scene", camera = ((Camera) new Camera() {
 
                 @Override
-                public final void doLogic() {
+                public final void update() {
                     float horizontalSpeed = 30.0F * 0.5F;
                     float verticalSpeed = 10.0F * 0.5F;
                     float turnSpeed = 40.0F * 0.5F;
@@ -160,7 +160,7 @@ public class AnimationTest {
             entity_test = new Entity("entity_test", animatedModel) {
 
                 @Override
-                public final void doLogic() {
+                public final void update() {
                     setRelativePos(camera.getAbsolutePos().x, camera.getAbsolutePos().y, camera.getAbsolutePos().z);
                     getRelativeRotation().y = camera.getAbsoluteRotation().y;
                 }
