@@ -164,7 +164,7 @@ public class GameObject implements DataMapSerializable {
                 c.execute(this);
             }
         }
-        doLogic();
+        update();
         if (componentsPostLogic != null) {
             for (Component c : componentsPostLogic) {
                 c.execute(this);
@@ -271,7 +271,7 @@ public class GameObject implements DataMapSerializable {
      * override this to let your gameobject do its logic then its in sight of
      * the cam
      */
-    protected void doLogic() {
+    protected void update() {
     }
 
     public final GameObject deleteOperation() {

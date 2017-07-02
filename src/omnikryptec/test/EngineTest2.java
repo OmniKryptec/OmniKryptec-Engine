@@ -17,8 +17,9 @@ import omnikryptec.gameobject.gameobject.Entity.RenderType;
 import omnikryptec.gameobject.gameobject.GameObject.UpdateType;
 import omnikryptec.gameobject.particles.Particle;
 import omnikryptec.gameobject.particles.ParticleMaster;
+import omnikryptec.gameobject.particles.ParticleSpawnArea;
+import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
 import omnikryptec.gameobject.particles.SimpleParticleSystem;
-import omnikryptec.gameobject.particles.ParticleTexture;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;
@@ -29,6 +30,7 @@ import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.resource.objConverter.ObjLoader;
 import omnikryptec.resource.texture.AtlasTexture;
+import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.resource.texture.SimpleAnimation;
 import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.settings.GameSettings;
@@ -126,7 +128,7 @@ public class EngineTest2 implements IEventHandler {
             OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
                 @Override
-                public void doLogic() {
+                public void update() {
                     // setRelativePos(getRelativePos().x, getRelativePos().y,
                     // getRelativePos().z + 0.1f *
                     // DisplayManager.instance().getDeltaTime());
@@ -179,14 +181,15 @@ public class EngineTest2 implements IEventHandler {
                 }
             }
             System.out.println("Done.");
-            //Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0, 1).setScale(new Vector3f(scale,scale,scale)).setUpdateType(UpdateType.STATIC).setRelativePos(0, 0, 0));
+            Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0, 1).setScale(new Vector3f(scale,scale,scale)).setUpdateType(UpdateType.STATIC).setRelativePos(0, 0, 0));
 
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
             system = new SimpleParticleSystem(0, 0, 0,
-                    new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true), 300f, 2.5f,
-                    new Vector3f(0, 1, 0),75f, 1f, RenderType.ALWAYS);
+                    new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true), 300f, 2f,
+                    new Vector3f(0, -100, 0),7.5f, 1f, RenderType.ALWAYS);
             //system.setParent(Instance.getCurrentCamera());
-            system.setTimemultiplier(1);
+            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.SHPERE, new Vector3f(0,0.7f,0.3f), 1000));
+            system.setTimeMultiplier(1);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));
             //OmniKryptecEngine.instance().getCurrentScene()
@@ -232,9 +235,9 @@ public class EngineTest2 implements IEventHandler {
 
         // system.generateParticles(1);
         if (ev.getType() == EventType.RENDER_EVENT) {
-            system.setActive(ra.nextInt(100)<40);
-            d += 0.025*system.getTimemultiplier();
-    		system.setRelativePos((float)(50*Math.sin(d)), -25, (float) (50*Math.cos(d/2)));
+           // system.setActive(ra.nextInt(100)<40);
+            //d += 0.025*system.getTimeMultiplier();
+    		//system.setRelativePos((float)(50*Math.sin(d)), -25, (float) (50*Math.cos(d/2)));
             //Display.setTitle("FPS: " + DisplayManager.instance().getFPS()+" / SFPS: " + DisplayManager.instance().getSmoothedFPS()+" / Vertices: "+OmniKryptecEngine.instance().getModelVertsCount()+" / PPStages: "+PostProcessing.instance().getActiveStageCount()+ " / Renderer P.: "+ParticleMaster.instance().getRenderedParticlesCount()+"  (updated P.: "+ParticleMaster.instance().getUpdatedParticlesCount()+") ");
         }
         //System.out.println("(Rendertime: "+Instance.getEngine().getRenderTimeMS()+" Particletime: "+ParticleMaster.instance().getOverallParticleTimeMS()+" PPTime: "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());

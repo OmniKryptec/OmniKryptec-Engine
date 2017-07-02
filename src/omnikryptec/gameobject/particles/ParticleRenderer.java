@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL31;
 import omnikryptec.gameobject.gameobject.Camera;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.VertexBufferObject;
+import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.Maths;
 import omnikryptec.util.ModelUtil;
@@ -55,7 +56,7 @@ public class ParticleRenderer {
 	private int count;
 	private long globalCount;
 
-	protected void render(Map<ParticleTexture, List<Particle>> particles, Camera camera) {
+	protected void render(Map<ParticleAtlas, List<Particle>> particles, Camera camera) {
 		curCam = camera;
 		if (buffer == null || buffer.capacity() != maxInstancesPerSys * INSTANCE_DATA_LENGTH) {
 			buffer = BufferUtils.createFloatBuffer(maxInstancesPerSys * INSTANCE_DATA_LENGTH);
@@ -65,7 +66,7 @@ public class ParticleRenderer {
 		FrustrumFilter.setProjViewMatrices(curCam.getProjectionViewMatrix());
 		quad.getVao().bind(0, 1, 2, 3, 4, 5, 6);
 		globalCount = 0;
-		for (ParticleTexture tmpt : particles.keySet()) {
+		for (ParticleAtlas tmpt : particles.keySet()) {
 			bindTexture(tmpt);
 			particleList = particles.get(tmpt);
 			pointer = 0;
@@ -96,7 +97,7 @@ public class ParticleRenderer {
 		return globalCount;
 	}
 
-	private void bindTexture(ParticleTexture texture) {
+	private void bindTexture(ParticleAtlas texture) {
 		if (texture.useAlphaBlending()) {
 			RenderUtil.enableAdditiveBlending();
 		} else {
@@ -104,6 +105,7 @@ public class ParticleRenderer {
 		}
 		texture.getTexture().bindToUnit(0);
 		shader.nrOfRows.loadFloat(texture.getNumberOfRows());
+        shader.uvs.loadVec4(texture.getTexture().getUVs()[0], texture.getTexture().getUVs()[1], texture.getTexture().getUVs()[2], texture.getTexture().getUVs()[3]);
 	}
 
 	private void updateTexCoordInfo(Particle par, float[] data) {

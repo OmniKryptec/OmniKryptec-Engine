@@ -1,63 +1,62 @@
 package omnikryptec.gameobject.particles;
 
-import java.util.Random;
-
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
-
 import omnikryptec.display.DisplayManager;
-import omnikryptec.gameobject.gameobject.GameObject;
+import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.gameobject.gameobject.Entity.RenderType;
+import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
 import omnikryptec.util.Maths;
 
-public class SimpleParticleSystem extends GameObject {
+public class SimpleParticleSystem extends ParticleSystem {
 
-	private float pps, averageSpeed, averageLifeLength, averageScale;
+	protected float particlepersec, averageSpeed, averageLifeLength, averageScale;
 
-	private float speedError, lifeError, scaleError = 0;
-	private boolean randomRotation = false;
-	private Vector3f direction, gravityComplient;
-	private float directionDeviation = 0;
-	private float timemultiplier = 1;
+	protected float speedError, lifeError, scaleError = 0;
+	protected boolean randomRotation = false;
+	
+	/**
+	 * direction can be null
+	 */
+	protected Vector3f direction, force;
+	protected float directionAngel = 0;
 	private RenderType type = RenderType.MEDIUM;
 
-	private float lifelengthf = -1;
-	private float elapsedtime = 0;
+	protected float lifelengthsystem = -1;
+	protected float elapsedtime = 0;
 
-	private Random random = new Random();
-
-	private ParticleTexture tex;
-
-	public SimpleParticleSystem(Vector3f pos, ParticleTexture tex, float pps, float speed, float lifeLength, float scale,
+	protected ParticleAtlas particletexture;
+	
+	protected ParticleSpawnArea spawnarea = new ParticleSpawnArea(ParticleSpawnAreaType.POINT, 0);
+	
+	public SimpleParticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float speed, float lifeLength, float scale,
 			RenderType type) {
 		this(pos.x, pos.y, pos.z, tex, pps, speed, lifeLength, scale, type);
 	}
 
-	public SimpleParticleSystem(float x, float y, float z, ParticleTexture tex, float pps, float speed, float lifeLength,
+	public SimpleParticleSystem(float x, float y, float z, ParticleAtlas tex, float pps, float speed, float lifeLength,
 			float scale, RenderType type) {
 		this(x, y, z, tex, pps, speed, Maths.ZERO, lifeLength, scale, type);
 	}
 
-	public SimpleParticleSystem(float x, float y, float z, ParticleTexture tex, float pps, float speed,
+	public SimpleParticleSystem(float x, float y, float z, ParticleAtlas tex, float pps, float speed,
 			Vector3f gravityComplient, float lifeLength, float scale, RenderType type) {
 		this.type = type;
-		this.pps = pps;
+		this.particlepersec = pps;
 		this.averageSpeed = speed;
-		this.gravityComplient = gravityComplient;
+		this.force = gravityComplient;
 		this.averageLifeLength = lifeLength;
 		this.averageScale = scale;
-		this.tex = tex;
+		this.particletexture = tex;
 		setRelativePos(x, y, z);
 	}
 
-	public SimpleParticleSystem(Vector3f pos, ParticleTexture tex, float pps, float speed, Vector3f gravityComplient,
+	public SimpleParticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float speed, Vector3f gravityComplient,
 			float lifeLength, float scale, RenderType type) {
 		this(pos.x, pos.y, pos.z, tex, pps, speed, gravityComplient, lifeLength, scale, type);
 	}
 
 	public SimpleParticleSystem setSystemLifeLength(float f) {
-		this.lifelengthf = f;
+		this.lifelengthsystem = f;
 		return this;
 	}
 
@@ -70,7 +69,7 @@ public class SimpleParticleSystem extends GameObject {
 	 */
 	public SimpleParticleSystem setDirection(Vector3f direction, float angel) {
 		this.direction = new Vector3f(direction);
-		this.directionDeviation = angel;
+		this.directionAngel = angel;
 		return this;
 	}
 
@@ -108,19 +107,18 @@ public class SimpleParticleSystem extends GameObject {
 		elapsedtime = 0;
 	}
 	
-	public float getTimemultiplier() {
-		return timemultiplier;
+	public ParticleSpawnArea getSpawnArea(){
+		return spawnarea;
 	}
-
-	public SimpleParticleSystem setTimemultiplier(float timemultiplier) {
-		this.timemultiplier = timemultiplier;
+	
+	public SimpleParticleSystem setSpawnArea(ParticleSpawnArea area){
+		this.spawnarea = area;
 		return this;
 	}
 	
-	
 	@Override
-	public void doLogic() {
-		if (elapsedtime <= lifelengthf || lifelengthf < 0) {
+	public void update() {
+		if (elapsedtime <= lifelengthsystem || lifelengthsystem < 0) {
 			generateParticles(timemultiplier);
 			elapsedtime += DisplayManager.instance().getDeltaTimef()*timemultiplier;
 		}
@@ -137,7 +135,7 @@ public class SimpleParticleSystem extends GameObject {
 
 	public SimpleParticleSystem generateParticles(float timemultiplier) {
 		delta = DisplayManager.instance().getDeltaTimef() * timemultiplier;
-		particlesToCreate = pps * delta;
+		particlesToCreate = particlepersec * delta;
 		if (particlesToCreate < 1f) {
 			lastParticlef += particlesToCreate;
 			if (lastParticlef >= 1f) {
@@ -167,26 +165,33 @@ public class SimpleParticleSystem extends GameObject {
 
 	protected Particle emitParticle(Vector3f center) {
 		if (direction != null) {
-			velocity = generateRandomUnitVectorWithinCone(direction, directionDeviation);
+			velocity = generateRandomUnitVectorWithinCone(direction, directionAngel);
 		} else {
 			velocity = generateRandomUnitVector();
 		}
-		velocity.normalize();
-		velocity.mul(generateValue(averageSpeed, speedError));
-		scale = generateValue(averageScale, scaleError);
-		lifeLength = generateValue(averageLifeLength, lifeError);
-		return new SimpleParticle(tex, new Vector3f(center), velocity, gravityComplient,
+		velocity.mul(getErroredValue(averageSpeed, speedError));
+		scale = getErroredValue(averageScale, scaleError);
+		lifeLength = getErroredValue(averageLifeLength, lifeError);
+		return new SimpleParticle(particletexture,	calcNewSpawnPos(center), velocity, force,
 				lifeLength, generateRotation(), scale, this, type);
 	}
 
-	private float offset;
-
-	private float generateValue(float average, float errorMargin) {
-		offset = (random.nextFloat() - 0.5f) * 2f * errorMargin;
-		return average + offset;
+	protected Vector3f calcNewSpawnPos(Vector3f center){
+		switch(spawnarea.getType()){
+		case CIRCLE:
+			return Maths.getRandomPointInCircle(random, center, spawnarea.getData(), spawnarea.getDirection());
+		case LINE:
+			return Maths.getRandomPointOnLine(random, spawnarea.getDirection(), center, spawnarea.getData());
+		case POINT:
+			return new Vector3f(center);
+		case SHPERE:
+			return Maths.getRandomPointInSphere(random, center, spawnarea.getData());
+		default:
+			return new Vector3f(center);
+		}
 	}
-
-	private float generateRotation() {
+	
+	protected float generateRotation() {
 		if (randomRotation) {
 			return random.nextFloat() * 360f;
 		} else {
@@ -194,44 +199,6 @@ public class SimpleParticleSystem extends GameObject {
 		}
 	}
 
-	private static float cosAngle, rotateAngle;
-	private static Random randoms;
-	private static Vector4f tmp4f = new Vector4f();
-	private static Vector3f rotateAxis;
-	private static Matrix4f rotationMatrix = new Matrix4f();
-
-	private static Vector3f generateRandomUnitVectorWithinCone(Vector3f coneDirection, float angle) {
-		cosAngle = (float) Math.cos(angle);
-		randoms = new Random();
-		theta = (float) (randoms.nextFloat() * 2f * Math.PI);
-		z = cosAngle + (randoms.nextFloat() * (1 - cosAngle));
-		rootOneMinusZSquared = (float) Math.sqrt(1 - z * z);
-		x = (float) (rootOneMinusZSquared * Math.cos(theta));
-		y = (float) (rootOneMinusZSquared * Math.sin(theta));
-
-		tmp4f.set(x, y, z, 1);
-		if (coneDirection.x != 0 || coneDirection.y != 0 || (coneDirection.z != 1 && coneDirection.z != -1)) {
-			coneDirection.cross(Maths.Z, rotateAxis);
-			rotateAxis.normalize();
-			rotateAngle = (float) Math.acos(coneDirection.dot(Maths.Z));
-			rotationMatrix.identity();
-			rotationMatrix.rotate(-rotateAngle, rotateAxis);
-			rotationMatrix.transform(tmp4f);
-		} else if (coneDirection.z == -1) {
-			tmp4f.z *= -1;
-		}
-		return new Vector3f(tmp4f.x, tmp4f.y, tmp4f.z);
-	}
-
-	private static float theta, z, rootOneMinusZSquared, x, y;
-
-	private Vector3f generateRandomUnitVector() {
-		theta = (float) (random.nextFloat() * 2f * Math.PI);
-		z = (random.nextFloat() * 2) - 1;
-		rootOneMinusZSquared = (float) Math.sqrt(1 - z * z);
-		x = (float) (rootOneMinusZSquared * Math.cos(theta));
-		y = (float) (rootOneMinusZSquared * Math.sin(theta));
-		return new Vector3f(x, y, z);
-	}
+	
 
 }

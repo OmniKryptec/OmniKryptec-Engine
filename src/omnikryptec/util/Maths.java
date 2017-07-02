@@ -3,9 +3,16 @@ package omnikryptec.util;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
+
 import omnikryptec.display.Display;
 import omnikryptec.gameobject.gameobject.Entity;
+
+import java.util.Random;
+
+import org.joml.AxisAngle4f;
 import org.joml.Math;
+import org.joml.Matrix3f;
 
 public class Maths {
 
@@ -147,6 +154,93 @@ public class Maths {
     	return vec;
     }
     
+    
+	private static float cosAngle, rotateAngle;
+	private static Vector4f tmp4f = new Vector4f();
+	private static Vector3f rotateAxis;
+	private static Matrix4f rotationMatrix = new Matrix4f();
+	private static float theta, z, rootOneMinusZSquared, x, y;
+	private static float offset;
+	private static float dx, dy;
+	private static double d;
+	private static Matrix3f helpmatrix = new Matrix3f();
+	
+	public static Vector3f generateRandomUnitVectorWithinCone(Random random, Vector3f coneDirection, float coneangle) {
+		cosAngle = (float) Math.cos(coneangle);
+		theta = (float) (random.nextFloat() * 2f * Math.PI);
+		z = cosAngle + (random.nextFloat() * (1 - cosAngle));
+		rootOneMinusZSquared = (float) Math.sqrt(1 - z * z);
+		x = (float) (rootOneMinusZSquared * Math.cos(theta));
+		y = (float) (rootOneMinusZSquared * Math.sin(theta));
+
+		tmp4f.set(x, y, z, 1);
+		if (coneDirection.x != 0 || coneDirection.y != 0 || (coneDirection.z != 1 && coneDirection.z != -1)) {
+			coneDirection.cross(Maths.Z, rotateAxis);
+			rotateAxis.normalize();
+			rotateAngle = (float) Math.acos(coneDirection.dot(Maths.Z));
+			rotationMatrix.identity();
+			rotationMatrix.rotate(-rotateAngle, rotateAxis);
+			rotationMatrix.transform(tmp4f);
+		} else if (coneDirection.z == -1) {
+			tmp4f.z *= -1;
+		}
+		return new Vector3f(tmp4f.x, tmp4f.y, tmp4f.z).normalize();
+	}
+
+	public static Vector3f generateRandomUnitVector(Random random) {
+		theta = (float) (random.nextFloat() * 2f * Math.PI);
+		z = (random.nextFloat() * 2) - 1;
+		rootOneMinusZSquared = (float) Math.sqrt(1 - z * z);
+		x = (float) (rootOneMinusZSquared * Math.cos(theta));
+		y = (float) (rootOneMinusZSquared * Math.sin(theta));
+		return new Vector3f(x, y, z).normalize();
+	}
+	
+	public static float getErroredValue(Random random, float average, float errorMargin) {
+		offset = (random.nextFloat() - 0.5f) * 2f * errorMargin;
+		return average + offset;
+	}
+	
+	public static Vector3f getRandomPointOnLine(Random random, Vector3f direction, Vector3f center, float linelength){
+		Vector3f vec = direction.normalize(new Vector3f()).mul(linelength/2);
+		vec.mul(random.nextFloat()*2-1);
+		return vec.add(center);
+	}
+	
+	public static Vector3f getRandomPointOnLine(Random random, Vector3f p1, Vector3f p2){
+		Vector3f vec = new Vector3f(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
+		vec.mul(random.nextFloat());
+		return vec.add(p1);
+	}
+	
+	public static Vector3f getRandomPointInCircle(Random random, Vector3f middle, float radius, Vector3f direction){
+		direction = direction.normalize();
+		dx = getRandomRotation(random);
+		d = (radius * Math.sqrt(random.nextDouble()));
+		dy = (float) Math.acos(direction.dot(Y));
+		Vector3f cross = Maths.Y.cross(direction, new Vector3f()).normalize();
+		if(dy==0||(Float.isNaN(cross.x)&&Float.isNaN(cross.y)&&Float.isNaN(cross.z))){
+			return new Vector3f((float) ((Math.cos(dx)*d)), 0, (float) ((Math.sin(dx)*d))).add(middle);
+		}else{
+			return helpmatrix.identity().rotate(new AxisAngle4f(dy, cross.x, cross.y, cross.z)).transform(new Vector3f((float) ((Math.cos(dx)*d)), 0, (float) ((Math.sin(dx)*d)))).add(middle);		
+		}	
+	}
+	
+	public static Vector3f getRandomPointInCircle(Random random, Vector3f middle, float radius){
+		dx = getRandomRotation(random);
+		d = (radius * Math.sqrt(random.nextDouble()));
+		return new Vector3f((float) (middle.x+(Math.cos(dx)*d)), middle.y, (float) (middle.z+(Math.sin(dx)*d)));
+	}
+	
+	public static Vector3f getRandomPointInSphere(Random random, Vector3f middle, float radius){
+		dx = (float)(radius * Math.sqrt(random.nextDouble()));
+		return generateRandomUnitVector(random).mul(dx);
+	}
+	
+	public static float getRandomRotation(Random r){
+		return (float) (r.nextDouble() * 2 * Math.PI);
+	}
+	
     // public static double getRelativizer(double velocity, double maxVelocity){
     // if(velocity>maxVelocity){
     // velocity = maxVelocity;

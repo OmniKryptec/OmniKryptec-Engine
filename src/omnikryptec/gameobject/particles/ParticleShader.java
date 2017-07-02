@@ -4,6 +4,7 @@ import omnikryptec.shader.base.Attribute;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.UniformFloat;
 import omnikryptec.shader.base.UniformMatrix;
+import omnikryptec.shader.base.UniformVec4;
 
 public class ParticleShader extends Shader {
 
@@ -12,12 +13,13 @@ public class ParticleShader extends Shader {
 
 	public final UniformFloat nrOfRows = new UniformFloat("nrRows");
 	public final UniformMatrix projMatrix = new UniformMatrix("projectionMatrix");
-
+	public final UniformVec4 uvs = new UniformVec4("uvs");
+	
 	public ParticleShader() {
 		super("ParticleShader", Shader.class.getResourceAsStream(VERTEX_FILE),
 				Shader.class.getResourceAsStream(FRAGMENT_FILE), new Attribute("position", 0),
 				new Attribute("modelViewMatrix", 1), new Attribute("texOffsets", 5), new Attribute("blendFac", 6));
-		registerUniforms(nrOfRows, projMatrix);
+		registerUniforms(nrOfRows, projMatrix, uvs);
 
 	}
 

@@ -13,19 +13,20 @@ out float blend;
 uniform mat4 projectionMatrix;
 
 uniform float nrRows;
-
+uniform vec4 uvs;
 
 
 void main(void){
 	
 	vec2 texCoords = position * 0.5 + 0.5;
 	texCoords.y = 1.0 - texCoords.y;
+	texCoords *= uvs.zw - uvs.xy;
+	texCoords += uvs.xy;
 	texCoords /= nrRows;
-	texCoords1 = texCoords + texOffsets.xy;
-	texCoords2 = texCoords + texOffsets.zw;
+	texCoords1 = texCoords + (texOffsets.xy*(uvs.zw - uvs.xy)+uvs.xy);
+	texCoords2 = texCoords + (texOffsets.zw*(uvs.zw - uvs.xy)+uvs.xy);
 	blend = blendFac;
-	
-	
+
 	gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 0.0, 1.0);
 
 }

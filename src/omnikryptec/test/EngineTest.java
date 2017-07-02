@@ -35,7 +35,7 @@ public class EngineTest {
             tm.getMaterial().setReflectivity(0.5f);
             OmniKryptecEngine.instance().addAndSetScene(new Scene("test", new Camera() {
                 @Override
-                public void doLogic() {
+                public void update() {
                     // setRelativePos(getRelativePos().x, getRelativePos().y,
                     // getRelativePos().z+1*DisplayManager.instance().getDeltaTime());
                     // increaseRelativeRot(10*DisplayManager.instance().getDeltaTime(),
