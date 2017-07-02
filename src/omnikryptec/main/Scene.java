@@ -10,6 +10,7 @@ import omnikryptec.gameobject.gameobject.Camera;
 import omnikryptec.gameobject.gameobject.Entity;
 import omnikryptec.gameobject.gameobject.GameObject;
 import omnikryptec.gameobject.gameobject.Light;
+import omnikryptec.physics.JBulletPhysicsWorld;
 import omnikryptec.physics.PhysicsWorld;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.AllowedRenderer;
@@ -190,7 +191,7 @@ public class Scene implements DataMapSerializable {
     }
 
     public final Scene useDefaultPhysics() {
-        return setPhysicsWorld(new PhysicsWorld(PhysicsUtil.createDefaultDynamicsWorld()));
+        return setPhysicsWorld(new JBulletPhysicsWorld(PhysicsUtil.createDefaultDynamicsWorld()));
     }
 
     public final boolean isUsingPhysics() {
