@@ -32,96 +32,96 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
     /**
      * java.net.Socket Socket which connects to the ServerSocket
      */
-    private Socket socket = null;
+    protected Socket socket = null;
     /**
      * InetAddress to connect to
      */
-    private InetAddress inetAddress = null;
+    protected InetAddress inetAddress = null;
     /**
      * Port to connect to
      */
-    private int port = -1;
+    protected int port = -1;
     /**
      * ObjectOutputStream
      */
-    private ObjectOutputStream oos = null;
+    protected ObjectOutputStream oos = null;
     /**
      * ObjectInputStream
      */
-    private ObjectInputStream ois = null;
+    protected ObjectInputStream ois = null;
     /**
      * ThreadPool size
      */
-    private final int threadPoolSize;
+    protected final int threadPoolSize;
     /**
      * ThreadPool Receiving Side
      */
-    private ExecutorService executorReceiver = null;
+    protected ExecutorService executorReceiver = null;
     /**
      * ThreadPool Transmitting Side
      */
-    private ExecutorService executorTransmitter = null;
+    protected ExecutorService executorTransmitter = null;
     /**
      * Maximum number of tries to (re)connect to a ServerSocket
      */
-    private int connectionTriesMax = Network.CONNECTION_TRIES_MAX_STANDARD;
+    protected int connectionTriesMax = Network.CONNECTION_TRIES_MAX_STANDARD;
     /**
      * Milliseconds to wait between each (re)connection try
      */
-    private int connectionDelayTime = Network.CONNECTION_DELAY_TIME_STANDARD;
+    protected int connectionDelayTime = Network.CONNECTION_DELAY_TIME_STANDARD;
     /**
      * Maximum number of tries per connection checks
      */
-    private int connectionCheckTriesMax = Network.CONNECTION_CHECK_TRIES_MAX_STANDARD;
+    protected int connectionCheckTriesMax = Network.CONNECTION_CHECK_TRIES_MAX_STANDARD;
     /**
      * Maximum time between sending the Ping and receiving the Pong in
      * milliseconds
      */
-    private int connectionCheckAnswerTimeMax = Network.CONNECTION_ANSWER_TIME_STANDARD;
+    protected int connectionCheckAnswerTimeMax = Network.CONNECTION_ANSWER_TIME_STANDARD;
     /**
      * Delay time between each answer check in milliseconds
      */
-    private int connectionCheckAnswerDelayTime = Network.CONNECTION_ANSWER_DELAY_TIME_STANDARD;
+    protected int connectionCheckAnswerDelayTime = Network.CONNECTION_ANSWER_DELAY_TIME_STANDARD;
     /**
      * Delay time between each running connection check in milliseconds
      */
-    private int connectionCheckDelayTime = Network.CONNECTION_CHECK_DELAY_TIME_STANDARD;
+    protected int connectionCheckDelayTime = Network.CONNECTION_CHECK_DELAY_TIME_STANDARD;
     /**
      * Delay time between each new connection check in milliseconds
      */
-    private int connectionCheckTimerDelay = Network.CONNECTION_CHECK_TIMER_DELAY_STANDARD;
+    protected int connectionCheckTimerDelay = Network.CONNECTION_CHECK_TIMER_DELAY_STANDARD;
     /**
      * If this AdvancedSocket is an AdvancedSocket created from a Server
      */
-    private boolean isFromServerSocket = false;
+    protected boolean isFromServerSocket = false;
     /**
      * Receiver Thread
      */
-    private Thread threadReceiver = null;
+    protected Thread threadReceiver = null;
     /**
      * Timer which calls the checkConnection every seconds
      */
-    private Timer timer = null;
+    protected Timer timer = null;
     /**
      * If the AdvancedSocket is connected
      */
-    private boolean connected = false;
+    protected boolean connected = false;
     /**
      * If the AdvancedSocket is disconnected
      */
-    private boolean disconnected = true;
+    protected boolean disconnected = true;
     /**
      * Timestamp when the AdvancedSocket was connected
      */
-    private Instant instantConnected = null;
+    protected Instant instantConnected = null;
     /**
      * Timestamp when the AdvancedSocket was disconnected
      */
-    private Instant instantDisconnected = null;
+    protected Instant instantDisconnected = null;
     /**
      * Timestamp when the lastPong did happen
      */
-    private Instant lastPong = null;
+    protected Instant lastPong = null;
 
     /**
      * Creates an AdvancedSocket from a Socket

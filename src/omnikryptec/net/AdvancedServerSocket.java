@@ -32,55 +32,59 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
     /**
      * java.net.ServerSocket ServerSocket which accepts all Sockets
      */
-    private ServerSocket serverSocket = null;
+    protected ServerSocket serverSocket = null;
     /**
      * Port to start on
      */
-    private int port = -1;
+    protected int port = -1;
     /**
      * List with all accepted AdvancedSockets
      */
-    private final ArrayList<AdvancedSocket> socketsAccepted = new ArrayList<>();
+    protected final ArrayList<AdvancedSocket> socketsAccepted = new ArrayList<>();
     /**
      * ThreadPool size
      */
-    private final int threadPoolSize;
+    protected final int threadPoolSize;
     /**
      * ThreadPool Acceptor
      */
-    private ExecutorService executorReceiver = null;
+    protected ExecutorService executorReceiver = null;
     /**
      * Acceptor Thread
      */
-    private Thread threadAcceptor = null;
+    protected Thread threadAcceptor = null;
     /**
      * If the AdvancedServerSocket is started
      */
-    private boolean started = false;
+    protected boolean started = false;
     /**
      * If the AdvancedServerSocket is stopped
      */
-    private boolean stopped = true;
+    protected boolean stopped = true;
     /**
      * Timestamp when the AdvancedServerSocket was started
      */
-    private Instant instantStarted = null;
+    protected Instant instantStarted = null;
     /**
      * Timestamp when the AdvancedServerSocket was stopped
      */
-    private Instant instantStopped = null;
+    protected Instant instantStopped = null;
     /**
      * Delay time between each new connection check in milliseconds
      */
-    private int connectionCheckTimerDelay = Network.CONNECTION_CHECK_TIMER_DELAY_STANDARD;
+    protected int connectionCheckTimerDelay = Network.CONNECTION_CHECK_TIMER_DELAY_STANDARD;
     /**
      * Timer which calls the checkConnection every seconds
      */
-    private Timer timer = null;
+    protected Timer timer = null;
     /**
      * If disconnected AdvancedSockets should be deleted from the ArrayList
      */
-    private boolean deleteDisconnectedAdvancedSockets = true;
+    protected boolean deleteDisconnectedAdvancedSockets = true;
+    /**
+     * If the AdvancedServerSocket is checking the connections
+     */
+    protected boolean isCheckingConnections = false;
 
     /**
      * Creates an AdvancedServerSocket from a ServerSocket
@@ -333,12 +337,15 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      * Checks all connections to the accepted Sockets
      * @return A reference to thos AdvancedServerSocket
      */
-    private final AdvancedServerSocket checkConnections() {
+    protected final AdvancedServerSocket checkConnections() {
+        isCheckingConnections = true;
         synchronized (socketsAccepted) {
             final Iterator<AdvancedSocket> i = socketsAccepted.iterator();
             while(i.hasNext()) {
                 final AdvancedSocket socket = i.next();
+                final Instant instantNow = Instant.now();
                 if (!socket.checkConnection()) {
+                    onDisconnected(socket, instantNow);
                     socket.disconnect(true);
                     if (deleteDisconnectedAdvancedSockets) {
                         i.remove();
@@ -346,6 +353,7 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
                 }
             }
         }
+        isCheckingConnections = false;
         return this;
     }
 
@@ -393,7 +401,7 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
 
             @Override
             public void onDisconnected(Instant timestamp) {
-                ADVANCEDSERVERSOCKET.onDisconnected(this, timestamp);
+                //Nothing
             }
         };
         advancedSocket.connect(false);

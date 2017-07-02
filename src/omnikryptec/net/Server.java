@@ -21,7 +21,7 @@ public class Server extends AdvancedServerSocket {
 
     @Override
     public AdvancedSocket onConnected(Socket socket, Instant timestamp) {
-        return super.onConnected(socket, timestamp); //To change body of generated methods, choose Tools | Templates.
+        return super.onConnected(socket, timestamp);
     }
 
     @Override

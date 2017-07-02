@@ -19,7 +19,8 @@ public class AttractedPaticleSystem extends ParticleSystem {
     protected float speedError, lifeError, scaleError = 0;
     protected boolean randomRotation = false;
 
-    protected double directionAngel = 0;
+    protected Vector3f startDirection = null;
+    protected double startDirectionAngle = 0;
     private Entity.RenderType type = Entity.RenderType.MEDIUM;
 
     protected float lifelengthsystem = -1;
@@ -97,6 +98,24 @@ public class AttractedPaticleSystem extends ParticleSystem {
         return this;
     }
 
+    public Vector3f getStartDirection() {
+        return startDirection;
+    }
+
+    public AttractedPaticleSystem setStartDirection(Vector3f startDirection) {
+        this.startDirection = startDirection;
+        return this;
+    }
+
+    public double getStartDirectionAngle() {
+        return startDirectionAngle;
+    }
+
+    public AttractedPaticleSystem setStartDirectionAngle(double startDirectionAngle) {
+        this.startDirectionAngle = startDirectionAngle;
+        return this;
+    }
+    
     public AttractedPaticleSystem addAttractor(float x, float y, float z, float a, float t) {
         return addAttractor(x, y, z, a, t, false);
     }
@@ -178,8 +197,8 @@ public class AttractedPaticleSystem extends ParticleSystem {
     private static float scale, lifeLength;
 
     protected Particle emitParticle(Vector3f center) {
-        if (false) {
-            velocity = generateRandomUnitVectorWithinCone(null, directionAngel);
+        if (startDirection != null) {
+            velocity = generateRandomUnitVectorWithinCone(startDirection, startDirectionAngle);
         } else {
             velocity = generateRandomUnitVector();
         }
