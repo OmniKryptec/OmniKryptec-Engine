@@ -195,7 +195,6 @@ public class EngineTest2 implements IEventHandler {
             //system.setParent(Instance.getCurrentCamera());
             system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.SHPERE, new Vector3f(0,0,1), 200)).setDirection(new Vector3f(0, 1, 0), Math.PI/2)/*Remove setDirection for AttractedPaticleSystem*/;
             system.setTimeMultiplier(1);
-            system.setAttractor(system,0.1F,15, true,20); //SimpleParticleSystem
             
             /*
             //For AttractedPaticleSystem
