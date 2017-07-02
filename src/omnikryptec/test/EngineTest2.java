@@ -188,7 +188,7 @@ public class EngineTest2 implements IEventHandler {
                     new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true), 300f, 2f,
                     new Vector3f(0, -100, 0),7.5f, 1f, RenderType.ALWAYS);
             //system.setParent(Instance.getCurrentCamera());
-            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.SHPERE, new Vector3f(0,0.7f,0.3f), 1000));
+            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.DIRECTION, new Vector3f(0,0,0), 100));
             system.setTimeMultiplier(1);
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));

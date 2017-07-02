@@ -186,6 +186,8 @@ public class SimpleParticleSystem extends ParticleSystem {
 			return new Vector3f(center);
 		case SHPERE:
 			return Maths.getRandomPointInSphere(random, center, spawnarea.getData());
+		case DIRECTION:
+			return Maths.getRandomPointOnLine(random, center, spawnarea.getDirection().mul(spawnarea.getData(), new Vector3f()));
 		default:
 			return new Vector3f(center);
 		}
