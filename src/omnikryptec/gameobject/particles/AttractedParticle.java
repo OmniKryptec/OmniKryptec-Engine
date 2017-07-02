@@ -68,19 +68,6 @@ public class AttractedParticle extends Particle {
             velocity.add(acceleration.mul(timemultiplier, changeable));
             position.add(velocity.mul(timemultiplier, changeable));
         }
-        /*
-        velocity.add(acceleration.mul(timemultiplier, changeable));
-        position.add(velocity.mul(timemultiplier, changeable));
-        if (system.getAttractor() != null && system.getAttractorData() != null) {
-            changeable = system.getAttractor().getAbsolutePos().sub(position, changeable);
-            if (changeable.lengthSquared() > system.getAttractorData().w * system.getAttractorData().w) {
-                changeable.normalize().mul(system.getAttractorData().x * timemultiplier + system.getAttractorData().y * elapsedTime * elapsedTime * 0.5f);
-                position.add(changeable);
-            } else if (system.getAttractorData().z == 1) {
-                elapsedTime = lifeLength;
-            }
-        }
-         */
         return lifeLength == -1 || elapsedTime < lifeLength;
     }
 

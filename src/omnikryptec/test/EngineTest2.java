@@ -241,8 +241,8 @@ public class EngineTest2 implements IEventHandler {
         Logger.CONSOLE.setTitle(camera.toString());
     }
 
-    private static SimpleParticleSystem system;
-    //private static AttractedPaticleSystem system;
+    private static SimpleParticleSystem system; //For SimpleParticleSystem
+    //private static AttractedPaticleSystem system; //For AttractedPaticleSystem
     private Random ra = new Random();
 	private double d=0;
 

@@ -26,14 +26,14 @@ public class AttractedPaticleSystem extends ParticleSystem {
 
     protected ParticleAtlas particletexture;
     /**
-     * Index = Meaning
-     * 0 = Pos.x
-     * 1 = Pos.y
-     * 2 = Pos.z
-     * 3 = Acceleration
-     * 4 = Tolerance
-     * 5 = Die on Reach
-     * 6 = Infinite
+     * Index = Meaning;
+     * 0 = Pos.x;
+     * 1 = Pos.y;
+     * 2 = Pos.z;
+     * 3 = Acceleration;
+     * 4 = Tolerance;
+     * 5 = Die on Reach;
+     * 6 = Infinite;
      */
     protected final ArrayList<Float[]> attractorData = new ArrayList<>();
     protected ParticleSpawnArea spawnarea = new ParticleSpawnArea(ParticleSpawnArea.ParticleSpawnAreaType.POINT, 0);
@@ -118,14 +118,14 @@ public class AttractedPaticleSystem extends ParticleSystem {
     }
 
     /**
-     * Index = Meaning
-     * 0 = Pos.x
-     * 1 = Pos.y
-     * 2 = Pos.z
-     * 3 = Acceleration
-     * 4 = Tolerance
-     * 5 = Die on Reach
-     * 6 = Infinite
+     * Index = Meaning;
+     * 0 = Pos.x;
+     * 1 = Pos.y;
+     * 2 = Pos.z;
+     * 3 = Acceleration;
+     * 4 = Tolerance;
+     * 5 = Die on Reach;
+     * 6 = Infinite;
      */
     public ArrayList<Float[]> getAttractorData() {
         return attractorData;
