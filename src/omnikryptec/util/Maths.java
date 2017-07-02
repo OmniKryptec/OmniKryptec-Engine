@@ -207,11 +207,11 @@ public class Maths {
 	}
 	
 	public static Vector3f getRandomPointInCircle(Random random, Vector3f middle, float radius, Vector3f direction){
-		direction = direction.normalize();
+		Vector3f directionn = direction.normalize(new Vector3f());
 		double rotation = getRandomRotation(random);
 		double calculatedradius = (radius * Math.sqrt(random.nextDouble()));
-		double acosdot = Math.acos(direction.dot(Y));
-		Vector3f cross = Maths.Y.cross(direction, new Vector3f()).normalize();
+		double acosdot = Math.acos(directionn.dot(Y));
+		Vector3f cross = Maths.Y.cross(directionn, new Vector3f()).normalize();
 		if(acosdot==0||(Float.isNaN(cross.x)&&Float.isNaN(cross.y)&&Float.isNaN(cross.z))){
 			return new Vector3f((float) ((Math.cos(rotation)*calculatedradius)), 0, (float) ((Math.sin(rotation)*calculatedradius))).add(middle);
 		}else{
