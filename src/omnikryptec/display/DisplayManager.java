@@ -37,7 +37,7 @@ public class DisplayManager implements Profilable{
 	private static float runtimef = 0;
 	private static float deltatimef = 0;
 
-	
+	private double serverOffset=0;
 	
 	public static final int DISABLE_FPS_CAP = 0;
 
@@ -233,6 +233,19 @@ public class DisplayManager implements Profilable{
 		return Display.getCurrentTime();
 	}
 
+	
+	public final double getServerCurrentTime(){
+		return getCurrentTime()+serverOffset;
+	}
+	
+	public final DisplayManager setServerTimeOffset(double d){
+		this.serverOffset = d;
+		return this;
+	}
+	
+	public final double getServerTimeOffset(){
+		return serverOffset;
+	}
 	
 	/**
 	 * Returns the FPS cap, if it is DISABLE_FPS_CAP, the cap is disabled
