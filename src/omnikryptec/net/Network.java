@@ -16,7 +16,7 @@ public class Network {
     /**
      * Lowest possible Port number
      */
-    public static final int PORT_MIN = 1000;
+    public static final int PORT_MIN = 0x400;
     /**
      * Standard Port number
      */
@@ -31,9 +31,13 @@ public class Network {
     public static final int PORT_LOCAL_NETWORK_STANDARD = 8888;
 
     /**
-     * All Ports that are currently in use
+     * All TCP Ports that are currently in use
      */
-    private static final HashMap<Integer, AdvancedServerSocket> registeredPorts = new HashMap<>();
+    private static final HashMap<Integer, AdvancedServerSocket> registeredTCPPorts = new HashMap<>();
+    /**
+     * All UDP Ports that are currently in use
+     */
+    private static final HashMap<Integer, Object> registeredUDPPorts = new HashMap<>();
 
     /**
      * Maximum number of Threads in a Client ThreadPool
@@ -102,79 +106,153 @@ public class Network {
     }
 
     /**
-     * Checks if the given Port is already in use
+     * Checks if the given TCP Port is already in use
      *
-     * @param port Port to get checked
-     * @return <tt>true</tt> if the Port is already in use
+     * @param port TCP Port to get checked
+     * @return <tt>true</tt> if the TCP Port is already in use
      */
-    public static final boolean portExists(int port) {
-        return registeredPorts.containsKey(port);
+    public static final boolean existsTCPPort(int port) {
+        return registeredTCPPorts.containsKey(port);
     }
 
     /**
-     * Checks if the given Port is not in use and between the lowest and highest
+     * Checks if the given TCP Port is not in use and between the lowest and highest
      * possible Port number
      *
-     * @param port Port to get checked
-     * @return <tt>true</tt> if the Port is not in use and is a possible Port
+     * @param port TCP Port to get checked
+     * @return <tt>true</tt> if the TCP Port is not in use and is a possible Port
      * number
      */
-    public static final boolean checkPort(int port) {
-        if (portExists(port)) {
+    public static final boolean checkTCPPort(int port) {
+        if (existsTCPPort(port)) {
             return false;
         }
         return ((port >= PORT_MIN) && (port <= PORT_MAX));
     }
 
     /**
-     * Registers a Port to be used from now
+     * Registers a TCP Port to be used from now
      *
-     * @param port Port to get registered
-     * @return <tt>true</tt> if the Port was successfully registered
+     * @param port TCP Port to get registered
+     * @return <tt>true</tt> if the TCP Port was successfully registered
      */
-    public static final boolean registerPort(int port) {
-        return registerPort(port, null);
+    public static final boolean registerTCPPort(int port) {
+        return registerTCPPort(port, null);
     }
 
     /**
-     * Registers a Port to be used from now
+     * Registers a TCP Port to be used from now
      *
-     * @param port Port to get registered
+     * @param port TCP Port to get registered
      * @param serverSocket AdvancedServerSocket
-     * @return <tt>true</tt> if the Port was successfully registered
+     * @return <tt>true</tt> if the TCP Port was successfully registered
      */
-    public static final boolean registerPort(int port, AdvancedServerSocket serverSocket) {
-        if (!checkPort(port)) {
+    public static final boolean registerTCPPort(int port, AdvancedServerSocket serverSocket) {
+        if (!checkTCPPort(port)) {
             return false;
         }
-        registeredPorts.put(port, serverSocket);
+        registeredTCPPorts.put(port, serverSocket);
         return true;
     }
 
     /**
-     * Unregisters a Port to no longer be used
+     * Unregisters a TCP Port to no longer be used
      *
-     * @param port Port to get unregistered
-     * @return <tt>true</tt> if the Port was successfully unregistered
+     * @param port TCP Port to get unregistered
+     * @return <tt>true</tt> if the TCP Port was successfully unregistered
      */
-    public static final boolean unregisterPort(int port) {
-        if (!portExists(port)) {
+    public static final boolean unregisterTCPPort(int port) {
+        if (!existsTCPPort(port)) {
             return false;
         }
-        registeredPorts.remove(port);
+        registeredTCPPorts.remove(port);
         return true;
     }
 
     /**
-     * Returns the AdvancedServerSocket associated with the given Port
+     * Returns the AdvancedServerSocket associated with the given TCP Port
      *
-     * @param port Port
+     * @param port TCP Port
      * @return AdvancedServerSocket
      */
-    public static final AdvancedServerSocket getAdvancedServerSocketFromPort(int port) {
-        return registeredPorts.get(port);
+    public static final AdvancedServerSocket getObjectFromTCPPort(int port) {
+        return registeredTCPPorts.get(port);
+    }
+    
+    /**
+     * Checks if the given UDP Port is already in use
+     *
+     * @param port UDP Port to get checked
+     * @return <tt>true</tt> if the UDP Port is already in use
+     */
+    public static final boolean existsUDPPort(int port) {
+        return registeredUDPPorts.containsKey(port);
+    }
+    
+    /**
+     * Checks if the given UDP Port is not in use and between the lowest and highest
+     * possible Port number
+     *
+     * @param port UDP Port to get checked
+     * @return <tt>true</tt> if the UDP Port is not in use and is a possible Port
+     * number
+     */
+    public static final boolean checkUDPPort(int port) {
+        if (existsUDPPort(port)) {
+            return false;
+        }
+        return ((port >= PORT_MIN) && (port <= PORT_MAX));
     }
 
+    /**
+     * Registers a UDP Port to be used from now
+     *
+     * @param port UDP Port to get registered
+     * @return <tt>true</tt> if the UDP Port was successfully registered
+     */
+    public static final boolean registerUDPPort(int port) {
+        return registerUDPPort(port, null);
+    }
+
+    /**
+     * Registers a UDP Port to be used from now
+     *
+     * @param port UDP Port to get registered
+     * @param serverSocket AdvancedServerSocket
+     * @return <tt>true</tt> if the UDP Port was successfully registered
+     */
+    public static final boolean registerUDPPort(int port, AdvancedServerSocket serverSocket) {
+        if (!checkUDPPort(port)) {
+            return false;
+        }
+        registeredUDPPorts.put(port, serverSocket);
+        return true;
+    }
+
+    /**
+     * Unregisters a UDP Port to no longer be used
+     *
+     * @param port UDP Port to get unregistered
+     * @return <tt>true</tt> if the UDP Port was successfully unregistered
+     */
+    public static final boolean unregisterUDPPort(int port) {
+        if (!existsUDPPort(port)) {
+            return false;
+        }
+        registeredUDPPorts.remove(port);
+        return true;
+    }
+
+    /**
+     * Returns the Object associated with the given UDP Port
+     *
+     * @param port UDP Port
+     * @return Object
+     */
+    public static final Object getObjectFromUDPPort(int port) {
+        return registeredUDPPorts.get(port);
+    }
+    
     /**
      * Formats an InetAddress
      *

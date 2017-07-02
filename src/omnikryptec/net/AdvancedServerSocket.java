@@ -225,7 +225,7 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
             }
             return false;
         }
-        if (!Network.registerPort(port, this)) {
+        if (!Network.registerTCPPort(port, this)) {
             if (Logger.isDebugMode()) {
                 Logger.log("Can not start a ServerSocket on Port " + port + ", because the Port can not be registered!", LogLevel.WARNING);
             }
@@ -318,7 +318,7 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
             }
             started = !stopped;
             if (stopped) {
-                Network.unregisterPort(port);
+                Network.unregisterTCPPort(port);
             }
             return stopped;
         } catch (Exception ex) {
@@ -423,7 +423,7 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      * @return A reference to this AdvancedServerSocket
      */
     public final AdvancedServerSocket setPort(int port) {
-        if (!Network.checkPort(port)) {
+        if (!Network.checkTCPPort(port)) {
             this.port = Network.PORT_STANDARD;
             return this;
         }

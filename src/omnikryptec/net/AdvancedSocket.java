@@ -663,7 +663,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setPort(int port) {
-        if (!Network.checkPort(port)) {
+        if (!Network.checkTCPPort(port)) {
             this.port = Network.PORT_STANDARD;
             return this;
         }
