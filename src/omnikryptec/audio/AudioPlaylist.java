@@ -80,9 +80,9 @@ public class AudioPlaylist {
         Logger.log("Playing: " + sound);
         playStarted = Util.getCurrentTime();
         getWaitingAudioSource().stop();
-        //getWaitingAudioSource().setVolume(0.0F);
-        getWaitingAudioSource().play(sound);
+        getWaitingAudioSource().setVolume(1.0F);
         getWaitingAudioSource().setEffectState(AudioEffectState.FADE_IN);
+        getWaitingAudioSource().play(sound);
         playerIsSource1 = !playerIsSource1;
         return this;
     }
