@@ -35,6 +35,7 @@ import omnikryptec.gameobject.terrain.TerrainGenerator;
 import omnikryptec.gameobject.terrain.TerrainTexturePack;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
+import omnikryptec.physics.JBulletPhysicsWorld;
 import omnikryptec.physics.RigidBodyBuilder;
 import omnikryptec.resource.objConverter.ModelData;
 import omnikryptec.resource.texture.SimpleTexture;
@@ -55,7 +56,7 @@ import org.lwjgl.glfw.GLFW;
  * @author Panzer1119
  */
 public class JBulletTest2 {
-    
+
     private static EntityBuilder entityBuilder_brunnen;
     private static EntityBuilder entityBuilder_pine;
     private static Entity entity_ball;
@@ -211,8 +212,7 @@ public class JBulletTest2 {
         rigidBodyBuilder.setCollisionShape(new StaticPlaneShape(new Vector3f(0, 1, 0), 0.25F/* m */));
         rigidBodyBuilder.setDefaultMotionState(new Vector3f(0, 0, 0), new Vector3f(0, 0, 0));
         rigidBodyBuilder.getRigidBodyConstructionInfo().restitution = 0.25F;
-        OmniKryptecEngine.getInstance().getCurrentScene().getPhysicsWorld().getWorld()
-                .addRigidBody(rigidBodyBuilder.create());
+        ((JBulletPhysicsWorld) OmniKryptecEngine.getInstance().getCurrentScene().getPhysicsWorld()).getWorld().addRigidBody(rigidBodyBuilder.create());
     }
 
     private static final void setupRigidBodyBuilder() {
