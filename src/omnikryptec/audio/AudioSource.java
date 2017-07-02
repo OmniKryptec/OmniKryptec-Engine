@@ -460,7 +460,10 @@ public class AudioSource {
                     break;
                 case FADE_IN:
                     volumeStart = 0.0F;
-                    volumeTarget = 1.0F;
+                    volumeTarget = getVolume();
+                    if (volumeTarget <= 0.0F) {
+                        volumeTarget = 1.0F;
+                    }
                     fadeTime = fadeTimeComplete / 1000.0F;
                     break;
                 case FADE_OUT:
