@@ -16,6 +16,7 @@ import omnikryptec.gameobject.gameobject.GameObject;
 import omnikryptec.gameobject.gameobject.Light;
 import omnikryptec.gameobject.gameobject.Entity.RenderType;
 import omnikryptec.gameobject.gameobject.GameObject.UpdateType;
+import omnikryptec.gameobject.particles.AttractedPaticleSystem;
 import omnikryptec.gameobject.particles.Particle;
 import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.gameobject.particles.ParticleSpawnArea;
@@ -188,12 +189,23 @@ public class EngineTest2 implements IEventHandler {
 
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
             system = new SimpleParticleSystem(0, 0, 0,
-                    new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true), new Vector3f(0, 0, 0), 300f, 0,
-                  30f, 1f, RenderType.ALWAYS);
+                                              new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, true),
+                                              new Vector3f(0, 0, 0) /*Remove the Vector for AttractedPaticleSystem*/, 300f, 0,
+                                              30000f, 1f, RenderType.ALWAYS);
             //system.setParent(Instance.getCurrentCamera());
-            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.SHPERE, new Vector3f(0,0,1), 100)).setDirection(new Vector3f(0, 1, 0), Math.PI/2);
+            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.SHPERE, new Vector3f(0,0,1), 200)).setDirection(new Vector3f(0, 1, 0), Math.PI/2)/*Remove setDirection for AttractedPaticleSystem*/;
             system.setTimeMultiplier(1);
-            system.setAttractor(system,0,100, false,0);
+            system.setAttractor(system,0.1F,15, true,20); //SimpleParticleSystem
+            
+            /*
+            //For AttractedPaticleSystem
+            system.addAttractor(system.getAbsolutePos(), 100.0F, 50.0F, false);
+            system.addAttractor(0, 400, 0, 100.0F, 50.0F, false);
+            system.addAttractor(0, 300, 500, 200.0F, 100.0F, true);
+            //system.addAttractor(-200, 300, 0, 75.0F, 50.0F, true);
+            //system.addAttractor(200, 300, 0, 75.0F, 50.0F, true);
+            */
+            
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));
             //OmniKryptecEngine.instance().getCurrentScene()
@@ -230,6 +242,7 @@ public class EngineTest2 implements IEventHandler {
     }
 
     private static SimpleParticleSystem system;
+    //private static AttractedPaticleSystem system;
     private Random ra = new Random();
 	private double d=0;
 
