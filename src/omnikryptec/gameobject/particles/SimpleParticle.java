@@ -9,7 +9,7 @@ import omnikryptec.resource.texture.ParticleAtlas;
 public class SimpleParticle extends Particle {
 
 	protected Vector3f velocity;
-	protected Vector3f force;
+	protected Vector3f acceleration;
 	protected float lifeLength;
 	protected float elapsedTime = 0;
 	private SimpleParticleSystem mysystem;
@@ -21,7 +21,7 @@ public class SimpleParticle extends Particle {
 		setRotation(rot);
 		setScale(scale);
 		this.velocity = vel;
-		this.force = force;
+		this.acceleration = force;
 		this.lifeLength = lifeLength;
 		this.elapsedTime = 0;
 		this.mysystem = sys;
@@ -37,15 +37,12 @@ public class SimpleParticle extends Particle {
 	}
 
 	private static float timemultiplier;
-	private static Vector3f changeable = new Vector3f(), changeable2 = new Vector3f();
+	private static Vector3f changeable = new Vector3f();
 	@Override
 	protected boolean update() {
 		timemultiplier = mysystem.getTimeMultiplier() * DisplayManager.instance().getDeltaTimef();
-		changeable = velocity.mul(timemultiplier, changeable);
-		changeable2 = force.mul(timemultiplier*timemultiplier, changeable2).mul(0.5f);
-		System.out.println(changeable+"|"+changeable2+"|"+timemultiplier);
-		changeable = changeable.add(changeable2);
-		position.add(changeable);
+		velocity.add(acceleration.mul(timemultiplier, changeable));
+		position.add(velocity.mul(timemultiplier, changeable));
 		elapsedTime += timemultiplier;
 		return lifeLength==-1||elapsedTime < lifeLength;
 	}
