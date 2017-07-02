@@ -155,29 +155,25 @@ public class Maths {
     }
     
     
-	private static float cosAngle, rotateAngle;
 	private static Vector4f tmp4f = new Vector4f();
 	private static Vector3f rotateAxis;
 	private static Matrix4f rotationMatrix = new Matrix4f();
-	private static float theta, z, rootOneMinusZSquared, x, y;
-	private static float offset;
-	private static float dx, dy;
-	private static double d;
+
 	private static Matrix3f helpmatrix = new Matrix3f();
 	
 	public static Vector3f generateRandomUnitVectorWithinCone(Random random, Vector3f coneDirection, float coneangle) {
-		cosAngle = (float) Math.cos(coneangle);
-		theta = (float) (random.nextFloat() * 2f * Math.PI);
-		z = cosAngle + (random.nextFloat() * (1 - cosAngle));
-		rootOneMinusZSquared = (float) Math.sqrt(1 - z * z);
-		x = (float) (rootOneMinusZSquared * Math.cos(theta));
-		y = (float) (rootOneMinusZSquared * Math.sin(theta));
+		float cosAngle = (float) Math.cos(coneangle);
+		double theta = getRandomRotationf(random);
+		float z = cosAngle + (random.nextFloat() * (1 - cosAngle));
+		float rootOneMinusZSquared = (float) Math.sqrt(1 - z * z);
+		float x = (float) (rootOneMinusZSquared * Math.cos(theta));
+		float y = (float) (rootOneMinusZSquared * Math.sin(theta));
 
 		tmp4f.set(x, y, z, 1);
 		if (coneDirection.x != 0 || coneDirection.y != 0 || (coneDirection.z != 1 && coneDirection.z != -1)) {
 			coneDirection.cross(Maths.Z, rotateAxis);
 			rotateAxis.normalize();
-			rotateAngle = (float) Math.acos(coneDirection.dot(Maths.Z));
+			float rotateAngle = (float) Math.acos(coneDirection.dot(Maths.Z));
 			rotationMatrix.identity();
 			rotationMatrix.rotate(-rotateAngle, rotateAxis);
 			rotationMatrix.transform(tmp4f);
@@ -188,16 +184,14 @@ public class Maths {
 	}
 
 	public static Vector3f generateRandomUnitVector(Random random) {
-		theta = (float) (random.nextFloat() * 2f * Math.PI);
-		z = (random.nextFloat() * 2) - 1;
-		rootOneMinusZSquared = (float) Math.sqrt(1 - z * z);
-		x = (float) (rootOneMinusZSquared * Math.cos(theta));
-		y = (float) (rootOneMinusZSquared * Math.sin(theta));
-		return new Vector3f(x, y, z).normalize();
+		double theta = getRandomRotationf(random);
+		float z = (random.nextFloat() * 2) - 1;
+		float rootOneMinusZSquared = (float) Math.sqrt(1 - z * z);
+		return new Vector3f((float) (rootOneMinusZSquared * Math.cos(theta)), (float) (rootOneMinusZSquared * Math.sin(theta)), z).normalize();
 	}
 	
 	public static float getErroredValue(Random random, float average, float errorMargin) {
-		offset = (random.nextFloat() - 0.5f) * 2f * errorMargin;
+		float offset = (random.nextFloat() - 0.5f) * 2f * errorMargin;
 		return average + offset;
 	}
 	
@@ -215,30 +209,34 @@ public class Maths {
 	
 	public static Vector3f getRandomPointInCircle(Random random, Vector3f middle, float radius, Vector3f direction){
 		direction = direction.normalize();
-		dx = getRandomRotation(random);
-		d = (radius * Math.sqrt(random.nextDouble()));
-		dy = (float) Math.acos(direction.dot(Y));
+		double rotation = getRandomRotation(random);
+		double calculatedradius = (radius * Math.sqrt(random.nextDouble()));
+		double acosdot = Math.acos(direction.dot(Y));
 		Vector3f cross = Maths.Y.cross(direction, new Vector3f()).normalize();
-		if(dy==0||(Float.isNaN(cross.x)&&Float.isNaN(cross.y)&&Float.isNaN(cross.z))){
-			return new Vector3f((float) ((Math.cos(dx)*d)), 0, (float) ((Math.sin(dx)*d))).add(middle);
+		if(acosdot==0||(Float.isNaN(cross.x)&&Float.isNaN(cross.y)&&Float.isNaN(cross.z))){
+			return new Vector3f((float) ((Math.cos(rotation)*calculatedradius)), 0, (float) ((Math.sin(rotation)*calculatedradius))).add(middle);
 		}else{
-			return helpmatrix.identity().rotate(new AxisAngle4f(dy, cross.x, cross.y, cross.z)).transform(new Vector3f((float) ((Math.cos(dx)*d)), 0, (float) ((Math.sin(dx)*d)))).add(middle);		
+			return helpmatrix.identity().rotate(new AxisAngle4f((float) acosdot, cross.x, cross.y, cross.z)).transform(new Vector3f((float) ((Math.cos(rotation)*calculatedradius)), 0, (float) ((Math.sin(rotation)*calculatedradius)))).add(middle);		
 		}	
 	}
 	
 	public static Vector3f getRandomPointInCircle(Random random, Vector3f middle, float radius){
-		dx = getRandomRotation(random);
-		d = (radius * Math.sqrt(random.nextDouble()));
-		return new Vector3f((float) (middle.x+(Math.cos(dx)*d)), middle.y, (float) (middle.z+(Math.sin(dx)*d)));
+		double rotation = getRandomRotation(random);
+		double calculatedradius = (radius * Math.sqrt(random.nextDouble()));
+		return new Vector3f((float) (middle.x+(Math.cos(rotation)*calculatedradius)), middle.y, (float) (middle.z+(Math.sin(rotation)*calculatedradius)));
 	}
 	
 	public static Vector3f getRandomPointInSphere(Random random, Vector3f middle, float radius){
-		dx = (float)(radius * Math.sqrt(random.nextDouble()));
-		return generateRandomUnitVector(random).mul(dx);
+		float calculatedradius = (float)(radius * Math.sqrt(random.nextDouble()));
+		return generateRandomUnitVector(random).mul(calculatedradius);
 	}
 	
-	public static float getRandomRotation(Random r){
-		return (float) (r.nextDouble() * 2 * Math.PI);
+	public static double getRandomRotation(Random r){
+		return (r.nextDouble() * 2 * Math.PI);
+	}
+	
+	public static float getRandomRotationf(Random r){
+		return (float)getRandomRotation(r);
 	}
 	
     // public static double getRelativizer(double velocity, double maxVelocity){
