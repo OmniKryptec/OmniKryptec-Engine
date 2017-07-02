@@ -1,7 +1,5 @@
 package omnikryptec.gameobject.particles;
 
-import java.util.Iterator;
-import java.util.LinkedList;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.gameobject.Entity.RenderType;
 import omnikryptec.resource.texture.ParticleAtlas;
@@ -46,10 +44,7 @@ public class AttractedParticle extends Particle {
         elapsedTime += timemultiplier;
         final Vector3f acceleration = new Vector3f(0, 0, 0);
         final Vector3f acceleration_temp = new Vector3f(0, 0, 0);
-        final LinkedList<Float[]> attractorDatas = system.getAttractorData();
-        final Iterator<Float[]> i = attractorDatas.iterator();
-        while (i.hasNext()) {
-            final Float[] attractorData = i.next();
+        for (Float[] attractorData : system.getAttractorData()) {
             if (attractorData[6] == 0.0F) {
                 acceleration_temp.x = (attractorData[0] - position.x);
                 acceleration_temp.y = (attractorData[1] - position.y);
