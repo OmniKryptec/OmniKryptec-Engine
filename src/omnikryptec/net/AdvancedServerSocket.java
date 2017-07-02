@@ -78,10 +78,6 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      */
     protected Timer timer = null;
     /**
-     * If disconnected AdvancedSockets should be deleted from the ArrayList
-     */
-    protected boolean deleteDisconnectedAdvancedSockets = true;
-    /**
      * If the AdvancedServerSocket is checking the connections
      */
     protected boolean isCheckingConnections = false;
@@ -345,9 +341,9 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
                 final AdvancedSocket socket = i.next();
                 final Instant instantNow = Instant.now();
                 if (!socket.checkConnection()) {
-                    onDisconnected(socket, instantNow);
+                    final boolean delete = onDisconnected(socket, instantNow);
                     socket.disconnect(true);
-                    if (deleteDisconnectedAdvancedSockets) {
+                    if (delete) {
                         i.remove();
                     }
                 }
@@ -412,8 +408,9 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      * Called when a connection from a socket was disconnected
      *
      * @param timestamp Timestamp
+     * @return <tt>true</tt> if disconnected AdvancedSocket should be deleted from the ArrayList
      */
-    public abstract void onDisconnected(AdvancedSocket socket, Instant timestamp);
+    public abstract boolean onDisconnected(AdvancedSocket socket, Instant timestamp);
 
     /**
      * Returns the Port
@@ -533,24 +530,6 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      */
     public final AdvancedServerSocket setConnectionCheckTimerDelay(int connectionCheckTimerDelay) {
         this.connectionCheckTimerDelay = connectionCheckTimerDelay;
-        return this;
-    }
-
-    /**
-     * Returns if disconnected AdvancedSockets should be deleted from the ArrayList
-     * @return <tt>true</tt> if disconnected AdvancedSockets should be deleted from the ArrayList
-     */
-    public final boolean isDeletingDisconnectedAdvancedSockets() {
-        return deleteDisconnectedAdvancedSockets;
-    }
-
-    /**
-     * Sets if disconnected AdvancedSockets should be deleted from the ArrayList
-     * @param deleteDisconnectedAdvancedSockets If disconnected AdvancedSockets should be deleted from the ArrayList
-     * @return A reference to this AdvancedServerSocket
-     */
-    public final AdvancedServerSocket setDeleteDisconnectedAdvancedSockets(boolean deleteDisconnectedAdvancedSockets) {
-        this.deleteDisconnectedAdvancedSockets = deleteDisconnectedAdvancedSockets;
         return this;
     }
 

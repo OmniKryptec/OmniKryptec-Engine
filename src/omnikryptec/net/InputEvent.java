@@ -20,7 +20,7 @@ public class InputEvent implements Serializable {
     /**
      * Client where the Input comes from
      */
-    private Client client;
+    private AdvancedSocket socket;
     /**
      * InputType of this Input
      */
@@ -43,12 +43,12 @@ public class InputEvent implements Serializable {
     /**
      * Creates an InputEvent with an automatically generated ID
      * @param timestamp Timestamp
-     * @param client Client where the Input comes from
+     * @param socket AdvancedSocket where the Input comes from
      * @param inputType InputType
      * @param data Data
      */
-    public InputEvent(Instant timestamp, Client client, InputType inputType, Object... data) {
-        this(Network.generateID(), timestamp, client, inputType, data);
+    public InputEvent(Instant timestamp, AdvancedSocket socket, InputType inputType, Object... data) {
+        this(Network.generateID(), timestamp, socket, inputType, data);
     }
     
     /**
@@ -66,14 +66,14 @@ public class InputEvent implements Serializable {
      * Creates an InputEvent
      * @param id (Unique) ID
      * @param timestamp Timestamp
-     * @param client Client where the Input comes from
+     * @param socket AdvancedSocket where the Input comes from
      * @param inputType InputType
      * @param data Data
      */
-    public InputEvent(long id, Instant timestamp, Client client, InputType inputType, Object... data) {
+    public InputEvent(long id, Instant timestamp, AdvancedSocket socket, InputType inputType, Object... data) {
         this.id = id;
         this.timestamp = timestamp;
-        this.client = client;
+        this.socket = socket;
         this.inputType = inputType;
         this.data = data;
     }
@@ -115,20 +115,20 @@ public class InputEvent implements Serializable {
     }
     
     /**
-     * Returns the Client
-     * @return Client
+     * Returns the AdvancedSocket
+     * @return AdvancedSocket
      */
-    public final Client getClient() {
-        return client;
+    public final AdvancedSocket getAdvancedSocket() {
+        return socket;
     }
     
     /**
-     * Sets the Client
-     * @param client Client
+     * Sets the AdvancedSocket
+     * @param socket AdvancedSocket
      * @return A reference to this InputEvent
      */
-    protected final InputEvent setClient(Client client) {
-        this.client = client;
+    protected final InputEvent setAdvancedSocket(AdvancedSocket socket) {
+        this.socket = socket;
         return this;
     }
 
