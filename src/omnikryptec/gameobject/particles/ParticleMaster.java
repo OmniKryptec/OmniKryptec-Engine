@@ -3,6 +3,7 @@ package omnikryptec.gameobject.particles;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -103,7 +104,7 @@ public class ParticleMaster implements Profilable {
     public void addParticle(Particle par) {
         list1 = particles.get(par.getParticleTexture());
         if (list1 == null) {
-            list1 = new ArrayList<Particle>(100);
+            list1 = new LinkedList<Particle>();
             particles.put(par.getParticleTexture(), list1);
         }
         list1.add(par);

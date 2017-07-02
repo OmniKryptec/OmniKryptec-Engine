@@ -2,27 +2,29 @@ package omnikryptec.gameobject.particles;
 
 import org.joml.Vector3f;
 
-import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
-
 public class ParticleSpawnArea {
 	
 	public static enum ParticleSpawnAreaType{
-		POINT, CIRCLE, SHPERE, LINE;
+		POINT, CIRCLE, SHPERE, LINE, DIRECTION;
 	}
 	
 	private float data=0;
 	private ParticleSpawnAreaType type;
-	private Vector3f direction = new Vector3f(0,1,0);
+	private final Vector3f direction = new Vector3f(0,1,0);
 	
 	public ParticleSpawnArea(ParticleSpawnAreaType type, float data){
 		this.data = data;
 		this.type = type;
 	}
 	
-	public ParticleSpawnArea(ParticleSpawnAreaType type, Vector3f offset1, float length){
+	public ParticleSpawnArea(ParticleSpawnAreaType type, Vector3f v, float length){
+		this(type, v.x, v.y, v.z, length);
+	}
+
+	
+	public ParticleSpawnArea(ParticleSpawnAreaType type, float x, float y, float z, float length){
 		this.type = type;
-		this.direction = offset1;
+		this.direction.set(x,y,z);
 		this.data = length;
 	}
 	
