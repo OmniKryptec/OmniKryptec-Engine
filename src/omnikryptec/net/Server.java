@@ -37,7 +37,7 @@ public class Server extends AdvancedServerSocket implements InputListenerManager
                 switch (event.getInputType()) {
                     case CLIENT_LOGGED_OUT:
                         if (Logger.isDebugMode()) {
-                            Logger.log("Client " + socket + " logged out!", LogLevel.FINER);
+                            Logger.log("\"" + socket + "\" logged out", LogLevel.FINER);
                         }
                         if (socket instanceof Client) {
                             final Client client = (Client) socket;
@@ -47,7 +47,7 @@ public class Server extends AdvancedServerSocket implements InputListenerManager
                         break;
                     case CLIENT_LOGGED_IN:
                         if (Logger.isDebugMode()) {
-                            Logger.log("Client " + socket + " logged in!", LogLevel.FINER);
+                            Logger.log("\"" + socket + "\" logged in", LogLevel.FINER);
                         }
                         broadcast(event, true, getRegisteredClientsAsArray());
                         if (socket instanceof Client) {
@@ -59,7 +59,7 @@ public class Server extends AdvancedServerSocket implements InputListenerManager
                         break;
                     case BROADCAST:
                         if (Logger.isDebugMode()) {
-                            Logger.log("Client " + socket + " broadcasted: " + event, LogLevel.FINER);
+                            Logger.log("\"" + socket + "\" broadcasted: " + event, LogLevel.FINER);
                         }
                         if (event.getData() == null || event.getData().length == 0 || event.getData()[0] == null || !(event.getData()[0] instanceof AdvancedSocket[])) {
                             broadcast(event, true, getRegisteredClientsAsArray());
@@ -97,7 +97,7 @@ public class Server extends AdvancedServerSocket implements InputListenerManager
         return true;
     }
 
-    private final AdvancedSocket[] getRegisteredClientsAsArray() {
+    protected final AdvancedSocket[] getRegisteredClientsAsArray() {
         return registeredClients.toArray(new AdvancedSocket[registeredClients.size()]);
     }
 

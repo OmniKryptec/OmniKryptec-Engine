@@ -2,6 +2,7 @@ package omnikryptec.net;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Arrays;
 
 /**
  * InputEvent
@@ -166,6 +167,11 @@ public class InputEvent implements Serializable {
     protected final InputEvent setData(Object[] data) {
         this.data = data;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("InputEvent ID: %d, Timestamp: %s, Sender: \"%s\", Type: %s, Data: %s", id, timestamp, socket, inputType, Arrays.toString(data));
     }
     
 }
