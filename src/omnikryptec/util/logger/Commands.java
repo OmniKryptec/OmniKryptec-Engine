@@ -2,7 +2,6 @@ package omnikryptec.util.logger;
 
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
-import omnikryptec.util.logger.LogEntry.LogLevel;
 
 /**
  *

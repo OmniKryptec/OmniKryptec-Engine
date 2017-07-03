@@ -29,7 +29,6 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.lang.ILanguage;
 import omnikryptec.util.lang.LanguageManager;
-import omnikryptec.util.logger.LogEntry.LogLevel;
 import omnikryptec.util.logger.LogEntryFormatter.LogEntryFormatTile;
 
 /**

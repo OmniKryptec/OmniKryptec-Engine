@@ -19,7 +19,6 @@ import omnikryptec.swing.JCheckBoxList;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.lang.ILanguage;
 import omnikryptec.util.lang.LanguageManager;
-import omnikryptec.util.logger.LogEntry.LogLevel;
 import omnikryptec.util.logger.LogEntryFormatter.LogEntryFormatTile;
 
 /**
@@ -93,7 +92,7 @@ public class WizardSaveAs extends javax.swing.JDialog implements ActionListener,
     private LogEntry finish() {
         try {
             file = AdvancedFile.fileOfPath(textField_center_path.getText());
-            logEntry = new LogEntry(file, Instant.now(), LogEntry.LogLevel.INPUT);
+            logEntry = new LogEntry(file, Instant.now(), LogLevel.INPUT);
             logEntry.setLogEntryFormat(getLogEntryFormat());
             folder = file.getParent();
         } catch (Exception ex) {
