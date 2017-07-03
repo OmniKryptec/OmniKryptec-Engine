@@ -106,8 +106,7 @@ public class OmniKryptecEngine implements Profilable {
     private ShutdownOption shutdownOption = ShutdownOption.JAVA;
     private boolean requestclose = false;
 
-    private double rendertime = 0;
-    private double tmptime = 0;
+
     private double frametime = 0;
 
     public OmniKryptecEngine(DisplayManager manager) {
@@ -233,10 +232,7 @@ public class OmniKryptecEngine implements Profilable {
                 if (clear) {
                     RenderUtil.clear(sceneCurrent.getClearColor());
                 }
-                tmptime = manager.getCurrentTime();
-                vertsCountCurrent = sceneCurrent.frame(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, onlyrender, AllowedRenderer.All);
-                rendertime = manager.getCurrentTime() - tmptime;
-                ParticleMaster.instance().update(getCurrentScene().getCamera());
+                vertsCountCurrent = sceneCurrent.frame(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, onlyrender, true, AllowedRenderer.All);
             }
             eventsystem.fireEvent(new Event(), EventType.RENDER_EVENT);
             scenefbo.unbindFrameBuffer();
@@ -275,7 +271,7 @@ public class OmniKryptecEngine implements Profilable {
     }
 
     public final double getRenderTimeMS() {
-        return rendertime;
+        return sceneCurrent==null?0:sceneCurrent.getFrameTimeMS();
     }
 
     public final double getFrameTimeMS() {

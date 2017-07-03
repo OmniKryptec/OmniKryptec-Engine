@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import omnikryptec.resource.model.Model;
+import omnikryptec.resource.texture.SimpleTexture;
+import omnikryptec.resource.texture.Texture;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.ArrayUtil;
 import omnikryptec.util.ArrayUtil.Filter;
@@ -18,7 +21,9 @@ import omnikryptec.util.logger.LogLevel;
  * @author Panzer1119 &amp; pcfreak9000
  */
 public class ResourceLoader implements Loader {
-
+	
+	public static final SimpleTexture MISSING_TEXTURE = SimpleTexture.newTexture("/omnikryptec/resource/loader/missing_texture.png");
+	
 //    private ExecutorService executor = null;
     private final HashMap<String, ResourceObject> loadedData = new HashMap<>();
     private final HashMap<Integer, ArrayList<AdvancedFile>> priorityStagedAdvancedFiles = new HashMap<>();
@@ -202,10 +207,15 @@ public class ResourceLoader implements Loader {
             return null;
         }
         ResourceObject data = loadedData.get(name);
-        Logger.log("FOUND: " + data + " FOR: " + name);
-        Logger.log(c + " VS " + (data == null ? "null" : data.getClass()));
+        if(Logger.isDebugMode()){
+	        Logger.log("FOUND: " + data + " FOR: " + name);
+	        Logger.log(c + " VS " + (data == null ? "null" : data.getClass()));
+        }
+        if(data == null && Texture.class.isAssignableFrom(c)){
+        	return (T) MISSING_TEXTURE;
+        }
         if (data == null || (!c.isAssignableFrom(data.getClass()) && c != data.getClass())) { //TODO Gucken ob das isAssignableFrom so richtig herum ist
-            Logger.log("BUT  NOT GOOOD!");
+            Logger.log("Wrong Class!");
             return null;
         }
         return (T) data;

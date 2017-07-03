@@ -6,10 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.gameobject.Camera;
 import omnikryptec.gameobject.gameobject.Entity;
 import omnikryptec.gameobject.gameobject.GameObject;
 import omnikryptec.gameobject.gameobject.Light;
+import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.physics.JBulletPhysicsWorld;
 import omnikryptec.physics.PhysicsWorld;
 import omnikryptec.renderer.RenderChunk;
@@ -126,9 +128,13 @@ public class Scene implements DataMapSerializable {
          doLogic();
     }
     
-    public final long frame(float maxexpenlvl, float minexplvl, boolean onlyRender, AllowedRenderer info,
+    private double rendertime = 0;
+    private double tmptime = 0;
+    
+    public final long frame(float maxexpenlvl, float minexplvl, boolean onlyRender, boolean updateparticles, AllowedRenderer info,
             Renderer... re) {
-        lights.clear();
+        tmptime = DisplayManager.instance().getCurrentTime();
+    	lights.clear();
         lights.addAll(global.getImportantLights());
         if (!onlyRender && isUsingPhysics()) {
             physicsWorld.stepSimulation();
@@ -158,13 +164,26 @@ public class Scene implements DataMapSerializable {
             }
         }
         vertcount += global.frame(maxexpenlvl, minexplvl, onlyRender, info, re);
+        rendertime = DisplayManager.instance().getCurrentTime() - tmptime;
         if (!onlyRender) {
             cam.doLogic0();
             doLogic();
         }
+        if(updateparticles){
+            ParticleMaster.instance().update(cam, onlyRender);
+        }
         return vertcount;
     }
 
+    /**
+     * without particles
+     * @return
+     */
+    public final double getFrameTimeMS(){
+    	return rendertime;
+    }
+    
+    
     /**
      * override this to do your scene logic
      */

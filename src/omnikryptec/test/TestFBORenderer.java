@@ -34,4 +34,9 @@ public class TestFBORenderer implements Renderer {
 		return 1;
 	}
 
+	@Override
+	public float priority() {
+		return -1000000000f;
+	}
+
 }

@@ -3,6 +3,7 @@ package omnikryptec.settings;
 import omnikryptec.postprocessing.main.FBOFactory;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.RenderTarget;
+import omnikryptec.util.Instance;
 
 /**
  * Game settings object
@@ -11,7 +12,7 @@ import omnikryptec.postprocessing.main.RenderTarget;
  */
 public class GameSettings {
 
-    private int initialFPSCap = -1;
+    private int initialFPSCap = Instance.DISPLAYMANAGER_DISABLE_FPS_CAP;
     /**
      * 0 means no multisampling
      */
@@ -42,7 +43,8 @@ public class GameSettings {
     private boolean forwardlight = false;
     private int max_forward_lights = 4;
     
-    private boolean enable_chunks=true;
+    
+    private boolean enable_chunks=false;
     private int maxinstancespdc = 10000;
     
     private boolean frustrumCulling=true;
@@ -130,6 +132,11 @@ public class GameSettings {
     	return enable_chunks;
     }
     
+    /**
+     * can break the use of prioritys for the renderer.
+     * @param b
+     * @return
+     */
     public final GameSettings setUseRenderChunking(boolean b){
     	this.enable_chunks = b;
     	return this;

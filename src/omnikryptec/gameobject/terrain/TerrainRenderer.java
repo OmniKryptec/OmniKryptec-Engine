@@ -96,4 +96,9 @@ public class TerrainRenderer implements Renderer {
         return 0;
     }
 
+	@Override
+	public float priority() {
+		return 0;
+	}
+
 }

@@ -13,5 +13,7 @@ public interface Renderer {
 	void cleanup();
 
 	float expensiveLevel();
-
+	
+	float priority();
+	
 }

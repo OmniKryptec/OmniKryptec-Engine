@@ -1,6 +1,7 @@
 package omnikryptec.renderer;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,9 +73,24 @@ public class RenderChunk implements DataMapSerializable {
     }
 
     private final RenderMap<Renderer, RenderMap<AdvancedModel, List<Entity>>> chunk = new RenderMap<>(Renderer.class);
+    private final List<Renderer> prios = new ArrayList<>();
     private final ArrayList<GameObject> other = new ArrayList<>();
     private final List<Light> lights = new ArrayList<>();
 
+    private static final Comparator<Renderer> priority_sorter = new Comparator<Renderer>() {
+
+		@Override
+		public int compare(Renderer o1, Renderer o2) {
+			if(o1.priority()>o2.priority()){
+				return 1;
+			}else if(o1.priority()<o2.priority()){
+				return -1;
+			}else{
+				return 0;
+			}
+		}
+	};
+    
     private Entity tmp;
     private Renderer tmpr;
     private RenderMap<AdvancedModel, List<Entity>> map;
@@ -97,6 +113,8 @@ public class RenderChunk implements DataMapSerializable {
                             if (map == null) {
                                 map = new RenderMap<>(AdvancedModel.class);
                                 chunk.put(tmpr, map);
+                                prios.add(tmpr);
+                                prios.sort(priority_sorter);
                             }
                             list = map.get(am);
                             if (list == null) {
@@ -141,6 +159,7 @@ public class RenderChunk implements DataMapSerializable {
                                     }
                                     if (map.isEmpty()) {
                                         chunk.remove(tmpr);
+                                        prios.remove(tmpr);
                                     }
                                 } else if (Logger.isDebugMode()) {
                                     Logger.log("List for Entities is null", LogLevel.WARNING);
@@ -215,7 +234,7 @@ public class RenderChunk implements DataMapSerializable {
             rend = empty_array;
         }
         vertcount = 0;
-        for (Renderer keysArray : chunk.keysArray()) {
+        for (Renderer keysArray : prios) {
             r = keysArray;
             if (r != null && r.expensiveLevel() <= maxExpenLvl && r.expensiveLevel() >= minexplvl
                     && (type == AllowedRenderer.All || (type == AllowedRenderer.OnlThis && contains(rend, r))
