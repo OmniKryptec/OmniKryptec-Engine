@@ -2,7 +2,7 @@ package omnikryptec.display;
 
 import omnikryptec.event.input.InputManager;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;

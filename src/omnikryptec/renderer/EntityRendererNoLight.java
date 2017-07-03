@@ -13,7 +13,7 @@ import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.files.EntityShader;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 
 public class EntityRendererNoLight implements Renderer {
 

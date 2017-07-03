@@ -13,21 +13,19 @@ import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.SerializationUtil;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 
 /**
  *
  * @author pcfreak9000 &amp; Panzer1119
  *
  */
-public class GameObject implements DataMapSerializable, Positionable  {
+public class GameObject implements DataMapSerializable, Positionable {
 
-
-    public static enum UpdateType{
-    	DYNAMIC, STATIC;
+    public static enum UpdateType {
+        DYNAMIC, STATIC;
     }
-	
-	
+
     private static class Sorter implements Comparator<Component> {
 
         @Override
@@ -50,19 +48,19 @@ public class GameObject implements DataMapSerializable, Positionable  {
     private RenderChunk myChunk;
     private List<Component> componentsPreLogic = null;
     private List<Component> componentsPostLogic = null;
-    
-    private final Instant ULTIMATE_IDENTIFIER = Instant.now();
-    private UpdateType uptype= UpdateType.DYNAMIC;
 
-    public GameObject setUpdateType(UpdateType t){
-    	uptype = t;
-    	return this;
+    private final Instant ULTIMATE_IDENTIFIER = Instant.now();
+    private UpdateType uptype = UpdateType.DYNAMIC;
+
+    public GameObject setUpdateType(UpdateType t) {
+        uptype = t;
+        return this;
     }
-    
-    public UpdateType getUpdateType(){
-    	return uptype;
+
+    public UpdateType getUpdateType() {
+        return uptype;
     }
-    
+
     public GameObject() {
         this("");
     }
@@ -83,7 +81,7 @@ public class GameObject implements DataMapSerializable, Positionable  {
     public GameObject(String name, GameObject parent) {
         this.name = name;
         this.parent = parent;
-        if(name != null && !name.isEmpty()) {
+        if (name != null && !name.isEmpty()) {
             gameObjects.add(this);
         }
     }
@@ -170,7 +168,7 @@ public class GameObject implements DataMapSerializable, Positionable  {
                 c.execute(this);
             }
         }
-        if (getUpdateType()==UpdateType.DYNAMIC&&!(this instanceof Camera)) {
+        if (getUpdateType() == UpdateType.DYNAMIC && !(this instanceof Camera)) {
             checkChunkPos();
         }
         return this;
@@ -476,7 +474,7 @@ public class GameObject implements DataMapSerializable, Positionable  {
     public static final <T> T byName(Class<? extends T> c, String name) {
         return byName(c, name, true);
     }
-    
+
     @Override
     public String getName() {
         return name;
@@ -500,7 +498,7 @@ public class GameObject implements DataMapSerializable, Positionable  {
             return null;
         }
         String name = data.getString("name");
-        if(name == null || name.isEmpty()) {
+        if (name == null || name.isEmpty()) {
             return null;
         }
         final GameObject gameObject = byName(GameObject.class, name, false);

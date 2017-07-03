@@ -10,7 +10,7 @@ import java.util.jar.JarFile;
 
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 
 /**
  *
@@ -101,7 +101,7 @@ public class OSUtil {
             default:
                 break;
         }
-        if(file != null) {
+        if (file != null) {
             file.setShouldBeFile(false);
         }
         return file;

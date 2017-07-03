@@ -6,7 +6,7 @@ import java.util.List;
 import omnikryptec.animation.renderer.AnimatedModelRenderer;
 import omnikryptec.util.SerializationUtil;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 
 public class RendererRegistration {
 
@@ -36,14 +36,14 @@ public class RendererRegistration {
         }
         existingRenderers.clear();
     }
-    
+
     public static Renderer byName(String name) {
         return byClass(SerializationUtil.classForName(name));
     }
-    
+
     public static Renderer byClass(Class<?> c) {
-        for(Renderer renderer : existingRenderers) {
-            if(c == renderer.getClass()) {
+        for (Renderer renderer : existingRenderers) {
+            if (c == renderer.getClass()) {
                 return renderer;
             }
         }

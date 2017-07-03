@@ -14,7 +14,7 @@ import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.util.Instance;
 import omnikryptec.util.exceptions.OmniKryptecException;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 
 public class Shader {
 

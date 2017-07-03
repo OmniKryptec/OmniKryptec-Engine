@@ -6,7 +6,7 @@ import omnikryptec.main.Scene;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 
 import org.joml.Vector3f;
 
@@ -24,8 +24,7 @@ public class AudioListenerComponent implements Component {
         boolean done = AudioManager.setBlockingComponent(this, this);
         if (Logger.isDebugMode()) {
             if (!done) {
-                Logger.log("AudioListenerComponent could not be set as the Main-AudioListenerComponent!",
-                        LogLevel.WARNING);
+                Logger.log("AudioListenerComponent could not be set as the Main-AudioListenerComponent!", LogLevel.WARNING);
             } else {
                 Logger.log("AudioListenerComponent was set as the Main-AudioListenerComponent", LogLevel.FINER);
             }

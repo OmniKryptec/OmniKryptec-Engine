@@ -15,7 +15,7 @@ import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.SerializationUtil;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 
 public class Entity extends GameObject implements DataMapSerializable, Rangeable {
 

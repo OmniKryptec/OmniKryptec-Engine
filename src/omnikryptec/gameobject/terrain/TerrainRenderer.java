@@ -15,7 +15,7 @@ import omnikryptec.util.Instance;
 import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 
 import org.joml.Vector3f;
 
@@ -60,8 +60,7 @@ public class TerrainRenderer implements Renderer {
                 if (entity instanceof Terrain) {
                     terrain = (Terrain) entity;
                 } else {
-                    Logger.log("Non-Terrain GameObject tried to be rendered as a Terrain, but it failed",
-                            LogLevel.WARNING);
+                    Logger.log("Non-Terrain GameObject tried to be rendered as a Terrain, but it failed", LogLevel.WARNING);
                     continue;
                 }
                 TerrainTexturePack texturePack = terrain.getTexturePack();

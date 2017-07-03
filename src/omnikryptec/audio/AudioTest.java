@@ -6,7 +6,7 @@ import javax.swing.Timer;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.logger.Commands;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
 import org.joml.Vector3f;

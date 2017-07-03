@@ -41,7 +41,7 @@ import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.lang.LanguageManager;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.profiler.LiveProfiler;
 import omnikryptec.util.profiler.Profiler;
 
@@ -55,7 +55,7 @@ import org.joml.Vector3f;
 public class EngineTest2 implements IEventHandler {
 
     public static void main(String[] args) {
-    	try {
+        try {
             NativesLoader.loadNatives();
             OmniKryptecEngine.addShutdownHook(() -> NativesLoader.unloadNatives());
             Logger.setMinimumLogLevel(LogLevel.FINEST);
@@ -73,7 +73,7 @@ public class EngineTest2 implements IEventHandler {
             DisplayManager.instance().setSmoothedDeltatime(true);
             DisplayManager.instance().setSmoothedFrames(1000);
             LiveProfiler liveProfiler = new LiveProfiler(750, 750);
-            liveProfiler.startTimer(1000); 
+            liveProfiler.startTimer(1000);
             //PostProcessing.instance().addStage(new
             // DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
             // DeferredLightPrepare.DEFAULT_LIGHT_PREPARE));
@@ -185,17 +185,17 @@ public class EngineTest2 implements IEventHandler {
                 }
             }
             System.out.println("Done.");
-            Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0, 1).setScale(new Vector3f(scale,scale,scale)).setUpdateType(UpdateType.STATIC).setRelativePos(0, 0, 0));
+            Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0, 1).setScale(new Vector3f(scale, scale, scale)).setUpdateType(UpdateType.STATIC).setRelativePos(0, 0, 0));
 
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
             system = new SimpleParticleSystem(0, 0, 0,
-                                              new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, true),
-                                              new Vector3f(0, 0, 0) /*Remove the Vector for AttractedPaticleSystem*/, 300f, 0,
-                                              30000f, 1f, RenderType.ALWAYS);
+                    new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, true),
+                    new Vector3f(0, 0, 0) /*Remove the Vector for AttractedPaticleSystem*/, 300f, 0,
+                    30000f, 1f, RenderType.ALWAYS);
             //system.setParent(Instance.getCurrentCamera());
-            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.SHPERE, new Vector3f(0,0,1), 200)).setDirection(new Vector3f(0, 1, 0), Math.PI/2)/*Remove setDirection for AttractedPaticleSystem*/;
+            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.SHPERE, new Vector3f(0, 0, 1), 200)).setDirection(new Vector3f(0, 1, 0), Math.PI / 2)/*Remove setDirection for AttractedPaticleSystem*/;
             system.setTimeMultiplier(1);
-            
+
             /*
             //For AttractedPaticleSystem
             system.addAttractor(system.getAbsolutePos(), 100.0F, 50.0F, false);
@@ -203,8 +203,7 @@ public class EngineTest2 implements IEventHandler {
             system.addAttractor(0, 300, 500, 200.0F, 100.0F, true);
             //system.addAttractor(-200, 300, 0, 75.0F, 50.0F, true);
             //system.addAttractor(200, 300, 0, 75.0F, 50.0F, true);
-            */
-            
+             */
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));
             //OmniKryptecEngine.instance().getCurrentScene()
@@ -243,24 +242,23 @@ public class EngineTest2 implements IEventHandler {
     private static SimpleParticleSystem system; //For SimpleParticleSystem
     //private static AttractedPaticleSystem system; //For AttractedPaticleSystem
     private Random ra = new Random();
-	private double d=0;
+    private double d = 0;
 
-    
     @Override
     public void onEvent(Event ev) {
 
         // system.generateParticles(1);
         if (ev.getType() == EventType.RENDER_EVENT) {
-           //system.setActive(ra.nextInt(100)<40);
-        	//d += 0.025*system.getTimeMultiplier();
-    		//system.setRelativePos((float)(50*Math.sin(d)), -25, (float) (50*Math.cos(d/2)));
+            //system.setActive(ra.nextInt(100)<40);
+            //d += 0.025*system.getTimeMultiplier();
+            //system.setRelativePos((float)(50*Math.sin(d)), -25, (float) (50*Math.cos(d/2)));
             //Display.setTitle("FPS: " + DisplayManager.instance().getFPS()+" / SFPS: " + DisplayManager.instance().getSmoothedFPS()+" / Vertices: "+OmniKryptecEngine.instance().getModelVertsCount()+" / PPStages: "+PostProcessing.instance().getActiveStageCount()+ " / Renderer P.: "+ParticleMaster.instance().getRenderedParticlesCount()+"  (updated P.: "+ParticleMaster.instance().getUpdatedParticlesCount()+") ");
         }
         //System.out.println("(Rendertime: "+Instance.getEngine().getRenderTimeMS()+" Particletime: "+ParticleMaster.instance().getOverallParticleTimeMS()+" PPTime: "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());
         if (ev.getType() == EventType.AFTER_FRAME) {
             //Logger.log(new Profiler().createTimesString(50, true, false));
         }        //Logger.log(new Profiler().createTimesString(50, true, false));
-        
+
         //System.out.println(DisplayManager.instance().getFPS());
         // System.out.println(DisplayManager.instance().getDeltaTime());
     }

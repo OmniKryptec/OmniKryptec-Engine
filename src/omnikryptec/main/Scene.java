@@ -21,7 +21,7 @@ import omnikryptec.util.Color;
 import omnikryptec.util.Instance;
 import omnikryptec.util.PhysicsUtil;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 
 public class Scene implements DataMapSerializable {
 
@@ -33,7 +33,7 @@ public class Scene implements DataMapSerializable {
             coz = Instance.getGameSettings().getChunkRenderOffsetZ();
     private PhysicsWorld physicsWorld = null;
     private final List<Light> lights = new ArrayList<>();
-    
+
     private RenderChunk global = new RenderChunk(0, 0, 0, this);
 
     private Color clearcolor = new Color(0, 0, 0, 0);
@@ -43,8 +43,8 @@ public class Scene implements DataMapSerializable {
     private String tmp;
     private long cx, cy, cz;
     private RenderChunk tmpc;
-    private long vertcount=0;
-    
+    private long vertcount = 0;
+
     public Scene() {
         this("", null);
     }
@@ -72,7 +72,7 @@ public class Scene implements DataMapSerializable {
                 Logger.log("A Camera should not be added as a GameObject!", LogLevel.WARNING);
                 return false;
             }
-            if (g.isGlobal()||!Instance.getGameSettings().usesRenderChunking()) {
+            if (g.isGlobal() || !Instance.getGameSettings().usesRenderChunking()) {
                 global.addGameObject(g);
                 return true;
             }
@@ -112,28 +112,28 @@ public class Scene implements DataMapSerializable {
             physicsWorld.stepSimulation();
         }
         vertcount = 0;
-        if(Instance.getGameSettings().usesRenderChunking()){
-	        cx = cam.getChunkX();
-	        cy = cam.getChunkY();
-	        cz = cam.getChunkZ();
-	        for (long x = -cox + cx; x <= cox + cx; x++) {
-	            for (long y = -coy + cy; y <= coy + cy; y++) {
-	                for (long z = -coz + cz; z <= coz + cz; z++) {
-	                    if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
-	                        lights.addAll(tmpc.getImportantLights());
-	                    }
-	                }
-	            }
-	        }
-	        for (long x = -cox + cx; x <= cox + cx; x++) {
-	            for (long y = -coy + cy; y <= coy + cy; y++) {
-	                for (long z = -coz + cz; z <= coz + cz; z++) {
-	                    if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
-	                        vertcount += tmpc.frame(maxexpenlvl, minexplvl, onlyRender, info, re);
-	                    }
-	                }
-	            }
-	        }
+        if (Instance.getGameSettings().usesRenderChunking()) {
+            cx = cam.getChunkX();
+            cy = cam.getChunkY();
+            cz = cam.getChunkZ();
+            for (long x = -cox + cx; x <= cox + cx; x++) {
+                for (long y = -coy + cy; y <= coy + cy; y++) {
+                    for (long z = -coz + cz; z <= coz + cz; z++) {
+                        if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
+                            lights.addAll(tmpc.getImportantLights());
+                        }
+                    }
+                }
+            }
+            for (long x = -cox + cx; x <= cox + cx; x++) {
+                for (long y = -coy + cy; y <= coy + cy; y++) {
+                    for (long z = -coz + cz; z <= coz + cz; z++) {
+                        if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
+                            vertcount += tmpc.frame(maxexpenlvl, minexplvl, onlyRender, info, re);
+                        }
+                    }
+                }
+            }
         }
         vertcount += global.frame(maxexpenlvl, minexplvl, onlyRender, info, re);
         if (!onlyRender) {
@@ -148,7 +148,6 @@ public class Scene implements DataMapSerializable {
      */
     protected void doLogic() {
     }
-
 
     public final List<Light> getLights() {
         return lights;
@@ -202,7 +201,7 @@ public class Scene implements DataMapSerializable {
         this.name = name;
         return this;
     }
-    
+
     public final List<Entity> getEntities() {
         final List<Entity> entities = global.getEntities();
         scene.values().stream().forEach((chunk) -> {
@@ -251,12 +250,12 @@ public class Scene implements DataMapSerializable {
             data.put("renderChunk_" + i, scene.get(g).toDataMap(new DataMap(g)));
             i++;
         }
-        */
+         */
         return data;
     }
 
     public static Scene newInstanceFromDataMap(DataMap data) {
-        if(data == null) {
+        if (data == null) {
             return null;
         }
         final Scene scene = byName(data.getString("name"));
@@ -265,17 +264,17 @@ public class Scene implements DataMapSerializable {
 
     @Override
     public Scene fromDataMap(DataMap data) {
-        if(data == null) {
+        if (data == null) {
             return this;
         }
         setName(data.getString("name"));
         DataMap dataMap_temp = data.getDataMap("camera");
-        if(dataMap_temp != null) {
-            if(cam != null) {
+        if (dataMap_temp != null) {
+            if (cam != null) {
                 cam.fromDataMap(dataMap_temp);
             } else {
                 Object temp = Camera.newInstanceFromDataMap(dataMap_temp);
-                if(temp != null && temp instanceof Camera) {
+                if (temp != null && temp instanceof Camera) {
                     setCamera((Camera) temp);
                 }
             }
@@ -285,16 +284,16 @@ public class Scene implements DataMapSerializable {
         }
         final List<Entity> entities = getEntities();
         final List<String> entityNames = data.getList("entityNames", String.class);
-        if(entityNames == null) {
+        if (entityNames == null) {
             Logger.log("Entity name list is null!", LogLevel.WARNING);
             return this;
         }
-        for(String entitiyName : entityNames) {
+        for (String entitiyName : entityNames) {
             try {
                 final Entity entity = Entity.byName(Entity.class, entitiyName, false);
-                if(entity != null) {
-                    for(Entity e : entities) {
-                        if(e.getName().equals(entity.getName())) {
+                if (entity != null) {
+                    for (Entity e : entities) {
+                        if (e.getName().equals(entity.getName())) {
                             e.setValuesFrom(entity);
                             break;
                         }
@@ -304,7 +303,7 @@ public class Scene implements DataMapSerializable {
                 } else {
                     Logger.log("Entity not found!", LogLevel.WARNING);
                 }
-            } catch(Exception ex) {
+            } catch (Exception ex) {
                 Logger.logErr("Error while adding entity: " + ex, ex);
             }
         }
@@ -337,7 +336,7 @@ public class Scene implements DataMapSerializable {
             }
             i++;
         }
-        */
+         */
         return this;
     }
 

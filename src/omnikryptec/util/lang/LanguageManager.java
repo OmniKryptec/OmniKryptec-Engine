@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 
 /**
  *

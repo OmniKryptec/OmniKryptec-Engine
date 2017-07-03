@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 
 /**
  *
@@ -119,7 +119,7 @@ public class AdvancedFile {
         resetValues();
         return new AdvancedFile(shouldBeFile, folder, getPaths());
     }
-    
+
     public final AdvancedFile copyFrom(AdvancedFile advancedFile) {
         this.file = advancedFile.file;
         this.folder = advancedFile.folder;
@@ -143,11 +143,11 @@ public class AdvancedFile {
             return new AdvancedFile(false, toFile().getAbsoluteFile());
         }
     }
-    
+
     public final AdvancedFile correctAbsoluteness() {
-        if(isIntern()) {
+        if (isIntern()) {
             final File file_temp = new File(concatSystemPath());
-            if(file_temp.isAbsolute()) {
+            if (file_temp.isAbsolute()) {
                 return copyFrom(new AdvancedFile(file_temp.getParentFile(), file_temp.getName()));
             }
         }
@@ -172,11 +172,11 @@ public class AdvancedFile {
             return this;
         }
         if (this.paths != null) {
-            for(String path_toAdd : paths) {
+            for (String path_toAdd : paths) {
                 path_toAdd = path_toAdd.replace(WINDOWS_SEPARATOR_CHAR, PATH_SEPARATOR_CHAR);
                 final String[] split = path_toAdd.split(PATH_SEPARATOR);
-                for(String g : split) {
-                    if(!g.isEmpty() || this.paths.isEmpty()) { //TODO Maybe allow always empty Strings??
+                for (String g : split) {
+                    if (!g.isEmpty() || this.paths.isEmpty()) { //TODO Maybe allow always empty Strings??
                         this.paths.add(g);
                     }
                 }
@@ -211,11 +211,11 @@ public class AdvancedFile {
         }
         if (this.paths != null) {
             final ArrayList<String> paths_new = new ArrayList<>();
-            for(String path_toAdd : paths) {
+            for (String path_toAdd : paths) {
                 path_toAdd = path_toAdd.replace(WINDOWS_SEPARATOR_CHAR, PATH_SEPARATOR_CHAR);
                 final String[] split = path_toAdd.split(PATH_SEPARATOR);
-                for(String g : split) {
-                    if(!g.isEmpty() || (this.paths.isEmpty() || !this.paths.get(0).isEmpty())) { //TODO Maybe allow always empty Strings??
+                for (String g : split) {
+                    if (!g.isEmpty() || (this.paths.isEmpty() || !this.paths.get(0).isEmpty())) { //TODO Maybe allow always empty Strings??
                         paths_new.add(g);
                     }
                 }
@@ -262,37 +262,38 @@ public class AdvancedFile {
         resetValues();
         return ((ArrayList<String>) paths.clone()).toArray(new String[paths.size()]);
     }
-    
+
     /**
      * Returns the Paths but only the given ones
+     *
      * @param max_path_count Integer Maximum number of Paths returned
      * @return String Array Paths
      */
     public final String[] getPaths(int max_path_count) {
-        if(max_path_count == 0) {
-            return new String[] {""};
-        } else if(paths.size() <= max_path_count || max_path_count == -1) {
+        if (max_path_count == 0) {
+            return new String[]{""};
+        } else if (paths.size() <= max_path_count || max_path_count == -1) {
             return getPaths();
         } else {
             return ArrayUtil.copyOf(getPaths(), max_path_count);
         }
     }
-    
+
     protected final String concatSystemPath() {
         return concatPath().replace(PATH_SEPARATOR_CHAR, SYSTEM_SEPARATOR_CHAR);
     }
-    
+
     protected final String concatPath() {
         String path_new = "";
-        for(String path_temp : paths) {
+        for (String path_temp : paths) {
             path_new += (path_temp.startsWith(separator) ? "" : separator) + path_temp;
         }
-        if(path_new.length() >= separator.length()) {
+        if (path_new.length() >= separator.length()) {
             path_new = path_new.substring(separator.length());
         }
         return path_new;
     }
-    
+
     public final String getSystemPath() {
         return getPath().replace(PATH_SEPARATOR_CHAR, SYSTEM_SEPARATOR_CHAR);
     }

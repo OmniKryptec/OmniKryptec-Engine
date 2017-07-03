@@ -2,7 +2,7 @@ package omnikryptec.util;
 
 import omnikryptec.util.OSUtil.OS;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 
 /**
  *
@@ -55,8 +55,8 @@ public class NativesLoader {
             }
             unregisterNatives();
             boolean allGood = true;
-            for(AdvancedFile av : NATIVESFOLDER.listAdvancedFiles()) {
-                if(!av.toFile().delete()) {
+            for (AdvancedFile av : NATIVESFOLDER.listAdvancedFiles()) {
+                if (!av.toFile().delete()) {
                     av.toFile().deleteOnExit();
                     allGood = false;
                 }

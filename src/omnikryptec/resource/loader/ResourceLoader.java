@@ -10,7 +10,7 @@ import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.ArrayUtil;
 import omnikryptec.util.ArrayUtil.Filter;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 
 /**
  * ResourceLoader
@@ -33,7 +33,7 @@ public class ResourceLoader implements Loader {
     }
 
     public boolean addRessourceObject(String name, ResourceObject resourceObject) {
-        if(name != null && !name.isEmpty() && resourceObject != null) {
+        if (name != null && !name.isEmpty() && resourceObject != null) {
             loadedData.put(name, resourceObject);
             return true;
         } else {
@@ -53,18 +53,18 @@ public class ResourceLoader implements Loader {
                 return true;
             } else {
                 final List<Loader> loadersForExtension = getLoaderForExtensions(advancedFile.getExtension());
-                if(loadersForExtension.isEmpty()) {
+                if (loadersForExtension.isEmpty()) {
                     Logger.log(String.format("Failed to load, no Loaders available: \"%s\"%s", advancedFile, (AdvancedFile.isEqual(advancedFile, superFile) ? "" : String.format(" (in \"%s\")", superFile))), LogLevel.WARNING);
                     return false;
                 }
                 boolean loaded = false;
                 for (Loader loader : loadersForExtension) {
                     try {
-                        if(loader.load(advancedFile, superFile, resourceLoader)) {
+                        if (loader.load(advancedFile, superFile, resourceLoader)) {
                             loaded = true;
                         }
                     } catch (Exception ex) {
-                        if(Logger.isDebugMode()) {
+                        if (Logger.isDebugMode()) {
                             Logger.logErr("Error while loading: " + ex, ex);
                         }
                     }
@@ -101,7 +101,7 @@ public class ResourceLoader implements Loader {
         }
         isLoading = false;
     }
-    
+
     public final boolean isLoading() {
         return isLoading;
     }
@@ -141,7 +141,7 @@ public class ResourceLoader implements Loader {
     }
 
     public final Loader clearLoaders() {
-        if(isLoading) {
+        if (isLoading) {
             return this;
         }
         resetValues();
@@ -220,7 +220,7 @@ public class ResourceLoader implements Loader {
         if (dataOld == null) {
             dataOld = new ArrayList<>();
         }
-        if(isLoading) {
+        if (isLoading) {
             return dataOld;
         }
         final ArrayList<T> data = dataOld;
@@ -277,11 +277,10 @@ public class ResourceLoader implements Loader {
 //        executor = Executors.newFixedThreadPool(10);
 //        return this;
 //    }
-    
     public static final ResourceLoader resourceLoader = new ResourceLoader();
-    
+
     public static final ResourceLoader getInstance() {
         return resourceLoader;
     }
-    
+
 }

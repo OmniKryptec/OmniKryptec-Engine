@@ -29,7 +29,7 @@ import omnikryptec.util.RenderUtil;
 import omnikryptec.util.error.ErrorObject;
 import omnikryptec.util.error.OmnikryptecError;
 import omnikryptec.util.logger.Commands;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.profiler.Profilable;
 import omnikryptec.util.profiler.ProfileContainer;
@@ -117,21 +117,21 @@ public class OmniKryptecEngine implements Profilable {
         if (instance != null) {
             throw new IllegalStateException("OmniKryptec-Engine was already created!");
         }
-        try{
-	        Profiler.addProfilable(this, 0);
-	        this.manager = manager;
-	        state = State.Starting;
-	        instance = this;
-	        eventsystem = EventSystem.instance();
-	        postpro = PostProcessing.instance();
-	        RenderUtil.cullBackFaces(true);
-	        RenderUtil.enableDepthTesting(true);
-	        RendererRegistration.init();
-	        createFbos();
-	        Display.show();
-	        eventsystem.fireEvent(new Event(), EventType.BOOTING_COMPLETED);
-        }catch(Exception e){
-        	errorOccured(e, "Error occured while booting.");
+        try {
+            Profiler.addProfilable(this, 0);
+            this.manager = manager;
+            state = State.Starting;
+            instance = this;
+            eventsystem = EventSystem.instance();
+            postpro = PostProcessing.instance();
+            RenderUtil.cullBackFaces(true);
+            RenderUtil.enableDepthTesting(true);
+            RendererRegistration.init();
+            createFbos();
+            Display.show();
+            eventsystem.fireEvent(new Event(), EventType.BOOTING_COMPLETED);
+        } catch (Exception e) {
+            errorOccured(e, "Error occured while booting.");
         }
     }
 
@@ -187,6 +187,7 @@ public class OmniKryptecEngine implements Profilable {
     }
 
     private final LoopObject obj = new LoopObject();
+
     public final void startLoop(ShutdownOption shutdownOption) {
         setShutdownOption(shutdownOption);
         state = State.Running;
@@ -196,22 +197,22 @@ public class OmniKryptecEngine implements Profilable {
         close(this.shutdownOption);
     }
 
-    public final LoopObject getLoopObject(){
-    	return obj;
+    public final LoopObject getLoopObject() {
+        return obj;
     }
-    
+
     public final OmniKryptecEngine requestClose() {
         return requestClose(shutdownOption);
     }
 
     public final OmniKryptecEngine frame(boolean clear, boolean onlyrender, boolean sleepwheninactive) {
         final double currentTime = manager.getCurrentTime();
-        if(state!=State.Running){
-        Logger.log("Incorrect enginestate.", LogLevel.WARNING);
-        	return this;
+        if (state != State.Running) {
+            Logger.log("Incorrect enginestate.", LogLevel.WARNING);
+            return this;
         }
         try {
-            if (!Display.isActive()&&sleepwheninactive) {
+            if (!Display.isActive() && sleepwheninactive) {
                 manager.updateDisplay();
                 try {
                     Thread.sleep(1);
@@ -297,8 +298,8 @@ public class OmniKryptecEngine implements Profilable {
     }
 
     public void errorOccured(Exception e, String text) {
-    	state = State.Error;
-    	new OmnikryptecError(e, new ErrorObject<String>(text)).print();
+        state = State.Error;
+        new OmnikryptecError(e, new ErrorObject<String>(text)).print();
         eventsystem.fireEvent(new Event(e), EventType.ERROR);
     }
 
@@ -358,11 +359,12 @@ public class OmniKryptecEngine implements Profilable {
     public ProfileContainer[] getProfiles() {
         return new ProfileContainer[]{new ProfileContainer(Profiler.OVERALL_FRAME_TIME, getFrameTimeMS()), new ProfileContainer(Profiler.SCENE_TIME, getRenderTimeMS())};
     }
-    
-    public static class LoopObject{
-    	public boolean onlyRender=false;
-    	public boolean clear=true;
-    	public boolean sleepWhenInactive=true;
+
+    public static class LoopObject {
+
+        public boolean onlyRender = false;
+        public boolean clear = true;
+        public boolean sleepWhenInactive = true;
     }
 
 }

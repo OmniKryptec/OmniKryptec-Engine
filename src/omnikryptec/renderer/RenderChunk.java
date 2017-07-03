@@ -18,12 +18,12 @@ import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.SerializationUtil;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 
 public class RenderChunk implements DataMapSerializable {
-	
-	static final int DEFAULT_CAPACITY=50;
-	
+
+    static final int DEFAULT_CAPACITY = 50;
+
     private static int WIDTH = OmniKryptecEngine.instance().getDisplayManager().getSettings().getChunkWidth();
     private static int HEIGHT = OmniKryptecEngine.instance().getDisplayManager().getSettings().getChunkHeight();
     private static int DEPTH = OmniKryptecEngine.instance().getDisplayManager().getSettings().getChunkDepth();
@@ -59,7 +59,7 @@ public class RenderChunk implements DataMapSerializable {
 
     private long x, y, z;
     private final Scene scene;
-    
+
     public RenderChunk() {
         this(0, 0, 0, null);
     }
@@ -114,7 +114,7 @@ public class RenderChunk implements DataMapSerializable {
                     Logger.log("TexturedModel is null", LogLevel.WARNING);
                 }
             } else if (g instanceof Light) {
-               lights.add((Light)g);
+                lights.add((Light) g);
             } else {
                 other.add(g);
             }
@@ -158,12 +158,12 @@ public class RenderChunk implements DataMapSerializable {
                     Logger.log("TexturedModel is null", LogLevel.WARNING);
                 }
             } else if (g instanceof Light) {
-               lights.remove((Light)g);
+                lights.remove((Light) g);
             } else {
                 other.remove(g);
             }
-            if(delete){
-            	g.deleteOperation();
+            if (delete) {
+                g.deleteOperation();
             }
         }
         return g;
@@ -188,8 +188,8 @@ public class RenderChunk implements DataMapSerializable {
     private final Renderer[] empty_array = new Renderer[]{null};
     private Renderer r;
     private GameObject g;
-    private long vertcount=0;
-    
+    private long vertcount = 0;
+
     public long frame(float maxExpenLvl, float minexplvl, boolean onlyRender, AllowedRenderer type, Renderer... rend) {
         if (rend == null || rend.length == 0) {
             rend = empty_array;
@@ -210,13 +210,13 @@ public class RenderChunk implements DataMapSerializable {
                     g.doLogic0();
                 }
             }
-            if(type == AllowedRenderer.All){
-            	lightstoreturn.clear();
-            	for(int i=0; i<lights.size(); i++){
-            		if(lights.get(i).isActive()){
-            			lightstoreturn.add(tmpl);
-            		}
-            	}
+            if (type == AllowedRenderer.All) {
+                lightstoreturn.clear();
+                for (int i = 0; i < lights.size(); i++) {
+                    if (lights.get(i).isActive()) {
+                        lightstoreturn.add(tmpl);
+                    }
+                }
             }
         }
         return vertcount;
@@ -234,21 +234,22 @@ public class RenderChunk implements DataMapSerializable {
     public Scene getScene() {
         return scene;
     }
-    
+
     //TODO seperate all lights and important lights!
     private final List<Light> lightstoreturn = new ArrayList<>();
+
     public List<Light> getImportantLights() {
         return lights;
     }
-    
+
     public List<Entity> getEntities() {
         final ArrayList<Entity> entities = new ArrayList<>();
         other.stream().filter((gameObject) -> gameObject instanceof Entity).forEach((entity) -> {
             entities.add((Entity) entity);
         });
-        for(Renderer renderer : chunk.keysArray()) {
+        for (Renderer renderer : chunk.keysArray()) {
             RenderMap<AdvancedModel, List<Entity>> temp = chunk.get(renderer);
-            for(AdvancedModel advancedModel : temp.keysArray()) {
+            for (AdvancedModel advancedModel : temp.keysArray()) {
                 entities.addAll(temp.get(advancedModel));
             }
         }
@@ -260,16 +261,16 @@ public class RenderChunk implements DataMapSerializable {
         data.put("name", getName());
         final HashMap<Class<?>, ArrayList<Entity>> classesEntities = new HashMap<>();
         final HashMap<String, ArrayList<String>> chunk_renderer_entities = new HashMap<>();
-        for(Renderer renderer : chunk.keysArray()) {
+        for (Renderer renderer : chunk.keysArray()) {
             RenderMap<AdvancedModel, List<Entity>> rendererModels = chunk.get(renderer);
-            for(AdvancedModel advancedModel : rendererModels.keysArray()) {
+            for (AdvancedModel advancedModel : rendererModels.keysArray()) {
                 final List<Entity> entities = rendererModels.get(advancedModel);
                 ArrayList<Entity> listTemp = classesEntities.get(renderer.getClass());
-                if(listTemp == null) {
+                if (listTemp == null) {
                     listTemp = new ArrayList<>();
                     classesEntities.put(renderer.getClass(), listTemp);
                 }
-                for(Entity entity : entities) {
+                for (Entity entity : entities) {
                     listTemp.add(entity);
                 }
             }
@@ -298,34 +299,34 @@ public class RenderChunk implements DataMapSerializable {
     }
 
     public static RenderChunk newInstanceFromDataMap(DataMap data) {
-        if(data == null) {
+        if (data == null) {
             return null;
         }
         return new RenderChunk().fromDataMap(data);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
     public RenderChunk fromDataMap(DataMap data) {
-        if(data == null) {
+        if (data == null) {
             return this;
         }
         Vector3f temp_v = SerializationUtil.stringToVector3f(data.getString("name"));
-        if(temp_v != null) {
+        if (temp_v != null) {
             x = (long) temp_v.x;
             y = (long) temp_v.y;
             z = (long) temp_v.z;
         }
         other.clear();
         final Map<Class, Object> other_classes_gameObjects = data.getMap("other_classes_gameObjects", Class.class, Object.class);
-        if(other_classes_gameObjects != null) {
+        if (other_classes_gameObjects != null) {
             other_classes_gameObjects.keySet().stream().forEach((c) -> {
                 final Object object = other_classes_gameObjects.get(c);
-                if(object != null && object instanceof List) {
+                if (object != null && object instanceof List) {
                     ((List) object).stream().forEach((name) -> {
                         try {
                             Object gameObject = c.getDeclaredMethod("byName", Class.class, String.class).invoke(c, "" + name);
-                            if(gameObject != null && gameObject.getClass() == c) {
+                            if (gameObject != null && gameObject.getClass() == c) {
                                 other.add((GameObject) gameObject);
                             }
                         } catch (Exception ex) {
@@ -336,21 +337,21 @@ public class RenderChunk implements DataMapSerializable {
             });
             other_classes_gameObjects.clear();
         }
-        for(Renderer renderer : chunk.keysArray()) {
+        for (Renderer renderer : chunk.keysArray()) {
             chunk.remove(renderer);
         }
         final Map<String, Object> chunk_renderer_entities = data.getMap("chunk_renderer_entities", String.class, Object.class);
-        if(chunk_renderer_entities != null) {
+        if (chunk_renderer_entities != null) {
             chunk_renderer_entities.keySet().stream().forEach((c) -> {
                 final RenderMap<AdvancedModel, List<Entity>> rendererModels = new RenderMap<>(AdvancedModel.class);
                 final Object object = chunk_renderer_entities.get(c);
-                if(object != null && object instanceof List) {
+                if (object != null && object instanceof List) {
                     ((List) object).stream().forEach((name) -> {
                         try {
                             Entity entity = GameObject.byName(Entity.class, "" + name, false);
-                            if(entity != null) {
+                            if (entity != null) {
                                 List<Entity> entities = rendererModels.get(entity.getAdvancedModel());
-                                if(entities == null) {
+                                if (entities == null) {
                                     entities = new ArrayList<>();
                                     rendererModels.put(entity.getAdvancedModel(), entities);
                                 }
@@ -361,7 +362,7 @@ public class RenderChunk implements DataMapSerializable {
                         }
                     });
                 }
-                if(!rendererModels.isEmpty()) {
+                if (!rendererModels.isEmpty()) {
                     chunk.put(RendererRegistration.byClass(SerializationUtil.classForName(c)), rendererModels);
                 }
             });

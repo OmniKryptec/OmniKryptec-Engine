@@ -19,7 +19,7 @@ import java.util.Properties;
 
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 
 /**
  *

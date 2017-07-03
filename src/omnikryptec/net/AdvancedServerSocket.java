@@ -15,7 +15,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import javax.swing.Timer;
 import omnikryptec.util.Util;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
 /**
@@ -131,7 +131,7 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
                     executorReceiver.execute(() -> {
                         synchronized (socketsAccepted) {
                             final AdvancedSocket advancedSocket = onConnected(socket, instantNow);
-                            if(advancedSocket != null) {
+                            if (advancedSocket != null) {
                                 advancedSocket.setConnectionCheckTimerDelay(-1);
                                 socketsAccepted.add(advancedSocket);
                             }
@@ -328,16 +328,17 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
             return false;
         }
     }
-    
+
     /**
      * Checks all connections to the accepted Sockets
+     *
      * @return A reference to thos AdvancedServerSocket
      */
     protected final AdvancedServerSocket checkConnections() {
         isCheckingConnections = true;
         synchronized (socketsAccepted) {
             final Iterator<AdvancedSocket> i = socketsAccepted.iterator();
-            while(i.hasNext()) {
+            while (i.hasNext()) {
                 final AdvancedSocket socket = i.next();
                 final Instant instantNow = Instant.now();
                 if (!socket.checkConnection()) {
@@ -369,21 +370,24 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
         }
         return this;
     }
-    
+
     /**
      * Broadcasts a Message to all connected AdvancedSockets
+     *
      * @param message Message to broadcast
      * @return A reference to this AdvancedServerSocket
      */
     public final AdvancedServerSocket broadcast(Object message) {
         return broadcast(message, false);
     }
-    
+
     /**
      * Broadcast a Message to all given AdvancedSockets
+     *
      * @param message Message to broadcast
      * @param sockets If the list is a white or a blacklist
-     * @param list AdvancedSockets that are allowed/denied to receive the message
+     * @param list AdvancedSockets that are allowed/denied to receive the
+     * message
      * @return A reference to this AdvancedServerSocket
      */
     public final AdvancedServerSocket broadcast(Object message, boolean whitelist, AdvancedSocket... sockets) {
@@ -444,7 +448,8 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      * Called when a connection from a socket was disconnected
      *
      * @param timestamp Timestamp
-     * @return <tt>true</tt> if disconnected AdvancedSocket should be deleted from the ArrayList
+     * @return <tt>true</tt> if disconnected AdvancedSocket should be deleted
+     * from the ArrayList
      */
     public abstract boolean onDisconnected(AdvancedSocket socket, Instant timestamp);
 
@@ -568,9 +573,10 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
         this.connectionCheckTimerDelay = connectionCheckTimerDelay;
         return this;
     }
-    
+
     /**
      * Waits until the socketsAccepted ArrayList can be used
+     *
      * @return A reference to this AdvancedServerSocket
      */
     public final AdvancedServerSocket waitForSocketsAccepted() {
@@ -589,7 +595,7 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
             checkConnections();
         }
     }
-    
+
     @Override
     public String toString() {
         return String.format("%s on Port %d, Running time: %ds, Accepted AdvancedSockets: %d, Started: %b, Stopped: %b", getClass().getSimpleName(), port, getRunningDuration().getSeconds(), socketsAccepted.size(), started, stopped);

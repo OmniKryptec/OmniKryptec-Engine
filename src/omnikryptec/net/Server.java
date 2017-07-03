@@ -6,8 +6,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import omnikryptec.util.logger.LogEntry;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
 /**
@@ -25,7 +24,7 @@ public class Server extends AdvancedServerSocket implements InputListenerManager
      * ThreadPool for processing InputEvents
      */
     private final ExecutorService executorInputProcessor = Executors.newFixedThreadPool(1);
-    
+
     public Server(int port, int threadPoolSize) {
         super(port, threadPoolSize);
     }
@@ -97,7 +96,7 @@ public class Server extends AdvancedServerSocket implements InputListenerManager
         }
         return true;
     }
-    
+
     private final AdvancedSocket[] getRegisteredClientsAsArray() {
         return registeredClients.toArray(new AdvancedSocket[registeredClients.size()]);
     }

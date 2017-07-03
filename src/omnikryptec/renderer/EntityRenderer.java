@@ -24,7 +24,7 @@ import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.Instance;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 
 public class EntityRenderer implements Renderer {
 
@@ -37,8 +37,8 @@ public class EntityRenderer implements Renderer {
         RendererRegistration.register(this);
         shader = new EntityLightShader();
     }
-    
-    public EntityRenderer(AdvancedFile vertexshader, AdvancedFile fragmentshader){
+
+    public EntityRenderer(AdvancedFile vertexshader, AdvancedFile fragmentshader) {
         RendererRegistration.register(this);
         shader = new EntityLightShader(vertexshader, fragmentshader);
     }
@@ -149,7 +149,7 @@ public class EntityRenderer implements Renderer {
                 if (!onlyRender) {
                     entity.doLogic0();
                 }
-                if (FrustrumFilter.intersects(entity)&&RenderUtil.inRenderRange(entity, s.getCamera())) {
+                if (FrustrumFilter.intersects(entity) && RenderUtil.inRenderRange(entity, s.getCamera())) {
                     updateArray(entity.getTransformationMatrix(), entity.getColor(), array);
                     count++;
                 }

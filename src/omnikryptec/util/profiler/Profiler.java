@@ -7,7 +7,7 @@ import java.util.List;
 import omnikryptec.util.Util;
 import omnikryptec.util.error.ErrorItem;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogEntry.LogLevel;
+import omnikryptec.util.logger.LogLevel;
 
 public class Profiler implements ErrorItem{
 
