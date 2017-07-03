@@ -124,6 +124,15 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
     protected Instant lastPong = null;
 
     /**
+     * Creates an AdvancedSocket from a Socket with the standard Client ThreadPool size
+     *
+     * @param socket Socket
+     */
+    public AdvancedSocket(Socket socket) {
+        this(socket, Network.THREADPOOL_SIZE_CLIENT_STANDARD);
+    }
+    
+    /**
      * Creates an AdvancedSocket from a Socket
      *
      * @param socket Socket
@@ -133,6 +142,16 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
         this.threadPoolSize = Math.min(threadPoolSize, Network.THREADPOOL_SIZE_CLIENT_MAX);
         init();
         setSocket(socket);
+    }
+
+    /**
+     * Creates an AdvancedSocket with the standard Client ThreadPool size
+     *
+     * @param inetAddress InetAddress
+     * @param port Port
+     */
+    public AdvancedSocket(InetAddress inetAddress, int port) {
+        this(inetAddress, port, Network.THREADPOOL_SIZE_CLIENT_STANDARD);
     }
 
     /**

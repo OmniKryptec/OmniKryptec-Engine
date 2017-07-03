@@ -28,6 +28,15 @@ public class Client extends AdvancedSocket implements InputListenerManager, Seri
     private final ExecutorService executorInputProcessor = Executors.newFixedThreadPool(1);
 
     /**
+     * Creates a Client from a Socket with the standard Client ThreadPool size
+     *
+     * @param socket Socket
+     */
+    public Client(Socket socket) {
+        super(socket);
+    }
+    
+    /**
      * Creates a Client from a Socket
      *
      * @param socket Socket
@@ -35,6 +44,16 @@ public class Client extends AdvancedSocket implements InputListenerManager, Seri
      */
     public Client(Socket socket, int threadPoolSize) {
         super(socket, threadPoolSize);
+    }
+
+    /**
+     * Creates a Client with the standard Client ThreadPool size
+     *
+     * @param inetAddress InetAddress
+     * @param port Port
+     */
+    public Client(InetAddress inetAddress, int port) {
+        super(inetAddress, port);
     }
 
     /**

@@ -1,6 +1,7 @@
 package omnikryptec.net;
 
 import java.io.Serializable;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -25,6 +26,40 @@ public class Server extends AdvancedServerSocket implements InputListenerManager
      */
     private final ExecutorService executorInputProcessor = Executors.newFixedThreadPool(1);
 
+    /**
+     * Creates a Server from a ServerSocket with the standard Server ThreadPool size
+     *
+     * @param serverSocket ServerSocket
+     */
+    public Server(ServerSocket serverSocket) {
+        super(serverSocket);
+    }
+
+    /**
+     * Creates a Server from a ServerSocket
+     *
+     * @param serverSocket ServerSocket
+     * @param threadPoolSize ThreadPool size
+     */
+    public Server(ServerSocket serverSocket, int threadPoolSize) {
+        super(serverSocket, threadPoolSize);
+    }
+
+    /**
+     * Creates a Server with the standard Server ThreadPool size
+     *
+     * @param port Port
+     */
+    public Server(int port) {
+        super(port);
+    }
+
+    /**
+     * Creates a Server
+     *
+     * @param port Port
+     * @param threadPoolSize ThreadPool size
+     */
     public Server(int port, int threadPoolSize) {
         super(port, threadPoolSize);
     }
@@ -97,6 +132,10 @@ public class Server extends AdvancedServerSocket implements InputListenerManager
         return true;
     }
 
+    /**
+     * Returns all to this Server registered Clients
+     * @return Registered Clients
+     */
     protected final AdvancedSocket[] getRegisteredClientsAsArray() {
         return registeredClients.toArray(new AdvancedSocket[registeredClients.size()]);
     }

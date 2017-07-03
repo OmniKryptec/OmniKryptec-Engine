@@ -81,6 +81,15 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      * If the AdvancedServerSocket is checking the connections
      */
     protected boolean isCheckingConnections = false;
+    
+    /**
+     * Creates an AdvancedServerSocket from a ServerSocket with the standard Server ThreadPool size
+     *
+     * @param serverSocket ServerSocket
+     */
+    public AdvancedServerSocket(ServerSocket serverSocket) {
+        this(serverSocket, Network.THREADPOOL_SIZE_SERVER_STANDARD);
+    }
 
     /**
      * Creates an AdvancedServerSocket from a ServerSocket
@@ -92,6 +101,15 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
         this.threadPoolSize = Math.min(threadPoolSize, Network.THREADPOOL_SIZE_SERVER_MAX);
         init();
         setServerSocket(serverSocket);
+    }
+
+    /**
+     * Creates an AdvancedServerSocket with the standard Server ThreadPool size
+     *
+     * @param port Port
+     */
+    public AdvancedServerSocket(int port) {
+        this(port, Network.THREADPOOL_SIZE_SERVER_STANDARD);
     }
 
     /**

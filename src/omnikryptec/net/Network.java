@@ -42,11 +42,19 @@ public class Network {
     /**
      * Maximum number of Threads in a Client ThreadPool
      */
-    public static final int THREADPOOL_SIZE_CLIENT_MAX = 10;
+    public static final int THREADPOOL_SIZE_CLIENT_MAX = 15;
+    /**
+     * Standard number of Threads in a Client ThreadPool
+     */
+    public static final int THREADPOOL_SIZE_CLIENT_STANDARD = 7;
     /**
      * Maximum number of Threads in a Server
      */
-    public static final int THREADPOOL_SIZE_SERVER_MAX = 10;
+    public static final int THREADPOOL_SIZE_SERVER_MAX = 15;
+    /**
+     * Standard number of Threads in a Server
+     */
+    public static final int THREADPOOL_SIZE_SERVER_STANDARD = 7;
 
     /**
      * Milliseconds to wait between each time a Stream is null
