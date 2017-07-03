@@ -214,6 +214,7 @@ public class EngineTest2 implements IEventHandler {
             //system.addAttractor(-200, 300, 0, 75.0F, 50.0F, true);
             //system.addAttractor(200, 300, 0, 75.0F, 50.0F, true);
             
+            
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));
             //OmniKryptecEngine.instance().getCurrentScene()
@@ -260,7 +261,11 @@ public class EngineTest2 implements IEventHandler {
 
         // system.generateParticles(1);
         if (ev.getType() == EventType.RENDER_EVENT) {
-           //system.setActive(ra.nextInt(100)<40);
+        	if((Instance.getDisplayManager().getFramecount())%100==0){
+        		attractor.setEnabled(!attractor.isEnabled());
+        	}
+        	//attractor.setAcceleration((float) (100*Math.sin(DisplayManager.instance().getCurrentTime()*10)));
+        	//system.setActive(ra.nextInt(100)<40);
         	//d += 0.025*system.getTimeMultiplier();
     		//system.setRelativePos((float)(50*Math.sin(d)), -25, (float) (50*Math.cos(d/2)));
             //Display.setTitle("FPS: " + DisplayManager.instance().getFPS()+" / SFPS: " + DisplayManager.instance().getSmoothedFPS()+" / Vertices: "+OmniKryptecEngine.instance().getModelVertsCount()+" / PPStages: "+PostProcessing.instance().getActiveStageCount()+ " / Renderer P.: "+ParticleMaster.instance().getRenderedParticlesCount()+"  (updated P.: "+ParticleMaster.instance().getUpdatedParticlesCount()+") ");
