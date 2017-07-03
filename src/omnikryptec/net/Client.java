@@ -1,5 +1,6 @@
 package omnikryptec.net;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.time.Duration;
@@ -15,7 +16,7 @@ import omnikryptec.util.logger.Logger;
  *
  * @author Panzer1119
  */
-public class Client extends AdvancedSocket implements InputListenerManager {
+public class Client extends AdvancedSocket implements InputListenerManager, Serializable {
 
     /**
      * HashMap that is used to wait for answers

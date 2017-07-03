@@ -369,6 +369,42 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
         }
         return this;
     }
+    
+    /**
+     * Broadcasts a Message to all connected AdvancedSockets
+     * @param message Message to broadcast
+     * @return A reference to this AdvancedServerSocket
+     */
+    public final AdvancedServerSocket broadcast(Object message) {
+        return broadcast(message, false);
+    }
+    
+    /**
+     * Broadcast a Message to all given AdvancedSockets
+     * @param message Message to broadcast
+     * @param sockets If the list is a white or a blacklist
+     * @param list AdvancedSockets that are allowed/denied to receive the message
+     * @return A reference to this AdvancedServerSocket
+     */
+    public final AdvancedServerSocket broadcast(Object message, boolean whitelist, AdvancedSocket... sockets) {
+        if (sockets == null || sockets.length == 0) {
+            socketsAccepted.stream().forEach((socket) -> {
+                socket.send(message);
+            });
+        } else {
+            socketsAccepted.stream().filter((socket) -> {
+                for (AdvancedSocket s : sockets) {
+                    if (socket == s) {
+                        return whitelist;
+                    }
+                }
+                return !whitelist;
+            }).forEach((socket) -> {
+                socket.send(message);
+            });
+        }
+        return this;
+    }
 
     /**
      * Processes Inputs from sockets
@@ -532,12 +568,31 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
         this.connectionCheckTimerDelay = connectionCheckTimerDelay;
         return this;
     }
+    
+    /**
+     * Waits until the socketsAccepted ArrayList can be used
+     * @return A reference to this AdvancedServerSocket
+     */
+    public final AdvancedServerSocket waitForSocketsAccepted() {
+        while (isCheckingConnections) {
+            try {
+                Thread.sleep(1);
+            } catch (Exception ex) {
+            }
+        }
+        return this;
+    }
 
     @Override
     public final void actionPerformed(ActionEvent e) {
         if (e.getSource() == timer) {
             checkConnections();
         }
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("%s on Port %d, Running time: %ds, Accepted AdvancedSockets: %d, Started: %b, Stopped: %b", getClass().getSimpleName(), port, getRunningDuration().getSeconds(), socketsAccepted.size(), started, stopped);
     }
 
 }

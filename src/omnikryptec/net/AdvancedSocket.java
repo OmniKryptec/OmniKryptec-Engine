@@ -922,4 +922,9 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
         }
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s to %s, Running time: %ds, Connected: %b, Disconnected: %b", getClass().getSimpleName(), formatAddressAndPort(), getConnectionDuration().getSeconds(), connected, disconnected);
+    }
+
 }

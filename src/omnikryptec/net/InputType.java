@@ -11,7 +11,8 @@ public enum InputType implements Serializable {
     CLIENT_LOGGED_IN        (1),
     CLIENT_LOGGED_OUT       (2),
     ANSWER                  (3),
-    RAW_MESSAGE_RECEIVED    (4);
+    RAW_MESSAGE_RECEIVED    (4),
+    BROADCAST               (5);
     
     /**
      * Value to serialize
