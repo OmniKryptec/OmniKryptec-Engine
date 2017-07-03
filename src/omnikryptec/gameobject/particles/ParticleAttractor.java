@@ -6,9 +6,15 @@ import omnikryptec.gameobject.gameobject.GameObject;
 
 public class ParticleAttractor {
 	
+	public static enum AttractorMode{
+		KILL_ON_REACH, STOP_FOREVER_ON_REACH, STOP_UNTIL_DISABLED_ON_REACH, STOP_ON_REACH, NOTHING;
+	}
+	
 	protected float acceleration=0, tolerance=0;
-	protected boolean dieOnReach=false, infinite=true;
+	protected boolean infinite=false;
 	protected GameObject positionable;
+	protected AttractorMode mode = AttractorMode.NOTHING;
+	protected boolean enabled=true;
 	
 	public ParticleAttractor(GameObject p){
 		this.positionable = p;
@@ -36,12 +42,12 @@ public class ParticleAttractor {
 		return this;
 	}
 	
-	public boolean isDieOnReach() {
-		return dieOnReach;
+	public AttractorMode getMode(){
+		return this.mode;
 	}
 	
-	public ParticleAttractor setDieOnReach(boolean dieOnReach) {
-		this.dieOnReach = dieOnReach;
+	public ParticleAttractor setMode(AttractorMode mode) {
+		this.mode = mode;
 		return this;
 	}
 	
@@ -58,9 +64,22 @@ public class ParticleAttractor {
 		return positionable;
 	}
 	
+	public ParticleAttractor setAttractor(GameObject go){
+		this.positionable = go;
+		return this;
+	}
+	
 	public Vector3f getAbsolutePos(){
 		return positionable.getAbsolutePos();
 	}
 	
+	public ParticleAttractor setEnabled(boolean b){
+		this.enabled = b;
+		return this;
+	}
+	
+	public boolean isEnabled(){
+		return this.enabled;
+	}
 	
 }

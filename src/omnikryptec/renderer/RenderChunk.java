@@ -185,6 +185,26 @@ public class RenderChunk implements DataMapSerializable {
         All, EvElse, OnlThis;
     }
 
+    private RenderMap<AdvancedModel, List<Entity>> tmpmap;
+    private List<Entity> tmplist;
+	public void onlyLogic() {
+		for(int i=0; i<chunk.keysArray().length; i++){
+			tmpmap = chunk.get(chunk.keysArray()[i]);
+			for(int j=0; j<tmpmap.keysArray().length; j++){
+				tmplist = tmpmap.get(tmpmap.keysArray()[j]);
+				for(int k=0; k<tmplist.size(); k++){
+					tmplist.get(i).doLogic0();
+				}
+			}
+		}
+		for(int i=0; i<other.size(); i++){
+			other.get(i).doLogic0();
+		}
+		for(int i=0; i<lights.size(); i++){
+			lights.get(i).doLogic0();
+		}
+	}
+    
     private final Renderer[] empty_array = new Renderer[]{null};
     private Renderer r;
     private GameObject g;
@@ -375,5 +395,7 @@ public class RenderChunk implements DataMapSerializable {
     public String getName() {
         return SerializationUtil.vector3fToString(new Vector3f(x, y, z));
     }
+
+
 
 }

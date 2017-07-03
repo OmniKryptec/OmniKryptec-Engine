@@ -19,13 +19,16 @@ public class SimpleParticleSystem extends ParticleSystem {
 	 */
 	protected Vector3f direction, force;
 	protected double directionAngel = 0;
-	private RenderType type = RenderType.MEDIUM;
+	protected RenderType type = RenderType.MEDIUM;
 
 	protected float lifelengthsystem = -1;
 	protected float elapsedtime = 0;
 
 	protected ParticleAtlas particletexture;
 	protected ParticleSpawnArea spawnarea = new ParticleSpawnArea(ParticleSpawnAreaType.POINT, 0);
+	
+	protected SimpleParticleSystem(){
+	}
 	
 	public SimpleParticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float speed, float lifeLength, float scale,
 			RenderType type) {
@@ -66,7 +69,7 @@ public class SimpleParticleSystem extends ParticleSystem {
 	 *            - A value between 0 and 1 indicating how far from the chosen
 	 *            direction particles can deviate.
 	 */
-	public SimpleParticleSystem setDirection(Vector3f direction, double angel) {
+	public SimpleParticleSystem setCone(Vector3f direction, double angel) {
 		this.direction = new Vector3f(direction);
 		this.directionAngel = angel;
 		return this;
@@ -124,7 +127,7 @@ public class SimpleParticleSystem extends ParticleSystem {
 	}
 	
 	
-	private static float delta, particlesToCreate, partialParticle;
+	private static float particlesToCreate, partialParticle;
 	private static int count;
 	private static Vector3f pos;
 	/**
@@ -133,8 +136,7 @@ public class SimpleParticleSystem extends ParticleSystem {
 	private float lastParticlef = 0;
 
 	public SimpleParticleSystem generateParticles(float timemultiplier) {
-		delta = DisplayManager.instance().getDeltaTimef() * timemultiplier;
-		particlesToCreate = particlepersec * delta;
+		particlesToCreate = particlepersec * getScaledDeltatime();
 		if (particlesToCreate < 1f) {
 			lastParticlef += particlesToCreate;
 			if (lastParticlef >= 1f) {
@@ -154,7 +156,7 @@ public class SimpleParticleSystem extends ParticleSystem {
 		return this;
 	}
 
-	private void emitAndAdd(Vector3f center){
+	protected void emitAndAdd(Vector3f center){
 		ParticleMaster.instance().addParticle(emitParticle(center));
 	}
 	

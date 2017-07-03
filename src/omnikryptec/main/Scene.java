@@ -104,6 +104,28 @@ public class Scene implements DataMapSerializable {
         return g;
     }
 
+    public final void onlyLogic(){
+         physicsWorld.stepSimulation();
+         
+         if(Instance.getGameSettings().usesRenderChunking()){
+ 	        cx = cam.getChunkX();
+ 	        cy = cam.getChunkY();
+ 	        cz = cam.getChunkZ();
+ 	        for (long x = -cox + cx; x <= cox + cx; x++) {
+ 	            for (long y = -coy + cy; y <= coy + cy; y++) {
+ 	                for (long z = -coz + cz; z <= coz + cz; z++) {
+ 	                    if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
+ 	                        tmpc.onlyLogic();
+ 	                    }
+ 	                }
+ 	            }
+ 	        }
+         }
+         global.onlyLogic();
+         cam.doLogic0();
+         doLogic();
+    }
+    
     public final long frame(float maxexpenlvl, float minexplvl, boolean onlyRender, AllowedRenderer info,
             Renderer... re) {
         lights.clear();

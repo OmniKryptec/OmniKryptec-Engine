@@ -9,9 +9,20 @@ import omnikryptec.util.Maths;
 
 public class ParticleSystem extends GameObject{
 	
+	/**
+	 * maybe not supported by all ParticleSystems
+	 */
+	public static final float LIFELENGTH_NEVER_DIE=-2;
+	/**
+	 * maybe not supported by all ParticleSystems
+	 */
+	public static final float LIFELENGTH_DIE_ONLY_IN_ATTRACTOR=-1;
+	
 	protected float timemultiplier=1;
 	protected Random random = new Random();
-
+	
+	
+	
 	
 	public ParticleSystem setTimeMultiplier(float f){
 		this.timemultiplier = f;

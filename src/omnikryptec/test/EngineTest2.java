@@ -18,6 +18,8 @@ import omnikryptec.gameobject.gameobject.Entity.RenderType;
 import omnikryptec.gameobject.gameobject.GameObject.UpdateType;
 import omnikryptec.gameobject.particles.AttractedPaticleSystem;
 import omnikryptec.gameobject.particles.Particle;
+import omnikryptec.gameobject.particles.ParticleAttractor;
+import omnikryptec.gameobject.particles.ParticleAttractor.AttractorMode;
 import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.gameobject.particles.ParticleSpawnArea;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
@@ -173,37 +175,45 @@ public class EngineTest2 implements IEventHandler {
 //               e.setRelativePos(r.nextInt(100) - 50, r.nextInt(100) - 50, r.nextInt(100) - 50);
 //                OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 //            }
+            system = new AttractedPaticleSystem(0, 0, 0,
+                    new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false),
+                   300f, 0, 30000f, 1f, RenderType.ALWAYS);
+
             System.out.println("Generating objs...");
-            int cube = 0;
+            int cube =0;
             int abstand = 10;
             float scale = 2;
             for (int x = -cube; x < cube; x += abstand) {
                 for (int y = -cube; y < cube; y += abstand) {
                     for (int z = -cube; z < cube; z += abstand) {
-                        Instance.getCurrentScene().addGameObject(new Entity(tm).setScale(new Vector3f(scale, scale, scale)).setUpdateType(UpdateType.STATIC).setRelativePos(x, y, z));
+                    	GameObject go;
+                    	//go = new GameObject().setRelativePos(x, y, z);
+                    	go = new Entity(tm).setScale(new Vector3f(scale, scale, scale)).setUpdateType(UpdateType.STATIC).setRelativePos(x, y, z);
+                        Instance.getCurrentScene().addGameObject(go);
+                        //system.addAttractor(new ParticleAttractor(go).setAcceleration(10).setMode(AttractorMode.KILL_ON_REACH).setTolerance(5));
                     }
                 }
             }
             System.out.println("Done.");
-            Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0, 1).setScale(new Vector3f(scale, scale, scale)).setUpdateType(UpdateType.STATIC).setRelativePos(0, 0, 0));
+           // Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0, 1).setScale(new Vector3f(scale,scale,scale)).setUpdateType(UpdateType.STATIC).setRelativePos(0, 0, 0));
 
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
-            system = new SimpleParticleSystem(0, 0, 0,
-                    new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, true),
-                    new Vector3f(0, 0, 0) /*Remove the Vector for AttractedPaticleSystem*/, 300f, 0,
-                    30000f, 1f, RenderType.ALWAYS);
+           
             //system.setParent(Instance.getCurrentCamera());
-            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.SHPERE, new Vector3f(0, 0, 1), 200)).setDirection(new Vector3f(0, 1, 0), Math.PI / 2)/*Remove setDirection for AttractedPaticleSystem*/;
+            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.SHPERE, new Vector3f(0,0.5f,0.5f), 100));
             system.setTimeMultiplier(1);
-
-            /*
+            //system.setSystemLifeLength(20);
             //For AttractedPaticleSystem
-            system.addAttractor(system.getAbsolutePos(), 100.0F, 50.0F, false);
-            system.addAttractor(0, 400, 0, 100.0F, 50.0F, false);
-            system.addAttractor(0, 300, 500, 200.0F, 100.0F, true);
+            system.addAttractor(100,500,0, 5.0F, 50F, AttractorMode.STOP_FOREVER_ON_REACH);
+            system.addAttractor(-100,500,0, 5.0F, 50F, AttractorMode.STOP_FOREVER_ON_REACH);
+            system.addAttractor(attractor=new ParticleAttractor(0,0,0).setAcceleration(11.0F).setTolerance(50F).setMode(AttractorMode.STOP_UNTIL_DISABLED_ON_REACH));
+           // system.addAttractor(-250, 0, -250, 10.0F, 50F, AttractorMode.STOP_FOREVER_ON_REACH);
+            //system.addAttractor(0, 0, 500, 10.0F, 50F, AttractorMode.STOP_FOREVER_ON_REACH);
+            //system.addAttractor(attractor = new ParticleAttractor(system).setAcceleration(0).setTolerance(25).setMode(AttractorMode.NOTHING));
+            //system.addAttractor(0, 300, 500, 200.0F, 100.0F, false);
             //system.addAttractor(-200, 300, 0, 75.0F, 50.0F, true);
             //system.addAttractor(200, 300, 0, 75.0F, 50.0F, true);
-             */
+            
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));
             //OmniKryptecEngine.instance().getCurrentScene()
@@ -230,7 +240,8 @@ public class EngineTest2 implements IEventHandler {
     }
 
     private static float v = 100;
-
+   private static ParticleAttractor attractor;
+    
     private static void doCameraLogic(Camera camera) {
         // v += DisplayManager.instance().getDeltaTime()*30;
         InputManager.doFirstPersonController(camera, DisplayManager.instance().getSettings().getKeySettings(), v, v, 40, false);
@@ -239,7 +250,7 @@ public class EngineTest2 implements IEventHandler {
         Logger.CONSOLE.setTitle(camera.toString());
     }
 
-    private static SimpleParticleSystem system; //For SimpleParticleSystem
+    private static AttractedPaticleSystem system; //For SimpleParticleSystem
     //private static AttractedPaticleSystem system; //For AttractedPaticleSystem
     private Random ra = new Random();
     private double d = 0;
@@ -249,9 +260,9 @@ public class EngineTest2 implements IEventHandler {
 
         // system.generateParticles(1);
         if (ev.getType() == EventType.RENDER_EVENT) {
-            //system.setActive(ra.nextInt(100)<40);
-            //d += 0.025*system.getTimeMultiplier();
-            //system.setRelativePos((float)(50*Math.sin(d)), -25, (float) (50*Math.cos(d/2)));
+           //system.setActive(ra.nextInt(100)<40);
+        	//d += 0.025*system.getTimeMultiplier();
+    		//system.setRelativePos((float)(50*Math.sin(d)), -25, (float) (50*Math.cos(d/2)));
             //Display.setTitle("FPS: " + DisplayManager.instance().getFPS()+" / SFPS: " + DisplayManager.instance().getSmoothedFPS()+" / Vertices: "+OmniKryptecEngine.instance().getModelVertsCount()+" / PPStages: "+PostProcessing.instance().getActiveStageCount()+ " / Renderer P.: "+ParticleMaster.instance().getRenderedParticlesCount()+"  (updated P.: "+ParticleMaster.instance().getUpdatedParticlesCount()+") ");
         }
         //System.out.println("(Rendertime: "+Instance.getEngine().getRenderTimeMS()+" Particletime: "+ParticleMaster.instance().getOverallParticleTimeMS()+" PPTime: "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());
