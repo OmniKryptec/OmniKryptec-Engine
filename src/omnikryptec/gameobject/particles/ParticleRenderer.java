@@ -158,8 +158,4 @@ public class ParticleRenderer {
 		vboData[pointer++] = matrix.m33();
 	}
 
-	protected void cleanUp() {
-		shader.cleanup();
-	}
-
 }

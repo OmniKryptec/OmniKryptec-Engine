@@ -69,33 +69,7 @@ public class Maths {
     }
 
     public static Matrix4f setPerspectiveProjection(float fovdeg, float far, float near, float width, float height) {
-       float aspectRatio = width / height;
-       return new Matrix4f().setPerspective((float) Math.toRadians(fovdeg), aspectRatio, near, far);
-//    	Matrix4f projectionMatrix = new Matrix4f();
-//    	 
-//        float aspectRatio = width / height;
-// 
-//        float y_scale = (float) ((1f / Math.tan(Math.toRadians(fovdeg / 2f))));
-// 
-//        float x_scale = y_scale / aspectRatio;
-// 
-//        float frustum_length = far - near;
-// 
-//
-// 
-//        projectionMatrix.m00( x_scale);
-// 
-//        projectionMatrix.m11 ( y_scale);
-// 
-//        projectionMatrix.m22 ( -((far + near) / frustum_length));
-// 
-//        projectionMatrix.m23 ( -1);
-// 
-//        projectionMatrix.m32 ( -((2 * near * far) / frustum_length));
-// 
-//        projectionMatrix.m33 (0);
-// 
-//        return projectionMatrix;
+       return new Matrix4f().setPerspective((float) Math.toRadians(fovdeg), width/height, near, far);
     }
 
     public static Matrix4f setOrthographicProjection(float left, float right, float bottom, float top, float near,
@@ -112,10 +86,18 @@ public class Maths {
         return setOrthographicProjection(x, x + width, y, y + height, near, far);
     }
 
+    public static boolean fastEquals2f(Vector2f one, Vector2f sec){
+    	return one != null && sec != null && one.x == sec.x && one.y == sec.y;
+    }
+    
     public static boolean fastEquals3f(Vector3f one, Vector3f sec) {
         return one != null && sec != null && one.x == sec.x && one.y == sec.y && one.z == sec.z;
     }
 
+    public static boolean fastEquals4f(Vector4f one, Vector4f sec){
+    	return one != null && sec != null && one.x == sec.x && one.y == sec.y && one.z == sec.z && one.w == sec.w;
+    }
+    
     public static final float[] intArrayToFloatArray(int[] input) {
         final float[] output = new float[input.length];
         for (int i = 0; i < output.length; i++) {
@@ -237,14 +219,4 @@ public class Maths {
 	public static float getRandomRotationf(Random r){
 		return (float)getRandomRotation(r);
 	}
-	
-    // public static double getRelativizer(double velocity, double maxVelocity){
-    // if(velocity>maxVelocity){
-    // velocity = maxVelocity;
-    // }
-    // if(velocity<0){
-    // velocity = 0;
-    // }
-    // return Math.sqrt(1- (velocity*velocity)/(maxVelocity*maxVelocity));
-    // }
 }

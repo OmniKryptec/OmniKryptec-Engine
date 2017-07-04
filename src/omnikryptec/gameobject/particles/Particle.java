@@ -6,7 +6,7 @@ import omnikryptec.gameobject.gameobject.Rangeable;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import omnikryptec.gameobject.gameobject.Entity.RenderType;
+import omnikryptec.gameobject.gameobject.RenderType;
 import omnikryptec.resource.texture.ParticleAtlas;
 
 public class Particle implements Rangeable{

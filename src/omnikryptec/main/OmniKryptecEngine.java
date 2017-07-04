@@ -24,6 +24,7 @@ import omnikryptec.renderer.RenderChunk.AllowedRenderer;
 import omnikryptec.resource.model.VertexArrayObject;
 import omnikryptec.resource.model.VertexBufferObject;
 import omnikryptec.resource.texture.SimpleTexture;
+import omnikryptec.shader.base.Shader;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.error.ErrorObject;
@@ -72,9 +73,7 @@ public class OmniKryptecEngine implements Profilable {
         // TODO say that this is a library?
     }
 
-    public static enum State {
-        Starting, Running, Error, Stopping, Stopped;
-    }
+
 
     public static enum ShutdownOption {
         JAVA(2), ENGINE(1), NOTHING(0);
@@ -90,9 +89,9 @@ public class OmniKryptecEngine implements Profilable {
         }
     }
 
-    private State state = State.Stopped;
+    private GameState state = GameState.Stopped;
 
-    public State getState() {
+    public GameState getState() {
         return state;
     }
 
@@ -105,8 +104,8 @@ public class OmniKryptecEngine implements Profilable {
 
     private ShutdownOption shutdownOption = ShutdownOption.JAVA;
     private boolean requestclose = false;
-
-
+    private boolean debugMode=false;
+    
     private double frametime = 0;
 
     public OmniKryptecEngine(DisplayManager manager) {
@@ -119,7 +118,7 @@ public class OmniKryptecEngine implements Profilable {
         try {
             Profiler.addProfilable(this, 0);
             this.manager = manager;
-            state = State.Starting;
+            state = GameState.Starting;
             instance = this;
             eventsystem = EventSystem.instance();
             postpro = PostProcessing.instance();
@@ -189,8 +188,8 @@ public class OmniKryptecEngine implements Profilable {
 
     public final void startLoop(ShutdownOption shutdownOption) {
         setShutdownOption(shutdownOption);
-        state = State.Running;
-        while (!Display.isCloseRequested() && !requestclose && state != State.Error) {
+        state = GameState.Running;
+        while (!Display.isCloseRequested() && !requestclose && state != GameState.Error) {
             frame(obj.clear, obj.onlyRender, obj.sleepWhenInactive);
         }
         close(this.shutdownOption);
@@ -206,7 +205,7 @@ public class OmniKryptecEngine implements Profilable {
 
     public final OmniKryptecEngine frame(boolean clear, boolean onlyrender, boolean sleepwheninactive) {
         final double currentTime = manager.getCurrentTime();
-        if (state != State.Running) {
+        if (state != GameState.Running) {
             Logger.log("Incorrect enginestate.", LogLevel.WARNING);
             return this;
         }
@@ -216,7 +215,7 @@ public class OmniKryptecEngine implements Profilable {
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException e) {
-                    errorOccured(e, "Error occured while sleeping: ");
+                    errorOccured(e, "Error occured while sleeping.");
                 }
                 return this;
             }
@@ -232,9 +231,12 @@ public class OmniKryptecEngine implements Profilable {
                 if (clear) {
                     RenderUtil.clear(sceneCurrent.getClearColor());
                 }
-                vertsCountCurrent = sceneCurrent.frame(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, onlyrender, true, AllowedRenderer.All);
+                if(!onlyrender){
+                	sceneCurrent.logic(true);
+                }
+                vertsCountCurrent = sceneCurrent.render(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, AllowedRenderer.All, true);
             }
-            eventsystem.fireEvent(new Event(), EventType.RENDER_EVENT);
+            eventsystem.fireEvent(new Event(), EventType.RENDER_FRAME_EVENT);
             scenefbo.unbindFrameBuffer();
             scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);
             scenefbo.resolveToFbo(normalfbo, GL30.GL_COLOR_ATTACHMENT1);
@@ -271,19 +273,23 @@ public class OmniKryptecEngine implements Profilable {
     }
 
     public final double getRenderTimeMS() {
-        return sceneCurrent==null?0:sceneCurrent.getFrameTimeMS();
+        return sceneCurrent==null?0:sceneCurrent.getRenderTimeMS();
     }
 
+    public final double getLogicTimeMS() {
+        return sceneCurrent==null?0:sceneCurrent.getLogicTimeMS();
+    }
+    
     public final double getFrameTimeMS() {
         return frametime;
     }
 
     public final OmniKryptecEngine close(ShutdownOption shutdownOption) {
         if (shutdownOption.getLevel() >= ShutdownOption.ENGINE.getLevel()) {
-            state = State.Stopping;
+            state = GameState.Stopping;
             cleanup();
             manager.close();
-            state = State.Stopped;
+            state = GameState.Stopped;
             if (shutdownOption.getLevel() >= ShutdownOption.JAVA.getLevel()) {
                 Commands.COMMANDEXIT.run("-java");
             }
@@ -294,7 +300,7 @@ public class OmniKryptecEngine implements Profilable {
     }
 
     public void errorOccured(Exception e, String text) {
-        state = State.Error;
+        state = GameState.Error;
         new OmnikryptecError(e, new ErrorObject<String>(text)).print();
         eventsystem.fireEvent(new Event(e), EventType.ERROR);
     }
@@ -305,9 +311,9 @@ public class OmniKryptecEngine implements Profilable {
         VertexArrayObject.cleanup();
         VertexBufferObject.cleanup();
         FrameBufferObject.cleanup();
-        RendererRegistration.cleanup();
-        ParticleMaster.cleanup();
         SimpleTexture.cleanup();
+        Shader.cleanAllShader();
+        EventSystem.instance().fireEvent(new Event(), EventType.CLEANUP);
     }
 
     public final OmniKryptecEngine addAndSetScene(Scene scene) {
@@ -353,7 +359,7 @@ public class OmniKryptecEngine implements Profilable {
 
     @Override
     public ProfileContainer[] getProfiles() {
-        return new ProfileContainer[]{new ProfileContainer(Profiler.OVERALL_FRAME_TIME, getFrameTimeMS()), new ProfileContainer(Profiler.SCENE_TIME, getRenderTimeMS())};
+        return new ProfileContainer[]{new ProfileContainer(Profiler.OVERALL_FRAME_TIME, getFrameTimeMS()), new ProfileContainer(Profiler.SCENE_RENDER_TIME, getRenderTimeMS()), new ProfileContainer(Profiler.SCENE_LOGIC_TIME, getLogicTimeMS())};
     }
 
     public static class LoopObject {
@@ -363,4 +369,18 @@ public class OmniKryptecEngine implements Profilable {
         public boolean sleepWhenInactive = true;
     }
 
+	public boolean isDebugMode() {
+		return debugMode;
+	}
+	
+	public OmniKryptecEngine setDebugMode(boolean debug){
+		return this.setDebugMode(debug, Logger.isDebugMode());
+	}
+	
+	public OmniKryptecEngine setDebugMode(boolean debug, boolean loggerDebug){
+		this.debugMode = debug;
+		Logger.setDebugMode(loggerDebug);
+		return this;
+	}
+	
 }

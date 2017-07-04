@@ -293,7 +293,7 @@ public class JBulletTest {
             EventSystem.instance().addEventHandler((e) -> {
                 input();
                 logic();
-            }, EventType.RENDER_EVENT);
+            }, EventType.RENDER_FRAME_EVENT);
             /*
 			 * OmniKryptecEngine.instance().getCurrentScene().addGameObject(new
 			 * Entity(brunnen_tm) {

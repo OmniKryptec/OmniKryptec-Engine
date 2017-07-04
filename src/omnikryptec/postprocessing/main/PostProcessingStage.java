@@ -74,4 +74,6 @@ public abstract class PostProcessingStage {
 	protected void onResize() {
 	}
 
+
+
 }

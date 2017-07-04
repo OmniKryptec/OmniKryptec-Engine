@@ -1,9 +1,9 @@
 package omnikryptec.gameobject.particles;
 
 import java.util.LinkedList;
-import omnikryptec.gameobject.gameobject.Entity;
 import omnikryptec.gameobject.gameobject.GameObject;
-import omnikryptec.gameobject.particles.ParticleAttractor.AttractorMode;
+import omnikryptec.gameobject.gameobject.RenderType;
+import omnikryptec.gameobject.particles.AttractorMode;
 import omnikryptec.resource.texture.ParticleAtlas;
 import org.joml.Vector3f;
 
@@ -15,11 +15,11 @@ public class AttractedPaticleSystem extends SimpleParticleSystem {
 
     protected final LinkedList<ParticleAttractor> attractorData = new LinkedList<>();
 
-    public AttractedPaticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float startspeed, float lifeLength, float scale, Entity.RenderType type) {
+    public AttractedPaticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float startspeed, float lifeLength, float scale, RenderType type) {
         this(pos.x, pos.y, pos.z, tex, pps, startspeed, lifeLength, scale, type);
     }
 
-    public AttractedPaticleSystem(float x, float y, float z, ParticleAtlas tex, float pps, float startspeed, float lifeLength, float scale, Entity.RenderType type) {
+    public AttractedPaticleSystem(float x, float y, float z, ParticleAtlas tex, float pps, float startspeed, float lifeLength, float scale, RenderType type) {
         this.type = type;
         this.particlepersec = pps;
         this.averageSpeed = startspeed;

@@ -13,7 +13,8 @@ public class Profiler implements ErrorItem{
 
     public static final long NAME_NOT_FOUND = -1;
     public static final String OVERALL_FRAME_TIME = "OVERALL_FRAME_TIME";
-    public static final String SCENE_TIME = "SCENE_TIME";
+    public static final String SCENE_RENDER_TIME = "SCENE_RENDER_TIME";
+    public static final String SCENE_LOGIC_TIME = "SCENE_LOGIC_TIME";
     public static final String PARTICLE_RENDERER = "PARTICLE_RENDERER";
     public static final String PARTICLE_UPDATER = "PARTICLE_UPDATER";
     public static final String POSTPROCESSOR = "POSTPROCESSOR";

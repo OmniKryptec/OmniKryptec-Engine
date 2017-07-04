@@ -39,7 +39,7 @@ public class TerrainRenderer implements Renderer {
 
     // TODO change something
     @Override
-    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender) {
+    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities) {
         vertcount = 0;
         shader.start();
         TerrainShader.viewMatrix.loadMatrix(s.getCamera().getViewMatrix());
@@ -85,12 +85,7 @@ public class TerrainRenderer implements Renderer {
         }
         return vertcount;
     }
-
-    @Override
-    public void cleanup() {
-        shader.cleanup();
-    }
-
+    
     @Override
     public float expensiveLevel() {
         return 0;

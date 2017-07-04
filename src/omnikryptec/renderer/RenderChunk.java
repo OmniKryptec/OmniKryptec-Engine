@@ -18,8 +18,8 @@ import omnikryptec.resource.model.Material;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.SerializationUtil;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 public class RenderChunk implements DataMapSerializable {
 
@@ -206,7 +206,7 @@ public class RenderChunk implements DataMapSerializable {
 
     private RenderMap<AdvancedModel, List<Entity>> tmpmap;
     private List<Entity> tmplist;
-	public void onlyLogic() {
+	public void logic() {
 		for(int i=0; i<chunk.keysArray().length; i++){
 			tmpmap = chunk.get(chunk.keysArray()[i]);
 			for(int j=0; j<tmpmap.keysArray().length; j++){
@@ -226,10 +226,9 @@ public class RenderChunk implements DataMapSerializable {
     
     private final Renderer[] empty_array = new Renderer[]{null};
     private Renderer r;
-    private GameObject g;
     private long vertcount = 0;
 
-    public long frame(float maxExpenLvl, float minexplvl, boolean onlyRender, AllowedRenderer type, Renderer... rend) {
+    public long render(float maxExpenLvl, float minexplvl, AllowedRenderer type, Renderer... rend) {
         if (rend == null || rend.length == 0) {
             rend = empty_array;
         }
@@ -239,23 +238,7 @@ public class RenderChunk implements DataMapSerializable {
             if (r != null && r.expensiveLevel() <= maxExpenLvl && r.expensiveLevel() >= minexplvl
                     && (type == AllowedRenderer.All || (type == AllowedRenderer.OnlThis && contains(rend, r))
                     || (type == AllowedRenderer.EvElse && !contains(rend, r)))) {
-                vertcount += r.render(scene, chunk.get(r), onlyRender);
-            }
-        }
-        if (!onlyRender) {
-            for (int i = 0; i < other.size(); i++) {
-                g = other.get(i);
-                if (g != null && g.isActive()) {
-                    g.doLogic0();
-                }
-            }
-            if (type == AllowedRenderer.All) {
-                lightstoreturn.clear();
-                for (int i = 0; i < lights.size(); i++) {
-                    if (lights.get(i).isActive()) {
-                        lightstoreturn.add(tmpl);
-                    }
-                }
+                vertcount += r.render(scene, chunk.get(r));
             }
         }
         return vertcount;

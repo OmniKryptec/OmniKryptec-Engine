@@ -8,11 +8,14 @@ import java.util.List;
 import org.joml.Vector3f;
 
 import omnikryptec.gameobject.component.Component;
+import omnikryptec.main.Scene;
+import omnikryptec.main.Scene.FrameState;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.Instance;
 import omnikryptec.util.SerializationUtil;
+import omnikryptec.util.exceptions.OmniKryptecException;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
 
@@ -23,9 +26,6 @@ import omnikryptec.util.logger.LogLevel;
  */
 public class GameObject implements DataMapSerializable, Positionable {
 
-    public static enum UpdateType {
-        DYNAMIC, STATIC;
-    }
 
     private static class Sorter implements Comparator<Component> {
 
@@ -156,9 +156,14 @@ public class GameObject implements DataMapSerializable, Positionable {
         this.parent = go;
         return this;
     }
-
+    
+    private Scene cs;
     public final GameObject doLogic0() {
-        if (componentsPreLogic != null) {
+        if(Instance.getEngine().isDebugMode()&&(cs=Instance.getCurrentScene())!=null&&cs.getState()==FrameState.RENDERING){
+        	Logger.log("Logic is not allowed while rendering!", LogLevel.WARNING);
+        	return this;
+        }
+    	if (componentsPreLogic != null) {
             for (Component c : componentsPreLogic) {
                 c.execute(this);
             }

@@ -1,5 +1,6 @@
 package omnikryptec.util.logger;
 
+import omnikryptec.main.GameState;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 
@@ -37,8 +38,8 @@ public class Commands {
                     shutdownCompletely();
                 } else {
                     if (OmniKryptecEngine.getInstance() != null) {
-                        final OmniKryptecEngine.State state = OmniKryptecEngine.getInstance().getState();
-                        if (state != OmniKryptecEngine.State.Running && state != OmniKryptecEngine.State.Starting) {
+                        final GameState state = OmniKryptecEngine.getInstance().getState();
+                        if (state != GameState.Running && state != GameState.Starting) {
                             Logger.log("Engine is not running", LogLevel.WARNING);
                         } else {
                             OmniKryptecEngine.getInstance().requestClose(ShutdownOption.ENGINE);

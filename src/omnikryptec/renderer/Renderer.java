@@ -8,10 +8,8 @@ import omnikryptec.resource.model.AdvancedModel;
 
 public interface Renderer {
 
-	long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender);
-
-	void cleanup();
-
+	long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities);
+	
 	float expensiveLevel();
 	
 	float priority();

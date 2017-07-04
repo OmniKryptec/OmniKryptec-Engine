@@ -26,7 +26,9 @@ public class Shader {
 	private static int shadercount = 0;
 	private static Shader shadercurrent;
 	private static int shadercurrentid = -1;
-
+	
+	private static final List<Shader> allShader = new ArrayList<>();
+	
 	public static Shader getActiveShader() {
 		return shadercurrent;
 	}
@@ -110,6 +112,7 @@ public class Shader {
 		GL20.glValidateProgram(programID);
 		storeUniforms(uniformstmp.toArray(new Uniform[1]));
 		shadercount++;
+		allShader.add(this);
 		// if (uniformstmp.size() != uniforms.size() && Logger.isDebugMode()) {
 		// Logger.log("Found uniforms: " + uniforms + ";\n Required uniforms in
 		// constructor: " + uniformstmp.size(),
@@ -152,7 +155,13 @@ public class Shader {
 		GL20.glUseProgram(0);
 	}
 
-	public void cleanup() {
+	public static void cleanAllShader(){
+		for(Shader s : allShader){
+			s.cleanup();
+		}
+	}
+	
+	private void cleanup() {
 		stop();
 		GL20.glDetachShader(programID, vertexShaderID);
 		GL20.glDetachShader(programID, fragmentShaderID);

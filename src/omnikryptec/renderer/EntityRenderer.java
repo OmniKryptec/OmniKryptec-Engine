@@ -8,6 +8,7 @@ import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL31;
+
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.gameobject.Entity;
 import omnikryptec.gameobject.gameobject.Light;
@@ -23,8 +24,8 @@ import omnikryptec.util.Color;
 import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.Instance;
 import omnikryptec.util.RenderUtil;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 public class EntityRenderer implements Renderer {
 
@@ -54,7 +55,7 @@ public class EntityRenderer implements Renderer {
     private Model model;
 
     @Override
-    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender) {
+    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities) {
         if (!DisplayManager.instance().getSettings().isLightForwardAllowed() && Logger.isDebugMode()) {
             Logger.log("Forward light is not enabled. Will not render.", LogLevel.WARNING);
             return 0;
@@ -70,9 +71,6 @@ public class EntityRenderer implements Renderer {
         shader.activelights.loadInt(lights);
         for (int i = 0; i < lights; i++) {
             l = s.getLights().get(i);
-            if (!onlyRender) {
-                l.doLogic0();
-            }
             pos = l.getAbsolutePos();
             shader.lightpos[i].loadVec4(pos.x, pos.y, pos.z, l.isDirectional() ? 0.0f : 1.0f);
             shader.lightcolor[i].loadVec3(l.getColor().getArray());
@@ -123,7 +121,7 @@ public class EntityRenderer implements Renderer {
             shader.matData.loadVec4(mat.getMData());
             stapel = entities.get(textmodel);
             for (int j = 0; j < stapel.size(); j += INSTANCES_PER_DRAWCALL) {
-                newRender(onlyRender, s, j);
+                newRender(s, j);
             }
             if (textmodel.getMaterial().hasTransparency()) {
                 RenderUtil.cullBackFaces(true);
@@ -138,7 +136,7 @@ public class EntityRenderer implements Renderer {
     private float[] array;
     private int instances;
 
-    private void newRender(boolean onlyRender, Scene s, int offset) {
+    private void newRender(Scene s, int offset) {
         instances = Math.min(stapel.size(), INSTANCES_PER_DRAWCALL + offset);
         array = new float[Math.min(stapel.size(), INSTANCES_PER_DRAWCALL) * INSTANCED_DATA_LENGTH];
         pointer = 0;
@@ -146,9 +144,6 @@ public class EntityRenderer implements Renderer {
         for (int j = offset; j < instances; j++) {
             entity = stapel.get(j);
             if (entity.isActive()) {
-                if (!onlyRender) {
-                    entity.doLogic0();
-                }
                 if (FrustrumFilter.intersects(entity) && RenderUtil.inRenderRange(entity, s.getCamera())) {
                     updateArray(entity.getTransformationMatrix(), entity.getColor(), array);
                     count++;
@@ -207,10 +202,6 @@ public class EntityRenderer implements Renderer {
         vboData[pointer++] = matrix.m33();
     }
 
-    @Override
-    public void cleanup() {
-
-    }
 
     @Override
     public float expensiveLevel() {

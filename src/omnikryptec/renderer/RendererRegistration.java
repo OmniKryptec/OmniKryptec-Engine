@@ -5,8 +5,8 @@ import java.util.List;
 
 import omnikryptec.animation.renderer.AnimatedModelRenderer;
 import omnikryptec.util.SerializationUtil;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 public class RendererRegistration {
 
@@ -28,13 +28,6 @@ public class RendererRegistration {
 
     public static void register(Renderer r) {
         existingRenderers.add(r);
-    }
-
-    public static void cleanup() {
-        for (int i = 0; i < existingRenderers.size(); i++) {
-            existingRenderers.get(i).cleanup();
-        }
-        existingRenderers.clear();
     }
 
     public static Renderer byName(String name) {

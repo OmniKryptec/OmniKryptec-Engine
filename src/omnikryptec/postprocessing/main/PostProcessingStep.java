@@ -18,7 +18,12 @@ public abstract class PostProcessingStep extends PostProcessingStage {
 	protected final void setShader(Shader shader) {
 		this.shader = shader;
 	}
-
+	
+	protected final Shader getShader(){
+		return shader;
+	}
+	
+	
 	@Override
 	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist, int stage) {
 		shader.start();

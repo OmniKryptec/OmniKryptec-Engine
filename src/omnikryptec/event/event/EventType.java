@@ -15,14 +15,16 @@ public final class EventType {
 
 	public static final EventType FRAME_EVENT = new EventType("frame");
 
-	public static final EventType AFTER_FRAME = new EventType("after_frame", false);
+	public static final EventType AFTER_FRAME = new EventType("after_frame");
 	
 	/**
 	 * like the frame event but in the renderthread for renderingpurposes
 	 */
-	public static final EventType RENDER_EVENT = new EventType("render_frame", true);
+	public static final EventType RENDER_FRAME_EVENT = new EventType("render_frame", true);
 
 	public static final EventType COMMAND = new EventType("command_exc");
+
+	public static final EventType CLEANUP = new EventType("cleanup", true);
 
 	private final String name;
 	private final boolean needsCurrentThread;

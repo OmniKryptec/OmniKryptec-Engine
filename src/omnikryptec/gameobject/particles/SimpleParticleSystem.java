@@ -3,7 +3,7 @@ package omnikryptec.gameobject.particles;
 import org.joml.Vector3f;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.resource.texture.ParticleAtlas;
-import omnikryptec.gameobject.gameobject.Entity.RenderType;
+import omnikryptec.gameobject.gameobject.RenderType;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
 import omnikryptec.util.Maths;
 

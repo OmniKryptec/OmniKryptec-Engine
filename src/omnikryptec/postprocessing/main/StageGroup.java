@@ -33,5 +33,5 @@ public class StageGroup extends PostProcessingStage {
 			stages.get(i).resize();
 		}
 	}
-
+	
 }

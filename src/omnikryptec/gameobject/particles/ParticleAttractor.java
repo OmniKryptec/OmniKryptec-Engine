@@ -6,9 +6,6 @@ import omnikryptec.gameobject.gameobject.GameObject;
 
 public class ParticleAttractor {
 	
-	public static enum AttractorMode{
-		KILL_ON_REACH, STOP_FOREVER_ON_REACH, STOP_UNTIL_DISABLED_ON_REACH, STOP_ON_REACH, NOTHING;
-	}
 	
 	protected float acceleration=0, tolerance=0;
 	protected boolean infinite=false;

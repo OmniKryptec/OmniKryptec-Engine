@@ -27,6 +27,10 @@ import omnikryptec.util.logger.LogLevel;
 
 public class Scene implements DataMapSerializable {
 
+	public static enum FrameState{
+		NULL,RENDERING,LOGIC;
+	}
+	
     private String name;
     private final Map<String, RenderChunk> scene = new HashMap<>();
     private Camera cam;
@@ -47,6 +51,8 @@ public class Scene implements DataMapSerializable {
     private RenderChunk tmpc;
     private long vertcount = 0;
 
+    private FrameState state = FrameState.NULL;
+    
     public Scene() {
         this("", null);
     }
@@ -56,6 +62,10 @@ public class Scene implements DataMapSerializable {
         this.name = name;
     }
 
+    public FrameState getState(){
+    	return state;
+    }
+    
     public Scene setAmbientColor(float r, float g, float b) {
         ambientlight.set(r, g, b);
         return this;
@@ -106,39 +116,47 @@ public class Scene implements DataMapSerializable {
         return g;
     }
 
-    public final void onlyLogic(){
-         physicsWorld.stepSimulation();
-         
-         if(Instance.getGameSettings().usesRenderChunking()){
- 	        cx = cam.getChunkX();
- 	        cy = cam.getChunkY();
- 	        cz = cam.getChunkZ();
- 	        for (long x = -cox + cx; x <= cox + cx; x++) {
- 	            for (long y = -coy + cy; y <= coy + cy; y++) {
- 	                for (long z = -coz + cz; z <= coz + cz; z++) {
- 	                    if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
- 	                        tmpc.onlyLogic();
- 	                    }
- 	                }
- 	            }
- 	        }
-         }
-         global.onlyLogic();
-         cam.doLogic0();
-         doLogic();
+    private double logictime = 0;
+    private double tmptime2 = 0;
+    public final void logic(boolean particles){
+	    state = FrameState.LOGIC;
+    	tmptime2 = DisplayManager.instance().getCurrentTime();
+	    if(isUsingPhysics()){ 
+	    	physicsWorld.stepSimulation();
+	    }
+	    if(Instance.getGameSettings().usesRenderChunking()){
+		    cx = cam.getChunkX();
+		    cy = cam.getChunkY();
+		    cz = cam.getChunkZ();
+		    for (long x = -cox + cx; x <= cox + cx; x++) {
+		        for (long y = -coy + cy; y <= coy + cy; y++) {
+		            for (long z = -coz + cz; z <= coz + cz; z++) {
+		                if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
+		                    tmpc.logic();
+		                }
+		            }
+		        }
+		    }
+		}
+	    if(particles){
+	    	ParticleMaster.instance().logic(cam);
+	    }
+        global.logic();
+        cam.doLogic0();
+        doLogic();
+        logictime = DisplayManager.instance().getCurrentTime() - tmptime2;
+        state = FrameState.NULL;
     }
     
     private double rendertime = 0;
     private double tmptime = 0;
     
-    public final long frame(float maxexpenlvl, float minexplvl, boolean onlyRender, boolean updateparticles, AllowedRenderer info,
+    public final long render(float maxexpenlvl, float minexplvl, AllowedRenderer info, boolean particles,
             Renderer... re) {
-        tmptime = DisplayManager.instance().getCurrentTime();
+        state = FrameState.RENDERING;
+    	tmptime = DisplayManager.instance().getCurrentTime();
     	lights.clear();
         lights.addAll(global.getImportantLights());
-        if (!onlyRender && isUsingPhysics()) {
-            physicsWorld.stepSimulation();
-        }
         vertcount = 0;
         if (Instance.getGameSettings().usesRenderChunking()) {
             cx = cam.getChunkX();
@@ -157,21 +175,18 @@ public class Scene implements DataMapSerializable {
                 for (long y = -coy + cy; y <= coy + cy; y++) {
                     for (long z = -coz + cz; z <= coz + cz; z++) {
                         if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
-                            vertcount += tmpc.frame(maxexpenlvl, minexplvl, onlyRender, info, re);
+                            vertcount += tmpc.render(maxexpenlvl, minexplvl, info, re);
                         }
                     }
                 }
             }
         }
-        vertcount += global.frame(maxexpenlvl, minexplvl, onlyRender, info, re);
+        vertcount += global.render(maxexpenlvl, minexplvl, info, re);
         rendertime = DisplayManager.instance().getCurrentTime() - tmptime;
-        if (!onlyRender) {
-            cam.doLogic0();
-            doLogic();
+        if(particles){
+        	ParticleMaster.instance().render(cam);
         }
-        if(updateparticles){
-            ParticleMaster.instance().update(cam, onlyRender);
-        }
+        state = FrameState.NULL;
         return vertcount;
     }
 
@@ -179,8 +194,12 @@ public class Scene implements DataMapSerializable {
      * without particles
      * @return
      */
-    public final double getFrameTimeMS(){
+    public final double getRenderTimeMS(){
     	return rendertime;
+    }
+    
+    public final double getLogicTimeMS(){
+    	return logictime;
     }
     
     

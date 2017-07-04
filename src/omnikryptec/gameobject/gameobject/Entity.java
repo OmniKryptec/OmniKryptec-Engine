@@ -18,11 +18,6 @@ import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
 
 public class Entity extends GameObject implements DataMapSerializable, Rangeable {
-
-    public static enum RenderType {
-        ALWAYS, MEDIUM, FOLIAGE, BIG;
-    }
-
     
     private AdvancedModel model;
     private Vector3f scale = new Vector3f(1, 1, 1);
@@ -84,6 +79,8 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
 
     public final Entity setAdvancedModel(AdvancedModel model) {
         this.model = model;
+        //if renderer gets changed this entity must be treated differently 
+        checkChunkPos();
         return this;
     }
 

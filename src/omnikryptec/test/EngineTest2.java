@@ -14,21 +14,16 @@ import omnikryptec.gameobject.gameobject.Camera;
 import omnikryptec.gameobject.gameobject.Entity;
 import omnikryptec.gameobject.gameobject.GameObject;
 import omnikryptec.gameobject.gameobject.Light;
-import omnikryptec.gameobject.gameobject.Entity.RenderType;
-import omnikryptec.gameobject.gameobject.GameObject.UpdateType;
+import omnikryptec.gameobject.gameobject.RenderType;
+import omnikryptec.gameobject.gameobject.UpdateType;
 import omnikryptec.gameobject.particles.AttractedPaticleSystem;
-import omnikryptec.gameobject.particles.Particle;
 import omnikryptec.gameobject.particles.ParticleAttractor;
-import omnikryptec.gameobject.particles.ParticleAttractor.AttractorMode;
-import omnikryptec.gameobject.particles.ParticleMaster;
+import omnikryptec.gameobject.particles.AttractorMode;
 import omnikryptec.gameobject.particles.ParticleSpawnArea;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
-import omnikryptec.gameobject.particles.SimpleParticleSystem;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;
-import omnikryptec.postprocessing.main.DebugRenderer;
-import omnikryptec.postprocessing.main.PostProcessing;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
@@ -45,9 +40,6 @@ import omnikryptec.util.lang.LanguageManager;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.profiler.LiveProfiler;
-import omnikryptec.util.profiler.Profiler;
-
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 /**
@@ -70,12 +62,19 @@ public class EngineTest2 implements IEventHandler {
 
             DisplayManager.createDisplay("Test 2",
                     new GameSettings().setAnisotropicLevel(32).setMultisamples(32)
-                    .setInitialFPSCap(-1).setChunkRenderOffsets(2, 2, 2).setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(true),
+                    .setInitialFPSCap(-1).setChunkRenderOffsets(2, 2, 2).setLightForward(true).setUseRenderChunking(true).setUseFrustrumCulling(true),
                     new GLFWInfo(1280, 720));
             DisplayManager.instance().setSmoothedDeltatime(true);
             DisplayManager.instance().setSmoothedFrames(1000);
-            LiveProfiler liveProfiler = new LiveProfiler(750, 750);
-            liveProfiler.startTimer(1000);
+            new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					LiveProfiler liveProfiler = new LiveProfiler(750, 750);
+		            liveProfiler.startTimer(1000);					
+				}
+			}).start();
+            
             //PostProcessing.instance().addStage(new
             // DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
             // DeferredLightPrepare.DEFAULT_LIGHT_PREPARE));
@@ -113,7 +112,7 @@ public class EngineTest2 implements IEventHandler {
             SimpleTexture jd = SimpleTexture.newTexture(new AdvancedFile(res, "jd.png"));
             SimpleTexture js = SimpleTexture.newTexture(new AdvancedFile(res, "js.png"));
             SimpleTexture jn = SimpleTexture.newTexture(new AdvancedFile(res, "jn.png"));
-            EventSystem.instance().addEventHandler(new EngineTest2(), EventType.AFTER_FRAME, EventType.RENDER_EVENT);
+            EventSystem.instance().addEventHandler(new EngineTest2(), EventType.AFTER_FRAME, EventType.RENDER_FRAME_EVENT);
 
             Model brunnen = new Model("",
                     ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
@@ -180,7 +179,7 @@ public class EngineTest2 implements IEventHandler {
                    300f, 0, 30000f, 1f, RenderType.ALWAYS);
 
             System.out.println("Generating objs...");
-            int cube =0;
+            int cube =100;
             int abstand = 10;
             float scale = 2;
             for (int x = -cube; x < cube; x += abstand) {
@@ -215,7 +214,7 @@ public class EngineTest2 implements IEventHandler {
             //system.addAttractor(200, 300, 0, 75.0F, 50.0F, true);
             
             
-            OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
+           // OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));
             //OmniKryptecEngine.instance().getCurrentScene()
             //      .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setCuttOffRange(50).setColor(3, 0, 0).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0, -1, 0).setRelativePos(0,10, 0));
@@ -260,7 +259,7 @@ public class EngineTest2 implements IEventHandler {
     public void onEvent(Event ev) {
 
         // system.generateParticles(1);
-        if (ev.getType() == EventType.RENDER_EVENT) {
+        if (ev.getType() == EventType.RENDER_FRAME_EVENT) {
         	if((Instance.getDisplayManager().getFramecount())%100==0){
         		attractor.setEnabled(!attractor.isEnabled());
         	}

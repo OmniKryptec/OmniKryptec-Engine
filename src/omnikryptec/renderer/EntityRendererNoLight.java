@@ -12,8 +12,8 @@ import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.files.EntityShader;
 import omnikryptec.util.RenderUtil;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 public class EntityRendererNoLight implements Renderer {
 
@@ -25,14 +25,14 @@ public class EntityRendererNoLight implements Renderer {
     }
 
     private List<Entity> stapel;
-    private Entity entity;
     private TexturedModel model;
     private Material mat;
     private Texture textmp;
     private long vertcount = 0;
-
+    private Entity entity;
+    
     @Override
-    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender) {
+    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities) {
         vertcount = 0;
         shader.start();
         shader.view.loadMatrix(s.getCamera().getViewMatrix());
@@ -79,12 +79,9 @@ public class EntityRendererNoLight implements Renderer {
             //TODO shader.reflec.loadFloat(mat.getReflectivity());
             //shader.shinedamper.loadFloat(mat.getShineDamper());
             stapel = entities.get(model);
-            for (int j = 0; j < stapel.size(); j++) {
-                entity = stapel.get(j);
+            for (int j=0; j<stapel.size(); j++) {
+            	entity = stapel.get(j);
                 if (entity.isActive() && RenderUtil.inRenderRange(entity, s.getCamera())) {
-                    if (!onlyRender) {
-                        entity.doLogic0();
-                    }
                     shader.transformation.loadMatrix(entity.getTransformationMatrix());
                     shader.colmod.loadVec4(entity.getColor().getVector4f());
                     GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(),
@@ -101,10 +98,6 @@ public class EntityRendererNoLight implements Renderer {
         return vertcount;
     }
 
-    @Override
-    public void cleanup() {
-        shader.cleanup();
-    }
 
     @Override
     public float expensiveLevel() {
@@ -115,5 +108,6 @@ public class EntityRendererNoLight implements Renderer {
 	public float priority() {
 		return 0;
 	}
+
 
 }

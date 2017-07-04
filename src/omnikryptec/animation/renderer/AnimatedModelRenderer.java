@@ -46,7 +46,7 @@ public class AnimatedModelRenderer implements Renderer {
     private long vertcount = 0;
 
     @Override
-    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean onlyRender) {
+    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities) {
         final Camera camera = s.getCamera();
         vertcount = 0;
         shader.start();
@@ -71,9 +71,6 @@ public class AnimatedModelRenderer implements Renderer {
                 for (int z = 0; z < stapel.size(); z++) {
                     entity = stapel.get(z);
                     if (entity != null && entity.isActive() && RenderUtil.inRenderRange(entity, camera)) {
-                        if (!onlyRender) {
-                            entity.doLogic0();
-                        }
                         shader.jointTransforms.loadMatrixArray(animatedModel.getJointTransforms());
                         shader.transformationMatrix.loadMatrix(entity.getTransformationMatrix());
                         GL11.glDrawElements(GL11.GL_TRIANGLES, animatedModel.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
@@ -87,10 +84,6 @@ public class AnimatedModelRenderer implements Renderer {
         return vertcount;
     }
 
-    @Override
-    public void cleanup() {
-        shader.cleanup();
-    }
 
     @Override
     public float expensiveLevel() {

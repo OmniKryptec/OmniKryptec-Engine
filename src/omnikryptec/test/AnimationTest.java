@@ -183,7 +183,7 @@ public class AnimationTest {
                 input();
                 logic();
                 AnimatedModel.updateAllAnimatedModels();
-            }, EventType.RENDER_EVENT);
+            }, EventType.RENDER_FRAME_EVENT);
             InputManager.setCamera(camera);
             InputManager.setLongButtonPressEnabled(true);
             OmniKryptecEngine.getInstance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);

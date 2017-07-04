@@ -161,7 +161,7 @@ public class JBulletTest2 {
             EventSystem.instance().addEventHandler((e) -> {
                 input();
                 logic();
-            }, EventType.RENDER_EVENT);
+            }, EventType.RENDER_FRAME_EVENT);
             InputManager.setCamera(OmniKryptecEngine.getInstance().getCurrentScene().getCamera());
             InputManager.setLongButtonPressEnabled(true);
             OmniKryptecEngine.getInstance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);

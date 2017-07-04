@@ -90,4 +90,5 @@ public class DeferredLightStage extends PostProcessingStage {
         return new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE);
     }
 
+
 }
