@@ -27,6 +27,7 @@ import omnikryptec.main.Scene;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
+import omnikryptec.resource.objConverter.ModelData;
 import omnikryptec.resource.objConverter.ObjLoader;
 import omnikryptec.resource.texture.AtlasTexture;
 import omnikryptec.resource.texture.ParticleAtlas;
@@ -125,11 +126,12 @@ public class EngineTest2 implements IEventHandler {
             SimpleTexture baum = SimpleTexture.newTexture(new AdvancedFile(res, "final_tree_1.png"));
             Model baumM = Model.newModel(new AdvancedFile(res, "final_tree_1.obj"));
             AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
-            TexturedModel tm = new TexturedModel("brunnen", brunnen, brunnent);
+            Model BLOCK = new Model("", ObjLoader.loadOBJ(new AdvancedFile(res, "block.obj")));
+            TexturedModel tm = new TexturedModel("brunnen", BLOCK, brunnent);
             tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
             //tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
             tm.getMaterial().setHasTransparency(true).setReflectivity(new Vector3f(10, 10, 10)).setShineDamper(100)
-                    .setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER).setExtraInfoVec(new Vector3f(1, 1, 1));
+                    .setRenderer(RendererRegistration.DEF_ENTITY_RENDERER).setExtraInfoVec(new Vector3f(1, 1, 1));
             OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
                 @Override
@@ -154,7 +156,7 @@ public class EngineTest2 implements IEventHandler {
 
             TexturedModel ptm = new TexturedModel("pine", pine, pinet);
             ptm.getMaterial().setNormalmap(pine_normal);
-            ptm.getMaterial().setHasTransparency(true).setRenderer(RendererRegistration.DEF_FORWARD_ENTITY_RENDERER);
+            ptm.getMaterial().setHasTransparency(true).setRenderer(RendererRegistration.DEF_ENTITY_RENDERER);
             ptm.getMaterial().setReflectivity(0.1f).setShineDamper(10).setExtraInfoVec(new Vector3f(1, 1, 0));
             Random r = new Random();
 //            for (int i = 0; i < 250; i++) {
@@ -187,14 +189,14 @@ public class EngineTest2 implements IEventHandler {
                     for (int z = -cube; z < cube; z += abstand) {
                     	GameObject go;
                     	//go = new GameObject().setRelativePos(x, y, z);
-                    	go = new Entity(tm).setScale(new Vector3f(scale, scale, scale)).setUpdateType(UpdateType.STATIC).setRelativePos(x, y, z);
+                    	go = new Entity(tm).setScale(new Vector3f(scale, scale, scale)).setUpdateType(UpdateType.SEMISTATIC).setRelativePos(x, y, z);
                         Instance.getCurrentScene().addGameObject(go);
                         //system.addAttractor(new ParticleAttractor(go).setAcceleration(10).setMode(AttractorMode.KILL_ON_REACH).setTolerance(5));
                     }
                 }
             }
             System.out.println("Done.");
-           // Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0, 1).setScale(new Vector3f(scale,scale,scale)).setUpdateType(UpdateType.STATIC).setRelativePos(0, 0, 0));
+           // Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0, 1).setScale(new Vector3f(scale,scale,scale)).setUpdateType(UpdateType.SEMISTATIC).setRelativePos(0, 0, 0));
 
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
            

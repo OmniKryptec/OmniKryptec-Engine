@@ -18,7 +18,7 @@ public class Material {
 	private Texture extrainfo;
 	private Vector3f extrainfovec;
 	private boolean hasTransparency = false;
-	private Renderer renderer = RendererRegistration.DEF_ENTITY_RENDERER;
+	private Renderer renderer = RendererRegistration.DEF_STATIC_ENTITY_RENDERER;
 
 	public Material() {
 		this(0, 1);

@@ -18,9 +18,10 @@ public class Light extends GameObject {
 	/**
 	 * how much the light attenuates to the side of the cone of a spotlight.
 	 * distance: value between 0 and 1, 0 is in the middle and 1 is the highest distance.
-	 * final cone-attenuation = a + b * distance + c * distance * distance
+	 * final <code>coneattenuation = a + b * distance + c * distance * distance</code>
+	 * <br>
 	 * lower values mean less light.
-	 * the final light attenuation then is attenuation * cone-attenuation.
+	 * the final light attenuation then is <code>attenuation * cone-attenuation</code>.
 	 * 
 	 * @param a
 	 * @param b
@@ -32,14 +33,19 @@ public class Light extends GameObject {
 		return this;
 	}
 	
+	/**
+	 * the lights cone-attenuation.
+	 * @see {@link #setConeAttenuation(float, float, float)}
+	 * @return
+	 */
 	public Vector3f getConeAttenuation(){
 		return coneAtt;
 	}
 
 	/**
-	 * the color and intensity of the light. values greater than 1 are allowed.
+	 * the color and intensity of the light. values greater than 1 are allowed and used for the intensity of the light.
 	 * @param c
-	 * @return
+	 * @return this Light
 	 */
 	public Light setColor(Color c) {
 		this.color = c;
@@ -51,23 +57,29 @@ public class Light extends GameObject {
 	 * @param r
 	 * @param g
 	 * @param b
-	 * @return
+	 * @return this Light
 	 */
 	public Light setColor(float r, float g, float b) {
 		color.set(r, g, b);
 		return this;
 	}
 
+	/**
+	 * the color/intensity of this light.
+	 * @see {@link #setColor(Color)}
+	 * @return
+	 */
 	public Color getColor() {
 		return color;
 	}
 	
 	/**
 	 * the direction the spotlight is facing.
+	 * if this light is not a spotlight, this is ignored.
 	 * @param x
 	 * @param y
 	 * @param z
-	 * @return
+	 * @return this Light
 	 */
 	public Light setConeDirection(float x, float y, float z){
 		coneinfo.x = x;
@@ -77,24 +89,41 @@ public class Light extends GameObject {
 	}
 	
 	/**
-	 * how big the angel of the spotlight is.
+	 * how big the angel in degrees of the spotlight is.
+	 * if the light is not a spotlight, this is ignored.
 	 * @param d
-	 * @return
+	 * @return this Light
 	 */
 	public Light setConeDegrees(float d){
-		coneinfo.w = (float) Math.cos(Math.toRadians(d));
+		return setConeRadians(Math.toRadians(d));
+	}
+	
+	/**
+	 * how big the angel in radians of the spotlight is.
+	 * if the light is not a spotlight, this is ignored.
+	 * @param d
+	 * @return this Light
+	 */
+	public Light setConeRadians(double d){
+		coneinfo.w = (float) Math.cos(d);
 		return this;
 	}
 	
+	/**
+	 * coneinfo. only used if this light is a spotlight.
+	 * @see {@link #setConeDirection(float, float, float)}
+	 * @see {@link #setConeDegrees(float)}, {@link #setConeRadians(double)}
+	 * @return conedata
+	 */
 	public Vector4f getConeInfo(){
 		return coneinfo;
 	}
 	
 	/**
 	 * sets this light to be a directional light (e.g. sun).
-	 * the position of this light is the direction of the light.
+	 * the normalized position of this light is the direction of the light.
 	 * @param b
-	 * @return
+	 * @return this Light
 	 */
 	public Light setDirectional(boolean b){
 		directional = b;
@@ -103,8 +132,8 @@ public class Light extends GameObject {
 	
 	/**
 	 * sets this light to be a point light. 
-	 * modifys condedegress, coneattenuation and if this light is a directional light.
-	 * @return
+	 * modifys {@link #getConeInfo()} and if this light is a directional light.
+	 * @return this Light
 	 */
 	public Light setPointLight(){
 		setConeDegrees(180);
@@ -113,19 +142,26 @@ public class Light extends GameObject {
 		return this;
 	}
 
+	/**
+	 * the attenuation of this light.
+	 * @see {@link #setAttenuation(float, float, float)}
+	 * @see {@link #setCuttOffRange(float)}
+	 * @return attenuationdata
+	 */
 	public Vector4f getAttenuation() {
 		return att;
 	}
 
 	/**
 	 * how much the light attenuates into the distance (only for point- and spotlights).
-	 * distance: value between 0 and infinity.
-	 * attenuation = 1.0 / (a + b * distance + c * distance * distance)
+	 * distance: value between 0 and infinity.<br>
+	 * <code>attenuation = 1.0 / (a + b * distance + c * distance * distance)</code>
+	 * <br>
 	 * higher values mean less light.
 	 * @param a
 	 * @param b
 	 * @param c
-	 * @return
+	 * @return this Light
 	 */
 	public Light setAttenuation(float a, float b, float c) {
 		att.x = a;
@@ -135,16 +171,21 @@ public class Light extends GameObject {
 	}
 	
 	/**
-	 * the maximum range the light can shine or NO_CUTOFF_RANGE to not cutoff the light.
+	 * the maximum range the light can shine or <code>NO_CUTOFF_RANGE</code> to not cutoff the light.
 	 * this does not affect the attenuation of this light.
 	 * @param r
-	 * @return
+	 * @return this Light
 	 */
 	public Light setCuttOffRange(float r){
 		att.w = r;
 		return this;
 	}
 	
+	/**
+	 * returns if this light is a directional light.
+	 * @see {@link #setDirectional(boolean)}
+	 * @return
+	 */
 	public final boolean isDirectional() {
 		return directional;
 	}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import omnikryptec.animation.renderer.AnimatedModelRenderer;
+import omnikryptec.gameobject.terrain.TerrainRenderer;
 import omnikryptec.util.SerializationUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
@@ -12,14 +13,17 @@ public class RendererRegistration {
 
     private static final List<Renderer> existingRenderers = new ArrayList<>();
 
-    public static final EntityRendererNoLight DEF_ENTITY_RENDERER;
-    public static final EntityRenderer DEF_FORWARD_ENTITY_RENDERER;
+    public static final EntityRendererNoLight DEF_STATIC_ENTITY_RENDERER;
+    public static final EntityRenderer DEF_ENTITY_RENDERER;
     public static final AnimatedModelRenderer DEF_ANIMATEDMODEL_RENDERER;
-
+    public static final TerrainRenderer DEF_TERRAIN_RENDERER;
+    
+    
     static {
-        DEF_ENTITY_RENDERER = new EntityRendererNoLight();
+        DEF_STATIC_ENTITY_RENDERER = new EntityRendererNoLight();
         DEF_ANIMATEDMODEL_RENDERER = new AnimatedModelRenderer();
-        DEF_FORWARD_ENTITY_RENDERER = new EntityRenderer();
+        DEF_ENTITY_RENDERER = new EntityRenderer();
+        DEF_TERRAIN_RENDERER = new TerrainRenderer();
     }
 
     public static boolean exists(Renderer r) {

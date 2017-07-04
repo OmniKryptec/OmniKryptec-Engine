@@ -3,10 +3,12 @@ package omnikryptec.gameobject.gameobject;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import omnikryptec.animation.AnimatedModel;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Model;
+import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
@@ -58,6 +60,12 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
         this.color = new Color(copy.color);
     }
 
+    /**
+     * sets the RenderType of this entity.
+     * @see {@link #getType()}
+     * @param type
+     * @return this Entity
+     */
     public Entity setRenderType(RenderType type) {
         this.type = type;
         return this;
@@ -68,15 +76,31 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
         return type;
     }
 
+    /**
+     * the scale of this entity.
+     * @return
+     */
     public final Vector3f getScale() {
         return scale;
     }
 
+    /**
+     * sets the scale of this entity.
+     * @param v
+     * @return this Entity
+     */
     public final Entity setScale(Vector3f v) {
         this.scale = v;
         return this;
     }
 
+    /**
+     * sets the AdvancedModel of this Entity. if the AdvancedModel is changed at runtime, 
+     * this method should be called to ensure that the right renderer will render this entity.
+     * @see {@link TexturedModel}, {@link AnimatedModel}
+     * @param model
+     * @return this Entity
+     */
     public final Entity setAdvancedModel(AdvancedModel model) {
         this.model = model;
         //if renderer gets changed this entity must be treated differently 
@@ -84,20 +108,45 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
         return this;
     }
 
+    /**
+     * the Advanced Model of this entity
+     * @see {@link #setAdvancedModel(AdvancedModel)}
+     * @return Advanced Model
+     */
     public final AdvancedModel getAdvancedModel() {
         return model;
     }
 
+    /**
+     * sets the color of this Entity
+     * @see {@link #setColor(float, float, float, float)}
+     * @param c
+     * @return this Entity
+     */
     public Entity setColor(Color c) {
         this.color = c;
         return this;
     }
 
+    /**
+     * sets the color of this Entity.
+     * a renderer might use this differently than others.
+     * @param r [0,1]
+     * @param g [0,1]
+     * @param b [0,1]
+     * @param a [0,1]
+     * @return this Entity
+     */
     public Entity setColor(float r, float g, float b, float a) {
         color.set(r, g, b, a);
         return this;
     }
 
+    /**
+     * the color of this Entity
+     * @see {@link #setColor(float, float, float, float)}
+     * @return a color
+     */
     public Color getColor() {
         return color;
     }
@@ -107,15 +156,32 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
     private Vector3f lastpos = new Vector3f(), lastrot = new Vector3f(), lastscale = new Vector3f();
     private Matrix4f trans;
     private long lastframe=-1;
+    
+    /**
+     * the transformationmatrix of this entity.
+     * if this is a {@link UpdateType#SEMISTATIC} or {@link UpdateType#STATIC} Entity the transformation matrix will be created once and will never be touched again. 
+     * to recalculate the matrix change the <code>UpdateType</code> of this entity or use {@link #recalculateTransformation()}.
+     * @see {@link #setUpdateType(UpdateType)}
+     * @return transmatrix
+     */
     public Matrix4f getTransformationMatrix(){
     	if(RenderUtil.needsUpdate(lastframe, 1, getUpdateType())&&(!Maths.fastEquals3f(lastpos, getAbsolutePos())||!Maths.fastEquals3f(lastrot, getAbsoluteRotation())||!Maths.fastEquals3f(lastscale, getScale()))){	
-    		lastframe = DisplayManager.instance().getFramecount();
-    		lastpos.set(getAbsolutePos());
-    		lastrot.set(getAbsoluteRotation());
-    		lastscale.set(getScale());
-    		trans = Maths.createTransformationMatrix(this, trans);
+    		return recalculateTransformation();
     	}
     	return trans;
+    }
+    
+    /**
+     * forces the recalculation of the transformationmatrix. To get the transformationmatrix up-to-date and only recalculated if neccessary use {@link #getTransformationMatrix()}
+     * @return transmatrix
+     */
+    public Matrix4f recalculateTransformation(){
+    	lastframe = DisplayManager.instance().getFramecount();
+		lastpos.set(getAbsolutePos());
+		lastrot.set(getAbsoluteRotation());
+		lastscale.set(getScale());
+		trans = Maths.createTransformationMatrix(this, trans);
+		return trans;
     }
     
     public static EntityBuilder newEntity() {

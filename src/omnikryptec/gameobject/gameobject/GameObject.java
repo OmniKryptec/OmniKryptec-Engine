@@ -15,7 +15,6 @@ import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.Instance;
 import omnikryptec.util.SerializationUtil;
-import omnikryptec.util.exceptions.OmniKryptecException;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
 
@@ -53,29 +52,42 @@ public class GameObject implements DataMapSerializable, Positionable {
     private final Instant ULTIMATE_IDENTIFIER = Instant.now();
     private UpdateType uptype = UpdateType.DYNAMIC;
 
+    /**
+     * sets the updatetype of this GameObject. if its {@link UpdateType#SEMISTATIC} the logic will be executed but the chunkposition etc will not be changed.
+     *  if its {@link UpdateType#STATIC} the logic will never be executed.
+     * @param t
+     * @return this GameObject
+     */
     public GameObject setUpdateType(UpdateType t) {
         uptype = t;
         return this;
     }
 
+    /**
+     * the updatetpye of this GameObject
+     * @return
+     */
     public UpdateType getUpdateType() {
         return uptype;
     }
 
+    /**
+     * creats an empty GameObject
+     */
     public GameObject() {
         this("");
     }
 
     /**
-     * creates a gameobject with no parent
+     * creates a GameObject with no parent
      */
     public GameObject(String name) {
         this(name, null);
     }
 
     /**
-     * creates a gameobject with a parent. e. g. used to bind a gun to the
-     * player
+     * creates a GameObject with a parent. e. g. used to bind a gun to the
+     * player to move with him.
      *
      * @param parent the parent or null for no parent
      */
@@ -86,7 +98,15 @@ public class GameObject implements DataMapSerializable, Positionable {
             gameObjects.add(this);
         }
     }
-
+    
+    /**
+     * dont let the gameObjects list overflow
+     */
+    @Override
+    protected void finalize() throws Throwable {
+    	gameObjects.remove(this);
+    }
+    
     /**
      * if no parent is set this is the absolute position else its the postion
      * relative to the parent
@@ -94,6 +114,7 @@ public class GameObject implements DataMapSerializable, Positionable {
      * @param x
      * @param y
      * @param z
+     * @return this GameObject
      */
     public final GameObject setRelativePos(float x, float y, float z) {
         this.pos.x = x;
@@ -103,15 +124,22 @@ public class GameObject implements DataMapSerializable, Positionable {
     }
 
     /**
-     * the relative xpostion if this gameobject has a parent else the absolute
-     * xposition
+     * the relative position if this gameobject has a parent else the absolute
+     * position
      *
      * @return the relative position
      */
     public final Vector3f getRelativePos() {
-        return pos;
+        return new Vector3f(pos);
     }
 
+    /**
+     * increases the relative position with the given values.
+     * @param x
+     * @param y
+     * @param z
+     * @return this GameObject
+     */
     public final GameObject increaseRelativePos(float x, float y, float z) {
         pos.x += x;
         pos.y += y;
@@ -119,6 +147,13 @@ public class GameObject implements DataMapSerializable, Positionable {
         return this;
     }
 
+    /**
+     * increases the relative rotation with the given values.
+     * @param x
+     * @param y
+     * @param z
+     * @return this GameObject
+     */
     public final GameObject increaseRelativeRot(float x, float y, float z) {
         rotation.x += x;
         rotation.y += y;
@@ -127,10 +162,12 @@ public class GameObject implements DataMapSerializable, Positionable {
     }
 
     /**
-     * the absolute xposition is always absolute
+     * the absolute position is always absolute. if the parent is not <code>null</code>, the relative position of this gameobject + the absolute position of the parent is returned.
+     * 
      *
-     * @return the absolute xposition
+     * @return the absolute position
      */
+    @Override
     public final Vector3f getAbsolutePos() {
         if (parent == null) {
             return new Vector3f(pos);
@@ -139,7 +176,7 @@ public class GameObject implements DataMapSerializable, Positionable {
     }
 
     /**
-     * the parent or null for no parent of this gameobject
+     * the parent or null if this GameObject has no parent.
      *
      * @return the parent
      */
@@ -148,7 +185,7 @@ public class GameObject implements DataMapSerializable, Positionable {
     }
 
     /**
-     * sets the parent for this gameobject
+     * sets the parent for this gameobject or null for no parent
      *
      * @param go the parent
      */
@@ -157,9 +194,26 @@ public class GameObject implements DataMapSerializable, Positionable {
         return this;
     }
     
+    /**
+     * executes the logic of this GameObject if neccessary. 
+     * @see {@link #setUpdateType(UpdateType)}
+     * @return this GameObject
+     */
+    public final GameObject doLogic0(){
+    	return doLogic0(false);
+    }
+    
     private Scene cs;
-    public final GameObject doLogic0() {
-        if(Instance.getEngine().isDebugMode()&&(cs=Instance.getCurrentScene())!=null&&cs.getState()==FrameState.RENDERING){
+    /**
+     * executes the logic of this GameObject (if neccessary or forced)
+     * @param force if true all logic of this GameObject is executed, if neccessary or not (ignores {@link UpdateType}).
+     * @return this GameObject
+     */
+    public final GameObject doLogic0(boolean force) {
+        if(getUpdateType()==UpdateType.STATIC&&!force){
+        	return this;
+        }
+    	if(Instance.getEngine().isDebugMode()&&(cs=Instance.getCurrentScene())!=null&&cs.getState()==FrameState.RENDERING){
         	Logger.log("Logic is not allowed while rendering!", LogLevel.WARNING);
         	return this;
         }
@@ -174,12 +228,18 @@ public class GameObject implements DataMapSerializable, Positionable {
                 c.execute(this);
             }
         }
-        if (getUpdateType() == UpdateType.DYNAMIC && !(this instanceof Camera)&&Instance.getGameSettings().usesRenderChunking()) {
+        if ((force || getUpdateType() == UpdateType.DYNAMIC) && !(this instanceof Camera)&&Instance.getGameSettings().usesRenderChunking()) {
             checkChunkPos();
         }
         return this;
     }
 
+    /**
+     * adds a Component to this GameObject.
+     * @see {@link Component}
+     * @param c
+     * @return this GameObject
+     */
     public final GameObject addComponent(Component c) {
         if (c.getLevel() < 0) {
             if (componentsPreLogic == null) {
@@ -196,7 +256,13 @@ public class GameObject implements DataMapSerializable, Positionable {
         }
         return this;
     }
-
+    
+    /**
+     * removes a Component from this GameObject
+     * @see {@link Component}
+     * @param c
+     * @return this GameObject
+     */
     public final GameObject removeComponent(Component c) {
         if (c.getLevel() < 0) {
             if (componentsPreLogic != null) {
@@ -216,6 +282,10 @@ public class GameObject implements DataMapSerializable, Positionable {
 
     private List<Component> tmp;
 
+    /**
+     * all components of this GameObject
+     * @return
+     */
     public final Component[] getComponents() {
         if (componentsPreLogic == null && componentsPostLogic == null) {
             return new Component[]{};
@@ -232,6 +302,11 @@ public class GameObject implements DataMapSerializable, Positionable {
         return tmp.toArray(new Component[1]);
     }
 
+    /**
+     * the first occurence of a Component from the Class <code>type</code> or <code>null</code> if none is found.
+     * @param type
+     * @return the component
+     */
     @SuppressWarnings("unchecked")
     public final <T> T getComponent(Class<T> type) {
         if (componentsPreLogic != null) {
@@ -251,6 +326,11 @@ public class GameObject implements DataMapSerializable, Positionable {
         return null;
     }
 
+    /**
+     * all occurences
+     * @param type
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public final <T> ArrayList<T> getComponents(Class<T> type) {
         final ArrayList<T> cp = new ArrayList<>();
@@ -271,10 +351,6 @@ public class GameObject implements DataMapSerializable, Positionable {
         return cp;
     }
 
-    /**
-     * override this to let your gameobject do its logic then its in sight of
-     * the cam
-     */
     protected void update() {
     }
 
@@ -468,7 +544,8 @@ public class GameObject implements DataMapSerializable, Positionable {
         return this;
     }
 
-    public static final <T> T byName(Class<? extends T> c, String name, boolean onlySame) {
+    @SuppressWarnings("unchecked")
+	public static final <T> T byName(Class<? extends T> c, String name, boolean onlySame) {
         for (GameObject gameObject : gameObjects) {
             if ((!onlySame && c.isAssignableFrom(gameObject.getClass()) || (onlySame && gameObject.getClass() == c)) && (gameObject.getName() == null ? name == null : gameObject.getName().equals(name))) {
                 return (T) gameObject;

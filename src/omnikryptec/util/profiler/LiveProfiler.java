@@ -35,6 +35,7 @@ public class LiveProfiler {
         new ChartData(Profiler.DISPLAY_IDLE_TIME, 0),
         new ChartData(Profiler.DISPLAY_UPDATE_TIME, 0),
         new ChartData(Profiler.SCENE_RENDER_TIME, 0),
+        new ChartData(Profiler.SCENE_LOGIC_TIME, 0),
         new ChartData(Profiler.PARTICLE_RENDERER, 0),
         new ChartData(Profiler.PARTICLE_UPDATER, 0),
         new ChartData(Profiler.POSTPROCESSOR, 0),

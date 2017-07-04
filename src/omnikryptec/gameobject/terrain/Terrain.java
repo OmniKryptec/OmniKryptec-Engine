@@ -3,6 +3,7 @@ package omnikryptec.gameobject.terrain;
 import java.util.ArrayList;
 
 import omnikryptec.gameobject.gameobject.Entity;
+import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.resource.objConverter.ModelData;
@@ -20,8 +21,6 @@ import org.joml.Vector3f;
  * @author Panzer1119
  */
 public class Terrain extends Entity {
-
-    public static final TerrainRenderer terrainRenderer = new TerrainRenderer();
 
     private final TerrainTexturePack texturePack;
 
@@ -52,7 +51,7 @@ public class Terrain extends Entity {
         getRelativePos().z = worldZ;
         this.texturePack = texturePack;
         setAdvancedModel(new TexturedModel(texturedModelName, model, blendMap));
-        getAdvancedModel().getMaterial().setRenderer(terrainRenderer);
+        getAdvancedModel().getMaterial().setRenderer(RendererRegistration.DEF_TERRAIN_RENDERER);
         this.size = size;
         createHeights(model.getModelData());
     }

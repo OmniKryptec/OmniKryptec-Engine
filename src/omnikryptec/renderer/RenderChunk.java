@@ -212,15 +212,21 @@ public class RenderChunk implements DataMapSerializable {
 			for(int j=0; j<tmpmap.keysArray().length; j++){
 				tmplist = tmpmap.get(tmpmap.keysArray()[j]);
 				for(int k=0; k<tmplist.size(); k++){
-					tmplist.get(i).doLogic0();
+					if(tmplist.get(k).isActive()){
+						tmplist.get(k).doLogic0();
+					}
 				}
 			}
 		}
 		for(int i=0; i<other.size(); i++){
-			other.get(i).doLogic0();
+			if(other.get(i).isActive()){
+				other.get(i).doLogic0();
+			}
 		}
 		for(int i=0; i<lights.size(); i++){
-			lights.get(i).doLogic0();
+			if(lights.get(i).isActive()){
+				lights.get(i).doLogic0();
+			}
 		}
 	}
     
