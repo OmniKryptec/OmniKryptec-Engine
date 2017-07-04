@@ -168,6 +168,14 @@ public class InputEvent implements Serializable {
         this.data = data;
         return this;
     }
+    
+    /**
+     * Returns a copy of this InputEvent
+     * @return A copy of this InputEvent
+     */
+    public final InputEvent copy() {
+        return new InputEvent(id, Instant.ofEpochMilli(timestamp.toEpochMilli()), socket, inputType, data);
+    }
 
     @Override
     public String toString() {

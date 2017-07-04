@@ -2,6 +2,7 @@ package omnikryptec.net;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
+import omnikryptec.util.logger.Logger;
 
 /**
  * InputListenerManager
@@ -10,6 +11,8 @@ import java.util.concurrent.ExecutorService;
 public interface InputListenerManager {
     
     final ArrayList<InputListener> inputListeners = new ArrayList<>();
+    
+    public String getName();
     
     default InputListenerManager addInputListener(InputListener inputListener) {
         if(inputListener == null || inputListeners.contains(inputListener)) {
@@ -29,9 +32,14 @@ public interface InputListenerManager {
     
     default InputListenerManager fireInputEvent(InputEvent event, ExecutorService executor) {
         inputListeners.stream().forEach((inputListener) -> {
-            executor.execute(() -> {
-                inputListener.inputReceived(event);
-            });
+            Logger.logErr(getName() + ": FIRING EVENT ON: " + inputListener + " / " + inputListeners.size(), new Exception());
+            if (executor != null) {
+                executor.execute(() -> {
+                    inputListener.inputReceived(event.copy());
+                });
+            } else {
+                inputListener.inputReceived(event.copy());
+            }
         });
         return this;
     }

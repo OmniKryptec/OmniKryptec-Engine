@@ -12,8 +12,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import javax.swing.Timer;
+import omnikryptec.util.AdvancedThreadFactory;
 import omnikryptec.util.Util;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
@@ -45,6 +47,10 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      * ThreadPool size
      */
     protected final int threadPoolSize;
+    /**
+     * AdvancedThreadFactory Receiver
+     */
+    private final AdvancedThreadFactory advancedThreadFactoryReceiver = new AdvancedThreadFactory();
     /**
      * ThreadPool Acceptor
      */
@@ -177,7 +183,8 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      * @return A reference to this AdvancedServerSocket
      */
     private final AdvancedServerSocket resetExecutors(boolean immediately) {
-        executorReceiver = resetExecutor(executorReceiver, immediately);
+        advancedThreadFactoryReceiver.setName("AdvancedServerSocket-Port-" + port + "-Receiver-Thread-%d");
+        executorReceiver = resetExecutor(executorReceiver, advancedThreadFactoryReceiver, immediately);
         return this;
     }
 
@@ -187,7 +194,7 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      * @param immediately If the running Threads should be killed immediately
      * @return New ThreadPool
      */
-    private final ExecutorService resetExecutor(ExecutorService executor, boolean immediately) {
+    private final ExecutorService resetExecutor(ExecutorService executor, ThreadFactory threadFactory, boolean immediately) {
         try {
             if (executor != null) {
                 if (immediately) {
@@ -197,7 +204,7 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
                     executor.awaitTermination(1, TimeUnit.MINUTES);
                 }
             }
-            return Executors.newFixedThreadPool(threadPoolSize);
+            return Executors.newFixedThreadPool(threadPoolSize, threadFactory);
         } catch (Exception ex) {
             if (Logger.isDebugMode()) {
                 Logger.logErr("Error while resetting executor: " + ex, ex);
@@ -337,6 +344,9 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
             started = !stopped;
             if (stopped) {
                 Network.unregisterTCPPort(port);
+                if (Logger.isDebugMode()) {
+                    Logger.log("Stopped successfully Server on Port " + port, LogLevel.FINE);
+                }
             }
             return stopped;
         } catch (Exception ex) {
@@ -458,6 +468,7 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
                 //Nothing
             }
         };
+        advancedSocket.setFromServerSocket(true);
         advancedSocket.connect(false);
         return advancedSocket;
     }
