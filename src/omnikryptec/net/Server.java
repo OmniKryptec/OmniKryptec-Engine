@@ -7,6 +7,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import omnikryptec.util.AdvancedThreadFactory;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -22,12 +23,17 @@ public class Server extends AdvancedServerSocket implements InputListenerManager
      */
     private final ArrayList<Client> registeredClients = new ArrayList<>();
     /**
+     * AdvancedThreadFactory Processor
+     */
+    private final AdvancedThreadFactory advancedThreadFactoryProcessor = new AdvancedThreadFactory("Server-" + Integer.toHexString(hashCode()) + "-Thread-%d");
+    /**
      * ThreadPool for processing InputEvents
      */
-    private final ExecutorService executorInputProcessor = Executors.newFixedThreadPool(1);
+    private final ExecutorService executorInputProcessor = Executors.newFixedThreadPool(1, advancedThreadFactoryProcessor);
 
     /**
-     * Creates a Server from a ServerSocket with the standard Server ThreadPool size
+     * Creates a Server from a ServerSocket with the standard Server ThreadPool
+     * size
      *
      * @param serverSocket ServerSocket
      */
@@ -108,20 +114,31 @@ public class Server extends AdvancedServerSocket implements InputListenerManager
                         }
                         break;
                     default:
-                        fireInputEvent(event, executorInputProcessor);
+                        fireInputEvent(event, null /*executorInputProcessor*/);
                         break;
                 }
             } else {
-                fireInputEvent(event, executorInputProcessor);
+                fireInputEvent(event, null /*executorInputProcessor*/);
             }
         } else {
-            fireInputEvent(new InputEvent(timestamp, socket, InputType.RAW_MESSAGE_RECEIVED, object), executorInputProcessor);
+            fireInputEvent(new InputEvent(timestamp, socket, InputType.RAW_MESSAGE_RECEIVED, object), null /*executorInputProcessor*/);
         }
     }
 
     @Override
     public final synchronized AdvancedSocket onConnected(Socket socket, Instant timestamp) {
-        return super.onConnected(socket, timestamp);
+        final Client client = new Client(socket, threadPoolSize);
+        //client.addInputListener(this);
+        client.addInputListener(new InputListener() {
+            @Override
+            public void inputReceived(InputEvent event) {
+                //Logger.log("RECEIVED: " + event, LogLevel.WARNING);
+                processInput(event, event.getAdvancedSocket(), event.getTimestamp());
+            }
+        });
+        client.setFromServerSocket(true);
+        client.connect(false);
+        return client;
     }
 
     @Override
@@ -129,15 +146,31 @@ public class Server extends AdvancedServerSocket implements InputListenerManager
         if (socketDisconnected == null) {
             return true;
         }
+        if (socketDisconnected instanceof Client) {
+            //((Client) socketDisconnected).removeInputListener(this);
+        }
         return true;
     }
 
     /**
      * Returns all to this Server registered Clients
+     *
      * @return Registered Clients
      */
     protected final AdvancedSocket[] getRegisteredClientsAsArray() {
         return registeredClients.toArray(new AdvancedSocket[registeredClients.size()]);
     }
+/*
+    @Override
+    public void inputReceived(InputEvent event) {
+        //Logger.log("RECEIVED: " + event, LogLevel.WARNING);
+        processInput(event, event.getAdvancedSocket(), event.getTimestamp());
+    }
+*/
 
+    @Override
+    public String getName() {
+        return "SERVER";
+    }
+    
 }

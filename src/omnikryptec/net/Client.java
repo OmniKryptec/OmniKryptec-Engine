@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import omnikryptec.util.AdvancedThreadFactory;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -23,9 +24,13 @@ public class Client extends AdvancedSocket implements InputListenerManager, Seri
      */
     private final HashMap<Long, InputEvent> waitingAnswers = new HashMap<>();
     /**
+     * AdvancedThreadFactory Processor
+     */
+    private final AdvancedThreadFactory advancedThreadFactoryProcessor = new AdvancedThreadFactory("Client-" + Integer.toHexString(hashCode()) + "-Thread-%d");
+    /**
      * ThreadPool for processing InputEvents
      */
-    private final ExecutorService executorInputProcessor = Executors.newFixedThreadPool(1);
+    private final ExecutorService executorInputProcessor = Executors.newFixedThreadPool(1, advancedThreadFactoryProcessor);
 
     /**
      * Creates a Client from a Socket with the standard Client ThreadPool size
@@ -69,26 +74,31 @@ public class Client extends AdvancedSocket implements InputListenerManager, Seri
 
     @Override
     public final synchronized void processInput(Object object, Instant timestamp) {
+        Logger.log("RECEIVED CLIENT: " + object);
         if (object instanceof InputEvent) {
             final InputEvent event = (InputEvent) object;
             if ((event.getInputType() == InputType.ANSWER) && waitingAnswers.containsKey(event.getID())) {
                 waitingAnswers.put(event.getID(), event);
             } else {
-                fireInputEvent(event, executorInputProcessor);
+                fireInputEvent(event, null /*executorInputProcessor*/);
             }
         } else {
-            fireInputEvent(new InputEvent(timestamp, InputType.RAW_MESSAGE_RECEIVED, object), executorInputProcessor);
+            fireInputEvent(new InputEvent(timestamp, InputType.RAW_MESSAGE_RECEIVED, object), null /*executorInputProcessor*/);
         }
     }
 
     @Override
     public final synchronized void onConnected(Instant timestamp) {
-        send(InputType.CLIENT_LOGGED_IN);
+        if (!isFromServerSocket) {
+            send(new InputEvent(timestamp, InputType.CLIENT_LOGGED_IN));
+        }
     }
 
     @Override
     public final synchronized void onDisconnected(Instant timestamp) {
-        send(InputType.CLIENT_LOGGED_OUT);
+        if (!isFromServerSocket) {
+            send(new InputEvent(timestamp, InputType.CLIENT_LOGGED_OUT));
+        }
     }
 
     /**
@@ -210,6 +220,11 @@ public class Client extends AdvancedSocket implements InputListenerManager, Seri
         }
         waitingAnswers.remove(id);
         return answer;
+    }
+
+    @Override
+    public String getName() {
+        return "CLIENT";
     }
 
 }

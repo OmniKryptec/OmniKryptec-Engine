@@ -8,12 +8,15 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import javax.swing.Timer;
+import omnikryptec.util.AdvancedThreadFactory;
 import omnikryptec.util.Util;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
@@ -54,9 +57,17 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      */
     protected final int threadPoolSize;
     /**
+     * AdvancedThreadFactory Receiver
+     */
+    private final AdvancedThreadFactory advancedThreadFactoryReceiver = new AdvancedThreadFactory();
+    /**
      * ThreadPool Receiving Side
      */
     protected ExecutorService executorReceiver = null;
+    /**
+     * AdvancedThreadFactory Transmitter
+     */
+    private final AdvancedThreadFactory advancedThreadFactoryTransmitter = new AdvancedThreadFactory();
     /**
      * ThreadPool Transmitting Side
      */
@@ -141,7 +152,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
     public AdvancedSocket(Socket socket, int threadPoolSize) {
         this.threadPoolSize = Math.min(threadPoolSize, Network.THREADPOOL_SIZE_CLIENT_MAX);
         init();
-        setSocket(socket);
+        setSocket(socket, false, false);
     }
 
     /**
@@ -185,8 +196,10 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return A reference to this AdvancedSocket
      */
     private final AdvancedSocket resetExecutors(boolean immediately) {
-        executorReceiver = resetExecutor(executorReceiver, immediately);
-        executorTransmitter = resetExecutor(executorTransmitter, immediately);
+        advancedThreadFactoryReceiver.setName("AdvancedSocket-" + formatAddressAndPort() + "-Receiver-Thread-%d");
+        executorReceiver = resetExecutor(executorReceiver, advancedThreadFactoryReceiver, immediately);
+        advancedThreadFactoryTransmitter.setName("AdvancedSocket-" + formatAddressAndPort() + "-Transmitter-Thread-%d");
+        executorTransmitter = resetExecutor(executorTransmitter, advancedThreadFactoryTransmitter, immediately);
         return this;
     }
 
@@ -196,7 +209,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @param immediately If the running Threads should be killed immediately
      * @return New ThreadPool
      */
-    private final ExecutorService resetExecutor(ExecutorService executor, boolean immediately) {
+    private final ExecutorService resetExecutor(ExecutorService executor, ThreadFactory threadFactory, boolean immediately) {
         try {
             if (executor != null) {
                 if (immediately) {
@@ -206,7 +219,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
                     executor.awaitTermination(1, TimeUnit.MINUTES);
                 }
             }
-            return Executors.newFixedThreadPool(threadPoolSize);
+            return Executors.newFixedThreadPool(threadPoolSize, threadFactory);
         } catch (Exception ex) {
             if (Logger.isDebugMode()) {
                 Logger.logErr("Error while resetting executor: " + ex, ex);
@@ -226,6 +239,9 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
             while (connected) {
                 try {
                     final Object object = ois.readObject();
+                    if (object == null) {
+                        continue;
+                    }
                     final Instant instantNow = Instant.now();
                     if (object instanceof NetworkCommand) {
                         final NetworkCommand command = (NetworkCommand) object;
@@ -245,8 +261,9 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
                 } catch (IOException ex) {
                     if (Logger.isDebugMode()) {
                         Logger.log(formatAddressAndPort() + " disconnected!", LogLevel.WARNING);
+                        disconnect(true);
+                        break;
                     }
-                    connected = false;
                 } catch (Exception ex) {
                     if (Logger.isDebugMode()) {
                         Logger.logErr(String.format("Error while receiving from %s: %s", formatAddressAndPort(), ex), ex);
@@ -375,7 +392,9 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
             resetReceiverThread();
             resetExecutors(true);
             resetTimer(connectionCheckTimerDelay);
-            closeStreams();
+            if (createNewSocket) {
+                closeStreams();
+            }
             connected = connectSocket(createNewSocket);
             if (connected) {
                 if (Logger.isDebugMode()) {
@@ -385,7 +404,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
                 onConnected((instantConnected = Instant.now()));
             }
             disconnected = !connected;
-            if (!checkConnection()) {
+            if (!connected) { //FIXME Das muesste !checkConnection() sein!
                 try {
                     Thread.sleep(connectionDelayTime);
                 } catch (Exception ex) {
@@ -438,6 +457,9 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
             if (Network.closeSocket(socket)) {
                 socket = null;
                 disconnected = true;
+                if (Logger.isDebugMode()) {
+                    Logger.log("Disconnected successfully from " + formatAddressAndPort(), LogLevel.FINE);
+                }
             }
             connected = !disconnected;
             return disconnected;
@@ -464,8 +486,13 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
                 Network.closeSocket(socket);
                 socket = new Socket(inetAddress, port);
             }
-            setSocket(socket);
+            setSocket(socket, true, createNewSocket);
             return true;
+        } catch (IOException ex) {
+            if (Logger.isDebugMode()) {
+                Logger.log(String.format("Could not establish a connection to %s", formatAddressAndPort()), LogLevel.WARNING);
+            }
+            return false;
         } catch (Exception ex) {
             if (Logger.isDebugMode()) {
                 Logger.logErr(String.format("Error while connecting Socket to %s: %s", formatAddressAndPort(), ex), ex);
@@ -482,12 +509,22 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      */
     public final AdvancedSocket send(Object object) {
         if (socket == null || !connected) {
+            if (Logger.isDebugMode()) {
+                Logger.log("Could not send Object, because their is no Socket or its not connected!", LogLevel.WARNING);
+            }
             return this;
         }
+        Logger.log("SENT: " + object);
         executorTransmitter.execute(() -> {
             try {
                 getObjectOutputStream().writeObject(object);
                 getObjectOutputStream().flush();
+            } catch (SocketException ex) {
+                connected = false;
+                if (Logger.isDebugMode()) {
+                    Logger.log(formatAddressAndPort() + " disconnected!", LogLevel.WARNING);
+                    disconnect(true);
+                }
             } catch (Exception ex) {
                 if (Logger.isDebugMode()) {
                     Logger.logErr(String.format("Error while sending to %s: %s", formatAddressAndPort(), ex), ex);
@@ -569,7 +606,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
             }
         } catch (Exception ex) {
             if (Logger.isDebugMode()) {
-                Logger.logErr("Error while closing old ObjectOutputStream: " + ex, ex);
+                Logger.logErr("Error while closing old ObjectOutputStream: " + ex, null);
             }
         }
         oos = null;
@@ -579,7 +616,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
             }
         } catch (Exception ex) {
             if (Logger.isDebugMode()) {
-                Logger.logErr("Error while closing old ObjectInputStream: " + ex, ex);
+                Logger.logErr("Error while closing old ObjectInputStream: " + ex, null);
             }
         }
         ois = null;
@@ -590,12 +627,20 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * Sets the Streams
      *
      * @param socket Socket from where the new Streams are coming
+     * @param closeOldStreams If the old Streams should get closed
      * @return A reference to this AdvancedSocket
      */
-    private final AdvancedSocket setStreams(Socket socket) {
-        closeStreams();
+    private final AdvancedSocket setStreams(Socket socket, boolean closeOldStreams) {
+        if (closeOldStreams) {
+            closeStreams();
+        }
         try {
             oos = new ObjectOutputStream(socket.getOutputStream());
+        } catch (IOException ex) {
+            connected = false;
+            if (Logger.isDebugMode()) {
+                Logger.log("Could not set ObjectOutputStream from Socket, because its already closed!", LogLevel.WARNING);
+            }
         } catch (Exception ex) {
             if (Logger.isDebugMode()) {
                 Logger.logErr("Error while setting ObjectOutputStream: " + ex, ex);
@@ -603,6 +648,11 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
         }
         try {
             ois = new ObjectInputStream(socket.getInputStream());
+        } catch (IOException ex) {
+            connected = false;
+            if (Logger.isDebugMode()) {
+                Logger.log("Could not set ObjectInputStream from Socket, because its already closed!", LogLevel.WARNING);
+            }
         } catch (Exception ex) {
             if (Logger.isDebugMode()) {
                 Logger.logErr("Error while setting ObjectInputStream: " + ex, ex);
@@ -621,15 +671,29 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
     }
 
     /**
-     * Sets the Socket and Address
+     * Sets the Socket and Address and closes the old Streams
      *
      * @param socket Socket
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setSocket(Socket socket) {
+        return setSocket(socket, true, true);
+    }
+    
+    /**
+     * Sets the Socket and Address
+     *
+     * @param socket Socket
+     * @param setStreams If the streams should be setted
+     * @param closeOldStreams If the old Streams should get closed
+     * @return A reference to this AdvancedSocket
+     */
+    protected final AdvancedSocket setSocket(Socket socket, boolean setStreams, boolean closeOldStreams) {
         if (socket != null) {
             this.socket = socket;
-            setStreams(socket);
+            if (setStreams) {
+                setStreams(socket, closeOldStreams);
+            }
             setInetAddress(socket.getInetAddress());
             setPort(socket.getPort());
         }
