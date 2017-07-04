@@ -11,6 +11,7 @@ import omnikryptec.gameobject.component.Component;
 import omnikryptec.main.Scene;
 import omnikryptec.main.Scene.FrameState;
 import omnikryptec.renderer.RenderChunk;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.Instance;
@@ -327,9 +328,9 @@ public class GameObject implements DataMapSerializable, Positionable {
     }
 
     /**
-     * all occurences
+     * all occurences of a Component from the Class <code>type</code>
      * @param type
-     * @return
+     * @return a ArrayList of Components or an Empty ArrayList
      */
     @SuppressWarnings("unchecked")
     public final <T> ArrayList<T> getComponents(Class<T> type) {
@@ -351,9 +352,18 @@ public class GameObject implements DataMapSerializable, Positionable {
         return cp;
     }
 
+    /**
+     * override this to do some logic. only gets executed for {@link UpdateType#SEMISTATIC} pr {@link UpdateType#DYNAMIC} or if the logic is forced.
+     * @see {@link #doLogic0(boolean)}
+     */
     protected void update() {
     }
 
+    /**
+     * called then the GameObject is finally removed from the scene.
+     * @see {@link Scene#removeGameObject(GameObject, boolean)}, {@link Scene#removeGameObject(GameObject)}l
+     * @return
+     */
     public final GameObject deleteOperation() {
         if (componentsPreLogic != null) {
             for (Component c : componentsPreLogic) {
@@ -376,6 +386,10 @@ public class GameObject implements DataMapSerializable, Positionable {
     protected void delete() {
     }
 
+    /**
+     * checks the chunk pos of this GameObject
+     * @return
+     */
     protected final GameObject checkChunkPos() {
         RenderChunk oldchunk = getMyChunk();
         if (oldchunk != null) {
@@ -400,7 +414,7 @@ public class GameObject implements DataMapSerializable, Positionable {
 
     /**
      * the chunkx. used for rendering
-     *
+     * @see {@link GameSettings#usesRenderChunking()}
      * @return chunkx
      */
     public final long getChunkX() {
@@ -409,20 +423,25 @@ public class GameObject implements DataMapSerializable, Positionable {
 
     /**
      * the chunky. used for rendering
-     *
+     * @see {@link GameSettings#usesRenderChunking()}
      * @return chunky
      */
     public final long getChunkY() {
         return (long) Math.floor(getAbsolutePos().y / RenderChunk.getHeight());
     }
 
+    /**
+     * the chunkz. used for rendering
+     * @see {@link GameSettings#usesRenderChunking()}
+     * @return
+     */
     public final long getChunkZ() {
         return (long) Math.floor(getAbsolutePos().z / RenderChunk.getDepth());
     }
 
     /**
      * if true the gameobject is active and will be processed.
-     *
+     * if <code>false</code> the logic will never be executed automatically.
      * @param b
      */
     public final GameObject setActive(boolean b) {
@@ -440,7 +459,7 @@ public class GameObject implements DataMapSerializable, Positionable {
     }
 
     /**
-     * sets the rotation of this gameobject in radians
+     * sets the rotation of this gameobject in radians around x,y,z axis.
      *
      * @param vec
      */
@@ -461,7 +480,7 @@ public class GameObject implements DataMapSerializable, Positionable {
 
     /**
      * the absolute rotation of this GameObject in radians
-     *
+     * @see {@link #getAbsolutePos()}
      * @return
      */
     public final Vector3f getAbsoluteRotation() {
@@ -508,28 +527,55 @@ public class GameObject implements DataMapSerializable, Positionable {
         return this;
     }
 
+    /**
+     * the {@link RenderChunk} this GameObject is in.
+     * @return
+     */
     public final RenderChunk getMyChunk() {
         return myChunk;
     }
 
+    /**
+     * @see {@link #getRelativePos()}
+     * @return rel. pos
+     */
     public final Vector3f getPos() {
         return pos;
     }
 
+    /**
+     * @see {@link #getRelativeRotation()}
+     * @return rel. rot
+     */
     public final Vector3f getRotation() {
         return rotation;
     }
 
+    /**
+     * @see {@link #setRelativePos(float, float, float)}
+     * @param pos
+     * @return this GameObject
+     */
     public final GameObject setPos(Vector3f pos) {
         this.pos = pos;
         return this;
     }
 
+    /**
+     * if true this GameObject will always be processed regardless of the camera pos.
+     * @param b
+     * @return
+     */
     public GameObject setGlobal(boolean b) {
         this.isglobal = b;
+        checkChunkPos();
         return this;
     }
 
+    /**
+     * is this GameObject global?
+     * @return
+     */
     public boolean isGlobal() {
         return isglobal;
     }
