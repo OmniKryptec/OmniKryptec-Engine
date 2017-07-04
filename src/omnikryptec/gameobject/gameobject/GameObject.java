@@ -11,6 +11,7 @@ import omnikryptec.gameobject.component.Component;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
+import omnikryptec.util.Instance;
 import omnikryptec.util.SerializationUtil;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
@@ -168,7 +169,7 @@ public class GameObject implements DataMapSerializable, Positionable {
                 c.execute(this);
             }
         }
-        if (getUpdateType() == UpdateType.DYNAMIC && !(this instanceof Camera)) {
+        if (getUpdateType() == UpdateType.DYNAMIC && !(this instanceof Camera)&&Instance.getGameSettings().usesRenderChunking()) {
             checkChunkPos();
         }
         return this;
