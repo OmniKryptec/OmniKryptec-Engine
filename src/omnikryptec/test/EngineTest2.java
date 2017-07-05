@@ -19,6 +19,7 @@ import omnikryptec.gameobject.gameobject.UpdateType;
 import omnikryptec.gameobject.particles.AttractedPaticleSystem;
 import omnikryptec.gameobject.particles.ParticleAttractor;
 import omnikryptec.gameobject.particles.AttractorMode;
+import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.gameobject.particles.ParticleSpawnArea;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
 import omnikryptec.main.OmniKryptecEngine;
@@ -177,11 +178,12 @@ public class EngineTest2 implements IEventHandler {
 //               e.setRelativePos(r.nextInt(100) - 50, r.nextInt(100) - 50, r.nextInt(100) - 50);
 //                OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 //            }
+            ParticleMaster.instance().setMultithreading(true);
             system = new AttractedPaticleSystem(0, 0, 0,
                     new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false),
                   250f,0, 1000f, 1f, RenderType.ALWAYS).setAverageMass(1E5F).setParticlesAttractingEachOther(true);
 
-            /*
+            /* //Dieser Block war bis einschliesslich commit 15f451917d1f1fda347aca531b69a8dac84f47b3 aktiviert
             System.out.println("Generating objs...");
             int cube = 0;
             int abstand = 10;
@@ -212,10 +214,15 @@ public class EngineTest2 implements IEventHandler {
             //system.setSystemLifeLength(20);
             //For AttractedPaticleSystem
             //system.addAttractor(0, 0, 0, 50F, 50F, AttractorMode.NOTHING, false);
+            
+            
+            //Dieser Block war bis einschliesslich commit 15f451917d1f1fda347aca531b69a8dac84f47b3 aktiviert
         //system.addAttractor(150,600,0, 35.0F, 50F, AttractorMode.STOP_FOREVER_ON_REACH);
         //system.addAttractor(-500,500,100, 40.0F, 50F, AttractorMode.STOP_FOREVER_ON_REACH);
-            //system.getLastAddedAttractor().setAttenuation(0, 0.1f, 1);
+            //system.getLastAddedAttractor().setAttenuation(0, 0.1f, 1); //Der nicht
         //system.addAttractor(-200,-150,0, 35.0F, 50F, AttractorMode.STOP_FOREVER_ON_REACH);
+        
+        
             //system.addAttractor(50,-200,-200, 35.0F, 50F, AttractorMode.STOP_FOREVER_ON_REACH);
             //system.getLastAddedAttractor().setAttenuation(0, 1, 1);
            // system.addAttractor(attractor=new ParticleAttractor(0,0,0).setAcceleration(11.0F).setTolerance(50F).setMode(AttractorMode.STOP_UNTIL_DISABLED_ON_REACH));

@@ -151,9 +151,9 @@ public class SimpleParticleSystem extends ParticleSystem {
         }
     }
 
-    private static float particlesToCreate, partialParticle;
-    private static int count;
-    private static Vector3f pos;
+    private float particlesToCreate, partialParticle;
+    private int count;
+    private Vector3f pos;
     /**
      * for <1 particle/sec
      */
@@ -184,8 +184,8 @@ public class SimpleParticleSystem extends ParticleSystem {
         ParticleMaster.instance().addParticle(emitParticle(center));
     }
 
-    private static Vector3f velocity;
-    private static float scale, lifeLength, endscale;
+    private Vector3f velocity;
+    private float scale, lifeLength, endscale;
 
     protected Particle emitParticle(Vector3f center) {
         if (direction != null) {

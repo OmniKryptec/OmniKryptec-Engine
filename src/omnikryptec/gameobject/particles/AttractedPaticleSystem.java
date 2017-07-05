@@ -121,8 +121,8 @@ public class AttractedPaticleSystem extends SimpleParticleSystem {
         return this;
     }
 
-    private static Vector3f velocity;
-    private static float scale, lifeLength, endscale, mass;
+    private Vector3f velocity;
+    private float scale, lifeLength, endscale, mass;
 
     @Override
     protected Particle emitParticle(Vector3f center) {

@@ -65,9 +65,9 @@ public class AttractedParticle extends Particle {
         return this;
     }
 
-    private static float timemultiplier, lf;
-    private static Vector3f changeable = new Vector3f(), att;
-    private static boolean allowMovementThisFrame = false;
+    private float timemultiplier, lf;
+    private Vector3f changeable = new Vector3f(), att;
+    private boolean allowMovementThisFrame = false;
 
     private int disallowing_mov = 0;
     private ArrayList<ParticleAttractor> disabler;

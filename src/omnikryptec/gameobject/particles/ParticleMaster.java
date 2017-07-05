@@ -1,11 +1,15 @@
 package omnikryptec.gameobject.particles;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import omnikryptec.gameobject.gameobject.Camera;
 import omnikryptec.resource.texture.ParticleAtlas;
@@ -17,14 +21,16 @@ import omnikryptec.util.profiler.Profiler;
 
 public class ParticleMaster implements Profilable {
 
-    private static Map<ParticleAtlas, List<Particle>> particles = new HashMap<ParticleAtlas, List<Particle>>();
-    private static ParticleRenderer rend = new ParticleRenderer();
+    private static final Map<ParticleAtlas, List<Particle>> particles = new HashMap<>();
+    private static final ParticleRenderer rend = new ParticleRenderer();
 
     static Particle p;
     static Entry<ParticleAtlas, List<Particle>> entry;
     static List<Particle> list;
     static Iterator<Particle> iterator;
     static Iterator<Entry<ParticleAtlas, List<Particle>>> mapIterator;
+
+    static ExecutorService executor;
 
     private static ParticleMaster instance;
     private long updatedParticlesCount = 0;
@@ -43,6 +49,8 @@ public class ParticleMaster implements Profilable {
     private double rendertime = 0;
     private double tmptime = 0, tmptime2;
     private double updatetime = 0;
+    private boolean multithreading = false;
+    private final List<Particle> particlesToRemove = new ArrayList<>();
 
     public void render(Camera cam) {
         tmptime = Instance.getDisplayManager().getCurrentTime();
@@ -50,7 +58,15 @@ public class ParticleMaster implements Profilable {
         rendertime = Instance.getDisplayManager().getCurrentTime() - tmptime;
     }
 
+    private void resetExecutor() {
+        if (executor != null) {
+            executor.shutdownNow();
+        }
+        executor = Executors.newFixedThreadPool(10);
+    }
+
     public void logic(Camera c) {
+        final boolean multithread_ = multithreading;
         updatedParticlesCount = 0;
         tmptime2 = Instance.getDisplayManager().getCurrentTime();
         mapIterator = particles.entrySet().iterator();
@@ -58,15 +74,49 @@ public class ParticleMaster implements Profilable {
             entry = mapIterator.next();
             list = entry.getValue();
             iterator = list.iterator();
+            if (multithread_) {
+                resetExecutor();
+                particlesToRemove.clear();
+            }
             while (iterator.hasNext()) {
                 p = iterator.next();
-                if (!p.update(c)) {
-                    iterator.remove();
-                    if (list.isEmpty()) {
-                        mapIterator.remove();
+                if (!multithread_) {
+                    if (!p.update(c)) {
+                        iterator.remove();
+                        if (list.isEmpty()) {
+                            mapIterator.remove(); //Hier muss abgebrochen werden, denn man darf niemals bei einem Iterator 2 mal hintereinander .remove() aufrufen
+                            break;
+                        }
+                    } else {
+                        updatedParticlesCount++;
                     }
                 } else {
-                    updatedParticlesCount++;
+                    final Particle p_ = p;
+                    executor.execute(new Runnable() {
+                        @Override
+                        public final synchronized void run() {
+                            if (!p_.update(c)) {
+                                particlesToRemove.add(p_);
+                            } else {
+                                updatedParticlesCount++;
+                            }
+                        }
+                    });
+                }
+            }
+            if (multithread_) {
+                executor.shutdown();
+                try {
+                    executor.awaitTermination(1, TimeUnit.MINUTES);
+                } catch (InterruptedException ex) {
+                    System.err.println(ex);
+                }
+                particlesToRemove.stream().forEach((p_) -> {
+                    list.remove(p_);
+                });
+                particlesToRemove.clear();
+                if (list.isEmpty()) {
+                    mapIterator.remove();
                 }
             }
             iterator = list.iterator();
@@ -101,6 +151,15 @@ public class ParticleMaster implements Profilable {
 
     public long getUpdatedParticlesCount() {
         return updatedParticlesCount;
+    }
+
+    public boolean isMultithreading() {
+        return multithreading;
+    }
+
+    public ParticleMaster setMultithreading(boolean multithreading) {
+        this.multithreading = multithreading;
+        return this;
     }
 
     private static List<Particle> list1;

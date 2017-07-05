@@ -74,7 +74,7 @@ public class Particle implements Rangeable {
         return type;
     }
 
-    private static Vector3f tmp = new Vector3f();
+    private final Vector3f tmp = new Vector3f();
 
     final boolean update(Camera cam) {
         distance = (cam.getAbsolutePos().sub(position, tmp)).lengthSquared();
@@ -98,8 +98,8 @@ public class Particle implements Rangeable {
         return -1;
     }
 
-    private static float lifeFactor, atlasProg;
-    private static int stageCount, index1, index2;
+    private float lifeFactor, atlasProg;
+    private int stageCount, index1, index2;
 
     protected void updateTexCoordInfo() {
         lifeFactor = getLifeFactor();
@@ -126,7 +126,7 @@ public class Particle implements Rangeable {
         }
     }
 
-    private static int column, row;
+    private int column, row;
 
     protected Vector2f setTexOffset(Vector2f offset, int index) {
         column = index % particletexture.getNumberOfRows();
