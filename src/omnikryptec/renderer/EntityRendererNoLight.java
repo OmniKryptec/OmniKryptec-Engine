@@ -81,7 +81,7 @@ public class EntityRendererNoLight implements Renderer {
             stapel = entities.get(model);
             for (int j=0; j<stapel.size(); j++) {
             	entity = stapel.get(j);
-                if (entity.isActive() && RenderUtil.inRenderRange(entity, s.getCamera())) {
+                if (entity.isLogicEnabled() && RenderUtil.inRenderRange(entity, s.getCamera())) {
                     shader.transformation.loadMatrix(entity.getTransformationMatrix());
                     shader.colmod.loadVec4(entity.getColor().getVector4f());
                     GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(),

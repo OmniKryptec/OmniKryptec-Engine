@@ -98,8 +98,6 @@ public class RenderChunk implements DataMapSerializable {
     private Material m;
     private AdvancedModel am;
 
-    private Light tmpl;
-
     public void addGameObject(GameObject g) {
         if (g != null) {
             if (g instanceof Entity) {
@@ -212,21 +210,15 @@ public class RenderChunk implements DataMapSerializable {
 			for(int j=0; j<tmpmap.keysArray().length; j++){
 				tmplist = tmpmap.get(tmpmap.keysArray()[j]);
 				for(int k=0; k<tmplist.size(); k++){
-					if(tmplist.get(k).isActive()){
-						tmplist.get(k).doLogic0();
-					}
+					tmplist.get(k).doLogic0();
 				}
 			}
 		}
 		for(int i=0; i<other.size(); i++){
-			if(other.get(i).isActive()){
-				other.get(i).doLogic0();
-			}
+			other.get(i).doLogic0();
 		}
 		for(int i=0; i<lights.size(); i++){
-			if(lights.get(i).isActive()){
-				lights.get(i).doLogic0();
-			}
+			lights.get(i).doLogic0();
 		}
 	}
     

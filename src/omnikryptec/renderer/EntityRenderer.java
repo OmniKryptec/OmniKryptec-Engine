@@ -143,7 +143,7 @@ public class EntityRenderer implements Renderer {
         count = 0;
         for (int j = offset; j < instances; j++) {
             entity = stapel.get(j);
-            if (entity.isActive()) {
+            if (entity.isRenderingEnabled()) {
                 if (FrustrumFilter.intersects(entity) && RenderUtil.inRenderRange(entity, s.getCamera())) {
                     updateArray(entity.getTransformationMatrix(), entity.getColor(), array);
                     count++;

@@ -18,16 +18,29 @@ public class AttractedParticle extends Particle {
     protected float elapsedTime = 0;
     private final AttractedPaticleSystem system;
     private boolean living=true;
+    private float startscale=1,endscale=1;
+    private float[] color1 = new float[]{1,1,1,1};
+	private float[] color2 = new float[]{1,1,1,1};
     
     
-    public AttractedParticle(ParticleAtlas tex, Vector3f pos, Vector3f vel, float lifeLength, float rot, float scale, AttractedPaticleSystem system, RenderType type) {
+    public AttractedParticle(ParticleAtlas tex, Vector3f pos, Vector3f vel, float lifeLength, float rot, float scale, AttractedPaticleSystem system, RenderType type, float[] startcolor, float[] endcolor) {
+    	this(tex,pos,vel,lifeLength,rot,scale,scale,system,type,startcolor,endcolor);
+    }
+
+    
+    public AttractedParticle(ParticleAtlas tex, Vector3f pos, Vector3f vel, float lifeLength, float rot, float startscale, float endscale, AttractedPaticleSystem system, RenderType type, float[] startcolor, float[] endcolor) {
         super(pos, tex, type);
         setRotation(rot);
-        setScale(scale);
         this.velocity = vel;
         this.lifeLength = lifeLength;
         this.elapsedTime = 0;
         this.system = system;
+        this.startscale = startscale;
+        this.endscale = endscale;
+        this.color1 = startcolor;
+        this.color2 = endcolor;
+		color.setFrom(startcolor);
+        setScale(startscale);
     }
 
     public AttractedPaticleSystem getSystem() {
@@ -39,8 +52,8 @@ public class AttractedParticle extends Particle {
         return lifeLength <= -1 ? -1 : elapsedTime / lifeLength;
     }
 
-    private static float timemultiplier;
-    private static Vector3f changeable = new Vector3f();
+    private static float timemultiplier, lf;
+    private static Vector3f changeable = new Vector3f(), att;
     private static boolean allowMovementThisFrame=false;
     
     
@@ -65,7 +78,9 @@ public class AttractedParticle extends Particle {
         if(disallowing_mov<=0){
         	final Vector3f acceleration = new Vector3f(0, 0, 0);
         	final Vector3f direction = new Vector3f(0, 0, 0);
-	        outer:
+        	boolean b = false;
+        	float ddd = 0, attenu=1;
+        	outer:
         	for (ParticleAttractor attractorData : system.getAttractorData()) {
 	        	if(!attractorData.isEnabled()){
 	        		continue;
@@ -74,8 +89,10 @@ public class AttractedParticle extends Particle {
 	        	allowMovementThisFrame = true;
 	        	if (!attractorData.isInfinite()) {
 	            	direction.set(changeable).sub(position);
+	            	b = true;
 	            } else {
 	                direction.set(changeable);
+	                b = false;
 	            }
 	            if((direction.lengthSquared() <= (attractorData.getTolerance()*attractorData.getTolerance()))){
 		            switch(attractorData.getMode()){
@@ -105,8 +122,15 @@ public class AttractedParticle extends Particle {
 		            }
 	            }
 	        	if(attractorData.getMode()==AttractorMode.NOTHING||allowMovementThisFrame){
-	                direction.normalize();
-	                direction.mul(attractorData.getAcceleration());
+	                if(b){
+	                	att = attractorData.getAttenuation();
+	                	if(att.y!=0||att.z!=0){
+	                		ddd = direction.length();
+	                	}
+	                	attenu = att.x + att.y * ddd + att.z * ddd * ddd;
+	                }
+	        		direction.normalize();
+	                direction.mul(attractorData.getAcceleration()*attenu);
 	                acceleration.add(direction);
 	        	}
 	        }
@@ -115,6 +139,17 @@ public class AttractedParticle extends Particle {
 	            position.add(velocity.mul(timemultiplier, changeable));
 	        }
         }
+        lf = getLifeFactor();
+        if(lf<=-1){
+			setScale(startscale);
+			color.set(color1[0], color1[1],color1[2], color1[3]);
+		}else{
+			setScale((endscale-startscale)*lf+startscale);
+			color.setR((color2[0]-color1[0])*lf+color1[0]);
+			color.setG((color2[1]-color1[1])*lf+color1[1]);
+			color.setB((color2[2]-color1[2])*lf+color1[2]);
+			color.setA((color2[3]-color1[3])*lf+color1[3]);
+		}
         return lifeLength == -2 || (lifeLength == -1 && living) || (elapsedTime < lifeLength && living);
     }
 

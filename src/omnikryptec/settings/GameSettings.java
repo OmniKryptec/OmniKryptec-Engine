@@ -113,7 +113,7 @@ public class GameSettings {
     }
 
     /**
-     * Sets the number of multisamples, <code>NO_MULTISAMPLING<code> means
+     * Sets the number of multisamples, {@link #NO_MULTISAMPLING} means
      * multisampling is disabled
      *
      * @param multisamples Integer Number of multisamples
@@ -135,7 +135,7 @@ public class GameSettings {
 
     /**
      * Returns if RenderChunking is enabled.
-     * @see {@link #setUseRenderChunking(boolean)}
+     * @see #setUseRenderChunking(boolean)
      * @return boolean
      */
     public final boolean usesRenderChunking(){
@@ -145,7 +145,7 @@ public class GameSettings {
     /**
      * if activated, gameobjects will be sorted based on their position. only the chunks around the camera will be rendered.
      * can break the use of prioritys for the renderer.
-     * @see {@link GameSettings#setChunkRenderOffsets(long, long, long)}
+     * @see #setChunkRenderOffsets(long, long, long)
      * @param b
      * @return this GameSettings instance
      */
@@ -223,7 +223,7 @@ public class GameSettings {
 
     /**
      * Global texture setting.
-     * @see {@link GameSettings#setFilterNearest(boolean)}
+     * @see #setFilterNearest(boolean)
      * @return
      */
     public final boolean filterNearest() {
@@ -232,7 +232,7 @@ public class GameSettings {
 
     /**
      * Global texture setting. overrides global mipmapping to false if nearest gets activated.
-     * @see {@link GameSettings#setMipmap(boolean)}
+     * @see #setMipmap(boolean)
      * @param nearest
      * @return this GameSettings
      */
@@ -314,7 +314,7 @@ public class GameSettings {
 
     /**
      * Sets the radius around the camera where foliage will be rendered.
-     * @see {@link RenderType#FOLIAGE}
+     * @see RenderType#FOLIAGE
      *
      * @param foliageRadius Float FoliageRadius
      * @return GameSettings A reference to this GameSettings
@@ -335,7 +335,7 @@ public class GameSettings {
 
     /**
      * Sets the radius around the camera where medium objects will be rendered.
-     * @see {@link RenderType#MEDIUM}
+     * @see RenderType#MEDIUM
      * @param mediumRadius Float Medium radius
      * @return GameSettings A reference to this GameSettings
      */
@@ -355,7 +355,7 @@ public class GameSettings {
 
     /**
      * Returns the x chunk offset
-     * @see {@link #setUseRenderChunking(boolean)}
+     * @see #setUseRenderChunking(boolean)
      * @return Long X chunk offset
      */
     public final long getChunkRenderOffsetX() {
@@ -364,7 +364,7 @@ public class GameSettings {
 
     /**
      * Returns the y chunk offset
-     * @see {@link #setUseRenderChunking(boolean)}
+     * @see #setUseRenderChunking(boolean)
      * @return Long Y chunk offset
      */
     public final long getChunkRenderOffsetY() {
@@ -373,7 +373,7 @@ public class GameSettings {
 
     /**
      * Returns the z chunk offset
-     * @see {@link #setUseRenderChunking(boolean)}
+     * @see #setUseRenderChunking(boolean)
      * @return Long Z chunk offset
      */
     public final long getChunkRenderOffsetZ() {
@@ -382,7 +382,7 @@ public class GameSettings {
 
     /**
      * Sets the x chunk offset
-     * @see {@link #setUseRenderChunking(boolean)}
+     * @see #setUseRenderChunking(boolean)
      * @param o Long X chunk offset
      * @return GameSettings A reference to this GameSettings
      */
@@ -392,7 +392,7 @@ public class GameSettings {
 
     /**
      * Sets the y chunk offset
-     * @see {@link #setUseRenderChunking(boolean)}
+     * @see #setUseRenderChunking(boolean)
      * @param o Long Y chunk offset
      * @return GameSettings A reference to this GameSettings
      */
@@ -402,7 +402,7 @@ public class GameSettings {
 
     /**
      * Sets the z chunk offset
-     * @see {@link #setUseRenderChunking(boolean)}
+     * @see #setUseRenderChunking(boolean)
      * @param o Long Z chunk offset
      * @return GameSettings A reference to this GameSettings
      */
@@ -413,7 +413,7 @@ public class GameSettings {
     /**
      * Sets the ChunkRenderOffsets (max distance to the camera where a chunk will be rendererd)
      * 
-     * @see {@link GameSettings#setUseRenderChunking(boolean)}
+     * @see #setUseRenderChunking(boolean)
      * @param xo Long X chunk offset
      * @param yo Long Y chunk offset
      * @param zo Long Z chunk offset
@@ -428,7 +428,7 @@ public class GameSettings {
 
     /**
      * Returns the chunk width
-     * @see {@link #setChunkSize(int, int, int)}
+     * @see #setChunkSize(int, int, int)
      * @return Integer Chunk width
      */
     public final int getChunkWidth() {
@@ -437,7 +437,7 @@ public class GameSettings {
 
     /**
      * Returns the chunk height
-     * @see {@link #setChunkSize(int, int, int)}
+     * @see #setChunkSize(int, int, int)
      * @return Integer Chunk height
      */
     public final int getChunkHeight() {
@@ -446,7 +446,7 @@ public class GameSettings {
 
     /**
      * Returns the chunk depth
-     * @see {@link #setChunkSize(int, int, int)}
+     * @see #setChunkSize(int, int, int)
      * @return Integer Chunk depth
      */
     public final int getChunkDepth() {
@@ -455,7 +455,7 @@ public class GameSettings {
 
     /**
      * Sets the chunk size of the RenderChunks.
-     * @see {@link #setUseRenderChunking(boolean)}
+     * @see #setUseRenderChunking(boolean)
      *
      * @param w Integer Width
      * @param h Integer Height
@@ -471,7 +471,7 @@ public class GameSettings {
 
     /**
      * Sets the chunk width
-     * @see {@link #setChunkSize(int, int, int)}
+     * @see #setChunkSize(int, int, int)
      * @param i Integer Width
      * @return GameSettings A reference to this GameSettings
      */
@@ -481,7 +481,7 @@ public class GameSettings {
 
     /**
      * Sets the chunk height
-     * @see {@link #setChunkSize(int, int, int)}
+     * @see #setChunkSize(int, int, int)
      * @param i Integer Height
      * @return GameSettings A reference to this GameSettings
      */
@@ -491,7 +491,7 @@ public class GameSettings {
 
     /**
      * Sets the chunk depth
-     * @see {@link #setChunkSize(int, int, int)}
+     * @see #setChunkSize(int, int, int)
      * @param i Integer Depth
      * @return GameSettings A reference to this GameSettings
      */
@@ -509,7 +509,7 @@ public class GameSettings {
 
     /**
      * Sets the radius around the camera where medium objects will be rendered.
-     * @see {@link RenderType#BIG}
+     * @see RenderType#BIG
      * @param Float the radius
      * @return this GameSettings
      */
@@ -556,7 +556,7 @@ public class GameSettings {
 
     /**
      * sets the amount of lights that can be rendered with forward light rendering in a frame. must be called before the engine boots.
-     * @see {@link #setLightForward(boolean)}
+     * @see #setLightForward(boolean)
      * @param int
      * @return this GameSettings
      */

@@ -12,6 +12,7 @@ public class ParticleAttractor {
 	protected GameObject positionable;
 	protected AttractorMode mode = AttractorMode.NOTHING;
 	protected boolean enabled=true;
+	protected Vector3f attenuation = new Vector3f(1, 0, 0);
 	
 	public ParticleAttractor(GameObject p){
 		this.positionable = p;
@@ -77,6 +78,15 @@ public class ParticleAttractor {
 	
 	public boolean isEnabled(){
 		return this.enabled;
+	}
+	
+	public ParticleAttractor setAttenuation(float a, float b, float c){
+		attenuation.set(a, b, c);
+		return this;
+	}
+	
+	public Vector3f getAttenuation(){
+		return attenuation;
 	}
 	
 }

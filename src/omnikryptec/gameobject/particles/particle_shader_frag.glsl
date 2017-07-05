@@ -3,6 +3,7 @@
 in vec2 texCoords1;
 in vec2 texCoords2;
 in float blend;
+in vec4 col;
 
 layout (location = 0) out vec4 out_colour;
 
@@ -15,7 +16,7 @@ void main(void){
 	vec4 col2 = texture(particleTexture, texCoords2);
 	
 	
-	out_colour = mix(col1, col2, blend);
+	out_colour = mix(col1, col2, blend) * col;
 	
 	if(out_colour.a<0.3){
 		discard;

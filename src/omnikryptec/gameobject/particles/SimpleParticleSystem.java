@@ -5,13 +5,17 @@ import omnikryptec.display.DisplayManager;
 import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.gameobject.gameobject.RenderType;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
+import omnikryptec.util.Color;
 import omnikryptec.util.Maths;
 
 public class SimpleParticleSystem extends ParticleSystem {
 
-	protected float particlepersec, averageSpeed, averageLifeLength, averageScale;
-
-	protected float speedError, lifeError, scaleError = 0;
+	protected float particlepersec, averageSpeed, averageLifeLength, averageStartScale,averageEndScale;
+	
+	protected Color startcolor = new Color(1, 1, 1, 1);
+	protected Color endcolor = new Color(1, 1, 1, 1);
+	
+	protected float speedError, lifeError, startScaleError = 0, endScaleError=0;
 	protected boolean randomRotation = false;
 	
 	/**
@@ -30,31 +34,52 @@ public class SimpleParticleSystem extends ParticleSystem {
 	protected SimpleParticleSystem(){
 	}
 	
+	public SimpleParticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float speed, float lifeLength,
+			RenderType type) {
+		this(pos,tex,pps,speed,lifeLength,1,type);
+	}
+	
 	public SimpleParticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float speed, float lifeLength, float scale,
 			RenderType type) {
 		this(pos.x, pos.y, pos.z, tex, pps, speed, lifeLength, scale, type);
 	}
 
+	public SimpleParticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float speed, float lifeLength, float scale, float endscale,
+			RenderType type) {
+		this(pos.x, pos.y, pos.z, tex, pps, speed, lifeLength, scale, endscale, type);
+	}
+	
 	public SimpleParticleSystem(float x, float y, float z, ParticleAtlas tex, float pps, float speed, float lifeLength,
 			float scale, RenderType type) {
-		this(x, y, z, tex, Maths.ZERO, pps, speed, lifeLength, scale, type);
+		this(x, y, z, tex, Maths.ZERO, pps, speed, lifeLength, scale, scale, type);
 	}
 
+	public SimpleParticleSystem(float x, float y, float z, ParticleAtlas tex, float pps, float speed, float lifeLength,
+			float scale, float endscale, RenderType type) {
+		this(x, y, z, tex, Maths.ZERO, pps, speed, lifeLength, scale, endscale, type);
+	}
+	
 	public SimpleParticleSystem(float x, float y, float z, ParticleAtlas tex, Vector3f gravityComplient, float pps, float speed,
-			float lifeLength, float scale, RenderType type) {
+			float lifeLength, float startscale, float endscale, RenderType type) {
 		this.type = type;
 		this.particlepersec = pps;
 		this.averageSpeed = speed;
 		this.force = gravityComplient;
 		this.averageLifeLength = lifeLength;
-		this.averageScale = scale;
+		this.averageStartScale = scale;
 		this.particletexture = tex;
+		this.averageEndScale = endscale;
 		setRelativePos(x, y, z);
 	}
 
 	public SimpleParticleSystem(Vector3f pos, ParticleAtlas tex, Vector3f gravityComplient, float pps, float speed,
+			float lifeLength, float scale, float endscale, RenderType type) {
+		this(pos.x, pos.y, pos.z, tex, gravityComplient, pps, speed, lifeLength, scale, endscale, type);
+	}
+	
+	public SimpleParticleSystem(Vector3f pos, ParticleAtlas tex, Vector3f gravityComplient, float pps, float speed,
 			float lifeLength, float scale, RenderType type) {
-		this(pos.x, pos.y, pos.z, tex, gravityComplient, pps, speed, lifeLength, scale, type);
+		this(pos.x, pos.y, pos.z, tex, gravityComplient, pps, speed, lifeLength, scale, scale, type);
 	}
 
 	public SimpleParticleSystem setSystemLifeLength(float f) {
@@ -100,11 +125,19 @@ public class SimpleParticleSystem extends ParticleSystem {
 	 * @param error
 	 *            - A number between 0 and 1, where 0 means no error margin.
 	 */
-	public void setScaleError(float error) {
-		this.scaleError = error * averageScale;
+	public void setStartScaleError(float error) {
+		this.startScaleError = error * averageStartScale;
 	}
 
-
+	/**
+	 * @param error
+	 *            - A number between 0 and 1, where 0 means no error margin.
+	 */
+	public void setEndScaleError(float error) {
+		this.endScaleError = error * averageEndScale;
+	}
+	
+	
 	public void resetTime() {
 		elapsedtime = 0;
 	}
@@ -120,9 +153,9 @@ public class SimpleParticleSystem extends ParticleSystem {
 	
 	@Override
 	public void update() {
-		if (elapsedtime <= lifelengthsystem || lifelengthsystem < 0) {
+		if (elapsedtime <= lifelengthsystem || lifelengthsystem <= -1) {
 			generateParticles(timemultiplier);
-			elapsedtime += DisplayManager.instance().getDeltaTimef()*timemultiplier;
+			elapsedtime += getScaledDeltatime();
 		}
 	}
 	
@@ -162,7 +195,7 @@ public class SimpleParticleSystem extends ParticleSystem {
 	
 	
 	private static Vector3f velocity;
-	private static float scale, lifeLength;
+	private static float scale, lifeLength, endscale;
 
 	protected Particle emitParticle(Vector3f center) {
 		if (direction != null) {
@@ -171,10 +204,15 @@ public class SimpleParticleSystem extends ParticleSystem {
 			velocity = generateRandomUnitVector();
 		}
 		velocity.mul(getErroredValue(averageSpeed, speedError));
-		scale = getErroredValue(averageScale, scaleError);
+		scale = getErroredValue(averageStartScale, startScaleError);
+		if(averageStartScale==averageEndScale){
+			endscale = scale;
+		}else{
+			endscale = getErroredValue(averageEndScale, endScaleError);
+		}
 		lifeLength = averageLifeLength==-1?-1:getErroredValue(averageLifeLength, lifeError);
 		return new SimpleParticle(particletexture,	calcNewSpawnPos(center), velocity, force,
-				lifeLength, generateRotation(), scale, this, type);
+				lifeLength, generateRotation(), scale, endscale, this, type, startcolor.getArray(), endcolor.getArray());
 	}
 
 	protected Vector3f calcNewSpawnPos(Vector3f center){
@@ -202,6 +240,79 @@ public class SimpleParticleSystem extends ParticleSystem {
 		}
 	}
 
+	public float getParticlepersec() {
+		return particlepersec;
+	}
+
+	public SimpleParticleSystem setParticlepersec(float particlepersec) {
+		this.particlepersec = particlepersec;
+		return this;
+	}
+
+	public float getAverageSpeed() {
+		return averageSpeed;
+	}
+
+	public SimpleParticleSystem setAverageSpeed(float averageSpeed) {
+		this.averageSpeed = averageSpeed;
+		return this;
+	}
+
+	public float getAverageLifeLength() {
+		return averageLifeLength;
+	}
+
+	public SimpleParticleSystem setAverageLifeLength(float averageLifeLength) {
+		this.averageLifeLength = averageLifeLength;
+		return this;
+	}
+
+	public float getAverageStartScale() {
+		return averageStartScale;
+	}
+
+	public SimpleParticleSystem setAverageStartScale(float averageStartScale) {
+		this.averageStartScale = averageStartScale;
+		return this;
+	}
+
+	public float getAverageEndScale() {
+		return averageEndScale;
+	}
+
+	public SimpleParticleSystem setAverageEndScale(float averageEndScale) {
+		this.averageEndScale = averageEndScale;
+		return this;
+	}
+
+	public ParticleAtlas getParticletexture() {
+		return particletexture;
+	}
+
+	public SimpleParticleSystem setParticletexture(ParticleAtlas particletexture) {
+		this.particletexture = particletexture;
+		return this;
+	}
+
+	public Color getStartcolor() {
+		return startcolor;
+	}
+
+	public SimpleParticleSystem setStartcolor(Color startcolor) {
+		this.startcolor = startcolor;
+		return this;
+	}
+
+	public Color getEndcolor() {
+		return endcolor;
+	}
+
+	public SimpleParticleSystem setEndcolor(Color endcolor) {
+		this.endcolor = endcolor;
+		return this;
+	}
+
+	
 	
 
 }

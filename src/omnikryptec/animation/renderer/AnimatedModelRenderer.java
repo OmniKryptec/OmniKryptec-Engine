@@ -70,7 +70,7 @@ public class AnimatedModelRenderer implements Renderer {
             if (stapel != null && !stapel.isEmpty()) {
                 for (int z = 0; z < stapel.size(); z++) {
                     entity = stapel.get(z);
-                    if (entity != null && entity.isActive() && RenderUtil.inRenderRange(entity, camera)) {
+                    if (entity != null && entity.isRenderingEnabled() && RenderUtil.inRenderRange(entity, camera)) {
                         shader.jointTransforms.loadMatrixArray(animatedModel.getJointTransforms());
                         shader.transformationMatrix.loadMatrix(entity.getTransformationMatrix());
                         GL11.glDrawElements(GL11.GL_TRIANGLES, animatedModel.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);

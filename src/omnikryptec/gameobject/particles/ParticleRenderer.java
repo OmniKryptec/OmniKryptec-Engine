@@ -22,10 +22,10 @@ import omnikryptec.util.RenderUtil;
 
 public class ParticleRenderer {
 
-	private static int maxInstancesPerSys = 10_000_000;
-	private static final int INSTANCE_DATA_LENGTH = 21;
+	private static int maxInstancesPerSys = 1_000_000;
+	private static final int INSTANCE_DATA_LENGTH = 25;
 
-	private static FloatBuffer buffer = BufferUtils.createFloatBuffer(maxInstancesPerSys * INSTANCE_DATA_LENGTH);;
+	private static FloatBuffer buffer = BufferUtils.createFloatBuffer(maxInstancesPerSys * INSTANCE_DATA_LENGTH);
 
 	private Model quad;
 	private ParticleShader shader;
@@ -49,6 +49,7 @@ public class ParticleRenderer {
 		vbo.addInstancedAttribute(quad.getVao(), 4, 4, INSTANCE_DATA_LENGTH, 12);
 		vbo.addInstancedAttribute(quad.getVao(), 5, 4, INSTANCE_DATA_LENGTH, 16);
 		vbo.addInstancedAttribute(quad.getVao(), 6, 1, INSTANCE_DATA_LENGTH, 20);
+		vbo.addInstancedAttribute(quad.getVao(), 7, 4, INSTANCE_DATA_LENGTH, 21);
 		shader = new ParticleShader();
 	}
 
@@ -64,7 +65,7 @@ public class ParticleRenderer {
 		shader.start();
 		shader.projMatrix.loadMatrix(curCam.getProjectionMatrix());
 		FrustrumFilter.setProjViewMatrices(curCam.getProjectionViewMatrix());
-		quad.getVao().bind(0, 1, 2, 3, 4, 5, 6);
+		quad.getVao().bind(0, 1, 2, 3, 4, 5, 6, 7);
 		globalCount = 0;
 		for (ParticleAtlas tmpt : particles.keySet()) {
 			bindTexture(tmpt);
@@ -114,6 +115,11 @@ public class ParticleRenderer {
 		data[pointer++] = par.getTexOffset2().x;
 		data[pointer++] = par.getTexOffset2().y;
 		data[pointer++] = par.getBlend();
+		data[pointer++] = par.getColorR();
+		data[pointer++] = par.getColorG();
+		data[pointer++] = par.getColorB();
+		data[pointer++] = par.getColorA();
+
 	}
 
 	private Vector3f tmp = new Vector3f();

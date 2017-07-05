@@ -15,16 +15,35 @@ public class AttractedPaticleSystem extends SimpleParticleSystem {
 
     protected final LinkedList<ParticleAttractor> attractorData = new LinkedList<>();
 
+    public AttractedPaticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float startspeed, float lifeLength, RenderType type) {
+    	this(pos, tex,pps,startspeed,lifeLength,1,type);
+    }
+
+    
     public AttractedPaticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float startspeed, float lifeLength, float scale, RenderType type) {
-        this(pos.x, pos.y, pos.z, tex, pps, startspeed, lifeLength, scale, type);
+    	this(pos,tex,pps,startspeed, lifeLength, scale, scale, type);
+    }
+
+    
+    public AttractedPaticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float startspeed, float lifeLength, float scale, float endscale, RenderType type) {
+        this(pos.x, pos.y, pos.z, tex, pps, startspeed, lifeLength, scale, endscale, type);
+    }
+
+    public AttractedPaticleSystem(float x, float y, float z, ParticleAtlas tex, float pps, float startspeed, float lifeLength, RenderType type) {
+    	this(x,y,z,tex,pps,startspeed,lifeLength,1,type);
     }
 
     public AttractedPaticleSystem(float x, float y, float z, ParticleAtlas tex, float pps, float startspeed, float lifeLength, float scale, RenderType type) {
+    	this(x,y,z,tex,pps,startspeed, lifeLength, scale,scale,type);
+    }
+    
+    public AttractedPaticleSystem(float x, float y, float z, ParticleAtlas tex, float pps, float startspeed, float lifeLength, float scale, float endscale, RenderType type) {
         this.type = type;
         this.particlepersec = pps;
         this.averageSpeed = startspeed;
         this.averageLifeLength = lifeLength;
-        this.averageScale = scale;
+        this.averageStartScale = scale;
+        this.averageEndScale = endscale;
         this.particletexture = tex;
         setRelativePos(x, y, z);
     }
@@ -71,7 +90,7 @@ public class AttractedPaticleSystem extends SimpleParticleSystem {
     }
 
     private static Vector3f velocity;
-    private static float scale, lifeLength;
+    private static float scale, lifeLength, endscale;
 
     @Override
     protected Particle emitParticle(Vector3f center) {
@@ -81,9 +100,14 @@ public class AttractedPaticleSystem extends SimpleParticleSystem {
             velocity = generateRandomUnitVector();
         }
         velocity.mul(getErroredValue(averageSpeed, speedError));
-        scale = getErroredValue(averageScale, scaleError);
+        scale = getErroredValue(averageStartScale, startScaleError);
+		if(averageStartScale==averageEndScale){
+			endscale = scale;
+		}else{
+			endscale = getErroredValue(averageEndScale, endScaleError);
+		}
         lifeLength = averageLifeLength <= -1 ? averageLifeLength : getErroredValue(averageLifeLength, lifeError);
-        return new AttractedParticle(particletexture, calcNewSpawnPos(center), velocity, lifeLength, generateRotation(), scale, this, type);
+        return new AttractedParticle(particletexture, calcNewSpawnPos(center), velocity, lifeLength, generateRotation(), scale, endscale, this, type, startcolor.getArray(), endcolor.getArray());
     }
 
 }

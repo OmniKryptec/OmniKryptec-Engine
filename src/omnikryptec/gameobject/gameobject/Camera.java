@@ -83,16 +83,12 @@ public class Camera extends GameObject {
     	return this;
     }
     
-    private final void projMset(){
-    	
-    }
-    
     public final Camera setValuesFrom(Camera toCopy) {
         if (toCopy == null) {
             return this;
         }
         setName(toCopy.getName());
-        setActive(toCopy.isActive());
+        setLogicEnabled(toCopy.isLogicEnabled());
         setParent(toCopy.getParent());
         setRotation(new Vector3f(toCopy.getRotation()));
         setPos(new Vector3f(toCopy.getRelativePos()));
@@ -122,7 +118,7 @@ public class Camera extends GameObject {
             camera.view = camera_toCopy.view;
         }
         camera.setName(toCopy.getName());
-        camera.setActive(toCopy.isActive());
+        camera.setLogicEnabled(toCopy.isLogicEnabled());
         camera.setParent(toCopy.getParent());
         camera.setRotation(toCopy.getRotation());
         camera.setPos(toCopy.getRelativePos());

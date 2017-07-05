@@ -35,7 +35,7 @@ public class Light extends GameObject {
 	
 	/**
 	 * the lights cone-attenuation.
-	 * @see {@link #setConeAttenuation(float, float, float)}
+	 * @see #setConeAttenuation(float, float, float)
 	 * @return
 	 */
 	public Vector3f getConeAttenuation(){
@@ -66,7 +66,7 @@ public class Light extends GameObject {
 
 	/**
 	 * the color/intensity of this light.
-	 * @see {@link #setColor(Color)}
+	 * @see #setColor(Color)
 	 * @return
 	 */
 	public Color getColor() {
@@ -111,8 +111,9 @@ public class Light extends GameObject {
 	
 	/**
 	 * coneinfo. only used if this light is a spotlight.
-	 * @see {@link #setConeDirection(float, float, float)}
-	 * @see {@link #setConeDegrees(float)}, {@link #setConeRadians(double)}
+	 * @see #setConeDirection(float, float, float)
+	 * @see #setConeDegrees(float)
+	 * @see #setConeRadians(double)
 	 * @return conedata
 	 */
 	public Vector4f getConeInfo(){
@@ -144,8 +145,8 @@ public class Light extends GameObject {
 
 	/**
 	 * the attenuation of this light.
-	 * @see {@link #setAttenuation(float, float, float)}
-	 * @see {@link #setCuttOffRange(float)}
+	 * @see #setAttenuation(float, float, float)
+	 * @see #setCuttOffRange(float)
 	 * @return attenuationdata
 	 */
 	public Vector4f getAttenuation() {
@@ -183,7 +184,7 @@ public class Light extends GameObject {
 	
 	/**
 	 * returns if this light is a directional light.
-	 * @see {@link #setDirectional(boolean)}
+	 * @see #setDirectional(boolean)
 	 * @return
 	 */
 	public final boolean isDirectional() {

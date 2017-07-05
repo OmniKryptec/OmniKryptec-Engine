@@ -43,7 +43,7 @@ public class GameObject implements DataMapSerializable, Positionable {
     private boolean isglobal = false;
     private Vector3f pos = new Vector3f();
     private GameObject parent = null;
-    private boolean active = true;
+    private boolean logicEnabled = true;
     private Vector3f rotation = new Vector3f();
     // @JsonView(GameObject.class) //To hide this while saving it
     private RenderChunk myChunk;
@@ -55,7 +55,7 @@ public class GameObject implements DataMapSerializable, Positionable {
 
     /**
      * sets the updatetype of this GameObject. if its {@link UpdateType#SEMISTATIC} the logic will be executed but the chunkposition etc will not be changed.
-     *  if its {@link UpdateType#STATIC} the logic will never be executed.
+     * if its {@link UpdateType#STATIC} the logic will never be executed.
      * @param t
      * @return this GameObject
      */
@@ -197,7 +197,7 @@ public class GameObject implements DataMapSerializable, Positionable {
     
     /**
      * executes the logic of this GameObject if neccessary. 
-     * @see {@link #setUpdateType(UpdateType)}
+     * @see #setUpdateType(UpdateType)
      * @return this GameObject
      */
     public final GameObject doLogic0(){
@@ -218,6 +218,9 @@ public class GameObject implements DataMapSerializable, Positionable {
         	Logger.log("Logic is not allowed while rendering!", LogLevel.WARNING);
         	return this;
         }
+    	if(!logicEnabled){
+    		return this;
+    	}
     	if (componentsPreLogic != null) {
             for (Component c : componentsPreLogic) {
                 c.execute(this);
@@ -237,7 +240,7 @@ public class GameObject implements DataMapSerializable, Positionable {
 
     /**
      * adds a Component to this GameObject.
-     * @see {@link Component}
+     * @see Component
      * @param c
      * @return this GameObject
      */
@@ -354,14 +357,15 @@ public class GameObject implements DataMapSerializable, Positionable {
 
     /**
      * override this to do some logic. only gets executed for {@link UpdateType#SEMISTATIC} pr {@link UpdateType#DYNAMIC} or if the logic is forced.
-     * @see {@link #doLogic0(boolean)}
+     * @see #doLogic0(boolean)
      */
     protected void update() {
     }
 
     /**
      * called then the GameObject is finally removed from the scene.
-     * @see {@link Scene#removeGameObject(GameObject, boolean)}, {@link Scene#removeGameObject(GameObject)}l
+     * @see Scene#removeGameObject(GameObject, boolean) 
+     * @see Scene#removeGameObject(GameObject)
      * @return
      */
     public final GameObject deleteOperation() {
@@ -399,7 +403,7 @@ public class GameObject implements DataMapSerializable, Positionable {
                 oldchunk.removeGameObject(this, false);
             }
         } else if (Logger.isDebugMode()) {
-            Logger.log("MyChunk is null (Should not happen -.-)", LogLevel.WARNING);
+            Logger.log("MyChunk is null (Should not happen): "+toString(), LogLevel.WARNING);
         }
         return this;
     }
@@ -414,7 +418,7 @@ public class GameObject implements DataMapSerializable, Positionable {
 
     /**
      * the chunkx. used for rendering
-     * @see {@link GameSettings#usesRenderChunking()}
+     * @see GameSettings#usesRenderChunking()
      * @return chunkx
      */
     public final long getChunkX() {
@@ -423,7 +427,7 @@ public class GameObject implements DataMapSerializable, Positionable {
 
     /**
      * the chunky. used for rendering
-     * @see {@link GameSettings#usesRenderChunking()}
+     * @see GameSettings#usesRenderChunking()
      * @return chunky
      */
     public final long getChunkY() {
@@ -432,7 +436,7 @@ public class GameObject implements DataMapSerializable, Positionable {
 
     /**
      * the chunkz. used for rendering
-     * @see {@link GameSettings#usesRenderChunking()}
+     * @see GameSettings#usesRenderChunking()
      * @return
      */
     public final long getChunkZ() {
@@ -444,8 +448,8 @@ public class GameObject implements DataMapSerializable, Positionable {
      * if <code>false</code> the logic will never be executed automatically.
      * @param b
      */
-    public final GameObject setActive(boolean b) {
-        this.active = b;
+    public final GameObject setLogicEnabled(boolean b) {
+        this.logicEnabled = b;
         return this;
     }
 
@@ -454,8 +458,8 @@ public class GameObject implements DataMapSerializable, Positionable {
      *
      * @return
      */
-    public final boolean isActive() {
-        return active;
+    public final boolean isLogicEnabled() {
+        return logicEnabled;
     }
 
     /**
@@ -480,7 +484,7 @@ public class GameObject implements DataMapSerializable, Positionable {
 
     /**
      * the absolute rotation of this GameObject in radians
-     * @see {@link #getAbsolutePos()}
+     * @see #getAbsolutePos()
      * @return
      */
     public final Vector3f getAbsoluteRotation() {
@@ -498,7 +502,7 @@ public class GameObject implements DataMapSerializable, Positionable {
      */
     public static GameObject copy(GameObject toCopy) {
         GameObject go = new GameObject(toCopy.name);
-        go.active = toCopy.active;
+        go.logicEnabled = toCopy.logicEnabled;
         go.parent = toCopy.parent;
         go.rotation = new Vector3f(toCopy.rotation);
         go.pos = new Vector3f(toCopy.pos);
@@ -515,7 +519,7 @@ public class GameObject implements DataMapSerializable, Positionable {
             return this;
         }
         name = toCopy.name;
-        active = toCopy.active;
+        logicEnabled = toCopy.logicEnabled;
         parent = toCopy.parent;
         rotation = new Vector3f(toCopy.rotation);
         pos = new Vector3f(toCopy.pos);
@@ -536,7 +540,7 @@ public class GameObject implements DataMapSerializable, Positionable {
     }
 
     /**
-     * @see {@link #getRelativePos()}
+     * @see #getRelativePos()
      * @return rel. pos
      */
     public final Vector3f getPos() {
@@ -544,7 +548,7 @@ public class GameObject implements DataMapSerializable, Positionable {
     }
 
     /**
-     * @see {@link #getRelativeRotation()}
+     * @see #getRelativeRotation()
      * @return rel. rot
      */
     public final Vector3f getRotation() {
@@ -552,7 +556,7 @@ public class GameObject implements DataMapSerializable, Positionable {
     }
 
     /**
-     * @see {@link #setRelativePos(float, float, float)}
+     * @see #setRelativePos(float, float, float)
      * @param pos
      * @return this GameObject
      */
@@ -613,7 +617,7 @@ public class GameObject implements DataMapSerializable, Positionable {
     public DataMap toDataMap(DataMap data) {
         data.put("name", name);
         data.put("isglobal", isglobal);
-        data.put("active", active);
+        data.put("active", logicEnabled);
         if (parent != null) {
             data.put("parent", parent.toDataMap(new DataMap("parent")));
         }
@@ -641,7 +645,7 @@ public class GameObject implements DataMapSerializable, Positionable {
         }
         setName(data.getString("name"));
         setGlobal(data.getBoolean("isglobal"));
-        setActive(data.getBoolean("isActive"));
+        setLogicEnabled(data.getBoolean("isActive"));
         DataMap dataMap_temp = data.getDataMap("parent");
         if (parent == null) {
             Object parent_ = newInstanceFromDataMap(dataMap_temp);

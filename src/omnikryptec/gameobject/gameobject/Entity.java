@@ -25,8 +25,12 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
     private Vector3f scale = new Vector3f(1, 1, 1);
     private RenderType type = RenderType.ALWAYS;
     private Color color = new Color(1, 1, 1, 1);
+    private boolean renderingEnabled=true;
+    
+    
 
-    public Entity() {
+
+	public Entity() {
         super();
     }
 
@@ -62,7 +66,7 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
 
     /**
      * sets the RenderType of this entity.
-     * @see {@link #getType()}
+     * @see #getType()
      * @param type
      * @return this Entity
      */
@@ -97,7 +101,8 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
     /**
      * sets the AdvancedModel of this Entity. if the AdvancedModel is changed at runtime, 
      * this method should be called to ensure that the right renderer will render this entity.
-     * @see {@link TexturedModel}, {@link AnimatedModel}
+     * @see TexturedModel 
+     * @see AnimatedModel
      * @param model
      * @return this Entity
      */
@@ -110,7 +115,7 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
 
     /**
      * the Advanced Model of this entity
-     * @see {@link #setAdvancedModel(AdvancedModel)}
+     * @see #setAdvancedModel(AdvancedModel)
      * @return Advanced Model
      */
     public final AdvancedModel getAdvancedModel() {
@@ -119,7 +124,7 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
 
     /**
      * sets the color of this Entity
-     * @see {@link #setColor(float, float, float, float)}
+     * @see #setColor(float, float, float, float)
      * @param c
      * @return this Entity
      */
@@ -144,7 +149,7 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
 
     /**
      * the color of this Entity
-     * @see {@link #setColor(float, float, float, float)}
+     * @see #setColor(float, float, float, float)
      * @return a color
      */
     public Color getColor() {
@@ -161,7 +166,7 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
      * the transformationmatrix of this entity.
      * if this is a {@link UpdateType#SEMISTATIC} or {@link UpdateType#STATIC} Entity the transformation matrix will be created once and will never be touched again. 
      * to recalculate the matrix change the <code>UpdateType</code> of this entity or use {@link #recalculateTransformation()}.
-     * @see {@link #setUpdateType(UpdateType)}
+     * @see #setUpdateType(UpdateType)
      * @return transmatrix
      */
     public Matrix4f getTransformationMatrix(){
@@ -203,7 +208,7 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
             return this;
         }
         setName(toCopy.getName());
-        setActive(toCopy.isActive());
+        setLogicEnabled(toCopy.isLogicEnabled());
         setParent(toCopy.getParent());
         setRotation(new Vector3f(toCopy.getRotation()));
         setPos(new Vector3f(toCopy.getRelativePos()));
@@ -278,4 +283,13 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
         return this;
     }
 
+    
+    public boolean isRenderingEnabled() {
+		return renderingEnabled;
+	}
+
+	public void setRenderingEnabled(boolean renderingEnabled) {
+		this.renderingEnabled = renderingEnabled;
+	}
+    
 }

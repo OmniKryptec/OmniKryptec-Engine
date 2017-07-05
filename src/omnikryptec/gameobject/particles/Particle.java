@@ -8,6 +8,7 @@ import org.joml.Vector3f;
 
 import omnikryptec.gameobject.gameobject.RenderType;
 import omnikryptec.resource.texture.ParticleAtlas;
+import omnikryptec.util.Color;
 
 public class Particle implements Rangeable{
 	
@@ -18,6 +19,7 @@ public class Particle implements Rangeable{
 	protected Vector2f texOffset1 = new Vector2f(), texOffset2 = new Vector2f();
 	protected float textureblend;
 	private float distance;
+	protected Color color = new Color(1, 1, 1, 1);
 	
 	public Particle(ParticleAtlas texture){
 		this(texture, RenderType.ALWAYS);
@@ -145,5 +147,21 @@ public class Particle implements Rangeable{
 	
 	public float getDistance(){
 		return distance;
+	}
+	
+	public float getColorR(){
+		return color.getR();
+	}
+	
+	public float getColorG(){
+		return color.getG();
+	}
+	
+	public float getColorB(){
+		return color.getB();
+	}
+	
+	public float getColorA(){
+		return color.getA();
 	}
 }
