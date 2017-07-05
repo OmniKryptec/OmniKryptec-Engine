@@ -41,6 +41,7 @@ import omnikryptec.gameobject.component.Component;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.AudioUtil;
+import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
 import org.apache.commons.io.IOUtils;
@@ -68,6 +69,9 @@ public class AudioManager {
      */
     public static final boolean init() {
         if (isInitialized) {
+        	if(Logger.isDebugMode()){
+        		Logger.log("Audio is already initialized!", LogLevel.INFO);
+        	}
             return false;
         }
         try {
@@ -89,6 +93,7 @@ public class AudioManager {
             AL.createCapabilities(deviceCapabilities);
             setDistanceModel(DistanceModel.EXPONENT_CLAMPED);
             isInitialized = true;
+            Logger.log("Successfully initialized the Audiosystem!", LogLevel.FINEST);
             return true;
         } catch (Exception ex) {
             isInitialized = false;

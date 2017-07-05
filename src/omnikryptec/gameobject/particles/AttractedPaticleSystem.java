@@ -85,6 +85,10 @@ public class AttractedPaticleSystem extends SimpleParticleSystem {
     	return this;
     }
 
+    public ParticleAttractor getLastAddedAttractor(){
+    	return attractorData.getLast();
+    }
+    
     public LinkedList<ParticleAttractor> getAttractorData() {
         return attractorData;
     }

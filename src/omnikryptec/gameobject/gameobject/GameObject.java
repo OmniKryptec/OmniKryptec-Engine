@@ -201,7 +201,7 @@ public class GameObject implements DataMapSerializable, Positionable {
      * @return this GameObject
      */
     public final GameObject doLogic0(){
-    	return doLogic0(false);
+    	return doLogic(false);
     }
     
     private Scene cs;
@@ -210,7 +210,7 @@ public class GameObject implements DataMapSerializable, Positionable {
      * @param force if true all logic of this GameObject is executed, if neccessary or not (ignores {@link UpdateType}).
      * @return this GameObject
      */
-    public final GameObject doLogic0(boolean force) {
+    public final GameObject doLogic(boolean force) {
         if(getUpdateType()==UpdateType.STATIC&&!force){
         	return this;
         }
@@ -233,7 +233,7 @@ public class GameObject implements DataMapSerializable, Positionable {
             }
         }
         if ((force || getUpdateType() == UpdateType.DYNAMIC) && !(this instanceof Camera)&&Instance.getGameSettings().usesRenderChunking()) {
-            checkChunkPos();
+            checkChunkPos(true);
         }
         return this;
     }
@@ -357,7 +357,7 @@ public class GameObject implements DataMapSerializable, Positionable {
 
     /**
      * override this to do some logic. only gets executed for {@link UpdateType#SEMISTATIC} pr {@link UpdateType#DYNAMIC} or if the logic is forced.
-     * @see #doLogic0(boolean)
+     * @see #doLogic(boolean)
      */
     protected void update() {
     }
@@ -390,11 +390,12 @@ public class GameObject implements DataMapSerializable, Positionable {
     protected void delete() {
     }
 
-    /**
-     * checks the chunk pos of this GameObject
-     * @return
-     */
-    protected final GameObject checkChunkPos() {
+   /**
+    * checks the chunkpos of this GameObject
+    * @param error if true and if the Logger is in debugmode and if the chunk of this gameobject is null a warning will be printed.
+    * @return this GameObject
+    */
+    protected final GameObject checkChunkPos(boolean error) {
         RenderChunk oldchunk = getMyChunk();
         if (oldchunk != null) {
             if (oldchunk.getChunkX() != getChunkX() || oldchunk.getChunkY() != getChunkY()
@@ -402,8 +403,8 @@ public class GameObject implements DataMapSerializable, Positionable {
                 oldchunk.getScene().addGameObject(this);
                 oldchunk.removeGameObject(this, false);
             }
-        } else if (Logger.isDebugMode()) {
-            Logger.log("MyChunk is null (Should not happen): "+toString(), LogLevel.WARNING);
+        } else if (error&&Logger.isDebugMode()) {
+            Logger.log("MyChunk is null: "+toString(), LogLevel.WARNING);
         }
         return this;
     }
@@ -572,7 +573,7 @@ public class GameObject implements DataMapSerializable, Positionable {
      */
     public GameObject setGlobal(boolean b) {
         this.isglobal = b;
-        checkChunkPos();
+        checkChunkPos(false);
         return this;
     }
 

@@ -128,6 +128,7 @@ public class OmniKryptecEngine implements Profilable {
             createFbos();
             Display.show();
             eventsystem.fireEvent(new Event(), EventType.BOOTING_COMPLETED);
+            Logger.log("Successfully booted the Engine!", LogLevel.FINEST);
         } catch (Exception e) {
             errorOccured(e, "Error occured while booting.");
         }

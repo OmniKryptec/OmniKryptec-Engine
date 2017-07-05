@@ -109,7 +109,7 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
     public final Entity setAdvancedModel(AdvancedModel model) {
         this.model = model;
         //if renderer gets changed this entity must be treated differently 
-        checkChunkPos();
+        checkChunkPos(false);
         return this;
     }
 

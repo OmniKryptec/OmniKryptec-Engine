@@ -101,11 +101,10 @@ public class DisplayManager implements Profilable{
 			GL11.glViewport(0, 0, info.getWidth(), info.getHeight());
 			AudioManager.init();
 			lasttime = manager.getCurrentTime();
+			Logger.log("Successfully created the Display!", LogLevel.FINEST);
 			return new OmniKryptecEngine(manager);
 		} catch (Exception ex) {
-			if (Logger.isDebugMode()) {
-				Logger.logErr("Error while creating new DisplayManager: " + ex, ex);
-			}
+			Logger.logErr("Error while creating new DisplayManager: " + ex, ex);
 			return null;
 		}
 	}
