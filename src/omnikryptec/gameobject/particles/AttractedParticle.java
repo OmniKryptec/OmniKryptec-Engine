@@ -128,6 +128,7 @@ public class AttractedParticle extends Particle {
 	                		ddd = direction.length();
 	                	}
 	                	attenu = att.x + att.y * ddd + att.z * ddd * ddd;
+	                	attenu = 1/attenu;
 	                }
 	        		direction.normalize();
 	                direction.mul(attractorData.getAcceleration()*attenu);
