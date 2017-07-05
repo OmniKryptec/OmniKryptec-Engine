@@ -4,6 +4,7 @@ import omnikryptec.gameobject.gameobject.RenderType;
 import omnikryptec.resource.texture.ParticleAtlas;
 
 import java.util.ArrayList;
+import omnikryptec.util.PhysicsUtil;
 
 import org.joml.Vector3f;
 
@@ -13,6 +14,8 @@ import org.joml.Vector3f;
  */
 public class AttractedParticle extends Particle {
 
+    protected Vector3f positionLast = new Vector3f();
+    protected boolean attractedByParticles = false;
     protected Vector3f velocity;
     protected float lifeLength;
     protected float elapsedTime = 0;
@@ -29,6 +32,7 @@ public class AttractedParticle extends Particle {
 
     public AttractedParticle(ParticleAtlas tex, Vector3f pos, Vector3f vel, float mass, float lifeLength, float rot, float startscale, float endscale, AttractedPaticleSystem system, RenderType type, float[] startcolor, float[] endcolor) {
         super(pos, tex, type);
+        positionLast.set(pos);
         setRotation(rot);
         this.velocity = vel;
         this.mass = mass;
@@ -50,6 +54,15 @@ public class AttractedParticle extends Particle {
     @Override
     protected float getLifeFactor() {
         return lifeLength <= -1 ? -1 : elapsedTime / lifeLength;
+    }
+
+    public boolean isAttractedByParticles() {
+        return attractedByParticles;
+    }
+
+    public AttractedParticle setAttractedByParticles(boolean attractedByParticles) {
+        this.attractedByParticles = attractedByParticles;
+        return this;
     }
 
     private static float timemultiplier, lf;
@@ -135,6 +148,23 @@ public class AttractedParticle extends Particle {
                     acceleration.add(direction);
                 }
             }
+            if (attractedByParticles) {
+                float force = 0;
+                for (AttractedParticle particle : system.particles) {
+                    if (!particle.attractedByParticles) {
+                        continue;
+                    }
+                    particle.positionLast.sub(position, changeable);
+                    final float radiusSquared = changeable.lengthSquared();
+                    if (radiusSquared == 0) {
+                        continue;
+                    }
+                    force = (PhysicsUtil.GRAVITATIONAL_CONSTANT * (mass * particle.mass)) / radiusSquared;
+                    changeable.normalize();
+                    changeable.mul(force);
+                    acceleration.add(changeable);
+                }
+            }
             if (disallowing_mov <= 0 && elapsedTime != lifeLength) {
                 velocity.add(acceleration.mul(timemultiplier, changeable));
                 position.add(velocity.mul(timemultiplier, changeable));
@@ -151,7 +181,16 @@ public class AttractedParticle extends Particle {
             color.setB((color2[2] - color1[2]) * lf + color1[2]);
             color.setA((color2[3] - color1[3]) * lf + color1[3]);
         }
-        return lifeLength == -2 || (lifeLength == -1 && living) || (elapsedTime < lifeLength && living);
+        final boolean livesNextFrame = (lifeLength == -2 || (lifeLength == -1 && living) || (elapsedTime < lifeLength && living));
+        if (!livesNextFrame) {
+            system.particles.remove(this);
+        }
+        return livesNextFrame;
+    }
+    
+    protected boolean updateLast() {
+        positionLast.set(position);
+        return true;
     }
 
 }

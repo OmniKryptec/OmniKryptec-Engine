@@ -50,8 +50,8 @@ public class ParticleMaster implements Profilable {
         rendertime = Instance.getDisplayManager().getCurrentTime() - tmptime;
     }
 
-    public void logic(Camera c){
-    	updatedParticlesCount = 0;
+    public void logic(Camera c) {
+        updatedParticlesCount = 0;
         tmptime2 = Instance.getDisplayManager().getCurrentTime();
         mapIterator = particles.entrySet().iterator();
         while (mapIterator.hasNext()) {
@@ -69,15 +69,20 @@ public class ParticleMaster implements Profilable {
                     updatedParticlesCount++;
                 }
             }
+            iterator = list.iterator();
+            while (iterator.hasNext()) {
+                p = iterator.next();
+                p.updateLast();
+            }
             if (!entry.getKey().useAlphaBlending()) {
                 ArrayUtil.parallelSortArrayListAsArray(list, Sorting.PARTICLE_COMPARATOR);
                 //list.sort(Sorting.PARTICLE_COMPARATOR); //Sorry You Are Too Slow
             }
         }
-         
+
         updatetime = Instance.getDisplayManager().getCurrentTime() - tmptime2;
     }
-    
+
     public double getRenderTimeMS() {
         return rendertime;
     }
@@ -97,7 +102,6 @@ public class ParticleMaster implements Profilable {
     public long getUpdatedParticlesCount() {
         return updatedParticlesCount;
     }
-
 
     private static List<Particle> list1;
 

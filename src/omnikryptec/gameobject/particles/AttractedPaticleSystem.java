@@ -13,8 +13,10 @@ import org.joml.Vector3f;
 public class AttractedPaticleSystem extends SimpleParticleSystem {
 
     protected final LinkedList<ParticleAttractor> attractorData = new LinkedList<>();
+    protected final LinkedList<AttractedParticle> particles = new LinkedList<>();
     protected float averageMass = 1.0F;
     protected float massError = 0.0F;
+    protected boolean particlesAttractingEachOther = false;
 
     public AttractedPaticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float startspeed, float lifeLength, RenderType type) {
         this(pos, tex, pps, startspeed, lifeLength, 1, type);
@@ -110,6 +112,15 @@ public class AttractedPaticleSystem extends SimpleParticleSystem {
         return this;
     }
 
+    public boolean isParticlesAttractingEachOther() {
+        return particlesAttractingEachOther;
+    }
+
+    public AttractedPaticleSystem setParticlesAttractingEachOther(boolean particlesAttractingEachOther) {
+        this.particlesAttractingEachOther = particlesAttractingEachOther;
+        return this;
+    }
+
     private static Vector3f velocity;
     private static float scale, lifeLength, endscale, mass;
 
@@ -129,7 +140,10 @@ public class AttractedPaticleSystem extends SimpleParticleSystem {
         }
         mass = getErroredValue(averageMass, massError);
         lifeLength = averageLifeLength <= -1 ? averageLifeLength : getErroredValue(averageLifeLength, lifeError);
-        return new AttractedParticle(particletexture, calcNewSpawnPos(center), velocity, mass, lifeLength, generateRotation(), scale, endscale, this, type, startcolor.getArray(), endcolor.getArray());
+        final AttractedParticle particle = new AttractedParticle(particletexture, calcNewSpawnPos(center), velocity, mass, lifeLength, generateRotation(), scale, endscale, this, type, startcolor.getArray(), endcolor.getArray());
+        particles.add(particle);
+        particle.setAttractedByParticles(particlesAttractingEachOther);
+        return particle;
     }
 
 }
