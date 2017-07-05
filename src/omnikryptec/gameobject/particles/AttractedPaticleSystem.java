@@ -3,40 +3,39 @@ package omnikryptec.gameobject.particles;
 import java.util.LinkedList;
 import omnikryptec.gameobject.gameobject.GameObject;
 import omnikryptec.gameobject.gameobject.RenderType;
-import omnikryptec.gameobject.particles.AttractorMode;
 import omnikryptec.resource.texture.ParticleAtlas;
 import org.joml.Vector3f;
 
 /**
- *
+ * AttractedPaticleSystem
  * @author Panzer1119 &amp; pcfreak9000
  */
 public class AttractedPaticleSystem extends SimpleParticleSystem {
 
     protected final LinkedList<ParticleAttractor> attractorData = new LinkedList<>();
+    protected float averageMass = 1.0F;
+    protected float massError = 0.0F;
 
     public AttractedPaticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float startspeed, float lifeLength, RenderType type) {
-    	this(pos, tex,pps,startspeed,lifeLength,1,type);
+        this(pos, tex, pps, startspeed, lifeLength, 1, type);
     }
 
-    
     public AttractedPaticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float startspeed, float lifeLength, float scale, RenderType type) {
-    	this(pos,tex,pps,startspeed, lifeLength, scale, scale, type);
+        this(pos, tex, pps, startspeed, lifeLength, scale, scale, type);
     }
 
-    
     public AttractedPaticleSystem(Vector3f pos, ParticleAtlas tex, float pps, float startspeed, float lifeLength, float scale, float endscale, RenderType type) {
         this(pos.x, pos.y, pos.z, tex, pps, startspeed, lifeLength, scale, endscale, type);
     }
 
     public AttractedPaticleSystem(float x, float y, float z, ParticleAtlas tex, float pps, float startspeed, float lifeLength, RenderType type) {
-    	this(x,y,z,tex,pps,startspeed,lifeLength,1,type);
+        this(x, y, z, tex, pps, startspeed, lifeLength, 1, type);
     }
 
     public AttractedPaticleSystem(float x, float y, float z, ParticleAtlas tex, float pps, float startspeed, float lifeLength, float scale, RenderType type) {
-    	this(x,y,z,tex,pps,startspeed, lifeLength, scale,scale,type);
+        this(x, y, z, tex, pps, startspeed, lifeLength, scale, scale, type);
     }
-    
+
     public AttractedPaticleSystem(float x, float y, float z, ParticleAtlas tex, float pps, float startspeed, float lifeLength, float scale, float endscale, RenderType type) {
         this.type = type;
         this.particlepersec = pps;
@@ -47,19 +46,19 @@ public class AttractedPaticleSystem extends SimpleParticleSystem {
         this.particletexture = tex;
         setRelativePos(x, y, z);
     }
-    
+
     public AttractedPaticleSystem addAttractor(float x, float y, float z, float a, float t) {
         return addAttractor(x, y, z, a, t, AttractorMode.NOTHING);
     }
-    
+
     public AttractedPaticleSystem addAttractor(float x, float y, float z, float a, float t, AttractorMode d) {
         return addAttractor(x, y, z, a, t, d, false);
     }
-    
+
     public AttractedPaticleSystem addAttractor(Vector3f pos, float a, float t) {
         return addAttractor(pos, a, t, AttractorMode.NOTHING);
     }
-    
+
     public AttractedPaticleSystem addAttractor(Vector3f pos, float a, float t, AttractorMode d) {
         return addAttractor(pos.x, pos.y, pos.z, a, t, d, false);
     }
@@ -67,34 +66,52 @@ public class AttractedPaticleSystem extends SimpleParticleSystem {
     public AttractedPaticleSystem addAttractor(GameObject go, float a, float t) {
         return addAttractor(go, a, t, AttractorMode.NOTHING);
     }
-    
+
     public AttractedPaticleSystem addAttractor(GameObject go, float a, float t, AttractorMode d) {
         return addAttractor(go, a, t, d, false);
     }
-    
-    public AttractedPaticleSystem addAttractor(float x, float y, float z, float a, float t, AttractorMode mode, boolean i) {
-    	return addAttractor(new ParticleAttractor(x,y,z).setAcceleration(a).setTolerance(t).setMode(mode).setInfinite(i));
-    }
-    
-    public AttractedPaticleSystem addAttractor(GameObject go, float a, float t, AttractorMode mode, boolean i) {
-    	return addAttractor(new ParticleAttractor(go).setAcceleration(a).setTolerance(t).setMode(mode).setInfinite(i));
-    }
-    
-    public AttractedPaticleSystem addAttractor(ParticleAttractor atr){
-    	this.attractorData.add(atr);
-    	return this;
+
+    public AttractedPaticleSystem addAttractor(float x, float y, float z, float g, float t, AttractorMode mode, boolean i) {
+        return addAttractor(new ParticleAttractor(x, y, z).setGravitation(g).setTolerance(t).setMode(mode).setInfinite(i));
     }
 
-    public ParticleAttractor getLastAddedAttractor(){
-    	return attractorData.getLast();
+    public AttractedPaticleSystem addAttractor(GameObject go, float g, float t, AttractorMode mode, boolean i) {
+        return addAttractor(new ParticleAttractor(go).setGravitation(g).setTolerance(t).setMode(mode).setInfinite(i));
     }
-    
+
+    public AttractedPaticleSystem addAttractor(ParticleAttractor atr) {
+        this.attractorData.add(atr);
+        return this;
+    }
+
+    public ParticleAttractor getLastAddedAttractor() {
+        return attractorData.getLast();
+    }
+
     public LinkedList<ParticleAttractor> getAttractorData() {
         return attractorData;
     }
 
+    public float getAverageMass() {
+        return averageMass;
+    }
+
+    public AttractedPaticleSystem setAverageMass(float averageMass) {
+        this.averageMass = averageMass;
+        return this;
+    }
+
+    public float getMassError() {
+        return massError;
+    }
+
+    public AttractedPaticleSystem setMassError(float massError) {
+        this.massError = massError;
+        return this;
+    }
+
     private static Vector3f velocity;
-    private static float scale, lifeLength, endscale;
+    private static float scale, lifeLength, endscale, mass;
 
     @Override
     protected Particle emitParticle(Vector3f center) {
@@ -105,13 +122,14 @@ public class AttractedPaticleSystem extends SimpleParticleSystem {
         }
         velocity.mul(getErroredValue(averageSpeed, speedError));
         scale = getErroredValue(averageStartScale, startScaleError);
-		if(averageStartScale==averageEndScale){
-			endscale = scale;
-		}else{
-			endscale = getErroredValue(averageEndScale, endScaleError);
-		}
+        if (averageStartScale == averageEndScale) {
+            endscale = scale;
+        } else {
+            endscale = getErroredValue(averageEndScale, endScaleError);
+        }
+        mass = getErroredValue(averageMass, massError);
         lifeLength = averageLifeLength <= -1 ? averageLifeLength : getErroredValue(averageLifeLength, lifeError);
-        return new AttractedParticle(particletexture, calcNewSpawnPos(center), velocity, lifeLength, generateRotation(), scale, endscale, this, type, startcolor.getArray(), endcolor.getArray());
+        return new AttractedParticle(particletexture, calcNewSpawnPos(center), velocity, mass, lifeLength, generateRotation(), scale, endscale, this, type, startcolor.getArray(), endcolor.getArray());
     }
 
 }
