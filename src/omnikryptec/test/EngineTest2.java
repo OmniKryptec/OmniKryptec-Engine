@@ -129,7 +129,7 @@ public class EngineTest2 implements IEventHandler {
             Model baumM = Model.newModel(new AdvancedFile(res, "final_tree_1.obj"));
             AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
             Model BLOCK = new Model("", ObjLoader.loadOBJ(new AdvancedFile(res, "block.obj")));
-            TexturedModel tm = new TexturedModel("brunnen", BLOCK, brunnent);
+            TexturedModel tm = new TexturedModel("brunnen", brunnen, brunnent);
             tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
             //tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
             tm.getMaterial().setHasTransparency(true).setReflectivity(new Vector3f(10, 10, 10)).setShineDamper(100)
@@ -185,15 +185,15 @@ public class EngineTest2 implements IEventHandler {
 
             /* //Dieser Block war bis einschliesslich commit 15f451917d1f1fda347aca531b69a8dac84f47b3 aktiviert
             System.out.println("Generating objs...");
-            int cube = 0;
+            int cube = 100;
             int abstand = 10;
-            float scale = 2;
+            float scale = 4;
             for (int x = -cube; x < cube; x += abstand) {
                 for (int y = -cube; y < cube; y += abstand) {
                     for (int z = -cube; z < cube; z += abstand) {
                     	GameObject go;
                     	//go = new GameObject().setRelativePos(x, y, z);
-                    	go = new Entity(tm).setScale(new Vector3f(scale, scale, scale)).setUpdateType(UpdateType.SEMISTATIC).setRelativePos(x, y, z);
+                    	go = new Entity(tm).setScale(new Vector3f(scale, scale, scale)).setUpdateType(UpdateType.STATIC).setRelativePos(x, y, z);
                         Instance.getCurrentScene().addGameObject(go);
                         //system.addAttractor(new ParticleAttractor(go).setAcceleration(10).setMode(AttractorMode.KILL_ON_REACH).setTolerance(5));
                     }
@@ -236,7 +236,7 @@ public class EngineTest2 implements IEventHandler {
             system.setGlobal(true);
             system.setStartcolor(new Color(1, 0, 1));
             system.setEndcolor(new Color(1, 1, 0));
-            OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
+           // OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));
             //OmniKryptecEngine.instance().getCurrentScene()
             //      .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setCuttOffRange(50).setColor(3, 0, 0).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0, -1, 0).setRelativePos(0,10, 0));
