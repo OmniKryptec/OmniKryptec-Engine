@@ -21,15 +21,16 @@ import omnikryptec.util.profiler.Profiler;
 
 public class ParticleMaster implements Profilable {
 
-    private static final Map<ParticleAtlas, List<Particle>> particles = new HashMap<>();
+    private static final Map<ParticleAtlas, ParticleList> particles = new HashMap<>();
     private static final ParticleRenderer rend = new ParticleRenderer();
 
     static Particle p;
-    static Entry<ParticleAtlas, List<Particle>> entry;
+    static Entry<ParticleAtlas, ParticleList> entry;
     static List<Particle> list;
+    static ParticleList pl;
     static Iterator<Particle> iterator;
-    static Iterator<Entry<ParticleAtlas, List<Particle>>> mapIterator;
-
+    static Iterator<Entry<ParticleAtlas, ParticleList>> mapIterator;
+    static boolean tmpboolean,tmpboolean2;
     static ExecutorService executor;
 
     private static ParticleMaster instance;
@@ -68,8 +69,8 @@ public class ParticleMaster implements Profilable {
         boolean multithread_ = Instance.getGameSettings().isMultithreadedParticles();
         if(multithread_){
         	long count = 0;
-        	for(List<Particle> l : particles.values()){
-        		count += l.size();
+        	for(ParticleList l : particles.values()){
+        		count += l.list.size();
         	}
         	if(count < Instance.getGameSettings().getMinMultithreadParticles()){
         		multithread_ = false;
@@ -80,7 +81,10 @@ public class ParticleMaster implements Profilable {
         mapIterator = particles.entrySet().iterator();
         while (mapIterator.hasNext()) {
             entry = mapIterator.next();
-            list = entry.getValue();
+            pl = entry.getValue();
+            list = pl.list;
+            tmpboolean = pl.wantsUpdateLast;
+            tmpboolean2 = true;
             iterator = list.iterator();
             if (multithread_) {
                 resetExecutor();
@@ -88,6 +92,11 @@ public class ParticleMaster implements Profilable {
             }
             while (iterator.hasNext()) {
                 p = iterator.next();
+                if(tmpboolean&&tmpboolean2){
+                	if(p.wantsupdatelast){
+                		tmpboolean2 = false;
+                	}
+                }
                 if (!multithread_) {
                     if (!p.update(c)) {
                         iterator.remove();
@@ -99,10 +108,10 @@ public class ParticleMaster implements Profilable {
                         updatedParticlesCount++;
                     }
                 } else {
-                    final Particle p_ = p;
+                	final Particle p_ = p;
                     executor.execute(new Runnable() {
                         @Override
-                        public final synchronized void run() {
+                        public final void run() {
                             if (!p_.update(c)) {
                                 particlesToRemove.add(p_);
                             } else {
@@ -127,10 +136,13 @@ public class ParticleMaster implements Profilable {
                     mapIterator.remove();
                 }
             }
-            iterator = list.iterator();
-            while (iterator.hasNext()) {
-                p = iterator.next();
-                p.updateLast();
+            if(tmpboolean){
+            	for(Particle p : list){
+            		p.updateLast();
+            	}
+            }
+            if(tmpboolean2){
+            	list1.wantsUpdateLast = false;
             }
             if (!entry.getKey().useAlphaBlending()) {
                 ArrayUtil.parallelSortArrayListAsArray(list, Sorting.PARTICLE_COMPARATOR);
@@ -161,15 +173,18 @@ public class ParticleMaster implements Profilable {
         return updatedParticlesCount;
     }
     
-    private static List<Particle> list1;
+    private static ParticleList list1;
 
     public void addParticle(Particle par) {
         list1 = particles.get(par.getParticleTexture());
         if (list1 == null) {
-            list1 = new LinkedList<Particle>();
+            list1 = new ParticleList();
             particles.put(par.getParticleTexture(), list1);
         }
-        list1.add(par);
+        if(par.wantsUpdateLast()){
+        	list1.wantsUpdateLast = true;
+        }
+        list1.list.add(par);
     }
 
     @Override

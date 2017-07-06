@@ -45,6 +45,7 @@ public class AttractedParticle extends Particle {
         this.color2 = endcolor;
         color.setFrom(startcolor);
         setScale(startscale);
+        wantsupdatelast = true;
     }
 
     public AttractedPaticleSystem getSystem() {

@@ -57,7 +57,7 @@ public class ParticleRenderer {
 	private int count;
 	private long globalCount;
 
-	protected void render(Map<ParticleAtlas, List<Particle>> particles, Camera camera) {
+	protected void render(Map<ParticleAtlas, ParticleList> particles, Camera camera) {
 		curCam = camera;
 		if (buffer == null || buffer.capacity() != maxInstancesPerSys * INSTANCE_DATA_LENGTH) {
 			buffer = BufferUtils.createFloatBuffer(maxInstancesPerSys * INSTANCE_DATA_LENGTH);
@@ -69,7 +69,7 @@ public class ParticleRenderer {
 		globalCount = 0;
 		for (ParticleAtlas tmpt : particles.keySet()) {
 			bindTexture(tmpt);
-			particleList = particles.get(tmpt);
+			particleList = particles.get(tmpt).list;
 			pointer = 0;
 			if (vboData == null || particleList.size() * INSTANCE_DATA_LENGTH != oldsize) {
 				vboData = new float[(oldsize = particleList.size() * INSTANCE_DATA_LENGTH)];

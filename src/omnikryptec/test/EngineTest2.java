@@ -178,12 +178,13 @@ public class EngineTest2 implements IEventHandler {
 //               e.setRelativePos(r.nextInt(100) - 50, r.nextInt(100) - 50, r.nextInt(100) - 50);
 //                OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 //            }
+            Instance.getGameSettings().setMultithreadedParticles(true);
             system = new AttractedPaticleSystem(0, 0, 0,
                     new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false),
-                  250f,0, 1000f, 1f, RenderType.ALWAYS).setAverageMass(1E5F).setParticlesAttractingEachOther(true);
+                  100000,0, 1000f, 1f, RenderType.ALWAYS).setAverageMass(2);
 
             System.out.println("Generating objs...");
-            int cube = 100;
+            int cube =0;
             int abstand = 10;
             float scale = 4;
             for (int x = -cube; x < cube; x += abstand) {
@@ -235,7 +236,7 @@ public class EngineTest2 implements IEventHandler {
             system.setGlobal(true);
             system.setStartcolor(new Color(1, 0, 1));
             system.setEndcolor(new Color(1, 1, 0));
-           // OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
+            OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));
             //OmniKryptecEngine.instance().getCurrentScene()
             //      .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setCuttOffRange(50).setColor(3, 0, 0).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0, -1, 0).setRelativePos(0,10, 0));
@@ -281,9 +282,9 @@ public class EngineTest2 implements IEventHandler {
 
         // system.generateParticles(1);
         if (ev.getType() == EventType.RENDER_FRAME_EVENT) {
-        	if((Instance.getDisplayManager().getFramecount())%100==0){
+        	//if((Instance.getDisplayManager().getFramecount())%100==0){
         		//attractor.setEnabled(!attractor.isEnabled());
-        	}
+        	//}
         	//attractor.setAcceleration((float) (100*Math.sin(DisplayManager.instance().getCurrentTime()*10)));
         	//system.setActive(ra.nextInt(100)<40);
         	//d += 0.025*system.getTimeMultiplier();
@@ -292,6 +293,7 @@ public class EngineTest2 implements IEventHandler {
         }
         //System.out.println("(Rendertime: "+Instance.getEngine().getRenderTimeMS()+" Particletime: "+ParticleMaster.instance().getOverallParticleTimeMS()+" PPTime: "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());
         if (ev.getType() == EventType.AFTER_FRAME) {
+    		System.out.println(ParticleMaster.instance().getUpdatedParticlesCount());
             //Logger.log(new Profiler().createTimesString(50, true, false));
         }        //Logger.log(new Profiler().createTimesString(50, true, false));
 

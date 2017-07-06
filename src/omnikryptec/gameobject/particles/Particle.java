@@ -20,7 +20,8 @@ public class Particle implements Rangeable {
     protected float textureblend;
     private float distance;
     protected Color color = new Color(1, 1, 1, 1);
-
+    protected boolean wantsupdatelast=false;
+    
     public Particle(ParticleAtlas texture) {
         this(texture, RenderType.ALWAYS);
     }
@@ -167,4 +168,8 @@ public class Particle implements Rangeable {
     public float getColorA() {
         return color.getA();
     }
+    
+	public final boolean wantsUpdateLast() {
+		return wantsupdatelast;
+	}
 }
