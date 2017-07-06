@@ -178,10 +178,10 @@ public class EngineTest2 implements IEventHandler {
 //               e.setRelativePos(r.nextInt(100) - 50, r.nextInt(100) - 50, r.nextInt(100) - 50);
 //                OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 //            }
-            Instance.getGameSettings().setMultithreadedParticles(true);
+            Instance.getGameSettings().setMultithreadedParticles(false);
             system = new AttractedPaticleSystem(0, 0, 0,
                     new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false),
-                  100000,0, 1000f, 1f, RenderType.ALWAYS).setAverageMass(2);
+                  1000,0, 1000f, 1f, RenderType.ALWAYS).setAverageMass(1E6F).setParticlesAttractingEachOther(true);
 
             System.out.println("Generating objs...");
             int cube =0;
@@ -293,7 +293,7 @@ public class EngineTest2 implements IEventHandler {
         }
         //System.out.println("(Rendertime: "+Instance.getEngine().getRenderTimeMS()+" Particletime: "+ParticleMaster.instance().getOverallParticleTimeMS()+" PPTime: "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());
         if (ev.getType() == EventType.AFTER_FRAME) {
-    		System.out.println(ParticleMaster.instance().getUpdatedParticlesCount());
+    		//System.out.println(ParticleMaster.instance().getUpdatedParticlesCount());
             //Logger.log(new Profiler().createTimesString(50, true, false));
         }        //Logger.log(new Profiler().createTimesString(50, true, false));
 

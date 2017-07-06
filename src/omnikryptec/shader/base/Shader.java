@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
+import omnikryptec.graphics.OpenGL;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.util.Instance;
 import omnikryptec.util.exceptions.OmniKryptecException;
@@ -88,14 +89,14 @@ public class Shader {
 		fragmentShaderHolder = loadShader(fragmentFile, GL20.GL_FRAGMENT_SHADER);
 		vertexShaderID = vertexShaderHolder.getID();
 		fragmentShaderID = fragmentShaderHolder.getID();
-		programID = GL20.glCreateProgram();
-		GL20.glAttachShader(programID, vertexShaderID);
+		programID = OpenGL.gl20createProgram();
+		OpenGL.gl20attachShader(programID, vertexShaderID);
 		if (geometryFile != null) {
 			geometryShaderHolder = loadShader(geometryFile, GL32.GL_GEOMETRY_SHADER);
 			geometryShaderID = geometryShaderHolder.getID();
-			GL20.glAttachShader(programID, geometryShaderID);
+			OpenGL.gl20attachShader(programID, geometryShaderID);
 		}
-		GL20.glAttachShader(programID, fragmentShaderID);
+		OpenGL.gl20attachShader(programID, fragmentShaderID);
 		List<Uniform> uniformstmp = new ArrayList<>();
 		List<Attribute> attributes = new ArrayList<>();
 		for (int i = 0; i < uniAttr.length; i++) {
@@ -108,8 +109,8 @@ public class Shader {
 			}
 		}
 		bindAttributes(attributes.toArray(new Attribute[1]));
-		GL20.glLinkProgram(programID);
-		GL20.glValidateProgram(programID);
+		OpenGL.gl20linkProgram(programID);
+		OpenGL.gl20validateProgram(programID);
 		storeUniforms(uniformstmp.toArray(new Uniform[1]));
 		shadercount++;
 		allShader.add(this);
@@ -140,7 +141,7 @@ public class Shader {
 	public void start() {
 		if (shadercurrentid != programID) {
 			shadercurrent = this;
-			GL20.glUseProgram(programID);
+			OpenGL.gl20useProgram(programID);
 			shadercurrentid = programID;
 		}
 	}
@@ -152,7 +153,7 @@ public class Shader {
 	public void stop() {
 		shadercurrent = null;
 		shadercurrentid = 0;
-		GL20.glUseProgram(0);
+		OpenGL.gl20useProgram(0);
 	}
 
 	public static void cleanAllShader(){
@@ -163,15 +164,15 @@ public class Shader {
 	
 	private void cleanup() {
 		stop();
-		GL20.glDetachShader(programID, vertexShaderID);
-		GL20.glDetachShader(programID, fragmentShaderID);
-		GL20.glDeleteShader(vertexShaderID);
-		GL20.glDeleteShader(fragmentShaderID);
+		OpenGL.gl20detachShader(programID, vertexShaderID);
+		OpenGL.gl20detachShader(programID, fragmentShaderID);
+		OpenGL.gl20deleteShader(vertexShaderID);
+		OpenGL.gl20deleteShader(fragmentShaderID);
 		if (geometryShaderID != 0) {
-			GL20.glDetachShader(programID, geometryShaderID);
-			GL20.glDeleteShader(geometryShaderID);
+			OpenGL.gl20detachShader(programID, geometryShaderID);
+			OpenGL.gl20deleteShader(geometryShaderID);
 		}
-		GL20.glDeleteProgram(programID);
+		OpenGL.gl20deleteProgram(programID);
 	}
 
 	private void storeUniforms(Uniform... uniforms) {
@@ -195,7 +196,7 @@ public class Shader {
 	}
 
 	private void bindAttributeManually(Attribute a) {
-		GL20.glBindAttribLocation(programID, a.getIndex(), a.getName());
+		OpenGL.gl20bindAttribLocation(programID, a.getIndex(), a.getName());
 	}
 
 	// ==============================================LOADINGSECTION=======================================================
@@ -227,12 +228,12 @@ public class Shader {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		int shaderID = GL20.glCreateShader(type);
-		GL20.glShaderSource(shaderID, shaderSrc);
-		GL20.glCompileShader(shaderID);
-		if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
+		int shaderID = OpenGL.gl20createShader(type);
+		OpenGL.gl20shaderSource(shaderID, shaderSrc);
+		OpenGL.gl20compileShader(shaderID);
+		if (OpenGL.gl20getShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
 			Instance.getEngine().errorOccured(new OmniKryptecException("Shadercreation"), "Shader compilation failed in Shader: " + name);
-			Logger.log("(Lines with LineInsertion!): " + GL20.glGetShaderInfoLog(shaderID, 1024), LogLevel.ERROR, true);
+			Logger.log("(Lines with LineInsertion!): " + OpenGL.gl20getShaderInfoLog(shaderID, 1024), LogLevel.ERROR, true);
 			Instance.getEngine().close(ShutdownOption.JAVA);
 		}
 		return new ShaderHolder(shaderID, uniforms, type);
