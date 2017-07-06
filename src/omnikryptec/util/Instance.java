@@ -109,7 +109,7 @@ public class Instance {
 		return getDisplayManager().getDeltaTime();
 	}
 	
-	public static final long getFPS(){
+	public static final double getFPS(){
 		return getDisplayManager().getFPS();
 	}
 	

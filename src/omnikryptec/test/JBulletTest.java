@@ -103,7 +103,7 @@ public class JBulletTest {
 
     private static void logic() {
         if (!physicsPause && physicsSpeed > 0) {
-            dynamicsWorld.stepSimulation((1.0F / DisplayManager.instance().getFPS()) * physicsSpeed);
+            //TODO dynamicsWorld.stepSimulation((1.0F / DisplayManager.instance().getFPS()) * physicsSpeed);
         }
         final HashMap<Entity, RigidBody> ballsToBeRemoved = new HashMap<>();
         for (Entity e : balls.keySet()) {

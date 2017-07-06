@@ -200,21 +200,21 @@ public class GameObject implements DataMapSerializable, Positionable {
      * @see #setUpdateType(UpdateType)
      * @return this GameObject
      */
-    public final GameObject doLogic0(){
+    public final GameObject doLogic(){
     	return doLogic(false);
     }
     
     private Scene cs;
     /**
      * executes the logic of this GameObject (if neccessary or forced)
-     * @param force if true all logic of this GameObject is executed, if neccessary or not (ignores {@link UpdateType}).
+     * @param force if true all logic of this GameObject is executed, if neccessary or not (ignores the {@link UpdateType}).
      * @return this GameObject
      */
     public final GameObject doLogic(boolean force) {
         if(getUpdateType()==UpdateType.STATIC&&!force){
         	return this;
         }
-    	if(Instance.getEngine().isDebugMode()&&(cs=Instance.getCurrentScene())!=null&&cs.getState()==FrameState.RENDERING){
+    	if(Logger.isDebugMode()&&(cs=Instance.getCurrentScene())!=null&&cs.getState()==FrameState.RENDERING){
         	Logger.log("Logic is not allowed while rendering!", LogLevel.WARNING);
         	return this;
         }

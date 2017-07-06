@@ -138,13 +138,13 @@ public class Scene implements DataMapSerializable {
 		        }
 		    }
 		}
-	    if(particles){
-	    	ParticleMaster.instance().logic(cam);
-	    }
         global.logic();
-        cam.doLogic0();
+        cam.doLogic();
         doLogic();
         logictime = DisplayManager.instance().getCurrentTime() - tmptime2;
+        if(particles){
+	    	ParticleMaster.instance().logic(cam);
+        }
         state = FrameState.NULL;
     }
     

@@ -73,7 +73,7 @@ public class DeferredLightStage extends PostProcessingStage {
                 for (int j = 0; j < relevant.size(); j++) {
                     l = relevant.get(j);
                     if (l.isLogicEnabled()) {
-                        l.doLogic0();
+                        l.doLogic();
                         preparea[i].prepareLight(l);
                         GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);
                     }

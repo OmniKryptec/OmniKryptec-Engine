@@ -103,9 +103,7 @@ public class OmniKryptecEngine implements Profilable {
     private long vertsCountCurrent = 0;
 
     private ShutdownOption shutdownOption = ShutdownOption.JAVA;
-    private boolean requestclose = false;
-    private boolean debugMode=false;
-    
+    private boolean requestclose = false;    
     private double frametime = 0;
 
     public OmniKryptecEngine(DisplayManager manager) {
@@ -315,6 +313,7 @@ public class OmniKryptecEngine implements Profilable {
         SimpleTexture.cleanup();
         Shader.cleanAllShader();
         EventSystem.instance().fireEvent(new Event(), EventType.CLEANUP);
+        instance = null;
     }
 
     public final OmniKryptecEngine addAndSetScene(Scene scene) {
@@ -369,19 +368,5 @@ public class OmniKryptecEngine implements Profilable {
         public boolean clear = true;
         public boolean sleepWhenInactive = true;
     }
-
-	public boolean isDebugMode() {
-		return debugMode;
-	}
-	
-	public OmniKryptecEngine setDebugMode(boolean debug){
-		return this.setDebugMode(debug, Logger.isDebugMode());
-	}
-	
-	public OmniKryptecEngine setDebugMode(boolean debug, boolean loggerDebug){
-		this.debugMode = debug;
-		Logger.setDebugMode(loggerDebug);
-		return this;
-	}
 	
 }

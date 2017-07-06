@@ -210,8 +210,8 @@ public class DisplayManager implements Profilable{
 	 * 
 	 * @return Long FPS
 	 */
-	public final long getFPS() {
-		return Math.round(1.0 / deltatime);
+	public final double getFPS() {
+		return 1.0 / deltatime;
 	}
 
 	/**
