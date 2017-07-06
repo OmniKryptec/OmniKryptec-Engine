@@ -51,6 +51,9 @@ public class GameSettings {
     
     private boolean frustrumCulling=true;
     
+    private boolean multithreadedParticles=true;
+    private long minmultithreadedparticles=1000;
+    
     /**
      * Standard value for disabling multisampling
      */
@@ -606,6 +609,24 @@ public class GameSettings {
 	 */
 	public GameSettings setUseFrustrumCulling(boolean b){
 		this.frustrumCulling = b;
+		return this;
+	}
+
+	public boolean isMultithreadedParticles() {
+		return this.multithreadedParticles;
+	}
+
+	public long getMinMultithreadParticles() {
+		return this.minmultithreadedparticles;
+	}
+	
+	public GameSettings setMultithreadedParticles(boolean b){
+		this.multithreadedParticles = b;
+		return this;
+	}
+	
+	public GameSettings setMinMultithreadedParticles(long l){
+		this.minmultithreadedparticles = l;
 		return this;
 	}
 }

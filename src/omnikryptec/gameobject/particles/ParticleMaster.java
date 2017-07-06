@@ -49,7 +49,6 @@ public class ParticleMaster implements Profilable {
     private double rendertime = 0;
     private double tmptime = 0, tmptime2;
     private double updatetime = 0;
-    private boolean multithreading = false;
     private final List<Particle> particlesToRemove = new ArrayList<>();
 
     public void render(Camera cam) {
@@ -66,7 +65,16 @@ public class ParticleMaster implements Profilable {
     }
 
     public void logic(Camera c) {
-        final boolean multithread_ = multithreading;
+        boolean multithread_ = Instance.getGameSettings().isMultithreadedParticles();
+        if(multithread_){
+        	long count = 0;
+        	for(List<Particle> l : particles.values()){
+        		count += l.size();
+        	}
+        	if(count < Instance.getGameSettings().getMinMultithreadParticles()){
+        		multithread_ = false;
+        	}
+        }
         updatedParticlesCount = 0;
         tmptime2 = Instance.getDisplayManager().getCurrentTime();
         mapIterator = particles.entrySet().iterator();
@@ -84,7 +92,7 @@ public class ParticleMaster implements Profilable {
                     if (!p.update(c)) {
                         iterator.remove();
                         if (list.isEmpty()) {
-                            mapIterator.remove(); //Hier muss abgebrochen werden, denn man darf niemals bei einem Iterator 2 mal hintereinander .remove() aufrufen
+                            mapIterator.remove(); 
                             break;
                         }
                     } else {
@@ -152,16 +160,7 @@ public class ParticleMaster implements Profilable {
     public long getUpdatedParticlesCount() {
         return updatedParticlesCount;
     }
-
-    public boolean isMultithreading() {
-        return multithreading;
-    }
-
-    public ParticleMaster setMultithreading(boolean multithreading) {
-        this.multithreading = multithreading;
-        return this;
-    }
-
+    
     private static List<Particle> list1;
 
     public void addParticle(Particle par) {
