@@ -143,9 +143,9 @@ public class PhysicsComponent implements Component {
             return;
         }
         ballPosition = body.getMotionState().getWorldTransform(new Transform()).origin;
-        instance.setRelativePos(ballPosition.x, ballPosition.y, ballPosition.z);
+        instance.getTransform().setPosition(ballPosition.x, ballPosition.y, ballPosition.z);
         ballOrientation = body.getOrientation(ballOrientation);
-        instance.getRelativeRotation().set(ballOrientation.x, ballOrientation.y, ballOrientation.z);
+        instance.getTransform().setRotation(ballOrientation.x, ballOrientation.y, ballOrientation.z, ballOrientation.w);
     }
 
     @Override

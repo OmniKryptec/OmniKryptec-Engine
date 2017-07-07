@@ -1,8 +1,6 @@
 package omnikryptec.gameobject.particles;
 
 import omnikryptec.gameobject.gameobject.Camera;
-import omnikryptec.gameobject.gameobject.Rangeable;
-
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -10,7 +8,7 @@ import omnikryptec.gameobject.gameobject.RenderType;
 import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.util.Color;
 
-public class Particle implements Rangeable {
+public class Particle {
 
     protected ParticleAtlas particletexture;
     private RenderType type;
@@ -65,12 +63,10 @@ public class Particle implements Rangeable {
         return this;
     }
 
-    @Override
-    public final Vector3f getAbsolutePos() {
+    public final Vector3f getPosition() {
         return position;
     }
 
-    @Override
     public final RenderType getType() {
         return type;
     }
@@ -78,7 +74,7 @@ public class Particle implements Rangeable {
     private final Vector3f tmp = new Vector3f();
 
     final boolean update(Camera cam) {
-        distance = (cam.getAbsolutePos().sub(position, tmp)).lengthSquared();
+        distance = (cam.getTransform().getPosition(true).sub(position, tmp)).lengthSquared();
         updateTexCoordInfo();
         return update();
     }

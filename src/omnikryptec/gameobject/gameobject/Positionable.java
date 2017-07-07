@@ -4,6 +4,6 @@ import org.joml.Vector3f;
 
 public interface Positionable {
 
-	Vector3f getAbsolutePos();
+	Vector3f getPosition();
 	
 }

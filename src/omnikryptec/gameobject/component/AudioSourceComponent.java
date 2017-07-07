@@ -148,12 +148,12 @@ public class AudioSourceComponent implements Component {
                 }
             }
         }
-        position = instance.getAbsolutePos();
+        position = instance.getTransform().getPosition(true);
         velocity.set(0, 0, 0);
         if (isUsingPhysics) {
             physicsComponent.getBody().getAngularVelocity(velocity);
         }
-        rotation = instance.getAbsoluteRotation();
+        rotation = instance.getTransform().getRotation(true).getEulerAnglesXYZ(new Vector3f());
         sources.stream().forEach((source) -> {
             source.setPosition(position);
             source.setVelocity(velocity);

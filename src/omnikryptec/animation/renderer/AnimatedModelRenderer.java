@@ -72,7 +72,7 @@ public class AnimatedModelRenderer implements Renderer {
                     entity = stapel.get(z);
                     if (entity != null && entity.isRenderingEnabled() && RenderUtil.inRenderRange(entity, camera)) {
                         shader.jointTransforms.loadMatrixArray(animatedModel.getJointTransforms());
-                        shader.transformationMatrix.loadMatrix(entity.getTransformationMatrix());
+                        shader.transformationMatrix.loadMatrix(entity.getTransformation());
                         GL11.glDrawElements(GL11.GL_TRIANGLES, animatedModel.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
                         vertcount += animatedModel.getModel().getModelData().getVertexCount();
                     }

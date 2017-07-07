@@ -1,6 +1,7 @@
 package omnikryptec.util;
 
 import org.joml.Matrix4f;
+import org.joml.Quaternionf;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -22,9 +23,6 @@ public class Maths {
     public static final Vector3f ZERO = new Vector3f(0, 0, 0);
     public static final Vector3f ONE = new Vector3f(1, 1, 1);
 
-    public static Matrix4f createTransformationMatrix(Entity entity, Matrix4f old) {
-        return createTransformationMatrix(entity.getAbsolutePos(), entity.getAbsoluteRotation(), entity.getScale(), old);
-    }
     public static Matrix4f createTransformationMatrix(Vector3f position, Vector3f rotation, Vector3f scale) {
     	return createTransformationMatrix(position, rotation, scale, null);
     }
@@ -95,6 +93,10 @@ public class Maths {
     }
 
     public static boolean fastEquals4f(Vector4f one, Vector4f sec){
+    	return one != null && sec != null && one.x == sec.x && one.y == sec.y && one.z == sec.z && one.w == sec.w;
+    }
+    
+    public static boolean fastEquals4f(Quaternionf one, Quaternionf sec){
     	return one != null && sec != null && one.x == sec.x && one.y == sec.y && one.z == sec.z && one.w == sec.w;
     }
     

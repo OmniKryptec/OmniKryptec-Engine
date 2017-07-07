@@ -18,7 +18,8 @@ public class ParticleAttractor {
     }
 
     public ParticleAttractor(float x, float y, float z) {
-        this.positionable = new GameObject().setRelativePos(x, y, z);
+        this.positionable = new GameObject();
+        positionable.getTransform().setPosition(x, y, z);
     }
 
     public float getGravitation() {
@@ -67,7 +68,7 @@ public class ParticleAttractor {
     }
 
     public Vector3f getAbsolutePos() {
-        return positionable.getAbsolutePos();
+        return positionable.getTransform().getPosition();
     }
 
     public ParticleAttractor setEnabled(boolean b) {

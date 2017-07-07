@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import omnikryptec.gameobject.component.Component;
@@ -24,8 +25,10 @@ import omnikryptec.util.logger.LogLevel;
  * @author pcfreak9000 &amp; Panzer1119
  *
  */
-public class GameObject implements DataMapSerializable, Positionable {
+public class GameObject implements DataMapSerializable, Transformable {
 
+    private static final Sorter SORTER = new Sorter();
+    public static final ArrayList<GameObject> gameObjects = new ArrayList<>();
 
     private static class Sorter implements Comparator<Component> {
 
@@ -36,16 +39,13 @@ public class GameObject implements DataMapSerializable, Positionable {
 
     }
 
-    private static final Sorter SORTER = new Sorter();
-    public static final ArrayList<GameObject> gameObjects = new ArrayList<>();
 
+
+    private Transform transform = new Transform();
     private String name;
     private boolean isglobal = false;
-    private Vector3f pos = new Vector3f();
     private GameObject parent = null;
     private boolean logicEnabled = true;
-    private Vector3f rotation = new Vector3f();
-    // @JsonView(GameObject.class) //To hide this while saving it
     private RenderChunk myChunk;
     private List<Component> componentsPreLogic = null;
     private List<Component> componentsPostLogic = null;
@@ -64,6 +64,20 @@ public class GameObject implements DataMapSerializable, Positionable {
         return this;
     }
 
+	@Override
+	public Transform getTransform() {
+		return transform;
+	}
+    
+	public Matrix4f getTransformation(){
+		return transform.getTransformation(uptype);
+	}
+	
+	public GameObject setTransform(Transform t){
+		this.transform = t;
+		return this;
+	}
+	
     /**
      * the updatetpye of this GameObject
      * @return
@@ -107,74 +121,6 @@ public class GameObject implements DataMapSerializable, Positionable {
     protected void finalize() throws Throwable {
     	gameObjects.remove(this);
     }
-    
-    /**
-     * if no parent is set this is the absolute position else its the postion
-     * relative to the parent
-     *
-     * @param x
-     * @param y
-     * @param z
-     * @return this GameObject
-     */
-    public final GameObject setRelativePos(float x, float y, float z) {
-        this.pos.x = x;
-        this.pos.y = y;
-        this.pos.z = z;
-        return this;
-    }
-
-    /**
-     * the relative position if this gameobject has a parent else the absolute
-     * position
-     *
-     * @return the relative position
-     */
-    public final Vector3f getRelativePos() {
-        return new Vector3f(pos);
-    }
-
-    /**
-     * increases the relative position with the given values.
-     * @param x
-     * @param y
-     * @param z
-     * @return this GameObject
-     */
-    public final GameObject increaseRelativePos(float x, float y, float z) {
-        pos.x += x;
-        pos.y += y;
-        pos.z += z;
-        return this;
-    }
-
-    /**
-     * increases the relative rotation with the given values.
-     * @param x
-     * @param y
-     * @param z
-     * @return this GameObject
-     */
-    public final GameObject increaseRelativeRot(float x, float y, float z) {
-        rotation.x += x;
-        rotation.y += y;
-        rotation.z += z;
-        return this;
-    }
-
-    /**
-     * the absolute position is always absolute. if the parent is not <code>null</code>, the relative position of this gameobject + the absolute position of the parent is returned.
-     * 
-     *
-     * @return the absolute position
-     */
-    @Override
-    public final Vector3f getAbsolutePos() {
-        if (parent == null) {
-            return new Vector3f(pos);
-        }
-        return parent.getAbsolutePos().add(pos, new Vector3f());
-    }
 
     /**
      * the parent or null if this GameObject has no parent.
@@ -192,6 +138,7 @@ public class GameObject implements DataMapSerializable, Positionable {
      */
     public final GameObject setParent(GameObject go) {
         this.parent = go;
+        this.transform.setParent(go==null?null:go.getTransform());
         return this;
     }
     
@@ -423,7 +370,7 @@ public class GameObject implements DataMapSerializable, Positionable {
      * @return chunkx
      */
     public final long getChunkX() {
-        return (long) Math.floor(getAbsolutePos().x / RenderChunk.getWidth());
+        return (long) Math.floor(transform.getPosition(true).x / RenderChunk.getWidth());
     }
 
     /**
@@ -432,7 +379,7 @@ public class GameObject implements DataMapSerializable, Positionable {
      * @return chunky
      */
     public final long getChunkY() {
-        return (long) Math.floor(getAbsolutePos().y / RenderChunk.getHeight());
+        return (long) Math.floor(transform.getPosition(true).y / RenderChunk.getHeight());
     }
 
     /**
@@ -441,7 +388,7 @@ public class GameObject implements DataMapSerializable, Positionable {
      * @return
      */
     public final long getChunkZ() {
-        return (long) Math.floor(getAbsolutePos().z / RenderChunk.getDepth());
+        return (long) Math.floor(transform.getPosition(true).z / RenderChunk.getDepth());
     }
 
     /**
@@ -464,38 +411,6 @@ public class GameObject implements DataMapSerializable, Positionable {
     }
 
     /**
-     * sets the rotation of this gameobject in radians around x,y,z axis.
-     *
-     * @param vec
-     */
-    public final GameObject setRotation(Vector3f vec) {
-        this.rotation = vec;
-        return this;
-    }
-
-    /**
-     * the relative rotation in radians of this object or if this gameobject has
-     * no parent, the absolute rotation
-     *
-     * @return
-     */
-    public final Vector3f getRelativeRotation() {
-        return rotation;
-    }
-
-    /**
-     * the absolute rotation of this GameObject in radians
-     * @see #getAbsolutePos()
-     * @return
-     */
-    public final Vector3f getAbsoluteRotation() {
-        if (parent == null) {
-            return new Vector3f(rotation);
-        }
-        return parent.getAbsoluteRotation().add(rotation, new Vector3f());
-    }
-
-    /**
      * wont copy physics!
      *
      * @param toCopy
@@ -503,10 +418,10 @@ public class GameObject implements DataMapSerializable, Positionable {
      */
     public static GameObject copy(GameObject toCopy) {
         GameObject go = new GameObject(toCopy.name);
+        go.name = toCopy.name;
         go.logicEnabled = toCopy.logicEnabled;
-        go.parent = toCopy.parent;
-        go.rotation = new Vector3f(toCopy.rotation);
-        go.pos = new Vector3f(toCopy.pos);
+        go.setParent(toCopy.getParent());
+        go.transform = toCopy.getTransform().getNewCopy();
         return go;
     }
 
@@ -521,9 +436,8 @@ public class GameObject implements DataMapSerializable, Positionable {
         }
         name = toCopy.name;
         logicEnabled = toCopy.logicEnabled;
-        parent = toCopy.parent;
-        rotation = new Vector3f(toCopy.rotation);
-        pos = new Vector3f(toCopy.pos);
+        setParent(toCopy.getParent());
+        transform = toCopy.getTransform().getNewCopy();
         return this;
     }
 
@@ -659,5 +573,7 @@ public class GameObject implements DataMapSerializable, Positionable {
         setRotation(SerializationUtil.stringToVector3f(data.getString("rotation")));
         return this;
     }
+
+
 
 }

@@ -25,5 +25,9 @@ public class ConverterUtil {
 	public static final javax.vecmath.Vector3f convertVector3fFromLWJGL(org.joml.Vector3f vector) {
 		return new javax.vecmath.Vector3f(vector.x, vector.y, vector.z);
 	}
+	
+	public static final javax.vecmath.Quat4f convertQuat4fFromLWJGL(org.joml.Quaternionf q){
+		return new javax.vecmath.Quat4f(q.x, q.y, q.z, q.w);
+	}
 
 }

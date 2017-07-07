@@ -2,6 +2,7 @@ package omnikryptec.gameobject.gameobject;
 
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import omnikryptec.display.Display;
@@ -27,15 +28,16 @@ public class Camera extends GameObject {
         return projection;
     }
 
-    private Vector3f absrot, campos, negcampos, lastrot = new Vector3f(), lastpos = new Vector3f();
-
+    private Vector3f campos, negcampos, lastpos = new Vector3f();
+    private Quaternionf absrot, lastrot = new Quaternionf();
+    
     public Matrix4f getViewMatrix() {
         if (view == null) {
             view = new Matrix4f();
         }
-        absrot = getAbsoluteRotation();
-        campos = getAbsolutePos();
-        if (!Maths.fastEquals3f(campos, lastpos) || !Maths.fastEquals3f(lastrot, absrot)) {
+        absrot = getTransform().getRotation(true);
+        campos = getTransform().getPosition(true);
+        if (!Maths.fastEquals3f(campos, lastpos) || !Maths.fastEquals4f(lastrot, absrot)) {
             negcampos = new Vector3f(-campos.x, -campos.y, -campos.z);
             view.identity();
             view.rotate((float) Math.toRadians(absrot.x), Maths.X);
@@ -87,11 +89,7 @@ public class Camera extends GameObject {
         if (toCopy == null) {
             return this;
         }
-        setName(toCopy.getName());
-        setLogicEnabled(toCopy.isLogicEnabled());
-        setParent(toCopy.getParent());
-        setRotation(new Vector3f(toCopy.getRotation()));
-        setPos(new Vector3f(toCopy.getRelativePos()));
+        super.setValuesFrom(toCopy);
         absrot = toCopy.absrot;
         campos = toCopy.campos;
         lastpos = toCopy.lastpos;
@@ -120,8 +118,7 @@ public class Camera extends GameObject {
         camera.setName(toCopy.getName());
         camera.setLogicEnabled(toCopy.isLogicEnabled());
         camera.setParent(toCopy.getParent());
-        camera.setRotation(toCopy.getRotation());
-        camera.setPos(toCopy.getRelativePos());
+        camera.setTransform(toCopy.getTransform().getNewCopy());
         return camera;
     }
 

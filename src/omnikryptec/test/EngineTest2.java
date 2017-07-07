@@ -43,6 +43,8 @@ import omnikryptec.util.lang.LanguageManager;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.profiler.LiveProfiler;
+
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 /**
@@ -144,7 +146,8 @@ public class EngineTest2 implements IEventHandler {
                     doCameraLogic(this);
                 }
 
-            }.setPerspectiveProjection(90, 0.1f, 1000).setRelativePos(0, 0, 0)).setAmbientColor(0.5f, 0.5f, 0.5f));
+            }.setPerspectiveProjection(90, 0.1f, 1000)).setAmbientColor(0.5f, 0.5f, 0.5f));
+            //Instance.getCurrentCamera().getTransform().setPosition(0, 0, 0);
             Model pine = new Model("",
                     ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")));
             Model bauer = new Model("",
@@ -192,7 +195,8 @@ public class EngineTest2 implements IEventHandler {
                     for (int z = -cube; z < cube; z += abstand) {
                     	GameObject go;
                     	//go = new GameObject().setRelativePos(x, y, z);
-                    	go = new Entity(tm).setScale(new Vector3f(scale, scale, scale)).setUpdateType(UpdateType.STATIC).setRelativePos(x, y, z);
+                    	go = new Entity(tm).setUpdateType(UpdateType.STATIC);
+                    	go.getTransform().setScale(scale).setPosition(x, y, z);
                         Instance.getCurrentScene().addGameObject(go);
                         //system.addAttractor(new ParticleAttractor(go).setAcceleration(10).setMode(AttractorMode.KILL_ON_REACH).setTolerance(5));
                     }
@@ -240,8 +244,10 @@ public class EngineTest2 implements IEventHandler {
             //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));
             //OmniKryptecEngine.instance().getCurrentScene()
             //      .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setCuttOffRange(50).setColor(3, 0, 0).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0, -1, 0).setRelativePos(0,10, 0));
+            GameObject l;
             OmniKryptecEngine.instance().getCurrentScene()
-                    .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setColor(1, 1, 1).setDirectional(true).setConeDegrees(5).setConeDirection(0, 1, 0).setRelativePos(0, 1, 0).setGlobal(true));
+                    .addGameObject(l = new Light().setAttenuation(0, 0.001f, 0).setColor(1, 1, 1).setDirectional(true).setConeDegrees(5).setConeDirection(0, 1, 0).setGlobal(true));
+            l.getTransform().setPosition(0, 1, 0);
 
             // ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
             // OmniKryptecEngine.instance().getCurrentScene().addGameObject(new

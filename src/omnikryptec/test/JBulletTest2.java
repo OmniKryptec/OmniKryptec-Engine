@@ -198,7 +198,7 @@ public class JBulletTest2 {
             rigidBodyBuilder_terrain
                     .setCollisionShape(PhysicsUtil.createConvexHullShape(terrain.getAdvancedModel().getModel()));
             rigidBodyBuilder_terrain.setDefaultMotionState(
-                    new Vector3f(terrain.getAbsolutePos().x / 2, 0, terrain.getAbsolutePos().z / 2),
+                    new Vector3f(terrain.getPosition().x / 2, 0, terrain.getPosition().z / 2),
                     new Vector3f(0, 0, 0));
             terrain.addComponent(new PhysicsComponent(terrain, rigidBodyBuilder_terrain).setPause(true));
         }
@@ -220,14 +220,14 @@ public class JBulletTest2 {
         rigidBodyBuilder_ball = new RigidBodyBuilder(1.0F);
         rigidBodyBuilder_ball.setCollisionShape(PhysicsUtil.createConvexHullShape(entityBuilder_brunnen.getModel()));
         rigidBodyBuilder_ball.setDefaultMotionState(
-                new Vector3f(camera.getAbsolutePos().x, 20.0F, camera.getAbsolutePos().z - 5), new Vector3f(0, 0, 0));
+                new Vector3f(camera.getPosition().x, 20.0F, camera.getPosition().z - 5), new Vector3f(0, 0, 0));
         rigidBodyBuilder_ball.getCollisionShape().calculateLocalInertia(rigidBodyBuilder_ball.getMass(),
                 rigidBodyBuilder_ball.getInertia());
         rigidBodyBuilder_ball.getRigidBodyConstructionInfo().restitution = 0.75F;
         rigidBodyBuilder_attractor = new RigidBodyBuilder(1000.0F);
         rigidBodyBuilder_attractor.setCollisionShape(PhysicsUtil.createConvexHullShape(entityBuilder_pine.getModel()));
         rigidBodyBuilder_attractor.setDefaultMotionState(
-                new Vector3f(camera.getAbsolutePos().x, 10.0F, camera.getAbsolutePos().z - 30), new Vector3f(0, 0, 0));
+                new Vector3f(camera.getPosition().x, 10.0F, camera.getPosition().z - 30), new Vector3f(0, 0, 0));
         rigidBodyBuilder_attractor.getCollisionShape().calculateLocalInertia(rigidBodyBuilder_attractor.getMass(),
                 rigidBodyBuilder_attractor.getInertia());
         rigidBodyBuilder_attractor.getRigidBodyConstructionInfo().restitution = 0.75F;
@@ -246,7 +246,7 @@ public class JBulletTest2 {
         final Transform bodyTransform = new Transform();
         body.getMotionState().getWorldTransform(bodyTransform);
         final Vector3f bodyLocation = bodyTransform.origin;
-        final Vector3f attractorPosition = ConverterUtil.convertVector3fFromLWJGL(entity_attractor.getAbsolutePos());
+        final Vector3f attractorPosition = ConverterUtil.convertVector3fFromLWJGL(entity_attractor.getPosition());
         final Vector3f force = new Vector3f();
         force.sub(attractorPosition, bodyLocation);
         body.activate();
@@ -271,7 +271,7 @@ public class JBulletTest2 {
         if (InputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_C)) {
             final RigidBody body = entity_ball.getComponent(PhysicsComponent.class).getBody();
             body.setCenterOfMassTransform(PhysicsUtil.createTransform(
-                    ConverterUtil.convertVector3fFromLWJGL(camera.getAbsolutePos()), new Vector3f(0, 0, 0)));
+                    ConverterUtil.convertVector3fFromLWJGL(camera.getPosition()), new Vector3f(0, 0, 0)));
             body.setAngularVelocity(new Vector3f(0, 0, 0));
             body.setLinearVelocity(new Vector3f(0, 0, 0));
         }
@@ -326,7 +326,7 @@ public class JBulletTest2 {
         final Transform bodyTransform = new Transform();
         body.getMotionState().getWorldTransform(bodyTransform);
         final Vector3f bodyLocation = bodyTransform.origin;
-        final Vector3f cameraPosition = ConverterUtil.convertVector3fFromLWJGL(camera.getAbsolutePos());
+        final Vector3f cameraPosition = ConverterUtil.convertVector3fFromLWJGL(camera.getPosition());
         final Vector3f force = new Vector3f();
         force.sub(cameraPosition, bodyLocation);
         body.activate();
@@ -339,7 +339,7 @@ public class JBulletTest2 {
         final Transform bodyTransform = new Transform();
         body.getMotionState().getWorldTransform(bodyTransform);
         final Vector3f bodyLocation = bodyTransform.origin;
-        final Vector3f cameraPosition = ConverterUtil.convertVector3fFromLWJGL(camera.getAbsolutePos());
+        final Vector3f cameraPosition = ConverterUtil.convertVector3fFromLWJGL(camera.getPosition());
         final Vector3f force = new Vector3f();
         force.sub(cameraPosition, bodyLocation);
         Vector3f temp = new Vector3f();

@@ -70,9 +70,7 @@ public class TerrainRenderer implements Renderer {
                 texturePack.getbTexture().bindToUnit(3);
                 terrain.getBlendMap().bindToUnit(4);
                 if (RenderUtil.inRenderRange(terrain, s.getCamera()) || true) {
-                    TerrainShader.transformationMatrix.loadMatrix(Maths.createTransformationMatrix(
-                            new Vector3f(terrain.getAbsolutePos().x, 0, terrain.getAbsolutePos().z),
-                            Instance.MATHS_ZERO, Instance.MATHS_ONE));
+                    TerrainShader.transformationMatrix.loadMatrix(terrain.getTransformation());
                     GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(),
                             GL11.GL_UNSIGNED_INT, 0);
                     vertcount += model.getModel().getModelData().getVertexCount();

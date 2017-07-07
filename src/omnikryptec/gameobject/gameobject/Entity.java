@@ -19,10 +19,9 @@ import omnikryptec.util.SerializationUtil;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
 
-public class Entity extends GameObject implements DataMapSerializable, Rangeable {
+public class Entity extends GameObject implements DataMapSerializable {
     
     private AdvancedModel model;
-    private Vector3f scale = new Vector3f(1, 1, 1);
     private RenderType type = RenderType.ALWAYS;
     private Color color = new Color(1, 1, 1, 1);
     private boolean renderingEnabled=true;
@@ -60,7 +59,6 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
         setValuesFrom(copy);
         this.model = copy.model;
         this.type = copy.type;
-        this.scale = new Vector3f(copy.scale);
         this.color = new Color(copy.color);
     }
 
@@ -75,27 +73,8 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
         return this;
     }
 
-    @Override
     public RenderType getType() {
         return type;
-    }
-
-    /**
-     * the scale of this entity.
-     * @return
-     */
-    public final Vector3f getScale() {
-        return scale;
-    }
-
-    /**
-     * sets the scale of this entity.
-     * @param v
-     * @return this Entity
-     */
-    public final Entity setScale(Vector3f v) {
-        this.scale = v;
-        return this;
     }
 
     /**
@@ -155,39 +134,6 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
     public Color getColor() {
         return color;
     }
-
-
-    
-    private Vector3f lastpos = new Vector3f(), lastrot = new Vector3f(), lastscale = new Vector3f();
-    private Matrix4f trans;
-    private long lastframe=-1;
-    
-    /**
-     * the transformationmatrix of this entity.
-     * if this is a {@link UpdateType#SEMISTATIC} or {@link UpdateType#STATIC} Entity the transformation matrix will be created once and will never be touched again. 
-     * to recalculate the matrix change the <code>UpdateType</code> of this entity or use {@link #recalculateTransformation()}.
-     * @see #setUpdateType(UpdateType)
-     * @return transmatrix
-     */
-    public Matrix4f getTransformationMatrix(){
-    	if(RenderUtil.needsUpdate(lastframe, 1, getUpdateType())&&(!Maths.fastEquals3f(lastpos, getAbsolutePos())||!Maths.fastEquals3f(lastrot, getAbsoluteRotation())||!Maths.fastEquals3f(lastscale, getScale()))){	
-    		return recalculateTransformation();
-    	}
-    	return trans;
-    }
-    
-    /**
-     * forces the recalculation of the transformationmatrix. To get the transformationmatrix up-to-date and only recalculated if neccessary use {@link #getTransformationMatrix()}
-     * @return transmatrix
-     */
-    public Matrix4f recalculateTransformation(){
-    	lastframe = DisplayManager.instance().getFramecount();
-		lastpos.set(getAbsolutePos());
-		lastrot.set(getAbsoluteRotation());
-		lastscale.set(getScale());
-		trans = Maths.createTransformationMatrix(this, trans);
-		return trans;
-    }
     
     public static EntityBuilder newEntity() {
         return new EntityBuilder();
@@ -207,14 +153,9 @@ public class Entity extends GameObject implements DataMapSerializable, Rangeable
         if (toCopy == null) {
             return this;
         }
-        setName(toCopy.getName());
-        setLogicEnabled(toCopy.isLogicEnabled());
-        setParent(toCopy.getParent());
-        setRotation(new Vector3f(toCopy.getRotation()));
-        setPos(new Vector3f(toCopy.getRelativePos()));
+        super.setValuesFrom(toCopy);
         color = toCopy.color.getClone();
         model = toCopy.model;
-        scale = new Vector3f(toCopy.scale);
         type = toCopy.type;
         return this;
     }

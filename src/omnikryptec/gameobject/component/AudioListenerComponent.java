@@ -54,9 +54,10 @@ public class AudioListenerComponent implements Component {
                 }
             }
         }
-        position = instance.getAbsolutePos();
+        position = instance.getTransform().getPosition(true);
         velocity.set(0, 0, 0);
-        rotation = instance.getAbsoluteRotation();
+        //TODO sind die eulerangles richtig herum?
+        rotation = instance.getTransform().getRotation(true).getEulerAnglesXYZ(new Vector3f());
         if (isUsingPhysics) {
             physicsComponent.getBody().getAngularVelocity(velocity);
         }

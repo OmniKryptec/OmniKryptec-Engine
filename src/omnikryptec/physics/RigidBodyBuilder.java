@@ -1,6 +1,9 @@
 package omnikryptec.physics;
 
+import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
+
+import org.joml.Quaternionf;
 
 import com.bulletphysics.collision.shapes.CollisionShape;
 import com.bulletphysics.dynamics.RigidBody;
@@ -11,6 +14,7 @@ import omnikryptec.gameobject.gameobject.Entity;
 import omnikryptec.gameobject.gameobject.GameObject;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
+import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.PhysicsUtil;
 
 /**
@@ -36,11 +40,11 @@ public class RigidBodyBuilder {
         this.motionState = motionState;
     }
 
-    public RigidBodyBuilder(org.joml.Vector3f position, org.joml.Vector3f rotation) {
+    public RigidBodyBuilder(org.joml.Vector3f position, org.joml.Quaternionf rotation) {
         setDefaultMotionState(position, rotation);
     }
 
-    public RigidBodyBuilder(Vector3f position, Vector3f rotation) {
+    public RigidBodyBuilder(Vector3f position, Quat4f rotation) {
         setDefaultMotionState(position, rotation);
     }
 
@@ -66,14 +70,14 @@ public class RigidBodyBuilder {
         this.collisionShape = collisionShape;
     }
 
-    public RigidBodyBuilder(float mass, Vector3f position, Vector3f rotation, CollisionShape collisionShape) {
+    public RigidBodyBuilder(float mass, Vector3f position, Quat4f rotation, CollisionShape collisionShape) {
         this.mass = mass;
         setDefaultMotionState(position, rotation);
         this.collisionShape = collisionShape;
     }
 
     public RigidBodyBuilder(float mass, org.joml.Vector3f position,
-            org.joml.Vector3f rotation, CollisionShape collisionShape) {
+            org.joml.Quaternionf rotation, CollisionShape collisionShape) {
         this.mass = mass;
         setDefaultMotionState(position, rotation);
         this.collisionShape = collisionShape;
@@ -113,18 +117,18 @@ public class RigidBodyBuilder {
         if (gameObject == null) {
             return this;
         }
-        setDefaultMotionState(gameObject.getAbsolutePos(), gameObject.getAbsoluteRotation());
+        setDefaultMotionState(gameObject.getTransform().getPosition(), gameObject.getTransform().getRotation());
         return this;
     }
 
-    public final RigidBodyBuilder setDefaultMotionState(Vector3f position, Vector3f rotation) {
+    public final RigidBodyBuilder setDefaultMotionState(Vector3f position, Quat4f rotation) {
         this.motionState = PhysicsUtil.createDefaultMotionStateOfPosition(position, rotation);
         rigidBodyConstructionInfo = null;
         return this;
     }
 
     public final RigidBodyBuilder setDefaultMotionState(org.joml.Vector3f position,
-            org.joml.Vector3f rotation) {
+            org.joml.Quaternionf rotation) {
         this.motionState = PhysicsUtil.createDefaultMotionStateOfPosition(position, rotation);
         rigidBodyConstructionInfo = null;
         return this;

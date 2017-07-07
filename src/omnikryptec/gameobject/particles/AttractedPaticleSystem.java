@@ -46,7 +46,7 @@ public class AttractedPaticleSystem extends SimpleParticleSystem {
         this.averageStartScale = scale;
         this.averageEndScale = endscale;
         this.particletexture = tex;
-        setRelativePos(x, y, z);
+        getTransform().setPosition(x, y, z);
     }
 
     public AttractedPaticleSystem addAttractor(float x, float y, float z, float a, float t) {

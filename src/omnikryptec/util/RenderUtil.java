@@ -5,7 +5,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.gameobject.Camera;
-import omnikryptec.gameobject.gameobject.Rangeable;
+import omnikryptec.gameobject.gameobject.Entity;
+import omnikryptec.gameobject.gameobject.EntityBuilder;
 import omnikryptec.gameobject.gameobject.RenderType;
 import omnikryptec.gameobject.gameobject.UpdateType;
 import omnikryptec.main.OmniKryptecEngine;
@@ -157,29 +158,30 @@ public class RenderUtil {
 	}
 
 	private static float rad;
-	private static Vector3f pos, cpos;
+	private static Vector3f cpos;
 
-	public static boolean inRenderRange(Rangeable e, Camera c) {
-		if (e.getType() == RenderType.ALWAYS) {
+	public static boolean inRenderRange(Entity e, Camera c){
+		return inRenderRange(e.getTransform().getPosition(true), e.getType(), c);
+	}
+	
+	public static boolean inRenderRange(Vector3f pos, RenderType type, Camera c) {
+		if (type == RenderType.ALWAYS) {
 			return true;
-		} else if (e.getType() == RenderType.FOLIAGE) {
+		} else if (type == RenderType.FOLIAGE) {
 			rad = OmniKryptecEngine.instance().getDisplayManager().getSettings().getRadiusFoliage();
-			pos = e.getAbsolutePos();
-			cpos = c.getAbsolutePos();
+			cpos = c.getTransform().getPosition(true);
 			if (pos.lengthSquared() < cpos.lengthSquared() + rad && pos.lengthSquared() > cpos.lengthSquared() - rad) {
 				return true;
 			}
-		} else if (e.getType() == RenderType.MEDIUM) {
+		} else if (type == RenderType.MEDIUM) {
 			rad = OmniKryptecEngine.instance().getDisplayManager().getSettings().getRadiusMedium();
-			pos = e.getAbsolutePos();
-			cpos = c.getAbsolutePos();
+			cpos = c.getTransform().getPosition(true);
 			if (pos.lengthSquared() < cpos.lengthSquared() + rad && pos.lengthSquared() > cpos.lengthSquared() - rad) {
 				return true;
 			}
-		} else if (e.getType() == RenderType.BIG) {
+		} else if (type == RenderType.BIG) {
 			rad = OmniKryptecEngine.instance().getDisplayManager().getSettings().getRadiusBig();
-			pos = e.getAbsolutePos();
-			cpos = c.getAbsolutePos();
+			cpos = c.getTransform().getPosition(true);
 			if (pos.lengthSquared() < cpos.lengthSquared() + rad && pos.lengthSquared() > cpos.lengthSquared() - rad) {
 				return true;
 			}

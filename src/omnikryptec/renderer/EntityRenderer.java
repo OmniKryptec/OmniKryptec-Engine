@@ -71,7 +71,7 @@ public class EntityRenderer implements Renderer {
         shader.activelights.loadInt(lights);
         for (int i = 0; i < lights; i++) {
             l = s.getLights().get(i);
-            pos = l.getAbsolutePos();
+            pos = l.getTransform().getPosition(true);
             shader.lightpos[i].loadVec4(pos.x, pos.y, pos.z, l.isDirectional() ? 0.0f : 1.0f);
             shader.lightcolor[i].loadVec3(l.getColor().getArray());
             shader.atts[i].loadVec4(l.getAttenuation());
@@ -145,7 +145,7 @@ public class EntityRenderer implements Renderer {
             entity = stapel.get(j);
             if (entity.isRenderingEnabled()) {
                 if (FrustrumFilter.intersects(entity) && RenderUtil.inRenderRange(entity, s.getCamera())) {
-                    updateArray(entity.getTransformationMatrix(), entity.getColor(), array);
+                    updateArray(entity.getTransformation(), entity.getColor(), array);
                     count++;
                 }
             }

@@ -26,7 +26,7 @@ public class FrustrumFilter {
 	
 	private static float tmp;
 	public static boolean intersects(Entity e){
-		tmp = (e.getAdvancedModel().getModel().getModelData().getFurthestPoint()+RADIUS_CORRECTION)*Math.max(e.getScale().x, Math.max(e.getScale().y,e.getScale().z));
-		return intersects(e.getAbsolutePos().x, e.getAbsolutePos().y, e.getAbsolutePos().z, tmp);
+		tmp = (e.getAdvancedModel().getModel().getModelData().getFurthestPoint()+RADIUS_CORRECTION)*Math.max(e.getTransform().getScale(true).x, Math.max(e.getTransform().getScale(true).y,e.getTransform().getScale(true).z));
+		return intersects(e.getTransform().getPosition(true).x, e.getTransform().getPosition(true).y, e.getTransform().getPosition(true).z, tmp);
 	}
 }

@@ -67,8 +67,7 @@ public class SimpleParticleSystem extends ParticleSystem {
         this.averageLifeLength = lifeLength;
         this.averageStartScale = scale;
         this.particletexture = tex;
-        this.averageEndScale = endscale;
-        setRelativePos(x, y, z);
+        getTransform().setPosition(x, y, z);
     }
 
     public SimpleParticleSystem(Vector3f pos, ParticleAtlas tex, Vector3f gravityComplient, float pps, float speed,
@@ -170,7 +169,7 @@ public class SimpleParticleSystem extends ParticleSystem {
         }
         count = (int) Math.floor(particlesToCreate);
         partialParticle = particlesToCreate % 1;
-        pos = getAbsolutePos();
+        pos = getTransform().getPosition();
         for (int i = 0; i < count; i++) {
             emitAndAdd(pos);
         }

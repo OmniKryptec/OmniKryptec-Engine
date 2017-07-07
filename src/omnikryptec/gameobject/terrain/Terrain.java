@@ -47,8 +47,8 @@ public class Terrain extends Entity {
 	}
 
 	public Terrain(final float size, final float worldX, final float worldZ, String texturedModelName, Model model, TerrainTexturePack texturePack, Texture blendMap) {
-        getRelativePos().x = worldX;
-        getRelativePos().z = worldZ;
+        getTransform().position.x = worldX;
+        getTransform().position.z = worldZ;
         this.texturePack = texturePack;
         setAdvancedModel(new TexturedModel(texturedModelName, model, blendMap));
         getAdvancedModel().getMaterial().setRenderer(RendererRegistration.DEF_TERRAIN_RENDERER);
@@ -76,10 +76,10 @@ public class Terrain extends Entity {
     //TODO to be tested!!
     public float getHeightOfTerrain(float worldX, float worldZ, float size) {
 		if(heights==null||heights.length==0){
-			return getAbsolutePos().y;
+			return getTransform().getPosition(true).y;
 		}
-    	float terrainX = worldX - getAbsolutePos().x;
-		float terrainZ = worldZ - getAbsolutePos().z;
+    	float terrainX = worldX - getTransform().getPosition(true).x;
+		float terrainZ = worldZ - getTransform().getPosition(true).z;
 		float gridSquareSize = size / ((float) heights.length - 1);
 		int gridX = (int) Math.floor(terrainX / gridSquareSize);
 		int gridZ = (int) Math.floor(terrainZ / gridSquareSize);
@@ -98,7 +98,7 @@ public class Terrain extends Entity {
 					new Vector3f(1, heights[gridX + 1][gridZ + 1], 1), new Vector3f(0, heights[gridX][gridZ + 1], 1),
 					new Vector2f(xCoord, zCoord));
 		}
-		return answer+getAbsolutePos().y;
+		return answer+getTransform().getPosition(true).y;
 	}
     
 	public static final ModelData generateTerrain(final float worldx, final float worldz, final TerrainGenerator generator, final float size, final int vertex_count) {

@@ -144,7 +144,7 @@ public class JBulletTest {
         ball.getMotionState().getWorldTransform(ballTransform);
         final Vector3f ballLocation = ballTransform.origin;
         final Vector3f cameraPosition = ConverterUtil.convertVector3fFromLWJGL((camera instanceof FollowingCamera)
-                ? ((FollowingCamera) camera).getFollowedGameObject().getAbsolutePos() : camera.getAbsolutePos());
+                ? ((FollowingCamera) camera).getFollowedGameObject().getPosition() : camera.getPosition());
         final Vector3f force = new Vector3f();
         force.sub(cameraPosition, ballLocation);
         ball.activate(true);
@@ -162,7 +162,7 @@ public class JBulletTest {
                 relateTo = temp;
             }
         }
-        final Vector3f position = new Vector3f(relateTo.getAbsolutePos().x, 35F, relateTo.getAbsolutePos().z);
+        final Vector3f position = new Vector3f(relateTo.getPosition().x, 35F, relateTo.getPosition().z);
         final CollisionShape shape = PhysicsUtil.createConvexHullShape(entityBuilder.getModel());
         final DefaultMotionState motionState = new DefaultMotionState(
                 new Transform(new Matrix4f(new Quat4f(0, 0, 0, 1), position, 1)));
@@ -325,7 +325,7 @@ public class JBulletTest {
                                 new Transform(new Matrix4f(
                                         new Quat4f(getAbsoluteRotation().x, getAbsoluteRotation().y,
                                                 getAbsoluteRotation().z, 1),
-                                        ConverterUtil.convertVector3fFromLWJGL(getAbsolutePos()), 1.0F)));
+                                        ConverterUtil.convertVector3fFromLWJGL(getPosition()), 1.0F)));
                         lustig.setAngularVelocity(new Vector3f(0, 0, 0));
                         lustig.setLinearVelocity(new Vector3f(0, 0, 0));
                     }

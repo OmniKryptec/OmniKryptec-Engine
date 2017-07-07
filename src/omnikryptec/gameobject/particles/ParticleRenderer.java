@@ -79,9 +79,9 @@ public class ParticleRenderer {
 				if (count > maxInstancesPerSys) {
 					break;
 				}
-				curparpos = par.getAbsolutePos();
-				if (FrustrumFilter.intersects(curparpos.x, curparpos.y, curparpos.z, par.getScale()) && RenderUtil.inRenderRange(par, curCam)) {
-					updateModelViewMatrix(par.getAbsolutePos(), par.getRotation(), par.getScale(), curCam.getViewMatrix(),
+				curparpos = par.getPosition();
+				if (FrustrumFilter.intersects(curparpos.x, curparpos.y, curparpos.z, par.getScale()) && RenderUtil.inRenderRange(par.getPosition(), par.getType(), curCam)) {
+					updateModelViewMatrix(par.getPosition(), par.getRotation(), par.getScale(), curCam.getViewMatrix(),
 							vboData);
 					updateTexCoordInfo(par, vboData);
 					count++;

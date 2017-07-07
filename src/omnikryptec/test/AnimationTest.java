@@ -161,7 +161,7 @@ public class AnimationTest {
 
                 @Override
                 public final void update() {
-                    setRelativePos(camera.getAbsolutePos().x, camera.getAbsolutePos().y, camera.getAbsolutePos().z);
+                    setRelativePos(camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
                     getRelativeRotation().y = camera.getAbsoluteRotation().y;
                 }
 
