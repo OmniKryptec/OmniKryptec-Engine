@@ -1,7 +1,6 @@
 package omnikryptec.settings;
 
-import omnikryptec.gameobject.gameobject.Rangeable;
-import omnikryptec.gameobject.gameobject.RenderType;
+import omnikryptec.gameobject.RenderType;
 import omnikryptec.postprocessing.main.FBOFactory;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.RenderTarget;

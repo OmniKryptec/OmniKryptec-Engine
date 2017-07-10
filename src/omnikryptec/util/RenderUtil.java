@@ -4,11 +4,11 @@ import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import omnikryptec.display.DisplayManager;
-import omnikryptec.gameobject.gameobject.Camera;
-import omnikryptec.gameobject.gameobject.Entity;
-import omnikryptec.gameobject.gameobject.EntityBuilder;
-import omnikryptec.gameobject.gameobject.RenderType;
-import omnikryptec.gameobject.gameobject.UpdateType;
+import omnikryptec.gameobject.Camera;
+import omnikryptec.gameobject.Entity;
+import omnikryptec.gameobject.EntityBuilder;
+import omnikryptec.gameobject.RenderType;
+import omnikryptec.gameobject.UpdateType;
 import omnikryptec.main.OmniKryptecEngine;
 
 public class RenderUtil {

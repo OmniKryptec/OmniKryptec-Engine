@@ -1,10 +1,10 @@
 package omnikryptec.gameobject.particles;
 
-import omnikryptec.gameobject.gameobject.Camera;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import omnikryptec.gameobject.gameobject.RenderType;
+import omnikryptec.gameobject.Camera;
+import omnikryptec.gameobject.RenderType;
 import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.util.Color;
 

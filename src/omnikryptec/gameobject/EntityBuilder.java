@@ -1,4 +1,4 @@
-package omnikryptec.gameobject.gameobject;
+package omnikryptec.gameobject;
 
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;

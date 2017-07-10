@@ -7,8 +7,8 @@ import com.bulletphysics.collision.dispatch.CollisionObject;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
 
-import omnikryptec.gameobject.gameobject.Entity;
-import omnikryptec.gameobject.gameobject.GameObject;
+import omnikryptec.gameobject.Entity;
+import omnikryptec.gameobject.GameObject;
 import omnikryptec.main.Scene;
 import omnikryptec.physics.JBulletPhysicsWorld;
 import omnikryptec.physics.RigidBodyBuilder;

@@ -4,7 +4,7 @@ import java.util.Random;
 
 import org.joml.Vector3f;
 import omnikryptec.display.DisplayManager;
-import omnikryptec.gameobject.gameobject.GameObject;
+import omnikryptec.gameobject.GameObject;
 import omnikryptec.util.Maths;
 
 public class ParticleSystem extends GameObject{

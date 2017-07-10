@@ -10,8 +10,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL31;
 
 import omnikryptec.display.DisplayManager;
-import omnikryptec.gameobject.gameobject.Entity;
-import omnikryptec.gameobject.gameobject.Light;
+import omnikryptec.gameobject.Entity;
+import omnikryptec.gameobject.Light;
 import omnikryptec.main.Scene;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;

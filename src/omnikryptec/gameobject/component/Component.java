@@ -1,6 +1,6 @@
 package omnikryptec.gameobject.component;
 
-import omnikryptec.gameobject.gameobject.GameObject;
+import omnikryptec.gameobject.GameObject;
 
 /**
  * Component interface

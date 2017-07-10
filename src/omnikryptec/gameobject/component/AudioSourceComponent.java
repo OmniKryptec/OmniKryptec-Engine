@@ -5,7 +5,7 @@ import omnikryptec.audio.AudioEffectState;
 
 import omnikryptec.audio.AudioSource;
 import omnikryptec.display.DisplayManager;
-import omnikryptec.gameobject.gameobject.GameObject;
+import omnikryptec.gameobject.GameObject;
 import omnikryptec.main.Scene;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.util.Blocker;

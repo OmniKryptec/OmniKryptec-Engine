@@ -7,7 +7,7 @@ package omnikryptec.test.saving;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import omnikryptec.gameobject.gameobject.GameObject;
+import omnikryptec.gameobject.GameObject;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.logger.Logger;
 
@@ -59,6 +59,7 @@ public class ObjectManager {
         }
     }
 
+    //FIXME fixen
     public static void main(String[] args) {
         try {
             TestClass obj = new TestClass("Troll", 22);
@@ -67,14 +68,14 @@ public class ObjectManager {
             TestClass temp = loadObjectFromFile(file_2, TestClass.createInstance());
             // Logger.log("Here:\n" + test);
             GameObject test_2 = new GameObject();
-            test_2.setPos(new Vector3f(0F, 1F, 2F));
+            //test_2.setPos(new Vector3f(0F, 1F, 2F));
             // Logger.log("Here 2:\n" +
             // mapper.writerWithDefaultPrettyPrinter().writeValueAsString(test_2));
             // new GameObject[] {test_2}
             GameObject[] test_array = new GameObject[10];
             for (int i = 0; i < test_array.length; i++) {
-                test_array[i] = new GameObject()
-                        .setPos(new Vector3f((float) Math.random(), (float) Math.random(), (float) Math.random()));
+//                test_array[i] = new GameObject()
+//                        .setPos(new Vector3f((float) Math.random(), (float) Math.random(), (float) Math.random()));
             }
 
             AdvancedFile file = new AdvancedFile("test_world.txt");

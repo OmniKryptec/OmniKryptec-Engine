@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import omnikryptec.display.DisplayManager;
-import omnikryptec.gameobject.gameobject.Camera;
-import omnikryptec.gameobject.gameobject.Entity;
-import omnikryptec.gameobject.gameobject.GameObject;
-import omnikryptec.gameobject.gameobject.Light;
+import omnikryptec.gameobject.Camera;
+import omnikryptec.gameobject.Entity;
+import omnikryptec.gameobject.GameObject;
+import omnikryptec.gameobject.Light;
 import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.physics.JBulletPhysicsWorld;
 import omnikryptec.physics.PhysicsWorld;

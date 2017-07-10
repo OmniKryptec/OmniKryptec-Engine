@@ -3,7 +3,7 @@ package omnikryptec.util;
 import org.joml.FrustumIntersection;
 import org.joml.Matrix4fc;
 
-import omnikryptec.gameobject.gameobject.Entity;
+import omnikryptec.gameobject.Entity;
 
 public class FrustrumFilter {
 	

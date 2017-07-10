@@ -2,7 +2,7 @@ package omnikryptec.gameobject.terrain;
 
 import java.util.ArrayList;
 
-import omnikryptec.gameobject.gameobject.Entity;
+import omnikryptec.gameobject.Entity;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;

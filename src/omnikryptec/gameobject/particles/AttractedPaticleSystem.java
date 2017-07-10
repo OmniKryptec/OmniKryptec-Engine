@@ -1,8 +1,9 @@
 package omnikryptec.gameobject.particles;
 
 import java.util.LinkedList;
-import omnikryptec.gameobject.gameobject.GameObject;
-import omnikryptec.gameobject.gameobject.RenderType;
+
+import omnikryptec.gameobject.GameObject;
+import omnikryptec.gameobject.RenderType;
 import omnikryptec.resource.texture.ParticleAtlas;
 import org.joml.Vector3f;
 

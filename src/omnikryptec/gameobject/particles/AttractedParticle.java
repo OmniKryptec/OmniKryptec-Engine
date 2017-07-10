@@ -1,6 +1,6 @@
 package omnikryptec.gameobject.particles;
 
-import omnikryptec.gameobject.gameobject.RenderType;
+import omnikryptec.gameobject.RenderType;
 import omnikryptec.resource.texture.ParticleAtlas;
 
 import java.util.ArrayList;

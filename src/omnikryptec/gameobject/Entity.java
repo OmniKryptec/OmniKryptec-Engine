@@ -1,4 +1,4 @@
-package omnikryptec.gameobject.gameobject;
+package omnikryptec.gameobject;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -165,7 +165,6 @@ public class Entity extends GameObject implements DataMapSerializable {
         DataMap data_temp = super.toDataMap(new DataMap("gameObject"));
         data.put(data_temp.getName(), data_temp);
         data.put("color", SerializationUtil.colorToString(color));
-        data.put("scale", SerializationUtil.vector3fToString(scale));
         data.put("type", type.name());
         if(model != null) {
             data.put("model", model.toDataMap(new DataMap(model.getName())));
@@ -195,7 +194,6 @@ public class Entity extends GameObject implements DataMapSerializable {
         DataMap dataMap_temp = data.getDataMap("gameObject");
         super.fromDataMap(dataMap_temp);
         color = SerializationUtil.stringToColor(data.getString("color"));
-        scale = SerializationUtil.stringToVector3f(data.getString("scale"));
         String temp = data.getString("type");
         if(temp != null) {
             type = RenderType.valueOf(temp);

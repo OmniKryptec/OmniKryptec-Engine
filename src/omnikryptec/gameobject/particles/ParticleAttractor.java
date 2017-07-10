@@ -2,7 +2,7 @@ package omnikryptec.gameobject.particles;
 
 import org.joml.Vector3f;
 
-import omnikryptec.gameobject.gameobject.GameObject;
+import omnikryptec.gameobject.GameObject;
 
 public class ParticleAttractor {
 

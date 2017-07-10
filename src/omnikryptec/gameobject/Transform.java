@@ -1,4 +1,4 @@
-package omnikryptec.gameobject.gameobject;
+package omnikryptec.gameobject;
 
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -18,6 +18,7 @@ public class Transform implements Positionable{
 	private Matrix4f transformation;
 	
 	private boolean disableRecalculation = false;
+	
 	
 	public Transform(){
 		this(new Vector3f(0));
@@ -54,6 +55,7 @@ public class Transform implements Positionable{
 	}
 	
 	public Transform setParent(Transform transform){
+    	lastframe = -1;
 		this.parent = transform;
 		return this;
 	}
@@ -72,6 +74,7 @@ public class Transform implements Positionable{
 	}
 	
 	public Transform increasePosition(float x, float y, float z){
+    	lastframe = -1;
 		this.position.x += x;
 		this.position.y += y;
 		this.position.z += z;
@@ -79,6 +82,7 @@ public class Transform implements Positionable{
 	}
 	
 	public Transform increaseRotation(float x, float y, float z, float w){
+    	lastframe = -1;
 		this.rotation.x += x;
 		this.rotation.y += y;
 		this.rotation.z += z;
@@ -86,7 +90,15 @@ public class Transform implements Positionable{
 		return this;
 	}
 	
+	public Transform increaseRotation(float xa, float ya, float za){
+    	lastframe = -1;
+		this.rotation.rotate(xa, ya, za);
+		return this;
+	}
+
+	
 	public Transform increaseScale(float x, float y, float z){
+    	lastframe = -1;
 		this.scale.x += x;
 		this.scale.y += y;
 		this.scale.z += z;
@@ -94,16 +106,19 @@ public class Transform implements Positionable{
 	}
 	
 	public Transform setPosition(float x, float y, float z){
+    	lastframe = -1;
 		this.position.set(x, y, z);
 		return this;
 	}
 	
 	public Transform setRotation(float x, float y, float z, float w){
+    	lastframe = -1;
 		this.rotation.set(x, y, z, w);
 		return this;
 	}
 	
 	public Transform setScale(float x, float y, float z){
+    	lastframe = -1;
 		this.scale.set(x, y, z);
 		return this;
 	}
@@ -113,16 +128,19 @@ public class Transform implements Positionable{
 	}
 	
 	public Transform setPosition(Vector3f pos){
+    	lastframe = -1;
 		this.position = pos;
 		return this;
 	}
 	
 	public Transform setRotation(Quaternionf q){
+    	lastframe = -1;
 		this.rotation = q;
 		return this;
 	}
 	
 	public Transform setScale(Vector3f scale){
+    	lastframe = -1;
 		this.scale = scale;
 		return this;
 	}
@@ -185,6 +203,18 @@ public class Transform implements Positionable{
 		return parent.getScale(false).add(scale);
 	}
 	
+	public Vector3f getEulerAngelsXYZ(){
+		return getEulerAngelsXYZ(false);
+	}
+	
+	private Vector3f tmp = new Vector3f();
+	public Vector3f getEulerAngelsXYZ(boolean simple){
+		return getEulerAngelsXYZ(simple, simple?tmp.set(0):new Vector3f());
+	}
+	
+	public Vector3f getEulerAngelsXYZ(boolean simple, Vector3f dest){
+		return getRotation(simple).getEulerAnglesXYZ(dest);
+	}
 	
 	public Matrix4f getTransformation(){
 		return this.getTransformation(true);
@@ -218,10 +248,15 @@ public class Transform implements Positionable{
 		}
     	lastframe = DisplayManager.instance().getFramecount();
 		transformation.identity();
-		transformation.translate(lastpos.set(getPosition()));
 		transformation.rotate(lastrot.set(getRotation()));
+		transformation.translate(lastpos.set(getPosition()));
 		transformation.scale(lastscale.set(getScale()));
 		return transformation;
+    }
+    
+    public Transform setDirty(){
+    	lastframe = -1;
+    	return this;
     }
     
     //TMP-Vars

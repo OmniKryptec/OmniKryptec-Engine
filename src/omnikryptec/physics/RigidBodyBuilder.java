@@ -10,8 +10,8 @@ import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
 import com.bulletphysics.linearmath.MotionState;
 
-import omnikryptec.gameobject.gameobject.Entity;
-import omnikryptec.gameobject.gameobject.GameObject;
+import omnikryptec.gameobject.Entity;
+import omnikryptec.gameobject.GameObject;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.util.ConverterUtil;

@@ -1,4 +1,4 @@
-package omnikryptec.gameobject.gameobject;
+package omnikryptec.gameobject;
 
 public interface Transformable {
 	

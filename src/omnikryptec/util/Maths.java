@@ -7,7 +7,7 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import omnikryptec.display.Display;
-import omnikryptec.gameobject.gameobject.Entity;
+import omnikryptec.gameobject.Entity;
 
 import java.util.Random;
 

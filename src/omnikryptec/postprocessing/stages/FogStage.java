@@ -5,7 +5,7 @@ import java.util.List;
 import org.joml.Vector4f;
 
 import omnikryptec.display.Display;
-import omnikryptec.gameobject.gameobject.Camera;
+import omnikryptec.gameobject.Camera;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.PostProcessingStep;

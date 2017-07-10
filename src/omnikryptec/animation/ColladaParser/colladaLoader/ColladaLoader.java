@@ -9,6 +9,7 @@ import omnikryptec.animation.ColladaParser.dataStructures.MeshData;
 import omnikryptec.animation.ColladaParser.dataStructures.SkeletonData;
 import omnikryptec.animation.ColladaParser.dataStructures.SkinningData;
 import omnikryptec.util.AdvancedFile;
+import omnikryptec.util.Instance;
 import omnikryptec.util.XMLUtil;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -20,7 +21,7 @@ import org.joml.Vector3f;
  */
 public class ColladaLoader {
 
-    public static final Matrix4f CORRECTION = new Matrix4f().rotate((float) Math.toRadians(-90), new Vector3f(1, 0, 0));
+    public static final Matrix4f CORRECTION = new Matrix4f().rotate((float) Math.toRadians(-90), Instance.MATHS_X_AXIS);
 
     public static final MeshData getMeshDataOnly(AdvancedFile colladaFile) {
         return loadColladaModel("", colladaFile, 0).getMeshData();

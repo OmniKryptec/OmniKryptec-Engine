@@ -1,7 +1,13 @@
-package omnikryptec.gameobject.gameobject;
+package omnikryptec.gameobject;
+
+import org.joml.AxisAngle4f;
+import org.joml.Matrix3f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import omnikryptec.event.input.InputManager;
 import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.util.Maths;
 
 /**
  *
@@ -32,21 +38,24 @@ public class FollowingCamera extends Camera {
 	}
 
 	private void calculateCameraPosition() {
+		final Vector3f rot = getTransform().getEulerAngelsXYZ(true);
 		final float horizontalDistance = (float) (distanceFromGameObject
-				* Math.cos(Math.toRadians(getAbsoluteRotation().x)));
+				* Math.cos(rot.x));
 		final float verticalDistance = (float) (distanceFromGameObject
-				* Math.sin(Math.toRadians(getAbsoluteRotation().x)));
-		final float theta = followedGameObject.getAbsoluteRotation().y + angleAroundGameObject;
+				* Math.sin(rot.x));
+		final float theta = followedGameObject.getTransform().getEulerAngelsXYZ(true).y + angleAroundGameObject;
 		final float offsetX = (float) (horizontalDistance * Math.sin(Math.toRadians(theta)));
 		final float offsetZ = (float) (horizontalDistance * Math.cos(Math.toRadians(theta)));
-		setRelativePos(followedGameObject.getRelativePos().x - offsetX,
-				followedGameObject.getRelativePos().y + verticalDistance,
-				followedGameObject.getRelativePos().z - offsetZ);
+		getTransform().setPosition(followedGameObject.getTransform().getPositionSimple().x - offsetX,
+				followedGameObject.getTransform().getPositionSimple().y + verticalDistance,
+				followedGameObject.getTransform().getPositionSimple().z - offsetZ);
 	}
 
 	private void calculateCameraOrientation() {
-		final float theta = followedGameObject.getAbsoluteRotation().y + angleAroundGameObject;
-		getRelativeRotation().y = (180 - theta);
+		final float theta = followedGameObject.getTransform().getEulerAngelsXYZ(true).y + angleAroundGameObject;
+		final AxisAngle4f tmp = new AxisAngle4f();
+		getTransform().getRotationSimple().get(tmp).y = (float) Math.toRadians(180 - theta);
+		getTransform().getRotationSimple().set(tmp);
 	}
 
 	private void calculateZoom() {
@@ -56,7 +65,7 @@ public class FollowingCamera extends Camera {
 	private void calculatePitch() {
 		if (OmniKryptecEngine.instance().getDisplayManager().getSettings().getKeySettings().getKey("mouseButtonRight")
 				.isPressed()) {
-			getRelativeRotation().x -= (InputManager.getMouseDelta().y * 0.1F);
+			getTransform().getRotationSimple().rotateAxis((float) Math.toRadians(InputManager.getMouseDelta().y * 0.1F), Maths.X);
 		}
 	}
 

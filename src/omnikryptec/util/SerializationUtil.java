@@ -8,11 +8,12 @@ import java.util.Locale;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
+import org.joml.Quaternionf;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import omnikryptec.gameobject.gameobject.GameObject;
+import omnikryptec.gameobject.GameObject;
 import omnikryptec.util.logger.Logger;
 
 /**
@@ -116,6 +117,13 @@ public class SerializationUtil {
         return String.format(Locale.US, "[%f%s%f%s%f]", vector.x, VECTOR_SPLITTER, vector.y, VECTOR_SPLITTER, vector.z);
     }
 
+    public static final String quaternionfToString(Quaternionf vector) {
+        if (vector == null) {
+            return null;
+        }
+        return String.format(Locale.US, "[%f%s%f%s%f%s%f]", vector.x, VECTOR_SPLITTER, vector.y, VECTOR_SPLITTER, vector.z, VECTOR_SPLITTER, vector.w);
+    }
+    
     public static final Vector3f stringToVector3f(String temp) {
         if (temp == null || temp.length() < 10) {
             return null;
@@ -125,6 +133,16 @@ public class SerializationUtil {
         return new Vector3f(Float.parseFloat(split[0]), Float.parseFloat(split[1]), Float.parseFloat(split[2]));
     }
 
+    //FIXME richtig?
+    public static final Quaternionf stringToQuaternionf(String temp) {
+        if (temp == null || temp.length() < 10) {
+            return null;
+        }
+        temp = temp.substring(1, temp.length() - 1).replaceAll(" ", "");
+        final String[] split = temp.split(VECTOR_SPLITTER);
+        return new Quaternionf(Float.parseFloat(split[0]), Float.parseFloat(split[1]), Float.parseFloat(split[2]), Float.parseFloat(split[3]));
+    }
+    
     public static final String vector4fToString(Vector4f vector) {
         if (vector == null) {
             return null;

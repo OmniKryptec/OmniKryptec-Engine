@@ -3,8 +3,8 @@ package omnikryptec.event.input;
 import omnikryptec.display.Display;
 
 import omnikryptec.display.DisplayManager;
-import omnikryptec.gameobject.gameobject.Camera;
-import omnikryptec.gameobject.gameobject.GameObject;
+import omnikryptec.gameobject.Camera;
+import omnikryptec.gameobject.GameObject;
 import omnikryptec.settings.KeySettings;
 import omnikryptec.util.Maths;
 import omnikryptec.util.logger.Logger;
@@ -280,13 +280,13 @@ public class InputManager {
      */
     public static final void moveXZ(GameObject source, GameObject destination, float forward, float sideward, float upward) {
         if (forward != 0) {
-            destination.increaseRelativePos((float) (forward * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))), 0, (float) (-forward * Math.cos(Math.toRadians(source.getAbsoluteRotation().y))));
+        	destination.getTransform().increasePosition((float) (forward * Math.sin(source.getTransform().getEulerAngelsXYZ(true).y)), 0, (float) (-forward * Math.cos(source.getTransform().getEulerAngelsXYZ(true).y)));
         }
         if (sideward != 0) {
-            destination.increaseRelativePos((float) (sideward * Math.cos(Math.toRadians(source.getAbsoluteRotation().y))), 0, (float) (sideward * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))));
+        	destination.getTransform().increasePosition((float) (sideward * Math.cos(source.getTransform().getEulerAngelsXYZ(true).y)), 0, (float) (sideward * Math.sin(source.getTransform().getEulerAngelsXYZ(true).y)));
         }
         if (upward != 0) {
-            destination.increaseRelativePos(0, upward, 0);
+        	destination.getTransform().increasePosition(0, upward, 0);
         }
     }
 
@@ -300,13 +300,13 @@ public class InputManager {
      */
     public static final void moveXYZ(GameObject source, GameObject destination, float forward, float sideward, float upward) {
         if (forward != 0) {
-            destination.increaseRelativePos((float) (forward * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))), (float) (-forward * Math.sin(Math.toRadians(source.getAbsoluteRotation().x))), (float) (-forward * Math.cos(Math.toRadians(source.getAbsoluteRotation().y)) * Math.cos(Math.toRadians(source.getAbsoluteRotation().x))));
+        	destination.getTransform().increasePosition((float) (forward * Math.sin(source.getTransform().getEulerAngelsXYZ(true).y)), (float) (-forward * Math.sin(source.getTransform().getEulerAngelsXYZ(true).x)), (float) (-forward * Math.cos(source.getTransform().getEulerAngelsXYZ(true).y) * Math.cos(source.getTransform().getEulerAngelsXYZ(true).x)));
         }
         if (sideward != 0) {
-            destination.increaseRelativePos((float) (sideward * Math.cos(Math.toRadians(source.getAbsoluteRotation().y)) * Math.cos(Math.toRadians(source.getAbsoluteRotation().z))), (float) (-sideward * Math.sin(Math.toRadians(source.getAbsoluteRotation().z))), (float) (sideward * Math.sin(Math.toRadians(source.getAbsoluteRotation().y))));
+        	destination.getTransform().increasePosition((float) (sideward * Math.cos(source.getTransform().getEulerAngelsXYZ(true).y) * Math.cos(source.getTransform().getEulerAngelsXYZ(true).y)), (float) (-sideward * Math.sin(source.getTransform().getEulerAngelsXYZ(true).z)), (float) (sideward * Math.sin(source.getTransform().getEulerAngelsXYZ(true).y)));
         }
-        if (upward != 0) {
-            destination.increaseRelativePos((float) (upward * Math.sin(Math.toRadians(source.getAbsoluteRotation().z))), (float) (upward * Math.cos(Math.toRadians(source.getAbsoluteRotation().x)) * Math.cos(Math.toRadians(source.getAbsoluteRotation().z))), (float) (-upward * Math.sin(Math.toRadians(source.getAbsoluteRotation().x))));
+        if (upward != 0) {																																																																															//FIXME .y richtig?
+            destination.getTransform().increasePosition((float) (upward * Math.sin(source.getTransform().getEulerAngelsXYZ(true).z)), (float) (upward * Math.cos(source.getTransform().getEulerAngelsXYZ(true).x) * Math.cos(source.getTransform().getEulerAngelsXYZ(true).z)), (float) (-upward * Math.sin(source.getTransform().getEulerAngelsXYZ(true).y)));
         }
     }
     
@@ -321,15 +321,15 @@ public class InputManager {
         if(destination == null) {
             return;
         }
-        final AxisAngle4f x_axis = new AxisAngle4f((float) Math.toRadians(deltaRotX), Maths.X);
-        final AxisAngle4f y_axis = new AxisAngle4f((float) Math.toRadians(deltaRotY), Maths.Y);
-        final AxisAngle4f z_axis = new AxisAngle4f((float) Math.toRadians(deltaRotZ), Maths.Z);
+        final AxisAngle4f x_axis = new AxisAngle4f(deltaRotX, Maths.X);
+        final AxisAngle4f y_axis = new AxisAngle4f(deltaRotY, Maths.Y);
+        final AxisAngle4f z_axis = new AxisAngle4f(deltaRotZ, Maths.Z);
         if(source != null) {
-            final Vector3f rotation = source.getAbsoluteRotation();
+        	final Vector3f rotation = source.getTransform().getEulerAngelsXYZ(true);
             final Matrix3f rotationMatrix = new Matrix3f();
-            rotationMatrix.rotate((float) Math.toRadians(rotation.x), Maths.X);
-            rotationMatrix.rotate((float) Math.toRadians(rotation.y), Maths.Y);
-            rotationMatrix.rotate((float) Math.toRadians(rotation.z), Maths.Z);
+            rotationMatrix.rotate(rotation.x, Maths.X);
+            rotationMatrix.rotate(rotation.y, Maths.Y);
+            rotationMatrix.rotate(rotation.z, Maths.Z);
             rotationMatrix.getEulerAnglesZYX(rotation);
             x_axis.set(x_axis.angle, Maths.X.mul(rotationMatrix, new Vector3f()));
             y_axis.set(y_axis.angle, Maths.Y.mul(rotationMatrix, new Vector3f()));
@@ -345,7 +345,7 @@ public class InputManager {
         if(destination == null) {
             return;
         }
-        final Vector3f rotation = destination.getRelativeRotation();
+        final Vector3f rotation = destination.getTransform().getEulerAngelsXYZ(true);
         final Matrix3f rotationMatrix = new Matrix3f();
         rotationMatrix.rotate(x_axis);
         rotation.mul(rotationMatrix);
@@ -359,46 +359,46 @@ public class InputManager {
     }
 
     public static final void turnXZ(GameObject source, GameObject destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
-        final Vector3f rotation = new Vector3f(source.getAbsoluteRotation());
+    	final Vector3f rotation = source.getTransform().getEulerAngelsXYZ(true);
         if (deltaRotZ != 0) {
-            destination.increaseRelativeRot((float) (-deltaRotZ * Math.sin(Math.toRadians(rotation.y))), 0, (float) (deltaRotZ * Math.cos(Math.toRadians(rotation.y))));
+            destination.getTransform().increaseRotation((float) (-deltaRotZ * Math.sin(rotation.y)), 0, (float) (deltaRotZ * Math.cos(rotation.y)));
         }
         if (deltaRotX != 0) {
-            destination.increaseRelativeRot((float) (-deltaRotX * Math.cos(Math.toRadians(rotation.y))), 0, (float) (deltaRotX * Math.sin(Math.toRadians(rotation.y))));
+        	destination.getTransform().increaseRotation((float) (-deltaRotX * Math.cos(rotation.y)), 0, (float) (deltaRotX * Math.sin(rotation.y)));
         }
         if (deltaRotY != 0) {
-            destination.increaseRelativeRot(0, deltaRotY, 0);
+        	destination.getTransform().increaseRotation(0, deltaRotY, 0);
         }
     }
 
     public static final void turnXZY(GameObject source, GameObject destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
-        final Vector3f rotation = new Vector3f(source.getAbsoluteRotation());
+    	final Vector3f rotation = source.getTransform().getEulerAngelsXYZ(true);
         if (deltaRotZ != 0) {
-            destination.increaseRelativeRot((float) (-deltaRotZ * Math.sin(Math.toRadians(rotation.y))), (float) (deltaRotZ * Math.sin(Math.toRadians(rotation.x))), (float) (deltaRotZ * Math.cos(Math.toRadians(rotation.y)) * Math.cos(Math.toRadians(rotation.x))));
+        	destination.getTransform().increaseRotation((float) (-deltaRotZ * Math.sin(rotation.y)), (float) (deltaRotZ * Math.sin(rotation.x)), (float) (deltaRotZ * Math.cos(rotation.y) * Math.cos(rotation.x)));
         }
         if (deltaRotX != 0) {
-            destination.increaseRelativeRot((float) (deltaRotX * Math.cos(Math.toRadians(rotation.y)) * Math.cos(Math.toRadians(rotation.z))), (float) (-deltaRotX * Math.sin(Math.toRadians(rotation.z))), (float) (deltaRotX * Math.sin(Math.toRadians(rotation.y))));
+        	destination.getTransform().increaseRotation((float) (deltaRotX * Math.cos(rotation.y) * Math.cos(rotation.z)), (float) (-deltaRotX * Math.sin(rotation.z)), (float) (deltaRotX * Math.sin(rotation.y)));
         }
         if (deltaRotY != 0) {
-            destination.increaseRelativeRot(0, deltaRotY, 0);
+        	destination.getTransform().increaseRotation(0, deltaRotY, 0);
         }
     }
 
     public static final void turnXYZ(GameObject source, GameObject destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
-        final Vector3f rotation = new Vector3f(source.getAbsoluteRotation());
+        final Vector3f rotation = source.getTransform().getEulerAngelsXYZ(true);
         if (deltaRotZ != 0) {
-            destination.increaseRelativeRot((float) (-deltaRotZ * Math.sin(Math.toRadians(rotation.y))), (float) (deltaRotZ * Math.sin(Math.toRadians(rotation.x))), (float) (deltaRotZ * Math.cos(Math.toRadians(rotation.y)) * Math.cos(Math.toRadians(rotation.x))));
+        	destination.getTransform().increaseRotation((float) (-deltaRotZ * Math.sin(rotation.y)), (float) (deltaRotZ * Math.sin(rotation.x)), (float) (deltaRotZ * Math.cos(rotation.y) * Math.cos(rotation.x)));
         }
         if (deltaRotX != 0) {
-            destination.increaseRelativeRot((float) (deltaRotX * Math.cos(Math.toRadians(rotation.y)) * Math.cos(Math.toRadians(rotation.z))), (float) (-deltaRotX * Math.sin(Math.toRadians(rotation.z))), (float) (deltaRotX * Math.sin(Math.toRadians(rotation.y))));
+        	destination.getTransform().increaseRotation((float) (deltaRotX * Math.cos(rotation.y) * Math.cos(rotation.z)), (float) (-deltaRotX * Math.sin(rotation.z)), (float) (deltaRotX * Math.sin(rotation.y)));
         }
         if (deltaRotY != 0) {
-            destination.increaseRelativeRot((float) (deltaRotY * Math.sin(Math.toRadians(rotation.z))), (float) (deltaRotY * Math.cos(Math.toRadians(rotation.x)) * Math.cos(Math.toRadians(rotation.z))), (float) (-deltaRotY * Math.sin(Math.toRadians(rotation.x))));
+        	destination.getTransform().increaseRotation((float) (deltaRotY * Math.sin(rotation.z)), (float) (deltaRotY * Math.cos(rotation.x) * Math.cos(rotation.z)), (float) (-deltaRotY * Math.sin(rotation.x)));
         }
     }
 
     public static final void turnNormal(GameObject source, GameObject destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
-        destination.increaseRelativeRot(deltaRotX, deltaRotY, deltaRotZ);
+    	destination.getTransform().increaseRotation(deltaRotX, deltaRotY, deltaRotZ);
     }
 
 }

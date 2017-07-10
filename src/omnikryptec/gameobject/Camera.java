@@ -1,4 +1,4 @@
-package omnikryptec.gameobject.gameobject;
+package omnikryptec.gameobject;
 
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
@@ -40,9 +40,7 @@ public class Camera extends GameObject {
         if (!Maths.fastEquals3f(campos, lastpos) || !Maths.fastEquals4f(lastrot, absrot)) {
             negcampos = new Vector3f(-campos.x, -campos.y, -campos.z);
             view.identity();
-            view.rotate((float) Math.toRadians(absrot.x), Maths.X);
-            view.rotate((float) Math.toRadians(absrot.y), Maths.Y);
-            view.rotate((float) Math.toRadians(absrot.z), Maths.Z);
+            view.rotate(absrot);
             view.translate(negcampos);
             lastpos.set(campos);
             lastrot.set(absrot);
@@ -126,10 +124,10 @@ public class Camera extends GameObject {
     public DataMap toDataMap(DataMap data) {
         DataMap data_temp = super.toDataMap(new DataMap("gameObject"));
         data.put(data_temp.getName(), data_temp);
-        data.put("absrot", SerializationUtil.vector3fToString(absrot));
+        data.put("absrot", SerializationUtil.quaternionfToString(absrot));
         data.put("campos", SerializationUtil.vector3fToString(campos));
         data.put("lastpos", SerializationUtil.vector3fToString(lastpos));
-        data.put("lastrot", SerializationUtil.vector3fToString(lastrot));
+        data.put("lastrot", SerializationUtil.quaternionfToString(lastrot));
         data.put("negcampos", SerializationUtil.vector3fToString(negcampos));
         data.put("projection", SerializationUtil.matrix4fToString(projection));
         data.put("view", SerializationUtil.matrix4fToString(view));
@@ -155,10 +153,10 @@ public class Camera extends GameObject {
         }
         DataMap dataMap_temp = data.getDataMap("gameObject");
         super.fromDataMap(dataMap_temp);
-        absrot = SerializationUtil.stringToVector3f(data.getString("absrot"));
+        absrot = SerializationUtil.stringToQuaternionf(data.getString("absrot"));
         campos = SerializationUtil.stringToVector3f(data.getString("campos"));
         lastpos = SerializationUtil.stringToVector3f(data.getString("lastpos"));
-        lastrot = SerializationUtil.stringToVector3f(data.getString("lastrot"));
+        lastrot = SerializationUtil.stringToQuaternionf(data.getString("lastrot"));
         negcampos = SerializationUtil.stringToVector3f(data.getString("negcampos"));
         projection = SerializationUtil.stringToMatrix4f(data.getString("projection"));
         view = SerializationUtil.stringToMatrix4f(data.getString("view"));

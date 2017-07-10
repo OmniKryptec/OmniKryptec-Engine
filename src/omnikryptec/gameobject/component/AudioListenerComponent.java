@@ -1,7 +1,7 @@
 package omnikryptec.gameobject.component;
 
 import omnikryptec.audio.AudioManager;
-import omnikryptec.gameobject.gameobject.GameObject;
+import omnikryptec.gameobject.GameObject;
 import omnikryptec.main.Scene;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.util.ConverterUtil;

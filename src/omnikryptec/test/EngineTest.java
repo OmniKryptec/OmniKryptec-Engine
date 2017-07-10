@@ -1,8 +1,8 @@
 package omnikryptec.test;
 
 import omnikryptec.display.DisplayManager;
-import omnikryptec.gameobject.gameobject.Camera;
-import omnikryptec.gameobject.gameobject.Entity;
+import omnikryptec.gameobject.Camera;
+import omnikryptec.gameobject.Entity;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;

@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL30;
 
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
-import omnikryptec.gameobject.gameobject.Light;
+import omnikryptec.gameobject.Light;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.postprocessing.main.FrameBufferObject;

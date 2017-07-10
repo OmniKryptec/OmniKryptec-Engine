@@ -10,12 +10,12 @@ import omnikryptec.event.event.EventSystem;
 import omnikryptec.event.event.EventType;
 import omnikryptec.event.event.IEventHandler;
 import omnikryptec.event.input.InputManager;
-import omnikryptec.gameobject.gameobject.Camera;
-import omnikryptec.gameobject.gameobject.Entity;
-import omnikryptec.gameobject.gameobject.GameObject;
-import omnikryptec.gameobject.gameobject.Light;
-import omnikryptec.gameobject.gameobject.RenderType;
-import omnikryptec.gameobject.gameobject.UpdateType;
+import omnikryptec.gameobject.Camera;
+import omnikryptec.gameobject.Entity;
+import omnikryptec.gameobject.GameObject;
+import omnikryptec.gameobject.Light;
+import omnikryptec.gameobject.RenderType;
+import omnikryptec.gameobject.UpdateType;
 import omnikryptec.gameobject.particles.AttractedPaticleSystem;
 import omnikryptec.gameobject.particles.ParticleAttractor;
 import omnikryptec.gameobject.particles.AttractorMode;
@@ -187,7 +187,7 @@ public class EngineTest2 implements IEventHandler {
                   1000,0, 1000f, 1f, RenderType.ALWAYS).setAverageMass(1E6F).setParticlesAttractingEachOther(true);
 
             System.out.println("Generating objs...");
-            int cube =0;
+            int cube =50;
             int abstand = 10;
             float scale = 4;
             for (int x = -cube; x < cube; x += abstand) {
@@ -196,7 +196,7 @@ public class EngineTest2 implements IEventHandler {
                     	GameObject go;
                     	//go = new GameObject().setRelativePos(x, y, z);
                     	go = new Entity(tm).setUpdateType(UpdateType.STATIC);
-                    	go.getTransform().setScale(scale).setPosition(x, y, z);
+                    	go.getTransform().setScale(scale).setPosition(x, y, z).getRotationSimple().rotate((float) Math.toRadians(180), 0, 0);
                         Instance.getCurrentScene().addGameObject(go);
                         //system.addAttractor(new ParticleAttractor(go).setAcceleration(10).setMode(AttractorMode.KILL_ON_REACH).setTolerance(5));
                     }
@@ -240,7 +240,7 @@ public class EngineTest2 implements IEventHandler {
             system.setGlobal(true);
             system.setStartcolor(new Color(1, 0, 1));
             system.setEndcolor(new Color(1, 1, 0));
-            OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
+            //OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));
             //OmniKryptecEngine.instance().getCurrentScene()
             //      .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setCuttOffRange(50).setColor(3, 0, 0).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0, -1, 0).setRelativePos(0,10, 0));
@@ -272,7 +272,7 @@ public class EngineTest2 implements IEventHandler {
     
     private static void doCameraLogic(Camera camera) {
         // v += DisplayManager.instance().getDeltaTime()*30;
-        InputManager.doFirstPersonController(camera, DisplayManager.instance().getSettings().getKeySettings(), v, v, 40, false);
+        InputManager.doFirstPersonController(camera, DisplayManager.instance().getSettings().getKeySettings(), v, v, (float) Math.toRadians(20), false);
         // camera.setPerspectiveProjection(Maths.alterFOV(10, 179f, v, 1000),
         // 1000, 0.001f);
         Logger.CONSOLE.setTitle(camera.toString());

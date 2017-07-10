@@ -1,6 +1,6 @@
 package omnikryptec.gameobject.water;
 
-import omnikryptec.gameobject.gameobject.Entity;
+import omnikryptec.gameobject.Entity;
 
 public class WaterEntity extends Entity{
 

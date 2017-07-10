@@ -1,4 +1,4 @@
-package omnikryptec.gameobject.gameobject;
+package omnikryptec.gameobject;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -453,33 +453,7 @@ public class GameObject implements DataMapSerializable, Transformable {
     public final RenderChunk getMyChunk() {
         return myChunk;
     }
-
-    /**
-     * @see #getRelativePos()
-     * @return rel. pos
-     */
-    public final Vector3f getPos() {
-        return pos;
-    }
-
-    /**
-     * @see #getRelativeRotation()
-     * @return rel. rot
-     */
-    public final Vector3f getRotation() {
-        return rotation;
-    }
-
-    /**
-     * @see #setRelativePos(float, float, float)
-     * @param pos
-     * @return this GameObject
-     */
-    public final GameObject setPos(Vector3f pos) {
-        this.pos = pos;
-        return this;
-    }
-
+    
     /**
      * if true this GameObject will always be processed regardless of the camera pos.
      * @param b
@@ -501,7 +475,7 @@ public class GameObject implements DataMapSerializable, Transformable {
 
     @Override
     public String toString() {
-        return String.format("%s (%d): [Position: %s, Rotation: %s]", getClass().getSimpleName(), ULTIMATE_IDENTIFIER.toEpochMilli(), pos, rotation);
+        return String.format("%s (%d): [Position: %s, Rotation: %s]", getClass().getSimpleName(), ULTIMATE_IDENTIFIER.toEpochMilli(), getTransform().getPosition(true), getTransform().getEulerAngelsXYZ(true));
     }
 
     public GameObject setName(String name) {
@@ -528,6 +502,7 @@ public class GameObject implements DataMapSerializable, Transformable {
         return name;
     }
 
+    //FIXME fixen
     @Override
     public DataMap toDataMap(DataMap data) {
         data.put("name", name);
@@ -536,11 +511,12 @@ public class GameObject implements DataMapSerializable, Transformable {
         if (parent != null) {
             data.put("parent", parent.toDataMap(new DataMap("parent")));
         }
-        data.put("position", SerializationUtil.vector3fToString(pos));
-        data.put("rotation", SerializationUtil.vector3fToString(rotation));
+//        data.put("position", SerializationUtil.vector3fToString(pos));
+//        data.put("rotation", SerializationUtil.vector3fToString(rotation));
         return data;
     }
 
+    //FIXME fixen
     public static GameObject newInstanceFromDataMap(DataMap data) {
         if (data == null) {
             return null;
@@ -569,8 +545,8 @@ public class GameObject implements DataMapSerializable, Transformable {
             parent.fromDataMap(dataMap_temp); // FIXME Hmmm ist die Frage weil
             // die Parents und id und so
         }
-        setPos(SerializationUtil.stringToVector3f(data.getString("position")));
-        setRotation(SerializationUtil.stringToVector3f(data.getString("rotation")));
+//        setPos(SerializationUtil.stringToVector3f(data.getString("position")));
+//        setRotation(SerializationUtil.stringToVector3f(data.getString("rotation")));
         return this;
     }
 

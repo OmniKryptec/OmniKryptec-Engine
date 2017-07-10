@@ -8,9 +8,9 @@ import java.util.Map;
 
 import org.joml.Vector3f;
 
-import omnikryptec.gameobject.gameobject.Entity;
-import omnikryptec.gameobject.gameobject.GameObject;
-import omnikryptec.gameobject.gameobject.Light;
+import omnikryptec.gameobject.Entity;
+import omnikryptec.gameobject.GameObject;
+import omnikryptec.gameobject.Light;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.resource.model.AdvancedModel;

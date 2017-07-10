@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL31;
 
-import omnikryptec.gameobject.gameobject.Camera;
+import omnikryptec.gameobject.Camera;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.VertexBufferObject;
 import omnikryptec.resource.texture.ParticleAtlas;

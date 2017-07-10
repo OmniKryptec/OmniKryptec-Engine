@@ -7,7 +7,7 @@ import org.joml.Vector3f;
 import omnikryptec.animation.renderer.AnimatedModelRenderer;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.event.event.EventSystem;
-import omnikryptec.gameobject.gameobject.Camera;
+import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.gameobject.terrain.TerrainRenderer;
 import omnikryptec.main.OmniKryptecEngine;

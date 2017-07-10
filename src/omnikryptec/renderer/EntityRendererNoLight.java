@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import omnikryptec.gameobject.gameobject.Entity;
+import omnikryptec.gameobject.Entity;
 import omnikryptec.main.Scene;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;

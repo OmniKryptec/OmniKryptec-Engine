@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import omnikryptec.gameobject.gameobject.Camera;
+import omnikryptec.gameobject.Camera;
 import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.util.ArrayUtil;
 import omnikryptec.util.Instance;
