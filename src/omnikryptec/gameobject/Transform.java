@@ -248,9 +248,9 @@ public class Transform implements Positionable{
 		}
     	lastframe = DisplayManager.instance().getFramecount();
 		transformation.identity();
-		transformation.rotate(lastrot.set(getRotation()));
-		transformation.translate(lastpos.set(getPosition()));
-		transformation.scale(lastscale.set(getScale()));
+		transformation.rotate(lastrot.set(getRotation(true)));
+		transformation.translate(lastpos.set(getPosition(true)));
+		transformation.scale(lastscale.set(getScale(true)));
 		return transformation;
     }
     

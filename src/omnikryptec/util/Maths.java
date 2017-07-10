@@ -72,7 +72,7 @@ public class Maths {
 
     public static Matrix4f setOrthographicProjection(float left, float right, float bottom, float top, float near,
             float far) {
-        return new Matrix4f().setOrtho(left, right, bottom, top, near, far);
+    	return new Matrix4f().setOrtho(left, right, bottom, top, near, far);
     }
 
     public static Matrix4f setOrthographicProjection2D(float x, float y, float width, float height) {

@@ -146,7 +146,7 @@ public class EngineTest2 implements IEventHandler {
                     doCameraLogic(this);
                 }
 
-            }.setPerspectiveProjection(90, 0.1f, 1000)).setAmbientColor(0.5f, 0.5f, 0.5f));
+            }.setPerspectiveProjection(90, 0.1f,1000)).setAmbientColor(0.5f, 0.5f, 0.5f));
             //Instance.getCurrentCamera().getTransform().setPosition(0, 0, 0);
             Model pine = new Model("",
                     ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")));
@@ -196,7 +196,7 @@ public class EngineTest2 implements IEventHandler {
                     	GameObject go;
                     	//go = new GameObject().setRelativePos(x, y, z);
                     	go = new Entity(tm).setUpdateType(UpdateType.STATIC);
-                    	go.getTransform().setScale(scale).setPosition(x, y, z).getRotationSimple().rotate((float) Math.toRadians(180), 0, 0);
+                    	go.getTransform().setScale(scale).setPosition(x, y, z);
                         Instance.getCurrentScene().addGameObject(go);
                         //system.addAttractor(new ParticleAttractor(go).setAcceleration(10).setMode(AttractorMode.KILL_ON_REACH).setTolerance(5));
                     }
