@@ -189,14 +189,14 @@ public class EngineTest2 implements IEventHandler {
             System.out.println("Generating objs...");
             int cube =50;
             int abstand = 10;
-            float scale = 4;
+            float scale = 1;
             for (int x = -cube; x < cube; x += abstand) {
                 for (int y = -cube; y < cube; y += abstand) {
                     for (int z = -cube; z < cube; z += abstand) {
                     	GameObject go;
                     	//go = new GameObject().setRelativePos(x, y, z);
                     	go = new Entity(tm).setUpdateType(UpdateType.STATIC);
-                    	go.getTransform().setScale(scale).setPosition(x, y, z);
+                    	go.getTransform().setScale(scale).setPosition(x, y, z).getRotationSimple().rotate(0, 0, 0);
                         Instance.getCurrentScene().addGameObject(go);
                         //system.addAttractor(new ParticleAttractor(go).setAcceleration(10).setMode(AttractorMode.KILL_ON_REACH).setTolerance(5));
                     }
