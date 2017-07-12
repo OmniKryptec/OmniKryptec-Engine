@@ -1,0 +1,128 @@
+package omnikryptec.renderer;
+
+import java.nio.FloatBuffer;
+import java.util.List;
+
+import org.joml.Matrix4f;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL31;
+
+import omnikryptec.display.DisplayManager;
+import omnikryptec.gameobject.Entity;
+import omnikryptec.main.Scene;
+import omnikryptec.resource.model.AdvancedModel;
+import omnikryptec.resource.model.Material;
+import omnikryptec.resource.model.Model;
+import omnikryptec.resource.model.TexturedModel;
+import omnikryptec.shader.base.Shader;
+import omnikryptec.shader.files.EntityMeshShader;
+import omnikryptec.util.Color;
+import omnikryptec.util.FrustrumFilter;
+import omnikryptec.util.Instance;
+import omnikryptec.util.RenderUtil;
+import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
+
+public class EntityMeshRenderer extends Renderer<EntityMeshShader>{
+    public static final int INSTANCED_DATA_LENGTH = 20;
+    private static final int INSTANCES_PER_DRAWCALL = Instance.getGameSettings().getMaxInstancesPerDrawcall();
+
+
+    public EntityMeshRenderer() {
+        super(new EntityMeshShader());
+    	RendererRegistration.register(this);
+    }
+
+    private List<Entity> stapel;
+    private Entity entity;
+    private TexturedModel textmodel;
+    private Material mat;
+    private long vertcount = 0;
+    private Model model;
+
+    @Override
+    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean os) {
+        vertcount = 0;
+        for (AdvancedModel advancedModel : entities.keysArray()) {
+            if (advancedModel == null || !(advancedModel instanceof TexturedModel)) {
+                if (Logger.isDebugMode()) {
+                    Logger.log("Wrong renderer for AdvancedModel set! (" + advancedModel + ")", LogLevel.WARNING);
+                }
+                continue;
+            }
+            textmodel = (TexturedModel) advancedModel;
+            model = textmodel.getModel();
+            model.getVao().bind(0, 1, 2, 3, 4, 5, 6, 7, 8);
+            mat = textmodel.getMaterial();
+            shader.onModelRender(mat);
+            if (mat.hasTransparency()) {
+                RenderUtil.cullBackFaces(false);
+            }
+            stapel = entities.get(textmodel);
+            for (int j = 0; j < stapel.size(); j += INSTANCES_PER_DRAWCALL) {
+                newRender(s, j);
+            }
+            if (textmodel.getMaterial().hasTransparency()) {
+                RenderUtil.cullBackFaces(true);
+            }
+        }
+        return vertcount;
+    }
+
+    private FloatBuffer buffer;
+    private int pointer;
+    private int count;
+    private float[] array;
+    private int instances;
+
+    private void newRender(Scene s, int offset) {
+        instances = Math.min(stapel.size(), INSTANCES_PER_DRAWCALL + offset);
+        array = new float[Math.min(stapel.size(), INSTANCES_PER_DRAWCALL) * INSTANCED_DATA_LENGTH];
+        pointer = 0;
+        count = 0;
+        for (int j = offset; j < instances; j++) {
+            entity = stapel.get(j);
+            if (entity.isRenderingEnabled()) {
+                if (FrustrumFilter.intersects(entity) && RenderUtil.inRenderRange(entity, s.getCamera())) {
+                    updateArray(entity.getTransformation(), entity.getColor(), array);
+                    count++;
+                }
+            }
+        }
+        if (buffer == null || buffer.capacity() < array.length) {
+            buffer = BufferUtils.createFloatBuffer(array.length);
+        }
+        model.getUpdateableVBO().updateData(array, buffer);
+        GL31.glDrawElementsInstanced(GL11.GL_TRIANGLES, textmodel.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0, count);
+        vertcount += model.getModelData().getVertexCount() * stapel.size();
+    }
+
+    private void updateArray(Matrix4f transformationMatrix, Color color, float[] array) {
+        storeMatrixData(transformationMatrix, array);
+        array[pointer++] = color.getR();
+        array[pointer++] = color.getG();
+        array[pointer++] = color.getB();
+        array[pointer++] = color.getA();
+    }
+
+    private void storeMatrixData(Matrix4f matrix, float[] vboData) {
+        vboData[pointer++] = matrix.m00();
+        vboData[pointer++] = matrix.m01();
+        vboData[pointer++] = matrix.m02();
+        vboData[pointer++] = matrix.m03();
+        vboData[pointer++] = matrix.m10();
+        vboData[pointer++] = matrix.m11();
+        vboData[pointer++] = matrix.m12();
+        vboData[pointer++] = matrix.m13();
+        vboData[pointer++] = matrix.m20();
+        vboData[pointer++] = matrix.m21();
+        vboData[pointer++] = matrix.m22();
+        vboData[pointer++] = matrix.m23();
+        vboData[pointer++] = matrix.m30();
+        vboData[pointer++] = matrix.m31();
+        vboData[pointer++] = matrix.m32();
+        vboData[pointer++] = matrix.m33();
+    }
+
+}

@@ -27,22 +27,16 @@ import omnikryptec.util.RenderUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
-public class EntityRenderer implements Renderer {
+public class EntityRenderer extends Renderer<EntityLightShader> {
 
     public static final int INSTANCED_DATA_LENGTH = 20;
     private static final int INSTANCES_PER_DRAWCALL = Instance.getGameSettings().getMaxInstancesPerDrawcall();
 
-    private EntityLightShader shader;
-
     public EntityRenderer() {
-        RendererRegistration.register(this);
-        shader = new EntityLightShader();
+        super(new EntityLightShader());
+    	RendererRegistration.register(this);
     }
 
-    public EntityRenderer(AdvancedFile vertexshader, AdvancedFile fragmentshader) {
-        RendererRegistration.register(this);
-        shader = new EntityLightShader(vertexshader, fragmentshader);
-    }
 
     private List<Entity> stapel;
     private Entity entity;
@@ -55,16 +49,14 @@ public class EntityRenderer implements Renderer {
     private Model model;
 
     @Override
-    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities) {
+    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean b) {
         if (!DisplayManager.instance().getSettings().isLightForwardAllowed() && Logger.isDebugMode()) {
             Logger.log("Forward light is not enabled. Will not render.", LogLevel.WARNING);
             return 0;
         }
         vertcount = 0;
-        shader.start();
         shader.view.loadMatrix(s.getCamera().getViewMatrix());
         shader.projection.loadMatrix(s.getCamera().getProjectionMatrix());
-        FrustrumFilter.setProjViewMatrices(s.getCamera().getProjectionViewMatrix());
         shader.ambient.loadVec3(s.getAmbient().getArray());
         int lights = Math.min(DisplayManager.instance().getSettings().getLightMaxForward(),
                 s.getLights().size());
@@ -201,16 +193,5 @@ public class EntityRenderer implements Renderer {
         vboData[pointer++] = matrix.m32();
         vboData[pointer++] = matrix.m33();
     }
-
-
-    @Override
-    public float expensiveLevel() {
-        return 0;
-    }
-
-	@Override
-	public float priority() {
-		return 0;
-	}
 
 }

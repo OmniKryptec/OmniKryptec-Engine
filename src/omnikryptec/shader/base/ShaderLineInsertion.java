@@ -1,6 +1,6 @@
 package omnikryptec.shader.base;
 
-public interface LineInsert {
+public interface ShaderLineInsertion {
 
 	String[] get(int type);
 

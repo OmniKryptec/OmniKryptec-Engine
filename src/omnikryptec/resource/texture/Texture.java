@@ -42,6 +42,7 @@ public abstract class Texture implements ResourceObject {
     public final void bindToUnit(int unit, int... info) {
         if (this != lastBoundTexture || alwaysBind) {
             bindToUnita(unit, info);
+            lastBoundTexture = this;
         }
     }
 

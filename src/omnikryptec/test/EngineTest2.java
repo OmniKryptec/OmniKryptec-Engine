@@ -26,6 +26,7 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;
 import omnikryptec.renderer.RendererRegistration;
+import omnikryptec.resource.model.Material;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.resource.objConverter.ModelData;
@@ -66,7 +67,7 @@ public class EngineTest2 implements IEventHandler {
             LanguageManager.setLanguage("DE");
 
             DisplayManager.createDisplay("Test 2",
-                    new GameSettings().setAnisotropicLevel(32).setMultisamples(32)
+                    new GameSettings().setAnisotropicLevel(0).setMultisamples(0)
                     .setInitialFPSCap(-1).setChunkRenderOffsets(2, 2, 2).setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(true),
                     new GLFWInfo(1280, 720));
             DisplayManager.instance().setSmoothedDeltatime(true);
@@ -132,6 +133,7 @@ public class EngineTest2 implements IEventHandler {
             AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
             Model BLOCK = new Model("", ObjLoader.loadOBJ(new AdvancedFile(res, "block.obj")));
             TexturedModel tm = new TexturedModel("brunnen", brunnen, brunnent);
+            tm.getMaterial().setTexture(Material.DIFFUSE, brunnent).setRenderer(RendererRegistration.SIMPLE_MESH_RENDERER);
             tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
             //tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
             tm.getMaterial().setHasTransparency(true).setReflectivity(new Vector3f(10, 10, 10)).setShineDamper(100)
@@ -187,7 +189,7 @@ public class EngineTest2 implements IEventHandler {
                   1000,0, 1000f, 1f, RenderType.ALWAYS).setAverageMass(1E6F).setParticlesAttractingEachOther(true);
 
             System.out.println("Generating objs...");
-            int cube =50;
+            int cube =100;
             int abstand = 10;
             float scale = 1;
             for (int x = -cube; x < cube; x += abstand) {
@@ -203,7 +205,6 @@ public class EngineTest2 implements IEventHandler {
                 }
             }
             System.out.println("Done.");
-            
            // Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0, 1).setScale(new Vector3f(scale,scale,scale)).setUpdateType(UpdateType.SEMISTATIC).setRelativePos(0, 0, 0));
 
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS

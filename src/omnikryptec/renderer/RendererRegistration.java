@@ -11,35 +11,36 @@ import omnikryptec.util.logger.Logger;
 
 public class RendererRegistration {
 
-    private static final List<Renderer> existingRenderers = new ArrayList<>();
+    private static final List<Renderer<?>> existingRenderers = new ArrayList<>();
 
-    public static final EntityRendererNoLight DEF_STATIC_ENTITY_RENDERER;
     public static final EntityRenderer DEF_ENTITY_RENDERER;
     public static final AnimatedModelRenderer DEF_ANIMATEDMODEL_RENDERER;
     public static final TerrainRenderer DEF_TERRAIN_RENDERER;
+
+	public static final EntityMeshRenderer SIMPLE_MESH_RENDERER;
     
     
     static {
-        DEF_STATIC_ENTITY_RENDERER = new EntityRendererNoLight();
         DEF_ANIMATEDMODEL_RENDERER = new AnimatedModelRenderer();
         DEF_ENTITY_RENDERER = new EntityRenderer();
         DEF_TERRAIN_RENDERER = new TerrainRenderer();
+        SIMPLE_MESH_RENDERER = new EntityMeshRenderer();
     }
 
-    public static boolean exists(Renderer r) {
+    public static boolean exists(Renderer<?> r) {
         return existingRenderers.contains(r);
     }
 
-    public static void register(Renderer r) {
+    public static void register(Renderer<?> r) {
         existingRenderers.add(r);
     }
 
-    public static Renderer byName(String name) {
+    public static Renderer<?> byName(String name) {
         return byClass(SerializationUtil.classForName(name));
     }
 
-    public static Renderer byClass(Class<?> c) {
-        for (Renderer renderer : existingRenderers) {
+    public static Renderer<?> byClass(Class<?> c) {
+        for (Renderer<?> renderer : existingRenderers) {
             if (c == renderer.getClass()) {
                 return renderer;
             }

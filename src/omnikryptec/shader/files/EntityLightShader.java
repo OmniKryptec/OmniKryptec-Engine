@@ -3,8 +3,10 @@ package omnikryptec.shader.files;
 import org.lwjgl.opengl.GL20;
 
 import omnikryptec.display.DisplayManager;
+import omnikryptec.resource.model.Material;
+import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.base.Attribute;
-import omnikryptec.shader.base.LineInsert;
+import omnikryptec.shader.base.ShaderLineInsertion;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.UniformBoolean;
 import omnikryptec.shader.base.UniformInt;
@@ -18,14 +20,17 @@ public class EntityLightShader extends Shader {
 
 	public final UniformMatrix view = new UniformMatrix("viewmatrix");
 	public final UniformMatrix projection = new UniformMatrix("projmatrix");
-	public final UniformBoolean hasspecular = new UniformBoolean("hasspecular");
+	
 	public final UniformSampler tex = new UniformSampler("tex");
+	public final UniformVec4 uvs = new UniformVec4("uvs");
+
+	
 	public final UniformSampler normalmap = new UniformSampler("normaltex");
+	public final UniformBoolean hasspecular = new UniformBoolean("hasspecular");
 	public final UniformSampler specularmap = new UniformSampler("speculartex");
 	public final UniformBoolean hasextrainfomap = new UniformBoolean("hasextra");
 	public final UniformSampler extrainfo = new UniformSampler("extra");
 	public final UniformVec3 extrainfovec = new UniformVec3("exinfovec");
-	public final UniformVec4 uvs = new UniformVec4("uvs");
 	public final UniformBoolean hasnormal = new UniformBoolean("hasnormal");
 	public final UniformVec3[] lightcolor, catts;
 	public final UniformVec4[] coneinfo, lightpos, atts;
@@ -37,7 +42,7 @@ public class EntityLightShader extends Shader {
 
 	
 	
-	private static final LineInsert insert = new LineInsert() {
+	private static final ShaderLineInsertion insert = new ShaderLineInsertion() {
 
 		@Override
 		public String[] get(int type) {
@@ -93,4 +98,6 @@ public class EntityLightShader extends Shader {
 		specularmap.loadTexUnit(2);
 		extrainfo.loadTexUnit(3);
 	}
+	
+	
 }

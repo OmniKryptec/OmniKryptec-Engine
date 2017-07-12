@@ -1,5 +1,8 @@
 package omnikryptec.resource.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -10,15 +13,78 @@ import omnikryptec.util.exceptions.OmniKryptecException;
 import omnikryptec.util.logger.Logger;
 
 public class Material {
+	
+	public static final String DIFFUSE = "diffuse";
+	public static final String SPECULAR = "specular";
+	public static final String NORMAL = "normal";
+	public static final String INFO = "info";
 
+	public static final String REFLECTIVITY = "reflectivity";
+	
+	private Map<String, Texture> textures = new HashMap<>(); 
+	private Map<String, Float> floats = new HashMap<>(); 
+	private Map<String, Vector3f> vec4fs = new HashMap<>(); 
+
+	private Renderer<?> renderer = RendererRegistration.SIMPLE_MESH_RENDERER;
+	private boolean hasTransparency = false;
+
+	
+	public Material setTexture(String name, Texture t){
+		textures.put(name, t);
+		return this;
+	}
+	
+	public Material setFloat(String name, float f){
+		floats.put(name, f);
+		return this;
+	}
+	
+	public Material setVector3f(String name, Vector3f v){
+		vec4fs.put(name, v);
+		return this;
+	}
+	
+	public Texture getTexture(String name){
+		return textures.get(name);
+	}
+	
+	public float getFloat(String name){
+		return floats.get(name);
+	}
+	
+	public Vector3f getVector3f(String name){
+		return vec4fs.get(name);
+	}
+	
+	public final boolean hasTransparency() {
+		return hasTransparency;
+	}
+
+	public final Material setHasTransparency(boolean hasTransparency) {
+		this.hasTransparency = hasTransparency;
+		return this;
+	}
+
+	public final Renderer<?> getRenderer() {
+		return renderer;
+	}
+	
+	public final Material setRenderer(Renderer<?> renderer) {
+		if (!RendererRegistration.exists(renderer)) {
+			Logger.logErr("This renderer is not registered!",
+					new OmniKryptecException("Renderer is not registered: " + renderer));
+		}
+		this.renderer = renderer;
+		return this;
+	}
+	
+	
+//********************************************************DEPRECATED*******************************************************************	
 	private Vector4f mdata;
-
 	private Texture normalmap;
 	private Texture specularmap;
 	private Texture extrainfo;
 	private Vector3f extrainfovec;
-	private boolean hasTransparency = false;
-	private Renderer renderer = RendererRegistration.DEF_STATIC_ENTITY_RENDERER;
 
 	public Material() {
 		this(0, 1);
@@ -51,9 +117,7 @@ public class Material {
 	}
 
 
-	public final boolean hasTransparency() {
-		return hasTransparency;
-	}
+
 
 	/**
 	 * setting an extrainfomap overrides this settings
@@ -98,23 +162,9 @@ public class Material {
 		return extrainfo;
 	}
 
-	public final Material setHasTransparency(boolean hasTransparency) {
-		this.hasTransparency = hasTransparency;
-		return this;
-	}
 
-	public final Renderer getRenderer() {
-		return renderer;
-	}
 
-	public final Material setRenderer(Renderer renderer) {
-		if (!RendererRegistration.exists(renderer)) {
-			Logger.logErr("This renderer is not registered!",
-					new OmniKryptecException("Renderer is not registered: " + renderer));
-		}
-		this.renderer = renderer;
-		return this;
-	}
+
 
 	public Material setShineDamper(float sh) {
 		mdata.w = sh;
