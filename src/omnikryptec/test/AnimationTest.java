@@ -161,7 +161,7 @@ public class AnimationTest {
                 @Override
                 public final void update() {
                     getTransform().setPosition(camera.getTransform().getPosition());
-                    getTransform().rotation.y = camera.getTransform().rotation.y;
+                    getTransform().increaseRotation(0, camera.getTransform().rotation.y, 0);
                 }
 
             };
@@ -173,10 +173,9 @@ public class AnimationTest {
             if (!SAVE.exists()) {
                 OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_brunnen);
                 OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_test);
-                camera.getTransform().position.y += 3;
-                camera.getTransform().rotation.y = 90;
-                entity_brunnen.getTransform().position.x += 8;
-                entity_brunnen.getTransform().position.y += 1;
+                camera.getTransform().increasePosition(0, 3, 0);
+                camera.getTransform().increaseRotation(0, 90, 0);
+                entity_brunnen.getTransform().increasePosition(8, 1, 0);
             }
             EventSystem.instance().addEventHandler((e) -> {
                 input();
@@ -239,11 +238,9 @@ public class AnimationTest {
             InputManager.setCursorType(((InputManager.getCursorType() == CursorType.DISABLED) ? CursorType.NORMAL : CursorType.DISABLED));
         }
         if (keySettings.isPressed("reset")) {
-            camera.getTransform().position.x = 0;
-            camera.getTransform().position.y = 0;
-            camera.getTransform().position.z = 0;
-            camera.getTransform().position.y += 3;
-            camera.getTransform().rotation.y = 90;
+            camera.getTransform().setPosition(0, 0, 0);
+            camera.getTransform().increasePosition(0, 3, 0);
+            camera.getTransform().increaseRotation(0, 90, 0);
         }
         float deltaX = InputManager.getMouseDelta().x;
         float deltaY = InputManager.getMouseDelta().y;
@@ -257,8 +254,7 @@ public class AnimationTest {
             if (keySettings.isPressed("alternativeMouseGrabbed")) {
                 InputManager.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
             } else {
-                camera.getTransform().rotation.y -= (deltaX / 5);
-                camera.getTransform().rotation.x += (deltaY / 5);
+                camera.getTransform().increaseRotation((deltaY / 5), -(deltaX / 5), 0);
             }
         }
         float deltaSpeedFactor = 0.0F;

@@ -42,6 +42,7 @@ import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.PhysicsUtil;
 import omnikryptec.util.logger.Logger;
+import org.joml.Quaternionf;
 
 import org.lwjgl.glfw.GLFW;
 
@@ -144,7 +145,7 @@ public class JBulletTest {
         ball.getMotionState().getWorldTransform(ballTransform);
         final Vector3f ballLocation = ballTransform.origin;
         final Vector3f cameraPosition = ConverterUtil.convertVector3fFromLWJGL((camera instanceof FollowingCamera)
-                ? ((FollowingCamera) camera).getFollowedGameObject().getPosition() : camera.getPosition());
+                ? ((FollowingCamera) camera).getFollowedGameObject().getTransform().getPosition(true) : camera.getTransform().getPosition(true));
         final Vector3f force = new Vector3f();
         force.sub(cameraPosition, ballLocation);
         ball.activate(true);
@@ -162,7 +163,7 @@ public class JBulletTest {
                 relateTo = temp;
             }
         }
-        final Vector3f position = new Vector3f(relateTo.getPosition().x, 35F, relateTo.getPosition().z);
+        final Vector3f position = new Vector3f(relateTo.getTransform().getPosition().x, 35F, relateTo.getTransform().getPosition().z);
         final CollisionShape shape = PhysicsUtil.createConvexHullShape(entityBuilder.getModel());
         final DefaultMotionState motionState = new DefaultMotionState(
                 new Transform(new Matrix4f(new Quat4f(0, 0, 0, 1), position, 1)));
@@ -215,8 +216,7 @@ public class JBulletTest {
                 Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
                 InputManager.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
             } else {
-                OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().y -= (deltaX / 5);
-                OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().x += (deltaY / 5);
+                OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getTransform().increaseRotation((deltaY / 5), -(deltaX / 5), 0);
             }
         }
     }
@@ -227,10 +227,9 @@ public class JBulletTest {
             @Override
             public void update() {
                 final Vector3f ballPosition = body.getMotionState().getWorldTransform(new Transform()).origin;
-                setRelativePos(ballPosition.x, ballPosition.y, ballPosition.z);
+                getTransform().setPosition(ballPosition.x, ballPosition.y, ballPosition.z);
                 final Quat4f ballOrientation = body.getOrientation(new Quat4f());
-                setRotation(
-                        new org.joml.Vector3f(ballOrientation.x, ballOrientation.y, ballOrientation.z));
+                getTransform().setRotation(ballOrientation.x, ballOrientation.y, ballOrientation.z, 0);
             }
 
             @Override
@@ -287,9 +286,9 @@ public class JBulletTest {
                     .loadTexture("/omnikryptec/test/pine2.png");
             final Entity entity_1 = entityBuilder_brunnen.create();
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(entity_1);
-            OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().y += 3;
-            OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativeRotation().x = 40;
-            entity_1.setRelativePos(0, 0, -5);
+            OmniKryptecEngine.instance().getCurrentScene().getCamera().getTransform().increasePosition(0, 3, 0);
+            OmniKryptecEngine.instance().getCurrentScene().getCamera().getTransform().setRotation(40, 0, 0, 0);
+            entity_1.getTransform().setPosition(0, 0, -5);
             EventSystem.instance().addEventHandler((e) -> {
                 input();
                 logic();
@@ -321,11 +320,8 @@ public class JBulletTest {
                         // 40.0F
                         // is
                         // better
-                        lustig.setCenterOfMassTransform(
-                                new Transform(new Matrix4f(
-                                        new Quat4f(getAbsoluteRotation().x, getAbsoluteRotation().y,
-                                                getAbsoluteRotation().z, 1),
-                                        ConverterUtil.convertVector3fFromLWJGL(getPosition()), 1.0F)));
+                        final Quaternionf absrot = getTransform().getRotation(true);
+                        lustig.setCenterOfMassTransform(new Transform(new Matrix4f(new Quat4f(absrot.x, absrot.y, absrot.z, 1), ConverterUtil.convertVector3fFromLWJGL(getTransform().getPosition(true)), 1.0F)));
                         lustig.setAngularVelocity(new Vector3f(0, 0, 0));
                         lustig.setLinearVelocity(new Vector3f(0, 0, 0));
                     }

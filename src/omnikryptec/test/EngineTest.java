@@ -54,11 +54,11 @@ public class EngineTest {
             OmniKryptecEngine.instance().getCurrentScene().addGameObject(ent3);
             // OmniKryptecEngine.instance().getCurrentScene().getCamera().setRelativePos(0,
             // 100, -5);
-            OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativePos().y += 10;
-            OmniKryptecEngine.instance().getCurrentScene().getCamera().getRelativeRotation().x = 90;
-            ent.setRelativePos(0, 0, -5);
-            ent2.setRelativePos(5, 0, -5);
-            ent3.setRelativePos(-5, 0, 2);
+            OmniKryptecEngine.instance().getCurrentScene().getCamera().getTransform().increasePosition(0, 10, 0);
+            OmniKryptecEngine.instance().getCurrentScene().getCamera().getTransform().increaseRotation(0, 90, 0);
+            ent.getTransform().setPosition(0, 0, -5);
+            ent2.getTransform().setPosition(5, 0, -5);
+            ent3.getTransform().setPosition(-5, 0, 2);
             // ent.setScale(new Vector3f(1, 1, 1));
             OmniKryptecEngine.instance().startLoop(ShutdownOption.JAVA);
             NativesLoader.unloadNatives();

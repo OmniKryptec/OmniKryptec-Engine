@@ -13,6 +13,7 @@ import com.bulletphysics.linearmath.Transform;
 
 import de.pcfreak9000.noise.components.NoiseWrapper;
 import de.pcfreak9000.noise.noises.OpenSimplexNoise;
+import javax.vecmath.Quat4f;
 import omnikryptec.audio.AudioEffectState;
 import omnikryptec.audio.AudioManager;
 import omnikryptec.audio.AudioSource;
@@ -140,8 +141,8 @@ public class JBulletTest2 {
             addTerrains();
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_ball);
             OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_attractor);
-            OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativePos().y += 3;
-            OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().y = 90;
+            OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getTransform().increasePosition(0, 3, 0);
+            OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getTransform().increaseRotation(0, 90, 0);
             final AudioSource source = new AudioSource();
             final StreamedSound streamedSound = StreamedSound.ofInputStream("Tobu_-_Infectious_[NCS_Release]", source,
                     JBulletTest2.class.getResourceAsStream("/omnikryptec/audio/Tobu_-_Infectious_[NCS_Release].wav"));
@@ -195,11 +196,8 @@ public class JBulletTest2 {
 
     private static final void manageTerrains() {
         for (Terrain terrain : terrains) {
-            rigidBodyBuilder_terrain
-                    .setCollisionShape(PhysicsUtil.createConvexHullShape(terrain.getAdvancedModel().getModel()));
-            rigidBodyBuilder_terrain.setDefaultMotionState(
-                    new Vector3f(terrain.getPosition().x / 2, 0, terrain.getPosition().z / 2),
-                    new Vector3f(0, 0, 0));
+            rigidBodyBuilder_terrain.setCollisionShape(PhysicsUtil.createConvexHullShape(terrain.getAdvancedModel().getModel()));
+            rigidBodyBuilder_terrain.setDefaultMotionState(new Vector3f(terrain.getTransform().position.x / 2, 0, terrain.getTransform().position.z / 2), new Quat4f(0, 0, 0, 0));
             terrain.addComponent(new PhysicsComponent(terrain, rigidBodyBuilder_terrain).setPause(true));
         }
     }
@@ -210,7 +208,7 @@ public class JBulletTest2 {
         }
         RigidBodyBuilder rigidBodyBuilder = new RigidBodyBuilder();
         rigidBodyBuilder.setCollisionShape(new StaticPlaneShape(new Vector3f(0, 1, 0), 0.25F/* m */));
-        rigidBodyBuilder.setDefaultMotionState(new Vector3f(0, 0, 0), new Vector3f(0, 0, 0));
+        rigidBodyBuilder.setDefaultMotionState(new Vector3f(0, 0, 0), new Quat4f(0, 0, 0, 0));
         rigidBodyBuilder.getRigidBodyConstructionInfo().restitution = 0.25F;
         ((JBulletPhysicsWorld) OmniKryptecEngine.getInstance().getCurrentScene().getPhysicsWorld()).getWorld().addRigidBody(rigidBodyBuilder.create());
     }
@@ -219,21 +217,17 @@ public class JBulletTest2 {
         final Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
         rigidBodyBuilder_ball = new RigidBodyBuilder(1.0F);
         rigidBodyBuilder_ball.setCollisionShape(PhysicsUtil.createConvexHullShape(entityBuilder_brunnen.getModel()));
-        rigidBodyBuilder_ball.setDefaultMotionState(
-                new Vector3f(camera.getPosition().x, 20.0F, camera.getPosition().z - 5), new Vector3f(0, 0, 0));
-        rigidBodyBuilder_ball.getCollisionShape().calculateLocalInertia(rigidBodyBuilder_ball.getMass(),
-                rigidBodyBuilder_ball.getInertia());
+        rigidBodyBuilder_ball.setDefaultMotionState(new Vector3f(camera.getTransform().position.x, 20.0F, camera.getTransform().position.z - 5), new Quat4f(0, 0, 0, 0));
+        rigidBodyBuilder_ball.getCollisionShape().calculateLocalInertia(rigidBodyBuilder_ball.getMass(), rigidBodyBuilder_ball.getInertia());
         rigidBodyBuilder_ball.getRigidBodyConstructionInfo().restitution = 0.75F;
         rigidBodyBuilder_attractor = new RigidBodyBuilder(1000.0F);
         rigidBodyBuilder_attractor.setCollisionShape(PhysicsUtil.createConvexHullShape(entityBuilder_pine.getModel()));
-        rigidBodyBuilder_attractor.setDefaultMotionState(
-                new Vector3f(camera.getPosition().x, 10.0F, camera.getPosition().z - 30), new Vector3f(0, 0, 0));
-        rigidBodyBuilder_attractor.getCollisionShape().calculateLocalInertia(rigidBodyBuilder_attractor.getMass(),
-                rigidBodyBuilder_attractor.getInertia());
+        rigidBodyBuilder_attractor.setDefaultMotionState(new Vector3f(camera.getTransform().position.x, 10.0F, camera.getTransform().position.z - 30), new Quat4f(0, 0, 0, 0));
+        rigidBodyBuilder_attractor.getCollisionShape().calculateLocalInertia(rigidBodyBuilder_attractor.getMass(), rigidBodyBuilder_attractor.getInertia());
         rigidBodyBuilder_attractor.getRigidBodyConstructionInfo().restitution = 0.75F;
         rigidBodyBuilder_terrain = new RigidBodyBuilder(0.0F);
         rigidBodyBuilder_terrain.setCollisionShape(new StaticPlaneShape(new Vector3f(0, 1, 0), 0.25F));
-        rigidBodyBuilder_terrain.setDefaultMotionState(new Vector3f(0, 0, 0), new Vector3f(0, 0, 0));
+        rigidBodyBuilder_terrain.setDefaultMotionState(new Vector3f(0, 0, 0), new Quat4f(0, 0, 0, 0));
         rigidBodyBuilder_terrain.getRigidBodyConstructionInfo().restitution = 0.25F;
     }
 
@@ -246,7 +240,7 @@ public class JBulletTest2 {
         final Transform bodyTransform = new Transform();
         body.getMotionState().getWorldTransform(bodyTransform);
         final Vector3f bodyLocation = bodyTransform.origin;
-        final Vector3f attractorPosition = ConverterUtil.convertVector3fFromLWJGL(entity_attractor.getPosition());
+        final Vector3f attractorPosition = ConverterUtil.convertVector3fFromLWJGL(entity_attractor.getTransform().getPosition(true));
         final Vector3f force = new Vector3f();
         force.sub(attractorPosition, bodyLocation);
         body.activate();
@@ -270,8 +264,7 @@ public class JBulletTest2 {
         }
         if (InputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_C)) {
             final RigidBody body = entity_ball.getComponent(PhysicsComponent.class).getBody();
-            body.setCenterOfMassTransform(PhysicsUtil.createTransform(
-                    ConverterUtil.convertVector3fFromLWJGL(camera.getPosition()), new Vector3f(0, 0, 0)));
+            body.setCenterOfMassTransform(PhysicsUtil.createTransform(ConverterUtil.convertVector3fFromLWJGL(camera.getTransform().getPosition(true)), new Quat4f(0, 0, 0, 0)));
             body.setAngularVelocity(new Vector3f(0, 0, 0));
             body.setLinearVelocity(new Vector3f(0, 0, 0));
         }
@@ -314,8 +307,7 @@ public class JBulletTest2 {
             if (InputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_L)) {
                 InputManager.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
             } else {
-                OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().y -= (deltaX / 5);
-                OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getRelativeRotation().x += (deltaY / 5);
+                OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getTransform().increaseRotation((deltaY / 5), -(deltaX / 5), 0);
             }
         }
     }
@@ -326,7 +318,7 @@ public class JBulletTest2 {
         final Transform bodyTransform = new Transform();
         body.getMotionState().getWorldTransform(bodyTransform);
         final Vector3f bodyLocation = bodyTransform.origin;
-        final Vector3f cameraPosition = ConverterUtil.convertVector3fFromLWJGL(camera.getPosition());
+        final Vector3f cameraPosition = ConverterUtil.convertVector3fFromLWJGL(camera.getTransform().getPosition(true));
         final Vector3f force = new Vector3f();
         force.sub(cameraPosition, bodyLocation);
         body.activate();
@@ -339,11 +331,11 @@ public class JBulletTest2 {
         final Transform bodyTransform = new Transform();
         body.getMotionState().getWorldTransform(bodyTransform);
         final Vector3f bodyLocation = bodyTransform.origin;
-        final Vector3f cameraPosition = ConverterUtil.convertVector3fFromLWJGL(camera.getPosition());
+        final Vector3f cameraPosition = ConverterUtil.convertVector3fFromLWJGL(camera.getTransform().getPosition(true));
         final Vector3f force = new Vector3f();
         force.sub(cameraPosition, bodyLocation);
         Vector3f temp = new Vector3f();
-        temp.cross(bodyLocation, ConverterUtil.convertVector3fFromLWJGL(entity_ball.getAbsoluteRotation()));
+        temp.cross(bodyLocation, ConverterUtil.convertVector3fFromLWJGL(entity_ball.getTransform().getEulerAngelsXYZ()));
         temp.dot(force);
         Logger.log(temp);
         body.activate();
