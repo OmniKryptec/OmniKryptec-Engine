@@ -3,6 +3,7 @@ package omnikryptec.test;
 import java.util.Random;
 
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
+import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
 import omnikryptec.event.event.Event;
@@ -25,6 +26,9 @@ import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;
+import omnikryptec.postprocessing.main.DebugRenderer;
+import omnikryptec.postprocessing.main.PostProcessing;
+import omnikryptec.postprocessing.stages.CompleteGaussianBlurStage;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.Material;
 import omnikryptec.resource.model.Model;
@@ -110,10 +114,9 @@ public class EngineTest2 implements IEventHandler {
 //             CompleteGaussianBlurStage(false, 0.3f, 0.3f));
 //             PostProcessing.instance().addStage(new
 //             CompleteGaussianBlurStage(false, 0.1f, 0.1f));
-//             PostProcessing.instance().addStage(new
-//             CompleteGaussianBlurStage(false, 0.05f, 0.05f));
-//            PostProcessing.instance().addStage(new DebugRenderer());
-
+            	PostProcessing.instance().addStage(new
+            	CompleteGaussianBlurStage(false, 0.05f, 0.05f));
+           //PostProcessing.instance().addStage(new DebugRenderer());
             AdvancedFile res = new AdvancedFile("res");
             SimpleTexture jd = SimpleTexture.newTexture(new AdvancedFile(res, "jd.png"));
             SimpleTexture js = SimpleTexture.newTexture(new AdvancedFile(res, "js.png"));
@@ -128,16 +131,16 @@ public class EngineTest2 implements IEventHandler {
             SimpleTexture brunnen_norm = SimpleTexture
                     .newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen_normal.png")).create();
             SimpleTexture brunnen_specular = SimpleTexture.newTexture("/omnikryptec/test/brunnen_specular.png");
-            SimpleTexture baum = SimpleTexture.newTexture(new AdvancedFile(res, "final_tree_1.png"));
-            Model baumM = Model.newModel(new AdvancedFile(res, "final_tree_1.obj"));
+            SimpleTexture baum = SimpleTexture.newTexture(new AdvancedFile(res, "final_tree_3.png"));
+            Model baumM = Model.newModel(new AdvancedFile(res, "final_tree_3.obj"));
             AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
             Model BLOCK = new Model("", ObjLoader.loadOBJ(new AdvancedFile(res, "block.obj")));
-            TexturedModel tm = new TexturedModel("brunnen", brunnen, brunnent);
-            tm.getMaterial().setTexture(Material.DIFFUSE, brunnent).setRenderer(RendererRegistration.SIMPLE_MESH_RENDERER);
-            tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
+            TexturedModel tm = new TexturedModel("brunnen", baumM, baum);
+            tm.getMaterial().setTexture(Material.DIFFUSE, baum).setRenderer(RendererRegistration.DEF_ENTITY_RENDERER);
+           // tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
             //tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
             tm.getMaterial().setHasTransparency(true).setReflectivity(new Vector3f(10, 10, 10)).setShineDamper(100)
-                    .setRenderer(RendererRegistration.DEF_ENTITY_RENDERER).setExtraInfoVec(new Vector3f(1, 1, 1));
+                    .setExtraInfoVec(new Vector3f(1, 1, 1));
             OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
                 @Override
@@ -189,8 +192,8 @@ public class EngineTest2 implements IEventHandler {
                   1000,0, 1000f, 1f, RenderType.ALWAYS).setAverageMass(1E6F).setParticlesAttractingEachOther(true);
 
             System.out.println("Generating objs...");
-            int cube =100;
-            int abstand = 10;
+            int cube = 100;
+            int abstand =50;
             float scale = 1;
             for (int x = -cube; x < cube; x += abstand) {
                 for (int y = -cube; y < cube; y += abstand) {
@@ -300,7 +303,8 @@ public class EngineTest2 implements IEventHandler {
         }
         //System.out.println("(Rendertime: "+Instance.getEngine().getRenderTimeMS()+" Particletime: "+ParticleMaster.instance().getOverallParticleTimeMS()+" PPTime: "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());
         if (ev.getType() == EventType.AFTER_FRAME) {
-    		//System.out.println(ParticleMaster.instance().getUpdatedParticlesCount());
+    		//System.out.println(Instance.getEngine().getModelVertsCount());
+        	//System.out.println(ParticleMaster.instance().getUpdatedParticlesCount());
             //Logger.log(new Profiler().createTimesString(50, true, false));
         }        //Logger.log(new Profiler().createTimesString(50, true, false));
 

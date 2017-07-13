@@ -220,8 +220,7 @@ public class OmniKryptecEngine implements Profilable {
             }
             AudioManager.update(currentTime);
             if (Display.wasResized()) {
-                GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
-                resizeFbos();
+            	resizeFbos();
                 PostProcessing.instance().resize();
                 eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
             }
@@ -249,6 +248,7 @@ public class OmniKryptecEngine implements Profilable {
             if (sceneCurrent != null) {
                 PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
             }
+            normalfbo.resolveToScreen();
             eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
             InputManager.prePollEvents();
             manager.updateDisplay();
@@ -271,6 +271,10 @@ public class OmniKryptecEngine implements Profilable {
         return vertsCountCurrent;
     }
 
+    public final long getFaceCount() {
+        return vertsCountCurrent/3;
+    }
+    
     public final double getRenderTimeMS() {
         return sceneCurrent==null?0:sceneCurrent.getRenderTimeMS();
     }

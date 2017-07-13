@@ -42,6 +42,7 @@ class Window {
         }));
     	GLFW.glfwMakeContextCurrent(window);
         GL.createCapabilities();
+        onResize(width, height);
     }
     
     long getID(){

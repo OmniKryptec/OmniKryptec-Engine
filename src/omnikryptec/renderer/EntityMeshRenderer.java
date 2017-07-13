@@ -95,7 +95,7 @@ public class EntityMeshRenderer extends Renderer<EntityMeshShader>{
         }
         model.getUpdateableVBO().updateData(array, buffer);
         GL31.glDrawElementsInstanced(GL11.GL_TRIANGLES, textmodel.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0, count);
-        vertcount += model.getModelData().getVertexCount() * stapel.size();
+        vertcount += model.getModelData().getVertexCount()/3 * count;
     }
 
     private void updateArray(Matrix4f transformationMatrix, Color color, float[] array) {

@@ -172,7 +172,7 @@ public class Shader {
 	}
 	
 	//TODO
-	public void onInstanceRender(){
+	public void onRenderInstance(){
 		
 	}
 	

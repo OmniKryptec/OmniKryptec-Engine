@@ -47,6 +47,9 @@ public abstract class PostProcessingStage {
 	}
 
 	public final void resize() {
+		if(target!=null){
+			target.delete();
+		}
 		target = createFbo();
 		onResize();
 	}
