@@ -27,17 +27,18 @@ import org.joml.Vector3f;
  * @author Karl &amp; Panzer1119
  *
  */
-public class AnimatedModelRenderer implements Renderer {
+public class AnimatedModelRenderer extends Renderer<AnimatedModelShader> {
 
     public static final Vector3f LIGHT_DIR = new Vector3f(0.2f, -0.3f, -0.8f);
-    private AnimatedModelShader shader;
 
     /**
      * Initializes the shader program used for rendering animated models.
      */
     public AnimatedModelRenderer() {
+        super(new AnimatedModelShader());
+        setExpensiveLevel(1);
+        setPriority(0);
         RendererRegistration.register(this);
-        this.shader = new AnimatedModelShader();
     }
 
     private List<Entity> stapel;
@@ -46,7 +47,7 @@ public class AnimatedModelRenderer implements Renderer {
     private long vertcount = 0;
 
     @Override
-    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities) {
+    protected long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean ownshader) {
         final Camera camera = s.getCamera();
         vertcount = 0;
         shader.start();
@@ -83,16 +84,5 @@ public class AnimatedModelRenderer implements Renderer {
         }
         return vertcount;
     }
-
-
-    @Override
-    public float expensiveLevel() {
-        return 1;
-    }
-
-	@Override
-	public float priority() {
-		return 0;
-	}
 
 }

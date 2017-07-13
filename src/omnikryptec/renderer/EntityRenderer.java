@@ -19,7 +19,6 @@ import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.files.EntityLightShader;
-import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Color;
 import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.Instance;
@@ -34,9 +33,8 @@ public class EntityRenderer extends Renderer<EntityLightShader> {
 
     public EntityRenderer() {
         super(new EntityLightShader());
-    	RendererRegistration.register(this);
+        RendererRegistration.register(this);
     }
-
 
     private List<Entity> stapel;
     private Entity entity;

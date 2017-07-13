@@ -11,25 +11,21 @@ import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.TexturedModel;
-import omnikryptec.util.Instance;
-import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
-
-import org.joml.Vector3f;
 
 /**
  *
  * @author Panzer1119
  */
-public class TerrainRenderer implements Renderer {
-
-    private final TerrainShader shader;
+public class TerrainRenderer extends Renderer<TerrainShader> {
 
     public TerrainRenderer() {
+        super(new TerrainShader());
         RendererRegistration.register(this);
-        shader = new TerrainShader();
+        setExpensiveLevel(0);
+        setPriority(0);
     }
 
     private List<Entity> stapel;
@@ -39,7 +35,7 @@ public class TerrainRenderer implements Renderer {
 
     // TODO change something
     @Override
-    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities) {
+    protected long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean ownshader) {
         vertcount = 0;
         shader.start();
         TerrainShader.viewMatrix.loadMatrix(s.getCamera().getViewMatrix());
@@ -83,15 +79,5 @@ public class TerrainRenderer implements Renderer {
         }
         return vertcount;
     }
-    
-    @Override
-    public float expensiveLevel() {
-        return 0;
-    }
-
-	@Override
-	public float priority() {
-		return 0;
-	}
 
 }
