@@ -73,7 +73,7 @@ public class EngineTest2 implements IEventHandler {
             DisplayManager.createDisplay("Test 2",
                     new GameSettings().setAnisotropicLevel(0).setMultisamples(0)
                     .setInitialFPSCap(-1).setChunkRenderOffsets(2, 2, 2).setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(true),
-                    new GLFWInfo(1280, 720));
+                    new GLFWInfo(4,5,true,false,1280, 720));
             DisplayManager.instance().setSmoothedDeltatime(true);
             DisplayManager.instance().setSmoothedFrames(1000);
             new Thread(new Runnable() {
@@ -114,8 +114,8 @@ public class EngineTest2 implements IEventHandler {
 //             CompleteGaussianBlurStage(false, 0.3f, 0.3f));
 //             PostProcessing.instance().addStage(new
 //             CompleteGaussianBlurStage(false, 0.1f, 0.1f));
-            	PostProcessing.instance().addStage(new
-            	CompleteGaussianBlurStage(false, 0.05f, 0.05f));
+            //	PostProcessing.instance().addStage(new
+            //	CompleteGaussianBlurStage(false, 0.05f, 0.05f));
            //PostProcessing.instance().addStage(new DebugRenderer());
             AdvancedFile res = new AdvancedFile("res");
             SimpleTexture jd = SimpleTexture.newTexture(new AdvancedFile(res, "jd.png"));
@@ -136,10 +136,10 @@ public class EngineTest2 implements IEventHandler {
             AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
             Model BLOCK = new Model("", ObjLoader.loadOBJ(new AdvancedFile(res, "block.obj")));
             TexturedModel tm = new TexturedModel("brunnen", baumM, baum);
-            tm.getMaterial().setTexture(Material.DIFFUSE, baum).setRenderer(RendererRegistration.DEF_ENTITY_RENDERER);
+            tm.getMaterial().setTexture(Material.DIFFUSE, baum).setRenderer(RendererRegistration.SIMPLE_MESH_RENDERER);
            // tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
             //tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
-            tm.getMaterial().setHasTransparency(true).setReflectivity(new Vector3f(10, 10, 10)).setShineDamper(100)
+            tm.getMaterial().setHasTransparency(false).setReflectivity(new Vector3f(10, 10, 10)).setShineDamper(100)
                     .setExtraInfoVec(new Vector3f(1, 1, 1));
             OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
@@ -166,7 +166,7 @@ public class EngineTest2 implements IEventHandler {
 
             TexturedModel ptm = new TexturedModel("pine", pine, pinet);
             ptm.getMaterial().setNormalmap(pine_normal);
-            ptm.getMaterial().setHasTransparency(true).setRenderer(RendererRegistration.DEF_ENTITY_RENDERER);
+            ptm.getMaterial().setHasTransparency(false).setRenderer(RendererRegistration.DEF_ENTITY_RENDERER);
             ptm.getMaterial().setReflectivity(0.1f).setShineDamper(10).setExtraInfoVec(new Vector3f(1, 1, 0));
             Random r = new Random();
 //            for (int i = 0; i < 250; i++) {
@@ -200,7 +200,7 @@ public class EngineTest2 implements IEventHandler {
                     for (int z = -cube; z < cube; z += abstand) {
                     	GameObject go;
                     	//go = new GameObject().setRelativePos(x, y, z);
-                    	go = new Entity(tm).setUpdateType(UpdateType.STATIC);
+                    	go = new Entity(tm).setUpdateType(UpdateType.DYNAMIC);
                     	go.getTransform().setScale(scale).setPosition(x, y, z).getRotationSimple().rotate(0, 0, 0);
                         Instance.getCurrentScene().addGameObject(go);
                         //system.addAttractor(new ParticleAttractor(go).setAcceleration(10).setMode(AttractorMode.KILL_ON_REACH).setTolerance(5));
@@ -248,10 +248,10 @@ public class EngineTest2 implements IEventHandler {
             //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));
             //OmniKryptecEngine.instance().getCurrentScene()
             //      .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setCuttOffRange(50).setColor(3, 0, 0).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0, -1, 0).setRelativePos(0,10, 0));
-            GameObject l;
-            OmniKryptecEngine.instance().getCurrentScene()
-                    .addGameObject(l = new Light().setAttenuation(0, 0.001f, 0).setColor(1, 1, 1).setDirectional(true).setConeDegrees(5).setConeDirection(0, 1, 0).setGlobal(true));
-            l.getTransform().setPosition(0, 1, 0);
+//            GameObject l;
+//            OmniKryptecEngine.instance().getCurrentScene()
+//                    .addGameObject(l = new Light().setAttenuation(0, 0.001f, 0).setColor(1, 1, 1).setDirectional(true).setConeDegrees(5).setConeDirection(0, 1, 0).setGlobal(true));
+//            l.getTransform().setPosition(0, 1, 0);
 
             // ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
             // OmniKryptecEngine.instance().getCurrentScene().addGameObject(new

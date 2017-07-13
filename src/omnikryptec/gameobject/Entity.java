@@ -230,5 +230,7 @@ public class Entity extends GameObject implements DataMapSerializable {
 	public void setRenderingEnabled(boolean renderingEnabled) {
 		this.renderingEnabled = renderingEnabled;
 	}
+	
+
     
 }

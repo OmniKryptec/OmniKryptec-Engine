@@ -248,7 +248,6 @@ public class OmniKryptecEngine implements Profilable {
             if (sceneCurrent != null) {
                 PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
             }
-            normalfbo.resolveToScreen();
             eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
             InputManager.prePollEvents();
             manager.updateDisplay();

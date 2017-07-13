@@ -37,7 +37,7 @@ public class TerrainRenderer extends Renderer<TerrainShader> {
     @Override
     protected long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean ownshader) {
         vertcount = 0;
-        shader.start();
+        //shader.start();
         TerrainShader.viewMatrix.loadMatrix(s.getCamera().getViewMatrix());
         TerrainShader.projectionMatrix.loadMatrix(s.getCamera().getProjectionMatrix());
         for (int i = 0; i < entities.keysArray().length; i++) {

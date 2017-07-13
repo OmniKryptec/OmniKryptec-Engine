@@ -168,7 +168,7 @@ public class FrameBufferObject extends Texture {
      * Binds the current FBO to be read from (not used in tutorial 43).
      */
     public void bindToRead(int attachment) {
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+        Texture.unbindCurrent();
         GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, frameBuffer);
         GL11.glReadBuffer(attachment);
     }
@@ -291,7 +291,7 @@ public class FrameBufferObject extends Texture {
      */
     private int createTextureAttachment(int attachment, int level) {
         int colourTexture = GL11.glGenTextures();
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, colourTexture);
+        Texture.bind(GL11.GL_TEXTURE_2D, colourTexture);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, level, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE,
                 (ByteBuffer) null);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
@@ -308,7 +308,7 @@ public class FrameBufferObject extends Texture {
      */
     private void createDepthTextureAttachment() {
         depthTexture = GL11.glGenTextures();
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, depthTexture);
+        Texture.bind(GL11.GL_TEXTURE_2D, depthTexture);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL14.GL_DEPTH_COMPONENT24, width, height, 0, GL11.GL_DEPTH_COMPONENT,
                 GL11.GL_FLOAT, (ByteBuffer) null);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);

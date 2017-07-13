@@ -15,6 +15,7 @@ import org.lwjgl.opengl.GL32;
 import omnikryptec.graphics.OpenGL;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;
+import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Instance;
@@ -162,7 +163,7 @@ public class Shader {
 		// }
 	}
 
-	public void onModelRender(Material m){
+	public void onModelRender(AdvancedModel m){
 		
 	}
 	

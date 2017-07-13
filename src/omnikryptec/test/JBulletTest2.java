@@ -38,6 +38,7 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.physics.JBulletPhysicsWorld;
 import omnikryptec.physics.RigidBodyBuilder;
+import omnikryptec.resource.model.Material;
 import omnikryptec.resource.objConverter.ModelData;
 import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.settings.GameSettings;
@@ -94,7 +95,7 @@ public class JBulletTest2 {
             keySettings.setKey(grabMouse);
             keySettings.setKey("physicsFaster", GLFW.GLFW_KEY_PERIOD, true);
             keySettings.setKey("physicsSlower", GLFW.GLFW_KEY_COMMA, true);
-            DisplayManager.createDisplay("JBullet Test2", gameSettings, new GLFWInfo(4, 3, false, false, 1280, 720));
+            DisplayManager.createDisplay("JBullet Test2", gameSettings, new GLFWInfo(4, 3, true, false, 1280, 720));
             DisplayManager.instance().getSettings().getKeySettings().setKey("sprint", GLFW.GLFW_KEY_LEFT_CONTROL, true);
             OmniKryptecEngine.instance().addAndSetScene(new Scene("Test-Scene", (Camera) new Camera() {
 
@@ -134,6 +135,7 @@ public class JBulletTest2 {
             setupStaticPlane();
             setupRigidBodyBuilder();
             entity_ball = entityBuilder_brunnen.create();
+            entity_ball.getAdvancedModel().getMaterial().setTexture(Material.DIFFUSE, entityBuilder_brunnen.getTexture());
             entity_attractor = entityBuilder_pine.create();
             final TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture,
                     bTexture);
@@ -153,7 +155,7 @@ public class JBulletTest2 {
             OmniKryptecEngine.getInstance().getCurrentScene()
                     .addGameObject(new GameObject().addComponent(new AudioSourceComponent(source)));
             manageTerrains();
-            entity_ball.addComponent(new PhysicsComponent(entity_ball, rigidBodyBuilder_ball));
+           // entity_ball.addComponent(new PhysicsComponent(entity_ball, rigidBodyBuilder_ball));
             bouncer = new AudioSource().setLooping(true);
             bouncer.setRollOffFactor(0.5F);
             // bouncer.play("bounce");

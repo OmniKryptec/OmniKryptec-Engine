@@ -1,8 +1,7 @@
 package omnikryptec.shader.files;
 
-import org.joml.Matrix4fc;
-
 import omnikryptec.main.Scene;
+import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.base.Attribute;
@@ -24,7 +23,7 @@ public class EntityMeshShader extends Shader{
 		super("EntityMeshShader",
 				new AdvancedFile(SHADER_LOCATION, "entity_mesh_shader_vert.glsl"),
 				new AdvancedFile(SHADER_LOCATION, "entity_mesh_shader_frag.glsl"), new Attribute("pos", 0), new Attribute("texcoords", 1),
-				new Attribute("normal", 2), new Attribute("tangent",3), new Attribute("transmatrix", 4), new Attribute("colour", 8));
+				new Attribute("transmatrix",4), new Attribute("colour",8));
 		super.registerUniforms(u_view, u_projection, tex, uvs);
 		start();
 		tex.loadTexUnit(0);
@@ -33,8 +32,9 @@ public class EntityMeshShader extends Shader{
 	
 	private Texture tmp;
 	@Override
-	public void onModelRender(Material m){
-		tmp = m.getTexture(Material.DIFFUSE);
+	public void onModelRender(AdvancedModel m){
+        m.getModel().getVao().bind(0, 1, 4, 5, 6, 7, 8);
+		tmp = m.getMaterial().getTexture(Material.DIFFUSE);
 		if(tmp!=null){
 			tmp.bindToUnit(0);
 			uvs.loadVec4(tmp.getUVs());

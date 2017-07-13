@@ -53,9 +53,8 @@ public class EntityMeshRenderer extends Renderer<EntityMeshShader>{
             }
             textmodel = (TexturedModel) advancedModel;
             model = textmodel.getModel();
-            model.getVao().bind(0, 1, 2, 3, 4, 5, 6, 7, 8);
             mat = textmodel.getMaterial();
-            shader.onModelRender(mat);
+            shader.onModelRender(textmodel);
             if (mat.hasTransparency()) {
                 RenderUtil.cullBackFaces(false);
             }
@@ -63,7 +62,8 @@ public class EntityMeshRenderer extends Renderer<EntityMeshShader>{
             for (int j = 0; j < stapel.size(); j += INSTANCES_PER_DRAWCALL) {
                 newRender(s, j);
             }
-            if (textmodel.getMaterial().hasTransparency()) {
+            stapel = null;
+            if (mat.hasTransparency()) {
                 RenderUtil.cullBackFaces(true);
             }
         }
@@ -85,7 +85,7 @@ public class EntityMeshRenderer extends Renderer<EntityMeshShader>{
             entity = stapel.get(j);
             if (entity.isRenderingEnabled()) {
                 if (FrustrumFilter.intersects(entity) && RenderUtil.inRenderRange(entity, s.getCamera())) {
-                    updateArray(entity.getTransformation(), entity.getColor(), array);
+                	updateArray(entity.getTransformation(), entity.getColor(), array);
                     count++;
                 }
             }
@@ -95,7 +95,7 @@ public class EntityMeshRenderer extends Renderer<EntityMeshShader>{
         }
         model.getUpdateableVBO().updateData(array, buffer);
         GL31.glDrawElementsInstanced(GL11.GL_TRIANGLES, textmodel.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0, count);
-        vertcount += model.getModelData().getVertexCount()/3 * count;
+        vertcount += model.getModelData().getVertexCount() * count;
     }
 
     private void updateArray(Matrix4f transformationMatrix, Color color, float[] array) {

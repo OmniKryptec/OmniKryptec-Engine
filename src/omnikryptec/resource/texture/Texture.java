@@ -1,5 +1,7 @@
 package omnikryptec.resource.texture;
 
+import org.lwjgl.opengl.GL11;
+
 import omnikryptec.resource.loader.ResourceObject;
 
 public abstract class Texture implements ResourceObject {
@@ -40,7 +42,7 @@ public abstract class Texture implements ResourceObject {
     }
 
     public final void bindToUnit(int unit, int... info) {
-        if (this != lastBoundTexture || alwaysBind) {
+    	if (this != lastBoundTexture || alwaysBind) {
             bindToUnita(unit, info);
             lastBoundTexture = this;
         }
@@ -60,5 +62,19 @@ public abstract class Texture implements ResourceObject {
     public final String getName() {
         return name;
     }
+
+    public static void resetLastBoundTexture(){
+    	lastBoundTexture = null;
+    }
+    
+	public static void unbindCurrent() {
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+		resetLastBoundTexture();
+	}
+	
+	public static void bind(int type, int id){
+		resetLastBoundTexture();
+		GL11.glBindTexture(type, id);
+	}
 
 }

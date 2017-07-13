@@ -197,5 +197,10 @@ public class Color {
         final int b = (int) ((b1 * iRatio) + (b2 * ratio));
         return new Color(a << 24 | r << 16 | g << 8 | b);
     }
+    
+	@Override
+	public String toString(){
+		return "Color: [R="+getR()+" G="+getG()+" B="+getB()+" A="+getA()+"]";
+	}
 
 }

@@ -2,8 +2,7 @@
 
 in vec2 texcoords;
 in vec3 pos;
-in vec3 normal;
-in vec3 tangent;
+
 
 out vec2 pass_texcoords;
 
