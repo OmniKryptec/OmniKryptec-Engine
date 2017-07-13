@@ -42,6 +42,7 @@ import omnikryptec.util.RenderUtil;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.profiler.LiveProfiler;
 import org.joml.Matrix3f;
+import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
@@ -116,16 +117,14 @@ public class AnimationTest {
                         turnSpeed *= 1;
                     }
                     InputManager.doThirdPersonController(this, this, keySettings, horizontalSpeed, verticalSpeed, turnSpeed);
-                    if(true) {
+                    if (true) {
                         return;
                     }
                     final Vector4f camera_ray = getViewMatrix().transform(new Vector4f(0, 0, 0, 0));
-                    Vector3f absrot = getAbsoluteRotation();
-                    Matrix3f view = new Matrix3f();
-                    view.rotate((float) Math.toRadians(absrot.x), Maths.X);
-                    view.rotate((float) Math.toRadians(absrot.y), Maths.Y);
-                    view.rotate((float) Math.toRadians(absrot.z), Maths.Z);
-                    
+                    final Quaternionf absrot = getTransform().getRotation(true);
+                    final Matrix3f view = new Matrix3f();
+                    view.rotate(absrot);
+
                     Logger.log("camera_ray == " + camera_ray);
                 }
 
@@ -161,8 +160,8 @@ public class AnimationTest {
 
                 @Override
                 public final void update() {
-                    setRelativePos(camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
-                    getRelativeRotation().y = camera.getAbsoluteRotation().y;
+                    getTransform().setPosition(camera.getTransform().getPosition());
+                    getTransform().rotation.y = camera.getTransform().rotation.y;
                 }
 
             };
@@ -174,10 +173,10 @@ public class AnimationTest {
             if (!SAVE.exists()) {
                 OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_brunnen);
                 OmniKryptecEngine.getInstance().getCurrentScene().addGameObject(entity_test);
-                camera.getRelativePos().y += 3;
-                camera.getRelativeRotation().y = 90;
-                entity_brunnen.getRelativePos().x += 8;
-                entity_brunnen.getRelativePos().y += 1;
+                camera.getTransform().position.y += 3;
+                camera.getTransform().rotation.y = 90;
+                entity_brunnen.getTransform().position.x += 8;
+                entity_brunnen.getTransform().position.y += 1;
             }
             EventSystem.instance().addEventHandler((e) -> {
                 input();
@@ -240,11 +239,11 @@ public class AnimationTest {
             InputManager.setCursorType(((InputManager.getCursorType() == CursorType.DISABLED) ? CursorType.NORMAL : CursorType.DISABLED));
         }
         if (keySettings.isPressed("reset")) {
-            camera.getRelativePos().x = 0;
-            camera.getRelativePos().y = 0;
-            camera.getRelativePos().z = 0;
-            camera.getRelativePos().y += 3;
-            camera.getRelativeRotation().y = 90;
+            camera.getTransform().position.x = 0;
+            camera.getTransform().position.y = 0;
+            camera.getTransform().position.z = 0;
+            camera.getTransform().position.y += 3;
+            camera.getTransform().rotation.y = 90;
         }
         float deltaX = InputManager.getMouseDelta().x;
         float deltaY = InputManager.getMouseDelta().y;
@@ -258,8 +257,8 @@ public class AnimationTest {
             if (keySettings.isPressed("alternativeMouseGrabbed")) {
                 InputManager.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
             } else {
-                camera.getRelativeRotation().y -= (deltaX / 5);
-                camera.getRelativeRotation().x += (deltaY / 5);
+                camera.getTransform().rotation.y -= (deltaX / 5);
+                camera.getTransform().rotation.x += (deltaY / 5);
             }
         }
         float deltaSpeedFactor = 0.0F;
