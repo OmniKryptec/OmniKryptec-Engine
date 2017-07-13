@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
 import omnikryptec.gameobject.component.Component;
 import omnikryptec.main.Scene;
@@ -16,7 +15,6 @@ import omnikryptec.settings.GameSettings;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.Instance;
-import omnikryptec.util.SerializationUtil;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
 
@@ -39,8 +37,6 @@ public class GameObject implements DataMapSerializable, Transformable {
 
     }
 
-
-
     private Transform transform = new Transform();
     private String name;
     private boolean isglobal = false;
@@ -54,8 +50,11 @@ public class GameObject implements DataMapSerializable, Transformable {
     private UpdateType uptype = UpdateType.DYNAMIC;
 
     /**
-     * sets the updatetype of this GameObject. if its {@link UpdateType#SEMISTATIC} the logic will be executed but the chunkposition etc will not be changed.
-     * if its {@link UpdateType#STATIC} the logic will never be executed.
+     * sets the updatetype of this GameObject. if its
+     * {@link UpdateType#SEMISTATIC} the logic will be executed but the
+     * chunkposition etc will not be changed. if its {@link UpdateType#STATIC}
+     * the logic will never be executed.
+     *
      * @param t
      * @return this GameObject
      */
@@ -64,22 +63,23 @@ public class GameObject implements DataMapSerializable, Transformable {
         return this;
     }
 
-	@Override
-	public Transform getTransform() {
-		return transform;
-	}
-    
-	public Matrix4f getTransformation(){
-		return transform.getTransformation(uptype);
-	}
-	
-	public GameObject setTransform(Transform t){
-		this.transform = t;
-		return this;
-	}
-	
+    @Override
+    public Transform getTransform() {
+        return transform;
+    }
+
+    public Matrix4f getTransformation() {
+        return transform.getTransformation(uptype);
+    }
+
+    public GameObject setTransform(Transform t) {
+        this.transform = t;
+        return this;
+    }
+
     /**
      * the updatetpye of this GameObject
+     *
      * @return
      */
     public UpdateType getUpdateType() {
@@ -113,13 +113,13 @@ public class GameObject implements DataMapSerializable, Transformable {
             gameObjects.add(this);
         }
     }
-    
+
     /**
      * dont let the gameObjects list overflow
      */
     @Override
     protected void finalize() throws Throwable {
-    	gameObjects.remove(this);
+        gameObjects.remove(this);
     }
 
     /**
@@ -138,37 +138,41 @@ public class GameObject implements DataMapSerializable, Transformable {
      */
     public final GameObject setParent(GameObject go) {
         this.parent = go;
-        this.transform.setParent(go==null?null:go.getTransform());
+        this.transform.setParent(go == null ? null : go.getTransform());
         return this;
     }
-    
+
     /**
-     * executes the logic of this GameObject if neccessary. 
+     * executes the logic of this GameObject if neccessary.
+     *
      * @see #setUpdateType(UpdateType)
      * @return this GameObject
      */
-    public final GameObject doLogic(){
-    	return doLogic(false);
+    public final GameObject doLogic() {
+        return doLogic(false);
     }
-    
+
     private Scene cs;
+
     /**
      * executes the logic of this GameObject (if neccessary or forced)
-     * @param force if true all logic of this GameObject is executed, if neccessary or not (ignores the {@link UpdateType}).
+     *
+     * @param force if true all logic of this GameObject is executed, if
+     * neccessary or not (ignores the {@link UpdateType}).
      * @return this GameObject
      */
     public final GameObject doLogic(boolean force) {
-        if(getUpdateType()==UpdateType.STATIC&&!force){
-        	return this;
+        if (getUpdateType() == UpdateType.STATIC && !force) {
+            return this;
         }
-    	if(Logger.isDebugMode()&&(cs=Instance.getCurrentScene())!=null&&cs.getState()==FrameState.RENDERING){
-        	Logger.log("Logic is not allowed while rendering!", LogLevel.WARNING);
-        	return this;
+        if (Logger.isDebugMode() && (cs = Instance.getCurrentScene()) != null && cs.getState() == FrameState.RENDERING) {
+            Logger.log("Logic is not allowed while rendering!", LogLevel.WARNING);
+            return this;
         }
-    	if(!logicEnabled){
-    		return this;
-    	}
-    	if (componentsPreLogic != null) {
+        if (!logicEnabled) {
+            return this;
+        }
+        if (componentsPreLogic != null) {
             for (Component c : componentsPreLogic) {
                 c.execute(this);
             }
@@ -179,7 +183,7 @@ public class GameObject implements DataMapSerializable, Transformable {
                 c.execute(this);
             }
         }
-        if ((force || getUpdateType() == UpdateType.DYNAMIC) && !(this instanceof Camera)&&Instance.getGameSettings().usesRenderChunking()) {
+        if ((force || getUpdateType() == UpdateType.DYNAMIC) && !(this instanceof Camera) && Instance.getGameSettings().usesRenderChunking()) {
             checkChunkPos(true);
         }
         return this;
@@ -187,6 +191,7 @@ public class GameObject implements DataMapSerializable, Transformable {
 
     /**
      * adds a Component to this GameObject.
+     *
      * @see Component
      * @param c
      * @return this GameObject
@@ -207,9 +212,10 @@ public class GameObject implements DataMapSerializable, Transformable {
         }
         return this;
     }
-    
+
     /**
      * removes a Component from this GameObject
+     *
      * @see {@link Component}
      * @param c
      * @return this GameObject
@@ -235,6 +241,7 @@ public class GameObject implements DataMapSerializable, Transformable {
 
     /**
      * all components of this GameObject
+     *
      * @return
      */
     public final Component[] getComponents() {
@@ -254,7 +261,9 @@ public class GameObject implements DataMapSerializable, Transformable {
     }
 
     /**
-     * the first occurence of a Component from the Class <code>type</code> or <code>null</code> if none is found.
+     * the first occurence of a Component from the Class <code>type</code> or
+     * <code>null</code> if none is found.
+     *
      * @param type
      * @return the component
      */
@@ -279,6 +288,7 @@ public class GameObject implements DataMapSerializable, Transformable {
 
     /**
      * all occurences of a Component from the Class <code>type</code>
+     *
      * @param type
      * @return a ArrayList of Components or an Empty ArrayList
      */
@@ -303,7 +313,10 @@ public class GameObject implements DataMapSerializable, Transformable {
     }
 
     /**
-     * override this to do some logic. only gets executed for {@link UpdateType#SEMISTATIC} pr {@link UpdateType#DYNAMIC} or if the logic is forced.
+     * override this to do some logic. only gets executed for
+     * {@link UpdateType#SEMISTATIC} pr {@link UpdateType#DYNAMIC} or if the
+     * logic is forced.
+     *
      * @see #doLogic(boolean)
      */
     protected void update() {
@@ -311,7 +324,8 @@ public class GameObject implements DataMapSerializable, Transformable {
 
     /**
      * called then the GameObject is finally removed from the scene.
-     * @see Scene#removeGameObject(GameObject, boolean) 
+     *
+     * @see Scene#removeGameObject(GameObject, boolean)
      * @see Scene#removeGameObject(GameObject)
      * @return
      */
@@ -337,11 +351,13 @@ public class GameObject implements DataMapSerializable, Transformable {
     protected void delete() {
     }
 
-   /**
-    * checks the chunkpos of this GameObject
-    * @param error if true and if the Logger is in debugmode and if the chunk of this gameobject is null a warning will be printed.
-    * @return this GameObject
-    */
+    /**
+     * checks the chunkpos of this GameObject
+     *
+     * @param error if true and if the Logger is in debugmode and if the chunk
+     * of this gameobject is null a warning will be printed.
+     * @return this GameObject
+     */
     protected final GameObject checkChunkPos(boolean error) {
         RenderChunk oldchunk = getMyChunk();
         if (oldchunk != null) {
@@ -350,8 +366,8 @@ public class GameObject implements DataMapSerializable, Transformable {
                 oldchunk.getScene().addGameObject(this);
                 oldchunk.removeGameObject(this, false);
             }
-        } else if (error&&Logger.isDebugMode()) {
-            Logger.log("MyChunk is null: "+toString(), LogLevel.WARNING);
+        } else if (error && Logger.isDebugMode()) {
+            Logger.log("MyChunk is null: " + toString(), LogLevel.WARNING);
         }
         return this;
     }
@@ -366,6 +382,7 @@ public class GameObject implements DataMapSerializable, Transformable {
 
     /**
      * the chunkx. used for rendering
+     *
      * @see GameSettings#usesRenderChunking()
      * @return chunkx
      */
@@ -375,6 +392,7 @@ public class GameObject implements DataMapSerializable, Transformable {
 
     /**
      * the chunky. used for rendering
+     *
      * @see GameSettings#usesRenderChunking()
      * @return chunky
      */
@@ -384,6 +402,7 @@ public class GameObject implements DataMapSerializable, Transformable {
 
     /**
      * the chunkz. used for rendering
+     *
      * @see GameSettings#usesRenderChunking()
      * @return
      */
@@ -392,8 +411,9 @@ public class GameObject implements DataMapSerializable, Transformable {
     }
 
     /**
-     * if true the gameobject is active and will be processed.
-     * if <code>false</code> the logic will never be executed automatically.
+     * if true the gameobject is active and will be processed. if
+     * <code>false</code> the logic will never be executed automatically.
+     *
      * @param b
      */
     public final GameObject setLogicEnabled(boolean b) {
@@ -448,14 +468,17 @@ public class GameObject implements DataMapSerializable, Transformable {
 
     /**
      * the {@link RenderChunk} this GameObject is in.
+     *
      * @return
      */
     public final RenderChunk getMyChunk() {
         return myChunk;
     }
-    
+
     /**
-     * if true this GameObject will always be processed regardless of the camera pos.
+     * if true this GameObject will always be processed regardless of the camera
+     * pos.
+     *
      * @param b
      * @return
      */
@@ -467,6 +490,7 @@ public class GameObject implements DataMapSerializable, Transformable {
 
     /**
      * is this GameObject global?
+     *
      * @return
      */
     public boolean isGlobal() {
@@ -484,7 +508,7 @@ public class GameObject implements DataMapSerializable, Transformable {
     }
 
     @SuppressWarnings("unchecked")
-	public static final <T> T byName(Class<? extends T> c, String name, boolean onlySame) {
+    public static final <T> T byName(Class<? extends T> c, String name, boolean onlySame) {
         for (GameObject gameObject : gameObjects) {
             if ((!onlySame && c.isAssignableFrom(gameObject.getClass()) || (onlySame && gameObject.getClass() == c)) && (gameObject.getName() == null ? name == null : gameObject.getName().equals(name))) {
                 return (T) gameObject;
@@ -549,7 +573,5 @@ public class GameObject implements DataMapSerializable, Transformable {
 //        setRotation(SerializationUtil.stringToVector3f(data.getString("rotation")));
         return this;
     }
-
-
 
 }

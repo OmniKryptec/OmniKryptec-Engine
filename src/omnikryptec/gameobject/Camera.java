@@ -4,7 +4,6 @@ import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 import omnikryptec.display.Display;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.util.Maths;
@@ -30,7 +29,7 @@ public class Camera extends GameObject {
 
     private Vector3f campos, negcampos, lastpos = new Vector3f();
     private Quaternionf absrot, lastrot = new Quaternionf();
-    
+
     public Matrix4f getViewMatrix() {
         if (view == null) {
             view = new Matrix4f();
@@ -47,7 +46,7 @@ public class Camera extends GameObject {
         }
         return view;
     }
-    
+
     public Matrix4f getInverseProjView() {
         return getProjectionViewMatrix().invert(new Matrix4f());
     }
@@ -78,11 +77,11 @@ public class Camera extends GameObject {
         return setOrthographicProjection(x, x + width, y, y + height, near, far);
     }
 
-    public Camera setProjectionMatrix(Matrix4f proj){
-    	this.projection = proj.toImmutable();
-    	return this;
+    public Camera setProjectionMatrix(Matrix4f proj) {
+        this.projection = proj.toImmutable();
+        return this;
     }
-    
+
     public final Camera setValuesFrom(Camera toCopy) {
         if (toCopy == null) {
             return this;
@@ -139,7 +138,7 @@ public class Camera extends GameObject {
             return null;
         }
         String name = data.getDataMap("gameObject").getString("name");
-        if(name == null || name.isEmpty()) {
+        if (name == null || name.isEmpty()) {
             return null;
         }
         final Camera camera = byName(Camera.class, name, false);
