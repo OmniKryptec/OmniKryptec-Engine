@@ -44,8 +44,8 @@ public class BloomStage extends PostProcessingStage {
 		brightness.renderAndResolveDepth(before, beforelist, stage);
 		bloomindicator.renderAndResolveDepth(brightness.getFbo(), beforelist, stage);
 		bloomedeffect.renderAndResolveDepth(bloomindicator.getFbo(), beforelist, stage);
-		bloomedeffect.getFbo().bindToUnit(1);
-		before.bindToUnit(0);
+		bloomedeffect.getFbo().bindToUnitOptimized(1);
+		before.bindToUnitOptimized(0);
 		cshader.start();
 		cshader.weights.loadVec2(combine_weights);
 		renderQuad(true);

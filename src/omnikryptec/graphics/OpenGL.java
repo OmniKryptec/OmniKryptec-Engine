@@ -3,11 +3,34 @@ package omnikryptec.graphics;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL31;
 
-public class OpenGL {
+import omnikryptec.resource.texture.Texture;
 
+public class OpenGL {
+	
+		//Textures
+	
+		/**
+		 * Should be used via {@link Texture}
+		 * @param type
+		 * @param id
+		 */
+		public static void gl11bindTexture(int type, int id) {
+			GL11.glBindTexture(type, id);
+		}
+
+		public static void gl13activeTextureGL(int unit) {
+			GL13.glActiveTexture(unit);
+		}
+		
+		public static void gl13activeTextureZB(int unit) {
+			gl13activeTextureGL(GL13.GL_TEXTURE0+unit);
+		}
+		
+		
 		//Rendering
 		public static void gl11drawElements(int mode, int indexcount, int type, long indices){
             GL11.glDrawElements(mode, indexcount, type, indices);
@@ -83,6 +106,5 @@ public class OpenGL {
 		public static String gl20getShaderInfoLog(int shader, int info){
 			return GL20.glGetShaderInfoLog(shader, info);
 		}
-
 	
 }

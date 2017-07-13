@@ -36,7 +36,7 @@ public class EntityMeshShader extends Shader{
         m.getModel().getVao().bind(0, 1, 4, 5, 6, 7, 8);
 		tmp = m.getMaterial().getTexture(Material.DIFFUSE);
 		if(tmp!=null){
-			tmp.bindToUnit(0);
+			tmp.bindToUnitOptimized(0);
 			uvs.loadVec4(tmp.getUVs());
 		}
 	}

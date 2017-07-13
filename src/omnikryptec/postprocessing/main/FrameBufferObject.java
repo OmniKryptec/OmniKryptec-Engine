@@ -20,6 +20,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import omnikryptec.display.Display;
+import omnikryptec.graphics.OpenGL;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.AdvancedFile;
@@ -168,7 +169,7 @@ public class FrameBufferObject extends Texture {
      * Binds the current FBO to be read from (not used in tutorial 43).
      */
     public void bindToRead(int attachment) {
-        Texture.unbindCurrent();
+        Texture.unbindActive();
         GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, frameBuffer);
         GL11.glReadBuffer(attachment);
     }
@@ -291,7 +292,7 @@ public class FrameBufferObject extends Texture {
      */
     private int createTextureAttachment(int attachment, int level) {
         int colourTexture = GL11.glGenTextures();
-        Texture.bind(GL11.GL_TEXTURE_2D, colourTexture);
+        Texture.bindAndReset(GL11.GL_TEXTURE_2D, colourTexture);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, level, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE,
                 (ByteBuffer) null);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
@@ -308,7 +309,7 @@ public class FrameBufferObject extends Texture {
      */
     private void createDepthTextureAttachment() {
         depthTexture = GL11.glGenTextures();
-        Texture.bind(GL11.GL_TEXTURE_2D, depthTexture);
+        Texture.bindAndReset(GL11.GL_TEXTURE_2D, depthTexture);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL14.GL_DEPTH_COMPONENT24, width, height, 0, GL11.GL_DEPTH_COMPONENT,
                 GL11.GL_FLOAT, (ByteBuffer) null);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
@@ -337,17 +338,17 @@ public class FrameBufferObject extends Texture {
      * info[0] is the attachmentindex to use
      */
     @Override
-    protected void bindToUnita(int unit, int... info) {
+    protected void bindToUnit(int unit, int... info) {
         if (info == null || info.length == 0) {
             info = new int[]{0};
         }
-        GL13.glActiveTexture(GL13.GL_TEXTURE0 + unit);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, getTexture(info[0]));
+        OpenGL.gl13activeTextureZB(unit);
+        super.bindTexture(GL11.GL_TEXTURE_2D, getTexture(info[0]));
     }
 
     public void bindDepthTexture(int unit) {
-        GL13.glActiveTexture(GL13.GL_TEXTURE0 + unit);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, getDepthTexture());
+        OpenGL.gl13activeTextureZB(unit);
+        super.bindTexture(GL11.GL_TEXTURE_2D, getDepthTexture());
     }
 
     public static void cleanup() {

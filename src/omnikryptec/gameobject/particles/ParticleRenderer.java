@@ -104,7 +104,7 @@ public class ParticleRenderer {
 		} else {
 			RenderUtil.enableAlphaBlending();
 		}
-		texture.getTexture().bindToUnit(0);
+		texture.getTexture().bindToUnitOptimized(0);
 		shader.nrOfRows.loadFloat(texture.getNumberOfRows());
         shader.uvs.loadVec4(texture.getTexture().getUVs()[0], texture.getTexture().getUVs()[1], texture.getTexture().getUVs()[2], texture.getTexture().getUVs()[3]);
 	}

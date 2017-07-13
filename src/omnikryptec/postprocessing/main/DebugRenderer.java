@@ -59,7 +59,7 @@ public class DebugRenderer extends PostProcessingStage {
 				notr++;
 				continue;
 			}
-			beforelist.get(i).bindToUnit(0);
+			beforelist.get(i).bindToUnitOptimized(0);
 			shader.info.loadVec3(side, i + (tmp ? 1 : 0) - notr, (i + (tmp ? 1 : 0) - notr) % side);
 			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);
 		}

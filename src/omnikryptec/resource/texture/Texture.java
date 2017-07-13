@@ -2,6 +2,7 @@ package omnikryptec.resource.texture;
 
 import org.lwjgl.opengl.GL11;
 
+import omnikryptec.graphics.OpenGL;
 import omnikryptec.resource.loader.ResourceObject;
 
 public abstract class Texture implements ResourceObject {
@@ -41,14 +42,14 @@ public abstract class Texture implements ResourceObject {
         return this;
     }
 
-    public final void bindToUnit(int unit, int... info) {
+    public final void bindToUnitOptimized(int unit, int... info) {
     	if (this != lastBoundTexture || alwaysBind) {
-            bindToUnita(unit, info);
+            bindToUnit(unit, info);
             lastBoundTexture = this;
         }
     }
 
-    protected abstract void bindToUnita(int unit, int... info);
+    protected abstract void bindToUnit(int unit, int... info);
 
     public float[] getUVs() {
         return uvs;
@@ -67,14 +68,23 @@ public abstract class Texture implements ResourceObject {
     	lastBoundTexture = null;
     }
     
-	public static void unbindCurrent() {
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+	public static void unbindActive() {
+		bindTexture(GL11.GL_TEXTURE_2D, 0);
 		resetLastBoundTexture();
 	}
 	
-	public static void bind(int type, int id){
+	public static void bindAndReset(int type, int id){
+		bindTexture(type, id);
 		resetLastBoundTexture();
-		GL11.glBindTexture(type, id);
+	}
+	
+	/**
+	 * should only be used in {@link #bindToUnit(int, int...)}
+	 * @param type
+	 * @param id
+	 */
+	protected static void bindTexture(int type, int id){
+		OpenGL.gl11bindTexture(type, id);
 	}
 
 }

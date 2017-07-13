@@ -54,8 +54,8 @@ public class AtlasTexture extends Texture {
     }
 
     @Override
-    public void bindToUnita(int unit, int... info) {
-        texture.bindToUnita(unit, info);
+    public void bindToUnit(int unit, int... info) {
+        texture.bindToUnit(unit, info);
     }
 
 }

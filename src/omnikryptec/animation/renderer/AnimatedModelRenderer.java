@@ -63,7 +63,7 @@ public class AnimatedModelRenderer extends Renderer<AnimatedModelShader> {
             }
             animatedModel = (AnimatedModel) advancedModel;
             animatedModel.getModel().getVao().bind(0, 1, 2, 3, 4, 5);
-            animatedModel.getTexture().bindToUnit(0);
+            animatedModel.getTexture().bindToUnitOptimized(0);
             RenderUtil.antialias(true);
             RenderUtil.disableBlending();
             RenderUtil.enableDepthTesting(true);

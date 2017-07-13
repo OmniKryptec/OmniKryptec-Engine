@@ -42,9 +42,9 @@ public class ContrastchangeStage extends PostProcessingStep {
 	@Override
 	public void bindTexture(FrameBufferObject before, List<FrameBufferObject> beforelist, Shader using, int stage) {
 		if (list_ind < 0) {
-			before.bindToUnit(0);
+			before.bindToUnitOptimized(0);
 		} else {
-			beforelist.get(list_ind).bindToUnit(0);
+			beforelist.get(list_ind).bindToUnitOptimized(0);
 		}
 		ContrastchangeShader.change.loadFloat(change);
 	}

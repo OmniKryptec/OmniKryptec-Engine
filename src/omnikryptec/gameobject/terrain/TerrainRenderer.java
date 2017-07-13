@@ -60,11 +60,11 @@ public class TerrainRenderer extends Renderer<TerrainShader> {
                     continue;
                 }
                 TerrainTexturePack texturePack = terrain.getTexturePack();
-                texturePack.getBackgroundTexture().bindToUnit(0);
-                texturePack.getrTexture().bindToUnit(1);
-                texturePack.getgTexture().bindToUnit(2);
-                texturePack.getbTexture().bindToUnit(3);
-                terrain.getBlendMap().bindToUnit(4);
+                texturePack.getBackgroundTexture().bindToUnitOptimized(0);
+                texturePack.getrTexture().bindToUnitOptimized(1);
+                texturePack.getgTexture().bindToUnitOptimized(2);
+                texturePack.getbTexture().bindToUnitOptimized(3);
+                terrain.getBlendMap().bindToUnitOptimized(4);
                 if (RenderUtil.inRenderRange(terrain, s.getCamera()) || true) {
                     TerrainShader.transformationMatrix.loadMatrix(terrain.getTransformation());
                     GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(),

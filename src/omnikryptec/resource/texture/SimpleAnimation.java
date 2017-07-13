@@ -39,8 +39,8 @@ public class SimpleAnimation extends Texture {
     }
 
     @Override
-    public void bindToUnita(int unit, int... info) {
-        textures[index].bindToUnita(unit, info);
+    public void bindToUnit(int unit, int... info) {
+        textures[index].bindToUnit(unit, info);
         if (lastupdated < DisplayManager.instance().getFramecount()) {
             lastupdated = DisplayManager.instance().getFramecount();
             if (time >= secondsperframe) {

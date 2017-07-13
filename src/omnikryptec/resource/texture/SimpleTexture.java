@@ -7,6 +7,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
+import omnikryptec.graphics.OpenGL;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.logger.Logger;
 
@@ -31,9 +32,9 @@ public class SimpleTexture extends Texture {
     }
 
     @Override
-    public void bindToUnita(int unit, int... info) {
-        GL13.glActiveTexture(GL13.GL_TEXTURE0 + unit);
-        GL11.glBindTexture(type, id);
+    public void bindToUnit(int unit, int... info) {
+    	OpenGL.gl13activeTextureZB(unit);
+    	super.bindTexture(type, id);
     }
 
     public void delete() {

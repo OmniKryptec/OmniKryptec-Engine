@@ -79,11 +79,11 @@ public class EntityRenderer extends Renderer<EntityLightShader> {
             model = textmodel.getModel();
             model.getVao().bind(0, 1, 2, 3, 4, 5, 6, 7, 8);
             textmp = textmodel.getTexture();
-            textmp.bindToUnit(0);
+            textmp.bindToUnitOptimized(0);
             shader.uvs.loadVec4(textmp.getUVs()[0], textmp.getUVs()[1], textmp.getUVs()[2], textmp.getUVs()[3]);
             mat = textmodel.getMaterial();
             if (mat.getNormalmap() != null) {
-                mat.getNormalmap().bindToUnit(1);
+                mat.getNormalmap().bindToUnitOptimized(1);
                 shader.hasnormal.loadBoolean(true);
             } else {
                 shader.hasnormal.loadBoolean(false);
@@ -92,13 +92,13 @@ public class EntityRenderer extends Renderer<EntityLightShader> {
                 RenderUtil.cullBackFaces(false);
             }
             if (mat.getSpecularmap() != null) {
-                mat.getSpecularmap().bindToUnit(2);
+                mat.getSpecularmap().bindToUnitOptimized(2);
                 shader.hasspecular.loadBoolean(true);
             } else {
                 shader.hasspecular.loadBoolean(false);
             }
             if (mat.getExtraInfo() != null) {
-                mat.getExtraInfo().bindToUnit(3);
+                mat.getExtraInfo().bindToUnitOptimized(3);
                 shader.hasextrainfomap.loadBoolean(true);
             } else {
                 shader.hasextrainfomap.loadBoolean(false);
