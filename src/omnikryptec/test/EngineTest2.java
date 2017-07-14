@@ -23,6 +23,7 @@ import omnikryptec.gameobject.particles.AttractorMode;
 import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.gameobject.particles.ParticleSpawnArea;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
+import omnikryptec.gameobject.particles.ParticleSystem;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;
@@ -189,10 +190,10 @@ public class EngineTest2 implements IEventHandler {
             Instance.getGameSettings().setMultithreadedParticles(false);
             system = new AttractedPaticleSystem(0, 0, 0,
                     new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false),
-                  1000,0, 1000f, 1f, RenderType.ALWAYS).setAverageMass(1E6F).setParticlesAttractingEachOther(true);
+                  10000,0, 1000f, 1f, RenderType.ALWAYS);
 
             System.out.println("Generating objs...");
-            int cube = 100;
+            int cube = 0;
             int abstand =50;
             float scale = 1;
             for (int x = -cube; x < cube; x += abstand) {
@@ -200,7 +201,7 @@ public class EngineTest2 implements IEventHandler {
                     for (int z = -cube; z < cube; z += abstand) {
                     	GameObject go;
                     	//go = new GameObject().setRelativePos(x, y, z);
-                    	go = new Entity(tm).setUpdateType(UpdateType.DYNAMIC);
+                    	go = new Entity(tm).setUpdateType(UpdateType.STATIC);
                     	go.getTransform().setScale(scale).setPosition(x, y, z).getRotationSimple().rotate(0, 0, 0);
                         Instance.getCurrentScene().addGameObject(go);
                         //system.addAttractor(new ParticleAttractor(go).setAcceleration(10).setMode(AttractorMode.KILL_ON_REACH).setTolerance(5));
@@ -213,7 +214,7 @@ public class EngineTest2 implements IEventHandler {
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
            
             //system.setParent(Instance.getCurrentCamera());
-            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.SHPERE, new Vector3f(0,1,0), 100));
+            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.SHPERE, new Vector3f(0,1,0), 10));
             system.setTimeMultiplier(1F);
             //system.setAverageStartScale(0.01f);
             //system.setAverageEndScale(1);
@@ -240,11 +241,11 @@ public class EngineTest2 implements IEventHandler {
             //system.addAttractor(0, 300, 500, 200.0F, 100.0F, false);
             //system.addAttractor(-200, 300, 0, 75.0F, 50.0F, true);
             //system.addAttractor(200, 300, 0, 75.0F, 50.0F, true);
-            
+            system.setSystemLifeLength(ParticleSystem.LIFELENGTH_SYSTEM_ONETICKBURST);
             system.setGlobal(true);
             system.setStartcolor(new Color(1, 0, 1));
             system.setEndcolor(new Color(1, 1, 0));
-            //OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
+            OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));
             //OmniKryptecEngine.instance().getCurrentScene()
             //      .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setCuttOffRange(50).setColor(3, 0, 0).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0, -1, 0).setRelativePos(0,10, 0));

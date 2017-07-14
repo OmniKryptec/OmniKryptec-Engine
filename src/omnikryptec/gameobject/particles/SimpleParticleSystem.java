@@ -29,7 +29,9 @@ public class SimpleParticleSystem extends ParticleSystem {
 
     protected ParticleAtlas particletexture;
     protected ParticleSpawnArea spawnarea = new ParticleSpawnArea(ParticleSpawnAreaType.POINT, 0);
-
+    
+    protected boolean wasonetickburst=false;
+    
     protected SimpleParticleSystem() {
     }
 
@@ -131,6 +133,10 @@ public class SimpleParticleSystem extends ParticleSystem {
 
     public void resetTime() {
         elapsedtime = 0;
+        if(wasonetickburst){
+        	wasonetickburst = false;
+        	lifelengthsystem = LIFELENGTH_SYSTEM_ONETICKBURST;
+        }
     }
 
     public ParticleSpawnArea getSpawnArea() {
@@ -147,6 +153,10 @@ public class SimpleParticleSystem extends ParticleSystem {
         if (elapsedtime <= lifelengthsystem || lifelengthsystem <= -1) {
             generateParticles(timemultiplier);
             elapsedtime += getScaledDeltatime();
+            if(lifelengthsystem==LIFELENGTH_SYSTEM_ONETICKBURST){
+            	lifelengthsystem = 0;
+            	wasonetickburst = true;
+            }
         }
     }
 
@@ -159,7 +169,7 @@ public class SimpleParticleSystem extends ParticleSystem {
     private float lastParticlef = 0;
 
     public SimpleParticleSystem generateParticles(float timemultiplier) {
-        particlesToCreate = particlepersec * getScaledDeltatime();
+        particlesToCreate = particlepersec * (lifelengthsystem==LIFELENGTH_SYSTEM_ONETICKBURST?1:getScaledDeltatime());
         if (particlesToCreate < 1f) {
             lastParticlef += particlesToCreate;
             if (lastParticlef >= 1f) {

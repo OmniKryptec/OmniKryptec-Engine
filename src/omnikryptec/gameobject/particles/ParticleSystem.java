@@ -10,19 +10,22 @@ import omnikryptec.util.Maths;
 public class ParticleSystem extends GameObject{
 	
 	/**
-	 * maybe not supported by all ParticleSystems
+	 * The particlesystem will emit the particles/sec amount of particles in one tick and after that it will die. The system maybe can be resetted.
+	 * Maybe not supported by all ParticleSystems 
+	 */
+	public static final float LIFELENGTH_SYSTEM_ONETICKBURST = -3;
+	
+	/**
+	 * Maybe not supported by all ParticleSystems.
 	 */
 	public static final float LIFELENGTH_NEVER_DIE=-2;
 	/**
-	 * maybe not supported by all ParticleSystems
+	 * Maybe not supported by all ParticleSystems.
 	 */
 	public static final float LIFELENGTH_DIE_ONLY_IN_ATTRACTOR=-1;
 	
 	protected float timemultiplier=1;
 	protected Random random = new Random();
-	
-	
-	
 	
 	public ParticleSystem setTimeMultiplier(float f){
 		this.timemultiplier = f;
