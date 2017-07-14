@@ -96,6 +96,9 @@ public class LiveProfiler {
         double max = 0.0;
         for (ChartData chartData : data.keySet()) {
             final LinkedList<Double> values = data.get(chartData);
+            if (values == null) {
+                continue;
+            }
             final double addValue = Math.max(Profiler.currentTimeByName(chartData.getName()), 0.0F);
             values.addFirst(addValue);
             while (values.size() > maxValuesSize) {

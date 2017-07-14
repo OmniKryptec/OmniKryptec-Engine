@@ -215,8 +215,7 @@ public class AnimationTest {
     public static final void save() {
         try {
             SAVE.createFile();
-            final Scene scene = OmniKryptecEngine.getInstance().getCurrentScene();
-            final String sceneName = OmniKryptecEngine.getInstance().getCurrentSceneName();
+            final String sceneName = scene.getName();
             dataMapSerializer.reset();
             GameObject.gameObjects.stream().filter((gameObject) -> (gameObject.getName() != null && !gameObject.getName().isEmpty() && gameObject.getClass() != Camera.class)).forEach((gameObject) -> {
                 dataMapSerializer.addObject(gameObject);
