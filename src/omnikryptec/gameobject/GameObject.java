@@ -535,8 +535,7 @@ public class GameObject implements DataMapSerializable, Transformable {
         if (parent != null) {
             data.put("parent", parent.toDataMap(new DataMap("parent")));
         }
-//        data.put("position", SerializationUtil.vector3fToString(pos));
-//        data.put("rotation", SerializationUtil.vector3fToString(rotation));
+        data.put("transform", transform.toDataMap(new DataMap("transform")));
         return data;
     }
 
@@ -563,14 +562,16 @@ public class GameObject implements DataMapSerializable, Transformable {
         setLogicEnabled(data.getBoolean("isActive"));
         DataMap dataMap_temp = data.getDataMap("parent");
         if (parent == null) {
-            Object parent_ = newInstanceFromDataMap(dataMap_temp);
-            setParent((parent_ != null ? (GameObject) parent_ : null));
+            parent = newInstanceFromDataMap(dataMap_temp);
         } else {
-            parent.fromDataMap(dataMap_temp); // FIXME Hmmm ist die Frage weil
-            // die Parents und id und so
+            parent.fromDataMap(dataMap_temp); // FIXME Hmmm ist die Frage weil die Parents und id und so
         }
-//        setPos(SerializationUtil.stringToVector3f(data.getString("position")));
-//        setRotation(SerializationUtil.stringToVector3f(data.getString("rotation")));
+        dataMap_temp = data.getDataMap("transform");
+        if (transform == null) {
+            transform = Transform.newInstanceFromDataMap(dataMap_temp);
+        } else {
+            transform.fromDataMap(dataMap_temp);
+        }
         return this;
     }
 

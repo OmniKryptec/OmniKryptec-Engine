@@ -20,16 +20,13 @@ import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
 
 public class Entity extends GameObject implements DataMapSerializable {
-    
+
     private AdvancedModel model;
     private RenderType type = RenderType.ALWAYS;
     private Color color = new Color(1, 1, 1, 1);
-    private boolean renderingEnabled=true;
-    
-    
+    private boolean renderingEnabled = true;
 
-
-	public Entity() {
+    public Entity() {
         super();
     }
 
@@ -64,6 +61,7 @@ public class Entity extends GameObject implements DataMapSerializable {
 
     /**
      * sets the RenderType of this entity.
+     *
      * @see #getType()
      * @param type
      * @return this Entity
@@ -78,9 +76,11 @@ public class Entity extends GameObject implements DataMapSerializable {
     }
 
     /**
-     * sets the AdvancedModel of this Entity. if the AdvancedModel is changed at runtime, 
-     * this method should be called to ensure that the right renderer will render this entity.
-     * @see TexturedModel 
+     * sets the AdvancedModel of this Entity. if the AdvancedModel is changed at
+     * runtime, this method should be called to ensure that the right renderer
+     * will render this entity.
+     *
+     * @see TexturedModel
      * @see AnimatedModel
      * @param model
      * @return this Entity
@@ -94,6 +94,7 @@ public class Entity extends GameObject implements DataMapSerializable {
 
     /**
      * the Advanced Model of this entity
+     *
      * @see #setAdvancedModel(AdvancedModel)
      * @return Advanced Model
      */
@@ -103,6 +104,7 @@ public class Entity extends GameObject implements DataMapSerializable {
 
     /**
      * sets the color of this Entity
+     *
      * @see #setColor(float, float, float, float)
      * @param c
      * @return this Entity
@@ -113,8 +115,9 @@ public class Entity extends GameObject implements DataMapSerializable {
     }
 
     /**
-     * sets the color of this Entity.
-     * a renderer might use this differently than others.
+     * sets the color of this Entity. a renderer might use this differently than
+     * others.
+     *
      * @param r [0,1]
      * @param g [0,1]
      * @param b [0,1]
@@ -128,13 +131,14 @@ public class Entity extends GameObject implements DataMapSerializable {
 
     /**
      * the color of this Entity
+     *
      * @see #setColor(float, float, float, float)
      * @return a color
      */
     public Color getColor() {
         return color;
     }
-    
+
     public static EntityBuilder newEntity() {
         return new EntityBuilder();
     }
@@ -147,8 +151,6 @@ public class Entity extends GameObject implements DataMapSerializable {
         return new EntityBuilder(texture);
     }
 
-    
-    
     public Entity setValuesFrom(Entity toCopy) {
         if (toCopy == null) {
             return this;
@@ -159,14 +161,14 @@ public class Entity extends GameObject implements DataMapSerializable {
         type = toCopy.type;
         return this;
     }
-    
+
     @Override
     public DataMap toDataMap(DataMap data) {
         DataMap data_temp = super.toDataMap(new DataMap("gameObject"));
         data.put(data_temp.getName(), data_temp);
         data.put("color", SerializationUtil.colorToString(color));
         data.put("type", type.name());
-        if(model != null) {
+        if (model != null) {
             data.put("model", model.toDataMap(new DataMap(model.getName())));
         }
         return data;
@@ -177,7 +179,7 @@ public class Entity extends GameObject implements DataMapSerializable {
             return null;
         }
         String name = data.getDataMap("gameObject").getString("name");
-        if(name == null || name.isEmpty()) {
+        if (name == null || name.isEmpty()) {
             Logger.log("Failed to create new Entity");
             return null;
         }
@@ -195,42 +197,39 @@ public class Entity extends GameObject implements DataMapSerializable {
         super.fromDataMap(dataMap_temp);
         color = SerializationUtil.stringToColor(data.getString("color"));
         String temp = data.getString("type");
-        if(temp != null) {
+        if (temp != null) {
             type = RenderType.valueOf(temp);
         } else {
             type = RenderType.ALWAYS;
         }
         dataMap_temp = data.getDataMap("model");
-        if(dataMap_temp != null) {
+        if (dataMap_temp != null) {
             final String modelName = dataMap_temp.getName();
             Logger.log("Loading AdvancedModel: " + modelName + ", for: " + this);
             try {
                 model = ResourceLoader.getInstance().getData(AdvancedModel.class, modelName);
-                if(model != null) {
+                if (model != null) {
                     model.fromDataMap(dataMap_temp);
-                } else if(Logger.isDebugMode()) {
+                } else if (Logger.isDebugMode()) {
                     Logger.log("AdvancedModel is null!", LogLevel.WARNING);
                 }
             } catch (Exception ex) {
                 model = null;
                 Logger.logErr("Error while setting up the advanced model: " + ex, ex);
             }
-        } else if(Logger.isDebugMode()) {
+        } else if (Logger.isDebugMode()) {
             model = null;
             Logger.log("AdvancedModel DataMap is null!", LogLevel.WARNING);
         }
         return this;
     }
 
-    
     public boolean isRenderingEnabled() {
-		return renderingEnabled;
-	}
+        return renderingEnabled;
+    }
 
-	public void setRenderingEnabled(boolean renderingEnabled) {
-		this.renderingEnabled = renderingEnabled;
-	}
-	
+    public void setRenderingEnabled(boolean renderingEnabled) {
+        this.renderingEnabled = renderingEnabled;
+    }
 
-    
 }

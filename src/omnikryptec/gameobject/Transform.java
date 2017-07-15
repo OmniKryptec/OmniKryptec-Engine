@@ -5,10 +5,13 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import omnikryptec.display.DisplayManager;
+import omnikryptec.test.saving.DataMap;
+import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
+import omnikryptec.util.SerializationUtil;
 
-public class Transform implements Positionable {
+public class Transform implements DataMapSerializable, Positionable {
 
     private Transform parent;
     public Vector3f position;
@@ -262,4 +265,45 @@ public class Transform implements Positionable {
     private Vector3f lastpos = new Vector3f(), lastscale = new Vector3f();
     private Quaternionf lastrot = new Quaternionf();
     private long lastframe = 0;
+
+    @Override
+    public String getName() {
+        return "";
+    }
+
+    @Override
+    public DataMap toDataMap(DataMap data) {
+        if (parent != null) {
+            data.put("parent", parent.toDataMap(new DataMap("parent")));
+        }
+        data.put("position", SerializationUtil.vector3fToString(position));
+        data.put("rotation", SerializationUtil.quaternionfToString(rotation));
+        data.put("scale", SerializationUtil.vector3fToString(scale));
+        return data;
+    }
+
+    @Override
+    public Transform fromDataMap(DataMap data) {
+        if (data == null) {
+            return null;
+        }
+        setScale(SerializationUtil.stringToVector3f(data.getString("scale")));
+        setRotation(SerializationUtil.stringToQuaternionf(data.getString("rotation")));
+        setPosition(SerializationUtil.stringToVector3f(data.getString("position")));
+        DataMap dataMap_temp = data.getDataMap("parent");
+        if (parent == null) {
+            parent = newInstanceFromDataMap(dataMap_temp);
+        } else {
+            parent.fromDataMap(dataMap_temp);
+        }
+        return this;
+    }
+    
+    public static Transform newInstanceFromDataMap(DataMap data) {
+        if (data == null) {
+            return null;
+        }
+        return new Transform().fromDataMap(data);
+    }
+    
 }
