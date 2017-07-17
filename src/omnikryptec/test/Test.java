@@ -9,6 +9,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 
 import omnikryptec.swing.JCheckBoxList;
+import omnikryptec.util.action.ActionProcessor;
 import omnikryptec.util.debug.VariableChangeListener;
 import omnikryptec.util.lang.ILanguage;
 import omnikryptec.util.lang.LanguageManager;
@@ -62,6 +63,7 @@ public class Test implements ILanguage {
         VisualThreadMonitor vtm = new VisualThreadMonitor(thread_test);
         thread_test.start();
         new Thread(() -> vtm.start()).start();
+        ActionProcessor.addActionsToProcessor(() -> System.out.println("TTTT 1"), () -> System.out.println("TTTT 2"), () -> System.out.println("TTTT 3"), () -> System.out.println("TTTT 4"), () -> System.out.println("TTTT 5"), () -> System.out.println("TTTT 6"));
         // LanguageManager.collectAllLanguageKeys(new File("lang_TE.txt"));
         System.out.println("Test 1");
         System.err.println("Test 2 " + System.getProperty("user.home"));
