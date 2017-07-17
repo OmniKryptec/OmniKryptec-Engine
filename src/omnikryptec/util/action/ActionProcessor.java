@@ -47,6 +47,11 @@ public class ActionProcessor extends Thread {
         }
     }
     
+    public final synchronized ActionProcessor killNow() {
+        actions.clear();
+        return kill();
+    }
+    
     public final synchronized ActionProcessor kill() {
         running = false;
         notify();
