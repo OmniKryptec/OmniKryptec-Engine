@@ -47,9 +47,10 @@ public class ActionProcessor extends Thread {
         }
     }
     
-    public final synchronized ActionProcessor killNow() {
+    public final synchronized LinkedList<Action> killNow() {
+        final LinkedList<Action> actions_left = new LinkedList(actions);
         actions.clear();
-        return kill();
+        return actions_left;
     }
     
     public final synchronized ActionProcessor kill() {
