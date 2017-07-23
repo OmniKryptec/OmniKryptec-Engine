@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.time.Instant;
+import java.util.Locale;
 
 /**
  *
@@ -117,6 +118,35 @@ public class SystemOutputStream extends PrintStream {
     @Override
     public void println(String g) {
         print(g, Instant.now(), true);
+    }
+
+    @Override
+    public void println() {
+        println("");
+    }
+
+    @Override
+    public PrintStream format(Locale l, String format, Object... args) {
+        print(String.format(l, format, args));
+        return this;
+    }
+
+    @Override
+    public PrintStream format(String format, Object... args) {
+        print(String.format(format, args));
+        return this;
+    }
+
+    @Override
+    public PrintStream printf(Locale l, String format, Object... args) {
+        print(String.format(l, format, args));
+        return this;
+    }
+
+    @Override
+    public PrintStream printf(String format, Object... args) {
+        print(String.format(format, args));
+        return this;
     }
 
     private void print(String g, Instant instant, boolean newLine) {
