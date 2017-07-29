@@ -12,6 +12,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
+import omnikryptec.gameobject.Entity;
 import omnikryptec.graphics.OpenGL;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;
@@ -51,8 +52,6 @@ public class Shader {
 	private String name;
 	private ShaderLineInsertion insert;
 
-	// private static FloatBuffer matrixBuffer =
-	// BufferUtils.createFloatBuffer(16);
 
 	public Shader(AdvancedFile vertexFile, AdvancedFile fragmentFile, Object... uniAttr) {
 		this((String) null, (ShaderLineInsertion) null, vertexFile, fragmentFile, uniAttr);
@@ -156,24 +155,17 @@ public class Shader {
 		storeUniforms(uniformstmp.toArray(new Uniform[1]));
 		shadercount++;
 		allShader.add(this);
-		// if (uniformstmp.size() != uniforms.size() && Logger.isDebugMode()) {
-		// Logger.log("Found uniforms: " + uniforms + ";\n Required uniforms in
-		// constructor: " + uniformstmp.size(),
-		// LogLevel.WARNING, false);
-		// }
 	}
 
 	public void onModelRender(AdvancedModel m){
 		
 	}
 	
-	//TODO
 	public void onRenderStart(Scene s){
 		
 	}
 	
-	//TODO
-	public void onRenderInstance(){
+	public void onRenderInstance(Entity e){
 		
 	}
 	
@@ -186,10 +178,10 @@ public class Shader {
 	}
 
 	protected void registerUniforms(Uniform... uniformsarray) {
-		registerUniformsa(uniformsarray);
+		registerUniformsA(uniformsarray);
 	}
 
-	protected void registerUniformsa(Uniform[] array, Uniform... uniformsarray) {
+	protected void registerUniformsA(Uniform[] array, Uniform... uniformsarray) {
 		storeUniforms(array);
 		storeUniforms(uniformsarray);
 	}
@@ -288,7 +280,7 @@ public class Shader {
 		OpenGL.gl20shaderSource(shaderID, shaderSrc);
 		OpenGL.gl20compileShader(shaderID);
 		if (OpenGL.gl20getShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-			Instance.getEngine().errorOccured(new OmniKryptecException("Shadercreation"), "Shader compilation failed in Shader: " + name);
+			Instance.getEngine().errorOccured(new OmniKryptecException("Shadercreation"), "Shader compilation failed in "+getShaderType(type)+": " + name);
 			Logger.log("(Lines with LineInsertion!): " + OpenGL.gl20getShaderInfoLog(shaderID, 1024), LogLevel.ERROR, true);
 			Instance.getEngine().close(ShutdownOption.JAVA);
 		}

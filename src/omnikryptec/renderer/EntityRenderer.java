@@ -18,6 +18,8 @@ import omnikryptec.resource.model.Material;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.resource.texture.Texture;
+import omnikryptec.shader.base.Shader;
+import omnikryptec.shader.base.ShaderPack;
 import omnikryptec.shader.files.EntityLightShader;
 import omnikryptec.util.Color;
 import omnikryptec.util.FrustrumFilter;
@@ -32,7 +34,7 @@ public class EntityRenderer extends Renderer<EntityLightShader> {
     private static final int INSTANCES_PER_DRAWCALL = Instance.getGameSettings().getMaxInstancesPerDrawcall();
 
     public EntityRenderer() {
-        super(new EntityLightShader());
+        super(new ShaderPack<>(new EntityLightShader()));
         RendererRegistration.register(this);
     }
 
@@ -47,26 +49,26 @@ public class EntityRenderer extends Renderer<EntityLightShader> {
     private Model model;
 
     @Override
-    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean b) {
+    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader b) {
         if (!DisplayManager.instance().getSettings().isLightForwardAllowed() && Logger.isDebugMode()) {
             Logger.log("Forward light is not enabled. Will not render.", LogLevel.WARNING);
             return 0;
         }
         vertcount = 0;
-        shader.view.loadMatrix(s.getCamera().getViewMatrix());
-        shader.projection.loadMatrix(s.getCamera().getProjectionMatrix());
-        shader.ambient.loadVec3(s.getAmbient().getArray());
+        shaderpack.getDefaultShader().view.loadMatrix(s.getCamera().getViewMatrix());
+        shaderpack.getDefaultShader().projection.loadMatrix(s.getCamera().getProjectionMatrix());
+        shaderpack.getDefaultShader().ambient.loadVec3(s.getAmbient().getArray());
         int lights = Math.min(DisplayManager.instance().getSettings().getLightMaxForward(),
                 s.getLights().size());
-        shader.activelights.loadInt(lights);
+        shaderpack.getDefaultShader().activelights.loadInt(lights);
         for (int i = 0; i < lights; i++) {
             l = s.getLights().get(i);
             pos = l.getTransform().getPosition(true);
-            shader.lightpos[i].loadVec4(pos.x, pos.y, pos.z, l.isDirectional() ? 0.0f : 1.0f);
-            shader.lightcolor[i].loadVec3(l.getColor().getArray());
-            shader.atts[i].loadVec4(l.getAttenuation());
-            shader.coneinfo[i].loadVec4(l.getConeInfo());
-            shader.catts[i].loadVec3(l.getConeAttenuation());
+            shaderpack.getDefaultShader().lightpos[i].loadVec4(pos.x, pos.y, pos.z, l.isDirectional() ? 0.0f : 1.0f);
+            shaderpack.getDefaultShader().lightcolor[i].loadVec3(l.getColor().getArray());
+            shaderpack.getDefaultShader().atts[i].loadVec4(l.getAttenuation());
+            shaderpack.getDefaultShader().coneinfo[i].loadVec4(l.getConeInfo());
+            shaderpack.getDefaultShader().catts[i].loadVec3(l.getConeAttenuation());
         }
         for (AdvancedModel advancedModel : entities.keysArray()) {
             if (advancedModel == null || !(advancedModel instanceof TexturedModel)) {
@@ -80,35 +82,35 @@ public class EntityRenderer extends Renderer<EntityLightShader> {
             model.getVao().bind(0, 1, 2, 3, 4, 5, 6, 7, 8);
             textmp = textmodel.getTexture();
             textmp.bindToUnitOptimized(0);
-            shader.uvs.loadVec4(textmp.getUVs()[0], textmp.getUVs()[1], textmp.getUVs()[2], textmp.getUVs()[3]);
+            shaderpack.getDefaultShader().uvs.loadVec4(textmp.getUVs()[0], textmp.getUVs()[1], textmp.getUVs()[2], textmp.getUVs()[3]);
             mat = textmodel.getMaterial();
             if (mat.getNormalmap() != null) {
                 mat.getNormalmap().bindToUnitOptimized(1);
-                shader.hasnormal.loadBoolean(true);
+                shaderpack.getDefaultShader().hasnormal.loadBoolean(true);
             } else {
-                shader.hasnormal.loadBoolean(false);
+                shaderpack.getDefaultShader().hasnormal.loadBoolean(false);
             }
             if (mat.hasTransparency()) {
                 RenderUtil.cullBackFaces(false);
             }
             if (mat.getSpecularmap() != null) {
                 mat.getSpecularmap().bindToUnitOptimized(2);
-                shader.hasspecular.loadBoolean(true);
+                shaderpack.getDefaultShader().hasspecular.loadBoolean(true);
             } else {
-                shader.hasspecular.loadBoolean(false);
+                shaderpack.getDefaultShader().hasspecular.loadBoolean(false);
             }
             if (mat.getExtraInfo() != null) {
                 mat.getExtraInfo().bindToUnitOptimized(3);
-                shader.hasextrainfomap.loadBoolean(true);
+                shaderpack.getDefaultShader().hasextrainfomap.loadBoolean(true);
             } else {
-                shader.hasextrainfomap.loadBoolean(false);
+                shaderpack.getDefaultShader().hasextrainfomap.loadBoolean(false);
                 if (mat.getExtraInfoVec() != null) {
-                    shader.extrainfovec.loadVec3(mat.getExtraInfoVec());
+                    shaderpack.getDefaultShader().extrainfovec.loadVec3(mat.getExtraInfoVec());
                 } else {
-                    shader.extrainfovec.loadVec3(0, 0, 0);
+                    shaderpack.getDefaultShader().extrainfovec.loadVec3(0, 0, 0);
                 }
             }
-            shader.matData.loadVec4(mat.getMData());
+            shaderpack.getDefaultShader().matData.loadVec4(mat.getMData());
             stapel = entities.get(textmodel);
             for (int j = 0; j < stapel.size(); j += INSTANCES_PER_DRAWCALL) {
                 newRender(s, j);

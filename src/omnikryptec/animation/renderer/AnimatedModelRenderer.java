@@ -12,6 +12,8 @@ import omnikryptec.renderer.RenderMap;
 import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.AdvancedModel;
+import omnikryptec.shader.base.Shader;
+import omnikryptec.shader.base.ShaderPack;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
@@ -35,7 +37,7 @@ public class AnimatedModelRenderer extends Renderer<AnimatedModelShader> {
      * Initializes the shader program used for rendering animated models.
      */
     public AnimatedModelRenderer() {
-        super(new AnimatedModelShader());
+        super(new ShaderPack<>(new AnimatedModelShader()));
         setExpensiveLevel(1);
         setPriority(0);
         RendererRegistration.register(this);
@@ -47,13 +49,12 @@ public class AnimatedModelRenderer extends Renderer<AnimatedModelShader> {
     private long vertcount = 0;
 
     @Override
-    protected long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean ownshader) {
+    protected long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader ownshader) {
         final Camera camera = s.getCamera();
         vertcount = 0;
-        shader.start();
-        shader.projectionMatrix.loadMatrix(camera.getProjectionMatrix());
-        shader.viewMatrix.loadMatrix(camera.getViewMatrix());
-        shader.lightDirection.loadVec3(LIGHT_DIR);
+        shaderpack.getDefaultShader().projectionMatrix.loadMatrix(camera.getProjectionMatrix());
+        shaderpack.getDefaultShader().viewMatrix.loadMatrix(camera.getViewMatrix());
+        shaderpack.getDefaultShader().lightDirection.loadVec3(LIGHT_DIR);
         for (AdvancedModel advancedModel : entities.keysArray()) {
             if (advancedModel == null || !(advancedModel instanceof AnimatedModel)) {
                 if (Logger.isDebugMode()) {
@@ -72,8 +73,8 @@ public class AnimatedModelRenderer extends Renderer<AnimatedModelShader> {
                 for (int z = 0; z < stapel.size(); z++) {
                     entity = stapel.get(z);
                     if (entity != null && entity.isRenderingEnabled() && RenderUtil.inRenderRange(entity, camera)) {
-                        shader.jointTransforms.loadMatrixArray(animatedModel.getJointTransforms());
-                        shader.transformationMatrix.loadMatrix(entity.getTransformation());
+                        shaderpack.getDefaultShader().jointTransforms.loadMatrixArray(animatedModel.getJointTransforms());
+                        shaderpack.getDefaultShader().transformationMatrix.loadMatrix(entity.getTransformation());
                         GL11.glDrawElements(GL11.GL_TRIANGLES, animatedModel.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
                         vertcount += animatedModel.getModel().getModelData().getVertexCount();
                     }

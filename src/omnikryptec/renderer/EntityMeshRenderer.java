@@ -16,6 +16,7 @@ import omnikryptec.resource.model.Material;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.shader.base.Shader;
+import omnikryptec.shader.base.ShaderPack;
 import omnikryptec.shader.files.EntityMeshShader;
 import omnikryptec.util.Color;
 import omnikryptec.util.FrustrumFilter;
@@ -30,7 +31,7 @@ public class EntityMeshRenderer extends Renderer<EntityMeshShader>{
 
 
     public EntityMeshRenderer() {
-        super(new EntityMeshShader());
+        super(new ShaderPack<>(new EntityMeshShader()));
     	RendererRegistration.register(this);
     }
 
@@ -42,8 +43,8 @@ public class EntityMeshRenderer extends Renderer<EntityMeshShader>{
     private Model model;
 
     @Override
-    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean os) {
-        vertcount = 0;
+    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader shader) {
+    	vertcount = 0;
         for (AdvancedModel advancedModel : entities.keysArray()) {
             if (advancedModel == null || !(advancedModel instanceof TexturedModel)) {
                 if (Logger.isDebugMode()) {

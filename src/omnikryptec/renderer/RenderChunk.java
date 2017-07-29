@@ -222,21 +222,21 @@ public class RenderChunk implements DataMapSerializable {
 		}
 	}
     
-    private final Renderer<?>[] empty_array = new Renderer[]{null};
-    private Renderer<?> r;
+    private final Renderer[] empty_array = new Renderer[]{null};
+    private Renderer r;
     private long vertcount = 0;
 
-    public long render(float maxExpenLvl, float minexplvl, AllowedRenderer type, Renderer<?>... rend) {
+    public long render(float maxExpenLvl, float minexplvl, String renderPassName, AllowedRenderer type, Renderer... rend) {
         if (rend == null || rend.length == 0) {
             rend = empty_array;
         }
         vertcount = 0;
-        for (Renderer<?> keysArray : prios) {
+        for (Renderer keysArray : prios) {
             r = keysArray;
             if (r != null && r.expensiveLevel() <= maxExpenLvl && r.expensiveLevel() >= minexplvl
                     && (type == AllowedRenderer.All || (type == AllowedRenderer.OnlThis && contains(rend, r))
                     || (type == AllowedRenderer.EvElse && !contains(rend, r)))) {
-                vertcount += r.render(scene, chunk.get(r));
+                vertcount += r.render(scene, chunk.get(r), renderPassName);
             }
         }
         return vertcount;

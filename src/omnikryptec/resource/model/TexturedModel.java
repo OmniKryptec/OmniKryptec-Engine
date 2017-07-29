@@ -12,6 +12,7 @@ public class TexturedModel implements AdvancedModel {
 
     private String name;
     private Model model;
+    @Deprecated
     private Texture texture;
     private Material material;
     

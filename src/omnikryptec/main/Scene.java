@@ -151,8 +151,8 @@ public class Scene implements DataMapSerializable {
     private double rendertime = 0;
     private double tmptime = 0;
     
-    public final long render(float maxexpenlvl, float minexplvl, AllowedRenderer info, boolean particles,
-            Renderer<?>... re) {
+    public final long render(float maxexpenlvl, float minexplvl, String renderPassName, AllowedRenderer info, boolean particles,
+            Renderer... re) {
         state = FrameState.RENDERING;
     	tmptime = DisplayManager.instance().getCurrentTime();
     	lights.clear();
@@ -175,13 +175,13 @@ public class Scene implements DataMapSerializable {
                 for (long y = -coy + cy; y <= coy + cy; y++) {
                     for (long z = -coz + cz; z <= coz + cz; z++) {
                         if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
-                            vertcount += tmpc.render(maxexpenlvl, minexplvl, info, re);
+                            vertcount += tmpc.render(maxexpenlvl, minexplvl, renderPassName, info, re);
                         }
                     }
                 }
             }
         }
-        vertcount += global.render(maxexpenlvl, minexplvl, info, re);
+        vertcount += global.render(maxexpenlvl, minexplvl, renderPassName, info, re);
         rendertime = DisplayManager.instance().getCurrentTime() - tmptime;
         if(particles){
         	ParticleMaster.instance().render(cam);

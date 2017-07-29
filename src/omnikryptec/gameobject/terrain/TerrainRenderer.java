@@ -11,6 +11,8 @@ import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.TexturedModel;
+import omnikryptec.shader.base.Shader;
+import omnikryptec.shader.base.ShaderPack;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
@@ -22,7 +24,7 @@ import omnikryptec.util.logger.LogLevel;
 public class TerrainRenderer extends Renderer<TerrainShader> {
 
     public TerrainRenderer() {
-        super(new TerrainShader());
+        super(new ShaderPack<>(new TerrainShader()));
         RendererRegistration.register(this);
         setExpensiveLevel(0);
         setPriority(0);
@@ -35,7 +37,7 @@ public class TerrainRenderer extends Renderer<TerrainShader> {
 
     // TODO change something
     @Override
-    protected long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, boolean ownshader) {
+    protected long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader ownshader) {
         vertcount = 0;
         //shader.start();
         TerrainShader.viewMatrix.loadMatrix(s.getCamera().getViewMatrix());

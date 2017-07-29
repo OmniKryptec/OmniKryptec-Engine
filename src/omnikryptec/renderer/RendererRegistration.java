@@ -11,7 +11,7 @@ import omnikryptec.util.logger.Logger;
 
 public class RendererRegistration {
 
-    private static final List<Renderer<?>> existingRenderers = new ArrayList<>();
+    private static final List<Renderer> existingRenderers = new ArrayList<>();
 
     public static final EntityRenderer DEF_ENTITY_RENDERER;
     public static final AnimatedModelRenderer DEF_ANIMATEDMODEL_RENDERER;
@@ -27,20 +27,20 @@ public class RendererRegistration {
         SIMPLE_MESH_RENDERER = new EntityMeshRenderer();
     }
 
-    public static boolean exists(Renderer<?> r) {
+    public static boolean exists(Renderer r) {
         return existingRenderers.contains(r);
     }
 
-    public static void register(Renderer<?> r) {
+    public static void register(Renderer r) {
         existingRenderers.add(r);
     }
 
-    public static Renderer<?> byName(String name) {
+    public static Renderer byName(String name) {
         return byClass(SerializationUtil.classForName(name));
     }
 
-    public static Renderer<?> byClass(Class<?> c) {
-        for (Renderer<?> renderer : existingRenderers) {
+    public static Renderer byClass(Class<?> c) {
+        for (Renderer renderer : existingRenderers) {
             if (c == renderer.getClass()) {
                 return renderer;
             }
@@ -52,6 +52,6 @@ public class RendererRegistration {
      * trigger static constructor
      */
     public static void init() {
-        Logger.log("Initialized default renderer", LogLevel.FINEST);
+        Logger.log("Initializing default renderer", LogLevel.FINE);
     }
 }

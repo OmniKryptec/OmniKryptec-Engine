@@ -232,7 +232,7 @@ public class OmniKryptecEngine implements Profilable {
                 if(!onlyrender){
                 	sceneCurrent.logic(true);
                 }
-                vertsCountCurrent = sceneCurrent.render(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, AllowedRenderer.All, true);
+                vertsCountCurrent = sceneCurrent.render(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, null, AllowedRenderer.All, true);
             }
             eventsystem.fireEvent(new Event(), EventType.RENDER_FRAME_EVENT);
             scenefbo.unbindFrameBuffer();
