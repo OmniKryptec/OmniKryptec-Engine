@@ -190,7 +190,7 @@ public class EngineTest2 implements IEventHandler {
             Instance.getGameSettings().setMultithreadedParticles(false);
             system = new AttractedPaticleSystem(0, 0, 0,
                     new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false),
-                  10000,0, 1000f, 1f, RenderType.ALWAYS);
+                  100,0, 1000f, 1f, RenderType.ALWAYS);
 
             System.out.println("Generating objs...");
             int cube = 0;
@@ -214,8 +214,8 @@ public class EngineTest2 implements IEventHandler {
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
            
             //system.setParent(Instance.getCurrentCamera());
-            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.SHPERE, new Vector3f(0,1,0), 10));
-            system.setTimeMultiplier(1F);
+            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.DIRECTION, new Vector3f(0,1,0), 100));
+            system.setTimeMultiplier(2F);
             //system.setAverageStartScale(0.01f);
             //system.setAverageEndScale(1);
             //system.setSystemLifeLength(20);
@@ -241,7 +241,7 @@ public class EngineTest2 implements IEventHandler {
             //system.addAttractor(0, 300, 500, 200.0F, 100.0F, false);
             //system.addAttractor(-200, 300, 0, 75.0F, 50.0F, true);
             //system.addAttractor(200, 300, 0, 75.0F, 50.0F, true);
-            system.setSystemLifeLength(ParticleSystem.LIFELENGTH_SYSTEM_ONETICKBURST);
+            //system.setSystemLifeLength(ParticleSystem.LIFELENGTH_SYSTEM_ONETICKBURST);
             system.setGlobal(true);
             system.setStartcolor(new Color(1, 0, 1));
             system.setEndcolor(new Color(1, 1, 0));

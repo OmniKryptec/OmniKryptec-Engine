@@ -13,10 +13,10 @@ import omnikryptec.util.SerializationUtil;
 
 public class Transform implements DataMapSerializable, Positionable {
 
-    private Transform parent;
-    public Vector3f position;
-    public Quaternionf rotation;
-    public Vector3f scale;
+	protected Transform parent;
+    protected Vector3f position;
+    protected Quaternionf rotation;
+    protected Vector3f scale;
 
     private Matrix4f transformation;
 
