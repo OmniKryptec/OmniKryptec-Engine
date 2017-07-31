@@ -47,8 +47,8 @@ public class Terrain extends Entity {
 	}
 
 	public Terrain(final float size, final float worldX, final float worldZ, String texturedModelName, Model model, TerrainTexturePack texturePack, Texture blendMap) {
-        getTransform().position.x = worldX;
-        getTransform().position.z = worldZ;
+        getTransform().setX(worldX);
+        getTransform().setZ(worldZ);
         this.texturePack = texturePack;
         setAdvancedModel(new TexturedModel(texturedModelName, model, blendMap));
         getAdvancedModel().getMaterial().setRenderer(RendererRegistration.DEF_TERRAIN_RENDERER);

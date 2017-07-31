@@ -13,6 +13,7 @@ import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.ShaderPack;
+import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
@@ -37,7 +38,7 @@ public class TerrainRenderer extends Renderer<TerrainShader> {
 
     // TODO change something
     @Override
-    protected long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader ownshader) {
+    protected long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader ownshader, FrustrumFilter filter) {
         vertcount = 0;
         //shader.start();
         TerrainShader.viewMatrix.loadMatrix(s.getCamera().getViewMatrix());

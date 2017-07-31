@@ -22,6 +22,8 @@ import omnikryptec.util.RenderUtil;
 
 public class ParticleRenderer {
 
+	private static FrustrumFilter filter = new FrustrumFilter();
+	
 	private static int maxInstancesPerSys = 1_000_000;
 	private static final int INSTANCE_DATA_LENGTH = 25;
 
@@ -37,9 +39,9 @@ public class ParticleRenderer {
 	private int oldsize = -1;
 
 	private Camera curCam;
-	
+
 	private Vector3f curparpos;
-	
+
 	protected ParticleRenderer() {
 		quad = ModelUtil.generateQuad();
 		vbo = VertexBufferObject.createEmpty(GL15.GL_ARRAY_BUFFER);
@@ -64,7 +66,7 @@ public class ParticleRenderer {
 		}
 		shader.start();
 		shader.projMatrix.loadMatrix(curCam.getProjectionMatrix());
-		FrustrumFilter.setProjViewMatrices(curCam.getProjectionViewMatrix());
+		filter.setCamera(camera);
 		quad.getVao().bind(0, 1, 2, 3, 4, 5, 6, 7);
 		globalCount = 0;
 		for (ParticleAtlas tmpt : particles.keySet()) {
@@ -80,7 +82,8 @@ public class ParticleRenderer {
 					break;
 				}
 				curparpos = par.getPosition();
-				if (FrustrumFilter.intersects(curparpos.x, curparpos.y, curparpos.z, par.getScale()) && RenderUtil.inRenderRange(par.getPosition(), par.getType(), curCam)) {
+				if (filter.intersects(curparpos.x, curparpos.y, curparpos.z, par.getScale())
+						&& RenderUtil.inRenderRange(par.getPosition(), par.getType(), curCam)) {
 					updateModelViewMatrix(par.getPosition(), par.getRotation(), par.getScale(), curCam.getViewMatrix(),
 							vboData);
 					updateTexCoordInfo(par, vboData);
@@ -106,7 +109,8 @@ public class ParticleRenderer {
 		}
 		texture.getTexture().bindToUnitOptimized(0);
 		shader.nrOfRows.loadFloat(texture.getNumberOfRows());
-        shader.uvs.loadVec4(texture.getTexture().getUVs()[0], texture.getTexture().getUVs()[1], texture.getTexture().getUVs()[2], texture.getTexture().getUVs()[3]);
+		shader.uvs.loadVec4(texture.getTexture().getUVs()[0], texture.getTexture().getUVs()[1],
+				texture.getTexture().getUVs()[2], texture.getTexture().getUVs()[3]);
 	}
 
 	private void updateTexCoordInfo(Particle par, float[] data) {
@@ -129,15 +133,15 @@ public class ParticleRenderer {
 	private void updateModelViewMatrix(Vector3f pos, float rot, float scale, Matrix4f viewMatrix, float[] vboData) {
 		modelMatrix.identity();
 		modelMatrix.translate(pos);
-		modelMatrix.m00 ( viewMatrix.m00());
-		modelMatrix.m01 ( viewMatrix.m10());
-		modelMatrix.m02 ( viewMatrix.m20());
-		modelMatrix.m10 ( viewMatrix.m01());
-		modelMatrix.m11 ( viewMatrix.m11());
-		modelMatrix.m12 ( viewMatrix.m21());
-		modelMatrix.m20 ( viewMatrix.m02());
-		modelMatrix.m21 ( viewMatrix.m12());
-		modelMatrix.m22 ( viewMatrix.m22());
+		modelMatrix.m00(viewMatrix.m00());
+		modelMatrix.m01(viewMatrix.m10());
+		modelMatrix.m02(viewMatrix.m20());
+		modelMatrix.m10(viewMatrix.m01());
+		modelMatrix.m11(viewMatrix.m11());
+		modelMatrix.m12(viewMatrix.m21());
+		modelMatrix.m20(viewMatrix.m02());
+		modelMatrix.m21(viewMatrix.m12());
+		modelMatrix.m22(viewMatrix.m22());
 		modelMatrix.rotate((float) Math.toRadians(rot), Maths.Z);
 		tmp.set(scale, scale, scale);
 		modelMatrix.scale(tmp);

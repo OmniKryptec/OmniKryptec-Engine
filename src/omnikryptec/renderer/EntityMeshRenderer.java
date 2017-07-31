@@ -43,7 +43,7 @@ public class EntityMeshRenderer extends Renderer<EntityMeshShader>{
     private Model model;
 
     @Override
-    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader shader) {
+    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader shader, FrustrumFilter filter) {
     	vertcount = 0;
         for (AdvancedModel advancedModel : entities.keysArray()) {
             if (advancedModel == null || !(advancedModel instanceof TexturedModel)) {
@@ -61,7 +61,7 @@ public class EntityMeshRenderer extends Renderer<EntityMeshShader>{
             }
             stapel = entities.get(textmodel);
             for (int j = 0; j < stapel.size(); j += INSTANCES_PER_DRAWCALL) {
-                newRender(s, j);
+                newRender(s, j, filter);
             }
             stapel = null;
             if (mat.hasTransparency()) {
@@ -77,7 +77,7 @@ public class EntityMeshRenderer extends Renderer<EntityMeshShader>{
     private float[] array;
     private int instances;
 
-    private void newRender(Scene s, int offset) {
+    private void newRender(Scene s, int offset, FrustrumFilter filter) {
         instances = Math.min(stapel.size(), INSTANCES_PER_DRAWCALL + offset);
         array = new float[Math.min(stapel.size(), INSTANCES_PER_DRAWCALL) * INSTANCED_DATA_LENGTH];
         pointer = 0;
@@ -85,7 +85,7 @@ public class EntityMeshRenderer extends Renderer<EntityMeshShader>{
         for (int j = offset; j < instances; j++) {
             entity = stapel.get(j);
             if (entity.isRenderingEnabled()) {
-                if (FrustrumFilter.intersects(entity) && RenderUtil.inRenderRange(entity, s.getCamera())) {
+                if (filter.intersects(entity, true)) {
                 	updateArray(entity.getTransformation(), entity.getColor(), array);
                     count++;
                 }

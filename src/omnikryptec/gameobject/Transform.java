@@ -20,7 +20,7 @@ public class Transform implements DataMapSerializable, Positionable {
 
     private Matrix4f transformation;
 
-    private boolean disableRecalculation = false;
+    protected boolean disableRecalculation = false;
 
     public Transform() {
         this(new Vector3f(0));
@@ -74,7 +74,25 @@ public class Transform implements DataMapSerializable, Positionable {
     public boolean isRecalculationDisabled() {
         return disableRecalculation;
     }
-
+    
+    public Transform setX(float x){
+    	lastframe = -1;
+    	this.position.x = x;
+    	return this;
+    }
+    
+    public Transform setY(float y){
+    	lastframe = -1;
+    	this.position.y = y;
+    	return this;
+    }
+    
+    public Transform setZ(float z){
+    	lastframe = -1;
+    	this.position.z = z;
+    	return this;
+    }
+    
     public Transform increasePosition(float x, float y, float z) {
         lastframe = -1;
         this.position.x += x;

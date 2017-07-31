@@ -58,7 +58,7 @@ public class ShaderPack<T extends Shader> {
 	
 	public Shader getShader(String renderPassName){
 		Shader sh = pack.get(renderPassName);
-		if(defaultShader!=null){
+		if(sh==null&&defaultShader!=null){
 			sh = this.defaultShader;
 		}
 		return sh;

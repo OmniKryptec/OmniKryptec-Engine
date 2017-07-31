@@ -13,13 +13,15 @@ public class Camera extends GameObject {
 
     private Matrix4fc projection;
     private Matrix4f view;
-
+    
     public Camera() {
         super();
     }
 
     public Camera(Matrix4f proj) {
         super();
+        projViewNeedsUpdate = true;
+        invPVneedsUpdate = true;
         projection = proj.toImmutable();
     }
 
@@ -43,16 +45,32 @@ public class Camera extends GameObject {
             view.translate(negcampos);
             lastpos.set(campos);
             lastrot.set(absrot);
+            projViewNeedsUpdate = true;
+            invPVneedsUpdate = true;
         }
         return view;
     }
 
+    private Matrix4f invProjView = new Matrix4f();
+    private boolean invPVneedsUpdate = true;
     public Matrix4f getInverseProjView() {
-        return getProjectionViewMatrix().invert(new Matrix4f());
+    	if(invPVneedsUpdate){
+    		invPVneedsUpdate = false;
+            return getProjectionViewMatrix().invert(invProjView);
+    	}else{
+    		return invProjView;
+    	}
     }
-
+    
+    private boolean projViewNeedsUpdate=true;
+    private Matrix4f projview = new Matrix4f();
     public Matrix4f getProjectionViewMatrix() {
-        return getProjectionMatrix().mul(getViewMatrix(), new Matrix4f());
+        if(projViewNeedsUpdate){
+        	projViewNeedsUpdate=false;
+        	return getProjectionMatrix().mul(getViewMatrix(), projview); 
+        }else{
+        	return projview;
+        }
     }
 
     public Camera setPerspectiveProjection(float fovdeg, float near, float far) {
@@ -60,12 +78,16 @@ public class Camera extends GameObject {
     }
 
     public Camera setPerspectiveProjection(float fovdeg, float near, float far, float width, float height) {
-        projection = Maths.setPerspectiveProjection(fovdeg, far, near, width, height).toImmutable();
+        projViewNeedsUpdate = true;
+        invPVneedsUpdate = true;
+    	projection = Maths.setPerspectiveProjection(fovdeg, far, near, width, height).toImmutable();
         return this;
     }
 
     public Camera setOrthographicProjection(float left, float right, float bottom, float top, float near, float far) {
-        projection = Maths.setOrthographicProjection(left, right, bottom, top, near, far).toImmutable();
+        projViewNeedsUpdate = true;
+        invPVneedsUpdate = true;
+    	projection = Maths.setOrthographicProjection(left, right, bottom, top, near, far).toImmutable();
         return this;
     }
 
@@ -78,7 +100,9 @@ public class Camera extends GameObject {
     }
 
     public Camera setProjectionMatrix(Matrix4f proj) {
-        this.projection = proj.toImmutable();
+        projViewNeedsUpdate = true;
+        invPVneedsUpdate = true;
+    	this.projection = proj.toImmutable();
         return this;
     }
 

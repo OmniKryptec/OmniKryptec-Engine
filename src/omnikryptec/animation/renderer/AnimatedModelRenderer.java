@@ -14,6 +14,7 @@ import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.ShaderPack;
+import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
@@ -49,7 +50,7 @@ public class AnimatedModelRenderer extends Renderer<AnimatedModelShader> {
     private long vertcount = 0;
 
     @Override
-    protected long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader ownshader) {
+    protected long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader ownshader, FrustrumFilter filter) {
         final Camera camera = s.getCamera();
         vertcount = 0;
         shaderpack.getDefaultShader().projectionMatrix.loadMatrix(camera.getProjectionMatrix());

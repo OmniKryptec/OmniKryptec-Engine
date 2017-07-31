@@ -49,7 +49,7 @@ public class EntityRenderer extends Renderer<EntityLightShader> {
     private Model model;
 
     @Override
-    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader b) {
+    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader b, FrustrumFilter f) {
         if (!DisplayManager.instance().getSettings().isLightForwardAllowed() && Logger.isDebugMode()) {
             Logger.log("Forward light is not enabled. Will not render.", LogLevel.WARNING);
             return 0;
@@ -113,7 +113,7 @@ public class EntityRenderer extends Renderer<EntityLightShader> {
             shaderpack.getDefaultShader().matData.loadVec4(mat.getMData());
             stapel = entities.get(textmodel);
             for (int j = 0; j < stapel.size(); j += INSTANCES_PER_DRAWCALL) {
-                newRender(s, j);
+                newRender(s, j, f);
             }
             if (textmodel.getMaterial().hasTransparency()) {
                 RenderUtil.cullBackFaces(true);
@@ -128,7 +128,7 @@ public class EntityRenderer extends Renderer<EntityLightShader> {
     private float[] array;
     private int instances;
 
-    private void newRender(Scene s, int offset) {
+    private void newRender(Scene s, int offset, FrustrumFilter f) {
         instances = Math.min(stapel.size(), INSTANCES_PER_DRAWCALL + offset);
         array = new float[Math.min(stapel.size(), INSTANCES_PER_DRAWCALL) * INSTANCED_DATA_LENGTH];
         pointer = 0;
@@ -136,7 +136,7 @@ public class EntityRenderer extends Renderer<EntityLightShader> {
         for (int j = offset; j < instances; j++) {
             entity = stapel.get(j);
             if (entity.isRenderingEnabled()) {
-                if (FrustrumFilter.intersects(entity) && RenderUtil.inRenderRange(entity, s.getCamera())) {
+                if (f.intersects(entity, true)) {
                     updateArray(entity.getTransformation(), entity.getColor(), array);
                     count++;
                 }

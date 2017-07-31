@@ -12,16 +12,18 @@ import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
 public abstract class Renderer<T extends Shader> {
-
+	
+	
     private float lvl = 0, prio = 0;
     protected ShaderPack<T> shaderpack;
-    protected boolean setFrustrumFilter = true;
+	protected FrustrumFilter filter = new FrustrumFilter();
+
     
     protected Renderer(ShaderPack<T> myshader) {
         this.shaderpack = myshader;
     }
 
-    protected abstract long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader started);
+    protected abstract long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader started, FrustrumFilter filter);
 
     private Shader tmps = null;
 
@@ -34,14 +36,23 @@ public abstract class Renderer<T extends Shader> {
             return 0;
         }
 
-        if (setFrustrumFilter) {
-            FrustrumFilter.setProjViewMatrices(s.getCamera().getProjectionViewMatrix());
+        if (filter!=null) {
+        	filter.setCamera(s.getCamera());
         }
         tmps.start();
         tmps.onRenderStart(s);
-        return render(s, entities, tmps);
+        return render(s, entities, tmps, filter);
     }
 
+    public FrustrumFilter getFrustrumFilter(){
+    	return filter;
+    }
+    
+    public Renderer<T> setFrustrumFilter(FrustrumFilter filter){
+    	this.filter = filter;
+    	return this;
+    }
+    
     public final float expensiveLevel() {
         return lvl;
     }
