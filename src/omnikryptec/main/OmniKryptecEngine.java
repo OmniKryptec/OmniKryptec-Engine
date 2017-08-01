@@ -19,6 +19,7 @@ import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.PostProcessing;
 import omnikryptec.postprocessing.main.RenderTarget;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
+import omnikryptec.renderer.Query;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.AllowedRenderer;
 import omnikryptec.resource.model.VertexArrayObject;
@@ -315,6 +316,7 @@ public class OmniKryptecEngine implements Profilable {
         FrameBufferObject.cleanup();
         SimpleTexture.cleanup();
         Shader.cleanAllShader();
+        Query.cleanup();
         EventSystem.instance().fireEvent(new Event(), EventType.CLEANUP);
         instance = null;
     }

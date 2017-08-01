@@ -4,6 +4,7 @@ import java.nio.FloatBuffer;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL31;
 
@@ -40,7 +41,26 @@ public class OpenGL {
         	GL31.glDrawElementsInstanced(mode, indexcount, type, indices, count);
         }
         
+		//Querys
+		public static int gl15genQueries() {
+			return GL15.glGenQueries();
+		}
 		
+		public static void gl15deleteQueries(int id){
+			GL15.glDeleteQueries(id);
+		}
+		
+		public static void gl15beginQuery(int type, int id){
+			GL15.glBeginQuery(type, id);
+		}
+		
+		public static void gl15endQuery(int id){
+			GL15.glEndQuery(id);
+		}
+		
+		public static int gl15getQueryObjecti(int id, int pname){
+			return GL15.glGetQueryObjecti(id, pname);
+		}
 		
 		//Shader
 		public static void gl20loadMatrix4f(int location, boolean transposed, FloatBuffer matrixbuffer){
