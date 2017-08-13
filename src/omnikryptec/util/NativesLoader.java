@@ -12,13 +12,24 @@ public class NativesLoader {
 
     private static final String NATIVESPATH = "/omnikryptec/res/natives/";
     private static final String LWJGLLIBRARYPATH = "org.lwjgl.librarypath";
-    private static final AdvancedFile NATIVESFOLDER = getStandardNativesFolder();
+    private static AdvancedFile NATIVESFOLDER = null;
     private static String OLDLWJGLLIBRARYPATH = "";
 
     private static boolean nativesLoaded = false;
 
+    public static final boolean setNativesFolder(AdvancedFile file){
+    	if(nativesLoaded){
+    		return false;
+    	}
+    	NATIVESFOLDER = file;
+    	return true;
+    }
+    
     public static final boolean loadNatives() {
-        if (NATIVESFOLDER == null) {
+        if(NATIVESFOLDER==null){
+        	NATIVESFOLDER = getStandardNativesFolder();
+        }
+    	if (NATIVESFOLDER == null) {
             Logger.log("Loaded natives not successfully, because there is some error with the standard natives folder",
                     LogLevel.WARNING);
             return false;
@@ -126,7 +137,7 @@ public class NativesLoader {
     }
 
     private static final AdvancedFile getStandardNativesFolder() {
-        boolean appDataCreated = OSUtil.createStandardFolders();
+    	boolean appDataCreated = OSUtil.createStandardFolders();
         if (appDataCreated) {
             return new AdvancedFile(false, OSUtil.STANDARDAPPDATA, "natives", OSUtil.OpSys.getName());
         } else {

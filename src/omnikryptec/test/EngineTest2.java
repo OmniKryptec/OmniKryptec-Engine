@@ -52,6 +52,10 @@ import omnikryptec.util.profiler.LiveProfiler;
 
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GLCapabilities;
 
 /**
  *
@@ -61,8 +65,8 @@ public class EngineTest2 implements IEventHandler {
 
     public static void main(String[] args) {
         try {
-            NativesLoader.loadNatives();
-            OmniKryptecEngine.addShutdownHook(() -> NativesLoader.unloadNatives());
+        	NativesLoader.loadNatives();
+        	OmniKryptecEngine.addShutdownHook(() -> NativesLoader.unloadNatives());
             Logger.setMinimumLogLevel(LogLevel.FINEST);
             Logger.enableLoggerRedirection(true);
             Logger.setDebugMode(true);
@@ -72,7 +76,7 @@ public class EngineTest2 implements IEventHandler {
             LanguageManager.setLanguage("DE");
 
             DisplayManager.createDisplay("Test 2",
-                    new GameSettings().setAnisotropicLevel(0).setMultisamples(0)
+                    new GameSettings().setAnisotropicLevel(512).setMultisamples(512)
                     .setInitialFPSCap(-1).setChunkRenderOffsets(2, 2, 2).setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(true),
                     new GLFWInfo(4,3,true,false,1280, 720));
             DisplayManager.instance().setSmoothedDeltatime(true);
@@ -85,7 +89,6 @@ public class EngineTest2 implements IEventHandler {
 		            liveProfiler.startTimer(1000);					
 				}
 			}).start();
-            
             //PostProcessing.instance().addStage(new
             // DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
             // DeferredLightPrepare.DEFAULT_LIGHT_PREPARE));
@@ -193,8 +196,8 @@ public class EngineTest2 implements IEventHandler {
                   100,0, 1000f, 1f, RenderType.ALWAYS);
 
             System.out.println("Generating objs...");
-            int cube = 0;
-            int abstand =50;
+            int cube = 100;
+            int abstand =10;
             float scale = 1;
             for (int x = -cube; x < cube; x += abstand) {
                 for (int y = -cube; y < cube; y += abstand) {

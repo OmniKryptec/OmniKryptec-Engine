@@ -1,6 +1,10 @@
 package omnikryptec.settings;
 
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL30;
+
 import omnikryptec.gameobject.RenderType;
+import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.postprocessing.main.FBOFactory;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.RenderTarget;
@@ -122,7 +126,7 @@ public class GameSettings {
      * @return GameSettings A reference to this GameSettings
      */
     public final GameSettings setMultisamples(int multisamples) {
-        this.multisamples = multisamples;
+    	this.multisamples = 0;
         return this;
     }
 
@@ -132,7 +136,7 @@ public class GameSettings {
      * @return Integer Number of multisamples
      */
     public final int getMultiSamples() {
-        return multisamples;
+        return OmniKryptecEngine.isCreated()?(GL.getCapabilities().GL_EXT_framebuffer_multisample?multisamples:NO_MULTISAMPLING):multisamples;
     }
 
     /**

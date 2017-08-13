@@ -373,5 +373,9 @@ public class OmniKryptecEngine implements Profilable {
         public boolean clear = true;
         public boolean sleepWhenInactive = true;
     }
+
+	public static boolean isCreated() {
+		return instance!=null;
+	}
 	
 }

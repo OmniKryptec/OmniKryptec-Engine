@@ -92,7 +92,9 @@ public class ParticleRenderer {
 				}
 			}
 			vbo.updateData(vboData, buffer);
-			GL31.glDrawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVao().getIndexCount(), count);
+			if(count>0){
+				GL31.glDrawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVao().getIndexCount(), count);
+			}
 		}
 		RenderUtil.disableBlending();
 	}
