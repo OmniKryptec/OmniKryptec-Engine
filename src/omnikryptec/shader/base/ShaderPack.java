@@ -10,6 +10,7 @@ public class ShaderPack<T extends Shader> {
 
 	private HashMap<String, Shader> pack;
 	protected T defaultShader;
+	protected boolean defaultShaderIfError=true;
 	
 	public ShaderPack(T defaults, Object...os){
 		this.defaultShader = defaults;
@@ -58,7 +59,7 @@ public class ShaderPack<T extends Shader> {
 	
 	public Shader getShader(String renderPassName){
 		Shader sh = pack.get(renderPassName);
-		if(sh==null&&defaultShader!=null){
+		if(sh==null&&defaultShader!=null&&defaultShaderIfError){
 			sh = this.defaultShader;
 		}
 		return sh;

@@ -152,7 +152,7 @@ public class Scene implements DataMapSerializable {
     private double tmptime = 0;
     
     public final long render(float maxexpenlvl, float minexplvl, String renderPassName, AllowedRenderer info, boolean particles,
-            Renderer... re) {
+            Renderer<?>... re) {
         state = FrameState.RENDERING;
     	tmptime = DisplayManager.instance().getCurrentTime();
     	lights.clear();
