@@ -6,4 +6,5 @@ public class ParticleList {
 	
 	LinkedList<Particle> list = new LinkedList<>();
 	boolean wantsUpdateLast=false;
+	boolean mt;
 }

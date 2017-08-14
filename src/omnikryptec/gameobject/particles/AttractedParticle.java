@@ -46,6 +46,7 @@ public class AttractedParticle extends Particle {
         color.setFrom(startcolor);
         setScale(startscale);
         wantsupdatelast = true;
+        wantsmultithreaded = attractedByParticles;
     }
 
     public AttractedPaticleSystem getSystem() {
@@ -62,7 +63,8 @@ public class AttractedParticle extends Particle {
     }
 
     public AttractedParticle setAttractedByParticles(boolean attractedByParticles) {
-        this.attractedByParticles = attractedByParticles;
+    	this.wantsmultithreaded = attractedByParticles;
+    	this.attractedByParticles = attractedByParticles;
         return this;
     }
 

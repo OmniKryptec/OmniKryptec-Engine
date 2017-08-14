@@ -34,7 +34,7 @@ public class ParticleMaster implements Profilable {
     static ExecutorService executor;
 
     private static ParticleMaster instance;
-    private long updatedParticlesCount = 0;
+    private volatile long updatedParticlesCount = 0;
 
     public static ParticleMaster instance() {
         if (instance == null) {
@@ -69,10 +69,14 @@ public class ParticleMaster implements Profilable {
         boolean multithread_ = Instance.getGameSettings().isMultithreadedParticles();
         if(multithread_){
         	long count = 0;
+        	boolean mt = false;
         	for(ParticleList l : particles.values()){
         		count += l.list.size();
+        		if(l.mt) {
+        			mt = true;
+        		}
         	}
-        	if(count < Instance.getGameSettings().getMinMultithreadParticles()){
+        	if(count < Instance.getGameSettings().getMinMultithreadParticles() || !mt){
         		multithread_ = false;
         	}
         }
@@ -128,6 +132,7 @@ public class ParticleMaster implements Profilable {
                 } catch (InterruptedException ex) {
                     System.err.println(ex);
                 }
+                //TODO perfomance?!?!?
                 particlesToRemove.stream().forEach((p_) -> {
                     list.remove(p_);
                 });
@@ -183,6 +188,9 @@ public class ParticleMaster implements Profilable {
         }
         if(par.wantsUpdateLast()){
         	list1.wantsUpdateLast = true;
+        }
+        if(par.wantsMultithreaded()) {
+        	list1.mt = true;
         }
         list1.list.add(par);
     }

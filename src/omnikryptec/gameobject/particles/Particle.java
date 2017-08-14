@@ -19,6 +19,7 @@ public class Particle {
     private float distance;
     protected Color color = new Color(1, 1, 1, 1);
     protected boolean wantsupdatelast=false;
+    protected boolean wantsmultithreaded=false;
     
     public Particle(ParticleAtlas texture) {
         this(texture, RenderType.ALWAYS);
@@ -167,5 +168,9 @@ public class Particle {
     
 	public final boolean wantsUpdateLast() {
 		return wantsupdatelast;
+	}
+
+	public boolean wantsMultithreaded() {
+		return wantsmultithreaded;
 	}
 }
