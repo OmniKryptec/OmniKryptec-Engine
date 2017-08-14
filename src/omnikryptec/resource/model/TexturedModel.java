@@ -12,8 +12,6 @@ public class TexturedModel implements AdvancedModel {
 
     private String name;
     private Model model;
-    @Deprecated
-    private Texture texture;
     private Material material;
     
     public TexturedModel() {
@@ -23,11 +21,15 @@ public class TexturedModel implements AdvancedModel {
         this(name, model, texture, new Material());
     }
 
+    public TexturedModel(String name, Model model, Material material) {
+    	this(name, model, null, material);
+    }
+    
     public TexturedModel(String name, Model model, Texture texture, Material material) {
         this.name = name;
         this.model = model;
-        this.texture = texture;
         this.material = material;
+        this.material.setTexture(Material.DIFFUSE, texture);
         ArrayList<TexturedModel> tms = texturedModels.get(name);
         if(tms == null) {
             tms = new ArrayList<>();
@@ -39,11 +41,6 @@ public class TexturedModel implements AdvancedModel {
     @Override
     public final Model getModel() {
         return model;
-    }
-
-    @Override
-    public final Texture getTexture() {
-        return texture;
     }
 
     @Override
@@ -90,7 +87,7 @@ public class TexturedModel implements AdvancedModel {
     
     @Override
     public final TexturedModel copy() {
-        return new TexturedModel(name, model, texture, material);
+        return new TexturedModel(name, model, material.getTexture(Material.DIFFUSE), material);
     }
     
     public static final TexturedModel byName(String name) {

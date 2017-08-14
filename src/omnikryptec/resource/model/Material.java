@@ -29,31 +29,31 @@ public class Material {
 	private boolean hasTransparency = false;
 
 	
-	public Material setTexture(String name, Texture t){
-		textures.put(name, t);
+	public Material setTexture(String type, Texture t){
+		textures.put(type, t);
 		return this;
 	}
 	
-	public Material setFloat(String name, float f){
-		floats.put(name, f);
+	public Material setFloat(String type, float f){
+		floats.put(type, f);
 		return this;
 	}
 	
-	public Material setVector3f(String name, Vector3f v){
-		vec4fs.put(name, v);
+	public Material setVector3f(String type, Vector3f v){
+		vec4fs.put(type, v);
 		return this;
 	}
 	
-	public Texture getTexture(String name){
-		return textures.get(name);
+	public Texture getTexture(String type){
+		return textures.get(type);
 	}
 	
-	public float getFloat(String name){
-		return floats.get(name);
+	public float getFloat(String type){
+		return floats.get(type);
 	}
 	
-	public Vector3f getVector3f(String name){
-		return vec4fs.get(name);
+	public Vector3f getVector3f(String type){
+		return vec4fs.get(type);
 	}
 	
 	public final boolean hasTransparency() {

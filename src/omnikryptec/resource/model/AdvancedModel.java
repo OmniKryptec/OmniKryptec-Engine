@@ -19,13 +19,6 @@ public interface AdvancedModel extends ResourceObject {
     public Model getModel();
 
     /**
-     * Returns the texture
-     *
-     * @return Texture Texture
-     */
-    public Texture getTexture();
-
-    /**
      * Returns the material
      *
      * @return Material Material

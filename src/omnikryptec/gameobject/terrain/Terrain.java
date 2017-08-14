@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import omnikryptec.gameobject.Entity;
 import omnikryptec.renderer.RendererRegistration;
+import omnikryptec.resource.model.Material;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.resource.objConverter.ModelData;
@@ -245,7 +246,7 @@ public class Terrain extends Entity {
     }
 
     public final Terrain copy(int gridX, int gridZ) {
-        return new Terrain(size, gridX, gridZ, getAdvancedModel().getName(), getAdvancedModel().getModel(), texturePack, getAdvancedModel().getTexture());
+        return new Terrain(size, gridX, gridZ, getAdvancedModel().getName(), getAdvancedModel().getModel(), texturePack, getAdvancedModel().getMaterial().getTexture(Material.DIFFUSE));
     }
 
     public final TerrainTexturePack getTexturePack() {
@@ -253,7 +254,7 @@ public class Terrain extends Entity {
     }
 
     public final Texture getBlendMap() {
-        return getAdvancedModel().getTexture();
+        return getAdvancedModel().getMaterial().getTexture(Material.DIFFUSE);
     }
 
 }

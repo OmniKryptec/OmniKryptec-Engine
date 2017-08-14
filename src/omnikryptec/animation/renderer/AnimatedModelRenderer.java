@@ -12,6 +12,7 @@ import omnikryptec.renderer.RenderMap;
 import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.AdvancedModel;
+import omnikryptec.resource.model.Material;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.ShaderPack;
 import omnikryptec.util.FrustrumFilter;
@@ -65,8 +66,7 @@ public class AnimatedModelRenderer extends Renderer<AnimatedModelShader> {
             }
             animatedModel = (AnimatedModel) advancedModel;
             animatedModel.getModel().getVao().bind(0, 1, 2, 3, 4, 5);
-            animatedModel.getTexture().bindToUnitOptimized(0);
-            RenderUtil.antialias(true);
+            animatedModel.getMaterial().getTexture(Material.DIFFUSE).bindToUnitOptimized(0);
             RenderUtil.disableBlending();
             RenderUtil.enableDepthTesting(true);
             stapel = entities.get(animatedModel);

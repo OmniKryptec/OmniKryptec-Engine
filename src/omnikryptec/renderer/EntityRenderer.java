@@ -80,7 +80,7 @@ public class EntityRenderer extends Renderer<EntityLightShader> {
             textmodel = (TexturedModel) advancedModel;
             model = textmodel.getModel();
             model.getVao().bind(0, 1, 2, 3, 4, 5, 6, 7, 8);
-            textmp = textmodel.getTexture();
+            textmp = textmodel.getMaterial().getTexture(Material.DIFFUSE);
             textmp.bindToUnitOptimized(0);
             shaderpack.getDefaultShader().uvs.loadVec4(textmp.getUVs()[0], textmp.getUVs()[1], textmp.getUVs()[2], textmp.getUVs()[3]);
             mat = textmodel.getMaterial();

@@ -90,16 +90,6 @@ public class AnimatedModel implements AdvancedModel {
     }
 
     /**
-     * Returns the texture
-     *
-     * @return Texture Texture
-     */
-    @Override
-    public final Texture getTexture() {
-        return texture;
-    }
-
-    /**
      * Returns the root joint
      *
      * @return Joint Root Joint
