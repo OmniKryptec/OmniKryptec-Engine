@@ -1,12 +1,12 @@
 package omnikryptec.gameobject.particles;
 
-import omnikryptec.gameobject.RenderType;
-import omnikryptec.resource.texture.ParticleAtlas;
-
 import java.util.ArrayList;
-import omnikryptec.util.PhysicsUtil;
 
 import org.joml.Vector3f;
+
+import omnikryptec.gameobject.RenderType;
+import omnikryptec.resource.texture.ParticleAtlas;
+import omnikryptec.util.PhysicsUtil;
 
 /**
  * AttractedParticle

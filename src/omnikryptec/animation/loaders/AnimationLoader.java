@@ -2,6 +2,9 @@ package omnikryptec.animation.loaders;
 
 import java.util.HashMap;
 
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+
 import omnikryptec.animation.Animation;
 import omnikryptec.animation.JointTransform;
 import omnikryptec.animation.KeyFrame;
@@ -11,8 +14,6 @@ import omnikryptec.animation.ColladaParser.dataStructures.JointTransformData;
 import omnikryptec.animation.ColladaParser.dataStructures.KeyFrameData;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Quaternion;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
 /**
  * This class loads up an animation collada file, gets the information from it,

@@ -1,7 +1,8 @@
 package omnikryptec.gameobject.component;
 
 import java.util.ArrayList;
-import omnikryptec.audio.AudioEffectState;
+
+import org.joml.Vector3f;
 
 import omnikryptec.audio.AudioSource;
 import omnikryptec.display.DisplayManager;
@@ -9,7 +10,6 @@ import omnikryptec.gameobject.GameObject;
 import omnikryptec.main.Scene;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.util.Blocker;
-import org.joml.Vector3f;
 
 /**
  * Component for creating sounds

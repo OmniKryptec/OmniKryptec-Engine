@@ -2,8 +2,8 @@ package omnikryptec.shader.base;
 
 import org.lwjgl.opengl.GL20;
 
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 public abstract class Uniform {
 

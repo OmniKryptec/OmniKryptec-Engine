@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
+
+import org.lwjgl.glfw.GLFW;
 
 import com.bulletphysics.collision.shapes.StaticPlaneShape;
 import com.bulletphysics.dynamics.RigidBody;
@@ -13,7 +16,6 @@ import com.bulletphysics.linearmath.Transform;
 
 import de.pcfreak9000.noise.components.NoiseWrapper;
 import de.pcfreak9000.noise.noises.OpenSimplexNoise;
-import javax.vecmath.Quat4f;
 import omnikryptec.audio.AudioEffectState;
 import omnikryptec.audio.AudioManager;
 import omnikryptec.audio.AudioSource;
@@ -50,8 +52,6 @@ import omnikryptec.util.NativesLoader;
 import omnikryptec.util.PhysicsUtil;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.logger.Logger;
-
-import org.lwjgl.glfw.GLFW;
 
 /**
  *

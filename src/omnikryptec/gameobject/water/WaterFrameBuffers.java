@@ -1,11 +1,13 @@
 package omnikryptec.gameobject.water;
 
 import java.nio.ByteBuffer;
-import omnikryptec.display.Display;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
+
+import omnikryptec.display.Display;
 
 /**
  * WaterFrameBuffers

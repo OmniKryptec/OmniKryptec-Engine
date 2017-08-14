@@ -15,8 +15,8 @@ import omnikryptec.settings.GameSettings;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.Instance;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 /**
  *

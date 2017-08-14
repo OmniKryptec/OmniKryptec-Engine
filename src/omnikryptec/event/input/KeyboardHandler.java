@@ -1,9 +1,11 @@
 package omnikryptec.event.input;
 
 import java.util.Arrays;
-import omnikryptec.settings.KeySettings;
+
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWKeyCallback;
+
+import omnikryptec.settings.KeySettings;
 
 /**
  * KeyboardHandler

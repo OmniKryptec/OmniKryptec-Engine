@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import omnikryptec.util.AdvancedFile;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 /**
  *

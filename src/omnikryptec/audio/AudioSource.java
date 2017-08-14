@@ -1,9 +1,8 @@
 package omnikryptec.audio;
 
 import java.util.ArrayList;
-import omnikryptec.main.OmniKryptecEngine;
-import org.joml.Vector3f;
 
+import org.joml.Vector3f;
 import org.lwjgl.openal.AL10;
 
 /**

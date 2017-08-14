@@ -1,12 +1,7 @@
 package omnikryptec.util.error;
 
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-
-import com.fasterxml.jackson.databind.ext.Java7SupportImpl;
-
-import omnikryptec.util.OSUtil;
 
 public class SystemInfoItem implements ErrorItem{
 

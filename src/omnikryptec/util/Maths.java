@@ -1,5 +1,10 @@
 package omnikryptec.util;
 
+import java.util.Random;
+
+import org.joml.AxisAngle4f;
+import org.joml.Math;
+import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector2f;
@@ -7,12 +12,6 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import omnikryptec.display.Display;
-
-import java.util.Random;
-
-import org.joml.AxisAngle4f;
-import org.joml.Math;
-import org.joml.Matrix3f;
 
 public class Maths {
 

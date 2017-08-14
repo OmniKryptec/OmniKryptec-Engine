@@ -2,6 +2,7 @@ package omnikryptec.animation.ColladaParser.colladaLoader;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.joml.Matrix4f;
 
 import omnikryptec.animation.ColladaParser.dataStructures.AnimatedModelData;
 import omnikryptec.animation.ColladaParser.dataStructures.AnimationData;
@@ -11,8 +12,6 @@ import omnikryptec.animation.ColladaParser.dataStructures.SkinningData;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Instance;
 import omnikryptec.util.XMLUtil;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
 /**
  * Loads a model from a collada XML file.

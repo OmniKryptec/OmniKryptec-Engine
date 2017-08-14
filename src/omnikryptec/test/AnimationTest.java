@@ -3,6 +3,11 @@ package omnikryptec.test;
 import java.util.Random;
 import java.util.zip.Deflater;
 
+import org.joml.Matrix3f;
+import org.joml.Quaternionf;
+import org.joml.Vector4f;
+import org.lwjgl.glfw.GLFW;
+
 import omnikryptec.animation.AnimatedModel;
 import omnikryptec.animation.Animation;
 import omnikryptec.animation.ColladaParser.dataStructures.AnimatedModelData;
@@ -35,17 +40,11 @@ import omnikryptec.settings.KeySettings;
 import omnikryptec.test.saving.DataMapSerializer;
 import omnikryptec.test.saving.XMLSerializer;
 import omnikryptec.util.AdvancedFile;
-import omnikryptec.util.Maths;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.OSUtil;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.profiler.LiveProfiler;
-import org.joml.Matrix3f;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
-import org.lwjgl.glfw.GLFW;
 
 /**
  * AnimationTest

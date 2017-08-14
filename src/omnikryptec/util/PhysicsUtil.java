@@ -23,8 +23,8 @@ import com.bulletphysics.util.ObjectArrayList;
 
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.objConverter.ModelData;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 /**
  * Physics utility class

@@ -1,6 +1,7 @@
 package omnikryptec.util.logger;
 
 import java.awt.Color;
+
 import omnikryptec.util.lang.LanguageManager;
 
 /**

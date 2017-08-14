@@ -4,8 +4,10 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import omnikryptec.settings.KeySettings;
+
 import org.lwjgl.glfw.GLFW;
+
+import omnikryptec.settings.KeySettings;
 
 /**
  * JoystickHandler
@@ -16,7 +18,7 @@ public class JoystickHandler implements InputHandler {
 
     private static final ArrayList<JoystickHandler> joystickHandlers = new ArrayList<>();
 
-    private final JoystickHandler ME = this;
+    //private final JoystickHandler ME = this;
     private final int joystick;
     protected FloatBuffer dataAxes = null;
     protected ByteBuffer dataButtons = null;

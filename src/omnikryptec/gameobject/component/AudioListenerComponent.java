@@ -1,14 +1,14 @@
 package omnikryptec.gameobject.component;
 
+import org.joml.Vector3f;
+
 import omnikryptec.audio.AudioManager;
 import omnikryptec.gameobject.GameObject;
 import omnikryptec.main.Scene;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.util.ConverterUtil;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
-
-import org.joml.Vector3f;
+import omnikryptec.util.logger.Logger;
 
 /**
  * Component for listening the sounds

@@ -2,9 +2,10 @@ package omnikryptec.animation;
 
 import java.util.HashMap;
 
+import org.joml.Matrix4f;
+
 import omnikryptec.display.DisplayManager;
 import omnikryptec.util.Maths;
-import org.joml.Matrix4f;
 
 /**
  * Animator

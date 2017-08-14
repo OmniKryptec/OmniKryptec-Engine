@@ -1,11 +1,5 @@
 package omnikryptec.deferredlight;
 
-import omnikryptec.display.Display;
-import omnikryptec.gameobject.Light;
-import omnikryptec.main.Scene;
-import omnikryptec.shader.base.Shader;
-import omnikryptec.shader.files.QuadLightShader;
-
 public class QuadraticAttLightPrepare implements DeferredLightPrepare {
 
 //	private QuadLightShader shader = new QuadLightShader();

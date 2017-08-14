@@ -25,7 +25,9 @@ public class LiveProfiler {
     private BufferedImage image = null;
     private final JFrame frame = new JFrame("LiveProfiler");
     private final JPanel panel_image = new JPanel() {
-        @Override
+		private static final long serialVersionUID = -7905030061618863267L;
+
+		@Override
         protected void paintComponent(Graphics g) {
             g.drawImage(image, 0, 0, null);
         }
@@ -47,6 +49,7 @@ public class LiveProfiler {
     final Dimension size;
     private int maxValuesSize = 0;
 
+    
     public LiveProfiler(int width, int height) {
         this.size = new Dimension(width, height);
         frame.setLayout(new BorderLayout());
@@ -112,7 +115,7 @@ public class LiveProfiler {
             chartData.setValue(Math.max((completeValue / values.size()), 0.0F));
             max += chartData.getValue();
         }
-        final double average = max / data.size();
+        //final double average = max / data.size();
         frame.setTitle(String.format("LiveProfiler - %s: %f ms - Max %s: %f ms", Profiler.OVERALL_FRAME_TIME, (Profiler.currentTimeByName(Profiler.OVERALL_FRAME_TIME)), Profiler.OVERALL_FRAME_TIME, max));
         return updateImage();
     }
@@ -134,7 +137,8 @@ public class LiveProfiler {
     }
 
     public static final void main(String[] args) {
-        final LiveProfiler liveProfiler = new LiveProfiler(1000, 1000);
+        //final LiveProfiler liveProfiler = new LiveProfiler(1000, 1000);
+    	new LiveProfiler(1000, 1000);
     }
 
 }

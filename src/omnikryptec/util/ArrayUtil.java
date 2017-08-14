@@ -39,11 +39,13 @@ public class ArrayUtil {
         return false;
     }
 
-    public static <T> boolean contains(T[] array, T... toTest) {
+    @SuppressWarnings("unchecked")
+	public static <T> boolean contains(T[] array, T... toTest) {
         return contains(array, null, toTest);
     }
     
-    public static <T> boolean contains(T[] array, Filter<T> filter, T... toTest) {
+    @SuppressWarnings("unchecked")
+	public static <T> boolean contains(T[] array, Filter<T> filter, T... toTest) {
         if (array == null || array.length == 0 || toTest == null) {
             return false;
         }
@@ -104,7 +106,8 @@ public class ArrayUtil {
         
     }
     
-    @Deprecated
+    @SuppressWarnings("unchecked")
+	@Deprecated
     public static final <T> void sortArrayListAsArray(List<T> list, Comparator<? super T> c) {
         final T[] array = (T[]) list.toArray();
         list.clear();
@@ -112,7 +115,8 @@ public class ArrayUtil {
         list.addAll(Arrays.asList(array));
     }
     
-    public static final <T> void parallelSortArrayListAsArray(List<T> list, Comparator<? super T> c) {
+    @SuppressWarnings("unchecked")
+	public static final <T> void parallelSortArrayListAsArray(List<T> list, Comparator<? super T> c) {
         final T[] array = (T[]) list.toArray();
         list.clear();
         Arrays.parallelSort(array, c);

@@ -2,6 +2,7 @@ package omnikryptec.animation.renderer;
 
 import java.util.List;
 
+import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 
 import omnikryptec.animation.AnimatedModel;
@@ -17,10 +18,8 @@ import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.ShaderPack;
 import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.RenderUtil;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
-
-import org.joml.Vector3f;
+import omnikryptec.util.logger.Logger;
 
 /**
  *

@@ -1,22 +1,5 @@
 package omnikryptec.deferredlight;
 
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
-
-import omnikryptec.display.Display;
-import omnikryptec.display.DisplayManager;
-import omnikryptec.gameobject.Light;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.Scene;
-import omnikryptec.postprocessing.main.FrameBufferObject;
-import omnikryptec.postprocessing.main.PostProcessingStage;
-import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
-import omnikryptec.util.RenderUtil;
-import omnikryptec.util.logger.Logger;
-import omnikryptec.util.logger.LogLevel;
-
 public class DeferredLightStage  {
 
 //    private DeferredLightPrepare[] preparea;

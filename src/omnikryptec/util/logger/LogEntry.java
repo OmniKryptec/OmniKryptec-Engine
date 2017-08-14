@@ -1,13 +1,10 @@
 package omnikryptec.util.logger;
 
-import java.awt.Color;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-
-import omnikryptec.util.lang.LanguageManager;
 
 /**
  *

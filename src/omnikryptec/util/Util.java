@@ -1,7 +1,8 @@
 package omnikryptec.util;
 
-import omnikryptec.display.DisplayManager;
 import static omnikryptec.util.AdvancedFile.NOT_FOUND;
+
+import omnikryptec.display.DisplayManager;
 import omnikryptec.util.logger.Logger;
 
 /**
@@ -89,6 +90,7 @@ public class Util {
         while((thread.isAlive() && !thread.isInterrupted()) && ((delayTime == -1 || maxTime == -1) || ((times * delayTime) < maxTime))) {
             try {
                 thread.interrupt();
+                //FIXME deprecated?!
                 thread.stop();
                 if(delayTime > 0) {
                     Thread.sleep(delayTime);

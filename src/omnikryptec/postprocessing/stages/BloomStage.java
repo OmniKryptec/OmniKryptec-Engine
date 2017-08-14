@@ -7,9 +7,9 @@ import org.joml.Vector4f;
 
 import omnikryptec.display.Display;
 import omnikryptec.postprocessing.main.FrameBufferObject;
+import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.main.PostProcessingStage;
 import omnikryptec.postprocessing.main.SimpleStage;
-import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.shader.files.BrightnessHighlighterShader;
 import omnikryptec.shader.files.CombineShader;
 

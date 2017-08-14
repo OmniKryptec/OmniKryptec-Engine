@@ -27,7 +27,7 @@ public class AnimatedModelLoader {
      * @param textureFile - the file containing the data for the entity.
      * @return The animated entity (no animation applied though)
      */
-    public static AnimatedModel loadModel(String name, AdvancedFile modelFile, AdvancedFile textureFile, Renderer renderer) {
+    public static AnimatedModel loadModel(String name, AdvancedFile modelFile, AdvancedFile textureFile, Renderer<?> renderer) {
         AnimatedModelData entityData = ColladaLoader.loadColladaModel(name, modelFile, Instance.MAX_WEIGHTS);
         MeshData meshData = entityData.getMeshData();
         Model model = new Model(name, meshData);
@@ -43,7 +43,7 @@ public class AnimatedModelLoader {
         return animatedModel;
     }
 
-    public static AnimatedModel createModel(String name, AnimatedModelData entityData, Texture texture, Renderer renderer) {
+    public static AnimatedModel createModel(String name, AnimatedModelData entityData, Texture texture, Renderer<?> renderer) {
         MeshData meshData = entityData.getMeshData();
         Model model = new Model(name, meshData);
         VertexArrayObject vao = model.getVao();
@@ -83,24 +83,24 @@ public class AnimatedModelLoader {
         return joint;
     }
 
-    /**
-     * Stores the mesh data in a VAO.
-     *
-     * @param data - all the data about the mesh that needs to be stored in the
-     * VAO.
-     * @return The VAO containing all the mesh data for the model.
-     */
-    private static VertexArrayObject createVertexArrayObject(MeshData data) {
-        VertexArrayObject vao = VertexArrayObject.create();
-        vao.bind();
-        vao.createIndexBuffer(data.getIndices());
-        vao.createAttribute(0, data.getVertices(), 3);
-        vao.createAttribute(1, data.getTextureCoords(), 2);
-        vao.createAttribute(2, data.getNormals(), 3);
-        vao.createAttribute(3, data.getTangents(), 3);
-        vao.createIntAttribute(4, data.getJointIds(), 3);
-        vao.createAttribute(5, data.getVertexWeights(), 3);
-        return vao;
-    }
+//    /**
+//     * Stores the mesh data in a VAO.
+//     *
+//     * @param data - all the data about the mesh that needs to be stored in the
+//     * VAO.
+//     * @return The VAO containing all the mesh data for the model.
+//     */
+//    private static VertexArrayObject createVertexArrayObject(MeshData data) {
+//        VertexArrayObject vao = VertexArrayObject.create();
+//        vao.bind();
+//        vao.createIndexBuffer(data.getIndices());
+//        vao.createAttribute(0, data.getVertices(), 3);
+//        vao.createAttribute(1, data.getTextureCoords(), 2);
+//        vao.createAttribute(2, data.getNormals(), 3);
+//        vao.createAttribute(3, data.getTangents(), 3);
+//        vao.createIntAttribute(4, data.getJointIds(), 3);
+//        vao.createAttribute(5, data.getVertexWeights(), 3);
+//        return vao;
+//    }
 
 }

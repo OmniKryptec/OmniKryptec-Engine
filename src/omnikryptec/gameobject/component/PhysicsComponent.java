@@ -13,8 +13,8 @@ import omnikryptec.main.Scene;
 import omnikryptec.physics.JBulletPhysicsWorld;
 import omnikryptec.physics.RigidBodyBuilder;
 import omnikryptec.renderer.RenderChunk;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 /**
  * Component for physics

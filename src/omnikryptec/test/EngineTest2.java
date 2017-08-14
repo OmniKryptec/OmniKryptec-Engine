@@ -2,8 +2,9 @@ package omnikryptec.test;
 
 import java.util.Random;
 
+import org.joml.Vector3f;
+
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
-import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
 import omnikryptec.event.event.Event;
@@ -14,27 +15,20 @@ import omnikryptec.event.input.InputManager;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.gameobject.GameObject;
-import omnikryptec.gameobject.Light;
 import omnikryptec.gameobject.RenderType;
 import omnikryptec.gameobject.UpdateType;
 import omnikryptec.gameobject.particles.AttractedPaticleSystem;
-import omnikryptec.gameobject.particles.ParticleAttractor;
 import omnikryptec.gameobject.particles.AttractorMode;
-import omnikryptec.gameobject.particles.ParticleMaster;
+import omnikryptec.gameobject.particles.ParticleAttractor;
 import omnikryptec.gameobject.particles.ParticleSpawnArea;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
-import omnikryptec.gameobject.particles.ParticleSystem;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;
-import omnikryptec.postprocessing.main.DebugRenderer;
-import omnikryptec.postprocessing.main.PostProcessing;
-import omnikryptec.postprocessing.stages.CompleteGaussianBlurStage;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.Material;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
-import omnikryptec.resource.objConverter.ModelData;
 import omnikryptec.resource.objConverter.ObjLoader;
 import omnikryptec.resource.texture.AtlasTexture;
 import omnikryptec.resource.texture.ParticleAtlas;
@@ -46,16 +40,9 @@ import omnikryptec.util.Color;
 import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.lang.LanguageManager;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 import omnikryptec.util.profiler.LiveProfiler;
-
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
-import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.GLCapabilities;
 
 /**
  *

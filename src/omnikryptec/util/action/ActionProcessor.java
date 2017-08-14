@@ -2,6 +2,7 @@ package omnikryptec.util.action;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+
 import omnikryptec.util.logger.Logger;
 
 /**
@@ -48,7 +49,7 @@ public class ActionProcessor extends Thread {
     }
     
     public final synchronized LinkedList<Action> killNow() {
-        final LinkedList<Action> actions_left = new LinkedList(actions);
+        final LinkedList<Action> actions_left = new LinkedList<>(actions);
         actions.clear();
         return actions_left;
     }

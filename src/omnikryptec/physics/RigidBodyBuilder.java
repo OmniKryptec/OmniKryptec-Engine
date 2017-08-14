@@ -3,8 +3,6 @@ package omnikryptec.physics;
 import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 
-import org.joml.Quaternionf;
-
 import com.bulletphysics.collision.shapes.CollisionShape;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
@@ -14,7 +12,6 @@ import omnikryptec.gameobject.Entity;
 import omnikryptec.gameobject.GameObject;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
-import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.PhysicsUtil;
 
 /**

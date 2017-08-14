@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.lwjgl.glfw.GLFW;
 
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 /**
  * KeySettings

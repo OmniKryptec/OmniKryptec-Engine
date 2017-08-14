@@ -14,8 +14,8 @@ import org.lwjgl.openal.AL10;
 
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.AudioUtil;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 /**
  * Streamed sound

@@ -9,8 +9,8 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 /**
  *

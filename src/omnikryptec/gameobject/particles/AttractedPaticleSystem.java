@@ -2,10 +2,11 @@ package omnikryptec.gameobject.particles;
 
 import java.util.LinkedList;
 
+import org.joml.Vector3f;
+
 import omnikryptec.gameobject.GameObject;
 import omnikryptec.gameobject.RenderType;
 import omnikryptec.resource.texture.ParticleAtlas;
-import org.joml.Vector3f;
 
 /**
  * AttractedPaticleSystem

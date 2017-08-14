@@ -1,14 +1,5 @@
 package omnikryptec.event.input;
 
-import omnikryptec.display.Display;
-
-import omnikryptec.display.DisplayManager;
-import omnikryptec.gameobject.Camera;
-import omnikryptec.gameobject.GameObject;
-import omnikryptec.settings.KeySettings;
-import omnikryptec.util.Maths;
-import omnikryptec.util.logger.Logger;
-
 import org.joml.AxisAngle4f;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
@@ -16,6 +7,14 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
+
+import omnikryptec.display.Display;
+import omnikryptec.display.DisplayManager;
+import omnikryptec.gameobject.Camera;
+import omnikryptec.gameobject.GameObject;
+import omnikryptec.settings.KeySettings;
+import omnikryptec.util.Maths;
+import omnikryptec.util.logger.Logger;
 
 /**
  * InputManager

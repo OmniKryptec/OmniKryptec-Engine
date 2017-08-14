@@ -11,8 +11,6 @@ import omnikryptec.gameobject.GameObject;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.logger.Logger;
 
-import org.joml.Vector3f;
-
 /**
  *
  * @author Panzer1119

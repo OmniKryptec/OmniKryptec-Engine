@@ -18,8 +18,8 @@ import java.util.Collections;
 import java.util.Properties;
 
 import omnikryptec.util.AdvancedFile;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 /**
  *
@@ -32,7 +32,7 @@ public class Language extends Properties {
      */
     private static final long serialVersionUID = -5071523675384082116L;
     private static final String LANGUAGEFILEPREFIX = "lang_";
-    private static final int CODESHORTLENGTH = 2;
+    //private static final int CODESHORTLENGTH = 2;
     private static final String LANGUAGEPATHSEPARATOR = "/";
 
     private String languageCodeShort = "";

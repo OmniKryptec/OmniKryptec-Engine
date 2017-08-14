@@ -24,11 +24,14 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import org.apache.commons.io.IOUtils;
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
@@ -38,14 +41,10 @@ import org.lwjgl.openal.ALC10;
 import org.lwjgl.openal.ALCCapabilities;
 
 import omnikryptec.gameobject.component.Component;
-import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.AudioUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
-
-import org.apache.commons.io.IOUtils;
-import org.joml.Vector3f;
 
 /**
  * Main audio manager class

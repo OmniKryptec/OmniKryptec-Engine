@@ -1,8 +1,6 @@
 package omnikryptec.gameobject;
 
 import org.joml.AxisAngle4f;
-import org.joml.Matrix3f;
-import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import omnikryptec.event.input.InputManager;

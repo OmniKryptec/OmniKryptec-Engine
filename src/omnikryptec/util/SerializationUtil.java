@@ -246,7 +246,8 @@ public class SerializationUtil {
         return toCast;
     }
 
-    public static final <T> T[] castArray(Object[] toCast, Class<? extends T> c) {
+    @SuppressWarnings("unchecked")
+	public static final <T> T[] castArray(Object[] toCast, Class<? extends T> c) {
         if (toCast == null) {
             return null;
         }

@@ -1,7 +1,6 @@
 package omnikryptec.resource.model;
 
 import omnikryptec.resource.loader.ResourceObject;
-import omnikryptec.resource.texture.Texture;
 import omnikryptec.test.saving.DataMap;
 
 /**

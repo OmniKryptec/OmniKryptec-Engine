@@ -6,14 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import omnikryptec.resource.model.Model;
 import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.ArrayUtil;
 import omnikryptec.util.ArrayUtil.Filter;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 /**
  * ResourceLoader

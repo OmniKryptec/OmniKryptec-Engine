@@ -2,7 +2,7 @@ package omnikryptec.net;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.time.Instant;
+
 import omnikryptec.util.logger.Commands;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;

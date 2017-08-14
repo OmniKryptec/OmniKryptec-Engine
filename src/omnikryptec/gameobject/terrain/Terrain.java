@@ -2,6 +2,9 @@ package omnikryptec.gameobject.terrain;
 
 import java.util.ArrayList;
 
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+
 import omnikryptec.gameobject.Entity;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.Material;
@@ -12,9 +15,6 @@ import omnikryptec.resource.objConverter.Vertex;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.util.Instance;
 import omnikryptec.util.Maths;
-
-import org.joml.Vector2f;
-import org.joml.Vector3f;
 
 /**
  * Terrain

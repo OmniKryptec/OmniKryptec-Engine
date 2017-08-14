@@ -1,15 +1,16 @@
 package omnikryptec.audio;
 
 import java.util.Arrays;
+
 import javax.swing.Timer;
+
+import org.joml.Vector3f;
 
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.logger.Commands;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
-
-import org.joml.Vector3f;
 
 /**
  * Test class for the audio functions

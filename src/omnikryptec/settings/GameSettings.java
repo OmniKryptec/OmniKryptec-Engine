@@ -1,7 +1,6 @@
 package omnikryptec.settings;
 
 import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL30;
 
 import omnikryptec.gameobject.RenderType;
 import omnikryptec.main.OmniKryptecEngine;

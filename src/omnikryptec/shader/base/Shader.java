@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joml.Matrix4f;
-import org.joml.Matrix4fc;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
@@ -17,12 +15,11 @@ import omnikryptec.graphics.OpenGL;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;
 import omnikryptec.resource.model.AdvancedModel;
-import omnikryptec.resource.model.Material;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Instance;
 import omnikryptec.util.exceptions.OmniKryptecException;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 public class Shader {
 

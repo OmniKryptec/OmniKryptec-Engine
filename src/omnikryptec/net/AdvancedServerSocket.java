@@ -14,7 +14,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+
 import javax.swing.Timer;
+
 import omnikryptec.util.AdvancedThreadFactory;
 import omnikryptec.util.Util;
 import omnikryptec.util.logger.LogLevel;

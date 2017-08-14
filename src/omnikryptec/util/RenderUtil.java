@@ -3,10 +3,10 @@ package omnikryptec.util;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
-import omnikryptec.gameobject.EntityBuilder;
 import omnikryptec.gameobject.RenderType;
 import omnikryptec.gameobject.UpdateType;
 import omnikryptec.main.OmniKryptecEngine;

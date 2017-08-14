@@ -23,8 +23,8 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 /**
  *
@@ -258,7 +258,8 @@ public class AdvancedFile {
      *
      * @return Stirng Array Paths
      */
-    public final String[] getPaths() {
+    @SuppressWarnings("unchecked")
+	public final String[] getPaths() {
         resetValues();
         return ((ArrayList<String>) paths.clone()).toArray(new String[paths.size()]);
     }

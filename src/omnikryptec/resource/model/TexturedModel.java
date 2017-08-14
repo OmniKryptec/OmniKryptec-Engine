@@ -70,7 +70,8 @@ public class TexturedModel implements AdvancedModel {
         return this;
     }
     
-    private final TexturedModel deleteAll(boolean all) {
+    @SuppressWarnings("unchecked")
+	private final TexturedModel deleteAll(boolean all) {
         ArrayList<TexturedModel> tms = (ArrayList<TexturedModel>) texturedModels.get(name).clone();
         if(tms != null) {
             tms.remove(this);

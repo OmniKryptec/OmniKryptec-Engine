@@ -10,7 +10,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import omnikryptec.util.lang.LanguageManager;
-import omnikryptec.util.logger.LogLevel;
 
 /**
  * 

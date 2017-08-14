@@ -3,11 +3,9 @@ package omnikryptec.shader.files;
 import org.lwjgl.opengl.GL20;
 
 import omnikryptec.display.DisplayManager;
-import omnikryptec.resource.model.Material;
-import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.base.Attribute;
-import omnikryptec.shader.base.ShaderLineInsertion;
 import omnikryptec.shader.base.Shader;
+import omnikryptec.shader.base.ShaderLineInsertion;
 import omnikryptec.shader.base.UniformBoolean;
 import omnikryptec.shader.base.UniformInt;
 import omnikryptec.shader.base.UniformMatrix;

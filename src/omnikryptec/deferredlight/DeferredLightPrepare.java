@@ -1,9 +1,5 @@
 package omnikryptec.deferredlight;
 
-import omnikryptec.gameobject.Light;
-import omnikryptec.main.Scene;
-import omnikryptec.shader.base.Shader;
-
 public interface DeferredLightPrepare {
 
 //	public static final DeferredLightPrepare FORWARD_RENDERING = null;

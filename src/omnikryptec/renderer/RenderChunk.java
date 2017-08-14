@@ -72,15 +72,16 @@ public class RenderChunk implements DataMapSerializable {
         this.scene = scene;
     }
 
-    private final RenderMap<Renderer, RenderMap<AdvancedModel, List<Entity>>> chunk = new RenderMap<>(Renderer.class);
-    private final List<Renderer> prios = new ArrayList<>();
+    @SuppressWarnings("rawtypes") //idk why
+	private final RenderMap<Renderer, RenderMap<AdvancedModel, List<Entity>>> chunk = new RenderMap<>(Renderer.class);
+    private final List<Renderer<?>> prios = new ArrayList<>();
     private final ArrayList<GameObject> other = new ArrayList<>();
     private final List<Light> lights = new ArrayList<>();
 
-    private static final Comparator<Renderer> priority_sorter = new Comparator<Renderer>() {
+    private static final Comparator<Renderer<?>> priority_sorter = new Comparator<Renderer<?>>() {
 
 		@Override
-		public int compare(Renderer o1, Renderer o2) {
+		public int compare(Renderer<?> o1, Renderer<?> o2) {
 			if(o1.priority()>o2.priority()){
 				return 1;
 			}else if(o1.priority()<o2.priority()){
@@ -92,7 +93,7 @@ public class RenderChunk implements DataMapSerializable {
 	};
     
     private Entity tmp;
-    private Renderer tmpr;
+    private Renderer<?> tmpr;
     private RenderMap<AdvancedModel, List<Entity>> map;
     private List<Entity> list;
     private Material m;
@@ -267,7 +268,7 @@ public class RenderChunk implements DataMapSerializable {
         other.stream().filter((gameObject) -> gameObject instanceof Entity).forEach((entity) -> {
             entities.add((Entity) entity);
         });
-        for (Renderer renderer : chunk.keysArray()) {
+        for (Renderer<?> renderer : chunk.keysArray()) {
             RenderMap<AdvancedModel, List<Entity>> temp = chunk.get(renderer);
             for (AdvancedModel advancedModel : temp.keysArray()) {
                 entities.addAll(temp.get(advancedModel));
@@ -281,7 +282,7 @@ public class RenderChunk implements DataMapSerializable {
         data.put("name", getName());
         final HashMap<Class<?>, ArrayList<Entity>> classesEntities = new HashMap<>();
         final HashMap<String, ArrayList<String>> chunk_renderer_entities = new HashMap<>();
-        for (Renderer renderer : chunk.keysArray()) {
+        for (Renderer<?> renderer : chunk.keysArray()) {
             RenderMap<AdvancedModel, List<Entity>> rendererModels = chunk.get(renderer);
             for (AdvancedModel advancedModel : rendererModels.keysArray()) {
                 final List<Entity> entities = rendererModels.get(advancedModel);

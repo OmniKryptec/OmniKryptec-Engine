@@ -13,9 +13,9 @@ import omnikryptec.util.action.ActionProcessor;
 import omnikryptec.util.debug.VariableChangeListener;
 import omnikryptec.util.lang.ILanguage;
 import omnikryptec.util.lang.LanguageManager;
+import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.SystemInputStream;
-import omnikryptec.util.logger.LogLevel;
 
 /**
  *

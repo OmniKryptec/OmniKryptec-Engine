@@ -22,8 +22,8 @@ import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.Color;
 import omnikryptec.util.Instance;
 import omnikryptec.util.PhysicsUtil;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 public class Scene implements DataMapSerializable {
 

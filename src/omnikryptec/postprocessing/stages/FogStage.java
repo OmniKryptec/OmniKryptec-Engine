@@ -8,8 +8,8 @@ import omnikryptec.display.Display;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.postprocessing.main.FrameBufferObject;
-import omnikryptec.postprocessing.main.PostProcessingStep;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
+import omnikryptec.postprocessing.main.PostProcessingStep;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.files.FogShader;
 

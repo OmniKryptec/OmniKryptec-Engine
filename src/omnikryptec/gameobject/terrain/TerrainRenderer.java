@@ -15,8 +15,8 @@ import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.ShaderPack;
 import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.RenderUtil;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 /**
  *

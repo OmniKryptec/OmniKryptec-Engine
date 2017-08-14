@@ -4,12 +4,12 @@ import java.nio.FloatBuffer;
 import java.util.List;
 
 import org.jdom2.Element;
+import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 
 import omnikryptec.animation.ColladaParser.dataStructures.JointData;
 import omnikryptec.animation.ColladaParser.dataStructures.SkeletonData;
 import omnikryptec.util.XMLUtil;
-import org.joml.Matrix4f;
 
 /**
  * Loads the Skeleton

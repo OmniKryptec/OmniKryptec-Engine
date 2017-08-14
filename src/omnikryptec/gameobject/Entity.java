@@ -1,10 +1,6 @@
 package omnikryptec.gameobject;
 
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
-
 import omnikryptec.animation.AnimatedModel;
-import omnikryptec.display.DisplayManager;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Model;
@@ -13,11 +9,9 @@ import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.Color;
-import omnikryptec.util.Maths;
-import omnikryptec.util.RenderUtil;
 import omnikryptec.util.SerializationUtil;
-import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 public class Entity extends GameObject implements DataMapSerializable {
 

@@ -1,8 +1,9 @@
 package omnikryptec.animation;
 
-import omnikryptec.util.Quaternion;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+
+import omnikryptec.util.Quaternion;
 
 /**
  * JointTransform

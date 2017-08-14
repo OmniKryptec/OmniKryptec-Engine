@@ -2,7 +2,9 @@ package omnikryptec.audio;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import javax.swing.Timer;
+
 import omnikryptec.util.Util;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
