@@ -41,6 +41,7 @@ import omnikryptec.util.Color;
 import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.OSUtil;
+import omnikryptec.util.error.OmnikryptecError;
 import omnikryptec.util.lang.LanguageManager;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
@@ -133,17 +134,18 @@ public class EngineTest2 implements IEventHandler {
             //tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
             tm.getMaterial().setHasTransparency(false).setReflectivity(new Vector3f(10, 10, 10)).setShineDamper(100)
                     .setExtraInfoVec(new Vector3f(1, 1, 1));
-            OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
-
-                @Override
-                public void update() {
-                    // setRelativePos(getRelativePos().x, getRelativePos().y,
-                    // getRelativePos().z + 0.1f *
-                    // DisplayManager.instance().getDeltaTime());
-                    doCameraLogic(this);
-                }
-
-            }.setPerspectiveProjection(90, 0.1f,1000)).setAmbientColor(0.5f, 0.5f, 0.5f));
+//            OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
+//
+//                @Override
+//                public void update() {
+//                    // setRelativePos(getRelativePos().x, getRelativePos().y,
+//                    // getRelativePos().z + 0.1f *
+//                    // DisplayManager.instance().getDeltaTime());
+//                    doCameraLogic(this);
+//                }
+//
+//            }.setPerspectiveProjection(90, 0.1f,1000)).setAmbientColor(0.5f, 0.5f, 0.5f));
+            OmniKryptecEngine.instance().addAndSetScene(null);
             //Instance.getCurrentCamera().getTransform().setPosition(0, 0, 0);
             Model pine = new Model("",
                     ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")));

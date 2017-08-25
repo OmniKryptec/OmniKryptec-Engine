@@ -320,8 +320,10 @@ public class OmniKryptecEngine implements Profilable {
     }
 
     public final OmniKryptecEngine addAndSetScene(Scene scene) {
-        addScene(scene);
-        setScene(scene.getName());
+        if(scene!=null){
+    		addScene(scene);
+        	setScene(scene.getName());
+        }
         return this;
     }
 
