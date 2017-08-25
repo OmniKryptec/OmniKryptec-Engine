@@ -14,7 +14,7 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.postprocessing.main.PostProcessing;
 import omnikryptec.postprocessing.main.PostProcessingStage;
-import omnikryptec.renderer.EntityRenderer;
+import omnikryptec.renderer.ForwardMeshRenderer;
 //import omnikryptec.renderer.EntityRendererNoLight;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.loader.ResourceLoader;
@@ -36,7 +36,7 @@ public class Instance {
     public static final String SHADER_DEFAULT_PP_VERTEX_SHADER_LOC = Shader.DEFAULT_PP_VERTEX_SHADER_LOC;
 
     public static final TerrainRenderer RENDERERREG_DEF_TERRAIN_RENDERER = RendererRegistration.DEF_TERRAIN_RENDERER;
-    public static final EntityRenderer RENDERERREG_DEF_ENTITY_RENDERER = RendererRegistration.DEF_ENTITY_RENDERER;
+    public static final ForwardMeshRenderer RENDERERREG_DEF_ENTITY_RENDERER = RendererRegistration.FORWARD_MESH_RENDERER;
     //public static final EntityRendererNoLight RENDERERREG_DEF_STATIC_ENTITY_RENDERER = RendererRegistration.DEF_STATIC_ENTITY_RENDERER;
     public static final AnimatedModelRenderer RENDERERREG_DEF_ANIMATEDMODEL_RENDERER = RendererRegistration.DEF_ANIMATEDMODEL_RENDERER;
 

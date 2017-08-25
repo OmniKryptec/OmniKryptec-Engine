@@ -4,19 +4,23 @@ import java.nio.FloatBuffer;
 import java.util.List;
 
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL31;
 
+import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.Entity;
+import omnikryptec.gameobject.Light;
 import omnikryptec.main.Scene;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
+import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.ShaderPack;
-import omnikryptec.shader.files.EntityMeshShader;
+import omnikryptec.shader.files.ForwardMeshShader;
 import omnikryptec.util.Color;
 import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.Instance;
@@ -24,26 +28,34 @@ import omnikryptec.util.RenderUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
-public class EntityMeshRenderer extends Renderer<EntityMeshShader>{
+/**
+ * renders  with per-pixel light.
+ * @author pcfreak9000
+ *
+ */
+public class ForwardMeshRenderer extends Renderer<ForwardMeshShader> {
+
     public static final int INSTANCED_DATA_LENGTH = 20;
     private static final int INSTANCES_PER_DRAWCALL = Instance.getGameSettings().getMaxInstancesPerDrawcall();
 
-
-    public EntityMeshRenderer() {
-        super(new ShaderPack<>(new EntityMeshShader()));
-    	RendererRegistration.register(this);
+    public ForwardMeshRenderer() {
+        super(new ShaderPack<>(new ForwardMeshShader()));
+        RendererRegistration.register(this);
     }
 
     private List<Entity> stapel;
     private Entity entity;
-    private TexturedModel textmodel;
     private Material mat;
     private long vertcount = 0;
     private Model model;
 
     @Override
-    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader shader, FrustrumFilter filter) {
-    	vertcount = 0;
+    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader b, FrustrumFilter f) {
+        if (!DisplayManager.instance().getSettings().isLightForwardAllowed() && Logger.isDebugMode()) {
+            Logger.log("Forward light is not enabled. Will not render.", LogLevel.WARNING);
+            return 0;
+        }
+        vertcount = 0;
         for (AdvancedModel advancedModel : entities.keysArray()) {
             if (advancedModel == null || !(advancedModel instanceof TexturedModel)) {
                 if (Logger.isDebugMode()) {
@@ -51,19 +63,17 @@ public class EntityMeshRenderer extends Renderer<EntityMeshShader>{
                 }
                 continue;
             }
-            textmodel = (TexturedModel) advancedModel;
-            model = textmodel.getModel();
-            mat = textmodel.getMaterial();
-            shader.onModelRender(textmodel);
+            model = advancedModel.getModel();
+            mat = advancedModel.getMaterial();
+            b.onModelRender(advancedModel);
             if (mat.hasTransparency()) {
                 RenderUtil.cullBackFaces(false);
             }
-            stapel = entities.get(textmodel);
+            stapel = entities.get(advancedModel);
             for (int j = 0; j < stapel.size(); j += INSTANCES_PER_DRAWCALL) {
-                newRender(s, j, filter);
+                newRender(s, j, advancedModel, f);
             }
-            stapel = null;
-            if (mat.hasTransparency()) {
+            if (advancedModel.getMaterial().hasTransparency()) {
                 RenderUtil.cullBackFaces(true);
             }
         }
@@ -76,7 +86,7 @@ public class EntityMeshRenderer extends Renderer<EntityMeshShader>{
     private float[] array;
     private int instances;
 
-    private void newRender(Scene s, int offset, FrustrumFilter filter) {
+    private void newRender(Scene s, int offset, AdvancedModel amodel, FrustrumFilter f) {
         instances = Math.min(stapel.size(), INSTANCES_PER_DRAWCALL + offset);
         array = new float[Math.min(stapel.size(), INSTANCES_PER_DRAWCALL) * INSTANCED_DATA_LENGTH];
         pointer = 0;
@@ -84,8 +94,8 @@ public class EntityMeshRenderer extends Renderer<EntityMeshShader>{
         for (int j = offset; j < instances; j++) {
             entity = stapel.get(j);
             if (entity.isRenderingEnabled()) {
-                if (filter.intersects(entity, true)) {
-                	updateArray(entity.getTransformation(), entity.getColor(), array);
+                if (f.intersects(entity, true)) {
+                    updateArray(entity.getTransformation(), entity.getColor(), array);
                     count++;
                 }
             }
@@ -94,10 +104,27 @@ public class EntityMeshRenderer extends Renderer<EntityMeshShader>{
             buffer = BufferUtils.createFloatBuffer(array.length);
         }
         model.getUpdateableVBO().updateData(array, buffer);
-        GL31.glDrawElementsInstanced(GL11.GL_TRIANGLES, textmodel.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0, count);
-        vertcount += model.getModelData().getVertexCount() * count;
+        GL31.glDrawElementsInstanced(GL11.GL_TRIANGLES, amodel.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0, count);
+        vertcount += model.getModelData().getVertexCount() * stapel.size();
     }
 
+//enable the uniforms in the shader
+//**
+//	private void oldRender(boolean onlyRender, Scene s){
+//		for (int j = 0; j < stapel.size(); j++) {
+//			entity = stapel.get(j);
+//			if (entity.isActive() && RenderUtil.inRenderRange(entity, s.getCamera())) {
+//				if (!onlyRender) {
+//					entity.doLogic0();
+//				}
+//				shader.transformation.loadMatrix(entity.getTransformationMatrix());
+//				shader.colmod.loadVec4(entity.getColor().getVector4f());
+//				GL11.glDrawElements(GL11.GL_TRIANGLES, model.getVao().getIndexCount(),
+//						GL11.GL_UNSIGNED_INT, 0);
+//				vertcount += model.getModelData().getVertexCount();
+//			}
+//		}
+//	}
     private void updateArray(Matrix4f transformationMatrix, Color color, float[] array) {
         storeMatrixData(transformationMatrix, array);
         array[pointer++] = color.getR();

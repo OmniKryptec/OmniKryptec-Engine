@@ -28,13 +28,13 @@ public class Shader {
 	public static final String DEFAULT_PP_VERTEX_SHADER_TEXC_OUT = "textureCoords";
 	protected static final String oc_shader_loc = "/omnikryptec/shader/files/";
 	protected static final AdvancedFile SHADER_LOCATION = new AdvancedFile("omnikryptec", "shader", "files");
-	
+
 	private static int shadercount = 0;
 	private static Shader shadercurrent;
 	private static int shadercurrentid = -1;
-	
+
 	private static final List<Shader> allShader = new ArrayList<>();
-	
+
 	public static Shader getActiveShader() {
 		return shadercurrent;
 	}
@@ -49,7 +49,6 @@ public class Shader {
 	private String name;
 	private ShaderLineInsertion insert;
 
-
 	public Shader(AdvancedFile vertexFile, AdvancedFile fragmentFile, Object... uniAttr) {
 		this((String) null, (ShaderLineInsertion) null, vertexFile, fragmentFile, uniAttr);
 	}
@@ -62,7 +61,8 @@ public class Shader {
 		this(name, (ShaderLineInsertion) null, vertexFile, null, fragmentFile, uniAttr);
 	}
 
-	public Shader(String name, ShaderLineInsertion insert, AdvancedFile vertexFile, AdvancedFile fragmentFile, Object... uniAttr) {
+	public Shader(String name, ShaderLineInsertion insert, AdvancedFile vertexFile, AdvancedFile fragmentFile,
+			Object... uniAttr) {
 		this(name, insert, vertexFile, null, fragmentFile, uniAttr);
 	}
 
@@ -70,8 +70,8 @@ public class Shader {
 		this((String) null, (ShaderLineInsertion) null, vertexFile, geometryFile, fragmentFile, uniAttr);
 	}
 
-	public Shader(ShaderLineInsertion insert, AdvancedFile vertexFile, AdvancedFile geometryFile, AdvancedFile fragmentFile,
-			Object... uniAttr) {
+	public Shader(ShaderLineInsertion insert, AdvancedFile vertexFile, AdvancedFile geometryFile,
+			AdvancedFile fragmentFile, Object... uniAttr) {
 		this(null, insert, vertexFile, geometryFile, fragmentFile, uniAttr);
 	}
 
@@ -79,12 +79,14 @@ public class Shader {
 			Object... uniAttr) {
 		this(name, (ShaderLineInsertion) null, vertexFile, geometryFile, fragmentFile, uniAttr);
 	}
-	
+
 	public Shader(String name, ShaderLineInsertion insert, AdvancedFile vertexFile, AdvancedFile geometryFile,
 			AdvancedFile fragmentFile, Object... uniAttr) {
-		this(name, insert, vertexFile==null?null:vertexFile.createInputStream(),geometryFile==null?null:geometryFile.createInputStream(),fragmentFile==null?null:fragmentFile.createInputStream(),uniAttr);
+		this(name, insert, vertexFile == null ? null : vertexFile.createInputStream(),
+				geometryFile == null ? null : geometryFile.createInputStream(),
+				fragmentFile == null ? null : fragmentFile.createInputStream(), uniAttr);
 	}
-	
+
 	public Shader(InputStream vertexFile, InputStream fragmentFile, Object... uniAttr) {
 		this((String) null, (ShaderLineInsertion) null, vertexFile, fragmentFile, uniAttr);
 	}
@@ -97,7 +99,8 @@ public class Shader {
 		this(name, (ShaderLineInsertion) null, vertexFile, null, fragmentFile, uniAttr);
 	}
 
-	public Shader(String name, ShaderLineInsertion insert, InputStream vertexFile, InputStream fragmentFile, Object... uniAttr) {
+	public Shader(String name, ShaderLineInsertion insert, InputStream vertexFile, InputStream fragmentFile,
+			Object... uniAttr) {
 		this(name, insert, vertexFile, null, fragmentFile, uniAttr);
 	}
 
@@ -105,8 +108,8 @@ public class Shader {
 		this((String) null, (ShaderLineInsertion) null, vertexFile, geometryFile, fragmentFile, uniAttr);
 	}
 
-	public Shader(ShaderLineInsertion insert, InputStream vertexFile, InputStream geometryFile, InputStream fragmentFile,
-			Object... uniAttr) {
+	public Shader(ShaderLineInsertion insert, InputStream vertexFile, InputStream geometryFile,
+			InputStream fragmentFile, Object... uniAttr) {
 		this(null, insert, vertexFile, geometryFile, fragmentFile, uniAttr);
 	}
 
@@ -118,9 +121,9 @@ public class Shader {
 	public Shader(String name, ShaderLineInsertion insert, InputStream vertexFile, InputStream geometryFile,
 			InputStream fragmentFile, Object... uniAttr) {
 		if (name == null) {
-			name = "" + shadercount;
+			name = this.getClass().getSimpleName();// "" + shadercount;
 		}
-		name = "Shader " + name;
+		name = "Shader " + shadercount + " (" + name + ")";
 		this.insert = insert;
 		this.name = name;
 		vertexShaderHolder = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
@@ -154,18 +157,18 @@ public class Shader {
 		allShader.add(this);
 	}
 
-	public void onModelRender(AdvancedModel m){
-		
+	public void onModelRender(AdvancedModel m) {
+
 	}
-	
-	public void onRenderStart(Scene s){
-		
+
+	public void onRenderStart(Scene s) {
+
 	}
-	
-	public void onRenderInstance(Entity e){
-		
+
+	public void onRenderInstance(Entity e) {
+
 	}
-	
+
 	public int getId() {
 		return programID;
 	}
@@ -201,12 +204,12 @@ public class Shader {
 		OpenGL.gl20useProgram(0);
 	}
 
-	public static void cleanAllShader(){
-		for(Shader s : allShader){
+	public static void cleanAllShader() {
+		for (Shader s : allShader) {
 			s.cleanup();
 		}
 	}
-	
+
 	private void cleanup() {
 		stop();
 		OpenGL.gl20detachShader(programID, vertexShaderID);
@@ -277,8 +280,10 @@ public class Shader {
 		OpenGL.gl20shaderSource(shaderID, shaderSrc);
 		OpenGL.gl20compileShader(shaderID);
 		if (OpenGL.gl20getShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-			Instance.getEngine().errorOccured(new OmniKryptecException("Shadercreation"), "Shader compilation failed in "+getShaderType(type)+": " + name);
-			Logger.log("(Lines with LineInsertion!): " + OpenGL.gl20getShaderInfoLog(shaderID, 1024), LogLevel.ERROR, true);
+			Instance.getEngine().errorOccured(new OmniKryptecException("Shadercreation"),
+					"Shader compilation failed in " + getShaderType(type) + ": " + name);
+			Logger.log("(Lines with LineInsertion!): " + OpenGL.gl20getShaderInfoLog(shaderID, 1024), LogLevel.ERROR,
+					true);
 			Instance.getEngine().close(ShutdownOption.JAVA);
 		}
 		return new ShaderHolder(shaderID, uniforms, type);

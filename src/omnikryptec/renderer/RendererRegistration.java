@@ -12,19 +12,20 @@ import omnikryptec.util.logger.Logger;
 public class RendererRegistration {
 
     private static final List<Renderer<?>> existingRenderers = new ArrayList<>();
-
-    public static final EntityRenderer DEF_ENTITY_RENDERER;
+    
+	public static final SimpleMeshRenderer SIMPLE_MESH_RENDERER;
+    public static final ForwardMeshRenderer FORWARD_MESH_RENDERER;
+    
     public static final AnimatedModelRenderer DEF_ANIMATEDMODEL_RENDERER;
     public static final TerrainRenderer DEF_TERRAIN_RENDERER;
 
-	public static final EntityMeshRenderer SIMPLE_MESH_RENDERER;
     
     
     static {
         DEF_ANIMATEDMODEL_RENDERER = new AnimatedModelRenderer();
-        DEF_ENTITY_RENDERER = new EntityRenderer();
+        FORWARD_MESH_RENDERER = new ForwardMeshRenderer();
         DEF_TERRAIN_RENDERER = new TerrainRenderer();
-        SIMPLE_MESH_RENDERER = new EntityMeshRenderer();
+        SIMPLE_MESH_RENDERER = new SimpleMeshRenderer();
     }
 
     public static boolean exists(Renderer<?> r) {

@@ -7,7 +7,9 @@ import omnikryptec.resource.loader.ResourceObject;
 
 public abstract class Texture implements ResourceObject {
 
-    private static Texture lastBoundTexture;
+	public static final int MAX_SUPPORTED_TEXTURE_UNITS=10;
+	
+    private static Texture[] lastBoundTexture = new Texture[MAX_SUPPORTED_TEXTURE_UNITS];
 
     private final String name;
     private boolean alwaysBind = false;
@@ -43,9 +45,9 @@ public abstract class Texture implements ResourceObject {
     }
 
     public final void bindToUnitOptimized(int unit, int... info) {
-    	if (this != lastBoundTexture || alwaysBind) {
+    	if (this != lastBoundTexture[unit] || alwaysBind) {
             bindToUnit(unit, info);
-            lastBoundTexture = this;
+            lastBoundTexture[unit] = this;
         }
     }
 
@@ -65,7 +67,9 @@ public abstract class Texture implements ResourceObject {
     }
 
     public static void resetLastBoundTexture(){
-    	lastBoundTexture = null;
+    	for(int i=0; i<lastBoundTexture.length; i++) {
+    		lastBoundTexture[i] = null;
+    	}
     }
     
 	public static void unbindActive() {
