@@ -213,10 +213,10 @@ public class JBulletTest {
             float deltaY = InputManager.getMouseDelta().y;
             float deltaD = InputManager.getMouseDelta().z;
             if (InputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_LEFT_CONTROL)) {
-                Camera camera = OmniKryptecEngine.getInstance().getCurrentScene().getCamera();
+                Camera camera = OmniKryptecEngine.rawInstance().getCurrentScene().getCamera();
                 InputManager.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
             } else {
-                OmniKryptecEngine.getInstance().getCurrentScene().getCamera().getTransform().increaseRotation((deltaY / 5), -(deltaX / 5), 0);
+                OmniKryptecEngine.rawInstance().getCurrentScene().getCamera().getTransform().increaseRotation((deltaY / 5), -(deltaX / 5), 0);
             }
         }
     }
@@ -335,7 +335,7 @@ public class JBulletTest {
                 };
 
                 OmniKryptecEngine.instance().getCurrentScene().addGameObject(followedEntity);
-                ((FollowingCamera) OmniKryptecEngine.getInstance().getCurrentScene().getCamera())
+                ((FollowingCamera) OmniKryptecEngine.rawInstance().getCurrentScene().getCamera())
                         .setFollowedGameObject(followedEntity);
             }
             InputManager.setCamera(OmniKryptecEngine.instance().getCurrentScene().getCamera());

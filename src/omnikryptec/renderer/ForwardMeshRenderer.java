@@ -105,7 +105,7 @@ public class ForwardMeshRenderer extends Renderer<ForwardMeshShader> {
         }
         model.getUpdateableVBO().updateData(array, buffer);
         GL31.glDrawElementsInstanced(GL11.GL_TRIANGLES, amodel.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0, count);
-        vertcount += model.getModelData().getVertexCount() * stapel.size();
+        vertcount += model.getModelData().getVertexCount() * count;
     }
 
 //enable the uniforms in the shader

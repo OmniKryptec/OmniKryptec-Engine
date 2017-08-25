@@ -54,7 +54,7 @@ public class OmniKryptecEngine implements Profilable {
         return instance;
     }
 
-    public static OmniKryptecEngine getInstance() {
+    public static OmniKryptecEngine rawInstance() {
         return instance;
     }
 

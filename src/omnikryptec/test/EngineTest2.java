@@ -18,6 +18,7 @@ import omnikryptec.gameobject.GameObject;
 import omnikryptec.gameobject.Light;
 import omnikryptec.gameobject.RenderType;
 import omnikryptec.gameobject.UpdateType;
+import omnikryptec.gameobject.component.Component;
 import omnikryptec.gameobject.particles.AttractedPaticleSystem;
 import omnikryptec.gameobject.particles.AttractorMode;
 import omnikryptec.gameobject.particles.ParticleAttractor;
@@ -126,7 +127,7 @@ public class EngineTest2 implements IEventHandler {
             AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
             Model BLOCK = new Model("", ObjLoader.loadOBJ(new AdvancedFile(res, "block.obj")));
             TexturedModel tm = new TexturedModel("brunnen", baumM, baum);
-            tm.getMaterial().setTexture(Material.DIFFUSE, baum).setRenderer(RendererRegistration.SIMPLE_MESH_RENDERER);
+            tm.getMaterial().setTexture(Material.DIFFUSE, baum).setRenderer(RendererRegistration.FORWARD_MESH_RENDERER);
            // tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
             //tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
             tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(10, 10, 10)).setFloat(Material.DAMPER, 100).setVector3f(Material.SHADERINFO, new Vector3f(1));
@@ -183,9 +184,10 @@ public class EngineTest2 implements IEventHandler {
                   100,0, 1000f, 1f, RenderType.ALWAYS);
 
             System.out.println("Generating objs...");
-            int cube = 100;
+            int cube = 1;
             int abstand =10;
             float scale = 1;
+            int objcount=0;
             for (int x = -cube; x < cube; x += abstand) {
                 for (int y = -cube; y < cube; y += abstand) {
                     for (int z = -cube; z < cube; z += abstand) {
@@ -195,10 +197,11 @@ public class EngineTest2 implements IEventHandler {
                     	go.getTransform().setScale(scale).setPosition(x, y, z).getRotationSimple().rotate(0, 0, 0);
                         Instance.getCurrentScene().addGameObject(go);
                         //system.addAttractor(new ParticleAttractor(go).setAcceleration(10).setMode(AttractorMode.KILL_ON_REACH).setTolerance(5));
+                        objcount++;
                     }
                 }
             }
-            System.out.println("Done.");
+            System.out.println("Done: "+objcount+" Objects.");
            // Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0, 1).setScale(new Vector3f(scale,scale,scale)).setUpdateType(UpdateType.SEMISTATIC).setRelativePos(0, 0, 0));
 
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
@@ -239,10 +242,10 @@ public class EngineTest2 implements IEventHandler {
             //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));
             OmniKryptecEngine.instance().getCurrentScene()
                   .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setCuttOffRange(50).setColor(3, 0, 0).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0, -1, 0));
-//            GameObject l;
-//            OmniKryptecEngine.instance().getCurrentScene()
-//                    .addGameObject(l = new Light().setAttenuation(0, 0.001f, 0).setColor(1, 1, 1).setDirectional(true).setConeDegrees(5).setConeDirection(0, 1, 0).setGlobal(true));
-//            l.getTransform().setPosition(0, 1, 0);
+            GameObject l;
+            OmniKryptecEngine.instance().getCurrentScene()
+                    .addGameObject(l = new Light().setAttenuation(0, 0.001f, 0).setColor(1, 1, 1).setDirectional(true).setConeDegrees(5).setConeDirection(0, 1, 0).setGlobal(true));
+            l.getTransform().setPosition(0, 1, 0);
 
             // ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
             // OmniKryptecEngine.instance().getCurrentScene().addGameObject(new

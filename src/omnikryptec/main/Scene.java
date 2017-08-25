@@ -279,8 +279,8 @@ public class Scene implements DataMapSerializable {
     }
 
     public static final Scene byName(String name) {
-        if (OmniKryptecEngine.getInstance() != null) {
-            for (Scene scene : OmniKryptecEngine.getInstance().getScenes()) {
+        if (OmniKryptecEngine.rawInstance() != null) {
+            for (Scene scene : OmniKryptecEngine.rawInstance().getScenes()) {
                 if (scene.getName() == null ? name == null : scene.getName().equals(name)) {
                     return scene;
                 }

@@ -8,7 +8,7 @@ import omnikryptec.gameobject.Entity;
 
 public class FrustrumFilter {
 	
-	private static final float RADIUS_CORRECTION=1;
+	private static final float RADIUS_CORRECTION=3f;
 	
 	private FrustumIntersection intersection = new FrustumIntersection();
 	private boolean isenabled=true;
@@ -33,7 +33,7 @@ public class FrustrumFilter {
 		if(!isenabled){
 			return true;
 		}
-		tmp = (e.getAdvancedModel().getModel().getModelData().getFurthestPoint()+RADIUS_CORRECTION)*Math.max(e.getTransform().getScale(true).x, Math.max(e.getTransform().getScale(true).y,e.getTransform().getScale(true).z));
+		tmp = (e.getAdvancedModel().getModel().getModelData().getFurthestPoint()*RADIUS_CORRECTION)*Math.max(e.getTransform().getScale(true).x, Math.max(e.getTransform().getScale(true).y,e.getTransform().getScale(true).z));
 		e.getTransformation().transform(vec.set(0,0,0,1));
 		return intersects(vec.x, vec.y, vec.z, tmp)&&(checkRenderRange?RenderUtil.inRenderRange(e, cam):true);
 	}

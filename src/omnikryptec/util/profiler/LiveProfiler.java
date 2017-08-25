@@ -9,9 +9,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.swing.ChartData;
 import omnikryptec.swing.PieChartGenerator;
 
@@ -33,6 +35,7 @@ public class LiveProfiler {
         }
 
     };
+    private JLabel vert_info = new JLabel();
     private final ChartData[] chartDatas = new ChartData[]{
         new ChartData(Profiler.DISPLAY_IDLE_TIME, 0),
         new ChartData(Profiler.DISPLAY_UPDATE_TIME, 0),
@@ -53,6 +56,7 @@ public class LiveProfiler {
     public LiveProfiler(int width, int height) {
         this.size = new Dimension(width, height);
         frame.setLayout(new BorderLayout());
+        frame.add(vert_info, BorderLayout.NORTH);
         frame.setSize(size);
         frame.setPreferredSize(size);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -96,7 +100,13 @@ public class LiveProfiler {
     }
 
     private final LiveProfiler updateData() {
-        double max = 0.0;
+    	OmniKryptecEngine omc = OmniKryptecEngine.rawInstance();
+    	if(omc!=null) {
+    		vert_info.setText("Vertices: "+omc.getModelVertsCount());
+    	}else {
+    		vert_info.setText("Error: Instance is null");
+    	}
+    	double max = 0.0;
         for (ChartData chartData : data.keySet()) {
             final LinkedList<Double> values = data.get(chartData);
             if (values == null) {

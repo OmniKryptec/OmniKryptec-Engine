@@ -37,12 +37,12 @@ public class Commands {
                 if (instantShutdown) {
                     shutdownCompletely();
                 } else {
-                    if (OmniKryptecEngine.getInstance() != null) {
-                        final GameState state = OmniKryptecEngine.getInstance().getState();
+                    if (OmniKryptecEngine.rawInstance() != null) {
+                        final GameState state = OmniKryptecEngine.rawInstance().getState();
                         if (state != GameState.Running && state != GameState.Starting) {
                             Logger.log("Engine is not running", LogLevel.WARNING);
                         } else {
-                            OmniKryptecEngine.getInstance().requestClose(ShutdownOption.ENGINE);
+                            OmniKryptecEngine.rawInstance().requestClose(ShutdownOption.ENGINE);
                             Logger.log("Engine was successfully exited");
                         }
                     } else if (shutdownOption == ShutdownOption.ENGINE) {
