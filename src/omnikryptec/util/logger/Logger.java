@@ -38,7 +38,7 @@ public class Logger {
 		Commands.initialize();
 	}
 
-	public static LogLevel minimumLogLevel = LogLevel.INFO;
+	public static LogLevel minimumLogLevel = LogLevel.FINEST;
 	public static final Console CONSOLE = new Console();
 	public static final ArrayList<LogEntry> LOG = new ArrayList<>();
 	protected static boolean blockInput = false;

@@ -75,7 +75,7 @@ public class Console extends JFrame implements ActionListener, ILanguage, KeyLis
     private int depth = 0;
     private boolean visible = false;
     private boolean showed = false;
-    private boolean exitWhenLastOne = false;
+    private boolean exitWhenLastOne = true;
     private WizardSaveAs wizardSaveAs = null;
     private boolean blockAdding = false;
 

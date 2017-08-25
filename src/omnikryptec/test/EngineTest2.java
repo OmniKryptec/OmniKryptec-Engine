@@ -1,5 +1,6 @@
 package omnikryptec.test;
 
+import java.io.File;
 import java.util.Random;
 
 import org.joml.Vector3f;
@@ -39,6 +40,7 @@ import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Color;
 import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
+import omnikryptec.util.OSUtil;
 import omnikryptec.util.lang.LanguageManager;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
@@ -52,12 +54,11 @@ public class EngineTest2 implements IEventHandler {
 
     public static void main(String[] args) {
         try {
+        	NativesLoader.setNativesFolder(new AdvancedFile(false, (Object)null, "H:/natives/"));
         	NativesLoader.loadNatives();
         	OmniKryptecEngine.addShutdownHook(() -> NativesLoader.unloadNatives());
-            Logger.setMinimumLogLevel(LogLevel.FINEST);
             Logger.enableLoggerRedirection(true);
             Logger.setDebugMode(true);
-            Logger.CONSOLE.setExitWhenLastOne(true);
             Logger.showConsoleDirect();
 
             LanguageManager.setLanguage("DE");
@@ -65,7 +66,7 @@ public class EngineTest2 implements IEventHandler {
             DisplayManager.createDisplay("Test 2",
                     new GameSettings().setAnisotropicLevel(512).setMultisamples(512)
                     .setInitialFPSCap(-1).setChunkRenderOffsets(2, 2, 2).setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(true),
-                    new GLFWInfo(4,3,true,false,1280, 720));
+                    new GLFWInfo(3,3,true,false,1280, 720));
             DisplayManager.instance().setSmoothedDeltatime(true);
             DisplayManager.instance().setSmoothedFrames(1000);
             new Thread(new Runnable() {
@@ -235,7 +236,7 @@ public class EngineTest2 implements IEventHandler {
             system.setGlobal(true);
             system.setStartcolor(new Color(1, 0, 1));
             system.setEndcolor(new Color(1, 1, 0));
-            OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
+            //OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));
             //OmniKryptecEngine.instance().getCurrentScene()
             //      .addGameObject(new Light().setAttenuation(0, 0.001f, 0).setCuttOffRange(50).setColor(3, 0, 0).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0, -1, 0).setRelativePos(0,10, 0));
