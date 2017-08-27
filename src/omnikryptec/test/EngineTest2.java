@@ -27,6 +27,8 @@ import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;
+import omnikryptec.postprocessing.main.DebugRenderer;
+import omnikryptec.postprocessing.main.PostProcessing;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.Material;
 import omnikryptec.resource.model.Model;
@@ -63,7 +65,7 @@ public class EngineTest2 implements IEventHandler {
             LanguageManager.setLanguage("DE");
 
             DisplayManager.createDisplay("Test 2",
-                    new GameSettings().setAnisotropicLevel(512).setMultisamples(512)
+                    new GameSettings().setAnisotropicLevel(32).setMultisamples(32)
                     .setInitialFPSCap(-1).setChunkRenderOffsets(2, 2, 2).setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(false),
                     new GLFWInfo(3,3,true,false,1280, 720));
             new Thread(new Runnable() {
@@ -121,15 +123,16 @@ public class EngineTest2 implements IEventHandler {
                     .newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen_normal.png")).create();
             SimpleTexture brunnen_specular = SimpleTexture.newTexture("/omnikryptec/test/brunnen_specular.png");
             SimpleTexture baum = SimpleTexture.newTexture(new AdvancedFile(res, "final_tree_3.png"));
-            Model baumM = Model.newModel(new AdvancedFile(res, "final_tree_3.obj"));
+           // Model baumM = Model.newModel(new AdvancedFile(res, "final_tree_3.obj"));
+            Model baumM = Model.newModel(new AdvancedFile(res, "cube.obj"));
             AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
             Model BLOCK = new Model("", ObjLoader.loadOBJ(new AdvancedFile(res, "block.obj")));
             TexturedModel tm = new TexturedModel("brunnen", baumM, baum);
             tm.getMaterial().setRenderer(RendererRegistration.FORWARD_MESH_RENDERER);
            // tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
             //tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
-            //tm.getMaterial().setTexture(Material.NORMAL, jn);
-            tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(10, 10, 10)).setFloat(Material.DAMPER, 100).setVector3f(Material.SHADERINFO, new Vector3f(1));
+            tm.getMaterial().setTexture(Material.NORMAL, jn);
+            tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.1f, 0.1f, 0.1f)).setFloat(Material.DAMPER, 1).setVector3f(Material.SHADERINFO, new Vector3f(1));
           OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
                 @Override
@@ -184,7 +187,7 @@ public class EngineTest2 implements IEventHandler {
 
             System.out.println("Generating objs...");
             int cube = 50;
-            int abstand =10;
+            int abstand =2;
             float scale = 1;
             int objcount=0;
             for (int x = -cube; x < cube; x += abstand) {
