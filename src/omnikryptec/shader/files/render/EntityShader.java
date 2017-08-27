@@ -1,4 +1,4 @@
-package omnikryptec.shader.files;
+package omnikryptec.shader.files.render;
 
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.UniformBoolean;

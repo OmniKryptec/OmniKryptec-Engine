@@ -64,10 +64,8 @@ public class EngineTest2 implements IEventHandler {
 
             DisplayManager.createDisplay("Test 2",
                     new GameSettings().setAnisotropicLevel(512).setMultisamples(512)
-                    .setInitialFPSCap(-1).setChunkRenderOffsets(2, 2, 2).setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(true),
+                    .setInitialFPSCap(-1).setChunkRenderOffsets(2, 2, 2).setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(false),
                     new GLFWInfo(3,3,true,false,1280, 720));
-            DisplayManager.instance().setSmoothedDeltatime(true);
-            DisplayManager.instance().setSmoothedFrames(1000);
             new Thread(new Runnable() {
 				
 				@Override
@@ -127,9 +125,10 @@ public class EngineTest2 implements IEventHandler {
             AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
             Model BLOCK = new Model("", ObjLoader.loadOBJ(new AdvancedFile(res, "block.obj")));
             TexturedModel tm = new TexturedModel("brunnen", baumM, baum);
-            tm.getMaterial().setTexture(Material.DIFFUSE, baum).setRenderer(RendererRegistration.FORWARD_MESH_RENDERER);
+            tm.getMaterial().setRenderer(RendererRegistration.FORWARD_MESH_RENDERER);
            // tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
             //tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
+            //tm.getMaterial().setTexture(Material.NORMAL, jn);
             tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(10, 10, 10)).setFloat(Material.DAMPER, 100).setVector3f(Material.SHADERINFO, new Vector3f(1));
           OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
@@ -184,7 +183,7 @@ public class EngineTest2 implements IEventHandler {
                   100,0, 1000f, 1f, RenderType.ALWAYS);
 
             System.out.println("Generating objs...");
-            int cube = 1;
+            int cube = 50;
             int abstand =10;
             float scale = 1;
             int objcount=0;
@@ -265,7 +264,7 @@ public class EngineTest2 implements IEventHandler {
         }
     }
 
-    private static float v = 100;
+    private static float v = 40;
    private static ParticleAttractor attractor;
     
     private static void doCameraLogic(Camera camera) {

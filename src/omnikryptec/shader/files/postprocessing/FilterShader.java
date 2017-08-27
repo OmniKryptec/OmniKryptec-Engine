@@ -1,8 +1,9 @@
-package omnikryptec.shader.files;
+package omnikryptec.shader.files.postprocessing;
 
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.UniformSampler;
 import omnikryptec.shader.base.UniformVec4;
+import omnikryptec.util.AdvancedFile;
 
 public class FilterShader extends Shader {
 
@@ -11,8 +12,8 @@ public class FilterShader extends Shader {
 	public final UniformSampler extra = new UniformSampler("extra");
 
 	public FilterShader() {
-		super(Shader.class.getResourceAsStream(DEFAULT_PP_VERTEX_SHADER_LOC),
-				Shader.class.getResourceAsStream(Shader.oc_shader_loc + "extrainfo_reader_frag.glsl"),
+		super(DEF_SHADER_LOC_PP_VS,
+				new AdvancedFile(SHADER_LOCATION_PP, "extrainfo_reader_frag.glsl"),
 				Shader.DEFAULT_PP_VERTEX_SHADER_POS_ATTR);
 		registerUniforms(sampler, extra, channels);
 		start();

@@ -16,7 +16,7 @@ import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.ShaderPack;
-import omnikryptec.shader.files.SimpleMeshShader;
+import omnikryptec.shader.files.render.SimpleMeshShader;
 import omnikryptec.util.Color;
 import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.Instance;

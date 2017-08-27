@@ -1,8 +1,9 @@
-package omnikryptec.shader.files;
+package omnikryptec.shader.files.postprocessing;
 
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.UniformFloat;
 import omnikryptec.shader.base.UniformSampler;
+import omnikryptec.util.AdvancedFile;
 
 public class ContrastchangeShader extends Shader {
 
@@ -10,8 +11,8 @@ public class ContrastchangeShader extends Shader {
 	public static final UniformSampler scene = new UniformSampler("img");
 
 	public ContrastchangeShader() {
-		super(Shader.class.getResourceAsStream(DEFAULT_PP_VERTEX_SHADER_LOC),
-				Shader.class.getResourceAsStream(oc_shader_loc + "contrastshanger_shader_frag.glsl"),
+		super(DEF_SHADER_LOC_PP_VS,
+				new AdvancedFile(SHADER_LOCATION_PP, "contrastshanger_shader_frag.glsl"),
 				DEFAULT_PP_VERTEX_SHADER_POS_ATTR, change, scene);
 		start();
 		scene.loadTexUnit(0);

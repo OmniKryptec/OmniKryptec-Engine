@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 
 import omnikryptec.display.Display;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
-import omnikryptec.shader.files.DebugShader;
+import omnikryptec.shader.files.postprocessing.DebugShader;
 import omnikryptec.util.RenderUtil;
 
 public class DebugRenderer extends PostProcessingStage {

@@ -1,4 +1,4 @@
-package omnikryptec.shader.files;
+package omnikryptec.shader.files.postprocessing;
 
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.UniformFloat;
@@ -7,6 +7,7 @@ import omnikryptec.shader.base.UniformSampler;
 import omnikryptec.shader.base.UniformVec2;
 import omnikryptec.shader.base.UniformVec3;
 import omnikryptec.shader.base.UniformVec4;
+import omnikryptec.util.AdvancedFile;
 
 public class FogShader extends Shader {
 
@@ -23,8 +24,8 @@ public class FogShader extends Shader {
 	public final UniformVec3 campos = new UniformVec3("campos");
 
 	public FogShader() {
-		super(FogShader.class.getResourceAsStream(DEFAULT_PP_VERTEX_SHADER_LOC),
-				FogShader.class.getResourceAsStream(oc_shader_loc + "fog_shader_frag.glsl"),
+		super(DEF_SHADER_LOC_PP_VS,
+				new AdvancedFile(SHADER_LOCATION_PP, "fog_shader_frag.glsl"),
 				Shader.DEFAULT_PP_VERTEX_SHADER_POS_ATTR);
 		registerUniforms(depth, texture, pixsize, fog, density, gradient, invprojv, campos);
 		start();

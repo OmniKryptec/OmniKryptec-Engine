@@ -1,4 +1,4 @@
-package omnikryptec.shader.files;
+package omnikryptec.shader.files.render;
 
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL20;
@@ -22,7 +22,7 @@ import omnikryptec.shader.base.UniformVec4;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Maths;
 
-public class ForwardMeshShader extends Shader {
+public class ForwardPPMeshShader extends Shader {
 
 	public final UniformMatrix view = new UniformMatrix("viewmatrix");
 	public final UniformMatrix projection = new UniformMatrix("projmatrix");
@@ -58,12 +58,12 @@ public class ForwardMeshShader extends Shader {
 		}
 	};
 
-	public ForwardMeshShader() {
-		this(new AdvancedFile(oc_shader_loc.substring(1) + "forward_shader_vert.glsl"),
-				new AdvancedFile(oc_shader_loc.substring(1) + "forward_shader_frag.glsl"));
+	public ForwardPPMeshShader() {
+		this(new AdvancedFile(SHADER_LOCATION_RENDER, "forward_shader_vert.glsl"),
+				new AdvancedFile(SHADER_LOCATION_RENDER, "forward_shader_frag.glsl"));
 	}
 
-	public ForwardMeshShader(AdvancedFile vertexshader, AdvancedFile fragmentshader) {
+	public ForwardPPMeshShader(AdvancedFile vertexshader, AdvancedFile fragmentshader) {
 		super(insert, vertexshader.createInputStream(), fragmentshader.createInputStream(),
 				new Attribute("pos", 0), new Attribute("texcoords", 1), new Attribute("normal", 2),
 				new Attribute("tangent", 3), new Attribute("transmatrix", 4), new Attribute("colour", 8));

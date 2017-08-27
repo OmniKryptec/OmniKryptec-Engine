@@ -7,7 +7,7 @@ import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.main.PostProcessingStep;
 import omnikryptec.shader.base.Shader;
-import omnikryptec.shader.files.ContrastchangeShader;
+import omnikryptec.shader.files.postprocessing.ContrastchangeShader;
 
 public class ContrastchangeStage extends PostProcessingStep {
 

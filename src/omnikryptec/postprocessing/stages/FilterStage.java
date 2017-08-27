@@ -9,7 +9,7 @@ import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.main.PostProcessingStep;
 import omnikryptec.shader.base.Shader;
-import omnikryptec.shader.files.FilterShader;
+import omnikryptec.shader.files.postprocessing.FilterShader;
 
 public class FilterStage extends PostProcessingStep {
 

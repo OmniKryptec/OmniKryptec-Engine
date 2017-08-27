@@ -7,7 +7,7 @@ import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.main.PostProcessingStep;
 import omnikryptec.shader.base.Shader;
-import omnikryptec.shader.files.GaussianBlurShader;
+import omnikryptec.shader.files.postprocessing.GaussianBlurShader;
 
 public class SingleGaussianBlurStage extends PostProcessingStep {
 

@@ -6,43 +6,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.gameobject.GameObject;
 import omnikryptec.gameobject.Light;
-import omnikryptec.gameobject.particles.ParticleMaster;
-import omnikryptec.physics.JBulletPhysicsWorld;
-import omnikryptec.physics.PhysicsWorld;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderChunk.AllowedRenderer;
 import omnikryptec.renderer.Renderer;
 import omnikryptec.test.saving.DataMap;
-import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.Color;
 import omnikryptec.util.Instance;
-import omnikryptec.util.PhysicsUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
-public class Scene implements DataMapSerializable {
+public class Scene extends AbstractScene {
 
-	public static enum FrameState{
-		NULL,RENDERING,LOGIC;
-	}
-	
-    private String name;
     private final Map<String, RenderChunk> scene = new HashMap<>();
-    private Camera cam;
     private long cox = Instance.getGameSettings().getChunkRenderOffsetX(),
             coy = Instance.getGameSettings().getChunkRenderOffsetY(),
             coz = Instance.getGameSettings().getChunkRenderOffsetZ();
-    private PhysicsWorld physicsWorld = null;
     private final List<Light> lights = new ArrayList<>();
 
     private RenderChunk global = new RenderChunk(0, 0, 0, this);
 
-    private Color clearcolor = new Color(0, 0, 0, 0);
     private Color ambientlight = new Color(0, 0, 0, 0);
 
     /* Temp Variables */
@@ -51,20 +37,15 @@ public class Scene implements DataMapSerializable {
     private RenderChunk tmpc;
     private long vertcount = 0;
 
-    private FrameState state = FrameState.NULL;
     
     public Scene() {
         this("", null);
     }
 
     public Scene(String name, Camera cam) {
-        this.cam = cam;
-        this.name = name;
+        super(name, cam);
     }
 
-    public FrameState getState(){
-    	return state;
-    }
     
     public Scene setAmbientColor(float r, float g, float b) {
         ambientlight.set(r, g, b);
@@ -116,18 +97,11 @@ public class Scene implements DataMapSerializable {
         return g;
     }
 
-    private double logictime = 0;
-    private double tmptime2 = 0;
-    public final void logic(boolean particles){
-	    state = FrameState.LOGIC;
-    	tmptime2 = DisplayManager.instance().getCurrentTime();
-	    if(isUsingPhysics()){ 
-	    	physicsWorld.stepSimulation();
-	    }
+    public final void logic(){
 	    if(Instance.getGameSettings().usesRenderChunking()){
-		    cx = cam.getChunkX();
-		    cy = cam.getChunkY();
-		    cz = cam.getChunkZ();
+		    cx = getCamera().getChunkX();
+		    cy = getCamera().getChunkY();
+		    cz = getCamera().getChunkZ();
 		    for (long x = -cox + cx; x <= cox + cx; x++) {
 		        for (long y = -coy + cy; y <= coy + cy; y++) {
 		            for (long z = -coz + cz; z <= coz + cz; z++) {
@@ -139,29 +113,19 @@ public class Scene implements DataMapSerializable {
 		    }
 		}
         global.logic();
-        cam.doLogic();
         doLogic();
-        logictime = DisplayManager.instance().getCurrentTime() - tmptime2;
-        if(particles){
-	    	ParticleMaster.instance().logic(cam);
-        }
-        state = FrameState.NULL;
     }
     
-    private double rendertime = 0;
-    private double tmptime = 0;
     
-    public final long render(float maxexpenlvl, float minexplvl, String renderPassName, AllowedRenderer info, boolean particles,
+    public final long render(float maxexpenlvl, float minexplvl, String renderPassName, AllowedRenderer info,
             Renderer<?>... re) {
-        state = FrameState.RENDERING;
-    	tmptime = DisplayManager.instance().getCurrentTime();
     	lights.clear();
         lights.addAll(global.getImportantLights());
         vertcount = 0;
         if (Instance.getGameSettings().usesRenderChunking()) {
-            cx = cam.getChunkX();
-            cy = cam.getChunkY();
-            cz = cam.getChunkZ();
+            cx = getCamera().getChunkX();
+            cy = getCamera().getChunkY();
+            cz = getCamera().getChunkZ();
             for (long x = -cox + cx; x <= cox + cx; x++) {
                 for (long y = -coy + cy; y <= coy + cy; y++) {
                     for (long z = -coz + cz; z <= coz + cz; z++) {
@@ -182,27 +146,9 @@ public class Scene implements DataMapSerializable {
             }
         }
         vertcount += global.render(maxexpenlvl, minexplvl, renderPassName, info, re);
-        rendertime = DisplayManager.instance().getCurrentTime() - tmptime;
-        if(particles){
-        	ParticleMaster.instance().render(cam);
-        }
-        state = FrameState.NULL;
         return vertcount;
     }
-
-    /**
-     * without particles
-     * @return
-     */
-    public final double getRenderTimeMS(){
-    	return rendertime;
-    }
-    
-    public final double getLogicTimeMS(){
-    	return logictime;
-    }
-    
-    
+ 
     /**
      * override this to do your scene logic
      */
@@ -213,54 +159,6 @@ public class Scene implements DataMapSerializable {
         return lights;
     }
 
-    public final Camera getCamera() {
-        return cam;
-    }
-
-    public final Scene setCamera(Camera cam) {
-        this.cam = cam;
-        return this;
-    }
-
-    public final Scene setClearColor(float r, float g, float b) {
-        return setClearColor(r, g, b, 1);
-    }
-
-    public final Scene setClearColor(float r, float g, float b, float a) {
-        clearcolor.set(r, g, b, a);
-        return this;
-    }
-
-    public final Scene setClearColor(Color f) {
-        clearcolor = f;
-        return this;
-    }
-
-    public final Color getClearColor() {
-        return clearcolor;
-    }
-
-    public final PhysicsWorld getPhysicsWorld() {
-        return physicsWorld;
-    }
-
-    public final Scene setPhysicsWorld(PhysicsWorld physicsWorld) {
-        this.physicsWorld = physicsWorld;
-        return this;
-    }
-
-    public final Scene useDefaultPhysics() {
-        return setPhysicsWorld(new JBulletPhysicsWorld(PhysicsUtil.createDefaultDynamicsWorld()));
-    }
-
-    public final boolean isUsingPhysics() {
-        return physicsWorld != null;
-    }
-
-    public final Scene setName(String name) {
-        this.name = name;
-        return this;
-    }
 
     public final List<Entity> getEntities() {
         final List<Entity> entities = global.getEntities();
@@ -278,25 +176,14 @@ public class Scene implements DataMapSerializable {
         return ambientlight;
     }
 
-    public static final Scene byName(String name) {
-        if (OmniKryptecEngine.rawInstance() != null) {
-            for (Scene scene : OmniKryptecEngine.rawInstance().getScenes()) {
-                if (scene.getName() == null ? name == null : scene.getName().equals(name)) {
-                    return scene;
-                }
-            }
-            return null;
-        } else {
-            return null;
-        }
-    }
+    
 
     @Override
     public DataMap toDataMap(DataMap data) {
-        data.put("name", name);
-        data.put("camera", (cam != null ? cam.toDataMap(new DataMap("camera")) : null));
+        data.put("name", getName());
+        data.put("camera", (getCamera() != null ? getCamera().toDataMap(new DataMap("camera")) : null));
         final List<Entity> entities = getEntities();
-        Logger.log("SCENE: " + name + " ENTITIES: " + Arrays.toString(entities.toArray()));
+        Logger.log("SCENE: " + getName() + " ENTITIES: " + Arrays.toString(entities.toArray()));
         final List<String> entityNames = new ArrayList<>();
         entities.stream().forEach((entity) -> {
             entityNames.add(entity.getName());
@@ -318,7 +205,13 @@ public class Scene implements DataMapSerializable {
         if (data == null) {
             return null;
         }
-        final Scene scene = byName(data.getString("name"));
+        Scene scene;
+        try {
+        	scene = (Scene) byName(data.getString("name"));
+        }catch(Exception ex) {
+        	scene = null;
+        	Logger.logErr("Can't cast to Scene (byName returned wrong type)", ex);
+        }
         return (scene != null ? scene : new Scene()).fromDataMap(data);
     }
 
@@ -330,8 +223,8 @@ public class Scene implements DataMapSerializable {
         setName(data.getString("name"));
         DataMap dataMap_temp = data.getDataMap("camera");
         if (dataMap_temp != null) {
-            if (cam != null) {
-                cam.fromDataMap(dataMap_temp);
+            if (getCamera() != null) {
+                getCamera().fromDataMap(dataMap_temp);
             } else {
                 Object temp = Camera.newInstanceFromDataMap(dataMap_temp);
                 if (temp != null && temp instanceof Camera) {
@@ -398,11 +291,6 @@ public class Scene implements DataMapSerializable {
         }
          */
         return this;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     public Scene setValuesFrom(Scene scene) {

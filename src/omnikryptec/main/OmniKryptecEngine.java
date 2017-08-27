@@ -97,8 +97,8 @@ public class OmniKryptecEngine implements Profilable {
     private DisplayManager manager;
     private EventSystem eventsystem;
     private PostProcessing postpro;
-    private final ArrayList<Scene> scenes = new ArrayList<>();
-    private Scene sceneCurrent;
+    private final ArrayList<AbstractScene> scenes = new ArrayList<>();
+    private AbstractScene sceneCurrent;
     private long vertsCountCurrent = 0;
 
     private ShutdownOption shutdownOption = ShutdownOption.JAVA;
@@ -229,9 +229,9 @@ public class OmniKryptecEngine implements Profilable {
                     RenderUtil.clear(sceneCurrent.getClearColor());
                 }
                 if(!onlyrender){
-                	sceneCurrent.logic(true);
+                	sceneCurrent.publicLogic(true);
                 }
-                vertsCountCurrent = sceneCurrent.render(Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, null, AllowedRenderer.All, true);
+                vertsCountCurrent = sceneCurrent.publicRender(true, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, null, AllowedRenderer.All);
             }
             eventsystem.fireEvent(new Event(), EventType.RENDER_FRAME_EVENT);
             scenefbo.unbindFrameBuffer();
@@ -319,7 +319,7 @@ public class OmniKryptecEngine implements Profilable {
         instance = null;
     }
 
-    public final OmniKryptecEngine addAndSetScene(Scene scene) {
+    public final OmniKryptecEngine addAndSetScene(AbstractScene scene) {
         if(scene!=null){
     		addScene(scene);
         	setScene(scene.getName());
@@ -327,7 +327,7 @@ public class OmniKryptecEngine implements Profilable {
         return this;
     }
 
-    public final OmniKryptecEngine addScene(Scene scene) {
+    public final OmniKryptecEngine addScene(AbstractScene scene) {
         if (scene != null) {
             scenes.add(scene);
         }
@@ -335,13 +335,13 @@ public class OmniKryptecEngine implements Profilable {
     }
 
     public final OmniKryptecEngine setScene(String name) {
-        List<Scene> scenesEquals = scenes.stream().filter((scene) -> scene.getName().equals(name))
+        List<AbstractScene> scenesEquals = scenes.stream().filter((scene) -> scene.getName().equals(name))
                 .collect(Collectors.toList());
         sceneCurrent = (scenesEquals.isEmpty() ? null : scenesEquals.get(0));
         return this;
     }
 
-    public final Scene getCurrentScene() {
+    public final AbstractScene getCurrentScene() {
         return sceneCurrent;
     }
 
@@ -354,7 +354,7 @@ public class OmniKryptecEngine implements Profilable {
         return this;
     }
 
-    public final ArrayList<Scene> getScenes() {
+    public final ArrayList<AbstractScene> getScenes() {
         return scenes;
     }
 

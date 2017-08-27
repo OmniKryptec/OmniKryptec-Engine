@@ -1,15 +1,16 @@
-package omnikryptec.shader.files;
+package omnikryptec.shader.files.postprocessing;
 
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.UniformSampler;
+import omnikryptec.util.AdvancedFile;
 
 public class BrightnessHighlighterShader extends Shader {
 
 	public final UniformSampler scene = new UniformSampler("scene");
 
 	public BrightnessHighlighterShader() {
-		super(Shader.class.getResourceAsStream(DEFAULT_PP_VERTEX_SHADER_LOC),
-				Shader.class.getResourceAsStream(oc_shader_loc + "bloom_shader_frag.glsl"),
+		super(DEF_SHADER_LOC_PP_VS,
+				new AdvancedFile(SHADER_LOCATION_PP, "bloom_shader_frag.glsl"),
 				Shader.DEFAULT_PP_VERTEX_SHADER_POS_ATTR);
 		registerUniforms(scene);
 		start();

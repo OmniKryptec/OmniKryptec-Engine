@@ -1,8 +1,9 @@
-package omnikryptec.shader.files;
+package omnikryptec.shader.files.postprocessing;
 
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.UniformSampler;
 import omnikryptec.shader.base.UniformVec3;
+import omnikryptec.util.AdvancedFile;
 
 public class DebugShader extends Shader {
 
@@ -10,8 +11,8 @@ public class DebugShader extends Shader {
 	public final UniformVec3 info = new UniformVec3("info");
 
 	public DebugShader() {
-		super(Shader.class.getResourceAsStream(oc_shader_loc + "debug_shader_vert.glsl"),
-				Shader.class.getResourceAsStream(oc_shader_loc + "debug_shader_frag.glsl"),
+		super(new AdvancedFile(SHADER_LOCATION_PP, "debug_shader_vert.glsl"),
+				new AdvancedFile(SHADER_LOCATION_PP, "debug_shader_frag.glsl"),
 				Shader.DEFAULT_PP_VERTEX_SHADER_POS_ATTR);
 		registerUniforms(sampler, info);
 		start();

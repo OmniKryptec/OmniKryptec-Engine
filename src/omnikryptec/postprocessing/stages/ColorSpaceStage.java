@@ -9,7 +9,7 @@ import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.main.PostProcessingStep;
 import omnikryptec.shader.base.Shader;
-import omnikryptec.shader.files.ColorSpaceShader;
+import omnikryptec.shader.files.postprocessing.ColorSpaceShader;
 
 public class ColorSpaceStage extends PostProcessingStep {
 

@@ -22,15 +22,19 @@ import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
 public class Shader {
-
+	
+	@Deprecated
 	public static final String DEFAULT_PP_VERTEX_SHADER_LOC = "/omnikryptec/shader/files/pp_vert.glsl";
 	public static final String DEFAULT_PP_VERTEX_SHADER_POS_ATTR = "position";
 	public static final String DEFAULT_PP_VERTEX_SHADER_TEXC_OUT = "textureCoords";
 	
 	protected static final AdvancedFile SHADER_LOCATION = new AdvancedFile("omnikryptec", "shader", "files");
+	protected static final AdvancedFile SHADER_LOCATION_PP = new AdvancedFile("omnikryptec", "shader", "files", "postprocessing");
+	protected static final AdvancedFile SHADER_LOCATION_RENDER = new AdvancedFile("omnikryptec", "shader", "files", "render");
+	protected static final AdvancedFile DEF_SHADER_LOC_PP_VS = new AdvancedFile(SHADER_LOCATION_PP, "pp_vert.glsl");
 	
 	@Deprecated
-	protected static final String oc_shader_loc = "/omnikryptec/shader/files/";
+	protected static final String oc_shader_loc = "/omnikryptec/shader/files/postprocessing";
 	
 
 	private static int shadercount = 0;

@@ -8,8 +8,9 @@ import java.util.List;
 import org.joml.Matrix4f;
 
 import omnikryptec.gameobject.component.Component;
+import omnikryptec.main.AbstractScene;
+import omnikryptec.main.AbstractScene.FrameState;
 import omnikryptec.main.Scene;
-import omnikryptec.main.Scene.FrameState;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.test.saving.DataMap;
@@ -152,7 +153,7 @@ public class GameObject implements DataMapSerializable, Transformable {
         return doLogic(false);
     }
 
-    private Scene cs;
+    private AbstractScene cs;
 
     /**
      * executes the logic of this GameObject (if neccessary or forced)

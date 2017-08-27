@@ -25,8 +25,8 @@ public class DisplayManager implements Profilable{
 	private static double lasttime = 0;
 	private static double runtime = 0;
 
-	private static boolean smootheddelteenabled = false;
-	private static double[] smootheddelta = new double[60];
+	private static boolean smootheddelteenabled = true;
+	private static double[] smootheddelta = new double[250];
 	private static int deltapointer = 0;
 	
 	private static long framecount = 0;
