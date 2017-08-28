@@ -49,7 +49,7 @@ vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 M
 	float distance = length(tlvec);
 	//directional light -> lightpos is the light direction
 	if(pos.w==0.0){
-		tlvec = pos.xyz;
+		tlvec = -pos.xyz;
 	}
 	vec3 toLightNormalized = normalize(tlvec);
 	vec3 unitCam = normalize(tcvec);

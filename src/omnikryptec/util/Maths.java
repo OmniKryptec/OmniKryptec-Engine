@@ -140,6 +140,13 @@ public class Maths {
     private static Matrix4f rotationMatrix = new Matrix4f();
     private static Matrix3f helpmatrix = new Matrix3f();
 
+    /**
+     * 
+     * @param random a random number generator
+     * @param coneDirection direction of the cone
+     * @param coneangle max coneangle in radians
+     * @return a random normal vector within the cone
+     */
     public static Vector3f generateRandomUnitVectorWithinCone(Random random, Vector3f coneDirection, double coneangle) {
         float cosAngle = (float) Math.cos(coneangle);
         double theta = getRandomRotationf(random);

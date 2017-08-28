@@ -203,4 +203,16 @@ public class Color {
 		return "Color: [R="+getR()+" G="+getG()+" B="+getB()+" A="+getA()+"]";
 	}
 
+	public static Color randomRGBA() {
+		return randomRGB((float)Math.random());
+	}
+	
+	public static Color randomRGB(float a) {
+		return new Color((float)Math.random(), (float)Math.random(),(float) Math.random(), a);
+	}
+	
+	public static Color randomRGB() {
+		return randomRGB(1);
+	}
+
 }

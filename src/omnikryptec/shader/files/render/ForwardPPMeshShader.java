@@ -158,7 +158,7 @@ public class ForwardPPMeshShader extends Shader {
 		for (int i = 0; i < lights; i++) {
 			l = s.getLights().get(i);
 			pos = l.getTransform().getPosition(true);
-			lightpos[i].loadVec4(pos.x, pos.y, pos.z, l.isDirectional() ? 0.0f : 1.0f);
+			lightpos[i].loadVec4(l.isDirectional()?l.getConeInfo().x:pos.x, l.isDirectional()?l.getConeInfo().y:pos.y, l.isDirectional()?l.getConeInfo().z:pos.z, l.isDirectional() ? 0.0f : 1.0f);
 			lightcolor[i].loadVec3(l.getColor().getArray());
 			atts[i].loadVec4(l.getAttenuation());
 			coneinfo[i].loadVec4(l.getConeInfo());

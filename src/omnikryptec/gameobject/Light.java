@@ -74,18 +74,27 @@ public class Light extends GameObject {
 	}
 	
 	/**
-	 * the direction the spotlight is facing.
-	 * if this light is not a spotlight, this is ignored.
+	 * the direction the light is facing.
+	 * if this light is not a spot- or directionallight, this is ignored.
 	 * @param x
 	 * @param y
 	 * @param z
 	 * @return this Light
 	 */
-	public Light setConeDirection(float x, float y, float z){
+	public Light setDirection(float x, float y, float z){
 		coneinfo.x = x;
 		coneinfo.y = y;
 		coneinfo.z = z;
 		return this;
+	}
+	
+	/**
+	 * @see #setDirection(float, float, float)
+	 * @param d directionvector
+	 * @return this Light
+	 */
+	public Light setDirection(Vector3f d) {
+		return setDirection(d.x, d.y, d.z);
 	}
 	
 	/**
@@ -111,7 +120,7 @@ public class Light extends GameObject {
 	
 	/**
 	 * coneinfo. only used if this light is a spotlight.
-	 * @see #setConeDirection(float, float, float)
+	 * @see #setDirection(float, float, float)
 	 * @see #setConeDegrees(float)
 	 * @see #setConeRadians(double)
 	 * @return conedata

@@ -11,7 +11,7 @@ import omnikryptec.gameobject.Entity;
 import omnikryptec.gameobject.GameObject;
 import omnikryptec.gameobject.Light;
 import omnikryptec.renderer.RenderChunk;
-import omnikryptec.renderer.RenderChunk.AllowedRenderer;
+import omnikryptec.renderer.RenderConfiguration;
 import omnikryptec.renderer.Renderer;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.util.Color;
@@ -117,8 +117,7 @@ public class Scene extends AbstractScene {
     }
     
     
-    public final long render(float maxexpenlvl, float minexplvl, String renderPassName, AllowedRenderer info,
-            Renderer<?>... re) {
+    public final long render(RenderConfiguration config) {
     	lights.clear();
         lights.addAll(global.getImportantLights());
         vertcount = 0;
@@ -139,13 +138,13 @@ public class Scene extends AbstractScene {
                 for (long y = -coy + cy; y <= coy + cy; y++) {
                     for (long z = -coz + cz; z <= coz + cz; z++) {
                         if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
-                            vertcount += tmpc.render(maxexpenlvl, minexplvl, renderPassName, info, re);
+                            vertcount += tmpc.render(config);
                         }
                     }
                 }
             }
         }
-        vertcount += global.render(maxexpenlvl, minexplvl, renderPassName, info, re);
+        vertcount += global.render(config);
         return vertcount;
     }
  

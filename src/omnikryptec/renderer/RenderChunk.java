@@ -3,6 +3,7 @@ package omnikryptec.renderer;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import omnikryptec.gameobject.GameObject;
 import omnikryptec.gameobject.Light;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
+import omnikryptec.renderer.RenderConfiguration.AllowedRenderer;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
 import omnikryptec.test.saving.DataMap;
@@ -199,9 +201,7 @@ public class RenderChunk implements DataMapSerializable {
         return z;
     }
 
-    public static enum AllowedRenderer {
-        All, EvElse, OnlThis;
-    }
+    
 
     private RenderMap<AdvancedModel, List<Entity>> tmpmap;
     private List<Entity> tmplist;
@@ -223,33 +223,21 @@ public class RenderChunk implements DataMapSerializable {
 		}
 	}
     
-    private final Renderer<?>[] empty_array = new Renderer[]{null};
+    private LinkedList<Renderer<?>> renderlist;
     private Renderer<?> r;
     private long vertcount = 0;
-
-    public long render(float maxExpenLvl, float minexplvl, String renderPassName, AllowedRenderer type, Renderer<?>... rend) {
-        if (rend == null || rend.length == 0) {
-            rend = empty_array;
-        }
+    private RenderMap<AdvancedModel, List<Entity>> rendermap;
+    
+    public long render(RenderConfiguration config) {
         vertcount = 0;
-        for (Renderer<?> keysArray : prios) {
-            r = keysArray;
-            if (r != null && r.expensiveLevel() <= maxExpenLvl && r.expensiveLevel() >= minexplvl
-                    && (type == AllowedRenderer.All || (type == AllowedRenderer.OnlThis && contains(rend, r))
-                    || (type == AllowedRenderer.EvElse && !contains(rend, r)))) {
-                vertcount += r.render(scene, chunk.get(r), renderPassName);
-            }
+        renderlist = config.getRenderer();
+        for(Renderer<?> renderer : renderlist) {
+        	rendermap = chunk.get(renderer);
+        	if(rendermap!=null) {
+        		vertcount += renderer.render(scene, rendermap, "");
+        	}
         }
         return vertcount;
-    }
-
-    private boolean contains(Object[] array, Object obj) {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] == obj) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public Scene getScene() {

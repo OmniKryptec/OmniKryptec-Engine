@@ -19,7 +19,8 @@ import omnikryptec.postprocessing.main.PostProcessing;
 import omnikryptec.postprocessing.main.RenderTarget;
 import omnikryptec.renderer.Query;
 import omnikryptec.renderer.RenderChunk;
-import omnikryptec.renderer.RenderChunk.AllowedRenderer;
+import omnikryptec.renderer.RenderConfiguration;
+import omnikryptec.renderer.RenderConfiguration.AllowedRenderer;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.VertexArrayObject;
 import omnikryptec.resource.model.VertexBufferObject;
@@ -127,7 +128,7 @@ public class OmniKryptecEngine implements Profilable {
             eventsystem.fireEvent(new Event(), EventType.BOOTING_COMPLETED);
             Logger.log("Successfully booted the Engine!", LogLevel.FINEST);
         } catch (Exception e) {
-            errorOccured(e, "Error occured while booting.");
+        	errorOccured(e, "Error occured while booting!");
         }
     }
 
@@ -213,7 +214,7 @@ public class OmniKryptecEngine implements Profilable {
                 try {
                     Thread.sleep(1);
                 } catch (InterruptedException e) {
-                    errorOccured(e, "Error occured while sleeping.");
+                    errorOccured(e, "Error occured while sleeping in frame!");
                 }
                 return this;
             }
@@ -231,7 +232,7 @@ public class OmniKryptecEngine implements Profilable {
                 if(!onlyrender){
                 	sceneCurrent.publicLogic(true);
                 }
-                vertsCountCurrent = sceneCurrent.publicRender(true, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY, null, AllowedRenderer.All);
+                vertsCountCurrent = sceneCurrent.publicRender(new RenderConfiguration());
             }
             eventsystem.fireEvent(new Event(), EventType.RENDER_FRAME_EVENT);
             scenefbo.unbindFrameBuffer();
@@ -253,7 +254,7 @@ public class OmniKryptecEngine implements Profilable {
             InputManager.nextFrame();
             frametime = manager.getCurrentTime() - currentTime;
         } catch (Exception e) {
-            errorOccured(e, "Error occured in frame.");
+            errorOccured(e, "Error occured in frame!");
         }
         eventsystem.fireEvent(new Event(), EventType.AFTER_FRAME);
         return this;
@@ -287,10 +288,8 @@ public class OmniKryptecEngine implements Profilable {
 
     public final OmniKryptecEngine close(ShutdownOption shutdownOption) {
         if (shutdownOption.getLevel() >= ShutdownOption.ENGINE.getLevel()) {
-            state = GameState.Stopping;
-            cleanup();
+        	cleanup();
             manager.close();
-            state = GameState.Stopped;
             if (shutdownOption.getLevel() >= ShutdownOption.JAVA.getLevel()) {
                 Commands.COMMANDEXIT.run("-java");
             }
@@ -298,12 +297,6 @@ public class OmniKryptecEngine implements Profilable {
         } else {
             return this;
         }
-    }
-
-    public void errorOccured(Exception e, String text) {
-        state = GameState.Error;
-        new OmnikryptecError(e, new ErrorObject<String>(text)).print();
-        eventsystem.fireEvent(new Event(e), EventType.ERROR);
     }
 
     private void cleanup() {
@@ -319,6 +312,12 @@ public class OmniKryptecEngine implements Profilable {
         instance = null;
     }
 
+    public void errorOccured(Exception e, String text) {
+        state = GameState.Error;
+        new OmnikryptecError(e, new ErrorObject<String>(text)).print();
+        EventSystem.instance().fireEvent(new Event(e), EventType.ERROR);
+    }
+    
     public final OmniKryptecEngine addAndSetScene(AbstractScene scene) {
         if(scene!=null){
     		addScene(scene);

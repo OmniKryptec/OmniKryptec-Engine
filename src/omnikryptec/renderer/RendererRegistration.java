@@ -1,6 +1,7 @@
 package omnikryptec.renderer;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import omnikryptec.animation.renderer.AnimatedModelRenderer;
@@ -11,7 +12,7 @@ import omnikryptec.util.logger.Logger;
 
 public class RendererRegistration {
 
-    private static final List<Renderer<?>> existingRenderers = new ArrayList<>();
+    private static final List<Renderer<?>> existingRenderers = new LinkedList<>();
     
 	public static final SimpleMeshRenderer SIMPLE_MESH_RENDERER;
     public static final ForwardMeshRenderer FORWARD_MESH_RENDERER;
@@ -49,6 +50,10 @@ public class RendererRegistration {
         return null;
     }
 
+    public static List<Renderer<?>> getAllRenderer(){
+    	return existingRenderers;
+    }
+    
     /**
      * trigger static constructor
      */

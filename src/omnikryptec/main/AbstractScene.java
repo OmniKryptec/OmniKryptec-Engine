@@ -1,13 +1,12 @@
 package omnikryptec.main;
 
-import omnikryptec.renderer.Renderer;
+import omnikryptec.renderer.RenderConfiguration;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.GameObject;
 import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.physics.JBulletPhysicsWorld;
 import omnikryptec.physics.PhysicsWorld;
-import omnikryptec.renderer.RenderChunk.AllowedRenderer;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.Color;
 import omnikryptec.util.PhysicsUtil;
@@ -59,12 +58,12 @@ public abstract class AbstractScene implements DataMapSerializable{
 		state = FrameState.NULL;
 	}
 	
-	public final long publicRender(boolean particles, float maxexpenlvl, float minexplvl, String renderPassName, AllowedRenderer info, Renderer<?>... re) {
+	public final long publicRender(RenderConfiguration config) {
 		state = FrameState.RENDERING;
 		tmptime = DisplayManager.instance().getCurrentTime();
-		long l = render(maxexpenlvl, minexplvl, renderPassName, info, re);
+		long l = render(config);
 		rendertime = DisplayManager.instance().getCurrentTime() - tmptime;
-		if(particles&&camera!=null) {
+		if(config.renderParticles()&&camera!=null) {
 			ParticleMaster.instance().render(camera);
 		}
 		state = FrameState.NULL;
@@ -139,7 +138,7 @@ public abstract class AbstractScene implements DataMapSerializable{
     
     protected abstract void logic();
 	
-	protected abstract long render(float maxexpenlvl, float minexplvl, String renderPassName, AllowedRenderer info, Renderer<?>... re);
+	protected abstract long render(RenderConfiguration config);
 	
 	public abstract boolean addGameObject(GameObject go);
 	
