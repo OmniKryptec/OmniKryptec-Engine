@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import omnikryptec.display.DisplayManager;
+import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.swing.ChartData;
 import omnikryptec.swing.PieChartGenerator;
@@ -102,7 +104,8 @@ public class LiveProfiler {
     private final LiveProfiler updateData() {
     	OmniKryptecEngine omc = OmniKryptecEngine.rawInstance();
     	if(omc!=null) {
-    		vert_info.setText("Vertices: "+omc.getModelVertsCount());
+    		//TODO @Panzer1119 xD
+    		vert_info.setText("Vertices: "+omc.getModelVertsCount()+" Frames: "+DisplayManager.instance().getFramecount()+" Particles updated: "+ParticleMaster.instance().getUpdatedParticlesCount());
     	}else {
     		vert_info.setText("Error: Instance is null");
     	}

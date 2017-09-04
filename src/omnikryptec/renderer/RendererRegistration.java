@@ -1,6 +1,5 @@
 package omnikryptec.renderer;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,7 +11,7 @@ import omnikryptec.util.logger.Logger;
 
 public class RendererRegistration {
 
-    private static final List<Renderer<?>> existingRenderers = new LinkedList<>();
+    private static final List<Renderer> existingRenderers = new LinkedList<>();
     
 	public static final SimpleMeshRenderer SIMPLE_MESH_RENDERER;
     public static final ForwardMeshRenderer FORWARD_MESH_RENDERER;
@@ -29,20 +28,20 @@ public class RendererRegistration {
         SIMPLE_MESH_RENDERER = new SimpleMeshRenderer();
     }
 
-    public static boolean exists(Renderer<?> r) {
+    public static boolean exists(Renderer r) {
         return existingRenderers.contains(r);
     }
 
-    public static void register(Renderer<?> r) {
+    public static void register(Renderer r) {
         existingRenderers.add(r);
     }
 
-    public static Renderer<?> byName(String name) {
+    public static Renderer byName(String name) {
         return byClass(SerializationUtil.classForName(name));
     }
 
-    public static Renderer<?> byClass(Class<?> c) {
-        for (Renderer<?> renderer : existingRenderers) {
+    public static Renderer byClass(Class<?> c) {
+        for (Renderer renderer : existingRenderers) {
             if (c == renderer.getClass()) {
                 return renderer;
             }
@@ -50,7 +49,7 @@ public class RendererRegistration {
         return null;
     }
 
-    public static List<Renderer<?>> getAllRenderer(){
+    public static List<Renderer> getAllRenderer(){
     	return existingRenderers;
     }
     

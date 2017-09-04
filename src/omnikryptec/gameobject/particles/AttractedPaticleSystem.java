@@ -76,11 +76,11 @@ public class AttractedPaticleSystem extends SimpleParticleSystem {
     }
 
     public AttractedPaticleSystem addAttractor(float x, float y, float z, float g, float t, AttractorMode mode, boolean i) {
-        return addAttractor(new ParticleAttractor(x, y, z).setGravitation(g).setTolerance(t).setMode(mode).setInfinite(i));
+        return addAttractor(new ParticleAttractor(x, y, z).setGravitation(g).setDistanceTolerance(t).setMode(mode).setInfinite(i));
     }
 
     public AttractedPaticleSystem addAttractor(GameObject go, float g, float t, AttractorMode mode, boolean i) {
-        return addAttractor(new ParticleAttractor(go).setGravitation(g).setTolerance(t).setMode(mode).setInfinite(i));
+        return addAttractor(new ParticleAttractor(go).setGravitation(g).setDistanceTolerance(t).setMode(mode).setInfinite(i));
     }
 
     public AttractedPaticleSystem addAttractor(ParticleAttractor atr) {

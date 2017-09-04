@@ -12,7 +12,6 @@ import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.gameobject.terrain.TerrainRenderer;
 import omnikryptec.main.AbstractScene;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.Scene;
 import omnikryptec.postprocessing.main.PostProcessing;
 import omnikryptec.postprocessing.main.PostProcessingStage;
 import omnikryptec.renderer.ForwardMeshRenderer;

@@ -18,17 +18,15 @@ import omnikryptec.gameobject.GameObject;
 import omnikryptec.gameobject.Light;
 import omnikryptec.gameobject.RenderType;
 import omnikryptec.gameobject.UpdateType;
-import omnikryptec.gameobject.component.Component;
 import omnikryptec.gameobject.particles.AttractedPaticleSystem;
 import omnikryptec.gameobject.particles.AttractorMode;
 import omnikryptec.gameobject.particles.ParticleAttractor;
 import omnikryptec.gameobject.particles.ParticleSpawnArea;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
+import omnikryptec.gameobject.particles.ParticleSystem;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;
-import omnikryptec.postprocessing.main.DebugRenderer;
-import omnikryptec.postprocessing.main.PostProcessing;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.Material;
 import omnikryptec.resource.model.Model;
@@ -54,6 +52,9 @@ import omnikryptec.util.profiler.LiveProfiler;
  */
 public class EngineTest2 implements IEventHandler {
 
+    static TestRenderer rend;
+
+	
     public static void main(String[] args) {
         try {
         	//NativesLoader.setNativesFolder(new AdvancedFile(false, (Object)null, "H:/natives/"));
@@ -77,6 +78,7 @@ public class EngineTest2 implements IEventHandler {
 		            liveProfiler.startTimer(1000);					
 				}
 			}).start();
+           // rend = new TestRenderer();
             //PostProcessing.instance().addStage(new
             // DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
             // DeferredLightPrepare.DEFAULT_LIGHT_PREPARE));
@@ -114,7 +116,6 @@ public class EngineTest2 implements IEventHandler {
             SimpleTexture js = SimpleTexture.newTexture(new AdvancedFile(res, "js.png"));
             SimpleTexture jn = SimpleTexture.newTexture(new AdvancedFile(res, "jn.png"));
             EventSystem.instance().addEventHandler(new EngineTest2(), EventType.AFTER_FRAME, EventType.RENDER_FRAME_EVENT);
-
             Model brunnen = new Model("",
                     ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
             // Model brunnen = ModelUtil.generateQuad();
@@ -132,8 +133,8 @@ public class EngineTest2 implements IEventHandler {
             tm.getMaterial().setRenderer(RendererRegistration.FORWARD_MESH_RENDERER);
            // tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
             //tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
-           // tm.getMaterial().setTexture(Material.NORMAL, jn);
-            tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.8f)).setFloat(Material.DAMPER, 0.01f).setVector3f(Material.SHADERINFO, new Vector3f(1));
+            //tm.getMaterial().setTexture(Material.SPECULAR, );
+            tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.8f)).setFloat(Material.DAMPER, 1.01f).setVector3f(Material.SHADERINFO, new Vector3f(1));
           OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
                 @Override
@@ -144,7 +145,8 @@ public class EngineTest2 implements IEventHandler {
                     doCameraLogic(this);
                 }
 
-            }.setPerspectiveProjection(90, 0.1f,1000)).setAmbientColor(0.05f, 0.05f, 0.05f));
+            }.setPerspectiveProjection(90, 0.1f,1000)).setAmbientColor(0.1f, 0.1f, 0.1f));
+          	Instance.getCurrentCamera().getTransform().setPosition(0, 0, 500);
             //OmniKryptecEngine.instance().addAndSetScene(null);
             //Instance.getCurrentCamera().getTransform().setPosition(0, 0, 0);
             Model pine = new Model("",
@@ -181,13 +183,10 @@ public class EngineTest2 implements IEventHandler {
 //               e.setRelativePos(r.nextInt(100) - 50, r.nextInt(100) - 50, r.nextInt(100) - 50);
 //                OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 //            }
-            Instance.getGameSettings().setMultithreadedParticles(false);
-            system = new AttractedPaticleSystem(0, 0, 0,
-                    new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false),
-                  100,0, 1000f, 1f, RenderType.ALWAYS);
+
 
             System.out.println("Generating objs...");
-            int cube = 100;
+            int cube = 500;
             int abstand = 30;
             float scale = 5;
             int objcount=0;
@@ -208,10 +207,14 @@ public class EngineTest2 implements IEventHandler {
            // Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0, 1).setScale(new Vector3f(scale,scale,scale)).setUpdateType(UpdateType.SEMISTATIC).setRelativePos(0, 0, 0));
 
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
-           
+            Instance.getGameSettings().setMultithreadedParticles(true);
+            system = new AttractedPaticleSystem(0, 0, 0,
+                    new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false),
+                  10000,0, 1000, 1f, RenderType.ALWAYS).setParticlesAttractingEachOther(true).setAverageMass(1000000000f).setMassError(0.75f);
+            system.setSystemLifeLength(ParticleSystem.LIFELENGTH_SYSTEM_ONETICKBURST);
             //system.setParent(Instance.getCurrentCamera());
-            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.DIRECTION, new Vector3f(0,1,0), 100));
-            system.setTimeMultiplier(2F);
+            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.SHPERE, new Vector3f(0,1,0), 100));
+            //system.setTimeMultiplier(3);
             //system.setAverageStartScale(0.01f);
             //system.setAverageEndScale(1);
             //system.setSystemLifeLength(20);
@@ -223,11 +226,12 @@ public class EngineTest2 implements IEventHandler {
             //system.getLastAddedAttractor().setAttenuation(0, 0.1f, 1); //Der nicht
         //system.addAttractor(-200,-150,0, 35.0F, 50F, AttractorMode.STOP_FOREVER_ON_REACH);
         
-        
-            system.addAttractor(150,600,0, 35.0F, 50F, AttractorMode.STOP_FOREVER_ON_REACH);
+            attractor = new ParticleAttractor(0, 0, 0).setGravitation(100000000000f).setDistanceTolerance(30).setMode(AttractorMode.STOP_UNTIL_DISABLED_ON_REACH);
+            system.addAttractor(attractor);
+            //system.addAttractor(150,600,0, 350000.0F, 50F, AttractorMode.STOP_FOREVER_ON_REACH);
             //system.addAttractor(-500,500,100, 40.0F, 50F, AttractorMode.STOP_FOREVER_ON_REACH);
             //system.getLastAddedAttractor().setAttenuation(0, 0.1f, 1);
-            system.addAttractor(-200,-150,0, 35.0F, 50F, AttractorMode.STOP_FOREVER_ON_REACH);
+            //system.addAttractor(-200,-150,0, 35.0F, 50F, AttractorMode.STOP_FOREVER_ON_REACH);
             //system.addAttractor(50,-200,-200, 35.0F, 50F, AttractorMode.STOP_FOREVER_ON_REACH);
             //system.getLastAddedAttractor().setAttenuation(0, 1, 1);
            // system.addAttractor(attractor=new ParticleAttractor(0,0,0).setAcceleration(11.0F).setTolerance(50F).setMode(AttractorMode.STOP_UNTIL_DISABLED_ON_REACH));
@@ -270,7 +274,7 @@ public class EngineTest2 implements IEventHandler {
         }
     }
     static Light l;
-    private static float v = 40;
+    private static float v = 80;
    private static ParticleAttractor attractor;
     
     private static void doCameraLogic(Camera camera) {
@@ -291,6 +295,19 @@ public class EngineTest2 implements IEventHandler {
 
         // system.generateParticles(1);
         if (ev.getType() == EventType.RENDER_FRAME_EVENT) {
+//        	if(Instance.getFramecount()>1000) {
+//        		system.setTimeMultiplier(0.01f);
+//        		attractor.setEnabled(false);
+//        	}
+//        	if(Instance.getFramecount()>3000) {
+//        		system.setTimeMultiplier(0.05f);
+//        	}
+//        	if(Instance.getFramecount()>3300) {
+//        		system.setTimeMultiplier(0.1f);
+//        	}
+//        	if(Instance.getFramecount()>3600) {
+//        		system.setTimeMultiplier(0.5f);
+//        	}
         	if(Math.random()<0.095) {
         		l.setColor(Color.randomRGB());
         	}
@@ -298,6 +315,7 @@ public class EngineTest2 implements IEventHandler {
         		Vector3f vec = Maths.generateRandomUnitVectorWithinCone(ra, new Vector3f(0, -1, 0), Math.toRadians(200));
         		l.setDirection(vec);
         	}
+        	//rend.render(Instance.getCurrentScene(), null, null);
         	//if((Instance.getDisplayManager().getFramecount())%100==0){
         		//attractor.setEnabled(!attractor.isEnabled());
         	//}

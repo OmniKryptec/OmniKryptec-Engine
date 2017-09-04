@@ -27,7 +27,7 @@ public class AnimatedModelLoader {
      * @param textureFile - the file containing the data for the entity.
      * @return The animated entity (no animation applied though)
      */
-    public static AnimatedModel loadModel(String name, AdvancedFile modelFile, AdvancedFile textureFile, Renderer<?> renderer) {
+    public static AnimatedModel loadModel(String name, AdvancedFile modelFile, AdvancedFile textureFile, Renderer renderer) {
         AnimatedModelData entityData = ColladaLoader.loadColladaModel(name, modelFile, Instance.MAX_WEIGHTS);
         MeshData meshData = entityData.getMeshData();
         Model model = new Model(name, meshData);
@@ -43,7 +43,7 @@ public class AnimatedModelLoader {
         return animatedModel;
     }
 
-    public static AnimatedModel createModel(String name, AnimatedModelData entityData, Texture texture, Renderer<?> renderer) {
+    public static AnimatedModel createModel(String name, AnimatedModelData entityData, Texture texture, Renderer renderer) {
         MeshData meshData = entityData.getMeshData();
         Model model = new Model(name, meshData);
         VertexArrayObject vao = model.getVao();

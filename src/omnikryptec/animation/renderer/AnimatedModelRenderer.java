@@ -6,14 +6,13 @@ import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 
 import omnikryptec.animation.AnimatedModel;
-import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
+import omnikryptec.main.AbstractScene;
 import omnikryptec.main.Scene;
 import omnikryptec.renderer.RenderMap;
 import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.AdvancedModel;
-import omnikryptec.resource.model.Material;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.ShaderPack;
 import omnikryptec.util.FrustrumFilter;
@@ -30,15 +29,16 @@ import omnikryptec.util.logger.Logger;
  * @author Karl &amp; Panzer1119
  *
  */
-public class AnimatedModelRenderer extends Renderer<AnimatedModelShader> {
+public class AnimatedModelRenderer extends Renderer {
 
+	//TODO das hier ist gurke
     public static final Vector3f LIGHT_DIR = new Vector3f(0.2f, -0.3f, -0.8f);
 
     /**
      * Initializes the shader program used for rendering animated models.
      */
     public AnimatedModelRenderer() {
-        super(new ShaderPack<>(new AnimatedModelShader()));
+        super(new ShaderPack(new AnimatedModelShader()));
         setExpensiveLevel(1);
         setPriority(0);
         RendererRegistration.register(this);
@@ -50,12 +50,9 @@ public class AnimatedModelRenderer extends Renderer<AnimatedModelShader> {
     private long vertcount = 0;
 
     @Override
-    protected long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader ownshader, FrustrumFilter filter) {
-        final Camera camera = s.getCamera();
+    protected long render(AbstractScene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader ownshader, FrustrumFilter filter) {
         vertcount = 0;
-        shaderpack.getDefaultShader().projectionMatrix.loadMatrix(camera.getProjectionMatrix());
-        shaderpack.getDefaultShader().viewMatrix.loadMatrix(camera.getViewMatrix());
-        shaderpack.getDefaultShader().lightDirection.loadVec3(LIGHT_DIR);
+        ((AnimatedModelShader)shaderpack.getDefaultShader()).lightDirection.loadVec3(LIGHT_DIR);
         for (AdvancedModel advancedModel : entities.keysArray()) {
             if (advancedModel == null || !(advancedModel instanceof AnimatedModel)) {
                 if (Logger.isDebugMode()) {
@@ -63,25 +60,19 @@ public class AnimatedModelRenderer extends Renderer<AnimatedModelShader> {
                 }
                 continue;
             }
-            animatedModel = (AnimatedModel) advancedModel;
-            animatedModel.getModel().getVao().bind(0, 1, 2, 3, 4, 5);
-            animatedModel.getMaterial().getTexture(Material.DIFFUSE).bindToUnitOptimized(0);
-            RenderUtil.disableBlending();
-            RenderUtil.enableDepthTesting(true);
+            ownshader.onModelRenderStart(advancedModel);
             stapel = entities.get(animatedModel);
             if (stapel != null && !stapel.isEmpty()) {
                 for (int z = 0; z < stapel.size(); z++) {
                     entity = stapel.get(z);
-                    if (entity != null && entity.isRenderingEnabled() && RenderUtil.inRenderRange(entity, camera)) {
-                        shaderpack.getDefaultShader().jointTransforms.loadMatrixArray(animatedModel.getJointTransforms());
-                        shaderpack.getDefaultShader().transformationMatrix.loadMatrix(entity.getTransformation());
+                    if (entity != null && entity.isRenderingEnabled() && RenderUtil.inRenderRange(entity, s.getCamera())) {
+                    	ownshader.onRenderInstance(entity);
                         GL11.glDrawElements(GL11.GL_TRIANGLES, animatedModel.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
                         vertcount += animatedModel.getModel().getModelData().getVertexCount();
                     }
                 }
             }
             stapel = null;
-            // model.getModel().getVao().unbind(0, 1, 2, 3);
         }
         return vertcount;
     }

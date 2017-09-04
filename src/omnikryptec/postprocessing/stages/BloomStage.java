@@ -8,10 +8,10 @@ import org.joml.Vector4f;
 import omnikryptec.display.Display;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
-import omnikryptec.shader.files.postprocessing.BrightnessHighlighterShader;
-import omnikryptec.shader.files.postprocessing.CombineShader;
 import omnikryptec.postprocessing.main.PostProcessingStage;
 import omnikryptec.postprocessing.main.SimpleStage;
+import omnikryptec.shader.files.postprocessing.BrightnessHighlighterShader;
+import omnikryptec.shader.files.postprocessing.CombineShader;
 
 public class BloomStage extends PostProcessingStage {
 

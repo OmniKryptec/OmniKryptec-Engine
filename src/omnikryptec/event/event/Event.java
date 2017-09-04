@@ -2,7 +2,6 @@ package omnikryptec.event.event;
 
 import omnikryptec.main.AbstractScene;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.Scene;
 
 /**
  * 

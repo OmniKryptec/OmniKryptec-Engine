@@ -1,5 +1,10 @@
 package omnikryptec.animation.renderer;
 
+import omnikryptec.animation.AnimatedModel;
+import omnikryptec.gameobject.Entity;
+import omnikryptec.main.Scene;
+import omnikryptec.resource.model.AdvancedModel;
+import omnikryptec.resource.model.Material;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.UniformMatrix;
 import omnikryptec.shader.base.UniformMatrixArray;
@@ -7,6 +12,7 @@ import omnikryptec.shader.base.UniformSampler;
 import omnikryptec.shader.base.UniformVec3;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Instance;
+import omnikryptec.util.RenderUtil;
 
 public class AnimatedModelShader extends Shader {
 
@@ -35,4 +41,23 @@ public class AnimatedModelShader extends Shader {
         diffuseMap.loadTexUnit(0);
     }
 
+    private AnimatedModel model;
+	public void onModelRenderStart(AdvancedModel m) {
+		model = (AnimatedModel)m;
+        model.getModel().getVao().bind(0, 1, 2, 3, 4, 5);
+        model.getMaterial().getTexture(Material.DIFFUSE).bindToUnitOptimized(0);
+		jointTransforms.loadMatrixArray(model.getJointTransforms());
+        RenderUtil.disableBlending();
+        RenderUtil.enableDepthTesting(true);
+	}
+
+	public void onRenderStart(Scene s) {
+		viewMatrix.loadMatrix(s.getCamera().getViewMatrix());
+		projectionMatrix.loadMatrix(s.getCamera().getProjectionMatrix());
+	}
+
+	public void onRenderInstance(Entity e) {
+         transformationMatrix.loadMatrix(e.getTransformation());
+	}
+    
 }

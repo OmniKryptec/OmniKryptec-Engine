@@ -4,8 +4,8 @@ import org.joml.Vector3f;
 import org.lwjgl.opengl.GL20;
 
 import omnikryptec.display.DisplayManager;
-import omnikryptec.gameobject.Entity;
 import omnikryptec.gameobject.Light;
+import omnikryptec.main.AbstractScene;
 import omnikryptec.main.Scene;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
@@ -21,6 +21,7 @@ import omnikryptec.shader.base.UniformVec3;
 import omnikryptec.shader.base.UniformVec4;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Maths;
+import omnikryptec.util.RenderUtil;
 
 public class ForwardPPMeshShader extends Shader {
 
@@ -103,7 +104,10 @@ public class ForwardPPMeshShader extends Shader {
 	}
 
 	@Override
-	public void onModelRender(AdvancedModel m) {
+	public void onModelRenderStart(AdvancedModel m) {
+        if (m.getMaterial().hasTransparency()) {
+            RenderUtil.cullBackFaces(false);
+        }
 		m.getModel().getVao().bind(0, 1, 2, 3, 4, 5, 6, 7, 8);
 		Texture tmptexture = m.getMaterial().getTexture(Material.DIFFUSE);
 		Vector3f ex;
@@ -145,12 +149,19 @@ public class ForwardPPMeshShader extends Shader {
 		}
 		matData.loadVec4(ex.x, ex.y, ex.z, m.getMaterial().getFloat(Material.DAMPER));
 	}
-
+	
 	@Override
-	public void onRenderStart(Scene s) {
+	public void onModelRenderEnd(AdvancedModel m) {
+        if (m.getMaterial().hasTransparency()) {
+            RenderUtil.cullBackFaces(true);
+        }
+	}
+	
+	@Override
+	public void onRenderStart(AbstractScene s) {
 		view.loadMatrix(s.getCamera().getViewMatrix());
 		projection.loadMatrix(s.getCamera().getProjectionMatrix());
-		ambient.loadVec3(s.getAmbient().getArray());
+		ambient.loadVec3(s.getAmbientColor().getArray());
 		int lights = Math.min(DisplayManager.instance().getSettings().getLightMaxForward(), s.getLights().size());
 		activelights.loadInt(lights);
 		Light l;

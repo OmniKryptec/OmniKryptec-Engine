@@ -1,12 +1,16 @@
 package omnikryptec.main;
 
-import omnikryptec.renderer.RenderConfiguration;
+import java.util.List;
+
+import omnikryptec.deferredlight.QuadraticAttLightPrepare;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.GameObject;
+import omnikryptec.gameobject.Light;
 import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.physics.JBulletPhysicsWorld;
 import omnikryptec.physics.PhysicsWorld;
+import omnikryptec.renderer.RenderConfiguration;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.Color;
 import omnikryptec.util.PhysicsUtil;
@@ -37,7 +41,8 @@ public abstract class AbstractScene implements DataMapSerializable{
 	private String name;
 	private PhysicsWorld physicsworld;
     private Color clearcolor = new Color(0, 0, 0, 0);
-
+    private Color ambientcolor = new Color(0,0,0,1);
+    
 	protected AbstractScene(String name, Camera cam) {
 		this.name = name;
 		this.camera = cam;
@@ -58,15 +63,20 @@ public abstract class AbstractScene implements DataMapSerializable{
 		state = FrameState.NULL;
 	}
 	
-	public final long publicRender(RenderConfiguration config) {
+	final long mainRender() {
 		state = FrameState.RENDERING;
 		tmptime = DisplayManager.instance().getCurrentTime();
-		long l = render(config);
+		long l = publicRender(new RenderConfiguration());
 		rendertime = DisplayManager.instance().getCurrentTime() - tmptime;
+		state = FrameState.NULL;
+		return l;
+	}
+	
+	public final long publicRender(RenderConfiguration config) {
+		long l = render(config);
 		if(config.renderParticles()&&camera!=null) {
 			ParticleMaster.instance().render(camera);
 		}
-		state = FrameState.NULL;
 		return l;
 	}
 	
@@ -136,6 +146,20 @@ public abstract class AbstractScene implements DataMapSerializable{
         return clearcolor;
     }
     
+    public final AbstractScene setAmbientColor(float r, float g, float b) {
+    	this.clearcolor.set(r, g, b);
+    	return this;
+    }
+    
+    public final AbstractScene setAmbientColor(Color f) {
+    	this.ambientcolor = f;
+    	return this;
+    }
+    
+    public final Color getAmbientColor() {
+    	return ambientcolor;
+    }
+    
     protected abstract void logic();
 	
 	protected abstract long render(RenderConfiguration config);
@@ -147,4 +171,6 @@ public abstract class AbstractScene implements DataMapSerializable{
 	}
 	
 	public abstract GameObject removeGameObject(GameObject go, boolean delete);
+	
+	public abstract List<Light> getLights();
 }

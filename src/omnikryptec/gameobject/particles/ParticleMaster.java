@@ -61,7 +61,7 @@ public class ParticleMaster implements Profilable {
         if (executor != null) {
             executor.shutdownNow();
         }
-        executor = Executors.newFixedThreadPool(10);
+        executor = Executors.newFixedThreadPool(Instance.getGameSettings().getParticleThreadpoolSize());
     }
 
     public void logic(Camera c) {
@@ -158,7 +158,7 @@ public class ParticleMaster implements Profilable {
 
         updatetime = Instance.getDisplayManager().getCurrentTime() - tmptime2;
     }
-
+    
     public double getRenderTimeMS() {
         return rendertime;
     }

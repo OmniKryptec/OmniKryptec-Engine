@@ -55,6 +55,7 @@ public class GameSettings {
     
     private boolean multithreadedParticles=true;
     private long minmultithreadedparticles=1000;
+	private int partThrPSize=-1;
     
     /**
      * Standard value for disabling multisampling
@@ -630,5 +631,9 @@ public class GameSettings {
 	public GameSettings setMinMultithreadedParticles(long l){
 		this.minmultithreadedparticles = l;
 		return this;
+	}
+
+	public int getParticleThreadpoolSize() {
+		return partThrPSize<0?Runtime.getRuntime().availableProcessors():partThrPSize;
 	}
 }

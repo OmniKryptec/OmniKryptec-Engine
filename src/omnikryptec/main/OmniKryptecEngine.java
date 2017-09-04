@@ -20,7 +20,6 @@ import omnikryptec.postprocessing.main.RenderTarget;
 import omnikryptec.renderer.Query;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderConfiguration;
-import omnikryptec.renderer.RenderConfiguration.AllowedRenderer;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.VertexArrayObject;
 import omnikryptec.resource.model.VertexBufferObject;
@@ -171,6 +170,22 @@ public class OmniKryptecEngine implements Profilable {
         createFbos();
     }
 
+    public final FrameBufferObject getSceneFBO() {
+    	return unsampledfbo;
+    }
+    
+    public final FrameBufferObject getNormalFBO() {
+    	return normalfbo;
+    }
+    
+    public final FrameBufferObject getSpecularFBO() {
+    	return specularfbo;
+    }
+    
+    public final FrameBufferObject getShaderInfoFBO() {
+    	return extrainfofbo;
+    }
+    
     public final DisplayManager getDisplayManager() {
         return manager;
     }
@@ -220,9 +235,9 @@ public class OmniKryptecEngine implements Profilable {
             }
             AudioManager.update(currentTime);
             if (Display.wasResized()) {
-            	resizeFbos();
-                PostProcessing.instance().resize();
                 eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
+                resizeFbos();
+                PostProcessing.instance().resize();
             }
             scenefbo.bindFrameBuffer();
             if (sceneCurrent != null) {
@@ -232,7 +247,7 @@ public class OmniKryptecEngine implements Profilable {
                 if(!onlyrender){
                 	sceneCurrent.publicLogic(true);
                 }
-                vertsCountCurrent = sceneCurrent.publicRender(new RenderConfiguration());
+                vertsCountCurrent = sceneCurrent.mainRender();
             }
             eventsystem.fireEvent(new Event(), EventType.RENDER_FRAME_EVENT);
             scenefbo.unbindFrameBuffer();

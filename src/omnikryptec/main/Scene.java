@@ -12,7 +12,6 @@ import omnikryptec.gameobject.GameObject;
 import omnikryptec.gameobject.Light;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderConfiguration;
-import omnikryptec.renderer.Renderer;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.util.Color;
 import omnikryptec.util.Instance;
@@ -29,7 +28,6 @@ public class Scene extends AbstractScene {
 
     private RenderChunk global = new RenderChunk(0, 0, 0, this);
 
-    private Color ambientlight = new Color(0, 0, 0, 0);
 
     /* Temp Variables */
     private String tmp;
@@ -46,11 +44,6 @@ public class Scene extends AbstractScene {
         super(name, cam);
     }
 
-    
-    public Scene setAmbientColor(float r, float g, float b) {
-        ambientlight.set(r, g, b);
-        return this;
-    }
 
     public Scene setChunkOffsets(long xo, long yo, long zo) {
         this.cox = xo;
@@ -117,7 +110,7 @@ public class Scene extends AbstractScene {
     }
     
     
-    public final long render(RenderConfiguration config) {
+    protected final long render(RenderConfiguration config) {
     	lights.clear();
         lights.addAll(global.getImportantLights());
         vertcount = 0;
@@ -170,13 +163,7 @@ public class Scene extends AbstractScene {
     private static String xyzToString(long x, long y, long z) {
         return x + ":" + y + ":" + z;
     }
-
-    public Color getAmbient() {
-        return ambientlight;
-    }
-
     
-
     @Override
     public DataMap toDataMap(DataMap data) {
         data.put("name", getName());

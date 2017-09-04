@@ -1,5 +1,6 @@
 package omnikryptec.shader.files.render;
 
+import omnikryptec.main.AbstractScene;
 import omnikryptec.main.Scene;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
@@ -10,6 +11,7 @@ import omnikryptec.shader.base.UniformMatrix;
 import omnikryptec.shader.base.UniformSampler;
 import omnikryptec.shader.base.UniformVec4;
 import omnikryptec.util.AdvancedFile;
+import omnikryptec.util.RenderUtil;
 
 public class SimpleMeshShader extends Shader {
 
@@ -31,17 +33,27 @@ public class SimpleMeshShader extends Shader {
 	private Texture tmp;
 
 	@Override
-	public void onModelRender(AdvancedModel m) {
+	public void onModelRenderStart(AdvancedModel m) {
 		m.getModel().getVao().bind(0, 1, 4, 5, 6, 7, 8);
 		tmp = m.getMaterial().getTexture(Material.DIFFUSE);
 		if (tmp != null) {
 			tmp.bindToUnitOptimized(0);
 			uvs.loadVec4(tmp.getUVs());
 		}
+		if(m.getMaterial().hasTransparency()) {
+			RenderUtil.cullBackFaces(false);
+		}
 	}
 
 	@Override
-	public void onRenderStart(Scene s) {
+	public void onModelRenderEnd(AdvancedModel m) {
+        if (m.getMaterial().hasTransparency()) {
+            RenderUtil.cullBackFaces(true);
+        }
+	}
+	
+	@Override
+	public void onRenderStart(AbstractScene s) {
 		u_view.loadMatrix(s.getCamera().getViewMatrix());
 		u_projection.loadMatrix(s.getCamera().getProjectionMatrix());
 	}

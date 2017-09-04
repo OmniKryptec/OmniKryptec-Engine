@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
@@ -26,7 +25,7 @@ public class Material {
 	private Map<String, Float> floats = new HashMap<>(); 
 	private Map<String, Vector3f> vec3fs = new HashMap<>(); 
 
-	private Renderer<?> renderer = RendererRegistration.SIMPLE_MESH_RENDERER;
+	private Renderer renderer = RendererRegistration.SIMPLE_MESH_RENDERER;
 	private boolean hasTransparency = false;
 
 	
@@ -66,11 +65,11 @@ public class Material {
 		return this;
 	}
 
-	public final Renderer<?> getRenderer() {
+	public final Renderer getRenderer() {
 		return renderer;
 	}
 	
-	public final Material setRenderer(Renderer<?> renderer) {
+	public final Material setRenderer(Renderer renderer) {
 		if (!RendererRegistration.exists(renderer)) {
 			Logger.logErr("This renderer is not registered!",
 					new OmniKryptecException("Renderer is not registered: " + renderer));

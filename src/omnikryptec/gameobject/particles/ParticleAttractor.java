@@ -35,7 +35,7 @@ public class ParticleAttractor {
         return tolerance;
     }
 
-    public ParticleAttractor setTolerance(float tolerance) {
+    public ParticleAttractor setDistanceTolerance(float tolerance) {
         this.tolerance = tolerance;
         return this;
     }

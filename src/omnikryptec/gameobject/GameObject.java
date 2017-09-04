@@ -166,11 +166,11 @@ public class GameObject implements DataMapSerializable, Transformable {
         if (getUpdateType() == UpdateType.STATIC && !force) {
             return this;
         }
-        if (Logger.isDebugMode() && (cs = Instance.getCurrentScene()) != null && cs.getState() == FrameState.RENDERING) {
-            Logger.log("Logic is not allowed while rendering!", LogLevel.WARNING);
+        if (!logicEnabled) {
             return this;
         }
-        if (!logicEnabled) {
+        if (Logger.isDebugMode() && (cs = Instance.getCurrentScene()) != null && cs.getState() == FrameState.RENDERING) {
+            Logger.log("Logic is not allowed while rendering!", LogLevel.WARNING);
             return this;
         }
         if (componentsPreLogic != null) {

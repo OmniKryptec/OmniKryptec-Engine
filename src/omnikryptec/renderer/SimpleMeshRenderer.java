@@ -9,9 +9,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL31;
 
 import omnikryptec.gameobject.Entity;
+import omnikryptec.main.AbstractScene;
 import omnikryptec.main.Scene;
 import omnikryptec.resource.model.AdvancedModel;
-import omnikryptec.resource.model.Material;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.shader.base.Shader;
@@ -20,29 +20,27 @@ import omnikryptec.shader.files.render.SimpleMeshShader;
 import omnikryptec.util.Color;
 import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.Instance;
-import omnikryptec.util.RenderUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
-public class SimpleMeshRenderer extends Renderer<SimpleMeshShader>{
+public class SimpleMeshRenderer extends Renderer{
     public static final int INSTANCED_DATA_LENGTH = 20;
     private static final int INSTANCES_PER_DRAWCALL = Instance.getGameSettings().getMaxInstancesPerDrawcall();
 
 
     public SimpleMeshRenderer() {
-        super(new ShaderPack<>(new SimpleMeshShader()));
+        super(new ShaderPack(new SimpleMeshShader()));
     	RendererRegistration.register(this);
     }
 
     private List<Entity> stapel;
     private Entity entity;
     private TexturedModel textmodel;
-    private Material mat;
     private long vertcount = 0;
     private Model model;
 
     @Override
-    public long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader shader, FrustrumFilter filter) {
+    public long render(AbstractScene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader shader, FrustrumFilter filter) {
     	vertcount = 0;
         for (AdvancedModel advancedModel : entities.keysArray()) {
             if (advancedModel == null || !(advancedModel instanceof TexturedModel)) {
@@ -53,19 +51,13 @@ public class SimpleMeshRenderer extends Renderer<SimpleMeshShader>{
             }
             textmodel = (TexturedModel) advancedModel;
             model = textmodel.getModel();
-            mat = textmodel.getMaterial();
-            shader.onModelRender(textmodel);
-            if (mat.hasTransparency()) {
-                RenderUtil.cullBackFaces(false);
-            }
+            shader.onModelRenderStart(textmodel);
             stapel = entities.get(textmodel);
             for (int j = 0; j < stapel.size(); j += INSTANCES_PER_DRAWCALL) {
                 newRender(s, j, filter);
             }
             stapel = null;
-            if (mat.hasTransparency()) {
-                RenderUtil.cullBackFaces(true);
-            }
+            shader.onModelRenderEnd(textmodel);
         }
         return vertcount;
     }
@@ -76,7 +68,7 @@ public class SimpleMeshRenderer extends Renderer<SimpleMeshShader>{
     private float[] array;
     private int instances;
 
-    private void newRender(Scene s, int offset, FrustrumFilter filter) {
+    private void newRender(AbstractScene s, int offset, FrustrumFilter filter) {
         instances = Math.min(stapel.size(), INSTANCES_PER_DRAWCALL + offset);
         array = new float[Math.min(stapel.size(), INSTANCES_PER_DRAWCALL) * INSTANCED_DATA_LENGTH];
         pointer = 0;

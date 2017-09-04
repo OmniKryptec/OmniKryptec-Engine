@@ -5,6 +5,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import omnikryptec.gameobject.Entity;
+import omnikryptec.main.AbstractScene;
 import omnikryptec.main.Scene;
 import omnikryptec.renderer.RenderMap;
 import omnikryptec.renderer.Renderer;
@@ -22,10 +23,10 @@ import omnikryptec.util.logger.Logger;
  *
  * @author Panzer1119
  */
-public class TerrainRenderer extends Renderer<TerrainShader> {
+public class TerrainRenderer extends Renderer {
 
     public TerrainRenderer() {
-        super(new ShaderPack<>(new TerrainShader()));
+        super(new ShaderPack(new TerrainShader()));
         RendererRegistration.register(this);
         setExpensiveLevel(0);
         setPriority(0);
@@ -38,7 +39,7 @@ public class TerrainRenderer extends Renderer<TerrainShader> {
 
     // TODO change something
     @Override
-    protected long render(Scene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader ownshader, FrustrumFilter filter) {
+    protected long render(AbstractScene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader ownshader, FrustrumFilter filter) {
         vertcount = 0;
         //shader.start();
         TerrainShader.viewMatrix.loadMatrix(s.getCamera().getViewMatrix());

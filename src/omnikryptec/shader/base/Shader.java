@@ -12,6 +12,7 @@ import org.lwjgl.opengl.GL32;
 
 import omnikryptec.gameobject.Entity;
 import omnikryptec.graphics.OpenGL;
+import omnikryptec.main.AbstractScene;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;
 import omnikryptec.resource.model.AdvancedModel;
@@ -164,19 +165,31 @@ public class Shader {
 		shadercount++;
 		allShader.add(this);
 	}
-
-	public void onModelRender(AdvancedModel m) {
+	
+//******************************************************************
+	
+	public void onRenderStart(AbstractScene s) {
 
 	}
-
-	public void onRenderStart(Scene s) {
+	
+	public void onModelRenderStart(AdvancedModel m) {
 
 	}
 
 	public void onRenderInstance(Entity e) {
 
 	}
-
+	
+	public void onModelRenderEnd(AdvancedModel m) {
+		
+	}
+	
+	public void onRenderEnd(AbstractScene s) {
+		
+	}
+	
+//******************************************************************
+	
 	public int getId() {
 		return programID;
 	}
