@@ -54,7 +54,7 @@ public class ParticleMaster implements Profilable {
     public void render(Camera cam) {
         tmptime = Instance.getDisplayManager().getCurrentTime();
         renderer.render(particles, cam);
-        rendertime = Instance.getDisplayManager().getCurrentTime() - tmptime;
+        rendertime += Instance.getDisplayManager().getCurrentTime() - tmptime;
     }
 
     private void resetExecutor() {
@@ -156,7 +156,7 @@ public class ParticleMaster implements Profilable {
             }
         }
 
-        updatetime = Instance.getDisplayManager().getCurrentTime() - tmptime2;
+        updatetime += Instance.getDisplayManager().getCurrentTime() - tmptime2;
     }
     
     public double getRenderTimeMS() {
@@ -200,4 +200,9 @@ public class ParticleMaster implements Profilable {
     public ProfileContainer[] getProfiles() {
         return new ProfileContainer[]{new ProfileContainer(Profiler.PARTICLE_RENDERER, getRenderTimeMS()), new ProfileContainer(Profiler.PARTICLE_UPDATER, getUpdateTimeMS())};
     }
+
+	public void resetTimes() {
+		rendertime = 0;
+		updatetime = 0;
+	}
 }
