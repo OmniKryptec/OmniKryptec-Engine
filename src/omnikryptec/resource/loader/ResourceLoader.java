@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.Generated;
+
 import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.util.AdvancedFile;
@@ -23,6 +25,23 @@ public class ResourceLoader implements Loader {
 	
 	public static final SimpleTexture MISSING_TEXTURE = SimpleTexture.newTexture("/omnikryptec/resource/loader/missing_texture.png");
 	
+	
+    public static final ResourceLoader resourceLoader = new ResourceLoader();
+
+    public static final ResourceLoader getInstance() {
+        return resourceLoader;
+    }
+	
+    //less code
+    public final static <T extends ResourceObject> T getRes(String name) {
+    	return getInstance().getResource(name);
+    }
+    
+    //less code
+    public final static <T extends ResourceObject> T getRes(Class<? extends T> clazz, String name) {
+    	return getInstance().getResource(clazz, name);
+    }
+    
 //    private ExecutorService executor = null;
     private final HashMap<String, ResourceObject> loadedData = new HashMap<>();
     private final HashMap<Integer, ArrayList<AdvancedFile>> priorityStagedAdvancedFiles = new HashMap<>();
@@ -188,7 +207,7 @@ public class ResourceLoader implements Loader {
     }
 
     @SuppressWarnings("unchecked")
-    public final <T extends ResourceObject> T getData(String name) {
+    public final <T extends ResourceObject> T getResource(String name) {
         if (name == null || name.isEmpty()) {
             return null;
         }
@@ -199,9 +218,9 @@ public class ResourceLoader implements Loader {
         }
 
     }
-
+    
     @SuppressWarnings("unchecked")
-    public final <T extends ResourceObject> T getData(Class<? extends T> c, String name) {
+    public final <T extends ResourceObject> T getResource(Class<? extends T> c, String name) {
         if (c == null || name == null || name.isEmpty()) {
             return null;
         }
@@ -219,13 +238,13 @@ public class ResourceLoader implements Loader {
         }
         return (T) data;
     }
-
-    public final <T extends ResourceObject> ArrayList<T> getAllData(Class<? extends T> c) {
-        return getAllData(c, null);
+    
+    public final <T extends ResourceObject> ArrayList<T> getResources(Class<? extends T> c) {
+        return getResources(c, null);
     }
 
     @SuppressWarnings("unchecked")
-    private final <T extends ResourceObject> ArrayList<T> getAllData(Class<? extends T> c, ArrayList<T> dataOld) {
+    private final <T extends ResourceObject> ArrayList<T> getResources(Class<? extends T> c, ArrayList<T> dataOld) {
         if (dataOld == null) {
             dataOld = new ArrayList<>();
         }
@@ -286,10 +305,6 @@ public class ResourceLoader implements Loader {
 //        executor = Executors.newFixedThreadPool(10);
 //        return this;
 //    }
-    public static final ResourceLoader resourceLoader = new ResourceLoader();
 
-    public static final ResourceLoader getInstance() {
-        return resourceLoader;
-    }
 
 }

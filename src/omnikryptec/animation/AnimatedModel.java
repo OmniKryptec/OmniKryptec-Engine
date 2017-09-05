@@ -262,7 +262,7 @@ public class AnimatedModel implements AdvancedModel {
         animator.setAnimationTime(animationTime);
         animator.setLoop(loop);
         if(name_animation != null) {
-            doAnimation(ResourceLoader.getInstance().getData(Animation.class, name_animation), animationTime, loop);
+            doAnimation(ResourceLoader.getInstance().getResource(Animation.class, name_animation), animationTime, loop);
         }
         return this;
     }

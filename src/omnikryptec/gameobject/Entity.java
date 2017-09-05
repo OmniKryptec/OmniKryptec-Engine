@@ -201,7 +201,7 @@ public class Entity extends GameObject implements DataMapSerializable {
             final String modelName = dataMap_temp.getName();
             Logger.log("Loading AdvancedModel: " + modelName + ", for: " + this);
             try {
-                model = ResourceLoader.getInstance().getData(AdvancedModel.class, modelName);
+                model = ResourceLoader.getInstance().getResource(AdvancedModel.class, modelName);
                 if (model != null) {
                     model.fromDataMap(dataMap_temp);
                 } else if (Logger.isDebugMode()) {

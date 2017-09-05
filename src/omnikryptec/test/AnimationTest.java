@@ -145,15 +145,15 @@ public class AnimationTest {
             //file = new AdvancedFile("pictures", String.format("test_%s%d.png", (withTransparency ? "withTransparency_" : ""), JBulletTest2.imagesTaken)).getAbsoluteAdvancedFile();
             //FIXME Only for testing DON'T DELETE TIHS!!! END
 
-            animatedModel = AnimatedModelLoader.createModel("res:model.dae:AnimatedModel", ResourceLoader.getInstance().getData(AnimatedModelData.class, "res:model.dae:AnimatedModelData"), ResourceLoader.getInstance().getData(Texture.class, "res:diffuse.png"), null);
+            animatedModel = AnimatedModelLoader.createModel("res:model.dae:AnimatedModel", ResourceLoader.getInstance().getResource(AnimatedModelData.class, "res:model.dae:AnimatedModelData"), ResourceLoader.getInstance().getResource(Texture.class, "res:diffuse.png"), null);
             ResourceLoader.getInstance().addRessourceObject("res:model.dae:AnimatedModel", animatedModel);
-            ResourceLoader.getInstance().addRessourceObject("omnikryptec:test:brunnen", new TexturedModel("omnikryptec:test:brunnen", ResourceLoader.getInstance().getData(Model.class, "omnikryptec:test:brunnen.obj"), ResourceLoader.getInstance().getData(SimpleTexture.class, "omnikryptec:test:brunnen.png")));
+            ResourceLoader.getInstance().addRessourceObject("omnikryptec:test:brunnen", new TexturedModel("omnikryptec:test:brunnen", ResourceLoader.getInstance().getResource(Model.class, "omnikryptec:test:brunnen.obj"), ResourceLoader.getInstance().getResource(SimpleTexture.class, "omnikryptec:test:brunnen.png")));
 
             //entityBuilder_brunnen = new EntityBuilder().setTexturedModelName("omnikryptec:test:brunnen.png").loadModel("/omnikryptec/test/brunnen.obj").setTexture(ResourceLoader.getInstance().getData(SimpleTexture.class, "omnikryptec:test:brunnen.png"))/*.loadTexture("brunnen.png", "/omnikryptec/test/brunnen.png")*/;
-            entityBuilder_brunnen = new EntityBuilder().setTexturedModel(ResourceLoader.getInstance().getData(TexturedModel.class, "omnikryptec:test:brunnen"));
+            entityBuilder_brunnen = new EntityBuilder().setTexturedModel(ResourceLoader.getInstance().getResource(TexturedModel.class, "omnikryptec:test:brunnen"));
             entity_brunnen = entityBuilder_brunnen.create("entity_brunnen");
 
-            animation = ResourceLoader.getInstance().getData(Animation.class, "res:model.dae:Animation");
+            animation = ResourceLoader.getInstance().getResource(Animation.class, "res:model.dae:Animation");
             Logger.log("");
             entity_test = new Entity("entity_test", animatedModel) {
 
