@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import omnikryptec.resource.texture.SimpleTexture;
-import omnikryptec.resource.texture.Texture;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.ArrayUtil;
 import omnikryptec.util.ArrayUtil.Filter;
@@ -229,7 +228,8 @@ public class ResourceLoader implements Loader {
         return loaders.stream().filter((loader) -> ArrayUtil.contains(loader.getExtensions(), Filter.createStringFilterEqualsIgnoreCase(), extensions)).collect(Collectors.toList());
     }
 
-    public final <T extends ResourceObject> T getResource(String name) {
+    @SuppressWarnings("unchecked")
+	public final <T extends ResourceObject> T getResource(String name) {
         if (name == null || name.isEmpty()) {
             return null;
         }
@@ -240,7 +240,8 @@ public class ResourceLoader implements Loader {
         }
     }
 
-    public final <T extends ResourceObject> T getResource(Class<? extends T> c, String name) {
+    @SuppressWarnings("unchecked")
+	public final <T extends ResourceObject> T getResource(Class<? extends T> c, String name) {
         if (c == null || name == null || name.isEmpty()) {
             return null;
         }
@@ -249,7 +250,7 @@ public class ResourceLoader implements Loader {
             Logger.log("FOUND: " + data + " FOR: " + name);
             Logger.log(c + " VS " + (data == null ? "null" : data.getClass()));
         }
-        if (data == null && Texture.class.isAssignableFrom(c)) {
+        if (data == null && SimpleTexture.class.isAssignableFrom(c)) {
             return (T) MISSING_TEXTURE;
         }
         if (data == null || (!c.isAssignableFrom(data.getClass()) && c != data.getClass())) { //TODO Gucken ob das isAssignableFrom so richtig herum ist
@@ -263,7 +264,8 @@ public class ResourceLoader implements Loader {
         return getResources(c, null);
     }
 
-    private final <T extends ResourceObject> ArrayList<T> getResources(Class<? extends T> c, ArrayList<T> dataOld) {
+    @SuppressWarnings("unchecked")
+	private final <T extends ResourceObject> ArrayList<T> getResources(Class<? extends T> c, ArrayList<T> dataOld) {
         if (dataOld == null) {
             dataOld = new ArrayList<>();
         }

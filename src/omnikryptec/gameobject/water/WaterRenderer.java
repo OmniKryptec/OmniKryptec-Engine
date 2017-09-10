@@ -4,7 +4,6 @@ import java.util.List;
 
 import omnikryptec.gameobject.Entity;
 import omnikryptec.main.AbstractScene;
-import omnikryptec.main.Scene;
 import omnikryptec.renderer.RenderMap;
 import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;

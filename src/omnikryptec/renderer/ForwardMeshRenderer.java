@@ -11,7 +11,6 @@ import org.lwjgl.opengl.GL31;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.main.AbstractScene;
-import omnikryptec.main.Scene;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;

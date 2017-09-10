@@ -6,7 +6,6 @@ import org.lwjgl.opengl.GL20;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.Light;
 import omnikryptec.main.AbstractScene;
-import omnikryptec.main.Scene;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
 import omnikryptec.resource.texture.Texture;

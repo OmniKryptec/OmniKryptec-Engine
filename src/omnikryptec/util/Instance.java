@@ -22,7 +22,6 @@ import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.loader.ResourceObject;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.settings.KeySettings;
-import omnikryptec.shader.base.Shader;
 
 public class Instance {
 

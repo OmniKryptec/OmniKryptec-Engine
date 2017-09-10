@@ -4,7 +4,6 @@ import java.util.List;
 
 import omnikryptec.gameobject.Entity;
 import omnikryptec.main.AbstractScene;
-import omnikryptec.main.Scene;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.ShaderPack;

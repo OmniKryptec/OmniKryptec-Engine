@@ -2,7 +2,6 @@ package omnikryptec.main;
 
 import java.util.List;
 
-import omnikryptec.deferredlight.QuadraticAttLightPrepare;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.GameObject;

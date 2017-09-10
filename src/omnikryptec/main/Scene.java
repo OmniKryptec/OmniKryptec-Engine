@@ -13,7 +13,6 @@ import omnikryptec.gameobject.Light;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.renderer.RenderConfiguration;
 import omnikryptec.test.saving.DataMap;
-import omnikryptec.util.Color;
 import omnikryptec.util.Instance;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;

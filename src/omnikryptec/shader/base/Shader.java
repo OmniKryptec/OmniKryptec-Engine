@@ -14,7 +14,6 @@ import omnikryptec.gameobject.Entity;
 import omnikryptec.graphics.OpenGL;
 import omnikryptec.main.AbstractScene;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
-import omnikryptec.main.Scene;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Instance;

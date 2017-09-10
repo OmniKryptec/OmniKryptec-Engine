@@ -19,7 +19,6 @@ import omnikryptec.postprocessing.main.PostProcessing;
 import omnikryptec.postprocessing.main.RenderTarget;
 import omnikryptec.renderer.Query;
 import omnikryptec.renderer.RenderChunk;
-import omnikryptec.renderer.RenderConfiguration;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.VertexArrayObject;
 import omnikryptec.resource.model.VertexBufferObject;
