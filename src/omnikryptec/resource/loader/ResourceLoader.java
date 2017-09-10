@@ -53,11 +53,11 @@ public class ResourceLoader implements Loader {
         return resourceLoader;
     }
 
-    public final static <T extends ResourceObject> T getDefaultResource(String name) {
+    public final static <T extends ResourceObject> T getResourceDefault(String name) {
         return currentInstance().getResource(name);
     }
 
-    public final static <T extends ResourceObject> T getDefaultResource(Class<? extends T> clazz, String name) {
+    public final static <T extends ResourceObject> T getResourceDefault(Class<? extends T> clazz, String name) {
         return currentInstance().getResource(clazz, name);
     }
 
