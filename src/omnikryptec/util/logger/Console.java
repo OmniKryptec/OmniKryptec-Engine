@@ -402,7 +402,7 @@ public class Console extends JFrame implements ActionListener, ILanguage, KeyLis
                 return null;
             }
             if (!file.exists()) {
-                file.createFile();
+                file.createAdvancedFile();
             }
             final String logEntryFormat = wizardSaveAs.getLogEntryFormat();
             final HashMap<LogLevel, Boolean> logLevels = wizardSaveAs.getLogLevels();

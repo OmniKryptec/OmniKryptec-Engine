@@ -70,7 +70,7 @@ public class XMLTest {
                 AdvancedFile file = AdvancedFile.fileOfPath("E:\\Daten\\NetBeans\\Projekte\\OmniKryptec-Engine\\temp").addPaths("Test.xml");
                 // Logger.log("file == " + file);
                 // Logger.log("file.toFile() == " + file.toFile());
-                // Logger.log("file.createFile() == " + file.createFile());
+                // Logger.log("file.createAdvancedFile() == " + file.createAdvancedFile());
                 dataMapSerializer.serialize("Welt_1", XMLSerializer.newInstance(), file.createOutputstream(false));
                 Logger.log("file.exists() == " + file.exists());
                 HashMap<Class<?>, ArrayList<DataMapSerializable>> xmlsc = dataMapSerializer.deserializeToDataMapSerializable(file.createInputStream(), XMLSerializer.newInstance());

@@ -29,7 +29,7 @@ public class PieChartGenerator {
         final BufferedImage image = createPieChart(chartDatas, 1600, 1600, 0.9F, 0.65F, true, "%s %.2f");
         try {
             final AdvancedFile file = new AdvancedFile("test.png").getAbsoluteAdvancedFile();
-            file.createFile();
+            file.createAdvancedFile();
             ImageIO.write(image, "png", file.createOutputstream(false));
             Logger.log("Saved file: " + file);
             Commands.COMMANDEXIT.run("-java");

@@ -441,7 +441,7 @@ public class FrameBufferObject extends Texture {
         try {
             final BufferedImage image = toBufferedImage(withTransparency);
             if(image != null) {
-                file.createFile();
+                file.createAdvancedFile();
                 if(!file.exists() || !file.isFile()) {
                     return false;
                 }

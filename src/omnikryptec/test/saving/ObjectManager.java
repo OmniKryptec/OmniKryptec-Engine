@@ -27,14 +27,14 @@ public class ObjectManager {
             if (object == null) {
                 file.delete();
                 if (!override) {
-                    file.createFile();
+                    file.createAdvancedFile();
                 }
             } else {
                 if (!file.exists() || override) {
                     if (file.exists()) {
                         file.delete();
                     }
-                    file.createFile();
+                    file.createAdvancedFile();
                 }
                 mapper.writeValue(file.toFile(), object);
             }

@@ -22,6 +22,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
@@ -259,7 +260,7 @@ public class AdvancedFile {
      * @return Stirng Array Paths
      */
     @SuppressWarnings("unchecked")
-	public final String[] getPaths() {
+    public final String[] getPaths() {
         resetValues();
         return ((ArrayList<String>) paths.clone()).toArray(new String[paths.size()]);
     }
@@ -416,6 +417,11 @@ public class AdvancedFile {
         resetValues();
         if (withFolder && parent == null) {
             setFolder(null);
+        } else if (parent instanceof String) {
+            final File file = new File((String) parent).getAbsoluteFile();
+            if (withFolder) {
+                setFolder(file);
+            }
         } else if (parent instanceof File) {
             final File file = (File) parent;
             if (withFolder && file.isAbsolute()) {
@@ -488,7 +494,7 @@ public class AdvancedFile {
      * @return <tt>true</tt> if the file was successfully created or already
      * exists
      */
-    public final boolean createFile() {
+    public final boolean createAdvancedFile() {
         if (isIntern()) {
             return false;
         }
@@ -600,8 +606,8 @@ public class AdvancedFile {
             if (uri == null) {
                 return FileType.NON;
             }
-            final BooleanHolder isFile = new BooleanHolder(false);
-            final BooleanHolder isDirectory = new BooleanHolder(false);
+            final AtomicBoolean isFile = new AtomicBoolean(false);
+            final AtomicBoolean isDirectory = new AtomicBoolean(false);
             FileSystem fileSystem = null;
             Path myPath = null;
             if (uri.getScheme().equalsIgnoreCase("jar") || uri.getScheme().equalsIgnoreCase("zip")) { //TODO Funzt das auch mit zips?
@@ -627,7 +633,7 @@ public class AdvancedFile {
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                     final String name = file.toString().replace(WINDOWS_SEPARATOR_CHAR, PATH_SEPARATOR_CHAR);
                     if (file.getParent().equals(myPathTest) && name.endsWith(getPath())) {
-                        isFile.setData(true);
+                        isFile.set(true);
                         return FileVisitResult.TERMINATE;
                     } else {
                         return FileVisitResult.CONTINUE;
@@ -638,7 +644,7 @@ public class AdvancedFile {
                 public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
                     final String name = dir.toString().replace(WINDOWS_SEPARATOR_CHAR, PATH_SEPARATOR_CHAR);
                     if (dir.getParent().equals(myPathTest) && name.endsWith(getPath())) {
-                        isDirectory.setData(true);
+                        isDirectory.set(true);
                         return FileVisitResult.TERMINATE;
                     } else {
                         return FileVisitResult.CONTINUE;
@@ -650,7 +656,7 @@ public class AdvancedFile {
             if (fileSystem != null) {
                 fileSystem.close();
             }
-            return FileType.of(isFile.isData(), isDirectory.isData());
+            return FileType.of(isFile.get(), isDirectory.get());
         } catch (Exception ex) {
             Logger.logErr("Erorr while resolving path from file system: " + ex, ex);
             return FileType.NON;
@@ -987,6 +993,20 @@ public class AdvancedFile {
         } else {
             return false;
         }
+    }
+
+    public static final File[] toFiles(AdvancedFile... advancedFiles) {
+        if (advancedFiles == null || advancedFiles.length == 0) {
+            return new File[0];
+        }
+        final File[] files = new File[advancedFiles.length];
+        for (int i = 0; i < advancedFiles.length; i++) {
+            if (advancedFiles[i] == null) {
+                continue;
+            }
+            files[i] = advancedFiles[i].toFile();
+        }
+        return files;
     }
 
     public static final boolean isEqual(AdvancedFile af_1, AdvancedFile af_2) {

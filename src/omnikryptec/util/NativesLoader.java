@@ -34,7 +34,7 @@ public class NativesLoader {
                     LogLevel.WARNING);
             return false;
         }
-        NATIVESFOLDER.createFile();
+        NATIVESFOLDER.createAdvancedFile();
         if (NATIVESFOLDER.exists() && NATIVESFOLDER.isDirectory()) {
             boolean good = extractNatives(NATIVESFOLDER);
             if (good) {

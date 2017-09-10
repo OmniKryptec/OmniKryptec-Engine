@@ -122,10 +122,10 @@ public class Instance {
 	}
 
 	public static final <T extends ResourceObject> T getResource(Class<? extends T> clazz, String name) {
-		return ResourceLoader.getRes(clazz, name);
+		return ResourceLoader.getDefaultResource(clazz, name);
 	}
 
 	public static final <T extends ResourceObject> T getResource(String name) {
-		return ResourceLoader.getRes(name);
+		return ResourceLoader.getDefaultResource(name);
 	}
 }
