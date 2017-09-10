@@ -13,7 +13,7 @@ import omnikryptec.util.SerializationUtil;
 
 public class Transform implements DataMapSerializable, Positionable {
 
-	protected Transform parent;
+    protected Transform parent;
     protected Vector3f position;
     protected Quaternionf rotation;
     protected Vector3f scale;
@@ -74,25 +74,25 @@ public class Transform implements DataMapSerializable, Positionable {
     public boolean isRecalculationDisabled() {
         return disableRecalculation;
     }
-    
-    public Transform setX(float x){
-    	lastframe = -1;
-    	this.position.x = x;
-    	return this;
+
+    public Transform setX(float x) {
+        lastframe = -1;
+        this.position.x = x;
+        return this;
     }
-    
-    public Transform setY(float y){
-    	lastframe = -1;
-    	this.position.y = y;
-    	return this;
+
+    public Transform setY(float y) {
+        lastframe = -1;
+        this.position.y = y;
+        return this;
     }
-    
-    public Transform setZ(float z){
-    	lastframe = -1;
-    	this.position.z = z;
-    	return this;
+
+    public Transform setZ(float z) {
+        lastframe = -1;
+        this.position.z = z;
+        return this;
     }
-    
+
     public Transform increasePosition(float x, float y, float z) {
         lastframe = -1;
         this.position.x += x;
@@ -316,12 +316,12 @@ public class Transform implements DataMapSerializable, Positionable {
         }
         return this;
     }
-    
+
     public static Transform newInstanceFromDataMap(DataMap data) {
         if (data == null) {
             return null;
         }
         return new Transform().fromDataMap(data);
     }
-    
+
 }

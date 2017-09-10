@@ -160,7 +160,7 @@ public class AnimationTest {
                 @Override
                 public final void update() {
                     getTransform().setPosition(camera.getTransform().getPosition());
-                    getTransform().increaseRotation(0, camera.getTransform().rotation.y, 0);
+                    getTransform().increaseRotation(0, camera.getTransform().getEulerAngelsXYZ().y, 0);
                 }
 
             };

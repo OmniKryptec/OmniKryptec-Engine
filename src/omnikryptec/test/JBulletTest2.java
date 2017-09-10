@@ -36,6 +36,7 @@ import omnikryptec.gameobject.component.PhysicsComponent;
 import omnikryptec.gameobject.terrain.Terrain;
 import omnikryptec.gameobject.terrain.TerrainGenerator;
 import omnikryptec.gameobject.terrain.TerrainTexturePack;
+import omnikryptec.main.AbstractScene;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene;
 import omnikryptec.physics.JBulletPhysicsWorld;
@@ -155,7 +156,7 @@ public class JBulletTest2 {
             OmniKryptecEngine.rawInstance().getCurrentScene()
                     .addGameObject(new GameObject().addComponent(new AudioSourceComponent(source)));
             manageTerrains();
-           // entity_ball.addComponent(new PhysicsComponent(entity_ball, rigidBodyBuilder_ball));
+            // entity_ball.addComponent(new PhysicsComponent(entity_ball, rigidBodyBuilder_ball));
             bouncer = new AudioSource().setLooping(true);
             bouncer.setRollOffFactor(0.5F);
             // bouncer.play("bounce");
@@ -199,7 +200,7 @@ public class JBulletTest2 {
     private static final void manageTerrains() {
         for (Terrain terrain : terrains) {
             rigidBodyBuilder_terrain.setCollisionShape(PhysicsUtil.createConvexHullShape(terrain.getAdvancedModel().getModel()));
-            rigidBodyBuilder_terrain.setDefaultMotionState(new Vector3f(terrain.getTransform().position.x / 2, 0, terrain.getTransform().position.z / 2), new Quat4f(0, 0, 0, 0));
+            rigidBodyBuilder_terrain.setDefaultMotionState(new Vector3f(terrain.getTransform().getPosition().x / 2, 0, terrain.getTransform().getPosition().z / 2), new Quat4f(0, 0, 0, 0));
             terrain.addComponent(new PhysicsComponent(terrain, rigidBodyBuilder_terrain).setPause(true));
         }
     }
@@ -219,12 +220,12 @@ public class JBulletTest2 {
         final Camera camera = OmniKryptecEngine.rawInstance().getCurrentScene().getCamera();
         rigidBodyBuilder_ball = new RigidBodyBuilder(1.0F);
         rigidBodyBuilder_ball.setCollisionShape(PhysicsUtil.createConvexHullShape(entityBuilder_brunnen.getModel()));
-        rigidBodyBuilder_ball.setDefaultMotionState(new Vector3f(camera.getTransform().position.x, 20.0F, camera.getTransform().position.z - 5), new Quat4f(0, 0, 0, 0));
+        rigidBodyBuilder_ball.setDefaultMotionState(new Vector3f(camera.getTransform().getPosition().x, 20.0F, camera.getTransform().getPosition().z - 5), new Quat4f(0, 0, 0, 0));
         rigidBodyBuilder_ball.getCollisionShape().calculateLocalInertia(rigidBodyBuilder_ball.getMass(), rigidBodyBuilder_ball.getInertia());
         rigidBodyBuilder_ball.getRigidBodyConstructionInfo().restitution = 0.75F;
         rigidBodyBuilder_attractor = new RigidBodyBuilder(1000.0F);
         rigidBodyBuilder_attractor.setCollisionShape(PhysicsUtil.createConvexHullShape(entityBuilder_pine.getModel()));
-        rigidBodyBuilder_attractor.setDefaultMotionState(new Vector3f(camera.getTransform().position.x, 10.0F, camera.getTransform().position.z - 30), new Quat4f(0, 0, 0, 0));
+        rigidBodyBuilder_attractor.setDefaultMotionState(new Vector3f(camera.getTransform().getPosition().x, 10.0F, camera.getTransform().getPosition().z - 30), new Quat4f(0, 0, 0, 0));
         rigidBodyBuilder_attractor.getCollisionShape().calculateLocalInertia(rigidBodyBuilder_attractor.getMass(), rigidBodyBuilder_attractor.getInertia());
         rigidBodyBuilder_attractor.getRigidBodyConstructionInfo().restitution = 0.75F;
         rigidBodyBuilder_terrain = new RigidBodyBuilder(0.0F);
@@ -277,7 +278,7 @@ public class JBulletTest2 {
                 bouncer.continuePlaying();
             }
         }
-        final Scene scene = OmniKryptecEngine.rawInstance().getCurrentScene();
+        final AbstractScene scene = OmniKryptecEngine.rawInstance().getCurrentScene();
         float deltaPhysicsSpeed = 0;
         if (keySettings.isPressed("physicsFaster")) {
             deltaPhysicsSpeed += 0.005;
