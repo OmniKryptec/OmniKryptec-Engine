@@ -23,20 +23,48 @@ public class ResourceLoader implements Loader {
 
     public static final SimpleTexture MISSING_TEXTURE = SimpleTexture.newTexture("/omnikryptec/resource/loader/missing_texture.png");
 
-    public static final ResourceLoader resourceLoader = new ResourceLoader();
+    private static ResourceLoader resourceLoader;
 
-    public static final ResourceLoader getInstance() {
+    public static final ResourceLoader createInstanceDefault(boolean ascurrent) {
+    	ResourceLoader loader = new ResourceLoader();
+    	if(ascurrent) {
+    		resourceLoader = loader;
+    	}
+    	loader.addLoader(new DefaultModelLoader());
+    	loader.addLoader(new DefaultTextureLoader());
+    	loader.addLoader(new DefaultAnimationLoader());
+    	loader.addLoader(new DefaultAnimatedModelDataLoader());
+    	return loader;
+    }
+    
+    public static final ResourceLoader createInstance(boolean ascurrent) {
+    	ResourceLoader loader = new ResourceLoader();
+    	if(ascurrent) {
+    		resourceLoader = loader;
+    	}
+    	return loader;
+    }
+    
+    public static final void resetInstance() {
+    	resourceLoader = null;
+    }
+    
+    public static final ResourceLoader currentInstance() {
         return resourceLoader;
     }
 
     public final static <T extends ResourceObject> T getDefaultResource(String name) {
-        return getInstance().getResource(name);
+        return currentInstance().getResource(name);
     }
 
     public final static <T extends ResourceObject> T getDefaultResource(Class<? extends T> clazz, String name) {
-        return getInstance().getResource(clazz, name);
+        return currentInstance().getResource(clazz, name);
     }
 
+    //use static create methods
+    private ResourceLoader() {
+    }
+    
     //private ExecutorService executor = null;
     private final HashMap<String, ResourceObject> loadedData = new HashMap<>();
     private final HashMap<Integer, ArrayList<AdvancedFile>> priorityStagedAdvancedFiles = new HashMap<>();

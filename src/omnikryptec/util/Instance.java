@@ -94,7 +94,7 @@ public class Instance {
 	}
 
 	public static final ResourceLoader getLoader() {
-		return ResourceLoader.getInstance();
+		return ResourceLoader.currentInstance();
 	}
 
 	public static final ParticleMaster getParticleController() {
