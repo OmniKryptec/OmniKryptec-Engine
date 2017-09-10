@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.annotation.Generated;
-
 import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.util.AdvancedFile;
@@ -22,27 +20,24 @@ import omnikryptec.util.logger.Logger;
  * @author Panzer1119 &amp; pcfreak9000
  */
 public class ResourceLoader implements Loader {
-	
-	public static final SimpleTexture MISSING_TEXTURE = SimpleTexture.newTexture("/omnikryptec/resource/loader/missing_texture.png");
-	
-	
+
+    public static final SimpleTexture MISSING_TEXTURE = SimpleTexture.newTexture("/omnikryptec/resource/loader/missing_texture.png");
+
     public static final ResourceLoader resourceLoader = new ResourceLoader();
 
     public static final ResourceLoader getInstance() {
         return resourceLoader;
     }
-	
-    //less code
-    public final static <T extends ResourceObject> T getRes(String name) {
-    	return getInstance().getResource(name);
+
+    public final static <T extends ResourceObject> T getDefaultResource(String name) {
+        return getInstance().getResource(name);
     }
-    
-    //less code
-    public final static <T extends ResourceObject> T getRes(Class<? extends T> clazz, String name) {
-    	return getInstance().getResource(clazz, name);
+
+    public final static <T extends ResourceObject> T getDefaultResource(Class<? extends T> clazz, String name) {
+        return getInstance().getResource(clazz, name);
     }
-    
-//    private ExecutorService executor = null;
+
+    //private ExecutorService executor = null;
     private final HashMap<String, ResourceObject> loadedData = new HashMap<>();
     private final HashMap<Integer, ArrayList<AdvancedFile>> priorityStagedAdvancedFiles = new HashMap<>();
     private final ArrayList<Loader> loaders = new ArrayList<>();
@@ -106,19 +101,19 @@ public class ResourceLoader implements Loader {
     public final void loadStagedAdvancedFiles(boolean clearData/*, long timeout, TimeUnit unit*/) {
         isLoading = true;
         try {
-//         	resetExecutor();
+            //resetExecutor();
             if (clearData) {
                 loadedData.clear();
             }
             final ArrayList<AdvancedFile> stagedAdvancedFiles = getStagedAdvancedFilesSorted();
             stagedAdvancedFiles.stream().forEach((advancedFile) -> {
                 load(advancedFile, advancedFile, this);
-//                executor.submit(() -> {
-//                    loadIntern(advancedFile, advancedFile);
-//                });
+                //executor.submit(() -> {
+                //    loadIntern(advancedFile, advancedFile);
+                //});
             });
-//          executor.shutdown();
-//          executor.awaitTermination(timeout, unit);
+            //executor.shutdown();
+            //executor.awaitTermination(timeout, unit);
         } catch (Exception ex) {
             Logger.logErr("Error while loading staged advanced files: " + ex, ex);
         }
@@ -206,7 +201,6 @@ public class ResourceLoader implements Loader {
         return loaders.stream().filter((loader) -> ArrayUtil.contains(loader.getExtensions(), Filter.createStringFilterEqualsIgnoreCase(), extensions)).collect(Collectors.toList());
     }
 
-    @SuppressWarnings("unchecked")
     public final <T extends ResourceObject> T getResource(String name) {
         if (name == null || name.isEmpty()) {
             return null;
@@ -216,21 +210,19 @@ public class ResourceLoader implements Loader {
         } catch (ClassCastException ex) {
             return null;
         }
-
     }
-    
-    @SuppressWarnings("unchecked")
+
     public final <T extends ResourceObject> T getResource(Class<? extends T> c, String name) {
         if (c == null || name == null || name.isEmpty()) {
             return null;
         }
         ResourceObject data = loadedData.get(name);
-        if(Logger.isDebugMode()){
-	        Logger.log("FOUND: " + data + " FOR: " + name);
-	        Logger.log(c + " VS " + (data == null ? "null" : data.getClass()));
+        if (Logger.isDebugMode()) {
+            Logger.log("FOUND: " + data + " FOR: " + name);
+            Logger.log(c + " VS " + (data == null ? "null" : data.getClass()));
         }
-        if(data == null && Texture.class.isAssignableFrom(c)){
-        	return (T) MISSING_TEXTURE;
+        if (data == null && Texture.class.isAssignableFrom(c)) {
+            return (T) MISSING_TEXTURE;
         }
         if (data == null || (!c.isAssignableFrom(data.getClass()) && c != data.getClass())) { //TODO Gucken ob das isAssignableFrom so richtig herum ist
             Logger.log("Wrong Class!");
@@ -238,12 +230,11 @@ public class ResourceLoader implements Loader {
         }
         return (T) data;
     }
-    
+
     public final <T extends ResourceObject> ArrayList<T> getResources(Class<? extends T> c) {
         return getResources(c, null);
     }
 
-    @SuppressWarnings("unchecked")
     private final <T extends ResourceObject> ArrayList<T> getResources(Class<? extends T> c, ArrayList<T> dataOld) {
         if (dataOld == null) {
             dataOld = new ArrayList<>();
@@ -305,6 +296,5 @@ public class ResourceLoader implements Loader {
 //        executor = Executors.newFixedThreadPool(10);
 //        return this;
 //    }
-
-
+    
 }
