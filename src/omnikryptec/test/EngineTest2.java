@@ -196,7 +196,7 @@ public class EngineTest2 implements IEventHandler {
                     	GameObject go;
                     	//go = new GameObject().setRelativePos(x, y, z);
                     	go = new Entity(tm).setUpdateType(UpdateType.STATIC);
-                    	go.getTransform().setScale(scale).setPosition(x, y, z).getRotationSimple().rotate(0, 0, 0);
+                    	go.getTransform().setDirty().setScale(scale).setPosition(x, y, z).getRotationSimple().rotate(0, 0, 0);
                         Instance.getCurrentScene().addGameObject(go);
                         //system.addAttractor(new ParticleAttractor(go).setAcceleration(10).setMode(AttractorMode.KILL_ON_REACH).setTolerance(5));
                         objcount++;

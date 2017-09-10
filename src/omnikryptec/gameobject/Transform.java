@@ -20,7 +20,7 @@ public class Transform implements DataMapSerializable, Positionable {
 
     private Matrix4f transformation;
 
-    protected boolean disableRecalculation = false;
+    protected boolean manualMatrixRecalculation = false;
 
     public Transform() {
         this(new Vector3f(0));
@@ -52,12 +52,16 @@ public class Transform implements DataMapSerializable, Positionable {
         setParent(parent);
     }
 
+    public Transform setDirty() {
+    	lastframe = -1;
+    	return this;
+    }
+    
     public Transform getNewCopy() {
         return new Transform(parent, getPositionNew(), getRotationNew(), getScaleNew());
     }
 
     public Transform setParent(Transform transform) {
-        lastframe = -1;
         this.parent = transform;
         return this;
     }
@@ -66,35 +70,31 @@ public class Transform implements DataMapSerializable, Positionable {
         return parent;
     }
 
-    public Transform setDisableRecalculation(boolean b) {
-        this.disableRecalculation = b;
+    public Transform setManualMatrixRecalculation(boolean b) {
+        this.manualMatrixRecalculation = b;
         return this;
     }
 
-    public boolean isRecalculationDisabled() {
-        return disableRecalculation;
+    public boolean isManualMatrixRecalculation() {
+        return manualMatrixRecalculation;
     }
 
     public Transform setX(float x) {
-        lastframe = -1;
         this.position.x = x;
         return this;
     }
 
     public Transform setY(float y) {
-        lastframe = -1;
         this.position.y = y;
         return this;
     }
 
     public Transform setZ(float z) {
-        lastframe = -1;
         this.position.z = z;
         return this;
     }
 
     public Transform increasePosition(float x, float y, float z) {
-        lastframe = -1;
         this.position.x += x;
         this.position.y += y;
         this.position.z += z;
@@ -102,7 +102,6 @@ public class Transform implements DataMapSerializable, Positionable {
     }
 
     public Transform increaseRotation(float x, float y, float z, float w) {
-        lastframe = -1;
         this.rotation.x += x;
         this.rotation.y += y;
         this.rotation.z += z;
@@ -111,13 +110,11 @@ public class Transform implements DataMapSerializable, Positionable {
     }
 
     public Transform increaseRotation(float xa, float ya, float za) {
-        lastframe = -1;
         this.rotation.rotate(xa, ya, za);
         return this;
     }
 
     public Transform increaseScale(float x, float y, float z) {
-        lastframe = -1;
         this.scale.x += x;
         this.scale.y += y;
         this.scale.z += z;
@@ -125,19 +122,16 @@ public class Transform implements DataMapSerializable, Positionable {
     }
 
     public Transform setPosition(float x, float y, float z) {
-        lastframe = -1;
         this.position.set(x, y, z);
         return this;
     }
 
     public Transform setRotation(float x, float y, float z, float w) {
-        lastframe = -1;
         this.rotation.set(x, y, z, w);
         return this;
     }
 
     public Transform setScale(float x, float y, float z) {
-        lastframe = -1;
         this.scale.set(x, y, z);
         return this;
     }
@@ -147,19 +141,16 @@ public class Transform implements DataMapSerializable, Positionable {
     }
 
     public Transform setPosition(Vector3f pos) {
-        lastframe = -1;
         this.position = pos;
         return this;
     }
 
     public Transform setRotation(Quaternionf q) {
-        lastframe = -1;
         this.rotation = q;
         return this;
     }
 
     public Transform setScale(Vector3f scale) {
-        lastframe = -1;
         this.scale = scale;
         return this;
     }
@@ -253,17 +244,21 @@ public class Transform implements DataMapSerializable, Positionable {
     }
 
     public Matrix4f getTransformation(UpdateType updatetype, int freq, boolean checkupdate) {
-        if (checkupdate && !disableRecalculation && RenderUtil.needsUpdate(lastframe, freq, updatetype) && (!Maths.fastEquals3f(lastpos, getPosition()) || !Maths.fastEquals4f(lastrot, getRotation()) || !Maths.fastEquals3f(lastscale, getScale()))) {
+        if (checkupdate && !manualMatrixRecalculation && RenderUtil.needsUpdate(lastframe, freq, updatetype) && (!Maths.fastEquals3f(lastpos, getPosition()) || !Maths.fastEquals4f(lastrot, getRotation()) || !Maths.fastEquals3f(lastscale, getScale()))) {
             return recalculateTransformation();
         }
         return transformation;
     }
 
+    /**
+     * will be disabled with manualMatrixRecalculation set to true; if so only returns the transformation matrix
+     * @return
+     */
     public Matrix4f recalculateTransformation() {
         if (transformation == null) {
             transformation = new Matrix4f();
         }
-        if (disableRecalculation) {
+        if (manualMatrixRecalculation) {
             return transformation;
         }
         lastframe = DisplayManager.instance().getFramecount();
@@ -274,11 +269,10 @@ public class Transform implements DataMapSerializable, Positionable {
         return transformation;
     }
 
-    public Transform setDirty() {
-        lastframe = -1;
-        return this;
+    public Matrix4f getMatrix() {
+    	return transformation;
     }
-
+    
     //TMP-Vars
     private Vector3f lastpos = new Vector3f(), lastscale = new Vector3f();
     private Quaternionf lastrot = new Quaternionf();
