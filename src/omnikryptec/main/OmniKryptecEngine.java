@@ -138,7 +138,7 @@ public class OmniKryptecEngine implements Profilable {
         scenefbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(),
                 manager.getSettings().getMultiSamples(), manager.getSettings().getAddAttachments(),
                 new RenderTarget(GL30.GL_COLOR_ATTACHMENT0), new RenderTarget(GL30.GL_COLOR_ATTACHMENT1),
-                new RenderTarget(GL30.GL_COLOR_ATTACHMENT2, true), new RenderTarget(GL30.GL_COLOR_ATTACHMENT3));
+                new RenderTarget(GL30.GL_COLOR_ATTACHMENT2, true), new RenderTarget(GL30.GL_COLOR_ATTACHMENT3, true));
         unsampledfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE,
                 new RenderTarget(GL30.GL_COLOR_ATTACHMENT0));
         normalfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
@@ -146,7 +146,7 @@ public class OmniKryptecEngine implements Profilable {
         specularfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
                 new RenderTarget(GL30.GL_COLOR_ATTACHMENT0, true));
         extrainfofbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
-                new RenderTarget(GL30.GL_COLOR_ATTACHMENT0));
+                new RenderTarget(GL30.GL_COLOR_ATTACHMENT0, true));
         add = manager.getSettings().getAddFBOs();
     }
 
