@@ -214,7 +214,7 @@ public class Maths {
 
     public static Vector3f getRandomPointInSphere(Random random, Vector3f middle, float radius) {
         float calculatedradius = (float) (radius * Math.sqrt(random.nextDouble()));
-        return generateRandomUnitVector(random).mul(calculatedradius);
+        return generateRandomUnitVector(random).mul(calculatedradius).add(middle);
     }
 
     public static double getRandomRotation(Random r) {

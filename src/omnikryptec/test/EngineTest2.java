@@ -146,7 +146,7 @@ public class EngineTest2 implements IEventHandler {
                 }
 
             }.setPerspectiveProjection(90, 0.1f,1000)).setAmbientColor(0.1f, 0.1f, 0.1f));
-          	Instance.getCurrentCamera().getTransform().setPosition(0, 0, 500);
+          	Instance.getCurrentCamera().getTransform().setPosition(0, 0, 200);
             //OmniKryptecEngine.instance().addAndSetScene(null);
             //Instance.getCurrentCamera().getTransform().setPosition(0, 0, 0);
             Model pine = new Model("",
@@ -186,7 +186,7 @@ public class EngineTest2 implements IEventHandler {
 
 
             System.out.println("Generating objs...");
-            int cube = 500;
+            int cube = 0;
             int abstand = 30;
             float scale = 5;
             int objcount=0;
@@ -210,10 +210,9 @@ public class EngineTest2 implements IEventHandler {
             Instance.getGameSettings().setMultithreadedParticles(true);
             system = new AttractedPaticleSystem(0, 0, 0,
                     new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false),
-                  10000,0, 1000, 1f, RenderType.ALWAYS).setParticlesAttractingEachOther(true).setAverageMass(1000000000f).setMassError(0.75f);
-            system.setSystemLifeLength(ParticleSystem.LIFELENGTH_SYSTEM_ONETICKBURST);
+                  1000,0, 1000, 1f, RenderType.ALWAYS).setParticlesAttractingEachOther(false).setAverageMass(100).setMassError(0.75f);
             //system.setParent(Instance.getCurrentCamera());
-            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.SHPERE, new Vector3f(0,1,0), 100));
+            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.SHPERE, new Vector3f(0,1,0), 20));
             //system.setTimeMultiplier(3);
             //system.setAverageStartScale(0.01f);
             //system.setAverageEndScale(1);
@@ -226,8 +225,9 @@ public class EngineTest2 implements IEventHandler {
             //system.getLastAddedAttractor().setAttenuation(0, 0.1f, 1); //Der nicht
         //system.addAttractor(-200,-150,0, 35.0F, 50F, AttractorMode.STOP_FOREVER_ON_REACH);
         
-            attractor = new ParticleAttractor(0, 0, 0).setGravitation(100000000000f).setDistanceTolerance(30).setMode(AttractorMode.STOP_UNTIL_DISABLED_ON_REACH);
+            attractor = new ParticleAttractor(0, -10, 0).setGravitation(100f).setDistanceTolerance(10).setMode(AttractorMode.STOP_UNTIL_DISABLED_ON_REACH);
             system.addAttractor(attractor);
+            system.setSpawnOffsets(new Vector3f[] {new Vector3f(0, 0, 200)});
             //system.addAttractor(150,600,0, 350000.0F, 50F, AttractorMode.STOP_FOREVER_ON_REACH);
             //system.addAttractor(-500,500,100, 40.0F, 50F, AttractorMode.STOP_FOREVER_ON_REACH);
             //system.getLastAddedAttractor().setAttenuation(0, 0.1f, 1);
@@ -245,7 +245,7 @@ public class EngineTest2 implements IEventHandler {
             system.setGlobal(true);
             system.setStartcolor(new Color(1, 0, 1));
             system.setEndcolor(new Color(1, 1, 0));
-            //OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
+            OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
             //ParticleMaster.instance().addParticle(new Particle(new ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4,true)));
             
       //      l.getTransform().setPosition(0, 200, 0);

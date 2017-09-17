@@ -63,7 +63,7 @@ public abstract class AbstractScene implements DataMapSerializable{
 	}
 	
 	final long mainRender() {
-		ParticleMaster.instance().resetTimes();
+		ParticleMaster.resetTimes();
 		state = FrameState.RENDERING;
 		tmptime = DisplayManager.instance().getCurrentTime();
 		long l = publicRender(new RenderConfiguration());

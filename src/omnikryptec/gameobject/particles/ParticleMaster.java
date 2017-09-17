@@ -201,8 +201,8 @@ public class ParticleMaster implements Profilable {
         return new ProfileContainer[]{new ProfileContainer(Profiler.PARTICLE_RENDERER, getRenderTimeMS()), new ProfileContainer(Profiler.PARTICLE_UPDATER, getUpdateTimeMS())};
     }
 
-	public void resetTimes() {
-		rendertime = 0;
-		updatetime = 0;
+	public static void resetTimes() {
+		instance.rendertime = 0;
+		instance.updatetime = 0;
 	}
 }

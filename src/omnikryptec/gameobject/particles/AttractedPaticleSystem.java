@@ -128,7 +128,7 @@ public class AttractedPaticleSystem extends SimpleParticleSystem {
 
     @Override
     protected Particle emitParticle(Vector3f center) {
-        if (direction != null) {
+    	if (direction != null) {
             velocity = generateRandomUnitVectorWithinCone(direction, directionAngel);
         } else {
             velocity = generateRandomUnitVector();
