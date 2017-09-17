@@ -1,5 +1,6 @@
 package omnikryptec.settings;
 
+import java.util.HashMap;
 import org.lwjgl.opengl.GL;
 
 import omnikryptec.gameobject.RenderType;
@@ -15,7 +16,16 @@ import omnikryptec.util.Instance;
  * @author pcfreak9000 &amp; Panzer1119
  */
 public class GameSettings {
+	
+	public static final String COLORSPACE_SCENE_FBO="COLORSPACE_SCENE_FBO";
+	public static final String COLORSPACE_NORMAL_FBO="COLORSPACE_NORMAL_FBO";
+	public static final String COLORSPACE_SPECULAR_FBO="COLORSPACE_SPECULAR_FBO";
+	public static final String COLORSPACE_SHADER_INFO_FBO="COLORSPACE_SHADER_INFO_FBO";
+	
+	private final HashMap<String, Integer> ints;
+	private final HashMap<String, Float> floats;
 
+	
     private int initialFPSCap = Instance.DISPLAYMANAGER_DISABLE_FPS_CAP;
     /**
      * 0 means no multisampling
@@ -76,8 +86,18 @@ public class GameSettings {
      */
     public GameSettings(KeySettings keySettings) {
         this.keySettings = keySettings;
+        ints = new HashMap<>();
+        floats = new HashMap<>();
     }
-
+    
+    public int getInt(String k) {
+    	return ints.get(k);
+    }
+    
+    public float getFloat(String k) {
+    	return floats.get(k);
+    }
+    
     /**
      * Returns the added attachments
      *
