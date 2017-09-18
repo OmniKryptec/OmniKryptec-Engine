@@ -1,6 +1,5 @@
 package omnikryptec.util;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,7 +9,7 @@ import java.util.stream.Collectors;
 /**
  * DistinctMap
  *
- * @author Paul Hagedorn
+ * @author Panzer1119
  */
 public class DistinctMap<A extends Object, B extends Object> {
 
