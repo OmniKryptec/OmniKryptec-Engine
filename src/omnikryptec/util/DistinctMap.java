@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
 /**
@@ -91,7 +92,7 @@ public class DistinctMap<A extends Object, B extends Object> {
 
     }
 
-    private final List<DistinctEntry<A, B>> entries = new ArrayList<>();
+    private final ConcurrentLinkedQueue<DistinctEntry<A, B>> entries = new ConcurrentLinkedQueue<>();
 
     public DistinctMap() {
         this(null, null);
