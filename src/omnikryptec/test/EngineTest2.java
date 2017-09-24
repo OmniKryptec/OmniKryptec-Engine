@@ -2,6 +2,7 @@ package omnikryptec.test;
 
 import java.util.Random;
 
+import org.joml.Matrix3f;
 import org.joml.Vector3f;
 
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
@@ -23,7 +24,6 @@ import omnikryptec.gameobject.particles.AttractorMode;
 import omnikryptec.gameobject.particles.ParticleAttractor;
 import omnikryptec.gameobject.particles.ParticleSpawnArea;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
-import omnikryptec.gameobject.particles.ParticleSystem;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;
@@ -57,6 +57,9 @@ public class EngineTest2 implements IEventHandler {
 	
     public static void main(String[] args) {
         try {
+        	Matrix3f testm = new Matrix3f(new Vector3f(1, 2, 3), new Vector3f(2, 3, -2), new Vector3f(2, 1, 1));
+        	testm = testm.invert();
+        	System.out.println(new Vector3f(3, 7, -2).mul(testm));
         	//NativesLoader.setNativesFolder(new AdvancedFile(false, (Object)null, "H:/natives/"));
         	NativesLoader.loadNatives();
         	OmniKryptecEngine.addShutdownHook(() -> NativesLoader.unloadNatives());

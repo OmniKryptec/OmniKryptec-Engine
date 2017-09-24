@@ -1,8 +1,11 @@
 package omnikryptec.renderer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
+import omnikryptec.main.AbstractScene.RendererTime;
 
 public class RenderConfiguration {
 
@@ -12,6 +15,7 @@ public class RenderConfiguration {
 
 	private String shaderpackKeyName;
 	private boolean renderParticle = true;
+	private HashMap<RendererTime, Boolean> allow = new HashMap<>();
 	private float maxExpensive = Float.POSITIVE_INFINITY;
 	private float minExpensive = Float.NEGATIVE_INFINITY;
 	private ArrayList<Renderer> renderer = new ArrayList<>();
@@ -25,6 +29,9 @@ public class RenderConfiguration {
 	
 	public RenderConfiguration(String sh) {
 		this.shaderpackKeyName = sh;
+		for(RendererTime t : RendererTime.values()) {
+			allow.put(t, true);
+		}
 		calcCache();
 	}
 
@@ -77,6 +84,10 @@ public class RenderConfiguration {
 	
 	public String getShaderpackKey() {
 		return shaderpackKeyName;
+	}
+	
+	public boolean isRendererTimeAllowed(RendererTime t) {
+		return allow.get(t);
 	}
 	
 	private void calcCache() {

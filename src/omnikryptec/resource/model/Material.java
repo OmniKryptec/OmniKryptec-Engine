@@ -70,10 +70,7 @@ public class Material {
 	}
 	
 	public final Material setRenderer(Renderer renderer) {
-		if (!RendererRegistration.exists(renderer)) {
-			Logger.logErr("This renderer is not registered!",
-					new OmniKryptecException("Renderer is not registered: " + renderer));
-		}
+		RendererRegistration.exceptionsIfNotRegistered(renderer);
 		this.renderer = renderer;
 		return this;
 	}
