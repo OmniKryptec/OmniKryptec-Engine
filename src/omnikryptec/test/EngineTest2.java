@@ -71,7 +71,7 @@ public class EngineTest2 implements IEventHandler {
 
             DisplayManager.createDisplay("Test 2",
                     new GameSettings().setAnisotropicLevel(16).setMultisamples(16)
-                    .setInitialFPSCap(-1).setChunkRenderOffsets(2, 2, 2).setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(false),
+                    .setChunkRenderOffsets(2, 2, 2).setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(false),
                     new GLFWInfo(3,3,true,false,1280, 720));
             new Thread(new Runnable() {
 				

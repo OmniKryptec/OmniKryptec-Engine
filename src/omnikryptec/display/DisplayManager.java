@@ -93,7 +93,7 @@ public class DisplayManager implements Profilable{
 			name = "";
 		}
 		try {
-			manager.setSyncFPS(settings.getInitialFPSCap());
+			manager.setSyncFPS(settings.getInteger(GameSettings.FPS_CAP));
 			Display.create(name, info);
 			if (settings.getMultiSamples() != GameSettings.NO_MULTISAMPLING) {
 				RenderUtil.antialias(true);

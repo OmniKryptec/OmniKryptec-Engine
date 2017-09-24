@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 
 import omnikryptec.display.DisplayManager;
 import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.settings.GameSettings;
 
 /**
  *
@@ -60,8 +61,8 @@ public class EventSystem {
         if (DisplayManager.instance() == null) {
             throw new NullPointerException("DisplayManager is null");
         }
-        if (DisplayManager.instance().getSettings().getEventThreadpoolSize() > 0) {
-            threadpool = Executors.newFixedThreadPool(DisplayManager.instance().getSettings().getEventThreadpoolSize());
+        if (DisplayManager.instance().getSettings().getInteger(GameSettings.THREADPOOLSIZE_EVENT) > 0) {
+            threadpool = Executors.newFixedThreadPool(DisplayManager.instance().getSettings().getInteger(GameSettings.THREADPOOLSIZE_EVENT));
         } else {
             threadpool = null;
         }

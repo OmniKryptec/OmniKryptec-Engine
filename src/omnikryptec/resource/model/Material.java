@@ -8,8 +8,6 @@ import org.joml.Vector3f;
 import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.texture.Texture;
-import omnikryptec.util.exceptions.OmniKryptecException;
-import omnikryptec.util.logger.Logger;
 
 public class Material {
 	

@@ -3,11 +3,12 @@ package omnikryptec.resource.texture;
 import java.io.InputStream;
 
 import omnikryptec.display.DisplayManager;
+import omnikryptec.settings.GameSettings;
 
 public class TextureBuilder {
 
-    private boolean clampEdges = DisplayManager.instance().getSettings().clampEdges();
-    private boolean mipmap = DisplayManager.instance().getSettings().mipmap();
+    private boolean clampEdges = DisplayManager.instance().getSettings().getBoolean(GameSettings.CLAMP_EDGES);
+    private boolean mipmap = DisplayManager.instance().getSettings().getBoolean(GameSettings.MIPMAP);
     private boolean anisotropic = DisplayManager.instance().getSettings().getAnisotropicLevel() > 0;
     private boolean nearest = DisplayManager.instance().getSettings().filterNearest();
 

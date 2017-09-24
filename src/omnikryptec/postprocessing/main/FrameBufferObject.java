@@ -240,12 +240,12 @@ public class FrameBufferObject extends Texture {
         if (multisample != GameSettings.NO_MULTISAMPLING) {
             for (int i = 0; i < targets.length; i++) {
                 colBuffers[i] = createMultisampleColourAttachment(targets[i].target,
-                        targets[i].extended ? GL30.GL_RGBA32F : GL11.GL_RGBA8);
+                        targets[i].extended); //? GL30.GL_RGBA32F : GL11.GL_RGBA8);
             }
         } else {
             for (int i = 0; i < targets.length; i++) {
                 colBuffers[i] = createTextureAttachment(targets[i].target,
-                        targets[i].extended ? GL30.GL_RGBA32F : GL11.GL_RGBA8);
+                        targets[i].extended); //? GL30.GL_RGBA32F : GL11.GL_RGBA8);
             }
         }
         if (type == DepthbufferType.DEPTH_RENDER_BUFFER) {

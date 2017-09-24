@@ -92,7 +92,7 @@ public class AnimationTest {
                 liveProfiler.startTimer(100);
             }).start();
 
-            gameSettings = new GameSettings().setAnisotropicLevel(32).setMultisamples(32).setInitialFPSCap(30).setChunkRenderOffsets(2, 2, 2).setLightForward(true);
+            gameSettings = new GameSettings().setAnisotropicLevel(32).setMultisamples(32)/*.setInitialFPSCap(30)*/.setChunkRenderOffsets(2, 2, 2).setLightForward(true);
             keySettings = gameSettings.getKeySettings();
             final KeyGroup grabMouse = new KeyGroup("grabMouse", new Key("grabMouse1", GLFW.GLFW_KEY_G, true), new Key("grabMouse2", GLFW.GLFW_KEY_Y, true)).setAllKeysNeedToBeActivated(false);
             keySettings.setKey(grabMouse);

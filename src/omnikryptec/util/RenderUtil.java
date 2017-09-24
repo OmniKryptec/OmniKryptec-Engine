@@ -9,7 +9,7 @@ import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.gameobject.RenderType;
 import omnikryptec.gameobject.UpdateType;
-import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.settings.GameSettings;
 
 public class RenderUtil {
 
@@ -149,53 +149,72 @@ public class RenderUtil {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 	}
 
-	public static void clear(Color c){
+	public static void clear(Color c) {
 		clear(c.getArray());
 	}
-	
+
 	public static void clear(float[] f) {
 		clear(f[0], f[1], f[2], f.length > 3 ? f[3] : 1);
 	}
 
-	private static float rad;
+	private static float rad_fol,rad_med,rad_big;
 	private static Vector3f cpos;
-
-	public static boolean inRenderRange(Entity e, Camera c){
+	private static long lastupdate = -1;
+	
+	public static boolean inRenderRange(Entity e, Camera c) {
 		return inRenderRange(e.getTransform().getPosition(true), e.getType(), c);
 	}
-	
+
 	public static boolean inRenderRange(Vector3f pos, RenderType type, Camera c) {
+		if (needsUpdate(lastupdate, 10)) {
+			lastupdate = DisplayManager.instance().getFramecount();
+			rad_fol = DisplayManager.instance().getSettings().getFloat(GameSettings.RADIUS_FOLIAGE);
+			rad_med = DisplayManager.instance().getSettings().getFloat(GameSettings.RADIUS_MEDIUM);
+			rad_big = DisplayManager.instance().getSettings().getFloat(GameSettings.RADIUS_BIG);
+			rad_fol *= rad_fol;
+			rad_med *= rad_med;
+			rad_big *= rad_big;
+		}
 		if (type == RenderType.ALWAYS) {
 			return true;
 		} else if (type == RenderType.FOLIAGE) {
-			rad = OmniKryptecEngine.instance().getDisplayManager().getSettings().getRadiusFoliage();
 			cpos = c.getTransform().getPosition(true);
-			if (pos.lengthSquared() < cpos.lengthSquared() + rad && pos.lengthSquared() > cpos.lengthSquared() - rad) {
+			if (pos.lengthSquared() < cpos.lengthSquared() + rad_fol && pos.lengthSquared() > cpos.lengthSquared() - rad_fol) {
 				return true;
 			}
 		} else if (type == RenderType.MEDIUM) {
-			rad = OmniKryptecEngine.instance().getDisplayManager().getSettings().getRadiusMedium();
 			cpos = c.getTransform().getPosition(true);
-			if (pos.lengthSquared() < cpos.lengthSquared() + rad && pos.lengthSquared() > cpos.lengthSquared() - rad) {
+			if (pos.lengthSquared() < cpos.lengthSquared() + rad_med && pos.lengthSquared() > cpos.lengthSquared() - rad_med) {
 				return true;
 			}
 		} else if (type == RenderType.BIG) {
-			rad = OmniKryptecEngine.instance().getDisplayManager().getSettings().getRadiusBig();
 			cpos = c.getTransform().getPosition(true);
-			if (pos.lengthSquared() < cpos.lengthSquared() + rad && pos.lengthSquared() > cpos.lengthSquared() - rad) {
+			if (pos.lengthSquared() < cpos.lengthSquared() + rad_big && pos.lengthSquared() > cpos.lengthSquared() - rad_big) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public static boolean needsUpdate(long lastUpdate, int frequenzy, UpdateType t){
-		if(lastUpdate<0){
-			return true;
-		}
-		return t==UpdateType.DYNAMIC?DisplayManager.instance().getFramecount()-frequenzy>=lastUpdate:false;
+	public static boolean needsUpdate(long lastUpdate) {
+		return needsUpdate(lastUpdate, 1);
 	}
 	
+	public static boolean needsUpdate(long lastUpdate, int freq) {
+		return needsUpdate(lastUpdate, freq, UpdateType.DYNAMIC);
+	}
+	
+	public static boolean needsUpdate(long lastUpdate, UpdateType t) {
+		return needsUpdate(lastUpdate, 1, t);
+	}
+	
+	public static boolean needsUpdate(long lastUpdate, int frequenzy, UpdateType t) {
+		if (lastUpdate < 0) {
+			return true;
+		}
+		return t == UpdateType.DYNAMIC ? DisplayManager.instance().getFramecount() - frequenzy >= lastUpdate : false;
+	}
+
 	// public static void setLightScissor(Vector4f lightpos, int sx, int sy){
 	// int[] rect = {0,0,sx,sy};
 	// float d;

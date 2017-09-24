@@ -49,7 +49,11 @@ public class Returner<T> {
     public static final Returner<Short> of(Short value) {
         return new Returner<>(value);
     }
-
+    
+    public static final Returner<Long> of(Long value) {
+        return new Returner<>(value);
+    }
+    
     public static final Returner<Character> of(Character value) {
         return new Returner<>(value);
     }

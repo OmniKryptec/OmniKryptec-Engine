@@ -1,14 +1,17 @@
 package omnikryptec.settings;
 
 import java.util.HashMap;
-import org.lwjgl.opengl.GL;
 
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
+
+import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.RenderType;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.postprocessing.main.FBOFactory;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.RenderTarget;
-import omnikryptec.util.Instance;
 import omnikryptec.util.Returner;
 
 /**
@@ -18,34 +21,91 @@ import omnikryptec.util.Returner;
  */
 public class GameSettings {
 
+    /**
+     * Standard value for disabling multisampling
+     */
+    public static final int NO_MULTISAMPLING = 0;
+	
+	/**
+	 * OpenGL int
+	 */
     public static final String COLORSPACE_SCENE_FBO = "COLORSPACE_SCENE_FBO";
+    /**
+	 * OpenGL int
+	 */
     public static final String COLORSPACE_NORMAL_FBO = "COLORSPACE_NORMAL_FBO";
+    /**
+	 * OpenGL int
+	 */
     public static final String COLORSPACE_SPECULAR_FBO = "COLORSPACE_SPECULAR_FBO";
+    /**
+	 * OpenGL int
+	 */
     public static final String COLORSPACE_SHADER_INFO_FBO = "COLORSPACE_SHADER_INFO_FBO";
+
+    /**
+     * int
+     */
+    public static final String FPS_CAP = "FPS_CAP";
+
+    /**
+     * Global texture setting. If mipmapping should be used.
+     * boolean
+	 */
+	public static final String MIPMAP = "MIPMAP";
+	/**
+	 * Global texture setting. If edges should be clamped.
+	 * boolean
+	 */
+    public static final String CLAMP_EDGES = "CLAMP_EDGES";
+	
+    /**
+     * Size of the EventSystem threadpool.
+     * int
+     */
+    public static final String THREADPOOLSIZE_EVENT = "THREADPOOLSIZE_EVENT";
+    
+    
+    /**
+     * Sets the radius around the camera where foliage will be rendered.
+     * float
+   	 * @see RenderType#FOLIAGE
+     */
+    public static final String RADIUS_FOLIAGE = "RADIUS_FOLIAGE";
+    /**
+     * Sets the radius around the camera where medium objetcs will be renderer.
+     * float
+     * @see RenderType#MEDIUM
+     */
+    public static final String RADIUS_MEDIUM = "RADIUS_MEDIUM";
+    /**
+     * Sets the radius around the camera where big objetcs will be renderer.
+     * float
+     * @see RenderType#BIG
+     */
+    public static final String RADIUS_BIG = "RADIUS_BIG";
+
 
     private final HashMap<String, Object> settings_objects = new HashMap<>();
     private final HashMap<String, Float> settings_floats = new HashMap<>();
     private final HashMap<String, Integer> settings_integers = new HashMap<>();
+    private final HashMap<String, Long> settings_longs = new HashMap<>();
+    private final HashMap<String, Boolean> settings_booleans = new HashMap<>();
 
-    private int initialFPSCap = Instance.DISPLAYMANAGER_DISABLE_FPS_CAP;
+    
+//************************************Not just settings****************************************
     /**
      * 0 means no multisampling
      */
-    private int multisamples = 0;
-    private float anisotropic = 4;
-    private boolean mipmap = false;
-    private boolean clampEdges = false;
-    private boolean nearest = false;
+    private int multisamples = NO_MULTISAMPLING;
+    private float anisotropic = 0;
     private KeySettings keySettings;
+    private boolean nearest = false;
 
-    private int eventThreadPoolSize = 2;
+//*********************************************************************************************
 
     private RenderTarget[] add_attachments = {};
     private FBOFactory fbo_factory;
-
-    private float foliageRadius = 50;
-    private float mediumRadius = 100;
-    private float bigRadius = 200;
 
     private long chunkOffsetX = 1;
     private long chunkOffsetY = 1;
@@ -67,10 +127,7 @@ public class GameSettings {
     private long minmultithreadedparticles = 1000;
     private int partThrPSize = -1;
 
-    /**
-     * Standard value for disabling multisampling
-     */
-    public static final int NO_MULTISAMPLING = 0;
+
 
     /**
      * constructs a GameSettings object with default key settings.
@@ -86,8 +143,26 @@ public class GameSettings {
      */
     public GameSettings(KeySettings keySettings) {
         this.keySettings = keySettings;
+        fillDefaults();
     }
 
+    public GameSettings fillDefaults() {
+    	/*COLORSPACE*/
+    	setInteger(COLORSPACE_NORMAL_FBO, GL11.GL_RGBA8);
+    	setInteger(COLORSPACE_SCENE_FBO, GL11.GL_RGBA8);
+    	setInteger(COLORSPACE_SHADER_INFO_FBO, GL30.GL_RGBA32F);
+    	setInteger(COLORSPACE_SPECULAR_FBO, GL30.GL_RGBA32F);
+    	/**/
+    	setInteger(FPS_CAP, DisplayManager.DISABLE_FPS_CAP);
+    	setBoolean(CLAMP_EDGES, false);
+    	setBoolean(MIPMAP, false);
+    	setInteger(THREADPOOLSIZE_EVENT, 2);
+    	setFloat(RADIUS_FOLIAGE, 50);
+    	setFloat(RADIUS_MEDIUM, 100);
+    	setFloat(RADIUS_BIG, 200);
+    	return this;
+    }
+    
     /**
      * Returns an Object or null for a key
      * @param key Key
@@ -115,6 +190,24 @@ public class GameSettings {
         return Returner.of(settings_integers.get(key)).or(0);
     }
 
+    /**
+     * Returns a Long or 0 for a key
+     * @param key Key
+     * @return long
+     */
+    public final long getLong(String key) {
+        return Returner.of(settings_longs.get(key)).or(0L);
+    }
+    
+    /**
+     * Returns a boolean or 0 for a key
+     * @param key Key
+     * @return boolean
+     */
+    public final boolean getBoolean(String key) {
+        return Returner.of(settings_booleans.get(key)).or(false);
+    }
+    
     /**
      * Sets an Object for a key
      * @param key Key
@@ -149,6 +242,28 @@ public class GameSettings {
     }
 
     /**
+     * Sets a Long for a key
+     * @param key Key
+     * @param value Value
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setLong(String key, long value) {
+        settings_longs.put(key, value);
+        return this;
+    }
+    
+    /**
+     * Sets a boolean for a key
+     * @param key Key
+     * @param value Value
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setBoolean(String key, boolean value) {
+        settings_booleans.put(key, value);
+        return this;
+    }
+    
+    /**
      * Returns if an Object for a key is present
      * @param key Key
      * @return <tt>true</tt> if the given key is holding a value
@@ -176,6 +291,24 @@ public class GameSettings {
     }
 
     /**
+     * Returns if a Long for a key is present
+     * @param key Key
+     * @return <tt>true</tt> if the given key is holding a value
+     */
+    public final boolean hasLong(String key) {
+        return settings_longs.containsKey(key);
+    }
+    
+    /**
+     * Returns if a boolean for a key is present
+     * @param key Key
+     * @return <tt>true</tt> if the given key is holding a value
+     */
+    public final boolean hasBoolean(String key) {
+        return settings_booleans.containsKey(key);
+    }
+    
+    /**
      * Returns the added attachments
      *
      * @return Integer Array Added attachments
@@ -193,26 +326,6 @@ public class GameSettings {
     public final GameSettings setAdditionalAttachments(RenderTarget... add_attachments) {
         this.add_attachments = add_attachments;
         return this;
-    }
-
-    /**
-     * Sets the FPS cap
-     *
-     * @param initialFPSCap Integer FPS Cap
-     * @return GameSettings A reference to this GameSettings
-     */
-    public final GameSettings setInitialFPSCap(int initialFPSCap) {
-        this.initialFPSCap = initialFPSCap;
-        return this;
-    }
-
-    /**
-     * Returns the FPS cap
-     *
-     * @return Integer FPS cap
-     */
-    public final int getInitialFPSCap() {
-        return initialFPSCap;
     }
 
     /**
@@ -278,50 +391,11 @@ public class GameSettings {
     public final GameSettings setAnisotropicLevel(float anisotropic) {
         this.anisotropic = anisotropic;
         if (anisotropic > 0) {
-            this.mipmap = true;
+        	setBoolean(MIPMAP, true);
         }
         return this;
     }
 
-    /**
-     * Global texture setting. Returns if the edges should be clamped
-     *
-     * @return <tt>true</tt> if the edges should be clamped
-     */
-    public final boolean clampEdges() {
-        return clampEdges;
-    }
-
-    /**
-     * Global texture setting. Sets if the edges should be clamped
-     *
-     * @param clampEdges Boolean If the edges should be clamped
-     * @return GameSettings A reference to this GameSettings
-     */
-    public final GameSettings setClampEdges(boolean clampEdges) {
-        this.clampEdges = clampEdges;
-        return this;
-    }
-
-    /**
-     * Returns if mipmapping should be used
-     *
-     * @return <tt>true</tt> if mipmapping is activated
-     */
-    public final boolean mipmap() {
-        return mipmap;
-    }
-
-    /**
-     * Global texture setting. Sets if mipmapping should be used
-     *
-     * @param mipmap Boolean If mipmapping should be activated
-     * @return GameSettings A reference to this GameSettings
-     */
-    public final GameSettings setMipmap(boolean mipmap) {
-        this.mipmap = mipmap;
-        return this;
-    }
 
     /**
      * Global texture setting.
@@ -343,29 +417,9 @@ public class GameSettings {
      */
     public final GameSettings setFilterNearest(boolean nearest) {
         if (nearest) {
-            mipmap = false;
+            setBoolean(MIPMAP, false);
         }
         this.nearest = nearest;
-        return this;
-    }
-
-    /**
-     * Returns the size of the EventSystem Threadpool
-     *
-     * @return Integer Threadpool size
-     */
-    public final int getEventThreadpoolSize() {
-        return eventThreadPoolSize;
-    }
-
-    /**
-     * Sets the size of the EventSystem Threadpool
-     *
-     * @param eventThreadPoolSize Integer Threadpool size
-     * @return GameSettings A reference to this GameSettings
-     */
-    public final GameSettings setEventThreadpoolSize(int eventThreadPoolSize) {
-        this.eventThreadPoolSize = eventThreadPoolSize;
         return this;
     }
 
@@ -415,49 +469,6 @@ public class GameSettings {
         } else {
             return fbos;
         }
-    }
-
-    /**
-     * Sets the radius around the camera where foliage will be rendered.
-     *
-     * @see RenderType#FOLIAGE
-     *
-     * @param foliageRadius Float FoliageRadius
-     * @return GameSettings A reference to this GameSettings
-     */
-    public final GameSettings setRadiusFoliage(float foliageRadius) {
-        this.foliageRadius = foliageRadius;
-        return this;
-    }
-
-    /**
-     * Returns the foliage radius
-     *
-     * @return Float Foliage radius
-     */
-    public final float getRadiusFoliage() {
-        return foliageRadius;
-    }
-
-    /**
-     * Sets the radius around the camera where medium objects will be rendered.
-     *
-     * @see RenderType#MEDIUM
-     * @param mediumRadius Float Medium radius
-     * @return GameSettings A reference to this GameSettings
-     */
-    public final GameSettings setRadiusMedium(float mediumRadius) {
-        this.mediumRadius = mediumRadius;
-        return this;
-    }
-
-    /**
-     * Returns the medium radius
-     *
-     * @return Float Medium radius
-     */
-    public final float getRadiusMedium() {
-        return mediumRadius;
     }
 
     /**
@@ -618,27 +629,6 @@ public class GameSettings {
      */
     public final GameSettings setChunkDepth(int i) {
         return setChunkSize(chunkWidth, chunkHeight, i);
-    }
-
-    /**
-     * returns the big radius.
-     *
-     * @return
-     */
-    public float getRadiusBig() {
-        return bigRadius;
-    }
-
-    /**
-     * Sets the radius around the camera where medium objects will be rendered.
-     *
-     * @see RenderType#BIG
-     * @param Float the radius
-     * @return this GameSettings
-     */
-    public GameSettings setRadiusBig(float r) {
-        this.bigRadius = r;
-        return this;
     }
 
     /**
