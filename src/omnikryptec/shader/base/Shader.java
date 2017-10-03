@@ -197,7 +197,7 @@ public class Shader {
 		return name;
 	}
 
-	protected void registerUniforms(Uniform... uniformsarray) {
+	public void registerUniforms(Uniform... uniformsarray) {
 		registerUniformsA(uniformsarray);
 	}
 

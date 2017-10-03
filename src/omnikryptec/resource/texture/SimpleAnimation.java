@@ -53,4 +53,14 @@ public class SimpleAnimation extends Texture {
         }
     }
 
+	@Override
+	public float getWidth() {
+		return textures[index].getWidth();
+	}
+
+	@Override
+	public float getHeight() {
+		return textures[index].getHeight();
+	}
+
 }

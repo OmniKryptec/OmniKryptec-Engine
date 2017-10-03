@@ -458,4 +458,14 @@ public class FrameBufferObject extends Texture {
         }
     }
 
+	@Override
+	public float getWidth() {
+		return width;
+	}
+
+	@Override
+	public float getHeight() {
+		return height;
+	}
+
 }

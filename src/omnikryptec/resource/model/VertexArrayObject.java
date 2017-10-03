@@ -1,5 +1,6 @@
 package omnikryptec.resource.model;
 
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -195,12 +196,14 @@ public class VertexArrayObject {
 	}
 	// *******************************************************************************************************************
 
-	private final VertexArrayObject storeData(int vertexCount, DataObject... data) {
+	public final VertexArrayObject storeData(int vertexCount, DataObject... data) {
 		int[] lengths = getAttributeLengths(data, vertexCount);
 		store(lengths, data);
 		return this;
 	}
 
+
+	
 	private final VertexArrayObject store(int[] lengths, DataObject[] data) {
 		for (int i = 0; i < data.length; i++) {
 			dataVboTmp = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
@@ -238,6 +241,17 @@ public class VertexArrayObject {
 		return lengths;
 	}
 
+	//TODO
+	public final VertexArrayObject storeBufferf(int vertexcount, int[] lengths, FloatBuffer buffer) {
+		if(dataVboTmp==null) {
+			dataVboTmp = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
+		}
+		dataVboTmp.bind();
+		dataVboTmp.storeData(buffer);
+		linkVboDataToAttributes(lengths, calculateBytesPerVertex(lengths));
+		return this;
+	}
+	
 	private final VertexArrayObject storeInterleavedData(float[] data, int... lengths) {
 		dataVboTmp = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
 		dataVboTmp.bind();

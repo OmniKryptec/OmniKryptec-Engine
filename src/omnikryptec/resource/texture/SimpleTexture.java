@@ -150,4 +150,14 @@ public class SimpleTexture extends Texture {
         }
     }
 
+	@Override
+	public float getWidth() {
+		return data==null?0:data.getWidth();
+	}
+
+	@Override
+	public float getHeight() {
+		return data==null?0:data.getHeight();
+	}
+
 }

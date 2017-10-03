@@ -51,8 +51,6 @@ public abstract class Texture implements ResourceObject {
         }
     }
 
-    protected abstract void bindToUnit(int unit, int... info);
-
     public float[] getUVs() {
         return uvs;
     }
@@ -91,4 +89,9 @@ public abstract class Texture implements ResourceObject {
 		OpenGL.gl11bindTexture(type, id);
 	}
 
+    protected abstract void bindToUnit(int unit, int... info);
+    
+    public abstract float getWidth();
+	
+    public abstract float getHeight();
 }

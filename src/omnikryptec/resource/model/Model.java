@@ -12,6 +12,10 @@ import omnikryptec.util.logger.Logger;
 
 public class Model implements ResourceObject {
 
+	public static enum VBO_TYPE{
+		NONE, SPRITEBATCH, RENDERING;
+	}
+	
     private final String name;
     private ModelData modelData = null;
     private final VertexArrayObject vao;
@@ -24,23 +28,29 @@ public class Model implements ResourceObject {
                 new DataObject(modelData.getTextureCoords()), new DataObject(modelData.getNormals()),
                 new DataObject(modelData.getTangents()));
         this.name = name;
-        createVBO();
+        createVBO(VBO_TYPE.RENDERING);
     }
 
     //fuer instanced rendering
-    private void createVBO() {
+    private void createVBO(VBO_TYPE t) {
+    	if(t == VBO_TYPE.NONE) {
+    		return;
+    	}
     	vbo_updateable = VertexBufferObject.createEmpty(GL15.GL_ARRAY_BUFFER);
-    	vbo_updateable.addInstancedAttribute(getVao(), 4, 4, 20, 0);
-    	vbo_updateable.addInstancedAttribute(getVao(), 5, 4, 20, 4);
-    	vbo_updateable.addInstancedAttribute(getVao(), 6, 4, 20, 8);
-    	vbo_updateable.addInstancedAttribute(getVao(), 7, 4, 20, 12);
-    	vbo_updateable.addInstancedAttribute(getVao(), 8, 4, 20, 16);
+    	if(t == VBO_TYPE.RENDERING) {
+    		int i=20;
+	    	vbo_updateable.addInstancedAttribute(getVao(), 4, 4, i, 0);
+	    	vbo_updateable.addInstancedAttribute(getVao(), 5, 4, i, 4);
+	    	vbo_updateable.addInstancedAttribute(getVao(), 6, 4, i, 8);
+	    	vbo_updateable.addInstancedAttribute(getVao(), 7, 4, i, 12);
+	    	vbo_updateable.addInstancedAttribute(getVao(), 8, 4, i, 16);
+    	}
 	}
 
-	public Model(String name, VertexArrayObject vao) {
+	public Model(String name, VertexArrayObject vao, VBO_TYPE type) {
         this.name = name;
         this.vao = vao;
-        createVBO();
+        createVBO(type);
     }
 
 	public VertexBufferObject getUpdateableVBO(){
