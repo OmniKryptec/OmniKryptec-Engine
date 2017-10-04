@@ -9,9 +9,9 @@ import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL31;
 
 import omnikryptec.gameobject.Camera;
+import omnikryptec.graphics.OpenGL;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.VertexBufferObject;
 import omnikryptec.resource.texture.ParticleAtlas;
@@ -44,7 +44,7 @@ public class ParticleRenderer {
 
 	protected ParticleRenderer() {
 		quad = ModelUtil.generateQuad();
-		vbo = VertexBufferObject.createEmpty(GL15.GL_ARRAY_BUFFER);
+		vbo = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
 		vbo.addInstancedAttribute(quad.getVao(), 1, 4, INSTANCE_DATA_LENGTH, 0);
 		vbo.addInstancedAttribute(quad.getVao(), 2, 4, INSTANCE_DATA_LENGTH, 4);
 		vbo.addInstancedAttribute(quad.getVao(), 3, 4, INSTANCE_DATA_LENGTH, 8);
@@ -93,7 +93,7 @@ public class ParticleRenderer {
 			}
 			vbo.updateData(vboData, buffer);
 			if(count>0){
-				GL31.glDrawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVao().getIndexCount(), count);
+				OpenGL.gl31drawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVao().getIndexCount(), count);
 			}
 		}
 		RenderUtil.disableBlending();

@@ -28,74 +28,82 @@
  *	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *	POSSIBILITY OF SUCH DAMAGE.
  */
-package omnikryptec.gui.base;
+package omnikryptec.gui.rendering;
 
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
 
 import omnikryptec.graphics.OpenGL;
-import omnikryptec.resource.model.Model;
-import omnikryptec.resource.model.Model.VBO_TYPE;
 import omnikryptec.resource.model.VertexArrayObject;
-import omnikryptec.resource.model.VertexBufferObject;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.base.Shader;
+import omnikryptec.shader.files.render.GuiShader;
 import omnikryptec.util.Color;
-import omnikryptec.util.ModelUtil;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.exceptions.OmniKryptecException;
-import omnikryptec.util.logger.Logger;
 
-/**
- * @author Matt (mdesl) DesLauriers
- * @author matheusdev
- */
-public class SpriteBatch {
-	private static final int floatsPerVertex=8;
-	private static final int[] elementLengths = {2,4,2};
-	private static final int vertices=6;
-	
+public class DrawBatch {
+	private static final int floatsPerVertex = 8;
+	private static final int[] elementLengths = { 2, 4, 2 };
+	private static final int vertices = 6;
+
+	private static GuiShader defShaderInst;
+
+	private static GuiShader defaultShader() {
+		if (defShaderInst == null) {
+			defShaderInst = new GuiShader();
+		}
+		return defShaderInst;
+	}
+
 	private FloatBuffer buffer;
 	private Shader program;
 
 	private VertexArrayObject vao;
-	private int vertexcount=0;
-	private int drawcalls=0;
-	private int idx=0;
-	private int max=0;
+	private int vertexcount = 0;
+	private int drawcalls = 0;
+	private int idx = 0;
+	private int max = 0;
 	private Texture cur;
-	private boolean drawing=false;
+	private boolean drawing = false;
 	private Color color = new Color(1, 1, 1, 1);
 
-	public SpriteBatch(Shader program, int size) {
+	public DrawBatch() {
+		this(1000);
+	}
+
+	public DrawBatch(int size) {
+		this(defaultShader(), size);
+	}
+
+	public DrawBatch(Shader program, int size) {
 		this.program = program;
 		vao = VertexArrayObject.create();
-		max = size*vertices;
-		buffer = BufferUtils.createFloatBuffer(floatsPerVertex*max);
+		max = size * vertices;
+		buffer = BufferUtils.createFloatBuffer(floatsPerVertex * max);
 	}
-	
-	public void test() {
+
+	public void drawTest() {
 		vertex(0, 0, 1, 1, 1, 1, 0, 0);
 		vertex(1, 0, 1, 1, 1, 1, 1, 0);
 		vertex(1, 1, 1, 1, 1, 1, 1, 1);
 	}
-	
+
 	private void checkFlush(Texture t) {
-		if(t!=cur||idx>=max) {
+		if (t != cur || idx >= max) {
 			Texture.unbindActive();
 			cur = t;
-			if(cur!=null) {
+			if (cur != null) {
 				cur.bindToUnitOptimized(0);
 			}
 			flush();
 		}
 	}
-	
+
 	public void begin() {
-		if(drawing) {
+		if (drawing) {
 			throw new OmniKryptecException("Can't start started rendering!");
 		}
 		RenderUtil.enableAlphaBlending();
@@ -105,29 +113,29 @@ public class SpriteBatch {
 		program.start();
 		drawing = true;
 	}
-	
-	public void end(){
-		if(!drawing) {
+
+	public void end() {
+		if (!drawing) {
 			throw new OmniKryptecException("Can't stop stopped rendering!");
 		}
 		flush();
 		drawing = false;
 	}
-	
+
 	public void changeShader(Shader sh) {
 		flush();
 		program = sh;
-		if(drawing) {
+		if (drawing) {
 			program.start();
 		}
 	}
-	
+
 	public Color color() {
 		return color;
 	}
-	
+
 	private void flush() {
-		if(idx > 0 && drawing) {
+		if (idx > 0 && drawing) {
 			buffer.flip();
 			vao.bind();
 			vao.storeBufferf(vertexcount, elementLengths, buffer);
@@ -136,73 +144,38 @@ public class SpriteBatch {
 			buffer.clear();
 		}
 	}
-	
+
 	private void render() {
 		drawcalls++;
-		vao.bind(0,1,2);
-		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, idx);
+		vao.bind(0, 1, 2);
+		OpenGL.gl11drawArrays(GL11.GL_TRIANGLES, 0, idx);
 	}
-	
+
 	private void vertex(float x, float y, float r, float g, float b, float a, float u, float v) {
-		if(!drawing) {
+		if (!drawing) {
 			throw new OmniKryptecException("Rendering is not active!");
 		}
 		vertexcount++;
 		idx++;
 		buffer.put(x).put(y).put(r).put(g).put(b).put(a).put(u).put(v);
 	}
-	
-	
-//	public void drawRegion(Texture tex, float srcX, float srcY, float srcWidth, float srcHeight, float dstX,
-//			float dstY) {
-//		drawRegion(tex, srcX, srcY, srcWidth, srcHeight, dstX, dstY, srcWidth, srcHeight);
-//	}
-//
-//	public void drawRegion(Texture tex, float srcX, float srcY, float srcWidth, float srcHeight, float dstX, float dstY,
-//			float dstWidth, float dstHeight) {
-//		u = srcX / tex.getWidth();
-//		v = srcY / tex.getHeight();
-//		u2 = (srcX + srcWidth) / tex.getWidth();
-//		v2 = (srcY + srcHeight) / tex.getHeight();
-//		draw(tex, dstX, dstY, dstWidth, dstHeight, u, v, u2, v2);
-//	}
-//
-//	public void drawRegion(TextureRegion region, float srcX, float srcY, float srcWidth, float srcHeight, float dstX,
-//			float dstY) {
-//		drawRegion(region, srcX, srcY, srcWidth, srcHeight, dstX, dstY, srcWidth, srcHeight);
-//	}
-//
-//	public void drawRegion(TextureRegion region, float srcX, float srcY, float srcWidth, float srcHeight, float dstX,
-//			float dstY, float dstWidth, float dstHeight) {
-//		drawRegion(region.getTexture(), region.getRegionX() + srcX, region.getRegionY() + srcY, srcWidth, srcHeight,
-//				dstX, dstY, dstWidth, dstHeight);
-//	}
 
 	public void draw(Texture tex, float x, float y) {
 		draw(tex, x, y, tex.getWidth(), tex.getHeight());
 	}
 
-//	public void draw(Texture tex, float x, float y, float width, float height) {
-//		draw(tex, x, y, width, height, tex.getUVs()[0], tex.getUVs()[1], tex.getUVs()[2], tex.getUVs()[3]);
-//	}
-
 	public void draw(Texture tex, float x, float y, float originX, float originY, float rotationRadians) {
 		draw(tex, x, y, tex.getWidth(), tex.getHeight(), originX, originY, rotationRadians);
 	}
 
-//	public void draw(Texture tex, float x, float y, float width, float height, float originX, float originY,
-//			float rotationRadians) {
-//		draw(tex, x, y, width, height, originX, originY, rotationRadians, tex.getUVs()[0], tex.getUVs()[1], tex.getUVs()[2],
-//				tex.getUVs()[3]);
-//	}
+	private float x1, y1, x2, y2, x3, y3, x4, y4, scaleX, scaleY, cx, cy, p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y, r, g,
+			b, a, u, v, u2, v2;
 
-	private float x1, y1, x2, y2, x3, y3, x4, y4, scaleX, scaleY, cx, cy, p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y, r, g, b, a, u, v, u2, v2;
-
-	//was with uvs
+	// was with uvs
 	public void draw(Texture tex, float x, float y, float width, float height) {
 		draw(tex, x, y, width, height, x, y, 0f);
 	}
-	
+
 	public void fillRect(float x, float y, float width, float height) {
 		draw(null, x, y, width, height);
 	}
@@ -239,13 +212,13 @@ public class SpriteBatch {
 	}
 
 	public void draw(Texture tex, float x, float y, float width, float height, float originX, float originY,
-			float rotationRadians /*float u, float v, float u2, float v2*/) {
+			float rotationRadians /* float u, float v, float u2, float v2 */) {
 		checkFlush(tex);
 		r = color.getR();
 		g = color.getG();
 		b = color.getB();
 		a = color.getA();
-		if(tex!=null) {
+		if (tex != null) {
 			u = tex.getUVs()[0];
 			v = tex.getUVs()[1];
 			u2 = tex.getUVs()[2];
@@ -307,5 +280,62 @@ public class SpriteBatch {
 		vertex(x3, y3, r, g, b, a, u2, v2);
 		vertex(x4, y4, r, g, b, a, u, v2);
 	}
-	
+
+	public int getDrawCalls() {
+		return drawcalls;
+	}
+
+	public int getVertexCount() {
+		return vertexcount;
+	}
+
+	public boolean isDrawing() {
+		return drawing;
+	}
+
+	// public void drawRegion(Texture tex, float srcX, float srcY, float srcWidth,
+	// float srcHeight, float dstX,
+	// float dstY) {
+	// drawRegion(tex, srcX, srcY, srcWidth, srcHeight, dstX, dstY, srcWidth,
+	// srcHeight);
+	// }
+	//
+	// public void drawRegion(Texture tex, float srcX, float srcY, float srcWidth,
+	// float srcHeight, float dstX, float dstY,
+	// float dstWidth, float dstHeight) {
+	// u = srcX / tex.getWidth();
+	// v = srcY / tex.getHeight();
+	// u2 = (srcX + srcWidth) / tex.getWidth();
+	// v2 = (srcY + srcHeight) / tex.getHeight();
+	// draw(tex, dstX, dstY, dstWidth, dstHeight, u, v, u2, v2);
+	// }
+	//
+	// public void drawRegion(TextureRegion region, float srcX, float srcY, float
+	// srcWidth, float srcHeight, float dstX,
+	// float dstY) {
+	// drawRegion(region, srcX, srcY, srcWidth, srcHeight, dstX, dstY, srcWidth,
+	// srcHeight);
+	// }
+	//
+	// public void drawRegion(TextureRegion region, float srcX, float srcY, float
+	// srcWidth, float srcHeight, float dstX,
+	// float dstY, float dstWidth, float dstHeight) {
+	// drawRegion(region.getTexture(), region.getRegionX() + srcX,
+	// region.getRegionY() + srcY, srcWidth, srcHeight,
+	// dstX, dstY, dstWidth, dstHeight);
+	// }
+
+	// public void draw(Texture tex, float x, float y, float width, float height,
+	// float originX, float originY,
+	// float rotationRadians) {
+	// draw(tex, x, y, width, height, originX, originY, rotationRadians,
+	// tex.getUVs()[0], tex.getUVs()[1], tex.getUVs()[2],
+	// tex.getUVs()[3]);
+	// }
+
+	// public void draw(Texture tex, float x, float y, float width, float height) {
+	// draw(tex, x, y, width, height, tex.getUVs()[0], tex.getUVs()[1],
+	// tex.getUVs()[2], tex.getUVs()[3]);
+	// }
+
 }

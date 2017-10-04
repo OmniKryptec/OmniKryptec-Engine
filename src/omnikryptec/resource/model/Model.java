@@ -36,7 +36,7 @@ public class Model implements ResourceObject {
     	if(t == VBO_TYPE.NONE) {
     		return;
     	}
-    	vbo_updateable = VertexBufferObject.createEmpty(GL15.GL_ARRAY_BUFFER);
+    	vbo_updateable = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
     	if(t == VBO_TYPE.RENDERING) {
     		int i=20;
 	    	vbo_updateable.addInstancedAttribute(getVao(), 4, 4, i, 0);

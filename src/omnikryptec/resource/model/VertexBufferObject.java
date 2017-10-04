@@ -9,9 +9,8 @@ import java.util.List;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL33;
 
+import omnikryptec.graphics.OpenGL;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -29,24 +28,17 @@ public class VertexBufferObject {
     }
 
     public static VertexBufferObject create(int type) {
-        int id = GL15.glGenBuffers();
+        int id = OpenGL.gl15genBuffers();
         return new VertexBufferObject(id, type);
     }
 
-    public static VertexBufferObject createEmpty(int type) {
-        VertexBufferObject vbo = create(type);
-//		vbo.bind();
-//		GL15.glBufferData(vbo.type, floatCount * 4, GL15.GL_STREAM_DRAW);
-        return vbo;
-    }
-
     public void bind() {
-        GL15.glBindBuffer(type, vboId);
+        OpenGL.gl15bindBuffer(type, vboId);
     }
 
     @Deprecated
     public void unbind() {
-        GL15.glBindBuffer(type, 0);
+        OpenGL.gl15bindBuffer(type, 0);
     }
 
     public void storeData(float[] data) {
@@ -61,7 +53,7 @@ public class VertexBufferObject {
     }
 
     public void storeData(FloatBuffer data) {
-        GL15.glBufferData(type, data, GL15.GL_STATIC_DRAW);
+        OpenGL.gl15bufferData(type, data, GL15.GL_STATIC_DRAW);
     }
 
     public void storeData(int[] data) {
@@ -76,7 +68,7 @@ public class VertexBufferObject {
     }
 
     public void storeData(IntBuffer data) {
-        GL15.glBufferData(type, data, GL15.GL_STATIC_DRAW);
+        OpenGL.gl15bufferData(type, data, GL15.GL_STATIC_DRAW);
     }
 
     public void updateData(float[] data, FloatBuffer buffer) {
@@ -90,8 +82,8 @@ public class VertexBufferObject {
         buffer.put(data);
         buffer.flip();
         bind();
-        GL15.glBufferData(type, buffer.capacity() * 4, GL15.GL_STREAM_DRAW);
-        GL15.glBufferSubData(type, 0, buffer);
+        OpenGL.gl15bufferData(type, buffer.capacity() * 4, GL15.GL_STREAM_DRAW);
+        OpenGL.gl15bufferSubData(type, 0, buffer);
     }
 
     public void addInstancedAttribute(VertexArrayObject vao, int attributNr, int dataSize, int instancedDataSize,
@@ -103,12 +95,12 @@ public class VertexBufferObject {
             int offset, int divisor) {
         bind();
         vao.bind();
-        GL20.glVertexAttribPointer(attributNr, dataSize, GL11.GL_FLOAT, false, instancedDataSize * 4, offset * 4);
-        GL33.glVertexAttribDivisor(attributNr, divisor);
+        OpenGL.gl20vertexAttribPointer(attributNr, dataSize, GL11.GL_FLOAT, false, instancedDataSize * 4, offset * 4);
+        OpenGL.gl33vertexAttribDivisor(attributNr, divisor);
     }
 
     public void delete() {
-        GL15.glDeleteBuffers(vboId);
+        OpenGL.gl15deleteBuffers(vboId);
     }
 
     private static float[] dc(Float[] is) {

@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
+
+import omnikryptec.graphics.OpenGL;
 
 public class VertexArrayObject {
 
@@ -29,7 +29,7 @@ public class VertexArrayObject {
 	 * @return VertexArrayObject VertexArrayObject
 	 */
 	public static final VertexArrayObject create() {
-		int id = GL30.glGenVertexArrays();
+		int id = OpenGL.gl30genVertexArrays();
 		return new VertexArrayObject(id);
 	}
 
@@ -54,7 +54,7 @@ public class VertexArrayObject {
 	 */
 	public final VertexArrayObject bind() {
 		if (ID != lastBoundId) {
-			GL30.glBindVertexArray(ID);
+			OpenGL.gl30bindVertexArray(ID);
 			lastBoundId = ID;
 		}
 		return this;
@@ -70,7 +70,7 @@ public class VertexArrayObject {
 	public final VertexArrayObject bind(int... attributes) {
 		bind();
 		for (int i : attributes) {
-			GL20.glEnableVertexAttribArray(i);
+			OpenGL.gl20enableVertexAttribArray(i);
 		}
 		return this;
 	}
@@ -84,7 +84,7 @@ public class VertexArrayObject {
 	@Deprecated
 	public final VertexArrayObject unbind() {
 		lastBoundId = 0;
-		GL30.glBindVertexArray(0);
+		OpenGL.gl30bindVertexArray(0);
 		return this;
 	}
 
@@ -99,7 +99,7 @@ public class VertexArrayObject {
 	@Deprecated
 	public final VertexArrayObject unbind(int... attributes) {
 		for (int i : attributes) {
-			GL20.glDisableVertexAttribArray(i);
+			OpenGL.gl20disableVertexAttribArray(i);
 		}
 		unbind();
 		return this;
@@ -136,7 +136,7 @@ public class VertexArrayObject {
 	 * @return A reference to this VertexArrayObject
 	 */
 	public final VertexArrayObject delete() {
-		GL30.glDeleteVertexArrays(ID);
+		OpenGL.gl30deleteVertexArrays(ID);
 		return this;
 	}
 
@@ -172,7 +172,7 @@ public class VertexArrayObject {
 		dataVboTmp = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
 		dataVboTmp.bind();
 		dataVboTmp.storeData(data);
-		GL20.glVertexAttribPointer(attribute, attributeSize, GL11.GL_FLOAT, false, attributeSize * BYTES_PER_FLOAT, 0);
+		OpenGL.gl20vertexAttribPointer(attribute, attributeSize, GL11.GL_FLOAT, false, attributeSize * BYTES_PER_FLOAT, 0);
 		return this;
 	}
 
@@ -191,7 +191,7 @@ public class VertexArrayObject {
 		dataVboTmp = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
 		dataVboTmp.bind();
 		dataVboTmp.storeData(data);
-		GL30.glVertexAttribIPointer(attribute, attributeSize, GL11.GL_INT, attributeSize * BYTES_PER_INT, 0);
+		OpenGL.gl30vertexAttribIPointer(attribute, attributeSize, GL11.GL_INT, attributeSize * BYTES_PER_INT, 0);
 		return this;
 	}
 	// *******************************************************************************************************************
@@ -210,9 +210,9 @@ public class VertexArrayObject {
 			dataVboTmp.bind();
 			data[i].store(dataVboTmp);
 			if (data[i].holdsInt()) {
-				GL30.glVertexAttribIPointer(i, lengths[i], data[i].getType(), lengths[i] * BYTES_PER_INT, 0);
+				OpenGL.gl30vertexAttribIPointer(i, lengths[i], data[i].getType(), lengths[i] * BYTES_PER_INT, 0);
 			} else if (data[i].holdsFloat()) {
-				GL20.glVertexAttribPointer(i, lengths[i], data[i].getType(), false, lengths[i] * BYTES_PER_FLOAT, 0);
+				OpenGL.gl20vertexAttribPointer(i, lengths[i], data[i].getType(), false, lengths[i] * BYTES_PER_FLOAT, 0);
 			}
 		}
 		return this;
@@ -241,7 +241,7 @@ public class VertexArrayObject {
 		return lengths;
 	}
 
-	//TODO
+	//TODO ?
 	public final VertexArrayObject storeBufferf(int vertexcount, int[] lengths, FloatBuffer buffer) {
 		if(dataVboTmp==null) {
 			dataVboTmp = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
@@ -264,7 +264,7 @@ public class VertexArrayObject {
 	private final VertexArrayObject linkVboDataToAttributes(int[] lengths, int bytesPerVertex) {
 		int total = 0;
 		for (int i = 0; i < lengths.length; i++) {
-			GL20.glVertexAttribPointer(i, lengths[i], GL11.GL_FLOAT, false, bytesPerVertex, BYTES_PER_FLOAT * total);
+			OpenGL.gl20vertexAttribPointer(i, lengths[i], GL11.GL_FLOAT, false, bytesPerVertex, BYTES_PER_FLOAT * total);
 			total += lengths[i];
 		}
 		return this;
