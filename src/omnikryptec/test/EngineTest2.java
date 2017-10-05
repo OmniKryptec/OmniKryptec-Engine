@@ -255,8 +255,7 @@ public class EngineTest2 implements IEventHandler {
 
 			testrend = new FloorReflectionRenderer(new RenderConfiguration(), new FrameBufferObject(320, 180, DepthbufferType.NONE), 0);
 			testrend.getRenderConfig().setRendererData(AllowedRenderer.EvElse, testrend);
-			RendererRegistration.register(testrend);
-			Instance.getCurrentScene().addIndependentRenderer(testrend, RendererTime.PRE);
+			testrend.registerAndAddToCurrentScene();
 			
 			attractor = new ParticleAttractor(0, -10, 0).setGravitation(100f).setDistanceTolerance(10)
 					.setMode(AttractorMode.STOP_UNTIL_DISABLED_ON_REACH);

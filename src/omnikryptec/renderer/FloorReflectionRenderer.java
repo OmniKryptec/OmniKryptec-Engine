@@ -4,10 +4,12 @@ import java.util.List;
 
 import omnikryptec.gameobject.Entity;
 import omnikryptec.main.AbstractScene;
+import omnikryptec.main.AbstractScene.RendererTime;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.util.FrustrumFilter;
+import omnikryptec.util.Instance;
 import omnikryptec.util.RenderUtil;
 
 public class FloorReflectionRenderer extends Renderer{
@@ -24,6 +26,12 @@ public class FloorReflectionRenderer extends Renderer{
 		}
 	}
 
+	public FloorReflectionRenderer registerAndAddToCurrentScene() {
+		RendererRegistration.register(this);
+		Instance.getCurrentScene().addIndependentRenderer(this, RendererTime.PRE);
+		return this;
+	}
+	
 	@Override
 	protected long render(AbstractScene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader started,
 			FrustrumFilter filter) {
