@@ -12,6 +12,7 @@ import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.shader.base.Shader;
+import omnikryptec.shader.base.ShaderGroup;
 import omnikryptec.shader.base.ShaderPack;
 import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.RenderUtil;
@@ -25,7 +26,7 @@ import omnikryptec.util.logger.Logger;
 public class TerrainRenderer extends Renderer {
 
     public TerrainRenderer() {
-        super(new ShaderPack(new TerrainShader()));
+        super(new ShaderPack(new ShaderGroup(new TerrainShader())));
         RendererRegistration.register(this);
         setExpensiveLevel(0);
         setPriority(0);

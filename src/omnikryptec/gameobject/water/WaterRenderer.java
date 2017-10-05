@@ -9,6 +9,7 @@ import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.shader.base.Shader;
+import omnikryptec.shader.base.ShaderGroup;
 import omnikryptec.shader.base.ShaderPack;
 import omnikryptec.util.FrustrumFilter;
 
@@ -20,15 +21,13 @@ import omnikryptec.util.FrustrumFilter;
 public class WaterRenderer extends Renderer {
 
     public WaterRenderer() {
-        super(new ShaderPack(new WaterShader()));
+        super(new ShaderPack(new ShaderGroup(new WaterShader())));
         RendererRegistration.register(this);
         setExpensiveLevel(2);
         setPriority(1);
     }
 
     private List<Entity> stapel;
-    private WaterTile waterTile;
-    //private TexturedModel model;
     private long vertcount = 0;
 
     @Override

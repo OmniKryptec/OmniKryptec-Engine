@@ -15,8 +15,9 @@ import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.shader.base.Shader;
+import omnikryptec.shader.base.ShaderGroup;
 import omnikryptec.shader.base.ShaderPack;
-import omnikryptec.shader.files.render.ForwardPPMeshShader;
+import omnikryptec.shader.files.render.ForwardMeshShader;
 import omnikryptec.util.Color;
 import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.Instance;
@@ -34,7 +35,7 @@ public class ForwardMeshRenderer extends Renderer{
     private static final int INSTANCES_PER_DRAWCALL = Instance.getGameSettings().getMaxInstancesPerDrawcall();
 
     public ForwardMeshRenderer() {
-        super(new ShaderPack(new ForwardPPMeshShader()));
+        super(new ShaderPack(new ShaderGroup(new ForwardMeshShader(true)).addShader(1, new ForwardMeshShader(false))));
         RendererRegistration.register(this);
     }
 

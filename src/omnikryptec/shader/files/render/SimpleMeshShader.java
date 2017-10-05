@@ -1,5 +1,7 @@
 package omnikryptec.shader.files.render;
 
+import org.joml.Vector4f;
+
 import omnikryptec.main.AbstractScene;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
@@ -52,7 +54,7 @@ public class SimpleMeshShader extends Shader {
 	}
 	
 	@Override
-	public void onRenderStart(AbstractScene s) {
+	public void onRenderStart(AbstractScene s, Vector4f cp) {
 		u_view.loadMatrix(s.getCamera().getViewMatrix());
 		u_projection.loadMatrix(s.getCamera().getProjectionMatrix());
 	}

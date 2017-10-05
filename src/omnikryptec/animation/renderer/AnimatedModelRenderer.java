@@ -13,6 +13,7 @@ import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.shader.base.Shader;
+import omnikryptec.shader.base.ShaderGroup;
 import omnikryptec.shader.base.ShaderPack;
 import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.RenderUtil;
@@ -37,7 +38,7 @@ public class AnimatedModelRenderer extends Renderer {
      * Initializes the shader program used for rendering animated models.
      */
     public AnimatedModelRenderer() {
-        super(new ShaderPack(new AnimatedModelShader()));
+        super(new ShaderPack(new ShaderGroup(new AnimatedModelShader())));
         setExpensiveLevel(1);
         setPriority(0);
         RendererRegistration.register(this);
@@ -51,7 +52,8 @@ public class AnimatedModelRenderer extends Renderer {
     @Override
     protected long render(AbstractScene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader ownshader, FrustrumFilter filter) {
         vertcount = 0;
-        ((AnimatedModelShader)shaderpack.getDefaultShader()).lightDirection.loadVec3(LIGHT_DIR);
+        //TODO in den shader verschieben bei onRenderStart odaso
+        //((AnimatedModelShader)shaderpack.getDefaultShader()).lightDirection.loadVec3(LIGHT_DIR);
         for (AdvancedModel advancedModel : entities.keysArray()) {
             if (advancedModel == null || !(advancedModel instanceof AnimatedModel)) {
                 if (Logger.isDebugMode()) {

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.joml.Vector4f;
+
 import omnikryptec.main.AbstractScene.RendererTime;
 
 public class RenderConfiguration {
@@ -20,7 +22,9 @@ public class RenderConfiguration {
 	private float minExpensive = Float.NEGATIVE_INFINITY;
 	private ArrayList<Renderer> renderer = new ArrayList<>();
 	private AllowedRenderer allowedRenderer = AllowedRenderer.All;
-
+	private Vector4f clipplane = new Vector4f(0);
+	private int shaderlvl=0;
+	
 	private LinkedList<Renderer> rendererCache;
 
 	public RenderConfiguration() {
@@ -59,6 +63,16 @@ public class RenderConfiguration {
 		return this;
 	}
 
+	public RenderConfiguration setClipPlane(Vector4f cp) {
+		this.clipplane = cp;
+		return this;
+	}
+	
+	public RenderConfiguration setShaderLvl(int lvl) {
+		this.shaderlvl = lvl;
+		return this;
+	}
+	
 	public RenderConfiguration setRendererData(AllowedRenderer option, Renderer... renderers) {
 		renderer.clear();
 		for (Renderer r : renderers) {
@@ -112,5 +126,13 @@ public class RenderConfiguration {
 			}
 		}
 		rendererCache = tmp;
+	}
+
+	public Vector4f getClipPlane() {
+		return clipplane;
+	}
+
+	public int getShaderLvl() {
+		return shaderlvl;
 	}
 }

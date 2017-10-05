@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
@@ -167,7 +168,7 @@ public class Shader {
 	
 //******************************************************************
 	
-	public void onRenderStart(AbstractScene s) {
+	public void onRenderStart(AbstractScene s, Vector4f clipPlane) {
 
 	}
 	

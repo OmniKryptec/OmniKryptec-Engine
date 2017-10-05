@@ -14,6 +14,7 @@ import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.shader.base.Shader;
+import omnikryptec.shader.base.ShaderGroup;
 import omnikryptec.shader.base.ShaderPack;
 import omnikryptec.shader.files.render.SimpleMeshShader;
 import omnikryptec.util.Color;
@@ -28,7 +29,7 @@ public class SimpleMeshRenderer extends Renderer{
 
 
     public SimpleMeshRenderer() {
-        super(new ShaderPack(new SimpleMeshShader()));
+        super(new ShaderPack(new ShaderGroup(new SimpleMeshShader())));
     	RendererRegistration.register(this);
     }
 

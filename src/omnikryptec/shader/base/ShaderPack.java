@@ -9,42 +9,20 @@ import omnikryptec.util.logger.Logger;
 
 public class ShaderPack {
 
-	private HashMap<String, Shader> pack;
-	protected Shader defaultShader;
+	private HashMap<String, ShaderGroup> pack;
+	protected ShaderGroup defaultShader;
 	protected boolean defaultShaderIfError = true;
 
-	public ShaderPack(Shader defaults, Object... os) {
-		this.defaultShader = defaults;
-		final List<String> strings = new ArrayList<>();
-		final List<Shader> shader = new ArrayList<>();
-		for (Object o : os) {
-			if (o instanceof String) {
-				strings.add((String) o);
-			} else if (o instanceof Shader) {
-				shader.add((Shader) o);
-			}
-		}
-		pack = new HashMap<>();
-		for (int i = 0; i < strings.size(); i++) {
-			if (strings.get(i) != null && strings.get(i).length() > 0 && i < shader.size() && shader.get(i) != null) {
-				pack.put(strings.get(i), shader.get(i));
-			}
-		}
-		if (strings.size() == 0) {
-			Logger.log("No shader(names) found!", LogLevel.WARNING);
-		}
+	public ShaderPack(ShaderGroup defaults) {
+		this( new HashMap<>(), defaults);
 	}
 
-	public ShaderPack(Shader defaults) {
-		this(defaults, new HashMap<>());
-	}
-
-	public ShaderPack(Shader defaults, HashMap<String, Shader> pack) {
+	public ShaderPack(HashMap<String, ShaderGroup> pack, ShaderGroup defaults) {
 		this.pack = pack;
 		this.defaultShader = defaults;
 	}
 
-	public ShaderPack addShader(String renderPassName, Shader shader) {
+	public ShaderPack addShader(String renderPassName, ShaderGroup shader) {
 		if (renderPassName == null || renderPassName.length() == 0 || shader == null) {
 			Logger.log("renderPassName or the shader is invalid!", LogLevel.WARNING);
 			return this;
@@ -58,24 +36,27 @@ public class ShaderPack {
 		return this;
 	}
 
-	public Shader getShader(String renderPassName) {
+	public Shader getShader(String renderPassName, int lvl) {
 		if(renderPassName==null||renderPassName.isEmpty()) {
-			return defaultShader;
+			return defaultShader.getShaderForLvl(lvl);
 		}
-		Shader sh = pack.get(renderPassName);
+		ShaderGroup sh = pack.get(renderPassName);
 		if (sh == null && defaultShader != null && defaultShaderIfError) {
 			sh = this.defaultShader;
 		}
-		return sh;
+		return sh.getShaderForLvl(lvl);
 	}
 
-	public ShaderPack setDefaultShader(Shader s) {
+	public ShaderPack setDefaultShader(ShaderGroup s) {
 		this.defaultShader = s;
 		return this;
 	}
 
 	public Shader getDefaultShader() {
+		return defaultShader.getShaderForLvl(0);
+	}
+	
+	public ShaderGroup getDefaultShaderGroup() {
 		return defaultShader;
 	}
-
 }

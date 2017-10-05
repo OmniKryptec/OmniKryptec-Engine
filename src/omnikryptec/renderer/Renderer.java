@@ -36,17 +36,17 @@ public abstract class Renderer{
     private Shader tmps = null;
     private long tmplong;
     
-    public final long render(AbstractScene s, RenderMap<AdvancedModel, List<Entity>> entities, String renderPassName) {
+    public final long render(AbstractScene s, RenderMap<AdvancedModel, List<Entity>> entities, RenderConfiguration config) {
     	if(usesShader) {
-	        tmps = shaderpack.getShader(renderPassName);
+	        tmps = shaderpack.getShader(config.getShaderpackKey(), config.getShaderLvl());
 	        if (tmps == null) {
 	            if (Logger.isDebugMode()) {
-	                Logger.log("Shader is null! (RenderPass \""+renderPassName+"\"", LogLevel.ERROR);
+	                Logger.log("Shader is null! (RenderPass \""+config.getShaderpackKey()+"\"", LogLevel.ERROR);
 	            }
 	            return 0;
 	        }
 	        tmps.start();
-	        tmps.onRenderStart(s);
+	        tmps.onRenderStart(s, config.getClipPlane());
     	}else {
     		tmps = null;
     	}

@@ -83,7 +83,7 @@ public class EngineTest2 implements IEventHandler {
 
 			DisplayManager.createDisplay("Test 2",
 					new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setChunkRenderOffsets(2, 2, 2)
-							.setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(true),
+							.setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(false),
 					new GLFWInfo(3, 3, true, false, 1280, 720));
 			new Thread(new Runnable() {
 
@@ -145,13 +145,13 @@ public class EngineTest2 implements IEventHandler {
 			// Model baumM = Model.newModel(new AdvancedFile(res, "cube.obj"));
 			AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
 			Model BLOCK = new Model("", ObjLoader.loadOBJ(new AdvancedFile(res, "block.obj")));
-			TexturedModel tm = new TexturedModel("brunnen", baumM, baum);
+			TexturedModel tm = new TexturedModel("brunnen", brunnen, brunnent);
 			tm.getMaterial().setRenderer(RendererRegistration.FORWARD_MESH_RENDERER);
 			testdings = tm;
-			// tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
+			tm.getMaterial().setTexture(Material.NORMAL, brunnen_norm).setTexture(Material.SPECULAR, brunnen_specular);
 			// tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
 			// tm.getMaterial().setTexture(Material.SPECULAR, );
-			tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.2f,0.5f,0.3f))
+			tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.7f))
 					.setFloat(Material.DAMPER, 1.01f).setVector3f(Material.SHADERINFO, new Vector3f(1));
 			OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
@@ -214,7 +214,7 @@ public class EngineTest2 implements IEventHandler {
 					for (int z = -cube; z < cube; z += abstand) {
 						GameObject go;
 						// go = new GameObject().setRelativePos(x, y, z);
-						go = new Entity(ptm).setUpdateType(UpdateType.STATIC);
+						go = new Entity(tm).setUpdateType(UpdateType.STATIC);
 						go.getTransform().setDirty().setScale(scale).setPosition(x, y, z).getRotationSimple().rotate(0,
 								0, 0);
 						Instance.getCurrentScene().addGameObject(go);
@@ -256,7 +256,7 @@ public class EngineTest2 implements IEventHandler {
 			testrend = new FloorReflectionRenderer(new RenderConfiguration(),
 					new FrameBufferObject(320, 180, DepthbufferType.NONE), 0);
 			testrend.getRenderConfig().setRendererData(AllowedRenderer.EvElse, testrend);
-			// testrend.registerAndAddToCurrentScene();
+			testrend.registerAndAddToCurrentScene();
 
 			attractor = new ParticleAttractor(0, -10, 0).setGravitation(100f).setDistanceTolerance(10)
 					.setMode(AttractorMode.STOP_UNTIL_DISABLED_ON_REACH);
@@ -302,16 +302,16 @@ public class EngineTest2 implements IEventHandler {
 					.addGameObject(l.setAttenuation(1, 0, 0).setColor(1, 1, 1).setDirectional(true)
 							.setConeAttenuation(1, 0, 0).setConeDegrees(55).setDirection(0, -1, 0).setGlobal(true));
 			l.getTransform().setPosition(0, 0, 0);
-			Light l2 = new Light();
-			OmniKryptecEngine.instance().getCurrentScene()
-					.addGameObject(l2.setAttenuation(1, 0, 0).setColor(1, 0, 1).setDirectional(false)
-							.setConeAttenuation(1, 0, 0).setConeDegrees(30).setDirection(0, -1, 0).setGlobal(true));
-			l2.getTransform().setPosition(0, 100, 0);
-			Light l3 = new Light();
-			OmniKryptecEngine.instance().getCurrentScene()
-					.addGameObject(l3.setAttenuation(1, 0, 0).setColor(0, 0, 1).setDirectional(false)
-							.setConeAttenuation(1, 0, 0).setConeDegrees(30).setDirection(0, -0.75f, 0.25f).setGlobal(true));
-			l3.getTransform().setPosition(100, 100, 0);
+//			Light l2 = new Light();
+//			OmniKryptecEngine.instance().getCurrentScene()
+//					.addGameObject(l2.setAttenuation(1, 0, 0).setColor(1, 0, 1).setDirectional(false)
+//							.setConeAttenuation(1, 0, 0).setConeDegrees(30).setDirection(0, -1, 0).setGlobal(true));
+//			l2.getTransform().setPosition(0, 100, 0);
+//			Light l3 = new Light();
+//			OmniKryptecEngine.instance().getCurrentScene()
+//					.addGameObject(l3.setAttenuation(1, 0, 0).setColor(0, 0, 1).setDirectional(false)
+//							.setConeAttenuation(1, 0, 0).setConeDegrees(30).setDirection(0, -0.75f, 0.25f).setGlobal(true));
+//			l3.getTransform().setPosition(100, 100, 0);
 			// ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
 			// OmniKryptecEngine.instance().getCurrentScene().addGameObject(new
 			// Light().setColor(1, 1, 0).setRadius(100));
@@ -353,10 +353,10 @@ public class EngineTest2 implements IEventHandler {
 
 		// system.generateParticles(1);
 		if (ev.getType() == EventType.RENDER_FRAME_EVENT) {
-			// DrawBatch testb = new DrawBatch(new GuiShader(), 100);
-			// testb.begin();
-			// testb.draw(testrend.getTexture(), 0, 0, 1, 1);
-			// testb.end();
+			 DrawBatch testb = new DrawBatch(new GuiShader(), 100);
+			 testb.begin();
+			 testb.draw(testrend.getTexture(), 0, 0, 1, 1);
+			 testb.end();
 			// if(Instance.getFramecount()>1000) {
 			// system.setTimeMultiplier(0.01f);
 			// attractor.setEnabled(false);

@@ -76,14 +76,14 @@ public abstract class AbstractScene implements DataMapSerializable {
 	
 	//private final RenderConfiguration defaultConfig = new RenderConfiguration();
 	final long mainRender() {
-		RenderConfiguration defaultConfig = new RenderConfiguration();
+		RenderConfiguration defaultConfig = new RenderConfiguration().setShaderLvl(2);
 		ParticleMaster.resetTimes();
 		state = FrameState.RENDERING;
 		tmptime = DisplayManager.instance().getCurrentTime();
 		if(defaultConfig.isRendererTimeAllowed(RendererTime.PRE)) {
 			for (Renderer r : prerender) {
 				if (defaultConfig.getRenderer().contains(r)) {
-					r.render(this, null, defaultConfig.getShaderpackKey());
+					r.render(this, null, defaultConfig);
 				}
 			}
 		}
@@ -91,7 +91,7 @@ public abstract class AbstractScene implements DataMapSerializable {
 		if(defaultConfig.isRendererTimeAllowed(RendererTime.POST)) {
 			for (Renderer r : postrender) {
 				if (defaultConfig.getRenderer().contains(r)) {
-					r.render(this, null, defaultConfig.getShaderpackKey());
+					r.render(this, null, defaultConfig);
 				}
 			}
 		}

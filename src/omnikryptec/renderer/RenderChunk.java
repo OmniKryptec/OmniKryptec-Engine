@@ -230,7 +230,7 @@ public class RenderChunk implements DataMapSerializable {
 		for (Renderer renderer : renderlist) {
 			rendermap = chunk.get(renderer);
 			if (rendermap != null) {
-				vertcount += renderer.render(scene, rendermap, config.getShaderpackKey());
+				vertcount += renderer.render(scene, rendermap, config);
 			}
 		}
 		return vertcount;

@@ -56,8 +56,8 @@ public class Camera extends GameObject {
     public void reflect(float height){
     	tmp = getTransform().getPosition(true);
 		tmp.y -= 2 * (tmp.y - height);
-    	getTransform().rotation.getEulerAnglesXYZ(eul.set(0));
-		getTransform().rotation.identity().rotate(-eul.x, eul.y, eul.z);
+    	getTransform().rotation.w *= -1;
+    	getTransform().rotation.z *= -1;
 		getTransform().setDirty();
 	}
     
