@@ -37,9 +37,9 @@ public class FloorReflectionRenderer extends Renderer{
 			FrustrumFilter filter) {
 		texture.bindFrameBuffer();
 		RenderUtil.clear(0, 0, 0, 1);
-		//s.getCamera().reflect(height);
+		s.getCamera().reflect(height);
 		long l = s.publicRender(config.setShaderLvl(0));
-		//s.getCamera().reflect(height);
+		s.getCamera().reflect(height);
 		texture.unbindFrameBuffer();
 		return l;
 	}
