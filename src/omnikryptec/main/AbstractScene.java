@@ -49,7 +49,7 @@ public abstract class AbstractScene implements DataMapSerializable {
 	private String name;
 	private PhysicsWorld physicsworld;
 	private Color clearcolor = new Color(0, 0, 0, 0);
-	private Color ambientcolor = new Color(0, 0, 0, 1);
+	private Color ambientcolor = new Color(0.01f, 0.01f, 0.01f, 1);
 	private LinkedList<Renderer> prerender = new LinkedList<>();
 	private LinkedList<Renderer> postrender = new LinkedList<>();
 
@@ -205,7 +205,7 @@ public abstract class AbstractScene implements DataMapSerializable {
 	}
 
 	public final AbstractScene setAmbientColor(float r, float g, float b) {
-		this.clearcolor.set(r, g, b);
+		this.ambientcolor.set(r, g, b);
 		return this;
 	}
 

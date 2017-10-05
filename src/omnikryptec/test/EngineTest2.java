@@ -30,6 +30,8 @@ import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
+import omnikryptec.postprocessing.main.PostProcessing;
+import omnikryptec.postprocessing.stages.FogStage;
 import omnikryptec.renderer.FloorReflectionRenderer;
 import omnikryptec.renderer.RenderConfiguration;
 import omnikryptec.renderer.RendererRegistration;
@@ -64,7 +66,7 @@ public class EngineTest2 implements IEventHandler {
 	static TestRenderer rend;
 	static AdvancedModel testdings;
 	static FloorReflectionRenderer testrend;
-	
+
 	public static void main(String[] args) {
 		try {
 			// System.out.println((int) (Math.ceil(size/10.0)*10));
@@ -91,7 +93,7 @@ public class EngineTest2 implements IEventHandler {
 					liveProfiler.startTimer(1000);
 				}
 			}).start();
-			
+
 			// rend = new TestRenderer();
 			// PostProcessing.instance().addStage(new
 			// DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
@@ -99,8 +101,7 @@ public class EngineTest2 implements IEventHandler {
 			// PostProcessing.instance().addStage(new BloomStage(new
 			// CompleteGaussianBlurStage(true, 0.4f, 0.4f), new Vector4f(1, 0,
 			// 0, 0), new Vector2f(1, 6)));
-			// PostProcessing.instance().addStage(new
-			// FogStage().setDensity(0.25f));
+			//PostProcessing.instance().addStage(new FogStage().setDensity(0.25f));
 			// PostProcessing.instance().addStage(new
 			// CompleteGaussianBlurStage(false,0.1f,0.1f));
 			// PostProcessing.instance().addStage(new ColorSpaceStage(16,4,4));
@@ -150,7 +151,7 @@ public class EngineTest2 implements IEventHandler {
 			// tm.getMaterial().setNormalmap(brunnen_norm).setSpecularmap(brunnen_specular);
 			// tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
 			// tm.getMaterial().setTexture(Material.SPECULAR, );
-			tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.8f))
+			tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.2f,0.5f,0.3f))
 					.setFloat(Material.DAMPER, 1.01f).setVector3f(Material.SHADERINFO, new Vector3f(1));
 			OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
@@ -179,8 +180,8 @@ public class EngineTest2 implements IEventHandler {
 
 			TexturedModel ptm = new TexturedModel("pine", pine, pinet);
 			ptm.getMaterial().setTexture(Material.NORMAL, pine_normal);
-			ptm.getMaterial().setHasTransparency(false).setRenderer(RendererRegistration.FORWARD_MESH_RENDERER);
-			ptm.getMaterial().setVector3f(Material.REFLECTIVITY, new Vector3f(0.1f)).setFloat(Material.DAMPER, 0.01f)
+			ptm.getMaterial().setHasTransparency(true).setRenderer(RendererRegistration.FORWARD_MESH_RENDERER);
+			ptm.getMaterial().setVector3f(Material.REFLECTIVITY, new Vector3f(1f)).setFloat(Material.DAMPER, 10)
 					.setVector3f(Material.SHADERINFO, new Vector3f(1, 1, 0));
 
 			Random r = new Random();
@@ -202,11 +203,10 @@ public class EngineTest2 implements IEventHandler {
 			// 50);
 			// OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 			// }
-			
-			
+
 			System.out.println("Generating objs...");
 			int cube = 100;
-			int abstand = 5;
+			int abstand = 10;
 			float scale = 0.5f;
 			int objcount = 0;
 			for (int x = -cube; x < cube; x += abstand) {
@@ -214,7 +214,7 @@ public class EngineTest2 implements IEventHandler {
 					for (int z = -cube; z < cube; z += abstand) {
 						GameObject go;
 						// go = new GameObject().setRelativePos(x, y, z);
-						go = new Entity(tm).setUpdateType(UpdateType.STATIC);
+						go = new Entity(ptm).setUpdateType(UpdateType.STATIC);
 						go.getTransform().setDirty().setScale(scale).setPosition(x, y, z).getRotationSimple().rotate(0,
 								0, 0);
 						Instance.getCurrentScene().addGameObject(go);
@@ -253,10 +253,11 @@ public class EngineTest2 implements IEventHandler {
 			// system.addAttractor(-200,-150,0, 35.0F, 50F,
 			// AttractorMode.STOP_FOREVER_ON_REACH);
 
-			testrend = new FloorReflectionRenderer(new RenderConfiguration(), new FrameBufferObject(320, 180, DepthbufferType.NONE), 0);
+			testrend = new FloorReflectionRenderer(new RenderConfiguration(),
+					new FrameBufferObject(320, 180, DepthbufferType.NONE), 0);
 			testrend.getRenderConfig().setRendererData(AllowedRenderer.EvElse, testrend);
-			//testrend.registerAndAddToCurrentScene();
-			
+			// testrend.registerAndAddToCurrentScene();
+
 			attractor = new ParticleAttractor(0, -10, 0).setGravitation(100f).setDistanceTolerance(10)
 					.setMode(AttractorMode.STOP_UNTIL_DISABLED_ON_REACH);
 			system.addAttractor(attractor);
@@ -300,8 +301,17 @@ public class EngineTest2 implements IEventHandler {
 			OmniKryptecEngine.instance().getCurrentScene()
 					.addGameObject(l.setAttenuation(1, 0, 0).setColor(1, 1, 1).setDirectional(true)
 							.setConeAttenuation(1, 0, 0).setConeDegrees(55).setDirection(0, -1, 0).setGlobal(true));
-			l.getTransform().setPosition(0, 200, 0);
-
+			l.getTransform().setPosition(0, 0, 0);
+			Light l2 = new Light();
+			OmniKryptecEngine.instance().getCurrentScene()
+					.addGameObject(l2.setAttenuation(1, 0, 0).setColor(1, 0, 1).setDirectional(false)
+							.setConeAttenuation(1, 0, 0).setConeDegrees(30).setDirection(0, -1, 0).setGlobal(true));
+			l2.getTransform().setPosition(0, 100, 0);
+			Light l3 = new Light();
+			OmniKryptecEngine.instance().getCurrentScene()
+					.addGameObject(l3.setAttenuation(1, 0, 0).setColor(0, 0, 1).setDirectional(false)
+							.setConeAttenuation(1, 0, 0).setConeDegrees(30).setDirection(0, -0.75f, 0.25f).setGlobal(true));
+			l3.getTransform().setPosition(100, 100, 0);
 			// ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
 			// OmniKryptecEngine.instance().getCurrentScene().addGameObject(new
 			// Light().setColor(1, 1, 0).setRadius(100));
@@ -343,10 +353,10 @@ public class EngineTest2 implements IEventHandler {
 
 		// system.generateParticles(1);
 		if (ev.getType() == EventType.RENDER_FRAME_EVENT) {
-			DrawBatch testb = new DrawBatch(new GuiShader(), 100);
-			testb.begin();
-			testb.draw(testrend.getTexture(), 0, 0, 1, 1);
-			testb.end();
+			// DrawBatch testb = new DrawBatch(new GuiShader(), 100);
+			// testb.begin();
+			// testb.draw(testrend.getTexture(), 0, 0, 1, 1);
+			// testb.end();
 			// if(Instance.getFramecount()>1000) {
 			// system.setTimeMultiplier(0.01f);
 			// attractor.setEnabled(false);
@@ -362,15 +372,16 @@ public class EngineTest2 implements IEventHandler {
 			// }
 			// l.setColor(Color.blend(new Color(0, 0, 0, 1), new Color(1, 0, 0, 1),
 			// (DisplayManager.instance().getFramecount()/100.0f)%1f));
-//			if (Math.random() < 0.095) {
-//				l.setColor(Color.randomRGB());
-//			}
-//			if (Math.random() < 0.055) {
-//				Vector3f vec = Maths.generateRandomUnitVectorWithinCone(ra, new Vector3f(0, -1, 0),
-//						Math.toRadians(200));
-//				l.setDirection(vec);
-//				//ev.getScene().getCamera().reflect(0);
-//			}
+			// if (Math.random() < 0.095) {
+			// l.setColor(Color.randomRGB());
+			// }
+			// if (Math.random() < 0.055) {
+			// Vector3f vec = Maths.generateRandomUnitVectorWithinCone(ra, new Vector3f(0,
+			// -1, 0),
+			// Math.toRadians(200));
+			// l.setDirection(vec);
+			// //ev.getScene().getCamera().reflect(0);
+			// }
 			// rend.render(Instance.getCurrentScene(), null, null);
 			// if((Instance.getDisplayManager().getFramecount())%100==0){
 			// attractor.setEnabled(!attractor.isEnabled());
