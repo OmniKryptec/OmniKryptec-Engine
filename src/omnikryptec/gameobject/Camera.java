@@ -51,7 +51,16 @@ public class Camera extends GameObject {
         }
         return view;
     }
-
+    
+    private Vector3f eul = new Vector3f(), tmp;
+    public void reflect(float height){
+    	tmp = getTransform().getPosition(true);
+		tmp.y -= 2 * (tmp.y - height);
+    	getTransform().rotation.getEulerAnglesXYZ(eul.set(0));
+		getTransform().rotation.identity().rotate(-eul.x, eul.y, eul.z);
+		getTransform().setDirty();
+	}
+    
     private Matrix4f invProjView = new Matrix4f();
     private boolean invPVneedsUpdate = true;
     public Matrix4f getInverseProjView() {

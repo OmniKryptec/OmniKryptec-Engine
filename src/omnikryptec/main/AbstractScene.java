@@ -72,35 +72,41 @@ public abstract class AbstractScene implements DataMapSerializable {
 		}
 		state = FrameState.NULL;
 	}
-
+	
+	
+	//private final RenderConfiguration defaultConfig = new RenderConfiguration();
 	final long mainRender() {
+		RenderConfiguration defaultConfig = new RenderConfiguration();
 		ParticleMaster.resetTimes();
 		state = FrameState.RENDERING;
 		tmptime = DisplayManager.instance().getCurrentTime();
-		long l = publicRender(new RenderConfiguration());
+		if(defaultConfig.isRendererTimeAllowed(RendererTime.PRE)) {
+			for (Renderer r : prerender) {
+				if (defaultConfig.getRenderer().contains(r)) {
+					r.render(this, null, defaultConfig.getShaderpackKey());
+				}
+			}
+		}
+		long l = publicRender(defaultConfig);
+		if(defaultConfig.isRendererTimeAllowed(RendererTime.POST)) {
+			for (Renderer r : postrender) {
+				if (defaultConfig.getRenderer().contains(r)) {
+					r.render(this, null, defaultConfig.getShaderpackKey());
+				}
+			}
+		}
 		rendertime = DisplayManager.instance().getCurrentTime() - tmptime - ParticleMaster.instance().getRenderTimeMS();
 		state = FrameState.NULL;
 		return l;
 	}
 
 	public final long publicRender(RenderConfiguration config) {
-		if(config.isRendererTimeAllowed(RendererTime.PRE)) {
-			for (Renderer r : prerender) {
-				if (config.getRenderer().contains(r)) {
-					r.render(this, null, config.getShaderpackKey());
-				}
-			}
+		if(config==null) {
+			config = new RenderConfiguration();
 		}
 		long l = render(config);
 		if (config.renderParticles() && camera != null) {
 			ParticleMaster.instance().render(camera);
-		}
-		if(config.isRendererTimeAllowed(RendererTime.POST)) {
-			for (Renderer r : postrender) {
-				if (config.getRenderer().contains(r)) {
-					r.render(this, null, config.getShaderpackKey());
-				}
-			}
 		}
 		return l;
 	}

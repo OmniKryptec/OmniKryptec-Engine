@@ -19,6 +19,14 @@ public abstract class Renderer{
 	protected FrustrumFilter filter = new FrustrumFilter();
 	protected boolean usesShader=true;
     
+	/**
+	 * Doesn't use any shaders ({@link #usesShader} is set to false)
+	 */
+	protected Renderer() {
+		this(null);
+		usesShader = false;
+	}
+	
     protected Renderer(ShaderPack myshader) {
         this.shaderpack = myshader;
     }

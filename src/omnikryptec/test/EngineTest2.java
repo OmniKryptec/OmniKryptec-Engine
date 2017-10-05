@@ -24,10 +24,16 @@ import omnikryptec.gameobject.particles.ParticleAttractor;
 import omnikryptec.gameobject.particles.ParticleSpawnArea;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
 import omnikryptec.gui.rendering.DrawBatch;
+import omnikryptec.main.AbstractScene.RendererTime;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;
+import omnikryptec.postprocessing.main.FrameBufferObject;
+import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
+import omnikryptec.renderer.FloorReflectionRenderer;
+import omnikryptec.renderer.RenderConfiguration;
 import omnikryptec.renderer.RendererRegistration;
+import omnikryptec.renderer.RenderConfiguration.AllowedRenderer;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
 import omnikryptec.resource.model.Model;
@@ -57,7 +63,8 @@ public class EngineTest2 implements IEventHandler {
 
 	static TestRenderer rend;
 	static AdvancedModel testdings;
-
+	static FloorReflectionRenderer testrend;
+	
 	public static void main(String[] args) {
 		try {
 			// System.out.println((int) (Math.ceil(size/10.0)*10));
@@ -84,6 +91,7 @@ public class EngineTest2 implements IEventHandler {
 					liveProfiler.startTimer(1000);
 				}
 			}).start();
+			
 			// rend = new TestRenderer();
 			// PostProcessing.instance().addStage(new
 			// DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
@@ -194,7 +202,8 @@ public class EngineTest2 implements IEventHandler {
 			// 50);
 			// OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 			// }
-
+			
+			
 			System.out.println("Generating objs...");
 			int cube = 100;
 			int abstand = 5;
@@ -244,6 +253,11 @@ public class EngineTest2 implements IEventHandler {
 			// system.addAttractor(-200,-150,0, 35.0F, 50F,
 			// AttractorMode.STOP_FOREVER_ON_REACH);
 
+			testrend = new FloorReflectionRenderer(new RenderConfiguration(), new FrameBufferObject(320, 180, DepthbufferType.NONE), 0);
+			testrend.getRenderConfig().setRendererData(AllowedRenderer.EvElse, testrend);
+			RendererRegistration.register(testrend);
+			Instance.getCurrentScene().addIndependentRenderer(testrend, RendererTime.PRE);
+			
 			attractor = new ParticleAttractor(0, -10, 0).setGravitation(100f).setDistanceTolerance(10)
 					.setMode(AttractorMode.STOP_UNTIL_DISABLED_ON_REACH);
 			system.addAttractor(attractor);
@@ -332,7 +346,7 @@ public class EngineTest2 implements IEventHandler {
 		if (ev.getType() == EventType.RENDER_FRAME_EVENT) {
 			DrawBatch testb = new DrawBatch(new GuiShader(), 100);
 			testb.begin();
-			testb.draw(testdings.getMaterial().getTexture(Material.DIFFUSE), 0, 0, 1, 1);
+			testb.draw(testrend.getTexture(), 0, 0, 1, 1);
 			testb.end();
 			// if(Instance.getFramecount()>1000) {
 			// system.setTimeMultiplier(0.01f);
@@ -356,6 +370,7 @@ public class EngineTest2 implements IEventHandler {
 				Vector3f vec = Maths.generateRandomUnitVectorWithinCone(ra, new Vector3f(0, -1, 0),
 						Math.toRadians(200));
 				l.setDirection(vec);
+				//ev.getScene().getCamera().reflect(0);
 			}
 			// rend.render(Instance.getCurrentScene(), null, null);
 			// if((Instance.getDisplayManager().getFramecount())%100==0){

@@ -11,12 +11,30 @@ import omnikryptec.resource.texture.Texture;
 
 public class Material {
 	
+	/**
+	 * Texture
+	 */
 	public static final String DIFFUSE = "diffuse";
+	/**
+	 * Texture
+	 */
 	public static final String SPECULAR = "specular";
+	/**
+	 * Texture
+	 */
 	public static final String NORMAL = "normal";
+	/**
+	 * Texture, Vec3
+	 */
 	public static final String SHADERINFO = "info";
 
+	/**
+	 * Vec3
+	 */
 	public static final String REFLECTIVITY = "reflectivity";
+	/**
+	 * Float
+	 */
 	public static final String DAMPER = "damper";
 	
 	private Map<String, Texture> textures = new HashMap<>(); 
