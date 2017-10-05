@@ -171,53 +171,20 @@ public class DrawBatch {
 	private float x1, y1, x2, y2, x3, y3, x4, y4, scaleX, scaleY, cx, cy, p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y, r, g,
 			b, a, u, v, u2, v2;
 
-	// was with uvs
 	public void draw(Texture tex, float x, float y, float width, float height) {
 		draw(tex, x, y, width, height, x, y, 0f);
 	}
 
-	public void fillRect(float x, float y, float width, float height) {
-		draw(null, x, y, width, height);
+	public void draw(Texture tex, float x, float y, float u, float v, float u2, float v2) {
+		draw(tex, x, y, tex.getWidth(), tex.getHeight(), u, v, u2, v2);
 	}
-
-	public void drawRect(float x, float y, float width, float height) {
-		drawRect(x, y, width, height, 1);
+	
+	public void draw(Texture tex, float x, float y, float width, float height, float u, float v, float u2, float v2) {
+		draw(tex, x, y, width, height, x, y, 0, u, v, u2, v2);
 	}
-
-	public void drawRect(float x, float y, float width, float height, float thickness) {
-		draw(null, x, y, width, thickness);
-		draw(null, x, y, thickness, height);
-		draw(null, x + width - thickness, y, thickness, height);
-		draw(null, x, y + height - thickness, width, thickness);
-	}
-
-	public void fill3DRect(float x, float y, float width, float height, float shadowOffset) {
-		float[] cur = color.getArray();
-		color.set(0, 0, 0, 1);
-		fillRect(x + shadowOffset, y + shadowOffset, width, height);
-		color.setFrom(cur);
-		fillRect(x, y, width, height);
-	}
-
-	public void drawLine(float x1, float y1, float x2, float y2) {
-		drawLine(x1, y1, x2, y2, 1);
-	}
-
-	public void drawLine(float x1, float y1, float x2, float y2, float thickness) {
-		float dx = x2 - x1;
-		float dy = y2 - y1;
-		float dist = (float) Math.sqrt(dx * dx + dy * dy);
-		float rad = (float) Math.atan2(dx, dy);
-		draw(null, x1, y1, dist, thickness, 0, 0, rad);
-	}
-
+	
 	public void draw(Texture tex, float x, float y, float width, float height, float originX, float originY,
-			float rotationRadians /* float u, float v, float u2, float v2 */) {
-		checkFlush(tex);
-		r = color.getR();
-		g = color.getG();
-		b = color.getB();
-		a = color.getA();
+			float rotationRadians) {
 		if (tex != null) {
 			u = tex.getUVs()[0];
 			v = tex.getUVs()[1];
@@ -229,6 +196,16 @@ public class DrawBatch {
 			u2 = -1;
 			v2 = -1;
 		}
+		draw(tex, x, y, width, height, originX, originY, rotationRadians, u, v, u2, v2);
+	}
+	
+	public void draw(Texture tex, float x, float y, float width, float height, float originX, float originY,
+			float rotationRadians, float u, float v, float u2, float v2) {
+		checkFlush(tex);
+		r = color.getR();
+		g = color.getG();
+		b = color.getB();
+		a = color.getA();
 		if (rotationRadians != 0) {
 			scaleX = 1f;// width/tex.getWidth();
 			scaleY = 1f;// height/tex.getHeight();
@@ -281,6 +258,42 @@ public class DrawBatch {
 		vertex(x4, y4, r, g, b, a, u, v2);
 	}
 
+
+	public void fillRect(float x, float y, float width, float height) {
+		draw(null, x, y, width, height);
+	}
+
+	public void drawRect(float x, float y, float width, float height) {
+		drawRect(x, y, width, height, 1);
+	}
+
+	public void drawRect(float x, float y, float width, float height, float thickness) {
+		draw(null, x, y, width, thickness);
+		draw(null, x, y, thickness, height);
+		draw(null, x + width - thickness, y, thickness, height);
+		draw(null, x, y + height - thickness, width, thickness);
+	}
+
+	public void fill3DRect(float x, float y, float width, float height, float shadowOffset) {
+		float[] cur = color.getArray();
+		color.set(0, 0, 0, 1);
+		fillRect(x + shadowOffset, y + shadowOffset, width, height);
+		color.setFrom(cur);
+		fillRect(x, y, width, height);
+	}
+
+	public void drawLine(float x1, float y1, float x2, float y2) {
+		drawLine(x1, y1, x2, y2, 1);
+	}
+
+	public void drawLine(float x1, float y1, float x2, float y2, float thickness) {
+		float dx = x2 - x1;
+		float dy = y2 - y1;
+		float dist = (float) Math.sqrt(dx * dx + dy * dy);
+		float rad = (float) Math.atan2(dx, dy);
+		draw(null, x1, y1, dist, thickness, 0, 0, rad);
+	}
+	
 	public int getDrawCalls() {
 		return drawcalls;
 	}

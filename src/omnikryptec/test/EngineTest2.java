@@ -255,7 +255,7 @@ public class EngineTest2 implements IEventHandler {
 
 			testrend = new FloorReflectionRenderer(new RenderConfiguration(), new FrameBufferObject(320, 180, DepthbufferType.NONE), 0);
 			testrend.getRenderConfig().setRendererData(AllowedRenderer.EvElse, testrend);
-			testrend.registerAndAddToCurrentScene();
+			//testrend.registerAndAddToCurrentScene();
 			
 			attractor = new ParticleAttractor(0, -10, 0).setGravitation(100f).setDistanceTolerance(10)
 					.setMode(AttractorMode.STOP_UNTIL_DISABLED_ON_REACH);
@@ -362,15 +362,15 @@ public class EngineTest2 implements IEventHandler {
 			// }
 			// l.setColor(Color.blend(new Color(0, 0, 0, 1), new Color(1, 0, 0, 1),
 			// (DisplayManager.instance().getFramecount()/100.0f)%1f));
-			if (Math.random() < 0.095) {
-				l.setColor(Color.randomRGB());
-			}
-			if (Math.random() < 0.055) {
-				Vector3f vec = Maths.generateRandomUnitVectorWithinCone(ra, new Vector3f(0, -1, 0),
-						Math.toRadians(200));
-				l.setDirection(vec);
-				//ev.getScene().getCamera().reflect(0);
-			}
+//			if (Math.random() < 0.095) {
+//				l.setColor(Color.randomRGB());
+//			}
+//			if (Math.random() < 0.055) {
+//				Vector3f vec = Maths.generateRandomUnitVectorWithinCone(ra, new Vector3f(0, -1, 0),
+//						Math.toRadians(200));
+//				l.setDirection(vec);
+//				//ev.getScene().getCamera().reflect(0);
+//			}
 			// rend.render(Instance.getCurrentScene(), null, null);
 			// if((Instance.getDisplayManager().getFramecount())%100==0){
 			// attractor.setEnabled(!attractor.isEnabled());
