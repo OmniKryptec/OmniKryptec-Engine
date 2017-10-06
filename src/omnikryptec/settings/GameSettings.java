@@ -12,6 +12,7 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.postprocessing.main.FBOFactory;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.RenderTarget;
+import omnikryptec.renderer.RenderConfiguration;
 import omnikryptec.util.Returner;
 
 /**
@@ -85,7 +86,9 @@ public class GameSettings {
      */
     public static final String RADIUS_BIG = "RADIUS_BIG";
 
-
+    public static final String HIGHEST_SHADER_LVL = "HIGHEST_SHADER_LVL";
+    
+    
     private final HashMap<String, Object> settings_objects = new HashMap<>();
     private final HashMap<String, Float> settings_floats = new HashMap<>();
     private final HashMap<String, Integer> settings_integers = new HashMap<>();
@@ -755,4 +758,5 @@ public class GameSettings {
     public int getParticleThreadpoolSize() {
         return partThrPSize < 0 ? Runtime.getRuntime().availableProcessors() : partThrPSize;
     }
+
 }

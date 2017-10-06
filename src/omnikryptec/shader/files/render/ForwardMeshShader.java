@@ -12,7 +12,6 @@ import omnikryptec.resource.model.Material;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.base.Attribute;
 import omnikryptec.shader.base.Shader;
-import omnikryptec.shader.base.ShaderLineInsertion;
 import omnikryptec.shader.base.UniformBoolean;
 import omnikryptec.shader.base.UniformInt;
 import omnikryptec.shader.base.UniformMatrix;
@@ -46,28 +45,30 @@ public class ForwardMeshShader extends Shader {
 	// public final UniformMatrix transformation = new UniformMatrix("transmatrix");
 	// public final UniformVec4 colmod = new UniformVec4("colormod");
 
-	private static final ShaderLineInsertion insert = new ShaderLineInsertion() {
+	// private static final ShaderLineInsertion insert = new ShaderLineInsertion() {
+	//
+	// @Override
+	// public String[] get(int type) {
+	// if (type == GL20.GL_FRAGMENT_SHADER || type == GL20.GL_VERTEX_SHADER) {
+	// return new String[] {
+	// "#define maxlights " +
+	// DisplayManager.instance().getSettings().getLightMaxForward() };
+	// } else {
+	// return null;
+	// }
+	// }
+	// };
 
-		@Override
-		public String[] get(int type) {
-			if (type == GL20.GL_FRAGMENT_SHADER || type == GL20.GL_VERTEX_SHADER) {
-				return new String[] {
-						"#define maxlights " + DisplayManager.instance().getSettings().getLightMaxForward() };
-			} else {
-				return null;
-			}
-		}
-	};
+	private boolean pervertex;
 
 	public ForwardMeshShader(boolean pv) {
-		this(new AdvancedFile(SHADER_LOCATION_RENDER, pv?"forward_pv_shader_vert.glsl":"forward_shader_vert.glsl"),
-				new AdvancedFile(SHADER_LOCATION_RENDER, pv?"forward_pv_shader_frag.glsl":"forward_shader_frag.glsl"));
-	}
-
-	private ForwardMeshShader(AdvancedFile vertexshader, AdvancedFile fragmentshader) {
-		super(insert, vertexshader.createInputStream(), fragmentshader.createInputStream(),
+		super(new AdvancedFile(SHADER_LOCATION_RENDER, pv ? "forward_pv_shader_vert.glsl" : "forward_shader_vert.glsl")
+				.createInputStream(),
+				new AdvancedFile(SHADER_LOCATION_RENDER,
+						pv ? "forward_pv_shader_frag.glsl" : "forward_shader_frag.glsl").createInputStream(),
 				new Attribute("pos", 0), new Attribute("texcoords", 1), new Attribute("normal", 2),
 				new Attribute("tangent", 3), new Attribute("transmatrix", 4), new Attribute("colour", 8));
+		this.pervertex = pv;
 		lightpos = new UniformVec4[DisplayManager.instance().getSettings().getLightMaxForward()];
 		for (int i = 0; i < lightpos.length; i++) {
 			lightpos[i] = new UniformVec4("lightpos[" + i + "]");
@@ -93,21 +94,26 @@ public class ForwardMeshShader extends Shader {
 			catts[i] = new UniformVec3("catts[" + i + "]");
 		}
 		registerUniforms(catts);
-		registerUniforms(view, projection, tex, normalmap, specularmap, hasspecular, matData, hasextrainfomap,
-				extrainfo, extrainfovec, uvs, hasnormal, activelights, ambient);
+		registerUniforms(view, projection, tex, specularmap, hasspecular, matData, hasextrainfomap, extrainfo,
+				extrainfovec, uvs, activelights, ambient);
+		if (!pervertex) {
+			registerUniforms(hasnormal, normalmap);
+		}
 		// registerUniforms(transformation, colmod);
 		start();
 		tex.loadTexUnit(0);
-		normalmap.loadTexUnit(1);
+		if (!pervertex) {
+			normalmap.loadTexUnit(1);
+		}
 		specularmap.loadTexUnit(2);
 		extrainfo.loadTexUnit(3);
 	}
 
 	@Override
 	public void onModelRenderStart(AdvancedModel m) {
-        if (m.getMaterial().hasTransparency()) {
-            RenderUtil.cullBackFaces(false);
-        }
+		if (m.getMaterial().hasTransparency()) {
+			RenderUtil.cullBackFaces(false);
+		}
 		m.getModel().getVao().bind(0, 1, 2, 3, 4, 5, 6, 7, 8);
 		Texture tmptexture = m.getMaterial().getTexture(Material.DIFFUSE);
 		Vector3f ex;
@@ -116,12 +122,14 @@ public class ForwardMeshShader extends Shader {
 			uvs.loadVec4(tmptexture.getUVs()[0], tmptexture.getUVs()[1], tmptexture.getUVs()[2],
 					tmptexture.getUVs()[3]);
 		}
-		tmptexture = m.getMaterial().getTexture(Material.NORMAL);
-		if (tmptexture != null) {
-			tmptexture.bindToUnitOptimized(1);
-			hasnormal.loadBoolean(true);
-		} else {
-			hasnormal.loadBoolean(false);
+		if (!pervertex) {
+			tmptexture = m.getMaterial().getTexture(Material.NORMAL);
+			if (tmptexture != null) {
+				tmptexture.bindToUnitOptimized(1);
+				hasnormal.loadBoolean(true);
+			} else {
+				hasnormal.loadBoolean(false);
+			}
 		}
 		tmptexture = m.getMaterial().getTexture(Material.SPECULAR);
 		if (tmptexture != null) {
@@ -149,14 +157,14 @@ public class ForwardMeshShader extends Shader {
 		}
 		matData.loadVec4(ex.x, ex.y, ex.z, m.getMaterial().getFloat(Material.DAMPER));
 	}
-	
+
 	@Override
 	public void onModelRenderEnd(AdvancedModel m) {
-        if (m.getMaterial().hasTransparency()) {
-            RenderUtil.cullBackFaces(true);
-        }
+		if (m.getMaterial().hasTransparency()) {
+			RenderUtil.cullBackFaces(true);
+		}
 	}
-	
+
 	@Override
 	public void onRenderStart(AbstractScene s, Vector4f cp) {
 		view.loadMatrix(s.getCamera().getViewMatrix());
@@ -169,7 +177,9 @@ public class ForwardMeshShader extends Shader {
 		for (int i = 0; i < lights; i++) {
 			l = s.getLights().get(i);
 			pos = l.getTransform().getPosition(true);
-			lightpos[i].loadVec4(l.isDirectional()?l.getConeInfo().x:pos.x, l.isDirectional()?l.getConeInfo().y:pos.y, l.isDirectional()?l.getConeInfo().z:pos.z, l.isDirectional() ? 0.0f : 1.0f);
+			lightpos[i].loadVec4(l.isDirectional() ? l.getConeInfo().x : pos.x,
+					l.isDirectional() ? l.getConeInfo().y : pos.y, l.isDirectional() ? l.getConeInfo().z : pos.z,
+					l.isDirectional() ? 0.0f : 1.0f);
 			lightcolor[i].loadVec3(l.getColor().getArray());
 			atts[i].loadVec4(l.getAttenuation());
 			coneinfo[i].loadVec4(l.getConeInfo());

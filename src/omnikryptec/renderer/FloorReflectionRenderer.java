@@ -2,6 +2,8 @@ package omnikryptec.renderer;
 
 import java.util.List;
 
+import org.joml.Vector4f;
+
 import omnikryptec.gameobject.Entity;
 import omnikryptec.main.AbstractScene;
 import omnikryptec.main.AbstractScene.RendererTime;
@@ -24,6 +26,7 @@ public class FloorReflectionRenderer extends Renderer{
 		if(this.texture == null) {
 			throw new NullPointerException("FBO is null!");
 		}
+		config.setClipPlane(new Vector4f(0, 1, 0, height));
 	}
 
 	public FloorReflectionRenderer registerAndAddToCurrentScene() {

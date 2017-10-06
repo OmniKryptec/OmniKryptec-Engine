@@ -4,10 +4,10 @@
 in vec2 pass_texcoords;
 in mat3 TBN;
 in vec3 norm;
-in vec3 toLightVec[maxlights];
+in vec3 toLightVec[$OKE_MAX_LIGHTS$];
 in vec3 toCamVec;
-in vec4 coneDeg[maxlights];
-in vec4 lightPosO[maxlights];
+in vec4 coneDeg[$OKE_MAX_LIGHTS$];
+in vec4 lightPosO[$OKE_MAX_LIGHTS$];
 in vec4 colormod;
 
 
@@ -30,9 +30,9 @@ uniform float hasnormal;
 
 uniform vec4 matData;
 
-uniform vec3 lightColor[maxlights];
-uniform vec4 atts[maxlights];
-uniform vec3 catts[maxlights];
+uniform vec3 lightColor[$OKE_MAX_LIGHTS$];
+uniform vec4 atts[$OKE_MAX_LIGHTS$];
+uniform vec3 catts[$OKE_MAX_LIGHTS$];
 
 
 uniform int activelights;

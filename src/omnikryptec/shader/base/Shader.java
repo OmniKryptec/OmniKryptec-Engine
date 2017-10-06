@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.joml.Vector4f;
@@ -23,20 +24,26 @@ import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
 public class Shader {
-	
-	@Deprecated
-	public static final String DEFAULT_PP_VERTEX_SHADER_LOC = "/omnikryptec/shader/files/pp_vert.glsl";
+
+	private static final String MODULE_LOCATION = "omnikryptec/shader/modules/";
+	private static final String MODULE_PREFIX = "#module";
+	private static final String DYNAMIC_VAR_START = "$OKE_";
+	private static final String DYNAMIC_VAR_END = "$";
+
 	public static final String DEFAULT_PP_VERTEX_SHADER_POS_ATTR = "position";
 	public static final String DEFAULT_PP_VERTEX_SHADER_TEXC_OUT = "textureCoords";
-	
+
 	protected static final AdvancedFile SHADER_LOCATION = new AdvancedFile("omnikryptec", "shader", "files");
-	protected static final AdvancedFile SHADER_LOCATION_PP = new AdvancedFile("omnikryptec", "shader", "files", "postprocessing");
-	protected static final AdvancedFile SHADER_LOCATION_RENDER = new AdvancedFile("omnikryptec", "shader", "files", "render");
+	protected static final AdvancedFile SHADER_LOCATION_PP = new AdvancedFile("omnikryptec", "shader", "files",
+			"postprocessing");
+	protected static final AdvancedFile SHADER_LOCATION_RENDER = new AdvancedFile("omnikryptec", "shader", "files",
+			"render");
 	protected static final AdvancedFile DEF_SHADER_LOC_PP_VS = new AdvancedFile(SHADER_LOCATION_PP, "pp_vert.glsl");
-	
+
 	@Deprecated
 	protected static final String oc_shader_loc = "/omnikryptec/shader/files/postprocessing";
-	
+
+	private static HashMap<String, String> loadedModules = new HashMap<>();
 
 	private static int shadercount = 0;
 	private static Shader shadercurrent;
@@ -56,84 +63,44 @@ public class Shader {
 	private ShaderHolder fragmentShaderHolder;
 	private ShaderHolder geometryShaderHolder;
 	private String name;
-	private ShaderLineInsertion insert;
 
 	public Shader(AdvancedFile vertexFile, AdvancedFile fragmentFile, Object... uniAttr) {
-		this((String) null, (ShaderLineInsertion) null, vertexFile, fragmentFile, uniAttr);
-	}
-
-	public Shader(ShaderLineInsertion insert, AdvancedFile vertexFile, AdvancedFile fragmentFile, Object... uniAttr) {
-		this((String) null, insert, vertexFile, fragmentFile, uniAttr);
+		this((String) null, vertexFile, fragmentFile, uniAttr);
 	}
 
 	public Shader(String name, AdvancedFile vertexFile, AdvancedFile fragmentFile, Object... uniAttr) {
-		this(name, (ShaderLineInsertion) null, vertexFile, null, fragmentFile, uniAttr);
-	}
-
-	public Shader(String name, ShaderLineInsertion insert, AdvancedFile vertexFile, AdvancedFile fragmentFile,
-			Object... uniAttr) {
-		this(name, insert, vertexFile, null, fragmentFile, uniAttr);
+		this(name, vertexFile, null, fragmentFile, uniAttr);
 	}
 
 	public Shader(AdvancedFile vertexFile, AdvancedFile geometryFile, AdvancedFile fragmentFile, Object... uniAttr) {
-		this((String) null, (ShaderLineInsertion) null, vertexFile, geometryFile, fragmentFile, uniAttr);
-	}
-
-	public Shader(ShaderLineInsertion insert, AdvancedFile vertexFile, AdvancedFile geometryFile,
-			AdvancedFile fragmentFile, Object... uniAttr) {
-		this(null, insert, vertexFile, geometryFile, fragmentFile, uniAttr);
+		this((String) null, vertexFile, geometryFile, fragmentFile, uniAttr);
 	}
 
 	public Shader(String name, AdvancedFile vertexFile, AdvancedFile geometryFile, AdvancedFile fragmentFile,
 			Object... uniAttr) {
-		this(name, (ShaderLineInsertion) null, vertexFile, geometryFile, fragmentFile, uniAttr);
-	}
-
-	public Shader(String name, ShaderLineInsertion insert, AdvancedFile vertexFile, AdvancedFile geometryFile,
-			AdvancedFile fragmentFile, Object... uniAttr) {
-		this(name, insert, vertexFile == null ? null : vertexFile.createInputStream(),
+		this(name, vertexFile == null ? null : vertexFile.createInputStream(),
 				geometryFile == null ? null : geometryFile.createInputStream(),
 				fragmentFile == null ? null : fragmentFile.createInputStream(), uniAttr);
 	}
 
 	public Shader(InputStream vertexFile, InputStream fragmentFile, Object... uniAttr) {
-		this((String) null, (ShaderLineInsertion) null, vertexFile, fragmentFile, uniAttr);
-	}
-
-	public Shader(ShaderLineInsertion insert, InputStream vertexFile, InputStream fragmentFile, Object... uniAttr) {
-		this((String) null, insert, vertexFile, fragmentFile, uniAttr);
+		this((String) null, vertexFile, fragmentFile, uniAttr);
 	}
 
 	public Shader(String name, InputStream vertexFile, InputStream fragmentFile, Object... uniAttr) {
-		this(name, (ShaderLineInsertion) null, vertexFile, null, fragmentFile, uniAttr);
-	}
-
-	public Shader(String name, ShaderLineInsertion insert, InputStream vertexFile, InputStream fragmentFile,
-			Object... uniAttr) {
-		this(name, insert, vertexFile, null, fragmentFile, uniAttr);
+		this(name, vertexFile, null, fragmentFile, uniAttr);
 	}
 
 	public Shader(InputStream vertexFile, InputStream geometryFile, InputStream fragmentFile, Object... uniAttr) {
-		this((String) null, (ShaderLineInsertion) null, vertexFile, geometryFile, fragmentFile, uniAttr);
-	}
-
-	public Shader(ShaderLineInsertion insert, InputStream vertexFile, InputStream geometryFile,
-			InputStream fragmentFile, Object... uniAttr) {
-		this(null, insert, vertexFile, geometryFile, fragmentFile, uniAttr);
+		this((String) null, vertexFile, geometryFile, fragmentFile, uniAttr);
 	}
 
 	public Shader(String name, InputStream vertexFile, InputStream geometryFile, InputStream fragmentFile,
 			Object... uniAttr) {
-		this(name, (ShaderLineInsertion) null, vertexFile, geometryFile, fragmentFile, uniAttr);
-	}
-
-	public Shader(String name, ShaderLineInsertion insert, InputStream vertexFile, InputStream geometryFile,
-			InputStream fragmentFile, Object... uniAttr) {
 		if (name == null) {
 			name = this.getClass().getSimpleName();// "" + shadercount;
 		}
 		name = "Shader " + shadercount + " (" + name + ")";
-		this.insert = insert;
 		this.name = name;
 		vertexShaderHolder = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
 		fragmentShaderHolder = loadShader(fragmentFile, GL20.GL_FRAGMENT_SHADER);
@@ -165,13 +132,13 @@ public class Shader {
 		shadercount++;
 		allShader.add(this);
 	}
-	
-//******************************************************************
-	
+
+	// ******************************************************************
+
 	public void onRenderStart(AbstractScene s, Vector4f clipPlane) {
 
 	}
-	
+
 	public void onModelRenderStart(AdvancedModel m) {
 
 	}
@@ -179,17 +146,17 @@ public class Shader {
 	public void onRenderInstance(Entity e) {
 
 	}
-	
+
 	public void onModelRenderEnd(AdvancedModel m) {
-		
+
 	}
-	
+
 	public void onRenderEnd(AbstractScene s) {
-		
+
 	}
-	
-//******************************************************************
-	
+
+	// ******************************************************************
+
 	public int getId() {
 		return programID;
 	}
@@ -270,41 +237,113 @@ public class Shader {
 
 	// ==============================================LOADINGSECTION=======================================================
 
-	private ShaderHolder loadShader(InputStream in, int type) {
-		StringBuilder shaderSrc = new StringBuilder();
-		List<String> uniforms = new ArrayList<>();
-		int linenr = 0;
-		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+	private String readShader(InputStream st, List<String> putUniformsHere) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(st))) {
+			StringBuilder shaderSrc = new StringBuilder();
 			String line;
 			while ((line = reader.readLine()) != null) {
-				if (insert != null && linenr == 1) {
-					String[] lines = insert.get(type);
-					if (lines != null) {
-						for (int i = 0; i < lines.length; i++) {
-							shaderSrc.append(lines[i]).append("\n");
-							linenr++;
-						}
+				if (line.toLowerCase().startsWith(MODULE_PREFIX)) {
+					shaderSrc
+							.append(
+									getModuleString(line.toLowerCase().substring(MODULE_PREFIX.length()).trim()))
+							.append("\n");
+				} else {
+					shaderSrc.append(line).append("\n");
+					if (line.toLowerCase().trim().startsWith("uniform")) {
+						putUniformsHere.add(insertDynamics(line));
 					}
 				}
-				shaderSrc.append(line).append("\n");
-				if (line.toLowerCase().trim().startsWith("uniform")) {
-					uniforms.add(line);
-				}
-				linenr++;
 			}
 			reader.close();
+			return insertDynamics(shaderSrc.toString());
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.logErr("Failed to read a shader", e);
 		}
+		return "FAIL";
+	}
+
+	private static String getModuleString(String name) {
+		String s = loadedModules.get(name);
+		if (s == null) {
+			if (name == null) {
+				Logger.log("Could not find null-module", LogLevel.WARNING);
+			}
+			s = readModule(name);
+			if (s == null) {
+				Logger.log("Could not find module: " + name, LogLevel.WARNING);
+			} else {
+				loadedModules.put(name, s);
+			}
+		}
+		return s;
+	}
+
+	private static String insertDynamics(String s) {
+		String st = s;
+		String word, value;
+		while (s.contains(DYNAMIC_VAR_START)) {
+			st = st.substring(st.indexOf(DYNAMIC_VAR_START));
+			int i = st.indexOf(DYNAMIC_VAR_END, DYNAMIC_VAR_START.length());
+			if(i>=0) {
+				i++;
+			}
+			word = st.substring(0, (i <= -1 || i > st.length())? st.length() : i);
+			value = getValueOf(word);
+			if(value==null) {
+				Logger.log("Keyword \"" + word + "\" not found!\nIn String:\n"+s, LogLevel.WARNING);
+				break;
+			}
+			s = s.replace(word, value);
+		}
+		return s;
+	}
+
+	private static String getValueOf(String word) {
+		word = word.replace(DYNAMIC_VAR_START, "");
+		word = word.replace(DYNAMIC_VAR_END, "");
+		switch (word) {
+		case "MAX_LIGHTS":
+			return Instance.getGameSettings().getLightMaxForward() + "";
+		default:
+			return null;
+		}
+	}
+
+	private static String readModule(String name) {
+		AdvancedFile ff = new AdvancedFile(MODULE_LOCATION, name);
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(ff.createInputStream()))) {
+			StringBuilder builder = new StringBuilder();
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (line.toLowerCase().startsWith(MODULE_PREFIX)) {
+					builder.append(getModuleString(line.toLowerCase().substring(MODULE_PREFIX.length()).trim()))
+							.append("\n");
+				} else {
+					builder.append(line).append("\n");
+				}
+			}
+			reader.close();
+			return builder.toString();
+		} catch (Exception e) {
+			Logger.logErr("Failed to read module: " + name, e);
+			return null;
+		}
+	}
+
+	private ShaderHolder loadShader(InputStream in, int type) {
+		List<String> uniforms = new ArrayList<>();
+
+		String shaderSrc = readShader(in, uniforms);
 		int shaderID = OpenGL.gl20createShader(type);
 		OpenGL.gl20shaderSource(shaderID, shaderSrc);
 		OpenGL.gl20compileShader(shaderID);
 		if (OpenGL.gl20getShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-			Instance.getEngine().errorOccured(new OmniKryptecException("Shadercreation"),
-					"Shader compilation failed in " + getShaderType(type) + ": " + name);
-			Logger.log("(Lines with LineInsertion!): " + OpenGL.gl20getShaderInfoLog(shaderID, 1024), LogLevel.ERROR,
-					true);
+			Logger.logErr("Shader compilation failed in " + getShaderType(type) + ": " + name,
+					new OmniKryptecException("Shadercreation"));
+			Logger.log(OpenGL.gl20getShaderInfoLog(shaderID, 1024), LogLevel.ERROR, true);
+			if(Logger.isDebugMode()) {
+				Logger.log("SHADER-SRC:\n\n"+shaderSrc, LogLevel.INFO);
+			}
 			Instance.getEngine().close(ShutdownOption.JAVA);
 		}
 		return new ShaderHolder(shaderID, uniforms, type);
@@ -346,92 +385,5 @@ public class Shader {
 		}
 
 	}
-
-	// public int getUniformID(String name) {
-	// return uniforms_map.get(name);
-	// }
-
-	// private int getUniformLocation(String uniformName) {
-	// return GL20.glGetUniformLocation(programID, uniformName);
-	// }
-
-	// protected void bindAttribute(int attrib, String varName) {
-	// GL20.glBindAttribLocation(programID, attrib, varName);
-	// }
-
-	// public void loadFloat(String name, float value) {
-	// errorIfNoSuchUniform(name);
-	// loadFloat(uniforms_map.get(name), value);
-	// }
-	//
-	// public void loadFloat(int location, float value) {
-	// GL20.glUniform1f(location, value);
-	// }
-	//
-	// public void loadInt(String name, int value) {
-	// errorIfNoSuchUniform(name);
-	// loadInt(uniforms_map.get(name), value);
-	// }
-	//
-	// public void loadInt(int location, int value) {
-	// GL20.glUniform1i(location, value);
-	// }
-	//
-	// public void loadVector3f(String name, Vector3f vector) {
-	// errorIfNoSuchUniform(name);
-	// loadVector3f(uniforms_map.get(name), vector);
-	// }
-	//
-	// public void loadVector3f(int loacation, Vector3f vector) {
-	// GL20.glUniform3f(loacation, vector.x, vector.y, vector.z);
-	// }
-	//
-	// public void loadVector4f(String name, Vector4f vector) {
-	// errorIfNoSuchUniform(name);
-	// loadVector4f(uniforms_map.get(name), vector);
-	// }
-	//
-	// public void loadVector4f(int loacation, Vector4f vector) {
-	// GL20.glUniform4f(loacation, vector.x, vector.y, vector.z, vector.w);
-	// }
-	//
-	// public void loadVector2f(String name, Vector2f vector) {
-	// errorIfNoSuchUniform(name);
-	// loadVector2f(uniforms_map.get(name), vector);
-	// }
-	//
-	// public void loadVector2f(int loacation, Vector2f vector) {
-	// GL20.glUniform2f(loacation, vector.x, vector.y);
-	// }
-	//
-	// public void loadBoolean(String name, boolean value) {
-	// errorIfNoSuchUniform(name);
-	// loadBoolean(uniforms_map.get(name), value);
-	// }
-	//
-	// public void loadBoolean(int location, boolean value) {
-	// float toLoad = 0;
-	// if (value) {
-	// toLoad = 1;
-	// }
-	// GL20.glUniform1f(location, toLoad);
-	// }
-	//
-	// public void loadMatrix4f(String name, Matrix4f matrix) {
-	// errorIfNoSuchUniform(name);
-	// loadMatrix4f(uniforms_map.get(name), matrix);
-	// }
-	//
-	// public void loadMatrix4f(int location, Matrix4f matrix) {
-	// matrix.store(matrixBuffer);
-	// matrixBuffer.flip();
-	// GL20.glUniformMatrix4(location, false, matrixBuffer);
-	// }
-	//
-	// private void errorIfNoSuchUniform(String name) {
-	// if (!testForUniform(name)) {
-	// Logger.log("No such uniform: "+name, LogLevel.WARNING, true, true);
-	// }
-	// }
 
 }

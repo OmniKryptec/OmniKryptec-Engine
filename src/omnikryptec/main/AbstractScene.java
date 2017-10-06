@@ -13,8 +13,10 @@ import omnikryptec.physics.PhysicsWorld;
 import omnikryptec.renderer.RenderConfiguration;
 import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.Color;
+import omnikryptec.util.Instance;
 import omnikryptec.util.PhysicsUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
@@ -73,10 +75,13 @@ public abstract class AbstractScene implements DataMapSerializable {
 		state = FrameState.NULL;
 	}
 	
-	
-	//private final RenderConfiguration defaultConfig = new RenderConfiguration();
+	private boolean dirtyConfig=true;
+	private RenderConfiguration defaultConfig;
 	final long mainRender() {
-		RenderConfiguration defaultConfig = new RenderConfiguration().setShaderLvl(2);
+		if(dirtyConfig) {
+			defaultConfig = new RenderConfiguration();
+			dirtyConfig = false;
+		}
 		ParticleMaster.resetTimes();
 		state = FrameState.RENDERING;
 		tmptime = DisplayManager.instance().getCurrentTime();
@@ -100,6 +105,19 @@ public abstract class AbstractScene implements DataMapSerializable {
 		return l;
 	}
 
+	public final void newRenderConfig() {
+		dirtyConfig = true;
+	}
+	
+	public final RenderConfiguration getRenderConfig() {
+		if(dirtyConfig) {
+			defaultConfig = new RenderConfiguration();
+			dirtyConfig = false;
+			return defaultConfig;
+		}
+		return defaultConfig;
+	}
+	
 	public final long publicRender(RenderConfiguration config) {
 		if(config==null) {
 			config = new RenderConfiguration();

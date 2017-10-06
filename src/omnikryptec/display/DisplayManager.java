@@ -1,6 +1,7 @@
 package omnikryptec.display;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
 
 import omnikryptec.audio.AudioManager;
 import omnikryptec.main.OmniKryptecEngine;
@@ -99,6 +100,7 @@ public class DisplayManager implements Profilable{
 				RenderUtil.antialias(true);
 			}
 			GL11.glViewport(0, 0, info.getWidth(), info.getHeight());
+			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 			AudioManager.init();
 			lasttime = manager.getCurrentTime();
 			Logger.log("Successfully created the Display!", LogLevel.FINEST);

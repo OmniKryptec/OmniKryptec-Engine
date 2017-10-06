@@ -11,33 +11,33 @@ out vec2 pass_texcoords;
 in mat4 transmatrix;
 in vec4 colour;
 out vec4 colormod;
-out vec3 lights;
 out vec4 coln;
 out vec4 cols;
+
+out vec3 specu[$OKE_MAX_LIGHTS$];
+out vec3 diffl[$OKE_MAX_LIGHTS$];
+out float attenuation[$OKE_MAX_LIGHTS$];
 
 uniform mat4 projmatrix;
 uniform mat4 viewmatrix;
 uniform vec4 uvs;
 
-uniform vec4 lightpos[maxlights];
-uniform vec4 coneInfo[maxlights];
+uniform vec4 lightpos[$OKE_MAX_LIGHTS$];
+uniform vec4 coneInfo[$OKE_MAX_LIGHTS$];
 
-uniform sampler2D normaltex;
+
 uniform sampler2D speculartex;
-uniform sampler2D tex; 
-
 
 uniform vec4 matData;
 
-uniform vec3 lightColor[maxlights];
-uniform vec4 atts[maxlights];
-uniform vec3 catts[maxlights];
+uniform vec3 lightColor[$OKE_MAX_LIGHTS$];
+uniform vec4 atts[$OKE_MAX_LIGHTS$];
+uniform vec3 catts[$OKE_MAX_LIGHTS$];
 
 
 uniform int activelights;
 
 uniform float hasspecular;
-uniform float hasnormal;
 
 
 
@@ -47,7 +47,7 @@ float saturate(float value){
 	return clamp(value,0.0,1.0);
 }
 
-vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 Mspec, float Mdamp, vec4 att, vec4 conei, vec4 pos, vec3 catt){
+void lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mspec, float Mdamp, vec4 att, vec4 conei, vec4 pos, vec3 catt, int i){
 	float distance = length(tlvec);
 	//directional light -> lightpos is the light direction
 	if(pos.w==0.0){
@@ -68,7 +68,7 @@ vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 M
 	if(dot1>0.0){
 		damp = pow(dot2, Mdamp);
 	}
-	vec3 spec = damp * Scol * Mspec;
+	specu[i] = damp * Scol * Mspec;
 
 
 
@@ -93,7 +93,9 @@ vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 M
 		}
 	}
 	attenu = min(attenu, 1.0);
-	return (diffusev*Mdiff+spec)*attenu;
+	diffl[i] = diffusev;
+	attenuation[i] = attenu;
+	//return (diffusev*Mdiff+spec)*attenu;
 }
 
 
@@ -111,29 +113,11 @@ void main(void){
 	
 	vec3 surfaceNormal = (modelViewMatrix * vec4(normal,0.0)).xyz;
 	vec3 norm = normalize(surfaceNormal);
-	mat3 TBN;
-	if(hasnormal>0.5){
-		vec3 tang = normalize((modelViewMatrix * vec4(tangent, 0.0)).xyz);
-		vec3 bitang = normalize(cross(norm, tang));
-		TBN = mat3(
-			tang.x, bitang.x, norm.x,
-			tang.y, bitang.y, norm.y,
-			tang.z, bitang.z, norm.z
-		);
-	}
+
 	
 	vec3 toCamVec = - positionRelativeToCam.xyz;
-	if(hasnormal>0.5){
-		toCamVec = TBN * toCamVec;
-	}
 	
-	vec3 normalt;
-	if(hasnormal>0.5){
-		normalt = texture(normaltex, pass_texcoords).rgb;
-		normalt = normalize(((normalt.rgb)*2.0-1.0));
-	}else{
-		normalt = normalize(norm);
-	}
+	vec3 normalt = normalize(norm);
 	
 	coln = vec4(normalt.rgb*0.5+0.5,1.0);
 	
@@ -144,7 +128,6 @@ void main(void){
 	}else{
 		cols = matData;
 	}
-	lights = vec3(0);
 	for(int i=0; i<activelights; i++){
 		vec3 toLightVec = (viewmatrix * lightpos[i]).xyz - positionRelativeToCam.xyz;
 		vec4 coneDeg;
@@ -153,11 +136,6 @@ void main(void){
 		vec4 lightPosO;
 		lightPosO.xyz = (viewmatrix * vec4(lightpos[i].xyz,0)).xyz;
 		lightPosO.w = lightpos[i].w;
-		if(hasnormal>0.5){
-			toLightVec = TBN * toLightVec;
-			coneDeg.xyz = TBN * coneDeg.xyz;
-			lightPosO.xyz = TBN * lightPosO.xyz;
-		}
-		lights = lights+lighting(lightColor[i], toCamVec, toLightVec, normalt, (colormod*texture(tex, pass_texcoords)).rgb, cols.xyz, cols.w, atts[i], coneDeg, lightPosO, catts[i]);
+		lighting(lightColor[i], toCamVec, toLightVec, normalt, cols.xyz, cols.w, atts[i], coneDeg, lightPosO, catts[i], i);
 	}
 }

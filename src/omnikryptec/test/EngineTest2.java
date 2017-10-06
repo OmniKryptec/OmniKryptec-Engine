@@ -145,13 +145,13 @@ public class EngineTest2 implements IEventHandler {
 			// Model baumM = Model.newModel(new AdvancedFile(res, "cube.obj"));
 			AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
 			Model BLOCK = new Model("", ObjLoader.loadOBJ(new AdvancedFile(res, "block.obj")));
-			TexturedModel tm = new TexturedModel("brunnen", brunnen, brunnent);
+			TexturedModel tm = new TexturedModel("brunnen", baumM, baum);
 			tm.getMaterial().setRenderer(RendererRegistration.FORWARD_MESH_RENDERER);
 			testdings = tm;
 			tm.getMaterial().setTexture(Material.NORMAL, brunnen_norm).setTexture(Material.SPECULAR, brunnen_specular);
 			// tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
 			// tm.getMaterial().setTexture(Material.SPECULAR, );
-			tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.7f))
+			tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.6f))
 					.setFloat(Material.DAMPER, 1.01f).setVector3f(Material.SHADERINFO, new Vector3f(1));
 			OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
 
@@ -206,8 +206,8 @@ public class EngineTest2 implements IEventHandler {
 
 			System.out.println("Generating objs...");
 			int cube = 100;
-			int abstand = 10;
-			float scale = 0.5f;
+			int abstand = 5;
+			float scale = 1;
 			int objcount = 0;
 			for (int x = -cube; x < cube; x += abstand) {
 				for (int y = -cube; y < cube; y += abstand) {
@@ -257,7 +257,9 @@ public class EngineTest2 implements IEventHandler {
 					new FrameBufferObject(320, 180, DepthbufferType.NONE), 0);
 			testrend.getRenderConfig().setRendererData(AllowedRenderer.EvElse, testrend);
 			testrend.registerAndAddToCurrentScene();
-
+			
+			Instance.getCurrentScene().getRenderConfig().setShaderLvl(0);
+			
 			attractor = new ParticleAttractor(0, -10, 0).setGravitation(100f).setDistanceTolerance(10)
 					.setMode(AttractorMode.STOP_UNTIL_DISABLED_ON_REACH);
 			system.addAttractor(attractor);
@@ -353,10 +355,10 @@ public class EngineTest2 implements IEventHandler {
 
 		// system.generateParticles(1);
 		if (ev.getType() == EventType.RENDER_FRAME_EVENT) {
-			 DrawBatch testb = new DrawBatch(new GuiShader(), 100);
-			 testb.begin();
-			 testb.draw(testrend.getTexture(), 0, 0, 1, 1);
-			 testb.end();
+//			 DrawBatch testb = new DrawBatch(new GuiShader(), 100);
+//			 testb.begin();
+//			 testb.draw(testrend.getTexture(), 0, 0, 1, 1);
+//			 testb.end();
 			// if(Instance.getFramecount()>1000) {
 			// system.setTimeMultiplier(0.01f);
 			// attractor.setEnabled(false);

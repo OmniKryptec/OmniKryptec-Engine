@@ -14,7 +14,6 @@ public class ShaderGroup {
 	}
 	
 	public Shader getShaderForLvl(int lvl) {
-		lvl = Math.abs(lvl);
 		int start = lvl;
 		Shader sh = shaders.get(lvl);
 		while(sh==null) {
@@ -28,6 +27,9 @@ public class ShaderGroup {
 	}
 	
 	public ShaderGroup addShader(int lvl, Shader s) {
+		if(lvl<0) {
+			throw new OmniKryptecException("Level is too small: "+lvl);
+		}
 		shaders.put(lvl, s);
 		return this;
 	}

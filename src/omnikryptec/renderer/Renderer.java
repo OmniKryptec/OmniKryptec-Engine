@@ -37,6 +37,7 @@ public abstract class Renderer{
     private long tmplong;
     
     public final long render(AbstractScene s, RenderMap<AdvancedModel, List<Entity>> entities, RenderConfiguration config) {
+    	cur = config;
     	if(usesShader) {
 	        tmps = shaderpack.getShader(config.getShaderpackKey(), config.getShaderLvl());
 	        if (tmps == null) {
@@ -57,9 +58,15 @@ public abstract class Renderer{
         if(usesShader) {
         	tmps.onRenderEnd(s);
         }
+        cur = null;
         return tmplong;
     }
-
+    private RenderConfiguration cur;
+    
+    protected final RenderConfiguration getCurrentRenderConfig() {
+    	return cur;
+    }
+    
     public FrustrumFilter getFrustrumFilter(){
     	return filter;
     }

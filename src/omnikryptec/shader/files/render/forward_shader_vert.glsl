@@ -8,9 +8,9 @@ in vec3 tangent;
 out vec2 pass_texcoords;
 out mat3 TBN;
 out vec3 norm;
-out vec3 toLightVec[maxlights];
-out vec4 coneDeg[maxlights];
-out vec4 lightPosO[maxlights];
+out vec3 toLightVec[$OKE_MAX_LIGHTS$];
+out vec4 coneDeg[$OKE_MAX_LIGHTS$];
+out vec4 lightPosO[$OKE_MAX_LIGHTS$];
 out vec3 toCamVec;
 
 in mat4 transmatrix;
@@ -22,11 +22,13 @@ uniform mat4 projmatrix;
 uniform mat4 viewmatrix;
 uniform vec4 uvs;
 
-uniform vec4 lightpos[maxlights];
-uniform vec4 coneInfo[maxlights];
+uniform vec4 lightpos[$OKE_MAX_LIGHTS$];
+uniform vec4 coneInfo[$OKE_MAX_LIGHTS$];
 
 
 uniform float hasnormal;
+uniform int activelights;
+
 
 void main(void){
 	colormod = colour;
@@ -51,7 +53,7 @@ void main(void){
 		);
 	}
 
-	for(int i=0; i<maxlights; i++){
+	for(int i=0; i<activelights; i++){
 		toLightVec[i] = (viewmatrix * lightpos[i]).xyz - positionRelativeToCam.xyz;
 		coneDeg[i].xyz = normalize(viewmatrix*vec4(coneInfo[i].xyz,0)).xyz;
 		coneDeg[i].w = coneInfo[i].w;
