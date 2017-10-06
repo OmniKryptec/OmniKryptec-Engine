@@ -17,19 +17,19 @@ public class NativesLoader {
 
     private static boolean nativesLoaded = false;
 
-    public static final boolean setNativesFolder(AdvancedFile file){
-    	if(nativesLoaded){
-    		return false;
-    	}
-    	NATIVESFOLDER = file;
-    	return true;
-    }
-    
-    public static final boolean loadNatives() {
-        if(NATIVESFOLDER==null){
-        	NATIVESFOLDER = getStandardNativesFolder();
+    public static final boolean setNativesFolder(AdvancedFile file) {
+        if (nativesLoaded) {
+            return false;
         }
-    	if (NATIVESFOLDER == null) {
+        NATIVESFOLDER = file;
+        return true;
+    }
+
+    public static final boolean loadNatives() {
+        if (NATIVESFOLDER == null) {
+            NATIVESFOLDER = getStandardNativesFolder();
+        }
+        if (NATIVESFOLDER == null) {
             Logger.log("Loaded natives not successfully, because there is some error with the standard natives folder",
                     LogLevel.WARNING);
             return false;
@@ -137,7 +137,7 @@ public class NativesLoader {
     }
 
     private static final AdvancedFile getStandardNativesFolder() {
-    	boolean appDataCreated = OSUtil.createStandardFolders();
+        boolean appDataCreated = OSUtil.createStandardFolders();
         if (appDataCreated) {
             return new AdvancedFile(false, OSUtil.STANDARDAPPDATA, "natives", OSUtil.OpSys.getName());
         } else {
