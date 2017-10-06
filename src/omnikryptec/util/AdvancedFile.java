@@ -23,11 +23,15 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
+import org.apache.commons.io.IOUtils;
 
 /**
+ * AdvancedFile
  *
  * @author Panzer1119
  */
@@ -48,9 +52,9 @@ public class AdvancedFile {
     public static final int NOT_FOUND = -1;
     public static final String NOT_FOUND_STRING = String.valueOf(NOT_FOUND);
 
-    private final AdvancedFile ME;
+    private final AdvancedFile ME = this;
     private File folder = null;
-    private ArrayList<String> paths = null;
+    private final ArrayList<String> paths = new ArrayList<>();
     private String separator = PATH_SEPARATOR;
     private boolean shouldBeFile = true;
     //Regenerated things
@@ -104,7 +108,6 @@ public class AdvancedFile {
      * @param paths String Array Paths
      */
     public AdvancedFile(boolean shouldBeFile, Object parent, String... paths) {
-        ME = this;
         this.shouldBeFile = shouldBeFile;
         setParent(parent);
         addPaths(paths);
@@ -125,7 +128,7 @@ public class AdvancedFile {
         this.file = advancedFile.file;
         this.folder = advancedFile.folder;
         this.path = advancedFile.path;
-        this.paths = advancedFile.paths;
+        this.paths.addAll(advancedFile.paths);
         this.separator = advancedFile.separator;
         this.shouldBeFile = advancedFile.shouldBeFile;
         resetValues();
@@ -169,22 +172,17 @@ public class AdvancedFile {
      */
     public final AdvancedFile addPaths(String... paths) {
         resetValues();
-        if (paths == null) {
+        if (paths == null || paths.length == 0) {
             return this;
         }
-        if (this.paths != null) {
-            for (String path_toAdd : paths) {
-                path_toAdd = path_toAdd.replace(WINDOWS_SEPARATOR_CHAR, PATH_SEPARATOR_CHAR);
-                final String[] split = path_toAdd.split(PATH_SEPARATOR);
-                for (String g : split) {
-                    if (!g.isEmpty() || this.paths.isEmpty()) { //TODO Maybe allow always empty Strings??
-                        this.paths.add(g);
-                    }
+        for (String path_toAdd : paths) {
+            path_toAdd = path_toAdd.replace(WINDOWS_SEPARATOR_CHAR, PATH_SEPARATOR_CHAR);
+            final String[] split = path_toAdd.split(PATH_SEPARATOR);
+            for (String g : split) {
+                if (!g.isEmpty() || this.paths.isEmpty()) { //TODO Maybe allow always empty Strings??
+                    this.paths.add(g);
                 }
             }
-        } else {
-            this.paths = new ArrayList<>();
-            return addPaths(paths);
         }
         return this;
     }
@@ -207,27 +205,22 @@ public class AdvancedFile {
      */
     public final AdvancedFile addPrePaths(String... paths) {
         resetValues();
-        if (paths == null) {
+        if (paths == null || paths.length == 0) {
             return this;
         }
-        if (this.paths != null) {
-            final ArrayList<String> paths_new = new ArrayList<>();
-            for (String path_toAdd : paths) {
-                path_toAdd = path_toAdd.replace(WINDOWS_SEPARATOR_CHAR, PATH_SEPARATOR_CHAR);
-                final String[] split = path_toAdd.split(PATH_SEPARATOR);
-                for (String g : split) {
-                    if (!g.isEmpty() || (this.paths.isEmpty() || !this.paths.get(0).isEmpty())) { //TODO Maybe allow always empty Strings??
-                        paths_new.add(g);
-                    }
+        final ArrayList<String> paths_new = new ArrayList<>();
+        for (String path_toAdd : paths) {
+            path_toAdd = path_toAdd.replace(WINDOWS_SEPARATOR_CHAR, PATH_SEPARATOR_CHAR);
+            final String[] split = path_toAdd.split(PATH_SEPARATOR);
+            for (String g : split) {
+                if (!g.isEmpty() || (this.paths.isEmpty() || !this.paths.get(0).isEmpty())) { //TODO Maybe allow always empty Strings??
+                    paths_new.add(g);
                 }
             }
-            paths_new.addAll(this.paths);
-            this.paths.clear();
-            this.paths = paths_new;
-        } else {
-            this.paths = new ArrayList<>();
-            return addPrePaths(paths);
         }
+        paths_new.addAll(this.paths);
+        this.paths.clear();
+        this.paths.addAll(paths_new);
         return this;
     }
 
@@ -249,7 +242,7 @@ public class AdvancedFile {
      */
     public final AdvancedFile setPaths(String... paths) {
         resetValues();
-        this.paths = null;
+        this.paths.clear();
         addPaths(paths);
         return this;
     }
@@ -259,10 +252,9 @@ public class AdvancedFile {
      *
      * @return Stirng Array Paths
      */
-    @SuppressWarnings("unchecked")
     public final String[] getPaths() {
         resetValues();
-        return ((ArrayList<String>) paths.clone()).toArray(new String[paths.size()]);
+        return paths.toArray(new String[paths.size()]);
     }
 
     /**
@@ -286,10 +278,7 @@ public class AdvancedFile {
     }
 
     protected final String concatPath() {
-        String path_new = "";
-        for (String path_temp : paths) {
-            path_new += (path_temp.startsWith(separator) ? "" : separator) + path_temp;
-        }
+        String path_new = paths.stream().map((path_) -> ((path_.startsWith(separator) ? "" : separator) + path_)).collect(Collectors.joining());
         if (path_new.length() >= separator.length()) {
             path_new = path_new.substring(separator.length());
         }
@@ -313,13 +302,7 @@ public class AdvancedFile {
     }
 
     private final String createPath() {
-        String path_new = (isIntern() ? "" : folder.getAbsolutePath());
-        if (paths != null) {
-            for (String path_temp : paths) {
-                path_new += (path_temp.startsWith(separator) ? "" : separator) + path_temp;
-            }
-        }
-        return path_new;
+        return (isIntern() ? "" : folder.getAbsolutePath()) + paths.stream().map((path_temp) -> ((path_temp.startsWith(separator) ? "" : separator)) + path_temp).collect(Collectors.joining());
     }
 
     /**
@@ -387,9 +370,9 @@ public class AdvancedFile {
      */
     public final AdvancedFile getParent() {
         resetValues();
-        if (paths != null && paths.size() > 1) {
+        if (paths.size() > 1) {
             return new AdvancedFile(false, folder, getPaths(paths.size() - 1));
-        } else if (paths != null && paths.size() == 1 && !isIntern()) {
+        } else if (paths.size() == 1 && !isIntern()) {
             return new AdvancedFile(false, folder);
         } else if (!isIntern()) {
             return new AdvancedFile(false, folder.getParentFile());
@@ -418,17 +401,17 @@ public class AdvancedFile {
         if (withFolder && parent == null) {
             setFolder(null);
         } else if (parent instanceof String) {
-            final File file = new File((String) parent).getAbsoluteFile();
+            final File folder_ = new File((String) parent).getAbsoluteFile();
             if (withFolder) {
-                setFolder(file);
+                setFolder(folder_);
             }
         } else if (parent instanceof File) {
-            final File file = (File) parent;
-            if (withFolder && file.isAbsolute()) {
-                setFolder(file);
+            final File folder_ = (File) parent;
+            if (withFolder && folder_.isAbsolute()) {
+                setFolder(folder_);
             }
-            if (withPaths && !file.isAbsolute()) {
-                addPrePaths(file.getPath().split("\\" + SYSTEM_SEPARATOR));
+            if (withPaths && !folder_.isAbsolute()) {
+                addPrePaths(folder_.getPath().split("\\" + SYSTEM_SEPARATOR));
             }
         } else if (parent instanceof AdvancedFile) {
             final AdvancedFile advancedFile = (AdvancedFile) parent;
@@ -682,6 +665,20 @@ public class AdvancedFile {
     }
 
     /**
+     * Reads the file to a byte array
+     *
+     * @return Data as byte array
+     */
+    public final byte[] toByteArray() {
+        try {
+            return IOUtils.toByteArray(createInputStream());
+        } catch (Exception ex) {
+            Logger.logErr("Could not read the File \"" + getPath() + "\": " + ex, ex);
+            return null;
+        }
+    }
+
+    /**
      * Returns a BufferedReader
      *
      * @return BufferedReader BufferedReader
@@ -852,6 +849,16 @@ public class AdvancedFile {
     }
 
     /**
+     * Lists all children (recursiv if set)
+     *
+     * @param recursiv Boolean if children should be listed recursivly
+     * @return ArrayList AdvancedFile Children (recursiv if set)
+     */
+    public final ArrayList<AdvancedFile> listAdvancedFiles(boolean recursiv) {
+        return listAdvancedFiles(null, recursiv);
+    }
+
+    /**
      * Lists all direct children that matches the AdvancedFileFilter
      *
      * @param advancedFileFilter AdvancedFileFilter File filter
@@ -942,6 +949,57 @@ public class AdvancedFile {
             Logger.logErr("Error while listing files: " + ex, ex);
         }
         return files;
+    }
+
+    /**
+     * Applies an Action on every children of this AdvancedFile
+     *
+     * @param consumer Consumer
+     * @return A reference to this AdvancedFile
+     */
+    public final AdvancedFile forEachChild(Consumer<AdvancedFile> consumer) {
+        listAdvancedFiles().stream().forEach(consumer);
+        return this;
+    }
+
+    /**
+     * Applies an Action on every children of this AdvancedFile (recursiv if
+     * set)
+     *
+     * @param recursiv Boolean if children should be listed recursivly
+     * @param consumer Consumer
+     * @return A reference to this AdvancedFile
+     */
+    public final AdvancedFile forEachChild(boolean recursiv, Consumer<AdvancedFile> consumer) {
+        listAdvancedFiles(recursiv).stream().forEach(consumer);
+        return this;
+    }
+
+    /**
+     * Applies an Action on every children of this AdvancedFile that matches the
+     * AdvancedFileFilter
+     *
+     * @param advancedFileFilter AdvancedFileFilter File filter
+     * @param consumer Consumer
+     * @return A reference to this AdvancedFile
+     */
+    public final AdvancedFile forEachChild(AdvancedFileFilter advancedFileFilter, Consumer<AdvancedFile> consumer) {
+        listAdvancedFiles(advancedFileFilter).stream().forEach(consumer);
+        return this;
+    }
+
+    /**
+     * Applies an Action on every children of this AdvancedFile (recursiv if
+     * set) that matches the AdvancedFileFilter
+     *
+     * @param advancedFileFilter AdvancedFileFilter File filter
+     * @param recursiv Boolean if children should be listed recursivly
+     * @param consumer Consumer
+     * @return A reference to this AdvancedFile
+     */
+    public final AdvancedFile forEachChild(AdvancedFileFilter advancedFileFilter, boolean recursiv, Consumer<AdvancedFile> consumer) {
+        listAdvancedFiles(advancedFileFilter, recursiv).stream().forEach(consumer);
+        return this;
     }
 
     /**
