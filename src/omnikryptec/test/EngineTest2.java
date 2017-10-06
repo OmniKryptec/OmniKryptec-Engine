@@ -46,6 +46,7 @@ import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.resource.texture.SimpleAnimation;
 import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.settings.GameSettings;
+import omnikryptec.shader.base.DynamicAccess;
 import omnikryptec.shader.files.render.GuiShader;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Color;
@@ -69,7 +70,7 @@ public class EngineTest2 implements IEventHandler {
 
 	public static void main(String[] args) {
 		try {
-			// System.out.println((int) (Math.ceil(size/10.0)*10));
+						// System.out.println((int) (Math.ceil(size/10.0)*10));
 			// NativesLoader.setNativesFolder(new AdvancedFile(false, (Object)null,
 			// "H:/natives/"));
 			NativesLoader.loadNatives();

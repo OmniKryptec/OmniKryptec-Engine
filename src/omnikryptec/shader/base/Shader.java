@@ -26,13 +26,7 @@ import omnikryptec.util.logger.Logger;
 
 public class Shader {
 
-	private static final String MODULE_LOCATION = "omnikryptec/shader/modules/";
-	private static final String MODULE_PREFIX = "#module";
-	private static final String DYNAMIC_VAR_START = "$OKE_";
-	private static final String DYNAMIC_VAR_END = "$";
-	private static final String EXTERN_MODULE_PREFIX = "?";
-	private static final String NON_SHADER_MODULE = "@m";
-	private static final String MODULE_FILE_SUFFIX=".module";
+	
 	
 	public static final String DEFAULT_PP_VERTEX_SHADER_POS_ATTR = "position";
 	public static final String DEFAULT_PP_VERTEX_SHADER_TEXC_OUT = "textureCoords";
@@ -44,7 +38,6 @@ public class Shader {
 			"render");
 	protected static final AdvancedFile DEF_SHADER_LOC_PP_VS = new AdvancedFile(SHADER_LOCATION_PP, "pp_vert.glsl");
 
-	private static HashMap<String, String> loadedModules = new HashMap<>();
 
 	private static int shadercount = 0;
 	private static Shader shadercurrent;
@@ -56,6 +49,14 @@ public class Shader {
 		return shadercurrent;
 	}
 
+	private static final ModuleSystem SHADERMODULES;
+	static {
+		SHADERMODULES = new ModuleSystem("$OKE_", "$", "omnikryptec/shader/modules/");
+		SHADERMODULES.addDynamic("MAX_LIGHTS", ()->Instance.getGameSettings().getLightMaxForward());
+		SHADERMODULES.addDynamic("MAX_JOINTS", ()->Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_JOINTS));
+		SHADERMODULES.addDynamic("MAX_WEIGHTS", ()->Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_WEIGHTS));
+	}
+	
 	private int programID;
 	private int vertexShaderID;
 	private int fragmentShaderID;
@@ -243,107 +244,21 @@ public class Shader {
 			StringBuilder shaderSrc = new StringBuilder();
 			String line;
 			while ((line = reader.readLine()) != null) {
-				if (line.toLowerCase().startsWith(MODULE_PREFIX)) {
-					String module = getModuleString(line.toLowerCase().substring(MODULE_PREFIX.length()).trim());
-					if (module.startsWith(NON_SHADER_MODULE)) {
-						Logger.log("Module is a non-shader module: "+line, LogLevel.WARNING);
-					} else {
-						shaderSrc.append(module).append("\n");
-					}
-				} else {
-					shaderSrc.append(line).append("\n");
-					if (line.toLowerCase().trim().startsWith("uniform")) {
-						putUniformsHere.add(insertDynamics(line));
-					}
+				line = SHADERMODULES.processLine(line);
+				shaderSrc.append(line).append("\n");
+				if (line.toLowerCase().trim().startsWith("uniform")) {
+					putUniformsHere.add(line);
 				}
 			}
 			reader.close();
-			return insertDynamics(shaderSrc.toString());
+			return shaderSrc.toString();
 		} catch (Exception e) {
 			Logger.logErr("Failed to read a shader", e);
 		}
 		return "FAIL";
 	}
 
-	private static String getModuleString(String name) {
-		String s = loadedModules.get(name);
-		if (s == null) {
-			if (name == null) {
-				Logger.log("Could not find null-module", LogLevel.WARNING);
-			}
-			s = readModule(name);
-			if (s == null) {
-				Logger.log("Could not find module: " + name, LogLevel.WARNING);
-			} else {
-				loadedModules.put(name, s);
-			}
-		}
-		return s;
-	}
 
-	private static String insertDynamics(String s) {
-		String st = s;
-		String word, value;
-		while (s.contains(DYNAMIC_VAR_START)) {
-			st = st.substring(st.indexOf(DYNAMIC_VAR_START));
-			int i = st.indexOf(DYNAMIC_VAR_END, DYNAMIC_VAR_START.length());
-			if (i >= 0) {
-				i++;
-			}
-			word = st.substring(0, (i <= -1 || i > st.length()) ? st.length() : i);
-			value = getValueOf(word);
-			if (value == null) {
-				Logger.log("Keyword \"" + word + "\" not found!\nIn String:\n" + s, LogLevel.WARNING);
-				break;
-			}
-			s = s.replace(word, value);
-		}
-		return s;
-	}
-
-	private static String getValueOf(String word) {
-		word = word.replace(DYNAMIC_VAR_START, "");
-		word = word.replace(DYNAMIC_VAR_END, "");
-		switch (word) {
-		case "MAX_LIGHTS":
-			return Instance.getGameSettings().getLightMaxForward() + "";
-		case "MAX_JOINTS":
-			return Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_JOINTS)+"";
-		case "MAX_WEIGHTS":
-			return Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_WEIGHTS)+"";
-		default:
-			return null;
-		}
-	}
-
-	private static String readModule(String name) {
-		AdvancedFile ff;
-		if(!name.endsWith(MODULE_FILE_SUFFIX)) {
-			name += MODULE_FILE_SUFFIX;
-		}
-		if (name.startsWith(EXTERN_MODULE_PREFIX)) {
-			ff = new AdvancedFile(name.substring(EXTERN_MODULE_PREFIX.length()));
-		} else {
-			ff = new AdvancedFile(MODULE_LOCATION, name);
-		}
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(ff.createInputStream()))) {
-			StringBuilder builder = new StringBuilder();
-			String line;
-			while ((line = reader.readLine()) != null) {
-				if (line.toLowerCase().startsWith(MODULE_PREFIX)) {
-					builder.append(getModuleString(line.toLowerCase().substring(MODULE_PREFIX.length()).trim()).replace(NON_SHADER_MODULE, ""))
-							.append("\n");
-				} else {
-					builder.append(line).append("\n");
-				}
-			}
-			reader.close();
-			return builder.toString();
-		} catch (Exception e) {
-			Logger.logErr("Failed to read module: " + name, e);
-			return null;
-		}
-	}
 
 	private ShaderHolder loadShader(InputStream in, int type) {
 		List<String> uniforms = new ArrayList<>();
