@@ -23,6 +23,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import omnikryptec.util.logger.LogLevel;
@@ -251,10 +252,9 @@ public class AdvancedFile {
      *
      * @return Stirng Array Paths
      */
-    @SuppressWarnings("unchecked")
     public final String[] getPaths() {
         resetValues();
-        return ((ArrayList<String>) paths.clone()).toArray(new String[paths.size()]);
+        return paths.toArray(new String[paths.size()]);
     }
 
     /**
@@ -849,6 +849,16 @@ public class AdvancedFile {
     }
 
     /**
+     * Lists all children (recursiv if set)
+     *
+     * @param recursiv Boolean if children should be listed recursivly
+     * @return ArrayList AdvancedFile Children (recursiv if set)
+     */
+    public final ArrayList<AdvancedFile> listAdvancedFiles(boolean recursiv) {
+        return listAdvancedFiles(null, recursiv);
+    }
+
+    /**
      * Lists all direct children that matches the AdvancedFileFilter
      *
      * @param advancedFileFilter AdvancedFileFilter File filter
@@ -939,6 +949,57 @@ public class AdvancedFile {
             Logger.logErr("Error while listing files: " + ex, ex);
         }
         return files;
+    }
+
+    /**
+     * Applies an Action on every children of this AdvancedFile
+     *
+     * @param consumer Consumer
+     * @return A reference to this AdvancedFile
+     */
+    public final AdvancedFile forEachChild(Consumer<AdvancedFile> consumer) {
+        listAdvancedFiles().stream().forEach(consumer);
+        return this;
+    }
+
+    /**
+     * Applies an Action on every children of this AdvancedFile (recursiv if
+     * set)
+     *
+     * @param recursiv Boolean if children should be listed recursivly
+     * @param consumer Consumer
+     * @return A reference to this AdvancedFile
+     */
+    public final AdvancedFile forEachChild(boolean recursiv, Consumer<AdvancedFile> consumer) {
+        listAdvancedFiles(recursiv).stream().forEach(consumer);
+        return this;
+    }
+
+    /**
+     * Applies an Action on every children of this AdvancedFile that matches the
+     * AdvancedFileFilter
+     *
+     * @param advancedFileFilter AdvancedFileFilter File filter
+     * @param consumer Consumer
+     * @return A reference to this AdvancedFile
+     */
+    public final AdvancedFile forEachChild(AdvancedFileFilter filter, Consumer<AdvancedFile> consumer) {
+        listAdvancedFiles(filter).stream().forEach(consumer);
+        return this;
+    }
+
+    /**
+     * Applies an Action on every children of this AdvancedFile (recursiv if
+     * set) that matches the AdvancedFileFilter
+     *
+     * @param advancedFileFilter AdvancedFileFilter File filter
+     * @param recursiv Boolean if children should be listed recursivly
+     * @param consumer Consumer
+     * @return A reference to this AdvancedFile
+     */
+    public final AdvancedFile forEachChild(AdvancedFileFilter filter, boolean recursiv, Consumer<AdvancedFile> consumer) {
+        listAdvancedFiles(filter, recursiv).stream().forEach(consumer);
+        return this;
     }
 
     /**
