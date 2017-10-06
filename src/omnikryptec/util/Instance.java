@@ -57,8 +57,7 @@ public class Instance {
 
 	public static final int DIMENSIONS = 3;
 
-	public static final int MAX_JOINTS = 50;
-	public static final int MAX_WEIGHTS = 3;
+
 
 	public static final OmniKryptecEngine getEngine() {
 		return OmniKryptecEngine.instance();

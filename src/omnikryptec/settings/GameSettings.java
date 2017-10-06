@@ -85,9 +85,15 @@ public class GameSettings {
      * @see RenderType#BIG
      */
     public static final String RADIUS_BIG = "RADIUS_BIG";
-
+    /**
+     * int
+     */
     public static final String HIGHEST_SHADER_LVL = "HIGHEST_SHADER_LVL";
     
+    public static final String ANIMATION_MAX_JOINTS = "ANIMATION_MAX_JOINTS";
+    public static final String ANIMATION_MAX_WEIGHTS = "ANIMATION_MAX_WEIGHTS";
+//	public static final int ANIMATION_MAX_JOINTS = 50;
+//	public static final int animation_MAX_WEIGHTS = 3;
     
     private final HashMap<String, Object> settings_objects = new HashMap<>();
     private final HashMap<String, Float> settings_floats = new HashMap<>();
@@ -163,6 +169,12 @@ public class GameSettings {
     	setFloat(RADIUS_FOLIAGE, 50);
     	setFloat(RADIUS_MEDIUM, 100);
     	setFloat(RADIUS_BIG, 200);
+    	
+    	setInteger(HIGHEST_SHADER_LVL, 10);
+    	
+    	/*ANIMATION*/
+    	setInteger(ANIMATION_MAX_JOINTS, 50);
+    	setInteger(ANIMATION_MAX_WEIGHTS, 3);
     	return this;
     }
     

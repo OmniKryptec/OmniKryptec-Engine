@@ -17,6 +17,7 @@ import omnikryptec.graphics.OpenGL;
 import omnikryptec.main.AbstractScene;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.resource.model.AdvancedModel;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Instance;
 import omnikryptec.util.exceptions.OmniKryptecException;
@@ -29,7 +30,10 @@ public class Shader {
 	private static final String MODULE_PREFIX = "#module";
 	private static final String DYNAMIC_VAR_START = "$OKE_";
 	private static final String DYNAMIC_VAR_END = "$";
-
+	private static final String EXTERN_MODULE_PREFIX = "?";
+	private static final String NON_SHADER_MODULE = "@m";
+	private static final String MODULE_FILE_SUFFIX=".module";
+	
 	public static final String DEFAULT_PP_VERTEX_SHADER_POS_ATTR = "position";
 	public static final String DEFAULT_PP_VERTEX_SHADER_TEXC_OUT = "textureCoords";
 
@@ -39,9 +43,6 @@ public class Shader {
 	protected static final AdvancedFile SHADER_LOCATION_RENDER = new AdvancedFile("omnikryptec", "shader", "files",
 			"render");
 	protected static final AdvancedFile DEF_SHADER_LOC_PP_VS = new AdvancedFile(SHADER_LOCATION_PP, "pp_vert.glsl");
-
-	@Deprecated
-	protected static final String oc_shader_loc = "/omnikryptec/shader/files/postprocessing";
 
 	private static HashMap<String, String> loadedModules = new HashMap<>();
 
@@ -243,10 +244,12 @@ public class Shader {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				if (line.toLowerCase().startsWith(MODULE_PREFIX)) {
-					shaderSrc
-							.append(
-									getModuleString(line.toLowerCase().substring(MODULE_PREFIX.length()).trim()))
-							.append("\n");
+					String module = getModuleString(line.toLowerCase().substring(MODULE_PREFIX.length()).trim());
+					if (module.startsWith(NON_SHADER_MODULE)) {
+						Logger.log("Module is a non-shader module: "+line, LogLevel.WARNING);
+					} else {
+						shaderSrc.append(module).append("\n");
+					}
 				} else {
 					shaderSrc.append(line).append("\n");
 					if (line.toLowerCase().trim().startsWith("uniform")) {
@@ -284,13 +287,13 @@ public class Shader {
 		while (s.contains(DYNAMIC_VAR_START)) {
 			st = st.substring(st.indexOf(DYNAMIC_VAR_START));
 			int i = st.indexOf(DYNAMIC_VAR_END, DYNAMIC_VAR_START.length());
-			if(i>=0) {
+			if (i >= 0) {
 				i++;
 			}
-			word = st.substring(0, (i <= -1 || i > st.length())? st.length() : i);
+			word = st.substring(0, (i <= -1 || i > st.length()) ? st.length() : i);
 			value = getValueOf(word);
-			if(value==null) {
-				Logger.log("Keyword \"" + word + "\" not found!\nIn String:\n"+s, LogLevel.WARNING);
+			if (value == null) {
+				Logger.log("Keyword \"" + word + "\" not found!\nIn String:\n" + s, LogLevel.WARNING);
 				break;
 			}
 			s = s.replace(word, value);
@@ -304,19 +307,31 @@ public class Shader {
 		switch (word) {
 		case "MAX_LIGHTS":
 			return Instance.getGameSettings().getLightMaxForward() + "";
+		case "MAX_JOINTS":
+			return Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_JOINTS)+"";
+		case "MAX_WEIGHTS":
+			return Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_WEIGHTS)+"";
 		default:
 			return null;
 		}
 	}
 
 	private static String readModule(String name) {
-		AdvancedFile ff = new AdvancedFile(MODULE_LOCATION, name);
+		AdvancedFile ff;
+		if(!name.endsWith(MODULE_FILE_SUFFIX)) {
+			name += MODULE_FILE_SUFFIX;
+		}
+		if (name.startsWith(EXTERN_MODULE_PREFIX)) {
+			ff = new AdvancedFile(name.substring(EXTERN_MODULE_PREFIX.length()));
+		} else {
+			ff = new AdvancedFile(MODULE_LOCATION, name);
+		}
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(ff.createInputStream()))) {
 			StringBuilder builder = new StringBuilder();
 			String line;
 			while ((line = reader.readLine()) != null) {
 				if (line.toLowerCase().startsWith(MODULE_PREFIX)) {
-					builder.append(getModuleString(line.toLowerCase().substring(MODULE_PREFIX.length()).trim()))
+					builder.append(getModuleString(line.toLowerCase().substring(MODULE_PREFIX.length()).trim()).replace(NON_SHADER_MODULE, ""))
 							.append("\n");
 				} else {
 					builder.append(line).append("\n");
@@ -341,8 +356,8 @@ public class Shader {
 			Logger.logErr("Shader compilation failed in " + getShaderType(type) + ": " + name,
 					new OmniKryptecException("Shadercreation"));
 			Logger.log(OpenGL.gl20getShaderInfoLog(shaderID, 1024), LogLevel.ERROR, true);
-			if(Logger.isDebugMode()) {
-				Logger.log("SHADER-SRC:\n\n"+shaderSrc, LogLevel.INFO);
+			if (Logger.isDebugMode()) {
+				Logger.log("SHADER-SRC:\n\n" + shaderSrc, LogLevel.INFO);
 			}
 			Instance.getEngine().close(ShutdownOption.JAVA);
 		}

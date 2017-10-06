@@ -5,6 +5,7 @@ import omnikryptec.gameobject.Entity;
 import omnikryptec.main.Scene;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.UniformMatrix;
 import omnikryptec.shader.base.UniformMatrixArray;
@@ -25,7 +26,7 @@ public class AnimatedModelShader extends Shader {
     public final UniformMatrix viewMatrix = new UniformMatrix("viewMatrix");
     public final UniformMatrix projectionMatrix = new UniformMatrix("projectionMatrix");
     protected UniformVec3 lightDirection = new UniformVec3("lightDirection");
-    protected UniformMatrixArray jointTransforms = new UniformMatrixArray("jointTransforms", Instance.MAX_JOINTS);
+    protected UniformMatrixArray jointTransforms = new UniformMatrixArray("jointTransforms", Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_JOINTS));
     private UniformSampler diffuseMap = new UniformSampler("diffuseMap");
 
     /**

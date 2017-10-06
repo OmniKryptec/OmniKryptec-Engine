@@ -1,0 +1,10 @@
+float saturate(float value){
+	return clamp(value,0.0,1.0);
+}
+
+
+float strictLevel(float l, float levelamount){
+	float level = floor(l*levelamount);
+	level /= levelamount;
+	return level;
+}

@@ -41,11 +41,8 @@ uniform float hasspecular;
 
 
 
+#module util
 
-float saturate(float value){
-
-	return clamp(value,0.0,1.0);
-}
 
 void lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mspec, float Mdamp, vec4 att, vec4 conei, vec4 pos, vec3 catt, int i){
 	float distance = length(tlvec);

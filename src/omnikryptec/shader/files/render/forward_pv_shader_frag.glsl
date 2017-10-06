@@ -1,5 +1,4 @@
 #version 330
-#module define_maxlights
 
 in vec2 pass_texcoords;
 in vec4 colormod;

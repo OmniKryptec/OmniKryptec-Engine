@@ -13,6 +13,7 @@ import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.VertexArrayObject;
 import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.resource.texture.Texture;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Instance;
 
@@ -28,7 +29,7 @@ public class AnimatedModelLoader {
      * @return The animated entity (no animation applied though)
      */
     public static AnimatedModel loadModel(String name, AdvancedFile modelFile, AdvancedFile textureFile, Renderer renderer) {
-        AnimatedModelData entityData = ColladaLoader.loadColladaModel(name, modelFile, Instance.MAX_WEIGHTS);
+        AnimatedModelData entityData = ColladaLoader.loadColladaModel(name, modelFile, Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_WEIGHTS));
         MeshData meshData = entityData.getMeshData();
         Model model = new Model(name, meshData);
         VertexArrayObject vao = model.getVao();
