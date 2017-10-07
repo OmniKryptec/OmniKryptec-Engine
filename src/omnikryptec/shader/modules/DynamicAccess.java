@@ -1,4 +1,4 @@
-package omnikryptec.shader.base;
+package omnikryptec.shader.modules;
 
 @FunctionalInterface
 public interface DynamicAccess<T> {

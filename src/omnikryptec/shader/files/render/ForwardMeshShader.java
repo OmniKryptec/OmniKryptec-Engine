@@ -10,6 +10,7 @@ import omnikryptec.main.AbstractScene;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
 import omnikryptec.resource.texture.Texture;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.shader.base.Attribute;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.UniformBoolean;
@@ -60,7 +61,7 @@ public class ForwardMeshShader extends Shader {
 	// };
 
 	private boolean pervertex;
-
+	private int maxlights;
 	public ForwardMeshShader(boolean pv) {
 		super(new AdvancedFile(SHADER_LOCATION_RENDER, pv ? "forward_pv_shader_vert.glsl" : "forward_shader_vert.glsl")
 				.createInputStream(),
@@ -69,27 +70,28 @@ public class ForwardMeshShader extends Shader {
 				new Attribute("pos", 0), new Attribute("texcoords", 1), new Attribute("normal", 2),
 				new Attribute("tangent", 3), new Attribute("transmatrix", 4), new Attribute("colour", 8));
 		this.pervertex = pv;
-		lightpos = new UniformVec4[DisplayManager.instance().getSettings().getLightMaxForward()];
+		maxlights = DisplayManager.instance().getSettings().getInteger(GameSettings.MAX_FORWARD_LIGHTS);
+		lightpos = new UniformVec4[maxlights];
 		for (int i = 0; i < lightpos.length; i++) {
 			lightpos[i] = new UniformVec4("lightpos[" + i + "]");
 		}
 		registerUniforms(lightpos);
-		atts = new UniformVec4[DisplayManager.instance().getSettings().getLightMaxForward()];
+		atts = new UniformVec4[maxlights];
 		for (int i = 0; i < atts.length; i++) {
 			atts[i] = new UniformVec4("atts[" + i + "]");
 		}
 		registerUniforms(atts);
-		lightcolor = new UniformVec3[DisplayManager.instance().getSettings().getLightMaxForward()];
+		lightcolor = new UniformVec3[maxlights];
 		for (int i = 0; i < lightcolor.length; i++) {
 			lightcolor[i] = new UniformVec3("lightColor[" + i + "]");
 		}
 		registerUniforms(lightcolor);
-		coneinfo = new UniformVec4[DisplayManager.instance().getSettings().getLightMaxForward()];
+		coneinfo = new UniformVec4[maxlights];
 		for (int i = 0; i < coneinfo.length; i++) {
 			coneinfo[i] = new UniformVec4("coneInfo[" + i + "]");
 		}
 		registerUniforms(coneinfo);
-		catts = new UniformVec3[DisplayManager.instance().getSettings().getLightMaxForward()];
+		catts = new UniformVec3[maxlights];
 		for (int i = 0; i < coneinfo.length; i++) {
 			catts[i] = new UniformVec3("catts[" + i + "]");
 		}
@@ -170,7 +172,7 @@ public class ForwardMeshShader extends Shader {
 		view.loadMatrix(s.getCamera().getViewMatrix());
 		projection.loadMatrix(s.getCamera().getProjectionMatrix());
 		ambient.loadVec3(s.getAmbientColor().getArray());
-		int lights = Math.min(DisplayManager.instance().getSettings().getLightMaxForward(), s.getLights().size());
+		int lights = Math.min(maxlights, s.getLights().size());
 		activelights.loadInt(lights);
 		Light l;
 		Vector3f pos;

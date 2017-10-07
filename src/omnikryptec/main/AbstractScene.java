@@ -79,7 +79,7 @@ public abstract class AbstractScene implements DataMapSerializable {
 	private RenderConfiguration defaultConfig;
 	final long mainRender() {
 		if(dirtyConfig) {
-			defaultConfig = new RenderConfiguration();
+			defaultConfig = getNew();
 			dirtyConfig = false;
 		}
 		ParticleMaster.resetTimes();
@@ -111,11 +111,15 @@ public abstract class AbstractScene implements DataMapSerializable {
 	
 	public final RenderConfiguration getRenderConfig() {
 		if(dirtyConfig) {
-			defaultConfig = new RenderConfiguration();
+			defaultConfig = getNew();
 			dirtyConfig = false;
 			return defaultConfig;
 		}
 		return defaultConfig;
+	}
+	
+	private final RenderConfiguration getNew() {
+		return new RenderConfiguration().setShaderLvl(Instance.getGameSettings().getInteger(GameSettings.HIGHEST_SHADER_LVL));
 	}
 	
 	public final long publicRender(RenderConfiguration config) {

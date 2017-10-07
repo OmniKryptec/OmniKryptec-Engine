@@ -40,59 +40,8 @@ uniform vec3 ambient;
 
 uniform mat4 viewmatrix;
 
-float saturate(float value){
 
-	return clamp(value,0.0,1.0);
-}
-
-vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 Mspec, float Mdamp, vec4 att, vec4 conei, vec4 pos, vec3 catt){
-	float distance = length(tlvec);
-	//directional light -> lightpos is the light direction
-	if(pos.w==0.0){
-		tlvec = -pos.xyz;
-	}
-	vec3 toLightNormalized = normalize(tlvec);
-	vec3 unitCam = normalize(tcvec);
-	vec3 fromLight = -toLightNormalized;
-
-
-	float dot1 = saturate(dot(normal,toLightNormalized));
-	vec3 diffusev = dot1 * Scol;
-
-	vec3 reflected = reflect(fromLight, normal);
-	float dot2 = saturate(dot(reflected, unitCam));
-	float damp = 0;
-	//if no diffuselight there will be no specular light
-	if(dot1>0.0){
-		damp = pow(dot2, Mdamp);
-	}
-	vec3 spec = damp * Scol * Mspec;
-
-
-
-
-	float attenu = 1.0/(att.x + (att.y * distance) + (att.z * distance * distance));
-	if(att.w>-1&&distance>att.w){
-		attenu = 0;
-	}
-	//directional light
-	if(pos.w==0.0){
-		attenu = 1.0;
-	}else{
-		//point- or spotlight
-		float ltsa = dot(fromLight, normalize(conei.xyz));
-		//current point is outside the lightcone
-		if(ltsa < conei.w){
-			attenu = 0.0;
-		}else{
-			float disfac = (ltsa - conei.w)/(1.0 - conei.w);
-			disfac = catt.x + catt.y * disfac + catt.z * disfac * disfac;
-			attenu = attenu * disfac;
-		}
-	}
-	attenu = min(attenu, 1.0);
-	return (diffusev*Mdiff+spec)*attenu;
-}
+#module light
 
 void main(void){
 	
@@ -130,5 +79,7 @@ void main(void){
 		col3.rgb = exinfovec;
 	}
 }
+
+
 
 

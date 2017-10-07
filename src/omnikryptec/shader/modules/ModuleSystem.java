@@ -1,7 +1,8 @@
-package omnikryptec.shader.base;
+package omnikryptec.shader.modules;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import omnikryptec.util.AdvancedFile;
@@ -9,16 +10,17 @@ import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
 public class ModuleSystem {
-	private static final String PRIVATE_MODULE = "@m";
-
-	private String MODULE_LOCATION;
-	private String MODULE_PREFIX;
-	private String DYNAMIC_VAR_START;
-	private String DYNAMIC_VAR_END;
-	private String EXTERN_MODULE_PREFIX;
-	private String MODULE_FILE_SUFFIX;
+	static final String PRIVATE_MODULE = "@m";
+	static final String DUPLICATE_ALLOWED = "@a";
 	
-	private HashMap<String, String> loadedModules = new HashMap<>();
+	String MODULE_LOCATION;
+	String MODULE_PREFIX;
+	String DYNAMIC_VAR_START;
+	String DYNAMIC_VAR_END;
+	String EXTERN_MODULE_PREFIX;
+	String MODULE_FILE_SUFFIX;
+	
+	private HashMap<String, Module> loadedModules = new HashMap<>();
 	private HashMap<String, DynamicAccess<?>> dynamics = new HashMap<>();
 	
 	
@@ -35,29 +37,39 @@ public class ModuleSystem {
 		this.MODULE_FILE_SUFFIX = modulefilesuffix;
 	}
 	
-	public String processLine(String line) {
-		if(line.startsWith(MODULE_PREFIX)) {
-			line = getModuleString(line.substring(MODULE_PREFIX.length()).trim());
+	public String compute(String s) {
+		ArrayList<String> alreadyInstalled = new ArrayList<>();
+		String[] lines = s.split("\n");
+		StringBuilder strg = new StringBuilder();
+		for(String line : lines) {
+			if (line.startsWith(MODULE_PREFIX)) {
+				String name = line.substring(MODULE_PREFIX.length()).trim();
+				if(!alreadyInstalled.contains(name)) {
+					Module m = getModule(name, false);
+					strg.append(m.getComputedString(alreadyInstalled));
+					if(!m.isDuplicateAllowed()) {
+						alreadyInstalled.add(name);
+					}
+				}
+			}else {
+				strg.append(line).append("\n");
+			}
 		}
-		return insertDynamics(line);
+		return insertDynamics(strg.toString());
 	}
 	
-	public String getModuleString(String name) {
-		return getModuleString(name, false);
-	}
-	
-	private String getModuleString(String name, boolean access) {
-		String s = loadedModules.get(name);
+	Module getModule(String name, boolean access) {
+		Module s = loadedModules.get(name);
 		if (s == null) {
 			if (name == null) {
 				Logger.log("Could not find null-module", LogLevel.WARNING);
 			}
 			s = readModule(name);
-			if (s == null) {
+			if (!s.isFound()) {
 				Logger.log("Could not find module: " + name, LogLevel.WARNING);
 			} else {
 				loadedModules.put(name, s);
-				if(s.contains(PRIVATE_MODULE)&&!access) {
+				if(s.isPrivate()&!access) {
 					Logger.log("Module is only for other modules: " + name, LogLevel.WARNING);
 					return null;
 				}
@@ -66,6 +78,19 @@ public class ModuleSystem {
 		return s;
 	}
 
+	private Module readModule(String name) {
+		AdvancedFile ff;
+		if(!name.endsWith(MODULE_FILE_SUFFIX)) {
+			name += MODULE_FILE_SUFFIX;
+		}
+		if (name.startsWith(EXTERN_MODULE_PREFIX)) {
+			ff = new AdvancedFile(name.substring(EXTERN_MODULE_PREFIX.length()));
+		} else {
+			ff = new AdvancedFile(MODULE_LOCATION, name);
+		}
+		return new Module(name, ff.createInputStream(), this);
+	}
+	
 	public String insertDynamics(String s) {
 		String st = s;
 		String word, value;
@@ -82,6 +107,7 @@ public class ModuleSystem {
 				break;
 			}
 			s = s.replace(word, value);
+			st = st.substring(word.length());
 		}
 		return s;
 	}
@@ -96,44 +122,5 @@ public class ModuleSystem {
 		word = word.replace(DYNAMIC_VAR_START, "");
 		word = word.replace(DYNAMIC_VAR_END, "");
 		return dynamics.get(word).get()+"";
-//		switch (word) {
-//		case "MAX_LIGHTS":
-//			return Instance.getGameSettings().getLightMaxForward() + "";
-//		case "MAX_JOINTS":
-//			return Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_JOINTS)+"";
-//		case "MAX_WEIGHTS":
-//			return Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_WEIGHTS)+"";
-//		default:
-//			return null;
-//		}
-	}
-
-	private String readModule(String name) {
-		AdvancedFile ff;
-		if(!name.endsWith(MODULE_FILE_SUFFIX)) {
-			name += MODULE_FILE_SUFFIX;
-		}
-		if (name.startsWith(EXTERN_MODULE_PREFIX)) {
-			ff = new AdvancedFile(name.substring(EXTERN_MODULE_PREFIX.length()));
-		} else {
-			ff = new AdvancedFile(MODULE_LOCATION, name);
-		}
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(ff.createInputStream()))) {
-			StringBuilder builder = new StringBuilder();
-			String line;
-			while ((line = reader.readLine()) != null) {
-				if (line.toLowerCase().startsWith(MODULE_PREFIX)) {
-					builder.append(getModuleString(line.toLowerCase().substring(MODULE_PREFIX.length()).trim()).replace(PRIVATE_MODULE, ""))
-							.append("\n");
-				} else {
-					builder.append(line).append("\n");
-				}
-			}
-			reader.close();
-			return builder.toString();
-		} catch (Exception e) {
-			Logger.logErr("Failed to read module: " + name, e);
-			return null;
-		}
 	}
 }

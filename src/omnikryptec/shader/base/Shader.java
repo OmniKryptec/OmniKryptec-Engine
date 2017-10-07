@@ -18,6 +18,7 @@ import omnikryptec.main.AbstractScene;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.settings.GameSettings;
+import omnikryptec.shader.modules.ModuleSystem;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Instance;
 import omnikryptec.util.exceptions.OmniKryptecException;
@@ -52,7 +53,7 @@ public class Shader {
 	private static final ModuleSystem SHADERMODULES;
 	static {
 		SHADERMODULES = new ModuleSystem("$OKE_", "$", "omnikryptec/shader/modules/");
-		SHADERMODULES.addDynamic("MAX_LIGHTS", ()->Instance.getGameSettings().getLightMaxForward());
+		SHADERMODULES.addDynamic("MAX_LIGHTS", ()->Instance.getGameSettings().getInteger(GameSettings.MAX_FORWARD_LIGHTS));
 		SHADERMODULES.addDynamic("MAX_JOINTS", ()->Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_JOINTS));
 		SHADERMODULES.addDynamic("MAX_WEIGHTS", ()->Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_WEIGHTS));
 	}
@@ -244,14 +245,17 @@ public class Shader {
 			StringBuilder shaderSrc = new StringBuilder();
 			String line;
 			while ((line = reader.readLine()) != null) {
-				line = SHADERMODULES.processLine(line);
 				shaderSrc.append(line).append("\n");
-				if (line.toLowerCase().trim().startsWith("uniform")) {
-					putUniformsHere.add(line);
-				}
 			}
 			reader.close();
-			return shaderSrc.toString();
+			String toreturn = SHADERMODULES.compute(shaderSrc.toString());
+			String[] sttt = toreturn.split("\n");
+			for(String s : sttt) {
+				if (s.toLowerCase().trim().startsWith("uniform")) {
+					putUniformsHere.add(s);
+				}
+			}
+			return toreturn;
 		} catch (Exception e) {
 			Logger.logErr("Failed to read a shader", e);
 		}
