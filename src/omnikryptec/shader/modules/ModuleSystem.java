@@ -46,16 +46,16 @@ public class ModuleSystem {
 				String name = line.substring(MODULE_PREFIX.length()).trim();
 				if(!alreadyInstalled.contains(name)) {
 					Module m = getModule(name, false);
-					strg.append(m.getComputedString(alreadyInstalled));
 					if(!m.isDuplicateAllowed()) {
 						alreadyInstalled.add(name);
 					}
+					strg.append(m.getComputedString(alreadyInstalled));
 				}
 			}else {
 				strg.append(line).append("\n");
 			}
 		}
-		return insertDynamics(strg.toString());
+		return insertDynamics(strg.toString().replace(DUPLICATE_ALLOWED, "").replace(PRIVATE_MODULE, ""));
 	}
 	
 	Module getModule(String name, boolean access) {

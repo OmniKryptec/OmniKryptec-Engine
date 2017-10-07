@@ -44,10 +44,10 @@ public class Module {
 				String name = line.substring(sys.MODULE_PREFIX.length()).trim();
 				if(!alreadyinstalled.contains(name)) {
 					Module m = sys.getModule(name, true);
-					builder.append(m.getComputedString(alreadyinstalled));
 					if(!m.isDuplicateAllowed()) {
 						alreadyinstalled.add(name);
 					}
+					builder.append(m.getComputedString(alreadyinstalled));
 				}
 			} else {
 				builder.append(line).append("\n");

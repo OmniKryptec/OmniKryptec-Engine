@@ -28,9 +28,12 @@ import omnikryptec.main.AbstractScene.RendererTime;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene;
+import omnikryptec.postprocessing.main.DebugRenderer;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.main.PostProcessing;
+import omnikryptec.postprocessing.stages.ColorSpaceStage;
+import omnikryptec.postprocessing.stages.ContrastchangeStage;
 import omnikryptec.postprocessing.stages.FogStage;
 import omnikryptec.renderer.FloorReflectionRenderer;
 import omnikryptec.renderer.RenderConfiguration;
@@ -53,6 +56,7 @@ import omnikryptec.util.Color;
 import omnikryptec.util.Instance;
 import omnikryptec.util.Maths;
 import omnikryptec.util.NativesLoader;
+import omnikryptec.util.RenderUtil;
 import omnikryptec.util.lang.LanguageManager;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
@@ -84,7 +88,7 @@ public class EngineTest2 implements IEventHandler {
 
 			DisplayManager.createDisplay("Test 2",
 					new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setChunkRenderOffsets(2, 2, 2)
-							.setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(false),
+							.setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(true),
 					new GLFWInfo(3, 3, true, false, 1280, 720));
 			new Thread(new Runnable() {
 
@@ -105,15 +109,15 @@ public class EngineTest2 implements IEventHandler {
 			//PostProcessing.instance().addStage(new FogStage().setDensity(0.25f));
 			// PostProcessing.instance().addStage(new
 			// CompleteGaussianBlurStage(false,0.1f,0.1f));
-			// PostProcessing.instance().addStage(new ColorSpaceStage(16,4,4));
+			 //PostProcessing.instance().addStage(new ColorSpaceStage(2,2,2));
 			// PostProcessing.instance().addStage(new
 			// CompleteGaussianBlurStage(true,0.5f,0.5f));
-			// PostProcessing.instance().addStage(new
-			// ContrastchangeStage(0.75f));
+			//PostProcessing.instance().addStage(new
+			//ContrastchangeStage(0.75f));
 			//
 			// // PostProcessing.instance().addStage(new BrightnessfilterStage(new
 			// // Vector4f(0, 0, 0, 0)));
-			// // RenderUtil.goWireframe(true);
+			 //RenderUtil.goWireframe(true);
 			// PostProcessing.instance().setEnabled(false);
 			// PostProcessing.instance().addStage(new
 			// FogStage().setDensity(0.05f).setFog(0, 0.5f, 0,
@@ -126,7 +130,7 @@ public class EngineTest2 implements IEventHandler {
 			// CompleteGaussianBlurStage(false, 0.1f, 0.1f));
 			// PostProcessing.instance().addStage(new
 			// CompleteGaussianBlurStage(false, 0.05f, 0.05f));
-			// PostProcessing.instance().addStage(new DebugRenderer());
+			//PostProcessing.instance().addStage(new DebugRenderer());
 			AdvancedFile res = new AdvancedFile("res");
 			SimpleTexture jd = SimpleTexture.newTexture(new AdvancedFile(res, "jd.png"));
 			SimpleTexture js = SimpleTexture.newTexture(new AdvancedFile(res, "js.png"));
@@ -259,7 +263,7 @@ public class EngineTest2 implements IEventHandler {
 			testrend.getRenderConfig().setRendererData(AllowedRenderer.EvElse, testrend);
 			testrend.registerAndAddToCurrentScene();
 			
-			Instance.getCurrentScene().getRenderConfig().setShaderLvl(0);
+			//Instance.getCurrentScene().getRenderConfig().setShaderLvl(0);
 			
 			attractor = new ParticleAttractor(0, -10, 0).setGravitation(100f).setDistanceTolerance(10)
 					.setMode(AttractorMode.STOP_UNTIL_DISABLED_ON_REACH);

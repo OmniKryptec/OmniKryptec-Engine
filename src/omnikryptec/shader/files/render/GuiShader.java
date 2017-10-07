@@ -9,8 +9,8 @@ public class GuiShader extends Shader {
 	private final UniformSampler sampler = new UniformSampler("sampler");
 
 	public GuiShader() {
-		super(new AdvancedFile("omnikryptec", "test", "test.vert"),
-				new AdvancedFile("omnikryptec", "test", "test.frag"), "pos", "rgba", "uv");
+		super(new AdvancedFile(SHADER_LOCATION_RENDER, "gui_vert.glsl"),
+				new AdvancedFile(SHADER_LOCATION_RENDER, "gui_frag.glsl"), "pos", "rgba", "uv");
 		registerUniforms(sampler);
 		start();
 		sampler.loadTexUnit(0);
