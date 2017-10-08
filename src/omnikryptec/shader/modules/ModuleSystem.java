@@ -1,9 +1,10 @@
 package omnikryptec.shader.modules;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.logger.LogLevel;
@@ -13,12 +14,16 @@ public class ModuleSystem {
 	static final String PRIVATE_MODULE = "@m";
 	static final String DUPLICATE_ALLOWED = "@a";
 	
+	String HEADERSECTION_START;
+	String HEADERSECTION_END;
 	String MODULE_LOCATION;
 	String MODULE_PREFIX;
 	String DYNAMIC_VAR_START;
 	String DYNAMIC_VAR_END;
 	String EXTERN_MODULE_PREFIX;
 	String MODULE_FILE_SUFFIX;
+	String INSERT_HEADERS_AFTER_LINE;
+
 	
 	private HashMap<String, Module> loadedModules = new HashMap<>();
 	private HashMap<String, DynamicAccess<?>> dynamics = new HashMap<>();
@@ -29,16 +34,25 @@ public class ModuleSystem {
 	}
 	
 	public ModuleSystem(String dynamicvarstart, String dynamicvarend, String defaultmoduleloc, String moduleprefix, String externpathprefix, String modulefilesuffix) {
+		this(dynamicvarstart, dynamicvarend, defaultmoduleloc, moduleprefix, externpathprefix, modulefilesuffix, new HeaderDefinition("@h>", "@h<", "#version"));
+	}
+
+	public ModuleSystem(String dynamicvarstart, String dynamicvarend, String defaultmoduleloc, String moduleprefix, String externpathprefix, String modulefilesuffix, HeaderDefinition headerdef) {
 		this.DYNAMIC_VAR_START = dynamicvarstart;
 		this.DYNAMIC_VAR_END = dynamicvarend;
 		this.MODULE_LOCATION = defaultmoduleloc;
 		this.MODULE_PREFIX = moduleprefix;
 		this.EXTERN_MODULE_PREFIX = externpathprefix;
 		this.MODULE_FILE_SUFFIX = modulefilesuffix;
+		this.HEADERSECTION_START = headerdef.start;
+		this.HEADERSECTION_END = headerdef.end;
+		this.INSERT_HEADERS_AFTER_LINE = headerdef.inserthere;
 	}
 	
 	public String compute(String s) {
 		ArrayList<String> alreadyInstalled = new ArrayList<>();
+		s = s.replace(HEADERSECTION_START, "");
+		s = s.replace(HEADERSECTION_END, "");
 		String[] lines = s.split("\n");
 		StringBuilder strg = new StringBuilder();
 		for(String line : lines) {
@@ -55,9 +69,24 @@ public class ModuleSystem {
 				strg.append(line).append("\n");
 			}
 		}
-		return insertDynamics(strg.toString().replace(DUPLICATE_ALLOWED, "").replace(PRIVATE_MODULE, ""));
+		String string = strg.toString().replace(DUPLICATE_ALLOWED, "").replace(PRIVATE_MODULE, "");
+		string = insertHeader(string, alreadyInstalled);
+		return insertDynamics(string);
 	}
 	
+	private String insertHeader(String string, ArrayList<String> modules) {
+		ArrayList<String> newlines = new ArrayList<>(Arrays.asList(string.split("\n")));
+		for(int i=0; i<newlines.size(); i++) {
+			if(newlines.get(i).contains(INSERT_HEADERS_AFTER_LINE)) {
+				for(String s : modules) {
+					newlines.addAll(i+1, getModule(s, true).getHeader());
+				}
+				break;
+			}
+		}
+		return newlines.stream().collect(Collectors.joining("\n"));
+	}
+
 	Module getModule(String name, boolean access) {
 		Module s = loadedModules.get(name);
 		if (s == null) {
@@ -69,7 +98,7 @@ public class ModuleSystem {
 				Logger.log("Could not find module: " + name, LogLevel.WARNING);
 			} else {
 				loadedModules.put(name, s);
-				if(s.isPrivate()&!access) {
+				if(s.isPrivate()&&!access) {
 					Logger.log("Module is only for other modules: " + name, LogLevel.WARNING);
 					return null;
 				}

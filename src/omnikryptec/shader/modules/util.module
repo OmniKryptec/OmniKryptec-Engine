@@ -1,3 +1,8 @@
+@h>
+float saturate(float value);
+float strictLevel(float l, float levelamount);
+@h<
+
 float saturate(float value){
 	return clamp(value,0.0,1.0);
 }

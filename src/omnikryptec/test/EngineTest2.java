@@ -100,7 +100,7 @@ public class EngineTest2 implements IEventHandler {
 			}).start();
 
 			// rend = new TestRenderer();
-			// PostProcessing.instance().addStage(new
+			//PostProcessing.instance().addStage(new
 			// DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
 			// DeferredLightPrepare.DEFAULT_LIGHT_PREPARE));
 			// PostProcessing.instance().addStage(new BloomStage(new
@@ -153,7 +153,7 @@ public class EngineTest2 implements IEventHandler {
 			TexturedModel tm = new TexturedModel("brunnen", baumM, baum);
 			tm.getMaterial().setRenderer(RendererRegistration.FORWARD_MESH_RENDERER);
 			testdings = tm;
-			tm.getMaterial().setTexture(Material.NORMAL, brunnen_norm).setTexture(Material.SPECULAR, brunnen_specular);
+			//tm.getMaterial().setTexture(Material.NORMAL, brunnen_norm).setTexture(Material.SPECULAR, brunnen_specular);
 			// tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
 			// tm.getMaterial().setTexture(Material.SPECULAR, );
 			tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.6f))

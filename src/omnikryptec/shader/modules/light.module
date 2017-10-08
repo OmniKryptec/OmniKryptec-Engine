@@ -1,5 +1,9 @@
 #module util
 
+@h>
+vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 Mspec, float Mdamp, vec4 att, vec4 conei, vec4 pos, vec3 catt);
+@h<
+
 vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 Mspec, float Mdamp, vec4 att, vec4 conei, vec4 pos, vec3 catt){
 	float distance = length(tlvec);
 	//directional light -> lightpos is the light direction
@@ -48,3 +52,4 @@ vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 M
 	attenu = min(attenu, 1.0);
 	return (diffusev*Mdiff+spec)*attenu;
 }
+

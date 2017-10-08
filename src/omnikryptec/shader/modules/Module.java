@@ -11,6 +11,7 @@ public class Module {
 	private String name;
 	private String raw;
 	private ArrayList<String> submodules = new ArrayList<>();
+	private ArrayList<String> header = new ArrayList<>();
 	private ModuleSystem sys;
 	
 	public Module(String name, InputStream stream, ModuleSystem sys) {
@@ -27,10 +28,28 @@ public class Module {
 			}
 			reader.close();
 			raw = builder.toString();
+			int headerstart = raw.indexOf(sys.HEADERSECTION_START);
+			int headerend = raw.indexOf(sys.HEADERSECTION_END);
+			if(headerstart!=-1&&headerend!=-1) {
+				String header = raw.substring(headerstart+sys.HEADERSECTION_START.length(), headerend);
+				raw = raw.replace(sys.HEADERSECTION_START, "").replace(sys.HEADERSECTION_END, "");
+				String[] array = header.split("\n");
+				for(String s : array) {
+					s = s.trim();
+					if(!s.isEmpty()&&!s.equals("\n")) {
+						this.header.add(s);
+					}
+				}
+				raw = raw.replace(header, "");
+			}
 		} catch (Exception e) {
 			Logger.logErr("Failed to read module: " + name, e);
 			raw = null;
 		}
+	}
+	
+	public ArrayList<String> getHeader(){
+		return header;
 	}
 	
 	public String getComputedString(ArrayList<String> alreadyinstalled) {
