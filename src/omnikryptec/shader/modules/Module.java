@@ -59,7 +59,7 @@ public class Module {
 		String[] lines = raw.split("\n");
 		StringBuilder builder = new StringBuilder();
 		for(String line : lines) {
-			if (line.startsWith(sys.MODULE_PREFIX)) {
+			if (line.trim().startsWith(sys.MODULE_PREFIX)) {
 				String name = line.substring(sys.MODULE_PREFIX.length()).trim();
 				if(!alreadyinstalled.contains(name)) {
 					Module m = sys.getModule(name, true);

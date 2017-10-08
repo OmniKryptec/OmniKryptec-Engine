@@ -1,22 +1,28 @@
 #module util
 
 @h>
-vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 Mspec, float Mdamp, vec4 att, vec4 conei, vec4 pos, vec3 catt);
+vec3 lighting(vec3 Scol, vec3 toCamVector, vec3 toLightVector, vec3 normal, vec3 Mdiff, vec3 Mspec, float Mdamp, vec4 attenuation, vec4 lightConeInfo, vec4 lightPosition, vec3 coneAttenuation);
 @h<
 
-vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 Mspec, float Mdamp, vec4 att, vec4 conei, vec4 pos, vec3 catt){
-	float distance = length(tlvec);
+/**
+*if lightPosition.w equals 0.0 this light will be a directional light
+*
+*
+*
+*/
+vec3 lighting(vec3 lightColor, vec3 toCamVector, vec3 toLightVector, vec3 normal, vec3 Mdiff, vec3 Mspec, float Mdamp, vec4 attenuation, vec4 lightConeInfo, vec4 lightPosition, vec3 coneAttenuation){
+	float distance = length(toLightVector);
 	//directional light -> lightpos is the light direction
-	if(pos.w==0.0){
-		tlvec = -pos.xyz;
+	if(lightPosition.w==0.0){
+		toLightVector = -lightPosition.xyz;
 	}
-	vec3 toLightNormalized = normalize(tlvec);
-	vec3 unitCam = normalize(tcvec);
+	vec3 toLightNormalized = normalize(toLightVector);
+	vec3 unitCam = normalize(toCamVector);
 	vec3 fromLight = -toLightNormalized;
 
 
 	float dot1 = saturate(dot(normal,toLightNormalized));
-	vec3 diffusev = dot1 * Scol;
+	vec3 diffusev = dot1 * lightColor;
 
 	vec3 reflected = reflect(fromLight, normal);
 	float dot2 = saturate(dot(reflected, unitCam));
@@ -25,27 +31,27 @@ vec3 lighting(vec3 Scol, vec3 tcvec, vec3 tlvec, vec3 normal, vec3 Mdiff, vec3 M
 	if(dot1>0.0){
 		damp = pow(dot2, Mdamp);
 	}
-	vec3 spec = damp * Scol * Mspec;
+	vec3 spec = damp * lightColor * Mspec;
 
 
 
 
-	float attenu = 1.0/(att.x + (att.y * distance) + (att.z * distance * distance));
-	if(att.w>-1&&distance>att.w){
+	float attenu = 1.0/(attenuation.x + (attenuation.y * distance) + (attenuation.z * distance * distance));
+	if(attenuation.w>-1&&distance>attenuation.w){
 		attenu = 0;
 	}
 	//directional light
-	if(pos.w==0.0){
+	if(lightPosition.w==0.0){
 		attenu = 1.0;
 	}else{
 		//point- or spotlight
-		float ltsa = dot(fromLight, normalize(conei.xyz));
+		float ltsa = dot(fromLight, normalize(lightConeInfo.xyz));
 		//current point is outside the lightcone
-		if(ltsa < conei.w){
+		if(ltsa < lightConeInfo.w){
 			attenu = 0.0;
 		}else{
-			float disfac = (ltsa - conei.w)/(1.0 - conei.w);
-			disfac = catt.x + catt.y * disfac + catt.z * disfac * disfac;
+			float disfac = (ltsa - lightConeInfo.w)/(1.0 - lightConeInfo.w);
+			disfac = coneAttenuation.x + coneAttenuation.y * disfac + coneAttenuation.z * disfac * disfac;
 			attenu = attenu * disfac;
 		}
 	}
