@@ -12,7 +12,7 @@ public class UniformInt extends Uniform {
 	}
 
 	public void loadInt(int value) {
-		if (!used || currentValue != value) {
+		if (isFound()&&(!used || currentValue != value)) {
 			GL20.glUniform1i(super.getLocation(), value);
 			used = true;
 			currentValue = value;

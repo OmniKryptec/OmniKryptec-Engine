@@ -21,7 +21,7 @@ public class UniformVec4 extends Uniform {
 	}
 
 	public void loadVec4(float x, float y, float z, float w) {
-		if (!used || x != old[0] || y != old[1] || z != old[2] || w != old[3]) {
+		if (isFound() && (!used || x != old[0] || y != old[1] || z != old[2] || w != old[3])) {
 			GL20.glUniform4f(super.getLocation(), x, y, z, w);
 			old[0] = x;
 			old[1] = y;

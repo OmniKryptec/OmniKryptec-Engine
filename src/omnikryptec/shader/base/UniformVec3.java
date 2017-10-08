@@ -24,7 +24,7 @@ public class UniformVec3 extends Uniform {
 	}
 
 	public void loadVec3(float x, float y, float z) {
-		if (!used || x != currentX || y != currentY || z != currentZ) {
+		if (isFound()&&(!used || x != currentX || y != currentY || z != currentZ)) {
 			this.currentX = x;
 			this.currentY = y;
 			this.currentZ = z;

@@ -22,7 +22,7 @@ public class UniformVec2 extends Uniform {
 	}
 
 	public void loadVec2(float x, float y) {
-		if (!used || x != currentX || y != currentY) {
+		if (isFound()&&(!used || x != currentX || y != currentY)) {
 			this.currentX = x;
 			this.currentY = y;
 			used = true;

@@ -12,7 +12,7 @@ public class UniformFloat extends Uniform {
 	}
 
 	public void loadFloat(float value) {
-		if (!used || currentValue != value) {
+		if (isFound()&&(!used || currentValue != value)) {
 			GL20.glUniform1f(super.getLocation(), value);
 			used = true;
 			currentValue = value;

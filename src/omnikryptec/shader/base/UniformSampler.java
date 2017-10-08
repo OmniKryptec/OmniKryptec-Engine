@@ -12,7 +12,7 @@ public class UniformSampler extends Uniform {
 	}
 
 	public void loadTexUnit(int texUnit) {
-		if (!used || currentValue != texUnit) {
+		if (isFound() && (!used || currentValue != texUnit)) {
 			GL20.glUniform1i(super.getLocation(), texUnit);
 			used = true;
 			currentValue = texUnit;
