@@ -101,6 +101,10 @@ public class Camera extends GameObject {
         return this;
     }
 
+    public Camera setDefaultScreenSpaceProjection() {
+    	return setOrthographicProjection2D(-1, -1, 2, 2);
+    }
+    
     public Camera setOrthographicProjection2D(float x, float y, float width, float height) {
         return setOrthographicProjection(x, x + width, y, y + height, -1, 1);
     }

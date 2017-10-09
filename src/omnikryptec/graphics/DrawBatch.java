@@ -41,7 +41,7 @@ import omnikryptec.gameobject.Camera;
 import omnikryptec.resource.model.VertexArrayObject;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.base.Shader;
-import omnikryptec.shader.files.render.GuiShader;
+import omnikryptec.shader.files.render.Shader2D;
 import omnikryptec.util.Color;
 import omnikryptec.util.Instance;
 import omnikryptec.util.RenderUtil;
@@ -52,11 +52,11 @@ public class DrawBatch {
 	private static final int[] elementLengths = { 2, 4, 2 };
 	private static final int vertices = 6;
 
-	private static GuiShader defShaderInst;
+	private static Shader2D defShaderInst;
 
-	private static GuiShader defaultShader() {
+	private static Shader2D defaultShader() {
 		if (defShaderInst == null) {
-			defShaderInst = new GuiShader();
+			defShaderInst = new Shader2D();
 		}
 		return defShaderInst;
 	}

@@ -4,5 +4,4 @@ package omnikryptec.shader.modules;
 public interface DynamicAccess<T> {
 
 	public T get();
-	
 }

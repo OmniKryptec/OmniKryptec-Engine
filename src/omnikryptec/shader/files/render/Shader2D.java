@@ -6,14 +6,14 @@ import omnikryptec.shader.base.UniformMatrix;
 import omnikryptec.shader.base.UniformSampler;
 import omnikryptec.util.AdvancedFile;
 
-public class GuiShader extends Shader {
+public class Shader2D extends Shader {
 
 	private final UniformSampler sampler = new UniformSampler("sampler");
 	private final UniformMatrix projview = new UniformMatrix("projview");
 	
-	public GuiShader() {
-		super(new AdvancedFile(SHADER_LOCATION_RENDER, "gui_vert.glsl"),
-				new AdvancedFile(SHADER_LOCATION_RENDER, "gui_frag.glsl"), "pos", "rgba", "uv");
+	public Shader2D() {
+		super(new AdvancedFile(SHADER_LOCATION_RENDER, "2d_vert.glsl"),
+				new AdvancedFile(SHADER_LOCATION_RENDER, "2d_frag.glsl"), "pos", "rgba", "uv");
 		registerUniforms(sampler, projview);
 		start();
 		sampler.loadTexUnit(0);

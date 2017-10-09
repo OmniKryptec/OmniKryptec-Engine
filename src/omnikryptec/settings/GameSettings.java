@@ -88,10 +88,14 @@ public class GameSettings {
 	public static final String HIGHEST_SHADER_LVL = "HIGHEST_SHADER_LVL";
 
 	/**
+	 * set if the engine is not booted yet; otherwise it will not have any effect.
+	 * 
 	 * int
 	 */
 	public static final String ANIMATION_MAX_JOINTS = "ANIMATION_MAX_JOINTS";
 	/**
+	 * set if the engine is not booted yet; otherwise it will not have any effect.
+	 * 
 	 * int
 	 */
 	public static final String ANIMATION_MAX_WEIGHTS = "ANIMATION_MAX_WEIGHTS";
@@ -101,6 +105,13 @@ public class GameSettings {
 	 * int
 	 */
 	public static final String MAX_FORWARD_LIGHTS = "MAX_FORWARD_LIGHTS";
+
+	/**
+	 * set if the engine is not booted yet; otherwise it will not have any effect.
+	 * 
+	 * float
+	 */
+	public static final String Z_OFFSET_2D = "Z_OFFSET_2D";
 
 	private final HashMap<String, Object> settings_objects = new HashMap<>();
 	private final HashMap<String, Float> settings_floats = new HashMap<>();
@@ -180,6 +191,8 @@ public class GameSettings {
 		/* ANIMATION */
 		setInteger(ANIMATION_MAX_JOINTS, 50);
 		setInteger(ANIMATION_MAX_WEIGHTS, 3);
+		/*SPECIAL*/
+		setFloat(Z_OFFSET_2D, 1f);
 		return this;
 	}
 

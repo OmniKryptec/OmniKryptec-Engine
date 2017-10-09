@@ -50,7 +50,7 @@ import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.resource.texture.SimpleAnimation;
 import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.settings.GameSettings;
-import omnikryptec.shader.files.render.GuiShader;
+import omnikryptec.shader.files.render.Shader2D;
 import omnikryptec.shader.modules.DynamicAccess;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Color;
@@ -361,7 +361,7 @@ public class EngineTest2 implements IEventHandler {
 
 		// system.generateParticles(1);
 		if (ev.getType() == EventType.RENDER_FRAME_EVENT) {
-			 DrawBatch testb = new DrawBatch(new Camera().setOrthographicProjection2D(-1, -1, 2, 2), new GuiShader(), 100);
+			 DrawBatch testb = new DrawBatch(new Camera().setDefaultScreenSpaceProjection(), new Shader2D(), 100);
 			 //testb.getCamera().getTransform().setPosition(0, 0, 10);
 			 testb.begin();
 			 testb.drawTest();
