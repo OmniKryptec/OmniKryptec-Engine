@@ -2,6 +2,7 @@ package omnikryptec.test;
 
 import java.util.Random;
 
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
@@ -23,7 +24,7 @@ import omnikryptec.gameobject.particles.AttractorMode;
 import omnikryptec.gameobject.particles.ParticleAttractor;
 import omnikryptec.gameobject.particles.ParticleSpawnArea;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
-import omnikryptec.gui.rendering.DrawBatch;
+import omnikryptec.graphics.DrawBatch;
 import omnikryptec.main.AbstractScene.RendererTime;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
@@ -210,7 +211,7 @@ public class EngineTest2 implements IEventHandler {
 			// }
 
 			System.out.println("Generating objs...");
-			int cube = 100;
+			int cube = 50;
 			int abstand = 5;
 			float scale = 1;
 			int objcount = 0;
@@ -360,10 +361,11 @@ public class EngineTest2 implements IEventHandler {
 
 		// system.generateParticles(1);
 		if (ev.getType() == EventType.RENDER_FRAME_EVENT) {
-//			 DrawBatch testb = new DrawBatch(new GuiShader(), 100);
-//			 testb.begin();
-//			 testb.draw(testrend.getTexture(), 0, 0, 1, 1);
-//			 testb.end();
+			 DrawBatch testb = new DrawBatch(new Camera().setOrthographicProjection2D(-1, -1, 2, 2), new GuiShader(), 100);
+			 //testb.getCamera().getTransform().setPosition(0, 0, 10);
+			 testb.begin();
+			 testb.drawTest();
+			 testb.end();
 			// if(Instance.getFramecount()>1000) {
 			// system.setTimeMultiplier(0.01f);
 			// attractor.setEnabled(false);

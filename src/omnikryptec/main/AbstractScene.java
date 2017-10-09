@@ -4,6 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import omnikryptec.display.DisplayManager;
+import omnikryptec.event.event.Event;
+import omnikryptec.event.event.EventSystem;
+import omnikryptec.event.event.EventType;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.GameObject;
 import omnikryptec.gameobject.Light;
@@ -119,7 +122,9 @@ public abstract class AbstractScene implements DataMapSerializable {
 	}
 	
 	private final RenderConfiguration getNew() {
-		return new RenderConfiguration().setShaderLvl(Instance.getGameSettings().getInteger(GameSettings.HIGHEST_SHADER_LVL));
+		RenderConfiguration cfg = new RenderConfiguration().setShaderLvl(Instance.getGameSettings().getInteger(GameSettings.HIGHEST_SHADER_LVL));
+		EventSystem.instance().fireEvent(new Event(cfg), EventType.NEW_DEFAULT_RENDERCONFIGURATION);
+		return cfg;
 	}
 	
 	public final long publicRender(RenderConfiguration config) {
@@ -163,8 +168,8 @@ public abstract class AbstractScene implements DataMapSerializable {
 	public final FrameState getState() {
 		return state;
 	}
-
-	public final Camera getCamera() {
+	
+	public Camera getCamera() {
 		return camera;
 	}
 
@@ -221,7 +226,7 @@ public abstract class AbstractScene implements DataMapSerializable {
 		clearcolor = f;
 		return this;
 	}
-
+	
 	public final Color getClearColor() {
 		return clearcolor;
 	}

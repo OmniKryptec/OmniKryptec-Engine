@@ -26,6 +26,8 @@ public final class EventType {
 
 	public static final EventType CLEANUP = new EventType("cleanup", true);
 
+	public static final EventType NEW_DEFAULT_RENDERCONFIGURATION = new EventType("newdefrendercfg", true);
+
 	private final String name;
 	private final boolean needsCurrentThread;
 
@@ -48,6 +50,12 @@ public final class EventType {
 
 	@Override
 	public boolean equals(Object o) {
+		if(o==null) {
+			return false;
+		}
+		if(this == o) {
+			return true;
+		}
 		if (o instanceof EventType) {
 			if (((EventType) o).needsCurrentThread == needsCurrentThread) {
 				if (((EventType) o).name.equals(name)) {

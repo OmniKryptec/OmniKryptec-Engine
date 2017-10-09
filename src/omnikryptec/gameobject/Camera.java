@@ -102,7 +102,7 @@ public class Camera extends GameObject {
     }
 
     public Camera setOrthographicProjection2D(float x, float y, float width, float height) {
-        return setOrthographicProjection(x, x + width, y + height, y, 1, -1);
+        return setOrthographicProjection(x, x + width, y, y + height, -1, 1);
     }
 
     public Camera setOrthographicProjection2D(float x, float y, float width, float height, float near, float far) {

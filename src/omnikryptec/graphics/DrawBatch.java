@@ -28,19 +28,22 @@
  *	ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *	POSSIBILITY OF SUCH DAMAGE.
  */
-package omnikryptec.gui.rendering;
+package omnikryptec.graphics;
 
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
-import omnikryptec.graphics.OpenGL;
+import com.bulletphysics.linearmath.Transform;
+
+import omnikryptec.gameobject.Camera;
 import omnikryptec.resource.model.VertexArrayObject;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.files.render.GuiShader;
 import omnikryptec.util.Color;
+import omnikryptec.util.Instance;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.exceptions.OmniKryptecException;
 
@@ -69,22 +72,37 @@ public class DrawBatch {
 	private Texture cur;
 	private boolean drawing = false;
 	private Color color = new Color(1, 1, 1, 1);
-
-	public DrawBatch() {
-		this(1000);
+	private Camera camera;
+	
+	public DrawBatch(Camera cam) {
+		this(cam, 1000);
 	}
 
-	public DrawBatch(int size) {
-		this(defaultShader(), size);
+	public DrawBatch(Camera cam, int size) {
+		this(cam, defaultShader(), size);
 	}
 
-	public DrawBatch(Shader program, int size) {
+	public DrawBatch(Camera cam, Shader program, int size) {
 		this.program = program;
+		this.camera = cam;
 		vao = VertexArrayObject.create();
 		max = size * vertices;
 		buffer = BufferUtils.createFloatBuffer(floatsPerVertex * max);
 	}
 
+	public Camera getCamera() {
+		return camera;
+	}
+	
+	public DrawBatch setCamera(Camera cam) {
+		if (drawing) {
+			throw new OmniKryptecException("Can't change the camera while rendering!");
+		}else {
+			this.camera = cam;
+		}
+		return this;
+	}
+	
 	public void drawTest() {
 		vertex(0, 0, 1, 1, 1, 1, 0, 0);
 		vertex(1, 0, 1, 1, 1, 1, 1, 0);
@@ -111,6 +129,7 @@ public class DrawBatch {
 		vertexcount = 0;
 		drawcalls = 0;
 		program.start();
+		program.onDrawBatchStart(this);
 		drawing = true;
 	}
 
@@ -119,6 +138,7 @@ public class DrawBatch {
 			throw new OmniKryptecException("Can't stop stopped rendering!");
 		}
 		flush();
+		program.onDrawBatchEnd(this);
 		drawing = false;
 	}
 

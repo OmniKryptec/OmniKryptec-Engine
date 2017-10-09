@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
 import omnikryptec.gameobject.Entity;
+import omnikryptec.graphics.DrawBatch;
 import omnikryptec.graphics.OpenGL;
 import omnikryptec.main.AbstractScene;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
@@ -142,6 +143,10 @@ public class Shader {
 
 	}
 
+	public void onDrawBatchStart(DrawBatch batch) {
+		
+	}
+	
 	public void onModelRenderStart(AdvancedModel m) {
 
 	}
@@ -154,6 +159,10 @@ public class Shader {
 
 	}
 
+	public void onDrawBatchEnd(DrawBatch batch) {
+		
+	}
+	
 	public void onRenderEnd(AbstractScene s) {
 
 	}

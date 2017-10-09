@@ -7,9 +7,11 @@ in vec2 uv;
 out vec4 col;
 out vec2 tex;
 
+uniform mat4 projview;
+
 void main(void){
 	
-	gl_Position = vec4(pos, 0.0, 1.0);
+	gl_Position =  projview * vec4(pos, 0.0, 1.0);
 	col = rgba;
 	tex = uv;
 }
