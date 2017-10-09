@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import omnikryptec.util.AdvancedFile;
@@ -26,7 +27,7 @@ public class ModuleSystem {
 
 	
 	private HashMap<String, Module> loadedModules = new HashMap<>();
-	private HashMap<String, DynamicAccess<?>> dynamics = new HashMap<>();
+	private HashMap<String, Supplier<?>> dynamics = new HashMap<>();
 	
 	
 	public ModuleSystem(String dynamicvarstart, String dynamicvarend, String defaultmoduleloc) {
@@ -142,7 +143,7 @@ public class ModuleSystem {
 	}
 
 	
-	public ModuleSystem addDynamic(String key, DynamicAccess<?> valuegetter) {
+	public ModuleSystem addDynamic(String key, Supplier<?> valuegetter) {
 		dynamics.put(key, valuegetter);
 		return this;
 	}

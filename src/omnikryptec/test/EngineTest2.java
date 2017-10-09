@@ -51,7 +51,6 @@ import omnikryptec.resource.texture.SimpleAnimation;
 import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.shader.files.render.Shader2D;
-import omnikryptec.shader.modules.DynamicAccess;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Color;
 import omnikryptec.util.Instance;
