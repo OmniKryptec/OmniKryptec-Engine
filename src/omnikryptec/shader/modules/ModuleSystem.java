@@ -151,6 +151,6 @@ public class ModuleSystem {
 	public String getValueOf(String word) {
 		word = word.replace(DYNAMIC_VAR_START, "");
 		word = word.replace(DYNAMIC_VAR_END, "");
-		return dynamics.get(word).get()+"";
+		return dynamics.get(word)==null?"$$$Invalid dynamic$$$":dynamics.get(word).get()+"";
 	}
 }
