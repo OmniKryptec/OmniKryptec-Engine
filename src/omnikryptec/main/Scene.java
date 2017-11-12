@@ -153,9 +153,9 @@ public class Scene extends AbstractScene {
 
     public final List<Entity> getEntities() {
         final List<Entity> entities = global.getEntities();
-        scene.values().stream().forEach((chunk) -> {
-            entities.addAll(chunk.getEntities());
-        });
+        for(RenderChunk c : scene.values()) {
+        	entities.addAll(c.getEntities());
+        }
         return entities;
     }
 

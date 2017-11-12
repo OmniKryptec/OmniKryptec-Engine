@@ -73,8 +73,16 @@ public class EngineTest2 implements IEventHandler {
     static FloorReflectionRenderer testrend;
 
     public static void main(String[] args) {
-        try {
-            // System.out.println((int) (Math.ceil(size/10.0)*10));
+    	try {
+    		
+//    		int abc = 1000000;
+//    		long time = System.currentTimeMillis();
+//    		for(int i=0; i<abc; i++) {
+//    			org.joml.Math.sin(43);
+//    		}
+//    		long time2 = System.currentTimeMillis();
+//    		System.out.println((time2-time)*1000000/(double)abc);
+    		// System.out.println((int) (Math.ceil(size/10.0)*10));
             // NativesLoader.setNativesFolder(new AdvancedFile(false, (Object)null,
             // "H:/natives/"));
             NativesLoader.loadNatives();
@@ -98,7 +106,7 @@ public class EngineTest2 implements IEventHandler {
                     liveProfiler.startTimer(1000);
                 }
             }).start();
-
+            
             // rend = new TestRenderer();
             //PostProcessing.instance().addStage(new
             // DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,

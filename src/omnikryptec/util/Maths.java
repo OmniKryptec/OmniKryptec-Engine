@@ -21,6 +21,11 @@ public class Maths {
     public static final Vector3f ZERO = new Vector3f(0, 0, 0);
     public static final Vector3f ONE = new Vector3f(1, 1, 1);
 
+    
+    public static long fastFloor(float f) {
+    	return f<0.0f?(long)f-1:(long)f;
+    }
+    
     public static Matrix4f createTransformationMatrix(Vector3f position, Vector3f rotation, Vector3f scale) {
         return createTransformationMatrix(position, rotation, scale, null);
     }

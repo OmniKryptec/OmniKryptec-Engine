@@ -166,7 +166,7 @@ public class RenderUtil {
 	}
 
 	public static boolean inRenderRange(Vector3f pos, RenderType type, Camera c) {
-		if (needsUpdate(lastupdate, 10)) {
+		if (needsUpdate(lastupdate, 20)) {
 			lastupdate = DisplayManager.instance().getFramecount();
 			rad_fol = DisplayManager.instance().getSettings().getFloat(GameSettings.RADIUS_FOLIAGE);
 			rad_med = DisplayManager.instance().getSettings().getFloat(GameSettings.RADIUS_MEDIUM);

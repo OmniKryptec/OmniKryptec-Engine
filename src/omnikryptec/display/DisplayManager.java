@@ -85,6 +85,9 @@ public class DisplayManager implements Profilable{
 	 * @return OmniKryptecEngine OmniKryptecEngine
 	 */
 	public static final OmniKryptecEngine createDisplay(String name, GameSettings settings, GLFWInfo info) {
+		if(settings.getBoolean(GameSettings.FASTMATH)) {
+			System.setProperty("joml.fastmath", "true");
+		}
 		if (manager != null) {
 			throw new IllegalStateException("The DisplayManager is already created!");
 		}

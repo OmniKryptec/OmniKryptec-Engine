@@ -113,6 +113,13 @@ public class GameSettings {
 	 */
 	public static final String Z_OFFSET_2D = "Z_OFFSET_2D";
 
+	/**
+	 * set if the engine is not booted yet; otherwise it will not have any effect.
+	 * 
+	 * boolean
+	 */
+	public static final String FASTMATH = "FASTMATH";
+	
 	private final HashMap<String, Object> settings_objects = new HashMap<>();
 	private final HashMap<String, Float> settings_floats = new HashMap<>();
 	private final HashMap<String, Integer> settings_integers = new HashMap<>();
@@ -193,6 +200,7 @@ public class GameSettings {
 		setInteger(ANIMATION_MAX_WEIGHTS, 3);
 		/*SPECIAL*/
 		setFloat(Z_OFFSET_2D, 1f);
+		setBoolean(FASTMATH, true);
 		return this;
 	}
 

@@ -7,6 +7,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
+import org.joml.Math;
 
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;

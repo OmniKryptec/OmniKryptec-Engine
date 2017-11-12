@@ -16,6 +16,7 @@ import omnikryptec.settings.GameSettings;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.Instance;
+import omnikryptec.util.Maths;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -388,7 +389,7 @@ public class GameObject implements DataMapSerializable, Transformable {
      * @return chunkx
      */
     public final long getChunkX() {
-        return (long) Math.floor(transform.getPosition(true).x / RenderChunk.getWidth());
+        return Maths.fastFloor(transform.getPosition(true).x / RenderChunk.getWidth());
     }
 
     /**
@@ -398,7 +399,7 @@ public class GameObject implements DataMapSerializable, Transformable {
      * @return chunky
      */
     public final long getChunkY() {
-        return (long) Math.floor(transform.getPosition(true).y / RenderChunk.getHeight());
+        return Maths.fastFloor(transform.getPosition(true).y / RenderChunk.getHeight());
     }
 
     /**
@@ -408,7 +409,7 @@ public class GameObject implements DataMapSerializable, Transformable {
      * @return
      */
     public final long getChunkZ() {
-        return (long) Math.floor(transform.getPosition(true).z / RenderChunk.getDepth());
+        return Maths.fastFloor(transform.getPosition(true).z / RenderChunk.getDepth());
     }
 
     /**
