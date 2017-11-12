@@ -2,6 +2,11 @@ package omnikryptec.resource.texture;
 
 import omnikryptec.display.DisplayManager;
 
+/**
+ * Animations in animations may not work correctly.
+ * @author pcfreak9000
+ *
+ */
 public class SimpleAnimation extends Texture {
 
     private Texture[] textures;
