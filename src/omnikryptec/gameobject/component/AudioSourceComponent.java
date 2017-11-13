@@ -7,7 +7,7 @@ import org.joml.Vector3f;
 import omnikryptec.audio.AudioSource;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.GameObject;
-import omnikryptec.main.Scene;
+import omnikryptec.main.Scene3D;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.util.Blocker;
 
@@ -124,7 +124,7 @@ public class AudioSourceComponent implements Component {
     private float newDeltaPitch;
     private boolean isUsingPhysics, paused;
     private RenderChunk chunk;
-    private Scene scene;
+    private Scene3D scene;
     private PhysicsComponent physicsComponent;
     private Vector3f position, rotation;
     private javax.vecmath.Vector3f velocity = new javax.vecmath.Vector3f(0, 0, 0);

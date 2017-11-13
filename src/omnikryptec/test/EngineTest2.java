@@ -2,7 +2,6 @@ package omnikryptec.test;
 
 import java.util.Random;
 
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
@@ -17,29 +16,21 @@ import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.gameobject.GameObject;
 import omnikryptec.gameobject.Light;
-import omnikryptec.gameobject.RenderType;
-import omnikryptec.gameobject.UpdateType;
 import omnikryptec.gameobject.particles.AttractedPaticleSystem;
 import omnikryptec.gameobject.particles.AttractorMode;
 import omnikryptec.gameobject.particles.ParticleAttractor;
 import omnikryptec.gameobject.particles.ParticleSpawnArea;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
 import omnikryptec.graphics.DrawBatch;
-import omnikryptec.main.AbstractScene.RendererTime;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
-import omnikryptec.main.Scene;
-import omnikryptec.postprocessing.main.DebugRenderer;
+import omnikryptec.main.Scene3D;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
-import omnikryptec.postprocessing.main.PostProcessing;
-import omnikryptec.postprocessing.stages.ColorSpaceStage;
-import omnikryptec.postprocessing.stages.ContrastchangeStage;
-import omnikryptec.postprocessing.stages.FogStage;
 import omnikryptec.renderer.FloorReflectionRenderer;
 import omnikryptec.renderer.RenderConfiguration;
-import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.renderer.RenderConfiguration.AllowedRenderer;
+import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
 import omnikryptec.resource.model.Model;
@@ -53,10 +44,10 @@ import omnikryptec.settings.GameSettings;
 import omnikryptec.shader.files.render.Shader2D;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Color;
+import omnikryptec.util.EnumCollection.RenderType;
+import omnikryptec.util.EnumCollection.UpdateType;
 import omnikryptec.util.Instance;
-import omnikryptec.util.Maths;
 import omnikryptec.util.NativesLoader;
-import omnikryptec.util.RenderUtil;
 import omnikryptec.util.lang.LanguageManager;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
@@ -166,7 +157,7 @@ public class EngineTest2 implements IEventHandler {
             // tm.getMaterial().setTexture(Material.SPECULAR, );
             tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.6f))
                     .setFloat(Material.DAMPER, 1.01f).setVector3f(Material.SHADERINFO, new Vector3f(1));
-            OmniKryptecEngine.instance().addAndSetScene(new Scene("test", (Camera) new Camera() {
+            OmniKryptecEngine.instance().addAndSetScene(new Scene3D("test", (Camera) new Camera() {
 
                 @Override
                 public void update() {

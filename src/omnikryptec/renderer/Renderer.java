@@ -3,7 +3,7 @@ package omnikryptec.renderer;
 import java.util.List;
 
 import omnikryptec.gameobject.Entity;
-import omnikryptec.main.AbstractScene;
+import omnikryptec.main.Abstract3DEnv;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.ShaderPack;
@@ -31,12 +31,12 @@ public abstract class Renderer{
         this.shaderpack = myshader;
     }
 
-    protected abstract long render(AbstractScene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader started, FrustrumFilter filter);
+    protected abstract long render(Abstract3DEnv s, RenderMap<AdvancedModel, List<Entity>> entities, Shader started, FrustrumFilter filter);
 
     private Shader tmps = null;
     private long tmplong;
     
-    public final long render(AbstractScene s, RenderMap<AdvancedModel, List<Entity>> entities, RenderConfiguration config) {
+    public final long render(Abstract3DEnv s, RenderMap<AdvancedModel, List<Entity>> entities, RenderConfiguration config) {
     	cur = config;
     	if(usesShader) {
 	        tmps = shaderpack.getShader(config.getShaderpackKey(), config.getShaderLvl());

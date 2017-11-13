@@ -1,13 +1,13 @@
 package omnikryptec.event.input;
 
 import org.joml.AxisAngle4f;
+import org.joml.Math;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
-import org.joml.Math;
 
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;

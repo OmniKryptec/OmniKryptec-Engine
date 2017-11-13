@@ -39,7 +39,7 @@ import omnikryptec.gameobject.EntityBuilder;
 import omnikryptec.gameobject.FollowingCamera;
 import omnikryptec.gameobject.GameObject;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.Scene;
+import omnikryptec.main.Scene3D;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.NativesLoader;
@@ -256,7 +256,7 @@ public class JBulletTest {
             DisplayManager.createDisplay("JBulletTest", new GameSettings().setAnisotropicLevel(32).setMultisamples(32)/*.setInitialFPSCap(30)*/.setChunkRenderOffsets(2, 2, 2).setLightForward(true), new GLFWInfo(4, 3, false, false, 1280, 720));
 
             // PostProcessing.instance().addStage(new LightRenderer());
-            OmniKryptecEngine.instance().addAndSetScene(new Scene("TestScene", new Camera() {
+            OmniKryptecEngine.instance().addAndSetScene(new Scene3D("TestScene", new Camera() {
                 @Override
                 public void update() {
                     InputManager.doFirstPersonController(this, DisplayManager.instance().getSettings().getKeySettings(),
@@ -265,7 +265,7 @@ public class JBulletTest {
 
             }.setPerspectiveProjection(75, 1000, 0.1F)));
 
-            OmniKryptecEngine.instance().addAndSetScene(new Scene("TestScene", getCamera(1))); // TODO
+            OmniKryptecEngine.instance().addAndSetScene(new Scene3D("TestScene", getCamera(1))); // TODO
             // Set
             // this
             // to

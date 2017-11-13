@@ -23,7 +23,7 @@ import omnikryptec.gameobject.Entity;
 import omnikryptec.gameobject.EntityBuilder;
 import omnikryptec.gameobject.GameObject;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.Scene;
+import omnikryptec.main.Scene3D;
 import omnikryptec.resource.loader.DefaultAnimatedModelDataLoader;
 import omnikryptec.resource.loader.DefaultAnimationLoader;
 import omnikryptec.resource.loader.DefaultModelLoader;
@@ -59,7 +59,7 @@ public class AnimationTest {
     private static final Random random = new Random();
     private static GameSettings gameSettings;
     private static KeySettings keySettings;
-    private static Scene scene = null;
+    private static Scene3D scene = null;
     private static Camera camera = null;
     private static AnimatedModel animatedModel;
     private static Animation animation;
@@ -103,7 +103,7 @@ public class AnimationTest {
             keySettings.setKey("lower", GLFW.GLFW_KEY_COMMA, true);
             keySettings.setKey("higher", GLFW.GLFW_KEY_PERIOD, true);
             DisplayManager.createDisplay("Animation Test", gameSettings, new GLFWInfo(4, 3, false, false, 1280, 720));
-            OmniKryptecEngine.instance().addAndSetScene((scene = new Scene("Test-Scene", camera = ((Camera) new Camera() {
+            OmniKryptecEngine.instance().addAndSetScene((scene = new Scene3D("Test-Scene", camera = ((Camera) new Camera() {
 
                 @Override
                 public final void update() {
@@ -204,7 +204,7 @@ public class AnimationTest {
                     }
                 });
             });
-            scene.fromDataMap(dataMapSerializer.getDataMaps(Scene.class).get(0));
+            scene.fromDataMap(dataMapSerializer.getDataMaps(Scene3D.class).get(0));
             Logger.log(String.format("Loaded Scene \"%s\" from file \"%s\"", scene.getName(), SAVE));
         } catch (Exception ex) {
             Logger.logErr("Error while loading save: " + ex, ex);

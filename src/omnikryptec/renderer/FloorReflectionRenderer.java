@@ -5,11 +5,11 @@ import java.util.List;
 import org.joml.Vector4f;
 
 import omnikryptec.gameobject.Entity;
-import omnikryptec.main.AbstractScene;
-import omnikryptec.main.AbstractScene.RendererTime;
+import omnikryptec.main.Abstract3DEnv;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.shader.base.Shader;
+import omnikryptec.util.EnumCollection.RendererTime;
 import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.Instance;
 import omnikryptec.util.RenderUtil;
@@ -36,7 +36,7 @@ public class FloorReflectionRenderer extends Renderer{
 	}
 	
 	@Override
-	protected long render(AbstractScene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader started,
+	protected long render(Abstract3DEnv s, RenderMap<AdvancedModel, List<Entity>> entities, Shader started,
 			FrustrumFilter filter) {
 		texture.bindFrameBuffer();
 		RenderUtil.clear(0, 0, 0, 1);

@@ -26,9 +26,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.IOUtils;
+
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
-import org.apache.commons.io.IOUtils;
 
 /**
  * AdvancedFile

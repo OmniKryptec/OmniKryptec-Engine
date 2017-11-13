@@ -4,9 +4,9 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import omnikryptec.gameobject.Camera;
-import omnikryptec.gameobject.RenderType;
 import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.util.Color;
+import omnikryptec.util.EnumCollection.RenderType;
 
 public class Particle {
 

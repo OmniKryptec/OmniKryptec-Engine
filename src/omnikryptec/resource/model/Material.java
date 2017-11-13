@@ -86,7 +86,7 @@ public class Material {
 	}
 	
 	public final Material setRenderer(Renderer renderer) {
-		RendererRegistration.exceptionsIfNotRegistered(renderer);
+		RendererRegistration.exceptionIfNotRegistered(renderer);
 		this.renderer = renderer;
 		return this;
 	}

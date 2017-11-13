@@ -2,11 +2,10 @@ package omnikryptec.shader.files.render;
 
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import org.lwjgl.opengl.GL20;
 
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.Light;
-import omnikryptec.main.AbstractScene;
+import omnikryptec.main.Abstract3DEnv;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
 import omnikryptec.resource.texture.Texture;
@@ -168,7 +167,7 @@ public class ForwardMeshShader extends Shader {
 	}
 
 	@Override
-	public void onRenderStart(AbstractScene s, Vector4f cp) {
+	public void onRenderStart(Abstract3DEnv s, Vector4f cp) {
 		view.loadMatrix(s.getCamera().getViewMatrix());
 		projection.loadMatrix(s.getCamera().getProjectionMatrix());
 		ambient.loadVec3(s.getAmbientColor().getArray());

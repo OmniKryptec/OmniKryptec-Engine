@@ -3,7 +3,7 @@ package omnikryptec.test;
 import java.util.List;
 
 import omnikryptec.gameobject.Entity;
-import omnikryptec.main.AbstractScene;
+import omnikryptec.main.Abstract3DEnv;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.renderer.RenderConfiguration;
@@ -25,7 +25,7 @@ public class TestRenderer extends Renderer{
 	}
 
 	@Override
-	protected long render(AbstractScene s, RenderMap<AdvancedModel, List<Entity>> entities, Shader started,
+	protected long render(Abstract3DEnv s, RenderMap<AdvancedModel, List<Entity>> entities, Shader started,
 			FrustrumFilter filter) {
 		fbo.bindFrameBuffer();
 		RenderUtil.clear(0, 0, 0, 0);

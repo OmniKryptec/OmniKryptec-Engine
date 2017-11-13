@@ -25,6 +25,7 @@ import omnikryptec.resource.model.VertexBufferObject;
 import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.shader.base.Shader;
+import omnikryptec.util.Color;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.error.ErrorObject;
 import omnikryptec.util.error.OmnikryptecError;
@@ -96,8 +97,9 @@ public class OmniKryptecEngine implements Profilable {
 	private DisplayManager manager;
 	private EventSystem eventsystem;
 	private PostProcessing postpro;
-	private final ArrayList<AbstractScene> scenes = new ArrayList<>();
-	private AbstractScene sceneCurrent;
+	private final ArrayList<Abstract3DEnv> scenes = new ArrayList<>();
+	private Abstract3DEnv sceneCurrent;
+	private Color clearcolor = new Color(0, 0, 0, 0);
 	private long vertsCountCurrent = 0;
 
 	private ShutdownOption shutdownOption = ShutdownOption.JAVA;
@@ -247,7 +249,7 @@ public class OmniKryptecEngine implements Profilable {
 			scenefbo.bindFrameBuffer();
 			if (sceneCurrent != null) {
 				if (clear) {
-					RenderUtil.clear(sceneCurrent.getClearColor());
+					RenderUtil.clear(getClearColor());
 				}
 				if (!onlyrender) {
 					sceneCurrent.publicLogic(true);
@@ -338,29 +340,37 @@ public class OmniKryptecEngine implements Profilable {
 		EventSystem.instance().fireEvent(new Event(e), EventType.ERROR);
 	}
 
-	public final OmniKryptecEngine addAndSetScene(AbstractScene scene) {
+	public final OmniKryptecEngine addAndSetScene(Enviroment scene) {
 		if (scene != null) {
 			addScene(scene);
-			setScene(scene.getName());
+			if(scene instanceof Abstract3DEnv) {
+				setScene(scene.getName());
+			}else if(scene instanceof Abstract2DEnv) {
+				
+			}
 		}
 		return this;
 	}
 
-	public final OmniKryptecEngine addScene(AbstractScene scene) {
+	public final OmniKryptecEngine addScene(Enviroment scene) {
 		if (scene != null) {
-			scenes.add(scene);
+			if(scene instanceof Abstract3DEnv) {
+				scenes.add((Abstract3DEnv)scene);
+			}else if(scene instanceof Abstract2DEnv) {
+				
+			}
 		}
 		return this;
 	}
 
 	public final OmniKryptecEngine setScene(String name) {
-		List<AbstractScene> scenesEquals = scenes.stream().filter((scene) -> scene.getName().equals(name))
+		List<Abstract3DEnv> scenesEquals = scenes.stream().filter((scene) -> scene.getName().equals(name))
 				.collect(Collectors.toList());
 		sceneCurrent = (scenesEquals.isEmpty() ? null : scenesEquals.get(0));
 		return this;
 	}
 
-	public final AbstractScene getCurrentScene() {
+	public final Abstract3DEnv getCurrentScene() {
 		return sceneCurrent;
 	}
 
@@ -373,7 +383,7 @@ public class OmniKryptecEngine implements Profilable {
 		return this;
 	}
 
-	public final ArrayList<AbstractScene> getScenes() {
+	public final ArrayList<Abstract3DEnv> getScenes() {
 		return scenes;
 	}
 
@@ -381,6 +391,25 @@ public class OmniKryptecEngine implements Profilable {
 		return sceneCurrent == null ? null : sceneCurrent.getName();
 	}
 
+
+	public final OmniKryptecEngine setClearColor(float r, float g, float b) {
+		return setClearColor(r, g, b, 1);
+	}
+
+	public final OmniKryptecEngine setClearColor(float r, float g, float b, float a) {
+		clearcolor.set(r, g, b, a);
+		return this;
+	}
+
+	public final OmniKryptecEngine setClearColor(Color f) {
+		clearcolor = f;
+		return this;
+	}
+	
+	public final Color getClearColor() {
+		return clearcolor;
+	}
+	
 	@Override
 	public ProfileContainer[] getProfiles() {
 		return new ProfileContainer[] { new ProfileContainer(Profiler.OVERALL_FRAME_TIME, getFrameTimeMS()),

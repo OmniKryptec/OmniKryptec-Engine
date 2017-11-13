@@ -1,8 +1,6 @@
 package omnikryptec.shader.base;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;

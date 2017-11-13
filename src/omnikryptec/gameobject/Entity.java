@@ -9,6 +9,7 @@ import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.Color;
+import omnikryptec.util.EnumCollection.RenderType;
 import omnikryptec.util.SerializationUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;

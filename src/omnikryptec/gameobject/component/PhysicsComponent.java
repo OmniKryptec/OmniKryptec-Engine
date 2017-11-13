@@ -9,7 +9,7 @@ import com.bulletphysics.linearmath.Transform;
 
 import omnikryptec.gameobject.Entity;
 import omnikryptec.gameobject.GameObject;
-import omnikryptec.main.Scene;
+import omnikryptec.main.Scene3D;
 import omnikryptec.physics.JBulletPhysicsWorld;
 import omnikryptec.physics.RigidBodyBuilder;
 import omnikryptec.renderer.RenderChunk;
@@ -87,7 +87,7 @@ public class PhysicsComponent implements Component {
         }
     }
 
-    private final void manageRigidBodyStatus(Scene oldScene, Scene newScene) {
+    private final void manageRigidBodyStatus(Scene3D oldScene, Scene3D newScene) {
         if (oldScene != null && oldScene.isUsingPhysics() && oldScene.getPhysicsWorld() instanceof JBulletPhysicsWorld) {
             ((JBulletPhysicsWorld) oldScene.getPhysicsWorld()).getWorld().removeRigidBody(body);
         }

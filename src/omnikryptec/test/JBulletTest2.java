@@ -36,9 +36,9 @@ import omnikryptec.gameobject.component.PhysicsComponent;
 import omnikryptec.gameobject.terrain.Terrain;
 import omnikryptec.gameobject.terrain.TerrainGenerator;
 import omnikryptec.gameobject.terrain.TerrainTexturePack;
-import omnikryptec.main.AbstractScene;
+import omnikryptec.main.Abstract3DEnv;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.Scene;
+import omnikryptec.main.Scene3D;
 import omnikryptec.physics.JBulletPhysicsWorld;
 import omnikryptec.physics.RigidBodyBuilder;
 import omnikryptec.resource.model.Material;
@@ -98,7 +98,7 @@ public class JBulletTest2 {
             keySettings.setKey("physicsSlower", GLFW.GLFW_KEY_COMMA, true);
             DisplayManager.createDisplay("JBullet Test2", gameSettings, new GLFWInfo(4, 3, true, false, 1280, 720));
             DisplayManager.instance().getSettings().getKeySettings().setKey("sprint", GLFW.GLFW_KEY_LEFT_CONTROL, true);
-            OmniKryptecEngine.instance().addAndSetScene(new Scene("Test-Scene", (Camera) new Camera() {
+            OmniKryptecEngine.instance().addAndSetScene(new Scene3D("Test-Scene", (Camera) new Camera() {
 
                 @Override
                 public void update() {
@@ -278,7 +278,7 @@ public class JBulletTest2 {
                 bouncer.continuePlaying();
             }
         }
-        final AbstractScene scene = OmniKryptecEngine.rawInstance().getCurrentScene();
+        final Abstract3DEnv scene = OmniKryptecEngine.rawInstance().getCurrentScene();
         float deltaPhysicsSpeed = 0;
         if (keySettings.isPressed("physicsFaster")) {
             deltaPhysicsSpeed += 0.005;

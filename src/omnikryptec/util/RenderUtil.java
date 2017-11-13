@@ -7,9 +7,9 @@ import org.lwjgl.opengl.GL13;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
-import omnikryptec.gameobject.RenderType;
-import omnikryptec.gameobject.UpdateType;
 import omnikryptec.settings.GameSettings;
+import omnikryptec.util.EnumCollection.RenderType;
+import omnikryptec.util.EnumCollection.UpdateType;
 
 public class RenderUtil {
 
@@ -166,6 +166,7 @@ public class RenderUtil {
 	}
 
 	public static boolean inRenderRange(Vector3f pos, RenderType type, Camera c) {
+		//In andere Funktion auslagern hier wird zu oft gecalled
 		if (needsUpdate(lastupdate, 20)) {
 			lastupdate = DisplayManager.instance().getFramecount();
 			rad_fol = DisplayManager.instance().getSettings().getFloat(GameSettings.RADIUS_FOLIAGE);

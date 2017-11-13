@@ -7,6 +7,7 @@ import org.joml.Vector3f;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
+import omnikryptec.util.EnumCollection.UpdateType;
 import omnikryptec.util.Maths;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.SerializationUtil;

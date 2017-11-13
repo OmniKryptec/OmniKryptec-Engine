@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.joml.Vector4f;
@@ -15,7 +14,7 @@ import org.lwjgl.opengl.GL32;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.graphics.DrawBatch;
 import omnikryptec.graphics.OpenGL;
-import omnikryptec.main.AbstractScene;
+import omnikryptec.main.Abstract3DEnv;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.settings.GameSettings;
@@ -140,7 +139,7 @@ public class Shader {
 
 	// ******************************************************************
 
-	public void onRenderStart(AbstractScene s, Vector4f clipPlane) {
+	public void onRenderStart(Abstract3DEnv s, Vector4f clipPlane) {
 
 	}
 
@@ -164,7 +163,7 @@ public class Shader {
 		
 	}
 	
-	public void onRenderEnd(AbstractScene s) {
+	public void onRenderEnd(Abstract3DEnv s) {
 
 	}
 

@@ -64,26 +64,26 @@ public class Maths {
         return matrix;
     }
 
-    public static Matrix4f setPerspectiveProjection(float fovdeg, float far, float near) {
-        return setPerspectiveProjection(fovdeg, far, near, Display.getWidth(), Display.getHeight());
+    public static Matrix4f newPerspectiveProjection(float fovdeg, float far, float near) {
+        return newPerspectiveProjection(fovdeg, far, near, Display.getWidth(), Display.getHeight());
     }
 
-    public static Matrix4f setPerspectiveProjection(float fovdeg, float far, float near, float width, float height) {
+    public static Matrix4f newPerspectiveProjection(float fovdeg, float far, float near, float width, float height) {
         return new Matrix4f().setPerspective((float) Math.toRadians(fovdeg), width / height, near, far);
     }
 
-    public static Matrix4f setOrthographicProjection(float left, float right, float bottom, float top, float near,
+    public static Matrix4f newOrthographicProjection(float left, float right, float bottom, float top, float near,
             float far) {
         return new Matrix4f().setOrtho(left, right, bottom, top, near, far);
     }
 
-    public static Matrix4f setOrthographicProjection2D(float x, float y, float width, float height) {
-        return setOrthographicProjection(x, x + width, y + height, y, 1, -1);
+    public static Matrix4f newOrthographicProjection2D(float x, float y, float width, float height) {
+        return newOrthographicProjection(x, x + width, y + height, y, 1, -1);
     }
 
-    public static Matrix4f setOrthographicProjection2D(float x, float y, float width, float height, float near,
+    public static Matrix4f newOrthographicProjection2D(float x, float y, float width, float height, float near,
             float far) {
-        return setOrthographicProjection(x, x + width, y, y + height, near, far);
+        return newOrthographicProjection(x, x + width, y, y + height, near, far);
     }
 
     public static boolean fastEquals2f(Vector2f one, Vector2f sec) {
@@ -228,5 +228,19 @@ public class Maths {
 
     public static float getRandomRotationf(Random r) {
         return (float) getRandomRotation(r);
+    }
+    
+    public static Vector2f cartesianToIsometric(Vector2f vec, Vector2f target) {
+    	if(target==null) {
+    		target = new Vector2f();
+    	}
+    	return target.set(vec.x-vec.y, (vec.x+vec.y)/2f);
+    }
+    
+    public static Vector2f isometricToCartesian(Vector2f vec, Vector2f target) {
+    	if(target==null) {
+    		target = new Vector2f();
+    	}
+    	return target.set((2 * vec.y + vec.x)/2, (2 * vec.y - vec.x)/2);
     }
 }

@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import org.joml.Vector3f;
 
 import omnikryptec.gameobject.GameObject;
-import omnikryptec.gameobject.RenderType;
 import omnikryptec.resource.texture.ParticleAtlas;
+import omnikryptec.util.EnumCollection.RenderType;
 
 /**
  * AttractedPaticleSystem

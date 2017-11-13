@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.joml.Vector3f;
 
-import omnikryptec.gameobject.RenderType;
 import omnikryptec.resource.texture.ParticleAtlas;
+import omnikryptec.util.EnumCollection.RenderType;
 import omnikryptec.util.PhysicsUtil;
 
 /**

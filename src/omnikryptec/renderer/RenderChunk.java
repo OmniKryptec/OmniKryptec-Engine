@@ -13,7 +13,7 @@ import omnikryptec.gameobject.Entity;
 import omnikryptec.gameobject.GameObject;
 import omnikryptec.gameobject.Light;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.Scene;
+import omnikryptec.main.Scene3D;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
 import omnikryptec.test.saving.DataMap;
@@ -60,13 +60,13 @@ public class RenderChunk implements DataMapSerializable {
 	}
 
 	private long x, y, z;
-	private final Scene scene;
+	private final Scene3D scene;
 
 	public RenderChunk() {
 		this(0, 0, 0, null);
 	}
 
-	public RenderChunk(long x, long y, long z, Scene scene) {
+	public RenderChunk(long x, long y, long z, Scene3D scene) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -236,7 +236,7 @@ public class RenderChunk implements DataMapSerializable {
 		return vertcount;
 	}
 
-	public Scene getScene() {
+	public Scene3D getScene() {
 		return scene;
 	}
 

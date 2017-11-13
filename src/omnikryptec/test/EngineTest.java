@@ -5,7 +5,7 @@ import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
-import omnikryptec.main.Scene;
+import omnikryptec.main.Scene3D;
 import omnikryptec.resource.model.Material;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
@@ -34,7 +34,7 @@ public class EngineTest {
                     .newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create();
             TexturedModel tm = new TexturedModel("brunnen", brunnen, brunnent);
             tm.getMaterial().setFloat(Material.REFLECTIVITY, 0.5f);
-            OmniKryptecEngine.instance().addAndSetScene(new Scene("test", new Camera() {
+            OmniKryptecEngine.instance().addAndSetScene(new Scene3D("test", new Camera() {
                 @Override
                 public void update() {
                     // setRelativePos(getRelativePos().x, getRelativePos().y,

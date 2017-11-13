@@ -27,7 +27,7 @@ public class RendererRegistration {
 		SIMPLE_MESH_RENDERER = new SimpleMeshRenderer();
 	}
 
-	public static void exceptionsIfNotRegistered(Renderer r) {
+	public static void exceptionIfNotRegistered(Renderer r) {
 		if (!exists(r)) {
 			Logger.logErr("This renderer is not registered!",
 					new OmniKryptecException("Renderer is not registered: " + r.getClass() + " (" + r + ")"));

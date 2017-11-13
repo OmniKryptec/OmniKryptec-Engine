@@ -1,6 +1,6 @@
 package omnikryptec.event.event;
 
-import omnikryptec.main.AbstractScene;
+import omnikryptec.main.Abstract3DEnv;
 import omnikryptec.main.OmniKryptecEngine;
 
 /**
@@ -11,7 +11,7 @@ import omnikryptec.main.OmniKryptecEngine;
 public class Event {
 
 	private EventType type;
-	private AbstractScene scene;
+	private Abstract3DEnv scene;
 	private Object[] msg;
 
 	/**
@@ -60,7 +60,7 @@ public class Event {
 	 * 
 	 * @return a scene
 	 */
-	public AbstractScene getScene() {
+	public Abstract3DEnv getScene() {
 		return scene;
 	}
 

@@ -10,7 +10,7 @@ import omnikryptec.event.event.EventSystem;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.gameobject.terrain.TerrainRenderer;
-import omnikryptec.main.AbstractScene;
+import omnikryptec.main.Abstract3DEnv;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.postprocessing.main.PostProcessing;
 import omnikryptec.postprocessing.main.PostProcessingStage;
@@ -71,7 +71,7 @@ public class Instance {
 		return DisplayManager.instance();
 	}
 
-	public static final AbstractScene getCurrentScene() {
+	public static final Abstract3DEnv getCurrentScene() {
 		return getEngine().getCurrentScene();
 	}
 

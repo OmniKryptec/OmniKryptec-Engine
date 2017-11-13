@@ -7,12 +7,11 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
 import omnikryptec.display.DisplayManager;
-import omnikryptec.gameobject.RenderType;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.postprocessing.main.FBOFactory;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.RenderTarget;
-import omnikryptec.renderer.RenderConfiguration;
+import omnikryptec.util.EnumCollection.RenderType;
 import omnikryptec.util.Returner;
 
 /**

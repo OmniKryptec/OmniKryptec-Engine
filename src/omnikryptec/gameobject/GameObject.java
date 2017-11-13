@@ -8,13 +8,14 @@ import java.util.List;
 import org.joml.Matrix4f;
 
 import omnikryptec.gameobject.component.Component;
-import omnikryptec.main.AbstractScene;
-import omnikryptec.main.AbstractScene.FrameState;
-import omnikryptec.main.Scene;
+import omnikryptec.main.Abstract3DEnv;
+import omnikryptec.main.Scene3D;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
+import omnikryptec.util.EnumCollection.FrameState;
+import omnikryptec.util.EnumCollection.UpdateType;
 import omnikryptec.util.Instance;
 import omnikryptec.util.Maths;
 import omnikryptec.util.logger.LogLevel;
@@ -154,7 +155,7 @@ public class GameObject implements DataMapSerializable, Transformable {
         return doLogic(false);
     }
 
-    private AbstractScene cs;
+    private Abstract3DEnv cs;
 
     /**
      * executes the logic of this GameObject (if neccessary or forced)
@@ -327,8 +328,8 @@ public class GameObject implements DataMapSerializable, Transformable {
     /**
      * called then the GameObject is finally removed from the scene.
      *
-     * @see Scene#removeGameObject(GameObject, boolean)
-     * @see Scene#removeGameObject(GameObject)
+     * @see Scene3D#removeGameObject(GameObject, boolean)
+     * @see Scene3D#removeGameObject(GameObject)
      * @return
      */
     public final GameObject deleteOperation() {

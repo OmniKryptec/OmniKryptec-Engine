@@ -2,7 +2,7 @@ package omnikryptec.animation.renderer;
 
 import omnikryptec.animation.AnimatedModel;
 import omnikryptec.gameobject.Entity;
-import omnikryptec.main.Scene;
+import omnikryptec.main.Scene3D;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
 import omnikryptec.settings.GameSettings;
@@ -52,7 +52,7 @@ public class AnimatedModelShader extends Shader {
         RenderUtil.enableDepthTesting(true);
 	}
 
-	public void onRenderStart(Scene s) {
+	public void onRenderStart(Scene3D s) {
 		viewMatrix.loadMatrix(s.getCamera().getViewMatrix());
 		projectionMatrix.loadMatrix(s.getCamera().getProjectionMatrix());
 	}

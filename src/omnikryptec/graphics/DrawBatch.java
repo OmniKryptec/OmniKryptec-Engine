@@ -35,15 +35,12 @@ import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
-import com.bulletphysics.linearmath.Transform;
-
 import omnikryptec.gameobject.Camera;
 import omnikryptec.resource.model.VertexArrayObject;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.files.render.Shader2D;
 import omnikryptec.util.Color;
-import omnikryptec.util.Instance;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.exceptions.OmniKryptecException;
 

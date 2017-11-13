@@ -3,8 +3,8 @@ package omnikryptec.gameobject.particles;
 import org.joml.Vector3f;
 
 import omnikryptec.display.DisplayManager;
-import omnikryptec.gameobject.RenderType;
 import omnikryptec.resource.texture.ParticleAtlas;
+import omnikryptec.util.EnumCollection.RenderType;
 
 public class SimpleParticle extends Particle {
 

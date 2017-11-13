@@ -90,14 +90,14 @@ public class Camera extends GameObject {
     public Camera setPerspectiveProjection(float fovdeg, float near, float far, float width, float height) {
         projViewNeedsUpdate = true;
         invPVneedsUpdate = true;
-    	projection = Maths.setPerspectiveProjection(fovdeg, far, near, width, height).toImmutable();
+    	projection = Maths.newPerspectiveProjection(fovdeg, far, near, width, height).toImmutable();
         return this;
     }
 
     public Camera setOrthographicProjection(float left, float right, float bottom, float top, float near, float far) {
         projViewNeedsUpdate = true;
         invPVneedsUpdate = true;
-    	projection = Maths.setOrthographicProjection(left, right, bottom, top, near, far).toImmutable();
+    	projection = Maths.newOrthographicProjection(left, right, bottom, top, near, far).toImmutable();
         return this;
     }
 
