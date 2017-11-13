@@ -47,7 +47,6 @@ public class DisplayManager implements Profilable{
 	private static DisplayManager manager;
 
 	private DisplayManager() {
-		manager = this;
 		Profiler.addProfilable(this, 5);
 	}
 
@@ -91,8 +90,8 @@ public class DisplayManager implements Profilable{
 		if (manager != null) {
 			throw new IllegalStateException("The DisplayManager is already created!");
 		}
+		manager = new DisplayManager();
 		DisplayManager.settings = settings;
-		new DisplayManager();
 		if (name == null) {
 			name = "";
 		}
