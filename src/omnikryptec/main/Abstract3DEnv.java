@@ -24,7 +24,7 @@ import omnikryptec.util.PhysicsUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
-public abstract class Abstract3DEnv extends Enviroment implements DataMapSerializable {
+public abstract class Abstract3DEnv extends Environment implements DataMapSerializable {
 
 
 

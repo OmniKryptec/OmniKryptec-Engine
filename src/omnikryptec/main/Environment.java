@@ -5,7 +5,7 @@ import omnikryptec.physics.PhysicsWorld;
 import omnikryptec.util.Color;
 import omnikryptec.util.EnumCollection.FrameState;
 
-class Enviroment {
+class Environment {
 	
 
 	Camera camera;
@@ -25,7 +25,7 @@ class Enviroment {
 		return camera;
 	}
 
-	public final Enviroment setCamera(Camera c) {
+	public final Environment setCamera(Camera c) {
 		this.camera = c;
 		return this;
 	}
@@ -38,7 +38,7 @@ class Enviroment {
 		return logictime;
 	}
 	
-	protected final Enviroment setName(String name) {
+	protected final Environment setName(String name) {
 		this.name = name;
 		return this;
 	}
@@ -47,7 +47,7 @@ class Enviroment {
 		return physicsworld;
 	}
 
-	public final Enviroment setPhysicsWorld(PhysicsWorld physicsWorld) {
+	public final Environment setPhysicsWorld(PhysicsWorld physicsWorld) {
 		this.physicsworld = physicsWorld;
 		return this;
 	}
@@ -56,12 +56,12 @@ class Enviroment {
 		return physicsworld != null;
 	}
 	
-	public final Enviroment setAmbientColor(float r, float g, float b) {
+	public final Environment setAmbientColor(float r, float g, float b) {
 		this.ambientcolor.set(r, g, b);
 		return this;
 	}
 
-	public final Enviroment setAmbientColor(Color f) {
+	public final Environment setAmbientColor(Color f) {
 		this.ambientcolor = f;
 		return this;
 	}

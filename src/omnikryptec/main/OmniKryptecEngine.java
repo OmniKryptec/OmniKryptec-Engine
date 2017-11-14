@@ -340,7 +340,7 @@ public class OmniKryptecEngine implements Profilable {
 		EventSystem.instance().fireEvent(new Event(e), EventType.ERROR);
 	}
 
-	public final OmniKryptecEngine addAndSetScene(Enviroment scene) {
+	public final OmniKryptecEngine addAndSetScene(Environment scene) {
 		if (scene != null) {
 			addScene(scene);
 			if(scene instanceof Abstract3DEnv) {
@@ -352,7 +352,7 @@ public class OmniKryptecEngine implements Profilable {
 		return this;
 	}
 
-	public final OmniKryptecEngine addScene(Enviroment scene) {
+	public final OmniKryptecEngine addScene(Environment scene) {
 		if (scene != null) {
 			if(scene instanceof Abstract3DEnv) {
 				scenes.add((Abstract3DEnv)scene);
