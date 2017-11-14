@@ -25,9 +25,9 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import omnikryptec.main.GameState;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.AdvancedFile;
+import omnikryptec.util.EnumCollection.GameState;
 import omnikryptec.util.lang.ILanguage;
 import omnikryptec.util.lang.LanguageManager;
 import omnikryptec.util.logger.LogEntryFormatter.LogEntryFormatTile;
@@ -290,7 +290,7 @@ public class Console extends JFrame implements ActionListener, ILanguage, KeyLis
         if (exitWhenLastOne) {
             try {
                 if (OmniKryptecEngine.rawInstance() == null
-                        || OmniKryptecEngine.rawInstance().getState() == GameState.Stopped) {
+                        || OmniKryptecEngine.rawInstance().getState() == GameState.STOPPED) {
                     Commands.COMMANDEXIT.run("-java");
                 }
             } catch (Exception ex) {

@@ -26,6 +26,7 @@ import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.util.Color;
+import omnikryptec.util.EnumCollection.GameState;
 import omnikryptec.util.RenderUtil;
 import omnikryptec.util.error.ErrorObject;
 import omnikryptec.util.error.OmnikryptecError;
@@ -88,7 +89,7 @@ public class OmniKryptecEngine implements Profilable {
 		}
 	}
 
-	private GameState state = GameState.Stopped;
+	private GameState state = GameState.STOPPED;
 
 	public GameState getState() {
 		return state;
@@ -116,12 +117,11 @@ public class OmniKryptecEngine implements Profilable {
 		try {
 			Profiler.addProfilable(this, 0);
 			this.manager = manager;
-			state = GameState.Starting;
+			state = GameState.STARTING;
 			instance = this;
 			eventsystem = EventSystem.instance();
 			postpro = PostProcessing.instance();
-			RenderUtil.cullBackFaces(true);
-			RenderUtil.enableDepthTesting(true);
+			
 			RendererRegistration.init();
 			createFbos();
 			Display.show();
@@ -209,8 +209,8 @@ public class OmniKryptecEngine implements Profilable {
 
 	public final void startLoop(ShutdownOption shutdownOption) {
 		setShutdownOption(shutdownOption);
-		state = GameState.Running;
-		while (!Display.isCloseRequested() && !requestclose && state != GameState.Error) {
+		state = GameState.RUNNING;
+		while (!Display.isCloseRequested() && !requestclose && state != GameState.ERROR) {
 			frame(obj.clear, obj.onlyRender, obj.sleepWhenInactive);
 		}
 		close(this.shutdownOption);
@@ -220,13 +220,13 @@ public class OmniKryptecEngine implements Profilable {
 		return obj;
 	}
 
-	public final OmniKryptecEngine requestClose() {
-		return requestClose(shutdownOption);
+	public final OmniKryptecEngine requestShutdown() {
+		return requestShutdown(shutdownOption);
 	}
 
 	public final OmniKryptecEngine frame(boolean clear, boolean onlyrender, boolean sleepwheninactive) {
 		final double currentTime = manager.getCurrentTime();
-		if (state != GameState.Running) {
+		if (state != GameState.RUNNING) {
 			Logger.log("Incorrect enginestate.", LogLevel.WARNING);
 			return this;
 		}
@@ -282,7 +282,7 @@ public class OmniKryptecEngine implements Profilable {
 		return this;
 	}
 
-	public final OmniKryptecEngine requestClose(ShutdownOption shutdownOption) {
+	public final OmniKryptecEngine requestShutdown(ShutdownOption shutdownOption) {
 		setShutdownOption(shutdownOption);
 		requestclose = true;
 		return this;
@@ -335,7 +335,7 @@ public class OmniKryptecEngine implements Profilable {
 	}
 
 	public void errorOccured(Exception e, String text) {
-		state = GameState.Error;
+		state = GameState.ERROR;
 		new OmnikryptecError(e, new ErrorObject<String>(text)).print();
 		EventSystem.instance().fireEvent(new Event(e), EventType.ERROR);
 	}

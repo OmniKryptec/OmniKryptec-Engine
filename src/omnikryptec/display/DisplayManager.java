@@ -101,6 +101,8 @@ public class DisplayManager implements Profilable{
 			if (settings.getMultiSamples() != GameSettings.NO_MULTISAMPLING) {
 				RenderUtil.antialias(true);
 			}
+			RenderUtil.cullBackFaces(true);
+			RenderUtil.enableDepthTesting(true);
 			GL11.glViewport(0, 0, info.getWidth(), info.getHeight());
 			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 			AudioManager.init();

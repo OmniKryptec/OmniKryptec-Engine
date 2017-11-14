@@ -32,10 +32,9 @@ package omnikryptec.graphics;
 
 import java.nio.FloatBuffer;
 
+import org.joml.Math;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-
-import org.joml.Math;
 
 import omnikryptec.gameobject.Camera;
 import omnikryptec.resource.model.VertexArrayObject;
