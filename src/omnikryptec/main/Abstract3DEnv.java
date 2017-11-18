@@ -52,13 +52,13 @@ public abstract class Abstract3DEnv extends Environment implements DataMapSerial
 
 	public final void publicLogic(boolean particles) {
 		state = FrameState.LOGIC;
-		tmptime = DisplayManager.instance().getCurrentTime();
+		tmptime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime();
 		if (isUsingPhysics()) {
 			physicsworld.stepSimulation();
 		}
 		logic();
 		camera.doLogic();
-		logictime = DisplayManager.instance().getCurrentTime() - tmptime;
+		logictime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime() - tmptime;
 		if (particles && camera != null) {
 			ParticleMaster.instance().logic(camera);
 		}
@@ -74,7 +74,7 @@ public abstract class Abstract3DEnv extends Environment implements DataMapSerial
 		}
 		ParticleMaster.resetTimes();
 		state = FrameState.RENDERING;
-		tmptime = DisplayManager.instance().getCurrentTime();
+		tmptime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime();
 		if(defaultConfig.isRendererTimeAllowed(RendererTime.PRE)) {
 			for (Renderer r : prerender) {
 				if (defaultConfig.getRenderer().contains(r)) {
@@ -90,7 +90,7 @@ public abstract class Abstract3DEnv extends Environment implements DataMapSerial
 				}
 			}
 		}
-		rendertime = DisplayManager.instance().getCurrentTime() - tmptime - ParticleMaster.instance().getRenderTimeMS();
+		rendertime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime() - tmptime - ParticleMaster.instance().getRenderTimeMS();
 		state = FrameState.NULL;
 		return l;
 	}
@@ -110,7 +110,7 @@ public abstract class Abstract3DEnv extends Environment implements DataMapSerial
 	
 	private final RenderConfiguration getNew() {
 		RenderConfiguration cfg = new RenderConfiguration().setShaderLvl(Instance.getGameSettings().getInteger(GameSettings.HIGHEST_SHADER_LVL));
-		EventSystem.instance().fireEvent(new Event(cfg), EventType.NEW_DEFAULT_RENDERCONFIGURATION);
+		OmniKryptecEngine.instance().getEventsystem().fireEvent(new Event(cfg), EventType.NEW_DEFAULT_RENDERCONFIGURATION);
 		return cfg;
 	}
 	

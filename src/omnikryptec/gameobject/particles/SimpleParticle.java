@@ -3,6 +3,7 @@ package omnikryptec.gameobject.particles;
 import org.joml.Vector3f;
 
 import omnikryptec.display.DisplayManager;
+import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.util.EnumCollection.RenderType;
 
@@ -53,7 +54,7 @@ public class SimpleParticle extends Particle {
 	private static Vector3f changeable = new Vector3f();
 	@Override
 	protected boolean update() {
-		timemultiplier = (mysystem==null?1:mysystem.getTimeMultiplier()) * DisplayManager.instance().getDeltaTimef();
+		timemultiplier = (mysystem==null?1:mysystem.getTimeMultiplier()) * OmniKryptecEngine.instance().getDisplayManager().getDeltaTimef();
 		elapsedTime += timemultiplier;
 		velocity.add(acceleration.mul(timemultiplier, changeable));
 		position.add(velocity.mul(timemultiplier, changeable));

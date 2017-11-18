@@ -26,8 +26,9 @@ import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.util.Color;
+import omnikryptec.util.EnumCollection.GameLoopShutdownOption;
 import omnikryptec.util.EnumCollection.GameState;
-import omnikryptec.util.RenderUtil;
+import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.error.ErrorObject;
 import omnikryptec.util.error.OmnikryptecError;
 import omnikryptec.util.logger.Commands;
@@ -46,13 +47,6 @@ public class OmniKryptecEngine implements Profilable {
 	private static OmniKryptecEngine instance;
 
 	public static OmniKryptecEngine instance() {
-		if (instance == null) {
-			if (DisplayManager.instance() == null) {
-				throw new IllegalStateException(
-						"Cant create the Engine because the DisplayManager is not created yet!");
-			}
-			new OmniKryptecEngine(DisplayManager.instance());
-		}
 		return instance;
 	}
 
@@ -104,9 +98,9 @@ public class OmniKryptecEngine implements Profilable {
 	private long vertsCountCurrent = 0;
 
 	private ShutdownOption shutdownOption = ShutdownOption.JAVA;
-	private boolean requestclose = false;
 	private double frametime = 0;
-
+	private GameLoop gameloop;
+	
 	public OmniKryptecEngine(DisplayManager manager) {
 		if (manager == null) {
 			throw new NullPointerException("DisplayManager is null");
@@ -119,63 +113,24 @@ public class OmniKryptecEngine implements Profilable {
 			this.manager = manager;
 			state = GameState.STARTING;
 			instance = this;
-			eventsystem = EventSystem.instance();
-			postpro = PostProcessing.instance();
+			eventsystem = new EventSystem();
+			postpro = new PostProcessing(null);
 			
 			RendererRegistration.init();
-			createFbos();
+			this.createFbos();
 			Display.show();
 			eventsystem.fireEvent(new Event(), EventType.BOOTING_COMPLETED);
 			Logger.log("Successfully booted the Engine!", LogLevel.FINEST);
+			instance = this;
+			if(gameloop==null) {
+				gameloop = new DefaultGameLoop();
+			}
 		} catch (Exception e) {
 			errorOccured(e, "Error occured while booting!");
 		}
 	}
 
-	private FrameBufferObject scenefbo;
-	private FrameBufferObject unsampledfbo, normalfbo, specularfbo, extrainfofbo;
-	private FrameBufferObject[] add;
 
-	private void createFbos() {
-		scenefbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(),
-				manager.getSettings().getMultiSamples(), manager.getSettings().getAddAttachments(),
-				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0,
-						manager.getSettings().getInteger(GameSettings.COLORSPACE_SCENE_FBO)),
-				new RenderTarget(GL30.GL_COLOR_ATTACHMENT1,
-						manager.getSettings().getInteger(GameSettings.COLORSPACE_NORMAL_FBO)),
-				new RenderTarget(GL30.GL_COLOR_ATTACHMENT2,
-						manager.getSettings().getInteger(GameSettings.COLORSPACE_SPECULAR_FBO)),
-				new RenderTarget(GL30.GL_COLOR_ATTACHMENT3,
-						manager.getSettings().getInteger(GameSettings.COLORSPACE_SHADER_INFO_FBO)));
-		unsampledfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE,
-				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0, manager.getSettings().getInteger(GameSettings.COLORSPACE_SCENE_FBO)));
-		normalfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
-				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0, manager.getSettings().getInteger(GameSettings.COLORSPACE_NORMAL_FBO)));
-		specularfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
-				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0,manager.getSettings().getInteger(GameSettings.COLORSPACE_SPECULAR_FBO)));
-		extrainfofbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
-				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0, manager.getSettings().getInteger(GameSettings.COLORSPACE_SHADER_INFO_FBO)));
-		add = manager.getSettings().getAddFBOs();
-	}
-
-	private void resizeFbos() {
-		if (scenefbo != null) {
-			scenefbo.delete();
-		}
-		if (unsampledfbo != null) {
-			unsampledfbo.delete();
-		}
-		if (normalfbo != null) {
-			normalfbo.delete();
-		}
-		if (specularfbo != null) {
-			specularfbo.delete();
-		}
-		if (extrainfofbo != null) {
-			extrainfofbo.delete();
-		}
-		createFbos();
-	}
 
 	public final FrameBufferObject getSceneFBO() {
 		return unsampledfbo;
@@ -205,24 +160,13 @@ public class OmniKryptecEngine implements Profilable {
 		return postpro;
 	}
 
-	private final LoopObject obj = new LoopObject();
 
-	public final void startLoop(ShutdownOption shutdownOption) {
-		setShutdownOption(shutdownOption);
-		state = GameState.RUNNING;
-		while (!Display.isCloseRequested() && !requestclose && state != GameState.ERROR) {
-			frame(obj.clear, obj.onlyRender, obj.sleepWhenInactive);
+	public final void startLoop() {
+		if(gameloop!=null) {
+			gameloop.run();
 		}
-		close(this.shutdownOption);
 	}
 
-	public final LoopObject getLoopObject() {
-		return obj;
-	}
-
-	public final OmniKryptecEngine requestShutdown() {
-		return requestShutdown(shutdownOption);
-	}
 
 	public final OmniKryptecEngine frame(boolean clear, boolean onlyrender, boolean sleepwheninactive) {
 		final double currentTime = manager.getCurrentTime();
@@ -232,45 +176,29 @@ public class OmniKryptecEngine implements Profilable {
 		}
 		try {
 			if (!Display.isActive() && sleepwheninactive) {
-				manager.updateDisplay();
-				try {
-					Thread.sleep(1);
-				} catch (InterruptedException e) {
-					errorOccured(e, "Error occured while sleeping in frame!");
-				}
+				
 				return this;
 			}
 			AudioManager.update(currentTime);
 			if (Display.wasResized()) {
 				eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
 				resizeFbos();
-				PostProcessing.instance().resize();
+				postpro.resize();
 			}
 			scenefbo.bindFrameBuffer();
 			if (sceneCurrent != null) {
 				if (clear) {
-					RenderUtil.clear(getClearColor());
+					GraphicsUtil.clear(getClearColor());
 				}
 				if (!onlyrender) {
 					sceneCurrent.publicLogic(true);
 				}
 				vertsCountCurrent = sceneCurrent.mainRender();
 			}
-			eventsystem.fireEvent(new Event(), EventType.RENDER_FRAME_EVENT);
-			scenefbo.unbindFrameBuffer();
-			scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);
-			scenefbo.resolveToFbo(normalfbo, GL30.GL_COLOR_ATTACHMENT1);
-			scenefbo.resolveToFbo(specularfbo, GL30.GL_COLOR_ATTACHMENT2);
-			scenefbo.resolveToFbo(extrainfofbo, GL30.GL_COLOR_ATTACHMENT3);
-			if (scenefbo.getTargets().length > 4) {
-				for (int i = 4; i < scenefbo.getTargets().length; i++) {
-					scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i - 4].target);
-				}
-			}
+			
 			if (sceneCurrent != null) {
-				PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
+			//	PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
 			}
-			eventsystem.fireEvent(new Event(), EventType.FRAME_EVENT);
 			InputManager.prePollEvents();
 			manager.updateDisplay();
 			InputManager.nextFrame();
@@ -278,22 +206,78 @@ public class OmniKryptecEngine implements Profilable {
 		} catch (Exception e) {
 			errorOccured(e, "Error occured in frame!");
 		}
-		eventsystem.fireEvent(new Event(), EventType.AFTER_FRAME);
 		return this;
 	}
 
-	public final OmniKryptecEngine requestShutdown(ShutdownOption shutdownOption) {
-		setShutdownOption(shutdownOption);
-		requestclose = true;
-		return this;
+	
+	final void beginSceneRendering() {
+		scenefbo.bindFrameBuffer();
+	}
+	
+	final void endSceneRendering() {
+		scenefbo.unbindFrameBuffer();
+		scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);
+		scenefbo.resolveToFbo(normalfbo, GL30.GL_COLOR_ATTACHMENT1);
+		scenefbo.resolveToFbo(specularfbo, GL30.GL_COLOR_ATTACHMENT2);
+		scenefbo.resolveToFbo(extrainfofbo, GL30.GL_COLOR_ATTACHMENT3);
+		if (scenefbo.getTargets().length > 4) {
+			for (int i = 4; i < scenefbo.getTargets().length; i++) {
+				scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i - 4].target);
+			}
+		}
+	}
+	
+	private FrameBufferObject scenefbo;
+	private FrameBufferObject unsampledfbo, normalfbo, specularfbo, extrainfofbo;
+	private FrameBufferObject[] add;
+
+	private void createFbos() {
+		scenefbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(),
+				manager.getSettings().getMultiSamples(), manager.getSettings().getAddAttachments(),
+				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0,
+						manager.getSettings().getInteger(GameSettings.COLORSPACE_SCENE_FBO)),
+				new RenderTarget(GL30.GL_COLOR_ATTACHMENT1,
+						manager.getSettings().getInteger(GameSettings.COLORSPACE_NORMAL_FBO)),
+				new RenderTarget(GL30.GL_COLOR_ATTACHMENT2,
+						manager.getSettings().getInteger(GameSettings.COLORSPACE_SPECULAR_FBO)),
+				new RenderTarget(GL30.GL_COLOR_ATTACHMENT3,
+						manager.getSettings().getInteger(GameSettings.COLORSPACE_SHADER_INFO_FBO)));
+		unsampledfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE,
+				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0, manager.getSettings().getInteger(GameSettings.COLORSPACE_SCENE_FBO)));
+		normalfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
+				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0, manager.getSettings().getInteger(GameSettings.COLORSPACE_NORMAL_FBO)));
+		specularfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
+				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0,manager.getSettings().getInteger(GameSettings.COLORSPACE_SPECULAR_FBO)));
+		extrainfofbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
+				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0, manager.getSettings().getInteger(GameSettings.COLORSPACE_SHADER_INFO_FBO)));
+		add = manager.getSettings().getAddFBOs();
 	}
 
+	void resizeFbos() {
+		if (scenefbo != null) {
+			scenefbo.delete();
+		}
+		if (unsampledfbo != null) {
+			unsampledfbo.delete();
+		}
+		if (normalfbo != null) {
+			normalfbo.delete();
+		}
+		if (specularfbo != null) {
+			specularfbo.delete();
+		}
+		if (extrainfofbo != null) {
+			extrainfofbo.delete();
+		}
+		createFbos();
+	}
+	
+	void doPostprocessing() {
+		postpro.doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
+	}
+	
 	public final long getModelVertsCount() {
 		return vertsCountCurrent;
-	}
-
-	public final long getFaceCount() {
-		return vertsCountCurrent / 3;
 	}
 
 	public final double getRenderTimeMS() {
@@ -309,6 +293,10 @@ public class OmniKryptecEngine implements Profilable {
 	}
 
 	public final OmniKryptecEngine close(ShutdownOption shutdownOption) {
+		
+		if(gameloop!=null) {
+			gameloop.requestStop(GameLoopShutdownOption.ENGINE);
+		}
 		if (shutdownOption.getLevel() >= ShutdownOption.ENGINE.getLevel()) {
 			cleanup();
 			manager.close();
@@ -330,16 +318,30 @@ public class OmniKryptecEngine implements Profilable {
 		SimpleTexture.cleanup();
 		Shader.cleanAllShader();
 		Query.cleanup();
-		EventSystem.instance().fireEvent(new Event(), EventType.CLEANUP);
+		eventsystem.fireEvent(new Event(), EventType.CLEANUP);
+		EventSystem.cleanUp();
 		instance = null;
 	}
 
 	public void errorOccured(Exception e, String text) {
 		state = GameState.ERROR;
 		new OmnikryptecError(e, new ErrorObject<String>(text)).print();
-		EventSystem.instance().fireEvent(new Event(e), EventType.ERROR);
+		eventsystem.fireEvent(new Event(e), EventType.ERROR);
 	}
 
+	public final ShutdownOption getShutdownOption() {
+		return shutdownOption;
+	}
+
+	public final OmniKryptecEngine setShutdownOption(ShutdownOption shutdownOption) {
+		this.shutdownOption = shutdownOption;
+		return this;
+	}
+
+	public void shutdown() {
+		close(getShutdownOption());
+	}
+	
 	public final OmniKryptecEngine addAndSetScene(Environment scene) {
 		if (scene != null) {
 			addScene(scene);
@@ -374,15 +376,9 @@ public class OmniKryptecEngine implements Profilable {
 		return sceneCurrent;
 	}
 
-	public final ShutdownOption getShutdownOption() {
-		return shutdownOption;
-	}
 
-	public final OmniKryptecEngine setShutdownOption(ShutdownOption shutdownOption) {
-		this.shutdownOption = shutdownOption;
-		return this;
-	}
 
+	
 	public final ArrayList<Abstract3DEnv> getScenes() {
 		return scenes;
 	}
@@ -417,15 +413,11 @@ public class OmniKryptecEngine implements Profilable {
 				new ProfileContainer(Profiler.SCENE_LOGIC_TIME, getLogicTimeMS()) };
 	}
 
-	public static class LoopObject {
-
-		public boolean onlyRender = false;
-		public boolean clear = true;
-		public boolean sleepWhenInactive = true;
-	}
-
 	public static boolean isCreated() {
 		return instance != null;
 	}
 
+	public boolean hasEnvironment() {
+		return getCurrentScene()!=null;
+	}
 }

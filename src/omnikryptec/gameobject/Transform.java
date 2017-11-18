@@ -5,11 +5,12 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import omnikryptec.display.DisplayManager;
+import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.EnumCollection.UpdateType;
 import omnikryptec.util.Maths;
-import omnikryptec.util.RenderUtil;
+import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.SerializationUtil;
 
 public class Transform implements DataMapSerializable, Positionable {
@@ -245,7 +246,7 @@ public class Transform implements DataMapSerializable, Positionable {
     }
 
     public Matrix4f getTransformation(UpdateType updatetype, int freq, boolean checkupdate) {
-        if (checkupdate && !manualMatrixRecalculation && RenderUtil.needsUpdate(lastframe, freq, updatetype) && (!Maths.fastEquals3f(lastpos, getPosition()) || !Maths.fastEquals4f(lastrot, getRotation()) || !Maths.fastEquals3f(lastscale, getScale()))) {
+        if (checkupdate && !manualMatrixRecalculation && GraphicsUtil.needsUpdate(lastframe, freq, updatetype) && (!Maths.fastEquals3f(lastpos, getPosition()) || !Maths.fastEquals4f(lastrot, getRotation()) || !Maths.fastEquals3f(lastscale, getScale()))) {
             return recalculateTransformation();
         }
         return transformation;
@@ -262,7 +263,7 @@ public class Transform implements DataMapSerializable, Positionable {
         if (manualMatrixRecalculation) {
             return transformation;
         }
-        lastframe = DisplayManager.instance().getFramecount();
+        lastframe = OmniKryptecEngine.instance().getDisplayManager().getFramecount();
         transformation.identity();
         transformation.rotate(lastrot.set(getRotation(true)));
         transformation.translate(lastpos.set(getPosition(true)));

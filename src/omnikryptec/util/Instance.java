@@ -64,11 +64,11 @@ public class Instance {
 	}
 
 	public static final PostProcessing getPostProcessing() {
-		return PostProcessing.instance();
+		return OmniKryptecEngine.instance().getPostprocessor();
 	}
 
 	public static final DisplayManager getDisplayManager() {
-		return DisplayManager.instance();
+		return OmniKryptecEngine.instance().getDisplayManager();
 	}
 
 	public static final Abstract3DEnv getCurrentScene() {
@@ -80,7 +80,7 @@ public class Instance {
 	}
 
 	public static final EventSystem getEventSystem() {
-		return EventSystem.instance();
+		return OmniKryptecEngine.instance().getEventsystem();
 	}
 
 	public static final GameSettings getGameSettings() {

@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 import omnikryptec.event.event.Event;
 import omnikryptec.event.event.EventSystem;
 import omnikryptec.event.event.EventType;
+import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.exceptions.UnsupportedCharacterException;
 
 /**
@@ -126,7 +127,7 @@ public class Command {
                     };
                     Runnable run_2 = () -> {
                         try {
-                            EventSystem.instance().fireEvent(new Event(COMMANDS.get(c), arguments), EventType.COMMAND);
+                            OmniKryptecEngine.instance().getEventsystem().fireEvent(new Event(COMMANDS.get(c), arguments), EventType.COMMAND);
                         } catch (Exception ex) {
                         }
                     };

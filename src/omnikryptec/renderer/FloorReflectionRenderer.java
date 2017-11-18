@@ -12,7 +12,7 @@ import omnikryptec.shader.base.Shader;
 import omnikryptec.util.EnumCollection.RendererTime;
 import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.Instance;
-import omnikryptec.util.RenderUtil;
+import omnikryptec.util.GraphicsUtil;
 
 public class FloorReflectionRenderer extends Renderer{
 	
@@ -39,7 +39,7 @@ public class FloorReflectionRenderer extends Renderer{
 	protected long render(Abstract3DEnv s, RenderMap<AdvancedModel, List<Entity>> entities, Shader started,
 			FrustrumFilter filter) {
 		texture.bindFrameBuffer();
-		RenderUtil.clear(0, 0, 0, 1);
+		GraphicsUtil.clear(0, 0, 0, 1);
 		s.getCamera().reflect(height);
 		long l = s.publicRender(config.setShaderLvl(0));
 		s.getCamera().reflect(height);

@@ -13,7 +13,7 @@ import omnikryptec.renderer.Renderer;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.util.FrustrumFilter;
-import omnikryptec.util.RenderUtil;
+import omnikryptec.util.GraphicsUtil;
 
 public class TestRenderer extends Renderer{
 
@@ -28,7 +28,7 @@ public class TestRenderer extends Renderer{
 	protected long render(Abstract3DEnv s, RenderMap<AdvancedModel, List<Entity>> entities, Shader started,
 			FrustrumFilter filter) {
 		fbo.bindFrameBuffer();
-		RenderUtil.clear(0, 0, 0, 0);
+		GraphicsUtil.clear(0, 0, 0, 0);
 		s.publicRender(new RenderConfiguration().setRendererData(AllowedRenderer.EvElse, this));
 		fbo.unbindFrameBuffer();
 		return 0;

@@ -89,14 +89,14 @@ public class EngineTest2 implements IEventHandler {
                     new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setChunkRenderOffsets(2, 2, 2)
                     .setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(true),
                     new GLFWInfo(3, 3, true, false, 1280, 720));
-            new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    LiveProfiler liveProfiler = new LiveProfiler(750, 750);
-                    liveProfiler.startTimer(1000);
-                }
-            }).start();
+//            new Thread(new Runnable() {
+//
+//                @Override
+//                public void run() {
+//                    LiveProfiler liveProfiler = new LiveProfiler(750, 750);
+//                    liveProfiler.startTimer(1000);
+//                }
+//            }).start();
             
             // rend = new TestRenderer();
             //PostProcessing.instance().addStage(new
@@ -134,7 +134,7 @@ public class EngineTest2 implements IEventHandler {
             SimpleTexture jd = SimpleTexture.newTexture(new AdvancedFile(res, "jd.png"));
             SimpleTexture js = SimpleTexture.newTexture(new AdvancedFile(res, "js.png"));
             SimpleTexture jn = SimpleTexture.newTexture(new AdvancedFile(res, "jn.png"));
-            EventSystem.instance().addEventHandler(new EngineTest2(), EventType.AFTER_FRAME,
+            OmniKryptecEngine.instance().getEventsystem().addEventHandler(new EngineTest2(), EventType.AFTER_FRAME,
                     EventType.RENDER_FRAME_EVENT);
             Model brunnen = new Model("",
                     ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
@@ -328,7 +328,8 @@ public class EngineTest2 implements IEventHandler {
             // .instance().getCurrentScene().addGameObject(new
             // Light().setColor(0, 0, 1).setRadius(100).setRelativePos(50, 50,
             // 0));
-            OmniKryptecEngine.instance().startLoop(ShutdownOption.JAVA);
+            
+            OmniKryptecEngine.instance().startLoop();
         } catch (Exception ex) {
             Logger.logErr("Error: " + ex, ex);
         }
@@ -340,7 +341,7 @@ public class EngineTest2 implements IEventHandler {
 
     private static void doCameraLogic(Camera camera) {
         // v += DisplayManager.instance().getDeltaTime()*30;
-        InputManager.doFirstPersonController(camera, DisplayManager.instance().getSettings().getKeySettings(), v, v,
+        InputManager.doFirstPersonController(camera, OmniKryptecEngine.instance().getDisplayManager().getSettings().getKeySettings(), v, v,
                 (float) Math.toRadians(20), false);
         // camera.setPerspectiveProjection(Maths.alterFOV(10, 179f, v, 1000),
         // 1000, 0.001f);

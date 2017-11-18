@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.joml.Matrix4f;
 
 import omnikryptec.display.DisplayManager;
+import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.Maths;
 
 /**
@@ -136,7 +137,7 @@ public class Animator {
     }
 
     private final Animator increaseAnimationTime() {
-        animationTime += (DisplayManager.instance().getDeltaTimef() * speedFactor);
+        animationTime += (OmniKryptecEngine.instance().getDisplayManager().getDeltaTimef() * speedFactor);
         if (isAnimationOver() && loop) {
             while (animationTime < 0) {
                 animationTime += currentAnimation.getLengthInSeconds();

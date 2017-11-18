@@ -42,7 +42,7 @@ import omnikryptec.test.saving.XMLSerializer;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.OSUtil;
-import omnikryptec.util.RenderUtil;
+import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.profiler.LiveProfiler;
 
@@ -230,7 +230,7 @@ public class AnimationTest {
 
     private static final void input() {
         if (keySettings.isLongPressed("toggleWireframe", 100, 400)) {
-            RenderUtil.goWireframe(!RenderUtil.isWireframe());
+            GraphicsUtil.goWireframe(!GraphicsUtil.isWireframe());
         }
         if (keySettings.isLongPressed("grabMouse", 100, 400)) {
             InputManager.setCursorType(((InputManager.getCursorType() == CursorType.DISABLED) ? CursorType.NORMAL : CursorType.DISABLED));

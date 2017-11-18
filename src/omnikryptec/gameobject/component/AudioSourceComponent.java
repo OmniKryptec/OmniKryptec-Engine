@@ -7,6 +7,7 @@ import org.joml.Vector3f;
 import omnikryptec.audio.AudioSource;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.GameObject;
+import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene3D;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.util.Blocker;
@@ -172,7 +173,7 @@ public class AudioSourceComponent implements Component {
                     }
                     source.setDeltaPitch(newDeltaPitch);
                 }
-                source.updateState(DisplayManager.instance().getDeltaTimef());
+                source.updateState(OmniKryptecEngine.instance().getDisplayManager().getDeltaTimef());
             });
         }
         blocker.setBlocked(false);

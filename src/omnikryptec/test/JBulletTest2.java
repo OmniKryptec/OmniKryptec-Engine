@@ -51,7 +51,7 @@ import omnikryptec.settings.KeySettings;
 import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.PhysicsUtil;
-import omnikryptec.util.RenderUtil;
+import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.logger.Logger;
 
 /**
@@ -293,7 +293,7 @@ public class JBulletTest2 {
         }
         if (keySettings.getKey("toggleWireframe").isLongPressed(100, 400)) {
             isWireframe = !isWireframe;
-            RenderUtil.goWireframe(isWireframe);
+            GraphicsUtil.goWireframe(isWireframe);
         }
         if (keySettings.isLongPressed("grabMouse", 100, 400)) {
             InputManager.setCursorType(((InputManager.getCursorType() == CursorType.DISABLED) ? CursorType.NORMAL : CursorType.DISABLED));

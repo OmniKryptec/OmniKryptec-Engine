@@ -39,8 +39,11 @@ public class EventSystem {
         });
     }
 
-    private EventSystem() {
-        Field[] fields = EventType.class.getFields();
+    public EventSystem() {
+    	if(instance!=null) {
+    		return;
+    	}
+    	Field[] fields = EventType.class.getFields();
         for (Field field : fields) {
             try {
                 if (field.get(null) instanceof EventType) {
@@ -52,22 +55,12 @@ public class EventSystem {
                 e.printStackTrace();
             }
         }
-    }
-
-    public static EventSystem instance() {
-        if (instance != null) {
-            return instance;
-        }
-        if (DisplayManager.instance() == null) {
-            throw new NullPointerException("DisplayManager is null");
-        }
-        if (DisplayManager.instance().getSettings().getInteger(GameSettings.THREADPOOLSIZE_EVENT) > 0) {
-            threadpool = Executors.newFixedThreadPool(DisplayManager.instance().getSettings().getInteger(GameSettings.THREADPOOLSIZE_EVENT));
-        } else {
-            threadpool = null;
-        }
-        instance = new EventSystem();
-        return instance;
+	    if (OmniKryptecEngine.instance().getDisplayManager().getSettings().getInteger(GameSettings.THREADPOOLSIZE_EVENT) > 0) {
+	        threadpool = Executors.newFixedThreadPool(OmniKryptecEngine.instance().getDisplayManager().getSettings().getInteger(GameSettings.THREADPOOLSIZE_EVENT));
+	    } else {
+	        threadpool = null;
+	    }
+    	instance=this;
     }
 
     /**
@@ -179,6 +172,7 @@ public class EventSystem {
     public static void cleanUp() {
         eventhandler.clear();
         types.clear();
+        instance = null;
     }
 
 }

@@ -22,12 +22,12 @@ public class EnumCollection {
 		STARTING, RUNNING, ERROR, STOPPING, STOPPED;
 	}
 	
-	public static enum GameLoopShutdown {
+	public static enum GameLoopShutdownOption {
 		ENGINE(2), LOOP(1), NOT_NOW(0);
 		
 		private final int lvl;
 		
-		private GameLoopShutdown(int l) {
+		private GameLoopShutdownOption(int l) {
 			lvl = l;
 		}
 		

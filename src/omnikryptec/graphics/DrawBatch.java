@@ -42,7 +42,7 @@ import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.files.render.Shader2D;
 import omnikryptec.util.Color;
-import omnikryptec.util.RenderUtil;
+import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.exceptions.OmniKryptecException;
 
 public class DrawBatch {
@@ -122,7 +122,7 @@ public class DrawBatch {
 		if (drawing) {
 			throw new OmniKryptecException("Can't start started rendering!");
 		}
-		RenderUtil.enableAlphaBlending();
+		GraphicsUtil.enableAlphaBlending();
 		idx = 0;
 		vertexcount = 0;
 		drawcalls = 0;

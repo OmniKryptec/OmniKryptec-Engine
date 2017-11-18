@@ -12,7 +12,7 @@ import omnikryptec.shader.base.UniformMatrix;
 import omnikryptec.shader.base.UniformSampler;
 import omnikryptec.shader.base.UniformVec4;
 import omnikryptec.util.AdvancedFile;
-import omnikryptec.util.RenderUtil;
+import omnikryptec.util.GraphicsUtil;
 
 public class SimpleMeshShader extends Shader {
 
@@ -42,14 +42,14 @@ public class SimpleMeshShader extends Shader {
 			uvs.loadVec4(tmp.getUVs());
 		}
 		if(m.getMaterial().hasTransparency()) {
-			RenderUtil.cullBackFaces(false);
+			GraphicsUtil.cullBackFaces(false);
 		}
 	}
 
 	@Override
 	public void onModelRenderEnd(AdvancedModel m) {
         if (m.getMaterial().hasTransparency()) {
-            RenderUtil.cullBackFaces(true);
+            GraphicsUtil.cullBackFaces(true);
         }
 	}
 	

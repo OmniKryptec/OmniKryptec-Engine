@@ -6,6 +6,7 @@ import org.joml.Vector4f;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.Light;
 import omnikryptec.main.Abstract3DEnv;
+import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
 import omnikryptec.resource.texture.Texture;
@@ -20,7 +21,7 @@ import omnikryptec.shader.base.UniformVec3;
 import omnikryptec.shader.base.UniformVec4;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Maths;
-import omnikryptec.util.RenderUtil;
+import omnikryptec.util.GraphicsUtil;
 
 public class ForwardMeshShader extends Shader {
 
@@ -69,7 +70,7 @@ public class ForwardMeshShader extends Shader {
 				new Attribute("pos", 0), new Attribute("texcoords", 1), new Attribute("normal", 2),
 				new Attribute("tangent", 3), new Attribute("transmatrix", 4), new Attribute("colour", 8));
 		this.pervertex = pv;
-		maxlights = DisplayManager.instance().getSettings().getInteger(GameSettings.MAX_FORWARD_LIGHTS);
+		maxlights = OmniKryptecEngine.instance().getDisplayManager().getSettings().getInteger(GameSettings.MAX_FORWARD_LIGHTS);
 		lightpos = new UniformVec4[maxlights];
 		for (int i = 0; i < lightpos.length; i++) {
 			lightpos[i] = new UniformVec4("lightpos[" + i + "]");
@@ -113,7 +114,7 @@ public class ForwardMeshShader extends Shader {
 	@Override
 	public void onModelRenderStart(AdvancedModel m) {
 		if (m.getMaterial().hasTransparency()) {
-			RenderUtil.cullBackFaces(false);
+			GraphicsUtil.cullBackFaces(false);
 		}
 		m.getModel().getVao().bind(0, 1, 2, 3, 4, 5, 6, 7, 8);
 		Texture tmptexture = m.getMaterial().getTexture(Material.DIFFUSE);
@@ -162,7 +163,7 @@ public class ForwardMeshShader extends Shader {
 	@Override
 	public void onModelRenderEnd(AdvancedModel m) {
 		if (m.getMaterial().hasTransparency()) {
-			RenderUtil.cullBackFaces(true);
+			GraphicsUtil.cullBackFaces(true);
 		}
 	}
 

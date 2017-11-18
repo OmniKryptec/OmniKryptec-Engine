@@ -1,6 +1,7 @@
 package omnikryptec.resource.texture;
 
 import omnikryptec.display.DisplayManager;
+import omnikryptec.main.OmniKryptecEngine;
 
 /**
  * Animations in animations may not work correctly.
@@ -46,14 +47,14 @@ public class SimpleAnimation extends Texture {
     @Override
     public void bindToUnit(int unit, int... info) {
         textures[index].bindToUnit(unit, info);
-        if (lastupdated < DisplayManager.instance().getFramecount()) {
-            lastupdated = DisplayManager.instance().getFramecount();
+        if (lastupdated < OmniKryptecEngine.instance().getDisplayManager().getFramecount()) {
+            lastupdated = OmniKryptecEngine.instance().getDisplayManager().getFramecount();
             if (time >= secondsperframe) {
                 index++;
                 index %= textures.length;
                 time = 0;
             } else {
-                time += DisplayManager.instance().getDeltaTimef();
+                time += OmniKryptecEngine.instance().getDisplayManager().getDeltaTimef();
             }
         }
     }

@@ -15,7 +15,7 @@ import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.ShaderGroup;
 import omnikryptec.shader.base.ShaderPack;
 import omnikryptec.util.FrustrumFilter;
-import omnikryptec.util.RenderUtil;
+import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -52,7 +52,7 @@ public class TerrainRenderer extends Renderer {
             model.getModel().getVao().bind(0, 1, 2);
             // model.getTexture().bindToUnit(0);
             if (model.getMaterial().hasTransparency()) {
-                RenderUtil.cullBackFaces(false);
+                GraphicsUtil.cullBackFaces(false);
             }
             stapel = entities.get(model);
             for (int j = 0; j < stapel.size(); j++) {
@@ -69,7 +69,7 @@ public class TerrainRenderer extends Renderer {
                 texturePack.getgTexture().bindToUnitOptimized(2);
                 texturePack.getbTexture().bindToUnitOptimized(3);
                 terrain.getBlendMap().bindToUnitOptimized(4);
-                if (RenderUtil.inRenderRange(terrain, s.getCamera()) || true) {
+                if (GraphicsUtil.inRenderRange(terrain, s.getCamera()) || true) {
                     TerrainShader.transformationMatrix.loadMatrix(terrain.getTransformation());
                     GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(),
                             GL11.GL_UNSIGNED_INT, 0);
@@ -78,7 +78,7 @@ public class TerrainRenderer extends Renderer {
             }
             stapel = null;
             if (model.getMaterial().hasTransparency()) {
-                RenderUtil.cullBackFaces(true);
+                GraphicsUtil.cullBackFaces(true);
             }
         }
         return vertcount;

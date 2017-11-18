@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import omnikryptec.util.RenderUtil;
+import omnikryptec.util.GraphicsUtil;
 
 public abstract class PostProcessingStage {
 
@@ -29,7 +29,7 @@ public abstract class PostProcessingStage {
 	protected void renderQuad(boolean clear) {
 		target.bindFrameBuffer();
 		if (clear) {
-			RenderUtil.clear(0, 0, 0, 0);
+			GraphicsUtil.clear(0, 0, 0, 0);
 		}
 		GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);
 		target.unbindFrameBuffer();

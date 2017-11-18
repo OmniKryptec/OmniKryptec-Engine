@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL31;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.main.Abstract3DEnv;
+import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
@@ -46,7 +47,7 @@ public class ForwardMeshRenderer extends Renderer{
 
     @Override
     public long render(Abstract3DEnv s, RenderMap<AdvancedModel, List<Entity>> entities, Shader b, FrustrumFilter f) {
-        if (!DisplayManager.instance().getSettings().isLightForwardAllowed() && Logger.isDebugMode()) {
+        if (!OmniKryptecEngine.instance().getDisplayManager().getSettings().isLightForwardAllowed() && Logger.isDebugMode()) {
             Logger.log("Forward light is not enabled. Will not render.", LogLevel.WARNING);
             return 0;
         }

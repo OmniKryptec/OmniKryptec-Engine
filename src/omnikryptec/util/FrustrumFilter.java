@@ -35,6 +35,6 @@ public class FrustrumFilter {
 		}
 		tmp = (e.getAdvancedModel().getModel().getModelData().getFurthestPoint()*RADIUS_CORRECTION)*Math.max(e.getTransform().getScale(true).x, Math.max(e.getTransform().getScale(true).y,e.getTransform().getScale(true).z));
 		e.getTransformation().transform(vec.set(0,0,0,1));
-		return intersects(vec.x, vec.y, vec.z, tmp)&&(checkRenderRange?RenderUtil.inRenderRange(e, cam):true);
+		return intersects(vec.x, vec.y, vec.z, tmp)&&(checkRenderRange?GraphicsUtil.inRenderRange(e, cam):true);
 	}
 }

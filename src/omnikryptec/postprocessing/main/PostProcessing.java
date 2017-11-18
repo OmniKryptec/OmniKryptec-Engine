@@ -7,10 +7,11 @@ import java.util.List;
 import org.lwjgl.opengl.GL30;
 
 import omnikryptec.display.DisplayManager;
+import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.resource.model.Model;
 import omnikryptec.util.Instance;
 import omnikryptec.util.ModelUtil;
-import omnikryptec.util.RenderUtil;
+import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.profiler.Profilable;
 import omnikryptec.util.profiler.ProfileContainer;
 import omnikryptec.util.profiler.Profiler;
@@ -29,21 +30,13 @@ public class PostProcessing implements Profilable {
 	private boolean enabled = true;
 	private int stagecountactive = 0;
 	private FrameBufferObject target;
-	private boolean ismain = false;
-
-	public static PostProcessing instance() {
-		if (instance == null) {
-			Profiler.addProfilable(instance = new PostProcessing(null), 2);
-		}
-		instance.ismain = true;
-		return instance;
-	}
 
 	public PostProcessing(FrameBufferObject target) {
-		if (DisplayManager.instance() == null) {
+		if (!OmniKryptecEngine.isCreated()) {
 			throw new NullPointerException("DisplayManager is null");
 		}
 		this.target = target;
+		Profiler.addProfilable(this);
 	}
 
 	private double tmptime = 0;
@@ -56,13 +49,9 @@ public class PostProcessing implements Profilable {
 	public void doPostProcessing(FrameBufferObject[] fbos, FrameBufferObject... fbo) {
 		before = fbo[0];
 		stagecountactive = 0;
-		if (ismain) {
-			rendertime = 0;
-		}
+		rendertime = 0;
 		if (enabled) {
-			if (ismain) {
-				tmptime = Instance.getDisplayManager().getCurrentTime();
-			}
+			tmptime = Instance.getDisplayManager().getCurrentTime();
 			beforelist.addAll(Arrays.asList(fbo));
 			if (fbos != null) {
 				beforelist.addAll(Arrays.asList(fbos));
@@ -84,9 +73,7 @@ public class PostProcessing implements Profilable {
 				}
 			}
 			end();
-			if (ismain) {
-				rendertime = Instance.getDisplayManager().getCurrentTime() - tmptime;
-			}
+			rendertime = Instance.getDisplayManager().getCurrentTime() - tmptime;
 		}
 		if (target == null) {
 			before.resolveToScreen();
@@ -131,11 +118,11 @@ public class PostProcessing implements Profilable {
 
 	private void start() {
 		quad.getVao().bind(0, 1);
-		RenderUtil.enableDepthTesting(false);
+		GraphicsUtil.enableDepthTesting(false);
 	}
 
 	private void end() {
-		RenderUtil.enableDepthTesting(true);
+		GraphicsUtil.enableDepthTesting(true);
 	}
 
 	public int getActiveStageCount() {

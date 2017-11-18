@@ -1,6 +1,7 @@
 package omnikryptec.physics;
 
 import omnikryptec.display.DisplayManager;
+import omnikryptec.main.OmniKryptecEngine;
 
 /**
  * PhysicsWorld
@@ -45,7 +46,7 @@ public abstract class PhysicsWorld {
     protected abstract float checkSimulationSpeed(float simulationSpeed);
 
     public final float getTimeStep() {
-        return DisplayManager.instance().getDeltaTimef() * simulationSpeed;
+        return OmniKryptecEngine.instance().getDisplayManager().getDeltaTimef() * simulationSpeed;
     }
 
     public final float getSimulationSpeed() {

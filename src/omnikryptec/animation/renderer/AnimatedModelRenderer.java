@@ -16,7 +16,7 @@ import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.ShaderGroup;
 import omnikryptec.shader.base.ShaderPack;
 import omnikryptec.util.FrustrumFilter;
-import omnikryptec.util.RenderUtil;
+import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -66,7 +66,7 @@ public class AnimatedModelRenderer extends Renderer {
             if (stapel != null && !stapel.isEmpty()) {
                 for (int z = 0; z < stapel.size(); z++) {
                     entity = stapel.get(z);
-                    if (entity != null && entity.isRenderingEnabled() && RenderUtil.inRenderRange(entity, s.getCamera())) {
+                    if (entity != null && entity.isRenderingEnabled() && GraphicsUtil.inRenderRange(entity, s.getCamera())) {
                     	ownshader.onRenderInstance(entity);
                         GL11.glDrawElements(GL11.GL_TRIANGLES, animatedModel.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
                         vertcount += animatedModel.getModel().getModelData().getVertexCount();

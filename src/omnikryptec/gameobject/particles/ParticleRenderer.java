@@ -18,7 +18,7 @@ import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.Maths;
 import omnikryptec.util.ModelUtil;
-import omnikryptec.util.RenderUtil;
+import omnikryptec.util.GraphicsUtil;
 
 public class ParticleRenderer {
 
@@ -83,7 +83,7 @@ public class ParticleRenderer {
 				}
 				curparpos = par.getPosition();
 				if (filter.intersects(curparpos.x, curparpos.y, curparpos.z, par.getScale())
-						&& RenderUtil.inRenderRange(par.getPosition(), par.getType(), curCam)) {
+						&& GraphicsUtil.inRenderRange(par.getPosition(), par.getType(), curCam)) {
 					updateModelViewMatrix(par.getPosition(), par.getRotation(), par.getScale(), curCam.getViewMatrix(),
 							vboData);
 					updateTexCoordInfo(par, vboData);
@@ -96,7 +96,7 @@ public class ParticleRenderer {
 				OpenGL.gl31drawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVao().getIndexCount(), count);
 			}
 		}
-		RenderUtil.disableBlending();
+		GraphicsUtil.disableBlending();
 	}
 
 	public long getParticleCount() {
@@ -105,9 +105,9 @@ public class ParticleRenderer {
 
 	private void bindTexture(ParticleAtlas texture) {
 		if (texture.useAlphaBlending()) {
-			RenderUtil.enableAdditiveBlending();
+			GraphicsUtil.enableAdditiveBlending();
 		} else {
-			RenderUtil.enableAlphaBlending();
+			GraphicsUtil.enableAlphaBlending();
 		}
 		texture.getTexture().bindToUnitOptimized(0);
 		shader.nrOfRows.loadFloat(texture.getNumberOfRows());

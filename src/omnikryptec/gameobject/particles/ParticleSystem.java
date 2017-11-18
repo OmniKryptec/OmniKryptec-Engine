@@ -6,6 +6,7 @@ import org.joml.Vector3f;
 
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.GameObject;
+import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.Maths;
 
 public class ParticleSystem extends GameObject{
@@ -38,7 +39,7 @@ public class ParticleSystem extends GameObject{
 	}
 	
 	protected float getScaledDeltatime(){
-		return DisplayManager.instance().getDeltaTimef()*getTimeMultiplier();
+		return OmniKryptecEngine.instance().getDisplayManager().getDeltaTimef()*getTimeMultiplier();
 	}
 	
 	protected Vector3f generateRandomUnitVectorWithinCone(Vector3f coneDirection, double coneangle) {

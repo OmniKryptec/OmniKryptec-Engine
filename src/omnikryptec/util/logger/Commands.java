@@ -42,7 +42,7 @@ public class Commands {
                         if (state != GameState.RUNNING && state != GameState.STARTING) {
                             Logger.log("Engine is not running", LogLevel.WARNING);
                         } else {
-                            OmniKryptecEngine.rawInstance().requestShutdown(ShutdownOption.ENGINE);
+                            OmniKryptecEngine.rawInstance().shutdown();
                             Logger.log("Engine was successfully exited");
                         }
                     } else if (shutdownOption == ShutdownOption.ENGINE) {

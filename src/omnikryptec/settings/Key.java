@@ -2,6 +2,7 @@ package omnikryptec.settings;
 
 import omnikryptec.display.DisplayManager;
 import omnikryptec.event.input.InputManager;
+import omnikryptec.main.OmniKryptecEngine;
 
 /**
  * Key
@@ -109,7 +110,7 @@ public class Key implements IKey {
 
     @Override
     public boolean isLongPressed(double minTime, double maxTime) {
-        final double currentTime = DisplayManager.instance().getCurrentTime();
+        final double currentTime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime();
         final double pressedTime = (currentTime - lastChange);
         final boolean isLongPressed = isPressed() && (pressedTime >= minTime && pressedTime <= maxTime);
         if (isLongPressed) {

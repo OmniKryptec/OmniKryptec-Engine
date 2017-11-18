@@ -13,6 +13,7 @@ import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.GameObject;
+import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.settings.KeySettings;
 import omnikryptec.util.Maths;
 import omnikryptec.util.logger.Logger;
@@ -69,7 +70,7 @@ public class InputManager {
 
     public static final void nextFrame() {
         keyboardHandler.resetInputString();
-        currentTime = DisplayManager.instance().getCurrentTime();
+        currentTime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime();
         mousePosition.x = mouseHandler.position.x;
         mousePosition.y = mouseHandler.position.y;
         mouseScrollOffset.x = mouseHandler.scrollOffset.x;
@@ -78,7 +79,7 @@ public class InputManager {
         mouseDelta.y = (mousePosition_lastTime.y - mousePosition.y);
         mouseDelta.z = (mouseScrollOffset.x - mouseScrollOffset_lastTime.x);
         mouseDelta.w = (mouseScrollOffset.y - mouseScrollOffset_lastTime.y);
-        final KeySettings keySettings = DisplayManager.instance().getSettings().getKeySettings();
+        final KeySettings keySettings = OmniKryptecEngine.instance().getDisplayManager().getSettings().getKeySettings();
         if (longButtonPressEnabled) {
             keyboardHandler.updateKeySettings(currentTime, keySettings);
             mouseHandler.updateKeySettings(currentTime, keySettings);
@@ -223,7 +224,7 @@ public class InputManager {
      * @return
      */
     public static final GameObject doFirstPersonController(GameObject gameObject, KeySettings keySettings, float deltaPosXZSpeed, float deltaPosYSpeed, float deltaRotXYZSpeed, boolean space) {
-        final float dt = DisplayManager.instance().getDeltaTimef();
+        final float dt = OmniKryptecEngine.instance().getDisplayManager().getDeltaTimef();
         deltaPosXZSpeed *= dt;
         deltaPosYSpeed *= dt;
         deltaRotXYZSpeed *= dt;
@@ -255,7 +256,7 @@ public class InputManager {
      * @return
      */
     public static final GameObject doThirdPersonController(GameObject source, GameObject destination, KeySettings keySettings, float deltaPosXZSpeed, float deltaPosYSpeed, float deltaRotXYZSpeed) {
-        final float dt = DisplayManager.instance().getDeltaTimef();
+        final float dt = OmniKryptecEngine.instance().getDisplayManager().getDeltaTimef();
         deltaPosXZSpeed *= dt;
         deltaPosYSpeed *= dt;
         deltaRotXYZSpeed *= dt;

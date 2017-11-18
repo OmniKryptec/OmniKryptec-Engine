@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 import omnikryptec.display.Display;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.shader.files.postprocessing.DebugShader;
-import omnikryptec.util.RenderUtil;
+import omnikryptec.util.GraphicsUtil;
 
 public class DebugRenderer extends PostProcessingStage {
 
@@ -48,7 +48,7 @@ public class DebugRenderer extends PostProcessingStage {
 			side = calcQuadratic(last = beforelist.size() + 1 - disabled.size());
 		}
 		getFbo().bindFrameBuffer();
-		RenderUtil.clear(0, 0, 0, 0);
+		GraphicsUtil.clear(0, 0, 0, 0);
 		if (tmp = !disabled.contains(0)) {
 			beforelist.get(0).bindDepthTexture(0);
 			shader.info.loadVec3(side, 0, 0);

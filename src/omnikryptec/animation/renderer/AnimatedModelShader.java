@@ -13,7 +13,7 @@ import omnikryptec.shader.base.UniformSampler;
 import omnikryptec.shader.base.UniformVec3;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Instance;
-import omnikryptec.util.RenderUtil;
+import omnikryptec.util.GraphicsUtil;
 
 public class AnimatedModelShader extends Shader {
 
@@ -48,8 +48,8 @@ public class AnimatedModelShader extends Shader {
         model.getModel().getVao().bind(0, 1, 2, 3, 4, 5);
         model.getMaterial().getTexture(Material.DIFFUSE).bindToUnitOptimized(0);
 		jointTransforms.loadMatrixArray(model.getJointTransforms());
-        RenderUtil.disableBlending();
-        RenderUtil.enableDepthTesting(true);
+        GraphicsUtil.disableBlending();
+        GraphicsUtil.enableDepthTesting(true);
 	}
 
 	public void onRenderStart(Scene3D s) {

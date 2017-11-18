@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL30;
 import omnikryptec.audio.AudioManager;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.settings.GameSettings;
-import omnikryptec.util.RenderUtil;
+import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.profiler.Profilable;
@@ -42,22 +42,15 @@ public class DisplayManager implements Profilable{
 	
 	public static final int DISABLE_FPS_CAP = 0;
 
-	private static GameSettings settings;
+	private GameSettings settings;
 
-	private static DisplayManager manager;
-
-	private DisplayManager() {
+	private DisplayManager(GameSettings settings) {
+		this.settings = settings;
+		lasttime = getCurrentTime();
+		setSyncFPS(settings.getInteger(GameSettings.FPS_CAP));
 		Profiler.addProfilable(this, 5);
 	}
 
-	/**
-	 * Returns the DisplayManager instance
-	 * 
-	 * @return DisplayManager DisplayManager
-	 */
-	public static final DisplayManager instance() {
-		return manager;
-	}
 	
 	/**
 	 * Creates a OmniKryptecEngine and a DisplayManager
@@ -84,31 +77,27 @@ public class DisplayManager implements Profilable{
 	 * @return OmniKryptecEngine OmniKryptecEngine
 	 */
 	public static final OmniKryptecEngine createDisplay(String name, GameSettings settings, GLFWInfo info) {
+		if (OmniKryptecEngine.isCreated()) {
+			throw new IllegalStateException("The Engine is already created!");
+		}
 		if(settings.getBoolean(GameSettings.FASTMATH)) {
 			System.setProperty("joml.fastmath", "true");
 		}
-		if (manager != null) {
-			throw new IllegalStateException("The DisplayManager is already created!");
-		}
-		manager = new DisplayManager();
-		DisplayManager.settings = settings;
 		if (name == null) {
 			name = "";
 		}
 		try {
-			manager.setSyncFPS(settings.getInteger(GameSettings.FPS_CAP));
 			Display.create(name, info);
+			AudioManager.init();
 			if (settings.getMultiSamples() != GameSettings.NO_MULTISAMPLING) {
-				RenderUtil.antialias(true);
+				GraphicsUtil.antialias(true);
 			}
-			RenderUtil.cullBackFaces(true);
-			RenderUtil.enableDepthTesting(true);
+			GraphicsUtil.cullBackFaces(true);
+			GraphicsUtil.enableDepthTesting(true);
 			GL11.glViewport(0, 0, info.getWidth(), info.getHeight());
 			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
-			AudioManager.init();
-			lasttime = manager.getCurrentTime();
 			Logger.log("Successfully created the Display!", LogLevel.FINEST);
-			return new OmniKryptecEngine(manager);
+			return new OmniKryptecEngine(new DisplayManager(settings));
 		} catch (Exception ex) {
 			Logger.logErr("Error while creating new DisplayManager: " + ex, ex);
 			return null;
@@ -152,7 +141,7 @@ public class DisplayManager implements Profilable{
 	 */
 	public final DisplayManager updateDisplay() {
 		if(isfirst){
-			lasttime = manager.getCurrentTime();
+			lasttime = getCurrentTime();
 			isfirst = false;
 		}
 		tmptime = getCurrentTime();
