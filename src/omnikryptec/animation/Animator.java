@@ -165,9 +165,9 @@ public class Animator {
         final Matrix4f currentLocalTransform = currentPose.get(joint.getName());
         final Matrix4f currentTransform = new Matrix4f();
         parentTransform.mul(currentLocalTransform, currentTransform);
-        joint.getChildren().stream().forEach((child) -> {
+        for(Joint child : joint.getChildren()) {
             applyPoseToJoints(currentPose, child, currentTransform);
-        });
+        }
         currentTransform.mul(joint.getInverseBindTransform(), currentTransform);
         joint.setAnimationTransform(currentTransform);
         return this;
@@ -195,13 +195,13 @@ public class Animator {
 
     private final HashMap<String, Matrix4f> interpolatePoses(KeyFrame previousFrame, KeyFrame nextFrame, float progression) {
         final HashMap<String, Matrix4f> currentPose = new HashMap<>();
-        previousFrame.getJointKeyFrames().keySet().stream().forEach((name) -> {
+        for(String name : previousFrame.getJointKeyFrames().keySet()) {
             final JointTransform previousTransform = previousFrame.getJointKeyFrames().get(name);
             final JointTransform nextTransform = nextFrame.getJointKeyFrames().get(name);
             final JointTransform currentTransform = JointTransform.interpolate(previousTransform, nextTransform,
                     progression);
             currentPose.put(name, currentTransform.getLocalTransform());
-        });
+        }
         return currentPose;
     }
 

@@ -106,18 +106,18 @@ public class JoystickHandler implements InputHandler {
         if(joystickHandlers.isEmpty()) {
             return;
         }
-        joystickHandlers.stream().forEach((joystickHandler) -> {
+        for(JoystickHandler joystickHandler : joystickHandlers) {
             joystickHandler.update();
-        });
+        }
     }
     
     protected static final void updateAll(double currentTime, KeySettings keySettings) {
         if(joystickHandlers.isEmpty()) {
             return;
         }
-        joystickHandlers.stream().forEach((joystickHandler) -> {
+        for(JoystickHandler joystickHandler : joystickHandlers) {
             joystickHandler.updateKeySettings(currentTime, keySettings);
-        });
+        }
     }
 
     @Override

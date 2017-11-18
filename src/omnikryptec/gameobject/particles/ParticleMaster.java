@@ -133,10 +133,9 @@ public class ParticleMaster implements Profilable {
                 } catch (InterruptedException ex) {
                     System.err.println(ex);
                 }
-                //TODO perfomance?!?!?
-                particlesToRemove.stream().forEach((p_) -> {
+                for(Particle p_ : particlesToRemove){
                     list.remove(p_);
-                });
+                }
                 particlesToRemove.clear();
                 if (list.isEmpty()) {
                     mapIterator.remove();

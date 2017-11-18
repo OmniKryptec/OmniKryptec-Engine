@@ -175,7 +175,7 @@ public class SerializationUtil {
     
     public static final HashMap<Class<?>, ArrayList<GameObject>> gameObjectsToClassesGameObjects(ArrayList<GameObject> gameObjects) {
         final HashMap<Class<?>, ArrayList<GameObject>> classesGameObjects = new HashMap<>();
-        gameObjects.stream().forEach((gameObject) -> {
+        for(GameObject gameObject : gameObjects) {
             final Class<?> c = gameObject.getClass();
             ArrayList<GameObject> gos = classesGameObjects.get(c);
             if(gos == null) {
@@ -183,7 +183,7 @@ public class SerializationUtil {
                 classesGameObjects.put(c, gos);
             }
             gos.add(gameObject);
-        });
+        }
         return classesGameObjects;
     }
 

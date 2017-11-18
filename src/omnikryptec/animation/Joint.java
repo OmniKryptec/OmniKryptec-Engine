@@ -110,9 +110,9 @@ public class Joint {
         final Matrix4f bindTransform = new Matrix4f();
         parentBindTransform.mul(localBindTransform, bindTransform);
         bindTransform.invert(inverseBindTransform);
-        children.stream().forEach((child) -> {
+        for(Joint child : children) {
             child.calculateInverseBindTransform(bindTransform);
-        });
+        }
         return this;
     }
 

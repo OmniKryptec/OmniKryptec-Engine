@@ -1,5 +1,6 @@
 package omnikryptec.test;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.joml.Vector3f;
@@ -87,7 +88,7 @@ public class EngineTest2 implements IEventHandler {
 
             DisplayManager.createDisplay("Test 2",
                     new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setChunkRenderOffsets(2, 2, 2)
-                    .setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(true),
+                    .setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(true).setInteger(GameSettings.HIGHEST_SHADER_LVL, 1),
                     new GLFWInfo(3, 3, true, false, 1280, 720));
 //            new Thread(new Runnable() {
 //
@@ -155,6 +156,7 @@ public class EngineTest2 implements IEventHandler {
             //tm.getMaterial().setTexture(Material.NORMAL, brunnen_norm).setTexture(Material.SPECULAR, brunnen_specular);
             // tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
             // tm.getMaterial().setTexture(Material.SPECULAR, );
+            new ArrayList<>().stream()
             tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.6f))
                     .setFloat(Material.DAMPER, 1.01f).setVector3f(Material.SHADERINFO, new Vector3f(1));
             OmniKryptecEngine.instance().addAndSetScene(new Scene3D("test", (Camera) new Camera() {
@@ -363,7 +365,7 @@ public class EngineTest2 implements IEventHandler {
             testb.begin();
             testb.drawTest();
             testb.end();
-        	System.out.println(OmniKryptecEngine.instance().getDisplayManager().getFPSCounted());
+        	//System.out.println(OmniKryptecEngine.instance().getDisplayManager().getFPSCounted());
 
             // if(Instance.getFramecount()>1000) {
             // system.setTimeMultiplier(0.01f);

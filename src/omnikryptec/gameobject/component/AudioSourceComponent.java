@@ -155,11 +155,11 @@ public class AudioSourceComponent implements Component {
             physicsComponent.getBody().getAngularVelocity(velocity);
         }
         rotation = instance.getTransform().getRotation(true).getEulerAnglesXYZ(new Vector3f());
-        sources.stream().forEach((source) -> {
+        for(AudioSource source : sources) {
             source.setPosition(position);
             source.setVelocity(velocity);
             source.setOrientation(rotation);
-        });
+        }
         if (scene != null && scene.isUsingPhysics()) {
             paused = scene.getPhysicsWorld().isSimulationPaused();
             newDeltaPitch = scene.getPhysicsWorld().getSimulationSpeed() - 1.0F;

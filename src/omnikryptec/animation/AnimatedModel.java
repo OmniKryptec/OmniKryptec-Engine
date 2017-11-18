@@ -187,9 +187,9 @@ public class AnimatedModel implements AdvancedModel {
 
     private final AnimatedModel addJointsToArray(Joint headJoint, Matrix4f[] jointMatrices) {
         jointMatrices[headJoint.getIndex()] = headJoint.getAnimatedTransform();
-        headJoint.getChildren().stream().forEach((child) -> {
+        for(Joint child : headJoint.getChildren()) {
             addJointsToArray(child, jointMatrices);
-        });
+        }
         return this;
     }
 
@@ -211,11 +211,11 @@ public class AnimatedModel implements AdvancedModel {
      * Updates all created AnimatedModels
      */
     public static final void updateAllAnimatedModels() {
-        animatedModels.values().stream().forEach((ams) -> {
-            ams.stream().forEach((am) -> {
+        for(ArrayList<AnimatedModel> ams : animatedModels.values()) {
+            for(AnimatedModel am : ams) {
                am.update();
-            });
-        });
+            }
+        }
     }
 
     @Override

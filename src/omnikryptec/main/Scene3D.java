@@ -152,7 +152,8 @@ public class Scene3D extends Abstract3DEnv {
 
 
     public final List<Entity> getEntities() {
-        final List<Entity> entities = global.getEntities();
+        final List<Entity> entities = new ArrayList<>(); 
+        entities.addAll(global.getEntities());
         for(RenderChunk c : scene.values()) {
         	entities.addAll(c.getEntities());
         }

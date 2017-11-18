@@ -207,9 +207,9 @@ public class AudioPlaylist {
     }
 
     public static final void updateAll() {
-        playlists.stream().forEach((playlist) -> {
+       for(AudioPlaylist playlist : playlists) {
             playlist.update();
-        });
+       };
     }
 
     public static final void cleanUp() {

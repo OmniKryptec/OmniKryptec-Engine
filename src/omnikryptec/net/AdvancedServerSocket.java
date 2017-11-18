@@ -422,9 +422,9 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      */
     public final AdvancedServerSocket broadcast(Object message, boolean whitelist, AdvancedSocket... sockets) {
         if (sockets == null || sockets.length == 0) {
-            socketsAccepted.stream().forEach((socket) -> {
+            for(AdvancedSocket socket : socketsAccepted) {
                 socket.send(message);
-            });
+            }
         } else {
             socketsAccepted.stream().filter((socket) -> {
                 for (AdvancedSocket s : sockets) {
