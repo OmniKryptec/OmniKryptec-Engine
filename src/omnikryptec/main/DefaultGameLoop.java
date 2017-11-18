@@ -1,13 +1,11 @@
 package omnikryptec.main;
 
-import omnikryptec.display.Display;
-
 public class DefaultGameLoop extends GameLoop{
 
 	@Override
 	protected void runLoop() {
 		while(!isStopRequested()) {
-			renderOneFrame();
+			step();
 		}
 	}
 
@@ -28,11 +26,4 @@ public class DefaultGameLoop extends GameLoop{
 		renderGui();
 		refresh();
 	}
-
-	@Override
-	public float getDeltaTime() {
-		return 0;
-	}
-
-
 }

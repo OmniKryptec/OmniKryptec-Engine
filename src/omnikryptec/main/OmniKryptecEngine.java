@@ -50,6 +50,7 @@ public class OmniKryptecEngine implements Profilable {
 		return instance;
 	}
 
+	@Deprecated
 	public static OmniKryptecEngine rawInstance() {
 		return instance;
 	}
@@ -167,48 +168,28 @@ public class OmniKryptecEngine implements Profilable {
 		}
 	}
 
-
-	public final OmniKryptecEngine frame(boolean clear, boolean onlyrender, boolean sleepwheninactive) {
-		final double currentTime = manager.getCurrentTime();
-		if (state != GameState.RUNNING) {
-			Logger.log("Incorrect enginestate.", LogLevel.WARNING);
-			return this;
+	public final void setLoop(GameLoop loop) {
+		boolean b = gameloop!=null&&gameloop.isRunning();
+		if(b) {
+			gameloop.requestStop(GameLoopShutdownOption.LOOP);
 		}
-		try {
-			if (!Display.isActive() && sleepwheninactive) {
-				
-				return this;
-			}
-			AudioManager.update(currentTime);
-			if (Display.wasResized()) {
-				eventsystem.fireEvent(new Event(manager), EventType.RESIZED);
-				resizeFbos();
-				postpro.resize();
-			}
-			scenefbo.bindFrameBuffer();
-			if (sceneCurrent != null) {
-				if (clear) {
-					GraphicsUtil.clear(getClearColor());
-				}
-				if (!onlyrender) {
-					sceneCurrent.publicLogic(true);
-				}
-				vertsCountCurrent = sceneCurrent.mainRender();
-			}
-			
-			if (sceneCurrent != null) {
-			//	PostProcessing.instance().doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
-			}
-			InputManager.prePollEvents();
-			manager.updateDisplay();
-			InputManager.nextFrame();
-			frametime = manager.getCurrentTime() - currentTime;
-		} catch (Exception e) {
-			errorOccured(e, "Error occured in frame!");
+		gameloop = loop;
+		if(b) {
+			gameloop.run();
 		}
-		return this;
 	}
-
+	
+	public final GameLoop getLoop() {
+		return gameloop;
+	}
+	
+	public final boolean hasLoop() {
+		return getLoop()!=null;
+	}
+	
+	public final float getRenderDeltaTime() {
+		return getDisplayManager().getDeltaTimef();
+	}
 	
 	final void beginSceneRendering() {
 		scenefbo.bindFrameBuffer();
@@ -280,15 +261,15 @@ public class OmniKryptecEngine implements Profilable {
 		return vertsCountCurrent;
 	}
 
-	public final double getRenderTimeMS() {
+	final double getRenderTimeMS() {
 		return sceneCurrent == null ? 0 : sceneCurrent.getRenderTimeMS();
 	}
 
-	public final double getLogicTimeMS() {
+	final double getLogicTimeMS() {
 		return sceneCurrent == null ? 0 : sceneCurrent.getLogicTimeMS();
 	}
 
-	public final double getFrameTimeMS() {
+	final double getFrameTimeMS() {
 		return frametime;
 	}
 
@@ -372,7 +353,7 @@ public class OmniKryptecEngine implements Profilable {
 		return this;
 	}
 
-	public final Abstract3DEnv getCurrentScene() {
+	public final Abstract3DEnv getCurrent3DScene() {
 		return sceneCurrent;
 	}
 
@@ -418,6 +399,8 @@ public class OmniKryptecEngine implements Profilable {
 	}
 
 	public boolean hasEnvironment() {
-		return getCurrentScene()!=null;
+		return getCurrent3DScene()!=null;
 	}
+
+
 }

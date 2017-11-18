@@ -22,6 +22,8 @@ public abstract class GameLoop {
 	
 	protected final OmniKryptecEngine engineInstance;
 	
+	private boolean running=false;
+		
 	protected GameLoop() {
 		engineInstance = OmniKryptecEngine.instance();
 	}
@@ -39,12 +41,14 @@ public abstract class GameLoop {
 	}
 	
 	public final void run() {
+		running = true;
 		stopLevel = GameLoopShutdownOption.NOT_NOW;
 		try {
 			runLoop();
 		}catch(Exception e) {
 			engineInstance.errorOccured(e, "An error occured in the game loop");
 		}
+		running = false;
 		if(Display.isCloseRequested()) {
 			engineInstance.shutdown();
 		}
@@ -59,6 +63,10 @@ public abstract class GameLoop {
 		}
 		engineInstance.getEventsystem().fireEvent(new Event(), EventType.AFTER_FRAME);
 		
+	}
+	
+	public final boolean isRunning() {
+		return running;
 	}
 	
 	public final void requestStop(GameLoopShutdownOption option) {
@@ -123,7 +131,7 @@ public abstract class GameLoop {
 	}
 	
 	protected final void render3D() {
-		engineInstance.getCurrentScene().publicRender(null);
+		engineInstance.getCurrent3DScene().publicRender(null);
 	}
 	
 	protected final void render2D() {
@@ -135,7 +143,7 @@ public abstract class GameLoop {
 	}
 	
 	protected final void logic3D() {
-		engineInstance.getCurrentScene().publicLogic(true);
+		engineInstance.getCurrent3DScene().publicLogic(true);
 	}
 	
 	protected final void logic2D() {
@@ -146,6 +154,6 @@ public abstract class GameLoop {
 	
 	protected abstract void renderOneFrame();
 	
-	public abstract float getDeltaTime();
+	//public abstract boolean useDeltaTimeInLogic();
 	
 }

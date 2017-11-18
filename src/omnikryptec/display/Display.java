@@ -34,7 +34,7 @@ public class Display {
         return window.wasResized();
     }
 
-    public static void update() {
+    static void update() {
         window.swapBuffers();
         GLFW.glfwPollEvents();
     }

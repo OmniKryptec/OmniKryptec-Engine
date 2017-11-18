@@ -302,7 +302,7 @@ public class EngineTest2 implements IEventHandler {
             // 0f).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0,
             // -1, 0));
             l = new Light();
-            OmniKryptecEngine.instance().getCurrentScene()
+            OmniKryptecEngine.instance().getCurrent3DScene()
                     .addGameObject(l.setAttenuation(1, 0, 0).setColor(1, 1, 1).setDirectional(true)
                             .setConeAttenuation(1, 0, 0).setConeDegrees(55).setDirection(0, -1, 0).setGlobal(true));
             l.getTransform().setPosition(0, 0, 0);
@@ -363,6 +363,8 @@ public class EngineTest2 implements IEventHandler {
             testb.begin();
             testb.drawTest();
             testb.end();
+        	System.out.println(OmniKryptecEngine.instance().getDisplayManager().getFPSCounted());
+
             // if(Instance.getFramecount()>1000) {
             // system.setTimeMultiplier(0.01f);
             // attractor.setEnabled(false);
@@ -410,7 +412,7 @@ public class EngineTest2 implements IEventHandler {
         // PPTime:
         // "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());
         if (ev.getType() == EventType.AFTER_FRAME) {
-            // System.out.println(ParticleMaster.instance().getRenderedParticlesCount());
+        	// System.out.println(ParticleMaster.instance().getRenderedParticlesCount());
             // System.out.println(Instance.getEngine().getModelVertsCount());
             // System.out.println(ParticleMaster.instance().getUpdatedParticlesCount());
             // Logger.log(new Profiler().createTimesString(50, true, false));

@@ -38,7 +38,7 @@ public class Event {
 	 */
 	protected Event(Event ev) {
 		type = ev.getType();
-		scene = ev.getScene() == null ? OmniKryptecEngine.instance().getCurrentScene() : ev.getScene();
+		scene = ev.getScene() == null ? OmniKryptecEngine.instance().getCurrent3DScene() : ev.getScene();
 		msg = ev.getMsgA();
 	}
 

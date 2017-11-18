@@ -63,7 +63,7 @@ public class Instance {
 		return OmniKryptecEngine.instance();
 	}
 
-	public static final PostProcessing getPostProcessing() {
+	public static final PostProcessing getPostProcessor() {
 		return OmniKryptecEngine.instance().getPostprocessor();
 	}
 
@@ -72,7 +72,7 @@ public class Instance {
 	}
 
 	public static final Abstract3DEnv getCurrentScene() {
-		return getEngine().getCurrentScene();
+		return getEngine().getCurrent3DScene();
 	}
 
 	public static final Camera getCurrentCamera() {
@@ -103,11 +103,11 @@ public class Instance {
 		return getDisplayManager().getCurrentTime();
 	}
 
-	public static final float getDeltaTimef() {
+	public static final float getRenderDeltaTimef() {
 		return getDisplayManager().getDeltaTimef();
 	}
 
-	public static final double getDeltaTime() {
+	public static final double getRenderDeltaTime() {
 		return getDisplayManager().getDeltaTime();
 	}
 
@@ -115,10 +115,14 @@ public class Instance {
 		return getDisplayManager().getFPS();
 	}
 
+	public static final long getFPSCounted() {
+		return getDisplayManager().getFPSCounted();
+	}
+	
 	public static final long getFramecount() {
 		return getDisplayManager().getFramecount();
 	}
-
+	
 	public static final <T extends ResourceObject> T getResource(Class<? extends T> clazz, String name) {
 		return ResourceLoader.getResourceDefault(clazz, name);
 	}

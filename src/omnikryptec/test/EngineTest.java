@@ -50,13 +50,13 @@ public class EngineTest {
             Entity ent2 = new Entity(tm);
             Entity ent3 = new Entity(tm);
 
-            OmniKryptecEngine.instance().getCurrentScene().addGameObject(ent);
-            OmniKryptecEngine.instance().getCurrentScene().addGameObject(ent2);
-            OmniKryptecEngine.instance().getCurrentScene().addGameObject(ent3);
+            OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(ent);
+            OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(ent2);
+            OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(ent3);
             // OmniKryptecEngine.instance().getCurrentScene().getCamera().setRelativePos(0,
             // 100, -5);
-            OmniKryptecEngine.instance().getCurrentScene().getCamera().getTransform().increasePosition(0, 10, 0);
-            OmniKryptecEngine.instance().getCurrentScene().getCamera().getTransform().increaseRotation(0, 90, 0);
+            OmniKryptecEngine.instance().getCurrent3DScene().getCamera().getTransform().increasePosition(0, 10, 0);
+            OmniKryptecEngine.instance().getCurrent3DScene().getCamera().getTransform().increaseRotation(0, 90, 0);
             ent.getTransform().setPosition(0, 0, -5);
             ent2.getTransform().setPosition(5, 0, -5);
             ent3.getTransform().setPosition(-5, 0, 2);

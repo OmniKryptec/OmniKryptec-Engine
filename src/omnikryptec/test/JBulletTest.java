@@ -93,7 +93,7 @@ public class JBulletTest {
             dynamicsWorld.addRigidBody(controlBall);
             controlBallEntity = createBallEntity(entityBuilder_brunnen, controlBall);
             balls.put(controlBallEntity, controlBall);
-            OmniKryptecEngine.instance().getCurrentScene().addGameObject(controlBallEntity);
+            OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(controlBallEntity);
         } catch (Exception ex) {
             Logger.logErr("Error while setting up physics: " + ex, ex);
         }
@@ -117,12 +117,12 @@ public class JBulletTest {
         }
         for (Entity e : ballsToBeRemoved.keySet()) {
             final RigidBody body = ballsToBeRemoved.get(e);
-            OmniKryptecEngine.instance().getCurrentScene().removeGameObject(e);
+            OmniKryptecEngine.instance().getCurrent3DScene().removeGameObject(e);
             balls.remove(e);
             dynamicsWorld.removeRigidBody(body);
         }
         if (applyForce) {
-            final Camera camera = OmniKryptecEngine.instance().getCurrentScene().getCamera();
+            final Camera camera = OmniKryptecEngine.instance().getCurrent3DScene().getCamera();
             // applyForceToBall(camera, controlBall);
             for (RigidBody body : balls.values()) {
                 applyForceToBall(camera, body);
@@ -156,7 +156,7 @@ public class JBulletTest {
         // final CollisionShape shape = new
         // SphereShape(entityBuilder.getModel().getRadius() / 10); //Standard
         // 3.0F //m
-        GameObject relateTo = OmniKryptecEngine.instance().getCurrentScene().getCamera();
+        GameObject relateTo = OmniKryptecEngine.instance().getCurrent3DScene().getCamera();
         if (relateTo instanceof FollowingCamera) {
             GameObject temp = ((FollowingCamera) relateTo).getFollowedGameObject();
             if (temp != null) {
@@ -181,7 +181,7 @@ public class JBulletTest {
         final RigidBody body = createNewRigidBody(entityBuilder);
         final Entity entity = createBallEntity(entityBuilder, body);
         balls.put(entity, body);
-        OmniKryptecEngine.instance().getCurrentScene().addGameObject(entity);
+        OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(entity);
         return entity;
     }
 
@@ -206,17 +206,17 @@ public class JBulletTest {
         if (physicsSpeed < 0) {
             physicsSpeed = 0;
         }
-        if (!(OmniKryptecEngine.instance().getCurrentScene().getCamera() instanceof FollowingCamera)
+        if (!(OmniKryptecEngine.instance().getCurrent3DScene().getCamera() instanceof FollowingCamera)
                 && OmniKryptecEngine.instance().getDisplayManager().getSettings().getKeySettings()
                 .getKey("mouseButtonLeft").isPressed()) {
             float deltaX = InputManager.getMouseDelta().x;
             float deltaY = InputManager.getMouseDelta().y;
             float deltaD = InputManager.getMouseDelta().z;
             if (InputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_LEFT_CONTROL)) {
-                Camera camera = OmniKryptecEngine.rawInstance().getCurrentScene().getCamera();
+                Camera camera = OmniKryptecEngine.rawInstance().getCurrent3DScene().getCamera();
                 InputManager.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
             } else {
-                OmniKryptecEngine.rawInstance().getCurrentScene().getCamera().getTransform().increaseRotation((deltaY / 5), -(deltaX / 5), 0);
+                OmniKryptecEngine.rawInstance().getCurrent3DScene().getCamera().getTransform().increaseRotation((deltaY / 5), -(deltaX / 5), 0);
             }
         }
     }
@@ -285,9 +285,9 @@ public class JBulletTest {
             entityBuilder_pine = new EntityBuilder().loadModel("/omnikryptec/test/pine.obj")
                     .loadTexture("/omnikryptec/test/pine2.png");
             final Entity entity_1 = entityBuilder_brunnen.create();
-            OmniKryptecEngine.instance().getCurrentScene().addGameObject(entity_1);
-            OmniKryptecEngine.instance().getCurrentScene().getCamera().getTransform().increasePosition(0, 3, 0);
-            OmniKryptecEngine.instance().getCurrentScene().getCamera().getTransform().setRotation(40, 0, 0, 0);
+            OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(entity_1);
+            OmniKryptecEngine.instance().getCurrent3DScene().getCamera().getTransform().increasePosition(0, 3, 0);
+            OmniKryptecEngine.instance().getCurrent3DScene().getCamera().getTransform().setRotation(40, 0, 0, 0);
             entity_1.getTransform().setPosition(0, 0, -5);
             EventSystem.instance().addEventHandler((e) -> {
                 input();
@@ -303,13 +303,13 @@ public class JBulletTest {
              */
             setUpPhysics();
             final Entity entity_2 = createNewShape(entityBuilder_pine);
-            if (OmniKryptecEngine.instance().getCurrentScene().getCamera() instanceof FollowingCamera) {
+            if (OmniKryptecEngine.instance().getCurrent3DScene().getCamera() instanceof FollowingCamera) {
                 RigidBody lustig = createNewRigidBody(entityBuilder_brunnen);
                 Entity followedEntity = new Entity(entityBuilder_brunnen.createTexturedModel()) {
 
                     @Override
                     public void update() {
-                        InputManager.doThirdPersonController(OmniKryptecEngine.instance().getCurrentScene().getCamera(),
+                        InputManager.doThirdPersonController(OmniKryptecEngine.instance().getCurrent3DScene().getCamera(),
                                 this, DisplayManager.instance().getSettings().getKeySettings(), 10.0F, 5.0F, 40.0F); // Standard:
                         // 1.5F,
                         // 15.0F
@@ -334,11 +334,11 @@ public class JBulletTest {
 
                 };
 
-                OmniKryptecEngine.instance().getCurrentScene().addGameObject(followedEntity);
-                ((FollowingCamera) OmniKryptecEngine.rawInstance().getCurrentScene().getCamera())
+                OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(followedEntity);
+                ((FollowingCamera) OmniKryptecEngine.rawInstance().getCurrent3DScene().getCamera())
                         .setFollowedGameObject(followedEntity);
             }
-            InputManager.setCamera(OmniKryptecEngine.instance().getCurrentScene().getCamera());
+            InputManager.setCamera(OmniKryptecEngine.instance().getCurrent3DScene().getCamera());
             OmniKryptecEngine.instance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
         } catch (Exception ex) {
             Logger.logErr("Main Error: " + ex, ex);

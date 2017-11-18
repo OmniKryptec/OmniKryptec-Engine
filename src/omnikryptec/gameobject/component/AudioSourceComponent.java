@@ -163,7 +163,7 @@ public class AudioSourceComponent implements Component {
         if (scene != null && scene.isUsingPhysics()) {
             paused = scene.getPhysicsWorld().isSimulationPaused();
             newDeltaPitch = scene.getPhysicsWorld().getSimulationSpeed() - 1.0F;
-            sources.stream().forEach((source) -> {
+            for(AudioSource source : sources) {
                 if (source.isAffectedByPhysics()) {
                     if (paused && source.isPlaying()) {
                         source.pauseTemporarily();// FIXME StreamedSound stops
@@ -174,7 +174,7 @@ public class AudioSourceComponent implements Component {
                     source.setDeltaPitch(newDeltaPitch);
                 }
                 source.updateState(OmniKryptecEngine.instance().getDisplayManager().getDeltaTimef());
-            });
+            }
         }
         blocker.setBlocked(false);
     }

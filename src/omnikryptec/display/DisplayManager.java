@@ -132,6 +132,10 @@ public class DisplayManager implements Profilable{
 	private double tmptime=0, tmptime2;
 	private double updateTime=0;
 	private double idletime=0;
+	private double fpstime=0;
+	
+	private long fps1=0, fps2=0;
+	private boolean fps=true;
 	
 	private boolean isfirst=true;
 	/**
@@ -142,6 +146,7 @@ public class DisplayManager implements Profilable{
 	public final DisplayManager updateDisplay() {
 		if(isfirst){
 			lasttime = getCurrentTime();
+			fpstime = getCurrentTime()/1000.0;
 			isfirst = false;
 		}
 		tmptime = getCurrentTime();
@@ -160,8 +165,24 @@ public class DisplayManager implements Profilable{
 		}
 		runtimef = (float) runtime;
 		framecount++;
+		
 		Display.update();
+		if(fps) {
+			fps1++;
+		}else {
+			fps2++;
+		}
 		tmptime2 = getCurrentTime();
+		if(runtime-fpstime>=1.0) {
+			fpstime = runtime;
+			if(fps) {
+				fps = false;
+				fps2 = 0;
+			}else {
+				fps = true;
+				fps1 = 0;
+			}
+		}
 		if (sync > DISABLE_FPS_CAP) {
 			Display.sync(sync);
 		}
@@ -209,6 +230,10 @@ public class DisplayManager implements Profilable{
 		return 1.0 / deltatime;
 	}
 
+	public final long getFPSCounted() {
+		return fps ? fps2 : fps1;
+	}
+	
 	/**
 	 * Returns the number of update calls
 	 * 

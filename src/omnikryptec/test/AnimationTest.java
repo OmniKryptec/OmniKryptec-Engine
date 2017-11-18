@@ -170,8 +170,8 @@ public class AnimationTest {
                 load();
             }
             if (!SAVE.exists()) {
-                OmniKryptecEngine.rawInstance().getCurrentScene().addGameObject(entity_brunnen);
-                OmniKryptecEngine.rawInstance().getCurrentScene().addGameObject(entity_test);
+                OmniKryptecEngine.rawInstance().getCurrent3DScene().addGameObject(entity_brunnen);
+                OmniKryptecEngine.rawInstance().getCurrent3DScene().addGameObject(entity_test);
                 camera.getTransform().increasePosition(0, 3, 0);
                 camera.getTransform().increaseRotation(0, 90, 0);
                 entity_brunnen.getTransform().increasePosition(8, 1, 0);
