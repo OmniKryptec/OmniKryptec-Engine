@@ -1,6 +1,6 @@
 package omnikryptec.shader.files.render;
 
-import omnikryptec.graphics.DrawBatch;
+import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.UniformMatrix;
 import omnikryptec.shader.base.UniformSampler;
@@ -20,7 +20,7 @@ public class Shader2D extends Shader {
 	}
 	
 	@Override
-	public void onDrawBatchStart(DrawBatch batch) {
+	public void onDrawBatchStart(SpriteBatch batch) {
 		projview.loadMatrix(batch.getCamera().getProjectionViewMatrix());
 	}
 

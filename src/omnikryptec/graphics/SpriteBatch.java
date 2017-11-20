@@ -45,8 +45,8 @@ import omnikryptec.util.Color;
 import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.exceptions.OmniKryptecException;
 
-public class DrawBatch {
-	private static final int floatsPerVertex = 8;
+public class SpriteBatch {
+	public static final int FLOATS_PER_VERTEX = 8;
 	private static final int[] elementLengths = { 2, 4, 2 };
 	private static final int vertices = 6;
 
@@ -71,36 +71,36 @@ public class DrawBatch {
 	private boolean drawing = false;
 	private Color color = new Color(1, 1, 1, 1);
 	private Camera camera;
-	
-	public DrawBatch(Camera cam) {
+
+	public SpriteBatch(Camera cam) {
 		this(cam, 1000);
 	}
 
-	public DrawBatch(Camera cam, int size) {
+	public SpriteBatch(Camera cam, int size) {
 		this(cam, defaultShader(), size);
 	}
 
-	public DrawBatch(Camera cam, Shader program, int size) {
+	public SpriteBatch(Camera cam, Shader program, int size) {
 		this.program = program;
 		this.camera = cam;
 		vao = VertexArrayObject.create();
 		max = size * vertices;
-		buffer = BufferUtils.createFloatBuffer(floatsPerVertex * max);
+		buffer = BufferUtils.createFloatBuffer(FLOATS_PER_VERTEX * max);
 	}
 
 	public Camera getCamera() {
 		return camera;
 	}
-	
-	public DrawBatch setCamera(Camera cam) {
+
+	public SpriteBatch setCamera(Camera cam) {
 		if (drawing) {
 			throw new OmniKryptecException("Can't change the camera while rendering!");
-		}else {
+		} else {
 			this.camera = cam;
 		}
 		return this;
 	}
-	
+
 	public void drawTest() {
 		vertex(0, 0, 1, 1, 1, 1, 0, 0);
 		vertex(1, 0, 1, 1, 1, 1, 1, 0);
@@ -178,6 +178,31 @@ public class DrawBatch {
 		buffer.put(x).put(y).put(r).put(g).put(b).put(a).put(u).put(v);
 	}
 
+	public void drawPolygon(float[] data, int vertexcount) {
+		drawPolygon(data, 0, data.length, vertexcount);
+	}
+
+	public void drawPolygon(float[] data, int start, int len, int vertexcount) {
+		if((len-start)%FLOATS_PER_VERTEX!=0) {
+			throw new OmniKryptecException("Floats per vertex are not correct.");
+		}
+		if (idx + vertexcount >= max) {
+			flush();
+		}
+		idx += vertexcount;
+		this.vertexcount += vertexcount;
+		buffer.put(data, start, len);
+	}
+
+	public float[] getData() {
+		buffer.flip();
+		float[] array = new float[buffer.limit()];
+		buffer.get(array);
+		idx = 0;
+		buffer.clear();
+		return array;
+	}
+
 	public void draw(Texture tex, float x, float y) {
 		draw(tex, x, y, tex.getWidth(), tex.getHeight());
 	}
@@ -196,11 +221,11 @@ public class DrawBatch {
 	public void draw(Texture tex, float x, float y, float u, float v, float u2, float v2) {
 		draw(tex, x, y, tex.getWidth(), tex.getHeight(), u, v, u2, v2);
 	}
-	
+
 	public void draw(Texture tex, float x, float y, float width, float height, float u, float v, float u2, float v2) {
 		draw(tex, x, y, width, height, x, y, 0, u, v, u2, v2);
 	}
-	
+
 	public void draw(Texture tex, float x, float y, float width, float height, float originX, float originY,
 			float rotationRadians) {
 		if (tex != null) {
@@ -216,7 +241,7 @@ public class DrawBatch {
 		}
 		draw(tex, x, y, width, height, originX, originY, rotationRadians, u, v, u2, v2);
 	}
-	
+
 	public void draw(Texture tex, float x, float y, float width, float height, float originX, float originY,
 			float rotationRadians, float u, float v, float u2, float v2) {
 		checkFlush(tex);
@@ -276,7 +301,6 @@ public class DrawBatch {
 		vertex(x4, y4, r, g, b, a, u, v2);
 	}
 
-
 	public void fillRect(float x, float y, float width, float height) {
 		draw(null, x, y, width, height);
 	}
@@ -311,7 +335,7 @@ public class DrawBatch {
 		float rad = (float) Math.atan2(dx, dy);
 		draw(null, x1, y1, dist, thickness, 0, 0, rad);
 	}
-	
+
 	public int getDrawCalls() {
 		return drawcalls;
 	}

@@ -22,7 +22,7 @@ import omnikryptec.gameobject.particles.AttractorMode;
 import omnikryptec.gameobject.particles.ParticleAttractor;
 import omnikryptec.gameobject.particles.ParticleSpawnArea;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
-import omnikryptec.graphics.DrawBatch;
+import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene3D;
@@ -156,7 +156,6 @@ public class EngineTest2 implements IEventHandler {
             //tm.getMaterial().setTexture(Material.NORMAL, brunnen_norm).setTexture(Material.SPECULAR, brunnen_specular);
             // tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
             // tm.getMaterial().setTexture(Material.SPECULAR, );
-            new ArrayList<>().stream()
             tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.6f))
                     .setFloat(Material.DAMPER, 1.01f).setVector3f(Material.SHADERINFO, new Vector3f(1));
             OmniKryptecEngine.instance().addAndSetScene(new Scene3D("test", (Camera) new Camera() {
@@ -360,10 +359,12 @@ public class EngineTest2 implements IEventHandler {
 
         // system.generateParticles(1);
         if (ev.getType() == EventType.RENDER_FRAME_EVENT) {
-            DrawBatch testb = new DrawBatch(new Camera().setDefaultScreenSpaceProjection(), new Shader2D(), 100);
+            SpriteBatch testb = new SpriteBatch(new Camera().setDefaultScreenSpaceProjection(), new Shader2D(), 100);
             //testb.getCamera().getTransform().setPosition(0, 0, 10);
             testb.begin();
             testb.drawTest();
+            float[] f = testb.getData();
+            testb.drawPolygon(f, 3);
             testb.end();
         	//System.out.println(OmniKryptecEngine.instance().getDisplayManager().getFPSCounted());
 

@@ -308,6 +308,7 @@ public class OmniKryptecEngine implements Profilable {
 		state = GameState.ERROR;
 		new OmnikryptecError(e, new ErrorObject<String>(text)).print();
 		eventsystem.fireEvent(new Event(e), EventType.ERROR);
+		shutdown();
 	}
 
 	public final ShutdownOption getShutdownOption() {
