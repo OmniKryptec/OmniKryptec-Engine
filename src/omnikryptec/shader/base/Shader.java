@@ -12,8 +12,8 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
 import omnikryptec.gameobject.Entity;
-import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.graphics.OpenGL;
+import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.main.Abstract3DEnv;
 import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.resource.model.AdvancedModel;

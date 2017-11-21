@@ -2,7 +2,6 @@ package omnikryptec.gameobject.particles;
 
 import org.joml.Vector3f;
 
-import omnikryptec.display.DisplayManager;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.util.EnumCollection.RenderType;

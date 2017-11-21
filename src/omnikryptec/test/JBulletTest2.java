@@ -49,9 +49,9 @@ import omnikryptec.settings.Key;
 import omnikryptec.settings.KeyGroup;
 import omnikryptec.settings.KeySettings;
 import omnikryptec.util.ConverterUtil;
+import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.PhysicsUtil;
-import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.logger.Logger;
 
 /**

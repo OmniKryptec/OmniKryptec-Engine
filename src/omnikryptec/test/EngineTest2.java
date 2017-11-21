@@ -1,6 +1,5 @@
 package omnikryptec.test;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import org.joml.Vector3f;
@@ -9,7 +8,6 @@ import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
 import omnikryptec.event.event.Event;
-import omnikryptec.event.event.EventSystem;
 import omnikryptec.event.event.EventType;
 import omnikryptec.event.event.IEventHandler;
 import omnikryptec.event.input.InputManager;
@@ -24,7 +22,6 @@ import omnikryptec.gameobject.particles.ParticleSpawnArea;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
 import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene3D;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
@@ -52,7 +49,6 @@ import omnikryptec.util.NativesLoader;
 import omnikryptec.util.lang.LanguageManager;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.profiler.LiveProfiler;
 
 /**
  *

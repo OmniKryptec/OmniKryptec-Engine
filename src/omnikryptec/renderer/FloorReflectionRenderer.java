@@ -11,8 +11,8 @@ import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.util.EnumCollection.RendererTime;
 import omnikryptec.util.FrustrumFilter;
-import omnikryptec.util.Instance;
 import omnikryptec.util.GraphicsUtil;
+import omnikryptec.util.Instance;
 
 public class FloorReflectionRenderer extends Renderer{
 	

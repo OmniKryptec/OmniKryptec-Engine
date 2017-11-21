@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import omnikryptec.display.DisplayManager;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.settings.GameSettings;
 

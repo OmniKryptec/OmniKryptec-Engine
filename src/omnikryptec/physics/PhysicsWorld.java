@@ -1,6 +1,5 @@
 package omnikryptec.physics;
 
-import omnikryptec.display.DisplayManager;
 import omnikryptec.main.OmniKryptecEngine;
 
 /**

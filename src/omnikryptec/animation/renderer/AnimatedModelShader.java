@@ -12,8 +12,8 @@ import omnikryptec.shader.base.UniformMatrixArray;
 import omnikryptec.shader.base.UniformSampler;
 import omnikryptec.shader.base.UniformVec3;
 import omnikryptec.util.AdvancedFile;
-import omnikryptec.util.Instance;
 import omnikryptec.util.GraphicsUtil;
+import omnikryptec.util.Instance;
 
 public class AnimatedModelShader extends Shader {
 

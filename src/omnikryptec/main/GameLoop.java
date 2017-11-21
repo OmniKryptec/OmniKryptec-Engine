@@ -7,11 +7,10 @@ import omnikryptec.display.Display;
 import omnikryptec.event.event.Event;
 import omnikryptec.event.event.EventType;
 import omnikryptec.event.input.InputManager;
-import omnikryptec.postprocessing.main.PostProcessing;
+import omnikryptec.util.EnumCollection.GameLoopShutdownOption;
 import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
-import omnikryptec.util.EnumCollection.GameLoopShutdownOption;
 
 public abstract class GameLoop {
 	

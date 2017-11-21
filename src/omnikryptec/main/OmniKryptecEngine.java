@@ -6,13 +6,11 @@ import java.util.stream.Collectors;
 
 import org.lwjgl.opengl.GL30;
 
-import omnikryptec.audio.AudioManager;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.event.event.Event;
 import omnikryptec.event.event.EventSystem;
 import omnikryptec.event.event.EventType;
-import omnikryptec.event.input.InputManager;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.main.PostProcessing;
@@ -28,7 +26,6 @@ import omnikryptec.shader.base.Shader;
 import omnikryptec.util.Color;
 import omnikryptec.util.EnumCollection.GameLoopShutdownOption;
 import omnikryptec.util.EnumCollection.GameState;
-import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.error.ErrorObject;
 import omnikryptec.util.error.OmnikryptecError;
 import omnikryptec.util.logger.Commands;

@@ -13,7 +13,6 @@ import org.lwjgl.opengl.GL30;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
-import omnikryptec.display.DisplayManager;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.logger.Logger;
 

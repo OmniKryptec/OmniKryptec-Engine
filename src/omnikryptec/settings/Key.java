@@ -1,6 +1,5 @@
 package omnikryptec.settings;
 
-import omnikryptec.display.DisplayManager;
 import omnikryptec.event.input.InputManager;
 import omnikryptec.main.OmniKryptecEngine;
 

@@ -10,7 +10,6 @@ import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 
 import omnikryptec.display.Display;
-import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.GameObject;
 import omnikryptec.main.OmniKryptecEngine;

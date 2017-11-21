@@ -4,8 +4,6 @@ import java.util.HashMap;
 
 import org.joml.Matrix4f;
 
-import omnikryptec.display.DisplayManager;
-import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.Instance;
 import omnikryptec.util.Maths;
 

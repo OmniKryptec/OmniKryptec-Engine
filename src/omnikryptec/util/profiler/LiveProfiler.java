@@ -13,7 +13,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.swing.ChartData;

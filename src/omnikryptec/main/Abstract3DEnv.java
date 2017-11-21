@@ -3,9 +3,7 @@ package omnikryptec.main;
 import java.util.LinkedList;
 import java.util.List;
 
-import omnikryptec.display.DisplayManager;
 import omnikryptec.event.event.Event;
-import omnikryptec.event.event.EventSystem;
 import omnikryptec.event.event.EventType;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.GameObject;

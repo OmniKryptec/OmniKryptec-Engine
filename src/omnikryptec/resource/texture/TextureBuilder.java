@@ -2,7 +2,6 @@ package omnikryptec.resource.texture;
 
 import java.io.InputStream;
 
-import omnikryptec.display.DisplayManager;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.settings.GameSettings;
 

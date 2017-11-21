@@ -40,9 +40,9 @@ import omnikryptec.settings.KeySettings;
 import omnikryptec.test.saving.DataMapSerializer;
 import omnikryptec.test.saving.XMLSerializer;
 import omnikryptec.util.AdvancedFile;
+import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.OSUtil;
-import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.profiler.LiveProfiler;
 

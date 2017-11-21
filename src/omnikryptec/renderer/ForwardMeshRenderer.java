@@ -8,7 +8,6 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL31;
 
-import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.main.Abstract3DEnv;
 import omnikryptec.main.OmniKryptecEngine;

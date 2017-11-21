@@ -2,7 +2,6 @@ package omnikryptec.util;
 
 import static omnikryptec.util.AdvancedFile.NOT_FOUND;
 
-import omnikryptec.display.DisplayManager;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.logger.Logger;
 

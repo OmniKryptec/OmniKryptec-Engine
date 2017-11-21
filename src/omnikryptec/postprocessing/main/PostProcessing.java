@@ -6,12 +6,11 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL30;
 
-import omnikryptec.display.DisplayManager;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.resource.model.Model;
+import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.Instance;
 import omnikryptec.util.ModelUtil;
-import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.profiler.Profilable;
 import omnikryptec.util.profiler.ProfileContainer;
 import omnikryptec.util.profiler.Profiler;

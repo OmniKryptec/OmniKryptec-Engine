@@ -3,7 +3,6 @@ package omnikryptec.shader.files.render;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.Light;
 import omnikryptec.main.Abstract3DEnv;
 import omnikryptec.main.OmniKryptecEngine;
@@ -20,8 +19,8 @@ import omnikryptec.shader.base.UniformSampler;
 import omnikryptec.shader.base.UniformVec3;
 import omnikryptec.shader.base.UniformVec4;
 import omnikryptec.util.AdvancedFile;
-import omnikryptec.util.Maths;
 import omnikryptec.util.GraphicsUtil;
+import omnikryptec.util.Maths;
 
 public class ForwardMeshShader extends Shader {
 

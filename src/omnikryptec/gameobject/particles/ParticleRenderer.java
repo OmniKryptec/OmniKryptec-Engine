@@ -16,9 +16,9 @@ import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.VertexBufferObject;
 import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.util.FrustrumFilter;
+import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.Maths;
 import omnikryptec.util.ModelUtil;
-import omnikryptec.util.GraphicsUtil;
 
 public class ParticleRenderer {
 

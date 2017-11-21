@@ -1,6 +1,5 @@
 package omnikryptec.resource.texture;
 
-import omnikryptec.display.DisplayManager;
 import omnikryptec.main.OmniKryptecEngine;
 
 /**
