@@ -8,7 +8,7 @@ import java.util.List;
 import org.joml.Matrix4f;
 
 import omnikryptec.gameobject.component.Component;
-import omnikryptec.main.Abstract3DEnv;
+import omnikryptec.main.AbstractScene3D;
 import omnikryptec.main.Scene3D;
 import omnikryptec.renderer.RenderChunk;
 import omnikryptec.settings.GameSettings;
@@ -155,7 +155,7 @@ public class GameObject implements DataMapSerializable, Transformable {
         return doLogic(false);
     }
 
-    private Abstract3DEnv cs;
+    private AbstractScene3D cs;
 
     /**
      * executes the logic of this GameObject (if neccessary or forced)

@@ -85,8 +85,8 @@ public class OmniKryptecEngine implements Profilable {
 	private DisplayManager manager;
 	private EventSystem eventsystem;
 	private PostProcessing postpro;
-	private final ArrayList<Abstract3DEnv> scenes = new ArrayList<>();
-	private Abstract3DEnv sceneCurrent;
+	private final ArrayList<AbstractScene3D> scenes = new ArrayList<>();
+	private AbstractScene3D sceneCurrent;
 	private Color clearcolor = new Color(0, 0, 0, 0);
 	private long vertsCountCurrent = 0;
 
@@ -320,23 +320,23 @@ public class OmniKryptecEngine implements Profilable {
 		close(getShutdownOption());
 	}
 	
-	public final OmniKryptecEngine addAndSetScene(Environment scene) {
+	public final OmniKryptecEngine addAndSetScene(AbstractScene scene) {
 		if (scene != null) {
 			addScene(scene);
-			if(scene instanceof Abstract3DEnv) {
+			if(scene instanceof AbstractScene3D) {
 				setScene(scene.getName());
-			}else if(scene instanceof Abstract2DEnv) {
+			}else if(scene instanceof AbstractScene2D) {
 				
 			}
 		}
 		return this;
 	}
 
-	public final OmniKryptecEngine addScene(Environment scene) {
+	public final OmniKryptecEngine addScene(AbstractScene scene) {
 		if (scene != null) {
-			if(scene instanceof Abstract3DEnv) {
-				scenes.add((Abstract3DEnv)scene);
-			}else if(scene instanceof Abstract2DEnv) {
+			if(scene instanceof AbstractScene3D) {
+				scenes.add((AbstractScene3D)scene);
+			}else if(scene instanceof AbstractScene2D) {
 				
 			}
 		}
@@ -344,20 +344,20 @@ public class OmniKryptecEngine implements Profilable {
 	}
 
 	public final OmniKryptecEngine setScene(String name) {
-		List<Abstract3DEnv> scenesEquals = scenes.stream().filter((scene) -> scene.getName().equals(name))
+		List<AbstractScene3D> scenesEquals = scenes.stream().filter((scene) -> scene.getName().equals(name))
 				.collect(Collectors.toList());
 		sceneCurrent = (scenesEquals.isEmpty() ? null : scenesEquals.get(0));
 		return this;
 	}
 
-	public final Abstract3DEnv getCurrent3DScene() {
+	public final AbstractScene3D getCurrent3DScene() {
 		return sceneCurrent;
 	}
 
 
 
 	
-	public final ArrayList<Abstract3DEnv> getScenes() {
+	public final ArrayList<AbstractScene3D> getScenes() {
 		return scenes;
 	}
 

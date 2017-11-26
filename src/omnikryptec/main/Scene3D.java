@@ -17,7 +17,7 @@ import omnikryptec.util.Instance;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
-public class Scene3D extends Abstract3DEnv {
+public class Scene3D extends AbstractScene3D {
 
     private final Map<String, RenderChunk> scene = new HashMap<>();
     private long cox = Instance.getGameSettings().getChunkRenderOffsetX(),

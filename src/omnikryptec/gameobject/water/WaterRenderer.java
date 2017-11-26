@@ -3,7 +3,7 @@ package omnikryptec.gameobject.water;
 import java.util.List;
 
 import omnikryptec.gameobject.Entity;
-import omnikryptec.main.Abstract3DEnv;
+import omnikryptec.main.AbstractScene3D;
 import omnikryptec.renderer.RenderMap;
 import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
@@ -31,7 +31,7 @@ public class WaterRenderer extends Renderer {
     private long vertcount = 0;
 
     @Override
-    protected long render(Abstract3DEnv s, RenderMap<AdvancedModel, List<Entity>> entities, Shader started, FrustrumFilter filter) {
+    protected long render(AbstractScene3D s, RenderMap<AdvancedModel, List<Entity>> entities, Shader started, FrustrumFilter filter) {
         //TODO Fill it out
         return 0;
     }

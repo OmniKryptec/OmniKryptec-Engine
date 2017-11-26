@@ -36,7 +36,7 @@ import omnikryptec.gameobject.component.PhysicsComponent;
 import omnikryptec.gameobject.terrain.Terrain;
 import omnikryptec.gameobject.terrain.TerrainGenerator;
 import omnikryptec.gameobject.terrain.TerrainTexturePack;
-import omnikryptec.main.Abstract3DEnv;
+import omnikryptec.main.AbstractScene3D;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene3D;
 import omnikryptec.physics.JBulletPhysicsWorld;
@@ -278,7 +278,7 @@ public class JBulletTest2 {
                 bouncer.continuePlaying();
             }
         }
-        final Abstract3DEnv scene = OmniKryptecEngine.rawInstance().getCurrent3DScene();
+        final AbstractScene3D scene = OmniKryptecEngine.rawInstance().getCurrent3DScene();
         float deltaPhysicsSpeed = 0;
         if (keySettings.isPressed("physicsFaster")) {
             deltaPhysicsSpeed += 0.005;

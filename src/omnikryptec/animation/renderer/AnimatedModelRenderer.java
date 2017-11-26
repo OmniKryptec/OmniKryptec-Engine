@@ -7,7 +7,7 @@ import org.lwjgl.opengl.GL11;
 
 import omnikryptec.animation.AnimatedModel;
 import omnikryptec.gameobject.Entity;
-import omnikryptec.main.Abstract3DEnv;
+import omnikryptec.main.AbstractScene3D;
 import omnikryptec.renderer.RenderMap;
 import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
@@ -50,7 +50,7 @@ public class AnimatedModelRenderer extends Renderer {
     private long vertcount = 0;
 
     @Override
-    protected long render(Abstract3DEnv s, RenderMap<AdvancedModel, List<Entity>> entities, Shader ownshader, FrustrumFilter filter) {
+    protected long render(AbstractScene3D s, RenderMap<AdvancedModel, List<Entity>> entities, Shader ownshader, FrustrumFilter filter) {
         vertcount = 0;
         //TODO in den shader verschieben bei onRenderStart odaso
         //((AnimatedModelShader)shaderpack.getDefaultShader()).lightDirection.loadVec3(LIGHT_DIR);

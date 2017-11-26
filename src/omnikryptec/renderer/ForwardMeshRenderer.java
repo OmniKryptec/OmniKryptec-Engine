@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL31;
 
 import omnikryptec.gameobject.Entity;
-import omnikryptec.main.Abstract3DEnv;
+import omnikryptec.main.AbstractScene3D;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Model;
@@ -45,7 +45,7 @@ public class ForwardMeshRenderer extends Renderer{
     private Model model;
 
     @Override
-    public long render(Abstract3DEnv s, RenderMap<AdvancedModel, List<Entity>> entities, Shader b, FrustrumFilter f) {
+    public long render(AbstractScene3D s, RenderMap<AdvancedModel, List<Entity>> entities, Shader b, FrustrumFilter f) {
         if (!OmniKryptecEngine.instance().getDisplayManager().getSettings().isLightForwardAllowed() && Logger.isDebugMode()) {
             Logger.log("Forward light is not enabled. Will not render.", LogLevel.WARNING);
             return 0;
@@ -75,7 +75,7 @@ public class ForwardMeshRenderer extends Renderer{
     private float[] array;
     private int instances;
 
-    private void newRender(Abstract3DEnv s, int offset, AdvancedModel amodel, FrustrumFilter f) {
+    private void newRender(AbstractScene3D s, int offset, AdvancedModel amodel, FrustrumFilter f) {
         instances = Math.min(stapel.size(), INSTANCES_PER_DRAWCALL + offset);
         array = new float[Math.min(stapel.size(), INSTANCES_PER_DRAWCALL) * INSTANCED_DATA_LENGTH];
         pointer = 0;

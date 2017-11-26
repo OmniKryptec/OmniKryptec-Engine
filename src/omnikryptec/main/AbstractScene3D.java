@@ -22,13 +22,13 @@ import omnikryptec.util.PhysicsUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
-public abstract class Abstract3DEnv extends Environment implements DataMapSerializable {
+public abstract class AbstractScene3D extends AbstractScene implements DataMapSerializable {
 
 
 
-	public static final Abstract3DEnv byName(String name) {
+	public static final AbstractScene3D byName(String name) {
 		if (OmniKryptecEngine.instance() != null) {
-			for (Abstract3DEnv scene : OmniKryptecEngine.instance().getScenes()) {
+			for (AbstractScene3D scene : OmniKryptecEngine.instance().getScenes()) {
 				if (scene.getName() == null ? name == null : scene.getName().equals(name)) {
 					return scene;
 				}
@@ -43,7 +43,7 @@ public abstract class Abstract3DEnv extends Environment implements DataMapSerial
 	private LinkedList<Renderer> prerender = new LinkedList<>();
 	private LinkedList<Renderer> postrender = new LinkedList<>();
 
-	protected Abstract3DEnv(String name, Camera cam) {
+	protected AbstractScene3D(String name, Camera cam) {
 		this.name = name;
 		this.camera = cam;
 	}
@@ -123,7 +123,7 @@ public abstract class Abstract3DEnv extends Environment implements DataMapSerial
 		return l;
 	}
 
-	public final Abstract3DEnv addIndependentRenderer(Renderer r, RendererTime t) {
+	public final AbstractScene3D addIndependentRenderer(Renderer r, RendererTime t) {
 		if(r == null) {
 			if(Logger.isDebugMode()) {
 				Logger.log("Renderer is null!", LogLevel.WARNING);
@@ -140,7 +140,7 @@ public abstract class Abstract3DEnv extends Environment implements DataMapSerial
 		return this;
 	}
 
-	public final Abstract3DEnv removeIndependentRenderer(Renderer r, RendererTime t) {
+	public final AbstractScene3D removeIndependentRenderer(Renderer r, RendererTime t) {
 		if (r != null && t == RendererTime.PRE) {
 			prerender.remove(r);
 		}
@@ -150,8 +150,8 @@ public abstract class Abstract3DEnv extends Environment implements DataMapSerial
 		return this;
 	}
 
-	public final Abstract3DEnv useDefaultPhysics() {
-		return (Abstract3DEnv)setPhysicsWorld(new JBulletPhysicsWorld(PhysicsUtil.createDefaultDynamicsWorld()));
+	public final AbstractScene3D useDefaultPhysics() {
+		return (AbstractScene3D)setPhysicsWorld(new JBulletPhysicsWorld(PhysicsUtil.createDefaultDynamicsWorld()));
 	}
 
 	protected abstract void logic();

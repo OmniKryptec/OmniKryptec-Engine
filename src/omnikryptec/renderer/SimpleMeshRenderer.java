@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL31;
 
 import omnikryptec.gameobject.Entity;
-import omnikryptec.main.Abstract3DEnv;
+import omnikryptec.main.AbstractScene3D;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
@@ -40,7 +40,7 @@ public class SimpleMeshRenderer extends Renderer{
     private Model model;
 
     @Override
-    public long render(Abstract3DEnv s, RenderMap<AdvancedModel, List<Entity>> entities, Shader shader, FrustrumFilter filter) {
+    public long render(AbstractScene3D s, RenderMap<AdvancedModel, List<Entity>> entities, Shader shader, FrustrumFilter filter) {
     	vertcount = 0;
         for (AdvancedModel advancedModel : entities.keysArray()) {
             if (advancedModel == null || !(advancedModel instanceof TexturedModel)) {
@@ -68,7 +68,7 @@ public class SimpleMeshRenderer extends Renderer{
     private float[] array;
     private int instances;
 
-    private void newRender(Abstract3DEnv s, int offset, FrustrumFilter filter) {
+    private void newRender(AbstractScene3D s, int offset, FrustrumFilter filter) {
         instances = Math.min(stapel.size(), INSTANCES_PER_DRAWCALL + offset);
         array = new float[Math.min(stapel.size(), INSTANCES_PER_DRAWCALL) * INSTANCED_DATA_LENGTH];
         pointer = 0;

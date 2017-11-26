@@ -5,7 +5,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import omnikryptec.gameobject.Entity;
-import omnikryptec.main.Abstract3DEnv;
+import omnikryptec.main.AbstractScene3D;
 import omnikryptec.renderer.RenderMap;
 import omnikryptec.renderer.Renderer;
 import omnikryptec.renderer.RendererRegistration;
@@ -39,7 +39,7 @@ public class TerrainRenderer extends Renderer {
 
     // TODO change something
     @Override
-    protected long render(Abstract3DEnv s, RenderMap<AdvancedModel, List<Entity>> entities, Shader ownshader, FrustrumFilter filter) {
+    protected long render(AbstractScene3D s, RenderMap<AdvancedModel, List<Entity>> entities, Shader ownshader, FrustrumFilter filter) {
         vertcount = 0;
         //shader.start();
         TerrainShader.viewMatrix.loadMatrix(s.getCamera().getViewMatrix());
