@@ -136,7 +136,7 @@ public class Animator {
     }
 
     private final Animator increaseAnimationTime() {
-        animationTime += (Instance.getRenderDeltaTimef() * speedFactor);
+        animationTime += (Instance.getDeltaTimef() * speedFactor);
         if (isAnimationOver() && loop) {
             while (animationTime < 0) {
                 animationTime += currentAnimation.getLengthInSeconds();

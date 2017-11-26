@@ -53,7 +53,7 @@ public class SimpleAnimation extends Texture {
                 index %= textures.length;
                 time = 0;
             } else {
-                time += OmniKryptecEngine.instance().getDisplayManager().getDeltaTimef();
+                time += OmniKryptecEngine.instance().getDeltaTimef();
             }
         }
     }

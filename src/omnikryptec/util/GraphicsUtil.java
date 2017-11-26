@@ -1,5 +1,7 @@
 package omnikryptec.util;
 
+import java.util.HashMap;
+
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -23,6 +25,7 @@ public class GraphicsUtil {
 	private static boolean scissor = false;
 	private static boolean depthMask = true;
 
+	
 	public static boolean isGLContextAvailable() {
 		return GLFW.glfwGetCurrentContext()!=0;
 	}

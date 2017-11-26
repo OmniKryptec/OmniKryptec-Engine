@@ -204,11 +204,11 @@ public class DisplayManager implements Profilable{
 	 * 
 	 * @return Float Time in seconds
 	 */
-	public final float getDeltaTimef() {
+	public final float getDUDeltaTimef() {
 		return deltatimef;
 	}
 	
-	public final double getDeltaTime(){
+	public final double getDUDeltaTime(){
 		return deltatime;
 	}
 

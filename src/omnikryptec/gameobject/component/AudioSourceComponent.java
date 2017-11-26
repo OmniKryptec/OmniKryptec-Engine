@@ -172,7 +172,7 @@ public class AudioSourceComponent implements Component {
                     }
                     source.setDeltaPitch(newDeltaPitch);
                 }
-                source.updateState(OmniKryptecEngine.instance().getDisplayManager().getDeltaTimef());
+                source.updateState(OmniKryptecEngine.instance().getDeltaTimef());
             }
         }
         blocker.setBlocked(false);

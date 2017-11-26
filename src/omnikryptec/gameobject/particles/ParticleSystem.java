@@ -38,7 +38,7 @@ public class ParticleSystem extends GameObject{
 	}
 	
 	protected float getScaledDeltatime(){
-		return OmniKryptecEngine.instance().getDisplayManager().getDeltaTimef()*getTimeMultiplier();
+		return OmniKryptecEngine.instance().getDeltaTimef()*getTimeMultiplier();
 	}
 	
 	protected Vector3f generateRandomUnitVectorWithinCone(Vector3f coneDirection, double coneangle) {

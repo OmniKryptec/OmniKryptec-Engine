@@ -26,4 +26,9 @@ public class DefaultGameLoop extends GameLoop{
 		renderGui();
 		refresh();
 	}
+
+	@Override
+	public float getDeltaTimef() {
+		return engineInstance.getDisplayManager().getDUDeltaTimef();
+	}
 }

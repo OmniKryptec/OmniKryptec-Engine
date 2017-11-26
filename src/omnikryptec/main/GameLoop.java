@@ -153,6 +153,5 @@ public abstract class GameLoop {
 	
 	protected abstract void renderOneFrame();
 	
-	//public abstract boolean useDeltaTimeInLogic();
-	
+	public abstract float getDeltaTimef();
 }

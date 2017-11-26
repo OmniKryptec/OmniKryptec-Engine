@@ -103,12 +103,12 @@ public class Instance {
 		return getDisplayManager().getCurrentTime();
 	}
 
-	public static final float getRenderDeltaTimef() {
-		return getDisplayManager().getDeltaTimef();
+	public static final float getDeltaTimef() {
+		return OmniKryptecEngine.instance().getDeltaTimef();
 	}
 
 	public static final double getRenderDeltaTime() {
-		return getDisplayManager().getDeltaTime();
+		return getDisplayManager().getDUDeltaTime();
 	}
 
 	public static final double getFPS() {

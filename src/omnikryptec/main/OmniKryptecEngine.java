@@ -47,11 +47,6 @@ public class OmniKryptecEngine implements Profilable {
 		return instance;
 	}
 
-	@Deprecated
-	public static OmniKryptecEngine rawInstance() {
-		return instance;
-	}
-
 	public static void addShutdownHook(Runnable run) {
 		if (run == null) {
 			return;
@@ -184,10 +179,6 @@ public class OmniKryptecEngine implements Profilable {
 		return getLoop()!=null;
 	}
 	
-	public final float getRenderDeltaTime() {
-		return getDisplayManager().getDeltaTimef();
-	}
-	
 	final void beginSceneRendering() {
 		scenefbo.bindFrameBuffer();
 	}
@@ -270,6 +261,14 @@ public class OmniKryptecEngine implements Profilable {
 		return frametime;
 	}
 
+	/**
+	 * Do not call this in a GameLoop-class. Use your own times or the DisplayManager deltatime instead.
+	 * @return
+	 */
+	public float getDeltaTimef() {
+		return hasLoop()?gameloop.getDeltaTimef():manager.getDUDeltaTimef();
+	}
+	
 	public final OmniKryptecEngine close(ShutdownOption shutdownOption) {
 		
 		if(gameloop!=null) {
@@ -399,6 +398,4 @@ public class OmniKryptecEngine implements Profilable {
 	public boolean hasEnvironment() {
 		return getCurrent3DScene()!=null;
 	}
-
-
 }

@@ -101,7 +101,7 @@ public class LiveProfiler {
     }
 
     private final LiveProfiler updateData() {
-    	OmniKryptecEngine omc = OmniKryptecEngine.rawInstance();
+    	OmniKryptecEngine omc = OmniKryptecEngine.instance();
     	if(omc!=null) {
     		//TODO @Panzer1119 xD
     		vert_info.setText("Vertices: "+omc.getModelVertsCount()+" Frames: "+OmniKryptecEngine.instance().getDisplayManager().getFramecount()+" Particles updated: "+ParticleMaster.instance().getUpdatedParticlesCount()+" Particles rendered: "+ParticleMaster.instance().getRenderedParticlesCount());

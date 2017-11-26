@@ -27,8 +27,8 @@ public abstract class Abstract3DEnv extends Environment implements DataMapSerial
 
 
 	public static final Abstract3DEnv byName(String name) {
-		if (OmniKryptecEngine.rawInstance() != null) {
-			for (Abstract3DEnv scene : OmniKryptecEngine.rawInstance().getScenes()) {
+		if (OmniKryptecEngine.instance() != null) {
+			for (Abstract3DEnv scene : OmniKryptecEngine.instance().getScenes()) {
 				if (scene.getName() == null ? name == null : scene.getName().equals(name)) {
 					return scene;
 				}

@@ -223,7 +223,7 @@ public class InputManager {
      * @return
      */
     public static final GameObject doFirstPersonController(GameObject gameObject, KeySettings keySettings, float deltaPosXZSpeed, float deltaPosYSpeed, float deltaRotXYZSpeed, boolean space) {
-        final float dt = OmniKryptecEngine.instance().getRenderDeltaTime();
+        final float dt = OmniKryptecEngine.instance().getDeltaTimef();
         deltaPosXZSpeed *= dt;
         deltaPosYSpeed *= dt;
         deltaRotXYZSpeed *= dt;
@@ -255,7 +255,7 @@ public class InputManager {
      * @return
      */
     public static final GameObject doThirdPersonController(GameObject source, GameObject destination, KeySettings keySettings, float deltaPosXZSpeed, float deltaPosYSpeed, float deltaRotXYZSpeed) {
-        final float dt = OmniKryptecEngine.instance().getDisplayManager().getDeltaTimef();
+        final float dt = OmniKryptecEngine.instance().getDeltaTimef();
         deltaPosXZSpeed *= dt;
         deltaPosYSpeed *= dt;
         deltaRotXYZSpeed *= dt;
