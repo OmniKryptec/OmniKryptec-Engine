@@ -1,7 +1,9 @@
 package omnikryptec.main;
 
 import omnikryptec.gameobject.Camera;
+import omnikryptec.gameobject.GameObject;
 import omnikryptec.physics.PhysicsWorld;
+import omnikryptec.renderer.RenderConfiguration;
 import omnikryptec.util.Color;
 import omnikryptec.util.EnumCollection.FrameState;
 
@@ -73,4 +75,16 @@ abstract class AbstractScene {
 	public final String getName() {
 		return name;
 	}
+	
+	protected abstract void logic();
+
+	protected abstract long render(RenderConfiguration config);
+
+	public abstract boolean addGameObject(GameObject go);
+
+	public GameObject removeGameObject(GameObject go) {
+		return removeGameObject(go, true);
+	}
+
+	public abstract GameObject removeGameObject(GameObject go, boolean delete);
 }

@@ -154,17 +154,5 @@ public abstract class AbstractScene3D extends AbstractScene implements DataMapSe
 		return (AbstractScene3D)setPhysicsWorld(new JBulletPhysicsWorld(PhysicsUtil.createDefaultDynamicsWorld()));
 	}
 
-	protected abstract void logic();
-
-	protected abstract long render(RenderConfiguration config);
-
-	public abstract boolean addGameObject(GameObject go);
-
-	public GameObject removeGameObject(GameObject go) {
-		return removeGameObject(go, true);
-	}
-
-	public abstract GameObject removeGameObject(GameObject go, boolean delete);
-
 	public abstract List<Light> getLights();
 }

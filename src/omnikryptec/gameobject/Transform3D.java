@@ -12,9 +12,9 @@ import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.Maths;
 import omnikryptec.util.SerializationUtil;
 
-public class Transform implements DataMapSerializable, Positionable {
+public class Transform3D implements DataMapSerializable, Positionable3D {
 
-    protected Transform parent;
+    protected Transform3D parent;
     protected Vector3f position;
     protected Quaternionf rotation;
     protected Vector3f scale;
@@ -23,23 +23,23 @@ public class Transform implements DataMapSerializable, Positionable {
 
     protected boolean manualMatrixRecalculation = false;
 
-    public Transform() {
+    public Transform3D() {
         this(new Vector3f(0));
     }
 
-    public Transform(Vector3f pos) {
+    public Transform3D(Vector3f pos) {
         this(pos, new Quaternionf(0, 0, 0));
     }
 
-    public Transform(Vector3f pos, Quaternionf rot) {
+    public Transform3D(Vector3f pos, Quaternionf rot) {
         this(pos, rot, new Vector3f(1));
     }
 
-    public Transform(Vector3f pos, Quaternionf rot, Vector3f scale) {
+    public Transform3D(Vector3f pos, Quaternionf rot, Vector3f scale) {
         this(null, pos, rot, scale);
     }
 
-    public Transform(Transform parent, Vector3f pos, Quaternionf rot, Vector3f scale) {
+    public Transform3D(Transform3D parent, Vector3f pos, Quaternionf rot, Vector3f scale) {
         this.parent = parent;
         this.position = pos;
         this.rotation = rot;
@@ -48,30 +48,30 @@ public class Transform implements DataMapSerializable, Positionable {
         recalculateTransformation();
     }
 
-    public Transform(Transform parent) {
+    public Transform3D(Transform3D parent) {
         this();
         setParent(parent);
     }
 
-    public Transform setDirty() {
+    public Transform3D setDirty() {
     	lastframe = -1;
     	return this;
     }
     
-    public Transform getNewCopy() {
-        return new Transform(parent, getPositionNew(), getRotationNew(), getScaleNew());
+    public Transform3D getNewCopy() {
+        return new Transform3D(parent, getPositionNew(), getRotationNew(), getScaleNew());
     }
 
-    public Transform setParent(Transform transform) {
+    public Transform3D setParent(Transform3D transform) {
         this.parent = transform;
         return this;
     }
 
-    public Transform getParent() {
+    public Transform3D getParent() {
         return parent;
     }
 
-    public Transform setManualMatrixRecalculation(boolean b) {
+    public Transform3D setManualMatrixRecalculation(boolean b) {
         this.manualMatrixRecalculation = b;
         return this;
     }
@@ -80,29 +80,29 @@ public class Transform implements DataMapSerializable, Positionable {
         return manualMatrixRecalculation;
     }
 
-    public Transform setX(float x) {
+    public Transform3D setX(float x) {
         this.position.x = x;
         return this;
     }
 
-    public Transform setY(float y) {
+    public Transform3D setY(float y) {
         this.position.y = y;
         return this;
     }
 
-    public Transform setZ(float z) {
+    public Transform3D setZ(float z) {
         this.position.z = z;
         return this;
     }
 
-    public Transform increasePosition(float x, float y, float z) {
+    public Transform3D increasePosition(float x, float y, float z) {
         this.position.x += x;
         this.position.y += y;
         this.position.z += z;
         return this;
     }
 
-    public Transform increaseRotation(float x, float y, float z, float w) {
+    public Transform3D increaseRotation(float x, float y, float z, float w) {
         this.rotation.x += x;
         this.rotation.y += y;
         this.rotation.z += z;
@@ -110,48 +110,48 @@ public class Transform implements DataMapSerializable, Positionable {
         return this;
     }
 
-    public Transform increaseRotation(float xa, float ya, float za) {
+    public Transform3D increaseRotation(float xa, float ya, float za) {
         this.rotation.rotate(xa, ya, za);
         return this;
     }
 
-    public Transform increaseScale(float x, float y, float z) {
+    public Transform3D increaseScale(float x, float y, float z) {
         this.scale.x += x;
         this.scale.y += y;
         this.scale.z += z;
         return this;
     }
 
-    public Transform setPosition(float x, float y, float z) {
+    public Transform3D setPosition(float x, float y, float z) {
         this.position.set(x, y, z);
         return this;
     }
 
-    public Transform setRotation(float x, float y, float z, float w) {
+    public Transform3D setRotation(float x, float y, float z, float w) {
         this.rotation.set(x, y, z, w);
         return this;
     }
 
-    public Transform setScale(float x, float y, float z) {
+    public Transform3D setScale(float x, float y, float z) {
         this.scale.set(x, y, z);
         return this;
     }
 
-    public Transform setScale(float d) {
+    public Transform3D setScale(float d) {
         return setScale(d, d, d);
     }
 
-    public Transform setPosition(Vector3f pos) {
+    public Transform3D setPosition(Vector3f pos) {
         this.position = pos;
         return this;
     }
 
-    public Transform setRotation(Quaternionf q) {
+    public Transform3D setRotation(Quaternionf q) {
         this.rotation = q;
         return this;
     }
 
-    public Transform setScale(Vector3f scale) {
+    public Transform3D setScale(Vector3f scale) {
         this.scale = scale;
         return this;
     }
@@ -296,7 +296,7 @@ public class Transform implements DataMapSerializable, Positionable {
     }
 
     @Override
-    public Transform fromDataMap(DataMap data) {
+    public Transform3D fromDataMap(DataMap data) {
         if (data == null) {
             return null;
         }
@@ -312,11 +312,11 @@ public class Transform implements DataMapSerializable, Positionable {
         return this;
     }
 
-    public static Transform newInstanceFromDataMap(DataMap data) {
+    public static Transform3D newInstanceFromDataMap(DataMap data) {
         if (data == null) {
             return null;
         }
-        return new Transform().fromDataMap(data);
+        return new Transform3D().fromDataMap(data);
     }
 
 }

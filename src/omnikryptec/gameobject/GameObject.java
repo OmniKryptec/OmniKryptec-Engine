@@ -26,7 +26,7 @@ import omnikryptec.util.logger.Logger;
  * @author pcfreak9000 &amp; Panzer1119
  *
  */
-public class GameObject implements DataMapSerializable, Transformable {
+public class GameObject implements DataMapSerializable, Transformable3D {
 
     private static final Sorter SORTER = new Sorter();
     public static final ArrayList<GameObject> gameObjects = new ArrayList<>();
@@ -40,7 +40,7 @@ public class GameObject implements DataMapSerializable, Transformable {
 
     }
 
-    private Transform transform = new Transform();
+    private Transform3D transform = new Transform3D();
     private String name;
     private boolean isglobal = false;
     private GameObject parent = null;
@@ -67,7 +67,7 @@ public class GameObject implements DataMapSerializable, Transformable {
     }
 
     @Override
-    public Transform getTransform() {
+    public Transform3D getTransform() {
         return transform;
     }
 
@@ -75,7 +75,7 @@ public class GameObject implements DataMapSerializable, Transformable {
         return transform.getTransformation(uptype);
     }
 
-    public GameObject setTransform(Transform t) {
+    public GameObject setTransform(Transform3D t) {
         this.transform = t;
         return this;
     }
@@ -571,7 +571,7 @@ public class GameObject implements DataMapSerializable, Transformable {
         }
         dataMap_temp = data.getDataMap("transform");
         if (transform == null) {
-            transform = Transform.newInstanceFromDataMap(dataMap_temp);
+            transform = Transform3D.newInstanceFromDataMap(dataMap_temp);
         } else {
             transform.fromDataMap(dataMap_temp);
         }
