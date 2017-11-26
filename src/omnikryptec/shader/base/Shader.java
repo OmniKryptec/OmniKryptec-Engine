@@ -54,8 +54,8 @@ public class Shader {
 	static {
 		SHADERMODULES = new ModuleSystem("$OKE_", "$", "omnikryptec/shader/modules/");
 		SHADERMODULES.addDynamic("MAX_LIGHTS", ()->Instance.getGameSettings().getInteger(GameSettings.MAX_FORWARD_LIGHTS));
-		SHADERMODULES.addDynamic("MAX_JOINTS", ()->Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_JOINTS));
-		SHADERMODULES.addDynamic("MAX_WEIGHTS", ()->Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_WEIGHTS));
+		SHADERMODULES.addDynamic("ANIM_MAX_JOINTS", ()->Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_JOINTS));
+		SHADERMODULES.addDynamic("ANIM_MAX_WEIGHTS", ()->Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_WEIGHTS));
 		SHADERMODULES.addDynamic("2D_Z_OFFSET", ()->Instance.getGameSettings().getFloat(GameSettings.Z_OFFSET_2D));
 	}
 	
