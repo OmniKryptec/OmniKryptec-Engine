@@ -52,7 +52,7 @@ public class Camera extends GameObject {
         return view;
     }
     
-    private Vector3f eul = new Vector3f(), tmp;
+    private Vector3f tmp;
     public void reflect(float height){
     	tmp = getTransform().getPosition(true);
 		tmp.y -= 2 * (tmp.y - height);

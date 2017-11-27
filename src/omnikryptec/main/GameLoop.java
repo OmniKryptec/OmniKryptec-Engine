@@ -105,7 +105,7 @@ public abstract class GameLoop {
 	}
 	
 	protected final void updateAudio() {
-		AudioManager.update(0);
+		AudioManager.update(engineInstance.getDisplayManager().getCurrentTime());
 	}
 	
 	protected final void sleepStep() {

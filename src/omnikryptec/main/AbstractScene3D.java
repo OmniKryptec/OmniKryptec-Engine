@@ -6,7 +6,6 @@ import java.util.List;
 import omnikryptec.event.event.Event;
 import omnikryptec.event.event.EventType;
 import omnikryptec.gameobject.Camera;
-import omnikryptec.gameobject.GameObject;
 import omnikryptec.gameobject.Light;
 import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.physics.JBulletPhysicsWorld;
@@ -28,7 +27,7 @@ public abstract class AbstractScene3D extends AbstractScene implements DataMapSe
 
 	public static final AbstractScene3D byName(String name) {
 		if (OmniKryptecEngine.instance() != null) {
-			for (AbstractScene3D scene : OmniKryptecEngine.instance().getScenes()) {
+			for (AbstractScene3D scene : OmniKryptecEngine.instance().getScenes3D()) {
 				if (scene.getName() == null ? name == null : scene.getName().equals(name)) {
 					return scene;
 				}

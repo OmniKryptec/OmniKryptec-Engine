@@ -1,6 +1,6 @@
 package omnikryptec.resource.objConverter;
 
-import omnikryptec.util.Instance;
+import omnikryptec.util.EnumCollection.Dimension;
 
 public class ModelData {
 
@@ -22,7 +22,7 @@ public class ModelData {
 	}
 
 	public int getVertexCount() {
-		return vertices.length / Instance.DIMENSIONS;
+		return vertices.length / Dimension.D3.bases;
 	}
 
 	public float[] getVertices() {

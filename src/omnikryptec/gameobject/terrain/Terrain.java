@@ -13,7 +13,7 @@ import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.resource.objConverter.ModelData;
 import omnikryptec.resource.objConverter.Vertex;
 import omnikryptec.resource.texture.Texture;
-import omnikryptec.util.Instance;
+import omnikryptec.util.EnumCollection.Dimension;
 import omnikryptec.util.Maths;
 
 /**
@@ -148,10 +148,10 @@ public class Terrain extends Entity {
             }
         }
         removeUnusedVertices(vertices);
-        final float[] verticesArray = new float[vertices.size() * Instance.DIMENSIONS];
+        final float[] verticesArray = new float[vertices.size() * Dimension.D3.bases];
         final float[] texturesArray = new float[vertices.size() * 2];
-        final float[] normalsArray = new float[vertices.size() * Instance.DIMENSIONS];
-        final float[] tangentsArray = new float[vertices.size() * Instance.DIMENSIONS];
+        final float[] normalsArray = new float[vertices.size() * Dimension.D3.bases];
+        final float[] tangentsArray = new float[vertices.size() * Dimension.D3.bases];
         final float furthest = convertDataToArrays(vertices, textures, normals, verticesArray, texturesArray,
                 normalsArray, tangentsArray);
         final int[] indicesArray = convertIndicesArrayListToArray(indices);

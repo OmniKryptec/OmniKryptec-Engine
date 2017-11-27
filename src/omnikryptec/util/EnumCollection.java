@@ -35,4 +35,14 @@ public class EnumCollection {
 			return lvl;
 		}
 	}
+	
+	public static enum Dimension{
+		D2(2),D3(3);
+		
+		public final int bases;
+		
+		private Dimension(int d) {
+			bases = d;
+		}
+	}
 }

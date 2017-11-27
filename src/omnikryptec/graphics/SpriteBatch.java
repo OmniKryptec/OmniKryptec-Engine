@@ -142,9 +142,11 @@ public class SpriteBatch {
 
 	public void changeShader(Shader sh) {
 		flush();
+		program.onDrawBatchEnd(this);
 		program = sh;
 		if (drawing) {
 			program.start();
+			program.onDrawBatchStart(this);
 		}
 	}
 

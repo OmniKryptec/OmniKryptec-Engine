@@ -87,4 +87,9 @@ abstract class AbstractScene {
 	}
 
 	public abstract GameObject removeGameObject(GameObject go, boolean delete);
+	
+	@Override
+	public String toString() {
+		return "Scene: "+name;
+	}
 }

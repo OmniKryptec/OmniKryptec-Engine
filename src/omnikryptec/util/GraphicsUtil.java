@@ -1,7 +1,5 @@
 package omnikryptec.util;
 
-import java.util.HashMap;
-
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
