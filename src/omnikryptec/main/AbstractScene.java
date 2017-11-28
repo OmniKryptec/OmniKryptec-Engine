@@ -7,7 +7,7 @@ import omnikryptec.renderer.RenderConfiguration;
 import omnikryptec.util.Color;
 import omnikryptec.util.EnumCollection.FrameState;
 
-abstract class AbstractScene {
+abstract class AbstractScene<T extends GameObject> implements GameObjectCase<T> {
 	
 
 	Camera camera;
@@ -27,7 +27,7 @@ abstract class AbstractScene {
 		return camera;
 	}
 
-	public final AbstractScene setCamera(Camera c) {
+	public final AbstractScene<T> setCamera(Camera c) {
 		this.camera = c;
 		return this;
 	}
@@ -40,7 +40,7 @@ abstract class AbstractScene {
 		return logictime;
 	}
 	
-	protected final AbstractScene setName(String name) {
+	protected final AbstractScene<T> setName(String name) {
 		this.name = name;
 		return this;
 	}
@@ -49,7 +49,7 @@ abstract class AbstractScene {
 		return physicsworld;
 	}
 
-	public final AbstractScene setPhysicsWorld(PhysicsWorld physicsWorld) {
+	public final AbstractScene<T> setPhysicsWorld(PhysicsWorld physicsWorld) {
 		this.physicsworld = physicsWorld;
 		return this;
 	}
@@ -58,12 +58,12 @@ abstract class AbstractScene {
 		return physicsworld != null;
 	}
 	
-	public final AbstractScene setAmbientColor(float r, float g, float b) {
+	public final AbstractScene<T> setAmbientColor(float r, float g, float b) {
 		this.ambientcolor.set(r, g, b);
 		return this;
 	}
 
-	public final AbstractScene setAmbientColor(Color f) {
+	public final AbstractScene<T> setAmbientColor(Color f) {
 		this.ambientcolor = f;
 		return this;
 	}
@@ -80,13 +80,13 @@ abstract class AbstractScene {
 
 	protected abstract long render(RenderConfiguration config);
 
-	public abstract boolean addGameObject(GameObject go);
+	public abstract boolean addGameObject(T go);
 
-	public GameObject removeGameObject(GameObject go) {
+	public T removeGameObject(T go) {
 		return removeGameObject(go, true);
 	}
 
-	public abstract GameObject removeGameObject(GameObject go, boolean delete);
+	public abstract T removeGameObject(T go, boolean delete);
 	
 	@Override
 	public String toString() {

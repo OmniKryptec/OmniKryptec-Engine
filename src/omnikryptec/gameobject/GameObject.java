@@ -5,19 +5,14 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import org.joml.Matrix4f;
-
 import omnikryptec.gameobject.component.Component;
 import omnikryptec.main.AbstractScene3D;
 import omnikryptec.main.Scene3D;
-import omnikryptec.renderer.RenderChunk;
-import omnikryptec.settings.GameSettings;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.EnumCollection.FrameState;
 import omnikryptec.util.EnumCollection.UpdateType;
 import omnikryptec.util.Instance;
-import omnikryptec.util.Maths;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -26,28 +21,25 @@ import omnikryptec.util.logger.Logger;
  * @author pcfreak9000 &amp; Panzer1119
  *
  */
-public class GameObject implements DataMapSerializable, Transformable3D {
+public abstract class GameObject implements DataMapSerializable {
 
     private static final Sorter SORTER = new Sorter();
     public static final ArrayList<GameObject> gameObjects = new ArrayList<>();
 
-    private static class Sorter implements Comparator<Component> {
+    private static class Sorter implements Comparator<Component<?>> {
 
         @Override
-        public int compare(Component o1, Component o2) {
+        public int compare(Component<?> o1, Component<?> o2) {
             return ((o1.getLevel() < o2.getLevel()) ? -1 : (o1.getLevel() > o2.getLevel() ? 1 : 0));
         }
 
     }
 
-    private Transform3D transform = new Transform3D();
     private String name;
     private boolean isglobal = false;
-    private GameObject parent = null;
     private boolean logicEnabled = true;
-    private RenderChunk myChunk;
-    private List<Component> componentsPreLogic = null;
-    private List<Component> componentsPostLogic = null;
+    private List<Component<GameObject>> componentsPreLogic = null;
+    private List<Component<GameObject>> componentsPostLogic = null;
 
     private final Instant ULTIMATE_IDENTIFIER = Instant.now();
     private UpdateType uptype = UpdateType.DYNAMIC;
@@ -66,19 +58,6 @@ public class GameObject implements DataMapSerializable, Transformable3D {
         return this;
     }
 
-    @Override
-    public Transform3D getTransform() {
-        return transform;
-    }
-
-    public Matrix4f getTransformation() {
-        return transform.getTransformation(uptype);
-    }
-
-    public GameObject setTransform(Transform3D t) {
-        this.transform = t;
-        return this;
-    }
 
     /**
      * the updatetpye of this GameObject
@@ -96,22 +75,14 @@ public class GameObject implements DataMapSerializable, Transformable3D {
         this("");
     }
 
-    /**
-     * creates a GameObject with no parent
-     */
-    public GameObject(String name) {
-        this(name, null);
-    }
 
     /**
-     * creates a GameObject with a parent. e. g. used to bind a gun to the
-     * player to move with him.
+     * creates a GameObject 
      *
      * @param parent the parent or null for no parent
      */
-    public GameObject(String name, GameObject parent) {
+    public GameObject(String name) {
         this.name = name;
-        this.parent = parent;
         if (name != null && !name.isEmpty()) {
             gameObjects.add(this);
         }
@@ -125,25 +96,9 @@ public class GameObject implements DataMapSerializable, Transformable3D {
         gameObjects.remove(this);
     }
 
-    /**
-     * the parent or null if this GameObject has no parent.
-     *
-     * @return the parent
-     */
-    public final GameObject getParent() {
-        return parent;
-    }
 
-    /**
-     * sets the parent for this gameobject or null for no parent
-     *
-     * @param go the parent
-     */
-    public final GameObject setParent(GameObject go) {
-        this.parent = go;
-        this.transform.setParent(go == null ? null : go.getTransform());
-        return this;
-    }
+
+
 
     /**
      * executes the logic of this GameObject if neccessary.
@@ -176,18 +131,18 @@ public class GameObject implements DataMapSerializable, Transformable3D {
             return this;
         }
         if (componentsPreLogic != null) {
-            for (Component c : componentsPreLogic) {
+            for (Component<GameObject> c : componentsPreLogic) {
                 c.execute(this);
             }
         }
         update();
         if (componentsPostLogic != null) {
-            for (Component c : componentsPostLogic) {
+            for (Component<GameObject> c : componentsPostLogic) {
                 c.execute(this);
             }
         }
         if ((force || getUpdateType() == UpdateType.DYNAMIC) && !(this instanceof Camera) && Instance.getGameSettings().usesRenderChunking()) {
-            checkChunkPos(true);
+            checkChunkPos();
         }
         return this;
     }
@@ -199,7 +154,7 @@ public class GameObject implements DataMapSerializable, Transformable3D {
      * @param c
      * @return this GameObject
      */
-    public final GameObject addComponent(Component c) {
+    public final GameObject addComponent(Component<GameObject> c) {
         if (c.getLevel() < 0) {
             if (componentsPreLogic == null) {
                 componentsPreLogic = new ArrayList<>();
@@ -223,7 +178,7 @@ public class GameObject implements DataMapSerializable, Transformable3D {
      * @param c
      * @return this GameObject
      */
-    public final GameObject removeComponent(Component c) {
+    public final GameObject removeComponent(Component<GameObject> c) {
         if (c.getLevel() < 0) {
             if (componentsPreLogic != null) {
                 componentsPreLogic.remove(c);
@@ -240,14 +195,14 @@ public class GameObject implements DataMapSerializable, Transformable3D {
         return this;
     }
 
-    private List<Component> tmp;
+    private List<Component<?>> tmp;
 
     /**
      * all components of this GameObject
      *
      * @return
      */
-    public final Component[] getComponents() {
+    public final Component<?>[] getComponents() {
         if (componentsPreLogic == null && componentsPostLogic == null) {
             return new Component[]{};
         }
@@ -273,14 +228,14 @@ public class GameObject implements DataMapSerializable, Transformable3D {
     @SuppressWarnings("unchecked")
     public final <T> T getComponent(Class<T> type) {
         if (componentsPreLogic != null) {
-            for (Component c : componentsPreLogic) {
+            for (Component<?> c : componentsPreLogic) {
                 if (c.getClass() == type) {
                     return (T) c;
                 }
             }
         }
         if (componentsPostLogic != null) {
-            for (Component c : componentsPostLogic) {
+            for (Component<?> c : componentsPostLogic) {
                 if (c.getClass() == type) {
                     return (T) c;
                 }
@@ -299,14 +254,14 @@ public class GameObject implements DataMapSerializable, Transformable3D {
     public final <T> ArrayList<T> getComponents(Class<T> type) {
         final ArrayList<T> cp = new ArrayList<>();
         if (componentsPreLogic != null) {
-            for (Component c : componentsPreLogic) {
+            for (Component<?> c : componentsPreLogic) {
                 if (c.getClass() == type) {
                     cp.add((T) c);
                 }
             }
         }
         if (componentsPostLogic != null) {
-            for (Component c : componentsPostLogic) {
+            for (Component<?> c : componentsPostLogic) {
                 if (c.getClass() == type) {
                     cp.add((T) c);
                 }
@@ -334,12 +289,12 @@ public class GameObject implements DataMapSerializable, Transformable3D {
      */
     public final GameObject deleteOperation() {
         if (componentsPreLogic != null) {
-            for (Component c : componentsPreLogic) {
+            for (Component<GameObject> c : componentsPreLogic) {
                 c.onDelete(this);
             }
         }
         if (componentsPostLogic != null) {
-            for (Component c : componentsPostLogic) {
+            for (Component<GameObject> c : componentsPostLogic) {
                 c.onDelete(this);
             }
         }
@@ -354,64 +309,9 @@ public class GameObject implements DataMapSerializable, Transformable3D {
     protected void delete() {
     }
 
-    /**
-     * checks the chunkpos of this GameObject
-     *
-     * @param error if true and if the Logger is in debugmode and if the chunk
-     * of this gameobject is null a warning will be printed.
-     * @return this GameObject
-     */
-    protected final GameObject checkChunkPos(boolean error) {
-        RenderChunk oldchunk = getMyChunk();
-        if (oldchunk != null) {
-            if (oldchunk.getChunkX() != getChunkX() || oldchunk.getChunkY() != getChunkY()
-                    || oldchunk.getChunkZ() != getChunkZ()) {
-                oldchunk.getScene().addGameObject(this);
-                oldchunk.removeGameObject(this, false);
-            }
-        } else if (error && Logger.isDebugMode()) {
-            Logger.log("MyChunk is null: " + toString(), LogLevel.WARNING);
-        }
-        return this;
-    }
 
-    /**
-     *
-     * @return true if a parent is set
-     */
-    public final boolean hasParent() {
-        return parent != null;
-    }
 
-    /**
-     * the chunkx. used for rendering
-     *
-     * @see GameSettings#usesRenderChunking()
-     * @return chunkx
-     */
-    public final long getChunkX() {
-        return Maths.fastFloor(transform.getPosition(true).x / RenderChunk.getWidth());
-    }
 
-    /**
-     * the chunky. used for rendering
-     *
-     * @see GameSettings#usesRenderChunking()
-     * @return chunky
-     */
-    public final long getChunkY() {
-        return Maths.fastFloor(transform.getPosition(true).y / RenderChunk.getHeight());
-    }
-
-    /**
-     * the chunkz. used for rendering
-     *
-     * @see GameSettings#usesRenderChunking()
-     * @return
-     */
-    public final long getChunkZ() {
-        return Maths.fastFloor(transform.getPosition(true).z / RenderChunk.getDepth());
-    }
 
     /**
      * if true the gameobject is active and will be processed. if
@@ -433,20 +333,20 @@ public class GameObject implements DataMapSerializable, Transformable3D {
         return logicEnabled;
     }
 
-    /**
-     * wont copy physics!
-     *
-     * @param toCopy
-     * @return
-     */
-    public static GameObject copy(GameObject toCopy) {
-        GameObject go = new GameObject(toCopy.name);
-        go.name = toCopy.name;
-        go.logicEnabled = toCopy.logicEnabled;
-        go.setParent(toCopy.getParent());
-        go.transform = toCopy.getTransform().getNewCopy();
-        return go;
-    }
+//    /**
+//     * wont copy physics!
+//     *
+//     * @param toCopy
+//     * @return
+//     */
+//    public static GameObject copy(GameObject toCopy) {
+//        GameObject go = new GameObject(toCopy.name);
+//        go.name = toCopy.name;
+//        go.logicEnabled = toCopy.logicEnabled;
+//        go.setParent(toCopy.getParent());
+//        go.transform = toCopy.getTransform().getNewCopy();
+//        return go;
+//    }
 
     /**
      * wont copy physics!
@@ -459,24 +359,13 @@ public class GameObject implements DataMapSerializable, Transformable3D {
         }
         name = toCopy.name;
         logicEnabled = toCopy.logicEnabled;
-        setParent(toCopy.getParent());
-        transform = toCopy.getTransform().getNewCopy();
+        //setParent(toCopy.getParent());
+      //  transform = toCopy.getTransform().getNewCopy();
         return this;
     }
 
-    public final GameObject setMyChunk(RenderChunk myChunk) {
-        this.myChunk = myChunk;
-        return this;
-    }
 
-    /**
-     * the {@link RenderChunk} this GameObject is in.
-     *
-     * @return
-     */
-    public final RenderChunk getMyChunk() {
-        return myChunk;
-    }
+    protected abstract GameObject3D checkChunkPos();
 
     /**
      * if true this GameObject will always be processed regardless of the camera
@@ -487,7 +376,7 @@ public class GameObject implements DataMapSerializable, Transformable3D {
      */
     public GameObject setGlobal(boolean b) {
         this.isglobal = b;
-        checkChunkPos(false);
+        checkChunkPos();
         return this;
     }
 
@@ -502,7 +391,7 @@ public class GameObject implements DataMapSerializable, Transformable3D {
 
     @Override
     public String toString() {
-        return String.format("%s (%d): [Position: %s, Rotation: %s]", getClass().getSimpleName(), ULTIMATE_IDENTIFIER.toEpochMilli(), getTransform().getPosition(true), getTransform().getEulerAngelsXYZ(true));
+        return String.format("%s (%d)", getClass().getSimpleName(), ULTIMATE_IDENTIFIER.toEpochMilli());
     }
 
     public GameObject setName(String name) {
@@ -535,10 +424,10 @@ public class GameObject implements DataMapSerializable, Transformable3D {
         data.put("name", name);
         data.put("isglobal", isglobal);
         data.put("active", logicEnabled);
-        if (parent != null) {
-            data.put("parent", parent.toDataMap(new DataMap("parent")));
-        }
-        data.put("transform", transform.toDataMap(new DataMap("transform")));
+//        if (parent != null) {
+//            data.put("parent", parent.toDataMap(new DataMap("parent")));
+//        }
+//        data.put("transform", transform.toDataMap(new DataMap("transform")));
         return data;
     }
 
@@ -552,7 +441,8 @@ public class GameObject implements DataMapSerializable, Transformable3D {
             return null;
         }
         final GameObject gameObject = byName(GameObject.class, name, false);
-        return (gameObject != null ? gameObject : new GameObject()).fromDataMap(data);
+      //  return (gameObject != null ? gameObject : new GameObject()).fromDataMap(data);
+        return null;
     }
 
     @Override
@@ -564,17 +454,17 @@ public class GameObject implements DataMapSerializable, Transformable3D {
         setGlobal(data.getBoolean("isglobal"));
         setLogicEnabled(data.getBoolean("isActive"));
         DataMap dataMap_temp = data.getDataMap("parent");
-        if (parent == null) {
-            parent = newInstanceFromDataMap(dataMap_temp);
-        } else {
-            parent.fromDataMap(dataMap_temp); // FIXME Hmmm ist die Frage weil die Parents und id und so
-        }
-        dataMap_temp = data.getDataMap("transform");
-        if (transform == null) {
-            transform = Transform3D.newInstanceFromDataMap(dataMap_temp);
-        } else {
-            transform.fromDataMap(dataMap_temp);
-        }
+//        if (parent == null) {
+//            parent = newInstanceFromDataMap(dataMap_temp);
+//        } else {
+//            parent.fromDataMap(dataMap_temp); // FIXME Hmmm ist die Frage weil die Parents und id und so
+//        }
+//        dataMap_temp = data.getDataMap("transform");
+//        if (transform == null) {
+//            transform = Transform3D.newInstanceFromDataMap(dataMap_temp);
+//        } else {
+//            transform.fromDataMap(dataMap_temp);
+//        }
         return this;
     }
 

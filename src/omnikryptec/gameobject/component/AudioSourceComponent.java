@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import org.joml.Vector3f;
 
 import omnikryptec.audio.AudioSource;
-import omnikryptec.gameobject.GameObject;
+import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene3D;
-import omnikryptec.renderer.RenderChunk;
+import omnikryptec.renderer.RenderChunk3D;
 import omnikryptec.util.Blocker;
 
 /**
@@ -16,7 +16,7 @@ import omnikryptec.util.Blocker;
  *
  * @author Panzer1119
  */
-public class AudioSourceComponent implements Component {
+public class AudioSourceComponent implements Component<GameObject3D> {
 
     private final ArrayList<AudioSource> sources = new ArrayList<>();
     private final Blocker blocker = new Blocker(0);
@@ -123,27 +123,27 @@ public class AudioSourceComponent implements Component {
 
     private float newDeltaPitch;
     private boolean isUsingPhysics, paused;
-    private RenderChunk chunk;
+    private RenderChunk3D chunk;
     private Scene3D scene;
-    private PhysicsComponent physicsComponent;
+    private PhysicsComponent3D physicsComponent;
     private Vector3f position, rotation;
     private javax.vecmath.Vector3f velocity = new javax.vecmath.Vector3f(0, 0, 0);
 
     ;
 
 	@Override
-    public final void execute(GameObject instance) {
+    public final void execute(GameObject3D instance) {
         blocker.waitFor();
         blocker.setBlocked(true);
         isUsingPhysics = false;
-        chunk = instance.getMyChunk();
+        chunk = instance.getRenderChunk();
         scene = null;
         physicsComponent = null;
         if (chunk != null) {
             scene = chunk.getScene();
             if (scene != null) {
                 if (scene.isUsingPhysics()) {
-                    physicsComponent = instance.getComponent(PhysicsComponent.class);
+                    physicsComponent = instance.getComponent(PhysicsComponent3D.class);
                     isUsingPhysics = ((physicsComponent != null) && (physicsComponent.getBody() != null));
                 }
             }
@@ -179,7 +179,7 @@ public class AudioSourceComponent implements Component {
     }
 
     @Override
-    public final void onDelete(GameObject instance) {
+    public final void onDelete(GameObject3D instance) {
         blocker.waitFor();
         deleteAllSources();
     }

@@ -10,7 +10,7 @@ import omnikryptec.test.saving.DataMap;
 import omnikryptec.util.Maths;
 import omnikryptec.util.SerializationUtil;
 
-public class Camera extends GameObject {
+public class Camera extends GameObject3D {
 
     private Matrix4fc projection;
     private Matrix4f view;
@@ -152,8 +152,8 @@ public class Camera extends GameObject {
         }
         camera.setName(toCopy.getName());
         camera.setLogicEnabled(toCopy.isLogicEnabled());
-        camera.setParent(toCopy.getParent());
-        camera.setTransform(toCopy.getTransform().getNewCopy());
+        //camera.setParent(toCopy.getParent());
+      //  camera.setTransform(toCopy.getTransform().getNewCopy());
         return camera;
     }
 

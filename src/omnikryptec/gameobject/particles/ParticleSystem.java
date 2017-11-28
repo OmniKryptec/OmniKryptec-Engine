@@ -4,11 +4,11 @@ import java.util.Random;
 
 import org.joml.Vector3f;
 
-import omnikryptec.gameobject.GameObject;
+import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.Maths;
 
-public class ParticleSystem extends GameObject{
+public class ParticleSystem extends GameObject3D{
 	
 	/**
 	 * The particlesystem will emit the particles/sec amount of particles in one tick and after that it will die. The system maybe can be resetted.

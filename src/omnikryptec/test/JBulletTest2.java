@@ -32,7 +32,7 @@ import omnikryptec.gameobject.EntityBuilder;
 import omnikryptec.gameobject.GameObject;
 import omnikryptec.gameobject.component.AudioListenerComponent;
 import omnikryptec.gameobject.component.AudioSourceComponent;
-import omnikryptec.gameobject.component.PhysicsComponent;
+import omnikryptec.gameobject.component.PhysicsComponent3D;
 import omnikryptec.gameobject.terrain.Terrain;
 import omnikryptec.gameobject.terrain.TerrainGenerator;
 import omnikryptec.gameobject.terrain.TerrainTexturePack;
@@ -161,7 +161,7 @@ public class JBulletTest2 {
             bouncer.setRollOffFactor(0.5F);
             // bouncer.play("bounce");
             entity_ball.addComponent(new AudioSourceComponent(bouncer));
-            entity_attractor.addComponent(new PhysicsComponent(entity_attractor, rigidBodyBuilder_attractor));
+            entity_attractor.addComponent(new PhysicsComponent3D(entity_attractor, rigidBodyBuilder_attractor));
             EventSystem.instance().addEventHandler((e) -> {
                 input();
                 logic();
@@ -201,7 +201,7 @@ public class JBulletTest2 {
         for (Terrain terrain : terrains) {
             rigidBodyBuilder_terrain.setCollisionShape(PhysicsUtil.createConvexHullShape(terrain.getAdvancedModel().getModel()));
             rigidBodyBuilder_terrain.setDefaultMotionState(new Vector3f(terrain.getTransform().getPosition().x / 2, 0, terrain.getTransform().getPosition().z / 2), new Quat4f(0, 0, 0, 0));
-            terrain.addComponent(new PhysicsComponent(terrain, rigidBodyBuilder_terrain).setPause(true));
+            terrain.addComponent(new PhysicsComponent3D(terrain, rigidBodyBuilder_terrain).setPause(true));
         }
     }
 
@@ -239,7 +239,7 @@ public class JBulletTest2 {
         if (true) {
             return;
         }
-        final RigidBody body = entity_ball.getComponent(PhysicsComponent.class).getBody();
+        final RigidBody body = entity_ball.getComponent(PhysicsComponent3D.class).getBody();
         final Transform bodyTransform = new Transform();
         body.getMotionState().getWorldTransform(bodyTransform);
         final Vector3f bodyLocation = bodyTransform.origin;
@@ -266,7 +266,7 @@ public class JBulletTest2 {
             applyForce();
         }
         if (InputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_C)) {
-            final RigidBody body = entity_ball.getComponent(PhysicsComponent.class).getBody();
+            final RigidBody body = entity_ball.getComponent(PhysicsComponent3D.class).getBody();
             body.setCenterOfMassTransform(PhysicsUtil.createTransform(ConverterUtil.convertVector3fFromLWJGL(camera.getTransform().getPosition(true)), new Quat4f(0, 0, 0, 0)));
             body.setAngularVelocity(new Vector3f(0, 0, 0));
             body.setLinearVelocity(new Vector3f(0, 0, 0));
@@ -317,7 +317,7 @@ public class JBulletTest2 {
 
     private static final void applyForce() {
         final Camera camera = OmniKryptecEngine.rawInstance().getCurrent3DScene().getCamera();
-        final RigidBody body = entity_ball.getComponent(PhysicsComponent.class).getBody();
+        final RigidBody body = entity_ball.getComponent(PhysicsComponent3D.class).getBody();
         final Transform bodyTransform = new Transform();
         body.getMotionState().getWorldTransform(bodyTransform);
         final Vector3f bodyLocation = bodyTransform.origin;
@@ -330,7 +330,7 @@ public class JBulletTest2 {
 
     private static final void applyCircularForce() {
         final Camera camera = OmniKryptecEngine.rawInstance().getCurrent3DScene().getCamera();
-        final RigidBody body = entity_ball.getComponent(PhysicsComponent.class).getBody();
+        final RigidBody body = entity_ball.getComponent(PhysicsComponent3D.class).getBody();
         final Transform bodyTransform = new Transform();
         body.getMotionState().getWorldTransform(bodyTransform);
         final Vector3f bodyLocation = bodyTransform.origin;

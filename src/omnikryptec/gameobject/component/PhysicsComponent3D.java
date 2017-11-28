@@ -9,10 +9,11 @@ import com.bulletphysics.linearmath.Transform;
 
 import omnikryptec.gameobject.Entity;
 import omnikryptec.gameobject.GameObject;
+import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.main.Scene3D;
 import omnikryptec.physics.JBulletPhysicsWorld;
 import omnikryptec.physics.RigidBodyBuilder;
-import omnikryptec.renderer.RenderChunk;
+import omnikryptec.renderer.RenderChunk3D;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -21,9 +22,9 @@ import omnikryptec.util.logger.Logger;
  *
  * @author Panzer1119
  */
-public class PhysicsComponent implements Component {
+public class PhysicsComponent3D implements Component<GameObject3D> {
 
-    private final GameObject instance;
+    private final GameObject3D instance;
     private final RigidBody body;
     private boolean pause = false;
 
@@ -35,7 +36,7 @@ public class PhysicsComponent implements Component {
      * @param instance GameObject Parent GameObject
      * @param mass Float Mass of the GameObject
      */
-    public PhysicsComponent(GameObject instance, float mass) {
+    public PhysicsComponent3D(GameObject3D instance, float mass) {
         if (instance == null) {
             throw new NullPointerException("Instance must not be null!");
         }
@@ -57,7 +58,7 @@ public class PhysicsComponent implements Component {
      * @param instance GameObject Parent GameObject
      * @param rigidBodyBuilder RigidBodyBuilder Custom RigidBodyBuilder
      */
-    public PhysicsComponent(GameObject instance, RigidBodyBuilder rigidBodyBuilder) {
+    public PhysicsComponent3D(GameObject3D instance, RigidBodyBuilder rigidBodyBuilder) {
         if (instance == null) {
             throw new NullPointerException("Instance must not be null!");
         } else if (rigidBodyBuilder == null) {
@@ -68,11 +69,11 @@ public class PhysicsComponent implements Component {
         init();
     }
 
-    private RenderChunk chunk;
+    private RenderChunk3D chunk;
 
     private final void init() {
         if (instance != null) {
-            chunk = instance.getMyChunk();
+            chunk = instance.getRenderChunk();
             if (chunk != null) {
                 body.setActivationState(CollisionObject.DISABLE_DEACTIVATION); // FIXME
                 // ONLY
@@ -129,7 +130,7 @@ public class PhysicsComponent implements Component {
      * @param pause Boolean Sets if the component is paused
      * @return PhysicsComponent A reference to this PhysicsComponent
      */
-    public final PhysicsComponent setPause(boolean pause) {
+    public final PhysicsComponent3D setPause(boolean pause) {
         this.pause = pause;
         return this;
     }
@@ -138,7 +139,7 @@ public class PhysicsComponent implements Component {
     private Quat4f ballOrientation = new Quat4f();
 
     @Override
-    public final void execute(GameObject instance) {
+    public final void execute(GameObject3D instance) {
         if (pause || body == null) {
             return;
         }
@@ -149,9 +150,9 @@ public class PhysicsComponent implements Component {
     }
 
     @Override
-    public final void onDelete(GameObject instance) {
+    public final void onDelete(GameObject3D instance) {
         if (body != null) {
-            manageRigidBodyStatus(instance.getMyChunk().getScene(), null);
+            manageRigidBodyStatus(instance.getRenderChunk().getScene(), null);
             body.destroy();
         }
     }

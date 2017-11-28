@@ -64,6 +64,7 @@ public class Transform3D implements DataMapSerializable, Positionable3D {
 
     public Transform3D setParent(Transform3D transform) {
         this.parent = transform;
+        setDirty();
         return this;
     }
 

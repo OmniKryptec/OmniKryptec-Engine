@@ -9,7 +9,7 @@ import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
 import com.bulletphysics.linearmath.MotionState;
 
 import omnikryptec.gameobject.Entity;
-import omnikryptec.gameobject.GameObject;
+import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.util.PhysicsUtil;
@@ -110,7 +110,7 @@ public class RigidBodyBuilder {
         return this;
     }
 
-    public final RigidBodyBuilder setDefaultMotionState(GameObject gameObject) {
+    public final RigidBodyBuilder setDefaultMotionState(GameObject3D gameObject) {
         if (gameObject == null) {
             return this;
         }

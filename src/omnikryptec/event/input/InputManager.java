@@ -11,7 +11,7 @@ import org.lwjgl.glfw.GLFW;
 
 import omnikryptec.display.Display;
 import omnikryptec.gameobject.Camera;
-import omnikryptec.gameobject.GameObject;
+import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.settings.KeySettings;
 import omnikryptec.util.Maths;
@@ -222,7 +222,7 @@ public class InputManager {
      *
      * @return
      */
-    public static final GameObject doFirstPersonController(GameObject gameObject, KeySettings keySettings, float deltaPosXZSpeed, float deltaPosYSpeed, float deltaRotXYZSpeed, boolean space) {
+    public static final GameObject3D doFirstPersonController(GameObject3D gameObject, KeySettings keySettings, float deltaPosXZSpeed, float deltaPosYSpeed, float deltaRotXYZSpeed, boolean space) {
         final float dt = OmniKryptecEngine.instance().getDeltaTimef();
         deltaPosXZSpeed *= dt;
         deltaPosYSpeed *= dt;
@@ -254,7 +254,7 @@ public class InputManager {
      *
      * @return
      */
-    public static final GameObject doThirdPersonController(GameObject source, GameObject destination, KeySettings keySettings, float deltaPosXZSpeed, float deltaPosYSpeed, float deltaRotXYZSpeed) {
+    public static final GameObject3D doThirdPersonController(GameObject3D source, GameObject3D destination, KeySettings keySettings, float deltaPosXZSpeed, float deltaPosYSpeed, float deltaRotXYZSpeed) {
         final float dt = OmniKryptecEngine.instance().getDeltaTimef();
         deltaPosXZSpeed *= dt;
         deltaPosYSpeed *= dt;
@@ -278,7 +278,7 @@ public class InputManager {
      * @param sideward Positive = Right, Negative = Left
      * @param upward Positive = Up, Negative = Down
      */
-    public static final void moveXZ(GameObject source, GameObject destination, float forward, float sideward, float upward) {
+    public static final void moveXZ(GameObject3D source, GameObject3D destination, float forward, float sideward, float upward) {
         if (forward != 0) {
         	destination.getTransform().increasePosition((float) (forward * Math.sin(source.getTransform().getEulerAngelsXYZ(true).y)), 0, (float) (-forward * Math.cos(source.getTransform().getEulerAngelsXYZ(true).y)));
         }
@@ -298,7 +298,7 @@ public class InputManager {
      * @param sideward Positive = Right, Negative = Left
      * @param upward Positive = Up, Negative = Down
      */
-    public static final void moveXYZ(GameObject source, GameObject destination, float forward, float sideward, float upward) {
+    public static final void moveXYZ(GameObject3D source, GameObject3D destination, float forward, float sideward, float upward) {
         if (forward != 0) {
         	destination.getTransform().increasePosition((float) (forward * Math.sin(source.getTransform().getEulerAngelsXYZ(true).y)), (float) (-forward * Math.sin(source.getTransform().getEulerAngelsXYZ(true).x)), (float) (-forward * Math.cos(source.getTransform().getEulerAngelsXYZ(true).y) * Math.cos(source.getTransform().getEulerAngelsXYZ(true).x)));
         }
@@ -310,14 +310,14 @@ public class InputManager {
         }
     }
     
-    public static final void rotateNormal(final GameObject destination, final float deltaRotX, final float deltaRotY, final float deltaRotZ) {
+    public static final void rotateNormal(final GameObject3D destination, final float deltaRotX, final float deltaRotY, final float deltaRotZ) {
         if(destination == null) {
             return;
         }
         rotateNormal(destination, destination, deltaRotX, deltaRotY, deltaRotZ);
     }
     
-    public static final void rotateNormal(final GameObject source, final GameObject destination, final float deltaRotX, final float deltaRotY, final float deltaRotZ) {
+    public static final void rotateNormal(final GameObject3D source, final GameObject3D destination, final float deltaRotX, final float deltaRotY, final float deltaRotZ) {
         if(destination == null) {
             return;
         }
@@ -341,7 +341,7 @@ public class InputManager {
         //rotateNormal(destination, x_axis, y_axis, z_axis);
     }
     
-    public static final void rotateNormal(final GameObject destination, final AxisAngle4f x_axis, final AxisAngle4f y_axis, final AxisAngle4f z_axis) {
+    public static final void rotateNormal(final GameObject3D destination, final AxisAngle4f x_axis, final AxisAngle4f y_axis, final AxisAngle4f z_axis) {
         if(destination == null) {
             return;
         }
@@ -358,7 +358,7 @@ public class InputManager {
         rotationMatrix.identity();
     }
 
-    public static final void turnXZ(GameObject source, GameObject destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
+    public static final void turnXZ(GameObject3D source, GameObject3D destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
     	final Vector3f rotation = source.getTransform().getEulerAngelsXYZ(true);
         if (deltaRotZ != 0) {
             destination.getTransform().increaseRotation((float) (-deltaRotZ * Math.sin(rotation.y)), 0, (float) (deltaRotZ * Math.cos(rotation.y)));
@@ -371,7 +371,7 @@ public class InputManager {
         }
     }
 
-    public static final void turnXZY(GameObject source, GameObject destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
+    public static final void turnXZY(GameObject3D source, GameObject3D destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
     	final Vector3f rotation = source.getTransform().getEulerAngelsXYZ(true);
         if (deltaRotZ != 0) {
         	destination.getTransform().increaseRotation((float) (-deltaRotZ * Math.sin(rotation.y)), (float) (deltaRotZ * Math.sin(rotation.x)), (float) (deltaRotZ * Math.cos(rotation.y) * Math.cos(rotation.x)));
@@ -384,7 +384,7 @@ public class InputManager {
         }
     }
 
-    public static final void turnXYZ(GameObject source, GameObject destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
+    public static final void turnXYZ(GameObject3D source, GameObject3D destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
         final Vector3f rotation = source.getTransform().getEulerAngelsXYZ(true);
         if (deltaRotZ != 0) {
         	destination.getTransform().increaseRotation((float) (-deltaRotZ * Math.sin(rotation.y)), (float) (deltaRotZ * Math.sin(rotation.x)), (float) (deltaRotZ * Math.cos(rotation.y) * Math.cos(rotation.x)));
@@ -397,7 +397,7 @@ public class InputManager {
         }
     }
 
-    public static final void turnNormal(GameObject source, GameObject destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
+    public static final void turnNormal(GameObject3D source, GameObject3D destination, float deltaRotX, float deltaRotY, float deltaRotZ) {
     	destination.getTransform().increaseRotation(deltaRotX, deltaRotY, deltaRotZ);
     }
 

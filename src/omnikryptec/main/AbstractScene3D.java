@@ -6,7 +6,8 @@ import java.util.List;
 import omnikryptec.event.event.Event;
 import omnikryptec.event.event.EventType;
 import omnikryptec.gameobject.Camera;
-import omnikryptec.gameobject.Light;
+import omnikryptec.gameobject.GameObject3D;
+import omnikryptec.gameobject.Light3D;
 import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.physics.JBulletPhysicsWorld;
 import omnikryptec.renderer.RenderConfiguration;
@@ -21,7 +22,7 @@ import omnikryptec.util.PhysicsUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
-public abstract class AbstractScene3D extends AbstractScene implements DataMapSerializable {
+public abstract class AbstractScene3D extends AbstractScene<GameObject3D> implements DataMapSerializable {
 
 
 
@@ -153,5 +154,5 @@ public abstract class AbstractScene3D extends AbstractScene implements DataMapSe
 		return (AbstractScene3D)setPhysicsWorld(new JBulletPhysicsWorld(PhysicsUtil.createDefaultDynamicsWorld()));
 	}
 
-	public abstract List<Light> getLights();
+	public abstract List<Light3D> getLights();
 }

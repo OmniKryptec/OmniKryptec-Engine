@@ -14,7 +14,7 @@ import omnikryptec.util.SerializationUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
-public class Entity extends GameObject implements DataMapSerializable {
+public class Entity extends GameObject3D implements DataMapSerializable {
 
     private AdvancedModel model;
     private RenderType type = RenderType.ALWAYS;
@@ -37,11 +37,11 @@ public class Entity extends GameObject implements DataMapSerializable {
         this(name, model, null);
     }
 
-    public Entity(AdvancedModel model, GameObject parent) {
+    public Entity(AdvancedModel model, GameObject3D parent) {
         this("", model, parent);
     }
 
-    public Entity(String name, AdvancedModel model, GameObject parent) {
+    public Entity(String name, AdvancedModel model, GameObject3D parent) {
         super(name, parent);
         this.model = model;
     }
@@ -83,7 +83,7 @@ public class Entity extends GameObject implements DataMapSerializable {
     public final Entity setAdvancedModel(AdvancedModel model) {
         this.model = model;
         //if renderer gets changed this entity must be treated differently 
-        checkChunkPos(false);
+        checkChunkPos();
         return this;
     }
 

@@ -3,7 +3,7 @@ package omnikryptec.shader.files.render;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import omnikryptec.gameobject.Light;
+import omnikryptec.gameobject.Light3D;
 import omnikryptec.main.AbstractScene3D;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.resource.model.AdvancedModel;
@@ -173,7 +173,7 @@ public class ForwardMeshShader extends Shader {
 		ambient.loadVec3(s.getAmbientColor().getArray());
 		int lights = Math.min(maxlights, s.getLights().size());
 		activelights.loadInt(lights);
-		Light l;
+		Light3D l;
 		Vector3f pos;
 		for (int i = 0; i < lights; i++) {
 			l = s.getLights().get(i);

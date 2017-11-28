@@ -8,9 +8,9 @@ import java.util.Map;
 
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
-import omnikryptec.gameobject.GameObject;
-import omnikryptec.gameobject.Light;
-import omnikryptec.renderer.RenderChunk;
+import omnikryptec.gameobject.GameObject3D;
+import omnikryptec.gameobject.Light3D;
+import omnikryptec.renderer.RenderChunk3D;
 import omnikryptec.renderer.RenderConfiguration;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.util.Instance;
@@ -19,19 +19,19 @@ import omnikryptec.util.logger.Logger;
 
 public class Scene3D extends AbstractScene3D {
 
-    private final Map<String, RenderChunk> scene = new HashMap<>();
+    private final Map<String, RenderChunk3D> scene = new HashMap<>();
     private long cox = Instance.getGameSettings().getChunkRenderOffsetX(),
             coy = Instance.getGameSettings().getChunkRenderOffsetY(),
             coz = Instance.getGameSettings().getChunkRenderOffsetZ();
-    private final List<Light> lights = new ArrayList<>();
+    private final List<Light3D> lights = new ArrayList<>();
 
-    private RenderChunk global = new RenderChunk(0, 0, 0, this);
+    private RenderChunk3D global = new RenderChunk3D(0, 0, 0, this);
 
 
     /* Temp Variables */
     private String tmp;
     private long cx, cy, cz;
-    private RenderChunk tmpc;
+    private RenderChunk3D tmpc;
     private long vertcount = 0;
 
     
@@ -51,7 +51,7 @@ public class Scene3D extends AbstractScene3D {
         return this;
     }
 
-    public final boolean addGameObject(GameObject g) {
+    public final boolean addGameObject(GameObject3D g) {
         if (g != null) {
             if (g instanceof Camera && Logger.isDebugMode()) {
                 Logger.log("A Camera should not be added as a GameObject!", LogLevel.WARNING);
@@ -63,7 +63,7 @@ public class Scene3D extends AbstractScene3D {
             }
             tmp = xyzToString(g.getChunkX(), g.getChunkY(), g.getChunkZ());
             if (!scene.containsKey(tmp)) {
-                scene.put(tmp, new RenderChunk(g.getChunkX(), g.getChunkY(), g.getChunkZ(), this));
+                scene.put(tmp, new RenderChunk3D(g.getChunkX(), g.getChunkY(), g.getChunkZ(), this));
             }
             scene.get(tmp).addGameObject(g);
             return true;
@@ -72,14 +72,14 @@ public class Scene3D extends AbstractScene3D {
         }
     }
 
-    public final GameObject removeGameObject(GameObject g) {
+    public final GameObject3D removeGameObject(GameObject3D g) {
         return removeGameObject(g, true);
     }
 
-    public final GameObject removeGameObject(GameObject g, boolean delete) {
+    public final GameObject3D removeGameObject(GameObject3D g, boolean delete) {
         if (g != null) {
-            if (g.getMyChunk() != null) {
-                g.getMyChunk().removeGameObject(g, delete);
+            if (g.getRenderChunk() != null) {
+                g.getRenderChunk().removeGameObject(g, delete);
             } else {
                 tmp = xyzToString(g.getChunkX(), g.getChunkY(), g.getChunkZ());
                 scene.get(tmp).removeGameObject(g, delete);
@@ -146,7 +146,7 @@ public class Scene3D extends AbstractScene3D {
     protected void doLogic() {
     }
 
-    public final List<Light> getLights() {
+    public final List<Light3D> getLights() {
         return lights;
     }
 
@@ -154,7 +154,7 @@ public class Scene3D extends AbstractScene3D {
     public final List<Entity> getEntities() {
         final List<Entity> entities = new ArrayList<>(); 
         entities.addAll(global.getEntities());
-        for(RenderChunk c : scene.values()) {
+        for(RenderChunk3D c : scene.values()) {
         	entities.addAll(c.getEntities());
         }
         return entities;

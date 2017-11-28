@@ -16,7 +16,7 @@ import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.main.PostProcessing;
 import omnikryptec.postprocessing.main.RenderTarget;
 import omnikryptec.renderer.Query;
-import omnikryptec.renderer.RenderChunk;
+import omnikryptec.renderer.RenderChunk3D;
 import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.VertexArrayObject;
 import omnikryptec.resource.model.VertexBufferObject;
@@ -292,7 +292,7 @@ public class OmniKryptecEngine implements Profilable {
 		if (cleaned) {
 			return;
 		}
-		RenderChunk.cleanup();
+		RenderChunk3D.cleanup();
 		PostProcessing.cleanup();
 		VertexArrayObject.cleanup();
 		VertexBufferObject.cleanup();
@@ -328,7 +328,7 @@ public class OmniKryptecEngine implements Profilable {
 		close(getShutdownOption());
 	}
 
-	public final OmniKryptecEngine addAndSetScene(AbstractScene scene) {
+	public final OmniKryptecEngine addAndSetScene(AbstractScene<?> scene) {
 		addScene(scene);
 		if (scene instanceof AbstractScene3D) {
 			setScene3D(scene.getName());
@@ -338,7 +338,7 @@ public class OmniKryptecEngine implements Profilable {
 		return this;
 	}
 
-	public final OmniKryptecEngine addScene(AbstractScene scene) {
+	public final OmniKryptecEngine addScene(AbstractScene<?> scene) {
 		if (scene instanceof AbstractScene3D) {
 			scenes3D.add((AbstractScene3D) scene);
 		} else if (scene instanceof AbstractScene2D) {

@@ -65,7 +65,7 @@ public class ObjectManager {
             saveObjectToFile(obj, file_2, true);
             TestClass temp = loadObjectFromFile(file_2, TestClass.createInstance());
             // Logger.log("Here:\n" + test);
-            GameObject test_2 = new GameObject();
+          //------->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  GameObject test_2 = new GameObject();
             //test_2.setPos(new Vector3f(0F, 1F, 2F));
             // Logger.log("Here 2:\n" +
             // mapper.writerWithDefaultPrettyPrinter().writeValueAsString(test_2));

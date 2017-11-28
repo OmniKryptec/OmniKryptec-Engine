@@ -5,7 +5,7 @@ import org.joml.Vector4f;
 
 import omnikryptec.util.Color;
 
-public class Light extends GameObject {
+public class Light3D extends GameObject3D {
 	
 	public static final float NO_CUTOFF_RANGE = -1;
 	
@@ -28,7 +28,7 @@ public class Light extends GameObject {
 	 * @param c
 	 * @return
 	 */
-	public Light setConeAttenuation(float a, float b, float c){
+	public Light3D setConeAttenuation(float a, float b, float c){
 		coneAtt.set(a, b, c);
 		return this;
 	}
@@ -47,7 +47,7 @@ public class Light extends GameObject {
 	 * @param c
 	 * @return this Light
 	 */
-	public Light setColor(Color c) {
+	public Light3D setColor(Color c) {
 		this.color = c;
 		return this;
 	}
@@ -59,7 +59,7 @@ public class Light extends GameObject {
 	 * @param b
 	 * @return this Light
 	 */
-	public Light setColor(float r, float g, float b) {
+	public Light3D setColor(float r, float g, float b) {
 		color.set(r, g, b);
 		return this;
 	}
@@ -81,7 +81,7 @@ public class Light extends GameObject {
 	 * @param z
 	 * @return this Light
 	 */
-	public Light setDirection(float x, float y, float z){
+	public Light3D setDirection(float x, float y, float z){
 		coneinfo.x = x;
 		coneinfo.y = y;
 		coneinfo.z = z;
@@ -93,7 +93,7 @@ public class Light extends GameObject {
 	 * @param d directionvector
 	 * @return this Light
 	 */
-	public Light setDirection(Vector3f d) {
+	public Light3D setDirection(Vector3f d) {
 		return setDirection(d.x, d.y, d.z);
 	}
 	
@@ -103,7 +103,7 @@ public class Light extends GameObject {
 	 * @param d
 	 * @return this Light
 	 */
-	public Light setConeDegrees(float d){
+	public Light3D setConeDegrees(float d){
 		return setConeRadians(Math.toRadians(d));
 	}
 	
@@ -113,7 +113,7 @@ public class Light extends GameObject {
 	 * @param d
 	 * @return this Light
 	 */
-	public Light setConeRadians(double d){
+	public Light3D setConeRadians(double d){
 		coneinfo.w = (float) Math.cos(d);
 		return this;
 	}
@@ -135,7 +135,7 @@ public class Light extends GameObject {
 	 * @param b
 	 * @return this Light
 	 */
-	public Light setDirectional(boolean b){
+	public Light3D setDirectional(boolean b){
 		directional = b;
 		return this;
 	}
@@ -145,7 +145,7 @@ public class Light extends GameObject {
 	 * modifys {@link #getConeInfo()} and if this light is a directional light.
 	 * @return this Light
 	 */
-	public Light setPointLight(){
+	public Light3D setPointLight(){
 		setConeDegrees(180);
 		setConeAttenuation(1, 0, 0);
 		setDirectional(false);
@@ -173,7 +173,7 @@ public class Light extends GameObject {
 	 * @param c
 	 * @return this Light
 	 */
-	public Light setAttenuation(float a, float b, float c) {
+	public Light3D setAttenuation(float a, float b, float c) {
 		att.x = a;
 		att.y = b;
 		att.z = c;
@@ -186,7 +186,7 @@ public class Light extends GameObject {
 	 * @param r
 	 * @return this Light
 	 */
-	public Light setCuttOffRange(float r){
+	public Light3D setCuttOffRange(float r){
 		att.w = r;
 		return this;
 	}

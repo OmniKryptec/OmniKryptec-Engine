@@ -3,9 +3,9 @@ package omnikryptec.gameobject.component;
 import org.joml.Vector3f;
 
 import omnikryptec.audio.AudioManager;
-import omnikryptec.gameobject.GameObject;
+import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.main.Scene3D;
-import omnikryptec.renderer.RenderChunk;
+import omnikryptec.renderer.RenderChunk3D;
 import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
@@ -15,7 +15,7 @@ import omnikryptec.util.logger.Logger;
  *
  * @author Panzer1119
  */
-public class AudioListenerComponent implements Component {
+public class AudioListenerComponent implements Component<GameObject3D> {
 
     /**
      * Normal constructor
@@ -31,9 +31,9 @@ public class AudioListenerComponent implements Component {
         }
     }
 
-    private RenderChunk chunk;
+    private RenderChunk3D chunk;
     private Scene3D scene;
-    private PhysicsComponent physicsComponent;
+    private PhysicsComponent3D physicsComponent;
     private boolean isUsingPhysics = false;
     private Vector3f position, rotation;
     private javax.vecmath.Vector3f velocity = new javax.vecmath.Vector3f(0, 0, 0);
@@ -41,15 +41,15 @@ public class AudioListenerComponent implements Component {
     ;
 
 	@Override
-    public final void execute(GameObject instance) {
-        isUsingPhysics = false;
-        chunk = instance.getMyChunk();
+    public final void execute(GameObject3D instance) {
+		isUsingPhysics = false;
+        chunk = instance.getRenderChunk();
         physicsComponent = null;
         if (chunk != null) {
             scene = chunk.getScene();
             if (scene != null) {
                 if (scene.isUsingPhysics()) {
-                    physicsComponent = instance.getComponent(PhysicsComponent.class);
+                    physicsComponent = instance.getComponent(PhysicsComponent3D.class);
                     isUsingPhysics = ((physicsComponent != null) && (physicsComponent.getBody() != null));
                 }
             }
@@ -65,7 +65,7 @@ public class AudioListenerComponent implements Component {
     }
 
     @Override
-    public final void onDelete(GameObject instance) {
+    public final void onDelete(GameObject3D instance) {
         AudioManager.setBlockingComponent(this, null);
     }
 

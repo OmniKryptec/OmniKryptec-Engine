@@ -13,8 +13,8 @@ import omnikryptec.event.event.IEventHandler;
 import omnikryptec.event.input.InputManager;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
-import omnikryptec.gameobject.GameObject;
-import omnikryptec.gameobject.Light;
+import omnikryptec.gameobject.GameObject3D;
+import omnikryptec.gameobject.Light3D;
 import omnikryptec.gameobject.particles.AttractedPaticleSystem;
 import omnikryptec.gameobject.particles.AttractorMode;
 import omnikryptec.gameobject.particles.ParticleAttractor;
@@ -213,9 +213,9 @@ public class EngineTest2 implements IEventHandler {
             for (int x = -cube; x < cube; x += abstand) {
                 for (int y = -cube; y < cube; y += abstand) {
                     for (int z = -cube; z < cube; z += abstand) {
-                        GameObject go;
+                        GameObject3D go;
                         // go = new GameObject().setRelativePos(x, y, z);
-                        go = new Entity(tm).setUpdateType(UpdateType.STATIC);
+                        go = (GameObject3D) new Entity(tm).setUpdateType(UpdateType.STATIC);
                         go.getTransform().setDirty().setScale(scale).setPosition(x, y, z).getRotationSimple().rotate(0,
                                 0, 0);
                         Instance.getCurrentScene().addGameObject(go);
@@ -298,9 +298,9 @@ public class EngineTest2 implements IEventHandler {
             // .addGameObject(l.setAttenuation(1, 0f, 0).setCuttOffRange(50).setColor(1, 0f,
             // 0f).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0,
             // -1, 0));
-            l = new Light();
+            l = new Light3D();
             OmniKryptecEngine.instance().getCurrent3DScene()
-                    .addGameObject(l.setAttenuation(1, 0, 0).setColor(1, 1, 1).setDirectional(true)
+                    .addGameObject((GameObject3D) l.setAttenuation(1, 0, 0).setColor(1, 1, 1).setDirectional(true)
                             .setConeAttenuation(1, 0, 0).setConeDegrees(55).setDirection(0, -1, 0).setGlobal(true));
             l.getTransform().setPosition(0, 0, 0);
 //			Light l2 = new Light();
@@ -332,7 +332,7 @@ public class EngineTest2 implements IEventHandler {
         }
     }
 
-    static Light l;
+    static Light3D l;
     private static float v = 50;
     private static ParticleAttractor attractor;
 

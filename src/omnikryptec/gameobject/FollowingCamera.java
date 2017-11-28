@@ -14,7 +14,7 @@ import omnikryptec.util.Maths;
  */
 public class FollowingCamera extends Camera {
 
-	private GameObject followedGameObject = null;
+	private GameObject3D followedGameObject = null;
 	private float distanceFromGameObject = 25;
 	private float angleAroundGameObject = 0;
 
@@ -22,7 +22,7 @@ public class FollowingCamera extends Camera {
 		this(null);
 	}
 
-	public FollowingCamera(GameObject followedGameObject) {
+	public FollowingCamera(GameObject3D followedGameObject) {
 		this.followedGameObject = followedGameObject;
 	}
 
@@ -75,11 +75,11 @@ public class FollowingCamera extends Camera {
 		}
 	}
 
-	public GameObject getFollowedGameObject() {
+	public GameObject3D getFollowedGameObject() {
 		return followedGameObject;
 	}
 
-	public FollowingCamera setFollowedGameObject(GameObject followedGameObject) {
+	public FollowingCamera setFollowedGameObject(GameObject3D followedGameObject) {
 		this.followedGameObject = followedGameObject;
 		return this;
 	}

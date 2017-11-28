@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import org.joml.Vector3f;
 
-import omnikryptec.gameobject.GameObject;
+import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.util.EnumCollection.RenderType;
 
@@ -67,11 +67,11 @@ public class AttractedPaticleSystem extends SimpleParticleSystem {
         return addAttractor(pos.x, pos.y, pos.z, a, t, d, false);
     }
 
-    public AttractedPaticleSystem addAttractor(GameObject go, float a, float t) {
+    public AttractedPaticleSystem addAttractor(GameObject3D go, float a, float t) {
         return addAttractor(go, a, t, AttractorMode.NOTHING);
     }
 
-    public AttractedPaticleSystem addAttractor(GameObject go, float a, float t, AttractorMode d) {
+    public AttractedPaticleSystem addAttractor(GameObject3D go, float a, float t, AttractorMode d) {
         return addAttractor(go, a, t, d, false);
     }
 
@@ -79,7 +79,7 @@ public class AttractedPaticleSystem extends SimpleParticleSystem {
         return addAttractor(new ParticleAttractor(x, y, z).setGravitation(g).setDistanceTolerance(t).setMode(mode).setInfinite(i));
     }
 
-    public AttractedPaticleSystem addAttractor(GameObject go, float g, float t, AttractorMode mode, boolean i) {
+    public AttractedPaticleSystem addAttractor(GameObject3D go, float g, float t, AttractorMode mode, boolean i) {
         return addAttractor(new ParticleAttractor(go).setGravitation(g).setDistanceTolerance(t).setMode(mode).setInfinite(i));
     }
 

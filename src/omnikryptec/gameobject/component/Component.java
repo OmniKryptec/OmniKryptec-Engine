@@ -7,7 +7,7 @@ import omnikryptec.gameobject.GameObject;
  * 
  * @author pcfreak9000 &amp; Panzer1119
  */
-public interface Component {
+public interface Component<T extends GameObject> {
 
 	/**
 	 * Called on frame update of the parent GameObject
@@ -15,7 +15,7 @@ public interface Component {
 	 * @param instance
 	 *            GameObject Parent GameObject
 	 */
-	void execute(GameObject instance);
+	void execute(T instance);
 
 	/**
 	 * Called on deletion of the parent GameObject
@@ -23,7 +23,7 @@ public interface Component {
 	 * @param instance
 	 *            GameObject Parent GameObject
 	 */
-	void onDelete(GameObject instance);
+	void onDelete(T instance);
 
 	/**
 	 * Returns the level of this component

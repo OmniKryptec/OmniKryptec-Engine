@@ -3,22 +3,23 @@ package omnikryptec.gameobject.particles;
 import org.joml.Vector3f;
 
 import omnikryptec.gameobject.GameObject;
+import omnikryptec.gameobject.GameObject3D;
 
 public class ParticleAttractor {
 
     protected float gravitation = 0, tolerance = 0;
     protected boolean infinite = false;
-    protected GameObject positionable;
+    protected GameObject3D positionable;
     protected AttractorMode mode = AttractorMode.NOTHING;
     protected boolean enabled = true;
     protected Vector3f attenuation = new Vector3f(1, 0, 0);
 
-    public ParticleAttractor(GameObject p) {
+    public ParticleAttractor(GameObject3D p) {
         this.positionable = p;
     }
 
     public ParticleAttractor(float x, float y, float z) {
-        this.positionable = new GameObject();
+        this.positionable = new GameObject3D();
         positionable.getTransform().setPosition(x, y, z);
     }
 
@@ -62,7 +63,7 @@ public class ParticleAttractor {
         return positionable;
     }
 
-    public ParticleAttractor setAttractor(GameObject go) {
+    public ParticleAttractor setAttractor(GameObject3D go) {
         this.positionable = go;
         return this;
     }
