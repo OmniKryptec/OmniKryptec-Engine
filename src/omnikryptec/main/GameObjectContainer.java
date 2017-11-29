@@ -2,7 +2,7 @@ package omnikryptec.main;
 
 import omnikryptec.gameobject.GameObject;
 
-public interface GameObjectCase<T extends GameObject> {
+public interface GameObjectContainer<T extends GameObject> {
 	
 	public boolean addGameObject(T go);
 

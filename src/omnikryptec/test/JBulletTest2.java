@@ -30,8 +30,8 @@ import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.gameobject.EntityBuilder;
 import omnikryptec.gameobject.GameObject;
-import omnikryptec.gameobject.component.AudioListenerComponent;
-import omnikryptec.gameobject.component.AudioSourceComponent;
+import omnikryptec.gameobject.component.AudioListenerComponent3D;
+import omnikryptec.gameobject.component.AudioSourceComponent3D;
 import omnikryptec.gameobject.component.PhysicsComponent3D;
 import omnikryptec.gameobject.terrain.Terrain;
 import omnikryptec.gameobject.terrain.TerrainGenerator;
@@ -114,7 +114,7 @@ public class JBulletTest2 {
                             turnSpeed);
                 }
 
-            }.setPerspectiveProjection(75, 0.1F, 1000).addComponent(new AudioListenerComponent())));
+            }.setPerspectiveProjection(75, 0.1F, 1000).addComponent(new AudioListenerComponent3D())));
             entityBuilder_brunnen = new EntityBuilder().loadModel("/omnikryptec/test/brunnen.obj")
                     .loadTexture("/omnikryptec/test/brunnen.png");
             entityBuilder_pine = new EntityBuilder().loadModel("/omnikryptec/test/pine.obj")
@@ -154,13 +154,13 @@ public class JBulletTest2 {
             source.setFadeTimeComplete(10000);
             source.setEffectState(AudioEffectState.FADE_OUT);
             OmniKryptecEngine.rawInstance().getCurrent3DScene()
-                    .addGameObject(new GameObject().addComponent(new AudioSourceComponent(source)));
+                    .addGameObject(new GameObject().addComponent(new AudioSourceComponent3D(source)));
             manageTerrains();
             // entity_ball.addComponent(new PhysicsComponent(entity_ball, rigidBodyBuilder_ball));
             bouncer = new AudioSource().setLooping(true);
             bouncer.setRollOffFactor(0.5F);
             // bouncer.play("bounce");
-            entity_ball.addComponent(new AudioSourceComponent(bouncer));
+            entity_ball.addComponent(new AudioSourceComponent3D(bouncer));
             entity_attractor.addComponent(new PhysicsComponent3D(entity_attractor, rigidBodyBuilder_attractor));
             EventSystem.instance().addEventHandler((e) -> {
                 input();

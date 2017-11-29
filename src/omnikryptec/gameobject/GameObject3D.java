@@ -113,7 +113,7 @@ public class GameObject3D extends GameObject implements Transformable3D{
     * of this gameobject is null a warning will be printed.
     * @return this GameObject
     */
-   protected final GameObject3D checkChunkPos() {
+   protected final void checkChunkPos() {
        RenderChunk3D oldchunk = getRenderChunk();
        if (oldchunk != null) {
            if (oldchunk.getChunkX() != getChunkX() || oldchunk.getChunkY() != getChunkY()
@@ -124,7 +124,6 @@ public class GameObject3D extends GameObject implements Transformable3D{
        } else if (Logger.isDebugMode()) {
            Logger.log("MyChunk is null: " + toString(), LogLevel.WARNING);
        }
-       return this;
    }
    
    public final GameObject3D setRenderChunk3D(RenderChunk3D myChunk) {

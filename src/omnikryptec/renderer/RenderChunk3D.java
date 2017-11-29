@@ -13,7 +13,7 @@ import omnikryptec.gameobject.Entity;
 import omnikryptec.gameobject.GameObject;
 import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.gameobject.Light3D;
-import omnikryptec.main.GameObjectCase;
+import omnikryptec.main.GameObjectContainer;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene3D;
 import omnikryptec.resource.model.AdvancedModel;
@@ -24,7 +24,7 @@ import omnikryptec.util.SerializationUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
-public class RenderChunk3D implements DataMapSerializable, GameObjectCase<GameObject3D> {
+public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<GameObject3D> {
 
 	static final int DEFAULT_CAPACITY = 50;
 

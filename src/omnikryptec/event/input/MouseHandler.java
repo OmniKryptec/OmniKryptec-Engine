@@ -23,7 +23,6 @@ public class MouseHandler implements InputHandler {
     private final GLFWMouseButtonCallback mouseButtonCallback;
     private final GLFWCursorPosCallback cursorPosCallback;
     private final GLFWScrollCallback scrollCallback;
-    //TODO was hiermit? wieso unused?
     private final GLFWCursorEnterCallback cursorEnterCallback;
     protected final InputState[] buttons = new InputState[100];
     private InputState[] buttons_lastTime = null;
@@ -71,6 +70,11 @@ public class MouseHandler implements InputHandler {
                 insideWindow = entered;
             }
         };
+    }
+    
+    //damit nicht unused
+    final GLFWCursorEnterCallback __getGLFWCEC() {
+    	return cursorEnterCallback;
     }
     
     public final MouseHandler initCallbacks() {

@@ -56,7 +56,7 @@ public class AudioManager {
     private static final ArrayList<Sound> sounds = new ArrayList<>();
     private static DistanceModel distanceModel = null;
     private static boolean isInitialized = false;
-    private static Component blockingAudioListenerComponent = null;
+    private static Component<?> blockingAudioListenerComponent = null;
     private static long defaultDevice = -1;
     private static long context = -1;
     private static ALCCapabilities deviceCapabilities = null;
@@ -110,7 +110,7 @@ public class AudioManager {
      * @param velocity Vector3f Vector of the velocity
      * @return <tt>true</tt> if the data was successfully changed
      */
-    public static final boolean setListenerData(Component component, javax.vecmath.Vector3f position,
+    public static final boolean setListenerData(Component<?> component, javax.vecmath.Vector3f position,
             javax.vecmath.Vector3f rotation, javax.vecmath.Vector3f velocity) {
         return setListenerData(component, position.x, position.y, position.z, rotation.x, rotation.y, rotation.z,
                 velocity.x, velocity.y, velocity.z);
@@ -125,7 +125,7 @@ public class AudioManager {
      * @param velocity Vector3f Vector of the velocity
      * @return <tt>true</tt> if the data was successfully changed
      */
-    public static final boolean setListenerData(Component component, Vector3f position, Vector3f rotation,
+    public static final boolean setListenerData(Component<?> component, Vector3f position, Vector3f rotation,
             Vector3f velocity) {
         return setListenerData(component, position.x, position.y, position.z, rotation.x, rotation.y, rotation.z,
                 velocity.x, velocity.y, velocity.z);
@@ -146,7 +146,7 @@ public class AudioManager {
      * @param velZ Float Float of the z-velocity
      * @return <tt>true</tt> if the data was successfully changed
      */
-    public static final boolean setListenerData(Component component, float posX, float posY, float posZ, float rotX,
+    public static final boolean setListenerData(Component<?> component, float posX, float posY, float posZ, float rotX,
             float rotY, float rotZ, float velX, float velY, float velZ) {
         if (blockingAudioListenerComponent != null
                 && (component == null || blockingAudioListenerComponent != component)) {
@@ -165,7 +165,7 @@ public class AudioManager {
      * @param newComponent Component New component or null
      * @return <tt>true</tt> if the component was set successfully
      */
-    public static final boolean setBlockingComponent(Component component, Component newComponent) {
+    public static final boolean setBlockingComponent(Component<?> component, Component<?> newComponent) {
         if (blockingAudioListenerComponent != null
                 && (component == null || blockingAudioListenerComponent != component)) {
             return false;

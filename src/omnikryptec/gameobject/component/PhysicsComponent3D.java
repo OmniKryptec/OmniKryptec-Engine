@@ -22,7 +22,8 @@ import omnikryptec.util.logger.Logger;
  *
  * @author Panzer1119
  */
-public class PhysicsComponent3D implements Component<GameObject3D> {
+@ComponentAnnotation(supportedGameObjectClass = GameObject3D.class)
+public class PhysicsComponent3D extends Component<GameObject3D> {
 
     private final GameObject3D instance;
     private final RigidBody body;

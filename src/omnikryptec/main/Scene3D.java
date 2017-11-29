@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
@@ -19,7 +18,7 @@ import omnikryptec.util.logger.Logger;
 
 public class Scene3D extends AbstractScene3D {
 
-    private final Map<String, RenderChunk3D> scene = new HashMap<>();
+    private final HashMap<String, RenderChunk3D> scene = new HashMap<>();
     private long cox = Instance.getGameSettings().getChunkRenderOffsetX(),
             coy = Instance.getGameSettings().getChunkRenderOffsetY(),
             coz = Instance.getGameSettings().getChunkRenderOffsetZ();

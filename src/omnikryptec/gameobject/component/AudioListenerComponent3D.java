@@ -15,12 +15,13 @@ import omnikryptec.util.logger.Logger;
  *
  * @author Panzer1119
  */
-public class AudioListenerComponent implements Component<GameObject3D> {
+@ComponentAnnotation(supportedGameObjectClass = GameObject3D.class)
+public class AudioListenerComponent3D extends Component<GameObject3D> {
 
     /**
      * Normal constructor
      */
-    public AudioListenerComponent() {
+    public AudioListenerComponent3D() {
         boolean done = AudioManager.setBlockingComponent(this, this);
         if (Logger.isDebugMode()) {
             if (!done) {

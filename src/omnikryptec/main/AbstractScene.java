@@ -7,7 +7,7 @@ import omnikryptec.renderer.RenderConfiguration;
 import omnikryptec.util.Color;
 import omnikryptec.util.EnumCollection.FrameState;
 
-abstract class AbstractScene<T extends GameObject> implements GameObjectCase<T> {
+abstract class AbstractScene<T extends GameObject> implements GameObjectContainer<T> {
 	
 
 	Camera camera;

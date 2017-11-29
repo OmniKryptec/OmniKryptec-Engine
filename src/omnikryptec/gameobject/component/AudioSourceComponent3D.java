@@ -16,7 +16,8 @@ import omnikryptec.util.Blocker;
  *
  * @author Panzer1119
  */
-public class AudioSourceComponent implements Component<GameObject3D> {
+@ComponentAnnotation(supportedGameObjectClass = GameObject3D.class)
+public class AudioSourceComponent3D extends Component<GameObject3D> {
 
     private final ArrayList<AudioSource> sources = new ArrayList<>();
     private final Blocker blocker = new Blocker(0);
@@ -27,7 +28,7 @@ public class AudioSourceComponent implements Component<GameObject3D> {
      * @param sources AudioSource Array Initialize this component with
      * AudioSources
      */
-    public AudioSourceComponent(AudioSource... sources) {
+    public AudioSourceComponent3D(AudioSource... sources) {
         addSources(sources);
     }
 
@@ -62,7 +63,7 @@ public class AudioSourceComponent implements Component<GameObject3D> {
      * @param sources AudioSource Array AudioSources
      * @return AudioSourceComponent A reference to this AudioSourceComponent
      */
-    public final AudioSourceComponent addSources(AudioSource... sources) {
+    public final AudioSourceComponent3D addSources(AudioSource... sources) {
         if (sources == null || sources.length == 0) {
             return this;
         }
@@ -81,7 +82,7 @@ public class AudioSourceComponent implements Component<GameObject3D> {
      * @param sources AudioSource Array AudioSources
      * @return AudioSourceComponent A reference to this AudioSourceComponent
      */
-    public final AudioSourceComponent removeSources(AudioSource... sources) {
+    public final AudioSourceComponent3D removeSources(AudioSource... sources) {
         return removeSources(false, sources);
     }
 
@@ -92,7 +93,7 @@ public class AudioSourceComponent implements Component<GameObject3D> {
      * @param sources AudioSource Array AudioSources
      * @return AudioSourceComponent A reference to this AudioSourceComponent
      */
-    public final AudioSourceComponent removeSources(boolean delete, AudioSource... sources) {
+    public final AudioSourceComponent3D removeSources(boolean delete, AudioSource... sources) {
         if (sources == null || sources.length == 0 || this.sources.isEmpty()) {
             return this;
         }
@@ -113,7 +114,7 @@ public class AudioSourceComponent implements Component<GameObject3D> {
      *
      * @return AudioSourceComponent A reference to this AudioSourceComponent
      */
-    public final AudioSourceComponent deleteAllSources() {
+    public final AudioSourceComponent3D deleteAllSources() {
         for (AudioSource source : sources) {
             source.delete();
         }
@@ -188,5 +189,6 @@ public class AudioSourceComponent implements Component<GameObject3D> {
     public float getLevel() {
         return 1.0F;
     }
+
 
 }

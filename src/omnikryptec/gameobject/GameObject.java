@@ -7,12 +7,14 @@ import java.util.List;
 
 import omnikryptec.gameobject.component.Component;
 import omnikryptec.main.AbstractScene3D;
+import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene3D;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.EnumCollection.FrameState;
 import omnikryptec.util.EnumCollection.UpdateType;
 import omnikryptec.util.Instance;
+import omnikryptec.util.exceptions.OmniKryptecException;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -38,8 +40,8 @@ public abstract class GameObject implements DataMapSerializable {
     private String name;
     private boolean isglobal = false;
     private boolean logicEnabled = true;
-    private List<Component<GameObject>> componentsPreLogic = null;
-    private List<Component<GameObject>> componentsPostLogic = null;
+    private List<Component<?>> componentsPreLogic = null;
+    private List<Component<?>> componentsPostLogic = null;
 
     private final Instant ULTIMATE_IDENTIFIER = Instant.now();
     private UpdateType uptype = UpdateType.DYNAMIC;
@@ -131,14 +133,14 @@ public abstract class GameObject implements DataMapSerializable {
             return this;
         }
         if (componentsPreLogic != null) {
-            for (Component<GameObject> c : componentsPreLogic) {
-                c.execute(this);
+            for (Component<?> c : componentsPreLogic) {
+                c.runOn(this);
             }
         }
         update();
         if (componentsPostLogic != null) {
-            for (Component<GameObject> c : componentsPostLogic) {
-                c.execute(this);
+            for (Component<?> c : componentsPostLogic) {
+                c.runOn(this);
             }
         }
         if ((force || getUpdateType() == UpdateType.DYNAMIC) && !(this instanceof Camera) && Instance.getGameSettings().usesRenderChunking()) {
@@ -154,8 +156,15 @@ public abstract class GameObject implements DataMapSerializable {
      * @param c
      * @return this GameObject
      */
-    public final GameObject addComponent(Component<GameObject> c) {
-        if (c.getLevel() < 0) {
+    public final GameObject addComponent(Component<?> c) {
+    	if(!c.supportsGameObject(this)) {
+    		if(OmniKryptecEngine.isCreated()) {
+    			OmniKryptecEngine.instance().errorOccured(new OmniKryptecException(getClass().getSimpleName()+" does not support the component "+c.getClass().getSimpleName()), "Error while adding component to a GameObject");
+    		}else {
+    			throw new OmniKryptecException(getClass().getSimpleName()+" does not support the component "+c.getClass().getSimpleName());
+    		}
+    	}
+    	if (c.getLevel() < 0) {
             if (componentsPreLogic == null) {
                 componentsPreLogic = new ArrayList<>();
             }
@@ -178,7 +187,7 @@ public abstract class GameObject implements DataMapSerializable {
      * @param c
      * @return this GameObject
      */
-    public final GameObject removeComponent(Component<GameObject> c) {
+    public final GameObject removeComponent(Component<?> c) {
         if (c.getLevel() < 0) {
             if (componentsPreLogic != null) {
                 componentsPreLogic.remove(c);
@@ -289,13 +298,13 @@ public abstract class GameObject implements DataMapSerializable {
      */
     public final GameObject deleteOperation() {
         if (componentsPreLogic != null) {
-            for (Component<GameObject> c : componentsPreLogic) {
-                c.onDelete(this);
+            for (Component<?> c : componentsPreLogic) {
+                c.deleteOp(this);
             }
         }
         if (componentsPostLogic != null) {
-            for (Component<GameObject> c : componentsPostLogic) {
-                c.onDelete(this);
+            for (Component<?> c : componentsPostLogic) {
+                c.deleteOp(this);
             }
         }
         delete();
@@ -365,7 +374,7 @@ public abstract class GameObject implements DataMapSerializable {
     }
 
 
-    protected abstract GameObject3D checkChunkPos();
+    protected abstract void checkChunkPos();
 
     /**
      * if true this GameObject will always be processed regardless of the camera
@@ -440,7 +449,7 @@ public abstract class GameObject implements DataMapSerializable {
         if (name == null || name.isEmpty()) {
             return null;
         }
-        final GameObject gameObject = byName(GameObject.class, name, false);
+   //     final GameObject gameObject = byName(GameObject.class, name, false);
       //  return (gameObject != null ? gameObject : new GameObject()).fromDataMap(data);
         return null;
     }
@@ -453,7 +462,7 @@ public abstract class GameObject implements DataMapSerializable {
         setName(data.getString("name"));
         setGlobal(data.getBoolean("isglobal"));
         setLogicEnabled(data.getBoolean("isActive"));
-        DataMap dataMap_temp = data.getDataMap("parent");
+     //   DataMap dataMap_temp = data.getDataMap("parent");
 //        if (parent == null) {
 //            parent = newInstanceFromDataMap(dataMap_temp);
 //        } else {

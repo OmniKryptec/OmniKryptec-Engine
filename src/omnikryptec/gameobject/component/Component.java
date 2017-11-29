@@ -7,15 +7,40 @@ import omnikryptec.gameobject.GameObject;
  * 
  * @author pcfreak9000 &amp; Panzer1119
  */
-public interface Component<T extends GameObject> {
-
+public abstract class Component<T extends GameObject> {
+	
+	private final Class<? extends GameObject> supported;
+	
+	protected Component() {
+    	if(getClass().isAnnotationPresent(ComponentAnnotation.class)) {
+    		supported = getClass().getAnnotation(ComponentAnnotation.class).supportedGameObjectClass();
+    	}else {
+    		supported = GameObject.class;
+    	}
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public final void runOn(GameObject g) {
+		execute((T)g);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public final void deleteOp(GameObject g) {
+		onDelete((T)g);
+	}
+	
+	public final boolean supportsGameObject(GameObject g) {
+		return supported.isAssignableFrom(g.getClass());
+	}
+	
 	/**
 	 * Called on frame update of the parent GameObject
 	 * 
 	 * @param instance
 	 *            GameObject Parent GameObject
 	 */
-	void execute(T instance);
+	protected abstract void execute(T instance);
 
 	/**
 	 * Called on deletion of the parent GameObject
@@ -23,7 +48,7 @@ public interface Component<T extends GameObject> {
 	 * @param instance
 	 *            GameObject Parent GameObject
 	 */
-	void onDelete(T instance);
+	protected abstract void onDelete(T instance);
 
 	/**
 	 * Returns the level of this component
@@ -31,5 +56,7 @@ public interface Component<T extends GameObject> {
 	 * @return Float Level of the execution (negative = before logic execution,
 	 *         positive = after logic execution)
 	 */
-	float getLevel();
+	public float getLevel() {
+		return 0;
+	}
 }

@@ -22,10 +22,6 @@ public class PostProcessing implements Profilable {
 	private static FrameBufferObject before;
 	private static PostProcessingStage currentStage;
 
-	private static PostProcessing instance;
-
-	// private FrameBufferObject tmp;
-
 	private boolean enabled = true;
 	private int stagecountactive = 0;
 	private FrameBufferObject target;

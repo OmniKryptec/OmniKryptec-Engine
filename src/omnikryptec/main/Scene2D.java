@@ -1,7 +1,7 @@
 package omnikryptec.main;
 
 import omnikryptec.gameobject.Camera;
-import omnikryptec.gameobject.GameObject;
+import omnikryptec.gameobject.GameObject2D;
 import omnikryptec.renderer.RenderConfiguration;
 
 public class Scene2D extends AbstractScene2D{
@@ -25,12 +25,12 @@ public class Scene2D extends AbstractScene2D{
 	}
 
 	@Override
-	public boolean addGameObject(GameObject go) {
+	public boolean addGameObject(GameObject2D go) {
 		return false;
 	}
 
 	@Override
-	public GameObject removeGameObject(GameObject go, boolean delete) {
+	public GameObject2D removeGameObject(GameObject2D go, boolean delete) {
 		return null;
 	}
 

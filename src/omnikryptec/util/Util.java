@@ -82,7 +82,8 @@ public class Util {
      * @param delayTime Time between each stopping try in milliseconds
      * @param maxTime Maximum time to wait for in milliseconds
      */
-    public static final void killThread(Thread thread, int delayTime, int maxTime) {
+    @SuppressWarnings("deprecation")
+	public static final void killThread(Thread thread, int delayTime, int maxTime) {
         if(thread == null) {
             return;
         }

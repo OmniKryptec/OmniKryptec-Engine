@@ -94,7 +94,6 @@ public class EngineTest2 implements IEventHandler {
 //                    liveProfiler.startTimer(1000);
 //                }
 //            }).start();
-            
             // rend = new TestRenderer();
             //PostProcessing.instance().addStage(new
             // DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
