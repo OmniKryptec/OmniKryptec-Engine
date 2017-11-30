@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import omnikryptec.util.GraphicsUtil;
+import omnikryptec.graphics.GraphicsUtil;
 
 public abstract class PostProcessingStage {
 

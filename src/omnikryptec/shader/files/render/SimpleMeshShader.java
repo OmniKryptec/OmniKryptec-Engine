@@ -2,6 +2,7 @@ package omnikryptec.shader.files.render;
 
 import org.joml.Vector4f;
 
+import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.main.AbstractScene3D;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
@@ -12,7 +13,6 @@ import omnikryptec.shader.base.UniformMatrix;
 import omnikryptec.shader.base.UniformSampler;
 import omnikryptec.shader.base.UniformVec4;
 import omnikryptec.util.AdvancedFile;
-import omnikryptec.util.GraphicsUtil;
 
 public class SimpleMeshShader extends Shader {
 

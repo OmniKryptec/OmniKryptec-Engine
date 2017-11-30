@@ -4,9 +4,9 @@ import java.util.List;
 
 import omnikryptec.gameobject.Entity;
 import omnikryptec.main.AbstractScene3D;
-import omnikryptec.renderer.RenderMap;
-import omnikryptec.renderer.Renderer;
-import omnikryptec.renderer.RendererRegistration;
+import omnikryptec.renderer.d3.RenderMap;
+import omnikryptec.renderer.d3.Renderer;
+import omnikryptec.renderer.d3.RendererRegistration;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.ShaderGroup;

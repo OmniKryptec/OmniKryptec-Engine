@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.joml.Vector3f;
 
-import omnikryptec.renderer.Renderer;
-import omnikryptec.renderer.RendererRegistration;
+import omnikryptec.renderer.d3.Renderer;
+import omnikryptec.renderer.d3.RendererRegistration;
 import omnikryptec.resource.texture.Texture;
 
 public class Material {

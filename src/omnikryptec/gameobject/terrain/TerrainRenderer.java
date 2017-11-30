@@ -5,17 +5,17 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import omnikryptec.gameobject.Entity;
+import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.main.AbstractScene3D;
-import omnikryptec.renderer.RenderMap;
-import omnikryptec.renderer.Renderer;
-import omnikryptec.renderer.RendererRegistration;
+import omnikryptec.renderer.d3.RenderMap;
+import omnikryptec.renderer.d3.Renderer;
+import omnikryptec.renderer.d3.RendererRegistration;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.ShaderGroup;
 import omnikryptec.shader.base.ShaderPack;
 import omnikryptec.util.FrustrumFilter;
-import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 

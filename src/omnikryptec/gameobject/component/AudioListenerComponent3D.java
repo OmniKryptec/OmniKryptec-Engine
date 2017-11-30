@@ -5,7 +5,7 @@ import org.joml.Vector3f;
 import omnikryptec.audio.AudioManager;
 import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.main.AbstractScene3D;
-import omnikryptec.renderer.RenderChunk3D;
+import omnikryptec.renderer.d3.RenderChunk3D;
 import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.Priority;
 import omnikryptec.util.logger.LogLevel;

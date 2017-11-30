@@ -5,6 +5,7 @@ import org.joml.Vector4f;
 
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
+import omnikryptec.graphics.GraphicsUtil;
 
 public class FrustrumFilter {
 	

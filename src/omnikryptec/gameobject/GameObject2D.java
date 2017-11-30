@@ -1,6 +1,6 @@
 package omnikryptec.gameobject;
 
-import omnikryptec.renderer.RenderChunk2D;
+import omnikryptec.renderer.d3.RenderChunk2D;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 

@@ -7,8 +7,8 @@ import omnikryptec.display.Display;
 import omnikryptec.event.event.Event;
 import omnikryptec.event.event.EventType;
 import omnikryptec.event.input.InputManager;
+import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.util.EnumCollection.GameLoopShutdownOption;
-import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -95,13 +95,13 @@ public abstract class GameLoop {
 	}
 	
 	protected final void beginScenesRendering() {
-		engineInstance.beginSceneRendering();
+		engineInstance.beginScene3dRendering();
 	}
 	
 	protected final void endScenesRendering() {
 		engineInstance.getEventsystem().fireEvent(new Event(), EventType.FRAME_EVENT);
 		engineInstance.getEventsystem().fireEvent(new Event(), EventType.RENDER_FRAME_EVENT);
-		engineInstance.endSceneRendering();
+		engineInstance.endScene3dRendering();
 	}
 	
 	protected final void updateAudio() {
@@ -130,11 +130,11 @@ public abstract class GameLoop {
 	}
 	
 	protected final void render3D() {
-		engineInstance.getCurrent3DScene().publicRender(null);
+		engineInstance.getCurrent3DScene().mainPassRender();
 	}
 	
 	protected final void render2D() {
-		
+		engineInstance.getCurrent2DScene().mainPassRender();
 	}
 	
 	protected final void renderGui() {
@@ -146,7 +146,7 @@ public abstract class GameLoop {
 	}
 	
 	protected final void logic2D() {
-		
+		engineInstance.getCurrent2DScene().publicLogic();
 	}
 	
 	protected abstract void runLoop();

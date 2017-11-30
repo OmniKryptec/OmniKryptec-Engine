@@ -1,4 +1,4 @@
-package omnikryptec.renderer;
+package omnikryptec.renderer.d3;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.joml.Vector4f;
 
+import omnikryptec.util.EnumCollection.Dimension;
 import omnikryptec.util.EnumCollection.RendererTime;
 
 public class RenderConfiguration {

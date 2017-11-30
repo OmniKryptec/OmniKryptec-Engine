@@ -1,4 +1,4 @@
-package omnikryptec.util;
+package omnikryptec.graphics;
 
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
@@ -9,6 +9,8 @@ import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.settings.GameSettings;
+import omnikryptec.util.Color;
+import omnikryptec.util.EnumCollection;
 import omnikryptec.util.EnumCollection.RenderType;
 import omnikryptec.util.EnumCollection.UpdateType;
 

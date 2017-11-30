@@ -13,7 +13,7 @@ import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.main.AbstractScene3D;
 import omnikryptec.physics.JBulletPhysicsWorld;
 import omnikryptec.physics.RigidBodyBuilder;
-import omnikryptec.renderer.RenderChunk3D;
+import omnikryptec.renderer.d3.RenderChunk3D;
 import omnikryptec.util.Priority;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;

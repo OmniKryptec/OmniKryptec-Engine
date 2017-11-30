@@ -42,7 +42,6 @@ import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.files.render.Shader2D;
 import omnikryptec.util.Color;
-import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.exceptions.OmniKryptecException;
 
 public class SpriteBatch {

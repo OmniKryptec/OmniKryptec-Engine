@@ -3,17 +3,17 @@ package omnikryptec.test;
 import java.util.List;
 
 import omnikryptec.gameobject.Entity;
+import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.main.AbstractScene3D;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
-import omnikryptec.renderer.RenderConfiguration;
-import omnikryptec.renderer.RenderConfiguration.AllowedRenderer;
-import omnikryptec.renderer.RenderMap;
-import omnikryptec.renderer.Renderer;
+import omnikryptec.renderer.d3.RenderConfiguration;
+import omnikryptec.renderer.d3.RenderMap;
+import omnikryptec.renderer.d3.Renderer;
+import omnikryptec.renderer.d3.RenderConfiguration.AllowedRenderer;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.util.FrustrumFilter;
-import omnikryptec.util.GraphicsUtil;
 
 public class TestRenderer extends Renderer{
 

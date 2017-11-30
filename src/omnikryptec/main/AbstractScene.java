@@ -3,7 +3,7 @@ package omnikryptec.main;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.GameObject;
 import omnikryptec.physics.PhysicsWorld;
-import omnikryptec.renderer.RenderConfiguration;
+import omnikryptec.renderer.d3.RenderConfiguration;
 import omnikryptec.util.Color;
 import omnikryptec.util.EnumCollection.FrameState;
 

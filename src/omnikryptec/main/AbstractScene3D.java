@@ -10,9 +10,9 @@ import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.gameobject.Light3D;
 import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.physics.JBulletPhysicsWorld;
-import omnikryptec.renderer.RenderConfiguration;
-import omnikryptec.renderer.Renderer;
-import omnikryptec.renderer.RendererRegistration;
+import omnikryptec.renderer.d3.RenderConfiguration;
+import omnikryptec.renderer.d3.Renderer;
+import omnikryptec.renderer.d3.RendererRegistration;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.EnumCollection.FrameState;
@@ -65,7 +65,7 @@ public abstract class AbstractScene3D extends AbstractScene<GameObject3D> implem
 	
 	private boolean dirtyConfig=true;
 	private RenderConfiguration defaultConfig;
-	final long mainRender() {
+	final long mainPassRender() {
 		if(dirtyConfig) {
 			defaultConfig = getNew();
 			dirtyConfig = false;
@@ -101,7 +101,6 @@ public abstract class AbstractScene3D extends AbstractScene<GameObject3D> implem
 		if(dirtyConfig) {
 			defaultConfig = getNew();
 			dirtyConfig = false;
-			return defaultConfig;
 		}
 		return defaultConfig;
 	}

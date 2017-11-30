@@ -2,7 +2,7 @@ package omnikryptec.main;
 
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.GameObject2D;
-import omnikryptec.renderer.RenderConfiguration;
+import omnikryptec.renderer.d3.RenderConfiguration;
 
 public class Scene2D extends AbstractScene2D{
 
@@ -31,7 +31,11 @@ public class Scene2D extends AbstractScene2D{
 
 	@Override
 	public GameObject2D removeGameObject(GameObject2D go, boolean delete) {
-		return null;
+		return go;
 	}
 
+	
+	private static String xyToString(long x, long y) {
+		return x+":"+y;
+	}
 }

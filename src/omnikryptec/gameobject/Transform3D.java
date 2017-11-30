@@ -4,13 +4,13 @@ import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.renderer.RenderChunk3D;
+import omnikryptec.renderer.d3.RenderChunk3D;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.EnumCollection.UpdateType;
-import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.Maths;
 import omnikryptec.util.SerializationUtil;
 

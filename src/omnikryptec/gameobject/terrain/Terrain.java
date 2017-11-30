@@ -6,7 +6,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import omnikryptec.gameobject.Entity;
-import omnikryptec.renderer.RendererRegistration;
+import omnikryptec.renderer.d3.RendererRegistration;
 import omnikryptec.resource.model.Material;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;

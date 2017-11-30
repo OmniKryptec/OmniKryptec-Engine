@@ -2,7 +2,7 @@ package omnikryptec.gameobject;
 
 import org.joml.Vector2f;
 
-import omnikryptec.renderer.RenderChunk2D;
+import omnikryptec.renderer.d3.RenderChunk2D;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.Maths;
 

@@ -2,7 +2,7 @@ package omnikryptec.gameobject;
 
 import org.joml.Matrix4f;
 
-import omnikryptec.renderer.RenderChunk3D;
+import omnikryptec.renderer.d3.RenderChunk3D;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 

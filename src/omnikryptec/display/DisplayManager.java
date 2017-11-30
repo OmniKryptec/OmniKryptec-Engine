@@ -4,9 +4,9 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
 import omnikryptec.audio.AudioManager;
+import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.settings.GameSettings;
-import omnikryptec.util.GraphicsUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.profiler.Profilable;

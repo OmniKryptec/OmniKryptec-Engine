@@ -1,4 +1,4 @@
-package omnikryptec.renderer;
+package omnikryptec.renderer.d3;
 
 import omnikryptec.gameobject.GameObject2D;
 import omnikryptec.main.AbstractScene2D;

@@ -13,11 +13,11 @@ import omnikryptec.event.event.EventSystem;
 import omnikryptec.event.event.EventType;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
+import omnikryptec.renderer.d3.Query;
+import omnikryptec.renderer.d3.RenderChunk3D;
+import omnikryptec.renderer.d3.RendererRegistration;
 import omnikryptec.postprocessing.main.PostProcessing;
 import omnikryptec.postprocessing.main.RenderTarget;
-import omnikryptec.renderer.Query;
-import omnikryptec.renderer.RenderChunk3D;
-import omnikryptec.renderer.RendererRegistration;
 import omnikryptec.resource.model.VertexArrayObject;
 import omnikryptec.resource.model.VertexBufferObject;
 import omnikryptec.resource.texture.SimpleTexture;
@@ -179,11 +179,11 @@ public class OmniKryptecEngine implements Profilable {
 		return getLoop() != null;
 	}
 
-	final void beginSceneRendering() {
+	final void beginScene3dRendering() {
 		scenefbo.bindFrameBuffer();
 	}
 
-	final void endSceneRendering() {
+	final void endScene3dRendering() {
 		scenefbo.unbindFrameBuffer();
 		scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);
 		scenefbo.resolveToFbo(normalfbo, GL30.GL_COLOR_ATTACHMENT1);

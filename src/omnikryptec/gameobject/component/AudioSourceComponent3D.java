@@ -8,7 +8,7 @@ import omnikryptec.audio.AudioSource;
 import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.main.AbstractScene3D;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.renderer.RenderChunk3D;
+import omnikryptec.renderer.d3.RenderChunk3D;
 import omnikryptec.util.Blocker;
 import omnikryptec.util.Priority;
 
