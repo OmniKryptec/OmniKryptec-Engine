@@ -191,7 +191,8 @@ public class AttractedParticle extends Particle {
         return livesNextFrame;
     }
     
-    protected boolean updateLast() {
+    @Override
+	protected boolean updateLast() {
         positionLast.set(position);
         return true;
     }

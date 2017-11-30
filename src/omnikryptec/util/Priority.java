@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 @Retention(value = RetentionPolicy.RUNTIME)
 @Inherited
 public @interface Priority {
-
-	float value();
+	
+	float value() default 0;
 	
 }

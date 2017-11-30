@@ -12,7 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
-import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EtchedBorder;
 
 import omnikryptec.swing.JCheckBoxList;
@@ -182,13 +182,14 @@ public class WizardSaveAs extends javax.swing.JDialog implements ActionListener,
 		checkBox_save_infos_appearance = new javax.swing.JCheckBox();
 		checkBox_save_infos_timestamp = new javax.swing.JCheckBox();
 		checkBox_save_infos_thread = new javax.swing.JCheckBox();
-		scrollPane_save_level = new javax.swing.JScrollPane(checkBoxList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane_save_level = new javax.swing.JScrollPane(checkBoxList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		button_bottom_cancel.setText("Cancel");
 		button_bottom_cancel.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				button_bottom_cancelActionPerformed(evt);
 			}
@@ -196,6 +197,7 @@ public class WizardSaveAs extends javax.swing.JDialog implements ActionListener,
 
 		button_bottom_finish.setText("Finish");
 		button_bottom_finish.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				button_bottom_finishActionPerformed(evt);
 			}
@@ -237,6 +239,7 @@ public class WizardSaveAs extends javax.swing.JDialog implements ActionListener,
 
 		button_center_path.setText("Search Computer");
 		button_center_path.addActionListener(new java.awt.event.ActionListener() {
+			@Override
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				button_center_pathActionPerformed(evt);
 			}
@@ -404,7 +407,8 @@ public class WizardSaveAs extends javax.swing.JDialog implements ActionListener,
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 new WizardSaveAs(Logger.CONSOLE).setVisible(true);
             }
         });

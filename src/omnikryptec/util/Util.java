@@ -2,9 +2,8 @@ package omnikryptec.util;
 
 import static omnikryptec.util.AdvancedFile.NOT_FOUND;
 
-import java.lang.annotation.Annotation;
-
 import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
 /**
@@ -119,6 +118,9 @@ public class Util {
 		if(clazz.isAnnotationPresent(Priority.class)) {
     		return clazz.getAnnotation(Priority.class).value();
     	}else {
+    		if(Logger.isDebugMode()) {
+    			Logger.log("No priority-annotation found in class: "+clazz.getName(), LogLevel.INFO);
+    		}
     		return def;
     	}
 	}
@@ -127,6 +129,9 @@ public class Util {
 		if(clazz.isAnnotationPresent(Level.class)) {
     		return clazz.getAnnotation(Level.class).value();
     	}else {
+    		if(Logger.isDebugMode()) {
+    			Logger.log("No level-annotation found in class: "+clazz.getName(), LogLevel.INFO);
+    		}
     		return def;
     	}
 	}

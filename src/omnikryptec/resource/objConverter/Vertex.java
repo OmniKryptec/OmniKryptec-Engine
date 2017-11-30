@@ -15,7 +15,7 @@ public class Vertex {
     private Vertex duplicateVertex = null;
     private int index;
     private float length;
-    private List<Vector3f> tangents = new ArrayList<Vector3f>();
+    private List<Vector3f> tangents = new ArrayList<>();
     private Vector3f averagedTangent = new Vector3f(0, 0, 0);
 
     public Vertex(int index, Vector3f position) {

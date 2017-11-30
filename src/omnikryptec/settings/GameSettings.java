@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
+import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.postprocessing.main.FBOFactory;
@@ -118,6 +119,21 @@ public class GameSettings {
 	 * boolean
 	 */
 	public static final String FASTMATH = "FASTMATH";
+
+	/**
+	 * int
+	 */
+	public static final String CHUNK_WIDTH_2D = "CHUNK_WIDTH_2D";
+	
+	/**
+	 * int
+	 */
+	public static final String CHUNK_HEIGHT_2D = "CHUNK_HEIGHT_2D";
+	
+	/**
+	 * boolean
+	 */
+	public static final String SET_CHUNK_SIZE_2D_AS_DISPLAYSIZE = "SET_CHUNK_SIZE_2D_AS_DISPLAYSIZE";
 	
 	private final HashMap<String, Object> settings_objects = new HashMap<>();
 	private final HashMap<String, Float> settings_floats = new HashMap<>();
@@ -166,6 +182,7 @@ public class GameSettings {
 		this(KeySettings.STANDARDKEYSETTINGS);
 	}
 
+	
 	/**
 	 * Constructs a GameSettings object with custom KeySettings
 	 *
@@ -188,10 +205,14 @@ public class GameSettings {
 		setBoolean(CLAMP_EDGES, false);
 		setBoolean(MIPMAP, false);
 		setInteger(THREADPOOLSIZE_EVENT, 2);
+
 		setFloat(RADIUS_FOLIAGE, 50);
 		setFloat(RADIUS_MEDIUM, 100);
 		setFloat(RADIUS_BIG, 200);
-
+		setInteger(CHUNK_WIDTH_2D, 512);
+		setInteger(CHUNK_HEIGHT_2D, 512);
+		setBoolean(SET_CHUNK_SIZE_2D_AS_DISPLAYSIZE, false);
+		
 		setInteger(HIGHEST_SHADER_LVL, 10);
 		setInteger(MAX_FORWARD_LIGHTS, 4);
 		/* ANIMATION */
@@ -203,6 +224,11 @@ public class GameSettings {
 		return this;
 	}
 
+	public final void setChunksize2DasDisplaySize() {
+		setInteger(CHUNK_WIDTH_2D, Display.getWidth());
+		setInteger(CHUNK_HEIGHT_2D, Display.getHeight());
+	}
+	
 	/**
 	 * Returns an Object or null for a key
 	 * 

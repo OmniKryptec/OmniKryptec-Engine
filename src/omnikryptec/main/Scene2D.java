@@ -25,8 +25,8 @@ public class Scene2D extends AbstractScene2D{
 	}
 
 	@Override
-	public boolean addGameObject(GameObject2D go) {
-		return false;
+	public void addGameObject(GameObject2D go) {
+		
 	}
 
 	@Override

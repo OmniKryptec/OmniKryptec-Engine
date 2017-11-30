@@ -13,6 +13,7 @@ import java.util.Enumeration;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -110,7 +111,7 @@ public class VisualThreadMonitor {
 	public VisualThreadMonitor(Thread thread) {
 		this.thread = thread;
 		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		frame.setSize(new Dimension(600, 600));
 		frame.setLayout(new BorderLayout());
 		frame.add(scrollPane, BorderLayout.CENTER);

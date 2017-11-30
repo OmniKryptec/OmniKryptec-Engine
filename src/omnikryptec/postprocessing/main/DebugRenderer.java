@@ -13,7 +13,7 @@ import omnikryptec.util.GraphicsUtil;
 
 public class DebugRenderer extends PostProcessingStage {
 
-	private List<Integer> disabled = new ArrayList<Integer>();
+	private List<Integer> disabled = new ArrayList<>();
 
 	private DebugShader shader = new DebugShader();
 

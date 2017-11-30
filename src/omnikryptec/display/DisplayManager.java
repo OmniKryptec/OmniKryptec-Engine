@@ -88,6 +88,9 @@ public class DisplayManager implements Profilable{
 		}
 		try {
 			Display.create(name, info);
+			if(settings.getBoolean(GameSettings.SET_CHUNK_SIZE_2D_AS_DISPLAYSIZE)) {
+				settings.setChunksize2DasDisplaySize();
+			}
 			AudioManager.init();
 			if (settings.getMultiSamples() != GameSettings.NO_MULTISAMPLING) {
 				GraphicsUtil.antialias(true);

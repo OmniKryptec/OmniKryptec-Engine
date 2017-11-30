@@ -7,6 +7,7 @@ import java.util.List;
 
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
+import omnikryptec.gameobject.GameObject;
 import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.gameobject.Light3D;
 import omnikryptec.renderer.RenderChunk3D;
@@ -24,7 +25,7 @@ public class Scene3D extends AbstractScene3D {
             coz = Instance.getGameSettings().getChunkRenderOffsetZ();
     private final List<Light3D> lights = new ArrayList<>();
 
-    private RenderChunk3D global = new RenderChunk3D(0, 0, 0, this);
+    private RenderChunk3D global = new RenderChunk3D(0, 0, 0, this, true);
 
 
     /* Temp Variables */
@@ -50,37 +51,36 @@ public class Scene3D extends AbstractScene3D {
         return this;
     }
 
-    public final boolean addGameObject(GameObject3D g) {
+    @Override
+	public final void addGameObject(GameObject3D g) {
         if (g != null) {
             if (g instanceof Camera && Logger.isDebugMode()) {
                 Logger.log("A Camera should not be added as a GameObject!", LogLevel.WARNING);
-                return false;
+                return;
             }
             if (g.isGlobal() || !Instance.getGameSettings().usesRenderChunking()) {
                 global.addGameObject(g);
-                return true;
             }
-            tmp = xyzToString(g.getChunkX(), g.getChunkY(), g.getChunkZ());
+            tmp = xyzToString(g.getTransform().getChunkX(), g.getTransform().getChunkY(), g.getTransform().getChunkZ());
             if (!scene.containsKey(tmp)) {
-                scene.put(tmp, new RenderChunk3D(g.getChunkX(), g.getChunkY(), g.getChunkZ(), this));
+                scene.put(tmp, new RenderChunk3D(g.getTransform().getChunkX(), g.getTransform().getChunkY(), g.getTransform().getChunkZ(), this));
             }
             scene.get(tmp).addGameObject(g);
-            return true;
-        } else {
-            return false;
         }
     }
 
-    public final GameObject3D removeGameObject(GameObject3D g) {
+    @Override
+	public final GameObject3D removeGameObject(GameObject3D g) {
         return removeGameObject(g, true);
     }
 
-    public final GameObject3D removeGameObject(GameObject3D g, boolean delete) {
+    @Override
+	public final GameObject3D removeGameObject(GameObject3D g, boolean delete) {
         if (g != null) {
             if (g.getRenderChunk() != null) {
                 g.getRenderChunk().removeGameObject(g, delete);
             } else {
-                tmp = xyzToString(g.getChunkX(), g.getChunkY(), g.getChunkZ());
+                tmp = xyzToString(g.getTransform().getChunkX(), g.getTransform().getChunkY(), g.getTransform().getChunkZ());
                 scene.get(tmp).removeGameObject(g, delete);
                 g.deleteOperation();
             }
@@ -88,11 +88,12 @@ public class Scene3D extends AbstractScene3D {
         return g;
     }
 
-    public final void logic(){
+    @Override
+	public final void logic(){
 	    if(Instance.getGameSettings().usesRenderChunking()){
-		    cx = getCamera().getChunkX();
-		    cy = getCamera().getChunkY();
-		    cz = getCamera().getChunkZ();
+		    cx = getCamera().getTransform().getChunkX();
+		    cy = getCamera().getTransform().getChunkY();
+		    cz = getCamera().getTransform().getChunkZ();
 		    for (long x = -cox + cx; x <= cox + cx; x++) {
 		        for (long y = -coy + cy; y <= coy + cy; y++) {
 		            for (long z = -coz + cz; z <= coz + cz; z++) {
@@ -108,14 +109,15 @@ public class Scene3D extends AbstractScene3D {
     }
     
     
-    protected final long render(RenderConfiguration config) {
+    @Override
+	protected final long render(RenderConfiguration config) {
     	lights.clear();
         lights.addAll(global.getImportantLights());
         vertcount = 0;
         if (Instance.getGameSettings().usesRenderChunking()) {
-            cx = getCamera().getChunkX();
-            cy = getCamera().getChunkY();
-            cz = getCamera().getChunkZ();
+            cx = getCamera().getTransform().getChunkX();
+            cy = getCamera().getTransform().getChunkY();
+            cz = getCamera().getTransform().getChunkZ();
             for (long x = -cox + cx; x <= cox + cx; x++) {
                 for (long y = -coy + cy; y <= coy + cy; y++) {
                     for (long z = -coz + cz; z <= coz + cz; z++) {
@@ -145,7 +147,8 @@ public class Scene3D extends AbstractScene3D {
     protected void doLogic() {
     }
 
-    public final List<Light3D> getLights() {
+    @Override
+	public final List<Light3D> getLights() {
         return lights;
     }
 
@@ -228,7 +231,7 @@ public class Scene3D extends AbstractScene3D {
         }
         for (String entitiyName : entityNames) {
             try {
-                final Entity entity = Entity.byName(Entity.class, entitiyName, false);
+                final Entity entity = GameObject.byName(Entity.class, entitiyName, false);
                 if (entity != null) {
                     for (Entity e : entities) {
                         if (e.getName().equals(entity.getName())) {

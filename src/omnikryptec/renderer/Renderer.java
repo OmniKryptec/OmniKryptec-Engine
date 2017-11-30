@@ -8,10 +8,14 @@ import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.ShaderPack;
 import omnikryptec.util.FrustrumFilter;
+import omnikryptec.util.Level;
+import omnikryptec.util.Priority;
 import omnikryptec.util.Util;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
+@Priority
+@Level
 public abstract class Renderer{
 	
 	

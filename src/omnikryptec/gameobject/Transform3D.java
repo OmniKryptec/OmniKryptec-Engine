@@ -5,6 +5,8 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.renderer.RenderChunk3D;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
 import omnikryptec.util.EnumCollection.UpdateType;
@@ -313,6 +315,36 @@ public class Transform3D implements DataMapSerializable, Positionable3D {
         return this;
     }
 
+    /**
+     * the chunkx. used for rendering
+     *
+     * @see GameSettings#usesRenderChunking()
+     * @return chunkx
+     */
+    public final long getChunkX() {
+        return Maths.fastFloor(getPosition(true).x / RenderChunk3D.getWidth());
+    }
+
+    /**
+     * the chunky. used for rendering
+     *
+     * @see GameSettings#usesRenderChunking()
+     * @return chunky
+     */
+    public final long getChunkY() {
+        return Maths.fastFloor(getPosition(true).y / RenderChunk3D.getHeight());
+    }
+
+    /**
+     * the chunkz. used for rendering
+     *
+     * @see GameSettings#usesRenderChunking()
+     * @return
+     */
+    public final long getChunkZ() {
+        return Maths.fastFloor(getPosition(true).z / RenderChunk3D.getDepth());
+    }
+    
     public static Transform3D newInstanceFromDataMap(DataMap data) {
         if (data == null) {
             return null;

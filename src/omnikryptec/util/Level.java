@@ -11,6 +11,6 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface Level {
 
-	float value();
+	float value() default 0;
 	
 }

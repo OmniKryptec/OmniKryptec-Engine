@@ -13,9 +13,9 @@ import omnikryptec.gameobject.Entity;
 import omnikryptec.gameobject.GameObject;
 import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.gameobject.Light3D;
+import omnikryptec.main.AbstractScene3D;
 import omnikryptec.main.GameObjectContainer;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.Scene3D;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
 import omnikryptec.test.saving.DataMap;
@@ -39,6 +39,7 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 	 * @param height
 	 * @param depth
 	 */
+	@Deprecated
 	public static void setSize(int width, int height, int depth) {
 		WIDTH = width;
 		HEIGHT = height;
@@ -62,24 +63,31 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 	}
 
 	private long x, y, z;
-	private final Scene3D scene;
+	private final AbstractScene3D scene;
 
-	public RenderChunk3D() {
+	private RenderChunk3D() {
 		this(0, 0, 0, null);
 	}
 
-	public RenderChunk3D(long x, long y, long z, Scene3D scene) {
+	public RenderChunk3D(long x, long y, long z, AbstractScene3D scene) {
+		this(x, y, z, scene, false);
+	}
+	
+	public RenderChunk3D(long x, long y, long z, AbstractScene3D scene, boolean global) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.scene = scene;
+		this.isglobal = global;
 	}
 
 	private final RenderMap<Renderer, RenderMap<AdvancedModel, List<Entity>>> chunk = new RenderMap<>(Renderer.class);
 	private final List<Renderer> prios = new ArrayList<>();
 	private final ArrayList<GameObject> other = new ArrayList<>();
 	private final List<Light3D> lights = new ArrayList<>();
-
+	
+	public final boolean isglobal;
+	
 	private static final Comparator<Renderer> priority_sorter = new Comparator<Renderer>() {
 
 		@Override
@@ -101,7 +109,8 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 	private Material m;
 	private AdvancedModel am;
 
-	public boolean addGameObject(GameObject3D g) {
+	@Override
+	public void addGameObject(GameObject3D g) {
 		if (g != null) {
 			if (g instanceof Entity) {
 				tmp = (Entity) g;
@@ -138,12 +147,10 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 				other.add(g);
 			}
 			g.setRenderChunk3D(this);
-			return true;
-		}else {
-			return false;
 		}
 	}
 
+	@Override
 	public GameObject3D removeGameObject(GameObject3D g, boolean delete) {
 		if (g != null) {
 			if (g instanceof Entity) {
@@ -241,7 +248,7 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 		return vertcount;
 	}
 
-	public Scene3D getScene() {
+	public AbstractScene3D getScene() {
 		return scene;
 	}
 

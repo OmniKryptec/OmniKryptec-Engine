@@ -78,13 +78,13 @@ public class EngineTest2 implements IEventHandler {
             Logger.enableLoggerRedirection(true);
             Logger.setDebugMode(true);
             Logger.showConsoleDirect();
-            Logger.setMinimumLogLevel(LogLevel.INFO);
+            Logger.setMinimumLogLevel(LogLevel.FINEST);
 
             LanguageManager.setLanguage("DE");
 
             DisplayManager.createDisplay("Test 2",
                     new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setChunkRenderOffsets(2, 2, 2)
-                    .setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(true).setInteger(GameSettings.HIGHEST_SHADER_LVL, 1),
+                    .setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(true).setInteger(GameSettings.HIGHEST_SHADER_LVL, 1000000),
                     new GLFWInfo(3, 3, true, false, 1280, 720));
 //            new Thread(new Runnable() {
 //

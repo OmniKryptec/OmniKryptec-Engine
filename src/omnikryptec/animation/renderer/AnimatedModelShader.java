@@ -43,6 +43,7 @@ public class AnimatedModelShader extends Shader {
     }
 
     private AnimatedModel model;
+	@Override
 	public void onModelRenderStart(AdvancedModel m) {
 		model = (AnimatedModel)m;
         model.getModel().getVao().bind(0, 1, 2, 3, 4, 5);
@@ -57,6 +58,7 @@ public class AnimatedModelShader extends Shader {
 		projectionMatrix.loadMatrix(s.getCamera().getProjectionMatrix());
 	}
 
+	@Override
 	public void onRenderInstance(Entity e) {
          transformationMatrix.loadMatrix(e.getTransformation());
 	}

@@ -29,7 +29,8 @@ public interface AdvancedModel extends ResourceObject {
      *
      * @return String Name
      */
-    public String getName();
+    @Override
+	public String getName();
     
     /**
      * Deletes the Model

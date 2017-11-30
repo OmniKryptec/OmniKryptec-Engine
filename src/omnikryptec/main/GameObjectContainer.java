@@ -4,7 +4,7 @@ import omnikryptec.gameobject.GameObject;
 
 public interface GameObjectContainer<T extends GameObject> {
 	
-	public boolean addGameObject(T go);
+	public void addGameObject(T go);
 
 	public T removeGameObject(T go, boolean delete);
 	

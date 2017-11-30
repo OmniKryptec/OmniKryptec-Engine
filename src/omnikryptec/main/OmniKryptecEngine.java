@@ -310,7 +310,7 @@ public class OmniKryptecEngine implements Profilable {
 
 	public void errorOccured(Exception e, String text) {
 		state = GameState.ERROR;
-		new OmnikryptecError(e, new ErrorObject<String>(text)).print();
+		new OmnikryptecError(e, new ErrorObject<>(text)).print();
 		eventsystem.fireEvent(new Event(e), EventType.ERROR);
 		shutdown();
 	}

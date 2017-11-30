@@ -20,6 +20,7 @@ public class JCheckBoxList extends JList<JCheckBox> {
 	public JCheckBoxList() {
 		setCellRenderer(new CellRenderer());
 		addMouseListener(new MouseAdapter() {
+			@Override
 			public void mousePressed(MouseEvent e) {
 				int index = locationToIndex(e.getPoint());
 				if (index != -1) {
@@ -38,6 +39,7 @@ public class JCheckBoxList extends JList<JCheckBox> {
 	}
 
 	protected class CellRenderer implements ListCellRenderer<JCheckBox> {
+		@Override
 		public Component getListCellRendererComponent(JList<? extends JCheckBox> list, JCheckBox value, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			JCheckBox checkbox = value;

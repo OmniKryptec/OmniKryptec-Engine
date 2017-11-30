@@ -79,14 +79,6 @@ abstract class AbstractScene<T extends GameObject> implements GameObjectContaine
 	protected abstract void logic();
 
 	protected abstract long render(RenderConfiguration config);
-
-	public abstract boolean addGameObject(T go);
-
-	public T removeGameObject(T go) {
-		return removeGameObject(go, true);
-	}
-
-	public abstract T removeGameObject(T go, boolean delete);
 	
 	@Override
 	public String toString() {

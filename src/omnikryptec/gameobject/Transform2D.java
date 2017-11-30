@@ -2,6 +2,10 @@ package omnikryptec.gameobject;
 
 import org.joml.Vector2f;
 
+import omnikryptec.renderer.RenderChunk2D;
+import omnikryptec.settings.GameSettings;
+import omnikryptec.util.Maths;
+
 public class Transform2D implements Positionable2D{
 	
 	protected Transform2D parent;
@@ -169,5 +173,25 @@ public class Transform2D implements Positionable2D{
             return simple ? scale : new Vector2f(scale);
         }
         return parent.getScale(false).add(scale);
+    }
+
+    /**
+     * the chunkx. used for rendering
+     *
+     * @see GameSettings#usesRenderChunking()
+     * @return chunkx
+     */
+    public final long getChunkX() {
+        return Maths.fastFloor(getPosition(true).x / RenderChunk2D.getWidth());
+    }
+
+    /**
+     * the chunky. used for rendering
+     *
+     * @see GameSettings#usesRenderChunking()
+     * @return chunky
+     */
+    public final long getChunkY() {
+        return Maths.fastFloor(getPosition(true).y / RenderChunk2D.getHeight());
     }
 }
