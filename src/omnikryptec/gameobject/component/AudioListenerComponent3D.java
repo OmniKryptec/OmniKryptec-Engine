@@ -4,7 +4,7 @@ import org.joml.Vector3f;
 
 import omnikryptec.audio.AudioManager;
 import omnikryptec.gameobject.GameObject3D;
-import omnikryptec.main.Scene3D;
+import omnikryptec.main.AbstractScene3D;
 import omnikryptec.renderer.RenderChunk3D;
 import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.Priority;
@@ -35,7 +35,7 @@ public class AudioListenerComponent3D extends Component<GameObject3D> {
     }
 
     private RenderChunk3D chunk;
-    private Scene3D scene;
+    private AbstractScene3D scene;
     private PhysicsComponent3D physicsComponent;
     private boolean isUsingPhysics = false;
     private Vector3f position, rotation;
