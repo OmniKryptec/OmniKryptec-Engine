@@ -32,7 +32,7 @@ public abstract class GameObject implements DataMapSerializable {
 
         @Override
         public int compare(Component<?> o1, Component<?> o2) {
-            return ((o1.getLevel() < o2.getLevel()) ? -1 : (o1.getLevel() > o2.getLevel() ? 1 : 0));
+            return ((o1.getPrio() < o2.getPrio()) ? -1 : (o1.getPrio() > o2.getPrio() ? 1 : 0));
         }
 
     }
@@ -164,7 +164,7 @@ public abstract class GameObject implements DataMapSerializable {
     			throw new OmniKryptecException(getClass().getSimpleName()+" does not support the component "+c.getClass().getSimpleName());
     		}
     	}
-    	if (c.getLevel() < 0) {
+    	if (c.getPrio() < 0) {
             if (componentsPreLogic == null) {
                 componentsPreLogic = new ArrayList<>();
             }
@@ -188,7 +188,7 @@ public abstract class GameObject implements DataMapSerializable {
      * @return this GameObject
      */
     public final GameObject removeComponent(Component<?> c) {
-        if (c.getLevel() < 0) {
+        if (c.getPrio() < 0) {
             if (componentsPreLogic != null) {
                 componentsPreLogic.remove(c);
                 if (componentsPreLogic.isEmpty()) {

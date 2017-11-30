@@ -1,6 +1,7 @@
 package omnikryptec.gameobject.component;
 
 import omnikryptec.gameobject.GameObject;
+import omnikryptec.util.Util;
 
 /**
  * Component interface
@@ -10,6 +11,7 @@ import omnikryptec.gameobject.GameObject;
 public abstract class Component<T extends GameObject> {
 	
 	private final Class<? extends GameObject> supported;
+	private final float prio;
 	
 	protected Component() {
     	if(getClass().isAnnotationPresent(ComponentAnnotation.class)) {
@@ -17,6 +19,7 @@ public abstract class Component<T extends GameObject> {
     	}else {
     		supported = GameObject.class;
     	}
+    	prio = Util.extractPrio(getClass(), 0);
 	}
 	
 	
@@ -56,7 +59,7 @@ public abstract class Component<T extends GameObject> {
 	 * @return Float Level of the execution (negative = before logic execution,
 	 *         positive = after logic execution)
 	 */
-	public float getLevel() {
-		return 0;
+	public final float getPrio() {
+		return prio;
 	}
 }

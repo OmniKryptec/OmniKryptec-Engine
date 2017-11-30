@@ -2,6 +2,8 @@ package omnikryptec.util;
 
 import static omnikryptec.util.AdvancedFile.NOT_FOUND;
 
+import java.lang.annotation.Annotation;
+
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.logger.Logger;
 
@@ -112,5 +114,20 @@ public class Util {
             return System.currentTimeMillis();
         }
     }
-
+    
+	public static final float extractPrio(Class<?> clazz, float def) {
+		if(clazz.isAnnotationPresent(Priority.class)) {
+    		return clazz.getAnnotation(Priority.class).value();
+    	}else {
+    		return def;
+    	}
+	}
+	
+	public static final float extractLvl(Class<?> clazz, float def) {
+		if(clazz.isAnnotationPresent(Level.class)) {
+    		return clazz.getAnnotation(Level.class).value();
+    	}else {
+    		return def;
+    	}
+	}
 }

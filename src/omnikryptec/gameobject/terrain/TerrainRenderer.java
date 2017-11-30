@@ -28,8 +28,6 @@ public class TerrainRenderer extends Renderer {
     public TerrainRenderer() {
         super(new ShaderPack(new ShaderGroup(new TerrainShader())));
         RendererRegistration.register(this);
-        setExpensiveLevel(0);
-        setPriority(0);
     }
 
     private List<Entity> stapel;

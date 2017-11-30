@@ -14,6 +14,7 @@ import omnikryptec.main.Scene3D;
 import omnikryptec.physics.JBulletPhysicsWorld;
 import omnikryptec.physics.RigidBodyBuilder;
 import omnikryptec.renderer.RenderChunk3D;
+import omnikryptec.util.Priority;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -22,6 +23,7 @@ import omnikryptec.util.logger.Logger;
  *
  * @author Panzer1119
  */
+@Priority( value = -1f)
 @ComponentAnnotation(supportedGameObjectClass = GameObject3D.class)
 public class PhysicsComponent3D extends Component<GameObject3D> {
 
@@ -156,11 +158,6 @@ public class PhysicsComponent3D extends Component<GameObject3D> {
             manageRigidBodyStatus(instance.getRenderChunk().getScene(), null);
             body.destroy();
         }
-    }
-
-    @Override
-    public float getLevel() {
-        return -1.0F;
     }
 
 }

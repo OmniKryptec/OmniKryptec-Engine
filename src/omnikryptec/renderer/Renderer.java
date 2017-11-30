@@ -8,13 +8,15 @@ import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.ShaderPack;
 import omnikryptec.util.FrustrumFilter;
+import omnikryptec.util.Util;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
 public abstract class Renderer{
 	
 	
-    private float lvl = 0, prio = 0;
+    private final float lvl;
+    private final float prio;
     protected ShaderPack shaderpack;
 	protected FrustrumFilter filter = new FrustrumFilter();
 	protected boolean usesShader=true;
@@ -29,6 +31,8 @@ public abstract class Renderer{
 	
     protected Renderer(ShaderPack myshader) {
         this.shaderpack = myshader;
+        lvl = Util.extractLvl(getClass(), 0);
+        prio = Util.extractPrio(getClass(), 0);
     }
 
     protected abstract long render(AbstractScene3D s, RenderMap<AdvancedModel, List<Entity>> entities, Shader started, FrustrumFilter filter);
@@ -84,15 +88,6 @@ public abstract class Renderer{
         return prio;
     }
 
-    public Renderer setExpensiveLevel(float f) {
-        this.lvl = f;
-        return this;
-    }
-
-    public Renderer setPriority(float f) {
-        this.prio = f;
-        return this;
-    }
     
     public ShaderPack getShaderPack(){
     	return shaderpack;

@@ -287,7 +287,7 @@ public class EngineTest2 implements IEventHandler {
             system.setGlobal(true);
             system.setStartcolor(new Color(1, 0, 1));
             system.setEndcolor(new Color(1, 1, 0));
-            // OmniKryptecEngine.instance().getCurrentScene().addGameObject(system);
+            // OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(system);
             // ParticleMaster.instance().addParticle(new Particle(new
             // ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"),
             // 4,true)));
@@ -359,7 +359,7 @@ public class EngineTest2 implements IEventHandler {
             testb.begin();
             testb.drawTest();
             float[] f = testb.getData();
-            testb.drawPolygon(f, 3);
+            //testb.drawPolygon(f, 3);
             testb.end();
         	//System.out.println(OmniKryptecEngine.instance().getDisplayManager().getFPSCounted());
 

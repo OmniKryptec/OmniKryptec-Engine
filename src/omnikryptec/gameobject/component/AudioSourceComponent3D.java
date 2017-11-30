@@ -10,12 +10,14 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene3D;
 import omnikryptec.renderer.RenderChunk3D;
 import omnikryptec.util.Blocker;
+import omnikryptec.util.Priority;
 
 /**
  * Component for creating sounds
  *
  * @author Panzer1119
  */
+@Priority(value = 1f)
 @ComponentAnnotation(supportedGameObjectClass = GameObject3D.class)
 public class AudioSourceComponent3D extends Component<GameObject3D> {
 
@@ -183,11 +185,6 @@ public class AudioSourceComponent3D extends Component<GameObject3D> {
     public final void onDelete(GameObject3D instance) {
         blocker.waitFor();
         deleteAllSources();
-    }
-
-    @Override
-    public float getLevel() {
-        return 1.0F;
     }
 
 

@@ -7,6 +7,7 @@ import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.main.Scene3D;
 import omnikryptec.renderer.RenderChunk3D;
 import omnikryptec.util.ConverterUtil;
+import omnikryptec.util.Priority;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -15,6 +16,7 @@ import omnikryptec.util.logger.Logger;
  *
  * @author Panzer1119
  */
+@Priority( value = 2f )
 @ComponentAnnotation(supportedGameObjectClass = GameObject3D.class)
 public class AudioListenerComponent3D extends Component<GameObject3D> {
 
@@ -68,11 +70,6 @@ public class AudioListenerComponent3D extends Component<GameObject3D> {
     @Override
     public final void onDelete(GameObject3D instance) {
         AudioManager.setBlockingComponent(this, null);
-    }
-
-    @Override
-    public float getLevel() {
-        return 2F;
     }
 
 }

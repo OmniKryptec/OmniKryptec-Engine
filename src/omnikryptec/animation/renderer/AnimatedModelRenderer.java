@@ -17,6 +17,8 @@ import omnikryptec.shader.base.ShaderGroup;
 import omnikryptec.shader.base.ShaderPack;
 import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.GraphicsUtil;
+import omnikryptec.util.Level;
+import omnikryptec.util.Priority;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -29,6 +31,7 @@ import omnikryptec.util.logger.Logger;
  * @author Karl &amp; Panzer1119
  *
  */
+@Level(value = 1)
 public class AnimatedModelRenderer extends Renderer {
 
 	//TODO das hier ist gurke
@@ -39,8 +42,6 @@ public class AnimatedModelRenderer extends Renderer {
      */
     public AnimatedModelRenderer() {
         super(new ShaderPack(new ShaderGroup(new AnimatedModelShader())));
-        setExpensiveLevel(1);
-        setPriority(0);
         RendererRegistration.register(this);
     }
 
