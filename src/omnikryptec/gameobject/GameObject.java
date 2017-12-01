@@ -31,7 +31,7 @@ public abstract class GameObject implements DataMapSerializable {
     private static class Sorter implements Comparator<Component<?>> {
 
         @Override
-        public int compare(Component<?> o1, Component<?> o2) {
+        public final int compare(Component<?> o1, Component<?> o2) {
             return ((o1.getPrio() < o2.getPrio()) ? -1 : (o1.getPrio() > o2.getPrio() ? 1 : 0));
         }
 
@@ -60,7 +60,6 @@ public abstract class GameObject implements DataMapSerializable {
         return this;
     }
 
-
     /**
      * the updatetpye of this GameObject
      *
@@ -77,9 +76,8 @@ public abstract class GameObject implements DataMapSerializable {
         this("");
     }
 
-
     /**
-     * creates a GameObject 
+     * creates a GameObject
      *
      * @param parent the parent or null for no parent
      */
@@ -97,10 +95,6 @@ public abstract class GameObject implements DataMapSerializable {
     protected void finalize() throws Throwable {
         gameObjects.remove(this);
     }
-
-
-
-
 
     /**
      * executes the logic of this GameObject if neccessary.
@@ -157,14 +151,14 @@ public abstract class GameObject implements DataMapSerializable {
      * @return this GameObject
      */
     public final GameObject addComponent(Component<?> c) {
-    	if(!c.supportsGameObject(this)) {
-    		if(OmniKryptecEngine.isCreated()) {
-    			OmniKryptecEngine.instance().errorOccured(new OmniKryptecException(getClass().getSimpleName()+" does not support the component "+c.getClass().getSimpleName()), "Error while adding component to a GameObject");
-    		}else {
-    			throw new OmniKryptecException(getClass().getSimpleName()+" does not support the component "+c.getClass().getSimpleName());
-    		}
-    	}
-    	if (c.getPrio() < 0) {
+        if (!c.supportsGameObject(this)) {
+            if (OmniKryptecEngine.isCreated()) {
+                OmniKryptecEngine.instance().errorOccured(new OmniKryptecException(getClass().getSimpleName() + " does not support the component " + c.getClass().getSimpleName()), "Error while adding component to a GameObject");
+            } else {
+                throw new OmniKryptecException(getClass().getSimpleName() + " does not support the component " + c.getClass().getSimpleName());
+            }
+        }
+        if (c.getPrio() < 0) {
             if (componentsPreLogic == null) {
                 componentsPreLogic = new ArrayList<>();
             }
@@ -318,10 +312,6 @@ public abstract class GameObject implements DataMapSerializable {
     protected void delete() {
     }
 
-
-
-
-
     /**
      * if true the gameobject is active and will be processed. if
      * <code>false</code> the logic will never be executed automatically.
@@ -356,7 +346,6 @@ public abstract class GameObject implements DataMapSerializable {
 //        go.transform = toCopy.getTransform().getNewCopy();
 //        return go;
 //    }
-
     /**
      * wont copy physics!
      *
@@ -369,10 +358,9 @@ public abstract class GameObject implements DataMapSerializable {
         name = toCopy.name;
         logicEnabled = toCopy.logicEnabled;
         //setParent(toCopy.getParent());
-      //  transform = toCopy.getTransform().getNewCopy();
+        //  transform = toCopy.getTransform().getNewCopy();
         return this;
     }
-
 
     protected abstract void checkChunkPos();
 
@@ -449,8 +437,8 @@ public abstract class GameObject implements DataMapSerializable {
         if (name == null || name.isEmpty()) {
             return null;
         }
-   //     final GameObject gameObject = byName(GameObject.class, name, false);
-      //  return (gameObject != null ? gameObject : new GameObject()).fromDataMap(data);
+        //     final GameObject gameObject = byName(GameObject.class, name, false);
+        //  return (gameObject != null ? gameObject : new GameObject()).fromDataMap(data);
         return null;
     }
 
@@ -462,7 +450,7 @@ public abstract class GameObject implements DataMapSerializable {
         setName(data.getString("name"));
         setGlobal(data.getBoolean("isglobal"));
         setLogicEnabled(data.getBoolean("isActive"));
-     //   DataMap dataMap_temp = data.getDataMap("parent");
+        //   DataMap dataMap_temp = data.getDataMap("parent");
 //        if (parent == null) {
 //            parent = newInstanceFromDataMap(dataMap_temp);
 //        } else {

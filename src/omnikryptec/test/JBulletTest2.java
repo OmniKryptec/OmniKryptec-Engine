@@ -22,7 +22,6 @@ import omnikryptec.audio.AudioSource;
 import omnikryptec.audio.StreamedSound;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
-import omnikryptec.event.event.EventSystem;
 import omnikryptec.event.event.EventType;
 import omnikryptec.event.input.CursorType;
 import omnikryptec.event.input.InputManager;
@@ -30,6 +29,7 @@ import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.gameobject.EntityBuilder;
 import omnikryptec.gameobject.GameObject;
+import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.gameobject.component.AudioListenerComponent3D;
 import omnikryptec.gameobject.component.AudioSourceComponent3D;
 import omnikryptec.gameobject.component.PhysicsComponent3D;
@@ -97,7 +97,7 @@ public class JBulletTest2 {
             keySettings.setKey("physicsFaster", GLFW.GLFW_KEY_PERIOD, true);
             keySettings.setKey("physicsSlower", GLFW.GLFW_KEY_COMMA, true);
             DisplayManager.createDisplay("JBullet Test2", gameSettings, new GLFWInfo(4, 3, true, false, 1280, 720));
-            DisplayManager.instance().getSettings().getKeySettings().setKey("sprint", GLFW.GLFW_KEY_LEFT_CONTROL, true);
+            OmniKryptecEngine.instance().getSettings().getKeySettings().setKey("sprint", GLFW.GLFW_KEY_LEFT_CONTROL, true);
             OmniKryptecEngine.instance().addAndSetScene(new Scene3D("Test-Scene", (Camera) new Camera() {
 
                 @Override
@@ -105,12 +105,12 @@ public class JBulletTest2 {
                     float horizontalSpeed = 30.0F;
                     float verticalSpeed = 10.0F;
                     float turnSpeed = 40.0F;
-                    if (DisplayManager.instance().getSettings().getKeySettings().getKey("sprint").isPressed()) {
+                    if (OmniKryptecEngine.instance().getSettings().getKeySettings().getKey("sprint").isPressed()) {
                         horizontalSpeed *= 10;
                         verticalSpeed *= 10;
                     }
                     InputManager.doThirdPersonController(this, this,
-                            DisplayManager.instance().getSettings().getKeySettings(), horizontalSpeed, verticalSpeed,
+                            OmniKryptecEngine.instance().getSettings().getKeySettings(), horizontalSpeed, verticalSpeed,
                             turnSpeed);
                 }
 
@@ -132,7 +132,7 @@ public class JBulletTest2 {
                 heightMap = null;
             }
             AudioManager.loadSound("bounce", "/omnikryptec/audio/bounce.wav");
-            OmniKryptecEngine.rawInstance().getCurrent3DScene().useDefaultPhysics();
+            OmniKryptecEngine.instance().getCurrent3DScene().useDefaultPhysics();
             setupStaticPlane();
             setupRigidBodyBuilder();
             entity_ball = entityBuilder_brunnen.create();
@@ -142,10 +142,10 @@ public class JBulletTest2 {
                     bTexture);
             setupTerrains(texturePack, blendMap, 4);
             addTerrains();
-            OmniKryptecEngine.rawInstance().getCurrent3DScene().addGameObject(entity_ball);
-            OmniKryptecEngine.rawInstance().getCurrent3DScene().addGameObject(entity_attractor);
-            OmniKryptecEngine.rawInstance().getCurrent3DScene().getCamera().getTransform().increasePosition(0, 3, 0);
-            OmniKryptecEngine.rawInstance().getCurrent3DScene().getCamera().getTransform().increaseRotation(0, 90, 0);
+            OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(entity_ball);
+            OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(entity_attractor);
+            OmniKryptecEngine.instance().getCurrent3DScene().getCamera().getTransform().increasePosition(0, 3, 0);
+            OmniKryptecEngine.instance().getCurrent3DScene().getCamera().getTransform().increaseRotation(0, 90, 0);
             final AudioSource source = new AudioSource();
             final StreamedSound streamedSound = StreamedSound.ofInputStream("Tobu_-_Infectious_[NCS_Release]", source,
                     JBulletTest2.class.getResourceAsStream("/omnikryptec/audio/Tobu_-_Infectious_[NCS_Release].wav"));
@@ -153,8 +153,8 @@ public class JBulletTest2 {
             source.play(streamedSound);
             source.setFadeTimeComplete(10000);
             source.setEffectState(AudioEffectState.FADE_OUT);
-            OmniKryptecEngine.rawInstance().getCurrent3DScene()
-                    .addGameObject(new GameObject().addComponent(new AudioSourceComponent3D(source)));
+            OmniKryptecEngine.instance().getCurrent3DScene()
+                    .addGameObject((GameObject3D) new GameObject3D().addComponent(new AudioSourceComponent3D(source)));
             manageTerrains();
             // entity_ball.addComponent(new PhysicsComponent(entity_ball, rigidBodyBuilder_ball));
             bouncer = new AudioSource().setLooping(true);
@@ -162,13 +162,13 @@ public class JBulletTest2 {
             // bouncer.play("bounce");
             entity_ball.addComponent(new AudioSourceComponent3D(bouncer));
             entity_attractor.addComponent(new PhysicsComponent3D(entity_attractor, rigidBodyBuilder_attractor));
-            EventSystem.instance().addEventHandler((e) -> {
+            OmniKryptecEngine.instance().getEventsystem().addEventHandler((e) -> {
                 input();
                 logic();
             }, EventType.RENDER_FRAME_EVENT);
-            InputManager.setCamera(OmniKryptecEngine.rawInstance().getCurrent3DScene().getCamera());
+            InputManager.setCamera(OmniKryptecEngine.instance().getCurrent3DScene().getCamera());
             InputManager.setLongButtonPressEnabled(true);
-            OmniKryptecEngine.rawInstance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
+            OmniKryptecEngine.instance().startLoop();
         } catch (Exception ex) {
             Logger.logErr("Main error: " + ex, ex);
         }
@@ -193,7 +193,7 @@ public class JBulletTest2 {
 
     private static final void addTerrains() {
         for (Terrain terrain : terrains) {
-            OmniKryptecEngine.rawInstance().getCurrent3DScene().addGameObject(terrain);
+            OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(terrain);
         }
     }
 
@@ -213,11 +213,11 @@ public class JBulletTest2 {
         rigidBodyBuilder.setCollisionShape(new StaticPlaneShape(new Vector3f(0, 1, 0), 0.25F/* m */));
         rigidBodyBuilder.setDefaultMotionState(new Vector3f(0, 0, 0), new Quat4f(0, 0, 0, 0));
         rigidBodyBuilder.getRigidBodyConstructionInfo().restitution = 0.25F;
-        ((JBulletPhysicsWorld) OmniKryptecEngine.rawInstance().getCurrent3DScene().getPhysicsWorld()).getWorld().addRigidBody(rigidBodyBuilder.create());
+        ((JBulletPhysicsWorld) OmniKryptecEngine.instance().getCurrent3DScene().getPhysicsWorld()).getWorld().addRigidBody(rigidBodyBuilder.create());
     }
 
     private static final void setupRigidBodyBuilder() {
-        final Camera camera = OmniKryptecEngine.rawInstance().getCurrent3DScene().getCamera();
+        final Camera camera = OmniKryptecEngine.instance().getCurrent3DScene().getCamera();
         rigidBodyBuilder_ball = new RigidBodyBuilder(1.0F);
         rigidBodyBuilder_ball.setCollisionShape(PhysicsUtil.createConvexHullShape(entityBuilder_brunnen.getModel()));
         rigidBodyBuilder_ball.setDefaultMotionState(new Vector3f(camera.getTransform().getPosition().x, 20.0F, camera.getTransform().getPosition().z - 5), new Quat4f(0, 0, 0, 0));
@@ -253,7 +253,7 @@ public class JBulletTest2 {
     }
 
     private static final void input() {
-        final GameSettings gameSettings = DisplayManager.instance().getSettings();
+        final GameSettings gameSettings = OmniKryptecEngine.instance().getSettings();
         final KeySettings keySettings = gameSettings.getKeySettings();
         if (keySettings.isPressed("test_1")) {
             Logger.log(keySettings.getKeyGroup("test_1"));
@@ -261,7 +261,7 @@ public class JBulletTest2 {
         if (keySettings.isPressed("test_2")) {
             Logger.log(keySettings.getKeyGroup("test_2"));
         }
-        Camera camera = OmniKryptecEngine.rawInstance().getCurrent3DScene().getCamera();
+        Camera camera = OmniKryptecEngine.instance().getCurrent3DScene().getCamera();
         if (InputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_F)) {
             applyForce();
         }
@@ -278,7 +278,7 @@ public class JBulletTest2 {
                 bouncer.continuePlaying();
             }
         }
-        final AbstractScene3D scene = OmniKryptecEngine.rawInstance().getCurrent3DScene();
+        final AbstractScene3D scene = OmniKryptecEngine.instance().getCurrent3DScene();
         float deltaPhysicsSpeed = 0;
         if (keySettings.isPressed("physicsFaster")) {
             deltaPhysicsSpeed += 0.005;
@@ -310,13 +310,13 @@ public class JBulletTest2 {
             if (InputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_L)) {
                 InputManager.moveXZ(camera, camera, -deltaY / 15, -deltaX / 15, deltaD);
             } else {
-                OmniKryptecEngine.rawInstance().getCurrent3DScene().getCamera().getTransform().increaseRotation((deltaY / 5), -(deltaX / 5), 0);
+                OmniKryptecEngine.instance().getCurrent3DScene().getCamera().getTransform().increaseRotation((deltaY / 5), -(deltaX / 5), 0);
             }
         }
     }
 
     private static final void applyForce() {
-        final Camera camera = OmniKryptecEngine.rawInstance().getCurrent3DScene().getCamera();
+        final Camera camera = OmniKryptecEngine.instance().getCurrent3DScene().getCamera();
         final RigidBody body = entity_ball.getComponent(PhysicsComponent3D.class).getBody();
         final Transform bodyTransform = new Transform();
         body.getMotionState().getWorldTransform(bodyTransform);
@@ -329,7 +329,7 @@ public class JBulletTest2 {
     }
 
     private static final void applyCircularForce() {
-        final Camera camera = OmniKryptecEngine.rawInstance().getCurrent3DScene().getCamera();
+        final Camera camera = OmniKryptecEngine.instance().getCurrent3DScene().getCamera();
         final RigidBody body = entity_ball.getComponent(PhysicsComponent3D.class).getBody();
         final Transform bodyTransform = new Transform();
         body.getMotionState().getWorldTransform(bodyTransform);

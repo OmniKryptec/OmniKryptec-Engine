@@ -61,7 +61,7 @@ public class EngineTest {
             ent2.getTransform().setPosition(5, 0, -5);
             ent3.getTransform().setPosition(-5, 0, 2);
             // ent.setScale(new Vector3f(1, 1, 1));
-            OmniKryptecEngine.instance().startLoop(ShutdownOption.JAVA);
+            OmniKryptecEngine.instance().startLoop();
             NativesLoader.unloadNatives();
         } catch (Exception ex) {
             Logger.logErr("Error: " + ex, ex);

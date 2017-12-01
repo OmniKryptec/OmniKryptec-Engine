@@ -14,7 +14,6 @@ import omnikryptec.animation.ColladaParser.dataStructures.AnimatedModelData;
 import omnikryptec.animation.loaders.AnimatedModelLoader;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
-import omnikryptec.event.event.EventSystem;
 import omnikryptec.event.event.EventType;
 import omnikryptec.event.input.CursorType;
 import omnikryptec.event.input.InputManager;
@@ -170,20 +169,20 @@ public class AnimationTest {
                 load();
             }
             if (!SAVE.exists()) {
-                OmniKryptecEngine.rawInstance().getCurrent3DScene().addGameObject(entity_brunnen);
-                OmniKryptecEngine.rawInstance().getCurrent3DScene().addGameObject(entity_test);
+                OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(entity_brunnen);
+                OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(entity_test);
                 camera.getTransform().increasePosition(0, 3, 0);
                 camera.getTransform().increaseRotation(0, 90, 0);
                 entity_brunnen.getTransform().increasePosition(8, 1, 0);
             }
-            EventSystem.instance().addEventHandler((e) -> {
+            OmniKryptecEngine.instance().getEventsystem().addEventHandler((e) -> {
                 input();
                 logic();
                 AnimatedModel.updateAllAnimatedModels();
             }, EventType.RENDER_FRAME_EVENT);
             InputManager.setCamera(camera);
             InputManager.setLongButtonPressEnabled(true);
-            OmniKryptecEngine.rawInstance().startLoop(OmniKryptecEngine.ShutdownOption.JAVA);
+            OmniKryptecEngine.instance().startLoop();
         } catch (Exception ex) {
             Logger.logErr("Main Error: " + ex, ex);
         }
