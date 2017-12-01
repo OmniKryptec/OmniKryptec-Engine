@@ -26,6 +26,11 @@ public class NativesLoader {
         return true;
     }
 
+    /**
+     * use null as argument for the default natives folder
+     * @param totry
+     * @return
+     */
     public static final boolean loadNatives(AdvancedFile ... totry) {
     	return loadNatives(true, totry);
     }
