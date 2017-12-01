@@ -1,5 +1,6 @@
 package omnikryptec.util;
 
+import java.util.function.Consumer;
 import omnikryptec.util.OSUtil.OS;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
@@ -26,12 +27,20 @@ public class NativesLoader {
     }
 
     public static final boolean loadNatives() {
+        return loadNatives(null);
+    }
+
+    public static final boolean loadNatives(Consumer<AdvancedFile> success) {
+        return loadNatives(success, null);
+    }
+
+    public static final boolean loadNatives(Consumer<AdvancedFile> success, Consumer<Throwable> failure) {
         if (NATIVESFOLDER == null) {
             NATIVESFOLDER = getStandardNativesFolder();
         }
         if (NATIVESFOLDER == null) {
-            Logger.log("Loaded natives not successfully, because there is some error with the standard natives folder",
-                    LogLevel.WARNING);
+            Logger.log("Loaded natives not successfully, because there is some error with the standard natives folder", LogLevel.WARNING);
+            Util.finish(false, success, failure, NATIVESFOLDER, null);
             return false;
         }
         NATIVESFOLDER.createAdvancedFile();
@@ -41,14 +50,16 @@ public class NativesLoader {
                 Logger.log("Loaded natives successfully", LogLevel.FINE);
                 registerNatives();
                 nativesLoaded = true;
+                Util.finish(true, success, failure, NATIVESFOLDER, null);
                 return true;
             } else {
-                Logger.log("Loaded natives not successfully, because something with loading the natives went wrong",
-                        LogLevel.WARNING);
+                Logger.log("Loaded natives not successfully, because something with loading the natives went wrong", LogLevel.WARNING);
+                Util.finish(false, success, failure, NATIVESFOLDER, null);
                 return false;
             }
         } else {
             Logger.log("Loaded natives not successfully, because the natives folder is a file", LogLevel.WARNING);
+            Util.finish(false, success, failure, NATIVESFOLDER, null);
             return false;
         }
     }

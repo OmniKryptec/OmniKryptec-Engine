@@ -61,8 +61,8 @@ public class EngineTest2 implements IEventHandler {
     static FloorReflectionRenderer testrend;
 
     public static void main(String[] args) {
-    	try {
-    		
+        try {
+
 //    		int abc = 1000000;
 //    		long time = System.currentTimeMillis();
 //    		for(int i=0; i<abc; i++) {
@@ -70,10 +70,11 @@ public class EngineTest2 implements IEventHandler {
 //    		}
 //    		long time2 = System.currentTimeMillis();
 //    		System.out.println((time2-time)*1000000/(double)abc);
-    		// System.out.println((int) (Math.ceil(size/10.0)*10));
-             NativesLoader.setNativesFolder(new AdvancedFile(false, (Object)null,
-             "H:/natives/"));
-            NativesLoader.loadNatives();
+            // System.out.println((int) (Math.ceil(size/10.0)*10));
+            NativesLoader.loadNatives((folder) -> Logger.log(String.format("Loaded natives from normal \"%s\"", folder), LogLevel.FINE), (throwable) -> {
+                NativesLoader.setNativesFolder(new AdvancedFile(false, (Object) null, "H:/natives/"));
+                NativesLoader.loadNatives((folder) -> Logger.log(String.format("Loaded natives from school \"%s\"", folder), LogLevel.FINE));
+            });
             OmniKryptecEngine.addShutdownHook(() -> NativesLoader.unloadNatives());
             Logger.enableLoggerRedirection(true);
             Logger.setDebugMode(true);
@@ -324,7 +325,7 @@ public class EngineTest2 implements IEventHandler {
             // .instance().getCurrentScene().addGameObject(new
             // Light().setColor(0, 0, 1).setRadius(100).setRelativePos(50, 50,
             // 0));
-            
+
             OmniKryptecEngine.instance().startLoop();
         } catch (Exception ex) {
             Logger.logErr("Error: " + ex, ex);
@@ -361,7 +362,7 @@ public class EngineTest2 implements IEventHandler {
             float[] f = testb.getData();
             //testb.drawPolygon(f, 3);
             testb.end();
-        	//System.out.println(OmniKryptecEngine.instance().getDisplayManager().getFPSCounted());
+            //System.out.println(OmniKryptecEngine.instance().getDisplayManager().getFPSCounted());
 
             // if(Instance.getFramecount()>1000) {
             // system.setTimeMultiplier(0.01f);
@@ -410,7 +411,7 @@ public class EngineTest2 implements IEventHandler {
         // PPTime:
         // "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());
         if (ev.getType() == EventType.AFTER_FRAME) {
-        	// System.out.println(ParticleMaster.instance().getRenderedParticlesCount());
+            // System.out.println(ParticleMaster.instance().getRenderedParticlesCount());
             // System.out.println(Instance.getEngine().getModelVertsCount());
             // System.out.println(ParticleMaster.instance().getUpdatedParticlesCount());
             // Logger.log(new Profiler().createTimesString(50, true, false));

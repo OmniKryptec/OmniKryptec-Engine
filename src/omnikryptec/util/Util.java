@@ -1,5 +1,6 @@
 package omnikryptec.util;
 
+import java.util.function.Consumer;
 import static omnikryptec.util.AdvancedFile.NOT_FOUND;
 
 import omnikryptec.main.OmniKryptecEngine;
@@ -8,6 +9,7 @@ import omnikryptec.util.logger.Logger;
 
 /**
  * Util
+ *
  * @author Panzer1119
  */
 public class Util {
@@ -76,36 +78,37 @@ public class Util {
         }
         return array;
     }
-    
+
     /**
      * Stops a Thread until its dead or the Time is over
+     *
      * @param thread Thread to get stopped
      * @param delayTime Time between each stopping try in milliseconds
      * @param maxTime Maximum time to wait for in milliseconds
      */
     @SuppressWarnings("deprecation")
-	public static final void killThread(Thread thread, int delayTime, int maxTime) {
-        if(thread == null) {
+    public static final void killThread(Thread thread, int delayTime, int maxTime) {
+        if (thread == null) {
             return;
         }
         int times = 0;
-        while((thread.isAlive() && !thread.isInterrupted()) && ((delayTime == -1 || maxTime == -1) || ((times * delayTime) < maxTime))) {
+        while ((thread.isAlive() && !thread.isInterrupted()) && ((delayTime == -1 || maxTime == -1) || ((times * delayTime) < maxTime))) {
             try {
                 thread.interrupt();
                 //FIXME deprecated?!
                 thread.stop();
-                if(delayTime > 0) {
+                if (delayTime > 0) {
                     Thread.sleep(delayTime);
                 }
             } catch (Exception ex) {
-                if(Logger.isDebugMode()) {
+                if (Logger.isDebugMode()) {
                     Logger.logErr(String.format("Error while killing Thread \"%s\": %s", thread.getName(), ex), ex);
                 }
             }
             times++;
         }
     }
-    
+
     public static final double getCurrentTime() {
         try {
             return OmniKryptecEngine.instance().getDisplayManager().getCurrentTime();
@@ -113,26 +116,47 @@ public class Util {
             return System.currentTimeMillis();
         }
     }
-    
-	public static final float extractPrio(Class<?> clazz, float def) {
-		if(clazz.isAnnotationPresent(Priority.class)) {
-    		return clazz.getAnnotation(Priority.class).value();
-    	}else {
-    		if(Logger.isDebugMode()) {
-    			Logger.log("No priority-annotation found in class: "+clazz.getName(), LogLevel.INFO);
-    		}
-    		return def;
-    	}
-	}
-	
-	public static final float extractLvl(Class<?> clazz, float def) {
-		if(clazz.isAnnotationPresent(Level.class)) {
-    		return clazz.getAnnotation(Level.class).value();
-    	}else {
-    		if(Logger.isDebugMode()) {
-    			Logger.log("No level-annotation found in class: "+clazz.getName(), LogLevel.INFO);
-    		}
-    		return def;
-    	}
-	}
+
+    public static final float extractPrio(Class<?> clazz, float def) {
+        if (clazz.isAnnotationPresent(Priority.class)) {
+            return clazz.getAnnotation(Priority.class).value();
+        } else {
+            if (Logger.isDebugMode()) {
+                Logger.log("No priority-annotation found in class: " + clazz.getName(), LogLevel.INFO);
+            }
+            return def;
+        }
+    }
+
+    public static final float extractLvl(Class<?> clazz, float def) {
+        if (clazz.isAnnotationPresent(Level.class)) {
+            return clazz.getAnnotation(Level.class).value();
+        } else {
+            if (Logger.isDebugMode()) {
+                Logger.log("No level-annotation found in class: " + clazz.getName(), LogLevel.INFO);
+            }
+            return def;
+        }
+    }
+
+    public static final <T> void consume(Consumer<T> consumer, T t) {
+        try {
+            consumer.accept(t);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static final <S, F> void finish(boolean succeeded, Consumer<S> success, Consumer<F> failure, S s, F f) {
+        try {
+            if (succeeded && success != null) {
+                success.accept(s);
+            } else if (!succeeded && failure != null) {
+                failure.accept(f);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
 }
