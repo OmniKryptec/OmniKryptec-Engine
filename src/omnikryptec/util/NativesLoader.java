@@ -26,8 +26,29 @@ public class NativesLoader {
         return true;
     }
 
+    public static final boolean loadNatives(AdvancedFile ... totry) {
+    	return loadNatives(true, totry);
+    }
+    
+    public static final boolean loadNatives(boolean log, AdvancedFile ... totry) {
+    	for(AdvancedFile f : totry) {
+    		setNativesFolder(f);
+    		if(loadNatives()) {
+    			if(log) {
+    				Logger.log("Loading natives to \""+f+"\" was successful", LogLevel.FINE);
+    			}
+    			return true;
+    		}else {
+    			if(log) {
+    				Logger.log("Loading natives to \""+f+"\" failed", LogLevel.WARNING);
+    			}
+    		}
+    	}
+    	return false;
+    }
+    
     public static final boolean loadNatives() {
-        return loadNatives(null);
+        return loadNatives((Consumer<AdvancedFile>)null);
     }
 
     public static final boolean loadNatives(Consumer<AdvancedFile> success) {
