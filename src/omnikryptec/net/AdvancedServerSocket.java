@@ -10,6 +10,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -89,9 +90,10 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      * If the AdvancedServerSocket is checking the connections
      */
     protected boolean isCheckingConnections = false;
-    
+
     /**
-     * Creates an AdvancedServerSocket from a ServerSocket with the standard Server ThreadPool size
+     * Creates an AdvancedServerSocket from a ServerSocket with the standard
+     * Server ThreadPool size
      *
      * @param serverSocket ServerSocket
      */
@@ -391,11 +393,7 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      */
     private final AdvancedServerSocket closeSockets() {
         synchronized (socketsAccepted) {
-            socketsAccepted.stream().forEach((socket) -> {
-                if (socket != null) {
-                    socket.disconnect(true);
-                }
-            });
+            socketsAccepted.parallelStream().filter(Objects::nonNull).forEach((socket) -> socket.disconnect(true));
             socketsAccepted.clear();
         }
         return this;
@@ -422,20 +420,19 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      */
     public final AdvancedServerSocket broadcast(Object message, boolean whitelist, AdvancedSocket... sockets) {
         if (sockets == null || sockets.length == 0) {
-            for(AdvancedSocket socket : socketsAccepted) {
-                socket.send(message);
-            }
+            socketsAccepted.parallelStream().filter(Objects::nonNull).forEach((socket) -> socket.send(message));
         } else {
-            socketsAccepted.stream().filter((socket) -> {
+            socketsAccepted.parallelStream().filter((socket) -> {
+                if (socket == null) {
+                    return false;
+                }
                 for (AdvancedSocket s : sockets) {
                     if (socket == s) {
                         return whitelist;
                     }
                 }
                 return !whitelist;
-            }).forEach((socket) -> {
-                socket.send(message);
-            });
+            }).forEach((socket) -> socket.send(message));
         }
         return this;
     }

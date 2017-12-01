@@ -512,7 +512,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
     public final AdvancedSocket send(Object object) {
         if (socket == null || !connected) {
             if (Logger.isDebugMode()) {
-                Logger.log("Could not send Object, because their is no Socket or its not connected!", LogLevel.WARNING);
+                Logger.log("Could not send Object, because there is no Socket or its not connected!", LogLevel.WARNING);
             }
             return this;
         }

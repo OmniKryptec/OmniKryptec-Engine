@@ -9,12 +9,13 @@ import omnikryptec.util.logger.Logger;
 
 /**
  * ClientTest
+ *
  * @author Panzer1119
  */
 public class ClientTest {
-    
-    protected static final String server_test = "192.168.6.110";
-    
+
+    protected static final String server_test = "localhost";
+
     public static void main(String[] args) throws UnknownHostException, InterruptedException {
         Logger.setDebugMode(true);
         Logger.setMinimumLogLevel(LogLevel.FINEST);
@@ -44,5 +45,5 @@ public class ClientTest {
         Logger.log("Program finished completely!");
         Commands.COMMANDEXIT.run("-java");
     }
-    
+
 }

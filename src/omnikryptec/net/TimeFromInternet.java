@@ -10,6 +10,7 @@ public class TimeFromInternet {
 
     /**
      * From http://www.torsten-horn.de/techdocs/java-net.htm#TimeFromInternet
+     *
      * @param args Test
      */
     public static void main(String[] args) {
@@ -28,7 +29,7 @@ public class TimeFromInternet {
             // Der Time Server gibt die Sekunden seit 1900 aus, Java erwartet Millisekunden seit 1970:
             System.out.println(DATUMFORMAT.format(new Date((time - SEKUNDEN_1900_1970) * 1000)));
         } catch (Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
         } finally {
             if (in != null) {
                 try {
