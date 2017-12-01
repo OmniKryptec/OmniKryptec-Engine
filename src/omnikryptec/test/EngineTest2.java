@@ -71,8 +71,8 @@ public class EngineTest2 implements IEventHandler {
 //    		long time2 = System.currentTimeMillis();
 //    		System.out.println((time2-time)*1000000/(double)abc);
     		// System.out.println((int) (Math.ceil(size/10.0)*10));
-            // NativesLoader.setNativesFolder(new AdvancedFile(false, (Object)null,
-            // "H:/natives/"));
+             NativesLoader.setNativesFolder(new AdvancedFile(false, (Object)null,
+             "H:/natives/"));
             NativesLoader.loadNatives();
             OmniKryptecEngine.addShutdownHook(() -> NativesLoader.unloadNatives());
             Logger.enableLoggerRedirection(true);

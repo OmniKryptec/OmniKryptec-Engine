@@ -201,7 +201,9 @@ public class ParticleMaster implements Profilable {
     }
 
 	public static void resetTimes() {
-		instance.rendertime = 0;
-		instance.updatetime = 0;
+		if(instance!=null) {
+			instance.rendertime = 0;
+			instance.updatetime = 0;
+		}
 	}
 }

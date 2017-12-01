@@ -130,11 +130,15 @@ public abstract class GameLoop {
 	}
 	
 	protected final void render3D() {
-		engineInstance.getCurrent3DScene().mainPassRender();
+		if(engineInstance.getCurrent3DScene()!=null) {
+			engineInstance.getCurrent3DScene().mainPassRender();
+		}
 	}
 	
 	protected final void render2D() {
-		engineInstance.getCurrent2DScene().mainPassRender();
+		if(engineInstance.getCurrent2DScene()!=null) {
+			engineInstance.getCurrent2DScene().mainPassRender();
+		}
 	}
 	
 	protected final void renderGui() {
@@ -142,11 +146,15 @@ public abstract class GameLoop {
 	}
 	
 	protected final void logic3D() {
-		engineInstance.getCurrent3DScene().publicLogic(true);
+		if(engineInstance.getCurrent3DScene()!=null) {
+			engineInstance.getCurrent3DScene().publicLogic(true);
+		}
 	}
 	
 	protected final void logic2D() {
-		engineInstance.getCurrent2DScene().publicLogic();
+		if(engineInstance.getCurrent2DScene()!=null) {
+			engineInstance.getCurrent2DScene().publicLogic();
+		}
 	}
 	
 	protected abstract void runLoop();
