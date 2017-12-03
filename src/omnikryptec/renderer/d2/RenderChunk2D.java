@@ -1,9 +1,15 @@
-package omnikryptec.renderer.d3;
+package omnikryptec.renderer.d2;
+
+import java.util.ArrayList;
+import java.util.Comparator;
 
 import omnikryptec.gameobject.GameObject2D;
+import omnikryptec.gameobject.Sprite;
 import omnikryptec.main.AbstractScene2D;
 import omnikryptec.main.GameObjectContainer;
 import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.renderer.d3.RenderMap;
+import omnikryptec.resource.texture.Texture;
 import omnikryptec.settings.GameSettings;
 
 public class RenderChunk2D implements GameObjectContainer<GameObject2D>{
@@ -19,9 +25,12 @@ public class RenderChunk2D implements GameObjectContainer<GameObject2D>{
 	}
 	
 	
+	
 	private AbstractScene2D scene;
 	private long x,y;
 	public final boolean isglobal;
+	private final ArrayList<Sprite> chunk = new ArrayList<>();
+	private final ArrayList<GameObject2D> other = new ArrayList<>(); 
 	
 	//currently unused
 //	private RenderChunk2D() {
@@ -41,7 +50,12 @@ public class RenderChunk2D implements GameObjectContainer<GameObject2D>{
 	
 	@Override
 	public void addGameObject(GameObject2D go) {
-		
+		if(go instanceof Sprite) {
+			chunk.add((Sprite)go);
+			chunk.sort(LAYER_COMPARATOR);
+		}else {
+			other.add(go);
+		}
 	}
 
 	@Override
@@ -61,4 +75,11 @@ public class RenderChunk2D implements GameObjectContainer<GameObject2D>{
 		return y;
 	}
 	
+	public void logic() {
+		
+	}
+	
+	public ArrayList<Sprite> __getSprites(){
+		return chunk;
+	}
 }

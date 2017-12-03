@@ -207,7 +207,7 @@ public class EngineTest2 implements IEventHandler {
             // }
 
             System.out.println("Generating objs...");
-            int cube = 50;
+            int cube = 120;
             int abstand = 5;
             float scale = 1;
             int objcount = 0;

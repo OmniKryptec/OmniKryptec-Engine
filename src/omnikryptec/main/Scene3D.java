@@ -12,6 +12,7 @@ import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.gameobject.Light3D;
 import omnikryptec.renderer.d3.RenderChunk3D;
 import omnikryptec.renderer.d3.RenderConfiguration;
+import omnikryptec.renderer.d3.RenderMap;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.util.Instance;
 import omnikryptec.util.logger.LogLevel;
@@ -43,7 +44,7 @@ public class Scene3D extends AbstractScene3D {
         super(name, cam);
     }
 
-
+    @Deprecated
     public Scene3D setChunkOffsets(long xo, long yo, long zo) {
         this.cox = xo;
         this.coy = yo;
@@ -67,11 +68,6 @@ public class Scene3D extends AbstractScene3D {
             }
             scene.get(tmp).addGameObject(g);
         }
-    }
-
-    @Override
-	public final GameObject3D removeGameObject(GameObject3D g) {
-        return removeGameObject(g, true);
     }
 
     @Override

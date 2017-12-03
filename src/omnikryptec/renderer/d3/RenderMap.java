@@ -1,13 +1,14 @@
 package omnikryptec.renderer.d3;
 
 import java.lang.reflect.Array;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 public class RenderMap<K, V> {
 
     private Class<K> keyclass;
-    private Map<K, V> map = new HashMap<>(RenderChunk3D.DEFAULT_CAPACITY, 0.7f);
+    private HashMap<K, V> map = new HashMap<>(RenderChunk3D.DEFAULT_CAPACITY, 0.7f);
     private K[] keys;
 
     private boolean keysDirty = true;

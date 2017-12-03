@@ -33,4 +33,11 @@ public abstract class AbstractScene2D extends AbstractScene<GameObject2D>{
 		
 	}
 	
+	@Override
+	protected final long render(RenderConfiguration renderc) {
+		return render();
+	}
+	
+	protected abstract long render();
+	
 }
