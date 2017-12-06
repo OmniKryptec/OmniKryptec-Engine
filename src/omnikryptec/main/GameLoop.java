@@ -29,7 +29,7 @@ public abstract class GameLoop {
 	
 	public void doGLTasks(int max) {
 		if(GraphicsUtil.isGLContextAvailable()) {
-			while(gltasks.size()>0&&(max>0||max==-1)) {
+			while(gltasks.size()>0&&(max!=0)) {
 				gltasks.firstElement().run();
 				gltasks.removeElementAt(0);
 				max--;
