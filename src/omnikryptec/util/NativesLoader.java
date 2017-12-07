@@ -6,6 +6,7 @@ import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
 /**
+ * NativesLoader
  *
  * @author Panzer1119
  */
@@ -27,39 +28,60 @@ public class NativesLoader {
     }
 
     /**
-     * use null as argument for the default natives folder
-     * @param totry
-     * @return
+     * Use null as argument for the default natives folder
+     *
+     * @param folders Folders to load natives to
+     * @return <tt>true</tt> if it worked
      */
-    public static final boolean loadNatives(AdvancedFile ... totry) {
-    	return loadNatives(true, totry);
-    }
-    
-    public static final boolean loadNatives(boolean log, AdvancedFile ... totry) {
-    	for(AdvancedFile f : totry) {
-    		setNativesFolder(f);
-    		if(loadNatives()) {
-    			if(log) {
-    				Logger.log("Loading natives to \""+f+"\" was successful", LogLevel.FINE);
-    			}
-    			return true;
-    		}else {
-    			if(log) {
-    				Logger.log("Loading natives to \""+f+"\" failed", LogLevel.WARNING);
-    			}
-    		}
-    	}
-    	return false;
-    }
-    
-    public static final boolean loadNatives() {
-        return loadNatives((Consumer<AdvancedFile>)null);
+    public static final boolean loadNatives(AdvancedFile... folders) {
+        return loadNatives(true, folders);
     }
 
+    /**
+     * Use null as argument for the default natives folder
+     *
+     * @param log If this should get logged
+     * @param folders Folders to load natives to
+     * @return <tt>true</tt> if it worked
+     */
+    public static final boolean loadNatives(boolean log, AdvancedFile... folders) {
+        for (AdvancedFile folder : folders) {
+            setNativesFolder(folder);
+            if (loadNatives()) {
+                if (log) {
+                    Logger.log("Loading natives to \"" + folder + "\" was successful", LogLevel.FINE);
+                }
+                return true;
+            } else if (log) {
+                Logger.log("Loading natives to \"" + folder + "\" failed", LogLevel.WARNING);
+            }
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @return <tt>true</tt> if it worked
+     */
+    public static final boolean loadNatives() {
+        return loadNatives((Consumer<AdvancedFile>) null);
+    }
+
+    /**
+     *
+     * @param success
+     * @return <tt>true</tt> if it worked
+     */
     public static final boolean loadNatives(Consumer<AdvancedFile> success) {
         return loadNatives(success, null);
     }
 
+    /**
+     *
+     * @param success
+     * @param failure
+     * @return <tt>true</tt> if it worked
+     */
     public static final boolean loadNatives(Consumer<AdvancedFile> success, Consumer<Throwable> failure) {
         if (NATIVESFOLDER == null) {
             NATIVESFOLDER = getStandardNativesFolder();
@@ -96,9 +118,7 @@ public class NativesLoader {
         }
         try {
             if (!NATIVESFOLDER.isDirectory()) {
-                Logger.log(
-                        "Unloaded natives not successfully, because there is some error with the standard natives folder",
-                        LogLevel.WARNING);
+                Logger.log("Unloaded natives not successfully, because there is some error with the standard natives folder", LogLevel.WARNING);
                 return false;
             }
             unregisterNatives();
@@ -113,8 +133,7 @@ public class NativesLoader {
                 nativesLoaded = false;
                 return true;
             } else {
-                Logger.log("Unloaded natives not successfully, because some files could not be deleted",
-                        LogLevel.WARNING);
+                Logger.log("Unloaded natives not successfully, because some files could not be deleted", LogLevel.WARNING);
                 return false;
             }
         } catch (Exception ex) {
@@ -142,7 +161,7 @@ public class NativesLoader {
     private static final boolean unregisterNatives() {
         try {
             System.setProperty(LWJGLLIBRARYPATH, OLDLWJGLLIBRARYPATH);
-            // GLContext.unloadOpenGLLibrary();
+            //GLContext.unloadOpenGLLibrary();
             System.gc();
             Logger.log("Unregistered natives successfully", LogLevel.FINER);
             return true;
