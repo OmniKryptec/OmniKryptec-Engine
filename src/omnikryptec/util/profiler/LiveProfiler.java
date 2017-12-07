@@ -40,8 +40,10 @@ public class LiveProfiler {
     private final ChartData[] chartDatas = new ChartData[]{
         new ChartData(Profiler.DISPLAY_IDLE_TIME, 0),
         new ChartData(Profiler.DISPLAY_UPDATE_TIME, 0),
-        new ChartData(Profiler.SCENE_RENDER_TIME, 0),
-        new ChartData(Profiler.SCENE_LOGIC_TIME, 0),
+        new ChartData(Profiler.SCENE_RENDER_TIME_3D, 0),
+        new ChartData(Profiler.SCENE_LOGIC_TIME_3D, 0),
+        new ChartData(Profiler.SCENE_RENDER_TIME_2D, 0),
+        new ChartData(Profiler.SCENE_LOGIC_TIME_2D, 0),
         new ChartData(Profiler.PARTICLE_RENDERER, 0),
         new ChartData(Profiler.PARTICLE_UPDATER, 0),
         new ChartData(Profiler.POSTPROCESSOR, 0),

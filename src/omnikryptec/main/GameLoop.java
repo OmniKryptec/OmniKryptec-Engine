@@ -22,7 +22,8 @@ public abstract class GameLoop {
 	protected final OmniKryptecEngine engineInstance;
 	
 	private boolean running=false;
-		
+	private double frametime=0, tmptime=0;	
+	
 	protected GameLoop() {
 		engineInstance = OmniKryptecEngine.instance();
 	}
@@ -39,7 +40,7 @@ public abstract class GameLoop {
 		}
 	}
 	
-	public final void run() {
+	final void run() {
 		running = true;
 		stopLevel = GameLoopShutdownOption.NOT_NOW;
 		try {
@@ -53,15 +54,21 @@ public abstract class GameLoop {
 		}
 	}
 	
-	public final void step() {
-		
+	
+	final void step() {
 		try {
-			renderOneFrame();
+			tmptime = engineInstance.getDisplayManager().getCurrentTime();
+			runStep();
+			frametime = engineInstance.getDisplayManager().getCurrentTime() - tmptime;
 		}catch(Exception e) {
 			engineInstance.errorOccured(e, "An error occured in a step of the game loop");
 		}
 		engineInstance.getEventsystem().fireEvent(new Event(), EventType.AFTER_FRAME);
 		
+	}
+	
+	public final double getFrameTime() {
+		return frametime;
 	}
 	
 	public final boolean isRunning() {
@@ -131,13 +138,14 @@ public abstract class GameLoop {
 	
 	protected final void render3D() {
 		if(engineInstance.getCurrent3DScene()!=null) {
-			engineInstance.getCurrent3DScene().mainPassRender();
+			engineInstance.getCurrent3DScene().timedRender();
+			engineInstance.getCurrent3DScene().publicParticlesRender();
 		}
 	}
 	
 	protected final void render2D() {
 		if(engineInstance.getCurrent2DScene()!=null) {
-			engineInstance.getCurrent2DScene().mainPassRender();
+			engineInstance.getCurrent2DScene().timedRender();
 		}
 	}
 	
@@ -147,19 +155,20 @@ public abstract class GameLoop {
 	
 	protected final void logic3D() {
 		if(engineInstance.getCurrent3DScene()!=null) {
-			engineInstance.getCurrent3DScene().publicLogic(true);
+			engineInstance.getCurrent3DScene().publicParticlesLogic();
+			engineInstance.getCurrent3DScene().timedLogic();
 		}
 	}
 	
 	protected final void logic2D() {
 		if(engineInstance.getCurrent2DScene()!=null) {
-			engineInstance.getCurrent2DScene().publicLogic();
+			engineInstance.getCurrent2DScene().timedLogic();
 		}
 	}
 	
 	protected abstract void runLoop();
 	
-	protected abstract void renderOneFrame();
+	protected abstract void runStep();
 	
 	public abstract float getDeltaTimef();
 }

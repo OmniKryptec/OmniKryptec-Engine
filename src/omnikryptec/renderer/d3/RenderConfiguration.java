@@ -10,7 +10,7 @@ import org.joml.Vector4f;
 import omnikryptec.util.EnumCollection.Dimension;
 import omnikryptec.util.EnumCollection.RendererTime;
 
-public class RenderConfiguration {
+public class RenderConfiguration implements Cloneable{
 
 	public static enum AllowedRenderer {
 		All, EvElse, OnlThis;
@@ -135,5 +135,22 @@ public class RenderConfiguration {
 
 	public int getShaderLvl() {
 		return shaderlvl;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public RenderConfiguration clone() {
+		RenderConfiguration rofl = new RenderConfiguration(shaderpackKeyName);
+		rofl.renderParticle = renderParticle;
+		rofl.maxExpensive = maxExpensive;
+		rofl.minExpensive = minExpensive;
+		rofl.renderer = (ArrayList<Renderer>) renderer.clone();
+		rofl.allow = (HashMap<RendererTime, Boolean>) allow.clone();
+		rofl.allowedRenderer = allowedRenderer;
+		rofl.clipplane = new Vector4f(clipplane);
+		rofl.shaderlvl = shaderlvl;
+		
+		rofl.rendererCache = (LinkedList<Renderer>) rendererCache.clone();
+		return rofl;
 	}
 }

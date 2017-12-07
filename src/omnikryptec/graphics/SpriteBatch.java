@@ -123,6 +123,7 @@ public class SpriteBatch {
 		if (drawing) {
 			throw new OmniKryptecException("Can't start started rendering!");
 		}
+		GraphicsUtil.enableDepthTesting(false);
 		GraphicsUtil.enableAlphaBlending();
 		idx = 0;
 		vertexcount = 0;
@@ -138,6 +139,8 @@ public class SpriteBatch {
 		}
 		flush();
 		program.onDrawBatchEnd(this);
+		GraphicsUtil.enableDepthTesting(true);
+		GraphicsUtil.disableBlending();
 		drawing = false;
 	}
 

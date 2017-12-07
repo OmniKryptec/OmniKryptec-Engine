@@ -12,32 +12,4 @@ public abstract class AbstractScene2D extends AbstractScene<GameObject2D>{
 		this.name = name;
 		this.camera = cam;
 	}
-	
-	public final void publicLogic() {
-		state = FrameState.LOGIC;
-		tmptime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime();
-		if (isUsingPhysics()) {
-			physicsworld.stepSimulation();
-		}
-		logic();
-		camera.doLogic();
-		logictime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime() - tmptime;
-		state = FrameState.NULL;
-	}
-	
-	final long mainPassRender() {
-		return render();
-	}
-
-	public final void publicRender(RenderConfiguration config) {
-		render(config);
-	}
-	
-	@Override
-	protected final long render(RenderConfiguration renderc) {
-		return render();
-	}
-	
-	protected abstract long render();
-	
 }

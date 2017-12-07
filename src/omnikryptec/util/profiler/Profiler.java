@@ -13,8 +13,10 @@ public class Profiler implements ErrorItem{
 
     public static final long NAME_NOT_FOUND = -1;
     public static final String OVERALL_FRAME_TIME = "OVERALL_FRAME_TIME";
-    public static final String SCENE_RENDER_TIME = "SCENE_RENDER_TIME";
-    public static final String SCENE_LOGIC_TIME = "SCENE_LOGIC_TIME";
+    public static final String SCENE_RENDER_TIME_3D = "SCENE_RENDER_TIME_3D";
+    public static final String SCENE_LOGIC_TIME_3D = "SCENE_LOGIC_TIME_3D";
+    public static final String SCENE_RENDER_TIME_2D = "SCENE_RENDER_TIME_2D";
+    public static final String SCENE_LOGIC_TIME_2D = "SCENE_LOGIC_TIME_2D";
     public static final String PARTICLE_RENDERER = "PARTICLE_RENDERER";
     public static final String PARTICLE_UPDATER = "PARTICLE_UPDATER";
     public static final String POSTPROCESSOR = "POSTPROCESSOR";
@@ -37,7 +39,10 @@ public class Profiler implements ErrorItem{
             }
 
             private double get() {
-                Profilable p = PROFILABLES.get(0);
+                if(true) {
+                	return 0;
+                }
+            	Profilable p = PROFILABLES.get(0);
                 ProfileContainer[] cs = null;
                 double max = 0.0;
                 if(p != null) {

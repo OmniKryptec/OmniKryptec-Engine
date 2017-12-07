@@ -27,12 +27,22 @@ public class Scene2D extends AbstractScene2D{
 		this("", null);
 	}
 	
+	
 	public Scene2D(String name, Camera cam) {
 		super(name, cam);
-		renderer = new DefaultRenderer2D(this);
+		setRenderer(new DefaultRenderer2D(this));
 	}
 	
-
+	public Scene2D(String name, Camera cam, Renderer2D renderer) {
+		this(name, cam);
+		setRenderer(renderer);
+	}
+	
+	public void setRenderer(Renderer2D renderer) {
+		this.renderer = renderer;
+	}
+	
+	
 	@Override
 	protected void logic() {
 		if(Instance.getGameSettings().usesRenderChunking()) {

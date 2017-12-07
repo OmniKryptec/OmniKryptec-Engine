@@ -29,7 +29,9 @@ public class TestRenderer extends Renderer{
 			FrustrumFilter filter) {
 		fbo.bindFrameBuffer();
 		GraphicsUtil.clear(0, 0, 0, 0);
-		s.publicRender(new RenderConfiguration().setRendererData(AllowedRenderer.EvElse, this));
+		s.setTmpRenderConfig(new RenderConfiguration().setRendererData(AllowedRenderer.EvElse, this));
+		s.publicRender();
+		s.setUnTmpRenderConfig();
 		fbo.unbindFrameBuffer();
 		return 0;
 	}

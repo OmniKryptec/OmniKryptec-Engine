@@ -42,7 +42,8 @@ public class FloorReflectionRenderer extends Renderer{
 		texture.bindFrameBuffer();
 		GraphicsUtil.clear(0, 0, 0, 1);
 		s.getCamera().reflect(height);
-		long l = s.publicRender(config.setShaderLvl(0));
+		s.setTmpRenderConfig(config.clone().setShaderLvl(0));
+		long l = s.publicRender();
 		s.getCamera().reflect(height);
 		texture.unbindFrameBuffer();
 		return l;

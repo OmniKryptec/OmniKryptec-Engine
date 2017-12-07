@@ -52,6 +52,7 @@ import omnikryptec.util.NativesLoader;
 import omnikryptec.util.lang.LanguageManager;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
+import omnikryptec.util.profiler.LiveProfiler;
 
 /**
  *
@@ -91,14 +92,14 @@ public class EngineTest2 implements IEventHandler {
                     new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setChunkRenderOffsets(2, 2, 2)
                     .setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(true).setInteger(GameSettings.HIGHEST_SHADER_LVL, 1000000),
                     new GLFWInfo(3, 3, true, false, 1280, 720));
-//            new Thread(new Runnable() {
-//
-//                @Override
-//                public void run() {
-//                    LiveProfiler liveProfiler = new LiveProfiler(750, 750);
-//                    liveProfiler.startTimer(1000);
-//                }
-//            }).start();
+            new Thread(new Runnable() {
+
+                @Override
+                public void run() {
+                    LiveProfiler liveProfiler = new LiveProfiler(750, 750);
+                    liveProfiler.startTimer(1000);
+                }
+            }).start();
             // rend = new TestRenderer();
             //PostProcessing.instance().addStage(new
             // DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
@@ -211,7 +212,7 @@ public class EngineTest2 implements IEventHandler {
             // }
 
             System.out.println("Generating objs...");
-            int cube = 10;
+            int cube = 120;
             int abstand = 5;
             float scale = 1;
             int objcount = 0;
@@ -230,10 +231,10 @@ public class EngineTest2 implements IEventHandler {
                     }
                 }
             }
-            for(int i=0; i<2; i++) {
+            for(int i=0; i<0; i++) {
             	GameObject2D gom;
-            	gom = new Sprite("dumm"+i, i%2==0?js:jn, null).setColor(new Color(1, 1, 1, 0.2f));
-            	gom.getTransform().setScale(0.5f).setPosition(i*100, 0);
+            	gom = new Sprite("dumm"+i, i%2==0?js:jn, null).setColor(new Color(1, 1, 1, 1));
+            	gom.getTransform().setScale(0.05f).setPosition(i*1, 0);
             	Instance.getCurrent2DScene().addGameObject(gom);
             }
             System.out.println("Done: " + objcount + " Objects.");
@@ -348,7 +349,7 @@ public class EngineTest2 implements IEventHandler {
     private static ParticleAttractor attractor;
 
     private static void doCameraLogic(Camera camera) {
-        // v += DisplayManager.instance().getDeltaTime()*30;
+    	// v += DisplayManager.instance().getDeltaTime()*30;
         InputManager.doFirstPersonController(camera, OmniKryptecEngine.instance().getDisplayManager().getSettings().getKeySettings(), v, v,
                 (float) Math.toRadians(20), false);
         // camera.setPerspectiveProjection(Maths.alterFOV(10, 179f, v, 1000),
@@ -422,7 +423,8 @@ public class EngineTest2 implements IEventHandler {
         // PPTime:
         // "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());
         if (ev.getType() == EventType.AFTER_FRAME) {
-            // System.out.println(ParticleMaster.instance().getRenderedParticlesCount());
+        
+        	// System.out.println(ParticleMaster.instance().getRenderedParticlesCount());
             // System.out.println(Instance.getEngine().getModelVertsCount());
             // System.out.println(ParticleMaster.instance().getUpdatedParticlesCount());
             // Logger.log(new Profiler().createTimesString(50, true, false));

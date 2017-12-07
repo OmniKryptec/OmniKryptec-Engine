@@ -22,16 +22,19 @@ public class DefaultRenderer2D implements Renderer2D{
 	}
 
 	private ArrayList<Sprite> sprites;
+	private String stringTmp;
 	@Override
 	public long render(RenderChunk2D global, long camChunkX, long camChunkY,
 			long chunkOffsetX, long chunkOffsetY, HashMap<String, RenderChunk2D> scene) {
 		sprites = new ArrayList<>();
 		for(long x=-chunkOffsetX; x<=chunkOffsetX; x++) {
 			for(long y=-chunkOffsetY; y<=camChunkY; y++) {
-				sprites.addAll(scene.get(Scene2D.xyToString(camChunkX+x, camChunkY+y)).__getSprites());
+				stringTmp = Scene2D.xyToString(camChunkX+x, camChunkY+y);
+				if(scene.get(stringTmp)!=null) {
+					sprites.addAll(scene.get(stringTmp).__getSprites());
+				}
 			}
 		}
-		GraphicsUtil.enableDepthTesting(false);
 		sprites.sort(LAYER_COMPARATOR);
 		batch.begin();
 		for(Sprite s : sprites) {
