@@ -13,8 +13,10 @@ import omnikryptec.event.event.IEventHandler;
 import omnikryptec.event.input.InputManager;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
+import omnikryptec.gameobject.GameObject2D;
 import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.gameobject.Light3D;
+import omnikryptec.gameobject.Sprite;
 import omnikryptec.gameobject.particles.AttractedPaticleSystem;
 import omnikryptec.gameobject.particles.AttractorMode;
 import omnikryptec.gameobject.particles.ParticleAttractor;
@@ -22,6 +24,7 @@ import omnikryptec.gameobject.particles.ParticleSpawnArea;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
 import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.main.Scene2D;
 import omnikryptec.main.Scene3D;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
@@ -166,7 +169,8 @@ public class EngineTest2 implements IEventHandler {
                 }
 
             }.setPerspectiveProjection(90, 0.1f, 1000)).setAmbientColor(0.1f, 0.1f, 0.1f));
-            Instance.getCurrentCamera().getTransform().setPosition(0, 0, 200);
+            OmniKryptecEngine.instance().addAndSetScene(new Scene2D("test2d", new Camera().setOrthographicProjection2D(0, 0, 1000, 1000)));
+            Instance.getCurrent3DCamera().getTransform().setPosition(0, 0, 200);
             // OmniKryptecEngine.instance().addAndSetScene(null);
             // Instance.getCurrentCamera().getTransform().setPosition(0, 0, 0);
             Model pine = new Model("",
@@ -177,7 +181,7 @@ public class EngineTest2 implements IEventHandler {
             SimpleTexture pinet = SimpleTexture
                     .newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine2.png")).create();
 
-            SimpleAnimation animation = new SimpleAnimation(2, brunnent, pinet);
+            SimpleAnimation animation = new SimpleAnimation(1, brunnent, pinet);
             SimpleTexture pine_normal = SimpleTexture.newTexture("/omnikryptec/test/pine2_normal.png");
 
             TexturedModel ptm = new TexturedModel("pine", pine, pinet);
@@ -207,7 +211,7 @@ public class EngineTest2 implements IEventHandler {
             // }
 
             System.out.println("Generating objs...");
-            int cube = 120;
+            int cube = 10;
             int abstand = 5;
             float scale = 1;
             int objcount = 0;
@@ -219,12 +223,18 @@ public class EngineTest2 implements IEventHandler {
                         go = (GameObject3D) new Entity(tm).setUpdateType(UpdateType.STATIC);
                         go.getTransform().setDirty().setScale(scale).setPosition(x, y, z).getRotationSimple().rotate(0,
                                 0, 0);
-                        Instance.getCurrentScene().addGameObject(go);
+                        Instance.getCurrent3DScene().addGameObject(go);
                         // system.addAttractor(new
                         // ParticleAttractor(go).setAcceleration(10).setMode(AttractorMode.KILL_ON_REACH).setTolerance(5));
                         objcount++;
                     }
                 }
+            }
+            for(int i=0; i<2; i++) {
+            	GameObject2D gom;
+            	gom = new Sprite("dumm"+i, i%2==0?js:jn, null).setColor(new Color(1, 1, 1, 0.2f));
+            	gom.getTransform().setScale(0.5f).setPosition(i*100, 0);
+            	Instance.getCurrent2DScene().addGameObject(gom);
             }
             System.out.println("Done: " + objcount + " Objects.");
             // Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0,
@@ -356,13 +366,13 @@ public class EngineTest2 implements IEventHandler {
 
         // system.generateParticles(1);
         if (ev.getType() == EventType.RENDER_FRAME_EVENT) {
-            SpriteBatch testb = new SpriteBatch(new Camera().setDefaultScreenSpaceProjection(), new Shader2D(), 100);
-            //testb.getCamera().getTransform().setPosition(0, 0, 10);
-            testb.begin();
-            testb.drawTest();
-            float[] f = testb.getData();
-            //testb.drawPolygon(f, 3);
-            testb.end();
+//            SpriteBatch testb = new SpriteBatch(new Camera().setDefaultScreenSpaceProjection(), new Shader2D(), 100);
+//            //testb.getCamera().getTransform().setPosition(0, 0, 10);
+//            testb.begin();
+//            testb.drawTest();
+//            float[] f = testb.getData();
+//            //testb.drawPolygon(f, 3);
+//            testb.end();
             //System.out.println(OmniKryptecEngine.instance().getDisplayManager().getFPSCounted());
 
             // if(Instance.getFramecount()>1000) {

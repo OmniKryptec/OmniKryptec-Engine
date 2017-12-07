@@ -33,10 +33,12 @@ package omnikryptec.graphics;
 import java.nio.FloatBuffer;
 
 import org.joml.Math;
+import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
 import omnikryptec.gameobject.Camera;
+import omnikryptec.gameobject.Sprite;
 import omnikryptec.resource.model.VertexArrayObject;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.base.Shader;
@@ -108,12 +110,12 @@ public class SpriteBatch {
 
 	private void checkFlush(Texture t) {
 		if (t != cur || idx >= max) {
+			flush();
 			Texture.unbindActive();
 			cur = t;
 			if (cur != null) {
 				cur.bindToUnitOptimized(0);
 			}
-			flush();
 		}
 	}
 
@@ -157,7 +159,7 @@ public class SpriteBatch {
 		if (idx > 0 && drawing) {
 			buffer.flip();
 			vao.bind();
-			vao.storeBufferf(vertexcount, elementLengths, buffer);
+			vao.storeBufferf(idx, elementLengths, buffer);
 			render();
 			idx = 0;
 			buffer.clear();
@@ -204,6 +206,15 @@ public class SpriteBatch {
 		return array;
 	}
 
+	public void draw(Sprite s) {
+		color.setFrom(s.getColor());
+		scaledWidth = s.getTexture().getWidth()*s.getTransform().getScale().x;
+		scaledHeight = s.getTexture().getHeight()*s.getTransform().getScale().y;
+		tmpPos = s.getTransform().getPosition(true);
+		draw(s.getTexture(), tmpPos.x, tmpPos.y, scaledWidth, 
+				scaledHeight, scaledWidth*0.5f, scaledHeight*0.5f, s.getTransform().getRotation().x);
+	}
+	
 	public void draw(Texture tex, float x, float y) {
 		draw(tex, x, y, tex.getWidth(), tex.getHeight());
 	}
@@ -213,8 +224,9 @@ public class SpriteBatch {
 	}
 
 	private float x1, y1, x2, y2, x3, y3, x4, y4, scaleX, scaleY, cx, cy, p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y, r, g,
-			b, a, u, v, u2, v2;
-
+			b, a, u, v, u2, v2, scaledWidth, scaledHeight;
+	private Vector2f tmpPos;
+	
 	public void draw(Texture tex, float x, float y, float width, float height) {
 		draw(tex, x, y, width, height, x, y, 0f);
 	}
@@ -348,50 +360,5 @@ public class SpriteBatch {
 	public boolean isDrawing() {
 		return drawing;
 	}
-
-	// public void drawRegion(Texture tex, float srcX, float srcY, float srcWidth,
-	// float srcHeight, float dstX,
-	// float dstY) {
-	// drawRegion(tex, srcX, srcY, srcWidth, srcHeight, dstX, dstY, srcWidth,
-	// srcHeight);
-	// }
-	//
-	// public void drawRegion(Texture tex, float srcX, float srcY, float srcWidth,
-	// float srcHeight, float dstX, float dstY,
-	// float dstWidth, float dstHeight) {
-	// u = srcX / tex.getWidth();
-	// v = srcY / tex.getHeight();
-	// u2 = (srcX + srcWidth) / tex.getWidth();
-	// v2 = (srcY + srcHeight) / tex.getHeight();
-	// draw(tex, dstX, dstY, dstWidth, dstHeight, u, v, u2, v2);
-	// }
-	//
-	// public void drawRegion(TextureRegion region, float srcX, float srcY, float
-	// srcWidth, float srcHeight, float dstX,
-	// float dstY) {
-	// drawRegion(region, srcX, srcY, srcWidth, srcHeight, dstX, dstY, srcWidth,
-	// srcHeight);
-	// }
-	//
-	// public void drawRegion(TextureRegion region, float srcX, float srcY, float
-	// srcWidth, float srcHeight, float dstX,
-	// float dstY, float dstWidth, float dstHeight) {
-	// drawRegion(region.getTexture(), region.getRegionX() + srcX,
-	// region.getRegionY() + srcY, srcWidth, srcHeight,
-	// dstX, dstY, dstWidth, dstHeight);
-	// }
-
-	// public void draw(Texture tex, float x, float y, float width, float height,
-	// float originX, float originY,
-	// float rotationRadians) {
-	// draw(tex, x, y, width, height, originX, originY, rotationRadians,
-	// tex.getUVs()[0], tex.getUVs()[1], tex.getUVs()[2],
-	// tex.getUVs()[3]);
-	// }
-
-	// public void draw(Texture tex, float x, float y, float width, float height) {
-	// draw(tex, x, y, width, height, tex.getUVs()[0], tex.getUVs()[1],
-	// tex.getUVs()[2], tex.getUVs()[3]);
-	// }
 
 }

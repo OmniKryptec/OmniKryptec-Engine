@@ -29,8 +29,8 @@ public class RenderChunk2D implements GameObjectContainer<GameObject2D>{
 	private AbstractScene2D scene;
 	private long x,y;
 	public final boolean isglobal;
-	private final ArrayList<Sprite> chunk = new ArrayList<>();
-	private final ArrayList<GameObject2D> other = new ArrayList<>(); 
+	private final ArrayList<Sprite> chunkSprites = new ArrayList<>();
+	private final ArrayList<GameObject2D> chunkOther = new ArrayList<>(); 
 	
 	//currently unused
 //	private RenderChunk2D() {
@@ -51,16 +51,20 @@ public class RenderChunk2D implements GameObjectContainer<GameObject2D>{
 	@Override
 	public void addGameObject(GameObject2D go) {
 		if(go instanceof Sprite) {
-			chunk.add((Sprite)go);
-			chunk.sort(LAYER_COMPARATOR);
+			chunkSprites.add((Sprite)go);
 		}else {
-			other.add(go);
+			chunkOther.add(go);
 		}
 	}
 
 	@Override
 	public GameObject2D removeGameObject(GameObject2D go, boolean delete) {
-		return null;
+		if(go instanceof Sprite) {
+			chunkSprites.remove(go);
+		}else {
+			chunkOther.remove(go);
+		}
+		return go;
 	}
 	
 	public AbstractScene2D getScene() {
@@ -80,6 +84,6 @@ public class RenderChunk2D implements GameObjectContainer<GameObject2D>{
 	}
 	
 	public ArrayList<Sprite> __getSprites(){
-		return chunk;
+		return chunkSprites;
 	}
 }

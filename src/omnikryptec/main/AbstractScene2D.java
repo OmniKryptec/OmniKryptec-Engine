@@ -26,11 +26,11 @@ public abstract class AbstractScene2D extends AbstractScene<GameObject2D>{
 	}
 	
 	final long mainPassRender() {
-		return 0;
+		return render();
 	}
 
 	public final void publicRender(RenderConfiguration config) {
-		
+		render(config);
 	}
 	
 	@Override

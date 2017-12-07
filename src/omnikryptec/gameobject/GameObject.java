@@ -122,7 +122,7 @@ public abstract class GameObject implements DataMapSerializable {
         if (!logicEnabled) {
             return this;
         }
-        if (Logger.isDebugMode() && (cs = Instance.getCurrentScene()) != null && cs.getState() == FrameState.RENDERING) {
+        if (Logger.isDebugMode() && (cs = Instance.getCurrent3DScene()) != null && cs.getState() == FrameState.RENDERING) {
             Logger.log("Logic is not allowed while rendering!", LogLevel.WARNING);
             return this;
         }

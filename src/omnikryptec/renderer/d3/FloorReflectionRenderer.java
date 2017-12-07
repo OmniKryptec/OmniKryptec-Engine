@@ -32,7 +32,7 @@ public class FloorReflectionRenderer extends Renderer{
 
 	public FloorReflectionRenderer registerAndAddToCurrentScene() {
 		RendererRegistration.register(this);
-		Instance.getCurrentScene().addIndependentRenderer(this, RendererTime.PRE);
+		Instance.getCurrent3DScene().addIndependentRenderer(this, RendererTime.PRE);
 		return this;
 	}
 	

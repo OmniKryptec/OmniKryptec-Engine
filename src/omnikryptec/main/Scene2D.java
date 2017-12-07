@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.GameObject2D;
+import omnikryptec.renderer.d2.DefaultRenderer2D;
 import omnikryptec.renderer.d2.RenderChunk2D;
 import omnikryptec.renderer.d2.Renderer2D;
 import omnikryptec.renderer.d3.RenderChunk3D;
@@ -28,6 +29,7 @@ public class Scene2D extends AbstractScene2D{
 	
 	public Scene2D(String name, Camera cam) {
 		super(name, cam);
+		renderer = new DefaultRenderer2D(this);
 	}
 	
 
@@ -84,7 +86,7 @@ public class Scene2D extends AbstractScene2D{
 	}
 
 	
-	private static String xyToString(long x, long y) {
+	public static String xyToString(long x, long y) {
 		return x+":"+y;
 	}
 }

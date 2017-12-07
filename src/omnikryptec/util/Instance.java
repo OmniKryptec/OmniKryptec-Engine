@@ -10,6 +10,7 @@ import omnikryptec.event.event.EventSystem;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.gameobject.terrain.TerrainRenderer;
+import omnikryptec.main.AbstractScene2D;
 import omnikryptec.main.AbstractScene3D;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.postprocessing.main.PostProcessing;
@@ -70,12 +71,20 @@ public class Instance {
 		return OmniKryptecEngine.instance().getDisplayManager();
 	}
 
-	public static final AbstractScene3D getCurrentScene() {
+	public static final AbstractScene3D getCurrent3DScene() {
 		return getEngine().getCurrent3DScene();
 	}
 
-	public static final Camera getCurrentCamera() {
-		return getCurrentScene() == null ? null : getCurrentScene().getCamera();
+	public static final Camera getCurrent3DCamera() {
+		return getCurrent3DScene() == null ? null : getCurrent3DScene().getCamera();
+	}
+	
+	public static final AbstractScene2D getCurrent2DScene() {
+		return getEngine().getCurrent2DScene();
+	}
+
+	public static final Camera getCurrent2DCamera() {
+		return getCurrent2DScene() == null ? null : getCurrent2DScene().getCamera();
 	}
 
 	public static final EventSystem getEventSystem() {
