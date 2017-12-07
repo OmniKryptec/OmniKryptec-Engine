@@ -2,6 +2,7 @@ package omnikryptec.main;
 
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.GameObject;
+import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.physics.PhysicsWorld;
 import omnikryptec.renderer.d3.RenderConfiguration;
 import omnikryptec.util.Color;
@@ -11,12 +12,13 @@ abstract class AbstractScene<T extends GameObject> implements GameObjectContaine
 
     Camera camera;
     FrameState state = FrameState.NULL;
-    double rendertime, logictime;
-    double tmptime;
     String name;
     PhysicsWorld physicsworld;
     Color ambientcolor = new Color(0.01f, 0.01f, 0.01f, 1);
 
+    private double rendertime, logictime;
+    private double tmptime;
+    
     public final FrameState getState() {
         return state;
     }
@@ -74,10 +76,46 @@ abstract class AbstractScene<T extends GameObject> implements GameObjectContaine
         return name;
     }
 
+    final void timedLogic() {
+		tmptime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime();
+		publicLogic();
+		logictime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime() - tmptime;
+    }
+    
+    public final void publicLogic() {
+		state = FrameState.LOGIC;
+		if (isUsingPhysics()) {
+			physicsworld.stepSimulation();
+		}
+		logic();
+		camera.doLogic();
+		state = FrameState.NULL;
+	}
+    
+    final void timedRender() {
+    	tmptime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime();
+    	publicRender();
+		rendertime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime() - tmptime;
+    }
+    
+    public final long publicRender() {
+		state = FrameState.RENDERING;
+		preRender();
+		long l = render();
+		postRender();
+		state = FrameState.NULL;
+		return l;
+    }
+    
+    
     protected abstract void logic();
+    
+    protected abstract long render();
 
-    protected abstract long render(RenderConfiguration config);
-
+    protected void preRender() {}
+    
+    protected void postRender() {} 
+    
     @Override
     public String toString() {
         return "Scene: " + name;

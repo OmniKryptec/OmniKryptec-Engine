@@ -5,12 +5,12 @@ public class DefaultGameLoop extends GameLoop{
 	@Override
 	protected void runLoop() {
 		while(!isStopRequested()) {
-			step();
+			runStep();
 		}
 	}
 
 	@Override
-	protected void renderOneFrame() {
+	protected void runStep() {
 		sleepIfInactive();
 		updateAudio();
 		checkAndDealWithResized();

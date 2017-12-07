@@ -42,86 +42,74 @@ public abstract class AbstractScene3D extends AbstractScene<GameObject3D> implem
 	
 	private LinkedList<Renderer> prerender = new LinkedList<>();
 	private LinkedList<Renderer> postrender = new LinkedList<>();
-
+	private RenderConfiguration renderConfig = new RenderConfiguration();
+	private RenderConfiguration backup;
+	
 	protected AbstractScene3D(String name, Camera cam) {
 		this.name = name;
 		this.camera = cam;
 	}
+	
 
-	public final void publicLogic(boolean particles) {
-		state = FrameState.LOGIC;
-		tmptime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime();
-		if (isUsingPhysics()) {
-			physicsworld.stepSimulation();
+	
+	protected void preRender() {
+		ParticleMaster.resetTimes();
+		if(renderConfig.isRendererTimeAllowed(RendererTime.PRE)) {
+			for (Renderer r : prerender) {
+				if (renderConfig.getRenderer().contains(r)) {
+					r.render(this, null, renderConfig);
+				}
+			}
 		}
-		logic();
-		camera.doLogic();
-		logictime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime() - tmptime;
-		if (particles && camera != null) {
-			ParticleMaster.instance().logic(camera);
-		}
-		state = FrameState.NULL;
 	}
 	
-	private boolean dirtyConfig=true;
-	private RenderConfiguration defaultConfig;
-	final long mainPassRender() {
-		if(dirtyConfig) {
-			defaultConfig = getNew();
-			dirtyConfig = false;
-		}
-		ParticleMaster.resetTimes();
-		state = FrameState.RENDERING;
-		tmptime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime();
-		if(defaultConfig.isRendererTimeAllowed(RendererTime.PRE)) {
-			for (Renderer r : prerender) {
-				if (defaultConfig.getRenderer().contains(r)) {
-					r.render(this, null, defaultConfig);
-				}
-			}
-		}
-		long l = publicRender(defaultConfig);
-		if(defaultConfig.isRendererTimeAllowed(RendererTime.POST)) {
+	protected void postRender() {
+		if(renderConfig.isRendererTimeAllowed(RendererTime.POST)) {
 			for (Renderer r : postrender) {
-				if (defaultConfig.getRenderer().contains(r)) {
-					r.render(this, null, defaultConfig);
+				if (renderConfig.getRenderer().contains(r)) {
+					r.render(this, null, renderConfig);
 				}
 			}
 		}
-		rendertime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime() - tmptime - ParticleMaster.instance().getRenderTimeMS();
-		state = FrameState.NULL;
-		return l;
-	}
-
-	public final void newRenderConfig() {
-		dirtyConfig = true;
 	}
 	
 	public final RenderConfiguration getRenderConfig() {
-		if(dirtyConfig) {
-			defaultConfig = getNew();
-			dirtyConfig = false;
-		}
-		return defaultConfig;
+		return renderConfig;
 	}
 	
-	private final RenderConfiguration getNew() {
-		RenderConfiguration cfg = new RenderConfiguration().setShaderLvl(Instance.getGameSettings().getInteger(GameSettings.HIGHEST_SHADER_LVL));
-		OmniKryptecEngine.instance().getEventsystem().fireEvent(new Event(cfg), EventType.NEW_DEFAULT_RENDERCONFIGURATION);
-		return cfg;
+	public final AbstractScene3D setRenderConfig(RenderConfiguration config) {
+		this.renderConfig = config;
+		return this;
 	}
 	
-	public final long publicRender(RenderConfiguration config) {
-		if(config==null) {
-			config = new RenderConfiguration();
+	public final AbstractScene3D setTmpRenderConfig(RenderConfiguration config) {
+		if(config != null) {
+			this.backup = this.renderConfig;
+			this.renderConfig = config;
 		}
-		long l = render(config);
-		if (config.renderParticles() && camera != null) {
+		return this;
+	}
+	
+	//Direkt nach postrender machen?
+	public final AbstractScene3D setUnTmpRenderConfig() {
+		if(backup!=null) {
+			this.renderConfig = backup;
+		}
+		return this;
+	}
+	
+	public final void publicParticlesRender() {
+		if(camera != null) {
 			ParticleMaster.instance().render(camera);
 		}
-		return l;
 	}
-
+	
+	public final void publicParticlesLogic() {
+		if (camera != null) {
+			ParticleMaster.instance().logic(camera);
+		}
+	}
+	
 	public final AbstractScene3D addIndependentRenderer(Renderer r, RendererTime t) {
 		if(r == null) {
 			if(Logger.isDebugMode()) {

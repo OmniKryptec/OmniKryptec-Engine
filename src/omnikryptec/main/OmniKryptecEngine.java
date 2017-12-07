@@ -87,7 +87,6 @@ public class OmniKryptecEngine implements Profilable {
     private ShutdownOption shutdownOption = ShutdownOption.JAVA;
     private GameState state = GameState.STOPPED;
 
-    private double frametime = 0;
     private boolean cleaned;
 
     public OmniKryptecEngine(DisplayManager manager) {
@@ -252,17 +251,22 @@ public class OmniKryptecEngine implements Profilable {
         postpro.doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
     }
 
-    final double getRenderTimeMS() {
+    final double getRender3DTimeMS() {
         return scene3DCurrent == null ? 0 : scene3DCurrent.getRenderTimeMS();
     }
 
-    final double getLogicTimeMS() {
+    final double getLogic3DTimeMS() {
         return scene3DCurrent == null ? 0 : scene3DCurrent.getLogicTimeMS();
     }
 
-    final double getFrameTimeMS() {
-        return frametime;
+    final double getRender2DTimeMS() {
+        return scene2DCurrent == null ? 0 : scene2DCurrent.getRenderTimeMS();
     }
+
+    final double getLogic2DTimeMS() {
+        return scene2DCurrent == null ? 0 : scene2DCurrent.getLogicTimeMS();
+    }
+    
 
     /**
      * Do not call this in a GameLoop-class. Use your own times or the
@@ -416,8 +420,9 @@ public class OmniKryptecEngine implements Profilable {
 
     @Override
     public ProfileContainer[] getProfiles() {
-        return new ProfileContainer[]{new ProfileContainer(Profiler.OVERALL_FRAME_TIME, getFrameTimeMS()),
-            new ProfileContainer(Profiler.SCENE_RENDER_TIME, getRenderTimeMS()),
-            new ProfileContainer(Profiler.SCENE_LOGIC_TIME, getLogicTimeMS())};
+        return new ProfileContainer[]{new ProfileContainer(Profiler.OVERALL_FRAME_TIME, hasLoop()?getLoop().getFrameTime():0),
+            new ProfileContainer(Profiler.SCENE_RENDER_TIME_3D, getRender3DTimeMS()),
+            new ProfileContainer(Profiler.SCENE_LOGIC_TIME_3D, getLogic3DTimeMS()), new ProfileContainer(Profiler.SCENE_RENDER_TIME_2D, getRender2DTimeMS()),
+            new ProfileContainer(Profiler.SCENE_LOGIC_TIME_2D, getLogic2DTimeMS())};
     }
 }

@@ -106,7 +106,7 @@ public class Scene3D extends AbstractScene3D {
     
     
     @Override
-	protected final long render(RenderConfiguration config) {
+	protected final long render() {
     	lights.clear();
         lights.addAll(global.getImportantLights());
         vertcount = 0;
@@ -127,13 +127,13 @@ public class Scene3D extends AbstractScene3D {
                 for (long y = -coy + cy; y <= coy + cy; y++) {
                     for (long z = -coz + cz; z <= coz + cz; z++) {
                         if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
-                            vertcount += tmpc.render(config);
+                            vertcount += tmpc.render(getRenderConfig());
                         }
                     }
                 }
             }
         }
-        vertcount += global.render(config);
+        vertcount += global.render(getRenderConfig());
         return vertcount;
     }
  
