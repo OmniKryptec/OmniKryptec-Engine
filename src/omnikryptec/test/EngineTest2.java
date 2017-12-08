@@ -92,14 +92,14 @@ public class EngineTest2 implements IEventHandler {
                     new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setChunkRenderOffsets(2, 2, 2)
                     .setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(true).setInteger(GameSettings.HIGHEST_SHADER_LVL, 1000000),
                     new GLFWInfo(3, 3, true, false, 1280, 720));
-            new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    LiveProfiler liveProfiler = new LiveProfiler(750, 750);
-                    liveProfiler.startTimer(1000);
-                }
-            }).start();
+//            new Thread(new Runnable() {
+//
+//                @Override
+//                public void run() {
+//                    LiveProfiler liveProfiler = new LiveProfiler(750, 750);
+//                    liveProfiler.startTimer(1000);
+//                }
+//            }).start();
             // rend = new TestRenderer();
             //PostProcessing.instance().addStage(new
             // DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
@@ -212,7 +212,7 @@ public class EngineTest2 implements IEventHandler {
             // }
 
             System.out.println("Generating objs...");
-            int cube = 120;
+            int cube = 0;
             int abstand = 5;
             float scale = 1;
             int objcount = 0;
@@ -231,10 +231,10 @@ public class EngineTest2 implements IEventHandler {
                     }
                 }
             }
-            for(int i=0; i<0; i++) {
+            for(int i=0; i<5; i++) {
             	GameObject2D gom;
             	gom = new Sprite("dumm"+i, i%2==0?js:jn, null).setColor(new Color(1, 1, 1, 1));
-            	gom.getTransform().setScale(0.05f).setPosition(i*1, 0);
+            	gom.getTransform().setScale(0.5f).setPosition(i*10, 0);
             	Instance.getCurrent2DScene().addGameObject(gom);
             }
             System.out.println("Done: " + objcount + " Objects.");

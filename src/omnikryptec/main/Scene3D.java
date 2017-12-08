@@ -44,14 +44,6 @@ public class Scene3D extends AbstractScene3D {
         super(name, cam);
     }
 
-    @Deprecated
-    public Scene3D setChunkOffsets(long xo, long yo, long zo) {
-        this.cox = xo;
-        this.coy = yo;
-        this.coz = zo;
-        return this;
-    }
-
     @Override
 	public final void addGameObject(GameObject3D g) {
         if (g != null) {

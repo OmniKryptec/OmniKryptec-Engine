@@ -58,6 +58,7 @@ public abstract class AbstractScene3D extends AbstractScene<GameObject3D> implem
 			for (Renderer r : prerender) {
 				if (renderConfig.getRenderer().contains(r)) {
 					r.render(this, null, renderConfig);
+					setUnTmpRenderConfig();
 				}
 			}
 		}
@@ -68,6 +69,7 @@ public abstract class AbstractScene3D extends AbstractScene<GameObject3D> implem
 			for (Renderer r : postrender) {
 				if (renderConfig.getRenderer().contains(r)) {
 					r.render(this, null, renderConfig);
+					setUnTmpRenderConfig();
 				}
 			}
 		}
@@ -94,6 +96,7 @@ public abstract class AbstractScene3D extends AbstractScene<GameObject3D> implem
 	public final AbstractScene3D setUnTmpRenderConfig() {
 		if(backup!=null) {
 			this.renderConfig = backup;
+			this.backup = null;
 		}
 		return this;
 	}
