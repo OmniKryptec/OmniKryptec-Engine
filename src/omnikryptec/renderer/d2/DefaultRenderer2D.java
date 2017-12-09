@@ -22,7 +22,7 @@ import omnikryptec.settings.GameSettings;
 import omnikryptec.util.EnumCollection.BlendMode;
 import omnikryptec.util.Instance;
 
-public class DefaultRenderer2D implements Renderer2D{
+public class DefaultRenderer2D implements Renderer2D, IEventHandler{
 	
 	private SpriteBatch batch, finalBatch;
 	
@@ -95,6 +95,16 @@ public class DefaultRenderer2D implements Renderer2D{
 		finalBatch.draw(fbo, -1, -1, 2, 2);
 		finalBatch.end();
 		return 0;
+	}
+
+	@Override
+	public void onEvent(Event ev) {
+		if(ev.getType()==EventType.RESIZED) {
+			fbo.delete();
+			lights.delete();
+			lights = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
+			fbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
+		}
 	}
 
 

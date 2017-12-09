@@ -165,10 +165,10 @@ public class DisplayManager implements Profilable{
 		}
 		runtimef = (float) runtime;
 		framecount++;
+		Display.update();
 		if (Display.wasResized()) {
 			Display.setDisplayViewport();
 		}
-		Display.update();
 		if(fps) {
 			fps1++;
 		}else {
