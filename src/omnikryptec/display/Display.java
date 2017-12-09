@@ -20,6 +20,9 @@ public class Display {
 		GLFW.glfwInit();
 		GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(Logger.NEWSYSERR));
 		window = new Window(name, info);
+		if(info.lockWindowAspectRatio()[0]>0&&info.lockWindowAspectRatio()[1]>0) {
+			GLFW.glfwSetWindowAspectRatio(window.getID(), info.lockWindowAspectRatio()[0], info.lockWindowAspectRatio()[1]);
+		}
 		calculateViewport();
 		InputManager.initCallbacks();
 		lastsynced = getCurrentTime();
@@ -96,7 +99,6 @@ public class Display {
 	}
 
 	public static final void setDisplayViewport() {
-		calculateViewport();
 		GL11.glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 	}
 
@@ -108,7 +110,7 @@ public class Display {
 		setAspectRatio(-1, true);
 	}
 
-	static final void calculateViewport() {
+	public static final void calculateViewport() {
 		double winV = (double) window.getWidth() / (double) window.getHeight();
 		viewport[0] = 0;
 		viewport[1] = 0;
@@ -127,10 +129,9 @@ public class Display {
 
 	public static final void setAspectRatio(double a, boolean set) {
 		aspectratio = a;
+		calculateViewport();
 		if (set) {
 			setDisplayViewport();
-		} else {
-			calculateViewport();
 		}
 	}
 }

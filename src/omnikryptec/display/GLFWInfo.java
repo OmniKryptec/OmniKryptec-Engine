@@ -12,7 +12,8 @@ public class GLFWInfo {
     private boolean resizeable;
     private int width = 0, height = 0;
     private boolean fullscreen = false;
-
+    private int[] lockWindowAspectRatio = {-1, -1};
+    
     public GLFWInfo() {
         this(800, 600);
     }
@@ -47,7 +48,13 @@ public class GLFWInfo {
         this.width = width;
         this.height = height;
     }
-
+    
+    public GLFWInfo setLockWindowAspectRatio(int w, int h) {
+    	lockWindowAspectRatio[0] = w;
+    	lockWindowAspectRatio[1] = h;
+    	return this;
+    }
+    
     int getMajorVersion() {
         return majVers;
     }
@@ -71,5 +78,9 @@ public class GLFWInfo {
     int getHeight() {
         return height;
     }
-
+    
+    int[] lockWindowAspectRatio() {
+    	return lockWindowAspectRatio;
+    }
+    
 }

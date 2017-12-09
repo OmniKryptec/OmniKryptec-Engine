@@ -167,6 +167,7 @@ public class DisplayManager implements Profilable{
 		framecount++;
 		Display.update();
 		if (Display.wasResized()) {
+			Display.calculateViewport();
 			Display.setDisplayViewport();
 		}
 		if(fps) {
