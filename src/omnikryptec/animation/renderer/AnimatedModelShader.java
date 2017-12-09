@@ -3,7 +3,6 @@ package omnikryptec.animation.renderer;
 import omnikryptec.animation.AnimatedModel;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.graphics.GraphicsUtil;
-import omnikryptec.graphics.GraphicsUtil.BlendMode;
 import omnikryptec.main.Scene3D;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
@@ -14,6 +13,7 @@ import omnikryptec.shader.base.UniformMatrixArray;
 import omnikryptec.shader.base.UniformSampler;
 import omnikryptec.shader.base.UniformVec3;
 import omnikryptec.util.AdvancedFile;
+import omnikryptec.util.EnumCollection.BlendMode;
 import omnikryptec.util.Instance;
 
 public class AnimatedModelShader extends Shader {

@@ -1,9 +1,7 @@
 package omnikryptec.renderer.d3;
 
 import java.lang.reflect.Array;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
 
 public class RenderMap<K, V> {
 

@@ -1,7 +1,6 @@
 package omnikryptec.renderer.d2;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import omnikryptec.gameobject.GameObject2D;
 import omnikryptec.gameobject.Light2D;
@@ -9,8 +8,6 @@ import omnikryptec.gameobject.Sprite;
 import omnikryptec.main.AbstractScene2D;
 import omnikryptec.main.GameObjectContainer;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.renderer.d3.RenderMap;
-import omnikryptec.resource.texture.Texture;
 import omnikryptec.settings.GameSettings;
 
 public class RenderChunk2D implements GameObjectContainer<GameObject2D>{

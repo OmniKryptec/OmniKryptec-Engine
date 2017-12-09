@@ -11,8 +11,6 @@ import omnikryptec.gameobject.GameObject;
 import omnikryptec.gameobject.GameObject3D;
 import omnikryptec.gameobject.Light3D;
 import omnikryptec.renderer.d3.RenderChunk3D;
-import omnikryptec.renderer.d3.RenderConfiguration;
-import omnikryptec.renderer.d3.RenderMap;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.util.Instance;
 import omnikryptec.util.logger.LogLevel;

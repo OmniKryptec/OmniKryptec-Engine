@@ -4,7 +4,6 @@ import omnikryptec.display.DisplayManager;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import omnikryptec.main.Scene3D;
 import omnikryptec.resource.model.Material;
 import omnikryptec.resource.model.Model;

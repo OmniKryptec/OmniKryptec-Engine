@@ -45,4 +45,8 @@ public class EnumCollection {
 			bases = d;
 		}
 	}
+	
+	public static enum BlendMode{
+		ADDITIVE, ALPHA, MULTIPLICATIVE, DISABLE;
+	}
 }

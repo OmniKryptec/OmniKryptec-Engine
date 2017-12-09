@@ -36,7 +36,6 @@ import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.gameobject.EntityBuilder;
 import omnikryptec.gameobject.FollowingCamera;
-import omnikryptec.gameobject.GameObject;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene3D;
 import omnikryptec.settings.GameSettings;

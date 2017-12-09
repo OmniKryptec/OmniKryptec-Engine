@@ -1,7 +1,8 @@
 package omnikryptec.util;
 
-import java.util.function.Consumer;
 import static omnikryptec.util.AdvancedFile.NOT_FOUND;
+
+import java.util.function.Consumer;
 
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.logger.LogLevel;

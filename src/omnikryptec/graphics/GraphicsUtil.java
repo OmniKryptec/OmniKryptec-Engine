@@ -10,7 +10,7 @@ import omnikryptec.gameobject.Entity;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.Color;
-import omnikryptec.util.EnumCollection;
+import omnikryptec.util.EnumCollection.BlendMode;
 import omnikryptec.util.EnumCollection.RenderType;
 import omnikryptec.util.EnumCollection.UpdateType;
 
@@ -24,9 +24,6 @@ public class GraphicsUtil {
 	private static boolean depthMask = true;
 	private static BlendMode blendmode=BlendMode.DISABLE;
 	
-	public static enum BlendMode{
-		ADDITIVE, ALPHA, MULTIPLICATIVE, DISABLE;
-	}
 	
 	public static boolean isGLContextAvailable() {
 		return GLFW.glfwGetCurrentContext()!=0;

@@ -97,7 +97,7 @@ public class DisplayManager implements Profilable{
 			}
 			GraphicsUtil.cullBackFaces(true);
 			GraphicsUtil.enableDepthTesting(true);
-			GL11.glViewport(0, 0, info.getWidth(), info.getHeight());
+			Display.setDisplayViewport();
 			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 			Logger.log("Successfully created the Display!", LogLevel.FINEST);
 			return new OmniKryptecEngine(new DisplayManager(settings));
@@ -106,7 +106,7 @@ public class DisplayManager implements Profilable{
 			return null;
 		}
 	}
-
+	
 	/**
 	 * Resizes the display
 	 * 
@@ -153,9 +153,6 @@ public class DisplayManager implements Profilable{
 			isfirst = false;
 		}
 		tmptime = getCurrentTime();
-		if (Display.wasResized()) {
-			GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
-		}
 		currentFrameTime = getCurrentTime();
 		deltatime = (currentFrameTime - lasttime) / 1000.0;
 		runtime += deltatime;
@@ -168,7 +165,9 @@ public class DisplayManager implements Profilable{
 		}
 		runtimef = (float) runtime;
 		framecount++;
-		
+		if (Display.wasResized()) {
+			Display.setDisplayViewport();
+		}
 		Display.update();
 		if(fps) {
 			fps1++;
