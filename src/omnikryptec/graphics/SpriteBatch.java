@@ -124,7 +124,6 @@ public class SpriteBatch {
 			throw new OmniKryptecException("Can't start started rendering!");
 		}
 		GraphicsUtil.enableDepthTesting(false);
-		GraphicsUtil.enableAlphaBlending();
 		idx = 0;
 		vertexcount = 0;
 		drawcalls = 0;
@@ -140,7 +139,6 @@ public class SpriteBatch {
 		flush();
 		program.onDrawBatchEnd(this);
 		GraphicsUtil.enableDepthTesting(true);
-		GraphicsUtil.disableBlending();
 		drawing = false;
 	}
 
@@ -158,7 +156,7 @@ public class SpriteBatch {
 		return color;
 	}
 
-	private void flush() {
+	public void flush() {
 		if (idx > 0 && drawing) {
 			buffer.flip();
 			vao.bind();

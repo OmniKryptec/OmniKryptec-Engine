@@ -64,7 +64,7 @@ public class Scene2D extends AbstractScene2D{
 
 	@Override
 	protected long render() {
-		return renderer.render(global, getCamera().getTransform().getChunkX(), getCamera().getTransform().getChunkY(), cox, coy, scene);
+		return renderer.render(this, global, getCamera().getTransform().getChunkX(), getCamera().getTransform().getChunkY(), cox, coy, scene);
 	}
 
 	@Override

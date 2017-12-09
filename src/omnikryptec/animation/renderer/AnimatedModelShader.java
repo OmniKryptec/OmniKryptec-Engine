@@ -3,6 +3,7 @@ package omnikryptec.animation.renderer;
 import omnikryptec.animation.AnimatedModel;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.graphics.GraphicsUtil;
+import omnikryptec.graphics.GraphicsUtil.BlendMode;
 import omnikryptec.main.Scene3D;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
@@ -49,7 +50,7 @@ public class AnimatedModelShader extends Shader {
         model.getModel().getVao().bind(0, 1, 2, 3, 4, 5);
         model.getMaterial().getTexture(Material.DIFFUSE).bindToUnitOptimized(0);
 		jointTransforms.loadMatrixArray(model.getJointTransforms());
-        GraphicsUtil.disableBlending();
+        GraphicsUtil.blendMode(BlendMode.DISABLE);
         GraphicsUtil.enableDepthTesting(true);
 	}
 

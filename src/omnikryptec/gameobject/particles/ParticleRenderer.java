@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL15;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.graphics.OpenGL;
+import omnikryptec.graphics.GraphicsUtil.BlendMode;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.VertexBufferObject;
 import omnikryptec.resource.texture.ParticleAtlas;
@@ -96,7 +97,7 @@ public class ParticleRenderer {
 				OpenGL.gl31drawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVao().getIndexCount(), count);
 			}
 		}
-		GraphicsUtil.disableBlending();
+		GraphicsUtil.blendMode(BlendMode.DISABLE);
 	}
 
 	public long getParticleCount() {
@@ -104,11 +105,7 @@ public class ParticleRenderer {
 	}
 
 	private void bindTexture(ParticleAtlas texture) {
-		if (texture.useAlphaBlending()) {
-			GraphicsUtil.enableAdditiveBlending();
-		} else {
-			GraphicsUtil.enableAlphaBlending();
-		}
+		GraphicsUtil.blendMode(texture.getBlendMode());
 		texture.getTexture().bindToUnitOptimized(0);
 		shader.nrOfRows.loadFloat(texture.getNumberOfRows());
 		shader.uvs.loadVec4(texture.getTexture().getUVs()[0], texture.getTexture().getUVs()[1],

@@ -3,10 +3,15 @@ package omnikryptec.renderer.d2;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import omnikryptec.display.Display;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.graphics.GraphicsUtil;
+import omnikryptec.graphics.GraphicsUtil.BlendMode;
 import omnikryptec.graphics.SpriteBatch;
+import omnikryptec.main.AbstractScene2D;
 import omnikryptec.main.Scene2D;
+import omnikryptec.postprocessing.main.FrameBufferObject;
+import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.renderer.d3.RenderConfiguration;
 
 public class DefaultRenderer2D implements Renderer2D{
@@ -19,12 +24,14 @@ public class DefaultRenderer2D implements Renderer2D{
 	
 	public DefaultRenderer2D(SpriteBatch batch) {
 		this.batch = batch;
+		lights = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
 	}
 
 	private ArrayList<Sprite> sprites;
 	private String stringTmp;
+	private FrameBufferObject lights;
 	@Override
-	public long render(RenderChunk2D global, long camChunkX, long camChunkY,
+	public long render(AbstractScene2D sc, RenderChunk2D global, long camChunkX, long camChunkY,
 			long chunkOffsetX, long chunkOffsetY, HashMap<String, RenderChunk2D> scene) {
 		sprites = new ArrayList<>();
 		for(long x=-chunkOffsetX; x<=chunkOffsetX; x++) {
@@ -40,6 +47,13 @@ public class DefaultRenderer2D implements Renderer2D{
 		for(Sprite s : sprites) {
 			batch.draw(s);
 		}
+		batch.flush();
+		lights.bindFrameBuffer();
+		GraphicsUtil.clear(sc.getAmbientColor());
+		GraphicsUtil.blendMode(BlendMode.ADDITIVE);
+
+		lights.unbindFrameBuffer();
+		batch.draw(lights, 0, 0);
 		batch.end();
 		return batch.getVertexCount();
 	}

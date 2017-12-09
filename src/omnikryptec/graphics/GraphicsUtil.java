@@ -24,7 +24,11 @@ public class GraphicsUtil {
 	private static boolean depthTesting = false;
 	private static boolean scissor = false;
 	private static boolean depthMask = true;
-
+	private static BlendMode blendmode=BlendMode.DISABLE;
+	
+	public static enum BlendMode{
+		ADDITIVE, ALPHA, MULTIPLICATIVE, DISABLE;
+	}
 	
 	public static boolean isGLContextAvailable() {
 		return GLFW.glfwGetCurrentContext()!=0;
@@ -67,47 +71,32 @@ public class GraphicsUtil {
 		return antialiasing;
 	}
 
-	public static void enableAlphaBlending() {
-		if (!isAlphaBlending) {
-			if (!additiveBlending) {
+	public static void blendMode(BlendMode mode) {
+		if(blendmode!=mode) {
+			if(blendmode==BlendMode.DISABLE) {
 				GL11.glEnable(GL11.GL_BLEND);
 			}
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-			isAlphaBlending = true;
-			additiveBlending = false;
-		}
-	}
-
-	public static boolean isAlphaBlending() {
-		return isAlphaBlending;
-	}
-
-	public static void enableAdditiveBlending() {
-		if (!additiveBlending) {
-			if (!isAlphaBlending) {
-				GL11.glEnable(GL11.GL_BLEND);
+			switch(mode) {
+			case ADDITIVE:
+				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+				break;
+			case ALPHA:
+				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+				break;
+			case MULTIPLICATIVE:
+				GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_ZERO);
+				break;
+			case DISABLE:
+				GL11.glDisable(GL11.GL_BLEND);
+				break;
+			default:
+				break;
 			}
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-			additiveBlending = true;
-			isAlphaBlending = false;
+			blendmode = mode;
 		}
 	}
+	
 
-	public static boolean isAdditiveBlending() {
-		return additiveBlending;
-	}
-
-	public static void disableBlending() {
-		if (isAlphaBlending || additiveBlending) {
-			GL11.glDisable(GL11.GL_BLEND);
-			isAlphaBlending = false;
-			additiveBlending = false;
-		}
-	}
-
-	public static boolean isBlending() {
-		return isAlphaBlending || additiveBlending;
-	}
 
 	public static void enableDepthTesting(boolean enable) {
 		if (enable && !depthTesting) {

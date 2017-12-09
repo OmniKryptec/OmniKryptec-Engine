@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 import omnikryptec.gameobject.Sprite;
+import omnikryptec.main.AbstractScene2D;
 
 public interface Renderer2D {
 	
@@ -15,7 +16,7 @@ public interface Renderer2D {
 		}
 	};
 	
-	long render(RenderChunk2D global, long camChunkX, long camChunkY, long chunkOffsetX, long chunkOffsetY,
+	long render(AbstractScene2D sc, RenderChunk2D global, long camChunkX, long camChunkY, long chunkOffsetX, long chunkOffsetY,
 			HashMap<String, RenderChunk2D> scene);
 
 }

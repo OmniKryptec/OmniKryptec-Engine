@@ -23,6 +23,7 @@ import omnikryptec.gameobject.particles.ParticleAttractor;
 import omnikryptec.gameobject.particles.ParticleSpawnArea;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
 import omnikryptec.graphics.SpriteBatch;
+import omnikryptec.graphics.GraphicsUtil.BlendMode;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
 import omnikryptec.main.Scene3D;
@@ -246,7 +247,7 @@ public class EngineTest2 implements IEventHandler {
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
             Instance.getGameSettings().setMultithreadedParticles(true);
             system = new AttractedPaticleSystem(0, 0, 0,
-                    new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, false), 1000, 0,
+                    new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, BlendMode.ADDITIVE), 1000, 0,
                     1000, 1f, RenderType.ALWAYS).setParticlesAttractingEachOther(false).setAverageMass(100)
                     .setMassError(0.75f);
             // system.setParent(Instance.getCurrentCamera());

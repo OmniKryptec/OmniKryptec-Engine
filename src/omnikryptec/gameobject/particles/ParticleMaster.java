@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import omnikryptec.gameobject.Camera;
+import omnikryptec.graphics.GraphicsUtil.BlendMode;
 import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.util.ArrayUtil;
 import omnikryptec.util.Instance;
@@ -149,7 +150,8 @@ public class ParticleMaster implements Profilable {
             if(cansetWantsUpdateLastFalse){
             	list1.wantsUpdateLast = false;
             }
-            if (!entry.getKey().useAlphaBlending()) {
+            //Brauch man es bei anderen vlt auch nicht? TODO
+            if (!(entry.getKey().getBlendMode()==BlendMode.ALPHA)) {
                 ArrayUtil.parallelSortArrayListAsArray(list, Sorting.PARTICLE_COMPARATOR);
                 //list.sort(Sorting.PARTICLE_COMPARATOR); //Sorry You Are Too Slow
             }

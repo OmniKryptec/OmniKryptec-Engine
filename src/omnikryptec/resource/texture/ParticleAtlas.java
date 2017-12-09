@@ -1,26 +1,28 @@
 package omnikryptec.resource.texture;
 
+import omnikryptec.graphics.GraphicsUtil.BlendMode;
+
 public class ParticleAtlas {
 	private int numberOfRows;
-	private boolean usealphablending;
+	private BlendMode blenddmode;
 	private Texture tex;
 
-	public ParticleAtlas(Texture t, int numberOfRows, boolean alphablending) {
+	public ParticleAtlas(Texture t, int numberOfRows, BlendMode blenddmode) {
 		this.tex = t;
 		this.numberOfRows = numberOfRows;
-		this.usealphablending = alphablending;
+		this.blenddmode = blenddmode;
 	}
 
-	public boolean useAlphaBlending() {
-		return usealphablending;
+	public BlendMode getBlendMode() {
+		return blenddmode;
 	}
 
 	public int getNumberOfRows() {
 		return numberOfRows;
 	}
 
-	public ParticleAtlas setUseAlphaBlending(boolean b) {
-		this.usealphablending = b;
+	public ParticleAtlas setBlendMode(BlendMode b) {
+		this.blenddmode = b;
 		return this;
 	}
 
