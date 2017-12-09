@@ -70,6 +70,7 @@ public class SpriteBatch {
 	private int max = 0;
 	private Texture cur;
 	private boolean drawing = false;
+	private boolean caching = false;
 	private Color color = new Color(1, 1, 1, 1);
 	private Camera camera;
 
@@ -120,31 +121,43 @@ public class SpriteBatch {
 	}
 
 	public void begin() {
-		if (drawing) {
+		begin(false);
+	}
+	
+	public void begin(boolean onlyCache) {
+		if (drawing||caching) {
 			throw new OmniKryptecException("Can't start started rendering!");
 		}
-		GraphicsUtil.enableDepthTesting(false);
 		idx = 0;
 		vertexcount = 0;
 		drawcalls = 0;
-		program.start();
-		program.onDrawBatchStart(this);
-		drawing = true;
+		if(!onlyCache) {
+			GraphicsUtil.enableDepthTesting(false);
+			program.start();
+			program.onDrawBatchStart(this);
+			drawing = true;
+		}
+		caching = true;
 	}
 
 	public void end() {
-		if (!drawing) {
+		if (!caching) {
 			throw new OmniKryptecException("Can't stop stopped rendering!");
 		}
-		flush();
-		program.onDrawBatchEnd(this);
-		GraphicsUtil.enableDepthTesting(true);
-		drawing = false;
+		if(drawing) {
+			flush();
+			program.onDrawBatchEnd(this);
+			GraphicsUtil.enableDepthTesting(true);
+			drawing = false;
+		}
+		caching = false;
 	}
 
 	public void changeShader(Shader sh) {
-		flush();
-		program.onDrawBatchEnd(this);
+		if(drawing) {
+			flush();
+			program.onDrawBatchEnd(this);
+		}
 		program = sh;
 		if (drawing) {
 			program.start();
@@ -174,8 +187,8 @@ public class SpriteBatch {
 	}
 
 	private void vertex(float x, float y, float r, float g, float b, float a, float u, float v) {
-		if (!drawing) {
-			throw new OmniKryptecException("Rendering is not active!");
+		if (!caching) {
+			throw new OmniKryptecException("Rendering or caching is not active!");
 		}
 		vertexcount++;
 		idx++;

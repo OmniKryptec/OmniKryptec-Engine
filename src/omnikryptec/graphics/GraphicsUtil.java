@@ -18,8 +18,6 @@ public class GraphicsUtil {
 
 	private static boolean cullingBackFace = false;
 	private static boolean inWireframe = false;
-	private static boolean isAlphaBlending = false;
-	private static boolean additiveBlending = false;
 	private static boolean antialiasing = false;
 	private static boolean depthTesting = false;
 	private static boolean scissor = false;
