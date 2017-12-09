@@ -44,6 +44,7 @@ public class DefaultRenderer2D implements Renderer2D{
 		}
 		sprites.sort(LAYER_COMPARATOR);
 		batch.begin();
+		GraphicsUtil.blendMode(BlendMode.ALPHA);
 		for(Sprite s : sprites) {
 			batch.draw(s);
 		}

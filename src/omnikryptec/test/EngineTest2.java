@@ -234,7 +234,7 @@ public class EngineTest2 implements IEventHandler {
             }
             for(int i=0; i<5; i++) {
             	GameObject2D gom;
-            	gom = new Sprite("dumm"+i, i%2==0?js:jn, null).setColor(new Color(1, 1, 1, 1));
+            	gom = new Sprite("dumm"+i, i%2==0?js:jn, null).setColor(new Color(1, 1, 1, 0.5f));
             	gom.getTransform().setScale(0.5f).setPosition(i*10, 0);
             	Instance.getCurrent2DScene().addGameObject(gom);
             }
