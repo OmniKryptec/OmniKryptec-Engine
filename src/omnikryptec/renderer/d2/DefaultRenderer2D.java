@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import omnikryptec.display.Display;
+import omnikryptec.event.event.Event;
+import omnikryptec.event.event.EventType;
+import omnikryptec.event.event.IEventHandler;
+import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Light2D;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.graphics.GraphicsUtil;
@@ -13,13 +17,14 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
+import omnikryptec.resource.texture.Texture;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.EnumCollection.BlendMode;
 import omnikryptec.util.Instance;
 
 public class DefaultRenderer2D implements Renderer2D{
 	
-	private SpriteBatch batch;
+	private SpriteBatch batch, finalBatch;
 	
 	public DefaultRenderer2D(Scene2D scene) {
 		this(new SpriteBatch(scene.getCamera()));
@@ -27,6 +32,7 @@ public class DefaultRenderer2D implements Renderer2D{
 	
 	public DefaultRenderer2D(SpriteBatch batch) {
 		this.batch = batch;
+		this.finalBatch = new SpriteBatch(new Camera().setDefaultScreenSpaceProjection());
 		lights = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
 		fbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
 	}
@@ -67,25 +73,29 @@ public class DefaultRenderer2D implements Renderer2D{
 		for(Sprite s : sprites) {
 			s.paint(batch);
 		}
+		batch.end();
 		if(light) {
-			batch.flush();
 			lights.bindFrameBuffer();
 			GraphicsUtil.clear(sc.getAmbientColor());
 			GraphicsUtil.blendMode(BlendMode.ADDITIVE);
+			batch.begin();
 			for(Light2D s : lightlist) {
 				s.paint(batch);
 			}
+			batch.end();
 			lights.unbindFrameBuffer();
 			GraphicsUtil.blendMode(BlendMode.MULTIPLICATIVE);
-			batch.draw(lights, 0, 0);
+			finalBatch.begin();
+			finalBatch.draw(lights, -1, -1, 2, 2);
+			finalBatch.end();
 		}
-		batch.end();
 		fbo.unbindFrameBuffer();
-		batch.begin();
 		GraphicsUtil.blendMode(BlendMode.ALPHA);
-		batch.draw(fbo, 0, 0);
-		batch.end();
-		return batch.getVertexCount();
+		finalBatch.begin();
+		finalBatch.draw(fbo, -1, -1, 2, 2);
+		finalBatch.end();
+		return 0;
 	}
+
 
 }

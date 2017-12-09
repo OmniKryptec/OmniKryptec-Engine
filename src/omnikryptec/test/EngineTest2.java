@@ -241,16 +241,16 @@ public class EngineTest2 implements IEventHandler {
 				}
 			}
 			System.out.println(Arrays.toString(Display.getViewportData()));
-			for (int i = 0; i < 1; i++) {
+			for (int i = 0; i < 5; i++) {
 				GameObject2D gom;
 				gom = new Sprite("dumm" + i, i % 2 == 0 ? js : jn, null) {
-					// @Override
-					// public void paint(SpriteBatch s) {
-					// s.color().set(1, 1, 1, 1);
-					// s.fill3DRect(0, 0, 1300, 1300, 0);
-					// }
+//					 @Override
+//					 public void paint(SpriteBatch s) {
+//						 s.color().set(1, 1, 1, 1);
+//						 s.fillRect(0, 0, 1000, 1000);
+//					 }
 				}.setColor(new Color(1, 1, 1, 1));
-				gom.getTransform().setScale(1.5f).setPosition(i * 100, 0);
+				gom.getTransform().setScale(1.5f).setPosition(i*100, i*100);
 				Instance.getCurrent2DScene().addGameObject(gom);
 			}
 			Light2D lllll = new Light2D("dickes fettes licht2d", animation, null);

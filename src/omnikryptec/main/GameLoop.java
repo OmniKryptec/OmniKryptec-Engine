@@ -8,6 +8,8 @@ import omnikryptec.event.event.Event;
 import omnikryptec.event.event.EventType;
 import omnikryptec.event.input.InputManager;
 import omnikryptec.graphics.GraphicsUtil;
+import omnikryptec.renderer.d3.RenderConfiguration;
+import omnikryptec.renderer.d3.RendererRegistration;
 import omnikryptec.util.EnumCollection.GameLoopShutdownOption;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;

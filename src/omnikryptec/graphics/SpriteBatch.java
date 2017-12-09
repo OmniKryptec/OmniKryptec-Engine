@@ -42,7 +42,8 @@ public class SpriteBatch {
 	private boolean caching = false;
 	private Color color = new Color(1, 1, 1, 1);
 	private Camera camera;
-
+	private Texture texCur;
+	
 	public SpriteBatch(Camera cam) {
 		this(cam, 1000);
 	}
@@ -79,11 +80,12 @@ public class SpriteBatch {
 	}
 
 	private void checkFlush(Texture t) {
-		if(idx >= max) {
+		if(idx >= max || t != texCur) {
 			flush();
 		}
 		if(t!=null) {
 			t.bindToUnitOptimized(0);
+			texCur = t;
 		}
 	}
 

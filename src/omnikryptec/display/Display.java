@@ -97,7 +97,8 @@ public class Display {
 
 	public static final void setDisplayViewport() {
 		calculateViewport();
-		GL11.glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+		GL11.glViewport(0, 0, 1280, 720);
+		//GL11.glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 	}
 
 	public static final int[] getViewportData() {

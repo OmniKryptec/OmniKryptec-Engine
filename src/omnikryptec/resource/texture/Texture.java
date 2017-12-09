@@ -44,11 +44,19 @@ public abstract class Texture implements ResourceObject {
         return this;
     }
 
-    public final void bindToUnitOptimized(int unit, int... info) {
+    /**
+     * 
+     * @param unit
+     * @param info
+     * @return true if this texture has been bound.
+     */
+    public final boolean bindToUnitOptimized(int unit, int... info) {
     	if (this != lastBoundTexture[unit] || alwaysBind) {
             bindToUnit(unit, info);
             lastBoundTexture[unit] = this;
+            return true;
         }
+    	return false;
     }
 
     public float[] getUVs() {
