@@ -7,11 +7,8 @@ import omnikryptec.gameobject.GameObject2D;
 import omnikryptec.renderer.d2.DefaultRenderer2D;
 import omnikryptec.renderer.d2.RenderChunk2D;
 import omnikryptec.renderer.d2.Renderer2D;
-import omnikryptec.renderer.d3.RenderChunk3D;
-import omnikryptec.renderer.d3.RenderConfiguration;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.util.Instance;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
 
 public class Scene2D extends AbstractScene2D{
 	
@@ -31,11 +28,19 @@ public class Scene2D extends AbstractScene2D{
 	public Scene2D(String name, Camera cam) {
 		super(name, cam);
 		setRenderer(new DefaultRenderer2D(this));
+		init();
 	}
 	
 	public Scene2D(String name, Camera cam, Renderer2D renderer) {
 		this(name, cam);
 		setRenderer(renderer);
+		init();
+	}
+	
+	private void init() {
+		setAmbientColor(1, 1, 1);
+		cox = OmniKryptecEngine.instance().getGameSettings().getLong(GameSettings.CHUNK_OFFSET_2D_X);
+		coy = OmniKryptecEngine.instance().getGameSettings().getLong(GameSettings.CHUNK_OFFSET_2D_Y);
 	}
 	
 	public void setRenderer(Renderer2D renderer) {

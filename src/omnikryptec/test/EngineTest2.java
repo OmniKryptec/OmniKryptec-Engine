@@ -15,6 +15,7 @@ import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.gameobject.GameObject2D;
 import omnikryptec.gameobject.GameObject3D;
+import omnikryptec.gameobject.Light2D;
 import omnikryptec.gameobject.Light3D;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.gameobject.particles.AttractedPaticleSystem;
@@ -171,7 +172,7 @@ public class EngineTest2 implements IEventHandler {
                 }
 
             }.setPerspectiveProjection(90, 0.1f, 1000)).setAmbientColor(0.1f, 0.1f, 0.1f));
-            OmniKryptecEngine.instance().addAndSetScene(new Scene2D("test2d", new Camera().setOrthographicProjection2D(0, 0, 1000, 1000)));
+            OmniKryptecEngine.instance().addAndSetScene(new Scene2D("test2d", new Camera().setOrthographicProjection2D(0, 0, 1000, 1000)).setAmbientColor(0.1f, 0.1f, 0.1f));
             Instance.getCurrent3DCamera().getTransform().setPosition(0, 0, 200);
             // OmniKryptecEngine.instance().addAndSetScene(null);
             // Instance.getCurrentCamera().getTransform().setPosition(0, 0, 0);
@@ -234,10 +235,12 @@ public class EngineTest2 implements IEventHandler {
             }
             for(int i=0; i<5; i++) {
             	GameObject2D gom;
-            	gom = new Sprite("dumm"+i, i%2==0?js:jn, null).setColor(new Color(1, 1, 1, 0.5f));
-            	gom.getTransform().setScale(0.5f).setPosition(i*10, 0);
+            	gom = new Sprite("dumm"+i, i%2==0?js:jn, null).setColor(new Color(1, 1, 1, 1));
+            	gom.getTransform().setScale(0.5f).setPosition(i*100, 100);
             	Instance.getCurrent2DScene().addGameObject(gom);
             }
+            Light2D lllll = new Light2D("dickes fettes licht2d", animation, null);
+            Instance.getCurrent2DScene().addGameObject(lllll);
             System.out.println("Done: " + objcount + " Objects.");
             // Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0,
             // 1).setScale(new

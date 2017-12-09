@@ -418,6 +418,10 @@ public class OmniKryptecEngine implements Profilable {
         return clearcolor;
     }
 
+    public final GameSettings getGameSettings() {
+    	return getDisplayManager().getSettings();
+    }
+    
     @Override
     public ProfileContainer[] getProfiles() {
         return new ProfileContainer[]{new ProfileContainer(Profiler.OVERALL_FRAME_TIME, hasLoop()?getLoop().getFrameTime():0),

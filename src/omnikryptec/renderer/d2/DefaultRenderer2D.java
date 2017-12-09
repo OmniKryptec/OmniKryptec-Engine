@@ -4,15 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import omnikryptec.display.Display;
+import omnikryptec.gameobject.Light2D;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.graphics.GraphicsUtil.BlendMode;
 import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.main.AbstractScene2D;
+import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.renderer.d3.RenderConfiguration;
+import omnikryptec.settings.GameSettings;
+import omnikryptec.util.Instance;
 
 public class DefaultRenderer2D implements Renderer2D{
 	
@@ -28,17 +32,30 @@ public class DefaultRenderer2D implements Renderer2D{
 	}
 
 	private ArrayList<Sprite> sprites;
+	private ArrayList<Light2D> lightlist;
 	private String stringTmp;
 	private FrameBufferObject lights;
+	private boolean light;
+	private long last=-1;
 	@Override
 	public long render(AbstractScene2D sc, RenderChunk2D global, long camChunkX, long camChunkY,
 			long chunkOffsetX, long chunkOffsetY, HashMap<String, RenderChunk2D> scene) {
 		sprites = new ArrayList<>();
+		if(GraphicsUtil.needsUpdate(last, 20)){
+			light = OmniKryptecEngine.instance().getGameSettings().getBoolean(GameSettings.LIGHT_2D);
+			last = Instance.getFramecount();
+		}
+		if(light) {
+			lightlist = new ArrayList<>();
+		}
 		for(long x=-chunkOffsetX; x<=chunkOffsetX; x++) {
 			for(long y=-chunkOffsetY; y<=camChunkY; y++) {
 				stringTmp = Scene2D.xyToString(camChunkX+x, camChunkY+y);
 				if(scene.get(stringTmp)!=null) {
 					sprites.addAll(scene.get(stringTmp).__getSprites());
+					if(light) {
+						lightlist.addAll(scene.get(stringTmp).__getLights());
+					}
 				}
 			}
 		}
@@ -46,15 +63,20 @@ public class DefaultRenderer2D implements Renderer2D{
 		batch.begin();
 		GraphicsUtil.blendMode(BlendMode.ALPHA);
 		for(Sprite s : sprites) {
-			batch.draw(s);
+			s.paint(batch);
 		}
 		batch.flush();
-		lights.bindFrameBuffer();
-		GraphicsUtil.clear(sc.getAmbientColor());
-		GraphicsUtil.blendMode(BlendMode.ADDITIVE);
-
-		lights.unbindFrameBuffer();
-		batch.draw(lights, 0, 0);
+		if(light) {
+			lights.bindFrameBuffer();
+			GraphicsUtil.clear(sc.getAmbientColor());
+			GraphicsUtil.blendMode(BlendMode.ADDITIVE);
+			for(Light2D s : lightlist) {
+				s.paint(batch);
+			}
+			lights.unbindFrameBuffer();
+			GraphicsUtil.blendMode(BlendMode.MULTIPLICATIVE);
+			batch.draw(lights, 0, 0);
+		}
 		batch.end();
 		return batch.getVertexCount();
 	}

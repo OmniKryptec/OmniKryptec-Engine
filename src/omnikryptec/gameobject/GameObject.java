@@ -388,7 +388,7 @@ public abstract class GameObject implements DataMapSerializable {
 
     @Override
     public String toString() {
-        return String.format("%s (%d)", getClass().getSimpleName(), ULTIMATE_IDENTIFIER.toEpochMilli());
+        return String.format("%s (%d)", getClass().getName(), ULTIMATE_IDENTIFIER.toEpochMilli());
     }
 
     public GameObject setName(String name) {

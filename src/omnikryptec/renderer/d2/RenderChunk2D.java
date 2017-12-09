@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import omnikryptec.gameobject.GameObject2D;
+import omnikryptec.gameobject.Light2D;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.main.AbstractScene2D;
 import omnikryptec.main.GameObjectContainer;
@@ -31,6 +32,7 @@ public class RenderChunk2D implements GameObjectContainer<GameObject2D>{
 	public final boolean isglobal;
 	private final ArrayList<Sprite> chunkSprites = new ArrayList<>();
 	private final ArrayList<GameObject2D> chunkOther = new ArrayList<>(); 
+	private final ArrayList<Light2D> chunkLights = new ArrayList<>();
 	
 	//currently unused
 //	private RenderChunk2D() {
@@ -51,12 +53,17 @@ public class RenderChunk2D implements GameObjectContainer<GameObject2D>{
 	@Override
 	public void addGameObject(GameObject2D go) {
 		if(go instanceof Sprite) {
-			chunkSprites.add((Sprite)go);
+			if(go instanceof Light2D) {
+				chunkLights.add((Light2D)go);
+			}else {
+				chunkSprites.add((Sprite)go);
+			}
 		}else {
 			chunkOther.add(go);
 		}
 	}
 
+	
 	@Override
 	public GameObject2D removeGameObject(GameObject2D go, boolean delete) {
 		if(go instanceof Sprite) {
@@ -80,7 +87,20 @@ public class RenderChunk2D implements GameObjectContainer<GameObject2D>{
 	}
 	
 	public void logic() {
-		
+		for(GameObject2D g : chunkOther) {
+			g.doLogic();
+		}
+		for(GameObject2D g : chunkLights) {
+			g.doLogic();
+		}
+		for(GameObject2D g : chunkSprites) {
+			g.doLogic();
+		}
+	}
+	
+
+	public ArrayList<Light2D> __getLights() {
+		return chunkLights;
 	}
 	
 	public ArrayList<Sprite> __getSprites(){

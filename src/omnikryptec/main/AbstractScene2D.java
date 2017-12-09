@@ -12,4 +12,5 @@ public abstract class AbstractScene2D extends AbstractScene<GameObject2D>{
 		this.name = name;
 		this.camera = cam;
 	}
+
 }

@@ -134,6 +134,21 @@ public class GameSettings {
 	 * boolean
 	 */
 	public static final String SET_CHUNK_SIZE_2D_AS_DISPLAYSIZE = "SET_CHUNK_SIZE_2D_AS_DISPLAYSIZE";
+
+	/**
+	 * boolean
+	 */
+	public static final String LIGHT_2D = "LIGHT_2D";
+
+	/**
+	 * long
+	 */
+	public static final String CHUNK_OFFSET_2D_X = "CHUNK_OFFSET_2D_X";
+	
+	/**
+	 * long
+	 */
+	public static final String CHUNK_OFFSET_2D_Y = "CHUNK_OFFSET_2D_Y";
 	
 	private final HashMap<String, Object> settings_objects = new HashMap<>();
 	private final HashMap<String, Float> settings_floats = new HashMap<>();
@@ -221,6 +236,9 @@ public class GameSettings {
 		/*SPECIAL*/
 		setFloat(Z_OFFSET_2D, 1f);
 		setBoolean(FASTMATH, true);
+		setBoolean(LIGHT_2D, true);
+		setLong(CHUNK_OFFSET_2D_X, 1);
+		setLong(CHUNK_OFFSET_2D_Y, 1);
 		return this;
 	}
 
