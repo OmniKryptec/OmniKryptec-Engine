@@ -23,7 +23,7 @@ public class Camera extends GameObject3D {
         super();
         projViewNeedsUpdate = true;
         invPVneedsUpdate = true;
-        projection = proj.toImmutable();
+        projection = proj;
     }
 
     public Matrix4fc getProjectionMatrix() {
@@ -90,14 +90,14 @@ public class Camera extends GameObject3D {
     public Camera setPerspectiveProjection(float fovdeg, float near, float far, float width, float height) {
         projViewNeedsUpdate = true;
         invPVneedsUpdate = true;
-    	projection = Maths.newPerspectiveProjection(fovdeg, far, near, width, height).toImmutable();
+    	projection = Maths.newPerspectiveProjection(fovdeg, far, near, width, height);
         return this;
     }
 
     public Camera setOrthographicProjection(float left, float right, float bottom, float top, float near, float far) {
         projViewNeedsUpdate = true;
         invPVneedsUpdate = true;
-    	projection = Maths.newOrthographicProjection(left, right, bottom, top, near, far).toImmutable();
+    	projection = Maths.newOrthographicProjection(left, right, bottom, top, near, far);
         return this;
     }
 
@@ -116,7 +116,7 @@ public class Camera extends GameObject3D {
     public Camera setProjectionMatrix(Matrix4f proj) {
         projViewNeedsUpdate = true;
         invPVneedsUpdate = true;
-    	this.projection = proj.toImmutable();
+    	this.projection = proj;
         return this;
     }
 

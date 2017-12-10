@@ -111,7 +111,8 @@ public class Display {
 	}
 
 	public static final void calculateViewport() {
-		double winV = (double) window.getWidth() / (double) window.getHeight();
+		//double winV = (double) window.getWidth() / (double) window.getHeight();
+		double winV = (double) getBufferWidth() / (double) getBufferHeight();
 		viewport[0] = 0;
 		viewport[1] = 0;
 		viewport[2] = window.getWidth();
