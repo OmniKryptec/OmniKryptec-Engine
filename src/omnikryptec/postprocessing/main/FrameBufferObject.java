@@ -123,7 +123,7 @@ public class FrameBufferObject extends Texture {
     /**
      * Deletes the frame buffer and its attachments when the game closes.
      */
-    public void delete() {
+    public FrameBufferObject delete() {
         GL30.glDeleteFramebuffers(frameBuffer);
         GL11.glDeleteTextures(depthTexture);
         GL30.glDeleteRenderbuffers(depthBuffer);
@@ -134,6 +134,7 @@ public class FrameBufferObject extends Texture {
                 GL11.glDeleteTextures(colBuffers[i]);
             }
         }
+		return this;
     }
     
 

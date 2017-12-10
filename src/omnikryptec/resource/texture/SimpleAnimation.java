@@ -1,6 +1,7 @@
 package omnikryptec.resource.texture;
 
 import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.resource.loader.ResourceObject;
 
 /**
  * Animations in animations may not work correctly.
@@ -66,6 +67,11 @@ public class SimpleAnimation extends Texture {
 	@Override
 	public float getHeight() {
 		return textures[index].getHeight();
+	}
+
+	@Override
+	public ResourceObject delete() {
+		return this;
 	}
 
 }

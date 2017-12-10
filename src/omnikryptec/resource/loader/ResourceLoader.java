@@ -131,6 +131,7 @@ public class ResourceLoader implements Loader {
         try {
             //resetExecutor();
             if (clearData) {
+            	loadedData.values().stream().forEach((i)->i.delete());
                 loadedData.clear();
             }
             final ArrayList<AdvancedFile> stagedAdvancedFiles = getStagedAdvancedFilesSorted();

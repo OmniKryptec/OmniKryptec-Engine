@@ -104,4 +104,11 @@ public class Model implements ResourceObject {
         return name;
     }
 
+	@Override
+	public ResourceObject delete() {
+		vao.delete();
+		vbo_updateable.delete();
+		return this;
+	}
+
 }

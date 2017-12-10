@@ -1,5 +1,7 @@
 package omnikryptec.resource.texture;
 
+import omnikryptec.resource.loader.ResourceObject;
+
 public class AtlasTexture extends Texture {
 
     private Texture texture;
@@ -68,6 +70,11 @@ public class AtlasTexture extends Texture {
 	@Override
 	public float getHeight() {
 		return h;
+	}
+
+	@Override
+	public ResourceObject delete() {
+		return this;
 	}
 
 }

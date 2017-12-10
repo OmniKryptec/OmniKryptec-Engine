@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.joml.Matrix4f;
 
 import omnikryptec.resource.loader.ResourceLoader;
+import omnikryptec.resource.loader.ResourceObject;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
 import omnikryptec.resource.model.Model;
@@ -104,7 +105,7 @@ public class AnimatedModel implements AdvancedModel {
      * @return A reference to this AnimatedModel
      */
     @Override
-    public final AnimatedModel delete() {
+    public final AdvancedModel delete() {
         model.getVao().delete();
         //texture.delete();
         animator.delete();

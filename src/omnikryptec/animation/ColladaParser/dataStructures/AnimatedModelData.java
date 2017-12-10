@@ -34,4 +34,10 @@ public class AnimatedModelData implements ResourceObject {
         return name;
     }
 
+	@Override
+	public ResourceObject delete() {
+		return this;
+	}
+
+
 }

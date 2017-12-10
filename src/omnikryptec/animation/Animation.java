@@ -59,4 +59,10 @@ public class Animation implements ResourceObject {
         return hash;
     }
 
+	@Override
+	public ResourceObject delete() {
+		return this;
+		
+	}
+
 }
