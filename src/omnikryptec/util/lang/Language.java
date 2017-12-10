@@ -136,7 +136,7 @@ public class Language extends Properties {
 
     public static final ArrayList<Language> ofResources(String path) {
         if (path == null) {
-            Logger.log("Error while loading Languages from resource, path is invalid", LogLevel.WARNING);
+            Logger.log("Error while loading Languages from resources, path is invalid", LogLevel.WARNING);
             return null;
         }
         try {
