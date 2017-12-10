@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.time.LocalDateTime;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -49,7 +50,7 @@ public class FrameBufferObject extends Texture {
     }
 
     private static List<FrameBufferObject> fbos = new ArrayList<>();
-    private static Stack<FrameBufferObject> history = new Stack<>();
+    private static ArrayDeque<FrameBufferObject> history = new ArrayDeque<>();
 
     /**
      * Creates an FBO of a specified width and height, with the desired type of
@@ -145,6 +146,7 @@ public class FrameBufferObject extends Texture {
     public void bindFrameBuffer() {
         history.push(this);
         GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, frameBuffer);
+        //Display.setViewPort(width, height);
         GL11.glViewport(0, 0, width, height);
     }
 
@@ -155,15 +157,15 @@ public class FrameBufferObject extends Texture {
      */
     public void unbindFrameBuffer() {
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-        Display.setDisplayViewport();
+	    history.pop();
         if(!history.isEmpty()){
-	        history.pop();
-	        if(!history.isEmpty()&&history.peek()!=null){
-	        	history.peek().bindFrameBuffer();
-	        }
+        	history.pop().bindFrameBuffer();
+        }else {
+            Display.setDisplayViewport();
         }
     }
 
+    
     /**
      * Binds the current FBO to be read from (not used in tutorial 43).
      */
@@ -201,7 +203,7 @@ public class FrameBufferObject extends Texture {
         GL11.glReadBuffer(attachment);
         GL30.glBlitFramebuffer(0, 0, width, height, 0, 0, out.width, out.height,
                 GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT, GL11.GL_NEAREST);
-        unbindFrameBuffer();
+        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
         if (depth) {
             resolveDepth(out);
         }
@@ -213,7 +215,7 @@ public class FrameBufferObject extends Texture {
         GL11.glReadBuffer(GL30.GL_DEPTH_ATTACHMENT);
         GL30.glBlitFramebuffer(0, 0, width, height, 0, 0, out.width, out.height, GL11.GL_DEPTH_BUFFER_BIT,
                 GL11.GL_NEAREST);
-        unbindFrameBuffer();
+        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
     }
 
     public void resolveToScreen() {
@@ -222,7 +224,7 @@ public class FrameBufferObject extends Texture {
         GL11.glDrawBuffer(GL11.GL_BACK);
         GL30.glBlitFramebuffer(0, 0, width, height, 0, 0, Display.getWidth(), Display.getHeight(),
                 GL11.GL_COLOR_BUFFER_BIT, GL11.GL_NEAREST);
-        unbindFrameBuffer();
+        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
     }
 
     /**
@@ -236,7 +238,9 @@ public class FrameBufferObject extends Texture {
         this.type = type;
         fbos.add(this);
         colBuffers = new int[targets.length];
-        createFrameBuffer();
+        frameBuffer = GL30.glGenFramebuffers();
+        bindFrameBuffer();
+        determineDrawBuffers();
         if (multisample != GameSettings.NO_MULTISAMPLING) {
             for (int i = 0; i < targets.length; i++) {
                 colBuffers[i] = createMultisampleColourAttachment(targets[i].target,
@@ -254,18 +258,6 @@ public class FrameBufferObject extends Texture {
             createDepthTextureAttachment();
         }
         unbindFrameBuffer();
-    }
-
-    /**
-     * Creates a new frame buffer object and sets the buffer to which drawing
-     * will occur - colour attachment 0. This is the attachment where the colour
-     * buffer texture is.
-     *
-     */
-    private void createFrameBuffer() {
-        frameBuffer = GL30.glGenFramebuffers();
-        GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, frameBuffer);
-        determineDrawBuffers();
     }
 
     private void determineDrawBuffers() {
@@ -372,7 +364,7 @@ public class FrameBufferObject extends Texture {
             final FloatBuffer buffer = BufferUtils.createFloatBuffer(width * height * (withTransparency ? 4 : 3));
             my.bindToRead(GL30.GL_COLOR_ATTACHMENT0);
             GL11.glReadPixels(0, 0, width, height, (withTransparency ? GL11.GL_RGBA : GL11.GL_RGB), GL11.GL_FLOAT, buffer);
-            my.unbindFrameBuffer();
+            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
             buffer.rewind();
             final int[] rgbArray = new int[width * height];
             for(int y = 0; y < height; y++) {

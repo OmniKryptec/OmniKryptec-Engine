@@ -98,7 +98,7 @@ public class EngineTest2 implements IEventHandler {
 							.setInteger(GameSettings.HIGHEST_SHADER_LVL, 1000000)
 							.setBoolean(GameSettings.LIGHT_2D, false),
 					new GLFWInfo(3, 2, true, false, 1280, 720));
-			Display.setAspectRatio(16/9.0, true);
+			Display.setAspectRatio(1, true);
 			// new Thread(new Runnable() {
 			//
 			// @Override

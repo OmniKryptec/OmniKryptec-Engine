@@ -100,7 +100,8 @@ public class Display {
 	}
 
 	public static final void setDisplayViewport() {
-		GL11.glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+		GL11.glViewport(0, 0, getBufferWidth(), getBufferHeight());
+		//GL11.glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
 	}
 
 	public static final int[] getViewportData() {
@@ -111,24 +112,42 @@ public class Display {
 		setAspectRatio(-1, true);
 	}
 
-	public static final void calculateViewport() {
+	static final void calculateViewport() {
 		// double winV = (double) window.getWidth() / (double) window.getHeight();
 		double winV = (double) getBufferWidth() / (double) getBufferHeight();
 		viewport[0] = 0;
 		viewport[1] = 0;
-		viewport[2] = window.getWidth();
-		viewport[3] = window.getHeight();
+		viewport[2] = getBufferWidth();
+		viewport[3] = getBufferHeight();
 		if (aspectratio > 0) {
 			if (winV <= aspectratio) {
-				viewport[3] = (int) ((window.getHeight() * winV) / aspectratio);
-				viewport[1] = (int) ((window.getHeight() - viewport[3]) * 0.5);
+				viewport[3] = (int) ((getBufferHeight() * winV) / aspectratio);
+				viewport[1] = (int) ((getBufferHeight() - viewport[3]) * 0.5);
 			} else {
-				viewport[2] = (int) ((window.getWidth() / winV) * aspectratio);
-				viewport[0] = (int) ((window.getWidth() - viewport[2]) * 0.5);
+				viewport[2] = (int) ((getBufferWidth() / winV) * aspectratio);
+				viewport[0] = (int) ((getBufferWidth() - viewport[2]) * 0.5);
 			}
 		}
 	}
 
+//	public static void setViewPort(int width, int height) {
+//		double winV = (double) width / (double) height;
+//		int x = 0;
+//		int y = 0;
+//		int w = window.getWidth();
+//		int h = window.getHeight();
+//		if (aspectratio > 0) {
+//			if (winV <= aspectratio) {
+//				h = (int) ((window.getHeight() * winV) / aspectratio);
+//				y = (int) ((window.getHeight() - h) * 0.5);
+//			} else {
+//				w = (int) ((window.getWidth() / winV) * aspectratio);
+//				x = (int) ((window.getWidth() - w) * 0.5);
+//			}
+//		}
+//		GL11.glViewport(x, y, w, h);
+//	}
+	
 	public static final void setAspectRatio(double a, boolean set) {
 		aspectratio = a;
 		calculateViewport();
