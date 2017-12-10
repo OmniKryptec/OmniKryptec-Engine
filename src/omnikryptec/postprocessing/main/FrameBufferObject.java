@@ -23,7 +23,6 @@ import omnikryptec.display.Display;
 import omnikryptec.graphics.OpenGL;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.settings.GameSettings;
-import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.EnumCollection.DepthbufferType;
 import omnikryptec.util.Instance;
 import omnikryptec.util.exceptions.IllegalAccessException;
