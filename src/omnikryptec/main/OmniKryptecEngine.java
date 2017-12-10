@@ -1,5 +1,6 @@
 package omnikryptec.main;
 
+import de.codemakers.logger.ILogger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,6 +43,30 @@ import omnikryptec.util.profiler.Profiler;
 public class OmniKryptecEngine implements Profilable {
 
     private static OmniKryptecEngine instance;
+
+    static {
+        de.codemakers.logger.Logger.setLogger(new ILogger() {
+            @Override
+            public final void log(Object object, Object... objects) {
+                if (objects == null || objects.length == 0) {
+                    Logger.log(object);
+                } else {
+                    Logger.log(String.format("" + object, objects));
+                }
+            }
+
+            @Override
+            public final void logErr(Object object, Throwable throwable, Object... objects) {
+                if (object != null) {
+                    if (objects == null || objects.length == 0) {
+                        Logger.logErr(object, (Exception) throwable);
+                    } else {
+                        Logger.logErr(String.format("" + object, objects), (Exception) throwable);
+                    }
+                }
+            }
+        });
+    }
 
     public static OmniKryptecEngine instance() {
         return instance;
@@ -266,7 +291,6 @@ public class OmniKryptecEngine implements Profilable {
     final double getLogic2DTimeMS() {
         return scene2DCurrent == null ? 0 : scene2DCurrent.getLogicTimeMS();
     }
-    
 
     /**
      * Do not call this in a GameLoop-class. Use your own times or the
@@ -419,12 +443,12 @@ public class OmniKryptecEngine implements Profilable {
     }
 
     public final GameSettings getGameSettings() {
-    	return getDisplayManager().getSettings();
+        return getDisplayManager().getSettings();
     }
-    
+
     @Override
     public ProfileContainer[] getProfiles() {
-        return new ProfileContainer[]{new ProfileContainer(Profiler.OVERALL_FRAME_TIME, hasLoop()?getLoop().getFrameTime():0),
+        return new ProfileContainer[]{new ProfileContainer(Profiler.OVERALL_FRAME_TIME, hasLoop() ? getLoop().getFrameTime() : 0),
             new ProfileContainer(Profiler.SCENE_RENDER_TIME_3D, getRender3DTimeMS()),
             new ProfileContainer(Profiler.SCENE_LOGIC_TIME_3D, getLogic3DTimeMS()), new ProfileContainer(Profiler.SCENE_RENDER_TIME_2D, getRender2DTimeMS()),
             new ProfileContainer(Profiler.SCENE_LOGIC_TIME_2D, getLogic2DTimeMS())};
