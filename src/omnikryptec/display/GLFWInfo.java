@@ -27,7 +27,7 @@ public class GLFWInfo {
     }
 
     public GLFWInfo(boolean resizeable, boolean fullscreen, int width, int height) {
-        this(3, 3, resizeable, fullscreen, width, height);
+        this(3, 2, resizeable, fullscreen, width, height);
     }
 
     /**
