@@ -192,8 +192,8 @@ public class SpriteBatch {
 	public void draw(Sprite s) {
 		if(s!=null) {
 			color.setFrom(s.getColor());
-			scaledWidth = s.getTexture().getWidth()*s.getTransform().getScale().x;
-			scaledHeight = s.getTexture().getHeight()*s.getTransform().getScale().y;
+			scaledWidth = s.getWidth();
+			scaledHeight = s.getHeight();
 			tmpPos = s.getTransform().getPosition(true);
 			draw(s.getTexture(), tmpPos.x, tmpPos.y, scaledWidth, 
 					scaledHeight, scaledWidth*0.5f, scaledHeight*0.5f, s.getTransform().getRotation().x);

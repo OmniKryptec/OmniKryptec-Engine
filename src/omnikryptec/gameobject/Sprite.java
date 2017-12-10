@@ -3,12 +3,15 @@ package omnikryptec.gameobject;
 import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.util.Color;
+import omnikryptec.util.EnumCollection.FixedSizeMode;
 
 public class Sprite extends GameObject2D{
 	
 	private Texture texture;
 	private Color color = new Color(1,1,1,1);	
 	private float layer = 0;
+	private float w,h;
+	private FixedSizeMode fmode = FixedSizeMode.OFF;
 	
 	public Sprite() {
 		this("", null, null);
@@ -64,6 +67,57 @@ public class Sprite extends GameObject2D{
 	
 	public void paint(SpriteBatch batch) {
 		batch.draw(this);
+	}
+	
+	public Sprite setFixedSize(float w, float h) {
+		this.w = w;
+		this.h = h;
+		return this;
+	}
+	
+	public Sprite setFixedWidthAR(float w) {
+		float ar = texture.getHeight()/texture.getWidth();
+		this.w = w;
+		this.h = ar * w;
+		return this;
+	}
+	
+	public Sprite setFixedHeightAR(float h) {
+		float ar = texture.getWidth()/texture.getHeight();
+		this.w = ar * h;
+		this.h = h;
+		return this;
+	}
+	
+	public Sprite setFixedSizeMode(FixedSizeMode fm) {
+		this.fmode = fm;
+		return this;
+	}
+	
+	public float getWidth() {
+		switch(fmode) {
+		case ALLOW_SCALING:
+			return w*getTransform().getScale().x;
+		case OFF:
+			return texture.getWidth()*getTransform().getScale().x;
+		case ON:
+			return w;
+		default:
+			return -1;
+		}
+	}
+	
+	public float getHeight() {
+		switch(fmode) {
+		case ALLOW_SCALING:
+			return h*getTransform().getScale().y;
+		case OFF:
+			return texture.getHeight()*getTransform().getScale().y;
+		case ON:
+			return h;
+		default:
+			return -1;
+		}
 	}
 	
 }

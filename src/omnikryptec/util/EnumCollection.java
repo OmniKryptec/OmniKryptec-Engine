@@ -54,4 +54,8 @@ public class EnumCollection {
     public static enum DepthbufferType {
         NONE, DEPTH_TEXTURE, DEPTH_RENDER_BUFFER;
     }
+    
+    public static enum FixedSizeMode{
+    	OFF,ALLOW_SCALING,ON;
+    }
 }
