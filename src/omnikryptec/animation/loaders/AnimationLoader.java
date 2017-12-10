@@ -1,5 +1,6 @@
 package omnikryptec.animation.loaders;
 
+import de.codemakers.io.file.AdvancedFile;
 import java.util.HashMap;
 
 import org.joml.Matrix4f;
@@ -12,7 +13,6 @@ import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
 import omnikryptec.animation.ColladaParser.dataStructures.AnimationData;
 import omnikryptec.animation.ColladaParser.dataStructures.JointTransformData;
 import omnikryptec.animation.ColladaParser.dataStructures.KeyFrameData;
-import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Quaternion;
 
 /**

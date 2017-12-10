@@ -1,5 +1,6 @@
 package omnikryptec.postprocessing.main;
 
+import de.codemakers.io.file.AdvancedFile;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
@@ -8,7 +9,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import javax.imageio.ImageIO;
 
@@ -23,7 +23,6 @@ import omnikryptec.display.Display;
 import omnikryptec.graphics.OpenGL;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.settings.GameSettings;
-import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Instance;
 import omnikryptec.util.exceptions.IllegalAccessException;
 import omnikryptec.util.logger.Logger;
@@ -157,15 +156,14 @@ public class FrameBufferObject extends Texture {
      */
     public void unbindFrameBuffer() {
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-	    history.pop();
-        if(!history.isEmpty()){
-        	history.pop().bindFrameBuffer();
-        }else {
+        history.pop();
+        if (!history.isEmpty()) {
+            history.pop().bindFrameBuffer();
+        } else {
             Display.setDisplayViewport();
         }
     }
 
-    
     /**
      * Binds the current FBO to be read from (not used in tutorial 43).
      */
@@ -349,11 +347,11 @@ public class FrameBufferObject extends Texture {
         fbos.clear();
         history.clear();
     }
-    
+
     public final BufferedImage toBufferedImage() {
         return toBufferedImage(true);
     }
-    
+
     public final BufferedImage toBufferedImage(boolean withTransparency) {
 //        if(multisample != GameSettings.NO_MULTISAMPLING) {
 //            throw new UnsupportedOperationException("Multisampled FBOs are not supported!"); //DONE Weil muessen erst auf ein einziges gerendert werden
@@ -367,13 +365,13 @@ public class FrameBufferObject extends Texture {
             GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
             buffer.rewind();
             final int[] rgbArray = new int[width * height];
-            for(int y = 0; y < height; y++) {
-                for(int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                for (int x = 0; x < width; x++) {
                     final int r = (int) (buffer.get() * 255) << 16;
                     final int g = (int) (buffer.get() * 255) << 8;
                     final int b = (int) (buffer.get() * 255);
                     int a = (255 << 24);
-                    if(withTransparency) {
+                    if (withTransparency) {
                         a = (int) (buffer.get() * 255) << 24;
                     }
                     final int i = ((height - 1) - y) * width + x;
@@ -384,57 +382,57 @@ public class FrameBufferObject extends Texture {
             image.setRGB(0, 0, width, height, rgbArray, 0, width);
             return image;
         } catch (Exception ex) {
-            if(Logger.isDebugMode()) {
+            if (Logger.isDebugMode()) {
                 Logger.logErr("Error while converting FBO to BufferedImage: " + ex, ex);
             }
             return null;
         }
     }
-    
+
     public final boolean saveAsScreenshotInFolder(AdvancedFile folder) {
         return saveAsScreenshotInFolder(folder, "screenshot");
     }
-    
+
     public final boolean saveAsScreenshotInFolder(AdvancedFile folder, String name) {
         return saveAsScreenshotInFolder(folder, name, "png");
     }
-    
+
     public final boolean saveAsScreenshotInFolder(AdvancedFile folder, String name, String format) {
         return saveAsScreenshotInFolder(folder, name, format, false);
     }
-    
+
     public final boolean saveAsScreenshotInFolder(AdvancedFile folder, String name, String format, boolean withTimestamp) {
         return saveAsScreenshotInFolder(folder, name, format, withTimestamp, true);
     }
-    
+
     public final boolean saveAsScreenshotInFolder(AdvancedFile folder, String name, String format, boolean withTimestamp, boolean withTransparency) {
         AdvancedFile file = null;
-        if(withTimestamp) {
+        if (withTimestamp) {
             file = new AdvancedFile(folder, String.format("%s_%s.%s", name, LocalDateTime.now().format(Instance.DATETIMEFORMAT_TIMESTAMP), format));
         } else {
             int i = 1;
-            while(file == null || file.exists()) {
+            while (file == null || file.exists()) {
                 file = new AdvancedFile(folder, String.format("%s_%d.%s", name, i, format));
                 i++;
             }
         }
         return saveAsScreenshot(file, format, withTransparency);
     }
-    
+
     public final boolean saveAsScreenshot(AdvancedFile file) {
         return saveAsScreenshot(file, "png");
     }
-    
+
     public final boolean saveAsScreenshot(AdvancedFile file, String format) {
         return saveAsScreenshot(file, format, true);
     }
-    
+
     public final boolean saveAsScreenshot(AdvancedFile file, String format, boolean withTransparency) {
         try {
             final BufferedImage image = toBufferedImage(withTransparency);
-            if(image != null) {
+            if (image != null) {
                 file.createAdvancedFile();
-                if(!file.exists() || !file.isFile()) {
+                if (!file.exists() || !file.isFile()) {
                     return false;
                 }
                 ImageIO.write(image, format, file.createOutputstream(false));
@@ -443,21 +441,21 @@ public class FrameBufferObject extends Texture {
                 return false;
             }
         } catch (Exception ex) {
-            if(Logger.isDebugMode()) {
+            if (Logger.isDebugMode()) {
                 Logger.logErr("Error while saving Screenshot: " + ex, ex);
             }
             return false;
         }
     }
 
-	@Override
-	public float getWidth() {
-		return width;
-	}
+    @Override
+    public float getWidth() {
+        return width;
+    }
 
-	@Override
-	public float getHeight() {
-		return height;
-	}
+    @Override
+    public float getHeight() {
+        return height;
+    }
 
 }

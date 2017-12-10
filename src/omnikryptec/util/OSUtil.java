@@ -1,5 +1,6 @@
 package omnikryptec.util;
 
+import de.codemakers.io.file.AdvancedFile;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;

@@ -1,8 +1,8 @@
 package omnikryptec.resource.loader;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.animation.Animation;
 import omnikryptec.animation.loaders.AnimationLoader;
-import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.logger.Logger;
 
 /**

@@ -1,12 +1,12 @@
 package omnikryptec.test.saving;
 
+import de.codemakers.util.ArrayUtil;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import omnikryptec.util.ArrayUtil;
 import omnikryptec.util.logger.Logger;
 
 /**
@@ -154,7 +154,7 @@ public class DataMapSerializer {
     }
 
     public static final ArrayList<DataMap> getDataMaps(HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps, Class<?> type, boolean onlySame) {
-        if(onlySame) {
+        if (onlySame) {
             return classesDataMaps.get(type);
         } else {
             final ArrayList<DataMap> dataMaps = new ArrayList<>();
@@ -166,7 +166,7 @@ public class DataMapSerializer {
             return dataMaps;
         }
     }
-    
+
     public static final ArrayList<DataMap> getDataMaps(HashMap<Class<?>, ArrayList<DataMap>> classesDataMaps, Class<?> type) {
         return getDataMaps(classesDataMaps, type, true);
     }

@@ -1,5 +1,6 @@
 package omnikryptec.test;
 
+import de.codemakers.io.file.AdvancedFile;
 import java.util.Random;
 import java.util.zip.Deflater;
 
@@ -39,7 +40,6 @@ import omnikryptec.settings.KeyGroup;
 import omnikryptec.settings.KeySettings;
 import omnikryptec.test.saving.DataMapSerializer;
 import omnikryptec.test.saving.XMLSerializer;
-import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.OSUtil;
 import omnikryptec.util.logger.Logger;

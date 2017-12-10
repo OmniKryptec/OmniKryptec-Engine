@@ -1,7 +1,6 @@
 package omnikryptec.util;
 
-import static omnikryptec.util.AdvancedFile.NOT_FOUND;
-
+import static de.codemakers.io.file.AdvancedFile.NOT_FOUND;
 import java.util.function.Consumer;
 
 import omnikryptec.main.OmniKryptecEngine;

@@ -1,5 +1,6 @@
 package omnikryptec.resource.texture;
 
+import de.codemakers.io.file.AdvancedFile;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
 import omnikryptec.graphics.OpenGL;
-import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.logger.Logger;
 
 public class SimpleTexture extends Texture {
@@ -33,8 +33,8 @@ public class SimpleTexture extends Texture {
 
     @Override
     public void bindToUnit(int unit, int... info) {
-    	OpenGL.gl13activeTextureZB(unit);
-    	super.bindTexture(type, id);
+        OpenGL.gl13activeTextureZB(unit);
+        super.bindTexture(type, id);
     }
 
     public void delete() {
@@ -44,7 +44,7 @@ public class SimpleTexture extends Texture {
     public static TextureBuilder newTextureb(AdvancedFile file) {
         return newTextureb("", file);
     }
-    
+
     public static TextureBuilder newTextureb(String name, AdvancedFile file) {
         try {
             return newTextureb(name, file.createInputStream());
@@ -53,7 +53,7 @@ public class SimpleTexture extends Texture {
             return null;
         }
     }
-    
+
     public static TextureBuilder newTextureb(String path) {
         return newTextureb("", path);
     }
@@ -66,7 +66,7 @@ public class SimpleTexture extends Texture {
             return null;
         }
     }
-    
+
     public static TextureBuilder newTextureb(InputStream textureFile) {
         return newTextureb("", textureFile);
     }
@@ -78,7 +78,7 @@ public class SimpleTexture extends Texture {
     public static SimpleTexture newTexture(AdvancedFile file) {
         return newTexture("", file);
     }
-    
+
     public static SimpleTexture newTexture(String name, AdvancedFile file) {
         try {
             return newTexture(name, file.createInputStream());
@@ -91,7 +91,7 @@ public class SimpleTexture extends Texture {
     public static SimpleTexture newTexture(String path) {
         return newTexture("", path);
     }
-    
+
     public static SimpleTexture newTexture(String name, String path) {
         try {
             return newTexture(name, TextureBuilder.class.getResourceAsStream(path));
@@ -104,7 +104,7 @@ public class SimpleTexture extends Texture {
     public static SimpleTexture newTexture(InputStream stream) {
         return newTexture("", stream);
     }
-    
+
     public static SimpleTexture newTexture(String name, InputStream stream) {
         return new TextureBuilder(name, stream).create();
     }
@@ -112,7 +112,7 @@ public class SimpleTexture extends Texture {
     public static SimpleTexture newCubeMap(InputStream[] textureFiles) {
         return newCubeMap("", textureFiles);
     }
-    
+
     public static SimpleTexture newCubeMap(String name, InputStream[] textureFiles) {
         int cubeMapId = TextureUtils.loadCubeMap(textureFiles);
         return new SimpleTexture(name, cubeMapId, GL13.GL_TEXTURE_CUBE_MAP, null);
@@ -121,7 +121,7 @@ public class SimpleTexture extends Texture {
     public static SimpleTexture newEmptyCubeMap(int size) {
         return newEmptyCubeMap("", size);
     }
-    
+
     public static SimpleTexture newEmptyCubeMap(String name, int size) {
         int cubeMapId = TextureUtils.createEmptyCubeMap(size);
         return new SimpleTexture(name, cubeMapId, GL13.GL_TEXTURE_CUBE_MAP, null);
@@ -150,14 +150,14 @@ public class SimpleTexture extends Texture {
         }
     }
 
-	@Override
-	public float getWidth() {
-		return data==null?0:data.getWidth();
-	}
+    @Override
+    public float getWidth() {
+        return data == null ? 0 : data.getWidth();
+    }
 
-	@Override
-	public float getHeight() {
-		return data==null?0:data.getHeight();
-	}
+    @Override
+    public float getHeight() {
+        return data == null ? 0 : data.getHeight();
+    }
 
 }

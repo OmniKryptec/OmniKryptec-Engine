@@ -16,7 +16,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EtchedBorder;
 
 import omnikryptec.swing.JCheckBoxList;
-import omnikryptec.util.AdvancedFile;
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.util.lang.ILanguage;
 import omnikryptec.util.lang.LanguageManager;
 import omnikryptec.util.logger.LogEntryFormatter.LogEntryFormatTile;
@@ -408,7 +408,7 @@ public class WizardSaveAs extends javax.swing.JDialog implements ActionListener,
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
-			public void run() {
+            public void run() {
                 new WizardSaveAs(Logger.CONSOLE).setVisible(true);
             }
         });

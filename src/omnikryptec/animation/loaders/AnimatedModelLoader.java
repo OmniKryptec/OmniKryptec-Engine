@@ -1,5 +1,6 @@
 package omnikryptec.animation.loaders;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.animation.AnimatedModel;
 import omnikryptec.animation.Joint;
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
@@ -14,7 +15,6 @@ import omnikryptec.resource.model.VertexArrayObject;
 import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.settings.GameSettings;
-import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Instance;
 
 public class AnimatedModelLoader {
@@ -103,5 +103,4 @@ public class AnimatedModelLoader {
 //        vao.createAttribute(5, data.getVertexWeights(), 3);
 //        return vao;
 //    }
-
 }

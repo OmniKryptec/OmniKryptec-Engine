@@ -1,5 +1,6 @@
 package omnikryptec.resource.objConverter;
 
+import de.codemakers.io.file.AdvancedFile;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -8,7 +9,6 @@ import java.util.ArrayList;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.logger.Logger;
 
 public class ObjLoader {
@@ -152,7 +152,6 @@ public class ObjLoader {
 //        int[] indicesArray = convertIndicesArrayListToArray(indices);
 //        return new ModelData(verticesArray, texturesArray, normalsArray, tangentsArray, indicesArray, furthest);
 //    }
-
     private static void calculateTangents(Vertex v0, Vertex v1, Vertex v2, ArrayList<Vector2f> textures) {
         Vector3f delatPos1 = v1.getPosition().sub(v0.getPosition(), new Vector3f());
         Vector3f delatPos2 = v2.getPosition().sub(v0.getPosition(), new Vector3f());

@@ -1,5 +1,6 @@
 package omnikryptec.gameobject.particles;
 
+import de.codemakers.util.ArrayUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -12,7 +13,6 @@ import java.util.concurrent.TimeUnit;
 
 import omnikryptec.gameobject.Camera;
 import omnikryptec.resource.texture.ParticleAtlas;
-import omnikryptec.util.ArrayUtil;
 import omnikryptec.util.EnumCollection.BlendMode;
 import omnikryptec.util.Instance;
 import omnikryptec.util.profiler.Profilable;
@@ -30,7 +30,7 @@ public class ParticleMaster implements Profilable {
     private static ParticleList particlelist;
     private static Iterator<Particle> listIterator;
     private static Iterator<Entry<ParticleAtlas, ParticleList>> mapIterator;
-    private static boolean listWantsUpdateLastTmp,cansetWantsUpdateLastFalse;
+    private static boolean listWantsUpdateLastTmp, cansetWantsUpdateLastFalse;
     private static ExecutorService executor;
 
     private static ParticleMaster instance;
@@ -67,18 +67,18 @@ public class ParticleMaster implements Profilable {
 
     public void logic(Camera c) {
         boolean multithread_ = Instance.getGameSettings().isMultithreadedParticles();
-        if(multithread_){
-        	long count = 0;
-        	boolean mt = false;
-        	for(ParticleList l : particles.values()){
-        		count += l.list.size();
-        		if(l.mt) {
-        			mt = true;
-        		}
-        	}
-        	if(count < Instance.getGameSettings().getMinMultithreadParticles() || !mt){
-        		multithread_ = false;
-        	}
+        if (multithread_) {
+            long count = 0;
+            boolean mt = false;
+            for (ParticleList l : particles.values()) {
+                count += l.list.size();
+                if (l.mt) {
+                    mt = true;
+                }
+            }
+            if (count < Instance.getGameSettings().getMinMultithreadParticles() || !mt) {
+                multithread_ = false;
+            }
         }
         updatedParticlesCount = 0;
         tmptime2 = Instance.getDisplayManager().getCurrentTime();
@@ -96,30 +96,30 @@ public class ParticleMaster implements Profilable {
             }
             while (listIterator.hasNext()) {
                 particleCurrent = listIterator.next();
-                if(listWantsUpdateLastTmp&&cansetWantsUpdateLastFalse){
-                	if(particleCurrent.wantsupdatelast){
-                		cansetWantsUpdateLastFalse = false;
-                	}
+                if (listWantsUpdateLastTmp && cansetWantsUpdateLastFalse) {
+                    if (particleCurrent.wantsupdatelast) {
+                        cansetWantsUpdateLastFalse = false;
+                    }
                 }
                 if (!multithread_) {
                     if (!particleCurrent.update(c)) {
                         listIterator.remove();
                         if (list.isEmpty()) {
-                            mapIterator.remove(); 
+                            mapIterator.remove();
                             break;
                         }
                     } else {
                         updatedParticlesCount++;
                     }
                 } else {
-                	final Particle p_ = particleCurrent;
+                    final Particle p_ = particleCurrent;
                     executor.execute(new Runnable() {
                         @Override
                         public final void run() {
                             if (!p_.update(c)) {
                                 synchronized (particlesToRemove) {
-                                	particlesToRemove.add(p_);
-								}
+                                    particlesToRemove.add(p_);
+                                }
                             } else {
                                 updatedParticlesCount++;
                             }
@@ -134,7 +134,7 @@ public class ParticleMaster implements Profilable {
                 } catch (InterruptedException ex) {
                     System.err.println(ex);
                 }
-                for(Particle p_ : particlesToRemove){
+                for (Particle p_ : particlesToRemove) {
                     list.remove(p_);
                 }
                 particlesToRemove.clear();
@@ -142,16 +142,16 @@ public class ParticleMaster implements Profilable {
                     mapIterator.remove();
                 }
             }
-            if(listWantsUpdateLastTmp){
-            	for(Particle p : list){
-            		p.updateLast();
-            	}
+            if (listWantsUpdateLastTmp) {
+                for (Particle p : list) {
+                    p.updateLast();
+                }
             }
-            if(cansetWantsUpdateLastFalse){
-            	list1.wantsUpdateLast = false;
+            if (cansetWantsUpdateLastFalse) {
+                list1.wantsUpdateLast = false;
             }
             //Brauch man es bei anderen vlt auch nicht? TODO
-            if (!(entry.getKey().getBlendMode()==BlendMode.ALPHA)) {
+            if (!(entry.getKey().getBlendMode() == BlendMode.ALPHA)) {
                 ArrayUtil.parallelSortArrayListAsArray(list, Sorting.PARTICLE_COMPARATOR);
                 //list.sort(Sorting.PARTICLE_COMPARATOR); //Sorry You Are Too Slow
             }
@@ -159,7 +159,7 @@ public class ParticleMaster implements Profilable {
 
         updatetime += Instance.getDisplayManager().getCurrentTime() - tmptime2;
     }
-    
+
     public double getRenderTimeMS() {
         return rendertime;
     }
@@ -179,7 +179,7 @@ public class ParticleMaster implements Profilable {
     public long getUpdatedParticlesCount() {
         return updatedParticlesCount;
     }
-    
+
     private static ParticleList list1;
 
     public void addParticle(Particle par) {
@@ -188,11 +188,11 @@ public class ParticleMaster implements Profilable {
             list1 = new ParticleList();
             particles.put(par.getParticleTexture(), list1);
         }
-        if(par.wantsUpdateLast()){
-        	list1.wantsUpdateLast = true;
+        if (par.wantsUpdateLast()) {
+            list1.wantsUpdateLast = true;
         }
-        if(par.wantsMultithreaded()) {
-        	list1.mt = true;
+        if (par.wantsMultithreaded()) {
+            list1.mt = true;
         }
         list1.list.add(par);
     }
@@ -202,10 +202,10 @@ public class ParticleMaster implements Profilable {
         return new ProfileContainer[]{new ProfileContainer(Profiler.PARTICLE_RENDERER, getRenderTimeMS()), new ProfileContainer(Profiler.PARTICLE_UPDATER, getUpdateTimeMS())};
     }
 
-	public static void resetTimes() {
-		if(instance!=null) {
-			instance.rendertime = 0;
-			instance.updatetime = 0;
-		}
-	}
+    public static void resetTimes() {
+        if (instance != null) {
+            instance.rendertime = 0;
+            instance.updatetime = 0;
+        }
+    }
 }

@@ -1,15 +1,16 @@
 package omnikryptec.resource.loader;
 
+import de.codemakers.io.file.AdvancedFile;
+import de.codemakers.util.ArrayUtil;
+import de.codemakers.util.ArrayUtil.Filter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import omnikryptec.resource.texture.SimpleTexture;
-import omnikryptec.util.AdvancedFile;
-import omnikryptec.util.ArrayUtil;
-import omnikryptec.util.ArrayUtil.Filter;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -25,29 +26,29 @@ public class ResourceLoader implements Loader {
     private static ResourceLoader resourceLoader;
 
     public static final ResourceLoader createInstanceDefault(boolean ascurrent) {
-    	ResourceLoader loader = new ResourceLoader();
-    	if(ascurrent) {
-    		resourceLoader = loader;
-    	}
-    	loader.addLoader(new DefaultModelLoader());
-    	loader.addLoader(new DefaultTextureLoader());
-    	loader.addLoader(new DefaultAnimationLoader());
-    	loader.addLoader(new DefaultAnimatedModelDataLoader());
-    	return loader;
+        ResourceLoader loader = new ResourceLoader();
+        if (ascurrent) {
+            resourceLoader = loader;
+        }
+        loader.addLoader(new DefaultModelLoader());
+        loader.addLoader(new DefaultTextureLoader());
+        loader.addLoader(new DefaultAnimationLoader());
+        loader.addLoader(new DefaultAnimatedModelDataLoader());
+        return loader;
     }
-    
+
     public static final ResourceLoader createInstance(boolean ascurrent) {
-    	ResourceLoader loader = new ResourceLoader();
-    	if(ascurrent) {
-    		resourceLoader = loader;
-    	}
-    	return loader;
+        ResourceLoader loader = new ResourceLoader();
+        if (ascurrent) {
+            resourceLoader = loader;
+        }
+        return loader;
     }
-    
+
     public static final void resetInstance() {
-    	resourceLoader = null;
+        resourceLoader = null;
     }
-    
+
     public static final ResourceLoader currentInstance() {
         return resourceLoader;
     }
@@ -63,7 +64,7 @@ public class ResourceLoader implements Loader {
     //use static create methods
     private ResourceLoader() {
     }
-    
+
     //private ExecutorService executor = null;
     private final HashMap<String, ResourceObject> loadedData = new HashMap<>();
     private final HashMap<Integer, ArrayList<AdvancedFile>> priorityStagedAdvancedFiles = new HashMap<>();
@@ -99,7 +100,7 @@ public class ResourceLoader implements Loader {
             } else {
                 final List<Loader> loadersForExtension = getLoaderForExtensions(advancedFile.getExtension());
                 if (loadersForExtension.isEmpty()) {
-                    Logger.log(String.format("Failed to load, no Loaders available: \"%s\"%s", advancedFile, (AdvancedFile.isEqual(advancedFile, superFile) ? "" : String.format(" (in \"%s\")", superFile))), LogLevel.WARNING);
+                    Logger.log(String.format("Failed to load, no Loaders available: \"%s\"%s", advancedFile, (Objects.equals(advancedFile, superFile) ? "" : String.format(" (in \"%s\")", superFile))), LogLevel.WARNING);
                     return false;
                 }
                 boolean loaded = false;
@@ -115,7 +116,7 @@ public class ResourceLoader implements Loader {
                     }
                 }
                 if (!loaded) {
-                    Logger.log(String.format("Failed to load: \"%s\"%s", advancedFile, (AdvancedFile.isEqual(advancedFile, superFile) ? "" : String.format(" (in \"%s\")", superFile))), LogLevel.WARNING);
+                    Logger.log(String.format("Failed to load: \"%s\"%s", advancedFile, (Objects.equals(advancedFile, superFile) ? "" : String.format(" (in \"%s\")", superFile))), LogLevel.WARNING);
                 }
                 return loaded;
             }
@@ -229,7 +230,7 @@ public class ResourceLoader implements Loader {
     }
 
     @SuppressWarnings("unchecked")
-	public final <T extends ResourceObject> T getResource(String name) {
+    public final <T extends ResourceObject> T getResource(String name) {
         if (name == null || name.isEmpty()) {
             return null;
         }
@@ -241,7 +242,7 @@ public class ResourceLoader implements Loader {
     }
 
     @SuppressWarnings("unchecked")
-	public final <T extends ResourceObject> T getResource(Class<? extends T> c, String name) {
+    public final <T extends ResourceObject> T getResource(Class<? extends T> c, String name) {
         if (c == null || name == null || name.isEmpty()) {
             return null;
         }
@@ -265,7 +266,7 @@ public class ResourceLoader implements Loader {
     }
 
     @SuppressWarnings("unchecked")
-	private final <T extends ResourceObject> ArrayList<T> getResources(Class<? extends T> c, ArrayList<T> dataOld) {
+    private final <T extends ResourceObject> ArrayList<T> getResources(Class<? extends T> c, ArrayList<T> dataOld) {
         if (dataOld == null) {
             dataOld = new ArrayList<>();
         }
@@ -326,5 +327,4 @@ public class ResourceLoader implements Loader {
 //        executor = Executors.newFixedThreadPool(10);
 //        return this;
 //    }
-    
 }

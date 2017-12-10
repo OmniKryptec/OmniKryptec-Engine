@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import omnikryptec.gameobject.GameObject;
-import omnikryptec.util.AdvancedFile;
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.util.logger.Logger;
 
 /**

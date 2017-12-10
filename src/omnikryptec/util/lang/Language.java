@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Properties;
 
-import omnikryptec.util.AdvancedFile;
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 

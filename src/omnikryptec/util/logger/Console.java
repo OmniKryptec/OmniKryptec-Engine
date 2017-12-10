@@ -1,5 +1,6 @@
 package omnikryptec.util.logger;
 
+import de.codemakers.io.file.AdvancedFile;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -26,7 +27,6 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.EnumCollection.GameState;
 import omnikryptec.util.lang.ILanguage;
 import omnikryptec.util.lang.LanguageManager;
@@ -579,7 +579,7 @@ public class Console extends JFrame implements ActionListener, ILanguage, KeyLis
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
-			public void run() {
+            public void run() {
                 new Console().setVisible(true);
             }
         });

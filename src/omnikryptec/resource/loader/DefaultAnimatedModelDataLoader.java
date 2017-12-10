@@ -1,14 +1,15 @@
 package omnikryptec.resource.loader;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
 import omnikryptec.animation.ColladaParser.dataStructures.AnimatedModelData;
 import omnikryptec.settings.GameSettings;
-import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Instance;
 import omnikryptec.util.logger.Logger;
 
 /**
  * DefaultAnimatedModelDataLoader
+ *
  * @author Panzer1119
  */
 public class DefaultAnimatedModelDataLoader implements Loader {
@@ -23,12 +24,12 @@ public class DefaultAnimatedModelDataLoader implements Loader {
 
     @Override
     public String[] getExtensions() {
-        return new String[] {"dae"};
+        return new String[]{"dae"};
     }
 
     @Override
     public String[] getBlacklist() {
         return null;
     }
-    
+
 }

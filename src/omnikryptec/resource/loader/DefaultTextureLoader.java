@@ -1,7 +1,7 @@
 package omnikryptec.resource.loader;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.resource.texture.SimpleTexture;
-import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.logger.Logger;
 
 public class DefaultTextureLoader implements Loader {

@@ -1,5 +1,6 @@
 package omnikryptec.util;
 
+import de.codemakers.io.file.AdvancedFile;
 import java.util.function.Consumer;
 
 import omnikryptec.util.OSUtil.OS;

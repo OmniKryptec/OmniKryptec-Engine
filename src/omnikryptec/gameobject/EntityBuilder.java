@@ -1,9 +1,9 @@
 package omnikryptec.gameobject;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
 import omnikryptec.resource.texture.SimpleTexture;
-import omnikryptec.util.AdvancedFile;
 
 /**
  *
@@ -87,7 +87,7 @@ public class EntityBuilder {
     public final EntityBuilder loadTexture(String texturePath) {
         return loadTexture("", texturePath);
     }
-    
+
     public final EntityBuilder loadTexture(String name, String texturePath) {
         this.texture = SimpleTexture.newTextureb(name, texturePath).create();
         return this;
@@ -96,7 +96,7 @@ public class EntityBuilder {
     public final EntityBuilder loadTexture(AdvancedFile textureFile) {
         return loadTexture("", textureFile);
     }
-    
+
     public final EntityBuilder loadTexture(String name, AdvancedFile textureFile) {
         this.texture = SimpleTexture.newTextureb(name, textureFile).create();
         return this;

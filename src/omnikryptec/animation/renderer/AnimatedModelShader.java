@@ -1,5 +1,6 @@
 package omnikryptec.animation.renderer;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.animation.AnimatedModel;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.graphics.GraphicsUtil;
@@ -12,7 +13,6 @@ import omnikryptec.shader.base.UniformMatrix;
 import omnikryptec.shader.base.UniformMatrixArray;
 import omnikryptec.shader.base.UniformSampler;
 import omnikryptec.shader.base.UniformVec3;
-import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.EnumCollection.BlendMode;
 import omnikryptec.util.Instance;
 
@@ -44,24 +44,25 @@ public class AnimatedModelShader extends Shader {
     }
 
     private AnimatedModel model;
-	@Override
-	public void onModelRenderStart(AdvancedModel m) {
-		model = (AnimatedModel)m;
+
+    @Override
+    public void onModelRenderStart(AdvancedModel m) {
+        model = (AnimatedModel) m;
         model.getModel().getVao().bind(0, 1, 2, 3, 4, 5);
         model.getMaterial().getTexture(Material.DIFFUSE).bindToUnitOptimized(0);
-		jointTransforms.loadMatrixArray(model.getJointTransforms());
+        jointTransforms.loadMatrixArray(model.getJointTransforms());
         GraphicsUtil.blendMode(BlendMode.DISABLE);
         GraphicsUtil.enableDepthTesting(true);
-	}
+    }
 
-	public void onRenderStart(Scene3D s) {
-		viewMatrix.loadMatrix(s.getCamera().getViewMatrix());
-		projectionMatrix.loadMatrix(s.getCamera().getProjectionMatrix());
-	}
+    public void onRenderStart(Scene3D s) {
+        viewMatrix.loadMatrix(s.getCamera().getViewMatrix());
+        projectionMatrix.loadMatrix(s.getCamera().getProjectionMatrix());
+    }
 
-	@Override
-	public void onRenderInstance(Entity e) {
-         transformationMatrix.loadMatrix(e.getTransformation());
-	}
-    
+    @Override
+    public void onRenderInstance(Entity e) {
+        transformationMatrix.loadMatrix(e.getTransformation());
+    }
+
 }
