@@ -8,6 +8,7 @@ import java.nio.IntBuffer;
 import java.time.LocalDateTime;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -44,7 +45,6 @@ public class FrameBufferObject extends Texture {
     private RenderTarget[] targets;
 
     private DepthbufferType type;
-
 
     private static List<FrameBufferObject> fbos = new ArrayList<>();
     private static ArrayDeque<FrameBufferObject> history = new ArrayDeque<>();
@@ -135,25 +135,26 @@ public class FrameBufferObject extends Texture {
             }
         }
     }
-
-    public void bindFrameBuffer() {
-    	bindFrameBuffer(false);
-    }
     
+
     /**
      * Binds the frame buffer, setting it as the current render target. Anything
      * rendered after this will be rendered to this FBO, and not to the screen.
      */
-    public void bindFrameBuffer(boolean ar) {
-        history.push(this);
+    public void bindFrameBuffer() {
         GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, frameBuffer);
-        if(ar) {
+        if(history.isEmpty()) {
         	OpenGL.gl11viewport(Display.calculateViewport(width, height));
         }else {
         	OpenGL.gl11viewport(0, 0, width, height);
         }
+        history.push(this);
     }
 
+    public static FrameBufferObject getBoundFBO() {
+    	return history.peek();
+    }
+    
     /**
      * Unbinds the frame buffer, setting the default frame buffer as the current
      * render target. Anything rendered after this will be rendered to the
@@ -165,7 +166,7 @@ public class FrameBufferObject extends Texture {
         if(!history.isEmpty()){
         	history.pop().bindFrameBuffer();
         }else {
-            Display.resetViewport();
+            Display.setARViewPort();
         }
     }
 

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 import org.joml.Vector3f;
+import org.lwjgl.opengl.GL11;
 
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
 import omnikryptec.display.Display;
@@ -29,6 +30,9 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
 import omnikryptec.main.Scene3D;
 import omnikryptec.postprocessing.main.FrameBufferObject;
+import omnikryptec.postprocessing.main.PostProcessing;
+import omnikryptec.postprocessing.stages.CompleteGaussianBlurStage;
+import omnikryptec.postprocessing.stages.FogStage;
 import omnikryptec.renderer.d3.FloorReflectionRenderer;
 import omnikryptec.renderer.d3.RenderConfiguration;
 import omnikryptec.renderer.d3.RenderConfiguration.AllowedRenderer;
@@ -98,7 +102,8 @@ public class EngineTest2 implements IEventHandler {
 							.setInteger(GameSettings.HIGHEST_SHADER_LVL, 1000000)
 							.setBoolean(GameSettings.LIGHT_2D, true),
 					new GLFWInfo(3, 2, true, false, 1280, 720));
-			Display.setAspectRatio(-1, true);
+			Display.setAspectRatio(4/3.0, true);
+			OmniKryptecEngine.instance().setClearColor(1, 0, 0);
 			// new Thread(new Runnable() {
 			//
 			// @Override
@@ -114,9 +119,9 @@ public class EngineTest2 implements IEventHandler {
 			// PostProcessing.instance().addStage(new BloomStage(new
 			// CompleteGaussianBlurStage(true, 0.4f, 0.4f), new Vector4f(1, 0,
 			// 0, 0), new Vector2f(1, 6)));
-			// PostProcessing.instance().addStage(new FogStage().setDensity(0.25f));
-			// PostProcessing.instance().addStage(new
-			// CompleteGaussianBlurStage(false,0.1f,0.1f));
+			//OmniKryptecEngine.instance().getPostprocessor().addStage(new FogStage().setDensity(0.25f));
+			//OmniKryptecEngine.instance().getPostprocessor().addStage(new
+			 //CompleteGaussianBlurStage(false,0.1f,0.1f));
 			// PostProcessing.instance().addStage(new ColorSpaceStage(2,2,2));
 			// PostProcessing.instance().addStage(new
 			// CompleteGaussianBlurStage(true,0.5f,0.5f));
@@ -220,7 +225,7 @@ public class EngineTest2 implements IEventHandler {
 			// OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 			// }
 			System.out.println("Generating objs...");
-			int cube = 10;
+			int cube = 100;
 			int abstand = 5;
 			float scale = 1;
 			int objcount = 0;
@@ -240,7 +245,7 @@ public class EngineTest2 implements IEventHandler {
 				}
 			}
 		//	System.out.println(Arrays.toString(Display.getViewportData()));
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 5; i++) {
 				GameObject2D gom;
 				gom = new Sprite("dumm" + i, i % 2 == 0 ? js : jn, null) {
 //					 @Override
@@ -389,7 +394,8 @@ public class EngineTest2 implements IEventHandler {
 
         // system.generateParticles(1);
         if (ev.getType() == EventType.RENDER_FRAME_EVENT) {
-            // SpriteBatch testb = new SpriteBatch(new
+        	
+        	// SpriteBatch testb = new SpriteBatch(new
             // Camera().setDefaultScreenSpaceProjection(), new Shader2D(), 100);
             // //testb.getCamera().getTransform().setPosition(0, 0, 10);
             // testb.begin();

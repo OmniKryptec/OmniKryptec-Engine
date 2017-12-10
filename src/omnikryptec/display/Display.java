@@ -1,11 +1,14 @@
 package omnikryptec.display;
 
+import java.util.Arrays;
+
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL11;
 
 import omnikryptec.event.input.InputManager;
 import omnikryptec.graphics.OpenGL;
+import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -15,7 +18,7 @@ public class Display {
 	private static Window window;
 	private static double lastsynced;
 	private static int[] viewport = new int[4];
-	private static double aspectratio;
+	private static double aspectratio=-1;
 
 	static void create(String name, GLFWInfo info) {
 		GLFW.glfwInit();
@@ -25,7 +28,8 @@ public class Display {
 			GLFW.glfwSetWindowAspectRatio(window.getID(), info.lockWindowAspectRatio()[0],
 					info.lockWindowAspectRatio()[1]);
 		}
-		//calculateViewport();
+		calcViewport();
+		setARViewPort();
 		InputManager.initCallbacks();
 		lastsynced = getCurrentTime();
 		Logger.log("Successfully created GLContext and the Window!", LogLevel.FINEST);
@@ -46,6 +50,10 @@ public class Display {
 	static void update() {
 		window.swapBuffers();
 		GLFW.glfwPollEvents();
+		if (wasResized()) {
+			calcViewport();
+			setARViewPort();
+		}
 	}
 
 	static void destroy() {
@@ -77,11 +85,13 @@ public class Display {
 	}
 
 	public static int getWidth() {
-		return viewport[2];
+		return getBufferWidth();
+		//return viewport[2];
 	}
 
 	public static int getHeight() {
-		return viewport[3];
+		return getBufferHeight();
+		//return viewport[3];
 	}
 
 	public static int getBufferWidth() {
@@ -104,10 +114,11 @@ public class Display {
 		OpenGL.gl11viewport(0, 0, getBufferWidth(), getBufferHeight());
 	}
 
-//	public static final int[] getViewportData() {
-//		return viewport;
-//	}
-
+	public static final void setARViewPort() {
+		//resetViewport();
+		OpenGL.gl11viewport(viewport);
+	}
+	
 	public static final void resetAspectRatio() {
 		setAspectRatio(-1, true);
 	}
@@ -130,16 +141,22 @@ public class Display {
 		return viewport;
 	}
 
-	static final void calcViewport() {
-		//viewport = calculateViewport(getBufferWidth(), getBufferHeight());
+	private static final void calcViewport() {
+		viewport = calculateViewport(getBufferWidth(), getBufferHeight());
 	}
 	
 	public static double getAspectRatio() {
 		return aspectratio;
 	}
 	
+	public static int[] getViewportdata() {
+		return viewport;
+	}
+	
 	public static final void setAspectRatio(double a, boolean set) {
 		aspectratio = a;
 		calcViewport();
+		setARViewPort();
 	}
+	
 }

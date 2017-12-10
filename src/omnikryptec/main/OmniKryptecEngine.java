@@ -207,7 +207,7 @@ public class OmniKryptecEngine implements Profilable {
     }
 
     final void beginScene3dRendering() {
-        scenefbo.bindFrameBuffer(true);
+        scenefbo.bindFrameBuffer();
     }
 
     final void endScene3dRendering() {
