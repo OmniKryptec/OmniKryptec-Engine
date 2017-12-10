@@ -96,9 +96,9 @@ public class EngineTest2 implements IEventHandler {
 					new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setChunkRenderOffsets(2, 2, 2)
 							.setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(true)
 							.setInteger(GameSettings.HIGHEST_SHADER_LVL, 1000000)
-							.setBoolean(GameSettings.LIGHT_2D, false),
+							.setBoolean(GameSettings.LIGHT_2D, true),
 					new GLFWInfo(3, 2, true, false, 1280, 720));
-			Display.setAspectRatio(1, true);
+			Display.setAspectRatio(16/9.0, true);
 			// new Thread(new Runnable() {
 			//
 			// @Override

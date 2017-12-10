@@ -113,18 +113,16 @@ public class Display {
 	}
 
 	static final void calculateViewport() {
-		// double winV = (double) window.getWidth() / (double) window.getHeight();
-		double winV = (double) getBufferWidth() / (double) getBufferHeight();
 		viewport[0] = 0;
 		viewport[1] = 0;
 		viewport[2] = getBufferWidth();
 		viewport[3] = getBufferHeight();
 		if (aspectratio > 0) {
-			if (winV <= aspectratio) {
-				viewport[3] = (int) ((getBufferHeight() * winV) / aspectratio);
+			if ((double) getBufferWidth() / (double) getBufferHeight() <= aspectratio) {
+				viewport[3] = (int) (getBufferWidth() * (1.0/aspectratio));
 				viewport[1] = (int) ((getBufferHeight() - viewport[3]) * 0.5);
 			} else {
-				viewport[2] = (int) ((getBufferWidth() / winV) * aspectratio);
+				viewport[2] = (int) (getBufferHeight() * aspectratio);
 				viewport[0] = (int) ((getBufferWidth() - viewport[2]) * 0.5);
 			}
 		}
