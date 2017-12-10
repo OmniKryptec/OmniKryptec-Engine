@@ -17,7 +17,7 @@ public interface Loader {
 
     default String generateName(AdvancedFile advancedFile, AdvancedFile superFile) {
         String path = advancedFile.getPath();
-        if (superFile.isDirectory() /*HÄÄÄÄÄ? && !superFile.isIntern()*/) {
+        if (superFile.isDirectory() /*&& !superFile.isIntern()*/) {
             path = path.replace(superFile.getPath(), "");
         }
         String s = path.replace(AdvancedFile.PATH_SEPARATOR, ":");
