@@ -103,7 +103,6 @@ public class EngineTest2 implements IEventHandler {
 							.setBoolean(GameSettings.LIGHT_2D, true),
 					new GLFWInfo(3, 2, true, false, 1280, 720));
 			Display.setAspectRatio(4/3.0, true);
-			OmniKryptecEngine.instance().setClearColor(1, 0, 0);
 			// new Thread(new Runnable() {
 			//
 			// @Override
