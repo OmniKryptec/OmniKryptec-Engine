@@ -72,7 +72,8 @@ public class ResourceLoader implements Loader {
     private String[] extensions = null;
     private String[] blacklist = null;
     private boolean isLoading = false;
-
+    private ResourceObject tmp;
+    
     @Override
     public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
         return loadIntern(advancedFile, superFile, resourceLoader);
@@ -244,10 +245,11 @@ public class ResourceLoader implements Loader {
 
     public final SimpleTexture getTexture(String name) {
     	if (name == null || name.isEmpty()) {
-            return null;
+    		return null;
         }
         try {
-            return (SimpleTexture) loadedData.get(name);
+        	tmp = loadedData.get(name);
+            return tmp==null? MISSING_TEXTURE : (SimpleTexture) tmp;
         } catch (ClassCastException ex) {
             return MISSING_TEXTURE;
         }
