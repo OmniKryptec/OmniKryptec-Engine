@@ -22,6 +22,7 @@ import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
 /**
+ * Language
  *
  * @author Panzer1119
  */
