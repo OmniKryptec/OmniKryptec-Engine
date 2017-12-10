@@ -12,7 +12,6 @@ import omnikryptec.event.event.Event;
 import omnikryptec.event.event.EventSystem;
 import omnikryptec.event.event.EventType;
 import omnikryptec.postprocessing.main.FrameBufferObject;
-import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.main.PostProcessing;
 import omnikryptec.postprocessing.main.RenderTarget;
 import omnikryptec.renderer.d3.Query;
@@ -24,6 +23,7 @@ import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.util.Color;
+import omnikryptec.util.EnumCollection.DepthbufferType;
 import omnikryptec.util.EnumCollection.GameLoopShutdownOption;
 import omnikryptec.util.EnumCollection.GameState;
 import omnikryptec.util.error.ErrorObject;
@@ -182,7 +182,7 @@ public class OmniKryptecEngine implements Profilable {
     }
 
     final void beginScene3dRendering() {
-        scenefbo.bindFrameBuffer();
+        scenefbo.bindFrameBuffer(true);
     }
 
     final void endScene3dRendering() {

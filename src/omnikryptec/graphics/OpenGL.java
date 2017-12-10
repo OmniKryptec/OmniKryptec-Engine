@@ -14,7 +14,15 @@ import org.lwjgl.opengl.GL33;
 import omnikryptec.resource.texture.Texture;
 
 public class OpenGL {
-
+	
+	public static void gl11viewport(int[] vp) {
+		gl11viewport(vp[0], vp[1], vp[2], vp[3]);
+	}
+	
+	public static void gl11viewport(int x, int y, int w, int h) {
+		GL11.glViewport(x, y, w, h);
+	}
+	
 	// OpenGL-Objects
 	public static void gl20enableVertexAttribArray(int i) {
 		GL20.glEnableVertexAttribArray(i);

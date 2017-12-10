@@ -6,13 +6,13 @@ import omnikryptec.gameobject.Entity;
 import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.main.AbstractScene3D;
 import omnikryptec.postprocessing.main.FrameBufferObject;
-import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.renderer.d3.RenderConfiguration;
 import omnikryptec.renderer.d3.RenderConfiguration.AllowedRenderer;
 import omnikryptec.renderer.d3.RenderMap;
 import omnikryptec.renderer.d3.Renderer;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.shader.base.Shader;
+import omnikryptec.util.EnumCollection.DepthbufferType;
 import omnikryptec.util.FrustrumFilter;
 
 public class TestRenderer extends Renderer{

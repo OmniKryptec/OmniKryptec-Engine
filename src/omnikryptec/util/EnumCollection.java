@@ -49,4 +49,9 @@ public class EnumCollection {
 	public static enum BlendMode{
 		ADDITIVE, ALPHA, MULTIPLICATIVE, DISABLE;
 	}
+	
+
+    public static enum DepthbufferType {
+        NONE, DEPTH_TEXTURE, DEPTH_RENDER_BUFFER;
+    }
 }

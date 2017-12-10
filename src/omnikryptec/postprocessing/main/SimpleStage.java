@@ -3,8 +3,8 @@ package omnikryptec.postprocessing.main;
 import java.util.List;
 
 import omnikryptec.display.Display;
-import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.shader.base.Shader;
+import omnikryptec.util.EnumCollection.DepthbufferType;
 
 public class SimpleStage extends PostProcessingStep {
 
