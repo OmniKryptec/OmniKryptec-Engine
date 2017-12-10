@@ -28,15 +28,15 @@ import javax.swing.text.StyledDocument;
 
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.EnumCollection.GameState;
-import omnikryptec.util.lang.ILanguage;
-import omnikryptec.util.lang.LanguageManager;
+import de.codemakers.lang.LanguageManager;
 import omnikryptec.util.logger.LogEntryFormatter.LogEntryFormatTile;
+import de.codemakers.lang.LanguageReloader;
 
 /**
  *
  * @author Panzer1119
  */
-public class Console extends JFrame implements ActionListener, ILanguage, KeyListener, WindowListener {
+public class Console extends JFrame implements ActionListener, LanguageReloader, KeyListener, WindowListener {
 
     /**
      *
@@ -93,7 +93,7 @@ public class Console extends JFrame implements ActionListener, ILanguage, KeyLis
         } catch (Exception ex) {
             Logger.logErr("Error while loading console icon: " + ex, ex);
         }
-        LanguageManager.addLanguageListener(this);
+        LanguageManager.addLanguageReloader(this);
         reloadLanguage();
     }
 

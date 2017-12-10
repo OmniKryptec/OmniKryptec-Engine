@@ -2,7 +2,7 @@ package omnikryptec.util.logger;
 
 import java.awt.Color;
 
-import omnikryptec.util.lang.LanguageManager;
+import de.codemakers.lang.LanguageManager;
 
 /**
  * LogLevel

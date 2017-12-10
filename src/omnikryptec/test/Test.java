@@ -11,17 +11,17 @@ import javax.swing.JFrame;
 import omnikryptec.swing.JCheckBoxList;
 import omnikryptec.util.action.ActionProcessor;
 import omnikryptec.util.debug.VariableChangeListener;
-import omnikryptec.util.lang.ILanguage;
-import omnikryptec.util.lang.LanguageManager;
+import de.codemakers.lang.LanguageManager;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.SystemInputStream;
+import de.codemakers.lang.LanguageReloader;
 
 /**
  *
  * @author Panzer1119
  */
-public class Test implements ILanguage {
+public class Test implements LanguageReloader {
 
     public static String test_data = "Troll";
 
@@ -47,7 +47,7 @@ public class Test implements ILanguage {
     public static void main(String[] args) {
         Logger.enableLoggerRedirection(true);
         Test test = new Test();
-        LanguageManager.addLanguageListener(test);
+        LanguageManager.addLanguageReloader(test);
         Logger.CONSOLE.setExitWhenLastOne(true);
         Logger.showConsoleDirect();
         new Thread(() -> {

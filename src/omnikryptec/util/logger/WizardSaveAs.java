@@ -17,15 +17,15 @@ import javax.swing.border.EtchedBorder;
 
 import omnikryptec.swing.JCheckBoxList;
 import de.codemakers.io.file.AdvancedFile;
-import omnikryptec.util.lang.ILanguage;
-import omnikryptec.util.lang.LanguageManager;
+import de.codemakers.lang.LanguageManager;
 import omnikryptec.util.logger.LogEntryFormatter.LogEntryFormatTile;
+import de.codemakers.lang.LanguageReloader;
 
 /**
  *
  * @author Panzer1119
  */
-public class WizardSaveAs extends javax.swing.JDialog implements ActionListener, ILanguage, WindowListener {
+public class WizardSaveAs extends javax.swing.JDialog implements ActionListener, LanguageReloader, WindowListener {
 
     /**
      *
@@ -54,7 +54,7 @@ public class WizardSaveAs extends javax.swing.JDialog implements ActionListener,
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         folder = AdvancedFile.folderOfPath(System.getProperty("user.dir"));
         reloadInfo();
-        LanguageManager.addLanguageListener(this);
+        LanguageManager.addLanguageReloader(this);
         reloadLanguage();
     }
 

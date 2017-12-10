@@ -21,10 +21,10 @@ public class OSUtil {
 
     private static final String OS_NAME = System.getProperty("os.name").toLowerCase();
     private static final AdvancedFile USER_HOME = AdvancedFile.folderOfPath(System.getProperty("user.home"));
-    private static final String ENGINE_FOLDER_NAME = "." + OmniKryptecEngine.class.getSimpleName() + "_3-1-2";
+    private static final String ENGINE_FOLDER_NAME = "." + OmniKryptecEngine.class.getSimpleName() + "_3-1-5";
     private static final String PATHSEPARATOR = "/";
 
-    public static final OS OpSys = detectOS();
+    public static final OS OPERATING_SYSTEM = detectOS();
     public static final AdvancedFile STANDARDAPPDATA = getStandardAppDataEngineFolder();
 
     public static enum OS {
@@ -52,7 +52,7 @@ public class OSUtil {
     }
 
     public static final OS getOS() {
-        return OpSys;
+        return OPERATING_SYSTEM;
     }
 
     private static final OS detectOS() {
@@ -84,7 +84,7 @@ public class OSUtil {
 
     public static final AdvancedFile getAppDataFolder(String folderName) {
         AdvancedFile file = null;
-        switch (OpSys) {
+        switch (OPERATING_SYSTEM) {
             case WINDOWS:
                 file = new AdvancedFile(USER_HOME, "AppData", "Roaming", folderName);
                 break;

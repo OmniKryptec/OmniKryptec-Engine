@@ -55,7 +55,7 @@ import omnikryptec.util.EnumCollection.RenderType;
 import omnikryptec.util.EnumCollection.UpdateType;
 import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
-import omnikryptec.util.lang.LanguageManager;
+import de.codemakers.lang.LanguageManager;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -88,7 +88,7 @@ public class EngineTest2 implements IEventHandler {
             // NativesLoader.loadNatives((folder) -> Logger.log(String.format("Loaded
             // natives from school \"%s\"", folder), LogLevel.FINE));
             // });
-            OmniKryptecEngine.addShutdownHook(() -> NativesLoader.unloadNatives());
+            //OmniKryptecEngine.addShutdownHook(() -> NativesLoader.unloadNatives());
             Logger.enableLoggerRedirection(true);
             Logger.setDebugMode(true);
             Logger.showConsoleDirect();
@@ -143,7 +143,7 @@ public class EngineTest2 implements IEventHandler {
 			// PostProcessing.instance().addStage(new
 			// CompleteGaussianBlurStage(false, 0.05f, 0.05f));
 			// PostProcessing.instance().addStage(new DebugRenderer());
-			AdvancedFile res = new AdvancedFile("res");
+			AdvancedFile res = new AdvancedFile("/res");
 			SimpleTexture jd = SimpleTexture.newTexture(new AdvancedFile(res, "jd.png"));
 			SimpleTexture js = SimpleTexture.newTexture(new AdvancedFile(res, "js.png"));
 			SimpleTexture jn = SimpleTexture.newTexture(new AdvancedFile(res, "jn.png"));
