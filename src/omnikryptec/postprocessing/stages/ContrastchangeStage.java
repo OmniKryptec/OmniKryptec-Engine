@@ -4,10 +4,10 @@ import java.util.List;
 
 import omnikryptec.display.Display;
 import omnikryptec.postprocessing.main.FrameBufferObject;
-import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.postprocessing.main.PostProcessingStep;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.files.postprocessing.ContrastchangeShader;
+import omnikryptec.util.EnumCollection.DepthbufferType;
 
 public class ContrastchangeStage extends PostProcessingStep {
 

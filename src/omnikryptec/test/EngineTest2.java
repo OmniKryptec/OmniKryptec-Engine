@@ -29,7 +29,6 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
 import omnikryptec.main.Scene3D;
 import omnikryptec.postprocessing.main.FrameBufferObject;
-import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
 import omnikryptec.renderer.d3.FloorReflectionRenderer;
 import omnikryptec.renderer.d3.RenderConfiguration;
 import omnikryptec.renderer.d3.RenderConfiguration.AllowedRenderer;
@@ -47,6 +46,7 @@ import omnikryptec.settings.GameSettings;
 import omnikryptec.util.AdvancedFile;
 import omnikryptec.util.Color;
 import omnikryptec.util.EnumCollection.BlendMode;
+import omnikryptec.util.EnumCollection.DepthbufferType;
 import omnikryptec.util.EnumCollection.RenderType;
 import omnikryptec.util.EnumCollection.UpdateType;
 import omnikryptec.util.Instance;
@@ -98,7 +98,7 @@ public class EngineTest2 implements IEventHandler {
 							.setInteger(GameSettings.HIGHEST_SHADER_LVL, 1000000)
 							.setBoolean(GameSettings.LIGHT_2D, true),
 					new GLFWInfo(3, 2, true, false, 1280, 720));
-			Display.setAspectRatio(16/9.0, true);
+			Display.setAspectRatio(-1, true);
 			// new Thread(new Runnable() {
 			//
 			// @Override
@@ -179,7 +179,7 @@ public class EngineTest2 implements IEventHandler {
 
 			}.setPerspectiveProjection(90, 0.1f, 1000)).setAmbientColor(0.1f, 0.1f, 0.1f));
 			OmniKryptecEngine.instance()
-					.addAndSetScene(new Scene2D("test2d", new Camera().setOrthographicProjection2D(0, 0, 1000, 1000)).setAmbientColor(1, 1, 1));
+					.addAndSetScene(new Scene2D("test2d", new Camera().setOrthographicProjection2D(0, 0, 2000, 2000)).setAmbientColor(1, 1, 1));
 			Instance.getCurrent3DCamera().getTransform().setPosition(0, 0, 200);
 			// OmniKryptecEngine.instance().addAndSetScene(null);
 			// Instance.getCurrentCamera().getTransform().setPosition(0, 0, 0);
@@ -239,8 +239,8 @@ public class EngineTest2 implements IEventHandler {
 					}
 				}
 			}
-			System.out.println(Arrays.toString(Display.getViewportData()));
-			for (int i = 0; i < 5; i++) {
+		//	System.out.println(Arrays.toString(Display.getViewportData()));
+			for (int i = 0; i < 10; i++) {
 				GameObject2D gom;
 				gom = new Sprite("dumm" + i, i % 2 == 0 ? js : jn, null) {
 //					 @Override
@@ -249,7 +249,7 @@ public class EngineTest2 implements IEventHandler {
 //						 s.fillRect(0, 0, 1000, 1000);
 //					 }
 				}.setColor(new Color(1, 1, 1, 1));
-				gom.getTransform().setScale(1.5f).setPosition(i*100, i*100);
+				gom.getTransform().setScale(1.5f).setPosition(i*100, i*70);
 				Instance.getCurrent2DScene().addGameObject(gom);
 			}
 			Light2D lllll = new Light2D("dickes fettes licht2d", animation, null);

@@ -5,6 +5,7 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL11;
 
 import omnikryptec.event.input.InputManager;
+import omnikryptec.graphics.OpenGL;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -13,7 +14,7 @@ public class Display {
 	private static GLFWErrorCallback errorCallback;
 	private static Window window;
 	private static double lastsynced;
-	private static final int[] viewport = new int[4];
+	private static int[] viewport = new int[4];
 	private static double aspectratio;
 
 	static void create(String name, GLFWInfo info) {
@@ -24,7 +25,7 @@ public class Display {
 			GLFW.glfwSetWindowAspectRatio(window.getID(), info.lockWindowAspectRatio()[0],
 					info.lockWindowAspectRatio()[1]);
 		}
-		calculateViewport();
+		//calculateViewport();
 		InputManager.initCallbacks();
 		lastsynced = getCurrentTime();
 		Logger.log("Successfully created GLContext and the Window!", LogLevel.FINEST);
@@ -99,58 +100,46 @@ public class Display {
 		window.show();
 	}
 
-	public static final void setDisplayViewport() {
-		GL11.glViewport(0, 0, getBufferWidth(), getBufferHeight());
-		//GL11.glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+	public static final void resetViewport() {
+		OpenGL.gl11viewport(0, 0, getBufferWidth(), getBufferHeight());
 	}
 
-	public static final int[] getViewportData() {
-		return viewport;
-	}
+//	public static final int[] getViewportData() {
+//		return viewport;
+//	}
 
 	public static final void resetAspectRatio() {
 		setAspectRatio(-1, true);
 	}
 
-	static final void calculateViewport() {
+	public static final int[] calculateViewport(int w, int h) {
+		int[] viewport = new int[4];
 		viewport[0] = 0;
 		viewport[1] = 0;
-		viewport[2] = getBufferWidth();
-		viewport[3] = getBufferHeight();
+		viewport[2] = w;
+		viewport[3] = h;
 		if (aspectratio > 0) {
-			if ((double) getBufferWidth() / (double) getBufferHeight() <= aspectratio) {
-				viewport[3] = (int) (getBufferWidth() * (1.0/aspectratio));
-				viewport[1] = (int) ((getBufferHeight() - viewport[3]) * 0.5);
+			if ((double) w / (double) h <= aspectratio) {
+				viewport[3] = (int) (w * (1.0 / aspectratio));
+				viewport[1] = (int) ((h - viewport[3]) * 0.5);
 			} else {
-				viewport[2] = (int) (getBufferHeight() * aspectratio);
-				viewport[0] = (int) ((getBufferWidth() - viewport[2]) * 0.5);
+				viewport[2] = (int) (h * aspectratio);
+				viewport[0] = (int) ((w - viewport[2]) * 0.5);
 			}
 		}
+		return viewport;
 	}
 
-//	public static void setViewPort(int width, int height) {
-//		double winV = (double) width / (double) height;
-//		int x = 0;
-//		int y = 0;
-//		int w = window.getWidth();
-//		int h = window.getHeight();
-//		if (aspectratio > 0) {
-//			if (winV <= aspectratio) {
-//				h = (int) ((window.getHeight() * winV) / aspectratio);
-//				y = (int) ((window.getHeight() - h) * 0.5);
-//			} else {
-//				w = (int) ((window.getWidth() / winV) * aspectratio);
-//				x = (int) ((window.getWidth() - w) * 0.5);
-//			}
-//		}
-//		GL11.glViewport(x, y, w, h);
-//	}
+	static final void calcViewport() {
+		//viewport = calculateViewport(getBufferWidth(), getBufferHeight());
+	}
+	
+	public static double getAspectRatio() {
+		return aspectratio;
+	}
 	
 	public static final void setAspectRatio(double a, boolean set) {
 		aspectratio = a;
-		calculateViewport();
-		if (set) {
-			setDisplayViewport();
-		}
+		calcViewport();
 	}
 }

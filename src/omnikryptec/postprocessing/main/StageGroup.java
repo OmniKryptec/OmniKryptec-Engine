@@ -6,7 +6,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL30;
 
 import omnikryptec.display.Display;
-import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
+import omnikryptec.util.EnumCollection.DepthbufferType;
 
 public class StageGroup extends PostProcessingStage {
 

@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import javax.imageio.ImageIO;
 
@@ -24,6 +23,7 @@ import omnikryptec.graphics.OpenGL;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.AdvancedFile;
+import omnikryptec.util.EnumCollection.DepthbufferType;
 import omnikryptec.util.Instance;
 import omnikryptec.util.exceptions.IllegalAccessException;
 import omnikryptec.util.logger.Logger;
@@ -45,9 +45,6 @@ public class FrameBufferObject extends Texture {
 
     private DepthbufferType type;
 
-    public static enum DepthbufferType {
-        NONE, DEPTH_TEXTURE, DEPTH_RENDER_BUFFER;
-    }
 
     private static List<FrameBufferObject> fbos = new ArrayList<>();
     private static ArrayDeque<FrameBufferObject> history = new ArrayDeque<>();
@@ -139,15 +136,22 @@ public class FrameBufferObject extends Texture {
         }
     }
 
+    public void bindFrameBuffer() {
+    	bindFrameBuffer(false);
+    }
+    
     /**
      * Binds the frame buffer, setting it as the current render target. Anything
      * rendered after this will be rendered to this FBO, and not to the screen.
      */
-    public void bindFrameBuffer() {
+    public void bindFrameBuffer(boolean ar) {
         history.push(this);
         GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, frameBuffer);
-        //Display.setViewPort(width, height);
-        GL11.glViewport(0, 0, width, height);
+        if(ar) {
+        	OpenGL.gl11viewport(Display.calculateViewport(width, height));
+        }else {
+        	OpenGL.gl11viewport(0, 0, width, height);
+        }
     }
 
     /**
@@ -161,7 +165,7 @@ public class FrameBufferObject extends Texture {
         if(!history.isEmpty()){
         	history.pop().bindFrameBuffer();
         }else {
-            Display.setDisplayViewport();
+            Display.resetViewport();
         }
     }
 

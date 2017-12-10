@@ -16,10 +16,9 @@ import omnikryptec.main.AbstractScene2D;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
 import omnikryptec.postprocessing.main.FrameBufferObject;
-import omnikryptec.postprocessing.main.FrameBufferObject.DepthbufferType;
-import omnikryptec.resource.texture.Texture;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.EnumCollection.BlendMode;
+import omnikryptec.util.EnumCollection.DepthbufferType;
 import omnikryptec.util.Instance;
 
 public class DefaultRenderer2D implements Renderer2D, IEventHandler{
