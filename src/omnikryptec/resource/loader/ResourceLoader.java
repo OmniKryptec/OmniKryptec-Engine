@@ -21,7 +21,7 @@ import omnikryptec.util.logger.Logger;
  */
 public class ResourceLoader implements Loader {
 
-    public static final SimpleTexture MISSING_TEXTURE = SimpleTexture.newTexture("/omnikryptec/resource/loader/missing_texture.png");
+    public static final SimpleTexture MISSING_TEXTURE = SimpleTexture.newTexture(new AdvancedFile("omnikryptec","resource","loader", "missing_texture.png"));
 
     private static ResourceLoader resourceLoader;
 
@@ -242,6 +242,17 @@ public class ResourceLoader implements Loader {
         }
     }
 
+    public final SimpleTexture getTexture(String name) {
+    	if (name == null || name.isEmpty()) {
+            return null;
+        }
+        try {
+            return (SimpleTexture) loadedData.get(name);
+        } catch (ClassCastException ex) {
+            return MISSING_TEXTURE;
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     public final <T extends ResourceObject> T getResource(Class<? extends T> c, String name) {
         if (c == null || name == null || name.isEmpty()) {

@@ -43,7 +43,7 @@ public class GameObject2D extends GameObject implements Transformable2D {
 		}
 	}
 
-	public final GameObject2D setRenderChunk3D(RenderChunk2D myChunk) {
+	public final GameObject2D setRenderChunk2D(RenderChunk2D myChunk) {
 		this.renderChunk = myChunk;
 		return this;
 	}

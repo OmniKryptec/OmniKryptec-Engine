@@ -49,14 +49,17 @@ public class RenderChunk2D implements GameObjectContainer<GameObject2D>{
 	
 	@Override
 	public void addGameObject(GameObject2D go) {
-		if(go instanceof Sprite) {
-			if(go instanceof Light2D) {
-				chunkLights.add((Light2D)go);
+		if(go!=null) {
+			if(go instanceof Sprite) {
+				if(go instanceof Light2D) {
+					chunkLights.add((Light2D)go);
+				}else {
+					chunkSprites.add((Sprite)go);
+				}
 			}else {
-				chunkSprites.add((Sprite)go);
+				chunkOther.add(go);
 			}
-		}else {
-			chunkOther.add(go);
+			go.setRenderChunk2D(this);
 		}
 	}
 
@@ -67,6 +70,9 @@ public class RenderChunk2D implements GameObjectContainer<GameObject2D>{
 			chunkSprites.remove(go);
 		}else {
 			chunkOther.remove(go);
+		}
+		if(delete) {
+			go.deleteOperation();
 		}
 		return go;
 	}

@@ -14,6 +14,10 @@ public class Sprite extends GameObject2D{
 		this("", null, null);
 	}
 	
+	public Sprite(Texture t) {
+		this("", t);
+	}
+	
 	public Sprite(String name, Texture t) {
 		this(name, t, null);
 	}
