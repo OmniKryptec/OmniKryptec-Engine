@@ -20,8 +20,9 @@ public class Display {
 		GLFW.glfwInit();
 		GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(Logger.NEWSYSERR));
 		window = new Window(name, info);
-		if(info.lockWindowAspectRatio()[0]>0&&info.lockWindowAspectRatio()[1]>0) {
-			GLFW.glfwSetWindowAspectRatio(window.getID(), info.lockWindowAspectRatio()[0], info.lockWindowAspectRatio()[1]);
+		if (info.lockWindowAspectRatio()[0] > 0 && info.lockWindowAspectRatio()[1] > 0) {
+			GLFW.glfwSetWindowAspectRatio(window.getID(), info.lockWindowAspectRatio()[0],
+					info.lockWindowAspectRatio()[1]);
 		}
 		calculateViewport();
 		InputManager.initCallbacks();
@@ -111,7 +112,7 @@ public class Display {
 	}
 
 	public static final void calculateViewport() {
-		//double winV = (double) window.getWidth() / (double) window.getHeight();
+		// double winV = (double) window.getWidth() / (double) window.getHeight();
 		double winV = (double) getBufferWidth() / (double) getBufferHeight();
 		viewport[0] = 0;
 		viewport[1] = 0;
@@ -119,10 +120,10 @@ public class Display {
 		viewport[3] = window.getHeight();
 		if (aspectratio > 0) {
 			if (winV <= aspectratio) {
-				viewport[3] = (int) (window.getHeight()/winV * aspectratio);
+				viewport[3] = (int) ((window.getHeight() * winV) / aspectratio);
 				viewport[1] = (int) ((window.getHeight() - viewport[3]) * 0.5);
 			} else {
-				viewport[2] = (int) (window.getWidth()/winV * aspectratio);
+				viewport[2] = (int) ((window.getWidth() / winV) * aspectratio);
 				viewport[0] = (int) ((window.getWidth() - viewport[2]) * 0.5);
 			}
 		}
