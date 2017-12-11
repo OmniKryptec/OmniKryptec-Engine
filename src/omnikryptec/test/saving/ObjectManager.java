@@ -61,7 +61,7 @@ public class ObjectManager {
     public static void main(String[] args) {
         try {
             TestClass obj = new TestClass("Troll", 22);
-            AdvancedFile file_2 = new AdvancedFile("test_2.txt");
+            AdvancedFile file_2 = new AdvancedFile(false, "test_2.txt");
             saveObjectToFile(obj, file_2, true);
             TestClass temp = loadObjectFromFile(file_2, TestClass.createInstance());
             // Logger.log("Here:\n" + test);
@@ -76,7 +76,7 @@ public class ObjectManager {
 //                        .setPos(new Vector3f((float) Math.random(), (float) Math.random(), (float) Math.random()));
             }
 
-            AdvancedFile file = new AdvancedFile("test_world.txt");
+            AdvancedFile file = new AdvancedFile(false, "test_world.txt");
             World world = new World("Test Welt", test_array);
             Logger.log(world);
             world.save(file);

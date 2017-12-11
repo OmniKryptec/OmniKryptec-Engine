@@ -80,7 +80,7 @@ public class WizardSaveAs extends javax.swing.JDialog implements ActionListener,
                 folder = AdvancedFile.folderOfPath(System.getProperty("user.dir"));
                 fileChooser.setCurrentDirectory(folder.toFile());
             }
-            fileChooser.setSelectedFile(new AdvancedFile().toFile());
+            fileChooser.setSelectedFile(new AdvancedFile(false, "").toFile());
         } catch (Exception ex) {
             Logger.logErr("Error while setting showSaveAsDialog: " + ex, ex);
         }
@@ -112,7 +112,7 @@ public class WizardSaveAs extends javax.swing.JDialog implements ActionListener,
 
     public void searchComputer(Component c) {
         int result = fileChooser.showSaveDialog(c);
-        AdvancedFile file_temp = new AdvancedFile(fileChooser.getSelectedFile());
+        AdvancedFile file_temp = new AdvancedFile(false, fileChooser.getSelectedFile());
         if (result == JFileChooser.APPROVE_OPTION && !file_temp.isIntern()) {
             file = file_temp;
             textField_center_path.setText(file.toFile().getAbsolutePath());

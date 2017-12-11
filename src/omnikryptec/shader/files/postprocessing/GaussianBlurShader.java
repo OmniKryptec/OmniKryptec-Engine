@@ -13,8 +13,8 @@ public class GaussianBlurShader extends Shader {
     public static final UniformSampler sampler = new UniformSampler("tex");
 
     public GaussianBlurShader(String vertshader) {
-        super(new AdvancedFile(SHADER_LOCATION_PP, vertshader),
-                new AdvancedFile(SHADER_LOCATION_PP, "gaussian_blur_frag.glsl"),
+        super(new AdvancedFile(true, SHADER_LOCATION_PP, vertshader),
+                new AdvancedFile(true, SHADER_LOCATION_PP, "gaussian_blur_frag.glsl"),
                 Shader.DEFAULT_PP_VERTEX_SHADER_POS_ATTR, size, isHor, sampler);
         start();
         sampler.loadTexUnit(0);

@@ -12,7 +12,7 @@ public class ContrastchangeShader extends Shader {
 
     public ContrastchangeShader() {
         super(DEF_SHADER_LOC_PP_VS,
-                new AdvancedFile(SHADER_LOCATION_PP, "contrastshanger_shader_frag.glsl"),
+                new AdvancedFile(true, SHADER_LOCATION_PP, "contrastshanger_shader_frag.glsl"),
                 DEFAULT_PP_VERTEX_SHADER_POS_ATTR, change, scene);
         start();
         scene.loadTexUnit(0);

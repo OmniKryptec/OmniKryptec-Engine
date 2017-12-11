@@ -30,12 +30,12 @@ public class Shader {
     public static final String DEFAULT_PP_VERTEX_SHADER_POS_ATTR = "position";
     public static final String DEFAULT_PP_VERTEX_SHADER_TEXC_OUT = "textureCoords";
 
-    protected static final AdvancedFile SHADER_LOCATION = new AdvancedFile("omnikryptec", "shader", "files");
-    protected static final AdvancedFile SHADER_LOCATION_PP = new AdvancedFile("omnikryptec", "shader", "files",
+    protected static final AdvancedFile SHADER_LOCATION = new AdvancedFile(true, "", "omnikryptec", "shader", "files");
+    protected static final AdvancedFile SHADER_LOCATION_PP = new AdvancedFile(true, "", "omnikryptec", "shader", "files",
             "postprocessing");
-    protected static final AdvancedFile SHADER_LOCATION_RENDER = new AdvancedFile("omnikryptec", "shader", "files",
+    protected static final AdvancedFile SHADER_LOCATION_RENDER = new AdvancedFile(true, "", "omnikryptec", "shader", "files",
             "render");
-    protected static final AdvancedFile DEF_SHADER_LOC_PP_VS = new AdvancedFile(SHADER_LOCATION_PP, "pp_vert.glsl");
+    protected static final AdvancedFile DEF_SHADER_LOC_PP_VS = new AdvancedFile(true, SHADER_LOCATION_PP, "pp_vert.glsl");
 
     private static int shadercount = 0;
     private static Shader shadercurrent;

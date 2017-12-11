@@ -25,7 +25,7 @@ public class FogShader extends Shader {
 
     public FogShader() {
         super(DEF_SHADER_LOC_PP_VS,
-                new AdvancedFile(SHADER_LOCATION_PP, "fog_shader_frag.glsl"),
+                new AdvancedFile(true, SHADER_LOCATION_PP, "fog_shader_frag.glsl"),
                 Shader.DEFAULT_PP_VERTEX_SHADER_POS_ATTR);
         registerUniforms(depth, texture, pixsize, fog, density, gradient, invprojv, campos);
         start();

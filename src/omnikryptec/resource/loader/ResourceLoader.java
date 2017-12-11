@@ -21,7 +21,7 @@ import omnikryptec.util.logger.Logger;
  */
 public class ResourceLoader implements Loader {
 
-    public static final SimpleTexture MISSING_TEXTURE = SimpleTexture.newTexture(new AdvancedFile("omnikryptec","resource","loader", "missing_texture.png"));
+    public static final SimpleTexture MISSING_TEXTURE = SimpleTexture.newTexture(new AdvancedFile(true, "", "omnikryptec", "resource", "loader", "missing_texture.png"));
 
     private static ResourceLoader resourceLoader;
 
@@ -73,7 +73,7 @@ public class ResourceLoader implements Loader {
     private String[] blacklist = null;
     private boolean isLoading = false;
     private ResourceObject tmp;
-    
+
     @Override
     public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
         return loadIntern(advancedFile, superFile, resourceLoader);
@@ -132,7 +132,7 @@ public class ResourceLoader implements Loader {
         try {
             //resetExecutor();
             if (clearData) {
-            	loadedData.values().stream().forEach((i)->i.delete());
+                loadedData.values().stream().forEach((i) -> i.delete());
                 loadedData.clear();
             }
             final ArrayList<AdvancedFile> stagedAdvancedFiles = getStagedAdvancedFilesSorted();
@@ -244,17 +244,17 @@ public class ResourceLoader implements Loader {
     }
 
     public final SimpleTexture getTexture(String name) {
-    	if (name == null || name.isEmpty()) {
-    		return null;
+        if (name == null || name.isEmpty()) {
+            return null;
         }
         try {
-        	tmp = loadedData.get(name);
-            return tmp==null? MISSING_TEXTURE : (SimpleTexture) tmp;
+            tmp = loadedData.get(name);
+            return tmp == null ? MISSING_TEXTURE : (SimpleTexture) tmp;
         } catch (ClassCastException ex) {
             return MISSING_TEXTURE;
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     public final <T extends ResourceObject> T getResource(Class<? extends T> c, String name) {
         if (c == null || name == null || name.isEmpty()) {

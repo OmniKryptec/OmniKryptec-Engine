@@ -62,9 +62,9 @@ public class ForwardMeshShader extends Shader {
     private int maxlights;
 
     public ForwardMeshShader(boolean pv) {
-        super(new AdvancedFile(SHADER_LOCATION_RENDER, pv ? "forward_pv_shader_vert.glsl" : "forward_shader_vert.glsl")
+        super(new AdvancedFile(true, SHADER_LOCATION_RENDER, pv ? "forward_pv_shader_vert.glsl" : "forward_shader_vert.glsl")
                 .createInputStream(),
-                new AdvancedFile(SHADER_LOCATION_RENDER,
+                new AdvancedFile(true, SHADER_LOCATION_RENDER,
                         pv ? "forward_pv_shader_frag.glsl" : "forward_shader_frag.glsl").createInputStream(),
                 new Attribute("pos", 0), new Attribute("texcoords", 1), new Attribute("normal", 2),
                 new Attribute("tangent", 3), new Attribute("transmatrix", 4), new Attribute("colour", 8));

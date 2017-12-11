@@ -64,11 +64,11 @@ public class AnimationTest {
     private static Animation animation;
     private static Entity entity_test;
     private static float speedFactor = 1.0F;
-    private static final AdvancedFile RES_FOLDER_1 = new AdvancedFile("res");
-    private static final AdvancedFile MODEL_FILE = new AdvancedFile(RES_FOLDER_1, "model.dae");
-    private static final AdvancedFile ANIM_FILE = new AdvancedFile(RES_FOLDER_1, "model.dae");
-    private static final AdvancedFile DIFFUSE_FILE = new AdvancedFile(RES_FOLDER_1, "diffuse.png");
-    private static final AdvancedFile SAVE = new AdvancedFile(OSUtil.getStandardAppDataEngineFolder(), "saves", "save.xml");
+    private static final AdvancedFile RES_FOLDER_1 = new AdvancedFile(true, "", "res");
+    private static final AdvancedFile MODEL_FILE = new AdvancedFile(true, RES_FOLDER_1, "model.dae");
+    private static final AdvancedFile ANIM_FILE = new AdvancedFile(true, RES_FOLDER_1, "model.dae");
+    private static final AdvancedFile DIFFUSE_FILE = new AdvancedFile(true, RES_FOLDER_1, "diffuse.png");
+    private static final AdvancedFile SAVE = new AdvancedFile(false, OSUtil.getStandardAppDataEngineFolder(), "saves", "save.xml");
     private static final Deflater deflater = new Deflater(Deflater.BEST_COMPRESSION);
 
     public static final void main(String[] args) {
@@ -129,7 +129,7 @@ public class AnimationTest {
             }.setPerspectiveProjection(75, 0.1F, 1000)))));
 
             //FIXME Only for testing DON'T DELETE TIHS!!! START
-            AdvancedFile res_test = new AdvancedFile("omnikryptec", "test");
+            AdvancedFile res_test = new AdvancedFile(true, "", "omnikryptec", "test");
             ResourceLoader.currentInstance().addLoader(new DefaultModelLoader());
             ResourceLoader.currentInstance().addLoader(new DefaultTextureLoader());
             ResourceLoader.currentInstance().addLoader(new DefaultAnimationLoader());
@@ -137,10 +137,10 @@ public class AnimationTest {
             //ResourceLoader.getInstance().stageAdvancedFiles(-1, DIFFUSE_FILE);
             //ResourceLoader.getInstance().stageAdvancedFiles(MODEL_FILE);
             ResourceLoader.currentInstance().stageAdvancedFiles(1, RES_FOLDER_1);
-            ResourceLoader.currentInstance().stageAdvancedFiles(new AdvancedFile(res_test, "brunnen.obj"));
-            ResourceLoader.currentInstance().stageAdvancedFiles(new AdvancedFile(res_test, "brunnen.png"));
+            ResourceLoader.currentInstance().stageAdvancedFiles(new AdvancedFile(true, res_test, "brunnen.obj"));
+            ResourceLoader.currentInstance().stageAdvancedFiles(new AdvancedFile(true, res_test, "brunnen.png"));
             ResourceLoader.currentInstance().loadStagedAdvancedFiles(true);
-            Logger.log("Local Folder: " + new AdvancedFile("").getAbsoluteAdvancedFile());
+            Logger.log("Local Folder: " + new AdvancedFile(false, "").getAbsoluteAdvancedFile());
             //file = new AdvancedFile("pictures", String.format("test_%s%d.png", (withTransparency ? "withTransparency_" : ""), JBulletTest2.imagesTaken)).getAbsoluteAdvancedFile();
             //FIXME Only for testing DON'T DELETE TIHS!!! END
 

@@ -20,8 +20,8 @@ public class AnimatedModelShader extends Shader {
 
     //private static final int MAX_JOINTS = 50;// max number of joints in a skeleton
     //private static final int DIFFUSE_TEX_UNIT = 0;
-    private static final AdvancedFile VERTEX_SHADER = new AdvancedFile("omnikryptec", "animation", "renderer", "animatedEntityVertex.glsl");
-    private static final AdvancedFile FRAGMENT_SHADER = new AdvancedFile("omnikryptec", "animation", "renderer", "animatedEntityFragment.glsl");
+    private static final AdvancedFile VERTEX_SHADER = new AdvancedFile(true, "", "omnikryptec", "animation", "renderer", "animatedEntityVertex.glsl");
+    private static final AdvancedFile FRAGMENT_SHADER = new AdvancedFile(true, "", "omnikryptec", "animation", "renderer", "animatedEntityFragment.glsl");
 
     public final UniformMatrix transformationMatrix = new UniformMatrix("transformationMatrix");
     public final UniformMatrix viewMatrix = new UniformMatrix("viewMatrix");

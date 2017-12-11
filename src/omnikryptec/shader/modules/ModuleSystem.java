@@ -112,9 +112,9 @@ public class ModuleSystem {
             name += MODULE_FILE_SUFFIX;
         }
         if (name.startsWith(EXTERN_MODULE_PREFIX)) {
-            ff = new AdvancedFile(name.substring(EXTERN_MODULE_PREFIX.length()));
+            ff = new AdvancedFile(true, name.substring(EXTERN_MODULE_PREFIX.length()));
         } else {
-            ff = new AdvancedFile(MODULE_LOCATION, name);
+            ff = new AdvancedFile(true, MODULE_LOCATION, name);
         }
         return new Module(name, ff.createInputStream(), this);
     }

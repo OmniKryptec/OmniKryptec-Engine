@@ -55,7 +55,7 @@ public class NativesLoader {
                 }
                 return true;
             } else if (log) {
-                Logger.log("Loading natives to \"" + NATIVESFOLDER + "\" failed", LogLevel.WARNING);
+                Logger.log("Loading natives to \"" + folder + "\" failed", LogLevel.WARNING);
             }
         }
         return false;
@@ -197,7 +197,7 @@ public class NativesLoader {
     private static final AdvancedFile getStandardNativesFolder() {
         boolean appDataCreated = OSUtil.createStandardFolders();
         if (appDataCreated) {
-            return new AdvancedFile(false, OSUtil.STANDARDAPPDATA, "natives", OSUtil.OPERATING_SYSTEM.getName());
+            return new AdvancedFile(false, OSUtil.STANDARD_APPDATA_FOLDER, "natives", OSUtil.OPERATING_SYSTEM.getName());
         } else {
             return null;
         }

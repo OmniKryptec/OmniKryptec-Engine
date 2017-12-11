@@ -11,8 +11,8 @@ public class DebugShader extends Shader {
     public final UniformVec3 info = new UniformVec3("info");
 
     public DebugShader() {
-        super(new AdvancedFile(SHADER_LOCATION_PP, "debug_shader_vert.glsl"),
-                new AdvancedFile(SHADER_LOCATION_PP, "debug_shader_frag.glsl"),
+        super(new AdvancedFile(true, SHADER_LOCATION_PP, "debug_shader_vert.glsl"),
+                new AdvancedFile(true, SHADER_LOCATION_PP, "debug_shader_frag.glsl"),
                 Shader.DEFAULT_PP_VERTEX_SHADER_POS_ATTR);
         registerUniforms(sampler, info);
         start();

@@ -134,9 +134,8 @@ public class FrameBufferObject extends Texture {
                 GL11.glDeleteTextures(colBuffers[i]);
             }
         }
-		return this;
+        return this;
     }
-    
 
     /**
      * Binds the frame buffer, setting it as the current render target. Anything
@@ -144,18 +143,18 @@ public class FrameBufferObject extends Texture {
      */
     public void bindFrameBuffer() {
         GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, frameBuffer);
-        if(history.isEmpty()) {
-        	OpenGL.gl11viewport(Display.calculateViewport(width, height));
-        }else {
-        	OpenGL.gl11viewport(0, 0, width, height);
+        if (history.isEmpty()) {
+            OpenGL.gl11viewport(Display.calculateViewport(width, height));
+        } else {
+            OpenGL.gl11viewport(0, 0, width, height);
         }
         history.push(this);
     }
 
     public static FrameBufferObject getBoundFBO() {
-    	return history.peek();
+        return history.peek();
     }
-    
+
     /**
      * Unbinds the frame buffer, setting the default frame buffer as the current
      * render target. Anything rendered after this will be rendered to the
@@ -163,10 +162,10 @@ public class FrameBufferObject extends Texture {
      */
     public void unbindFrameBuffer() {
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-	    history.pop();
-        if(!history.isEmpty()){
-        	history.pop().bindFrameBuffer();
-        }else {
+        history.pop();
+        if (!history.isEmpty()) {
+            history.pop().bindFrameBuffer();
+        } else {
             Display.setARViewPort();
         }
     }
@@ -415,11 +414,11 @@ public class FrameBufferObject extends Texture {
     public final boolean saveAsScreenshotInFolder(AdvancedFile folder, String name, String format, boolean withTimestamp, boolean withTransparency) {
         AdvancedFile file = null;
         if (withTimestamp) {
-            file = new AdvancedFile(folder, String.format("%s_%s.%s", name, LocalDateTime.now().format(Instance.DATETIMEFORMAT_TIMESTAMP), format));
+            file = new AdvancedFile(false, folder, String.format("%s_%s.%s", name, LocalDateTime.now().format(Instance.DATETIMEFORMAT_TIMESTAMP), format));
         } else {
             int i = 1;
             while (file == null || file.exists()) {
-                file = new AdvancedFile(folder, String.format("%s_%d.%s", name, i, format));
+                file = new AdvancedFile(false, folder, String.format("%s_%d.%s", name, i, format));
                 i++;
             }
         }

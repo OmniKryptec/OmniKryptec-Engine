@@ -23,8 +23,8 @@ public class SimpleMeshShader extends Shader {
     private final UniformVec4 uvs = new UniformVec4("uvs");
 
     public SimpleMeshShader() {
-        super(new AdvancedFile(SHADER_LOCATION_RENDER, "simple_mesh_shader_vert.glsl"),
-                new AdvancedFile(SHADER_LOCATION_RENDER, "simple_mesh_shader_frag.glsl"), new Attribute("pos", 0),
+        super(new AdvancedFile(true, SHADER_LOCATION_RENDER, "simple_mesh_shader_vert.glsl"),
+                new AdvancedFile(true, SHADER_LOCATION_RENDER, "simple_mesh_shader_frag.glsl"), new Attribute("pos", 0),
                 new Attribute("texcoords", 1), new Attribute("transmatrix", 4), new Attribute("colour", 8));
         super.registerUniforms(u_view, u_projection, tex, uvs);
         start();

@@ -25,7 +25,7 @@ public class OSUtil {
     private static final String PATHSEPARATOR = "/";
 
     public static final OS OPERATING_SYSTEM = detectOS();
-    public static final AdvancedFile STANDARDAPPDATA = getStandardAppDataEngineFolder();
+    public static final AdvancedFile STANDARD_APPDATA_FOLDER = getStandardAppDataEngineFolder();
 
     public static enum OS {
         WINDOWS("windows"), MAC("macosx"), UNIX("linux"), SOLARIS("solaris"), ERROR(null);
@@ -71,7 +71,7 @@ public class OSUtil {
 
     public static final boolean createStandardFolders() {
         try {
-            return (STANDARDAPPDATA.createAdvancedFile() && STANDARDAPPDATA.isDirectory());
+            return (STANDARD_APPDATA_FOLDER.createAdvancedFile() && STANDARD_APPDATA_FOLDER.isDirectory());
         } catch (Exception ex) {
             Logger.logErr("Error while creating standard folders: " + ex, ex);
             return false;
@@ -86,16 +86,16 @@ public class OSUtil {
         AdvancedFile file = null;
         switch (OPERATING_SYSTEM) {
             case WINDOWS:
-                file = new AdvancedFile(USER_HOME, "AppData", "Roaming", folderName);
+                file = new AdvancedFile(false, USER_HOME, "AppData", "Roaming", folderName);
                 break;
             case MAC:
-                file = new AdvancedFile(USER_HOME, "Library", "Application Support", folderName); // TODO Needs confirmation!
+                file = new AdvancedFile(false, USER_HOME, "Library", "Application Support", folderName); // TODO Needs confirmation!
                 break;
             case UNIX:
-                file = new AdvancedFile(USER_HOME, folderName);
+                file = new AdvancedFile(false, USER_HOME, folderName);
                 break;
             case SOLARIS:
-                file = new AdvancedFile(USER_HOME, folderName);
+                file = new AdvancedFile(false, USER_HOME, folderName);
                 break;
             case ERROR:
                 break;
@@ -147,7 +147,7 @@ public class OSUtil {
                     final AdvancedFile apps = AdvancedFile.folderOfPath(url.toURI().getPath());
                     for (AdvancedFile app : apps.listAdvancedFiles()) {
                         try {
-                            Files.copy(app.toFile().toPath(), new AdvancedFile(folder, app.getName()).toFile().toPath(), StandardCopyOption.COPY_ATTRIBUTES);
+                            Files.copy(app.toFile().toPath(), new AdvancedFile(false, folder, app.getName()).toFile().toPath(), StandardCopyOption.COPY_ATTRIBUTES);
                         } catch (java.nio.file.FileAlreadyExistsException faex) {
                         } catch (Exception ex) {
                             allGood = false;
@@ -170,7 +170,7 @@ public class OSUtil {
         if (path.contains(PATHSEPARATOR)) {
             name = name.substring(name.lastIndexOf(PATHSEPARATOR) + PATHSEPARATOR.length());
         }
-        return new AdvancedFile(folder, name);
+        return new AdvancedFile(false, folder, name);
     }
 
     public static final AdvancedFile getJarFile() {
