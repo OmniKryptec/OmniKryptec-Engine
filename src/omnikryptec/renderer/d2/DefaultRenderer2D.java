@@ -51,8 +51,10 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler{
 			light = OmniKryptecEngine.instance().getGameSettings().getBoolean(GameSettings.LIGHT_2D);
 			last = Instance.getFramecount();
 		}
+		sprites.addAll(global.__getSprites());
 		if(light) {
 			lightlist = new ArrayList<>();
+			lightlist.addAll(global.__getLights());
 		}
 		for(long x=-chunkOffsetX; x<=chunkOffsetX; x++) {
 			for(long y=-chunkOffsetY; y<=chunkOffsetY; y++) {
