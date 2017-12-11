@@ -279,15 +279,16 @@ public class SpriteBatch {
 			x4 = x + (cos * p4x - sin * p4y) + cx; // BOTTOM LEFT
 			y4 = y + (sin * p4x + cos * p4y) + cy;
 		} else {
+			//Topleft
 			x1 = x;
 			y1 = y;
-
+			//TopRight
 			x2 = x + width;
 			y2 = y;
-
+			//BottomRight
 			x3 = x + width;
 			y3 = y + height;
-
+			//BottomLeft
 			x4 = x;
 			y4 = y + height;
 		}

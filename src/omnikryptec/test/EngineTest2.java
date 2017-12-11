@@ -224,7 +224,7 @@ public class EngineTest2 implements IEventHandler {
 			// OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
 			// }
 			System.out.println("Generating objs...");
-			int cube = 100;
+			int cube = 10;
 			int abstand = 5;
 			float scale = 1;
 			int objcount = 0;
@@ -243,8 +243,17 @@ public class EngineTest2 implements IEventHandler {
 					}
 				}
 			}
+			GameObject3D go;
+			// go = new GameObject().setRelativePos(x, y, z);
+			go = (GameObject3D) new Entity(tm).setColor(1, 0, 0, 1).setUpdateType(UpdateType.STATIC);
+			go.getTransform().setDirty().setScale(scale).setPosition(100, -100, 0).getRotationSimple().rotate(0,
+					0, 0);
+			Instance.getCurrent3DScene().addGameObject(go);
+			// system.addAttractor(new
+			// ParticleAttractor(go).setAcceleration(10).setMode(AttractorMode.KILL_ON_REACH).setTolerance(5));
+			objcount++;
 		//	System.out.println(Arrays.toString(Display.getViewportData()));
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 0; i++) {
 				GameObject2D gom;
 				gom = new Sprite("dumm" + i, i % 2 == 0 ? js : jn, null) {
 //					 @Override

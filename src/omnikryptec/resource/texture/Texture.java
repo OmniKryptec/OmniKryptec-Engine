@@ -44,6 +44,20 @@ public abstract class Texture implements ResourceObject {
         return this;
     }
 
+    public Texture invertV() {
+    	float tmp = uvs[3];
+    	uvs[3] = uvs[1]; 
+    	uvs[1] = tmp;
+    	return this;
+    }
+    
+    public Texture invertU() {
+    	float tmp = uvs[2];
+    	uvs[2] = uvs[0]; 
+    	uvs[0] = tmp;
+    	return this;
+    }
+    
     /**
      * 
      * @param unit

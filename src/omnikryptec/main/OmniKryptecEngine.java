@@ -371,9 +371,13 @@ public class OmniKryptecEngine implements Profilable {
 
     public final OmniKryptecEngine addScene(AbstractScene<?> scene) {
         if (scene instanceof AbstractScene3D) {
-            scenes3D.add((AbstractScene3D) scene);
+            if(!scenes3D.contains(scene)) {
+            	scenes3D.add((AbstractScene3D) scene);
+            }
         } else if (scene instanceof AbstractScene2D) {
-            scenes2D.add((AbstractScene2D) scene);
+            if(!scenes2D.contains(scene)) {
+            	scenes2D.add((AbstractScene2D) scene);
+            }
         }
         return this;
     }
