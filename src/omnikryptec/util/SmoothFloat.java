@@ -19,6 +19,10 @@ public class SmoothFloat {
 		actual += change;
 	}
 
+	public void update() {
+		this.update(Instance.getDeltaTimef());
+	}
+	
 	public void increaseTarget(float dT) {
 		this.target += dT;
 	}
@@ -37,6 +41,11 @@ public class SmoothFloat {
 
 	public float getTarget() {
 		return target;
+	}
+	
+	@Override
+	public String toString() {
+		return "Value: "+actual+" Target: "+target+" Agility: "+agility;
 	}
 
 }

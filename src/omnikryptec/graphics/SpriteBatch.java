@@ -44,6 +44,10 @@ public class SpriteBatch {
 	private Camera camera;
 	private Texture texCur;
 	
+	public SpriteBatch() {
+		this(null);
+	}
+	
 	public SpriteBatch(Camera cam) {
 		this(cam, 1000);
 	}
@@ -190,7 +194,7 @@ public class SpriteBatch {
 	}
 
 	public void draw(Sprite s) {
-		if(s!=null) {
+		if(s!=null&&s.getTexture()!=null) {
 			color.setFrom(s.getColor());
 			scaledWidth = s.getWidth();
 			scaledHeight = s.getHeight();

@@ -25,8 +25,8 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler{
 	
 	private SpriteBatch batch, finalBatch;
 	
-	public DefaultRenderer2D(Scene2D scene) {
-		this(new SpriteBatch(scene.getCamera()));
+	public DefaultRenderer2D() {
+		this(new SpriteBatch());
 	}
 	
 	public DefaultRenderer2D(SpriteBatch batch) {
@@ -45,6 +45,7 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler{
 	@Override
 	public long render(AbstractScene2D sc, RenderChunk2D global, long camChunkX, long camChunkY,
 			long chunkOffsetX, long chunkOffsetY, HashMap<String, RenderChunk2D> scene) {
+		batch.setCamera(sc.getCamera());
 		sprites = new ArrayList<>();
 		if(GraphicsUtil.needsUpdate(last, 20)){
 			light = OmniKryptecEngine.instance().getGameSettings().getBoolean(GameSettings.LIGHT_2D);

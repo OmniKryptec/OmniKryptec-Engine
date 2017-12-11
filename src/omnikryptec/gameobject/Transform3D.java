@@ -351,5 +351,12 @@ public class Transform3D implements DataMapSerializable, Positionable3D {
         }
         return new Transform3D().fromDataMap(data);
     }
+    
+    
+
+    @Override
+    public String toString() {
+    	return "Transform2D [Pos.: "+position.toString()+" Rot.: "+rotation+" Scale: "+scale+" Parent: "+parent+"]";
+    }
 
 }

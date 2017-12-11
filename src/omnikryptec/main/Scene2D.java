@@ -24,10 +24,13 @@ public class Scene2D extends AbstractScene2D{
 		this("", null);
 	}
 	
+	public Scene2D(String name) {
+		this(name, null);
+	}
 	
 	public Scene2D(String name, Camera cam) {
 		super(name, cam);
-		setRenderer(new DefaultRenderer2D(this));
+		setRenderer(new DefaultRenderer2D());
 		init();
 	}
 	
@@ -69,6 +72,9 @@ public class Scene2D extends AbstractScene2D{
 
 	@Override
 	protected long render() {
+		if(getCamera()==null) {
+			return 0;
+		}
 		return renderer.render(this, global, getCamera().getTransform().getChunkX(), getCamera().getTransform().getChunkY(), cox, coy, scene);
 	}
 

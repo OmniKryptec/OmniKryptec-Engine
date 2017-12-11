@@ -90,14 +90,14 @@ public class RenderChunk2D implements GameObjectContainer<GameObject2D>{
 	}
 	
 	public void logic() {
-		for(GameObject2D g : chunkOther) {
-			g.doLogic();
+		for(int i=0; i<chunkOther.size(); i++) {
+			chunkOther.get(i).doLogic();
 		}
-		for(GameObject2D g : chunkLights) {
-			g.doLogic();
+		for(int i=0; i<chunkLights.size(); i++) {
+			chunkLights.get(i).doLogic();
 		}
-		for(GameObject2D g : chunkSprites) {
-			g.doLogic();
+		for(int i=0; i<chunkSprites.size(); i++) {
+			chunkSprites.get(i).doLogic();
 		}
 	}
 	

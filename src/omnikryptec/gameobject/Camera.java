@@ -9,6 +9,7 @@ import omnikryptec.display.Display;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.util.Maths;
 import omnikryptec.util.SerializationUtil;
+import omnikryptec.util.EnumCollection.UpdateType;
 
 public class Camera extends GameObject3D {
 
@@ -24,6 +25,7 @@ public class Camera extends GameObject3D {
         projViewNeedsUpdate = true;
         invPVneedsUpdate = true;
         projection = proj;
+        setUpdateType(UpdateType.DYNAMIC);
     }
 
     public Matrix4fc getProjectionMatrix() {

@@ -240,8 +240,10 @@ public class GameSettings {
         setFloat(Z_OFFSET_2D, 1f);
         setBoolean(FASTMATH, true);
         setBoolean(LIGHT_2D, true);
-        setLong(CHUNK_OFFSET_2D_X, 1);
-        setLong(CHUNK_OFFSET_2D_Y, 1);
+        setLong(CHUNK_OFFSET_2D_X, 2);
+        setLong(CHUNK_OFFSET_2D_Y, 2);
+        setLong(CHUNK_WIDTH_2D, 500);
+        setLong(CHUNK_HEIGHT_2D, 500);
         return this;
     }
 
