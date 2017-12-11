@@ -79,7 +79,7 @@ public abstract class GameObject implements DataMapSerializable {
     /**
      * creates a GameObject
      *
-     * @param parent the parent or null for no parent
+     * @param name the parent or null for no parent
      */
     public GameObject(String name) {
         this.name = name;
@@ -177,7 +177,7 @@ public abstract class GameObject implements DataMapSerializable {
     /**
      * removes a Component from this GameObject
      *
-     * @see {@link Component}
+     * @see Component
      * @param c
      * @return this GameObject
      */

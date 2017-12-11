@@ -413,8 +413,8 @@ public abstract class AdvancedServerSocket implements ActionListener, Serializab
      * Broadcast a Message to all given AdvancedSockets
      *
      * @param message Message to broadcast
-     * @param sockets If the list is a white or a blacklist
-     * @param list AdvancedSockets that are allowed/denied to receive the
+     * @param whitelist If the list is a white or a blacklist
+     * @param sockets AdvancedSockets that are allowed/denied to receive the
      * message
      * @return A reference to this AdvancedServerSocket
      */

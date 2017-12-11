@@ -180,7 +180,7 @@ public class AudioSource {
     /**
      * Fades one frame
      *
-     * @param out If fading out or fading in
+     * @param deltaTime out If fading out or fading in
      * @return <tt>true</tt> if next frame also needs to be faded again
      */
     public final boolean fadeOneFrame(float deltaTime) {
@@ -514,7 +514,7 @@ public class AudioSource {
     /**
      * Sets the fading in and out time
      *
-     * @param fadeTime Fade time in milliseconds
+     * @param fadeTimeComplete Fade time in milliseconds
      * @return A reference to this AudioSource
      */
     public final AudioSource setFadeTimeComplete(float fadeTimeComplete) {
