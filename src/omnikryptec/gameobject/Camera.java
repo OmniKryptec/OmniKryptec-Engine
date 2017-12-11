@@ -79,6 +79,7 @@ public class Camera extends GameObject3D {
     public Matrix4f getProjectionViewMatrix() {
         if(projViewNeedsUpdate){
         	projViewNeedsUpdate=false;
+        	invPVneedsUpdate = true;
         	return getProjectionMatrix().mul(getViewMatrix(), projview); 
         }else{
         	return projview;
@@ -137,6 +138,11 @@ public class Camera extends GameObject3D {
         return this;
     }
 
+    @Override
+    protected void update() {
+    	projViewNeedsUpdate=true;
+    }
+    
     public static Camera copy(GameObject toCopy) {
         Camera camera = new Camera();
         if (toCopy == null) {

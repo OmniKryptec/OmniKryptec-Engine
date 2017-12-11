@@ -21,7 +21,7 @@ public class Shader2D extends Shader {
 
     @Override
     public void onDrawBatchStart(SpriteBatch batch) {
-        projview.loadMatrix(batch.getCamera().getProjectionViewMatrix());
+    	projview.loadMatrix(batch.getCamera().getProjectionViewMatrix());
     }
 
 }
