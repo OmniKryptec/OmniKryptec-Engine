@@ -3,6 +3,8 @@ package omnikryptec.renderer.d3;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 
+import omnikryptec.gameobject.Camera;
+
 public class RenderMap<K, V> {
 
     private Class<K> keyclass;
@@ -41,5 +43,9 @@ public class RenderMap<K, V> {
     public boolean isEmpty() {
         return map.isEmpty();
     }
+
+	public int size() {
+		return map.size();
+	}
 
 }

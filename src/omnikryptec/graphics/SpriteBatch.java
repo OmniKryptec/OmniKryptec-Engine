@@ -44,6 +44,10 @@ public class SpriteBatch {
 	private Camera camera;
 	private Texture texCur;
 	
+	public SpriteBatch(int size) {
+		this(null, size);
+	}
+	
 	public SpriteBatch() {
 		this(null);
 	}
@@ -168,14 +172,15 @@ public class SpriteBatch {
 		buffer.put(x).put(y).put(r).put(g).put(b).put(a).put(u).put(v);
 	}
 
-	public void drawPolygon(float[] data, int vertexcount) {
-		drawPolygon(data, 0, data.length, vertexcount);
+	public void drawPolygon(Texture t, float[] data, int vertexcount) {
+		drawPolygon(t, data, 0, data.length, vertexcount);
 	}
 
-	public void drawPolygon(float[] data, int start, int len, int vertexcount) {
+	public void drawPolygon(Texture t, float[] data, int start, int len, int vertexcount) {
 		if((len-start)%FLOATS_PER_VERTEX!=0) {
 			throw new OmniKryptecException("Floats per vertex are not correct.");
 		}
+		checkFlush(t);
 		if (idx + vertexcount >= max) {
 			flush();
 		}
