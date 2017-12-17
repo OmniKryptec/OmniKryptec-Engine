@@ -180,6 +180,9 @@ public class SpriteBatch {
 		if((len-start)%FLOATS_PER_VERTEX!=0) {
 			throw new OmniKryptecException("Floats per vertex are not correct.");
 		}
+		if(vertexcount>max) {
+			throw new OmniKryptecException("Too many vertices!");
+		}
 		checkFlush(t);
 		if (idx + vertexcount >= max) {
 			flush();
@@ -354,6 +357,13 @@ public class SpriteBatch {
 
 	public boolean isDrawing() {
 		return drawing;
+	}
+
+	public void clear() {
+		if(caching) {
+			buffer.clear();
+			idx = 0;
+		}
 	}
 
 }

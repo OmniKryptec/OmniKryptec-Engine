@@ -67,7 +67,7 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler{
 				}
 			}
 		}
-		sprites.sort(LAYER_COMPARATOR);
+		sprites.sort(getLayerComparator());
 		fbo.bindFrameBuffer();
 		GraphicsUtil.clear(0, 0, 0, 0);
 		batch.begin();
