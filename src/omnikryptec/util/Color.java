@@ -109,7 +109,7 @@ public class Color {
     }
 
     public final Color setFrom(Color c) {
-        setFrom(c.getArray());
+        setFrom(c.color);
         return this;
     }
 

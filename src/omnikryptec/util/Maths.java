@@ -243,4 +243,5 @@ public class Maths {
     	}
     	return target.set((2 * vec.y + vec.x)/2, (2 * vec.y - vec.x)/2);
     }
+    
 }
