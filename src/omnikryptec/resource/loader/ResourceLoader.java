@@ -1,16 +1,19 @@
 package omnikryptec.resource.loader;
 
-import de.codemakers.io.file.AdvancedFile;
-import de.codemakers.util.ArrayUtil;
-import de.codemakers.util.ArrayUtil.Filter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import de.codemakers.io.file.AdvancedFile;
+import de.codemakers.util.ArrayUtil;
+import de.codemakers.util.ArrayUtil.Filter;
 import omnikryptec.resource.texture.SimpleTexture;
+import omnikryptec.util.action.Action;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -331,6 +334,15 @@ public class ResourceLoader implements Loader {
         return blacklist_temp.toArray(new String[blacklist_temp.size()]);
     }
 
+    public final <T extends ResourceObject>void actions(Class<T> resClass, Consumer<T> action) {
+    	actions((o)->resClass.isInstance(o), action);
+    }
+    
+    @SuppressWarnings("unchecked")
+	public final <T extends ResourceObject>void actions(Predicate<T> pre, Consumer<T> action){
+    	loadedData.values().stream().filter((Predicate<? super ResourceObject>) pre).forEach((Consumer<? super ResourceObject>) action);
+    }
+    
 //    private final Loader resetExecutor() {
 //        if(isLoading) {
 //          return this;
