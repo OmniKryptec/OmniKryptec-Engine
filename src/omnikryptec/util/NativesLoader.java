@@ -1,8 +1,8 @@
 package omnikryptec.util;
 
-import de.codemakers.io.file.AdvancedFile;
 import java.util.function.Consumer;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.util.OSUtil.OS;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;

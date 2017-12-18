@@ -1,6 +1,5 @@
 package omnikryptec.util.logger;
 
-import de.codemakers.io.file.AdvancedFile;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -26,11 +25,12 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import de.codemakers.io.file.AdvancedFile;
+import de.codemakers.lang.LanguageManager;
+import de.codemakers.lang.LanguageReloader;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.EnumCollection.GameState;
-import de.codemakers.lang.LanguageManager;
 import omnikryptec.util.logger.LogEntryFormatter.LogEntryFormatTile;
-import de.codemakers.lang.LanguageReloader;
 
 /**
  *

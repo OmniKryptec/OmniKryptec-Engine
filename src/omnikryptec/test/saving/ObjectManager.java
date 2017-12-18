@@ -7,8 +7,8 @@ package omnikryptec.test.saving;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import omnikryptec.gameobject.GameObject;
 import de.codemakers.io.file.AdvancedFile;
+import omnikryptec.gameobject.GameObject;
 import omnikryptec.util.logger.Logger;
 
 /**

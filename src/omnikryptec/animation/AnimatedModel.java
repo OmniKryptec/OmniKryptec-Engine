@@ -6,7 +6,6 @@ import java.util.HashMap;
 import org.joml.Matrix4f;
 
 import omnikryptec.resource.loader.ResourceLoader;
-import omnikryptec.resource.loader.ResourceObject;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
 import omnikryptec.resource.model.Model;

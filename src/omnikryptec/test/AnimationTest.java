@@ -1,6 +1,5 @@
 package omnikryptec.test;
 
-import de.codemakers.io.file.AdvancedFile;
 import java.util.Random;
 import java.util.zip.Deflater;
 
@@ -9,6 +8,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.animation.AnimatedModel;
 import omnikryptec.animation.Animation;
 import omnikryptec.animation.ColladaParser.dataStructures.AnimatedModelData;

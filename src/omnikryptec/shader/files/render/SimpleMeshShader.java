@@ -1,8 +1,8 @@
 package omnikryptec.shader.files.render;
 
-import de.codemakers.io.file.AdvancedFile;
 import org.joml.Vector4f;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.main.AbstractScene3D;
 import omnikryptec.resource.model.AdvancedModel;

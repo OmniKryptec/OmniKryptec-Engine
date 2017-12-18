@@ -1,11 +1,11 @@
 package omnikryptec.animation.loaders;
 
-import de.codemakers.io.file.AdvancedFile;
 import java.util.HashMap;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.animation.Animation;
 import omnikryptec.animation.JointTransform;
 import omnikryptec.animation.KeyFrame;

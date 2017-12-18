@@ -1,10 +1,10 @@
 package omnikryptec.animation.ColladaParser.colladaLoader;
 
-import de.codemakers.io.file.AdvancedFile;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.joml.Matrix4f;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.animation.ColladaParser.dataStructures.AnimatedModelData;
 import omnikryptec.animation.ColladaParser.dataStructures.AnimationData;
 import omnikryptec.animation.ColladaParser.dataStructures.MeshData;

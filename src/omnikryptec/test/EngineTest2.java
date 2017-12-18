@@ -1,11 +1,11 @@
 package omnikryptec.test;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import org.joml.Vector3f;
-import org.lwjgl.opengl.GL11;
 
+import de.codemakers.io.file.AdvancedFile;
+import de.codemakers.lang.LanguageManager;
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
@@ -30,9 +30,6 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
 import omnikryptec.main.Scene3D;
 import omnikryptec.postprocessing.main.FrameBufferObject;
-import omnikryptec.postprocessing.main.PostProcessing;
-import omnikryptec.postprocessing.stages.CompleteGaussianBlurStage;
-import omnikryptec.postprocessing.stages.FogStage;
 import omnikryptec.renderer.d3.FloorReflectionRenderer;
 import omnikryptec.renderer.d3.RenderConfiguration;
 import omnikryptec.renderer.d3.RenderConfiguration.AllowedRenderer;
@@ -47,7 +44,6 @@ import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.resource.texture.SimpleAnimation;
 import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.settings.GameSettings;
-import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.util.Color;
 import omnikryptec.util.EnumCollection.BlendMode;
 import omnikryptec.util.EnumCollection.DepthbufferType;
@@ -55,7 +51,6 @@ import omnikryptec.util.EnumCollection.RenderType;
 import omnikryptec.util.EnumCollection.UpdateType;
 import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
-import de.codemakers.lang.LanguageManager;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -100,7 +95,7 @@ public class EngineTest2 implements IEventHandler {
                     new GameSettings().setAnisotropicLevel(16).setMultisamples(16).setChunkRenderOffsets(2, 2, 2)
                     .setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(true)
                     .setInteger(GameSettings.HIGHEST_SHADER_LVL, 1000000)
-                    .setBoolean(GameSettings.LIGHT_2D, true),
+                    .setBoolean(GameSettings.LIGHT_2D, false),
                     new GLFWInfo(3, 2, true, false, 1280, 720));
             Display.setAspectRatio(4 / 3.0, true);
             // new Thread(new Runnable() {
@@ -226,7 +221,7 @@ public class EngineTest2 implements IEventHandler {
             // OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
             // }
             System.out.println("Generating objs...");
-            int cube = 10;
+            int cube = 20;
             int abstand = 5;
             float scale = 1;
             int objcount = 0;
@@ -255,7 +250,7 @@ public class EngineTest2 implements IEventHandler {
             // ParticleAttractor(go).setAcceleration(10).setMode(AttractorMode.KILL_ON_REACH).setTolerance(5));
             objcount++;
             //	System.out.println(Arrays.toString(Display.getViewportData()));
-            for (int i = 0; i < 0; i++) {
+            for (int i = 0; i < 100; i++) {
                 GameObject2D gom;
                 gom = new Sprite("dumm" + i, i % 2 == 0 ? js : jn, null) {
 //					 @Override
@@ -264,7 +259,7 @@ public class EngineTest2 implements IEventHandler {
 //						 s.fillRect(0, 0, 1000, 1000);
 //					 }
 
-                }.setColor(new Color(1, 1, 1, 1));
+                }.setColor(new Color(1, 1, 1, 0.5f));
                 gom.getTransform().setScale(1.5f).setPosition(i * 100, i * 70);
                 Instance.getCurrent2DScene().addGameObject(gom);
             }
@@ -275,7 +270,7 @@ public class EngineTest2 implements IEventHandler {
             // 1).setScale(new
             // Vector3f(scale,scale,scale)).setUpdateType(UpdateType.SEMISTATIC).setRelativePos(0,
             // 0, 0));
-
+            Instance.getCurrent2DScene().setCamera(Instance.getCurrent3DCamera());
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
             Instance.getGameSettings().setMultithreadedParticles(true);
             system = new AttractedPaticleSystem(0, 0, 0,

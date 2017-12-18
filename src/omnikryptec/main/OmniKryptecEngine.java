@@ -1,12 +1,12 @@
 package omnikryptec.main;
 
-import de.codemakers.logger.ILogger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.lwjgl.opengl.GL30;
 
+import de.codemakers.logger.ILogger;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.event.event.Event;

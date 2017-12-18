@@ -1,6 +1,5 @@
 package omnikryptec.util;
 
-import de.codemakers.io.file.AdvancedFile;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
@@ -9,6 +8,7 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;

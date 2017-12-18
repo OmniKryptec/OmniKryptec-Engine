@@ -1,6 +1,5 @@
 package omnikryptec.audio;
 
-import de.codemakers.io.file.AdvancedFile;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.Instant;
@@ -13,6 +12,7 @@ import javax.sound.sampled.AudioSystem;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL10;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.util.AudioUtil;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;

@@ -1,10 +1,10 @@
 package omnikryptec.shader.files.postprocessing;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.UniformBoolean;
 import omnikryptec.shader.base.UniformFloat;
 import omnikryptec.shader.base.UniformSampler;
-import de.codemakers.io.file.AdvancedFile;
 
 public class GaussianBlurShader extends Shader {
 

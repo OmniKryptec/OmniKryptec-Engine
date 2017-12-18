@@ -1,10 +1,10 @@
 package omnikryptec.resource.model;
 
-import de.codemakers.io.file.AdvancedFile;
 import java.io.InputStream;
 
 import org.lwjgl.opengl.GL15;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.resource.loader.ResourceObject;
 import omnikryptec.resource.objConverter.ModelData;
 import omnikryptec.resource.objConverter.ObjLoader;

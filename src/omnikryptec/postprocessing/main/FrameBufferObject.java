@@ -1,6 +1,5 @@
 package omnikryptec.postprocessing.main;
 
-import de.codemakers.io.file.AdvancedFile;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
@@ -8,7 +7,6 @@ import java.nio.IntBuffer;
 import java.time.LocalDateTime;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -20,6 +18,7 @@ import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.display.Display;
 import omnikryptec.graphics.OpenGL;
 import omnikryptec.resource.texture.Texture;

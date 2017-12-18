@@ -1,6 +1,5 @@
 package omnikryptec.swing;
 
-import de.codemakers.io.file.AdvancedFile;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -9,6 +8,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.util.Color;
 import omnikryptec.util.logger.Commands;
 import omnikryptec.util.logger.Logger;

@@ -7,9 +7,9 @@ import org.joml.Vector3f;
 
 import omnikryptec.display.Display;
 import omnikryptec.test.saving.DataMap;
+import omnikryptec.util.EnumCollection.UpdateType;
 import omnikryptec.util.Maths;
 import omnikryptec.util.SerializationUtil;
-import omnikryptec.util.EnumCollection.UpdateType;
 
 public class Camera extends GameObject3D {
 

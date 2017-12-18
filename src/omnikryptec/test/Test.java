@@ -8,14 +8,14 @@ import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 
+import de.codemakers.lang.LanguageManager;
+import de.codemakers.lang.LanguageReloader;
 import omnikryptec.swing.JCheckBoxList;
 import omnikryptec.util.action.ActionProcessor;
 import omnikryptec.util.debug.VariableChangeListener;
-import de.codemakers.lang.LanguageManager;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 import omnikryptec.util.logger.SystemInputStream;
-import de.codemakers.lang.LanguageReloader;
 
 /**
  *

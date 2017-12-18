@@ -1,6 +1,5 @@
 package omnikryptec.gameobject.particles;
 
-import de.codemakers.util.ArrayUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import de.codemakers.util.ArrayUtil;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.util.EnumCollection.BlendMode;

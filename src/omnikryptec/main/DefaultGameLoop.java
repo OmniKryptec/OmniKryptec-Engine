@@ -1,7 +1,5 @@
 package omnikryptec.main;
 
-import omnikryptec.graphics.GraphicsUtil;
-
 public class DefaultGameLoop extends GameLoop{
 
 	@Override

@@ -1,9 +1,9 @@
 package omnikryptec.shader.files.postprocessing;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.base.UniformSampler;
 import omnikryptec.shader.base.UniformVec3;
-import de.codemakers.io.file.AdvancedFile;
 
 public class ColorSpaceShader extends Shader {
 

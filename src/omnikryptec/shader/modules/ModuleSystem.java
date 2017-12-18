@@ -1,12 +1,12 @@
 package omnikryptec.shader.modules;
 
-import de.codemakers.io.file.AdvancedFile;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 

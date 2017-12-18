@@ -1,9 +1,9 @@
 package omnikryptec.shader.files.render;
 
-import de.codemakers.io.file.AdvancedFile;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.gameobject.Light3D;
 import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.main.AbstractScene3D;

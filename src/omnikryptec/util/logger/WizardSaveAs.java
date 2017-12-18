@@ -15,11 +15,11 @@ import javax.swing.JFileChooser;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EtchedBorder;
 
-import omnikryptec.swing.JCheckBoxList;
 import de.codemakers.io.file.AdvancedFile;
 import de.codemakers.lang.LanguageManager;
-import omnikryptec.util.logger.LogEntryFormatter.LogEntryFormatTile;
 import de.codemakers.lang.LanguageReloader;
+import omnikryptec.swing.JCheckBoxList;
+import omnikryptec.util.logger.LogEntryFormatter.LogEntryFormatTile;
 
 /**
  *

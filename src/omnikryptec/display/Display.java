@@ -1,14 +1,10 @@
 package omnikryptec.display;
 
-import java.util.Arrays;
-
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.opengl.GL11;
 
 import omnikryptec.event.input.InputManager;
 import omnikryptec.graphics.OpenGL;
-import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 

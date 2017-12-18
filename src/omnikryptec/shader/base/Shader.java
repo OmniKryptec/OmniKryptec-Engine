@@ -1,6 +1,5 @@
 package omnikryptec.shader.base;
 
-import de.codemakers.io.file.AdvancedFile;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,6 +11,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.gameobject.Entity;
 import omnikryptec.graphics.OpenGL;
 import omnikryptec.graphics.SpriteBatch;

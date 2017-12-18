@@ -1,6 +1,5 @@
 package omnikryptec.resource.texture;
 
-import de.codemakers.io.file.AdvancedFile;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +7,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.graphics.OpenGL;
 import omnikryptec.util.logger.Logger;
 

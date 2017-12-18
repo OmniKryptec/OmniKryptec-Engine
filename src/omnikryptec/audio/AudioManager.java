@@ -18,7 +18,6 @@
  */
 package omnikryptec.audio;
 
-import de.codemakers.io.file.AdvancedFile;
 import static org.lwjgl.openal.EXTEfx.ALC_MAX_AUXILIARY_SENDS;
 
 import java.io.InputStream;
@@ -41,6 +40,7 @@ import org.lwjgl.openal.ALC;
 import org.lwjgl.openal.ALC10;
 import org.lwjgl.openal.ALCCapabilities;
 
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.gameobject.component.Component;
 import omnikryptec.util.AudioUtil;
 import omnikryptec.util.logger.LogLevel;
