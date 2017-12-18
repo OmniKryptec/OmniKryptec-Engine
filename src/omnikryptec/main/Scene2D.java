@@ -106,8 +106,8 @@ public class Scene2D extends AbstractScene2D{
         return go;
 	}
 
-	
+	private static final String DELIMITER = ":";
 	public static String xyToString(long x, long y) {
-		return x+":"+y;
+		return x+DELIMITER+y;
 	}
 }

@@ -17,6 +17,7 @@ import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.settings.GameSettings;
+import omnikryptec.util.Color;
 import omnikryptec.util.EnumCollection.BlendMode;
 import omnikryptec.util.EnumCollection.DepthbufferType;
 import omnikryptec.util.Instance;
@@ -42,6 +43,7 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler{
 	private FrameBufferObject lights, fbo;
 	private boolean light;
 	private long last=-1;
+	private Color clearcolor2d=new Color(0, 0, 0, 0);
 	@Override
 	public long render(AbstractScene2D sc, RenderChunk2D global, long camChunkX, long camChunkY,
 			long chunkOffsetX, long chunkOffsetY, HashMap<String, RenderChunk2D> scene) {
@@ -69,7 +71,7 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler{
 		}
 		sprites.sort(getLayerComparator());
 		fbo.bindFrameBuffer();
-		GraphicsUtil.clear(0, 0, 0, 0);
+		GraphicsUtil.clear(clearcolor2d);
 		batch.begin();
 		GraphicsUtil.blendMode(BlendMode.ALPHA);
 		for(Sprite s : sprites) {
@@ -109,5 +111,8 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler{
 		}
 	}
 
-
+	public Color clearColor() {
+		return clearcolor2d;
+	}
+	
 }

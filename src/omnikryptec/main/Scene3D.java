@@ -148,8 +148,9 @@ public class Scene3D extends AbstractScene3D {
         return entities;
     }
 
+    private static final String DELIMITER = ":";
     private static String xyzToString(long x, long y, long z) {
-        return x + ":" + y + ":" + z;
+        return x + DELIMITER + y + DELIMITER + z;
     }
     
     @Override

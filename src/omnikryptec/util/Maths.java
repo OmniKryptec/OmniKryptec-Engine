@@ -244,4 +244,66 @@ public class Maths {
     	return target.set((2 * vec.y + vec.x)/2, (2 * vec.y - vec.x)/2);
     }
     
+    public static <T>T getWeightedRandom(Random random, T[] ts, int[] weights){
+    	int sum = 0;
+    	for(int i : weights) {
+    		sum+=i;
+    	}
+    	int rand = random.nextInt(sum-1)+1;
+    	for(int i=0; i<ts.length; i++) {
+    		rand -= weights[i];
+    		if(rand<=0) {
+    			return ts[i];
+    		}
+    	}
+    	return ts[0];
+    }
+    
+    /**
+	 * 
+	 * @param x
+	 *            the value
+	 * @param min
+	 *            inclusive
+	 * @param max
+	 *            exclusive
+	 * @return
+	 */
+    public static float mod(float x, float min, float max) {
+		return min + ((x - min) % (max - min));
+	}
+    
+	/**
+	 * normalizes x
+	 * 
+	 * @param x
+	 *            value
+	 * @param min
+	 *            smallest value possible
+	 * @param range
+	 *            difference between min and biggest value possible
+	 * @return [0.0-1.0]
+	 */
+	public static float normalize(float x, float min, float range) {
+		return (x - min) / range;
+	}
+
+	public static float unnormalize(float n, float min, float range) {
+		return n * range + min;
+	}
+
+	/**
+	 * inverts x
+	 * 
+	 * @param x
+	 *            value
+	 * @param min
+	 *            smallest value possible
+	 * @param range
+	 *            difference between min and biggest value possible
+	 * @return
+	 */
+	public static float invert(float x, float min, float range) {
+		return range - x + 2 * min;
+	}
 }
