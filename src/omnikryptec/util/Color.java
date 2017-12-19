@@ -170,6 +170,11 @@ public class Color {
         return (r + g + b + a);
     }
     
+	public Color setAll(float i) {
+		color.set(i);
+		return this;
+	}
+    
     public final Color blendWith(Color color, float ratio) {
         return blend(this, color, ratio);
     }
@@ -214,5 +219,7 @@ public class Color {
 	public static Color randomRGB() {
 		return randomRGB(1);
 	}
+
+
 
 }

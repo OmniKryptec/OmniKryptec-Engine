@@ -20,6 +20,8 @@ public class Maths {
     public static final Vector3f Z = new Vector3f(0, 0, 1);
     public static final Vector3f ZERO = new Vector3f(0, 0, 0);
     public static final Vector3f ONE = new Vector3f(1, 1, 1);
+	public static final double E = java.lang.Math.E;
+	public static final double PI = java.lang.Math.PI;
 
     
     public static long fastFloor(float f) {
