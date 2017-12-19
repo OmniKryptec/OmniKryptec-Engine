@@ -1,5 +1,6 @@
 package omnikryptec.settings;
 
+import de.codemakers.util.Returner;
 import java.util.HashMap;
 
 import org.lwjgl.opengl.GL;
@@ -13,7 +14,6 @@ import omnikryptec.postprocessing.main.FBOFactory;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.RenderTarget;
 import omnikryptec.util.EnumCollection.RenderType;
-import omnikryptec.util.Returner;
 
 /**
  * GameSettings
