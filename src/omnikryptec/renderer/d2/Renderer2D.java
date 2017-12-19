@@ -16,7 +16,7 @@ public interface Renderer2D {
 		}
 	};
 	
-	long render(AbstractScene2D sc, RenderChunk2D global, long camChunkX, long camChunkY, long chunkOffsetX, long chunkOffsetY,
+	long render(AbstractScene2D sc, RenderChunk2D global, long camChunkX, long camChunkY, int chunkOffsetX, int chunkOffsetY,
 			HashMap<String, RenderChunk2D> scene);
 
 	default Comparator<Sprite> getLayerComparator(){

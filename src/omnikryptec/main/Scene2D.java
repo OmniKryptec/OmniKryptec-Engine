@@ -16,7 +16,8 @@ public class Scene2D extends AbstractScene2D{
 	private RenderChunk2D global = new RenderChunk2D(0, 0, this, true);
 	private Renderer2D renderer;
 
-	private long cx,cy,cox,coy;
+	private long cx,cy;
+	private int cox,coy;
 	private RenderChunk2D tmpc;
 	private String tmp;
 	
@@ -42,8 +43,8 @@ public class Scene2D extends AbstractScene2D{
 	
 	private void init() {
 		setAmbientColor(1, 1, 1);
-		cox = OmniKryptecEngine.instance().getGameSettings().getLong(GameSettings.CHUNK_OFFSET_2D_X);
-		coy = OmniKryptecEngine.instance().getGameSettings().getLong(GameSettings.CHUNK_OFFSET_2D_Y);
+		cox = OmniKryptecEngine.instance().getGameSettings().getInteger(GameSettings.CHUNK_OFFSET_2D_X);
+		coy = OmniKryptecEngine.instance().getGameSettings().getInteger(GameSettings.CHUNK_OFFSET_2D_Y);
 	}
 	
 	public void setRenderer(Renderer2D renderer) {
@@ -65,17 +66,17 @@ public class Scene2D extends AbstractScene2D{
 		    }
 		}
         global.logic();
-        doLogic();
+        update();
 	}
 
-	protected void doLogic() {}
+	protected void update() {}
 
 	@Override
 	protected long render() {
 		if(getCamera()==null) {
 			return 0;
 		}
-		return renderer.render(this, global, getCamera().getTransform().getChunkX(), getCamera().getTransform().getChunkY(), cox, coy, scene);
+		return renderer.render(this, global, getCamera().getTransform().getChunkX2D(), getCamera().getTransform().getChunkY2D(), cox, coy, scene);
 	}
 
 	@Override

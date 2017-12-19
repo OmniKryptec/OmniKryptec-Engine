@@ -46,7 +46,7 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler{
 	private Color clearcolor2d=new Color(0, 0, 0, 0);
 	@Override
 	public long render(AbstractScene2D sc, RenderChunk2D global, long camChunkX, long camChunkY,
-			long chunkOffsetX, long chunkOffsetY, HashMap<String, RenderChunk2D> scene) {
+			int chunkOffsetX, int chunkOffsetY, HashMap<String, RenderChunk2D> scene) {
 		batch.setCamera(sc.getCamera());
 		sprites = new ArrayList<>();
 		if(GraphicsUtil.needsUpdate(last, 20)){

@@ -43,6 +43,15 @@ public class SmoothFloat {
 		return target;
 	}
 	
+	public void setValue(float f) {
+		actual = f;
+	}
+	
+	public void setValueAndTarget(float f) {
+		setTarget(f);
+		setValue(f);
+	}
+	
 	@Override
 	public String toString() {
 		return "Value: "+actual+" Target: "+target+" Agility: "+agility;

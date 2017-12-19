@@ -147,12 +147,12 @@ public class GameSettings {
     public static final String LIGHT_2D = "LIGHT_2D";
 
     /**
-     * long
+     * int
      */
     public static final String CHUNK_OFFSET_2D_X = "CHUNK_OFFSET_2D_X";
 
     /**
-     * long
+     * int
      */
     public static final String CHUNK_OFFSET_2D_Y = "CHUNK_OFFSET_2D_Y";
 
