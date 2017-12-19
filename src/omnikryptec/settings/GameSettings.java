@@ -1,12 +1,12 @@
 package omnikryptec.settings;
 
-import de.codemakers.util.Returner;
 import java.util.HashMap;
 
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
+import de.codemakers.util.Returner;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.main.OmniKryptecEngine;

@@ -24,7 +24,7 @@ import omnikryptec.util.ModelUtil;
 public class ParticleRenderer {
 
 	private static FrustrumFilter filter = new FrustrumFilter();
-	
+
 	private static int maxInstancesPerSys = 1_000_000;
 	private static final int INSTANCE_DATA_LENGTH = 25;
 
@@ -93,7 +93,7 @@ public class ParticleRenderer {
 				}
 			}
 			vbo.updateData(vboData, buffer);
-			if(count>0){
+			if (count > 0) {
 				OpenGL.gl31drawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVao().getIndexCount(), count);
 			}
 		}

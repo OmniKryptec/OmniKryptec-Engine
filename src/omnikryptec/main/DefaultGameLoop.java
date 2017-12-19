@@ -1,10 +1,10 @@
 package omnikryptec.main;
 
-public class DefaultGameLoop extends GameLoop{
+public class DefaultGameLoop extends GameLoop {
 
 	@Override
 	protected void runLoop() {
-		while(!isStopRequested()) {
+		while (!isStopRequested()) {
 			runStep();
 		}
 	}
