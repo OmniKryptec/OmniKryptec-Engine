@@ -102,6 +102,9 @@ public class Scene2D extends AbstractScene2D{
                 tmp = xyToString(go.getTransform().getChunkX(), go.getTransform().getChunkY());
                 scene.get(tmp).removeGameObject(go, delete);
                 go.deleteOperation();
+                if(scene.get(tmp).isEmpty()) {
+                	scene.remove(tmp);
+                }
             }
         }
         return go;
@@ -110,5 +113,11 @@ public class Scene2D extends AbstractScene2D{
 	private static final String DELIMITER = ":";
 	public static String xyToString(long x, long y) {
 		return x+DELIMITER+y;
+	}
+
+	@Override
+	public int size() {
+		//+1 weil global immer da ist
+		return scene.size()+1;
 	}
 }

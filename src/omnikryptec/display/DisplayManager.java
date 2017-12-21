@@ -165,7 +165,6 @@ public class DisplayManager implements Profilable{
 		runtimef = (float) runtime;
 		framecount++;
 		Display.update();
-		
 		if(fps) {
 			fps1++;
 		}else {

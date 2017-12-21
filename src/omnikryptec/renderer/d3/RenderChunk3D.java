@@ -259,6 +259,11 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 		return lights;
 	}
 
+
+	public int size() {
+		return chunk.size()+other.size()+lights.size();
+	}
+	
 	public List<Entity> getEntities() {
 		final ArrayList<Entity> entities = new ArrayList<>();
 		other.stream().filter((gameObject) -> gameObject instanceof Entity).forEach((entity) -> {
@@ -396,5 +401,6 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 	public String getName() {
 		return SerializationUtil.vector3fToString(new Vector3f(x, y, z));
 	}
+
 
 }

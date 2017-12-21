@@ -18,13 +18,13 @@ import omnikryptec.util.logger.Logger;
 
 public class Scene3D extends AbstractScene3D {
 
-    private final HashMap<String, RenderChunk3D> scene = new HashMap<>();
+    public final HashMap<String, RenderChunk3D> scene = new HashMap<>();
     private long cox = Instance.getGameSettings().getChunkRenderOffsetX(),
             coy = Instance.getGameSettings().getChunkRenderOffsetY(),
             coz = Instance.getGameSettings().getChunkRenderOffsetZ();
     private final List<Light3D> lights = new ArrayList<>();
 
-    private RenderChunk3D global = new RenderChunk3D(0, 0, 0, this, true);
+    private final RenderChunk3D global = new RenderChunk3D(0, 0, 0, this, true);
 
 
     /* Temp Variables */
@@ -32,6 +32,12 @@ public class Scene3D extends AbstractScene3D {
     private long cx, cy, cz;
     private RenderChunk3D tmpc;
     private long vertcount = 0;
+
+	@Override
+	public int size() {
+		//global ist immer da
+		return scene.size()+1;
+	}
 
     
     public Scene3D() {
@@ -69,6 +75,9 @@ public class Scene3D extends AbstractScene3D {
                 tmp = xyzToString(g.getTransform().getChunkX(), g.getTransform().getChunkY(), g.getTransform().getChunkZ());
                 scene.get(tmp).removeGameObject(g, delete);
                 g.deleteOperation();
+                if(scene.get(tmp).isEmpty()) {
+                	scene.remove(tmp);
+                }
             }
         }
         return g;

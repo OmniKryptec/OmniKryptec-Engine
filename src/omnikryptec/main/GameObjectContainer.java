@@ -11,4 +11,10 @@ public interface GameObjectContainer<T extends GameObject> {
 	public default T removeGameObject(T go) {
 		return removeGameObject(go, true);
 	}
+	
+	public int size();
+	
+	public default boolean isEmpty() {
+		return size()==0;
+	}
 }

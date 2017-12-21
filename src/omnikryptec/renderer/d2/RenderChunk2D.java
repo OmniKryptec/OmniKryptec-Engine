@@ -109,4 +109,8 @@ public class RenderChunk2D implements GameObjectContainer<GameObject2D>{
 	public ArrayList<Sprite> __getSprites(){
 		return chunkSprites;
 	}
+	@Override
+	public int size() {
+		return chunkLights.size()+chunkOther.size()+chunkSprites.size();
+	}
 }
