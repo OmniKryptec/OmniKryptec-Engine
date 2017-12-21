@@ -302,6 +302,16 @@ public class OmniKryptecEngine implements Profilable {
         return hasLoop() ? gameloop.getDeltaTimef() : manager.getDUDeltaTimef();
     }
 
+    /**
+     * Do not call this in a GameLoop-class. Use your own times or the
+     * DisplayManager deltatime instead.
+     *
+     * @return (smooth)
+     */
+    public float getDeltaTimeSf() {
+        return hasLoop() ? gameloop.getDeltatimeSmooth() : manager.getDUDeltaTimef();
+    }
+    
     public final OmniKryptecEngine close(ShutdownOption shutdownOption) {
 
         if (gameloop != null) {

@@ -115,6 +115,10 @@ public class Instance {
 		return OmniKryptecEngine.instance().getDeltaTimef();
 	}
 
+	public static final float getDeltaTimeSf() {
+		return OmniKryptecEngine.instance().getDeltaTimeSf();
+	}
+	
 	public static final double getRenderDeltaTime() {
 		return getDisplayManager().getDUDeltaTime();
 	}

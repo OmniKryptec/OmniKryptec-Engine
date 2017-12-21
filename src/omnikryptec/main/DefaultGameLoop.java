@@ -5,7 +5,7 @@ public class DefaultGameLoop extends GameLoop {
 	@Override
 	protected void runLoop() {
 		while (!isStopRequested()) {
-			runStep();
+			step();
 		}
 	}
 

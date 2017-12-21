@@ -19,9 +19,6 @@ public class SmoothFloat {
 		actual += change;
 	}
 
-	public void update() {
-		this.update(Instance.getDeltaTimef());
-	}
 	
 	public void increaseTarget(float dT) {
 		this.target += dT;

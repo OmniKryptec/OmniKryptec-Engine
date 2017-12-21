@@ -195,6 +195,7 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 			if (delete) {
 				g.deleteOperation();
 			}
+			g.setRenderChunk3D(null);
 		}
 		return g;
 	}
