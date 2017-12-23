@@ -20,16 +20,17 @@ import omnikryptec.settings.GameSettings;
 import omnikryptec.util.Color;
 import omnikryptec.util.EnumCollection.BlendMode;
 import omnikryptec.util.EnumCollection.DepthbufferType;
+import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.Instance;
 
-public class DefaultRenderer2D implements Renderer2D, IEventHandler{
-	
+public class DefaultRenderer2D implements Renderer2D, IEventHandler {
+
 	private SpriteBatch batch, finalBatch;
-	
+
 	public DefaultRenderer2D() {
 		this(new SpriteBatch());
 	}
-	
+
 	public DefaultRenderer2D(SpriteBatch batch) {
 		this.batch = batch;
 		this.finalBatch = new SpriteBatch(new Camera().setDefaultScreenSpaceProjection());
@@ -42,28 +43,31 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler{
 	private String stringTmp;
 	private FrameBufferObject lights, fbo;
 	private boolean light;
-	private long last=-1;
-	private Color clearcolor2d=new Color(0, 0, 0, 0);
+	private long last = -1;
+	private Color clearcolor2d = new Color(0, 0, 0, 0);
+	private FrustrumFilter filter = new FrustrumFilter();
+	
 	@Override
-	public long render(AbstractScene2D sc, RenderChunk2D global, long camChunkX, long camChunkY,
-			int chunkOffsetX, int chunkOffsetY, HashMap<String, RenderChunk2D> scene) {
+	public long render(AbstractScene2D sc, RenderChunk2D global, long camChunkX, long camChunkY, int chunkOffsetX,
+			int chunkOffsetY, HashMap<String, RenderChunk2D> scene) {
 		batch.setCamera(sc.getCamera());
+		filter.setCamera(sc.getCamera());
 		sprites = new ArrayList<>();
-		if(GraphicsUtil.needsUpdate(last, 20)){
+		if (GraphicsUtil.needsUpdate(last, 20)) {
 			light = OmniKryptecEngine.instance().getGameSettings().getBoolean(GameSettings.LIGHT_2D);
 			last = Instance.getFramecount();
 		}
 		sprites.addAll(global.__getSprites());
-		if(light) {
+		if (light) {
 			lightlist = new ArrayList<>();
 			lightlist.addAll(global.__getLights());
 		}
-		for(long x=-chunkOffsetX; x<=chunkOffsetX; x++) {
-			for(long y=-chunkOffsetY; y<=chunkOffsetY; y++) {
-				stringTmp = Scene2D.xyToString(camChunkX+x, camChunkY+y);
-				if(scene.get(stringTmp)!=null) {
+		for (long x = -chunkOffsetX; x <= chunkOffsetX; x++) {
+			for (long y = -chunkOffsetY; y <= chunkOffsetY; y++) {
+				stringTmp = Scene2D.xyToString(camChunkX + x, camChunkY + y);
+				if (scene.get(stringTmp) != null) {
 					sprites.addAll(scene.get(stringTmp).__getSprites());
-					if(light) {
+					if (light) {
 						lightlist.addAll(scene.get(stringTmp).__getLights());
 					}
 				}
@@ -74,16 +78,18 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler{
 		GraphicsUtil.clear(clearcolor2d);
 		batch.begin();
 		GraphicsUtil.blendMode(BlendMode.ALPHA);
-		for(Sprite s : sprites) {
-			s.paint(batch);
+		for (Sprite s : sprites) {
+			if(filter.intersects(s)){
+				s.paint(batch);
+			}
 		}
 		batch.end();
-		if(light) {
+		if (light) {
 			lights.bindFrameBuffer();
 			GraphicsUtil.clear(sc.getAmbientColor());
 			GraphicsUtil.blendMode(BlendMode.ADDITIVE);
 			batch.begin();
-			for(Light2D s : lightlist) {
+			for (Light2D s : lightlist) {
 				s.paint(batch);
 			}
 			batch.end();
@@ -103,7 +109,7 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler{
 
 	@Override
 	public void onEvent(Event ev) {
-		if(ev.getType()==EventType.RESIZED) {
+		if (ev.getType() == EventType.RESIZED) {
 			fbo.delete();
 			lights.delete();
 			lights = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
@@ -114,5 +120,5 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler{
 	public Color clearColor() {
 		return clearcolor2d;
 	}
-	
+
 }

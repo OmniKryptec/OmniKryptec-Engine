@@ -1,41 +1,57 @@
 package omnikryptec.util;
 
 import org.joml.FrustumIntersection;
+import org.joml.Vector2f;
 import org.joml.Vector4f;
 
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
+import omnikryptec.gameobject.Sprite;
 import omnikryptec.graphics.GraphicsUtil;
 
 public class FrustrumFilter {
-	
-	private static final float RADIUS_CORRECTION=3f;
-	
+
+	private static final float RADIUS_CORRECTION = 3f;
+
 	private FrustumIntersection intersection = new FrustumIntersection();
-	private boolean isenabled=true;
+	private boolean isenabled = true;
 	private Camera cam;
-	
-	public void setCamera(Camera c){
+
+	public void setCamera(Camera c) {
 		isenabled = Instance.getGameSettings().useFrustrumCulling();
 		cam = c;
 		intersection.set(cam.getProjectionViewMatrix());
 	}
-	
-	public boolean intersects(float x, float y, float z, float boundingsphererad){
-		if(!isenabled){
+
+	public boolean intersects(float x, float y, float z, float boundingsphererad) {
+		if (!isenabled) {
 			return true;
 		}
 		return intersection.testSphere(x, y, z, boundingsphererad);
 	}
-	
+
 	private float tmp;
 	private Vector4f vec = new Vector4f();
-	public boolean intersects(Entity e, boolean checkRenderRange){
-		if(!isenabled){
+	private Vector2f vec2 = new Vector2f();
+	
+	public boolean intersects(Entity e, boolean checkRenderRange) {
+		if (!isenabled) {
 			return true;
 		}
-		tmp = (e.getAdvancedModel().getModel().getModelData().getFurthestPoint()*RADIUS_CORRECTION)*Math.max(e.getTransform().getScale(true).x, Math.max(e.getTransform().getScale(true).y,e.getTransform().getScale(true).z));
-		e.getTransformation().transform(vec.set(0,0,0,1));
-		return intersects(vec.x, vec.y, vec.z, tmp)&&(checkRenderRange?GraphicsUtil.inRenderRange(e, cam):true);
+		tmp = (e.getAdvancedModel().getModel().getModelData().getFurthestPoint() * RADIUS_CORRECTION)
+				* Math.max(e.getTransform().getScale(true).x,
+						Math.max(e.getTransform().getScale(true).y, e.getTransform().getScale(true).z));
+		e.getTransformation().transform(vec.set(0, 0, 0, 1));
+		return intersects(vec.x, vec.y, vec.z, tmp) && (checkRenderRange ? GraphicsUtil.inRenderRange(e, cam) : true);
 	}
+
+	public boolean intersects(Sprite s) {
+		if (!isenabled) {
+			return true;
+		}
+		vec2 = s.getTransform().getPosition(true);
+		//TODO ?? 
+		return intersection.testAab(vec2.x, vec2.y, 0, vec2.x+s.getWidth(), vec2.y+s.getHeight(), 0);
+	}
+
 }
