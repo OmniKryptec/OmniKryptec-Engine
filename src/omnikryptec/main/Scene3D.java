@@ -63,6 +63,7 @@ public class Scene3D extends AbstractScene3D {
                 scene.put(tmp, new RenderChunk3D(g.getTransform().getChunkX(), g.getTransform().getChunkY(), g.getTransform().getChunkZ(), this));
             }
             scene.get(tmp).addGameObject(g);
+            g.added();
         }
     }
 
@@ -79,6 +80,7 @@ public class Scene3D extends AbstractScene3D {
                 	scene.remove(tmp);
                 }
             }
+            g.removed();
         }
         return g;
     }

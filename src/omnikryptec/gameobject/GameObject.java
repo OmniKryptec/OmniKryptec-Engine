@@ -283,6 +283,12 @@ public abstract class GameObject implements DataMapSerializable {
     protected void update() {
     }
 
+    public void removed(){
+    }
+    
+    public void added(){
+    }
+    
     /**
      * called then the GameObject is finally removed from the scene.
      *

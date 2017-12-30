@@ -90,6 +90,7 @@ public class Scene2D extends AbstractScene2D{
                 scene.put(tmp, new RenderChunk2D(go.getTransform().getChunkX(), go.getTransform().getChunkY(), this));
             }
             scene.get(tmp).addGameObject(go);
+            go.added();
         }
 	}
 
@@ -106,6 +107,7 @@ public class Scene2D extends AbstractScene2D{
                 	scene.remove(tmp);
                 }
             }
+            go.removed();
         }
         return go;
 	}

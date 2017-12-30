@@ -1,5 +1,7 @@
 package omnikryptec.gameobject;
 
+import java.util.ArrayList;
+
 import org.joml.Matrix4f;
 
 import omnikryptec.renderer.d3.RenderChunk3D;
@@ -11,7 +13,9 @@ public class GameObject3D extends GameObject implements Transformable3D {
     private RenderChunk3D renderChunk;
     private Transform3D transform = new Transform3D();
     private GameObject3D parent = null;
+	private ArrayList<GameObject3D> childs = null;
 
+    
     public GameObject3D() {
         this(null, null);
     }
@@ -28,7 +32,7 @@ public class GameObject3D extends GameObject implements Transformable3D {
         if (name == null) {
             name = "";
         }
-        setParent(parent);
+        addToParent(parent);
     }
 
     @Override
@@ -45,33 +49,70 @@ public class GameObject3D extends GameObject implements Transformable3D {
         return this;
     }
 
-    /**
-     * the parent or null if this GameObject has no parent.
-     *
-     * @return the parent
-     */
-    public final GameObject3D getParent() {
-        return parent;
-    }
+	/**
+	 * the parent or null if this GameObject has no parent.
+	 *
+	 * @return the parent
+	 */
+	public final GameObject3D getParent() {
+		return parent;
+	}
 
-    /**
-     * sets the parent for this gameobject or null for no parent
-     *
-     * @param go the parent
-     */
-    public final GameObject3D setParent(GameObject3D go) {
-        this.parent = go;
-        this.transform.setParent(go == null ? null : go.getTransform());
-        return this;
-    }
+	public final GameObject3D addChild(GameObject3D g){
+		if(g!=null){
+			if(childs == null){
+				childs = new ArrayList<>();
+			}
+			childs.add(g);
+			g.setParent(this);
+		}
+		return this;
+	}
+	
+	public final GameObject3D removeChild(GameObject3D g){
+		if(g!=null&&childs!=null){
+			childs.remove(g);
+			g.setParent(null);
+			if(childs.isEmpty()){
+				childs = null;
+			}
+		}
+		return this;
+	}
+	
+	public final GameObject3D removeFromParent(){
+		if(parent!=null){
+			parent.removeChild(this);
+		}
+		return this;
+	}
+	
+	public final GameObject3D addToParent(GameObject3D parent){
+		if(parent != null){
+			parent.addChild(this);
+		}
+		return this;
+	}
+	
+	/**
+	 * sets the parent for this gameobject or null for no parent
+	 *
+	 * @param go
+	 *            the parent
+	 */
+	private final GameObject3D setParent(GameObject3D go) {
+		this.parent = go;
+		this.transform.setParent(go == null ? null : go.getTransform());
+		return this;
+	}
 
-    /**
-     *
-     * @return true if a parent is set
-     */
-    public final boolean hasParent() {
-        return parent != null;
-    }
+	public final boolean hasParent() {
+		return parent!=null;
+	}
+	
+	public final boolean hasChilds(){
+		return childs!=null&&!childs.isEmpty();
+	}
 
     /**
      * checks the chunkpos of this GameObject
