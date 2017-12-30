@@ -2,6 +2,7 @@ package omnikryptec.gameobject;
 
 import java.util.ArrayList;
 
+import omnikryptec.main.AbstractScene;
 import omnikryptec.renderer.d2.RenderChunk2D;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
@@ -123,6 +124,11 @@ public class GameObject2D extends GameObject implements Transformable2D {
 	
 	public final boolean hasChilds(){
 		return childs!=null&&!childs.isEmpty();
+	}
+	
+
+	public ArrayList<GameObject2D> getChilds() {
+		return childs;
 	}
 	
 	@Override

@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import omnikryptec.gameobject.component.Component;
+import omnikryptec.main.AbstractScene;
 import omnikryptec.main.AbstractScene3D;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene3D;
@@ -282,7 +283,7 @@ public abstract class GameObject implements DataMapSerializable {
      */
     protected void update() {
     }
-
+    
     public void removed(){
     }
     

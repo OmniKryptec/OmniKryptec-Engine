@@ -6,7 +6,7 @@ import omnikryptec.physics.PhysicsWorld;
 import omnikryptec.util.Color;
 import omnikryptec.util.EnumCollection.FrameState;
 
-abstract class AbstractScene<T extends GameObject> implements GameObjectContainer<T> {
+public abstract class AbstractScene<T extends GameObject> implements GameObjectContainer<T> {
 
     Camera camera;
     FrameState state = FrameState.NULL;
@@ -16,6 +16,9 @@ abstract class AbstractScene<T extends GameObject> implements GameObjectContaine
 
     private double rendertime, logictime;
     private double tmptime;
+    
+    protected AbstractScene(){
+    }
     
     public final FrameState getState() {
         return state;
@@ -112,7 +115,21 @@ abstract class AbstractScene<T extends GameObject> implements GameObjectContaine
 
     protected void preRender() {}
     
-    protected void postRender() {} 
+    protected void postRender() {}
+    
+    protected abstract void addGameObject_(T g);
+    protected abstract T removeGameObject_(T g, boolean delete);
+    
+	public void addGameObject(T go){
+		addGameObject_(go);
+		go.added();
+	}
+
+	public T removeGameObject(T go, boolean delete){
+		removeGameObject_(go, delete);
+		go.removed();
+		return go;
+	}
     
     @Override
     public String toString() {

@@ -80,7 +80,7 @@ public class Scene2D extends AbstractScene2D{
 	}
 
 	@Override
-	public void addGameObject(GameObject2D go) {
+	public final void addGameObject_(GameObject2D go) {
 		if (go != null) {
             if (go.isGlobal() || !Instance.getGameSettings().usesRenderChunking()) {
                 global.addGameObject(go);
@@ -90,12 +90,11 @@ public class Scene2D extends AbstractScene2D{
                 scene.put(tmp, new RenderChunk2D(go.getTransform().getChunkX(), go.getTransform().getChunkY(), this));
             }
             scene.get(tmp).addGameObject(go);
-            go.added();
         }
 	}
 
 	@Override
-	public GameObject2D removeGameObject(GameObject2D go, boolean delete) {
+	public final GameObject2D removeGameObject_(GameObject2D go, boolean delete) {
 		if (go != null) {
             if (go.getRenderChunk() != null) {
                 go.getRenderChunk().removeGameObject(go, delete);
@@ -107,7 +106,6 @@ public class Scene2D extends AbstractScene2D{
                 	scene.remove(tmp);
                 }
             }
-            go.removed();
         }
         return go;
 	}

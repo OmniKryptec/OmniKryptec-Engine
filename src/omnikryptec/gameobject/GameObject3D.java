@@ -114,6 +114,11 @@ public class GameObject3D extends GameObject implements Transformable3D {
 		return childs!=null&&!childs.isEmpty();
 	}
 
+
+	public ArrayList<GameObject3D> getChilds() {
+		return childs;
+	}
+	
     /**
      * checks the chunkpos of this GameObject
      *
@@ -145,6 +150,7 @@ public class GameObject3D extends GameObject implements Transformable3D {
     public final RenderChunk3D getRenderChunk() {
         return renderChunk;
     }
+
 
     
 }

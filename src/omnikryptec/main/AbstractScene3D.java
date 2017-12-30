@@ -45,7 +45,26 @@ public abstract class AbstractScene3D extends AbstractScene<GameObject3D> implem
 		this.camera = cam;
 	}
 	
-
+	@Override
+	public void addGameObject(GameObject3D go) {
+		super.addGameObject(go);
+		if(go.hasChilds()){
+			for(GameObject3D g : go.getChilds()){
+				addGameObject(g);
+			}
+		}
+	}
+	
+	@Override
+	public GameObject3D removeGameObject(GameObject3D go, boolean delete) {
+		super.removeGameObject(go, delete);
+		if(go.hasChilds()){
+			for(GameObject3D g : go.getChilds()){
+				removeGameObject(g, delete);
+			}
+		}
+		return go;
+	}
 	
 	protected void preRender() {
 		ParticleMaster.resetTimes();
