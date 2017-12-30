@@ -201,12 +201,20 @@ public class SpriteBatch {
 		return array;
 	}
 
-	public void draw(Sprite s) {
+	public void draw(Sprite s){
+		draw(s, false);
+	}
+	
+	public void draw(Sprite s, boolean center) {
 		if(s!=null&&s.getTexture()!=null) {
 			color.setFrom(s.getColor());
 			scaledWidth = s.getWidth();
 			scaledHeight = s.getHeight();
 			tmpPos = s.getTransform().getPosition(true);
+			if(center){
+				tmpPos.x -= scaledWidth/2;
+				tmpPos.y -= scaledHeight/2;
+			}
 			draw(s.getTexture(), tmpPos.x, tmpPos.y, scaledWidth, 
 					scaledHeight, scaledWidth*0.5f, scaledHeight*0.5f, s.getTransform().getRotation().x);
 		}

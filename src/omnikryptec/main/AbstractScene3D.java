@@ -46,7 +46,7 @@ public abstract class AbstractScene3D extends AbstractScene<GameObject3D> implem
 	}
 	
 	@Override
-	public void addGameObject(GameObject3D go) {
+	public final void addGameObject(GameObject3D go) {
 		super.addGameObject(go);
 		if(go.hasChilds()){
 			for(GameObject3D g : go.getChilds()){
@@ -56,7 +56,7 @@ public abstract class AbstractScene3D extends AbstractScene<GameObject3D> implem
 	}
 	
 	@Override
-	public GameObject3D removeGameObject(GameObject3D go, boolean delete) {
+	public final GameObject3D removeGameObject(GameObject3D go, boolean delete) {
 		super.removeGameObject(go, delete);
 		if(go.hasChilds()){
 			for(GameObject3D g : go.getChilds()){

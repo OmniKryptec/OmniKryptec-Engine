@@ -126,11 +126,10 @@ public class GameObject3D extends GameObject implements Transformable3D {
     @Override
     protected final void checkChunkPos() {
         RenderChunk3D oldchunk = getRenderChunk();
-        if (oldchunk != null) {
+        if (oldchunk != null && (oldchunk.isglobal != isGlobal() || !oldchunk.isglobal)) {
             if (oldchunk.getChunkX() != getTransform().getChunkX() || oldchunk.getChunkY() != getTransform().getChunkY()
                     || oldchunk.getChunkZ() != getTransform().getChunkZ() || oldchunk.isglobal) {
-                oldchunk.getScene().addGameObject(this);
-                oldchunk.removeGameObject(this, false);
+                oldchunk.getScene().realign(this);
             }
         } else if (Logger.isDebugMode() && !isGlobal()) {
             Logger.log("RenderChunk3D is null: " + toString(), LogLevel.WARNING);
