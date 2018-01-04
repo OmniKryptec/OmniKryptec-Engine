@@ -6,7 +6,6 @@ import org.joml.Vector3f;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.codemakers.lang.LanguageManager;
-import omnikryptec.collision.d2.CollisionManager;
 import omnikryptec.collision.d2.Rectangle;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
@@ -383,11 +382,6 @@ public class EngineTest2 implements IEventHandler {
             // Light().setColor(0, 0, 1).setRadius(100).setRelativePos(50, 50,
             // 0));
 
-        	CollisionManager mgr = new CollisionManager();
-        	mgr.prepareStep();
-        	mgr.add(new Rectangle(0, 0, 100, 100).setDynamic(true));
-        	mgr.add(new Rectangle(-100, -100, 10, 10).setDynamic(true));
-        	mgr.step();
             
             OmniKryptecEngine.instance().startLoop();
         } catch (Exception ex) {
