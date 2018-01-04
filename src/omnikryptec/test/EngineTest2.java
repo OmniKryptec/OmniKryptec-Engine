@@ -6,7 +6,6 @@ import org.joml.Vector3f;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.codemakers.lang.LanguageManager;
-import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
@@ -34,11 +33,11 @@ import omnikryptec.renderer.d3.FloorReflectionRenderer;
 import omnikryptec.renderer.d3.RenderConfiguration;
 import omnikryptec.renderer.d3.RenderConfiguration.AllowedRenderer;
 import omnikryptec.renderer.d3.RendererRegistration;
+import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.model.AdvancedModel;
 import omnikryptec.resource.model.Material;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.TexturedModel;
-import omnikryptec.resource.objConverter.ObjLoader;
 import omnikryptec.resource.texture.AtlasTexture;
 import omnikryptec.resource.texture.ParticleAtlas;
 import omnikryptec.resource.texture.SimpleAnimation;
@@ -139,26 +138,41 @@ public class EngineTest2 implements IEventHandler {
             // CompleteGaussianBlurStage(false, 0.05f, 0.05f));
             // PostProcessing.instance().addStage(new DebugRenderer());
             final AdvancedFile res = new AdvancedFile(true, "", "res");
-            System.out.println(res);
-            SimpleTexture jd = SimpleTexture.newTexture(new AdvancedFile(true, res, "jd.png"));
-            SimpleTexture js = SimpleTexture.newTexture(new AdvancedFile(true, res, "js.png"));
-            SimpleTexture jn = SimpleTexture.newTexture(new AdvancedFile(true, res, "jn.png"));
-            OmniKryptecEngine.instance().getEventsystem().addEventHandler(new EngineTest2(), EventType.AFTER_FRAME,
-                    EventType.RENDER_FRAME_EVENT);
-            Model brunnen = new Model("",
-                    ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
+            final AdvancedFile test = new AdvancedFile(true, "", "omnikryptec", "test");
+            //System.out.println(res);
+            ResourceLoader.createInstanceDefault(true);
+            ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, res, "jd.png"));
+            ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, res, "js.png"));
+            ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, res, "jn.png"));
+            ResourceLoader.currentInstance().stageAdvancedFiles(1, new AdvancedFile(true, test, "brunnen.obj"));
+            ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, test, "brunnen.png"));
+            ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, test, "brunnen_normal.png"));
+            ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, test, "brunnen_specular.png"));
+            ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, res, "final_tree_3.png"));
+            ResourceLoader.currentInstance().stageAdvancedFiles(1, new AdvancedFile(true, res, "final_tree_3.obj"));
+            ResourceLoader.currentInstance().stageAdvancedFiles(1, new AdvancedFile(true, res, "block.obj"));
+            ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, res, "diffuse.png"));
+            ResourceLoader.currentInstance().stageAdvancedFiles(1, new AdvancedFile(true, test, "pine.obj"));
+            ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, test, "pine2.png"));
+            ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, test, "pine2_normal.png"));
+            ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, test, "cosmic.png"));
+            ResourceLoader.currentInstance().loadStagedAdvancedFiles(true);
+            //System.out.println("Resources loaded: " + ResourceLoader.currentInstance().getLoadedData());
+            SimpleTexture jd = ResourceLoader.currentInstance().getTexture("res:jd.png")/*SimpleTexture.newTexture(new AdvancedFile(true, res, "jd.png"))*/;
+            SimpleTexture js = ResourceLoader.currentInstance().getTexture("res:js.png")/*SimpleTexture.newTexture(new AdvancedFile(true, res, "js.png"))*/;
+            SimpleTexture jn = ResourceLoader.currentInstance().getTexture("res:jn.png")/*SimpleTexture.newTexture(new AdvancedFile(true, res, "jn.png"))*/;
+            OmniKryptecEngine.instance().getEventsystem().addEventHandler(new EngineTest2(), EventType.AFTER_FRAME, EventType.RENDER_FRAME_EVENT);
+            Model brunnen = ResourceLoader.currentInstance().getResource(Model.class, "res:brunnen.obj")/*new Model("", ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")))*/;
             // Model brunnen = ModelUtil.generateQuad();
-            SimpleTexture brunnent = SimpleTexture
-                    .newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create();
-            SimpleTexture brunnen_norm = SimpleTexture
-                    .newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen_normal.png")).create();
-            SimpleTexture brunnen_specular = SimpleTexture.newTexture("/omnikryptec/test/brunnen_specular.png");
-            SimpleTexture baum = SimpleTexture.newTexture(new AdvancedFile(true, res, "final_tree_3.png"));
-            System.out.println(new AdvancedFile(true, res, "final_tree_3.obj"));
-            Model baumM = Model.newModel(new AdvancedFile(true, res, "final_tree_3.obj"));
+            SimpleTexture brunnent = ResourceLoader.currentInstance().getTexture("omnikryptec:test:brunnen.png")/*SimpleTexture.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create()*/;
+            SimpleTexture brunnen_norm = ResourceLoader.currentInstance().getTexture("omnikryptec:test:brunnen_normal.png")/*SimpleTexture.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen_normal.png")).create()*/;
+            SimpleTexture brunnen_specular = ResourceLoader.currentInstance().getTexture("omnikryptec:test:brunnen_specular.png")/*SimpleTexture.newTexture("/omnikryptec/test/brunnen_specular.png")*/;
+            SimpleTexture baum = ResourceLoader.currentInstance().getTexture("res:final_tree_3.png")/*SimpleTexture.newTexture(new AdvancedFile(true, res, "final_tree_3.png"))*/;
+            //System.out.println(new AdvancedFile(true, res, "final_tree_3.obj"));
+            Model baumM = ResourceLoader.currentInstance().getResource(Model.class, "res:final_tree_3.obj")/*Model.newModel(new AdvancedFile(true, res, "final_tree_3.obj"))*/;
             // Model baumM = Model.newModel(new AdvancedFile(res, "cube.obj"));
             AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
-            Model BLOCK = new Model("", ObjLoader.loadOBJ(new AdvancedFile(true, res, "block.obj")));
+            Model BLOCK = ResourceLoader.currentInstance().getResource(Model.class, "res:block.obj")/*new Model("", ObjLoader.loadOBJ(new AdvancedFile(true, res, "block.obj")))*/;
             TexturedModel tm = new TexturedModel("brunnen", baumM, baum);
             tm.getMaterial().setRenderer(RendererRegistration.FORWARD_MESH_RENDERER);
             testdings = tm;
@@ -179,21 +193,17 @@ public class EngineTest2 implements IEventHandler {
                 }
 
             }.setPerspectiveProjection(90, 0.1f, 1000)).setAmbientColor(0.1f, 0.1f, 0.1f));
-            OmniKryptecEngine.instance()
-                    .addAndSetScene(new Scene2D("test2d", new Camera().setOrthographicProjection2D(0, 0, 2000, 2000)).setAmbientColor(1, 1, 1));
+            OmniKryptecEngine.instance().addAndSetScene(new Scene2D("test2d", new Camera().setOrthographicProjection2D(0, 0, 2000, 2000)).setAmbientColor(1, 1, 1));
             Instance.getCurrent3DCamera().getTransform().setPosition(0, 0, 200);
             // OmniKryptecEngine.instance().addAndSetScene(null);
             // Instance.getCurrentCamera().getTransform().setPosition(0, 0, 0);
-            Model pine = new Model("",
-                    ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")));
-            Model bauer = new Model("",
-                    ColladaLoader.loadColladaModel(new AdvancedFile(true, "res", "model.dae"), 50).getMeshData());
-            SimpleTexture bauert = SimpleTexture.newTexture("/res/diffuse.png");
-            SimpleTexture pinet = SimpleTexture
-                    .newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine2.png")).create();
+            Model pine = ResourceLoader.currentInstance().getResource(Model.class, "omnikryptec:test:pine.obj")/*new Model("", ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")))*/;
+            //Model bauer = new Model("", ColladaLoader.loadColladaModel(new AdvancedFile(true, "res", "model.dae"), 50).getMeshData());
+            SimpleTexture bauert = ResourceLoader.currentInstance().getTexture("res:diffuse.png")/*SimpleTexture.newTexture("/res/diffuse.png")*/;
+            SimpleTexture pinet = ResourceLoader.currentInstance().getTexture("omnikryptec:test:pine2.png")/*SimpleTexture.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine2.png")).create()*/;
 
             SimpleAnimation animation = new SimpleAnimation(1, brunnent, pinet);
-            SimpleTexture pine_normal = SimpleTexture.newTexture("/omnikryptec/test/pine2_normal.png");
+            SimpleTexture pine_normal = ResourceLoader.currentInstance().getTexture("omnikryptec:test:pine2_normal.png")/*SimpleTexture.newTexture("/omnikryptec/test/pine2_normal.png")*/;
 
             TexturedModel ptm = new TexturedModel("pine", pine, pinet);
             ptm.getMaterial().setTexture(Material.NORMAL, pine_normal);
@@ -274,7 +284,7 @@ public class EngineTest2 implements IEventHandler {
             // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
             Instance.getGameSettings().setMultithreadedParticles(true);
             system = new AttractedPaticleSystem(0, 0, 0,
-                    new ParticleAtlas(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"), 4, BlendMode.ADDITIVE),
+                    new ParticleAtlas(ResourceLoader.currentInstance().getTexture("omnikryptec:test:cosmic.png")/*SimpleTexture.newTexture("/omnikryptec/test/cosmic.png")*/, 4, BlendMode.ADDITIVE),
                     1000, 0, 1000, 1f, RenderType.ALWAYS).setParticlesAttractingEachOther(false).setAverageMass(100)
                     .setMassError(0.75f);
             // system.setParent(Instance.getCurrentCamera());
