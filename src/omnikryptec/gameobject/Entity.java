@@ -83,7 +83,7 @@ public class Entity extends GameObject3D implements DataMapSerializable {
     public final Entity setAdvancedModel(AdvancedModel model) {
         this.model = model;
         //if renderer gets changed this entity must be treated differently 
-        checkChunkPos();
+        checkChunkPos(true);
         return this;
     }
 

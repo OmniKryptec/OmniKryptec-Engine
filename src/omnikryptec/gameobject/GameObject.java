@@ -123,10 +123,10 @@ public abstract class GameObject implements DataMapSerializable {
         if (!logicEnabled) {
             return this;
         }
-        if (Logger.isDebugMode() && (cs = Instance.getCurrent3DScene()) != null && cs.getState() == FrameState.RENDERING) {
-            Logger.log("Logic is not allowed while rendering!", LogLevel.WARNING);
-            return this;
-        }
+//        if (Logger.isDebugMode() && (cs = Instance.getCurrent3DScene()) != null && cs.getState() == FrameState.RENDERING) {
+//            Logger.log("Logic is not allowed while rendering!", LogLevel.WARNING);
+//            return this;
+//        }
         if (componentsPreLogic != null) {
             for (Component<?> c : componentsPreLogic) {
                 c.runOn(this);
@@ -137,9 +137,6 @@ public abstract class GameObject implements DataMapSerializable {
             for (Component<?> c : componentsPostLogic) {
                 c.runOn(this);
             }
-        }
-        if ((force || getUpdateType() == UpdateType.DYNAMIC) && !(this instanceof Camera) && Instance.getGameSettings().usesRenderChunking()) {
-            checkChunkPos();
         }
         return this;
     }
@@ -369,7 +366,7 @@ public abstract class GameObject implements DataMapSerializable {
         return this;
     }
 
-    protected abstract void checkChunkPos();
+    public abstract void checkChunkPos(boolean force);
 
     /**
      * if true this GameObject will always be processed regardless of the camera
@@ -380,7 +377,7 @@ public abstract class GameObject implements DataMapSerializable {
      */
     public GameObject setGlobal(boolean b) {
         this.isglobal = b;
-        checkChunkPos();
+        checkChunkPos(true);
         return this;
     }
 

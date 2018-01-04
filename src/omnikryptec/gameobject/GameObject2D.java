@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import omnikryptec.main.AbstractScene;
 import omnikryptec.renderer.d2.RenderChunk2D;
+import omnikryptec.util.Instance;
+import omnikryptec.util.EnumCollection.UpdateType;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -122,17 +124,17 @@ public class GameObject2D extends GameObject implements Transformable2D {
 	}
 
 	@Override
-	protected void checkChunkPos() {
-		RenderChunk2D oldchunk = getRenderChunk();
-		if (oldchunk != null && (oldchunk.isglobal != isGlobal() || !oldchunk.isglobal)) {
-			if (oldchunk.getChunkX() != getTransform().getChunkX() || oldchunk.getChunkY() != getTransform().getChunkY()
-					|| oldchunk.isglobal) {
+	public void checkChunkPos(boolean force) {
+		if((force || getUpdateType() == UpdateType.DYNAMIC) && Instance.getGameSettings().usesRenderChunking()){
+			RenderChunk2D oldchunk = getRenderChunk();
+			if (oldchunk != null && (oldchunk.isglobal != isGlobal()
+					|| (!oldchunk.isglobal && (oldchunk.getChunkX() != getTransform().getChunkX()
+							|| oldchunk.getChunkY() != getTransform().getChunkY())))) {
 				oldchunk.getScene().realign(this);
+			} else if (Logger.isDebugMode() && oldchunk == null) {
+				Logger.log("RenderChunk2D is null: " + toString(), LogLevel.WARNING);
 			}
-		} else if (Logger.isDebugMode() && !isGlobal()) {
-			Logger.log("RenderChunk2D is null: " + toString(), LogLevel.WARNING);
 		}
-
 	}
 
 }

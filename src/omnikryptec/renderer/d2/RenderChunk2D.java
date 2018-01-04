@@ -68,7 +68,11 @@ public class RenderChunk2D implements GameObjectContainer<GameObject2D> {
 	public GameObject2D removeGameObject(GameObject2D go, boolean delete) {
 		if (go != null) {
 			if (go instanceof Sprite) {
-				chunkSprites.remove(go);
+				if(go instanceof Light2D) {
+					chunkLights.remove(go);
+				}else {
+					chunkSprites.remove(go);
+				}
 			} else {
 				chunkOther.remove(go);
 			}
@@ -101,6 +105,15 @@ public class RenderChunk2D implements GameObjectContainer<GameObject2D> {
 		}
 		for (int i = 0; i < chunkSprites.size(); i++) {
 			chunkSprites.get(i).doLogic();
+		}
+		for (int i = 0; i < chunkOther.size()&&!chunkOther.isEmpty(); i++) {
+			chunkOther.get(i).checkChunkPos(false);
+		}
+		for (int i = 0; i < chunkLights.size()&&!chunkLights.isEmpty(); i++) {
+			chunkLights.get(i).checkChunkPos(false);
+		}
+		for (int i = 0; i < chunkSprites.size()&&!chunkSprites.isEmpty(); i++) {
+			chunkSprites.get(i).checkChunkPos(false);
 		}
 	}
 

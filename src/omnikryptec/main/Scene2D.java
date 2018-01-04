@@ -9,6 +9,7 @@ import omnikryptec.renderer.d2.RenderChunk2D;
 import omnikryptec.renderer.d2.Renderer2D;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.Instance;
+import omnikryptec.util.logger.Logger;
 
 public class Scene2D extends AbstractScene2D{
 	
@@ -97,14 +98,25 @@ public class Scene2D extends AbstractScene2D{
 	@Override
 	public final GameObject2D removeGameObject_(GameObject2D go, boolean delete) {
 		if (go != null) {
-            if (go.getRenderChunk() != null && false) {
-                go.getRenderChunk().removeGameObject(go, delete);
+			if (go.getRenderChunk() != null) {
+            	if(!Instance.getGameSettings().usesRenderChunking()) {
+            		global.removeGameObject(go, delete);
+            	}else {
+					tmpc = go.getRenderChunk();
+	                go.getRenderChunk().removeGameObject(go, delete);
+	                if(tmpc.isEmpty()&&!tmpc.isglobal) {
+	                	scene.remove(xyToString(tmpc.getChunkX(), tmpc.getChunkY()));
+	                }
+            	}
             } else {
-                tmp = xyToString(go.getTransform().getChunkX(), go.getTransform().getChunkY());
+            	global.removeGameObject(go, delete);
+            	tmp = xyToString(go.getTransform().getChunkX(), go.getTransform().getChunkY());
                 scene.get(tmp).removeGameObject(go, delete);
-                go.deleteOperation();
                 if(scene.get(tmp).isEmpty()) {
                 	scene.remove(tmp);
+                }
+                if(Logger.isDebugMode()) {
+                	System.err.println("RenderChunk2D is null: "+go);
                 }
             }
         }
