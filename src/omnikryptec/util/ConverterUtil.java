@@ -1,5 +1,8 @@
 package omnikryptec.util;
 
+import org.dyn4j.geometry.Vector2;
+import org.joml.Vector2f;
+
 /**
  *
  * @author Panzer1119
@@ -30,4 +33,12 @@ public class ConverterUtil {
 		return new javax.vecmath.Quat4f(q.x, q.y, q.z, q.w);
 	}
 
+	public static final Vector2f convertVector3fToLWJGL(Vector2 v) {
+		return new Vector2f((float)v.x, (float)v.y);
+	}
+	
+	public static final Vector2 convertVector2fFromLWJGL(Vector2f v) {
+		return new Vector2(v.x, v.y);
+	}
+	
 }
