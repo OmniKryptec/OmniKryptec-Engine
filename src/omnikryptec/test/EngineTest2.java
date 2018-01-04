@@ -28,6 +28,8 @@ import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
 import omnikryptec.main.Scene3D;
+import omnikryptec.physics.d2.CollisionManager;
+import omnikryptec.physics.d2.Rectangle;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.renderer.d3.FloorReflectionRenderer;
 import omnikryptec.renderer.d3.RenderConfiguration;
@@ -137,6 +139,7 @@ public class EngineTest2 implements IEventHandler {
             // PostProcessing.instance().addStage(new
             // CompleteGaussianBlurStage(false, 0.05f, 0.05f));
             // PostProcessing.instance().addStage(new DebugRenderer());
+
             final AdvancedFile res = new AdvancedFile(true, "", "res");
             final AdvancedFile test = new AdvancedFile(true, "", "omnikryptec", "test");
             //System.out.println(res);
@@ -380,6 +383,12 @@ public class EngineTest2 implements IEventHandler {
             // Light().setColor(0, 0, 1).setRadius(100).setRelativePos(50, 50,
             // 0));
 
+        	CollisionManager mgr = new CollisionManager();
+        	mgr.prepareStep();
+        	mgr.add(new Rectangle(0, 0, 100, 100).setDynamic(true));
+        	mgr.add(new Rectangle(-100, -100, 10, 10).setDynamic(true));
+        	mgr.step();
+            
             OmniKryptecEngine.instance().startLoop();
         } catch (Exception ex) {
             Logger.logErr("Error: " + ex, ex);

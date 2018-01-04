@@ -86,11 +86,11 @@ public abstract class AbstractScene<T extends GameObject> implements GameObjectC
     
     public final void publicLogic() {
 		state = FrameState.LOGIC;
+		logic();
+		camera.doLogic();
 		if (isUsingPhysics()) {
 			physicsworld.stepSimulation();
 		}
-		logic();
-		camera.doLogic();
 		state = FrameState.NULL;
 	}
     

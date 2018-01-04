@@ -18,7 +18,6 @@ public class Scene2D extends AbstractScene2D{
 	private Renderer2D renderer;
 
 	private long cx,cy;
-	private int cox,coy;
 	private RenderChunk2D tmpc;
 	private String tmp;
 	
@@ -44,9 +43,9 @@ public class Scene2D extends AbstractScene2D{
 	
 	private void init() {
 		setAmbientColor(1, 1, 1);
-		cox = OmniKryptecEngine.instance().getGameSettings().getInteger(GameSettings.CHUNK_OFFSET_2D_X);
-		coy = OmniKryptecEngine.instance().getGameSettings().getInteger(GameSettings.CHUNK_OFFSET_2D_Y);
 	}
+	
+
 	
 	public void setRenderer(Renderer2D renderer) {
 		this.renderer = renderer;
