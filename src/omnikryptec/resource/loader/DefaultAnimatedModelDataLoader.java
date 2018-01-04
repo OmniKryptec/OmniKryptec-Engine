@@ -3,6 +3,7 @@ package omnikryptec.resource.loader;
 import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
 import omnikryptec.animation.ColladaParser.dataStructures.AnimatedModelData;
+import omnikryptec.resource.loader.annotations.DefaultLoader;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.Instance;
 import omnikryptec.util.logger.Logger;
@@ -12,6 +13,7 @@ import omnikryptec.util.logger.Logger;
  *
  * @author Panzer1119
  */
+@DefaultLoader
 public class DefaultAnimatedModelDataLoader implements Loader {
 
     @Override
@@ -23,13 +25,8 @@ public class DefaultAnimatedModelDataLoader implements Loader {
     }
 
     @Override
-    public String[] getExtensions() {
-        return new String[]{"dae"};
-    }
-
-    @Override
-    public String[] getBlacklist() {
-        return null;
+    public LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
+        return advancedFile.getExtension().equalsIgnoreCase("dae") ? LoadingType.OPENGL : LoadingType.NOT; //TODO Kann das hier auch Normal geloaded werden?
     }
 
 }

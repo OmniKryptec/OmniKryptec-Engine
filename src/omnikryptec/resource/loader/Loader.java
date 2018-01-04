@@ -11,9 +11,7 @@ public interface Loader {
 
     public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader);
 
-    public String[] getExtensions();
-
-    public String[] getBlacklist();
+    public LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader);
 
     default String generateName(AdvancedFile advancedFile, AdvancedFile superFile) {
         String path = advancedFile.getPath();

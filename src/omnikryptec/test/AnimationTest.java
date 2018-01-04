@@ -130,10 +130,7 @@ public class AnimationTest {
 
             //FIXME Only for testing DON'T DELETE TIHS!!! START
             AdvancedFile res_test = new AdvancedFile(true, "", "omnikryptec", "test");
-            ResourceLoader.currentInstance().addLoader(new DefaultModelLoader());
-            ResourceLoader.currentInstance().addLoader(new DefaultTextureLoader());
-            ResourceLoader.currentInstance().addLoader(new DefaultAnimationLoader());
-            ResourceLoader.currentInstance().addLoader(new DefaultAnimatedModelDataLoader());
+            ResourceLoader.createInstanceDefault(true);
             //ResourceLoader.getInstance().stageAdvancedFiles(-1, DIFFUSE_FILE);
             //ResourceLoader.getInstance().stageAdvancedFiles(MODEL_FILE);
             ResourceLoader.currentInstance().stageAdvancedFiles(1, RES_FOLDER_1);

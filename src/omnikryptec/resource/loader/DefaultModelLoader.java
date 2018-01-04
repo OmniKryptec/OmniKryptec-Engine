@@ -1,15 +1,18 @@
 package omnikryptec.resource.loader;
 
 import de.codemakers.io.file.AdvancedFile;
+import omnikryptec.resource.loader.annotations.DefaultLoader;
 import omnikryptec.resource.model.Model;
 import omnikryptec.util.logger.Logger;
 
 /**
  * DefaultModelLoader
+ *
  * @author Panzer1119
  */
+@DefaultLoader
 public class DefaultModelLoader implements Loader {
-    
+
     @Override
     public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
         final String name = generateName(advancedFile, superFile);
@@ -19,13 +22,8 @@ public class DefaultModelLoader implements Loader {
     }
 
     @Override
-    public String[] getExtensions() {
-        return new String[] {"obj"};
+    public LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
+        return advancedFile.getExtension().equalsIgnoreCase("obj") ? LoadingType.OPENGL : LoadingType.NOT; //TODO Kann das hier auch Normal geloaded werden?
     }
 
-    @Override
-    public String[] getBlacklist() {
-        return null;
-    }
-    
 }
