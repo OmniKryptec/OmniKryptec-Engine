@@ -56,11 +56,11 @@ public class Scene2D extends AbstractScene2D{
 	@Override
 	protected void logic() {
 		if(Instance.getGameSettings().usesRenderChunking()) {
-		    cx = getCamera().getTransform().getChunkX();
-		    cy = getCamera().getTransform().getChunkY();
-		    for (long x = -cox + cx; x <= cox + cx; x++) {
-		        for (long y = -coy + cy; y <= coy + cy; y++) {
-	                if ((tmpc = scene.get(xyToString(x, y))) != null) {
+		    cx = getCamera().getTransform().getChunkX2D();
+		    cy = getCamera().getTransform().getChunkY2D();
+		    for (long x = -cox; x <= cox; x++) {
+		        for (long y = -coy; y <= coy; y++) {
+	                if ((tmpc = scene.get(xyToString(x + cx, y + cy))) != null) {
 	                    tmpc.logic();
 	                }
 		        }
