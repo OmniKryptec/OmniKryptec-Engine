@@ -521,7 +521,7 @@ public class GameSettings {
      */
     public final GameSettings setFilterNearest(boolean nearest) {
         if (nearest) {
-            setBoolean(MIPMAP, false);
+           setBoolean(MIPMAP, false);
         }
         this.nearest = nearest;
         return this;

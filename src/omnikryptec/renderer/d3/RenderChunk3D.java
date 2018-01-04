@@ -221,15 +221,15 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 			for (int j = 0; j < tmpmap.keysArray().length; j++) {
 				tmplist = tmpmap.get(tmpmap.keysArray()[j]);
 				for (int k = 0; k < tmplist.size(); k++) {
-					tmplist.get(k).doLogic();
+					tmplist.get(k).doLogic().checkChunkPos(false);
 				}
 			}
 		}
 		for (int i = 0; i < other.size(); i++) {
-			other.get(i).doLogic();
+			other.get(i).doLogic().checkChunkPos(false);
 		}
 		for (int i = 0; i < lights.size(); i++) {
-			lights.get(i).doLogic();
+			lights.get(i).doLogic().checkChunkPos(false);
 		}
 	}
 
