@@ -3,10 +3,12 @@ package omnikryptec.graphics;
 import java.nio.FloatBuffer;
 
 import org.joml.Math;
+import org.joml.Rectanglef;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
+import omnikryptec.collision.d2.Rectangle;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.resource.model.VertexArrayObject;
@@ -324,6 +326,10 @@ public class SpriteBatch {
 		draw(null, x, y, width, height);
 	}
 
+	public void drawRect(Rectangle r) {
+		drawRect(r.minX, r.minY, r.getWidth(), r.getHeight());
+	}
+	
 	public void drawRect(float x, float y, float width, float height) {
 		drawRect(x, y, width, height, 1);
 	}

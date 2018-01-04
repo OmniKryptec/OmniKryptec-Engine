@@ -6,6 +6,8 @@ import org.joml.Vector3f;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.codemakers.lang.LanguageManager;
+import omnikryptec.collision.d2.CollisionManager;
+import omnikryptec.collision.d2.Rectangle;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
@@ -28,8 +30,6 @@ import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
 import omnikryptec.main.Scene3D;
-import omnikryptec.physics.d2.CollisionManager;
-import omnikryptec.physics.d2.Rectangle;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.renderer.d3.FloorReflectionRenderer;
 import omnikryptec.renderer.d3.RenderConfiguration;

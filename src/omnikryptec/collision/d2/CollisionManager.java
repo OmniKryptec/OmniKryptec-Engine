@@ -1,4 +1,4 @@
-package omnikryptec.physics.d2;
+package omnikryptec.collision.d2;
 
 import java.util.ArrayList;
 
@@ -7,16 +7,23 @@ import org.joml.Intersectionf;
 import omnikryptec.main.AbstractScene2D;
 import omnikryptec.renderer.d2.RenderChunk2D;
 import omnikryptec.util.Instance;
+import omnikryptec.util.logger.Logger;
 
 public class CollisionManager {
 
 	private Quadtree tree;
 	private ArrayList<Rectangle> toCheck = new ArrayList<>();
+	private boolean accept=false;
+
 	
 	public void add(Rectangle rect) {
-		tree.insert(rect);
-		if(rect.isDynamic()) {
-			toCheck.add(rect);
+		if(accept) {
+			tree.insert(rect);
+			if(rect.isDynamic()) {
+				toCheck.add(rect);
+			}
+		}else if(Logger.isDebugMode()){
+			System.out.println("Dont accept Rectangles currently!");
 		}
 	}
 	
@@ -25,17 +32,21 @@ public class CollisionManager {
 		float y = (Instance.getCurrent2DCamera().getTransform().getChunkY2D()-AbstractScene2D.getCoy())*RenderChunk2D.getHeight();
 		tree = new Quadtree(0, new Rectangle(x, y, AbstractScene2D.getCox()*2*RenderChunk2D.getWidth(), AbstractScene2D.getCoy()*2*RenderChunk2D.getHeight()));
 		toCheck.clear();
+		accept = true;
 	}
 	
 	
 	public void step() {
+		accept = false;
+		ArrayList<Rectangle> possibleCollisions = new ArrayList<>();
 		for(Rectangle r : toCheck) {
-			ArrayList<Rectangle> possibleCollisions = new ArrayList<>();
+			r.setColliding(false);
+			possibleCollisions.clear();
 			tree.retrieve(possibleCollisions, r);
 			for(Rectangle col : possibleCollisions) {
 				if(collide(r, col)) {
-					System.out.println("Collision!");
-					//r.reset();
+					r.setColliding(true);
+					break;
 				}
 			}
 		}

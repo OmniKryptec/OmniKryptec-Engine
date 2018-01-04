@@ -44,6 +44,10 @@ public abstract class PhysicsWorld {
     
     protected abstract float checkSimulationSpeed(float simulationSpeed);
 
+    public void preLogic() {
+    	
+    }
+    
     public final float getTimeStep() {
         return OmniKryptecEngine.instance().getDeltaTimef() * simulationSpeed;
     }

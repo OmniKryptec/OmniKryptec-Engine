@@ -1,4 +1,4 @@
-package omnikryptec.physics.d2;
+package omnikryptec.collision.d2;
 
 import java.util.ArrayList;
 

@@ -1,12 +1,12 @@
-package omnikryptec.physics.d2;
+package omnikryptec.collision.d2;
 
 import org.joml.Rectanglef;
 
 public class Rectangle extends Rectanglef {
 
-	private float w, h;
+	private float w, h, oldx, oldy;
 	private boolean dynamic=false;
-	
+	private boolean iscolliding=false;
 	
 	public Rectangle() {
 		this(0,0,0,0);
@@ -16,6 +16,8 @@ public class Rectangle extends Rectanglef {
 		super(x, y, x + w, y + h);
 		this.w = w;
 		this.h = h;
+		oldx = x;
+		oldy = y;
 	}
 
 	public float getWidth() {
@@ -44,6 +46,15 @@ public class Rectangle extends Rectanglef {
 		return this;
 	}
 	
+	public void saveOld() {
+		oldx = minX;
+		oldy = minY;
+	}
+	
+	public void restore() {
+		setPosition(oldx, oldy);
+	}
+	
 	public Rectangle setDynamic(boolean b) {
 		this.dynamic = b;
 		return this;
@@ -51,6 +62,15 @@ public class Rectangle extends Rectanglef {
 	
 	public boolean isDynamic() {
 		return dynamic;
+	}
+	
+	Rectangle setColliding(boolean b) {
+		iscolliding = b;
+		return this;
+	}
+	
+	public boolean isColliding() {
+		return iscolliding;
 	}
 	
 	@Override

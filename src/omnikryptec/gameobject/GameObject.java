@@ -107,8 +107,6 @@ public abstract class GameObject implements DataMapSerializable {
         return doLogic(false);
     }
 
-    private AbstractScene3D cs;
-
     /**
      * executes the logic of this GameObject (if neccessary or forced)
      *
