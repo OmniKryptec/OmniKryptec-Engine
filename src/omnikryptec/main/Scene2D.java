@@ -84,19 +84,20 @@ public class Scene2D extends AbstractScene2D{
 		if (go != null) {
             if (go.isGlobal() || !Instance.getGameSettings().usesRenderChunking()) {
                 global.addGameObject(go);
+            }else {
+            	tmp = xyToString(go.getTransform().getChunkX(), go.getTransform().getChunkY());
+	            if (!scene.containsKey(tmp)) {
+	                scene.put(tmp, new RenderChunk2D(go.getTransform().getChunkX(), go.getTransform().getChunkY(), this));
+	            }
+	            scene.get(tmp).addGameObject(go);
             }
-            tmp = xyToString(go.getTransform().getChunkX(), go.getTransform().getChunkY());
-            if (!scene.containsKey(tmp)) {
-                scene.put(tmp, new RenderChunk2D(go.getTransform().getChunkX(), go.getTransform().getChunkY(), this));
-            }
-            scene.get(tmp).addGameObject(go);
         }
 	}
 
 	@Override
 	public final GameObject2D removeGameObject_(GameObject2D go, boolean delete) {
 		if (go != null) {
-            if (go.getRenderChunk() != null) {
+            if (go.getRenderChunk() != null && false) {
                 go.getRenderChunk().removeGameObject(go, delete);
             } else {
                 tmp = xyToString(go.getTransform().getChunkX(), go.getTransform().getChunkY());

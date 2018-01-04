@@ -194,4 +194,9 @@ public class Transform2D implements Positionable2D{
     public final long getChunkY() {
         return Maths.fastFloor(getPosition(true).y / RenderChunk2D.getHeight());
     }
+    
+    @Override
+    public String toString() {
+    	return "Position: "+position+" Rotation: "+rotation+" Scale: "+scale+((parent==null)?"":(" Parent: ["+parent.toString()+"] "));
+    }
 }
