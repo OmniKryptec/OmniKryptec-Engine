@@ -33,12 +33,19 @@ public class ResourceLoader implements Loader {
 
     private static ResourceLoader RESOURCELOADER;
 
-    public static final ResourceLoader createInstanceDefault(boolean ascurrent) {
+    public static final ResourceLoader createInstanceDefault(boolean ascurrent, boolean searchForDefaultLoaders) {
         final ResourceLoader loader = new ResourceLoader();
         if (ascurrent) {
             RESOURCELOADER = loader;
         }
-        return loader.addDefaultLoaders();
+        if (searchForDefaultLoaders) {
+            return loader.addDefaultLoaders(false);
+        }
+        loader.addLoader(new DefaultModelLoader());
+        loader.addLoader(new DefaultTextureLoader());
+        loader.addLoader(new DefaultAnimationLoader());
+        loader.addLoader(new DefaultAnimatedModelDataLoader());
+        return loader;
     }
 
     public static final ResourceLoader createInstance(boolean ascurrent) {
@@ -147,7 +154,7 @@ public class ResourceLoader implements Loader {
     }
 
     public final void loadStagedAdvancedFiles(boolean clearData, long timeout, TimeUnit unit) {
-        resetExecutor();
+        //resetExecutor();
         isLoading = true;
         try {
             if (clearData) {
@@ -203,6 +210,11 @@ public class ResourceLoader implements Loader {
 
     public final ResourceLoader addDefaultLoaders() {
         getDefaultLoaders().forEach(this::addLoader);
+        return this;
+    }
+
+    public final ResourceLoader addDefaultLoaders(boolean distinct) {
+        getDefaultLoaders(distinct).forEach(this::addLoader);
         return this;
     }
 

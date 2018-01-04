@@ -140,7 +140,7 @@ public class EngineTest2 implements IEventHandler {
             final AdvancedFile res = new AdvancedFile(true, "", "res");
             final AdvancedFile test = new AdvancedFile(true, "", "omnikryptec", "test");
             //System.out.println(res);
-            ResourceLoader.createInstanceDefault(true);
+            ResourceLoader.createInstanceDefault(true, false);
             ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, res, "jd.png"));
             ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, res, "js.png"));
             ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, res, "jn.png"));

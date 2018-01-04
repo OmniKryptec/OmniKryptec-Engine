@@ -139,6 +139,7 @@ public class OmniKryptecEngine implements Profilable {
             instance = this;
             if (gameloop == null) {
                 gameloop = new DefaultGameLoop();
+                Logger.log("Successfully setted a DefaultGameLoop!", LogLevel.FINEST);
             }
         } catch (Exception e) {
             errorOccured(e, "Error occured while booting!");
