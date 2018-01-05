@@ -159,7 +159,7 @@ public class GraphicsUtil {
 
 	public static boolean inRenderRange(Vector3f pos, RenderType type, Camera c) {
 		//In andere Funktion auslagern hier wird zu oft gecalled
-		if (needsUpdate(lastupdate, 20)) {
+		if (needsUpdate(lastupdate, GameSettings.CHECKCHANGEFRAMES)) {
 			lastupdate = OmniKryptecEngine.instance().getDisplayManager().getFramecount();
 			rad_fol = OmniKryptecEngine.instance().getDisplayManager().getSettings().getFloat(GameSettings.RADIUS_FOLIAGE);
 			rad_med = OmniKryptecEngine.instance().getDisplayManager().getSettings().getFloat(GameSettings.RADIUS_MEDIUM);

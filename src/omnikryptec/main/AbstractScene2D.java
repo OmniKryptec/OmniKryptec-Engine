@@ -23,11 +23,11 @@ public abstract class AbstractScene2D extends AbstractScene<GameObject2D> {
 	}
 
 	@Override
-	public final void addGameObject(GameObject2D go) {
-		super.addGameObject(go);
+	public final void addGameObject(GameObject2D go, boolean added) {
+		super.addGameObject(go, added);
 		if (go.hasChilds()) {
 			for (GameObject2D g : go.getChilds()) {
-				addGameObject(g);
+				addGameObject(g, added);
 			}
 		}
 	}

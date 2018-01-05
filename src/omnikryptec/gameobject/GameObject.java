@@ -279,9 +279,6 @@ public abstract class GameObject implements DataMapSerializable {
     protected void update() {
     }
     
-    public void removed(){
-    }
-    
     public void added(){
     }
     
@@ -307,6 +304,21 @@ public abstract class GameObject implements DataMapSerializable {
         gameObjects.remove(this);
         return this;
     }
+    
+	public final GameObject addedOperation() {
+		if (componentsPreLogic != null) {
+            for (Component<?> c : componentsPreLogic) {
+                c.addedOp(this);
+            }
+        }
+        if (componentsPostLogic != null) {
+            for (Component<?> c : componentsPostLogic) {
+                c.addedOp(this);
+            }
+        }
+        added();
+        return this;
+	}
 
     /**
      * override this to let your gameobject do its things when deleted the cam

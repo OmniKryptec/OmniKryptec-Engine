@@ -218,7 +218,7 @@ public class SpriteBatch {
 				tmpPos.y -= scaledHeight/2;
 			}
 			draw(s.getTexture(), tmpPos.x, tmpPos.y, scaledWidth, 
-					scaledHeight, scaledWidth*0.5f, scaledHeight*0.5f, s.getTransform().getRotation().x);
+					scaledHeight, scaledWidth*0.5f, scaledHeight*0.5f, s.getTransform().getRotation());
 		}
 	}
 	

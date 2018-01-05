@@ -121,23 +121,21 @@ public abstract class AbstractScene<T extends GameObject> implements GameObjectC
     
     protected void postRender() {}
     
-    protected abstract void addGameObject_(T g);
+    protected abstract void addGameObject_(T g, boolean added);
     protected abstract T removeGameObject_(T g, boolean delete);
     
-	public void addGameObject(T go){
-		addGameObject_(go);
-		go.added();
+	public void addGameObject(T go, boolean added){
+		addGameObject_(go, added);
 	}
 
 	public T removeGameObject(T go, boolean delete){
 		removeGameObject_(go, delete);
-		go.removed();
 		return go;
 	}
     
 	public final void realign(T g) {
 		removeGameObject_(g, false);
-		addGameObject_(g);
+		addGameObject_(g, false);
 	}
 	
     @Override

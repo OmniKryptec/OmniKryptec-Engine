@@ -49,7 +49,7 @@ public class Scene3D extends AbstractScene3D {
     }
 
     @Override
-	public final void addGameObject_(GameObject3D g) {
+	public final void addGameObject_(GameObject3D g, boolean added) {
         if (g != null) {
             if (g instanceof Camera && Logger.isDebugMode()) {
                 Logger.log("A Camera should not be added as a GameObject!", LogLevel.WARNING);
@@ -63,6 +63,9 @@ public class Scene3D extends AbstractScene3D {
                 scene.put(tmp, new RenderChunk3D(g.getTransform().getChunkX(), g.getTransform().getChunkY(), g.getTransform().getChunkZ(), this));
             }
             scene.get(tmp).addGameObject(g);
+            if(added) {
+            	g.addedOperation();
+            }
         }
     }
 

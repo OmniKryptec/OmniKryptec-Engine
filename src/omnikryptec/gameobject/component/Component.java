@@ -33,6 +33,11 @@ public abstract class Component<T extends GameObject> {
 		onDelete((T)g);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public final void addedOp(GameObject g) {
+		added((T)g);
+	}
+	
 	public final boolean supportsGameObject(GameObject g) {
 		return supported.isAssignableFrom(g.getClass());
 	}
@@ -53,6 +58,10 @@ public abstract class Component<T extends GameObject> {
 	 */
 	protected abstract void onDelete(T instance);
 
+	protected void added(T instance) {
+		
+	}
+	
 	/**
 	 * Returns the level of this component
 	 * 

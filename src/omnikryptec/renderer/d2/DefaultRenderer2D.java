@@ -53,7 +53,7 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler {
         batch.setCamera(sc.getCamera());
         filter.setCamera(sc.getCamera());
         sprites = new ArrayList<>();
-        if (GraphicsUtil.needsUpdate(last, 20)) {
+        if (GraphicsUtil.needsUpdate(last, GameSettings.CHECKCHANGEFRAMES)) {
             light = OmniKryptecEngine.instance().getGameSettings().getBoolean(GameSettings.LIGHT_2D);
             last = Instance.getFramecount();
         }

@@ -110,7 +110,7 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 	private AdvancedModel am;
 
 	@Override
-	public void addGameObject(GameObject3D g) {
+	public void addGameObject(GameObject3D g, boolean added) {
 		if (g != null) {
 			if (g instanceof Entity) {
 				tmp = (Entity) g;
@@ -147,6 +147,9 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 				other.add(g);
 			}
 			g.setRenderChunk3D(this);
+			if(added) {
+				g.addedOperation();
+			}
 		}
 	}
 

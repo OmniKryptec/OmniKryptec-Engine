@@ -49,7 +49,7 @@ public class RenderChunk2D implements GameObjectContainer<GameObject2D> {
 	}
 
 	@Override
-	public void addGameObject(GameObject2D go) {
+	public void addGameObject(GameObject2D go, boolean added) {
 		if (go != null) {
 			if (go instanceof Sprite) {
 				if (go instanceof Light2D) {
@@ -61,6 +61,9 @@ public class RenderChunk2D implements GameObjectContainer<GameObject2D> {
 				chunkOther.add(go);
 			}
 			go.setRenderChunk2D(this);
+			if(added) {
+				go.addedOperation();
+			}
 		}
 	}
 

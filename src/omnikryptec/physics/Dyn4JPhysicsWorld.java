@@ -2,9 +2,14 @@ package omnikryptec.physics;
 
 import org.dyn4j.dynamics.World;
 
+import omnikryptec.graphics.GraphicsUtil;
+import omnikryptec.settings.GameSettings;
+import omnikryptec.util.Instance;
+
 public class Dyn4JPhysicsWorld extends PhysicsWorld{
 
 	private World world;
+	private boolean aarb = false;
 	
 	public Dyn4JPhysicsWorld() {
 		this.world = new World();
@@ -21,25 +26,45 @@ public class Dyn4JPhysicsWorld extends PhysicsWorld{
 	
 	@Override
 	protected int stepSimulation(float timeStep) {
-		world.updatev(timeStep);
+		update(timeStep);
 		return 0;
 	}
 
 	@Override
 	protected int stepSimulation(float timeStep, int maxSubSteps) {
-		world.updatev(timeStep);
+		update(timeStep);
 		return 0;
 	}
 
 	@Override
 	protected int stepSimulation(float timeStep, int maxSubSteps, float fixedTimeStep) {
-		world.updatev(timeStep);
+		update(timeStep);
 		return 0;
 	}
-
+	
+	private void update(float t) {
+		world.updatev(t);
+		if(aarb) {
+			world.removeAllBodies();
+		}
+	}
+	
+	private long last = 0;
 	@Override
 	protected float checkSimulationSpeed(float simulationSpeed) {
+		if(GraphicsUtil.needsUpdate(last, GameSettings.CHECKCHANGEFRAMES)) {
+			last = Instance.getFramecount();
+			boolean b = aarb;
+			aarb = Instance.getGameSettings().getBoolean(GameSettings.DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE);
+			if(!b&&aarb) {
+				world.removeAllBodies();
+			}
+		}
 		return Math.max(simulationSpeed, 0.0F);
 	}
 
+	public boolean raaBody() {
+		return aarb;
+	}
+	
 }

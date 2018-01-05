@@ -80,16 +80,16 @@ public class Scene2D extends AbstractScene2D{
 	}
 
 	@Override
-	public final void addGameObject_(GameObject2D go) {
+	public final void addGameObject_(GameObject2D go, boolean added) {
 		if (go != null) {
             if (go.isGlobal() || !Instance.getGameSettings().usesRenderChunking()) {
-                global.addGameObject(go);
+                global.addGameObject(go, added);
             }else {
             	tmp = xyToString(go.getTransform().getChunkX(), go.getTransform().getChunkY());
 	            if (!scene.containsKey(tmp)) {
 	                scene.put(tmp, new RenderChunk2D(go.getTransform().getChunkX(), go.getTransform().getChunkY(), this));
 	            }
-	            scene.get(tmp).addGameObject(go);
+	            scene.get(tmp).addGameObject(go, added);
             }
         }
 	}

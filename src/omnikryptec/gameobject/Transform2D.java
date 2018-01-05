@@ -10,7 +10,7 @@ public class Transform2D implements Positionable2D{
 	
 	protected Transform2D parent;
 	protected Vector2f position;
-	protected Vector2f rotation;
+	protected float rotation;
 	protected Vector2f scale;
 	
     public Transform2D() {
@@ -18,18 +18,18 @@ public class Transform2D implements Positionable2D{
     }
 
     public Transform2D(Vector2f pos) {
-        this(pos, new Vector2f(0));
+        this(pos, 0);
     }
 
-    public Transform2D(Vector2f pos, Vector2f rot) {
+    public Transform2D(Vector2f pos, float rot) {
         this(pos, rot, new Vector2f(1));
     }
 
-    public Transform2D(Vector2f pos, Vector2f rot, Vector2f scale) {
+    public Transform2D(Vector2f pos, float rot, Vector2f scale) {
         this(null, pos, rot, scale);
     }
 
-    public Transform2D(Transform2D parent, Vector2f pos, Vector2f rot, Vector2f scale) {
+    public Transform2D(Transform2D parent, Vector2f pos, float rot, Vector2f scale) {
         this.parent = parent;
         this.position = pos;
         this.rotation = rot;
@@ -42,7 +42,7 @@ public class Transform2D implements Positionable2D{
     }
 
     public Transform2D getNewCopy() {
-        return new Transform2D(parent, getPositionNew(), getRotationNew(), getScaleNew());
+        return new Transform2D(parent, getPositionNew(), getRotation(), getScaleNew());
     }
 
     public Transform2D setParent(Transform2D transform) {
@@ -71,9 +71,8 @@ public class Transform2D implements Positionable2D{
         return this;
     }
 
-    public Transform2D increaseRotation(float x, float y) {
-        this.rotation.x += x;
-        this.rotation.y += y;
+    public Transform2D increaseRotation(float x) {
+        this.rotation += x;
         return this;
     }
     
@@ -88,8 +87,8 @@ public class Transform2D implements Positionable2D{
         return this;
     }
 
-    public Transform2D setRotation(float x, float y) {
-        this.rotation.set(x, y);
+    public Transform2D setRotation(float x) {
+        this.rotation = x;
         return this;
     }
 
@@ -107,10 +106,6 @@ public class Transform2D implements Positionable2D{
         return this;
     }
 
-    public Transform2D setRotation(Vector2f q) {
-        this.rotation = q;
-        return this;
-    }
 
     public Transform2D setScale(Vector2f scale) {
         this.scale = scale;
@@ -133,10 +128,6 @@ public class Transform2D implements Positionable2D{
         return position;
     }
 
-    public Vector2f getRotationSimple() {
-        return rotation;
-    }
-
     public Vector2f getScaleSimple() {
         return scale;
     }
@@ -153,15 +144,12 @@ public class Transform2D implements Positionable2D{
         return parent.getPosition(false).add(position);
     }
 
-    public Vector2f getRotation() {
-        return getRotation(false);
-    }
 
-    public Vector2f getRotation(boolean simple) {
+    public float getRotation() {
         if (parent == null) {
-            return simple ? rotation : new Vector2f(rotation);
+            return rotation;
         }
-        return parent.getRotation(false).add(rotation);
+        return parent.getRotation() + rotation;
     }
 
     public Vector2f getScale() {
@@ -198,5 +186,14 @@ public class Transform2D implements Positionable2D{
     @Override
     public String toString() {
     	return "Position: "+position+" Rotation: "+rotation+" Scale: "+scale+((parent==null)?"":(" Parent: ["+parent.toString()+"] "));
+    }
+    
+    public Transform2D addTransform(Transform2D t, boolean scale) {
+    	this.position.add(t.getPosition(true));
+    	this.rotation += t.getRotation();
+    	if(scale) {
+    		this.scale.add(t.getScale(true));
+    	}
+    	return this;
     }
 }
