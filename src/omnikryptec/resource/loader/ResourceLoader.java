@@ -113,7 +113,7 @@ public class ResourceLoader implements Loader {
                 advancedFile.forEachChild((advancedFile_) -> loadIntern(advancedFile_, superFile, resourceLoader));
                 return true;
             } else {
-                final Properties properties_temp = new Returner<>(this.properties == null ? null : this.properties.getProperties(advancedFile)).or(Properties::new);
+                final Properties properties_temp = this.properties == null ? null : this.properties.getProperties(advancedFile);
                 final List<Loader> loadersForAdvancedFile = getLoadersForAdvancedFile(advancedFile, superFile, properties_temp, resourceLoader);
                 if (loadersForAdvancedFile.isEmpty()) {
                     Logger.log(String.format("Failed to load \"%s\"%s, no Loaders available", advancedFile, (Objects.equals(advancedFile, superFile) ? "" : String.format(" (in \"%s\")", superFile))), LogLevel.FINER);
