@@ -12,7 +12,8 @@ public class Dyn4JPhysicsWorld extends PhysicsWorld {
 	private World world;
 	private boolean aarb = false;
 	private boolean updatevar = false;
-
+	private int subs=5;
+	
 	public Dyn4JPhysicsWorld() {
 		this.world = new World();
 		world.setGravity(World.ZERO_GRAVITY);
@@ -51,12 +52,13 @@ public class Dyn4JPhysicsWorld extends PhysicsWorld {
 		if (updatevar) {
 			world.updatev(t);
 		} else {
-			world.update(t);
+			world.update(t,subs);
 		}
 		if (GraphicsUtil.needsUpdate(last, GameSettings.CHECKCHANGEFRAMES)) {
 			last = Instance.getFramecount();
 			aarb = Instance.getGameSettings().getBoolean(GameSettings.DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE);
 			updatevar = Instance.getGameSettings().getBoolean(GameSettings.DYN4J_PHYSICS_VAR_TS);
+			subs = Instance.getGameSettings().getInteger(GameSettings.DYN4J_MAX_SUBSTEPS);
 		}
 		if (aarb) {
 			world.removeAllBodies();
