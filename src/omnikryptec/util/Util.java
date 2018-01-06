@@ -2,8 +2,10 @@ package omnikryptec.util;
 
 import static de.codemakers.io.file.AdvancedFile.NOT_FOUND;
 
+import java.util.Properties;
 import java.util.function.Consumer;
 
+import de.codemakers.util.Returner;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
@@ -158,6 +160,11 @@ public class Util {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+    
+    
+    public static String getString(Properties p, String key, String defaults) {
+    	return p==null?defaults:Returner.of(p.getProperty(key)).or(defaults);
     }
 
 }

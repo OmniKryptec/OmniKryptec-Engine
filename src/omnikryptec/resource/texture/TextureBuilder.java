@@ -1,6 +1,7 @@
 package omnikryptec.resource.texture;
 
 import java.io.InputStream;
+import java.util.Properties;
 
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.settings.GameSettings;
@@ -20,9 +21,9 @@ public class TextureBuilder {
         this.file = textureFile;
     }
 
-    public SimpleTexture create() {
+    public SimpleTexture create(Properties infos) {
         TextureData textureData = TextureUtils.decodeTextureFile(file);
-        int textureId = TextureUtils.loadTextureToOpenGL(textureData, this);
+        int textureId = TextureUtils.loadTextureToOpenGL(textureData, this, infos);
         return new SimpleTexture(name, textureId, textureData);
     }
 

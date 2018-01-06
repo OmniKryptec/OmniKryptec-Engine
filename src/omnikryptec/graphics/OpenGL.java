@@ -1,5 +1,6 @@
 package omnikryptec.graphics;
 
+import java.lang.reflect.Field;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
@@ -12,6 +13,8 @@ import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL33;
 
 import omnikryptec.resource.texture.Texture;
+import omnikryptec.util.logger.LogLevel;
+import omnikryptec.util.logger.Logger;
 
 public class OpenGL {
 	
@@ -209,4 +212,30 @@ public class OpenGL {
 		return GL20.glGetShaderInfoLog(shader, info);
 	}
 
+	public static int varToInt(String s, Class<?>...classes) {
+		for(int i=0; i<classes.length; i++) {
+			Field[] fields = classes[i].getFields();
+			for(int j=0; j<fields.length; i++) {
+				if(fields[j].getName().equals(s)) {
+					try {
+						fields[j].get(null);
+					}catch(Exception e) {
+						continue;
+					}
+					if(fields[j].getType() == Integer.TYPE) {
+						try {
+							return fields[j].getInt(null);
+						} catch (IllegalArgumentException e) {
+							continue;
+						} catch (IllegalAccessException e) {
+							continue;
+						}
+					}
+				}
+			}
+		}
+		Logger.log("String in classes not found as int: "+s, LogLevel.WARNING);
+		return -1;
+	}
+	
 }
