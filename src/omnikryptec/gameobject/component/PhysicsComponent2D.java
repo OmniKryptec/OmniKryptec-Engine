@@ -10,49 +10,36 @@ import omnikryptec.util.Priority;
 
 @Priority(value = -1)
 @ComponentAnnotation(supportedGameObjectClass = GameObject2D.class)
-public class PhysicsComponent2D extends Component<GameObject2D>{
+public class PhysicsComponent2D extends Component<GameObject2D> {
 
-	private Body body;
-	public boolean enableRotation=true,enablePosition=true;
-	private Transform2D offset;
-	
-	public PhysicsComponent2D(Body b) {
+	private AdvancedBody body;
+
+
+	public PhysicsComponent2D(AdvancedBody b) {
 		this.body = b;
 	}
-	
+
 	@Override
 	protected void execute(GameObject2D instance) {
-		if(body!=null) {
-			if(enablePosition) {
-				instance.getTransform().setPosition((float)body.getTransform().getTranslationX(), (float)body.getTransform().getTranslationY());
-			}
-			if(enableRotation) {
-				instance.getTransform().setRotation((float)body.getTransform().getRotation());
-			}
-			if(offset!=null) {
-				instance.getTransform().addTransform(offset, false);
-			}
-			Dyn4JPhysicsWorld world = (Dyn4JPhysicsWorld)Instance.getCurrent2DScene().getPhysicsWorld();
-			if(world.raaBody()&&!world.getWorld().containsBody(body)) {
+		if (body != null) {	
+			body.setPositionOf(instance);
+			Dyn4JPhysicsWorld world = (Dyn4JPhysicsWorld) Instance.getCurrent2DScene().getPhysicsWorld();
+			if (world.raaBody() && !world.getWorld().containsBody(body)) {
 				world.getWorld().addBody(body);
 			}
 		}
 	}
 
-	
-	public PhysicsComponent2D setOffset(Transform2D t) {
-		this.offset = t;
-		return this;
-	}
-	
+
+
 	@Override
 	protected void onDelete(GameObject2D instance) {
-		((Dyn4JPhysicsWorld)Instance.getCurrent2DScene().getPhysicsWorld()).getWorld().removeBody(body);
+		((Dyn4JPhysicsWorld) Instance.getCurrent2DScene().getPhysicsWorld()).getWorld().removeBody(body);
 	}
-	
+
 	@Override
 	protected void added(GameObject2D instance) {
-		((Dyn4JPhysicsWorld)Instance.getCurrent2DScene().getPhysicsWorld()).getWorld().addBody(body);
+		((Dyn4JPhysicsWorld) Instance.getCurrent2DScene().getPhysicsWorld()).getWorld().addBody(body);
 	}
 
 }
