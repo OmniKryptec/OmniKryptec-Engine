@@ -78,13 +78,17 @@ public class SimpleTexture extends Texture {
         return new TextureBuilder(name, textureFile);
     }
 
+    public static SimpleTexture newTexture(AdvancedFile file) {
+        return newTexture("", file, null);
+    }
+    
     public static SimpleTexture newTexture(AdvancedFile file, Properties tp) {
         return newTexture("", file, tp);
     }
 
     public static SimpleTexture newTexture(String name, AdvancedFile file, Properties tp) {
         try {
-            return newTexture(name, file.createInputStream(), tp);
+            return newTexture(name, tp, file.createInputStream());
         } catch (Exception ex) {
             Logger.logErr("Error while creating FileInputStream: " + ex, ex);
             return null;
@@ -98,7 +102,7 @@ public class SimpleTexture extends Texture {
     @Deprecated
     public static SimpleTexture newTexture(String name, String path) {
         try {
-            return newTexture(name, TextureBuilder.class.getResourceAsStream(path), null);
+            return newTexture(name, TextureBuilder.class.getResourceAsStream(path));
         } catch (Exception ex) {
             Logger.logErr("Error while creating Stream from path: " + ex, ex);
             return null;
@@ -106,7 +110,7 @@ public class SimpleTexture extends Texture {
     }
 
     public static SimpleTexture newTexture(InputStream stream, Properties tp) {
-        return newTexture("", stream, tp);
+        return newTexture("", stream);
     }
 
     public static SimpleTexture newTexture(String name, InputStream stream) {
