@@ -162,6 +162,20 @@ public class GameSettings implements XMLable {
      * boolean
      */
     public static final String DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE = "DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE";
+    /**
+     *
+     * boolean
+     *
+     */
+
+    public static final String DYN4J_PHYSICS_VAR_TS = "DYN4J_PHYSICS_VAR_TS";
+
+    /**
+     *
+     * int
+     *
+     */
+    public static final String DYN4J_MAX_SUBSTEPS = "DYN4J_MAX_SUBSTEPS";
 
     public static final int CHECKCHANGEFRAMES = 20;
 
@@ -255,6 +269,8 @@ public class GameSettings implements XMLable {
         setInteger(CHUNK_HEIGHT_2D, 500);
 
         setBoolean(DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE, true);
+        setBoolean(DYN4J_PHYSICS_VAR_TS, false);
+        setInteger(DYN4J_MAX_SUBSTEPS, 5);
         return this;
     }
 
