@@ -155,7 +155,14 @@ public class GameSettings {
 	 */
 	public static final String DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE = "DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE";
 
+	/**
+	 * boolean
+	 */
+	public static final String DYN4J_PHYSICS_VAR_TS = "DYN4J_PHYSICS_VAR_TS";
+
+	
 	public static final int CHECKCHANGEFRAMES = 20;
+
 
 	private final HashMap<String, Object> settings_objects = new HashMap<>();
 	private final HashMap<String, Float> settings_floats = new HashMap<>();
@@ -248,6 +255,7 @@ public class GameSettings {
 		setInteger(CHUNK_HEIGHT_2D, 500);
 		
 		setBoolean(DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE, true);
+		setBoolean(DYN4J_PHYSICS_VAR_TS, false);
 		return this;
 	}
 
