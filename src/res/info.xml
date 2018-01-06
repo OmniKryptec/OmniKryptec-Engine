@@ -2,7 +2,8 @@
 <properties>
   <property name="Alter" value="100"/>
   <property name="name" value="Peter" pass="false"/>
-  <file name="js.png">
+  <file name="j.\.png" regex="true">
     <property name="Wert" value="-1"/>
   </file>
+  <file name="jd.png" exclude="true"/>
 </properties>
