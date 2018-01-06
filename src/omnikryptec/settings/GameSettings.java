@@ -240,25 +240,19 @@ public class GameSettings implements XMLable {
         setInteger(CHUNK_HEIGHT_2D, 512);
         setBoolean(SET_CHUNK_SIZE_2D_AS_DISPLAYSIZE, false);
 
-		setInteger(HIGHEST_SHADER_LVL, 10);
-		setInteger(MAX_FORWARD_LIGHTS, 4);
-		/* ANIMATION */
-		setInteger(ANIMATION_MAX_JOINTS, 50);
-		setInteger(ANIMATION_MAX_WEIGHTS, 3);
-		/* SPECIAL */
-		setFloat(Z_OFFSET_2D, 1f);
-		setBoolean(FASTMATH, true);
-		setBoolean(LIGHT_2D, true);
-		setInteger(CHUNK_OFFSET_2D_X, 2);
-		setInteger(CHUNK_OFFSET_2D_Y, 2);
-		setInteger(CHUNK_WIDTH_2D, 500);
-		setInteger(CHUNK_HEIGHT_2D, 500);
-		
-		setBoolean(DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE, true);
-		setBoolean(DYN4J_PHYSICS_VAR_TS, false);
-		setInteger(DYN4J_MAX_SUBSTEPS, 5);
-		return this;
-	}
+        setInteger(HIGHEST_SHADER_LVL, 10);
+        setInteger(MAX_FORWARD_LIGHTS, 4);
+        /* ANIMATION */
+        setInteger(ANIMATION_MAX_JOINTS, 50);
+        setInteger(ANIMATION_MAX_WEIGHTS, 3);
+        /* SPECIAL */
+        setFloat(Z_OFFSET_2D, 1f);
+        setBoolean(FASTMATH, true);
+        setBoolean(LIGHT_2D, true);
+        setInteger(CHUNK_OFFSET_2D_X, 2);
+        setInteger(CHUNK_OFFSET_2D_Y, 2);
+        setInteger(CHUNK_WIDTH_2D, 500);
+        setInteger(CHUNK_HEIGHT_2D, 500);
 
         setBoolean(DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE, true);
         return this;
