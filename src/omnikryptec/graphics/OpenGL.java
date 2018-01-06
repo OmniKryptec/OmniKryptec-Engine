@@ -214,22 +214,27 @@ public class OpenGL {
 
 	public static int varToInt(String s, Class<?>...classes) {
 		for(int i=0; i<classes.length; i++) {
-			Field[] fields = classes[i].getFields();
-			for(int j=0; j<fields.length; i++) {
-				if(fields[j].getName().equals(s)) {
+			Field field = null;
+			try {
+				field = classes[i].getField(s);
+			} catch (NoSuchFieldException e1) {
+				continue;
+			} catch (SecurityException e1) {
+				e1.printStackTrace();
+			}
+			if(field!=null) {
+				try {
+					field.get(null);
+				}catch(Exception e) {
+					continue;
+				}
+				if(field.getType() == Integer.TYPE) {
 					try {
-						fields[j].get(null);
-					}catch(Exception e) {
+						return field.getInt(null);
+					} catch (IllegalArgumentException e) {
 						continue;
-					}
-					if(fields[j].getType() == Integer.TYPE) {
-						try {
-							return fields[j].getInt(null);
-						} catch (IllegalArgumentException e) {
-							continue;
-						} catch (IllegalAccessException e) {
-							continue;
-						}
+					} catch (IllegalAccessException e) {
+						continue;
 					}
 				}
 			}
