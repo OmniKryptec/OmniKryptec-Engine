@@ -19,7 +19,7 @@ public class DefaultAnimationLoader implements Loader {
     public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
         final String name = generateName(advancedFile, superFile) + ":Animation";
         final Animation animation = AnimationLoader.loadAnimation(name, advancedFile);
-        Logger.log(String.format("Loaded Animation \"%s\" from \"%s\" (in \"%s\")", name, advancedFile, superFile)); //TODO Only for testing!!! DELETE THIS!
+        Logger.log(String.format("Loaded Animation \"%s\" from \"%s\" (in \"%s\")%s", name, advancedFile, superFile, (properties == null || properties.isEmpty()) ? "" : String.format(" (with properties %s)", properties))); //TODO Only for testing!!! DELETE THIS!
         return resourceLoader.addRessourceObject(name, animation);
     }
 

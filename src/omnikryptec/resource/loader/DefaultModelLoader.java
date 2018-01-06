@@ -18,7 +18,7 @@ public class DefaultModelLoader implements Loader {
     public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
         final String name = generateName(advancedFile, superFile);
         final Model model = Model.newModel(advancedFile);
-        Logger.log(String.format("Loaded Model \"%s\" from \"%s\" (in \"%s\")", name, advancedFile, superFile)); //TODO Only for testing!!! DELETE THIS!
+        Logger.log(String.format("Loaded Model \"%s\" from \"%s\" (in \"%s\")%s", name, advancedFile, superFile, (properties == null || properties.isEmpty()) ? "" : String.format(" (with properties %s)", properties))); //TODO Only for testing!!! DELETE THIS!
         return resourceLoader.addRessourceObject(name, model);
     }
 
