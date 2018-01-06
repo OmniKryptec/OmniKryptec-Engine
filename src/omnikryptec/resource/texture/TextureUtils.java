@@ -106,7 +106,7 @@ public class TextureUtils {
 			}
 		}else {
 			String mag = Util.getString(info, "TEX_MAG", "GL_LINEAR");
-			String min = Util.getString(info, "TEX_MIN", "GL_LINEAR");
+			String min = Util.getString(info, "TEX_MIN", builder.isMipmap()?"GL_LINEAR_MIPMAP_LINEAR":"GL_LINEAR");
 			if(mag.contains("MIPMAP")||min.contains("MIPMAP")) {
 				GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
 			}
