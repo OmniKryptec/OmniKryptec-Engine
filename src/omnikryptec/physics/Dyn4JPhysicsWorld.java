@@ -43,6 +43,9 @@ public class Dyn4JPhysicsWorld extends PhysicsWorld{
 	}
 	
 	private void update(float t) {
+		if(aarb) {
+			world.setUpdateRequired(true);
+		}
 		world.updatev(t);
 		if(GraphicsUtil.needsUpdate(last, GameSettings.CHECKCHANGEFRAMES)) {
 			last = Instance.getFramecount();
@@ -51,6 +54,11 @@ public class Dyn4JPhysicsWorld extends PhysicsWorld{
 		if(aarb) {
 			world.removeAllBodies();
 		}
+	}
+	
+	@Override
+	public void preLogic() {
+		
 	}
 	
 	private long last = 0;

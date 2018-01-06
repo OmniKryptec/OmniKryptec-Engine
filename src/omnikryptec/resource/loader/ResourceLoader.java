@@ -205,7 +205,7 @@ public class ResourceLoader implements Loader {
     }
 
     public final List<Loader> getLoaders() {
-        return new ArrayList(loaders);
+        return new ArrayList<>(loaders);
     }
 
     public final List<Loader> getLoadersForAdvancedFile(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {

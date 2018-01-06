@@ -39,6 +39,7 @@ public class PhysicsComponent2D extends Component<GameObject2D>{
 		}
 	}
 
+	
 	public PhysicsComponent2D setOffset(Transform2D t) {
 		this.offset = t;
 		return this;
