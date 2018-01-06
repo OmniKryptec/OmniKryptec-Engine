@@ -21,6 +21,10 @@ public class TextureBuilder {
         this.file = textureFile;
     }
 
+    public SimpleTexture create() {
+        return create(new Properties());
+    }
+
     public SimpleTexture create(Properties infos) {
         TextureData textureData = TextureUtils.decodeTextureFile(file);
         int textureId = TextureUtils.loadTextureToOpenGL(textureData, this, infos);
@@ -50,7 +54,7 @@ public class TextureBuilder {
         this.anisotropic = true;
         return this;
     }
-    
+
     public TextureBuilder setName(String name) {
         this.name = name;
         return this;
@@ -71,7 +75,7 @@ public class TextureBuilder {
     protected boolean isNearest() {
         return nearest;
     }
-    
+
     protected String getName() {
         return name;
     }

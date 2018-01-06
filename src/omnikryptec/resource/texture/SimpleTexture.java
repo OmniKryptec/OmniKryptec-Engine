@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
 import de.codemakers.io.file.AdvancedFile;
+import java.util.Properties;
 import omnikryptec.graphics.OpenGL;
 import omnikryptec.util.logger.Logger;
 
@@ -107,7 +108,11 @@ public class SimpleTexture extends Texture {
     }
 
     public static SimpleTexture newTexture(String name, InputStream stream) {
-        return new TextureBuilder(name, stream).create();
+        return newTexture(name, new Properties(), stream);
+    }
+
+    public static SimpleTexture newTexture(String name, Properties properties, InputStream stream) {
+        return new TextureBuilder(name, stream).create(properties);
     }
 
     public static SimpleTexture newCubeMap(InputStream[] textureFiles) {
