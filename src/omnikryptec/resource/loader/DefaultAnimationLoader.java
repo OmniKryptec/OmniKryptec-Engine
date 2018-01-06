@@ -1,6 +1,7 @@
 package omnikryptec.resource.loader;
 
 import de.codemakers.io.file.AdvancedFile;
+import java.util.Properties;
 import omnikryptec.animation.Animation;
 import omnikryptec.animation.loaders.AnimationLoader;
 import omnikryptec.resource.loader.annotations.DefaultLoader;
@@ -15,7 +16,7 @@ import omnikryptec.util.logger.Logger;
 public class DefaultAnimationLoader implements Loader {
 
     @Override
-    public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
+    public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
         final String name = generateName(advancedFile, superFile) + ":Animation";
         final Animation animation = AnimationLoader.loadAnimation(name, advancedFile);
         Logger.log(String.format("Loaded Animation \"%s\" from \"%s\" (in \"%s\")", name, advancedFile, superFile)); //TODO Only for testing!!! DELETE THIS!
@@ -23,7 +24,7 @@ public class DefaultAnimationLoader implements Loader {
     }
 
     @Override
-    public LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
+    public LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
         return advancedFile.getExtension().equalsIgnoreCase("dae") ? LoadingType.OPENGL : LoadingType.NOT; //TODO Kann das hier auch Normal geloaded werden?
     }
 

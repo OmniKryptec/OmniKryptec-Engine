@@ -1,6 +1,7 @@
 package omnikryptec.resource.loader;
 
 import de.codemakers.io.file.AdvancedFile;
+import java.util.Properties;
 
 /**
  * Loader Interface
@@ -9,9 +10,9 @@ import de.codemakers.io.file.AdvancedFile;
  */
 public interface Loader {
 
-    public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader);
+    public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader);
 
-    public LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader);
+    public LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader);
 
     default String generateName(AdvancedFile advancedFile, AdvancedFile superFile) {
         String path = advancedFile.getPath();

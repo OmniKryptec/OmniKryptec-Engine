@@ -1,6 +1,7 @@
 package omnikryptec.resource.loader;
 
 import de.codemakers.io.file.AdvancedFile;
+import java.util.Properties;
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
 import omnikryptec.animation.ColladaParser.dataStructures.AnimatedModelData;
 import omnikryptec.resource.loader.annotations.DefaultLoader;
@@ -17,7 +18,7 @@ import omnikryptec.util.logger.Logger;
 public class DefaultAnimatedModelDataLoader implements Loader {
 
     @Override
-    public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
+    public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
         final String name = generateName(advancedFile, superFile) + ":AnimatedModelData";
         final AnimatedModelData entityData = ColladaLoader.loadColladaModel(name, advancedFile, Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_WEIGHTS));
         Logger.log(String.format("Loaded AnimatedModelData \"%s\" from \"%s\" (in \"%s\")", name, advancedFile, superFile)); //TODO Only for testing!!! DELETE THIS!
@@ -25,7 +26,7 @@ public class DefaultAnimatedModelDataLoader implements Loader {
     }
 
     @Override
-    public LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
+    public LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
         return advancedFile.getExtension().equalsIgnoreCase("dae") ? LoadingType.OPENGL : LoadingType.NOT; //TODO Kann das hier auch Normal geloaded werden?
     }
 

@@ -1,6 +1,7 @@
 package omnikryptec.resource.loader;
 
 import de.codemakers.io.file.AdvancedFile;
+import java.util.Properties;
 import omnikryptec.resource.loader.annotations.DefaultLoader;
 import omnikryptec.resource.model.Model;
 import omnikryptec.util.logger.Logger;
@@ -14,7 +15,7 @@ import omnikryptec.util.logger.Logger;
 public class DefaultModelLoader implements Loader {
 
     @Override
-    public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
+    public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
         final String name = generateName(advancedFile, superFile);
         final Model model = Model.newModel(advancedFile);
         Logger.log(String.format("Loaded Model \"%s\" from \"%s\" (in \"%s\")", name, advancedFile, superFile)); //TODO Only for testing!!! DELETE THIS!
@@ -22,7 +23,7 @@ public class DefaultModelLoader implements Loader {
     }
 
     @Override
-    public LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
+    public LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
         return advancedFile.getExtension().equalsIgnoreCase("obj") ? LoadingType.OPENGL : LoadingType.NOT; //TODO Kann das hier auch Normal geloaded werden?
     }
 

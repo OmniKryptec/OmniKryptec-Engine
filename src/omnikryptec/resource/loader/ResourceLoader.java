@@ -9,8 +9,11 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import de.codemakers.io.file.AdvancedFile;
+import de.codemakers.properties.XMLProperties;
+import de.codemakers.util.Returner;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -76,17 +79,18 @@ public class ResourceLoader implements Loader {
     private final ConcurrentHashMap<String, ResourceObject> loadedData = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<Integer, ConcurrentLinkedQueue<AdvancedFile>> priorityStagedAdvancedFiles = new ConcurrentHashMap<>();
     private final ConcurrentLinkedQueue<Loader> loaders = new ConcurrentLinkedQueue<>();
+    private XMLProperties properties = null;
     private boolean isLoading = false;
     private ResourceObject temp_simpleTexture;
 
     @Override
-    public final boolean load(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
+    public final boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
         return loadIntern(advancedFile, superFile, resourceLoader);
     }
 
     @Override
-    public final LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
-        return !getLoadersForAdvancedFile(advancedFile, superFile, resourceLoader).isEmpty() ? LoadingType.NORMAL : LoadingType.NOT;
+    public final LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
+        return !getLoadersForAdvancedFile(advancedFile, superFile, properties, resourceLoader).isEmpty() ? LoadingType.NORMAL : LoadingType.NOT;
     }
 
     public final boolean addRessourceObject(String name, ResourceObject resourceObject) {
@@ -109,17 +113,18 @@ public class ResourceLoader implements Loader {
                 });
                 return true;
             } else {
-                final List<Loader> loadersForAdvancedFile = getLoadersForAdvancedFile(advancedFile, superFile, resourceLoader);
+                final Properties properties_temp = new Returner<>(this.properties.getProperties(advancedFile)).or(Properties::new);
+                final List<Loader> loadersForAdvancedFile = getLoadersForAdvancedFile(advancedFile, superFile, properties_temp, resourceLoader);
                 if (loadersForAdvancedFile.isEmpty()) {
                     Logger.log(String.format("Failed to load \"%s\"%s, no Loaders available", advancedFile, (Objects.equals(advancedFile, superFile) ? "" : String.format(" (in \"%s\")", superFile))), LogLevel.WARNING);
                     return false;
                 }
                 boolean loaded = false;
                 for (Loader loader : loadersForAdvancedFile) {
-                    final LoadingType loadingType = loader.accept(advancedFile, superFile, resourceLoader);
+                    final LoadingType loadingType = loader.accept(advancedFile, superFile, properties_temp, resourceLoader);
                     if (loadingType == LoadingType.NORMAL) {
                         try {
-                            executor.submit(() -> loader.load(advancedFile, superFile, resourceLoader));
+                            executor.submit(() -> loader.load(advancedFile, superFile, properties_temp, resourceLoader));
                             loaded = true;
                         } catch (Exception ex) {
                             if (Logger.isDebugMode()) {
@@ -128,7 +133,7 @@ public class ResourceLoader implements Loader {
                         }
                     } else if (loadingType == LoadingType.OPENGL) {
                         try {
-                            if (loader.load(advancedFile, superFile, resourceLoader)) {
+                            if (loader.load(advancedFile, superFile, properties_temp, resourceLoader)) {
                                 loaded = true;
                             }
                         } catch (Exception ex) {
@@ -154,14 +159,18 @@ public class ResourceLoader implements Loader {
     }
 
     public final void loadStagedAdvancedFiles(boolean clearData, long timeout, TimeUnit unit) {
-        //resetExecutor();
+        resetExecutor();
         isLoading = true;
         try {
             if (clearData) {
+                properties = null;
                 loadedData.values().stream().forEach((i) -> i.delete());
                 loadedData.clear();
             }
-            getStagedAdvancedFilesSorted().stream().forEach((advancedFile) -> load(advancedFile, advancedFile, this));
+            final List<AdvancedFile> advancedFiles = getStagedAdvancedFilesSorted();
+            properties = new XMLProperties(AdvancedFile.getClosestCommonParent(advancedFiles.toArray(new AdvancedFile[advancedFiles.size()])));
+            properties.analyze();
+            advancedFiles.stream().forEach((advancedFile) -> load(advancedFile, advancedFile, null, this));
             if (executor != null) {
                 executor.shutdown();
                 executor.awaitTermination(timeout, unit);
@@ -196,8 +205,8 @@ public class ResourceLoader implements Loader {
         return new ArrayList(loaders);
     }
 
-    public final List<Loader> getLoadersForAdvancedFile(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
-        return loaders.stream().filter((loader) -> loader.accept(advancedFile, superFile, resourceLoader) != LoadingType.NOT).collect(Collectors.toList());
+    public final List<Loader> getLoadersForAdvancedFile(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
+        return loaders.stream().filter((loader) -> loader.accept(advancedFile, superFile, properties, resourceLoader) != LoadingType.NOT).collect(Collectors.toList());
     }
 
     public final ResourceLoader clearLoaders() {
