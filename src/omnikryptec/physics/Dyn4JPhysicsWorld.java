@@ -1,5 +1,6 @@
 package omnikryptec.physics;
 
+import org.dyn4j.UnitConversion;
 import org.dyn4j.dynamics.World;
 
 import omnikryptec.graphics.GraphicsUtil;
@@ -46,7 +47,7 @@ public class Dyn4JPhysicsWorld extends PhysicsWorld{
 		if(aarb) {
 			world.setUpdateRequired(true);
 		}
-		world.updatev(t);
+		world.update(t);
 		if(GraphicsUtil.needsUpdate(last, GameSettings.CHECKCHANGEFRAMES)) {
 			last = Instance.getFramecount();
 			aarb = Instance.getGameSettings().getBoolean(GameSettings.DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE);
