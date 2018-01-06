@@ -116,7 +116,7 @@ public class Display {
 	}
 	
 	public static final void resetAspectRatio() {
-		setAspectRatio(-1, true);
+		setAspectRatio(-1);
 	}
 
 	public static final int[] calculateViewport(int w, int h) {
@@ -149,7 +149,7 @@ public class Display {
 		return viewport;
 	}
 	
-	public static final void setAspectRatio(double a, boolean set) {
+	public static final void setAspectRatio(double a) {
 		aspectratio = a;
 		calcViewport();
 		setARViewPort();
