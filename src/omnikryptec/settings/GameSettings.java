@@ -247,7 +247,7 @@ public class GameSettings {
 		setInteger(CHUNK_WIDTH_2D, 500);
 		setInteger(CHUNK_HEIGHT_2D, 500);
 		
-		setBoolean(DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE, false);
+		setBoolean(DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE, true);
 		return this;
 	}
 

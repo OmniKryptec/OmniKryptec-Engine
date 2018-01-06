@@ -32,8 +32,9 @@ public class PhysicsComponent2D extends Component<GameObject2D>{
 			if(offset!=null) {
 				instance.getTransform().addTransform(offset, false);
 			}
-			if(((Dyn4JPhysicsWorld)Instance.getCurrent2DScene().getPhysicsWorld()).raaBody()) {
-				((Dyn4JPhysicsWorld)Instance.getCurrent2DScene().getPhysicsWorld()).getWorld().addBody(body);
+			Dyn4JPhysicsWorld world = (Dyn4JPhysicsWorld)Instance.getCurrent2DScene().getPhysicsWorld();
+			if(world.raaBody()&&!world.getWorld().containsBody(body)) {
+				world.getWorld().addBody(body);
 			}
 		}
 	}

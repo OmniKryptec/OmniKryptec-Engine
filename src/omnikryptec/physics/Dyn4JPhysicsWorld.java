@@ -44,6 +44,10 @@ public class Dyn4JPhysicsWorld extends PhysicsWorld{
 	
 	private void update(float t) {
 		world.updatev(t);
+		if(GraphicsUtil.needsUpdate(last, GameSettings.CHECKCHANGEFRAMES)) {
+			last = Instance.getFramecount();
+			aarb = Instance.getGameSettings().getBoolean(GameSettings.DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE);
+		}
 		if(aarb) {
 			world.removeAllBodies();
 		}
@@ -52,14 +56,6 @@ public class Dyn4JPhysicsWorld extends PhysicsWorld{
 	private long last = 0;
 	@Override
 	protected float checkSimulationSpeed(float simulationSpeed) {
-		if(GraphicsUtil.needsUpdate(last, GameSettings.CHECKCHANGEFRAMES)) {
-			last = Instance.getFramecount();
-			boolean b = aarb;
-			aarb = Instance.getGameSettings().getBoolean(GameSettings.DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE);
-			if(!b&&aarb) {
-				world.removeAllBodies();
-			}
-		}
 		return Math.max(simulationSpeed, 0.0F);
 	}
 
