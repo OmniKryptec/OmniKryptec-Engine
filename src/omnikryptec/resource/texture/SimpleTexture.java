@@ -3,7 +3,6 @@ package omnikryptec.resource.texture;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -81,7 +80,7 @@ public class SimpleTexture extends Texture {
     public static SimpleTexture newTexture(AdvancedFile file) {
         return newTexture("", file, null);
     }
-    
+
     public static SimpleTexture newTexture(AdvancedFile file, Properties tp) {
         return newTexture("", file, tp);
     }
@@ -114,7 +113,7 @@ public class SimpleTexture extends Texture {
     }
 
     public static SimpleTexture newTexture(String name, InputStream stream) {
-        return newTexture(name, new Properties(), stream);
+        return newTexture(name, null, stream);
     }
 
     public static SimpleTexture newTexture(String name, Properties properties, InputStream stream) {

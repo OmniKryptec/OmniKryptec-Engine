@@ -22,7 +22,7 @@ public class TextureBuilder {
     }
 
     public SimpleTexture create() {
-        return create(new Properties());
+        return create(null);
     }
 
     public SimpleTexture create(Properties infos) {
