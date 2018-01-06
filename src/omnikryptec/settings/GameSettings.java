@@ -163,17 +163,7 @@ public class GameSettings implements XMLable {
      */
     public static final String DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE = "DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE";
 
-	/**
-	 * boolean
-	 */
-	public static final String DYN4J_PHYSICS_VAR_TS = "DYN4J_PHYSICS_VAR_TS";
-
-	/**
-	 * int
-	 */
-	public static final String DYN4J_MAX_SUBSTEPS = "DYN4J_MAX_SUBSTEPS";
-	
-	public static final int CHECKCHANGEFRAMES = 20;
+    public static final int CHECKCHANGEFRAMES = 20;
 
     private final HashMap<String, Object> settings_objects = new HashMap<>();
     private final HashMap<String, Float> settings_floats = new HashMap<>();
