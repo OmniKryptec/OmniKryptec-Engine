@@ -3,6 +3,7 @@ package omnikryptec.resource.texture;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -76,13 +77,13 @@ public class SimpleTexture extends Texture {
         return new TextureBuilder(name, textureFile);
     }
 
-    public static SimpleTexture newTexture(AdvancedFile file) {
-        return newTexture("", file);
+    public static SimpleTexture newTexture(AdvancedFile file, Properties tp) {
+        return newTexture("", file, tp);
     }
 
-    public static SimpleTexture newTexture(String name, AdvancedFile file) {
+    public static SimpleTexture newTexture(String name, AdvancedFile file, Properties tp) {
         try {
-            return newTexture(name, file.createInputStream());
+            return newTexture(name, file.createInputStream(), tp);
         } catch (Exception ex) {
             Logger.logErr("Error while creating FileInputStream: " + ex, ex);
             return null;
@@ -93,21 +94,22 @@ public class SimpleTexture extends Texture {
         return newTexture("", path);
     }
 
+    @Deprecated
     public static SimpleTexture newTexture(String name, String path) {
         try {
-            return newTexture(name, TextureBuilder.class.getResourceAsStream(path));
+            return newTexture(name, TextureBuilder.class.getResourceAsStream(path), null);
         } catch (Exception ex) {
             Logger.logErr("Error while creating Stream from path: " + ex, ex);
             return null;
         }
     }
 
-    public static SimpleTexture newTexture(InputStream stream) {
-        return newTexture("", stream);
+    public static SimpleTexture newTexture(InputStream stream, Properties tp) {
+        return newTexture("", stream, tp);
     }
 
-    public static SimpleTexture newTexture(String name, InputStream stream) {
-        return new TextureBuilder(name, stream).create();
+    public static SimpleTexture newTexture(String name, InputStream stream, Properties tp) {
+        return new TextureBuilder(name, stream).create(tp);
     }
 
     public static SimpleTexture newCubeMap(InputStream[] textureFiles) {
