@@ -34,6 +34,8 @@ public class ResourceLoader implements Loader {
 
     public static final SimpleTexture MISSING_TEXTURE = SimpleTexture.newTexture(new AdvancedFile(true, "", "omnikryptec", "resource", "loader", "missing_texture.png"));
 
+    public static final long LOAD_XML_INFO = 1;
+
     private static ResourceLoader RESOURCELOADER;
 
     public static final ResourceLoader createInstanceDefault(boolean ascurrent, boolean searchForDefaultLoaders) {
@@ -77,7 +79,7 @@ public class ResourceLoader implements Loader {
 
     private ExecutorService executor = null;
     private final ConcurrentHashMap<String, ResourceObject> loadedData = new ConcurrentHashMap<>();
-    private final ConcurrentHashMap<Integer, ConcurrentLinkedQueue<AdvancedFile>> priorityStagedAdvancedFiles = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Integer, ConcurrentLinkedQueue<StagedInfo>> priorityStagedInfos = new ConcurrentHashMap<>();
     private final ConcurrentLinkedQueue<Loader> loaders = new ConcurrentLinkedQueue<>();
     private XMLProperties properties = null;
     private boolean isLoading = false;
@@ -113,7 +115,7 @@ public class ResourceLoader implements Loader {
                 });
                 return true;
             } else {
-                final Properties properties_temp = new Returner<>(this.properties.getProperties(advancedFile)).or(Properties::new);
+                final Properties properties_temp = new Returner<>(this.properties == null ? null : this.properties.getProperties(advancedFile)).or(Properties::new);
                 final List<Loader> loadersForAdvancedFile = getLoadersForAdvancedFile(advancedFile, superFile, properties_temp, resourceLoader);
                 if (loadersForAdvancedFile.isEmpty()) {
                     Logger.log(String.format("Failed to load \"%s\"%s, no Loaders available", advancedFile, (Objects.equals(advancedFile, superFile) ? "" : String.format(" (in \"%s\")", superFile))), LogLevel.WARNING);
@@ -167,10 +169,10 @@ public class ResourceLoader implements Loader {
                 loadedData.values().stream().forEach((i) -> i.delete());
                 loadedData.clear();
             }
-            final List<AdvancedFile> advancedFiles = getStagedAdvancedFilesSorted();
-            properties = new XMLProperties(AdvancedFile.getClosestCommonParent(advancedFiles.toArray(new AdvancedFile[advancedFiles.size()])));
+            final List<StagedInfo> stagedInfos = getStagedInfosSorted();
+            properties = new XMLProperties(AdvancedFile.getClosestCommonParent(stagedInfos.stream().filter(StagedInfo::isLoadingXMLInfo).map(StagedInfo::getFile).toArray(AdvancedFile[]::new)));
             properties.analyze();
-            advancedFiles.stream().forEach((advancedFile) -> load(advancedFile, advancedFile, null, this));
+            stagedInfos.stream().forEach((stagedInfo) -> load(stagedInfo.getFile(), stagedInfo.getFile(), null, this));
             if (executor != null) {
                 executor.shutdown();
                 executor.awaitTermination(timeout, unit);
@@ -231,22 +233,30 @@ public class ResourceLoader implements Loader {
         return stageAdvancedFiles(0, advancedFiles);
     }
 
+    public final ResourceLoader stageAdvancedFiles(long options, AdvancedFile... advancedFiles) {
+        return stageAdvancedFiles(0, options, advancedFiles);
+    }
+
     public final ResourceLoader stageAdvancedFiles(int priority, AdvancedFile... advancedFiles) {
+        return stageAdvancedFiles(priority, 0, advancedFiles);
+    }
+
+    public final ResourceLoader stageAdvancedFiles(int priority, long options, AdvancedFile... advancedFiles) {
         if (isLoading || advancedFiles == null || advancedFiles.length == 0) {
             return this;
         }
-        priorityStagedAdvancedFiles.computeIfAbsent(priority, (key) -> new ConcurrentLinkedQueue<>()).addAll(Arrays.asList(advancedFiles));
+        priorityStagedInfos.computeIfAbsent(priority, (key) -> new ConcurrentLinkedQueue<>()).addAll(Arrays.asList(advancedFiles).stream().map((advancedFile) -> new StagedInfo(options, advancedFile)).collect(Collectors.toList()));
         return this;
     }
 
     public final Loader clearStagedAdvancedFiles() {
-        priorityStagedAdvancedFiles.clear();
+        priorityStagedInfos.clear();
         return this;
     }
 
-    public final List<AdvancedFile> getStagedAdvancedFilesSorted() {
-        final List<AdvancedFile> stagedAdvancedFiles = new ArrayList<>();
-        priorityStagedAdvancedFiles.keySet().stream().sorted((i1, i2) -> i2 - i1).forEach((i) -> stagedAdvancedFiles.addAll(priorityStagedAdvancedFiles.get(i)));
+    public final List<StagedInfo> getStagedInfosSorted() {
+        final List<StagedInfo> stagedAdvancedFiles = new ArrayList<>();
+        priorityStagedInfos.keySet().stream().sorted((i1, i2) -> i2 - i1).forEach((i) -> stagedAdvancedFiles.addAll(priorityStagedInfos.get(i)));
         return stagedAdvancedFiles;
     }
 
