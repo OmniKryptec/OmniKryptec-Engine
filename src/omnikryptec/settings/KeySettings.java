@@ -1,18 +1,20 @@
 package omnikryptec.settings;
 
+import de.codemakers.serialization.XMLable;
 import java.util.ArrayList;
 
 import org.lwjgl.glfw.GLFW;
 
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
+import org.jdom2.Element;
 
 /**
  * KeySettings
  *
  * @author Panzer1119
  */
-public class KeySettings {
+public class KeySettings implements XMLable {
 
     /**
      * Standard KeySettings
@@ -421,6 +423,13 @@ public class KeySettings {
             lastIndex = index;
         }
         return this;
+    }
+
+    @Override
+    public final Element toXML() {
+        final Element element = new Element(getClass().getSimpleName());
+        keys.forEach((key) -> element.addContent(key.toXML()));
+        return element;
     }
 
 }

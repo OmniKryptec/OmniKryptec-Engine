@@ -6,6 +6,7 @@ import org.joml.Vector3f;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.codemakers.lang.LanguageManager;
+import de.codemakers.util.XMLUtil;
 import omnikryptec.collision.d2.Rectangle;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
@@ -53,6 +54,8 @@ import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
+import org.jdom2.Document;
+import org.jdom2.output.Format;
 
 /**
  *
@@ -98,6 +101,7 @@ public class EngineTest2 implements IEventHandler {
                     .setBoolean(GameSettings.LIGHT_2D, false),
                     new GLFWInfo(3, 2, true, false, 1280, 720));
             Display.setAspectRatio(4 / 3.0, true);
+            XMLUtil.save(OmniKryptecEngine.instance().getDisplayManager().getSettings().toXMLDocument(), Format.getPrettyFormat(), new AdvancedFile(false, "gamesettings.xml").createOutputstream(false));
             // new Thread(new Runnable() {
             //
             // @Override
@@ -383,7 +387,6 @@ public class EngineTest2 implements IEventHandler {
             // Light().setColor(0, 0, 1).setRadius(100).setRelativePos(50, 50,
             // 0));
 
-            
             OmniKryptecEngine.instance().startLoop();
         } catch (Exception ex) {
             Logger.logErr("Error: " + ex, ex);

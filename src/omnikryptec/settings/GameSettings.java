@@ -1,5 +1,6 @@
 package omnikryptec.settings;
 
+import de.codemakers.serialization.XMLable;
 import java.util.HashMap;
 
 import org.lwjgl.opengl.GL;
@@ -14,146 +15,153 @@ import omnikryptec.postprocessing.main.FBOFactory;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.RenderTarget;
 import omnikryptec.util.EnumCollection.RenderType;
+import org.jdom2.Element;
 
 /**
  * GameSettings
  *
  * @author pcfreak9000 &amp; Panzer1119
  */
-public class GameSettings {
+public class GameSettings implements XMLable {
 
-	/**
-	 * Standard value for disabling multisampling
-	 */
-	public static final int NO_MULTISAMPLING = 0;
+    /**
+     * Standard value for disabling multisampling
+     */
+    public static final int NO_MULTISAMPLING = 0;
 
-	/**
-	 * OpenGL int
-	 */
-	public static final String COLORSPACE_SCENE_FBO = "COLORSPACE_SCENE_FBO";
-	/**
-	 * OpenGL int
-	 */
-	public static final String COLORSPACE_NORMAL_FBO = "COLORSPACE_NORMAL_FBO";
-	/**
-	 * OpenGL int
-	 */
-	public static final String COLORSPACE_SPECULAR_FBO = "COLORSPACE_SPECULAR_FBO";
-	/**
-	 * OpenGL int
-	 */
-	public static final String COLORSPACE_SHADER_INFO_FBO = "COLORSPACE_SHADER_INFO_FBO";
+    /**
+     * OpenGL int
+     */
+    public static final String COLORSPACE_SCENE_FBO = "COLORSPACE_SCENE_FBO";
+    /**
+     * OpenGL int
+     */
+    public static final String COLORSPACE_NORMAL_FBO = "COLORSPACE_NORMAL_FBO";
+    /**
+     * OpenGL int
+     */
+    public static final String COLORSPACE_SPECULAR_FBO = "COLORSPACE_SPECULAR_FBO";
+    /**
+     * OpenGL int
+     */
+    public static final String COLORSPACE_SHADER_INFO_FBO = "COLORSPACE_SHADER_INFO_FBO";
 
-	/**
-	 * int
-	 */
-	public static final String FPS_CAP = "FPS_CAP";
+    /**
+     * int
+     */
+    public static final String FPS_CAP = "FPS_CAP";
 
-	/**
-	 * Global texture setting. If mipmapping should be used. boolean
-	 */
-	public static final String MIPMAP = "MIPMAP";
-	/**
-	 * Global texture setting. If edges should be clamped. boolean
-	 */
-	public static final String CLAMP_EDGES = "CLAMP_EDGES";
+    /**
+     * Global texture setting. If mipmapping should be used. boolean
+     */
+    public static final String MIPMAP = "MIPMAP";
+    /**
+     * Global texture setting. If edges should be clamped. boolean
+     */
+    public static final String CLAMP_EDGES = "CLAMP_EDGES";
 
-	/**
-	 * Size of the EventSystem threadpool. int
-	 */
-	public static final String THREADPOOLSIZE_EVENT = "THREADPOOLSIZE_EVENT";
+    /**
+     * Size of the EventSystem threadpool. int
+     */
+    public static final String THREADPOOLSIZE_EVENT = "THREADPOOLSIZE_EVENT";
 
-	/**
-	 * Sets the radius around the camera where foliage will be rendered. float
-	 *
-	 * @see RenderType#FOLIAGE
-	 */
-	public static final String RADIUS_FOLIAGE = "RADIUS_FOLIAGE";
-	/**
-	 * Sets the radius around the camera where medium objetcs will be renderer.
-	 * float
-	 *
-	 * @see RenderType#MEDIUM
-	 */
-	public static final String RADIUS_MEDIUM = "RADIUS_MEDIUM";
-	/**
-	 * Sets the radius around the camera where big objetcs will be renderer. float
-	 *
-	 * @see RenderType#BIG
-	 */
-	public static final String RADIUS_BIG = "RADIUS_BIG";
-	/**
-	 * int
-	 */
-	public static final String HIGHEST_SHADER_LVL = "HIGHEST_SHADER_LVL";
+    /**
+     * Sets the radius around the camera where foliage will be rendered. float
+     *
+     * @see RenderType#FOLIAGE
+     */
+    public static final String RADIUS_FOLIAGE = "RADIUS_FOLIAGE";
+    /**
+     * Sets the radius around the camera where medium objetcs will be renderer.
+     * float
+     *
+     * @see RenderType#MEDIUM
+     */
+    public static final String RADIUS_MEDIUM = "RADIUS_MEDIUM";
+    /**
+     * Sets the radius around the camera where big objetcs will be renderer.
+     * float
+     *
+     * @see RenderType#BIG
+     */
+    public static final String RADIUS_BIG = "RADIUS_BIG";
+    /**
+     * int
+     */
+    public static final String HIGHEST_SHADER_LVL = "HIGHEST_SHADER_LVL";
 
-	/**
-	 * set if the engine is not booted yet; otherwise it will not have any effect.
-	 *
-	 * int
-	 */
-	public static final String ANIMATION_MAX_JOINTS = "ANIMATION_MAX_JOINTS";
-	/**
-	 * set if the engine is not booted yet; otherwise it will not have any effect.
-	 *
-	 * int
-	 */
-	public static final String ANIMATION_MAX_WEIGHTS = "ANIMATION_MAX_WEIGHTS";
-	/**
-	 * set if the engine is not booted yet; otherwise it will not have any effect.
-	 *
-	 * int
-	 */
-	public static final String MAX_FORWARD_LIGHTS = "MAX_FORWARD_LIGHTS";
+    /**
+     * set if the engine is not booted yet; otherwise it will not have any
+     * effect.
+     *
+     * int
+     */
+    public static final String ANIMATION_MAX_JOINTS = "ANIMATION_MAX_JOINTS";
+    /**
+     * set if the engine is not booted yet; otherwise it will not have any
+     * effect.
+     *
+     * int
+     */
+    public static final String ANIMATION_MAX_WEIGHTS = "ANIMATION_MAX_WEIGHTS";
+    /**
+     * set if the engine is not booted yet; otherwise it will not have any
+     * effect.
+     *
+     * int
+     */
+    public static final String MAX_FORWARD_LIGHTS = "MAX_FORWARD_LIGHTS";
 
-	/**
-	 * set if the engine is not booted yet; otherwise it will not have any effect.
-	 *
-	 * float
-	 */
-	public static final String Z_OFFSET_2D = "Z_OFFSET_2D";
+    /**
+     * set if the engine is not booted yet; otherwise it will not have any
+     * effect.
+     *
+     * float
+     */
+    public static final String Z_OFFSET_2D = "Z_OFFSET_2D";
 
-	/**
-	 * set if the engine is not booted yet; otherwise it will not have any effect.
-	 *
-	 * boolean
-	 */
-	public static final String FASTMATH = "FASTMATH";
+    /**
+     * set if the engine is not booted yet; otherwise it will not have any
+     * effect.
+     *
+     * boolean
+     */
+    public static final String FASTMATH = "FASTMATH";
 
-	/**
-	 * int
-	 */
-	public static final String CHUNK_WIDTH_2D = "CHUNK_WIDTH_2D";
+    /**
+     * int
+     */
+    public static final String CHUNK_WIDTH_2D = "CHUNK_WIDTH_2D";
 
-	/**
-	 * int
-	 */
-	public static final String CHUNK_HEIGHT_2D = "CHUNK_HEIGHT_2D";
+    /**
+     * int
+     */
+    public static final String CHUNK_HEIGHT_2D = "CHUNK_HEIGHT_2D";
 
-	/**
-	 * boolean
-	 */
-	public static final String SET_CHUNK_SIZE_2D_AS_DISPLAYSIZE = "SET_CHUNK_SIZE_2D_AS_DISPLAYSIZE";
+    /**
+     * boolean
+     */
+    public static final String SET_CHUNK_SIZE_2D_AS_DISPLAYSIZE = "SET_CHUNK_SIZE_2D_AS_DISPLAYSIZE";
 
-	/**
-	 * boolean
-	 */
-	public static final String LIGHT_2D = "LIGHT_2D";
+    /**
+     * boolean
+     */
+    public static final String LIGHT_2D = "LIGHT_2D";
 
-	/**
-	 * int
-	 */
-	public static final String CHUNK_OFFSET_2D_X = "CHUNK_OFFSET_2D_X";
+    /**
+     * int
+     */
+    public static final String CHUNK_OFFSET_2D_X = "CHUNK_OFFSET_2D_X";
 
-	/**
-	 * int
-	 */
-	public static final String CHUNK_OFFSET_2D_Y = "CHUNK_OFFSET_2D_Y";
+    /**
+     * int
+     */
+    public static final String CHUNK_OFFSET_2D_Y = "CHUNK_OFFSET_2D_Y";
 
-	/**
-	 * boolean
-	 */
-	public static final String DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE = "DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE";
+    /**
+     * boolean
+     */
+    public static final String DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE = "DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE";
 
 	/**
 	 * boolean
@@ -167,82 +175,80 @@ public class GameSettings {
 	
 	public static final int CHECKCHANGEFRAMES = 20;
 
+    private final HashMap<String, Object> settings_objects = new HashMap<>();
+    private final HashMap<String, Float> settings_floats = new HashMap<>();
+    private final HashMap<String, Integer> settings_integers = new HashMap<>();
+    private final HashMap<String, Long> settings_longs = new HashMap<>();
+    private final HashMap<String, Boolean> settings_booleans = new HashMap<>();
 
-	private final HashMap<String, Object> settings_objects = new HashMap<>();
-	private final HashMap<String, Float> settings_floats = new HashMap<>();
-	private final HashMap<String, Integer> settings_integers = new HashMap<>();
-	private final HashMap<String, Long> settings_longs = new HashMap<>();
-	private final HashMap<String, Boolean> settings_booleans = new HashMap<>();
+    // ************************************Not just
+    // settings****************************************
+    /**
+     * 0 means no multisampling
+     */
+    private int multisamples = NO_MULTISAMPLING;
+    private float anisotropic = 0;
+    private KeySettings keySettings;
+    private boolean nearest = false;
 
-	// ************************************Not just
-	// settings****************************************
-	/**
-	 * 0 means no multisampling
-	 */
-	private int multisamples = NO_MULTISAMPLING;
-	private float anisotropic = 0;
-	private KeySettings keySettings;
-	private boolean nearest = false;
+    // *********************************************************************************************
+    private RenderTarget[] add_attachments = {};
+    private FBOFactory fbo_factory;
 
-	// *********************************************************************************************
-	private RenderTarget[] add_attachments = {};
-	private FBOFactory fbo_factory;
+    private long chunkOffsetX = 1;
+    private long chunkOffsetY = 1;
+    private long chunkOffsetZ = 1;
+    private int chunkWidth = 128;
+    private int chunkHeight = 128;
+    private int chunkDepth = 128;
 
-	private long chunkOffsetX = 1;
-	private long chunkOffsetY = 1;
-	private long chunkOffsetZ = 1;
-	private int chunkWidth = 128;
-	private int chunkHeight = 128;
-	private int chunkDepth = 128;
+    private boolean deferredlight = false;
+    private boolean forwardlight = false;
 
-	private boolean deferredlight = false;
-	private boolean forwardlight = false;
+    private boolean enable_chunks = false;
+    private int maxinstancespdc = 10000;
 
-	private boolean enable_chunks = false;
-	private int maxinstancespdc = 10000;
+    private boolean frustrumCulling = true;
 
-	private boolean frustrumCulling = true;
+    private boolean multithreadedParticles = true;
+    private long minmultithreadedparticles = 1000;
+    private int partThrPSize = -1;
 
-	private boolean multithreadedParticles = true;
-	private long minmultithreadedparticles = 1000;
-	private int partThrPSize = -1;
+    /**
+     * constructs a GameSettings object with default key settings.
+     */
+    public GameSettings() {
+        this(KeySettings.STANDARDKEYSETTINGS);
+    }
 
-	/**
-	 * constructs a GameSettings object with default key settings.
-	 */
-	public GameSettings() {
-		this(KeySettings.STANDARDKEYSETTINGS);
-	}
+    /**
+     * Constructs a GameSettings object with custom KeySettings
+     *
+     * @param keySettings KeySettings Key settings
+     */
+    public GameSettings(KeySettings keySettings) {
+        this.keySettings = keySettings;
+        fillDefaults();
+    }
 
-	/**
-	 * Constructs a GameSettings object with custom KeySettings
-	 *
-	 * @param keySettings
-	 *            KeySettings Key settings
-	 */
-	public GameSettings(KeySettings keySettings) {
-		this.keySettings = keySettings;
-		fillDefaults();
-	}
+    public GameSettings fillDefaults() {
+        /* COLORSPACE */
+        setInteger(COLORSPACE_NORMAL_FBO, GL11.GL_RGBA8);
+        setInteger(COLORSPACE_SCENE_FBO, GL11.GL_RGBA8);
+        setInteger(COLORSPACE_SHADER_INFO_FBO, GL30.GL_RGBA32F);
+        setInteger(COLORSPACE_SPECULAR_FBO, GL30.GL_RGBA32F);
+        /**/
+        setInteger(FPS_CAP, DisplayManager.DISABLE_FPS_CAP);
+        setBoolean(CLAMP_EDGES, false);
+        setBoolean(MIPMAP, false);
+        setInteger(THREADPOOLSIZE_EVENT, 2);
 
-	public GameSettings fillDefaults() {
-		/* COLORSPACE */
-		setInteger(COLORSPACE_NORMAL_FBO, GL11.GL_RGBA8);
-		setInteger(COLORSPACE_SCENE_FBO, GL11.GL_RGBA8);
-		setInteger(COLORSPACE_SHADER_INFO_FBO, GL30.GL_RGBA32F);
-		setInteger(COLORSPACE_SPECULAR_FBO, GL30.GL_RGBA32F);
-		/**/
-		setInteger(FPS_CAP, DisplayManager.DISABLE_FPS_CAP);
-		setBoolean(CLAMP_EDGES, false);
-		setBoolean(MIPMAP, false);
-		setInteger(THREADPOOLSIZE_EVENT, 2);
-
-		setFloat(RADIUS_FOLIAGE, 50);
-		setFloat(RADIUS_MEDIUM, 100);
-		setFloat(RADIUS_BIG, 200);
-		setInteger(CHUNK_WIDTH_2D, 512);
-		setInteger(CHUNK_HEIGHT_2D, 512);
-		setBoolean(SET_CHUNK_SIZE_2D_AS_DISPLAYSIZE, false);
+        setFloat(RADIUS_FOLIAGE, 50);
+        setFloat(RADIUS_MEDIUM, 100);
+        setFloat(RADIUS_BIG, 200);
+        setInteger(CHUNK_WIDTH_2D, 512);
+        setInteger(CHUNK_HEIGHT_2D, 512);
+        setBoolean(SET_CHUNK_SIZE_2D_AS_DISPLAYSIZE, false);
 
 		setInteger(HIGHEST_SHADER_LVL, 10);
 		setInteger(MAX_FORWARD_LIGHTS, 4);
@@ -264,632 +270,647 @@ public class GameSettings {
 		return this;
 	}
 
-	public final void setChunksize2DasDisplaySize() {
-		setInteger(CHUNK_WIDTH_2D, Display.getWidth());
-		setInteger(CHUNK_HEIGHT_2D, Display.getHeight());
-	}
+        setBoolean(DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE, true);
+        return this;
+    }
 
-	/**
-	 * Returns an Object or null for a key
-	 *
-	 * @param key
-	 *            Key
-	 * @return Object
-	 */
-	public final Object getObject(String key) {
-		return settings_objects.get(key);
-	}
+    public final void setChunksize2DasDisplaySize() {
+        setInteger(CHUNK_WIDTH_2D, Display.getWidth());
+        setInteger(CHUNK_HEIGHT_2D, Display.getHeight());
+    }
 
-	/**
-	 * Returns an Float or 0F for a key
-	 *
-	 * @param key
-	 *            Key
-	 * @return Float
-	 */
-	public final float getFloat(String key) {
-		return Returner.of(settings_floats.get(key)).or(0F);
-	}
+    /**
+     * Returns an Object or null for a key
+     *
+     * @param key Key
+     * @return Object
+     */
+    public final Object getObject(String key) {
+        return settings_objects.get(key);
+    }
 
-	/**
-	 * Returns an Integer or 0 for a key
-	 *
-	 * @param key
-	 *            Key
-	 * @return Integer
-	 */
-	public final int getInteger(String key) {
-		return Returner.of(settings_integers.get(key)).or(0);
-	}
+    /**
+     * Returns an Float or 0F for a key
+     *
+     * @param key Key
+     * @return Float
+     */
+    public final float getFloat(String key) {
+        return Returner.of(settings_floats.get(key)).or(0F);
+    }
 
-	/**
-	 * Returns a Long or 0 for a key
-	 *
-	 * @param key
-	 *            Key
-	 * @return long
-	 */
-	public final long getLong(String key) {
-		return Returner.of(settings_longs.get(key)).or(0L);
-	}
+    /**
+     * Returns an Integer or 0 for a key
+     *
+     * @param key Key
+     * @return Integer
+     */
+    public final int getInteger(String key) {
+        return Returner.of(settings_integers.get(key)).or(0);
+    }
 
-	/**
-	 * Returns a boolean or 0 for a key
-	 *
-	 * @param key
-	 *            Key
-	 * @return boolean
-	 */
-	public final boolean getBoolean(String key) {
-		return Returner.of(settings_booleans.get(key)).or(false);
-	}
+    /**
+     * Returns a Long or 0 for a key
+     *
+     * @param key Key
+     * @return long
+     */
+    public final long getLong(String key) {
+        return Returner.of(settings_longs.get(key)).or(0L);
+    }
 
-	/**
-	 * Sets an Object for a key
-	 *
-	 * @param key
-	 *            Key
-	 * @param value
-	 *            Value
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setObject(String key, Object value) {
-		settings_objects.put(key, value);
-		return this;
-	}
+    /**
+     * Returns a boolean or 0 for a key
+     *
+     * @param key Key
+     * @return boolean
+     */
+    public final boolean getBoolean(String key) {
+        return Returner.of(settings_booleans.get(key)).or(false);
+    }
 
-	/**
-	 * Sets an Float for a key
-	 *
-	 * @param key
-	 *            Key
-	 * @param value
-	 *            Value
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setFloat(String key, float value) {
-		settings_floats.put(key, value);
-		return this;
-	}
+    /**
+     * Sets an Object for a key
+     *
+     * @param key Key
+     * @param value Value
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setObject(String key, Object value) {
+        settings_objects.put(key, value);
+        return this;
+    }
 
-	/**
-	 * Sets an Integer for a key
-	 *
-	 * @param key
-	 *            Key
-	 * @param value
-	 *            Value
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setInteger(String key, int value) {
-		settings_integers.put(key, value);
-		return this;
-	}
+    /**
+     * Sets an Float for a key
+     *
+     * @param key Key
+     * @param value Value
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setFloat(String key, float value) {
+        settings_floats.put(key, value);
+        return this;
+    }
 
-	/**
-	 * Sets a Long for a key
-	 *
-	 * @param key
-	 *            Key
-	 * @param value
-	 *            Value
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setLong(String key, long value) {
-		settings_longs.put(key, value);
-		return this;
-	}
+    /**
+     * Sets an Integer for a key
+     *
+     * @param key Key
+     * @param value Value
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setInteger(String key, int value) {
+        settings_integers.put(key, value);
+        return this;
+    }
 
-	/**
-	 * Sets a boolean for a key
-	 *
-	 * @param key
-	 *            Key
-	 * @param value
-	 *            Value
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setBoolean(String key, boolean value) {
-		settings_booleans.put(key, value);
-		return this;
-	}
+    /**
+     * Sets a Long for a key
+     *
+     * @param key Key
+     * @param value Value
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setLong(String key, long value) {
+        settings_longs.put(key, value);
+        return this;
+    }
 
-	/**
-	 * Returns if an Object for a key is present
-	 *
-	 * @param key
-	 *            Key
-	 * @return <tt>true</tt> if the given key is holding a value
-	 */
-	public final boolean hasObject(String key) {
-		return settings_objects.containsKey(key);
-	}
+    /**
+     * Sets a boolean for a key
+     *
+     * @param key Key
+     * @param value Value
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setBoolean(String key, boolean value) {
+        settings_booleans.put(key, value);
+        return this;
+    }
 
-	/**
-	 * Returns if an Float for a key is present
-	 *
-	 * @param key
-	 *            Key
-	 * @return <tt>true</tt> if the given key is holding a value
-	 */
-	public final boolean hasFloat(String key) {
-		return settings_floats.containsKey(key);
-	}
+    /**
+     * Returns if an Object for a key is present
+     *
+     * @param key Key
+     * @return <tt>true</tt> if the given key is holding a value
+     */
+    public final boolean hasObject(String key) {
+        return settings_objects.containsKey(key);
+    }
 
-	/**
-	 * Returns if an Integer for a key is present
-	 *
-	 * @param key
-	 *            Key
-	 * @return <tt>true</tt> if the given key is holding a value
-	 */
-	public final boolean hasInteger(String key) {
-		return settings_integers.containsKey(key);
-	}
+    /**
+     * Returns if an Float for a key is present
+     *
+     * @param key Key
+     * @return <tt>true</tt> if the given key is holding a value
+     */
+    public final boolean hasFloat(String key) {
+        return settings_floats.containsKey(key);
+    }
 
-	/**
-	 * Returns if a Long for a key is present
-	 *
-	 * @param key
-	 *            Key
-	 * @return <tt>true</tt> if the given key is holding a value
-	 */
-	public final boolean hasLong(String key) {
-		return settings_longs.containsKey(key);
-	}
+    /**
+     * Returns if an Integer for a key is present
+     *
+     * @param key Key
+     * @return <tt>true</tt> if the given key is holding a value
+     */
+    public final boolean hasInteger(String key) {
+        return settings_integers.containsKey(key);
+    }
 
-	/**
-	 * Returns if a boolean for a key is present
-	 *
-	 * @param key
-	 *            Key
-	 * @return <tt>true</tt> if the given key is holding a value
-	 */
-	public final boolean hasBoolean(String key) {
-		return settings_booleans.containsKey(key);
-	}
+    /**
+     * Returns if a Long for a key is present
+     *
+     * @param key Key
+     * @return <tt>true</tt> if the given key is holding a value
+     */
+    public final boolean hasLong(String key) {
+        return settings_longs.containsKey(key);
+    }
 
-	/**
-	 * Returns the added attachments
-	 *
-	 * @return Integer Array Added attachments
-	 */
-	public final RenderTarget[] getAddAttachments() {
-		return add_attachments;
-	}
+    /**
+     * Returns if a boolean for a key is present
+     *
+     * @param key Key
+     * @return <tt>true</tt> if the given key is holding a value
+     */
+    public final boolean hasBoolean(String key) {
+        return settings_booleans.containsKey(key);
+    }
 
-	/**
-	 * Sets additional attachments
-	 *
-	 * @param add_attachments
-	 *            Added attachments
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setAdditionalAttachments(RenderTarget... add_attachments) {
-		this.add_attachments = add_attachments;
-		return this;
-	}
+    /**
+     * Returns the added attachments
+     *
+     * @return Integer Array Added attachments
+     */
+    public final RenderTarget[] getAddAttachments() {
+        return add_attachments;
+    }
 
-	/**
-	 * Sets the number of multisamples, {@link #NO_MULTISAMPLING} means
-	 * multisampling is disabled
-	 *
-	 * @param multisamples
-	 *            Integer Number of multisamples
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setMultisamples(int multisamples) {
-		this.multisamples = 0;
-		return this;
-	}
+    /**
+     * Sets additional attachments
+     *
+     * @param add_attachments Added attachments
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setAdditionalAttachments(RenderTarget... add_attachments) {
+        this.add_attachments = add_attachments;
+        return this;
+    }
 
-	/**
-	 * Returns the number of multisamples or NO_MULTISAMPLING if its disabled.
-	 *
-	 * @return Integer Number of multisamples
-	 */
-	public final int getMultiSamples() {
-		return OmniKryptecEngine.isCreated()
-				? (GL.getCapabilities().GL_EXT_framebuffer_multisample ? multisamples : NO_MULTISAMPLING)
-				: multisamples;
-	}
+    /**
+     * Sets the number of multisamples, {@link #NO_MULTISAMPLING} means
+     * multisampling is disabled
+     *
+     * @param multisamples Integer Number of multisamples
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setMultisamples(int multisamples) {
+        this.multisamples = 0;
+        return this;
+    }
 
-	/**
-	 * Returns if RenderChunking is enabled.
-	 *
-	 * @see #setUseRenderChunking(boolean)
-	 * @return boolean
-	 */
-	public final boolean usesRenderChunking() {
-		return enable_chunks;
-	}
+    /**
+     * Returns the number of multisamples or NO_MULTISAMPLING if its disabled.
+     *
+     * @return Integer Number of multisamples
+     */
+    public final int getMultiSamples() {
+        return OmniKryptecEngine.isCreated()
+                ? (GL.getCapabilities().GL_EXT_framebuffer_multisample ? multisamples : NO_MULTISAMPLING)
+                : multisamples;
+    }
 
-	/**
-	 * if activated, gameobjects will be sorted based on their position. only the
-	 * chunks around the camera will be rendered. can break the use of prioritys for
-	 * the renderer.
-	 *
-	 * @see #setChunkRenderOffsets(long, long, long)
-	 * @param b
-	 * @return this GameSettings instance
-	 */
-	public final GameSettings setUseRenderChunking(boolean b) {
-		this.enable_chunks = b;
-		return this;
-	}
+    /**
+     * Returns if RenderChunking is enabled.
+     *
+     * @see #setUseRenderChunking(boolean)
+     * @return boolean
+     */
+    public final boolean usesRenderChunking() {
+        return enable_chunks;
+    }
 
-	/**
-	 * Returns the anisotropic filtering level
-	 *
-	 * @return Float Anisotropic filtering level
-	 */
-	public final float getAnisotropicLevel() {
-		return anisotropic;
-	}
+    /**
+     * if activated, gameobjects will be sorted based on their position. only
+     * the chunks around the camera will be rendered. can break the use of
+     * prioritys for the renderer.
+     *
+     * @see #setChunkRenderOffsets(long, long, long)
+     * @param b
+     * @return this GameSettings instance
+     */
+    public final GameSettings setUseRenderChunking(boolean b) {
+        this.enable_chunks = b;
+        return this;
+    }
 
-	/**
-	 * Sets the anisotropic filtering level
-	 *
-	 * @param anisotropic
-	 *            Float Anisotropic filtering level
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setAnisotropicLevel(float anisotropic) {
-		this.anisotropic = anisotropic;
-		if (anisotropic > 0) {
-			setBoolean(MIPMAP, true);
-		}
-		return this;
-	}
+    /**
+     * Returns the anisotropic filtering level
+     *
+     * @return Float Anisotropic filtering level
+     */
+    public final float getAnisotropicLevel() {
+        return anisotropic;
+    }
 
-	/**
-	 * Global texture setting.
-	 *
-	 * @see #setFilterNearest(boolean)
-	 * @return
-	 */
-	public final boolean filterNearest() {
-		return nearest;
-	}
+    /**
+     * Sets the anisotropic filtering level
+     *
+     * @param anisotropic Float Anisotropic filtering level
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setAnisotropicLevel(float anisotropic) {
+        this.anisotropic = anisotropic;
+        if (anisotropic > 0) {
+            setBoolean(MIPMAP, true);
+        }
+        return this;
+    }
 
-	/**
-	 * Global texture setting. overrides global mipmapping to false if nearest gets
-	 * activated.
-	 *
-	 * @param nearest
-	 * @return this GameSettings
-	 */
-	public final GameSettings setFilterNearest(boolean nearest) {
-		if (nearest) {
-			setBoolean(MIPMAP, false);
-		}
-		this.nearest = nearest;
-		return this;
-	}
+    /**
+     * Global texture setting.
+     *
+     * @see #setFilterNearest(boolean)
+     * @return
+     */
+    public final boolean filterNearest() {
+        return nearest;
+    }
 
-	/**
-	 * Returns the KeySettings
-	 *
-	 * @return KeySettings Key settings
-	 */
-	public final KeySettings getKeySettings() {
-		return keySettings;
-	}
+    /**
+     * Global texture setting. overrides global mipmapping to false if nearest
+     * gets activated.
+     *
+     * @param nearest
+     * @return this GameSettings
+     */
+    public final GameSettings setFilterNearest(boolean nearest) {
+        if (nearest) {
+            setBoolean(MIPMAP, false);
+        }
+        this.nearest = nearest;
+        return this;
+    }
 
-	/**
-	 * Sets the KeySettings
-	 *
-	 * @param keySettings
-	 *            KeySettings Key settings
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setKeySettings(KeySettings keySettings) {
-		this.keySettings = keySettings;
-		return this;
-	}
+    /**
+     * Returns the KeySettings
+     *
+     * @return KeySettings Key settings
+     */
+    public final KeySettings getKeySettings() {
+        return keySettings;
+    }
 
-	/**
-	 * Sets the FBOFactory for additional rendertargets.
-	 *
-	 * @param fbo_factory
-	 *            FBOFactory FBOFactory
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setFBOFactory(FBOFactory fbo_factory) {
-		this.fbo_factory = fbo_factory;
-		return this;
-	}
+    /**
+     * Sets the KeySettings
+     *
+     * @param keySettings KeySettings Key settings
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setKeySettings(KeySettings keySettings) {
+        this.keySettings = keySettings;
+        return this;
+    }
 
-	/**
-	 * Returns added FBOs. Called by the engine.
-	 *
-	 * @return FrameBufferObject Array FBOs
-	 */
-	public final FrameBufferObject[] getAddFBOs() {
-		if (fbo_factory == null) {
-			return new FrameBufferObject[] {};
-		}
-		FrameBufferObject[] fbos = fbo_factory.getAllFBOs();
-		if (fbos == null || fbos.length == 0) {
-			return new FrameBufferObject[] {};
-		} else {
-			return fbos;
-		}
-	}
+    /**
+     * Sets the FBOFactory for additional rendertargets.
+     *
+     * @param fbo_factory FBOFactory FBOFactory
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setFBOFactory(FBOFactory fbo_factory) {
+        this.fbo_factory = fbo_factory;
+        return this;
+    }
 
-	/**
-	 * Returns the x chunk offset
-	 *
-	 * @see #setUseRenderChunking(boolean)
-	 * @return Long X chunk offset
-	 */
-	public final long getChunkRenderOffsetX() {
-		return chunkOffsetX;
-	}
+    /**
+     * Returns added FBOs. Called by the engine.
+     *
+     * @return FrameBufferObject Array FBOs
+     */
+    public final FrameBufferObject[] getAddFBOs() {
+        if (fbo_factory == null) {
+            return new FrameBufferObject[]{};
+        }
+        FrameBufferObject[] fbos = fbo_factory.getAllFBOs();
+        if (fbos == null || fbos.length == 0) {
+            return new FrameBufferObject[]{};
+        } else {
+            return fbos;
+        }
+    }
 
-	/**
-	 * Returns the y chunk offset
-	 *
-	 * @see #setUseRenderChunking(boolean)
-	 * @return Long Y chunk offset
-	 */
-	public final long getChunkRenderOffsetY() {
-		return chunkOffsetY;
-	}
+    /**
+     * Returns the x chunk offset
+     *
+     * @see #setUseRenderChunking(boolean)
+     * @return Long X chunk offset
+     */
+    public final long getChunkRenderOffsetX() {
+        return chunkOffsetX;
+    }
 
-	/**
-	 * Returns the z chunk offset
-	 *
-	 * @see #setUseRenderChunking(boolean)
-	 * @return Long Z chunk offset
-	 */
-	public final long getChunkRenderOffsetZ() {
-		return chunkOffsetZ;
-	}
+    /**
+     * Returns the y chunk offset
+     *
+     * @see #setUseRenderChunking(boolean)
+     * @return Long Y chunk offset
+     */
+    public final long getChunkRenderOffsetY() {
+        return chunkOffsetY;
+    }
 
-	/**
-	 * Sets the x chunk offset
-	 *
-	 * @see #setUseRenderChunking(boolean)
-	 * @param o
-	 *            Long X chunk offset
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setChunkRenderOffsetX(long o) {
-		return setChunkRenderOffsets(o, chunkOffsetY, chunkOffsetZ);
-	}
+    /**
+     * Returns the z chunk offset
+     *
+     * @see #setUseRenderChunking(boolean)
+     * @return Long Z chunk offset
+     */
+    public final long getChunkRenderOffsetZ() {
+        return chunkOffsetZ;
+    }
 
-	/**
-	 * Sets the y chunk offset
-	 *
-	 * @see #setUseRenderChunking(boolean)
-	 * @param o
-	 *            Long Y chunk offset
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setChunkRenderOffsetY(long o) {
-		return setChunkRenderOffsets(chunkOffsetX, o, chunkOffsetZ);
-	}
+    /**
+     * Sets the x chunk offset
+     *
+     * @see #setUseRenderChunking(boolean)
+     * @param o Long X chunk offset
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setChunkRenderOffsetX(long o) {
+        return setChunkRenderOffsets(o, chunkOffsetY, chunkOffsetZ);
+    }
 
-	/**
-	 * Sets the z chunk offset
-	 *
-	 * @see #setUseRenderChunking(boolean)
-	 * @param o
-	 *            Long Z chunk offset
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setChunkRenderOffsetZ(long o) {
-		return setChunkRenderOffsets(chunkOffsetX, chunkOffsetY, o);
-	}
+    /**
+     * Sets the y chunk offset
+     *
+     * @see #setUseRenderChunking(boolean)
+     * @param o Long Y chunk offset
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setChunkRenderOffsetY(long o) {
+        return setChunkRenderOffsets(chunkOffsetX, o, chunkOffsetZ);
+    }
 
-	/**
-	 * Sets the ChunkRenderOffsets (max distance to the camera where a chunk will be
-	 * rendererd)
-	 *
-	 * @see #setUseRenderChunking(boolean)
-	 * @param xo
-	 *            Long X chunk offset
-	 * @param yo
-	 *            Long Y chunk offset
-	 * @param zo
-	 *            Long Z chunk offset
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setChunkRenderOffsets(long xo, long yo, long zo) {
-		this.chunkOffsetX = xo;
-		this.chunkOffsetY = yo;
-		this.chunkOffsetZ = zo;
-		return this;
-	}
+    /**
+     * Sets the z chunk offset
+     *
+     * @see #setUseRenderChunking(boolean)
+     * @param o Long Z chunk offset
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setChunkRenderOffsetZ(long o) {
+        return setChunkRenderOffsets(chunkOffsetX, chunkOffsetY, o);
+    }
 
-	/**
-	 * Returns the chunk width
-	 *
-	 * @see #setChunkSize(int, int, int)
-	 * @return Integer Chunk width
-	 */
-	public final int getChunkWidth() {
-		return chunkWidth;
-	}
+    /**
+     * Sets the ChunkRenderOffsets (max distance to the camera where a chunk
+     * will be rendererd)
+     *
+     * @see #setUseRenderChunking(boolean)
+     * @param xo Long X chunk offset
+     * @param yo Long Y chunk offset
+     * @param zo Long Z chunk offset
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setChunkRenderOffsets(long xo, long yo, long zo) {
+        this.chunkOffsetX = xo;
+        this.chunkOffsetY = yo;
+        this.chunkOffsetZ = zo;
+        return this;
+    }
 
-	/**
-	 * Returns the chunk height
-	 *
-	 * @see #setChunkSize(int, int, int)
-	 * @return Integer Chunk height
-	 */
-	public final int getChunkHeight() {
-		return chunkHeight;
-	}
+    /**
+     * Returns the chunk width
+     *
+     * @see #setChunkSize(int, int, int)
+     * @return Integer Chunk width
+     */
+    public final int getChunkWidth() {
+        return chunkWidth;
+    }
 
-	/**
-	 * Returns the chunk depth
-	 *
-	 * @see #setChunkSize(int, int, int)
-	 * @return Integer Chunk depth
-	 */
-	public final int getChunkDepth() {
-		return chunkDepth;
-	}
+    /**
+     * Returns the chunk height
+     *
+     * @see #setChunkSize(int, int, int)
+     * @return Integer Chunk height
+     */
+    public final int getChunkHeight() {
+        return chunkHeight;
+    }
 
-	/**
-	 * Sets the chunk size of the RenderChunks.
-	 *
-	 * @see #setUseRenderChunking(boolean)
-	 *
-	 * @param w
-	 *            Integer Width
-	 * @param h
-	 *            Integer Height
-	 * @param d
-	 *            Integer Depth
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setChunkSize(int w, int h, int d) {
-		chunkWidth = w;
-		chunkHeight = h;
-		chunkDepth = d;
-		return this;
-	}
+    /**
+     * Returns the chunk depth
+     *
+     * @see #setChunkSize(int, int, int)
+     * @return Integer Chunk depth
+     */
+    public final int getChunkDepth() {
+        return chunkDepth;
+    }
 
-	/**
-	 * Sets the chunk width
-	 *
-	 * @see #setChunkSize(int, int, int)
-	 * @param i
-	 *            Integer Width
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setChunkWidth(int i) {
-		return setChunkSize(i, chunkHeight, chunkDepth);
-	}
+    /**
+     * Sets the chunk size of the RenderChunks.
+     *
+     * @see #setUseRenderChunking(boolean)
+     *
+     * @param w Integer Width
+     * @param h Integer Height
+     * @param d Integer Depth
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setChunkSize(int w, int h, int d) {
+        chunkWidth = w;
+        chunkHeight = h;
+        chunkDepth = d;
+        return this;
+    }
 
-	/**
-	 * Sets the chunk height
-	 *
-	 * @see #setChunkSize(int, int, int)
-	 * @param i
-	 *            Integer Height
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setChunkHeight(int i) {
-		return setChunkSize(chunkWidth, i, chunkDepth);
-	}
+    /**
+     * Sets the chunk width
+     *
+     * @see #setChunkSize(int, int, int)
+     * @param i Integer Width
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setChunkWidth(int i) {
+        return setChunkSize(i, chunkHeight, chunkDepth);
+    }
 
-	/**
-	 * Sets the chunk depth
-	 *
-	 * @see #setChunkSize(int, int, int)
-	 * @param i
-	 *            Integer Depth
-	 * @return GameSettings A reference to this GameSettings
-	 */
-	public final GameSettings setChunkDepth(int i) {
-		return setChunkSize(chunkWidth, chunkHeight, i);
-	}
+    /**
+     * Sets the chunk height
+     *
+     * @see #setChunkSize(int, int, int)
+     * @param i Integer Height
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setChunkHeight(int i) {
+        return setChunkSize(chunkWidth, i, chunkDepth);
+    }
 
-	/**
-	 * sets if forwrd light rendering is enabled.
-	 *
-	 * @param b
-	 * @return this GameSettings
-	 */
-	public GameSettings setLightForward(boolean b) {
-		this.forwardlight = b;
-		return this;
-	}
+    /**
+     * Sets the chunk depth
+     *
+     * @see #setChunkSize(int, int, int)
+     * @param i Integer Depth
+     * @return GameSettings A reference to this GameSettings
+     */
+    public final GameSettings setChunkDepth(int i) {
+        return setChunkSize(chunkWidth, chunkHeight, i);
+    }
 
-	/**
-	 * is forward light rendering enabled?
-	 *
-	 * @return
-	 */
-	public boolean isLightForwardAllowed() {
-		return forwardlight;
-	}
+    /**
+     * sets if forwrd light rendering is enabled.
+     *
+     * @param b
+     * @return this GameSettings
+     */
+    public GameSettings setLightForward(boolean b) {
+        this.forwardlight = b;
+        return this;
+    }
 
-	/**
-	 * sets if deferred light rendering is enabled.
-	 *
-	 * @param b
-	 * @return this GameSettings
-	 */
-	public GameSettings setLightDeferred(boolean b) {
-		this.deferredlight = b;
-		return this;
-	}
+    /**
+     * is forward light rendering enabled?
+     *
+     * @return
+     */
+    public boolean isLightForwardAllowed() {
+        return forwardlight;
+    }
 
-	/**
-	 * is deferred light rendering enabled?
-	 *
-	 * @return
-	 */
-	public boolean isLightDeferredAllowed() {
-		return deferredlight;
-	}
+    /**
+     * sets if deferred light rendering is enabled.
+     *
+     * @param b
+     * @return this GameSettings
+     */
+    public GameSettings setLightDeferred(boolean b) {
+        this.deferredlight = b;
+        return this;
+    }
 
-	/**
-	 * max instances per drawcall for instanced rendering.
-	 *
-	 * @return int
-	 */
-	public int getMaxInstancesPerDrawcall() {
-		return maxinstancespdc;
-	}
+    /**
+     * is deferred light rendering enabled?
+     *
+     * @return
+     */
+    public boolean isLightDeferredAllowed() {
+        return deferredlight;
+    }
 
-	/**
-	 * sets how many Entitys can be drawn in one rendercall then using instanced
-	 * rendering.
-	 *
-	 * @param i
-	 * @return this GameSettings
-	 */
-	public GameSettings setMaxInstancesPerDrawcall(int i) {
-		this.maxinstancespdc = i;
-		return this;
-	}
+    /**
+     * max instances per drawcall for instanced rendering.
+     *
+     * @return int
+     */
+    public int getMaxInstancesPerDrawcall() {
+        return maxinstancespdc;
+    }
 
-	/**
-	 * is frustrum culling enabled?
-	 *
-	 * @return
-	 */
-	public boolean useFrustrumCulling() {
-		return frustrumCulling;
-	}
+    /**
+     * sets how many Entitys can be drawn in one rendercall then using instanced
+     * rendering.
+     *
+     * @param i
+     * @return this GameSettings
+     */
+    public GameSettings setMaxInstancesPerDrawcall(int i) {
+        this.maxinstancespdc = i;
+        return this;
+    }
 
-	/**
-	 * sets if frustrum culling is enabled.
-	 *
-	 * @param b
-	 * @return
-	 */
-	public GameSettings setUseFrustrumCulling(boolean b) {
-		this.frustrumCulling = b;
-		return this;
-	}
+    /**
+     * is frustrum culling enabled?
+     *
+     * @return
+     */
+    public boolean useFrustrumCulling() {
+        return frustrumCulling;
+    }
 
-	public boolean isMultithreadedParticles() {
-		return this.multithreadedParticles;
-	}
+    /**
+     * sets if frustrum culling is enabled.
+     *
+     * @param b
+     * @return
+     */
+    public GameSettings setUseFrustrumCulling(boolean b) {
+        this.frustrumCulling = b;
+        return this;
+    }
 
-	public long getMinMultithreadParticles() {
-		return this.minmultithreadedparticles;
-	}
+    public boolean isMultithreadedParticles() {
+        return this.multithreadedParticles;
+    }
 
-	public GameSettings setMultithreadedParticles(boolean b) {
-		this.multithreadedParticles = b;
-		return this;
-	}
+    public long getMinMultithreadParticles() {
+        return this.minmultithreadedparticles;
+    }
 
-	public GameSettings setMinMultithreadedParticles(long l) {
-		this.minmultithreadedparticles = l;
-		return this;
-	}
+    public GameSettings setMultithreadedParticles(boolean b) {
+        this.multithreadedParticles = b;
+        return this;
+    }
 
-	public int getParticleThreadpoolSize() {
-		return partThrPSize < 0 ? Runtime.getRuntime().availableProcessors() : partThrPSize;
-	}
+    public GameSettings setMinMultithreadedParticles(long l) {
+        this.minmultithreadedparticles = l;
+        return this;
+    }
+
+    public int getParticleThreadpoolSize() {
+        return partThrPSize < 0 ? Runtime.getRuntime().availableProcessors() : partThrPSize;
+    }
+
+    @Override
+    public final Element toXML() {
+        final Element element = new Element(getClass().getSimpleName());
+        element.addContent(new Element("property").setAttribute("name", "multisamples").setAttribute("value", "" + multisamples));
+        element.addContent(new Element("property").setAttribute("name", "anisotropic").setAttribute("value", "" + anisotropic));
+        if (keySettings != null) {
+            element.addContent(keySettings.toXML());
+        } else {
+            element.addContent(new Element(KeySettings.class.getSimpleName()));
+        }
+        element.addContent(new Element("property").setAttribute("name", "nearest").setAttribute("value", "" + nearest));
+        for (RenderTarget renderTarget : add_attachments) {
+            element.addContent(renderTarget.toXML());
+        }
+        //element.addContent(new Element("property").setAttribute("name", "fbo_factory").setAttribute("value", "" + fbo_factory));
+        element.addContent(new Element("property").setAttribute("name", "chunkOffsetX").setAttribute("value", "" + chunkOffsetX));
+        element.addContent(new Element("property").setAttribute("name", "chunkOffsetY").setAttribute("value", "" + chunkOffsetY));
+        element.addContent(new Element("property").setAttribute("name", "chunkOffsetZ").setAttribute("value", "" + chunkOffsetZ));
+        element.addContent(new Element("property").setAttribute("name", "chunkWidth").setAttribute("value", "" + chunkWidth));
+        element.addContent(new Element("property").setAttribute("name", "chunkHeight").setAttribute("value", "" + chunkHeight));
+        element.addContent(new Element("property").setAttribute("name", "chunkDepth").setAttribute("value", "" + chunkDepth));
+        element.addContent(new Element("property").setAttribute("name", "deferredlight").setAttribute("value", "" + deferredlight));
+        element.addContent(new Element("property").setAttribute("name", "forwardlight").setAttribute("value", "" + forwardlight));
+        element.addContent(new Element("property").setAttribute("name", "chunkDepth").setAttribute("value", "" + chunkDepth));
+        element.addContent(new Element("property").setAttribute("name", "enable_chunks").setAttribute("value", "" + enable_chunks));
+        element.addContent(new Element("property").setAttribute("name", "maxinstancespdc").setAttribute("value", "" + maxinstancespdc));
+        element.addContent(new Element("property").setAttribute("name", "frustrumCulling").setAttribute("value", "" + frustrumCulling));
+        element.addContent(new Element("property").setAttribute("name", "multithreadedParticles").setAttribute("value", "" + multithreadedParticles));
+        element.addContent(new Element("property").setAttribute("name", "minmultithreadedparticles").setAttribute("value", "" + minmultithreadedparticles));
+        element.addContent(new Element("property").setAttribute("name", "partThrPSize").setAttribute("value", "" + partThrPSize));
+        final Element element_settings_objects = new Element("settings_objects");
+        element.addContent(element_settings_objects);
+        settings_objects.forEach((key, value) -> element_settings_objects.addContent(new Element("property").setAttribute("name", key).setAttribute("value", "" + value)));
+        final Element element_settings_floats = new Element("settings_floats");
+        element.addContent(element_settings_floats);
+        settings_floats.forEach((key, value) -> element_settings_floats.addContent(new Element("property").setAttribute("name", key).setAttribute("value", "" + value)));
+        final Element element_settings_integers = new Element("settings_integers");
+        element.addContent(element_settings_integers);
+        settings_integers.forEach((key, value) -> element_settings_integers.addContent(new Element("property").setAttribute("name", key).setAttribute("value", "" + value)));
+        final Element element_settings_longs = new Element("settings_longs");
+        element.addContent(element_settings_longs);
+        settings_longs.forEach((key, value) -> element_settings_longs.addContent(new Element("property").setAttribute("name", key).setAttribute("value", "" + value)));
+        final Element element_settings_booleans = new Element("settings_booleans");
+        element.addContent(element_settings_booleans);
+        settings_booleans.forEach((key, value) -> element_settings_booleans.addContent(new Element("property").setAttribute("name", key).setAttribute("value", "" + value)));
+        return element;
+    }
 
 }

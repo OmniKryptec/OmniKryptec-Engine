@@ -2,6 +2,7 @@ package omnikryptec.settings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import org.jdom2.Element;
 
 /**
  * Key group
@@ -167,6 +168,15 @@ public class KeyGroup implements IKey {
     @Override
     public final String toString() {
         return String.format("KeyGroup: \"%s\" (%d): %s", name, keys.size(), Arrays.toString(keys.toArray()));
+    }
+
+    @Override
+    public final Element toXML() {
+        final Element element = new Element(getClass().getSimpleName());
+        element.setAttribute("name", name);
+        keys.forEach((key) -> element.addContent(key.toXML()));
+        element.setAttribute("allKeysNeedToBeActivated", "" + allKeysNeedToBeActivated);
+        return element;
     }
 
 }

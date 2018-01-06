@@ -1,11 +1,13 @@
 package omnikryptec.settings;
 
+import de.codemakers.serialization.XMLable;
+
 /**
  * Key Interface
  *
  * @author Panzer1119
  */
-public interface IKey {
+public interface IKey extends XMLable {
 
     /**
      * Returns the name

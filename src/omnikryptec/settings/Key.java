@@ -2,6 +2,8 @@ package omnikryptec.settings;
 
 import omnikryptec.event.input.InputManager;
 import omnikryptec.main.OmniKryptecEngine;
+import org.jdom2.Element;
+import org.lwjgl.glfw.GLFW;
 
 /**
  * Key
@@ -134,6 +136,13 @@ public class Key implements IKey {
     @Override
     public final String toString() {
         return String.format("Key: \"%s\" == %d, isKeyboardKey: %b", name, key, isKeyboardKey);
+    }
+
+    @Override
+    public final Element toXML() {
+        final String key_name = GLFW.glfwGetKeyName(key, 0);
+        final boolean isInt = (key_name == null || key_name.isEmpty());
+        return new Element(getClass().getSimpleName()).setAttribute("name", name).setAttribute("key", (isInt) ? ("" + key) : key_name).setAttribute("isKeyboardKey", "" + isKeyboardKey).setAttribute("isInt", "" + isInt);
     }
 
 }
