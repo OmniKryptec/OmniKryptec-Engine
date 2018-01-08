@@ -865,6 +865,19 @@ public class GameSettings implements XMLable {
         return partThrPSize < 0 ? Runtime.getRuntime().availableProcessors() : partThrPSize;
     }
 
+    //TODO
+    private double ppm=1.0;
+    
+    public double getPixelsPerMeter() {
+    	return ppm;
+    }
+    
+    
+    public GameSettings setPixelsPerMeter(double ppm) {
+    	this.ppm = ppm;
+    	return this;
+    }
+    
     @Override
     public final Element toXML() {
         final Element element = new Element(getClass().getSimpleName());

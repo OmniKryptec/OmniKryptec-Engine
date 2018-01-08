@@ -4,6 +4,7 @@ import org.dyn4j.dynamics.Body;
 
 import omnikryptec.gameobject.GameObject2D;
 import omnikryptec.gameobject.Transform2D;
+import omnikryptec.physics.AdvancedBody;
 import omnikryptec.physics.Dyn4JPhysicsWorld;
 import omnikryptec.util.Instance;
 import omnikryptec.util.Priority;

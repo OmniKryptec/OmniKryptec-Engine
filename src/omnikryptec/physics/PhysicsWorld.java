@@ -12,6 +12,7 @@ public abstract class PhysicsWorld {
     private float simulationSpeed = 1.0F;
     private boolean simulationPaused = false;
 
+    
     public final int stepSimulation() {
         int temp = -1;
         if (!simulationPaused && simulationSpeed > 0) {
@@ -45,11 +46,11 @@ public abstract class PhysicsWorld {
     protected abstract float checkSimulationSpeed(float simulationSpeed);
 
     public void preLogic() {
-    	
+
     }
     
     public final float getTimeStep() {
-        return OmniKryptecEngine.instance().getDeltaTimef() * simulationSpeed;
+        return OmniKryptecEngine.instance().getDeltaTimeSf() * simulationSpeed;
     }
 
     public final float getSimulationSpeed() {
@@ -75,5 +76,6 @@ public abstract class PhysicsWorld {
         this.simulationSpeed = 1.0F;
         return this;
     }
+	
 
 }

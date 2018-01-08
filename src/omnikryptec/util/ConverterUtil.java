@@ -33,7 +33,7 @@ public class ConverterUtil {
 		return new javax.vecmath.Quat4f(q.x, q.y, q.z, q.w);
 	}
 
-	public static final Vector2f convertVector3fToLWJGL(Vector2 v) {
+	public static final Vector2f convertVector2fToLWJGL(Vector2 v) {
 		return new Vector2f((float)v.x, (float)v.y);
 	}
 	
@@ -41,4 +41,35 @@ public class ConverterUtil {
 		return new Vector2(v.x, v.y);
 	}
 	
+    public static final Vector2f convertFromPhysics2D(Vector2 vec, double pixelsPerMeter) {
+    	return new Vector2f((float)(vec.x*pixelsPerMeter), (float)(vec.y*pixelsPerMeter));
+    }
+    
+    public static final Vector2 convertToPhysics2D(Vector2f vec, double pixelsPerMeter) {
+    	pixelsPerMeter = 1.0/pixelsPerMeter;
+    	return new Vector2(vec.x*pixelsPerMeter, vec.y*pixelsPerMeter);
+    }
+    public static final Vector2f convertFromPhysics2D(Vector2 vec) {
+    	return convertFromPhysics2D(vec, Instance.getGameSettings().getPixelsPerMeter());
+    }
+    
+    public static final Vector2 convertToPhysics2D(Vector2f vec) {
+    	return convertToPhysics2D(vec, Instance.getGameSettings().getPixelsPerMeter());
+    }
+
+	public static final double convertToPhysics2D(float f, double pixelsPerMeter) {
+		return f/pixelsPerMeter;
+	}
+	
+	public static final double convertToPhysics2D(float f) {
+		return convertToPhysics2D(f, Instance.getGameSettings().getPixelsPerMeter());
+	}
+	
+	public static final float convertFromPhysics2D(double d) {
+		return convertFromPhysics2D(d, Instance.getGameSettings().getPixelsPerMeter());
+	}
+
+	public static float convertFromPhysics2D(double d, double pixelsPerMeter) {
+		return (float) (d*pixelsPerMeter);
+	}
 }

@@ -4,6 +4,9 @@ import javax.vecmath.Matrix4f;
 import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
 
+import org.dyn4j.geometry.Vector2;
+import org.joml.Vector2f;
+
 import com.bulletphysics.collision.broadphase.BroadphaseInterface;
 import com.bulletphysics.collision.broadphase.DbvtBroadphase;
 import com.bulletphysics.collision.dispatch.CollisionConfiguration;
@@ -105,5 +108,5 @@ public class PhysicsUtil {
     public static final CollisionShape createStandardCollisionShape(float radius) {
         return new SphereShape(radius);
     }
-
+    
 }

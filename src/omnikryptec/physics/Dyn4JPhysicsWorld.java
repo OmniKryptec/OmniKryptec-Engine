@@ -1,6 +1,7 @@
 package omnikryptec.physics;
 
 import org.dyn4j.UnitConversion;
+import org.dyn4j.dynamics.ContinuousDetectionMode;
 import org.dyn4j.dynamics.World;
 
 import omnikryptec.graphics.GraphicsUtil;
@@ -14,9 +15,11 @@ public class Dyn4JPhysicsWorld extends PhysicsWorld {
 	private boolean updatevar = false;
 	private int subs=5;
 	
+	
 	public Dyn4JPhysicsWorld() {
 		this.world = new World();
 		world.setGravity(World.ZERO_GRAVITY);
+		world.getSettings().setContinuousDetectionMode(ContinuousDetectionMode.BULLETS_ONLY);
 	}
 
 	public Dyn4JPhysicsWorld(World world) {
@@ -52,7 +55,9 @@ public class Dyn4JPhysicsWorld extends PhysicsWorld {
 		if (updatevar) {
 			world.updatev(t);
 		} else {
+			//world.step(1, t);
 			world.update(t,subs);
+			//world.update(t, t, subs);
 		}
 		if (GraphicsUtil.needsUpdate(last, GameSettings.CHECKCHANGEFRAMES)) {
 			last = Instance.getFramecount();
@@ -65,10 +70,6 @@ public class Dyn4JPhysicsWorld extends PhysicsWorld {
 		}
 	}
 
-	@Override
-	public void preLogic() {
-
-	}
 
 	private long last = 0;
 
