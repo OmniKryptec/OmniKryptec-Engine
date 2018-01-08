@@ -6,18 +6,12 @@ import java.util.Comparator;
 import java.util.List;
 
 import omnikryptec.gameobject.component.Component;
-import omnikryptec.main.AbstractScene;
-import omnikryptec.main.AbstractScene3D;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene3D;
 import omnikryptec.test.saving.DataMap;
 import omnikryptec.test.saving.DataMapSerializable;
-import omnikryptec.util.EnumCollection.FrameState;
 import omnikryptec.util.EnumCollection.UpdateType;
-import omnikryptec.util.Instance;
 import omnikryptec.util.exceptions.OmniKryptecException;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
 
 /**
  *

@@ -3,7 +3,6 @@ package omnikryptec.graphics;
 import java.nio.FloatBuffer;
 
 import org.joml.Math;
-import org.joml.Rectanglef;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;

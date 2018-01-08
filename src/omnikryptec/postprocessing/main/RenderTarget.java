@@ -1,8 +1,9 @@
 package omnikryptec.postprocessing.main;
 
-import de.codemakers.serialization.XMLable;
 import org.jdom2.Element;
 import org.lwjgl.opengl.GL11;
+
+import de.codemakers.serialization.XMLable;
 
 public class RenderTarget implements XMLable {
 

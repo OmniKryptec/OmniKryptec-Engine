@@ -1,12 +1,13 @@
 package omnikryptec.settings;
 
-import de.codemakers.serialization.XMLable;
 import java.util.HashMap;
 
+import org.jdom2.Element;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
+import de.codemakers.serialization.XMLable;
 import de.codemakers.util.Returner;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
@@ -15,7 +16,6 @@ import omnikryptec.postprocessing.main.FBOFactory;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.RenderTarget;
 import omnikryptec.util.EnumCollection.RenderType;
-import org.jdom2.Element;
 
 /**
  * GameSettings

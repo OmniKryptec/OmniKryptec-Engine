@@ -2,11 +2,7 @@ package omnikryptec.main;
 
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.GameObject2D;
-import omnikryptec.gameobject.GameObject3D;
-import omnikryptec.renderer.d2.RenderChunk2D;
 import omnikryptec.settings.GameSettings;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
 
 public abstract class AbstractScene2D extends AbstractScene<GameObject2D> {
 

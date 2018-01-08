@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import org.joml.Matrix4f;
 
 import omnikryptec.renderer.d3.RenderChunk3D;
-import omnikryptec.util.Instance;
 import omnikryptec.util.EnumCollection.UpdateType;
+import omnikryptec.util.Instance;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 

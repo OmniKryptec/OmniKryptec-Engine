@@ -7,7 +7,6 @@ import omnikryptec.gameobject.GameObject2D;
 import omnikryptec.renderer.d2.DefaultRenderer2D;
 import omnikryptec.renderer.d2.RenderChunk2D;
 import omnikryptec.renderer.d2.Renderer2D;
-import omnikryptec.settings.GameSettings;
 import omnikryptec.util.Instance;
 import omnikryptec.util.logger.Logger;
 

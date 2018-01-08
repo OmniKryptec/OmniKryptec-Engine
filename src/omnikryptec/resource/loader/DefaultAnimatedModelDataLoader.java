@@ -1,7 +1,8 @@
 package omnikryptec.resource.loader;
 
-import de.codemakers.io.file.AdvancedFile;
 import java.util.Properties;
+
+import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
 import omnikryptec.animation.ColladaParser.dataStructures.AnimatedModelData;
 import omnikryptec.resource.loader.annotations.DefaultLoader;

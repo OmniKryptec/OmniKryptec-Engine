@@ -2,7 +2,6 @@ package omnikryptec.main;
 
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.GameObject;
-import omnikryptec.gameobject.GameObject2D;
 import omnikryptec.physics.PhysicsWorld;
 import omnikryptec.util.Color;
 import omnikryptec.util.EnumCollection.FrameState;

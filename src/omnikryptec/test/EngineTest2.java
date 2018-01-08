@@ -2,12 +2,12 @@ package omnikryptec.test;
 
 import java.util.Random;
 
+import org.jdom2.output.Format;
 import org.joml.Vector3f;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.codemakers.lang.LanguageManager;
 import de.codemakers.util.XMLUtil;
-import omnikryptec.collision.d2.Rectangle;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
@@ -54,8 +54,6 @@ import omnikryptec.util.Instance;
 import omnikryptec.util.NativesLoader;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
-import org.jdom2.Document;
-import org.jdom2.output.Format;
 
 /**
  *

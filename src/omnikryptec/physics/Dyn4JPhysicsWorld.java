@@ -1,6 +1,5 @@
 package omnikryptec.physics;
 
-import org.dyn4j.UnitConversion;
 import org.dyn4j.dynamics.ContinuousDetectionMode;
 import org.dyn4j.dynamics.World;
 
