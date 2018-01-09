@@ -17,6 +17,8 @@ import omnikryptec.util.logger.Logger;
  */
 public class Util {
 
+	public static final String LINE_TERM = "\n";
+	
     public static final String replaceAll(String string, String toReplace, String with) {
         if (string == null || toReplace == null || with == null) {
             return "";

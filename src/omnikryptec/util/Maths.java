@@ -15,6 +15,10 @@ import omnikryptec.display.Display;
 
 public class Maths {
 
+	public static final double STEFANBOLTZMANN = 5.670373 * java.lang.Math.pow(10, -8);
+	private static final double SOMECONSTANT = 1 / java.lang.Math.pow(2*Math.PI, 0.5); 
+
+	
     public static final Vector3f X = new Vector3f(1, 0, 0);
     public static final Vector3f Y = new Vector3f(0, 1, 0);
     public static final Vector3f Z = new Vector3f(0, 0, 1);
@@ -308,4 +312,9 @@ public class Maths {
 	public static float invert(float x, float min, float range) {
 		return range - x + 2 * min;
 	}
+	
+	public static double normalStandardDistribution(double x) {
+		return SOMECONSTANT*Math.exp(-0.5*x*x);
+	}
+
 }
