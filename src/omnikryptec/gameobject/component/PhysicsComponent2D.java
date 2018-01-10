@@ -40,4 +40,8 @@ public class PhysicsComponent2D extends Component<GameObject2D> {
 		((Dyn4JPhysicsWorld) Instance.getCurrent2DScene().getPhysicsWorld()).getWorld().addBody(body);
 	}
 
+	public AdvancedBody getBody() {
+		return body;
+	}
+	
 }

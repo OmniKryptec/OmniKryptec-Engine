@@ -28,6 +28,8 @@ public final class EventType {
 
 	public static final EventType NEW_DEFAULT_RENDERCONFIGURATION = new EventType("newdefrendercfg", true);
 
+	public static final EventType BEFORE_FRAME = new EventType("beforeframeev");
+
 	private final String name;
 	private final boolean needsCurrentThread;
 

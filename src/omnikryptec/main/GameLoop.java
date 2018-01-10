@@ -119,6 +119,7 @@ public abstract class GameLoop {
 
 	protected final void beginScenesRendering() {
 		engineInstance.beginScene3dRendering();
+		engineInstance.getEventsystem().fireEvent(new Event(), EventType.BEFORE_FRAME);
 	}
 
 	protected final void endScenesRendering() {
