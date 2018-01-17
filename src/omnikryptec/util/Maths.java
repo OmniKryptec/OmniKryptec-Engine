@@ -178,10 +178,10 @@ public class Maths {
 		return output;
 	}
 
-	public static final float clamp(float input, float min, float max) {
-		return Math.min(max, Math.max(min, input));
+	public static final float clamp(float in, float min, float max) {
+		return in<min?min:(in>max?max:in);
 	}
-
+	
 	public static final int clamp(int input, int min, int max) {
 		return Math.min(max, Math.max(min, input));
 	}
