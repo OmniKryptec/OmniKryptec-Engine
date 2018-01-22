@@ -46,4 +46,8 @@ public class RenderMap<K, V> {
 		return map.size();
 	}
 
+	public void clear() {
+		map.clear();
+	}
+
 }
