@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Quadtree {
 
 	private int MAX_OBJECTS = 10;
-	private int MAX_LEVELS = 10;
 
 	private int level;
 	private ArrayList<Rectangle> objects;
@@ -193,7 +192,7 @@ public class Quadtree {
 
 		objects.add(pRect);
 
-		if (objects.size() > MAX_OBJECTS && (MAX_LEVELS < 0 || Math.abs(level) < MAX_LEVELS)) {
+		if (objects.size() > MAX_OBJECTS) {
 			split();
 			int i = 0;
 			while (i < objects.size()) {
