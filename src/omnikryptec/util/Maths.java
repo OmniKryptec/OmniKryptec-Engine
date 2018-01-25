@@ -379,5 +379,13 @@ public class Maths {
 	public static double normalStandardDistribution(double x) {
 		return SOMECONSTANT * Math.exp(-0.5 * x * x);
 	}
+	
+	public static int toPowerOfTwo(int n) {
+		return 1 << (32 - Integer.numberOfLeadingZeros(n - 1));
+	}
+
+	public static boolean isPowerOfTwo(int n) {
+		return (n & -n) == n;
+	}
 
 }
