@@ -31,7 +31,7 @@ public class Maths {
 	
     /** Get the largest whole number smaller than x.
      * @param x number from which floor is requested
-     * @return a double number f such that f is an integer f <= x < f + 1.0
+     * @return a double number f such that f is an integer f less or equal x less f + 1.0
      */
     public static double fastFloord(double x) {
         long y;
@@ -62,7 +62,7 @@ public class Maths {
     
     /** Get the smallest whole number larger than x.
      * @param x number from which ceil is requested
-     * @return a double number c such that c is an integer c - 1.0 < x <= c
+     * @return a double number c such that c is an integer c - 1.0 less x less or equal c
      */
     public static double fastCeild(double x) {
         double y;
