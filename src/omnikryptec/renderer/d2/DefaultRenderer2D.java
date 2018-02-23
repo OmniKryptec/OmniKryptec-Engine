@@ -25,7 +25,7 @@ import omnikryptec.util.Instance;
 
 public class DefaultRenderer2D implements Renderer2D, IEventHandler {
 
-    private SpriteBatch batch, finalBatch;
+    private SpriteBatch batch/*, finalBatch*/;
 
     public DefaultRenderer2D() {
         this(new SpriteBatch());
@@ -33,7 +33,7 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler {
 
     public DefaultRenderer2D(SpriteBatch batch) {
         this.batch = batch;
-        this.finalBatch = new SpriteBatch(new Camera().setDefaultScreenSpaceProjection());
+        //this.finalBatch = new SpriteBatch(new Camera().setDefaultScreenSpaceProjection(), 1);
         lights = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
         fbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
     }
@@ -61,6 +61,8 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler {
         if (light) {
             lightlist = new ArrayList<>();
             lightlist.addAll(global.__getLights());
+        }else {
+        	lightlist = null;
         }
         for (long x = -chunkOffsetX; x <= chunkOffsetX; x++) {
             for (long y = -chunkOffsetY; y <= chunkOffsetY; y++) {
@@ -84,27 +86,27 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler {
             }
         }
         batch.end();
-        if (light) {
-            lights.bindFrameBuffer();
-            GraphicsUtil.clear(sc.getAmbientColor());
-            GraphicsUtil.blendMode(BlendMode.ADDITIVE);
-            batch.begin();
-            for (Light2D s : lightlist) {
-                s.paint(batch);
-            }
-            batch.end();
-            lights.unbindFrameBuffer();
-            GraphicsUtil.blendMode(BlendMode.MULTIPLICATIVE);
-            finalBatch.begin();
-            finalBatch.draw(lights, -1, -1, 2, 2);
-            finalBatch.end();
-        }
         fbo.unbindFrameBuffer();
-        GraphicsUtil.blendMode(BlendMode.ALPHA);
-        finalBatch.begin();
-        finalBatch.draw(fbo, -1, -1, 2, 2);
-        finalBatch.end();
-        return 0;
+//        if (light) {
+//            lights.bindFrameBuffer();
+//            GraphicsUtil.clear(sc.getAmbientColor());
+//            GraphicsUtil.blendMode(BlendMode.ADDITIVE);
+//            batch.begin();
+//            for (Light2D s : lightlist) {
+//                s.paint(batch);
+//            }
+//            batch.end();
+//            lights.unbindFrameBuffer();
+//            GraphicsUtil.blendMode(BlendMode.MULTIPLICATIVE);
+//            finalBatch.begin();
+//            finalBatch.draw(lights, -1, -1, 2, 2);
+//            finalBatch.end();
+//        }
+//        GraphicsUtil.blendMode(BlendMode.ALPHA);
+//        finalBatch.begin();
+//        finalBatch.draw(fbo, -1, -1, 2, 2);
+//        finalBatch.end();
+        return batch.getVertexCount();
     }
 
     @Override
@@ -121,4 +123,11 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler {
         return clearcolor2d;
     }
 
+    public SpriteBatch getSpriteBatch() {
+    	return batch;
+    }
+    
+    public ArrayList<Light2D> getPreparedLights(){
+    	return lightlist;
+    }
 }

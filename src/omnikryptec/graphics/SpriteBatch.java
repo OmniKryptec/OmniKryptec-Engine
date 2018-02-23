@@ -44,15 +44,15 @@ public class SpriteBatch {
 	private Color color = new Color(1, 1, 1, 1);
 	private Camera camera;
 	private Texture texCur;
-	
+
 	public SpriteBatch(int size) {
 		this(null, size);
 	}
-	
+
 	public SpriteBatch() {
 		this(null);
 	}
-	
+
 	public SpriteBatch(Camera cam) {
 		this(cam, 1000);
 	}
@@ -89,10 +89,10 @@ public class SpriteBatch {
 	}
 
 	private void checkFlush(Texture t) {
-		if(idx >= max || t != texCur) {
+		if (idx >= max || t != texCur) {
 			flush();
 		}
-		if(t!=null) {
+		if (t != null) {
 			t.bindToUnitOptimized(0);
 			texCur = t;
 		}
@@ -101,15 +101,15 @@ public class SpriteBatch {
 	public void begin() {
 		begin(false);
 	}
-	
+
 	public void begin(boolean onlyCache) {
-		if (drawing||caching) {
+		if (drawing || caching) {
 			throw new OmniKryptecException("Can't start started rendering!");
 		}
 		idx = 0;
 		vertexcount = 0;
 		drawcalls = 0;
-		if(!onlyCache) {
+		if (!onlyCache) {
 			GraphicsUtil.enableDepthTesting(false);
 			program.start();
 			program.onDrawBatchStart(this);
@@ -122,7 +122,7 @@ public class SpriteBatch {
 		if (!caching) {
 			throw new OmniKryptecException("Can't stop stopped rendering!");
 		}
-		if(drawing) {
+		if (drawing) {
 			flush();
 			program.onDrawBatchEnd(this);
 			GraphicsUtil.enableDepthTesting(true);
@@ -132,7 +132,7 @@ public class SpriteBatch {
 	}
 
 	public void changeShader(Shader sh) {
-		if(drawing) {
+		if (drawing) {
 			flush();
 			program.onDrawBatchEnd(this);
 		}
@@ -178,10 +178,10 @@ public class SpriteBatch {
 	}
 
 	public void drawPolygon(Texture t, float[] data, int start, int len, int vertexcount) {
-		if((len-start)%FLOATS_PER_VERTEX!=0) {
+		if ((len - start) % FLOATS_PER_VERTEX != 0) {
 			throw new OmniKryptecException("Floats per vertex are not correct.");
 		}
-		if(vertexcount>max) {
+		if (vertexcount > max) {
 			throw new OmniKryptecException("Too many vertices!");
 		}
 		checkFlush(t);
@@ -202,25 +202,25 @@ public class SpriteBatch {
 		return array;
 	}
 
-	public void draw(Sprite s){
+	public void draw(Sprite s) {
 		draw(s, false);
 	}
-	
+
 	public void draw(Sprite s, boolean center) {
-		if(s!=null&&s.getTexture()!=null) {
+		if (s != null && s.getTexture() != null) {
 			color.setFrom(s.getColor());
 			scaledWidth = s.getWidth();
 			scaledHeight = s.getHeight();
 			tmpPos = s.getTransform().getPosition(true);
-			if(center){
-				tmpPos.x -= scaledWidth/2;
-				tmpPos.y -= scaledHeight/2;
+			if (center) {
+				tmpPos.x -= scaledWidth / 2;
+				tmpPos.y -= scaledHeight / 2;
 			}
-			draw(s.getTexture(), tmpPos.x, tmpPos.y, scaledWidth, 
-					scaledHeight, scaledWidth*0.5f, scaledHeight*0.5f, s.getTransform().getRotation());
+			draw(s.getTexture(), tmpPos.x, tmpPos.y, scaledWidth, scaledHeight, scaledWidth * 0.5f, scaledHeight * 0.5f,
+					s.getTransform().getRotation());
 		}
 	}
-	
+
 	public void draw(Texture tex, float x, float y) {
 		draw(tex, x, y, tex.getWidth(), tex.getHeight());
 	}
@@ -232,7 +232,7 @@ public class SpriteBatch {
 	private float x1, y1, x2, y2, x3, y3, x4, y4, scaleX, scaleY, cx, cy, p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y, r, g,
 			b, a, u, v, u2, v2, scaledWidth, scaledHeight;
 	private Vector2f tmpPos;
-	
+
 	public void draw(Texture tex, float x, float y, float width, float height) {
 		draw(tex, x, y, width, height, x, y, 0f);
 	}
@@ -296,16 +296,16 @@ public class SpriteBatch {
 			x4 = x + (cos * p4x - sin * p4y) + cx; // BOTTOM LEFT
 			y4 = y + (sin * p4x + cos * p4y) + cy;
 		} else {
-			//Topleft
+			// Topleft
 			x1 = x;
 			y1 = y;
-			//TopRight
+			// TopRight
 			x2 = x + width;
 			y2 = y;
-			//BottomRight
+			// BottomRight
 			x3 = x + width;
 			y3 = y + height;
-			//BottomLeft
+			// BottomLeft
 			x4 = x;
 			y4 = y + height;
 		}
@@ -328,7 +328,7 @@ public class SpriteBatch {
 	public void drawRect(Rectangle r) {
 		drawRect(r.minX, r.minY, r.getWidth(), r.getHeight());
 	}
-	
+
 	public void drawRect(float x, float y, float width, float height) {
 		drawRect(x, y, width, height, 1);
 	}
@@ -373,7 +373,7 @@ public class SpriteBatch {
 	}
 
 	public void clear() {
-		if(caching) {
+		if (caching) {
 			buffer.clear();
 			idx = 0;
 		}
