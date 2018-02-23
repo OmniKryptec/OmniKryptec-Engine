@@ -25,7 +25,7 @@ import omnikryptec.util.Instance;
 
 public class DefaultRenderer2D implements Renderer2D, IEventHandler {
 
-    private SpriteBatch batch/*, finalBatch*/;
+    private SpriteBatch batch, finalBatch;
 
     public DefaultRenderer2D() {
         this(new SpriteBatch());
@@ -33,7 +33,7 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler {
 
     public DefaultRenderer2D(SpriteBatch batch) {
         this.batch = batch;
-        //this.finalBatch = new SpriteBatch(new Camera().setDefaultScreenSpaceProjection(), 1);
+        this.finalBatch = new SpriteBatch(new Camera().setDefaultScreenSpaceProjection(), 1);
         lights = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
         fbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
     }
@@ -103,9 +103,9 @@ public class DefaultRenderer2D implements Renderer2D, IEventHandler {
 //            finalBatch.end();
 //        }
 //        GraphicsUtil.blendMode(BlendMode.ALPHA);
-//        finalBatch.begin();
-//        finalBatch.draw(fbo, -1, -1, 2, 2);
-//        finalBatch.end();
+        finalBatch.begin();
+        finalBatch.draw(fbo, -1, -1, 2, 2);
+        finalBatch.end();
         return batch.getVertexCount();
     }
 
