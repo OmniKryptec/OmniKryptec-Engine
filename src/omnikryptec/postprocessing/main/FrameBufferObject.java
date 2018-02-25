@@ -225,7 +225,7 @@ public class FrameBufferObject extends Texture {
         GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, 0);
         GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, frameBuffer);
         GL11.glDrawBuffer(GL11.GL_BACK);
-        GL30.glBlitFramebuffer(0, 0, width, height, 0, 0, Display.getWidth(), Display.getHeight(),
+        GL30.glBlitFramebuffer(0, 0, width, height, Display.getViewportdata()[0], Display.getViewportdata()[1], Display.getViewportdata()[2]+Display.getViewportdata()[0], Display.getViewportdata()[3]+ Display.getViewportdata()[1],
                 GL11.GL_COLOR_BUFFER_BIT, GL11.GL_NEAREST);
         GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
     }

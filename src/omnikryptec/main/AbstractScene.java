@@ -70,7 +70,7 @@ public abstract class AbstractScene<T extends GameObject> implements GameObjectC
     }
 
     public final Color getAmbientColor() {
-        return ambientcolor;
+    	return ambientcolor;
     }
 
     public final String getName() {
