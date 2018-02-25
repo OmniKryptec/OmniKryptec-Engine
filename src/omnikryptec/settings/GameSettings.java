@@ -176,7 +176,12 @@ public class GameSettings implements XMLable {
      *
      */
     public static final String DYN4J_MAX_SUBSTEPS = "DYN4J_MAX_SUBSTEPS";
-
+    
+    /**
+     * double
+     */
+    public static final String PIXELS_PER_METER = "PIXELS_PER_METER";
+    
     public static final int CHECKCHANGEFRAMES = 20;
 
     private final HashMap<String, Object> settings_objects = new HashMap<>();
@@ -184,6 +189,7 @@ public class GameSettings implements XMLable {
     private final HashMap<String, Integer> settings_integers = new HashMap<>();
     private final HashMap<String, Long> settings_longs = new HashMap<>();
     private final HashMap<String, Boolean> settings_booleans = new HashMap<>();
+    private final HashMap<String, Double> settings_doubles = new HashMap<>();
 
     // ************************************Not just
     // settings****************************************
@@ -267,10 +273,11 @@ public class GameSettings implements XMLable {
         setInteger(CHUNK_OFFSET_2D_Y, 2);
         setInteger(CHUNK_WIDTH_2D, 500);
         setInteger(CHUNK_HEIGHT_2D, 500);
-
+        //Physics
         setBoolean(DYN4J_PHYSICS_REMOVE_ADD_LIFECYCLE, true);
         setBoolean(DYN4J_PHYSICS_VAR_TS, false);
         setInteger(DYN4J_MAX_SUBSTEPS, 5);
+        setDouble(PIXELS_PER_METER, 1);
         return this;
     }
 
@@ -328,7 +335,11 @@ public class GameSettings implements XMLable {
     public final boolean getBoolean(String key) {
         return Returner.of(settings_booleans.get(key)).or(false);
     }
-
+    
+    public final double getDouble(String key) {
+    	return Returner.of(settings_doubles.get(key)).or(0.0);
+    }
+    
     /**
      * Sets an Object for a key
      *
@@ -389,6 +400,11 @@ public class GameSettings implements XMLable {
         return this;
     }
 
+    public final GameSettings setDouble(String key, double value) {
+    	settings_doubles.put(key, value);
+    	return this;
+    }
+    
     /**
      * Returns if an Object for a key is present
      *
@@ -439,6 +455,10 @@ public class GameSettings implements XMLable {
         return settings_booleans.containsKey(key);
     }
 
+    public final boolean hasDouble(String key) {
+    	return settings_doubles.containsKey(key);
+    }
+    
     /**
      * Returns the added attachments
      *
@@ -864,19 +884,7 @@ public class GameSettings implements XMLable {
     public int getParticleThreadpoolSize() {
         return partThrPSize < 0 ? Runtime.getRuntime().availableProcessors() : partThrPSize;
     }
-
-    //TODO
-    private double ppm=1.0;
     
-    public double getPixelsPerMeter() {
-    	return ppm;
-    }
-    
-    
-    public GameSettings setPixelsPerMeter(double ppm) {
-    	this.ppm = ppm;
-    	return this;
-    }
     
     @Override
     public final Element toXML() {

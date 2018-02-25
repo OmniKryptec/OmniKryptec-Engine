@@ -4,14 +4,14 @@ import java.util.List;
 
 import omnikryptec.shader.base.Shader;
 
-public abstract class PostProcessingStep extends PostProcessingStage {
+public abstract class PostProcessingStageShaded extends PostProcessingStage {
 
 	private Shader shader;
 
-	protected PostProcessingStep() {
+	protected PostProcessingStageShaded() {
 	}
 
-	public PostProcessingStep(Shader shader) {
+	public PostProcessingStageShaded(Shader shader) {
 		this.shader = shader;
 	}
 

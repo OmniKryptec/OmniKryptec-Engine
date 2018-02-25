@@ -4,12 +4,12 @@ import java.util.List;
 
 import omnikryptec.display.Display;
 import omnikryptec.postprocessing.main.FrameBufferObject;
-import omnikryptec.postprocessing.main.PostProcessingStep;
+import omnikryptec.postprocessing.main.PostProcessingStageShaded;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.files.postprocessing.GaussianBlurShader;
 import omnikryptec.util.EnumCollection.DepthbufferType;
 
-public class SingleGaussianBlurStage extends PostProcessingStep {
+public class SingleGaussianBlurStage extends PostProcessingStageShaded {
 
 	private static GaussianBlurShader shader = new GaussianBlurShader("gaussian_blur_vert.glsl");
 	private boolean isHorizontal, scalefbo;

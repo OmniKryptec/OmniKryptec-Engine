@@ -13,7 +13,7 @@ in vec3 in_weights;
 out vec2 pass_textureCoords;
 out vec3 pass_normal;
 
-uniform mat4 jointTransforms[$OKE_ANIM_MAX_JOINTS$];
+uniform mat4 jointTransforms[$ANIM_MAX_JOINTS$];
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 transformationMatrix;
@@ -27,7 +27,7 @@ void main(void){
 	vec4 totalNormal = vec4(0.0);
 	
 	//hier kann man auch die bei diesem model maximalen weights als uniform hochladen falls es weniger hat ist alles besen
-	for(int i = 0; i < $OKE_ANIM_MAX_WEIGHTS$; i++){
+	for(int i = 0; i < $ANIM_MAX_WEIGHTS$; i++){
 		mat4 jointTransform = jointTransforms[in_jointIndices[i]];
 		vec4 posePosition = jointTransform * vec4(in_position, 1.0);
 		totalLocalPos += posePosition * in_weights[i];

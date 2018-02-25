@@ -14,25 +14,25 @@ out vec4 colormod;
 out vec4 coln;
 out vec4 cols;
 
-out vec3 specu[$OKE_MAX_LIGHTS$];
-out vec3 diffl[$OKE_MAX_LIGHTS$];
-out float attenuation[$OKE_MAX_LIGHTS$];
+out vec3 specu[$MAX_LIGHTS$];
+out vec3 diffl[$MAX_LIGHTS$];
+out float attenuation[$MAX_LIGHTS$];
 
 uniform mat4 projmatrix;
 uniform mat4 viewmatrix;
 uniform vec4 uvs;
 
-uniform vec4 lightpos[$OKE_MAX_LIGHTS$];
-uniform vec4 coneInfo[$OKE_MAX_LIGHTS$];
+uniform vec4 lightpos[$MAX_LIGHTS$];
+uniform vec4 coneInfo[$MAX_LIGHTS$];
 
 
 uniform sampler2D speculartex;
 
 uniform vec4 matData;
 
-uniform vec3 lightColor[$OKE_MAX_LIGHTS$];
-uniform vec4 atts[$OKE_MAX_LIGHTS$];
-uniform vec3 catts[$OKE_MAX_LIGHTS$];
+uniform vec3 lightColor[$MAX_LIGHTS$];
+uniform vec4 atts[$MAX_LIGHTS$];
+uniform vec3 catts[$MAX_LIGHTS$];
 
 
 uniform int activelights;

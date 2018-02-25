@@ -11,7 +11,7 @@ uniform mat4 projview;
 
 void main(void){
 	
-	gl_Position =  projview * vec4(pos, $OKE_2D_Z_OFFSET$, 1.0);
+	gl_Position =  projview * vec4(pos, $2D_Z_OFFSET$, 1.0);
 	col = rgba;
 	tex = uv;
 }

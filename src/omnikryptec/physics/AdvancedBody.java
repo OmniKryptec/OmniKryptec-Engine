@@ -6,6 +6,7 @@ import org.joml.Vector2f;
 
 import omnikryptec.gameobject.GameObject2D;
 import omnikryptec.gameobject.Transform2D;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.util.ConverterUtil;
 import omnikryptec.util.Instance;
 
@@ -25,7 +26,7 @@ public class AdvancedBody extends Body{
 	
 	public AdvancedBody setPositionOf(GameObject2D go) {
 		if (enablePosition) {
-			go.getTransform().setPosition(ConverterUtil.convertFromPhysics2D(getTransform().getTranslation(), Instance.getGameSettings().getPixelsPerMeter()).add(offsetv));
+			go.getTransform().setPosition(ConverterUtil.convertFromPhysics2D(getTransform().getTranslation(), Instance.getGameSettings().getDouble(GameSettings.PIXELS_PER_METER)).add(offsetv));
 //			go.getTransform().setPosition((float) getTransform().getTranslationX()+offsetx,
 //					(float) getTransform().getTranslationY()+offsety);
 		}

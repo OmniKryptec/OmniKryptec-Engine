@@ -3,6 +3,8 @@ package omnikryptec.util;
 import org.dyn4j.geometry.Vector2;
 import org.joml.Vector2f;
 
+import omnikryptec.settings.GameSettings;
+
 /**
  *
  * @author Panzer1119
@@ -50,11 +52,11 @@ public class ConverterUtil {
     	return new Vector2(vec.x*pixelsPerMeter, vec.y*pixelsPerMeter);
     }
     public static final Vector2f convertFromPhysics2D(Vector2 vec) {
-    	return convertFromPhysics2D(vec, Instance.getGameSettings().getPixelsPerMeter());
+    	return convertFromPhysics2D(vec, Instance.getGameSettings().getDouble(GameSettings.PIXELS_PER_METER));
     }
     
     public static final Vector2 convertToPhysics2D(Vector2f vec) {
-    	return convertToPhysics2D(vec, Instance.getGameSettings().getPixelsPerMeter());
+    	return convertToPhysics2D(vec, Instance.getGameSettings().getDouble(GameSettings.PIXELS_PER_METER));
     }
 
 	public static final double convertToPhysics2D(float f, double pixelsPerMeter) {
@@ -62,11 +64,11 @@ public class ConverterUtil {
 	}
 	
 	public static final double convertToPhysics2D(float f) {
-		return convertToPhysics2D(f, Instance.getGameSettings().getPixelsPerMeter());
+		return convertToPhysics2D(f, Instance.getGameSettings().getDouble(GameSettings.PIXELS_PER_METER));
 	}
 	
 	public static final float convertFromPhysics2D(double d) {
-		return convertFromPhysics2D(d, Instance.getGameSettings().getPixelsPerMeter());
+		return convertFromPhysics2D(d, Instance.getGameSettings().getDouble(GameSettings.PIXELS_PER_METER));
 	}
 
 	public static float convertFromPhysics2D(double d, double pixelsPerMeter) {

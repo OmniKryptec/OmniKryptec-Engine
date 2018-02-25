@@ -6,15 +6,15 @@ import omnikryptec.display.Display;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.util.EnumCollection.DepthbufferType;
 
-public class SimpleStage extends PostProcessingStep {
+public class PostProcessingStageRenderedSimple extends PostProcessingStageShaded {
 
-	public SimpleStage(Shader shader) {
+	public PostProcessingStageRenderedSimple(Shader shader) {
 		setShader(shader);
 	}
 
 	private int l_ind = -1;
 
-	public SimpleStage setListIndex(int i) {
+	public PostProcessingStageRenderedSimple setListIndex(int i) {
 		l_ind = i;
 		return this;
 	}

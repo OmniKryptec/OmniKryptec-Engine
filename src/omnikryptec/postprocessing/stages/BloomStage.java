@@ -8,7 +8,7 @@ import org.joml.Vector4f;
 import omnikryptec.display.Display;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.PostProcessingStage;
-import omnikryptec.postprocessing.main.SimpleStage;
+import omnikryptec.postprocessing.main.PostProcessingStageRenderedSimple;
 import omnikryptec.shader.files.postprocessing.BrightnessHighlighterShader;
 import omnikryptec.shader.files.postprocessing.CombineShader;
 import omnikryptec.util.EnumCollection.DepthbufferType;
@@ -22,7 +22,7 @@ public class BloomStage extends PostProcessingStage {
 
 	private PostProcessingStage bloomedeffect;
 
-	private SimpleStage brightness = new SimpleStage(new BrightnessHighlighterShader());
+	private PostProcessingStageRenderedSimple brightness = new PostProcessingStageRenderedSimple(new BrightnessHighlighterShader());
 
 	public BloomStage(PostProcessingStage bloomedeffect, Vector2f weights) {
 		this(bloomedeffect, new Vector4f(1, 0, 0, 0), weights);

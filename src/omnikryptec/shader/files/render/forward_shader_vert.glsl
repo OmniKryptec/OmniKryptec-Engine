@@ -9,9 +9,9 @@ in vec3 tangent;
 out vec2 pass_texcoords;
 out mat3 TBN;
 out vec3 norm;
-out vec3 toLightVec[$OKE_MAX_LIGHTS$];
-out vec4 coneDeg[$OKE_MAX_LIGHTS$];
-out vec4 lightPosO[$OKE_MAX_LIGHTS$];
+out vec3 toLightVec[$MAX_LIGHTS$];
+out vec4 coneDeg[$MAX_LIGHTS$];
+out vec4 lightPosO[$MAX_LIGHTS$];
 out vec3 toCamVec;
 
 in mat4 transmatrix;
@@ -23,8 +23,8 @@ uniform mat4 projmatrix;
 uniform mat4 viewmatrix;
 uniform vec4 uvs;
 
-uniform vec4 lightpos[$OKE_MAX_LIGHTS$];
-uniform vec4 coneInfo[$OKE_MAX_LIGHTS$];
+uniform vec4 lightpos[$MAX_LIGHTS$];
+uniform vec4 coneInfo[$MAX_LIGHTS$];
 
 
 uniform float hasnormal;

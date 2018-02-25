@@ -50,7 +50,7 @@ public class Shader {
     private static final ModuleSystem SHADERMODULES;
 
     static {
-        SHADERMODULES = new ModuleSystem("$OKE_", "$", "omnikryptec/shader/modules/");
+        SHADERMODULES = new ModuleSystem("$", "$", "omnikryptec/shader/modules/");
         SHADERMODULES.addDynamic("MAX_LIGHTS", () -> Instance.getGameSettings().getInteger(GameSettings.MAX_FORWARD_LIGHTS));
         SHADERMODULES.addDynamic("ANIM_MAX_JOINTS", () -> Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_JOINTS));
         SHADERMODULES.addDynamic("ANIM_MAX_WEIGHTS", () -> Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_WEIGHTS));
@@ -263,7 +263,7 @@ public class Shader {
         } catch (Exception e) {
             Logger.logErr("Failed to read a shader", e);
         }
-        return "FAIL";
+        return "FAILED";
     }
 
     private ShaderHolder loadShader(InputStream in, int type) {

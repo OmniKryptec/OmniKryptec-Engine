@@ -4,9 +4,9 @@ in vec2 pass_texcoords;
 in vec4 colormod;
 in vec4 coln;
 in vec4 cols;
-in vec3 specu[$OKE_MAX_LIGHTS$];
-in vec3 diffl[$OKE_MAX_LIGHTS$];
-in float attenuation[$OKE_MAX_LIGHTS$];
+in vec3 specu[$MAX_LIGHTS$];
+in vec3 diffl[$MAX_LIGHTS$];
+in float attenuation[$MAX_LIGHTS$];
 
 
 layout (location = 0) out vec4 colf;

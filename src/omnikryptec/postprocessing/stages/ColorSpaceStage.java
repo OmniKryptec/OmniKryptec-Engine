@@ -6,12 +6,12 @@ import org.joml.Vector3f;
 
 import omnikryptec.display.Display;
 import omnikryptec.postprocessing.main.FrameBufferObject;
-import omnikryptec.postprocessing.main.PostProcessingStep;
+import omnikryptec.postprocessing.main.PostProcessingStageShaded;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.files.postprocessing.ColorSpaceShader;
 import omnikryptec.util.EnumCollection.DepthbufferType;
 
-public class ColorSpaceStage extends PostProcessingStep {
+public class ColorSpaceStage extends PostProcessingStageShaded {
 
 	private static ColorSpaceShader shader = new ColorSpaceShader();
 	private Vector3f level = new Vector3f();

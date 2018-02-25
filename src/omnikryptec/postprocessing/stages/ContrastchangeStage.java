@@ -4,12 +4,12 @@ import java.util.List;
 
 import omnikryptec.display.Display;
 import omnikryptec.postprocessing.main.FrameBufferObject;
-import omnikryptec.postprocessing.main.PostProcessingStep;
+import omnikryptec.postprocessing.main.PostProcessingStageShaded;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.files.postprocessing.ContrastchangeShader;
 import omnikryptec.util.EnumCollection.DepthbufferType;
 
-public class ContrastchangeStage extends PostProcessingStep {
+public class ContrastchangeStage extends PostProcessingStageShaded {
 
 	private static ContrastchangeShader shader = new ContrastchangeShader();
 	private float change = 0;
