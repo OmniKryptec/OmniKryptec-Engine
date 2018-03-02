@@ -29,9 +29,9 @@ public abstract class PostProcessingStage {
 	protected void renderQuad(boolean clear) {
 		target.bindFrameBuffer();
 		if (clear) {
-			GraphicsUtil.clear(0, 0, 0, 0);
+			GraphicsUtil.clear(0, 0, 0, 1);
 		}
-		GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 4);
+		GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 6);
 		target.unbindFrameBuffer();
 	}
 

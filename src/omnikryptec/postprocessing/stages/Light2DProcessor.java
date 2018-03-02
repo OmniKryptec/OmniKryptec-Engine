@@ -44,6 +44,7 @@ public class Light2DProcessor extends PostProcessingStage {
 			batch.begin();
 			batch.draw(before, -1, -1, 2, 2);
 			batch.end();
+			GraphicsUtil.blendMode(BlendMode.ALPHA);
 			getFbo().unbindFrameBuffer();
 		}
 	}
