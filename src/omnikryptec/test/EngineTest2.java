@@ -99,7 +99,7 @@ public class EngineTest2 implements IEventHandler {
                     .setBoolean(GameSettings.LIGHT_2D, false),
                     new GLFWInfo(3, 2, true, false, 1280, 720));
             Display.setAspectRatio(4 / 3.0);
-            XMLUtil.save(OmniKryptecEngine.instance().getDisplayManager().getSettings().toXMLDocument(), Format.getPrettyFormat(), new AdvancedFile(false, "gamesettings.xml").createOutputstream(false));
+         //   XMLUtil.save(OmniKryptecEngine.instance().getDisplayManager().getSettings().toXMLDocument(), Format.getPrettyFormat(), new AdvancedFile(false, "gamesettings.xml").createOutputstream(false));
             // new Thread(new Runnable() {
             //
             // @Override

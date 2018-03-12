@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL30;
 import omnikryptec.audio.AudioManager;
 import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.opencl.core.OpenCL;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
@@ -289,6 +290,7 @@ public class DisplayManager implements Profilable{
 	 */
 	public final DisplayManager close() {
 		AudioManager.cleanup();
+		OpenCL.cleanup();
 		Display.destroy();
 		return this;
 	}
