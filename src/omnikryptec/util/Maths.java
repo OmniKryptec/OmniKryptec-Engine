@@ -34,8 +34,6 @@ public class Maths {
      * @return a double number f such that f is an integer f less or equal x less f + 1.0
      */
     public static double fastFloord(double x) {
-        long y;
-
         if (x != x) { // NaN
             return x;
         }
@@ -44,7 +42,7 @@ public class Maths {
             return x;
         }
 
-        y = (long) x;
+        long y = (long) x;
         if (x < 0 && y != x) {
             y--;
         }
@@ -65,13 +63,11 @@ public class Maths {
      * @return a double number c such that c is an integer c - 1.0 less x less or equal c
      */
     public static double fastCeild(double x) {
-        double y;
-
         if (x != x) { // NaN
             return x;
         }
 
-        y = fastFloor(x);
+        double y = fastFloor(x);
         if (y == x) {
             return y;
         }
