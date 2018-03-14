@@ -1,8 +1,5 @@
 package omnikryptec.opencl.core;
 
-import java.util.HashMap;
-
-import org.lwjgl.PointerBuffer;
 import org.lwjgl.opencl.CL;
 import org.lwjgl.opencl.CLCapabilities;
 

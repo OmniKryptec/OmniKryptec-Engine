@@ -141,8 +141,8 @@ public class EngineTest2 implements IEventHandler {
             // CompleteGaussianBlurStage(false, 0.05f, 0.05f));
             // PostProcessing.instance().addStage(new DebugRenderer());
 
-            final AdvancedFile res = new AdvancedFile(true, "", "res");
-            final AdvancedFile test = new AdvancedFile(true, "", "omnikryptec", "test");
+            final AdvancedFile res = new AdvancedFile(true, "res");
+            final AdvancedFile test = new AdvancedFile(true, "omnikryptec", "test");
             //System.out.println(res);
             ResourceLoader.createInstanceDefault(true, false);
             //ResourceLoader.currentInstance().stageAdvancedFiles(1, ResourceLoader.LOAD_XML_INFO, res);

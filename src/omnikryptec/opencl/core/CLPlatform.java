@@ -43,6 +43,10 @@ public class CLPlatform {
 		return this;
 	}
 	
+	public PointerBuffer getDevices() {
+		return devices;
+	}
+	
 	public CLDevice getDevice(int deviceInd) {
 		if(createdDevices.containsKey(deviceInd)) {
 			return createdDevices.get(deviceInd);

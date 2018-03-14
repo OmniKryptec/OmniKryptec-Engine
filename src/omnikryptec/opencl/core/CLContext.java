@@ -4,6 +4,7 @@ import org.lwjgl.opencl.CL10;
 import org.lwjgl.opencl.CLContextCallback;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
+import org.lwjgl.system.Platform;
 
 public class CLContext {
 
@@ -15,6 +16,10 @@ public class CLContext {
             System.err.println("[LWJGL] cl_context_callback");
             System.err.println("\tInfo: " + MemoryUtil.memUTF8(errinfo));
         }), MemoryUtil.NULL, null);
+	}
+	
+	public long getID() {
+		return context;
 	}
 	
 }

@@ -22,11 +22,12 @@ public class OpenCL {
 		tmpBuffer = memStack.mallocInt(1);
 	}
 	
-	public void createPlatformData() {
+	public OpenCL createPlatformData() {
 		CL10.clGetPlatformIDs(null, tmpBuffer);
 		assert tmpBuffer.get(0)!=0;
 		platforms = memStack.mallocPointer(tmpBuffer.get(0));
 		CL10.clGetPlatformIDs(platforms, (IntBuffer)null);
+		return this;
 	}
 	
 	public PointerBuffer getPlatforms() {
