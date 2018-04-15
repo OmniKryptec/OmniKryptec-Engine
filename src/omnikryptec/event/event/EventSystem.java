@@ -132,9 +132,9 @@ public class EventSystem {
         List<IEventHandler> handlers = eventhandler.get(type);
         if (handlers != null) {
             ev.setEventType(type);
-            handlers.stream().forEach((handler) -> {
-                handler.onEvent(new Event(ev));
-            });
+            for(IEventHandler handler : handlers) {
+            	handler.onEvent(new Event(ev));
+            }
         }
     }
 
