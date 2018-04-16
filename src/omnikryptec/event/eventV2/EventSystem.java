@@ -29,7 +29,9 @@ public class EventSystem {
 	};
 	private static HashMap<Class<? extends Event>, List<Method>> eventhandlers = new HashMap<>();
 	private static ExecutorService threadpool = Executors.newFixedThreadPool(2);
+	private static ExecutorService submitterpool = Executors.newFixedThreadPool(2);
 
+	
 	static {
 		OmniKryptecEngine.addShutdownHook(() -> {
 			try {
@@ -46,7 +48,7 @@ public class EventSystem {
 		if (event.usesCurrentThread()) {
 			__submit(event);
 		} else {
-			threadpool.submit(() -> __submit(event));
+			submitterpool.submit(() -> __submit(event));
 		}
 	}
 
