@@ -70,7 +70,7 @@ public class EventSystem {
 		Iterator<Class<?>> it = list(loader);
 		while (it.hasNext()) {
 			Class<?> clazz = it.next();
-			if (filter.accept(clazz)) {
+			if (filter == null || filter.accept(clazz)) {
 				registerEventClass(clazz);
 			}
 		}
