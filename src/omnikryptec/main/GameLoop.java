@@ -4,8 +4,8 @@ import java.util.Vector;
 
 import omnikryptec.audio.AudioManager;
 import omnikryptec.display.Display;
-import omnikryptec.event.event.Event;
-import omnikryptec.event.event.EventType;
+import omnikryptec.event.eventV2.engineevents.FrameEvent;
+import omnikryptec.event.eventV2.engineevents.FrameEvent.FrameType;
 import omnikryptec.event.eventV2.engineevents.ResizeEvent;
 import omnikryptec.event.input.InputManager;
 import omnikryptec.graphics.GraphicsUtil;
@@ -63,6 +63,7 @@ public abstract class GameLoop {
 	}
 
 	final void step() {
+		new FrameEvent(FrameType.PRE).call();
 		try {
 			deltas[pointer] = getDeltaTimef();
 			pointer++;
@@ -80,8 +81,8 @@ public abstract class GameLoop {
 		} catch (Exception e) {
 			engineInstance.errorOccured(e, "An error occured in a step of the game loop");
 		}
-		engineInstance.getEventsystem().fireEvent(new Event(), EventType.AFTER_FRAME);
-
+		new FrameEvent(FrameType.POST).call();
+		//engineInstance.getEventsystem().fireEvent(new Event(), EventType.AFTER_FRAME);
 	}
 
 	public final double getFrameTime() {
@@ -121,10 +122,11 @@ public abstract class GameLoop {
 
 	protected final void beginScenesRendering() {
 		engineInstance.beginScene3dRendering();
-
+		new FrameEvent(FrameType.STARTSCENE).call();
 	}
 
 	protected final void endScenesRendering() {
+		new FrameEvent(FrameType.ENDSCENE).call();
 		engineInstance.endScene3dRendering();
 	}
 
@@ -167,7 +169,7 @@ public abstract class GameLoop {
 	}
 
 	protected final void renderGui() {
-
+		
 	}
 
 	protected final void logic3D() {

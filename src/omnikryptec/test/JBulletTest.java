@@ -30,7 +30,6 @@ import com.bulletphysics.linearmath.Transform;
 
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
-import omnikryptec.event.event.EventType;
 import omnikryptec.event.input.InputManager;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;

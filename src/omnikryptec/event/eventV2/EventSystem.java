@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Predicate;
 
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.logger.LogLevel;
@@ -61,6 +62,9 @@ public class EventSystem {
 
 	private static void __submit(Event event) {
 		List<Method> list = eventhandlers.get(event.getClass());
+		if (list == null) {
+			return;
+		}
 		for (Method m : list) {
 			try {
 				if (event.isAsyncExecution()) {
@@ -82,11 +86,11 @@ public class EventSystem {
 		}
 	}
 
-	public static void findEventAnnotations(ClassLoader loader, ClassFilter filter) {
+	public static void findEventAnnotations(ClassLoader loader, Predicate<Class<?>> filter) {
 		Iterator<Class<?>> it = list(loader);
 		while (it.hasNext()) {
 			Class<?> clazz = it.next();
-			if (filter == null || filter.accept(clazz)) {
+			if (filter == null || filter.test(clazz)) {
 				registerEventClass(clazz);
 			}
 		}
@@ -141,7 +145,7 @@ public class EventSystem {
 			return null;
 		}
 	}
-	
+
 	public static void clean() {
 		eventhandlers = null;
 		init = false;

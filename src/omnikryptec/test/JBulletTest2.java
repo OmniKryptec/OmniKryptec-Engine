@@ -22,7 +22,6 @@ import omnikryptec.audio.AudioSource;
 import omnikryptec.audio.StreamedSound;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
-import omnikryptec.event.event.EventType;
 import omnikryptec.event.input.CursorType;
 import omnikryptec.event.input.InputManager;
 import omnikryptec.gameobject.Camera;

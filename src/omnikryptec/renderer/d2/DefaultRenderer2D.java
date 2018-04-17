@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import omnikryptec.display.Display;
-import omnikryptec.event.event.Event;
-import omnikryptec.event.event.EventType;
-import omnikryptec.event.event.IEventHandler;
 import omnikryptec.event.eventV2.EventHandler;
 import omnikryptec.event.eventV2.EventSubscription;
 import omnikryptec.event.eventV2.engineevents.ResizeEvent;

@@ -2,9 +2,7 @@ package omnikryptec.opencl.core;
 
 import org.lwjgl.opencl.CL10;
 import org.lwjgl.opencl.CLContextCallback;
-import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
-import org.lwjgl.system.Platform;
 
 public class CLContext {
 

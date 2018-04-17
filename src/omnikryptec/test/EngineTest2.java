@@ -2,17 +2,13 @@ package omnikryptec.test;
 
 import java.util.Random;
 
-import org.jdom2.output.Format;
 import org.joml.Vector3f;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.codemakers.lang.LanguageManager;
-import de.codemakers.util.XMLUtil;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
-import omnikryptec.event.event.Event;
-import omnikryptec.event.event.EventType;
 import omnikryptec.event.event.IEventHandler;
 import omnikryptec.event.input.InputManager;
 import omnikryptec.gameobject.Camera;
