@@ -8,6 +8,7 @@ import omnikryptec.main.OmniKryptecEngine;
  * @author pcfreak9000
  *
  */
+@Deprecated
 public class Event {
 
 	private EventType type;

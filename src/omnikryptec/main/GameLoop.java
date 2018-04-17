@@ -6,6 +6,7 @@ import omnikryptec.audio.AudioManager;
 import omnikryptec.display.Display;
 import omnikryptec.event.event.Event;
 import omnikryptec.event.event.EventType;
+import omnikryptec.event.eventV2.engineevents.ResizeEvent;
 import omnikryptec.event.input.InputManager;
 import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.util.EnumCollection.GameLoopShutdownOption;
@@ -101,7 +102,8 @@ public abstract class GameLoop {
 
 	protected final boolean checkAndDealWithResized() {
 		if (Display.wasResized()) {
-			engineInstance.getEventsystem().fireEvent(new Event(), EventType.RESIZED);
+			new ResizeEvent(Display.getWidth(), Display.getHeight()).call();
+			//engineInstance.getEventsystem().fireEvent(new Event(), EventType.RESIZED);
 			engineInstance.resizeFbos();
 			engineInstance.getPostprocessor().resize();
 			return true;
@@ -119,12 +121,10 @@ public abstract class GameLoop {
 
 	protected final void beginScenesRendering() {
 		engineInstance.beginScene3dRendering();
-		engineInstance.getEventsystem().fireEvent(new Event(), EventType.BEFORE_FRAME);
+
 	}
 
 	protected final void endScenesRendering() {
-		engineInstance.getEventsystem().fireEvent(new Event(), EventType.FRAME_EVENT);
-		engineInstance.getEventsystem().fireEvent(new Event(), EventType.RENDER_FRAME_EVENT);
 		engineInstance.endScene3dRendering();
 	}
 

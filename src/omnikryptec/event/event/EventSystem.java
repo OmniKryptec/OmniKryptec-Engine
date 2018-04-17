@@ -16,6 +16,7 @@ import omnikryptec.settings.GameSettings;
  * @author pcfreak9000
  *
  */
+@Deprecated
 public class EventSystem {
 
     private static Map<EventType, List<IEventHandler>> eventhandler = new HashMap<>();
@@ -54,8 +55,8 @@ public class EventSystem {
                 e.printStackTrace();
             }
         }
-	    if (OmniKryptecEngine.instance().getDisplayManager().getSettings().getInteger(GameSettings.THREADPOOLSIZE_EVENT) > 0) {
-	        threadpool = Executors.newFixedThreadPool(OmniKryptecEngine.instance().getDisplayManager().getSettings().getInteger(GameSettings.THREADPOOLSIZE_EVENT));
+	    if (OmniKryptecEngine.instance().getDisplayManager().getSettings().getInteger(GameSettings.THREADPOOLSIZE_EVENT_SUBMISSION) > 0) {
+	        threadpool = Executors.newFixedThreadPool(OmniKryptecEngine.instance().getDisplayManager().getSettings().getInteger(GameSettings.THREADPOOLSIZE_EVENT_SUBMISSION));
 	    } else {
 	        threadpool = null;
 	    }

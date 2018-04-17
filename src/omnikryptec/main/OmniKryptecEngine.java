@@ -12,6 +12,8 @@ import omnikryptec.display.DisplayManager;
 import omnikryptec.event.event.Event;
 import omnikryptec.event.event.EventSystem;
 import omnikryptec.event.event.EventType;
+import omnikryptec.event.eventV2.engineevents.CleanupEvent;
+import omnikryptec.event.eventV2.engineevents.ErrorEvent;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.PostProcessing;
 import omnikryptec.postprocessing.main.RenderTarget;
@@ -134,7 +136,6 @@ public class OmniKryptecEngine implements Profilable {
             RendererRegistration.init();
             this.createFbos();
             Display.show();
-            eventsystem.fireEvent(new Event(), EventType.BOOTING_COMPLETED);
             Logger.log("Successfully booted the Engine!", LogLevel.FINEST);
             instance = this;
             if (gameloop == null) {
@@ -314,7 +315,6 @@ public class OmniKryptecEngine implements Profilable {
     }
     
     public final OmniKryptecEngine close(ShutdownOption shutdownOption) {
-
         if (gameloop != null) {
             gameloop.requestStop(GameLoopShutdownOption.ENGINE);
         }
@@ -343,8 +343,9 @@ public class OmniKryptecEngine implements Profilable {
         Shader.cleanAllShader();
         Query.cleanup();
         if (event) {
-            eventsystem.fireEvent(new Event(), EventType.CLEANUP);
+        	new CleanupEvent().call();
         }
+        omnikryptec.event.eventV2.EventSystem.clean();
         EventSystem.cleanUp();
         instance = null;
         cleaned = true;
@@ -353,7 +354,7 @@ public class OmniKryptecEngine implements Profilable {
     public void errorOccured(Exception e, String text) {
         state = GameState.ERROR;
         new OmnikryptecError(e, new ErrorObject<>(text)).print();
-        eventsystem.fireEvent(new Event(e), EventType.ERROR);
+        new ErrorEvent(e, this).call();
         shutdown();
     }
 

@@ -27,28 +27,35 @@ public class EventSystem {
 		}
 
 	};
-	private static HashMap<Class<? extends Event>, List<Method>> eventhandlers = new HashMap<>();
-	private static ExecutorService threadpool = Executors.newFixedThreadPool(2);
-	private static ExecutorService submitterpool = Executors.newFixedThreadPool(2);
 
-	
+	private static HashMap<Class<? extends Event>, List<Method>> eventhandlers = new HashMap<>();
+	private static ExecutorService threadpool;
+	private static ExecutorService submitterpool;
+	private static boolean init = false;
+
+	public static void init(int exec, int subm) {
+		if (init) {
+			return;
+		}
+		init = true;
+		threadpool = Executors.newFixedThreadPool(exec);
+		submitterpool = Executors.newFixedThreadPool(subm);
+	}
+
 	static {
 		OmniKryptecEngine.addShutdownHook(() -> {
 			try {
-				if (threadpool != null) {
-					threadpool.shutdownNow();
-					threadpool = null;
-				}
+				clean();
 			} catch (Exception ex) {
 			}
 		});
 	}
 
 	public static void submit(Event event) {
-		if (event.usesCurrentThread()) {
-			__submit(event);
-		} else {
+		if (event.isAsyncSubmission()) {
 			submitterpool.submit(() -> __submit(event));
+		} else {
+			__submit(event);
 		}
 	}
 
@@ -56,7 +63,11 @@ public class EventSystem {
 		List<Method> list = eventhandlers.get(event.getClass());
 		for (Method m : list) {
 			try {
-				m.invoke(null, event);
+				if (event.isAsyncExecution()) {
+					threadpool.submit(() -> m.invoke(null, event));
+				} else {
+					m.invoke(null, event);
+				}
 			} catch (IllegalAccessException e) {
 				Logger.log("Could not call eventhandler: " + e, LogLevel.ERROR);
 			} catch (IllegalArgumentException e) {
@@ -64,6 +75,9 @@ public class EventSystem {
 			} catch (InvocationTargetException e) {
 				Logger.log("Event failed: " + e, LogLevel.ERROR);
 				Logger.logErr("", e);
+			}
+			if (event.isConsumeable() && event.isConsumed()) {
+				break;
 			}
 		}
 	}
@@ -84,6 +98,9 @@ public class EventSystem {
 			Method[] methods = clazz.getDeclaredMethods();
 			for (Method m : methods) {
 				if (m.isAnnotationPresent(EventSubscription.class)) {
+					if (eventhandlers.containsKey(clazz) && eventhandlers.get(clazz).contains(m)) {
+						continue;
+					}
 					Class<?>[] cls = m.getParameterTypes();
 					if (cls.length != 1) {
 						Logger.log("The eventhandler " + clazz + " uses incorrect event-handling methods!",
@@ -122,6 +139,19 @@ public class EventSystem {
 			return classes.iterator();
 		} catch (Exception e) {
 			return null;
+		}
+	}
+	
+	public static void clean() {
+		eventhandlers = null;
+		init = false;
+		if (threadpool != null) {
+			threadpool.shutdownNow();
+			threadpool = null;
+		}
+		if (submitterpool != null) {
+			submitterpool.shutdownNow();
+			submitterpool = null;
 		}
 	}
 }

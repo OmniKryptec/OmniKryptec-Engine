@@ -61,10 +61,16 @@ public class GameSettings implements XMLable {
     public static final String CLAMP_EDGES = "CLAMP_EDGES";
 
     /**
-     * Size of the EventSystem threadpool. int
+     * Size of the EventSystem submission threadpool. int
      */
-    public static final String THREADPOOLSIZE_EVENT = "THREADPOOLSIZE_EVENT";
+    public static final String THREADPOOLSIZE_EVENT_SUBMISSION = "THREADPOOLSIZE_EVENT";
 
+    /**
+     * Size of the EventSystem execution threadpool. int
+     */
+	public static final String THREADPOOLSIZE_EVENT_EXECUTION = "THREADPOOLSIZE_EVENT_EXECUTION";
+
+    
     /**
      * Sets the radius around the camera where foliage will be rendered. float
      *
@@ -182,7 +188,9 @@ public class GameSettings implements XMLable {
      */
     public static final String PIXELS_PER_METER = "PIXELS_PER_METER";
     
+    
     public static final int CHECKCHANGEFRAMES = 20;
+
 
     private final HashMap<String, Object> settings_objects = new HashMap<>();
     private final HashMap<String, Float> settings_floats = new HashMap<>();
@@ -251,8 +259,10 @@ public class GameSettings implements XMLable {
         setInteger(FPS_CAP, DisplayManager.DISABLE_FPS_CAP);
         setBoolean(CLAMP_EDGES, false);
         setBoolean(MIPMAP, false);
-        setInteger(THREADPOOLSIZE_EVENT, 2);
+        setInteger(THREADPOOLSIZE_EVENT_SUBMISSION, 2);
+        setInteger(THREADPOOLSIZE_EVENT_EXECUTION, 2);
 
+        /**/
         setFloat(RADIUS_FOLIAGE, 50);
         setFloat(RADIUS_MEDIUM, 100);
         setFloat(RADIUS_BIG, 200);

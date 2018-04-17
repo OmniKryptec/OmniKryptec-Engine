@@ -7,6 +7,7 @@ package omnikryptec.event.event;
  * @author pcfreak9000
  *
  */
+@Deprecated
 public interface IEventHandler {
 
 	/**

@@ -5,13 +5,9 @@ package omnikryptec.event.event;
  * @author pcfreak9000
  *
  */
+@Deprecated
 public final class EventType {
 
-	public static final EventType BOOTING_COMPLETED = new EventType("booting_completed");
-
-	public static final EventType ERROR = new EventType("error");
-
-	public static final EventType RESIZED = new EventType("resized", true);
 
 	public static final EventType FRAME_EVENT = new EventType("frame");
 
@@ -22,11 +18,6 @@ public final class EventType {
 	 */
 	public static final EventType RENDER_FRAME_EVENT = new EventType("render_frame", true);
 
-	public static final EventType COMMAND = new EventType("command_exc");
-
-	public static final EventType CLEANUP = new EventType("cleanup", true);
-
-	public static final EventType NEW_DEFAULT_RENDERCONFIGURATION = new EventType("newdefrendercfg", true);
 
 	public static final EventType BEFORE_FRAME = new EventType("beforeframeev");
 
