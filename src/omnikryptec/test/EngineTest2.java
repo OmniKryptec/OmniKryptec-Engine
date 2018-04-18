@@ -9,7 +9,10 @@ import de.codemakers.lang.LanguageManager;
 import omnikryptec.display.Display;
 import omnikryptec.display.DisplayManager;
 import omnikryptec.display.GLFWInfo;
-import omnikryptec.event.event.IEventHandler;
+import omnikryptec.event.eventV2.EventHandler;
+import omnikryptec.event.eventV2.EventSubscription;
+import omnikryptec.event.eventV2.engineevents.FrameEvent;
+import omnikryptec.event.eventV2.engineevents.FrameEvent.FrameType;
 import omnikryptec.event.input.InputManager;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Entity;
@@ -55,7 +58,8 @@ import omnikryptec.util.logger.Logger;
  *
  * @author Panzer1119
  */
-public class EngineTest2 implements IEventHandler {
+@EventHandler
+public class EngineTest2 {
 
     static TestRenderer rend;
     static AdvancedModel testdings;
@@ -161,8 +165,8 @@ public class EngineTest2 implements IEventHandler {
             //System.out.println("Resources loaded: " + ResourceLoader.currentInstance().getLoadedData());
             SimpleTexture jd = ResourceLoader.currentInstance().getTexture("res:jd.png")/*SimpleTexture.newTexture(new AdvancedFile(true, res, "jd.png"))*/;
             SimpleTexture js = ResourceLoader.currentInstance().getTexture("res:js.png")/*SimpleTexture.newTexture(new AdvancedFile(true, res, "js.png"))*/;
-            SimpleTexture jn = ResourceLoader.currentInstance().getTexture("res:jn.png")/*SimpleTexture.newTexture(new AdvancedFile(true, res, "jn.png"))*/;
-            OmniKryptecEngine.instance().getEventsystem().addEventHandler(new EngineTest2(), EventType.AFTER_FRAME, EventType.RENDER_FRAME_EVENT);
+            //SimpleTexture jn = ResourceLoader.currentInstance().getTexture("res:jn.png")/*SimpleTexture.newTexture(new AdvancedFile(true, res, "jn.png"))*/;
+            //OmniKryptecEngine.instance().getEventsystem().addEventHandler(new EngineTest2(), EventType.AFTER_FRAME, EventType.RENDER_FRAME_EVENT);
             Model brunnen = ResourceLoader.currentInstance().getResource(Model.class, "res:brunnen.obj")/*new Model("", ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")))*/;
             // Model brunnen = ModelUtil.generateQuad();
             SimpleTexture brunnent = ResourceLoader.currentInstance().getTexture("omnikryptec:test:brunnen.png")/*SimpleTexture.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create()*/;
@@ -406,11 +410,11 @@ public class EngineTest2 implements IEventHandler {
     private Random ra = new Random();
     private double d = 0;
 
-    @Override
-    public void onEvent(Event ev) {
+    @EventSubscription
+    public void onEvent(FrameEvent ev) {
 
         // system.generateParticles(1);
-        if (ev.getType() == EventType.RENDER_FRAME_EVENT) {
+        if (ev.getType() == FrameType.ENDSCENE) {
 
             // SpriteBatch testb = new SpriteBatch(new
             // Camera().setDefaultScreenSpaceProjection(), new Shader2D(), 100);
@@ -467,7 +471,7 @@ public class EngineTest2 implements IEventHandler {
         // Particletime: "+ParticleMaster.instance().getOverallParticleTimeMS()+"
         // PPTime:
         // "+PostProcessing.instance().getRenderTimeMS()+")/"+Instance.getEngine().getFrameTimeMS());
-        if (ev.getType() == EventType.AFTER_FRAME) {
+        if (ev.getType() == FrameType.POST) {
             // System.out.println(ParticleMaster.instance().getRenderedParticlesCount());
             // System.out.println(Instance.getEngine().getModelVertsCount());
             // System.out.println(ParticleMaster.instance().getUpdatedParticlesCount());

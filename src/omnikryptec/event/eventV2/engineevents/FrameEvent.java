@@ -14,7 +14,7 @@ public class FrameEvent extends Event {
 		this.tp = tp;
 	}
 
-	public FrameType getFrameType() {
+	public FrameType getType() {
 		return tp;
 	}
 

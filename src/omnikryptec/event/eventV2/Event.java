@@ -17,7 +17,9 @@ public abstract class Event {
 	}
 
 	public Event consume() {
-		consumed = true;
+		if(isConsumeable()) {
+			consumed = true;
+		}
 		return this;
 	}
 

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import omnikryptec.display.Display;
-import omnikryptec.event.eventV2.EventHandler;
 import omnikryptec.event.eventV2.EventSubscription;
+import omnikryptec.event.eventV2.EventSystem;
 import omnikryptec.event.eventV2.engineevents.ResizeEvent;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Light2D;
@@ -23,13 +23,13 @@ import omnikryptec.util.EnumCollection.DepthbufferType;
 import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.Instance;
 
-@EventHandler
 public class DefaultRenderer2D implements Renderer2D {
 
 	private SpriteBatch batch, finalBatch;
 
 	public DefaultRenderer2D() {
 		this(new SpriteBatch());
+		EventSystem.registerEventHandler(this);
 	}
 
 	public DefaultRenderer2D(SpriteBatch batch) {

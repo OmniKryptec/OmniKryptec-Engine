@@ -101,7 +101,6 @@ public class OmniKryptecEngine implements Profilable {
     }
 
     private DisplayManager manager;
-    private EventSystem eventsystem;
     private PostProcessing postpro;
     private final ArrayList<AbstractScene3D> scenes3D = new ArrayList<>();
     private final ArrayList<AbstractScene2D> scenes2D = new ArrayList<>();
@@ -128,7 +127,6 @@ public class OmniKryptecEngine implements Profilable {
             this.manager = manager;
             state = GameState.STARTING;
             instance = this;
-            eventsystem = new EventSystem();
             postpro = new PostProcessing(null);
 
             RendererRegistration.init();
@@ -168,11 +166,7 @@ public class OmniKryptecEngine implements Profilable {
     public final DisplayManager getDisplayManager() {
         return manager;
     }
-
-    public final EventSystem getEventsystem() {
-        return eventsystem;
-    }
-
+    
     public final GameSettings getSettings() {
         return manager == null ? null : manager.getSettings();
     }
@@ -343,8 +337,7 @@ public class OmniKryptecEngine implements Profilable {
         if (event) {
         	new CleanupEvent().call();
         }
-        omnikryptec.event.eventV2.EventSystem.clean();
-        EventSystem.cleanUp();
+        EventSystem.clean();
         instance = null;
         cleaned = true;
     }

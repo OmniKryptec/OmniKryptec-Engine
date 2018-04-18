@@ -1,12 +1,37 @@
 package omnikryptec.event.eventV2;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.reflect.Method;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface EventHandler {
-
+public class EventHandler {
+	
+	private Object handler;
+	private Method m;
+	
+	public EventHandler(Object handler, Method m) {
+		this.handler = handler;
+		this.m = m;
+	}
+	
+	public Object getHandler() {
+		return handler;
+	}
+	
+	public Method getMethod() {
+		return m;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == this) {
+			return true;
+		}
+		if(obj instanceof EventHandler) {
+			EventHandler sec = (EventHandler)obj;
+			if(sec.m.equals(m)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }

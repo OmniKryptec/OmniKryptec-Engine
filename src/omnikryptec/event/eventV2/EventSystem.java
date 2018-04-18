@@ -3,10 +3,10 @@ package omnikryptec.event.eventV2;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
@@ -19,17 +19,17 @@ import omnikryptec.util.logger.Logger;
 
 public class EventSystem {
 
-	private static Comparator<Method> comp = new Comparator<Method>() {
+	private static Comparator<EventHandler> comp = new Comparator<EventHandler>() {
 
 		@Override
-		public int compare(Method o1, Method o2) {
-			return (int) Math.signum(o1.getAnnotation(EventSubscription.class).priority()
-					- o2.getAnnotation(EventSubscription.class).priority());
+		public int compare(EventHandler o1, EventHandler o2) {
+			return (int) Math.signum(o1.getMethod().getAnnotation(EventSubscription.class).priority()
+					- o2.getMethod().getAnnotation(EventSubscription.class).priority());
 		}
 
 	};
 
-	private static HashMap<Class<? extends Event>, List<Method>> eventhandlers = new HashMap<>();
+	private static HashMap<Class<? extends Event>, List<EventHandler>> eventhandlers = new HashMap<>();
 	private static ExecutorService threadpool;
 	private static ExecutorService submitterpool;
 	private static boolean init = false;
@@ -52,6 +52,9 @@ public class EventSystem {
 		});
 	}
 
+	private EventSystem() {
+	}
+
 	public static void submit(Event event) {
 		if (event.isAsyncSubmission()) {
 			submitterpool.submit(() -> __submit(event));
@@ -61,16 +64,16 @@ public class EventSystem {
 	}
 
 	private static void __submit(Event event) {
-		List<Method> list = eventhandlers.get(event.getClass());
+		List<EventHandler> list = eventhandlers.get(event.getClass());
 		if (list == null) {
 			return;
 		}
-		for (Method m : list) {
+		for (EventHandler m : list) {
 			try {
 				if (event.isAsyncExecution()) {
-					threadpool.submit(() -> m.invoke(null, event));
+					threadpool.submit(() -> m.getMethod().invoke(m.getHandler(), event));
 				} else {
-					m.invoke(null, event);
+					m.getMethod().invoke(m.getHandler(), event);
 				}
 			} catch (IllegalAccessException e) {
 				Logger.log("Could not call eventhandler: " + e, LogLevel.ERROR);
@@ -86,51 +89,70 @@ public class EventSystem {
 		}
 	}
 
-	public static void findEventAnnotations(ClassLoader loader, Predicate<Class<?>> filter) {
-		Iterator<Class<?>> it = list(loader);
-		while (it.hasNext()) {
-			Class<?> clazz = it.next();
+	public static void findStaticEventAnnotations(ClassLoader loader, Predicate<Class<?>> filter) {
+		Vector<Class<?>> it = list(loader);
+		for (Class<?> clazz : it) {
 			if (filter == null || filter.test(clazz)) {
-				registerEventClass(clazz);
+				registerEventHandler(clazz);
 			}
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void registerEventClass(Class<?> clazz) {
-		if (clazz.isAnnotationPresent(EventHandler.class)) {
-			Method[] methods = clazz.getDeclaredMethods();
-			for (Method m : methods) {
-				if (m.isAnnotationPresent(EventSubscription.class)) {
-					if (eventhandlers.containsKey(clazz) && eventhandlers.get(clazz).contains(m)) {
-						continue;
-					}
-					Class<?>[] cls = m.getParameterTypes();
-					if (cls.length != 1) {
-						Logger.log("The eventhandler " + clazz + " uses incorrect event-handling methods!",
-								LogLevel.WARNING);
-					} else {
-						if (Event.class.isAssignableFrom(cls[0])) {
-							put((Class<? extends Event>) cls[0], m);
-						} else {
-							Logger.log("Event-handling method is useless, parameter is not an event in " + clazz
-									+ ", method " + m.toString(), LogLevel.WARNING);
+	public static void registerEventHandler(Object o) {
+		if (o == null) {
+			return;
+		}
+		Method[] methods;
+		if (o instanceof Class<?>) {
+			methods = ((Class<?>) o).getDeclaredMethods();
+			o = null;
+		} else {
+			methods = o.getClass().getDeclaredMethods();
+		}
+		boolean foundsmth = false;
+		for (Method m : methods) {
+			if (o == null && !Modifier.isStatic(m.getModifiers())) {
+				continue;
+			}
+			if (m.isAnnotationPresent(EventSubscription.class)) {
+				EventHandler handler = new EventHandler(o, m);
+				Class<?>[] cls = m.getParameterTypes();
+				if (cls.length != 1) {
+					Logger.log("The eventhandler " + (o == null ? o : o.getClass())
+							+ " uses incorrect event-handling methods!", LogLevel.WARNING);
+				} else {
+					if (Event.class.isAssignableFrom(cls[0])) {
+						if (eventhandlers.containsKey(cls[0]) && eventhandlers.get(cls[0]).contains(handler)) {
+							continue;
 						}
+						put((Class<? extends Event>) cls[0], handler);
+						foundsmth = true;
+					} else {
+						Logger.log(
+								"Event-handling method is useless, parameter is not an event in "
+										+ (o == null ? o : o.getClass()) + ", method " + m.toString(),
+								LogLevel.WARNING);
 					}
 				}
 			}
 		}
-	}
-
-	private static void put(Class<? extends Event> clazz, Method m) {
-		if (eventhandlers.get(clazz) == null) {
-			eventhandlers.put(clazz, new ArrayList<>());
+		if (foundsmth) {
+			for (List<EventHandler> l : eventhandlers.values()) {
+				l.sort(comp);
+			}
 		}
-		eventhandlers.get(clazz).add(m);
-		eventhandlers.get(clazz).sort(comp);
 	}
 
-	private static Iterator<Class<?>> list(ClassLoader CL) {
+	private static void put(Class<? extends Event> o, EventHandler m) {
+		if (eventhandlers.get(o) == null) {
+			eventhandlers.put(o, new ArrayList<>());
+		}
+		eventhandlers.get(o).add(m);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static Vector<Class<?>> list(ClassLoader CL) {
 		try {
 			Class<?> CL_class = CL.getClass();
 			while (CL_class != ClassLoader.class) {
@@ -138,9 +160,8 @@ public class EventSystem {
 			}
 			Field ClassLoader_classes_field = CL_class.getDeclaredField("classes");
 			ClassLoader_classes_field.setAccessible(true);
-			@SuppressWarnings("unchecked")
 			Vector<Class<?>> classes = (Vector<Class<?>>) ClassLoader_classes_field.get(CL);
-			return classes.iterator();
+			return (Vector<Class<?>>) classes.clone();
 		} catch (Exception e) {
 			return null;
 		}

@@ -6,7 +6,6 @@ import org.joml.Vector3f;
 
 import omnikryptec.animation.renderer.AnimatedModelRenderer;
 import omnikryptec.display.DisplayManager;
-import omnikryptec.event.eventV2.EventSystem;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.gameobject.terrain.TerrainRenderer;
@@ -87,9 +86,6 @@ public class Instance {
 		return getCurrent2DScene() == null ? null : getCurrent2DScene().getCamera();
 	}
 
-	public static final EventSystem getEventSystem() {
-		return OmniKryptecEngine.instance().getEventsystem();
-	}
 
 	public static final GameSettings getGameSettings() {
 		return getDisplayManager().getSettings();
