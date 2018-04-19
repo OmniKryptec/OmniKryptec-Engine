@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import omnikryptec.display.Display;
 import omnikryptec.event.eventV2.EventSubscription;
-import omnikryptec.event.eventV2.EventSystem;
+import omnikryptec.event.eventV2.EventBus;
 import omnikryptec.event.eventV2.engineevents.ResizeEvent;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Light2D;
@@ -29,7 +29,7 @@ public class DefaultRenderer2D implements Renderer2D {
 
 	public DefaultRenderer2D() {
 		this(new SpriteBatch());
-		EventSystem.registerEventHandler(this);
+		Instance.engineBus().registerEventHandler(this);
 	}
 
 	public DefaultRenderer2D(SpriteBatch batch) {

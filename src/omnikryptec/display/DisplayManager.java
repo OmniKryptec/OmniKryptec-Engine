@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
 import omnikryptec.audio.AudioManager;
-import omnikryptec.event.eventV2.EventSystem;
+import omnikryptec.event.eventV2.EventBus;
 import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.opencl.core.OpenCL;
@@ -94,13 +94,12 @@ public class DisplayManager implements Profilable{
 				settings.setChunksize2DasDisplaySize();
 			}
 			AudioManager.init();
-			EventSystem.init(settings.getInteger(GameSettings.THREADPOOLSIZE_EVENT_EXECUTION), settings.getInteger(GameSettings.THREADPOOLSIZE_EVENT_SUBMISSION));
 			if (settings.getMultiSamples() != GameSettings.NO_MULTISAMPLING) {
 				GraphicsUtil.antialias(true);
 			}
 			GraphicsUtil.cullBackFaces(true);
 			GraphicsUtil.enableDepthTesting(true);
-			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
+			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);			
 			Logger.log("Successfully created the Display!", LogLevel.FINEST);
 			return new OmniKryptecEngine(new DisplayManager(settings));
 		} catch (Exception ex) {

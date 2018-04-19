@@ -7,13 +7,18 @@ public abstract class Event {
 	protected boolean asyncSubmission = false;
 	protected boolean asyncExecution = false;
 	protected boolean consumeable = true;
-
+	private EventBus bus;
+	
+	protected Event(EventBus poster) {
+		this.bus = poster;
+	}
+	
 	public void call() {
 		if (called == true) {
 			return;
 		}
 		called = true;
-		EventSystem.submit(this);
+		bus.submit(this);
 	}
 
 	public Event consume() {

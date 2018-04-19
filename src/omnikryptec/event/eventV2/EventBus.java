@@ -13,11 +13,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Predicate;
 
+import omnikryptec.display.DisplayManager;
 import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.settings.GameSettings;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
-public class EventSystem {
+public class EventBus {
 
 	private static Comparator<EventHandler> comp = new Comparator<EventHandler>() {
 
@@ -28,22 +30,34 @@ public class EventSystem {
 		}
 
 	};
+	private static List<EventBus> eventbusses = new ArrayList<>();
 
-	private static HashMap<Class<? extends Event>, List<EventHandler>> eventhandlers = new HashMap<>();
-	private static ExecutorService threadpool;
-	private static ExecutorService submitterpool;
-	private static boolean init = false;
+	private HashMap<Class<? extends Event>, List<EventHandler>> eventhandlers = new HashMap<>();
+	private ExecutorService execpool;
+	private ExecutorService submitterpool;
 
-	public static void init(int exec, int subm) {
-		if (init) {
-			return;
-		}
-		init = true;
-		threadpool = Executors.newFixedThreadPool(exec);
-		submitterpool = Executors.newFixedThreadPool(subm);
-	}
+//	public static void initEngine(int exec, int subm) {
+//		if (init) {
+//			return;
+//		}
+//		
+////		try {
+////			Field f = EventBus.class.getDeclaredField("ENGINE_BUS");
+////			int mod = f.getModifiers();
+////			f.setAccessible(true);
+////			Field modifiersField = Field.class.getDeclaredField("modifiers");
+////			modifiersField.setAccessible(true);
+////			modifiersField.setInt(f, mod & ~Modifier.FINAL);
+////			f.set(null, new EventBus(exec, subm));
+////			modifiersField.setInt(f, mod);
+////			init = true;
+////		} catch (Exception e) {
+////			e.printStackTrace();
+////		}
+//	}
 
 	static {
+		//ENGINE_BUS = new EventBus(.getInteger(GameSettings.THREADPOOLSIZE_EVENT_EXECUTION), settings.getInteger(GameSettings.THREADPOOLSIZE_EVENT_SUBMISSION));
 		OmniKryptecEngine.addShutdownHook(() -> {
 			try {
 				clean();
@@ -52,26 +66,36 @@ public class EventSystem {
 		});
 	}
 
-	private EventSystem() {
+	public static void clean() {
+		for (EventBus b : eventbusses) {
+			b.cleanInstance();
+		}
+		eventbusses.clear();
 	}
 
-	public static void submit(Event event) {
-		if (event.isAsyncSubmission()) {
+	public EventBus(int exec, int subm) {
+		eventbusses.add(this);
+		execpool = Executors.newFixedThreadPool(exec);
+		submitterpool = Executors.newFixedThreadPool(subm);
+	}
+
+	public void submit(Event event) {
+		if (event.isAsyncSubmission() && submitterpool != null) {
 			submitterpool.submit(() -> __submit(event));
 		} else {
 			__submit(event);
 		}
 	}
 
-	private static void __submit(Event event) {
+	private void __submit(Event event) {
 		List<EventHandler> list = eventhandlers.get(event.getClass());
 		if (list == null) {
 			return;
 		}
 		for (EventHandler m : list) {
 			try {
-				if (event.isAsyncExecution()) {
-					threadpool.submit(() -> m.getMethod().invoke(m.getHandler(), event));
+				if (event.isAsyncExecution() && execpool != null) {
+					execpool.submit(() -> m.getMethod().invoke(m.getHandler(), event));
 				} else {
 					m.getMethod().invoke(m.getHandler(), event);
 				}
@@ -89,7 +113,7 @@ public class EventSystem {
 		}
 	}
 
-	public static void findStaticEventAnnotations(ClassLoader loader, Predicate<Class<?>> filter) {
+	public void findStaticEventAnnotations(ClassLoader loader, Predicate<Class<?>> filter) {
 		Vector<Class<?>> it = list(loader);
 		for (Class<?> clazz : it) {
 			if (filter == null || filter.test(clazz)) {
@@ -99,7 +123,7 @@ public class EventSystem {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void registerEventHandler(Object o) {
+	public void registerEventHandler(Object o) {
 		if (o == null) {
 			return;
 		}
@@ -144,7 +168,7 @@ public class EventSystem {
 		}
 	}
 
-	private static void put(Class<? extends Event> o, EventHandler m) {
+	private void put(Class<? extends Event> o, EventHandler m) {
 		if (eventhandlers.get(o) == null) {
 			eventhandlers.put(o, new ArrayList<>());
 		}
@@ -167,16 +191,16 @@ public class EventSystem {
 		}
 	}
 
-	public static void clean() {
+	public void cleanInstance() {
 		eventhandlers = null;
-		init = false;
-		if (threadpool != null) {
-			threadpool.shutdownNow();
-			threadpool = null;
+		if (execpool != null) {
+			execpool.shutdownNow();
+			execpool = null;
 		}
 		if (submitterpool != null) {
 			submitterpool.shutdownNow();
 			submitterpool = null;
 		}
 	}
+
 }

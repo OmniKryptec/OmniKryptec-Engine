@@ -6,6 +6,7 @@ import org.joml.Vector3f;
 
 import omnikryptec.animation.renderer.AnimatedModelRenderer;
 import omnikryptec.display.DisplayManager;
+import omnikryptec.event.eventV2.EventBus;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.particles.ParticleMaster;
 import omnikryptec.gameobject.terrain.TerrainRenderer;
@@ -137,5 +138,9 @@ public class Instance {
 
 	public static final <T extends ResourceObject> T getResource(String name) {
 		return ResourceLoader.getResourceDefault(name);
+	}
+
+	public static EventBus engineBus() {
+		return OmniKryptecEngine.instance().ENGINE_BUS;
 	}
 }
