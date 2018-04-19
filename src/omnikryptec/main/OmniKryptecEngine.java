@@ -113,8 +113,10 @@ public class OmniKryptecEngine implements Profilable {
 
 	private boolean cleaned;
 
+	public static final String ENGINE_EVENT_BUS_NAME = "OmnikryptecEvents-3141";
+	
 	public final EventBus ENGINE_BUS;
-
+	
 	public OmniKryptecEngine(DisplayManager manager) {
 		if (manager == null) {
 			throw new NullPointerException("DisplayManager is null");
@@ -122,7 +124,7 @@ public class OmniKryptecEngine implements Profilable {
 		if (instance != null) {
 			throw new IllegalStateException("OmniKryptec-Engine was already created!");
 		}
-		ENGINE_BUS = new EventBus(manager.getSettings().getInteger(GameSettings.THREADPOOLSIZE_EVENT_EXECUTION),
+		ENGINE_BUS = new EventBus(ENGINE_EVENT_BUS_NAME, manager.getSettings().getInteger(GameSettings.THREADPOOLSIZE_EVENT_EXECUTION),
 				manager.getSettings().getInteger(GameSettings.THREADPOOLSIZE_EVENT_SUBMISSION));
 		try {
 			cleaned = false;

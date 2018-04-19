@@ -35,30 +35,9 @@ public class EventBus {
 	private HashMap<Class<? extends Event>, List<EventHandler>> eventhandlers = new HashMap<>();
 	private ExecutorService execpool;
 	private ExecutorService submitterpool;
+	private String name;
 
-//	public static void initEngine(int exec, int subm) {
-//		if (init) {
-//			return;
-//		}
-//		
-////		try {
-////			Field f = EventBus.class.getDeclaredField("ENGINE_BUS");
-////			int mod = f.getModifiers();
-////			f.setAccessible(true);
-////			Field modifiersField = Field.class.getDeclaredField("modifiers");
-////			modifiersField.setAccessible(true);
-////			modifiersField.setInt(f, mod & ~Modifier.FINAL);
-////			f.set(null, new EventBus(exec, subm));
-////			modifiersField.setInt(f, mod);
-////			init = true;
-////		} catch (Exception e) {
-////			e.printStackTrace();
-////		}
-//	}
-
-	static {
-		//ENGINE_BUS = new EventBus(.getInteger(GameSettings.THREADPOOLSIZE_EVENT_EXECUTION), settings.getInteger(GameSettings.THREADPOOLSIZE_EVENT_SUBMISSION));
-		OmniKryptecEngine.addShutdownHook(() -> {
+	static {		OmniKryptecEngine.addShutdownHook(() -> {
 			try {
 				clean();
 			} catch (Exception ex) {
@@ -73,10 +52,20 @@ public class EventBus {
 		eventbusses.clear();
 	}
 
-	public EventBus(int exec, int subm) {
+	public static EventBus forName(String s) {
+		for(EventBus eb : eventbusses) {
+			if(eb.name.equals(s)) {
+				return eb;
+			}
+		}
+		return null;
+	}
+	
+	public EventBus(String name, int exec, int subm) {
 		eventbusses.add(this);
 		execpool = Executors.newFixedThreadPool(exec);
 		submitterpool = Executors.newFixedThreadPool(subm);
+		this.name = name;
 	}
 
 	public void submit(Event event) {
@@ -140,6 +129,10 @@ public class EventBus {
 				continue;
 			}
 			if (m.isAnnotationPresent(EventSubscription.class)) {
+				String wantedName = m.getAnnotation(EventSubscription.class).eventBusName();
+				if(!wantedName.equals("")&&!wantedName.equals(name)) {
+					continue;
+				}
 				EventHandler handler = new EventHandler(o, m);
 				Class<?>[] cls = m.getParameterTypes();
 				if (cls.length != 1) {
@@ -201,6 +194,10 @@ public class EventBus {
 			submitterpool.shutdownNow();
 			submitterpool = null;
 		}
+	}
+	
+	public String getName() {
+		return name;
 	}
 
 }
