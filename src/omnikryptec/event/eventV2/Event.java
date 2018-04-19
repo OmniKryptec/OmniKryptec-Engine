@@ -28,6 +28,10 @@ public abstract class Event {
 		return this;
 	}
 
+	public EventBus getBus() {
+		return bus;
+	}
+	
 	public boolean isConsumed() {
 		return consumed;
 	}

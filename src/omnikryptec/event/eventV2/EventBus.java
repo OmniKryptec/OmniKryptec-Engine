@@ -37,7 +37,8 @@ public class EventBus {
 	private ExecutorService submitterpool;
 	private String name;
 
-	static {		OmniKryptecEngine.addShutdownHook(() -> {
+	static {
+		OmniKryptecEngine.addShutdownHook(() -> {
 			try {
 				clean();
 			} catch (Exception ex) {
@@ -53,14 +54,14 @@ public class EventBus {
 	}
 
 	public static EventBus forName(String s) {
-		for(EventBus eb : eventbusses) {
-			if(eb.name.equals(s)) {
+		for (EventBus eb : eventbusses) {
+			if (eb.name.equals(s)) {
 				return eb;
 			}
 		}
 		return null;
 	}
-	
+
 	public EventBus(String name, int exec, int subm) {
 		eventbusses.add(this);
 		execpool = Executors.newFixedThreadPool(exec);
@@ -130,7 +131,7 @@ public class EventBus {
 			}
 			if (m.isAnnotationPresent(EventSubscription.class)) {
 				String wantedName = m.getAnnotation(EventSubscription.class).eventBusName();
-				if(!wantedName.equals("")&&!wantedName.equals(name)) {
+				if (!wantedName.equals("") && !wantedName.equals(name)) {
 					continue;
 				}
 				EventHandler handler = new EventHandler(o, m);
@@ -195,7 +196,7 @@ public class EventBus {
 			submitterpool = null;
 		}
 	}
-	
+
 	public String getName() {
 		return name;
 	}
