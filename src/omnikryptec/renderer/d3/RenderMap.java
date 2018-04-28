@@ -48,6 +48,7 @@ public class RenderMap<K, V> {
 
 	public void clear() {
 		map.clear();
+		keysDirty = true;
 	}
 
 }
