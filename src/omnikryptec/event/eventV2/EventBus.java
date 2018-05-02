@@ -87,6 +87,8 @@ public class EventBus {
 				if (event.isAsyncExecution() && execpool != null) {
 					execpool.submit(() -> m.getMethod().invoke(m.getHandler(), event));
 				} else {
+					event.beforeExecution(m);
+					m.getMethod().setAccessible(true);
 					m.getMethod().invoke(m.getHandler(), event);
 				}
 			} catch (IllegalAccessException e) {
@@ -95,7 +97,7 @@ public class EventBus {
 				Logger.logErr("Some IllegalArgumentException: ", e);
 			} catch (InvocationTargetException e) {
 				Logger.log("Event failed: " + e, LogLevel.ERROR);
-				Logger.logErr("", e);
+				Logger.logErr("Stacktrace: ", e);
 			}
 			if (event.isConsumeable() && event.isConsumed()) {
 				break;

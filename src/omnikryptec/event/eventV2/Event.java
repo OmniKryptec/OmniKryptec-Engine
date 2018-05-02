@@ -66,5 +66,12 @@ public abstract class Event {
 	public boolean isConsumeable() {
 		return !asyncExecution && consumeable;
 	}
+	
+	/**
+	 * Does not work with async execution!
+	 * @param handler
+	 */
+	public void beforeExecution(EventHandler handler) {
+	}
 
 }
