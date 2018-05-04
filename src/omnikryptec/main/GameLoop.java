@@ -105,7 +105,7 @@ public abstract class GameLoop {
 		if (Display.wasResized()) {
 			new ResizeEvent(Display.getWidth(), Display.getHeight()).call();
 			//engineInstance.getEventsystem().fireEvent(new Event(), EventType.RESIZED);
-			engineInstance.resizeFbos();
+			engineInstance.refreshFbos();
 			engineInstance.getPostprocessor().resize();
 			return true;
 		}

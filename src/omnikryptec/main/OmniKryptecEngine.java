@@ -114,9 +114,9 @@ public class OmniKryptecEngine implements Profilable {
 	private boolean cleaned;
 
 	public static final String ENGINE_EVENT_BUS_NAME = "OmnikryptecEvents-3141";
-	
+
 	public final EventBus ENGINE_BUS;
-	
+
 	public OmniKryptecEngine(DisplayManager manager) {
 		if (manager == null) {
 			throw new NullPointerException("DisplayManager is null");
@@ -124,7 +124,8 @@ public class OmniKryptecEngine implements Profilable {
 		if (instance != null) {
 			throw new IllegalStateException("OmniKryptec-Engine was already created!");
 		}
-		ENGINE_BUS = new EventBus(ENGINE_EVENT_BUS_NAME, manager.getSettings().getInteger(GameSettings.THREADPOOLSIZE_EVENT_EXECUTION),
+		ENGINE_BUS = new EventBus(ENGINE_EVENT_BUS_NAME,
+				manager.getSettings().getInteger(GameSettings.THREADPOOLSIZE_EVENT_EXECUTION),
 				manager.getSettings().getInteger(GameSettings.THREADPOOLSIZE_EVENT_SUBMISSION));
 		try {
 			cleaned = false;
@@ -212,48 +213,103 @@ public class OmniKryptecEngine implements Profilable {
 
 	final void endScene3dRendering() {
 		scenefbo.unbindFrameBuffer();
-		scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);
-		scenefbo.resolveToFbo(normalfbo, GL30.GL_COLOR_ATTACHMENT1);
-		scenefbo.resolveToFbo(specularfbo, GL30.GL_COLOR_ATTACHMENT2);
-		scenefbo.resolveToFbo(extrainfofbo, GL30.GL_COLOR_ATTACHMENT3);
-		if (scenefbo.getTargets().length > 4) {
-			for (int i = 4; i < scenefbo.getTargets().length; i++) {
-				scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i - 4].target);
-			}
+		if (FboModes.enabled(fboMode, FboModes.SCENE)) {
+			scenefbo.resolveToFbo(unsampledfbo, GL30.GL_COLOR_ATTACHMENT0);
 		}
+		if (FboModes.enabled(fboMode, FboModes.NORMALS)) {
+			scenefbo.resolveToFbo(normalfbo, GL30.GL_COLOR_ATTACHMENT1);
+		}
+		if (FboModes.enabled(fboMode, FboModes.SPECULAR)) {
+			scenefbo.resolveToFbo(specularfbo, GL30.GL_COLOR_ATTACHMENT2);
+		}
+		if (FboModes.enabled(fboMode, FboModes.INFO)) {
+			scenefbo.resolveToFbo(extrainfofbo, GL30.GL_COLOR_ATTACHMENT3);
+		}
+		// if (scenefbo.getTargets().length > 4) {
+		// for (int i = 4; i < scenefbo.getTargets().length; i++) {
+		// scenefbo.resolveToFbo(add[i], manager.getSettings().getAddAttachments()[i -
+		// 4].target);
+		// }
+		// }
 	}
 
 	private FrameBufferObject scenefbo;
 	private FrameBufferObject unsampledfbo, normalfbo, specularfbo, extrainfofbo;
-	private FrameBufferObject[] add;
+	// private FrameBufferObject[] add;
 
-	private void createFbos() {
-		scenefbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(),
-				manager.getSettings().getMultiSamples(), manager.getSettings().getAddAttachments(),
-				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0,
-						manager.getSettings().getInteger(GameSettings.COLORSPACE_SCENE_FBO)),
-				new RenderTarget(GL30.GL_COLOR_ATTACHMENT1,
-						manager.getSettings().getInteger(GameSettings.COLORSPACE_NORMAL_FBO)),
-				new RenderTarget(GL30.GL_COLOR_ATTACHMENT2,
-						manager.getSettings().getInteger(GameSettings.COLORSPACE_SPECULAR_FBO)),
-				new RenderTarget(GL30.GL_COLOR_ATTACHMENT3,
-						manager.getSettings().getInteger(GameSettings.COLORSPACE_SHADER_INFO_FBO)));
-		unsampledfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE,
-				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0,
-						manager.getSettings().getInteger(GameSettings.COLORSPACE_SCENE_FBO)));
-		normalfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
-				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0,
-						manager.getSettings().getInteger(GameSettings.COLORSPACE_NORMAL_FBO)));
-		specularfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
-				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0,
-						manager.getSettings().getInteger(GameSettings.COLORSPACE_SPECULAR_FBO)));
-		extrainfofbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
-				new RenderTarget(GL30.GL_COLOR_ATTACHMENT0,
-						manager.getSettings().getInteger(GameSettings.COLORSPACE_SHADER_INFO_FBO)));
-		add = manager.getSettings().getAddFBOs();
+	public static class FboModes {
+		public static final int SCENE = 0x1;
+		public static final int NORMALS = 0x2;
+		public static final int SPECULAR = 0x4;
+		public static final int INFO = 0x8;
+
+		public static int all() {
+			return SCENE | NORMALS | SPECULAR | INFO;
+		}
+
+		public static boolean enabled(int modes, int mode) {
+			return (modes & mode) == mode;
+		}
 	}
 
-	void resizeFbos() {
+	private int fboMode = FboModes.all();
+
+	public void setFboModes(int modes) {
+		fboMode = modes;
+	}
+
+	public void addFboMode(int mode) {
+		fboMode |= mode;
+	}
+
+	public void removeFboMode(int mode) {
+		fboMode &= ~mode;
+	}
+
+	private void createFbos() {
+		List<RenderTarget> tmp = new ArrayList<>();
+		if (FboModes.enabled(fboMode, FboModes.SCENE)) {
+			tmp.add(new RenderTarget(GL30.GL_COLOR_ATTACHMENT0,
+					manager.getSettings().getInteger(GameSettings.COLORSPACE_SCENE_FBO)));
+		}
+		if (FboModes.enabled(fboMode, FboModes.NORMALS)) {
+			tmp.add(new RenderTarget(GL30.GL_COLOR_ATTACHMENT1,
+					manager.getSettings().getInteger(GameSettings.COLORSPACE_NORMAL_FBO)));
+		}
+		if (FboModes.enabled(fboMode, FboModes.SPECULAR)) {
+			tmp.add(new RenderTarget(GL30.GL_COLOR_ATTACHMENT2,
+					manager.getSettings().getInteger(GameSettings.COLORSPACE_SPECULAR_FBO)));
+		}
+		if (FboModes.enabled(fboMode, FboModes.INFO)) {
+			tmp.add(new RenderTarget(GL30.GL_COLOR_ATTACHMENT3,
+					manager.getSettings().getInteger(GameSettings.COLORSPACE_SHADER_INFO_FBO)));
+		}
+		scenefbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(),
+				manager.getSettings().getMultiSamples(), tmp.toArray(new RenderTarget[tmp.size()]));
+		tmp.clear();
+		if (FboModes.enabled(fboMode, FboModes.SCENE)) {
+			unsampledfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.DEPTH_TEXTURE,
+					new RenderTarget(GL30.GL_COLOR_ATTACHMENT0,
+							manager.getSettings().getInteger(GameSettings.COLORSPACE_SCENE_FBO)));
+		}
+		if (FboModes.enabled(fboMode, FboModes.NORMALS)) {
+			normalfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
+					new RenderTarget(GL30.GL_COLOR_ATTACHMENT0,
+							manager.getSettings().getInteger(GameSettings.COLORSPACE_NORMAL_FBO)));
+		}
+		if (FboModes.enabled(fboMode, FboModes.SPECULAR)) {
+			specularfbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
+					new RenderTarget(GL30.GL_COLOR_ATTACHMENT0,
+							manager.getSettings().getInteger(GameSettings.COLORSPACE_SPECULAR_FBO)));
+		}
+		if (FboModes.enabled(fboMode, FboModes.INFO)) {
+			extrainfofbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE,
+					new RenderTarget(GL30.GL_COLOR_ATTACHMENT0,
+							manager.getSettings().getInteger(GameSettings.COLORSPACE_SHADER_INFO_FBO)));
+		}
+	}
+
+	public void refreshFbos() {
 		if (scenefbo != null) {
 			scenefbo.delete();
 		}
@@ -273,7 +329,7 @@ public class OmniKryptecEngine implements Profilable {
 	}
 
 	void doPostprocessing() {
-		postpro.doPostProcessing(add, unsampledfbo, normalfbo, specularfbo, extrainfofbo);
+		postpro.doPostProcessing(/* add, */ unsampledfbo, normalfbo, specularfbo, extrainfofbo);
 	}
 
 	final double getRender3DTimeMS() {
