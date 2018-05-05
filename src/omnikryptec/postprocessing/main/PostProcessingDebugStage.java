@@ -52,7 +52,7 @@ public class PostProcessingDebugStage extends PostProcessingStage {
 		GraphicsUtil.blendMode(BlendMode.ALPHA);
 		GraphicsUtil.clear(0, 0, 0, 0);
 		if (tmp = !disabled.contains(0)) {
-			beforelist.get(0).bindDepthTexture(0);
+			beforelist.get(0).getDepthTexture().bindToUnitOptimized(0);
 			shader.info.loadVec3(side, 0, 0);
 			GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, 6);
 		}

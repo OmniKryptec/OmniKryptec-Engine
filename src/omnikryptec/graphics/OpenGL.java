@@ -108,6 +108,10 @@ public class OpenGL {
 		gl13activeTextureGL(GL13.GL_TEXTURE0 + unit);
 	}
 
+	public static int gl11genTextures() {
+		return GL11.glGenTextures();
+	}
+	
 	// Rendering
 	public static void gl11drawElements(int mode, int indexcount, int type, long indices) {
 		GL11.glDrawElements(mode, indexcount, type, indices);
@@ -242,5 +246,6 @@ public class OpenGL {
 		Logger.log("String in classes not found as int: "+s, LogLevel.WARNING);
 		return -1;
 	}
+
 	
 }

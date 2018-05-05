@@ -22,7 +22,7 @@ import omnikryptec.util.logger.Logger;
 public class TextureUtils {
 
 	public static int createEmptyCubeMap(int size) {
-		int texID = GL11.glGenTextures();
+		int texID = OpenGL.gl11genTextures();
 		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texID);
 		for (int i = 0; i < 6; i++) {
 			GL11.glTexImage2D(GL13.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL11.GL_RGBA8, size, size, 0, GL11.GL_RGBA,
@@ -38,7 +38,7 @@ public class TextureUtils {
 	}
 
 	public static int loadCubeMap(InputStream[] textureFiles) {
-		int texID = GL11.glGenTextures();
+		int texID = OpenGL.gl11genTextures();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL13.GL_TEXTURE_CUBE_MAP, texID);
 		GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
@@ -74,7 +74,7 @@ public class TextureUtils {
 	}
 
 	protected static int loadTextureToOpenGL(TextureData data, TextureBuilder builder, Properties info) {
-		int texID = GL11.glGenTextures();
+		int texID = OpenGL.gl11genTextures();
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texID);
 		GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);

@@ -65,7 +65,7 @@ public class FogStage extends PostProcessingStageShaded {
 		shader.invprojv.loadMatrix(curcam.getInverseProjView());
 		shader.campos.loadVec3(curcam.getTransform().getPosition(true));
 		(l_ind[0] < 0 ? before : beforelist.get(l_ind[0])).bindToUnitOptimized(0);
-		(l_ind[1] < 0 ? before : beforelist.get(l_ind[1])).bindDepthTexture(1);
+		(l_ind[1] < 0 ? before : beforelist.get(l_ind[1])).getDepthTexture().bindToUnitOptimized(1);
 	}
 
 	@Override

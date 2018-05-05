@@ -21,6 +21,7 @@ import org.lwjgl.opengl.GL30;
 import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.display.Display;
 import omnikryptec.graphics.OpenGL;
+import omnikryptec.resource.loader.ResourceObject;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.EnumCollection.DepthbufferType;
@@ -30,23 +31,58 @@ import omnikryptec.util.logger.Logger;
 
 public class FrameBufferObject extends Texture {
 
+    private static List<FrameBufferObject> fbos = new ArrayList<>();
+    private static ArrayDeque<FrameBufferObject> history = new ArrayDeque<>();
+	
     private final int width;
     private final int height;
 
     private int frameBuffer;
-    private int depthTexture;
-
-    private int depthBuffer;
     private int[] colBuffers;
+    
+    //private int depthTexture;
+    private DepthTexture depthTexture = null;
+    private int depthBuffer;
 
     private int multisample = GameSettings.NO_MULTISAMPLING;
     private boolean multitarget = false;
-    private RenderTarget[] targets;
 
     private DepthbufferType type;
+    private RenderTarget[] targets;
 
-    private static List<FrameBufferObject> fbos = new ArrayList<>();
-    private static ArrayDeque<FrameBufferObject> history = new ArrayDeque<>();
+
+    public class DepthTexture extends Texture{
+    	
+    	private int depthTexture;
+    	
+    	private DepthTexture(int t) {
+    		super("", true);
+    		this.depthTexture = t;
+    	}
+
+		@Override
+		public DepthTexture delete() {
+	        GL11.glDeleteTextures(depthTexture);
+			return this;
+		}
+
+		@Override
+		protected void bindToUnit(int unit, int... info) {
+			OpenGL.gl13activeTextureZB(unit);
+	        super.bindTexture(GL11.GL_TEXTURE_2D, depthTexture);
+		}
+
+		@Override
+		public float getWidth() {
+			return width;
+		}
+
+		@Override
+		public float getHeight() {
+			return height;
+		}
+    	
+    }
 
     /**
      * Creates an FBO of a specified width and height, with the desired type of
@@ -124,8 +160,10 @@ public class FrameBufferObject extends Texture {
      */
     public FrameBufferObject delete() {
         GL30.glDeleteFramebuffers(frameBuffer);
-        GL11.glDeleteTextures(depthTexture);
         GL30.glDeleteRenderbuffers(depthBuffer);
+        if(hasDepthTexture()) {
+        	depthTexture.delete();
+        }
         for (int i = 0; i < colBuffers.length; i++) {
             if (multisample != GameSettings.NO_MULTISAMPLING) {
                 GL30.glDeleteRenderbuffers(colBuffers[i]);
@@ -181,10 +219,14 @@ public class FrameBufferObject extends Texture {
     /**
      * @return The texture containing the FBOs depth buffer.
      */
-    public int getDepthTexture() {
+    public DepthTexture getDepthTexture() {
         return depthTexture;
     }
 
+    public boolean hasDepthTexture() {
+    	return depthTexture != null;
+    }
+    
     public DepthbufferType getDepthbufferType() {
         return type;
     }
@@ -285,7 +327,7 @@ public class FrameBufferObject extends Texture {
      * FBO.
      */
     private int createTextureAttachment(int attachment, int level) {
-        int colourTexture = GL11.glGenTextures();
+        int colourTexture = OpenGL.gl11genTextures();
         Texture.bindAndReset(GL11.GL_TEXTURE_2D, colourTexture);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, level, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE,
                 (ByteBuffer) null);
@@ -302,13 +344,13 @@ public class FrameBufferObject extends Texture {
      * be sampled.
      */
     private void createDepthTextureAttachment() {
-        depthTexture = GL11.glGenTextures();
-        Texture.bindAndReset(GL11.GL_TEXTURE_2D, depthTexture);
+        depthTexture = new DepthTexture(OpenGL.gl11genTextures());
+        Texture.bindAndReset(GL11.GL_TEXTURE_2D, depthTexture.depthTexture);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL14.GL_DEPTH_COMPONENT24, width, height, 0, GL11.GL_DEPTH_COMPONENT,
                 GL11.GL_FLOAT, (ByteBuffer) null);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-        GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, depthTexture, 0);
+        GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, GL11.GL_TEXTURE_2D, depthTexture.depthTexture, 0);
     }
 
     /**
@@ -338,11 +380,6 @@ public class FrameBufferObject extends Texture {
         }
         OpenGL.gl13activeTextureZB(unit);
         super.bindTexture(GL11.GL_TEXTURE_2D, getTexture(info[0]));
-    }
-
-    public void bindDepthTexture(int unit) {
-        OpenGL.gl13activeTextureZB(unit);
-        super.bindTexture(GL11.GL_TEXTURE_2D, getDepthTexture());
     }
 
     public static void cleanup() {
