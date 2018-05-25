@@ -1,10 +1,14 @@
 package omnikryptec.postprocessing.v2;
 
-import omnikryptec.resource.texture.Texture;
+import omnikryptec.graphics.GraphicsUtil;
+import omnikryptec.postprocessing.main.FrameBufferObject;
+import omnikryptec.resource.model.Model;
+import omnikryptec.util.ModelUtil;
 
 public abstract class PostProcessingTask {
 
 	private boolean enabled=true;
+	//private boolean simplequad=true;
 	
 	public PostProcessingTask setEnabled(boolean b) {
 		this.enabled = b;
@@ -15,6 +19,12 @@ public abstract class PostProcessingTask {
 		return enabled;
 	}
 	
-	public abstract Texture process(PostProcessor parent, Texture texToProcess);
+	
+	
+//	public FrameBufferObject process(PostProcessor parent, FrameBufferObject toprocess) {
+//		if(!s)
+//	}
+	
+	public abstract FrameBufferObject process(PostProcessor parent, FrameBufferObject texToProcess);
 	
 }

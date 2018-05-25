@@ -102,6 +102,10 @@ public class FrameBufferObject extends Texture {
         initialiseFrameBuffer(type);
     }
 
+    public FrameBufferObject(int width, int height) {
+    	this(width, height, DepthbufferType.NONE);
+    }
+    
     public FrameBufferObject(int width, int height, DepthbufferType type) {
         this(width, height, type, new RenderTarget(GL30.GL_COLOR_ATTACHMENT0));
     }
