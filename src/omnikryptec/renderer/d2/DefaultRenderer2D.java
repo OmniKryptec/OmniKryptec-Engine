@@ -35,14 +35,14 @@ public class DefaultRenderer2D implements Renderer2D {
 	public DefaultRenderer2D(SpriteBatch batch) {
 		this.batch = batch;
 		this.finalBatch = new SpriteBatch(new Camera().setDefaultScreenSpaceProjection(), 1);
-		lights = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
-		fbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
+//		lights = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
+//		fbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
 	}
 
 	private ArrayList<Sprite> sprites;
 	private ArrayList<Light2D> lightlist;
 	private String stringTmp;
-	private FrameBufferObject lights, fbo;
+//	private FrameBufferObject fbo;
 	private boolean light;
 	private long last = -1;
 	private Color clearcolor2d = new Color(0, 0, 0, 0);
@@ -77,7 +77,7 @@ public class DefaultRenderer2D implements Renderer2D {
 			}
 		}
 		sprites.sort(getLayerComparator());
-		fbo.bindFrameBuffer();
+//		fbo.bindFrameBuffer();
 		GraphicsUtil.clear(clearcolor2d);
 		batch.begin();
 		GraphicsUtil.blendMode(BlendMode.ALPHA);
@@ -87,7 +87,7 @@ public class DefaultRenderer2D implements Renderer2D {
 			}
 		}
 		batch.end();
-		fbo.unbindFrameBuffer();
+//		fbo.unbindFrameBuffer();
 		// if (light) {
 		// lights.bindFrameBuffer();
 		// GraphicsUtil.clear(sc.getAmbientColor());
@@ -104,18 +104,18 @@ public class DefaultRenderer2D implements Renderer2D {
 		// finalBatch.end();
 		// }
 		// GraphicsUtil.blendMode(BlendMode.ALPHA);
-		finalBatch.begin();
-		finalBatch.draw(fbo, -1, -1, 2, 2);
-		finalBatch.end();
+		//finalBatch.begin();
+		//finalBatch.draw(fbo, -1, -1, 2, 2);
+		//finalBatch.end();
 		return batch.getVertexCount();
 	}
 
 	@EventSubscription
 	public void onEvent(ResizeEvent ev) {
-		fbo.delete();
-		lights.delete();
-		lights = new FrameBufferObject(ev.getNewWidth(), ev.getNewHeight(), DepthbufferType.NONE);
-		fbo = new FrameBufferObject(ev.getNewWidth(), ev.getNewHeight(), DepthbufferType.NONE);
+		//fbo.delete();
+		//lights.delete();
+		//lights = new FrameBufferObject(ev.getNewWidth(), ev.getNewHeight(), DepthbufferType.NONE);
+		//fbo = new FrameBufferObject(ev.getNewWidth(), ev.getNewHeight(), DepthbufferType.NONE);
 	}
 
 	public Color clearColor() {

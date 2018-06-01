@@ -109,6 +109,7 @@ public class SpriteBatch {
 		idx = 0;
 		vertexcount = 0;
 		drawcalls = 0;
+		texCur = null;
 		if (!onlyCache) {
 			GraphicsUtil.enableDepthTesting(false);
 			program.start();
@@ -377,6 +378,10 @@ public class SpriteBatch {
 			buffer.clear();
 			idx = 0;
 		}
+	}
+
+	public Texture getCurrentTexture() {
+		return texCur;
 	}
 
 }
