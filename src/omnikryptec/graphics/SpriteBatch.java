@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 import omnikryptec.collision.d2.Rectangle;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Sprite;
+import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.model.VertexArrayObject;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.base.Shader;
@@ -109,13 +110,13 @@ public class SpriteBatch {
 		idx = 0;
 		vertexcount = 0;
 		drawcalls = 0;
-		texCur = null;
 		if (!onlyCache) {
 			GraphicsUtil.enableDepthTesting(false);
 			program.start();
 			program.onDrawBatchStart(this);
 			drawing = true;
 		}
+		texCur = null;
 		caching = true;
 	}
 
@@ -129,6 +130,7 @@ public class SpriteBatch {
 			GraphicsUtil.enableDepthTesting(true);
 			drawing = false;
 		}
+		texCur = null;
 		caching = false;
 	}
 

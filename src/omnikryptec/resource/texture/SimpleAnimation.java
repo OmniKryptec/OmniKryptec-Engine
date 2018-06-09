@@ -46,7 +46,7 @@ public class SimpleAnimation extends Texture {
 
     @Override
     public void bindToUnit(int unit, int... info) {
-        textures[index].bindToUnit(unit, info);
+        textures[index].bindToUnitOptimized(unit, info);
         if (lastupdated < OmniKryptecEngine.instance().getDisplayManager().getFramecount()) {
             lastupdated = OmniKryptecEngine.instance().getDisplayManager().getFramecount();
             if (time >= secondsperframe) {

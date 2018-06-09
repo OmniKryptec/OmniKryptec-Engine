@@ -25,7 +25,7 @@ import omnikryptec.util.Instance;
 
 public class DefaultRenderer2D implements Renderer2D {
 
-	private SpriteBatch batch, finalBatch;
+	private SpriteBatch batch/*, finalBatch*/;
 
 	public DefaultRenderer2D() {
 		this(new SpriteBatch());
@@ -34,7 +34,7 @@ public class DefaultRenderer2D implements Renderer2D {
 
 	public DefaultRenderer2D(SpriteBatch batch) {
 		this.batch = batch;
-		this.finalBatch = new SpriteBatch(new Camera().setDefaultScreenSpaceProjection(), 1);
+//		this.finalBatch = new SpriteBatch(new Camera().setDefaultScreenSpaceProjection(), 1);
 //		lights = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
 //		fbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
 	}
@@ -42,7 +42,7 @@ public class DefaultRenderer2D implements Renderer2D {
 	private ArrayList<Sprite> sprites;
 	private ArrayList<Light2D> lightlist;
 	private String stringTmp;
-//	private FrameBufferObject fbo;
+	//private FrameBufferObject fbo;
 	private boolean light;
 	private long last = -1;
 	private Color clearcolor2d = new Color(0, 0, 0, 0);
@@ -77,7 +77,7 @@ public class DefaultRenderer2D implements Renderer2D {
 			}
 		}
 		sprites.sort(getLayerComparator());
-//		fbo.bindFrameBuffer();
+		//fbo.bindFrameBuffer();
 		GraphicsUtil.clear(clearcolor2d);
 		batch.begin();
 		GraphicsUtil.blendMode(BlendMode.ALPHA);
@@ -87,7 +87,7 @@ public class DefaultRenderer2D implements Renderer2D {
 			}
 		}
 		batch.end();
-//		fbo.unbindFrameBuffer();
+		//fbo.unbindFrameBuffer();
 		// if (light) {
 		// lights.bindFrameBuffer();
 		// GraphicsUtil.clear(sc.getAmbientColor());

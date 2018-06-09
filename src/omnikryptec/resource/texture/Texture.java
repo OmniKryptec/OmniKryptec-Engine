@@ -96,6 +96,14 @@ public abstract class Texture implements ResourceObject {
 		bindTexture(GL11.GL_TEXTURE_2D, 0);
 		resetLastBoundTexture();
 	}
+	
+	public static void unbindAllActive() {
+		for(int i=0; i<lastBoundTexture.length; i++) {
+			OpenGL.gl13activeTextureZB(i);
+			bindTexture(GL11.GL_TEXTURE_2D, 0);
+		}
+		resetLastBoundTexture();
+	}
 
 	public static void bindAndReset(int type, int id) {
 		bindTexture(type, id);

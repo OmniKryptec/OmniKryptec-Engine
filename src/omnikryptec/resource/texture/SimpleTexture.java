@@ -39,7 +39,7 @@ public class SimpleTexture extends Texture {
     }
 
     public SimpleTexture delete() {
-        GL11.glDeleteTextures(id);
+    	GL11.glDeleteTextures(id);
         return this;
     }
 

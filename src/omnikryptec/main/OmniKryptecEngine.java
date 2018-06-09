@@ -135,7 +135,6 @@ public class OmniKryptecEngine implements Profilable {
 			state = GameState.STARTING;
 			instance = this;
 			postpro = new PostProcessing(null);
-
 			RendererRegistration.init();
 			this.createFbos();
 			Display.show();

@@ -62,7 +62,7 @@ public class FrameBufferObject extends Texture {
 
 		@Override
 		public DepthTexture delete() {
-	        GL11.glDeleteTextures(depthTexture);
+			GL11.glDeleteTextures(depthTexture);
 			return this;
 		}
 
@@ -163,18 +163,21 @@ public class FrameBufferObject extends Texture {
      * Deletes the frame buffer and its attachments when the game closes.
      */
     public FrameBufferObject delete() {
-        GL30.glDeleteFramebuffers(frameBuffer);
-        GL30.glDeleteRenderbuffers(depthBuffer);
-        if(hasDepthTexture()) {
-        	depthTexture.delete();
+    	if(type == DepthbufferType.DEPTH_RENDER_BUFFER) {
+        	GL30.glDeleteRenderbuffers(depthBuffer);
+        }else if(hasDepthTexture()) {
+        	//depthTexture.delete(); //WHY THE FUCK DOES EVERYTHING FUCK UP WITH THIS?
+        	depthTexture = null;
         }
         for (int i = 0; i < colBuffers.length; i++) {
             if (multisample != GameSettings.NO_MULTISAMPLING) {
                 GL30.glDeleteRenderbuffers(colBuffers[i]);
             } else {
+            	System.out.println(colBuffers[i]);
                 GL11.glDeleteTextures(colBuffers[i]);
             }
         }
+    	GL30.glDeleteFramebuffers(frameBuffer);
         return this;
     }
 
@@ -374,13 +377,15 @@ public class FrameBufferObject extends Texture {
                 depthBuffer);
     }
 
+    private static final int[] ZERO_ARRAY = {0};
+    
     /**
      * info[0] is the attachmentindex to use
      */
     @Override
     protected void bindToUnit(int unit, int... info) {
         if (info == null || info.length == 0) {
-            info = new int[]{0};
+            info = ZERO_ARRAY;
         }
         OpenGL.gl13activeTextureZB(unit);
         super.bindTexture(GL11.GL_TEXTURE_2D, getTexture(info[0]));

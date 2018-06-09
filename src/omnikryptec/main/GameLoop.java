@@ -9,6 +9,7 @@ import omnikryptec.event.eventV2.engineevents.FrameEvent.FrameType;
 import omnikryptec.event.eventV2.engineevents.ResizeEvent;
 import omnikryptec.event.input.InputManager;
 import omnikryptec.graphics.GraphicsUtil;
+import omnikryptec.resource.texture.Texture;
 import omnikryptec.util.EnumCollection.GameLoopShutdownOption;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
@@ -103,10 +104,9 @@ public abstract class GameLoop {
 
 	protected final boolean checkAndDealWithResized() {
 		if (Display.wasResized()) {
-			new ResizeEvent(Display.getWidth(), Display.getHeight()).call();
-			//engineInstance.getEventsystem().fireEvent(new Event(), EventType.RESIZED);
 			engineInstance.refreshFbos();
 			engineInstance.getPostprocessor().resize();
+			new ResizeEvent(Display.getWidth(), Display.getHeight()).call();
 			return true;
 		}
 		return false;
