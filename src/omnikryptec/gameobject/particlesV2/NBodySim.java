@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class NBodySim implements SimulationStep {
 
-	public static final float G = (float) (6.674 * Math.pow(10, -11));
+	public static final float G = 6.674e-11f;
 
 	private float myG;
 	private float eps;

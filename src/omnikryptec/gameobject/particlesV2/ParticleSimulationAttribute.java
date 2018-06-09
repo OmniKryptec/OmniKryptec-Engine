@@ -42,7 +42,9 @@ public class ParticleSimulationAttribute {
 	}
 	
 	public void setBuffer(FloatBuffer buffer) {
-		this.buffer.clear();
+		if(this.buffer!=null) {
+			this.buffer.clear();
+		}
 		this.buffer = buffer;
 	}
 	

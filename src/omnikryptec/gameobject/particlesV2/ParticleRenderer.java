@@ -1,4 +1,4 @@
-package omnikryptec.gameobject.particles;
+package omnikryptec.gameobject.particlesV2;
 
 import java.nio.FloatBuffer;
 import java.util.List;
@@ -11,14 +11,14 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
 import omnikryptec.gameobject.Camera;
-import omnikryptec.gameobject.particlesV2.SimulationFactory;
+import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
 import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.graphics.OpenGL;
-import omnikryptec.main.OmniKryptecEngine;
+import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.model.Model;
 import omnikryptec.resource.model.VertexBufferObject;
+import omnikryptec.resource.texture.AtlasTexture;
 import omnikryptec.resource.texture.ParticleAtlas;
-import omnikryptec.test.EngineTest2;
 import omnikryptec.util.EnumCollection.BlendMode;
 import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.Maths;
@@ -46,7 +46,7 @@ public class ParticleRenderer {
 
 	private Vector3f curparpos;
 
-	protected ParticleRenderer() {
+	public ParticleRenderer() {
 		quad = ModelUtil.generateQuad();
 		vbo = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
 		vbo.addInstancedAttribute(quad.getVao(), 1, 4, INSTANCE_DATA_LENGTH, 0);
@@ -59,47 +59,42 @@ public class ParticleRenderer {
 		shader = new ParticleShader();
 	}
 
-	private List<Particle> particleList;
 	private int count;
 	private long globalCount;
 
-	protected void render(Map<ParticleAtlas, ParticleList> particles, Camera camera) {
+	public void render(ParticleSimulationAttribute pos, int ps, Camera camera) {
 		curCam = camera;
 		if (buffer == null || buffer.capacity() != maxInstancesPerSys * INSTANCE_DATA_LENGTH) {
 			buffer = BufferUtils.createFloatBuffer(maxInstancesPerSys * INSTANCE_DATA_LENGTH);
 		}
+		vboData = new float[INSTANCE_DATA_LENGTH];
 		shader.start();
 		shader.projMatrix.loadMatrix(curCam.getProjectionMatrix());
 		filter.setCamera(camera);
 		quad.getVao().bind(0, 1, 2, 3, 4, 5, 6, 7);
 		globalCount = 0;
-		for (ParticleAtlas tmpt : particles.keySet()) {
+		ParticleAtlas tmpt = new ParticleAtlas(ResourceLoader.MISSING_TEXTURE, 2, BlendMode.ADDITIVE);
 			bindTexture(tmpt);
-			particleList = particles.get(tmpt).list;
-			pointer = 0;
-			if (vboData == null || particleList.size() * INSTANCE_DATA_LENGTH != oldsize) {
-				vboData = new float[(oldsize = particleList.size() * INSTANCE_DATA_LENGTH)];
-			}
+			
 			count = 0;
-			for (Particle par : particleList) {
+			for (int i=0; i<ps; i++) {
 				if (count > maxInstancesPerSys) {
 					break;
 				}
-				curparpos = par.getPosition();
-				if (filter.intersects(curparpos.x, curparpos.y, curparpos.z, par.getScale())
-						&& GraphicsUtil.inRenderRange(par.getPosition(), par.getType(), curCam)) {
-					updateModelViewMatrix(par.getPosition(), par.getRotation(), par.getScale(), curCam.getViewMatrix(),
+				curparpos = new Vector3f(pos.get(i, 0),pos.get(i, 1),pos.get(i, 2));
+				
+					updateModelViewMatrix(curparpos, 1, 1, curCam.getViewMatrix(),
 							vboData);
-					updateTexCoordInfo(par, vboData);
+					updateTexCoordInfo(vboData);
 					count++;
 					globalCount++;
-				}
+				
 			}
 			vbo.updateData(vboData, buffer);
 			if (count > 0) {
 				OpenGL.gl31drawArraysInstanced(GL11.GL_TRIANGLE_STRIP, 0, quad.getVao().getIndexCount(), count);
 			}
-		}
+	
 		GraphicsUtil.blendMode(BlendMode.DISABLE);
 	}
 
@@ -115,16 +110,16 @@ public class ParticleRenderer {
 				texture.getTexture().getUVs()[2], texture.getTexture().getUVs()[3]);
 	}
 
-	private void updateTexCoordInfo(Particle par, float[] data) {
-		data[pointer++] = par.getTexOffset1().x;
-		data[pointer++] = par.getTexOffset1().y;
-		data[pointer++] = par.getTexOffset2().x;
-		data[pointer++] = par.getTexOffset2().y;
-		data[pointer++] = par.getBlend();
-		data[pointer++] = par.getColorR();
-		data[pointer++] = par.getColorG();
-		data[pointer++] = par.getColorB();
-		data[pointer++] = par.getColorA();
+	private void updateTexCoordInfo(float[] data) {
+		data[pointer++] = 0;
+		data[pointer++] = 0;
+		data[pointer++] = 1;
+		data[pointer++] = 1;
+		data[pointer++] = 1;
+		data[pointer++] = 1;
+		data[pointer++] = 1;
+		data[pointer++] = 1;
+		data[pointer++] = 1;
 
 	}
 
