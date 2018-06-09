@@ -20,4 +20,8 @@ public class CLContext {
 		return context;
 	}
 	
+	CLContextCallback getCB() {
+		return contextCB;
+	}
+	
 }

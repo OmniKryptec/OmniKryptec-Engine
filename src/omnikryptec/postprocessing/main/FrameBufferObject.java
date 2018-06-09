@@ -173,7 +173,6 @@ public class FrameBufferObject extends Texture {
             if (multisample != GameSettings.NO_MULTISAMPLING) {
                 GL30.glDeleteRenderbuffers(colBuffers[i]);
             } else {
-            	System.out.println(colBuffers[i]);
                 GL11.glDeleteTextures(colBuffers[i]);
             }
         }
