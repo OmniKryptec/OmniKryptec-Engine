@@ -11,8 +11,10 @@ public class FloatBufferBuffer {
 	private int readIndex, writeIndex;
 
 	public FloatBufferBuffer(int size, int singlesize) {
+		if(size<2) {
+			throw new IllegalArgumentException("The size of the FloatBufferBuffer must be >= 2");
+		}
 		buffers = new FloatBuffer[size];
-		//readMode = new boolean[size];
 		for(int i=0; i<buffers.length; i++) {
 			buffers[i] = BufferUtils.createFloatBuffer(singlesize);
 		}
@@ -43,6 +45,14 @@ public class FloatBufferBuffer {
 		buffers[readIndex].flip();
 		//readMode[readIndex] = true;
 		//readMode[writeIndex] = false;
+	}
+	
+	public FloatBuffer getWriteBuffer() {
+		return buffers[writeIndex];
+	}
+	
+	public FloatBuffer getReadBuffer() {
+		return buffers[readIndex];
 	}
 	
 	public void changeSize(int newsize) {
