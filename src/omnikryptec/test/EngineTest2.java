@@ -1,5 +1,6 @@
 package omnikryptec.test;
 
+import java.nio.FloatBuffer;
 import java.util.Random;
 
 import org.joml.Vector3f;
@@ -26,8 +27,10 @@ import omnikryptec.gameobject.particles.AttractorMode;
 import omnikryptec.gameobject.particles.ParticleAttractor;
 import omnikryptec.gameobject.particles.ParticleSpawnArea;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
+import omnikryptec.gameobject.particlesV2.BakePosition;
 import omnikryptec.gameobject.particlesV2.DynamicParticleSimulation;
-import omnikryptec.gameobject.particlesV2.ParticleRenderer;
+import omnikryptec.gameobject.particlesV2.NBodySim;
+import omnikryptec.gameobject.particlesV2.ParticleDefinition;
 import omnikryptec.gameobject.particlesV2.SimulationFactory;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
@@ -191,8 +194,17 @@ public class EngineTest2 {
 //            tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.6f))
 //                    .setFloat(Material.DAMPER, 1.01f).setVector3f(Material.SHADERINFO, new Vector3f(1));
             //OmniKryptecEngine.instance().ENGINE_BUS.registerEventHandler(new EngineTest2());
-            sim = SimulationFactory.createDynamicSimulation(SimulationFactory.POSITION, 3);
-            sim.add(SimulationFactory.POSITION, 0f, SimulationFactory.POSITION, 0f, SimulationFactory.POSITION, 0f);
+            sim = SimulationFactory.createDynamicSimulation(SimulationFactory.POSITION, 3, SimulationFactory.VELOCITY, 3, SimulationFactory.ACCELERATION, 3, SimulationFactory.MASS, 1);
+            sim.addPerAllStep(new NBodySim());
+            sim.addPerAllStep(new BakePosition());
+            ParticleDefinition def = new ParticleDefinition();
+            sim.addSingle(def, SimulationFactory.POSITION, 0f, 0f, 10f, SimulationFactory.MASS, 10000000000f, SimulationFactory.VELOCITY, 3f, 3f, 0f);
+            sim.addSingle(def, SimulationFactory.POSITION, 10f, 0f, 0f, SimulationFactory.MASS, 10000000000f, SimulationFactory.VELOCITY, 0f, 3f, 3f);
+            sim.addSingle(def, SimulationFactory.POSITION, 0f, 10f, 0f, SimulationFactory.MASS, 10000000000f, SimulationFactory.VELOCITY, 3f, 0f, 3f);
+            for(int i=0; i<250; i++) {
+            	sim.simulate(0.5f);
+            }
+            printFloatBuffer(sim.getBuffers().get(SimulationFactory.POSITION).getBuffer());
             OmniKryptecEngine.instance().addAndSetScene(new Scene3D("test", (Camera) new Camera() {
 
                 @Override
@@ -487,6 +499,14 @@ public class EngineTest2 {
 
         // System.out.println(DisplayManager.instance().getFPS());
         // System.out.println(DisplayManager.instance().getDeltaTime());
+    }
+    
+    private static void printFloatBuffer(FloatBuffer buffer) {
+    	String s="";
+    	for(int i=0; i<buffer.capacity(); i++) {
+    		s+=buffer.get(i)+" ";
+    	}
+    	System.out.println(s);
     }
 
 }
