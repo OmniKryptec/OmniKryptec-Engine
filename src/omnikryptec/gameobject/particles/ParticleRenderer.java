@@ -11,7 +11,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
 import omnikryptec.gameobject.Camera;
-import omnikryptec.gameobject.particlesV2.SimulationFactory;
 import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.graphics.OpenGL;
 import omnikryptec.main.OmniKryptecEngine;

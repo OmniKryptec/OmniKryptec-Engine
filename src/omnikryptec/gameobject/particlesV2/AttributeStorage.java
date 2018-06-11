@@ -18,4 +18,16 @@ public class AttributeStorage {
 		return buffer;
 	}
 	
+	public void set(int particleIndex, int comp, float data) {
+		buffer.put(attribute.calcIndex(particleIndex, comp), data);
+	}
+	
+	public void add(int particleIndex, int comp, float data) {
+		buffer.add(attribute.calcIndex(particleIndex, comp), data);
+	}
+	
+	public float get(int particleIndex, int comp) {
+		return buffer.get(attribute.calcIndex(particleIndex, comp));
+	}
+	
 }

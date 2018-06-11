@@ -18,6 +18,10 @@ public class ParticleAttribute {
 		return componentsize;
 	}
 	
+	public int calcIndex(int pIndex, int comp) {
+		return pIndex*componentsize+comp;
+	}
+	
 	@Override
 	public String toString() {
 		return getName();
