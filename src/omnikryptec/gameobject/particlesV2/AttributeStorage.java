@@ -30,4 +30,8 @@ public class AttributeStorage {
 		return buffer.getReadBuffer().get(attribute.calcIndex(particleIndex, comp));
 	}
 	
+	public float get(int index) {
+		return buffer.getReadBuffer().get(index);
+	}
+	
 }

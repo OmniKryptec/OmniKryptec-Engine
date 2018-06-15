@@ -7,6 +7,14 @@ public class ParticleAttribute {
 	 */
 	public static final String LIFESTATUS = "lifestatus";
 	
+	public static final String MASS ="mass";
+	
+	public static final String POSITION="position";
+	
+	public static final String VELOCITY ="velocity";
+	
+	public static final String ACCELERATION ="acceleration";
+	
 	private String name;
 	private int componentsize;
 	
