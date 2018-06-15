@@ -2,6 +2,11 @@ package omnikryptec.gameobject.particlesV2;
 
 public class ParticleAttribute {
 	
+	/**
+	 * if PGC use -1 to remove the particle from all buffers
+	 */
+	public static final String LIFESTATUS = "lifestatus";
+	
 	private String name;
 	private int componentsize;
 	

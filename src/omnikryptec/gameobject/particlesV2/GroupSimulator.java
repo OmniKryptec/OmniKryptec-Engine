@@ -20,4 +20,9 @@ public class GroupSimulator implements SimulatorPerSimulation{
 		this.singleSims.add(sim);
 	}
 
+	@Override
+	public boolean isOpenCLSimulation() {
+		return false;
+	}
+
 }

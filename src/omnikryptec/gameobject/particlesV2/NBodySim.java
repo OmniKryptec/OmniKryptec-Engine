@@ -42,6 +42,11 @@ public class NBodySim implements SimulatorPerSimulation{
 		}
 	}
 
+	@Override
+	public boolean isOpenCLSimulation() {
+		return false;
+	}
+
 //	@Override
 //	public void step(float dt, int particles, Map<String, ParticleSimulationAttribute> map) {
 //		ParticleSimulationAttribute position = map.get(SimulationFactory.POSITION);

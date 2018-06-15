@@ -15,9 +15,19 @@ public class ParticleSimulationBuffers {
 		return buffers;
 	}
 	
-	public void newsize(int s) {
+	public void resize(int s) {
 		for(AttributeStorage as : buffers.values()) {
-			as.getFlBuBuffer().changeSize(s*as.getAttribute().getComponentSize());
+			as.getParticleBuffer().resize(s*as.getAttribute().getComponentSize());
+		}
+	}
+
+	public void enableOpenCLMode(boolean b) {
+		for(AttributeStorage as : buffers.values()) {
+			if(b) {
+				as.getParticleBuffer().readyCL();
+			}else{
+				as.getParticleBuffer().unreadyCL();
+			}
 		}
 	}
 }

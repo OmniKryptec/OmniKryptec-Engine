@@ -2,32 +2,32 @@ package omnikryptec.gameobject.particlesV2;
 
 public class AttributeStorage {
 	
-	private FloatBufferBuffer buffer;
+	private ParticleFloatBuffer buffer;
 	private ParticleAttribute attribute;
 	
 	public AttributeStorage(ParticleAttribute att, int initialSize) {
 		this.attribute = att;
-		this.buffer = new FloatBufferBuffer(2, attribute.getComponentSize()*initialSize);
+		this.buffer = new ParticleFloatBuffer(attribute.getComponentSize()*initialSize);
 	}
 	
 	public ParticleAttribute getAttribute() {
 		return attribute;
 	}
 	
-	public FloatBufferBuffer getFlBuBuffer() {
+	public ParticleFloatBuffer getParticleBuffer() {
 		return buffer;
 	}
 	
 	public void set(int particleIndex, int comp, float data) {
-		buffer.put(attribute.calcIndex(particleIndex, comp), data);
+		buffer.getWriteBuffer().put(attribute.calcIndex(particleIndex, comp), data);
 	}
 	
 	public void add(int particleIndex, int comp, float data) {
-		buffer.add(attribute.calcIndex(particleIndex, comp), data);
+		set(particleIndex, comp, data+get(particleIndex, comp));
 	}
 	
 	public float get(int particleIndex, int comp) {
-		return buffer.get(attribute.calcIndex(particleIndex, comp));
+		return buffer.getReadBuffer().get(attribute.calcIndex(particleIndex, comp));
 	}
 	
 }

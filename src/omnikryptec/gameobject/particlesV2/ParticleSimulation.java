@@ -17,10 +17,13 @@ public class ParticleSimulation {
 	
 	public void simulate(float dt) {
 		for(SimulatorPerSimulation s : sims) {
-//			for(String string : s.requireStashed()) {
-//				buffers.getAttributeStorage(string)
-//			}
+			if(s.isOpenCLSimulation()) {
+				buffers.enableOpenCLMode(true);
+			}
 			s.step(dt, this);
+			if(s.isOpenCLSimulation()) {
+				buffers.enableOpenCLMode(false);
+			}
 		}
 	}
 	
