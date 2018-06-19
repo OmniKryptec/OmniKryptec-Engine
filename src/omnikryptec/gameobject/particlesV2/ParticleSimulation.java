@@ -11,6 +11,10 @@ public class ParticleSimulation {
 	private int max;
 	private int size;
 	
+	public ParticleSimulation() {
+		this(-1);
+	}
+	
 	public ParticleSimulation(int max) {
 		this.max = max;
 	}
@@ -39,8 +43,8 @@ public class ParticleSimulation {
 		return max;
 	}
 	
-	public boolean isUnlimited() {
-		return max<0;
+	public boolean isLimited() {
+		return max>0;
 	}
 	
 	public ParticleSimulationBuffers getParticleData() {

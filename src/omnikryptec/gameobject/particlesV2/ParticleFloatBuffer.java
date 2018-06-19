@@ -29,30 +29,30 @@ public class ParticleFloatBuffer {
 		}
 	}
 
-	public void unreadyCL() {
-		read++;
-		read %= buffers.length;
-		buffers[read].flip();
-		write++;
-		write %= buffers.length;
-		openclmode = false;
+	public void readyCL(boolean b) {
+		if (b) {
+			openclmode = true;
+			buffers[read].flip();
+		} else {
+			read++;
+			read %= buffers.length;
+			buffers[read].flip();
+			write++;
+			write %= buffers.length;
+			openclmode = false;
+		}
 	}
 
-	public void readyCL() {
-		openclmode = true;
-		buffers[read].flip();
-	}
-	
 	public boolean isOpenCLReady() {
 		return openclmode;
 	}
-	
+
 	public FloatBuffer getReadBuffer() {
 		return buffers[read];
 	}
-	
+
 	public FloatBuffer getWriteBuffer() {
-		return openclmode?buffers[write]:buffers[read];
+		return openclmode ? buffers[write] : buffers[read];
 	}
 
 	// private float[] stash;

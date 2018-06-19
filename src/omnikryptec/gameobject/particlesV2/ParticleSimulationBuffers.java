@@ -23,11 +23,7 @@ public class ParticleSimulationBuffers {
 
 	public void enableOpenCLMode(boolean b) {
 		for(AttributeStorage as : buffers.values()) {
-			if(b) {
-				as.getParticleBuffer().readyCL();
-			}else{
-				as.getParticleBuffer().unreadyCL();
-			}
+			as.getParticleBuffer().readyCL(b);
 		}
 	}
 }
