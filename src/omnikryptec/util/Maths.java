@@ -52,11 +52,6 @@ public class Maths {
         if (x < 0 && y != x) {
             y--;
         }
-
-        if (y == 0) { ////what the fuck? but who knows whats this for xD
-            return x * y;
-        }
-
         return y;
     }
 
