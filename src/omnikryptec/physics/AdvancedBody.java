@@ -12,7 +12,7 @@ import omnikryptec.util.Instance;
 
 public class AdvancedBody extends Body{
 
-	private Vector2f offsetv;
+	private Vector2f offsetv = new Vector2f();
 	private boolean enableRotation = true, enablePosition = true;
 	private Transform2D offset;
 	
@@ -38,6 +38,7 @@ public class AdvancedBody extends Body{
 		}
 		return this;
 	}
+	
 	
 	public AdvancedBody setOffsetTransform(Transform2D t) {
 		this.offset = t;

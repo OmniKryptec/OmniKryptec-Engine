@@ -21,6 +21,7 @@ public class Dyn4JPhysicsWorld extends PhysicsWorld {
 		world.getSettings().setContinuousDetectionMode(ContinuousDetectionMode.BULLETS_ONLY);
 		world.getSettings().setMaximumRotation(Double.POSITIVE_INFINITY);
 		world.getSettings().setMaximumTranslation(Double.POSITIVE_INFINITY);
+	
 	}
 
 	public Dyn4JPhysicsWorld(World world) {
