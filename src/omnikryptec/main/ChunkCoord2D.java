@@ -25,7 +25,7 @@ public class ChunkCoord2D {
 	
 	@Override
 	public int hashCode() {
-		return (int)(x^y);
+		return (int) ((((0)^x)*397)^y);
 	}
 
 }
