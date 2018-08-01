@@ -18,7 +18,7 @@ import omnikryptec.util.logger.Logger;
 
 public class Scene3D extends AbstractScene3D {
 
-    public final HashMap<String, RenderChunk3D> scene = new HashMap<>();
+    public final HashMap<ChunkCoord3D, RenderChunk3D> scene = new HashMap<>();
     private long cox = Instance.getGameSettings().getChunkRenderOffsetX(),
             coy = Instance.getGameSettings().getChunkRenderOffsetY(),
             coz = Instance.getGameSettings().getChunkRenderOffsetZ();
@@ -26,12 +26,6 @@ public class Scene3D extends AbstractScene3D {
 
     private final RenderChunk3D global = new RenderChunk3D(0, 0, 0, this, true);
 
-
-    /* Temp Variables */
-    private String tmp;
-    private long cx, cy, cz;
-    private RenderChunk3D tmpc;
-    private long vertcount = 0;
 
 	@Override
 	public int size() {
@@ -58,7 +52,8 @@ public class Scene3D extends AbstractScene3D {
             if (g.isGlobal() || !Instance.getGameSettings().usesRenderChunking()) {
                 global.addGameObject(g);
             }
-            tmp = xyzToString(g.getTransform().getChunkX(), g.getTransform().getChunkY(), g.getTransform().getChunkZ());
+            //tmp = xyzToString(g.getTransform().getChunkX(), g.getTransform().getChunkY(), g.getTransform().getChunkZ());
+            ChunkCoord3D tmp = new ChunkCoord3D(g.getTransform().getChunkX(), g.getTransform().getChunkY(), g.getTransform().getChunkZ());
             if (!scene.containsKey(tmp)) {
                 scene.put(tmp, new RenderChunk3D(g.getTransform().getChunkX(), g.getTransform().getChunkY(), g.getTransform().getChunkZ(), this));
             }
@@ -75,7 +70,8 @@ public class Scene3D extends AbstractScene3D {
             if (g.getRenderChunk() != null) {
                 g.getRenderChunk().removeGameObject(g, delete);
             } else {
-                tmp = xyzToString(g.getTransform().getChunkX(), g.getTransform().getChunkY(), g.getTransform().getChunkZ());
+                //tmp = xyzToString(g.getTransform().getChunkX(), g.getTransform().getChunkY(), g.getTransform().getChunkZ());
+            	ChunkCoord3D tmp = new ChunkCoord3D(g.getTransform().getChunkX(), g.getTransform().getChunkY(), g.getTransform().getChunkZ());
                 scene.get(tmp).removeGameObject(g, delete);
                 g.deleteOperation();
                 if(scene.get(tmp).isEmpty()) {
@@ -89,13 +85,14 @@ public class Scene3D extends AbstractScene3D {
     @Override
 	public final void logic(){
 	    if(Instance.getGameSettings().usesRenderChunking()){
-		    cx = getCamera().getTransform().getChunkX();
-		    cy = getCamera().getTransform().getChunkY();
-		    cz = getCamera().getTransform().getChunkZ();
+		    long cx = getCamera().getTransform().getChunkX();
+		    long cy = getCamera().getTransform().getChunkY();
+		    long cz = getCamera().getTransform().getChunkZ();
+		    RenderChunk3D tmpc;
 		    for (long x = -cox + cx; x <= cox + cx; x++) {
 		        for (long y = -coy + cy; y <= coy + cy; y++) {
 		            for (long z = -coz + cz; z <= coz + cz; z++) {
-		                if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
+		                if ((tmpc = scene.get(/*xyzToString(x, y, z)*/new ChunkCoord3D(x, y, z))) != null) {
 		                    tmpc.logic();
 		                }
 		            }
@@ -111,15 +108,16 @@ public class Scene3D extends AbstractScene3D {
 	protected final long render() {
     	lights.clear();
         lights.addAll(global.getImportantLights());
-        vertcount = 0;
+        long vertcount = 0;
         if (Instance.getGameSettings().usesRenderChunking()) {
-            cx = getCamera().getTransform().getChunkX();
-            cy = getCamera().getTransform().getChunkY();
-            cz = getCamera().getTransform().getChunkZ();
+            long cx = getCamera().getTransform().getChunkX();
+            long cy = getCamera().getTransform().getChunkY();
+            long cz = getCamera().getTransform().getChunkZ();
+            RenderChunk3D tmpc;
             for (long x = -cox + cx; x <= cox + cx; x++) {
                 for (long y = -coy + cy; y <= coy + cy; y++) {
                     for (long z = -coz + cz; z <= coz + cz; z++) {
-                        if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
+                        if ((tmpc = scene.get(/*xyzToString(x, y, z)*/new ChunkCoord3D(x, y, z))) != null) {
                             lights.addAll(tmpc.getImportantLights());
                         }
                     }
@@ -128,7 +126,7 @@ public class Scene3D extends AbstractScene3D {
             for (long x = -cox + cx; x <= cox + cx; x++) {
                 for (long y = -coy + cy; y <= coy + cy; y++) {
                     for (long z = -coz + cz; z <= coz + cz; z++) {
-                        if ((tmpc = scene.get(xyzToString(x, y, z))) != null) {
+                        if ((tmpc = scene.get(/*xyzToString(x, y, z)*/new ChunkCoord3D(x, y, z))) != null) {
                             vertcount += tmpc.render(getRenderConfig());
                         }
                     }
@@ -160,10 +158,10 @@ public class Scene3D extends AbstractScene3D {
         return entities;
     }
 
-    private static final String DELIMITER = ":";
-    private static String xyzToString(long x, long y, long z) {
-        return x + DELIMITER + y + DELIMITER + z;
-    }
+//    private static final String DELIMITER = ":";
+//    private static String xyzToString(long x, long y, long z) {
+//        return x + DELIMITER + y + DELIMITER + z;
+//    }
     
     @Override
     public DataMap toDataMap(DataMap data) {

@@ -13,6 +13,7 @@ import omnikryptec.gameobject.Sprite;
 import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.main.AbstractScene2D;
+import omnikryptec.main.ChunkCoord2D;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
 import omnikryptec.postprocessing.main.FrameBufferObject;
@@ -39,9 +40,7 @@ public class DefaultRenderer2D implements Renderer2D {
 //		fbo = new FrameBufferObject(Display.getWidth(), Display.getHeight(), DepthbufferType.NONE);
 	}
 
-	private ArrayList<Sprite> sprites;
 	private ArrayList<Light2D> lightlist;
-	private String stringTmp;
 	//private FrameBufferObject fbo;
 	private boolean light;
 	private long last = -1;
@@ -50,10 +49,10 @@ public class DefaultRenderer2D implements Renderer2D {
 
 	@Override
 	public long render(AbstractScene2D sc, RenderChunk2D global, long camChunkX, long camChunkY, int chunkOffsetX,
-			int chunkOffsetY, HashMap<String, RenderChunk2D> scene) {
+			int chunkOffsetY, HashMap<ChunkCoord2D, RenderChunk2D> scene) {
 		batch.setCamera(sc.getCamera());
 		filter.setCamera(sc.getCamera());
-		sprites = new ArrayList<>();
+		ArrayList<Sprite> sprites = new ArrayList<>();
 		if (GraphicsUtil.needsUpdate(last, GameSettings.CHECKCHANGEFRAMES)) {
 			light = OmniKryptecEngine.instance().getGameSettings().getBoolean(GameSettings.LIGHT_2D);
 			last = Instance.getFramecount();
@@ -65,9 +64,11 @@ public class DefaultRenderer2D implements Renderer2D {
 		} else {
 			lightlist = null;
 		}
+		ChunkCoord2D stringTmp;
 		for (long x = -chunkOffsetX; x <= chunkOffsetX; x++) {
 			for (long y = -chunkOffsetY; y <= chunkOffsetY; y++) {
-				stringTmp = Scene2D.xyToString(camChunkX + x, camChunkY + y);
+				stringTmp = new ChunkCoord2D(camChunkX + x, camChunkY + y);
+				//stringTmp = Scene2D.xyToString(camChunkX + x, camChunkY + y);
 				if (scene.get(stringTmp) != null) {
 					sprites.addAll(scene.get(stringTmp).__getSprites());
 					if (light) {
