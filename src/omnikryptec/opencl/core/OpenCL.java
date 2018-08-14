@@ -42,6 +42,12 @@ public class OpenCL {
 	}
 	
 	public static void cleanup() {
+		CLKernel.cleanup();
+		CLProgram.cleanup();
+		
+		CLMemory.cleanup();
+		
+		CLContext.cleanup();
 		CL.destroy();
 	}
 	

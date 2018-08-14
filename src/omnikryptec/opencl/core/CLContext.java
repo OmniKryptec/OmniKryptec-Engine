@@ -1,11 +1,16 @@
 package omnikryptec.opencl.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.opencl.CL10;
 import org.lwjgl.opencl.CLContextCallback;
 import org.lwjgl.system.MemoryUtil;
 
 public class CLContext {
 
+	private static List<CLContext> contexts = new ArrayList<>();
+	
 	private CLContextCallback contextCB;
 	private long context;
 	
@@ -24,4 +29,9 @@ public class CLContext {
 		return contextCB;
 	}
 	
+	public static void cleanup() {
+		for(CLContext c : contexts) {
+			CL10.clReleaseContext(c.getID());
+		}
+	}
 }

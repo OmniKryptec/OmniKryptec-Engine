@@ -54,5 +54,6 @@ public class CLPlatform {
 			return createdDevices.put(deviceInd, new CLDevice(devices.get(deviceInd), this));
 		}
 	}
+
 	
 }
