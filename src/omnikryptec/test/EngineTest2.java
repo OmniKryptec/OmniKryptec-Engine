@@ -1,9 +1,12 @@
 package omnikryptec.test;
 
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 import java.util.Random;
 
 import org.joml.Vector3f;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opencl.CL10;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.codemakers.lang.LanguageManager;
@@ -27,14 +30,18 @@ import omnikryptec.gameobject.particles.AttractorMode;
 import omnikryptec.gameobject.particles.ParticleAttractor;
 import omnikryptec.gameobject.particles.ParticleSpawnArea;
 import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
-import omnikryptec.gameobject.particlesV2.BakePosition;
-import omnikryptec.gameobject.particlesV2.DynamicParticleSimulation;
 import omnikryptec.gameobject.particlesV2.NBodySim;
 import omnikryptec.gameobject.particlesV2.ParticleDefinition;
-import omnikryptec.gameobject.particlesV2.SimulationFactory;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.main.Scene2D;
 import omnikryptec.main.Scene3D;
+import omnikryptec.opencl.core.CLCommandQueue;
+import omnikryptec.opencl.core.CLContext;
+import omnikryptec.opencl.core.CLDevice;
+import omnikryptec.opencl.core.CLKernel;
+import omnikryptec.opencl.core.CLPlatform;
+import omnikryptec.opencl.core.CLProgram;
+import omnikryptec.opencl.core.OpenCL;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.renderer.d3.FloorReflectionRenderer;
 import omnikryptec.renderer.d3.RenderConfiguration;
@@ -71,6 +78,13 @@ public class EngineTest2 {
     static AdvancedModel testdings;
     static FloorReflectionRenderer testrend;
 
+    static final String KERNEL = "kernel void sum(global const float* a, global const float* b, global float* result, int const size) {\r\n" + 
+    		"    const int itemId = get_global_id(0); \r\n" + 
+    		"    if(itemId < size) {\r\n" + 
+    		"        result[itemId] = a[itemId] + b[itemId];\r\n" + 
+    		"    }\r\n" + 
+    		"} ";
+    
     public static void main(String[] args) {
         try {
 
@@ -105,7 +119,38 @@ public class EngineTest2 {
                     .setBoolean(GameSettings.LIGHT_2D, false),
                     new GLFWInfo(3, 2, true, false, 1280, 720));
             Display.setAspectRatio(4 / 3.0);
-         //   XMLUtil.save(OmniKryptecEngine.instance().getDisplayManager().getSettings().toXMLDocument(), Format.getPrettyFormat(), new AdvancedFile(false, "gamesettings.xml").createOutputstream(false));
+            OpenCL.create();
+            CLPlatform platform = OpenCL.getPlatform(0);
+            CLDevice device = platform.createDeviceData(CL10.CL_DEVICE_TYPE_ALL).getDevice(0);
+            CLContext context = new CLContext(device);
+            CLCommandQueue queue = new CLCommandQueue(context, device, CL10.CL_QUEUE_PROFILING_ENABLE);
+            CLProgram program = new CLProgram(context, KERNEL).build(device, 1024);
+            CLKernel kernel = new CLKernel(program, "sum");
+//            int size=100;
+//            FloatBuffer aBuff = BufferUtils.createFloatBuffer(size);
+//            float[] tempData = new float[size];
+//            for(int i = 0; i < size; i++) {
+//                tempData[i] = i;
+//            }
+//            aBuff.put(tempData);
+//            aBuff.rewind();
+//            // Create float array from size-1 to 0. This means that the result should be size-1 for each element.
+//            FloatBuffer bBuff = BufferUtils.createFloatBuffer(size);
+//            for(int j = 0, i = size-1; j < size; j++, i--) {
+//                tempData[j] = i;
+//            }
+//            FloatBuffer result = BufferUtils.createFloatBuffer(size);
+//            bBuff.put(tempData);
+//            bBuff.rewind();
+//            kernel.setArg(0, aBuff);
+//            kernel.setArg(1, bBuff);
+//            kernel.setArg(2, result);
+//            kernel.setArg(3, size);
+//            kernel.enqueue(queue, 1, size, 0);
+//            queue.finish();
+//            System.out.println(result);
+            //   XMLUtil.save(OmniKryptecEngine.instance().getDisplayManager().getSettings().toXMLDocument(), Format.getPrettyFormat(), new AdvancedFile(false, "gamesettings.xml").createOutputstream(false));
+            
             // new Thread(new Runnable() {
             //
             // @Override
@@ -194,17 +239,17 @@ public class EngineTest2 {
 //            tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.6f))
 //                    .setFloat(Material.DAMPER, 1.01f).setVector3f(Material.SHADERINFO, new Vector3f(1));
             //OmniKryptecEngine.instance().ENGINE_BUS.registerEventHandler(new EngineTest2());
-            sim = SimulationFactory.createDynamicSimulation(SimulationFactory.POSITION, 3, SimulationFactory.VELOCITY, 3, SimulationFactory.ACCELERATION, 3, SimulationFactory.MASS, 1);
-            sim.addPerAllStep(new NBodySim());
-            sim.addPerAllStep(new BakePosition());
-            ParticleDefinition def = new ParticleDefinition();
-            sim.addSingle(def, SimulationFactory.POSITION, 0f, 0f, 10f, SimulationFactory.MASS, 10000000000f, SimulationFactory.VELOCITY, 3f, 3f, 0f);
-            sim.addSingle(def, SimulationFactory.POSITION, 10f, 0f, 0f, SimulationFactory.MASS, 10000000000f, SimulationFactory.VELOCITY, 0f, 3f, 3f);
-            sim.addSingle(def, SimulationFactory.POSITION, 0f, 10f, 0f, SimulationFactory.MASS, 10000000000f, SimulationFactory.VELOCITY, 3f, 0f, 3f);
-            for(int i=0; i<250; i++) {
-            	sim.simulate(0.5f);
-            }
-            printFloatBuffer(sim.getBuffers().get(SimulationFactory.POSITION).getBuffer());
+//            sim = SimulationFactory.createDynamicSimulation(SimulationFactory.POSITION, 3, SimulationFactory.VELOCITY, 3, SimulationFactory.ACCELERATION, 3, SimulationFactory.MASS, 1);
+//            sim.addPerAllStep(new NBodySim());
+//            sim.addPerAllStep(new BakePosition());
+//            ParticleDefinition def = new ParticleDefinition();
+//            sim.addSingle(def, SimulationFactory.POSITION, 0f, 0f, 10f, SimulationFactory.MASS, 10000000000f, SimulationFactory.VELOCITY, 3f, 3f, 0f);
+//            sim.addSingle(def, SimulationFactory.POSITION, 10f, 0f, 0f, SimulationFactory.MASS, 10000000000f, SimulationFactory.VELOCITY, 0f, 3f, 3f);
+//            sim.addSingle(def, SimulationFactory.POSITION, 0f, 10f, 0f, SimulationFactory.MASS, 10000000000f, SimulationFactory.VELOCITY, 3f, 0f, 3f);
+//            for(int i=0; i<250; i++) {
+//            	sim.simulate(0.5f);
+//            }
+//            printFloatBuffer(sim.getBuffers().get(SimulationFactory.POSITION).getBuffer());
             OmniKryptecEngine.instance().addAndSetScene(new Scene3D("test", (Camera) new Camera() {
 
                 @Override
@@ -427,7 +472,7 @@ public class EngineTest2 {
     // private static AttractedPaticleSystem system; //For AttractedPaticleSystem
     private Random ra = new Random();
     private double d = 0;
-    public static DynamicParticleSimulation sim;
+   // public static DynamicParticleSimulation sim;
     
     @EventSubscription
     public void onEvent(FrameEvent ev) {

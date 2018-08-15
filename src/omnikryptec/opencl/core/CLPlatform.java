@@ -15,6 +15,7 @@ public class CLPlatform {
 	private CLCapabilities platformCaps;
 	private PointerBuffer devices,ctxProps;
 	private long platform;
+	private int devs = -1;
 	
 	CLPlatform(long id) {
 		this.platform = id;
@@ -38,7 +39,8 @@ public class CLPlatform {
 	
 	public CLPlatform createDeviceData(int clDeviceFilter) {
 		CL10.clGetDeviceIDs(platform, clDeviceFilter, null, OpenCL.tmpBuffer);
-		devices = OpenCL.memStack.mallocPointer(OpenCL.tmpBuffer.get(0));
+		devs = OpenCL.tmpBuffer.get(0);
+		devices = OpenCL.memStack.mallocPointer(devs);
 		CL10.clGetDeviceIDs(platform, clDeviceFilter, devices, (IntBuffer)null);
 		return this;
 	}
@@ -47,12 +49,16 @@ public class CLPlatform {
 		return devices;
 	}
 	
+	public int getDevicesSize() {
+		return devs;
+	}
+	
 	public CLDevice getDevice(int deviceInd) {
-		if(createdDevices.containsKey(deviceInd)) {
-			return createdDevices.get(deviceInd);
-		}else {
-			return createdDevices.put(deviceInd, new CLDevice(devices.get(deviceInd), this));
+		if(!createdDevices.containsKey(deviceInd)) {
+			createdDevices.put(deviceInd, new CLDevice(devices.get(deviceInd), this));
 		}
+		return createdDevices.get(deviceInd);
+
 	}
 
 	
