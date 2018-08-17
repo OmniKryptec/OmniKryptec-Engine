@@ -61,9 +61,9 @@ public class OpenCL {
 		createPlatformData();
 	}
 	
+	private static final Class<?>[] constantsClasses = {CL10.class, CL12.class, CL20.class, CL21.class, CL22.class}
 	public static String searchConstants(int i) {
-		Class<?>[] classes = new Class<?>[]{CL10.class, CL12.class, CL20.class, CL21.class, CL22.class};
-		for(Class<?> c : classes) {
+		for(Class<?> c : constantsClasses) {
 			Field[] fields = c.getFields();
 			for(Field f : fields) {
 				try {
