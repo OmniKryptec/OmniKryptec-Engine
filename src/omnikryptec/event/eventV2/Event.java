@@ -1,9 +1,11 @@
 package omnikryptec.event.eventV2;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public abstract class Event {
 
 	private boolean called = false;
-	private boolean consumed = false;
+	private final AtomicBoolean consumed = new AtomicBoolean(false);
 	protected boolean asyncSubmission = false;
 	protected boolean asyncExecution = false;
 	protected boolean consumeable = true;
@@ -23,7 +25,7 @@ public abstract class Event {
 
 	public Event consume() {
 		if(isConsumeable()) {
-			consumed = true;
+			consumed.set(true);
 		}
 		return this;
 	}
@@ -33,7 +35,7 @@ public abstract class Event {
 	}
 	
 	public boolean isConsumed() {
-		return consumed;
+		return consumed.get();
 	}
 
 	public boolean isCalled() {
@@ -64,13 +66,9 @@ public abstract class Event {
 	}
 
 	public boolean isConsumeable() {
-		return !asyncExecution && consumeable;
+		return consumeable;
 	}
 	
-	/**
-	 * Does not work with async execution!
-	 * @param handler
-	 */
 	public void beforeExecution(EventHandler handler) {
 	}
 

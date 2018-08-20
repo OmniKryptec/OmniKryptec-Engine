@@ -13,9 +13,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Predicate;
 
-import omnikryptec.display.DisplayManager;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.settings.GameSettings;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;
 
@@ -82,22 +80,32 @@ public class EventBus {
 		if (list == null) {
 			return;
 		}
-		for (EventHandler m : list) {
-			try {
-				if (event.isAsyncExecution() && execpool != null) {
-					execpool.submit(() -> m.getMethod().invoke(m.getHandler(), event));
-				} else {
-					event.beforeExecution(m);
-					m.getMethod().setAccessible(true);
-					m.getMethod().invoke(m.getHandler(), event);
+		for (final EventHandler m : list) {
+			m.getMethod().setAccessible(true);
+			Runnable handlerInvocation = new Runnable() {
+
+				@Override
+				public void run() {
+					if(event.isConsumed()) {
+						return;
+					}
+					try {
+						event.beforeExecution(m);
+						m.getMethod().invoke(m.getHandler(), event);
+					} catch (IllegalAccessException e) {
+						Logger.log("Could not call eventhandler: " + e, LogLevel.ERROR);
+					} catch (IllegalArgumentException e) {
+						Logger.logErr("Some IllegalArgumentException: ", e);
+					} catch (InvocationTargetException e) {
+						Logger.log("Event failed: " + e, LogLevel.ERROR);
+						Logger.logErr("Stacktrace: ", e);
+					}
 				}
-			} catch (IllegalAccessException e) {
-				Logger.log("Could not call eventhandler: " + e, LogLevel.ERROR);
-			} catch (IllegalArgumentException e) {
-				Logger.logErr("Some IllegalArgumentException: ", e);
-			} catch (InvocationTargetException e) {
-				Logger.log("Event failed: " + e, LogLevel.ERROR);
-				Logger.logErr("Stacktrace: ", e);
+			};
+			if (event.isAsyncExecution() && execpool != null) {
+				execpool.submit(handlerInvocation);
+			} else {
+				handlerInvocation.run();
 			}
 			if (event.isConsumeable() && event.isConsumed()) {
 				break;
