@@ -116,8 +116,8 @@ public abstract class GameLoop {
 		GraphicsUtil.clear(engineInstance.getClearColor());
 	}
 
-	protected final void doPostprocessing() {
-		engineInstance.doPostprocessing();
+	protected final void sceneToScreen(boolean pp) {
+		engineInstance.sceneToScreen(pp);
 	}
 
 	protected final void beginScenesRendering() {

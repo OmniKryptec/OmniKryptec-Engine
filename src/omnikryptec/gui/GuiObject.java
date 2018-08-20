@@ -13,4 +13,9 @@ public class GuiObject {
 		return this;
 	}
 	
+	public GuiObject setY(float y) {
+		this.y = y;
+		return this;
+	}
+	
 }

@@ -327,10 +327,15 @@ public class OmniKryptecEngine implements Profilable {
 		createFbos();
 	}
 
-	void doPostprocessing() {
-		postpro.doPostProcessing(/* add, */ unsampledfbo, normalfbo, specularfbo, extrainfofbo);
+	void sceneToScreen(boolean pp) {
+		if(pp) {
+			postpro.doPostProcessing(/* add, */ unsampledfbo, normalfbo, specularfbo, extrainfofbo);
+		}else {
+			unsampledfbo.resolveToScreen();
+		}
 	}
 
+	
 	final double getRender3DTimeMS() {
 		return scene3DCurrent == null ? 0 : scene3DCurrent.getRenderTimeMS();
 	}

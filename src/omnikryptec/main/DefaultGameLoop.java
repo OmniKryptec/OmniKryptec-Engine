@@ -50,9 +50,7 @@ public class DefaultGameLoop extends GameLoop {
 			doGLTasks(-1);
 		}
 		endScenesRendering();
-		if ((mode & MODE_PP) != 0) {
-			doPostprocessing();
-		}
+		sceneToScreen((mode & MODE_PP) != 0);
 		if ((mode & MODE_GUI) != 0) {
 			renderGui();
 		}
