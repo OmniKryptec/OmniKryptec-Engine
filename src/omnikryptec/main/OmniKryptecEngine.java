@@ -12,6 +12,8 @@ import omnikryptec.display.DisplayManager;
 import omnikryptec.event.eventV2.EventBus;
 import omnikryptec.event.eventV2.engineevents.CleanupEvent;
 import omnikryptec.event.eventV2.engineevents.ErrorEvent;
+import omnikryptec.gui.GuiObject;
+import omnikryptec.gui.rendering.GuiRenderer;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.PostProcessing;
 import omnikryptec.postprocessing.main.RenderTarget;
@@ -106,6 +108,7 @@ public class OmniKryptecEngine implements Profilable {
 	private final ArrayList<AbstractScene2D> scenes2D = new ArrayList<>();
 	private AbstractScene3D scene3DCurrent;
 	private AbstractScene2D scene2DCurrent;
+	private GuiRenderer guirenderer;
 	private GameLoop gameloop;
 	private Color clearcolor = new Color(0, 0, 0, 0);
 	private ShutdownOption shutdownOption = ShutdownOption.JAVA;
@@ -132,16 +135,16 @@ public class OmniKryptecEngine implements Profilable {
 			addShutdownHook(() -> cleanup(false));
 			Profiler.addProfilable(this, 0);
 			this.manager = manager;
-			state = GameState.STARTING;
+			this.state = GameState.STARTING;
 			instance = this;
-			postpro = new PostProcessing(null);
+			this.postpro = new PostProcessing(null);
 			RendererRegistration.init();
 			this.createFbos();
+			this.guirenderer = new GuiRenderer();
 			Display.show();
 			Logger.log("Successfully booted the Engine!", LogLevel.FINEST);
-			instance = this;
 			if (gameloop == null) {
-				gameloop = new DefaultGameLoop();
+				this.gameloop = new DefaultGameLoop();
 				Logger.log("Successfully setted a DefaultGameLoop!", LogLevel.FINEST);
 			}
 		} catch (Exception e) {
@@ -181,6 +184,10 @@ public class OmniKryptecEngine implements Profilable {
 		return postpro;
 	}
 
+	final GuiRenderer getGuiRenderer() {
+		return guirenderer;
+	}
+	
 	public final void startLoop() {
 		if (gameloop != null) {
 			gameloop.run();
@@ -465,6 +472,11 @@ public class OmniKryptecEngine implements Profilable {
 		return this;
 	}
 
+	public final OmniKryptecEngine setGui(GuiObject parent) {
+		guirenderer.setGui(parent);
+		return this;
+	}
+	
 	public final AbstractScene3D getCurrent3DScene() {
 		return scene3DCurrent;
 	}

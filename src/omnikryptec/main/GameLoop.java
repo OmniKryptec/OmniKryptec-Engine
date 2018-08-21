@@ -169,7 +169,7 @@ public abstract class GameLoop {
 	}
 
 	protected final void renderGui() {
-		
+		engineInstance.getGuiRenderer().paint();
 	}
 
 	protected final void logic3D() {
