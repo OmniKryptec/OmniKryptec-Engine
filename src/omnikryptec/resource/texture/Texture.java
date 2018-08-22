@@ -86,6 +86,11 @@ public abstract class Texture implements ResourceObject {
 		return name;
 	}
 
+	@Override
+	public String toString() {
+		return getClass()+": "+getName();
+	}
+	
 	public static void resetLastBoundTexture() {
 		for (int i = 0; i < lastBoundTexture.length; i++) {
 			lastBoundTexture[i] = null;

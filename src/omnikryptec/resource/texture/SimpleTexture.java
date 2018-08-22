@@ -70,7 +70,7 @@ public class SimpleTexture extends Texture {
     }
 
     public static TextureBuilder newTextureb(InputStream textureFile) {
-        return newTextureb("", textureFile);
+        return newTextureb("nameless_texture_b", textureFile);
     }
 
     public static TextureBuilder newTextureb(String name, InputStream textureFile) {
@@ -78,7 +78,7 @@ public class SimpleTexture extends Texture {
     }
 
     public static SimpleTexture newTexture(AdvancedFile file) {
-        return newTexture("", file, null);
+        return newTexture(file.getBaseName(), file, null);
     }
 
     public static SimpleTexture newTexture(AdvancedFile file, Properties tp) {
@@ -171,4 +171,9 @@ public class SimpleTexture extends Texture {
         return data == null ? 0 : data.getHeight();
     }
 
+    @Override
+    public String toString() {
+    	return super.toString()+" ID: "+id;
+    }
+    
 }

@@ -89,15 +89,6 @@ public class SpriteBatch {
 		vertex(1, 1, 1, 1, 1, 1, 1, 1);
 	}
 
-	private void checkFlush(Texture t) {
-		if (idx >= max || t != texCur) {
-			flush();
-		}
-		if (t != null) {
-			t.bindToUnitOptimized(0);
-			texCur = t;
-		}
-	}
 
 	public void begin() {
 		begin(false);
@@ -150,6 +141,15 @@ public class SpriteBatch {
 		return color;
 	}
 
+	private void checkFlush(Texture t) {
+		if (idx >= max || t != texCur) {
+			flush();
+		}
+		if (t != null) {
+			t.bindToUnitOptimized(0);
+			texCur = t;
+		}
+	}
 	public void flush() {
 		if (idx > 0 && drawing) {
 			buffer.flip();
