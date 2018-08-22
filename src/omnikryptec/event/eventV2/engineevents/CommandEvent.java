@@ -1,7 +1,6 @@
 package omnikryptec.event.eventV2.engineevents;
 
 import omnikryptec.event.eventV2.Event;
-import omnikryptec.event.eventV2.EventBus;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.util.logger.Command;
 

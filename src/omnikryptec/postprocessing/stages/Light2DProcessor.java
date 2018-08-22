@@ -12,7 +12,6 @@ import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.PostProcessingStage;
 import omnikryptec.renderer.d2.DefaultRenderer2D;
-import omnikryptec.resource.texture.Texture;
 import omnikryptec.util.EnumCollection.BlendMode;
 import omnikryptec.util.EnumCollection.DepthbufferType;
 import omnikryptec.util.Instance;

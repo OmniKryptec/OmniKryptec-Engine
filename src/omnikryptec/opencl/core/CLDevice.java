@@ -1,9 +1,6 @@
 package omnikryptec.opencl.core;
 
-import org.lwjgl.BufferUtils;
-import org.lwjgl.PointerBuffer;
 import org.lwjgl.opencl.CL;
-import org.lwjgl.opencl.CL10;
 import org.lwjgl.opencl.CLCapabilities;
 
 public class CLDevice {

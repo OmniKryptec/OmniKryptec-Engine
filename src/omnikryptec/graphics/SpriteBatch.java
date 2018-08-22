@@ -10,7 +10,6 @@ import org.lwjgl.opengl.GL11;
 import omnikryptec.collision.d2.Rectangle;
 import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Sprite;
-import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.model.VertexArrayObject;
 import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.resource.texture.Texture;

@@ -9,7 +9,6 @@ import omnikryptec.event.eventV2.engineevents.FrameEvent.FrameType;
 import omnikryptec.event.eventV2.engineevents.ResizeEvent;
 import omnikryptec.event.input.InputManager;
 import omnikryptec.graphics.GraphicsUtil;
-import omnikryptec.resource.texture.Texture;
 import omnikryptec.util.EnumCollection.GameLoopShutdownOption;
 import omnikryptec.util.logger.LogLevel;
 import omnikryptec.util.logger.Logger;

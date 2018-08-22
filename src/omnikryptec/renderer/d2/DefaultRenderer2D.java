@@ -3,11 +3,8 @@ package omnikryptec.renderer.d2;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import omnikryptec.display.Display;
 import omnikryptec.event.eventV2.EventSubscription;
-import omnikryptec.event.eventV2.EventBus;
 import omnikryptec.event.eventV2.engineevents.ResizeEvent;
-import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Light2D;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.graphics.GraphicsUtil;
@@ -15,12 +12,9 @@ import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.main.AbstractScene2D;
 import omnikryptec.main.ChunkCoord2D;
 import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.Scene2D;
-import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.Color;
 import omnikryptec.util.EnumCollection.BlendMode;
-import omnikryptec.util.EnumCollection.DepthbufferType;
 import omnikryptec.util.FrustrumFilter;
 import omnikryptec.util.Instance;
 

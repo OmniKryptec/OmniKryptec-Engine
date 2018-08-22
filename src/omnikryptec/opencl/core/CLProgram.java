@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opencl.CL10;
-import org.lwjgl.opencl.CLProgramCallbackI;
 
 public class CLProgram {
 	

@@ -21,7 +21,6 @@ import org.lwjgl.opengl.GL30;
 import de.codemakers.io.file.AdvancedFile;
 import omnikryptec.display.Display;
 import omnikryptec.graphics.OpenGL;
-import omnikryptec.resource.loader.ResourceObject;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.settings.GameSettings;
 import omnikryptec.util.EnumCollection.DepthbufferType;

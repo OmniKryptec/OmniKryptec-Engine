@@ -4,7 +4,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
 import omnikryptec.audio.AudioManager;
-import omnikryptec.event.eventV2.EventBus;
 import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.main.OmniKryptecEngine;
 import omnikryptec.opencl.core.OpenCL;

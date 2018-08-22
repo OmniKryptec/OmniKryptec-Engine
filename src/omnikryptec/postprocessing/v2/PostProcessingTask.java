@@ -1,9 +1,6 @@
 package omnikryptec.postprocessing.v2;
 
-import omnikryptec.graphics.GraphicsUtil;
 import omnikryptec.postprocessing.main.FrameBufferObject;
-import omnikryptec.resource.model.Model;
-import omnikryptec.util.ModelUtil;
 
 public abstract class PostProcessingTask {
 

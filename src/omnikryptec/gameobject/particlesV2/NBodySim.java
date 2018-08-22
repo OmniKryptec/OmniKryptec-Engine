@@ -1,7 +1,5 @@
 package omnikryptec.gameobject.particlesV2;
 
-import java.util.Map;
-
 import omnikryptec.util.PhysicsUtil;
 
 public class NBodySim implements SimulatorPerSimulation {
