@@ -24,8 +24,14 @@ public abstract class GuiContainer {
 		
 	}
 	
-	public void setEnabled(boolean enabled) {
+	public GuiContainer add(GuiContainer g) {
+		objs.add(g);
+		return this;
+	}
+	
+	public GuiContainer setEnabled(boolean enabled) {
 		this.enabled = enabled;
+		return this;
 	}
 	
 	public boolean isEnabled() {

@@ -37,7 +37,7 @@ public class Light2DProcessor extends PostProcessingStage {
 			GraphicsUtil.blendMode(BlendMode.ADDITIVE);
 			myrenderer.getSpriteBatch().begin();
 			for (Light2D s : myrenderer.getPreparedLights()) {
-				System.out.println(s.getTexture());
+				//System.out.println(s.getTexture());
 				s.paint(myrenderer.getSpriteBatch());
 			}
 			myrenderer.getSpriteBatch().end();

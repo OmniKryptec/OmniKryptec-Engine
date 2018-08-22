@@ -2,39 +2,41 @@ package omnikryptec.gui;
 
 import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.resource.texture.Texture;
+import omnikryptec.util.Color;
 
-public class TexturedGuiObject extends GuiContainer{
+public class TexturedGuiContainer extends GuiContainer{
 	
+	private Color color = new Color();
 	private Texture texture;
 	private float x,y,w,h;
 	
-	public TexturedGuiObject(Texture t, float x, float y) {
+	public TexturedGuiContainer(Texture t, float x, float y) {
 		this.texture = t;
 		this.x = x;
 		this.y = y;
 	}
 		
-	public TexturedGuiObject setX(float x) {
+	public TexturedGuiContainer setX(float x) {
 		this.x = x;
 		return this;
 	}
 	
-	public TexturedGuiObject setY(float y) {
+	public TexturedGuiContainer setY(float y) {
 		this.y = y;
 		return this;
 	}
 	
-	public TexturedGuiObject setW(float w) {
+	public TexturedGuiContainer setW(float w) {
 		this.w = w;
 		return this;
 	}
 	
-	public TexturedGuiObject setH(float h) {
+	public TexturedGuiContainer setH(float h) {
 		this.h = h;
 		return this;
 	}
 	
-	public TexturedGuiObject setTexture(Texture t) {
+	public TexturedGuiContainer setTexture(Texture t) {
 		this.texture = t;
 		return this;
 	}
@@ -58,9 +60,14 @@ public class TexturedGuiObject extends GuiContainer{
 	public float getH() {
 		return h;
 	}
-
+	
+	public Color getColor() {
+		return color;
+	}
+	
 	@Override
 	public void draw(SpriteBatch batch) {
+		batch.color().setFrom(color);
 		batch.draw(texture, x, y, w, h);
 	}
 	

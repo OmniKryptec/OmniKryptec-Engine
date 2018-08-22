@@ -7,7 +7,7 @@ public class Color {
     private Vector4f color = new Vector4f();
 
     public Color() {
-        this(0, 0, 0, 0);
+        this(1, 1, 1, 1);
     }
 
     public Color(float r, float g, float b) {
