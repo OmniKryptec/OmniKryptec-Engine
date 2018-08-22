@@ -2,12 +2,12 @@ package omnikryptec.gui.rendering;
 
 import omnikryptec.gameobject.Camera;
 import omnikryptec.graphics.SpriteBatch;
-import omnikryptec.gui.GuiObject;
+import omnikryptec.gui.GuiContainer;
 
 public class GuiRenderer {
 
 	private SpriteBatch batch;
-	private GuiObject parent;
+	private GuiContainer parent;
 	
 	public GuiRenderer() {
 		batch = new SpriteBatch(new Camera().setOrthographicProjection2D(0, 0, 1, 1));
@@ -16,12 +16,12 @@ public class GuiRenderer {
 	public void paint() {
 		if(parent!=null) {
 			batch.begin();
-			parent.paint(batch);
+			parent.update(batch,true);
 			batch.end();
 		}
 	}
 	
-	public void setGui(GuiObject gui) {
+	public void setGui(GuiContainer gui) {
 		this.parent = gui;
 	}
 }

@@ -5,17 +5,31 @@ import java.util.List;
 
 import omnikryptec.graphics.SpriteBatch;
 
-public class GuiContainer extends GuiObject{
+public abstract class GuiContainer {
 
-	private List<GuiObject> objs = new ArrayList<>();
+	private boolean enabled=true;
+	private List<GuiContainer> objs = new ArrayList<>();
+
 	
-	@Override
-	public void draw(SpriteBatch batch) {
-		for(GuiObject g : objs) {
-			g.draw(batch);
+	public void update(SpriteBatch batch, boolean checkMouse) {
+		if(isEnabled()) {
+			draw(batch);
+			for(GuiContainer g : objs) {
+				g.update(batch, checkMouse);
+			}
 		}
 	}
 	
+	public void draw(SpriteBatch batch) {
+		
+	}
 	
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+	
+	public boolean isEnabled() {
+		return enabled;
+	}
 	
 }

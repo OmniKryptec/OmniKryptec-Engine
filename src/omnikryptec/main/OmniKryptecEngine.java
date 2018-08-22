@@ -12,7 +12,7 @@ import omnikryptec.display.DisplayManager;
 import omnikryptec.event.eventV2.EventBus;
 import omnikryptec.event.eventV2.engineevents.CleanupEvent;
 import omnikryptec.event.eventV2.engineevents.ErrorEvent;
-import omnikryptec.gui.GuiObject;
+import omnikryptec.gui.GuiContainer;
 import omnikryptec.gui.rendering.GuiRenderer;
 import omnikryptec.postprocessing.main.FrameBufferObject;
 import omnikryptec.postprocessing.main.PostProcessing;
@@ -472,7 +472,7 @@ public class OmniKryptecEngine implements Profilable {
 		return this;
 	}
 
-	public final OmniKryptecEngine setGui(GuiObject parent) {
+	public final OmniKryptecEngine setGui(GuiContainer parent) {
 		guirenderer.setGui(parent);
 		return this;
 	}

@@ -3,7 +3,7 @@ package omnikryptec.gui;
 import omnikryptec.graphics.SpriteBatch;
 import omnikryptec.resource.texture.Texture;
 
-public class TexturedGuiObject extends GuiObject{
+public class TexturedGuiObject extends GuiContainer{
 	
 	private Texture texture;
 	private float x,y,w,h;
@@ -34,6 +34,31 @@ public class TexturedGuiObject extends GuiObject{
 		return this;
 	}
 	
+	public TexturedGuiObject setTexture(Texture t) {
+		this.texture = t;
+		return this;
+	}
+	
+	public Texture getTexture() {
+		return texture;
+	}
+
+	public float getX() {
+		return x;
+	}
+
+	public float getY() {
+		return y;
+	}
+
+	public float getW() {
+		return w;
+	}
+
+	public float getH() {
+		return h;
+	}
+
 	@Override
 	public void draw(SpriteBatch batch) {
 		batch.draw(texture, x, y, w, h);
