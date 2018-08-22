@@ -192,10 +192,10 @@ public class EngineTest2 {
             // CompleteGaussianBlurStage(false, 0.05f, 0.05f));
             // PostProcessing.instance().addStage(new DebugRenderer());
 
-//            final AdvancedFile res = new AdvancedFile(true, "res");
+            final AdvancedFile res = new AdvancedFile(true, "res");
 //            final AdvancedFile test = new AdvancedFile(true, "omnikryptec", "test");
 //            //System.out.println(res);
-//            ResourceLoader.createInstanceDefault(true, false);
+            ResourceLoader.createInstanceDefault(true, false);
 //            //ResourceLoader.currentInstance().stageAdvancedFiles(1, ResourceLoader.LOAD_XML_INFO, res);
 //            ResourceLoader.currentInstance().stageAdvancedFiles(1, new AdvancedFile(true, res, "jd.png"));
 //            ResourceLoader.currentInstance().stageAdvancedFiles(1, ResourceLoader.LOAD_XML_INFO, new AdvancedFile(true, res, "js.png"));
@@ -204,15 +204,15 @@ public class EngineTest2 {
 //            ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, test, "brunnen.png"));
 //            ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, test, "brunnen_normal.png"));
 //            ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, test, "brunnen_specular.png"));
-//            ResourceLoader.currentInstance().stageAdvancedFiles(1, new AdvancedFile(true, res, "final_tree_3.png"));
-//            ResourceLoader.currentInstance().stageAdvancedFiles(1, new AdvancedFile(true, res, "final_tree_3.obj"));
+            ResourceLoader.currentInstance().stageAdvancedFiles(1, new AdvancedFile(true, res, "final_tree_3.png"));
+            ResourceLoader.currentInstance().stageAdvancedFiles(1, new AdvancedFile(true, res, "final_tree_3.obj"));
 //            ResourceLoader.currentInstance().stageAdvancedFiles(1, new AdvancedFile(true, res, "block.obj"));
 //            ResourceLoader.currentInstance().stageAdvancedFiles(1, new AdvancedFile(true, res, "diffuse.png"));
 //            ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, test, "pine.obj"));
 //            ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, test, "pine2.png"));
 //            ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, test, "pine2_normal.png"));
 //            ResourceLoader.currentInstance().stageAdvancedFiles(0, new AdvancedFile(true, test, "cosmic.png"));
-//            ResourceLoader.currentInstance().loadStagedAdvancedFiles(true);
+            ResourceLoader.currentInstance().loadStagedAdvancedFiles(true);
 //            //System.out.println("Resources loaded: " + ResourceLoader.currentInstance().getLoadedData());
 //            SimpleTexture jd = ResourceLoader.currentInstance().getTexture("res:jd.png")/*SimpleTexture.newTexture(new AdvancedFile(true, res, "jd.png"))*/;
 //            SimpleTexture js = ResourceLoader.currentInstance().getTexture("res:js.png")/*SimpleTexture.newTexture(new AdvancedFile(true, res, "js.png"))*/;
@@ -223,21 +223,22 @@ public class EngineTest2 {
 //            SimpleTexture brunnent = ResourceLoader.currentInstance().getTexture("omnikryptec:test:brunnen.png")/*SimpleTexture.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create()*/;
 //            SimpleTexture brunnen_norm = ResourceLoader.currentInstance().getTexture("omnikryptec:test:brunnen_normal.png")/*SimpleTexture.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen_normal.png")).create()*/;
 //            SimpleTexture brunnen_specular = ResourceLoader.currentInstance().getTexture("omnikryptec:test:brunnen_specular.png")/*SimpleTexture.newTexture("/omnikryptec/test/brunnen_specular.png")*/;
-//            SimpleTexture baum = ResourceLoader.currentInstance().getTexture("res:final_tree_3.png")/*SimpleTexture.newTexture(new AdvancedFile(true, res, "final_tree_3.png"))*/;
+            SimpleTexture baum = ResourceLoader.currentInstance().getTexture("res:final_tree_3.png")/*SimpleTexture.newTexture(new AdvancedFile(true, res, "final_tree_3.png"))*/;
 //            //System.out.println(new AdvancedFile(true, res, "final_tree_3.obj"));
 //            Model baumM = ResourceLoader.currentInstance().getResource(Model.class, "res:final_tree_3.obj")/*Model.newModel(new AdvancedFile(true, res, "final_tree_3.obj"))*/;
-//            // Model baumM = Model.newModel(new AdvancedFile(res, "cube.obj"));
+             //Model baumM = Model.newModel(new AdvancedFile(true, res, "final_tree_3."));
+            Model baumM = ResourceLoader.currentInstance().getResource("res:final_tree_3.obj");
 //            AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
 //            Model BLOCK = ResourceLoader.currentInstance().getResource(Model.class, "res:block.obj")/*new Model("", ObjLoader.loadOBJ(new AdvancedFile(true, res, "block.obj")))*/;
-//            TexturedModel tm = new TexturedModel("brunnen", baumM, baum);
-//            tm.getMaterial().setRenderer(RendererRegistration.FORWARD_MESH_RENDERER);
+            TexturedModel tm = new TexturedModel("brunnen", baumM, baum);
+            tm.getMaterial().setRenderer(RendererRegistration.FORWARD_MESH_RENDERER);
 //            testdings = tm;
 //            // tm.getMaterial().setTexture(Material.NORMAL,
 //            // brunnen_norm).setTexture(Material.SPECULAR, brunnen_specular);
 //            // tm.getMaterial().setNormalmap(jn).setSpecularmap(js);
-//            // tm.getMaterial().setTexture(Material.SPECULAR, );
-//            tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.6f))
-//                    .setFloat(Material.DAMPER, 1.01f).setVector3f(Material.SHADERINFO, new Vector3f(1));
+            // tm.getMaterial().setTexture(Material.SPECULAR, );
+            tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.6f))
+                    .setFloat(Material.DAMPER, 1.01f).setVector3f(Material.SHADERINFO, new Vector3f(1));
             //OmniKryptecEngine.instance().ENGINE_BUS.registerEventHandler(new EngineTest2());
 //            sim = SimulationFactory.createDynamicSimulation(SimulationFactory.POSITION, 3, SimulationFactory.VELOCITY, 3, SimulationFactory.ACCELERATION, 3, SimulationFactory.MASS, 1);
 //            sim.addPerAllStep(new NBodySim());
@@ -279,45 +280,45 @@ public class EngineTest2 {
 //            ptm.getMaterial().setVector3f(Material.REFLECTIVITY, new Vector3f(1f)).setFloat(Material.DAMPER, 10)
 //                    .setVector3f(Material.SHADERINFO, new Vector3f(1, 1, 0));
 //
-//            Random r = new Random();
-//            // for (int i = 0; i < 250; i++) {
-//            // Entity e = new Entity(tm) {
-//            // @Override
-//            // public void doLogic() {
-//            // // setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(),
-//            // // r.nextFloat());
-//            // // InputManager.doFirstPersonController(this,
-//            // // DisplayManager.instance().getSettings().getKeySettings(),
-//            // // 1, 1, 1);
-//            // // increaseRelativeRot(0, 1, 0);
-//            // }
-//            // }.setScale(new Vector3f(3, 3, 3));
-//            // //e.setRelativePos(5, -10, 10);
-//            // // e.setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);
-//            // e.setRelativePos(r.nextInt(100) - 50, r.nextInt(100) - 50, r.nextInt(100) -
-//            // 50);
-//            // OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
-//            // }
-//            System.out.println("Generating objs...");
-//            int cube = 20;
-//            int abstand = 5;
-//            float scale = 1;
-//            int objcount = 0;
-//            for (int x = -cube; x < cube; x += abstand) {
-//                for (int y = -cube; y < cube; y += abstand) {
-//                    for (int z = -cube; z < cube; z += abstand) {
-//                        GameObject3D go;
-//                        // go = new GameObject().setRelativePos(x, y, z);
-//                        go = (GameObject3D) new Entity(tm).setUpdateType(UpdateType.STATIC);
-//                        go.getTransform().setDirty().setScale(scale).setPosition(x, y, z).getRotationSimple().rotate(0,
-//                                0, 0);
-//                        Instance.getCurrent3DScene().addGameObject(go);
-//                        // system.addAttractor(new
-//                        // ParticleAttractor(go).setAcceleration(10).setMode(AttractorMode.KILL_ON_REACH).setTolerance(5));
-//                        objcount++;
-//                    }
-//                }
-//            }
+            Random r = new Random();
+            // for (int i = 0; i < 250; i++) {
+            // Entity e = new Entity(tm) {
+            // @Override
+            // public void doLogic() {
+            // // setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(),
+            // // r.nextFloat());
+            // // InputManager.doFirstPersonController(this,
+            // // DisplayManager.instance().getSettings().getKeySettings(),
+            // // 1, 1, 1);
+            // // increaseRelativeRot(0, 1, 0);
+            // }
+            // }.setScale(new Vector3f(3, 3, 3));
+            // //e.setRelativePos(5, -10, 10);
+            // // e.setColor(r.nextFloat(), r.nextFloat(), r.nextFloat(), 1);
+            // e.setRelativePos(r.nextInt(100) - 50, r.nextInt(100) - 50, r.nextInt(100) -
+            // 50);
+            // OmniKryptecEngine.instance().getCurrentScene().addGameObject(e);
+            // }
+            System.out.println("Generating objs...");
+            int cube = 20;
+            int abstand = 5;
+            float scale = 1;
+            int objcount = 0;
+            for (int x = -cube; x < cube; x += abstand) {
+                for (int y = -cube; y < cube; y += abstand) {
+                    for (int z = -cube; z < cube; z += abstand) {
+                        GameObject3D go;
+                        // go = new GameObject().setRelativePos(x, y, z);
+                        go = (GameObject3D) new Entity(tm).setUpdateType(UpdateType.STATIC);
+                        go.getTransform().setDirty().setScale(scale).setPosition(x, y, z).getRotationSimple().rotate(0,
+                                0, 0);
+                        Instance.getCurrent3DScene().addGameObject(go);
+                        // system.addAttractor(new
+                        // ParticleAttractor(go).setAcceleration(10).setMode(AttractorMode.KILL_ON_REACH).setTolerance(5));
+                        objcount++;
+                    }
+                }
+            }
 //            GameObject3D go;
 //            // go = new GameObject().setRelativePos(x, y, z);
 //            go = (GameObject3D) new Entity(tm).setColor(1, 0, 0, 1).setUpdateType(UpdateType.STATIC);
@@ -416,10 +417,10 @@ public class EngineTest2 {
 //            // .addGameObject(l.setAttenuation(1, 0f, 0).setCuttOffRange(50).setColor(1, 0f,
 //            // 0f).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0,
 //            // -1, 0));
-//            l = new Light3D();
-//            OmniKryptecEngine.instance().getCurrent3DScene()
-//                    .addGameObject((GameObject3D) l.setAttenuation(1, 0, 0).setColor(1, 1, 1).setDirectional(true)
-//                            .setConeAttenuation(1, 0, 0).setConeDegrees(55).setDirection(0, -1, 0).setGlobal(true));
+            l = new Light3D();
+            OmniKryptecEngine.instance().getCurrent3DScene()
+                    .addGameObject((GameObject3D) l.setAttenuation(1, 0, 0).setColor(1, 1, 1).setDirectional(true)
+                            .setConeAttenuation(1, 0, 0).setConeDegrees(55).setDirection(0, -1, 0).setGlobal(true));
 //            l.getTransform().setPosition(0, 0, 0);
 //            // Light l2 = new Light();
 //            // OmniKryptecEngine.instance().getCurrentScene()

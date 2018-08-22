@@ -12,6 +12,7 @@ import omnikryptec.gameobject.Camera;
 import omnikryptec.gameobject.Sprite;
 import omnikryptec.resource.loader.ResourceLoader;
 import omnikryptec.resource.model.VertexArrayObject;
+import omnikryptec.resource.texture.SimpleTexture;
 import omnikryptec.resource.texture.Texture;
 import omnikryptec.shader.base.Shader;
 import omnikryptec.shader.files.render.Shader2D;
@@ -312,7 +313,12 @@ public class SpriteBatch {
 			x4 = x;
 			y4 = y + height;
 		}
-
+		//:(
+		if(tex instanceof SimpleTexture) {
+			v = 1 - v;
+			v2 = 1 - v2;
+		}
+		
 		// top left, top right, bottom left
 		vertex(x1, y1, r, g, b, a, u, v);
 		vertex(x2, y2, r, g, b, a, u2, v);

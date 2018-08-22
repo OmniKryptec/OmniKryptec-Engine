@@ -26,7 +26,7 @@ public class GuiObject {
 	}
 	
 	public void paint(SpriteBatch batch) {
-		batch.draw(texture, x, y);
+		batch.draw(texture, x, y, 0.5f, 0.5f);
 	}
 	
 }

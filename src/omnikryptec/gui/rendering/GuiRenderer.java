@@ -10,7 +10,7 @@ public class GuiRenderer {
 	private GuiObject parent;
 	
 	public GuiRenderer() {
-		batch = new SpriteBatch(new Camera().setDefaultScreenSpaceProjection());
+		batch = new SpriteBatch(new Camera().setOrthographicProjection2D(0, 0, 1, 1));
 	}
 	
 	public void paint() {
