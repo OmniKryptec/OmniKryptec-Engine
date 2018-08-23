@@ -101,12 +101,14 @@ dependencies {
     extraLibs "org.lwjgl:lwjgl-opencl:$lwjglVersion"
     extraLibs "org.lwjgl:lwjgl-opengl:$lwjglVersion"
     extraLibs "org.lwjgl:lwjgl-opengles:$lwjglVersion"
+    /*
     extraLibs "org.lwjgl:lwjgl:$lwjglVersion:$lwjglNatives"
     extraLibs "org.lwjgl:lwjgl-assimp:$lwjglVersion:$lwjglNatives"
     extraLibs "org.lwjgl:lwjgl-glfw:$lwjglVersion:$lwjglNatives"
     extraLibs "org.lwjgl:lwjgl-openal:$lwjglVersion:$lwjglNatives"
     extraLibs "org.lwjgl:lwjgl-opengl:$lwjglVersion:$lwjglNatives"
     extraLibs "org.lwjgl:lwjgl-opengles:$lwjglVersion:$lwjglNatives"
+    */
     extraLibs "org.joml:joml:${jomlVersion}"
     //jacksons version previously: 2.9.0.pr3
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
@@ -139,5 +141,8 @@ dependencies {
 jar {
     from {
         configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    from ('src/main/java') {
+        include '**/*.glsl'
     }
 }
