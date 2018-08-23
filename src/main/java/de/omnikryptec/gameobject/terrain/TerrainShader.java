@@ -26,7 +26,7 @@ import de.omnikryptec.shader.base.UniformSampler;
  */
 public class TerrainShader extends Shader {
 
-    private static final String SHADER_FOLDER = "/omnikryptec/gameobject/terrain/";
+    private static final String SHADER_FOLDER = "/de/omnikryptec/gameobject/terrain/";
 
     /* VertexShader Uniforms */
     public static final UniformMatrix transformationMatrix = new UniformMatrix("transformationMatrix");

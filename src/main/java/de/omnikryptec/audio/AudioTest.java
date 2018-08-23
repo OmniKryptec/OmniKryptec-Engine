@@ -43,8 +43,8 @@ public class AudioTest {
         Logger.setMinimumLogLevel(LogLevel.FINEST);
         AudioManager.init();
         AudioManager.setListenerData(null, new Vector3f(0, 0, 0), new Vector3f(0, 0, 0), new Vector3f(0, 0, 0));
-        AudioManager.loadSound("bounce", "/omnikryptec/audio/bounce.wav");
-        //AudioManager.loadSound("Tobu_-_Infectious_[NCS_Release]", "/omnikryptec/audio/Tobu_-_Infectious_[NCS_Release].wav");
+        AudioManager.loadSound("bounce", "/de/omnikryptec/audio/bounce.wav");
+        //AudioManager.loadSound("Tobu_-_Infectious_[NCS_Release]", "/de/omnikryptec/audio/Tobu_-_Infectious_[NCS_Release].wav");
         final AudioSource source = new AudioSource();
         timer.start();
         // source.setLooping(true);

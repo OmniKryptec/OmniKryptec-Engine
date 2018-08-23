@@ -130,19 +130,19 @@ public class JBulletTest2 {
                     .loadTexture("/de/omnikryptec/test/brunnen.png");
             entityBuilder_pine = new EntityBuilder().loadModel("/de/omnikryptec/test/pine.obj")
                     .loadTexture("/de/omnikryptec/test/pine2.png");
-            final SimpleTexture backgroundTexture = SimpleTexture.newTextureb("/omnikryptec/gameobject/terrain/grassy2.png")
+            final SimpleTexture backgroundTexture = SimpleTexture.newTextureb("/de/omnikryptec/gameobject/terrain/grassy2.png")
                     .create();
-            final SimpleTexture rTexture = SimpleTexture.newTextureb("/omnikryptec/gameobject/terrain/mud.png").create();
-            final SimpleTexture gTexture = SimpleTexture.newTextureb("/omnikryptec/gameobject/terrain/grassFlowers.png").create();
-            final SimpleTexture bTexture = SimpleTexture.newTextureb("/omnikryptec/gameobject/terrain/path.png").create();
-            final SimpleTexture blendMap = SimpleTexture.newTextureb("/omnikryptec/gameobject/terrain/blendMap.png").create();
+            final SimpleTexture rTexture = SimpleTexture.newTextureb("/de/omnikryptec/gameobject/terrain/mud.png").create();
+            final SimpleTexture gTexture = SimpleTexture.newTextureb("/de/omnikryptec/gameobject/terrain/grassFlowers.png").create();
+            final SimpleTexture bTexture = SimpleTexture.newTextureb("/de/omnikryptec/gameobject/terrain/path.png").create();
+            final SimpleTexture blendMap = SimpleTexture.newTextureb("/de/omnikryptec/gameobject/terrain/blendMap.png").create();
             try {
-                heightMap = ImageIO.read(Terrain.class.getResourceAsStream("/omnikryptec/gameobject/terrain/heightmap.png"));
+                heightMap = ImageIO.read(Terrain.class.getResourceAsStream("/de/omnikryptec/gameobject/terrain/heightmap.png"));
             } catch (Exception ex) {
                 Logger.logErr("Error while loading the heightmap: " + ex, ex);
                 heightMap = null;
             }
-            AudioManager.loadSound("bounce", "/omnikryptec/audio/bounce.wav");
+            AudioManager.loadSound("bounce", "/de/omnikryptec/audio/bounce.wav");
             OmniKryptecEngine.instance().getCurrent3DScene().useDefaultPhysics();
             setupStaticPlane();
             setupRigidBodyBuilder();
@@ -159,7 +159,7 @@ public class JBulletTest2 {
             OmniKryptecEngine.instance().getCurrent3DScene().getCamera().getTransform().increaseRotation(0, 90, 0);
             final AudioSource source = new AudioSource();
             final StreamedSound streamedSound = StreamedSound.ofInputStream("Tobu_-_Infectious_[NCS_Release]", source,
-                    JBulletTest2.class.getResourceAsStream("/omnikryptec/audio/Tobu_-_Infectious_[NCS_Release].wav"));
+                    JBulletTest2.class.getResourceAsStream("/de/omnikryptec/audio/Tobu_-_Infectious_[NCS_Release].wav"));
             source.setAffectedByPhysics(true);
             source.play(streamedSound);
             source.setFadeTimeComplete(10000);

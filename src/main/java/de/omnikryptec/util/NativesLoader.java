@@ -30,7 +30,7 @@ import java.util.function.Consumer;
  */
 public class NativesLoader {
     
-    private static final String NATIVESPATH = "/omnikryptec/res/natives/";
+    private static final String NATIVESPATH = "/de/omnikryptec/res/natives/";
     private static final String LWJGLLIBRARYPATH = "org.lwjgl.librarypath";
     private static AdvancedFile NATIVESFOLDER = null;
     private static String OLDLWJGLLIBRARYPATH = "";

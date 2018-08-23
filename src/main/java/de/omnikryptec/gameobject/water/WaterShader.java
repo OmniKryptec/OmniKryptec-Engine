@@ -25,7 +25,7 @@ import de.omnikryptec.shader.base.Shader;
  */
 public class WaterShader extends Shader {
 
-    private static final String SHADER_FOLDER = "/omnikryptec/gameobject/water/";
+    private static final String SHADER_FOLDER = "/de/omnikryptec/gameobject/water/";
 
     /* VertexShader Uniforms */
     /*    
