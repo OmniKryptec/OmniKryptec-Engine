@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
  */
 public class ResourceLoader implements Loader {
     
-    public static final SimpleTexture MISSING_TEXTURE = SimpleTexture.newTexture(new AdvancedFile(true, "", "omnikryptec", "resource", "loader", "missing_texture.png"));
+    public static final SimpleTexture MISSING_TEXTURE = SimpleTexture.newTexture(new AdvancedFile(true, "", "de", "omnikryptec", "resource", "loader", "missing_texture.png"));
     
     public static final long LOAD_XML_INFO = 1;
     

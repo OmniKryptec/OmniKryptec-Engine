@@ -139,7 +139,7 @@ public class AnimationTest {
             }.setPerspectiveProjection(75, 0.1F, 1000)))));
 
             //FIXME Only for testing DON'T DELETE TIHS!!! START
-            AdvancedFile res_test = new AdvancedFile(true, "", "omnikryptec", "test");
+            AdvancedFile res_test = new AdvancedFile(true, "", "de", "omnikryptec", "test");
             ResourceLoader.createInstanceDefault(true, false);
             //ResourceLoader.getInstance().stageAdvancedFiles(-1, DIFFUSE_FILE);
             //ResourceLoader.getInstance().stageAdvancedFiles(MODEL_FILE);
