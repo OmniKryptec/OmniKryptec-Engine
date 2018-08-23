@@ -65,7 +65,7 @@ public class Shader {
     private static final ModuleSystem SHADERMODULES;
 
     static {
-        SHADERMODULES = new ModuleSystem("$", "$", "omnikryptec/shader/modules/");
+        SHADERMODULES = new ModuleSystem("$", "$", "de/omnikryptec/shader/modules/");
         SHADERMODULES.addDynamic("MAX_LIGHTS", () -> Instance.getGameSettings().getInteger(GameSettings.MAX_FORWARD_LIGHTS));
         SHADERMODULES.addDynamic("ANIM_MAX_JOINTS", () -> Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_JOINTS));
         SHADERMODULES.addDynamic("ANIM_MAX_WEIGHTS", () -> Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_WEIGHTS));
