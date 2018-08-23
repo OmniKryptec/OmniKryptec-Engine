@@ -21,12 +21,11 @@ import de.omnikryptec.main.OmniKryptecEngine;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
 
+import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.Enumeration;
-import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
@@ -126,38 +125,30 @@ public class OSUtil {
         return file;
     }
     
-    public static final boolean extractFileFromJar(AdvancedFile file, String path) {
-        if (file.exists()) {
-            return true;
-        }
-        try {
-            final InputStream inputStream = OSUtil.class.getResourceAsStream(path);
-            Files.copy(inputStream, file.toFile().getAbsoluteFile().toPath());
-            inputStream.close();
-            return file.exists();
-        } catch (Exception ex) {
-            Logger.logErr("Error while extracting file from jar: " + ex, ex);
-            return false;
-        }
-    }
-    
     public static final boolean extractFolderFromJar(AdvancedFile folder, String path) {
         try {
             boolean allGood = true;
             final AdvancedFile jarFile = getJarFile();
             if (jarFile.isFile()) {
-                final JarFile jar = new JarFile(jarFile.toFile());
-                final Enumeration<JarEntry> entries = jar.entries();
-                while (entries.hasMoreElements()) {
-                    final JarEntry jarEntry = entries.nextElement();
-                    final String name = jarEntry.getName();
-                    if (name.startsWith(path)) {
-                        boolean good = extractFileFromJar(getFileOfPath(folder, name), name);
-                        if (!good) {
-                            allGood = false;
-                        }
-                    }
+                if (path.startsWith("/")) {
+                    path = path.substring("/".length());
                 }
+                final String path_ = path;
+                final JarFile jar = new JarFile(jarFile.toFile());
+                allGood = jar.stream().filter((jarEntry) -> !jarEntry.isDirectory() && jarEntry.getName().startsWith(path_)).allMatch((jarEntry) -> {
+                    try {
+                        final File file_ = getFileOfPath(folder, jarEntry.getName()).toFile().getAbsoluteFile();
+                        if (!file_.exists()) {
+                            final InputStream inputStream = jar.getInputStream(jarEntry);
+                            Files.copy(inputStream, file_.toPath());
+                            inputStream.close();
+                        }
+                        return true;
+                    } catch (Exception ex) {
+                        Logger.logErr("Error while extracting file from jar: " + ex, ex);
+                        return false;
+                    }
+                });
                 jar.close();
             } else {
                 final URL url = OSUtil.class.getResource(path);
@@ -192,7 +183,7 @@ public class OSUtil {
     }
     
     public static final AdvancedFile getJarFile() {
-        return AdvancedFile.fileOfPath(OSUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+        return new AdvancedFile(false, OSUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath());
     }
     
     public static final boolean isJarFile() {
