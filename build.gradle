@@ -16,7 +16,7 @@
 
 import org.gradle.internal.os.OperatingSystem
 
-group 'omnikryptec'
+group 'de.omnikryptec'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
@@ -44,6 +44,11 @@ repositories {
     flatDir {
         dirs 'libs'
     }
+}
+
+configurations {
+    // configuration that holds jars to include in the jar
+    extraLibs
 }
 
 dependencies {
@@ -87,4 +92,52 @@ dependencies {
     compile name: 'noise-functions'
     // CUSTOM LIBS END
     testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    // extraLibs BEGIN
+    extraLibs "org.lwjgl:lwjgl:$lwjglVersion"
+    extraLibs "org.lwjgl:lwjgl-assimp:$lwjglVersion"
+    extraLibs "org.lwjgl:lwjgl-glfw:$lwjglVersion"
+    extraLibs "org.lwjgl:lwjgl-openal:$lwjglVersion"
+    extraLibs "org.lwjgl:lwjgl-opencl:$lwjglVersion"
+    extraLibs "org.lwjgl:lwjgl-opengl:$lwjglVersion"
+    extraLibs "org.lwjgl:lwjgl-opengles:$lwjglVersion"
+    extraLibs "org.lwjgl:lwjgl:$lwjglVersion:$lwjglNatives"
+    extraLibs "org.lwjgl:lwjgl-assimp:$lwjglVersion:$lwjglNatives"
+    extraLibs "org.lwjgl:lwjgl-glfw:$lwjglVersion:$lwjglNatives"
+    extraLibs "org.lwjgl:lwjgl-openal:$lwjglVersion:$lwjglNatives"
+    extraLibs "org.lwjgl:lwjgl-opengl:$lwjglVersion:$lwjglNatives"
+    extraLibs "org.lwjgl:lwjgl-opengles:$lwjglVersion:$lwjglNatives"
+    extraLibs "org.joml:joml:${jomlVersion}"
+    //jacksons version previously: 2.9.0.pr3
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
+    extraLibs group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.6'
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
+    extraLibs group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.6'
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    extraLibs group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.6'
+    // https://mvnrepository.com/artifact/org.jdom/jdom2
+    extraLibs group: 'org.jdom', name: 'jdom2', version: '2.0.6'
+    // https://mvnrepository.com/artifact/org.l33tlabs.twl/pngdecoder
+    extraLibs group: 'org.l33tlabs.twl', name: 'pngdecoder', version: '1.0'
+    // https://mvnrepository.com/artifact/javax.vecmath/vecmath
+    extraLibs group: 'javax.vecmath', name: 'vecmath', version: '1.5.2'
+    // https://mvnrepository.com/artifact/org.dyn4j/dyn4j
+    extraLibs group: 'org.dyn4j', name: 'dyn4j', version: '3.2.4'
+    // https://mvnrepository.com/artifact/org.reflections/reflections
+    extraLibs group: 'org.reflections', name: 'reflections', version: '0.9.11'
+    // CUSTOM LIBS BEGIN
+    extraLibs name: 'JavaPlus'
+    extraLibs name: 'MathPlus'
+    extraLibs name: 'NetworkPlus'
+    extraLibs name: 'LanguagePlus'
+    extraLibs name: 'jbullet'
+    extraLibs name: 'noise-functions'
+    // CUSTOM LIBS END
+    // extraLibs END
+}
+
+jar {
+    from {
+        configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
