@@ -1,0 +1,37 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="OmniKryptec-Engine:jar">
+    <output-path>$PROJECT_DIR$/store</output-path>
+    <root id="archive" name="OmniKryptec-Engine.jar">
+      <element id="module-output" name="OmniKryptec-Engine_main" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/jbullet.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/JavaPlus.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/MathPlus.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/NetworkPlus.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/LanguagePlus.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/noise-functions.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengles/3.1.6/7920ce2696b3f5a13ddcd9ef00a0fa95599657e5/lwjgl-opengles-3.1.6-natives-windows.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.l33tlabs.twl/pngdecoder/1.0/6422688e344db244da42244b21998284bf098948/pngdecoder-1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.9.6/4e393793c37c77e042ccc7be5a914ae39251b365/jackson-core-2.9.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jdom/jdom2/2.0.6/6f14738ec2e9dd0011e343717fa624a10f8aab64/jdom2-2.0.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-assimp/3.1.6/11420947d50dbfd70cb942a1e768a6f0b0336a95/lwjgl-assimp-3.1.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opencl/3.1.6/e5324eee23e0b8eec204dd7a3014851017fbab4c/lwjgl-opencl-3.1.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengles/3.1.6/4f92aab673c93799b36984ec06a51f005b50b2d2/lwjgl-opengles-3.1.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-assimp/3.1.6/1343b93af1d24f91883c0dd3a4204731fdf0754b/lwjgl-assimp-3.1.6-natives-windows.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.dyn4j/dyn4j/3.3.0/54b754e5d785b4d54ef9f9b14aebc1021d86a169/dyn4j-3.3.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.9.6/cfa4f316351a91bfd95cb0644c6a2c95f52db1fc/jackson-databind-2.9.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.1.6/7fe6af9a51891c9d22ee93c4241c237b4f3a5151/lwjgl-glfw-3.1.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/2973d150c0dc1fefe998f834810d68f278ea58ec/junit-4.12.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.1.6/c03253f13fff766ec3fc2e8d0924964d0f09e886/lwjgl-openal-3.1.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.1.6/a6ebe0dfde6c29836cbd928177012265ec4a8418/lwjgl-3.1.6-natives-windows.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.9.6/6a0f0f154edaba00067772ce02e24f8c0973d84c/jackson-annotations-2.9.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.joml/joml/1.9.9/85bf91522e79428b5016fa29a65c142e7cdbb090/joml-1.9.9.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl/3.1.6/75a08ab96db25e3dd05a127e69e314deb0c13161/lwjgl-3.1.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-openal/3.1.6/351960d5ebb1678ef99016af9e7ca97881af9288/lwjgl-openal-3.1.6-natives-windows.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.1.6/505ff142070375c86695445a7c593a727af47964/lwjgl-opengl-3.1.6-natives-windows.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/javax.vecmath/vecmath/1.5.2/fd17bc3e67f909573dfc039d8e2abecf407c4e27/vecmath-1.5.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-glfw/3.1.6/7203889aebc265a9600ab4d5a8df8d03c0a1925c/lwjgl-glfw-3.1.6-natives-windows.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lwjgl/lwjgl-opengl/3.1.6/964a2332ab3b396bcf67f12b8b93d39c79c978c2/lwjgl-opengl-3.1.6.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
