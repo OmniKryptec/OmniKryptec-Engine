@@ -1,4 +1,2 @@
-# OmniKryptec-Engine
-[![CodeFactor](https://www.codefactor.io/repository/github/omnikryptec/omnikryptec-engine/badge)](https://www.codefactor.io/repository/github/omnikryptec/omnikryptec-engine)
-
+# OmniKryptec-Engine-Rewrite
 Java Game Engine

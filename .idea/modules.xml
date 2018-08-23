@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/OmniKryptec-Engine.iml" filepath="$PROJECT_DIR$/.idea/modules/OmniKryptec-Engine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OmniKryptec-Engine_main.iml" filepath="$PROJECT_DIR$/.idea/modules/OmniKryptec-Engine_main.iml" group="OmniKryptec-Engine" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OmniKryptec-Engine_test.iml" filepath="$PROJECT_DIR$/.idea/modules/OmniKryptec-Engine_test.iml" group="OmniKryptec-Engine" />
     </modules>
   </component>
 </project>
