@@ -1,6 +1,6 @@
 package de.omnikryptec.util;
 
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.util.logger.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;

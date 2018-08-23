@@ -1,6 +1,6 @@
 package de.omnikryptec.shader.base;
 
-import omnikryptec.util.exceptions.OmniKryptecException;
+import de.omnikryptec.util.exceptions.OmniKryptecException;
 
 import java.util.HashMap;
 

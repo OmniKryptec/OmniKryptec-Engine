@@ -1,15 +1,15 @@
 package de.omnikryptec.gameobject;
 
-import omnikryptec.graphics.GraphicsUtil;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.renderer.d2.RenderChunk2D;
-import omnikryptec.renderer.d3.RenderChunk3D;
-import omnikryptec.settings.GameSettings;
-import omnikryptec.test.saving.DataMap;
-import omnikryptec.test.saving.DataMapSerializable;
-import omnikryptec.util.EnumCollection.UpdateType;
-import omnikryptec.util.Maths;
-import omnikryptec.util.SerializationUtil;
+import de.omnikryptec.graphics.GraphicsUtil;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.renderer.d2.RenderChunk2D;
+import de.omnikryptec.renderer.d3.RenderChunk3D;
+import de.omnikryptec.settings.GameSettings;
+import de.omnikryptec.test.saving.DataMap;
+import de.omnikryptec.test.saving.DataMapSerializable;
+import de.omnikryptec.util.EnumCollection.UpdateType;
+import de.omnikryptec.util.Maths;
+import de.omnikryptec.util.SerializationUtil;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;

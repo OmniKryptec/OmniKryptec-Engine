@@ -1,7 +1,7 @@
 package de.omnikryptec.postprocessing.main;
 
-import omnikryptec.display.Display;
-import omnikryptec.util.EnumCollection.DepthbufferType;
+import de.omnikryptec.display.Display;
+import de.omnikryptec.util.EnumCollection.DepthbufferType;
 import org.lwjgl.opengl.GL30;
 
 import java.util.ArrayList;

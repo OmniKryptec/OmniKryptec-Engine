@@ -1,9 +1,9 @@
 package de.omnikryptec.display;
 
+import de.omnikryptec.event.input.InputManager;
 import de.omnikryptec.graphics.OpenGL;
-import omnikryptec.event.input.InputManager;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 

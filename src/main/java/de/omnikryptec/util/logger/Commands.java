@@ -1,17 +1,16 @@
 package de.omnikryptec.util.logger;
 
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 import de.omnikryptec.util.EnumCollection.GameState;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.OmniKryptecEngine.ShutdownOption;
 
 /**
- *
  * @author Panzer1119
  */
 public class Commands {
-
+    
     public static final Command COMMANDEXIT = new Command("exit") {
-
+        
         @Override
         public void run(String arguments) {
             ShutdownOption shutdownOption = ShutdownOption.JAVA;
@@ -62,12 +61,11 @@ public class Commands {
                 }
             }
         }
-
-    }.setUseArguments(true).setHasExtraThread(true).setHelp(
-            "Usage:\nexit [-engine/-java]\nParameter - Description\nengine - Stops only the engine\njava - Stops directly the JVM");
-
+        
+    }.setUseArguments(true).setHasExtraThread(true).setHelp("Usage:\nexit [-engine/-java]\nParameter - Description\nengine - Stops only the engine\njava - Stops directly the JVM");
+    
     public static final Command COMMANDTEST = new Command("test") {
-
+        
         @Override
         public void run(String arguments) {
             try {
@@ -79,14 +77,14 @@ public class Commands {
                 Logger.logErr("Error while executing command \"test " + arguments + "\": " + ex, ex);
             }
         }
-
+        
     }.setUseArguments(true).setHasExtraThread(true).setHelp("Usage:\ntest <...>");
-
+    
     public static final void initialize() {
         // Nothing, this function only registers automatically all standard
         // Command's
     }
-
+    
     private static final void shutdownCompletely() {
         while (true) {
             try {
@@ -96,5 +94,5 @@ public class Commands {
             }
         }
     }
-
+    
 }

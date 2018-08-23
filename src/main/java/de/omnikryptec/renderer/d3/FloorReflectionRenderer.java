@@ -1,14 +1,14 @@
 package de.omnikryptec.renderer.d3;
 
 import de.omnikryptec.gameobject.Entity;
+import de.omnikryptec.graphics.GraphicsUtil;
+import de.omnikryptec.main.AbstractScene3D;
 import de.omnikryptec.postprocessing.main.FrameBufferObject;
 import de.omnikryptec.resource.model.AdvancedModel;
-import omnikryptec.graphics.GraphicsUtil;
-import omnikryptec.main.AbstractScene3D;
-import omnikryptec.shader.base.Shader;
-import omnikryptec.util.EnumCollection.RendererTime;
-import omnikryptec.util.FrustrumFilter;
-import omnikryptec.util.Instance;
+import de.omnikryptec.shader.base.Shader;
+import de.omnikryptec.util.EnumCollection.RendererTime;
+import de.omnikryptec.util.FrustrumFilter;
+import de.omnikryptec.util.Instance;
 import org.joml.Vector4f;
 
 import java.util.List;

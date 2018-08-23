@@ -1,9 +1,9 @@
 package de.omnikryptec.gameobject.particles;
 
 import de.omnikryptec.gameobject.Camera;
-import omnikryptec.resource.texture.ParticleAtlas;
-import omnikryptec.util.Color;
-import omnikryptec.util.EnumCollection.RenderType;
+import de.omnikryptec.resource.texture.ParticleAtlas;
+import de.omnikryptec.util.Color;
+import de.omnikryptec.util.EnumCollection.RenderType;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 

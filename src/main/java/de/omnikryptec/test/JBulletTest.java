@@ -25,13 +25,13 @@ import de.omnikryptec.gameobject.Camera;
 import de.omnikryptec.gameobject.Entity;
 import de.omnikryptec.gameobject.EntityBuilder;
 import de.omnikryptec.gameobject.FollowingCamera;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.main.Scene3D;
 import de.omnikryptec.settings.GameSettings;
 import de.omnikryptec.util.ConverterUtil;
 import de.omnikryptec.util.NativesLoader;
 import de.omnikryptec.util.PhysicsUtil;
 import de.omnikryptec.util.logger.Logger;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.Scene3D;
 import org.joml.Quaternionf;
 import org.lwjgl.glfw.GLFW;
 
@@ -283,10 +283,12 @@ public class JBulletTest {
             OmniKryptecEngine.instance().getCurrent3DScene().getCamera().getTransform().increasePosition(0, 3, 0);
             OmniKryptecEngine.instance().getCurrent3DScene().getCamera().getTransform().setRotation(40, 0, 0, 0);
             entity_1.getTransform().setPosition(0, 0, -5);
+            /* //FIXME fix the EventSystem
             OmniKryptecEngine.instance().getEventsystem().addEventHandler((e) -> {
                 input();
                 logic();
             }, EventType.RENDER_FRAME_EVENT);
+            */
             /*
 			 * OmniKryptecEngine.instance().getCurrentScene().addGameObject(new
 			 * Entity(brunnen_tm) {

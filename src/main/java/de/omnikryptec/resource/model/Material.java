@@ -1,8 +1,8 @@
 package de.omnikryptec.resource.model;
 
+import de.omnikryptec.renderer.d3.Renderer;
+import de.omnikryptec.renderer.d3.RendererRegistration;
 import de.omnikryptec.resource.texture.Texture;
-import omnikryptec.renderer.d3.Renderer;
-import omnikryptec.renderer.d3.RendererRegistration;
 import org.joml.Vector3f;
 
 import java.util.HashMap;

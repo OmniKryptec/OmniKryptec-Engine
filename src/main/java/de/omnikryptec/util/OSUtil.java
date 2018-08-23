@@ -1,9 +1,9 @@
 package de.omnikryptec.util;
 
 import de.codemakers.io.file.AdvancedFile;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -14,47 +14,49 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
- *
  * @author Panzer1119
  */
 public class OSUtil {
-
+    
     private static final String OS_NAME = System.getProperty("os.name").toLowerCase();
     private static final AdvancedFile USER_HOME = AdvancedFile.folderOfPath(System.getProperty("user.home"));
     private static final String ENGINE_FOLDER_NAME = "." + OmniKryptecEngine.class.getSimpleName() + "_3-1-5";
     private static final String PATHSEPARATOR = "/";
-
+    
     public static final OS OPERATING_SYSTEM = detectOS();
     public static final AdvancedFile STANDARD_APPDATA_FOLDER = getStandardAppDataEngineFolder();
-
+    
     public static enum OS {
-        WINDOWS("windows"), MAC("macosx"), UNIX("linux"), SOLARIS("solaris"), ERROR(null);
-
+        WINDOWS("windows"),
+        MAC("macosx"),
+        UNIX("linux"),
+        SOLARIS("solaris"),
+        ERROR(null);
+        
         private final String name;
-
+        
         OS(String name) {
             this.name = name;
         }
-
+        
         public String getName() {
             return name;
         }
-
+        
         public String toPathForResource(String nativesPath) {
-            return (nativesPath.startsWith(PATHSEPARATOR) ? "" : PATHSEPARATOR) + nativesPath
-                    + (nativesPath.endsWith(PATHSEPARATOR) ? "" : PATHSEPARATOR) + name;
+            return (nativesPath.startsWith(PATHSEPARATOR) ? "" : PATHSEPARATOR) + nativesPath + (nativesPath.endsWith(PATHSEPARATOR) ? "" : PATHSEPARATOR) + name;
         }
-
+        
         @Override
         public String toString() {
             return name;
         }
     }
-
+    
     public static final OS getOS() {
         return OPERATING_SYSTEM;
     }
-
+    
     private static final OS detectOS() {
         if (OS_NAME.contains("win")) {
             return OS.WINDOWS;
@@ -68,7 +70,7 @@ public class OSUtil {
             return OS.ERROR;
         }
     }
-
+    
     public static final boolean createStandardFolders() {
         try {
             return (STANDARD_APPDATA_FOLDER.createAdvancedFile() && STANDARD_APPDATA_FOLDER.isDirectory());
@@ -77,11 +79,11 @@ public class OSUtil {
             return false;
         }
     }
-
+    
     public static final AdvancedFile getStandardAppDataEngineFolder() {
         return getAppDataFolder(ENGINE_FOLDER_NAME);
     }
-
+    
     public static final AdvancedFile getAppDataFolder(String folderName) {
         AdvancedFile file = null;
         switch (OPERATING_SYSTEM) {
@@ -107,7 +109,7 @@ public class OSUtil {
         }
         return file;
     }
-
+    
     public static final boolean extractFileFromJar(AdvancedFile file, String path) {
         if (file.exists()) {
             return true;
@@ -122,7 +124,7 @@ public class OSUtil {
             return false;
         }
     }
-
+    
     public static final boolean extractFolderFromJar(AdvancedFile folder, String path) {
         try {
             boolean allGood = true;
@@ -164,7 +166,7 @@ public class OSUtil {
             return false;
         }
     }
-
+    
     public static final AdvancedFile getFileOfPath(AdvancedFile folder, String path) {
         String name = path;
         if (path.contains(PATHSEPARATOR)) {
@@ -172,17 +174,17 @@ public class OSUtil {
         }
         return new AdvancedFile(false, folder, name);
     }
-
+    
     public static final AdvancedFile getJarFile() {
         return AdvancedFile.fileOfPath(OSUtil.class.getProtectionDomain().getCodeSource().getLocation().getPath());
     }
-
+    
     public static final boolean isJarFile() {
         return getJarFile().isFile();
     }
-
+    
     public static final boolean isIDE() {
         return !isJarFile();
     }
-
+    
 }

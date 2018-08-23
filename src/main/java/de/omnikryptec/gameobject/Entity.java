@@ -1,18 +1,18 @@
 package de.omnikryptec.gameobject;
 
-import omnikryptec.animation.AnimatedModel;
-import omnikryptec.resource.loader.ResourceLoader;
-import omnikryptec.resource.model.AdvancedModel;
-import omnikryptec.resource.model.Model;
-import omnikryptec.resource.model.TexturedModel;
-import omnikryptec.resource.texture.SimpleTexture;
-import omnikryptec.test.saving.DataMap;
-import omnikryptec.test.saving.DataMapSerializable;
-import omnikryptec.util.Color;
-import omnikryptec.util.EnumCollection.RenderType;
-import omnikryptec.util.SerializationUtil;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.animation.AnimatedModel;
+import de.omnikryptec.resource.loader.ResourceLoader;
+import de.omnikryptec.resource.model.AdvancedModel;
+import de.omnikryptec.resource.model.Model;
+import de.omnikryptec.resource.model.TexturedModel;
+import de.omnikryptec.resource.texture.SimpleTexture;
+import de.omnikryptec.test.saving.DataMap;
+import de.omnikryptec.test.saving.DataMapSerializable;
+import de.omnikryptec.util.Color;
+import de.omnikryptec.util.EnumCollection.RenderType;
+import de.omnikryptec.util.SerializationUtil;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 
 public class Entity extends GameObject3D implements DataMapSerializable {
 

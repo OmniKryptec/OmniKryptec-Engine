@@ -1,6 +1,6 @@
 package de.omnikryptec.gameobject.particlesV2;
 
-import omnikryptec.util.PhysicsUtil;
+import de.omnikryptec.util.PhysicsUtil;
 
 public class NBodySim implements SimulatorPerSimulation {
 

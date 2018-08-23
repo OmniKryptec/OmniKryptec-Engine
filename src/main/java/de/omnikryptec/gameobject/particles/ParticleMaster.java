@@ -2,12 +2,12 @@ package de.omnikryptec.gameobject.particles;
 
 import de.codemakers.util.ArrayUtil;
 import de.omnikryptec.gameobject.Camera;
-import omnikryptec.resource.texture.ParticleAtlas;
-import omnikryptec.util.EnumCollection.BlendMode;
-import omnikryptec.util.Instance;
-import omnikryptec.util.profiler.Profilable;
-import omnikryptec.util.profiler.ProfileContainer;
-import omnikryptec.util.profiler.Profiler;
+import de.omnikryptec.resource.texture.ParticleAtlas;
+import de.omnikryptec.util.EnumCollection.BlendMode;
+import de.omnikryptec.util.Instance;
+import de.omnikryptec.util.profiler.Profilable;
+import de.omnikryptec.util.profiler.ProfileContainer;
+import de.omnikryptec.util.profiler.Profiler;
 
 import java.util.*;
 import java.util.Map.Entry;

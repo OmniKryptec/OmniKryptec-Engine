@@ -1,6 +1,6 @@
 package de.omnikryptec.animation;
 
-import omnikryptec.resource.loader.ResourceObject;
+import de.omnikryptec.resource.loader.ResourceObject;
 
 /**
  * Animation

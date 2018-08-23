@@ -1,7 +1,7 @@
 package de.omnikryptec.gameobject;
 
-import omnikryptec.graphics.SpriteBatch;
-import omnikryptec.resource.texture.Texture;
+import de.omnikryptec.graphics.SpriteBatch;
+import de.omnikryptec.resource.texture.Texture;
 
 public class Light2D extends Sprite {
 

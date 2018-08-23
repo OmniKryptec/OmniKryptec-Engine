@@ -1,6 +1,6 @@
 package de.omnikryptec.postprocessing.main;
 
-import omnikryptec.shader.base.Shader;
+import de.omnikryptec.shader.base.Shader;
 
 import java.util.List;
 

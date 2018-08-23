@@ -1,10 +1,10 @@
 package de.omnikryptec.audio;
 
 import de.codemakers.io.file.AdvancedFile;
-import omnikryptec.util.NativesLoader;
-import omnikryptec.util.logger.Commands;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.util.NativesLoader;
+import de.omnikryptec.util.logger.Commands;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 import org.joml.Vector3f;
 
 import javax.swing.*;

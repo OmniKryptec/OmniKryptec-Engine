@@ -1,15 +1,15 @@
 package de.omnikryptec.display;
 
+import de.omnikryptec.audio.AudioManager;
 import de.omnikryptec.graphics.GraphicsUtil;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.opencl.core.OpenCL;
 import de.omnikryptec.settings.GameSettings;
-import omnikryptec.audio.AudioManager;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.opencl.core.OpenCL;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
-import omnikryptec.util.profiler.Profilable;
-import omnikryptec.util.profiler.ProfileContainer;
-import omnikryptec.util.profiler.Profiler;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
+import de.omnikryptec.util.profiler.Profilable;
+import de.omnikryptec.util.profiler.ProfileContainer;
+import de.omnikryptec.util.profiler.Profiler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 

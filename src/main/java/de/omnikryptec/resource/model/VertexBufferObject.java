@@ -1,8 +1,8 @@
 package de.omnikryptec.resource.model;
 
-import omnikryptec.graphics.OpenGL;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.graphics.OpenGL;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;

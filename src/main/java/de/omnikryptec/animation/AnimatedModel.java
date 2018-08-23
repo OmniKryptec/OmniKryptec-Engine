@@ -1,11 +1,11 @@
 package de.omnikryptec.animation;
 
-import omnikryptec.resource.loader.ResourceLoader;
-import omnikryptec.resource.model.AdvancedModel;
-import omnikryptec.resource.model.Material;
-import omnikryptec.resource.model.Model;
-import omnikryptec.resource.texture.Texture;
-import omnikryptec.test.saving.DataMap;
+import de.omnikryptec.resource.loader.ResourceLoader;
+import de.omnikryptec.resource.model.AdvancedModel;
+import de.omnikryptec.resource.model.Material;
+import de.omnikryptec.resource.model.Model;
+import de.omnikryptec.resource.texture.Texture;
+import de.omnikryptec.test.saving.DataMap;
 import org.joml.Matrix4f;
 
 import java.util.ArrayList;
@@ -111,7 +111,7 @@ public class AnimatedModel implements AdvancedModel {
         return this;
     }
     
-    @SuppressWarnings("unchecked")
+    
 	private final AnimatedModel deleteAll(boolean all) {
         ArrayList<AnimatedModel> ams = (ArrayList<AnimatedModel>) animatedModels.get(name).clone();
         if(ams != null) {

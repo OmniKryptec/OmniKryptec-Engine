@@ -1,6 +1,6 @@
 package de.omnikryptec.gameobject.particles;
 
-import omnikryptec.shader.base.*;
+import de.omnikryptec.shader.base.*;
 
 public class ParticleShader extends Shader {
 

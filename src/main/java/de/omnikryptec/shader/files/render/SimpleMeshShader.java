@@ -2,11 +2,11 @@ package de.omnikryptec.shader.files.render;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.graphics.GraphicsUtil;
+import de.omnikryptec.main.AbstractScene3D;
 import de.omnikryptec.resource.model.AdvancedModel;
 import de.omnikryptec.resource.model.Material;
 import de.omnikryptec.resource.texture.Texture;
-import omnikryptec.main.AbstractScene3D;
-import omnikryptec.shader.base.*;
+import de.omnikryptec.shader.base.*;
 import org.joml.Vector4f;
 
 public class SimpleMeshShader extends Shader {

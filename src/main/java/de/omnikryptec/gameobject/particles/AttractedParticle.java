@@ -1,8 +1,8 @@
 package de.omnikryptec.gameobject.particles;
 
-import omnikryptec.resource.texture.ParticleAtlas;
-import omnikryptec.util.EnumCollection.RenderType;
-import omnikryptec.util.PhysicsUtil;
+import de.omnikryptec.resource.texture.ParticleAtlas;
+import de.omnikryptec.util.EnumCollection.RenderType;
+import de.omnikryptec.util.PhysicsUtil;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;

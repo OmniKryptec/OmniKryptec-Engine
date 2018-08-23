@@ -3,14 +3,14 @@ package de.omnikryptec.shader.files.render;
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.gameobject.Light3D;
 import de.omnikryptec.graphics.GraphicsUtil;
+import de.omnikryptec.main.AbstractScene3D;
+import de.omnikryptec.main.OmniKryptecEngine;
 import de.omnikryptec.resource.model.AdvancedModel;
 import de.omnikryptec.resource.model.Material;
 import de.omnikryptec.resource.texture.Texture;
 import de.omnikryptec.settings.GameSettings;
-import omnikryptec.main.AbstractScene3D;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.shader.base.*;
-import omnikryptec.util.Maths;
+import de.omnikryptec.shader.base.*;
+import de.omnikryptec.util.Maths;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 

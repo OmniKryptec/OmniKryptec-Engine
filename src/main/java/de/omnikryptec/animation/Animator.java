@@ -1,7 +1,7 @@
 package de.omnikryptec.animation;
 
-import omnikryptec.util.Instance;
-import omnikryptec.util.Maths;
+import de.omnikryptec.util.Instance;
+import de.omnikryptec.util.Maths;
 import org.joml.Matrix4f;
 
 import java.util.HashMap;

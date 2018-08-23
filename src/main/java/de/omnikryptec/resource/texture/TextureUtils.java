@@ -2,10 +2,10 @@ package de.omnikryptec.resource.texture;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
-import omnikryptec.graphics.OpenGL;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.util.Util;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.graphics.OpenGL;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.util.Util;
+import de.omnikryptec.util.logger.Logger;
 import org.lwjgl.opengl.*;
 
 import java.io.InputStream;

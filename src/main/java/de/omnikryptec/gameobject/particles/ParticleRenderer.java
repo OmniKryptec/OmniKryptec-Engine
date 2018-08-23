@@ -1,15 +1,15 @@
 package de.omnikryptec.gameobject.particles;
 
 import de.omnikryptec.gameobject.Camera;
-import omnikryptec.graphics.GraphicsUtil;
-import omnikryptec.graphics.OpenGL;
-import omnikryptec.resource.model.Model;
-import omnikryptec.resource.model.VertexBufferObject;
-import omnikryptec.resource.texture.ParticleAtlas;
-import omnikryptec.util.EnumCollection.BlendMode;
-import omnikryptec.util.FrustrumFilter;
-import omnikryptec.util.Maths;
-import omnikryptec.util.ModelUtil;
+import de.omnikryptec.graphics.GraphicsUtil;
+import de.omnikryptec.graphics.OpenGL;
+import de.omnikryptec.resource.model.Model;
+import de.omnikryptec.resource.model.VertexBufferObject;
+import de.omnikryptec.resource.texture.ParticleAtlas;
+import de.omnikryptec.util.EnumCollection.BlendMode;
+import de.omnikryptec.util.FrustrumFilter;
+import de.omnikryptec.util.Maths;
+import de.omnikryptec.util.ModelUtil;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;

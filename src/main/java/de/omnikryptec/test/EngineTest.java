@@ -3,6 +3,8 @@ package de.omnikryptec.test;
 import de.omnikryptec.display.DisplayManager;
 import de.omnikryptec.gameobject.Camera;
 import de.omnikryptec.gameobject.Entity;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.main.Scene3D;
 import de.omnikryptec.resource.model.Material;
 import de.omnikryptec.resource.model.Model;
 import de.omnikryptec.resource.model.TexturedModel;
@@ -11,8 +13,6 @@ import de.omnikryptec.resource.texture.SimpleTexture;
 import de.omnikryptec.settings.GameSettings;
 import de.omnikryptec.util.NativesLoader;
 import de.omnikryptec.util.logger.Logger;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.Scene3D;
 
 public class EngineTest {
 

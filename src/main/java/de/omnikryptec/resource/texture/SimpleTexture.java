@@ -1,8 +1,8 @@
 package de.omnikryptec.resource.texture;
 
 import de.codemakers.io.file.AdvancedFile;
-import omnikryptec.graphics.OpenGL;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.graphics.OpenGL;
+import de.omnikryptec.util.logger.Logger;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 

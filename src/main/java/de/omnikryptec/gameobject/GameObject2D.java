@@ -1,10 +1,10 @@
 package de.omnikryptec.gameobject;
 
-import omnikryptec.renderer.d2.RenderChunk2D;
-import omnikryptec.util.EnumCollection.UpdateType;
-import omnikryptec.util.Instance;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.renderer.d2.RenderChunk2D;
+import de.omnikryptec.util.EnumCollection.UpdateType;
+import de.omnikryptec.util.Instance;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 
 import java.util.ArrayList;
 

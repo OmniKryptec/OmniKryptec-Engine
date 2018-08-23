@@ -1,6 +1,6 @@
 package de.omnikryptec.resource.texture;
 
-import omnikryptec.util.EnumCollection.BlendMode;
+import de.omnikryptec.util.EnumCollection.BlendMode;
 
 public class ParticleAtlas {
 	private int numberOfRows;

@@ -1,8 +1,8 @@
 package de.omnikryptec.gameobject;
 
-import omnikryptec.event.input.InputManager;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.util.Maths;
+import de.omnikryptec.event.input.InputManager;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.util.Maths;
 import org.joml.AxisAngle4f;
 import org.joml.Math;
 import org.joml.Vector3f;

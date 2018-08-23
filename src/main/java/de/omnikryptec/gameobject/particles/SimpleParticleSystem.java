@@ -1,10 +1,10 @@
 package de.omnikryptec.gameobject.particles;
 
-import omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
-import omnikryptec.resource.texture.ParticleAtlas;
-import omnikryptec.util.Color;
-import omnikryptec.util.EnumCollection.RenderType;
-import omnikryptec.util.Maths;
+import de.omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
+import de.omnikryptec.resource.texture.ParticleAtlas;
+import de.omnikryptec.util.Color;
+import de.omnikryptec.util.EnumCollection.RenderType;
+import de.omnikryptec.util.Maths;
 import org.joml.Vector3f;
 
 public class SimpleParticleSystem extends ParticleSystem {

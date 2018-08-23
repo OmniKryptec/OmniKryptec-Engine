@@ -8,14 +8,14 @@ import de.omnikryptec.animation.ColladaParser.dataStructures.JointData;
 import de.omnikryptec.animation.ColladaParser.dataStructures.MeshData;
 import de.omnikryptec.animation.ColladaParser.dataStructures.SkeletonData;
 import de.omnikryptec.animation.Joint;
-import omnikryptec.renderer.d3.Renderer;
-import omnikryptec.renderer.d3.RendererRegistration;
-import omnikryptec.resource.model.Model;
-import omnikryptec.resource.model.VertexArrayObject;
-import omnikryptec.resource.texture.SimpleTexture;
-import omnikryptec.resource.texture.Texture;
-import omnikryptec.settings.GameSettings;
-import omnikryptec.util.Instance;
+import de.omnikryptec.renderer.d3.Renderer;
+import de.omnikryptec.renderer.d3.RendererRegistration;
+import de.omnikryptec.resource.model.Model;
+import de.omnikryptec.resource.model.VertexArrayObject;
+import de.omnikryptec.resource.texture.SimpleTexture;
+import de.omnikryptec.resource.texture.Texture;
+import de.omnikryptec.settings.GameSettings;
+import de.omnikryptec.util.Instance;
 
 public class AnimatedModelLoader {
 

@@ -15,6 +15,8 @@ import de.omnikryptec.gameobject.GameObject3D;
 import de.omnikryptec.gameobject.Light3D;
 import de.omnikryptec.gameobject.particles.AttractedPaticleSystem;
 import de.omnikryptec.gameobject.particles.ParticleAttractor;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.main.Scene3D;
 import de.omnikryptec.opencl.core.*;
 import de.omnikryptec.renderer.d3.FloorReflectionRenderer;
 import de.omnikryptec.renderer.d3.RendererRegistration;
@@ -30,8 +32,6 @@ import de.omnikryptec.util.Instance;
 import de.omnikryptec.util.NativesLoader;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.Scene3D;
 import org.joml.Vector3f;
 import org.lwjgl.opencl.CL10;
 

@@ -3,14 +3,14 @@ package de.omnikryptec.animation.renderer;
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.animation.AnimatedModel;
 import de.omnikryptec.gameobject.Entity;
-import omnikryptec.graphics.GraphicsUtil;
-import omnikryptec.main.Scene3D;
-import omnikryptec.resource.model.AdvancedModel;
-import omnikryptec.resource.model.Material;
-import omnikryptec.settings.GameSettings;
-import omnikryptec.shader.base.*;
-import omnikryptec.util.EnumCollection.BlendMode;
-import omnikryptec.util.Instance;
+import de.omnikryptec.graphics.GraphicsUtil;
+import de.omnikryptec.main.Scene3D;
+import de.omnikryptec.resource.model.AdvancedModel;
+import de.omnikryptec.resource.model.Material;
+import de.omnikryptec.settings.GameSettings;
+import de.omnikryptec.shader.base.*;
+import de.omnikryptec.util.EnumCollection.BlendMode;
+import de.omnikryptec.util.Instance;
 
 public class AnimatedModelShader extends Shader {
 

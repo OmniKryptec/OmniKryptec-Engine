@@ -1,9 +1,9 @@
 package de.omnikryptec.gameobject;
 
-import omnikryptec.graphics.SpriteBatch;
-import omnikryptec.resource.texture.Texture;
-import omnikryptec.util.Color;
-import omnikryptec.util.EnumCollection.FixedSizeMode;
+import de.omnikryptec.graphics.SpriteBatch;
+import de.omnikryptec.resource.texture.Texture;
+import de.omnikryptec.util.Color;
+import de.omnikryptec.util.EnumCollection.FixedSizeMode;
 
 public class Sprite extends GameObject2D {
 

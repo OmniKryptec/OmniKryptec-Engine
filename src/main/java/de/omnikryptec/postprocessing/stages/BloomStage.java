@@ -1,12 +1,12 @@
 package de.omnikryptec.postprocessing.stages;
 
-import omnikryptec.display.Display;
-import omnikryptec.postprocessing.main.FrameBufferObject;
-import omnikryptec.postprocessing.main.PostProcessingStage;
-import omnikryptec.postprocessing.main.PostProcessingStageRenderedSimple;
-import omnikryptec.shader.files.postprocessing.BrightnessHighlighterShader;
-import omnikryptec.shader.files.postprocessing.CombineShader;
-import omnikryptec.util.EnumCollection.DepthbufferType;
+import de.omnikryptec.display.Display;
+import de.omnikryptec.postprocessing.main.FrameBufferObject;
+import de.omnikryptec.postprocessing.main.PostProcessingStage;
+import de.omnikryptec.postprocessing.main.PostProcessingStageRenderedSimple;
+import de.omnikryptec.shader.files.postprocessing.BrightnessHighlighterShader;
+import de.omnikryptec.shader.files.postprocessing.CombineShader;
+import de.omnikryptec.util.EnumCollection.DepthbufferType;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 

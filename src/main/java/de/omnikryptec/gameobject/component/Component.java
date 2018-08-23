@@ -1,7 +1,7 @@
 package de.omnikryptec.gameobject.component;
 
 import de.omnikryptec.gameobject.GameObject;
-import omnikryptec.util.Util;
+import de.omnikryptec.util.Util;
 
 /**
  * Component interface
@@ -23,17 +23,17 @@ public abstract class Component<T extends GameObject> {
 	}
 	
 	
-	@SuppressWarnings("unchecked")
+	
 	public final void runOn(GameObject g) {
 		execute((T)g);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public final void deleteOp(GameObject g) {
 		onDelete((T)g);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	public final void addedOp(GameObject g) {
 		added((T)g);
 	}

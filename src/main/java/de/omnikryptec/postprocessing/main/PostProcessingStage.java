@@ -1,6 +1,6 @@
 package de.omnikryptec.postprocessing.main;
 
-import omnikryptec.graphics.GraphicsUtil;
+import de.omnikryptec.graphics.GraphicsUtil;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;

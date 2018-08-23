@@ -1,8 +1,8 @@
 package de.omnikryptec.postprocessing.main;
 
-import omnikryptec.display.Display;
-import omnikryptec.shader.base.Shader;
-import omnikryptec.util.EnumCollection.DepthbufferType;
+import de.omnikryptec.display.Display;
+import de.omnikryptec.shader.base.Shader;
+import de.omnikryptec.util.EnumCollection.DepthbufferType;
 
 import java.util.List;
 

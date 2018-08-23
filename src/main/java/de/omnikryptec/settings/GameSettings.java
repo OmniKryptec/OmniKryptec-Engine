@@ -2,13 +2,13 @@ package de.omnikryptec.settings;
 
 import de.codemakers.serialization.XMLable;
 import de.codemakers.util.Returner;
+import de.omnikryptec.display.Display;
+import de.omnikryptec.display.DisplayManager;
+import de.omnikryptec.main.OmniKryptecEngine;
 import de.omnikryptec.postprocessing.main.FBOFactory;
 import de.omnikryptec.postprocessing.main.FrameBufferObject;
 import de.omnikryptec.postprocessing.main.RenderTarget;
-import omnikryptec.display.Display;
-import omnikryptec.display.DisplayManager;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.util.EnumCollection.RenderType;
+import de.omnikryptec.util.EnumCollection.RenderType;
 import org.jdom2.Element;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;

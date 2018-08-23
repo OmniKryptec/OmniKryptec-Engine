@@ -2,10 +2,10 @@ package de.omnikryptec.resource.loader;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.codemakers.properties.XMLProperties;
+import de.omnikryptec.resource.loader.annotations.DefaultLoader;
 import de.omnikryptec.resource.texture.SimpleTexture;
-import omnikryptec.resource.loader.annotations.DefaultLoader;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 import org.reflections.Reflections;
 
 import java.util.*;
@@ -20,13 +20,13 @@ import java.util.stream.Collectors;
  * @author Panzer1119 &amp; pcfreak9000
  */
 public class ResourceLoader implements Loader {
-
+    
     public static final SimpleTexture MISSING_TEXTURE = SimpleTexture.newTexture(new AdvancedFile(true, "", "omnikryptec", "resource", "loader", "missing_texture.png"));
-
+    
     public static final long LOAD_XML_INFO = 1;
-
+    
     private static ResourceLoader RESOURCELOADER;
-
+    
     public static final ResourceLoader createInstanceDefault(boolean ascurrent, boolean searchForDefaultLoaders) {
         final ResourceLoader loader = new ResourceLoader();
         if (ascurrent) {
@@ -41,7 +41,7 @@ public class ResourceLoader implements Loader {
         loader.addLoader(new DefaultAnimatedModelDataLoader());
         return loader;
     }
-
+    
     public static final ResourceLoader createInstance(boolean ascurrent) {
         final ResourceLoader loader = new ResourceLoader();
         if (ascurrent) {
@@ -49,23 +49,23 @@ public class ResourceLoader implements Loader {
         }
         return loader;
     }
-
+    
     public static final void resetInstance() {
         RESOURCELOADER = null;
     }
-
+    
     public static final ResourceLoader currentInstance() {
         return RESOURCELOADER;
     }
-
+    
     public final static <T extends ResourceObject> T getResourceDefault(String name) {
         return currentInstance().getResource(name);
     }
-
+    
     public final static <T extends ResourceObject> T getResourceDefault(Class<? extends T> clazz, String name) {
         return currentInstance().getResource(clazz, name);
     }
-
+    
     private ExecutorService executor = null;
     private final ConcurrentHashMap<String, ResourceObject> loadedData = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<Integer, ConcurrentLinkedQueue<StagedInfo>> priorityStagedInfos = new ConcurrentHashMap<>();
@@ -73,17 +73,17 @@ public class ResourceLoader implements Loader {
     private XMLProperties properties = null;
     private boolean isLoading = false;
     private ResourceObject temp_simpleTexture;
-
+    
     @Override
     public final boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
         return loadIntern(advancedFile, superFile, resourceLoader);
     }
-
+    
     @Override
     public final LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
         return !getLoadersForAdvancedFile(advancedFile, superFile, properties, resourceLoader).isEmpty() ? LoadingType.NORMAL : LoadingType.NOT;
     }
-
+    
     public final boolean addRessourceObject(String name, ResourceObject resourceObject) {
         if (name != null && !name.isEmpty() && resourceObject != null) {
             loadedData.put(name, resourceObject);
@@ -92,7 +92,7 @@ public class ResourceLoader implements Loader {
             return false;
         }
     }
-
+    
     private final boolean loadIntern(AdvancedFile advancedFile, AdvancedFile superFile, ResourceLoader resourceLoader) {
         try {
             if (advancedFile == null || !advancedFile.exists()) {
@@ -142,11 +142,11 @@ public class ResourceLoader implements Loader {
             return false;
         }
     }
-
+    
     public final void loadStagedAdvancedFiles(boolean clearData) {
         loadStagedAdvancedFiles(clearData, 1, TimeUnit.MINUTES);
     }
-
+    
     public final void loadStagedAdvancedFiles(boolean clearData, long timeout, TimeUnit unit) {
         resetExecutor();
         isLoading = true;
@@ -172,11 +172,11 @@ public class ResourceLoader implements Loader {
         }
         isLoading = false;
     }
-
+    
     public final boolean isLoading() {
         return isLoading;
     }
-
+    
     public final ResourceLoader addLoader(Loader loader) {
         if (isLoading || loader == null || loader.equals(this) || loader instanceof ResourceLoader) {
             return this;
@@ -184,7 +184,7 @@ public class ResourceLoader implements Loader {
         loaders.add(loader);
         return this;
     }
-
+    
     public final ResourceLoader removeLoader(Loader loader) {
         if (isLoading || loader == null || loader.equals(this) || loader instanceof ResourceLoader) {
             return this;
@@ -192,15 +192,15 @@ public class ResourceLoader implements Loader {
         loaders.remove(loader);
         return this;
     }
-
+    
     public final List<Loader> getLoaders() {
         return new ArrayList<>(loaders);
     }
-
+    
     public final List<Loader> getLoadersForAdvancedFile(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
         return loaders.stream().filter((loader) -> loader.accept(advancedFile, superFile, properties, resourceLoader) != LoadingType.NOT).collect(Collectors.toList());
     }
-
+    
     public final ResourceLoader clearLoaders() {
         if (isLoading) {
             return this;
@@ -208,29 +208,29 @@ public class ResourceLoader implements Loader {
         loaders.clear();
         return this;
     }
-
+    
     public final ResourceLoader addDefaultLoaders() {
         getDefaultLoaders().forEach(this::addLoader);
         return this;
     }
-
+    
     public final ResourceLoader addDefaultLoaders(boolean distinct) {
         getDefaultLoaders(distinct).forEach(this::addLoader);
         return this;
     }
-
+    
     public final ResourceLoader stageAdvancedFiles(AdvancedFile... advancedFiles) {
         return stageAdvancedFiles(0, advancedFiles);
     }
-
+    
     public final ResourceLoader stageAdvancedFiles(long options, AdvancedFile... advancedFiles) {
         return stageAdvancedFiles(0, options, advancedFiles);
     }
-
+    
     public final ResourceLoader stageAdvancedFiles(int priority, AdvancedFile... advancedFiles) {
         return stageAdvancedFiles(priority, 0, advancedFiles);
     }
-
+    
     public final ResourceLoader stageAdvancedFiles(int priority, long options, AdvancedFile... advancedFiles) {
         if (isLoading || advancedFiles == null || advancedFiles.length == 0) {
             return this;
@@ -238,23 +238,22 @@ public class ResourceLoader implements Loader {
         priorityStagedInfos.computeIfAbsent(priority, (key) -> new ConcurrentLinkedQueue<>()).addAll(Arrays.asList(advancedFiles).stream().map((advancedFile) -> new StagedInfo(options, advancedFile)).collect(Collectors.toList()));
         return this;
     }
-
+    
     public final Loader clearStagedAdvancedFiles() {
         priorityStagedInfos.clear();
         return this;
     }
-
+    
     public final List<StagedInfo> getStagedInfosSorted() {
         final List<StagedInfo> stagedAdvancedFiles = new ArrayList<>();
         priorityStagedInfos.keySet().stream().sorted((i1, i2) -> i2 - i1).forEach((i) -> stagedAdvancedFiles.addAll(priorityStagedInfos.get(i)));
         return stagedAdvancedFiles;
     }
-
+    
     public final HashMap<String, ResourceObject> getLoadedData() {
         return new HashMap<>(loadedData);
     }
-
-    @SuppressWarnings("unchecked")
+    
     public final <T extends ResourceObject> T getResource(String name) {
         if (name == null || name.isEmpty()) {
             return null;
@@ -265,7 +264,7 @@ public class ResourceLoader implements Loader {
             return null;
         }
     }
-
+    
     public final SimpleTexture getTexture(String name) {
         if (name == null || name.isEmpty()) {
             return null;
@@ -277,8 +276,7 @@ public class ResourceLoader implements Loader {
             return MISSING_TEXTURE;
         }
     }
-
-    @SuppressWarnings("unchecked")
+    
     public final <T extends ResourceObject> T getResource(Class<? extends T> c, String name) {
         if (c == null || name == null || name.isEmpty()) {
             return null;
@@ -299,12 +297,11 @@ public class ResourceLoader implements Loader {
         }
         return (T) data;
     }
-
+    
     public final <T extends ResourceObject> List<T> getResources(Class<? extends T> c) {
         return getResources(c, null);
     }
-
-    @SuppressWarnings("unchecked")
+    
     private final <T extends ResourceObject> List<T> getResources(Class<? extends T> c, ArrayList<T> dataOld) {
         if (dataOld == null) {
             dataOld = new ArrayList<>();
@@ -318,16 +315,15 @@ public class ResourceLoader implements Loader {
         d.clear();
         return data;
     }
-
-    public final <T extends ResourceObject> void actions(Class<T> resClass, Consumer<T> action) {
+    
+    public final void actions(Class<ResourceObject> resClass, Consumer<ResourceObject> action) {
         actions((o) -> resClass.isInstance(o), action);
     }
-
-    @SuppressWarnings("unchecked")
-    public final <T extends ResourceObject> void actions(Predicate<T> pre, Consumer<T> action) {
-        loadedData.values().stream().filter((Predicate<? super ResourceObject>) pre).forEach((Consumer<? super ResourceObject>) action);
+    
+    public final void actions(Predicate<ResourceObject> pre, Consumer<ResourceObject> action) {
+        loadedData.values().stream().filter(pre).forEach(action);
     }
-
+    
     private final Loader resetExecutor() {
         try {
             if (isLoading) {
@@ -342,11 +338,11 @@ public class ResourceLoader implements Loader {
         }
         return this;
     }
-
+    
     public static final List<Loader> getDefaultLoaders() {
         return getDefaultLoaders(true);
     }
-
+    
     public static final List<Loader> getDefaultLoaders(boolean distinct) {
         try {
             if (!distinct) {
@@ -406,5 +402,5 @@ public class ResourceLoader implements Loader {
             return new ArrayList<>();
         }
     }
-
+    
 }

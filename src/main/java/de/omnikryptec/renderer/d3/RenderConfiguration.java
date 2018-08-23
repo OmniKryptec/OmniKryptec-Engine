@@ -1,6 +1,6 @@
 package de.omnikryptec.renderer.d3;
 
-import omnikryptec.util.EnumCollection.RendererTime;
+import de.omnikryptec.util.EnumCollection.RendererTime;
 import org.joml.Vector4f;
 
 import java.util.ArrayList;
@@ -135,7 +135,7 @@ public class RenderConfiguration implements Cloneable{
 		return shaderlvl;
 	}
 	
-	@SuppressWarnings("unchecked")
+	
 	@Override
 	public RenderConfiguration clone() {
 		RenderConfiguration rofl = new RenderConfiguration(shaderpackKeyName);

@@ -1,8 +1,8 @@
 package de.omnikryptec.gameobject;
 
-import omnikryptec.renderer.d2.RenderChunk2D;
-import omnikryptec.settings.GameSettings;
-import omnikryptec.util.Maths;
+import de.omnikryptec.renderer.d2.RenderChunk2D;
+import de.omnikryptec.settings.GameSettings;
+import de.omnikryptec.util.Maths;
 import org.joml.Vector2f;
 
 public class Transform2D implements Positionable2D{

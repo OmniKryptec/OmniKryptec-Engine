@@ -1,7 +1,7 @@
 package de.omnikryptec.resource.model;
 
 import de.omnikryptec.resource.loader.ResourceObject;
-import omnikryptec.test.saving.DataMap;
+import de.omnikryptec.test.saving.DataMap;
 
 /**
  * AdvancedModel

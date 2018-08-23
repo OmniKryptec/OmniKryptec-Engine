@@ -1,16 +1,16 @@
 package de.omnikryptec.util.profiler;
 
 import de.omnikryptec.util.Util;
-import omnikryptec.util.error.ErrorItem;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.util.error.ErrorItem;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Profiler implements ErrorItem{
-
+public class Profiler implements ErrorItem {
+    
     public static final long NAME_NOT_FOUND = -1;
     public static final String OVERALL_FRAME_TIME = "OVERALL_FRAME_TIME";
     public static final String SCENE_RENDER_TIME_3D = "SCENE_RENDER_TIME_3D";
@@ -22,34 +22,34 @@ public class Profiler implements ErrorItem{
     public static final String POSTPROCESSOR = "POSTPROCESSOR";
     public static final String DISPLAY_UPDATE_TIME = "DISPLAY_UPDATE_TIME";
     public static final String DISPLAY_IDLE_TIME = "DISPLAY_IDLE_TIME";
-
+    
     public static final String OTHER_TIME = "OTHER_TIME";
-
+    
     private static final ArrayList<Profilable> PROFILABLES = new ArrayList<>();
     private final List<ProfileContainer> container = new ArrayList<>();
-
+    
     private static Profilable rest_time;
-
+    
     static {
         rest_time = new Profilable() {
-
+            
             @Override
             public ProfileContainer[] getProfiles() {
                 return new ProfileContainer[] {new ProfileContainer(OTHER_TIME, get())};
             }
-
+            
             private double get() {
-                if(true) {
-                	return 0;
+                if (true) {
+                    return 0;
                 }
-            	Profilable p = PROFILABLES.get(0);
+                Profilable p = PROFILABLES.get(0);
                 ProfileContainer[] cs = null;
                 double max = 0.0;
-                if(p != null) {
+                if (p != null) {
                     cs = p.getProfiles();
-                    if(cs != null) {
+                    if (cs != null) {
                         ProfileContainer c = cs[0];
-                        if(c != null) {
+                        if (c != null) {
                             max = c.getTime();
                         } else {
                             return -1;
@@ -79,7 +79,7 @@ public class Profiler implements ErrorItem{
             }
         };
     }
-
+    
     public static double currentTimeByName(String name) {
         PROFILABLES.add(rest_time);
         for (int i = 0; i < PROFILABLES.size(); i++) {
@@ -101,7 +101,7 @@ public class Profiler implements ErrorItem{
         PROFILABLES.remove(rest_time);
         return NAME_NOT_FOUND;
     }
-
+    
     public static void addProfilable(Profilable p, int index) {
         if (PROFILABLES.contains(p)) {
             Logger.log("The Profilable \"" + p + "\" is already registered!", LogLevel.WARNING);
@@ -111,18 +111,18 @@ public class Profiler implements ErrorItem{
         }
         PROFILABLES.add(index, p);
     }
-
+    
     public static void addProfilable(Profilable p) {
         if (PROFILABLES.contains(p)) {
             Logger.log("The Profilable \"" + p + "\" is already registered!", LogLevel.WARNING);
         }
         PROFILABLES.add(p);
     }
-
+    
     public static void removeProfilable(Profilable p) {
         PROFILABLES.remove(p);
     }
-
+    
     public Profiler() {
         PROFILABLES.add(rest_time);
         for (int i = 0; i < PROFILABLES.size(); i++) {
@@ -137,7 +137,7 @@ public class Profiler implements ErrorItem{
         }
         PROFILABLES.remove(rest_time);
     }
-
+    
     public double profiledTimeByName(String name) {
         for (ProfileContainer c : container) {
             if (c != null && c.getName().equals(name)) {
@@ -146,7 +146,7 @@ public class Profiler implements ErrorItem{
         }
         return NAME_NOT_FOUND;
     }
-
+    
     public String createTimesString(int maxchars, boolean newline, boolean endline) {
         if (container.isEmpty()) {
             Logger.log("No Profiler are registered!", LogLevel.INFO);
@@ -168,7 +168,7 @@ public class Profiler implements ErrorItem{
         }
         return str.toString();
     }
-
+    
     private double[] getAllTimes() {
         double[] array = new double[container.size()];
         for (int i = 0; i < array.length; i++) {
@@ -176,7 +176,7 @@ public class Profiler implements ErrorItem{
         }
         return array;
     }
-
+    
     private String[] createNames() {
         String[] newone = new String[container.size()];
         for (int i = 0; i < newone.length; i++) {
@@ -188,7 +188,7 @@ public class Profiler implements ErrorItem{
         }
         return Util.adjustLength(newone, false);
     }
-
+    
     private String[] createPerc(double maxtime) {
         String[] array = new String[container.size()];
         for (int i = 0; i < container.size(); i++) {
@@ -200,7 +200,7 @@ public class Profiler implements ErrorItem{
         }
         return Util.adjustLength(array, false);
     }
-
+    
     private String[] createRelativeTo(double maxtime) {
         String[] array = new String[container.size()];
         for (int i = 0; i < container.size(); i++) {
@@ -212,7 +212,7 @@ public class Profiler implements ErrorItem{
         }
         return Util.adjustLength(array, false);
     }
-
+    
     private String[] createLines(double[] relatives, int maxchars, double maxtime) {
         double f = maxchars / maxtime;
         String[] newone = new String[relatives.length];
@@ -221,7 +221,7 @@ public class Profiler implements ErrorItem{
         }
         return newone;
     }
-
+    
     private String appendLine(double time, double mult, int max) {
         StringBuilder b = new StringBuilder();
         long amount = Math.round(time * mult);
@@ -238,10 +238,10 @@ public class Profiler implements ErrorItem{
         }
         return b.toString();
     }
-
-	@Override
-	public String getError() {
-		return "Profiled times: \n"+createTimesString(50, false, false);
-	}
-
+    
+    @Override
+    public String getError() {
+        return "Profiled times: \n" + createTimesString(50, false, false);
+    }
+    
 }

@@ -1,16 +1,16 @@
 package de.omnikryptec.postprocessing.stages;
 
-import omnikryptec.display.Display;
-import omnikryptec.gameobject.Camera;
-import omnikryptec.gameobject.Light2D;
-import omnikryptec.graphics.GraphicsUtil;
-import omnikryptec.graphics.SpriteBatch;
-import omnikryptec.postprocessing.main.FrameBufferObject;
-import omnikryptec.postprocessing.main.PostProcessingStage;
-import omnikryptec.renderer.d2.DefaultRenderer2D;
-import omnikryptec.util.EnumCollection.BlendMode;
-import omnikryptec.util.EnumCollection.DepthbufferType;
-import omnikryptec.util.Instance;
+import de.omnikryptec.display.Display;
+import de.omnikryptec.gameobject.Camera;
+import de.omnikryptec.gameobject.Light2D;
+import de.omnikryptec.graphics.GraphicsUtil;
+import de.omnikryptec.graphics.SpriteBatch;
+import de.omnikryptec.postprocessing.main.FrameBufferObject;
+import de.omnikryptec.postprocessing.main.PostProcessingStage;
+import de.omnikryptec.renderer.d2.DefaultRenderer2D;
+import de.omnikryptec.util.EnumCollection.BlendMode;
+import de.omnikryptec.util.EnumCollection.DepthbufferType;
+import de.omnikryptec.util.Instance;
 import org.lwjgl.opengl.GL30;
 
 import java.util.List;

@@ -22,6 +22,9 @@ import de.omnikryptec.gameobject.terrain.Terrain;
 import de.omnikryptec.gameobject.terrain.TerrainGenerator;
 import de.omnikryptec.gameobject.terrain.TerrainTexturePack;
 import de.omnikryptec.graphics.GraphicsUtil;
+import de.omnikryptec.main.AbstractScene3D;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.main.Scene3D;
 import de.omnikryptec.physics.JBulletPhysicsWorld;
 import de.omnikryptec.physics.RigidBodyBuilder;
 import de.omnikryptec.resource.model.Material;
@@ -37,9 +40,6 @@ import de.omnikryptec.util.PhysicsUtil;
 import de.omnikryptec.util.logger.Logger;
 import de.pcfreak9000.noise.components.NoiseWrapper;
 import de.pcfreak9000.noise.noises.OpenSimplexNoise;
-import omnikryptec.main.AbstractScene3D;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.Scene3D;
 import org.lwjgl.glfw.GLFW;
 
 import javax.imageio.ImageIO;
@@ -157,10 +157,12 @@ public class JBulletTest2 {
             // bouncer.play("bounce");
             entity_ball.addComponent(new AudioSourceComponent3D(bouncer));
             entity_attractor.addComponent(new PhysicsComponent3D(entity_attractor, rigidBodyBuilder_attractor));
+            /* //FIXME Fix the EventSystem
             OmniKryptecEngine.instance().getEventsystem().addEventHandler((e) -> {
                 input();
                 logic();
             }, EventType.RENDER_FRAME_EVENT);
+            */
             InputManager.setCamera(OmniKryptecEngine.instance().getCurrent3DScene().getCamera());
             InputManager.setLongButtonPressEnabled(true);
             OmniKryptecEngine.instance().startLoop();

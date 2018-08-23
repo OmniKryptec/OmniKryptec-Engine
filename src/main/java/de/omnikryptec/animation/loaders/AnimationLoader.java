@@ -8,7 +8,7 @@ import de.omnikryptec.animation.ColladaParser.dataStructures.JointTransformData;
 import de.omnikryptec.animation.ColladaParser.dataStructures.KeyFrameData;
 import de.omnikryptec.animation.JointTransform;
 import de.omnikryptec.animation.KeyFrame;
-import omnikryptec.util.Quaternion;
+import de.omnikryptec.util.Quaternion;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 

@@ -1,13 +1,13 @@
 package de.omnikryptec.gameobject.component;
 
+import de.omnikryptec.audio.AudioManager;
 import de.omnikryptec.gameobject.GameObject3D;
-import omnikryptec.audio.AudioManager;
-import omnikryptec.main.AbstractScene3D;
-import omnikryptec.renderer.d3.RenderChunk3D;
-import omnikryptec.util.ConverterUtil;
-import omnikryptec.util.Priority;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.main.AbstractScene3D;
+import de.omnikryptec.renderer.d3.RenderChunk3D;
+import de.omnikryptec.util.ConverterUtil;
+import de.omnikryptec.util.Priority;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 import org.joml.Vector3f;
 
 /**

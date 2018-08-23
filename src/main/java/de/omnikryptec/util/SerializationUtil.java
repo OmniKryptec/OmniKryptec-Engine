@@ -1,7 +1,7 @@
 package de.omnikryptec.util;
 
 import de.omnikryptec.gameobject.GameObject;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.util.logger.Logger;
 import org.joml.*;
 
 import java.lang.reflect.Array;
@@ -239,7 +239,7 @@ public class SerializationUtil {
         return toCast;
     }
 
-    @SuppressWarnings("unchecked")
+    
 	public static final <T> T[] castArray(Object[] toCast, Class<? extends T> c) {
         if (toCast == null) {
             return null;

@@ -2,7 +2,7 @@ package de.omnikryptec.physics;
 
 import de.omnikryptec.graphics.GraphicsUtil;
 import de.omnikryptec.settings.GameSettings;
-import omnikryptec.util.Instance;
+import de.omnikryptec.util.Instance;
 import org.dyn4j.dynamics.ContinuousDetectionMode;
 import org.dyn4j.dynamics.World;
 

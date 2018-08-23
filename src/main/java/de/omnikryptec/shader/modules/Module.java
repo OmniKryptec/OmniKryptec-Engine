@@ -1,6 +1,6 @@
 package de.omnikryptec.shader.modules;
 
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.util.logger.Logger;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

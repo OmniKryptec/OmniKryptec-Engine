@@ -3,8 +3,8 @@ package de.omnikryptec.resource.loader;
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.animation.Animation;
 import de.omnikryptec.animation.loaders.AnimationLoader;
-import omnikryptec.resource.loader.annotations.DefaultLoader;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.resource.loader.annotations.DefaultLoader;
+import de.omnikryptec.util.logger.Logger;
 
 import java.util.Properties;
 

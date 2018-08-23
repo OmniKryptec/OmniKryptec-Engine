@@ -1,6 +1,6 @@
 package de.omnikryptec.physics;
 
-import omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.main.OmniKryptecEngine;
 
 /**
  * PhysicsWorld

@@ -8,7 +8,7 @@ import de.omnikryptec.gameobject.Entity;
 import de.omnikryptec.gameobject.GameObject3D;
 import de.omnikryptec.resource.model.Model;
 import de.omnikryptec.resource.model.TexturedModel;
-import omnikryptec.util.PhysicsUtil;
+import de.omnikryptec.util.PhysicsUtil;
 
 import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;

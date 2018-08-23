@@ -1,12 +1,12 @@
 package de.omnikryptec.gameobject.component;
 
+import de.omnikryptec.audio.AudioSource;
 import de.omnikryptec.gameobject.GameObject3D;
-import omnikryptec.audio.AudioSource;
-import omnikryptec.main.AbstractScene3D;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.renderer.d3.RenderChunk3D;
-import omnikryptec.util.Blocker;
-import omnikryptec.util.Priority;
+import de.omnikryptec.main.AbstractScene3D;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.renderer.d3.RenderChunk3D;
+import de.omnikryptec.util.Blocker;
+import de.omnikryptec.util.Priority;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;

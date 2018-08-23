@@ -1,6 +1,6 @@
 package de.omnikryptec.gameobject;
 
-import omnikryptec.util.Color;
+import de.omnikryptec.util.Color;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 

@@ -3,7 +3,7 @@ package de.omnikryptec.animation.ColladaParser.colladaLoader;
 import de.omnikryptec.animation.ColladaParser.dataStructures.AnimationData;
 import de.omnikryptec.animation.ColladaParser.dataStructures.JointTransformData;
 import de.omnikryptec.animation.ColladaParser.dataStructures.KeyFrameData;
-import omnikryptec.util.XMLUtil;
+import de.omnikryptec.util.XMLUtil;
 import org.jdom2.Element;
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;

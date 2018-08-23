@@ -1,9 +1,9 @@
 package de.omnikryptec.audio;
 
 import de.codemakers.io.file.AdvancedFile;
-import omnikryptec.util.AudioUtil;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.util.AudioUtil;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL10;
 

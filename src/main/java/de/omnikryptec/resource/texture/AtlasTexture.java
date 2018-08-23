@@ -1,6 +1,6 @@
 package de.omnikryptec.resource.texture;
 
-import omnikryptec.resource.loader.ResourceObject;
+import de.omnikryptec.resource.loader.ResourceObject;
 
 public class AtlasTexture extends Texture {
 

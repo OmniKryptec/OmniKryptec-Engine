@@ -2,7 +2,7 @@ package de.omnikryptec.animation.ColladaParser.colladaLoader;
 
 import de.omnikryptec.animation.ColladaParser.dataStructures.SkinningData;
 import de.omnikryptec.animation.ColladaParser.dataStructures.VertexSkinData;
-import omnikryptec.util.XMLUtil;
+import de.omnikryptec.util.XMLUtil;
 import org.jdom2.Element;
 
 import java.util.ArrayList;

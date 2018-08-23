@@ -1,10 +1,10 @@
 package de.omnikryptec.gameobject;
 
-import omnikryptec.display.Display;
-import omnikryptec.test.saving.DataMap;
-import omnikryptec.util.EnumCollection.UpdateType;
-import omnikryptec.util.Maths;
-import omnikryptec.util.SerializationUtil;
+import de.omnikryptec.display.Display;
+import de.omnikryptec.test.saving.DataMap;
+import de.omnikryptec.util.EnumCollection.UpdateType;
+import de.omnikryptec.util.Maths;
+import de.omnikryptec.util.SerializationUtil;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Quaternionf;

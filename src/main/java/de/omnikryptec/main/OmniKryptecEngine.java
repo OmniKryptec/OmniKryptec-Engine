@@ -6,6 +6,8 @@ import de.omnikryptec.display.DisplayManager;
 import de.omnikryptec.event.eventV2.EventBus;
 import de.omnikryptec.event.eventV2.engineevents.CleanupEvent;
 import de.omnikryptec.event.eventV2.engineevents.ErrorEvent;
+import de.omnikryptec.gui.GuiContainer;
+import de.omnikryptec.gui.rendering.GuiRenderer;
 import de.omnikryptec.postprocessing.main.FrameBufferObject;
 import de.omnikryptec.postprocessing.main.PostProcessing;
 import de.omnikryptec.postprocessing.main.RenderTarget;
@@ -29,8 +31,6 @@ import de.omnikryptec.util.logger.Logger;
 import de.omnikryptec.util.profiler.Profilable;
 import de.omnikryptec.util.profiler.ProfileContainer;
 import de.omnikryptec.util.profiler.Profiler;
-import omnikryptec.gui.GuiContainer;
-import omnikryptec.gui.rendering.GuiRenderer;
 import org.lwjgl.opengl.GL30;
 
 import java.util.ArrayList;

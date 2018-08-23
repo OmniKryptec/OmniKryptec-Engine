@@ -1,7 +1,7 @@
 package de.omnikryptec.shader.files.postprocessing;
 
 import de.codemakers.io.file.AdvancedFile;
-import omnikryptec.shader.base.Shader;
+import de.omnikryptec.shader.base.Shader;
 
 public class SimpleFBOShader extends Shader {
 

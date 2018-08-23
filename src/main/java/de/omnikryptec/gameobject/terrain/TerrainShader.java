@@ -1,8 +1,8 @@
 package de.omnikryptec.gameobject.terrain;
 
-import omnikryptec.shader.base.Shader;
-import omnikryptec.shader.base.UniformMatrix;
-import omnikryptec.shader.base.UniformSampler;
+import de.omnikryptec.shader.base.Shader;
+import de.omnikryptec.shader.base.UniformMatrix;
+import de.omnikryptec.shader.base.UniformSampler;
 
 /**
  *

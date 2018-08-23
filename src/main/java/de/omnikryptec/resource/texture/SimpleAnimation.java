@@ -1,7 +1,7 @@
 package de.omnikryptec.resource.texture;
 
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.resource.loader.ResourceObject;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.resource.loader.ResourceObject;
 
 /**
  * Animations in animations may not work correctly.

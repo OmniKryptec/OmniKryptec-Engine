@@ -3,7 +3,7 @@ package de.omnikryptec.animation.ColladaParser.colladaLoader;
 import de.omnikryptec.animation.ColladaParser.dataStructures.AnimatedVertex;
 import de.omnikryptec.animation.ColladaParser.dataStructures.MeshData;
 import de.omnikryptec.animation.ColladaParser.dataStructures.VertexSkinData;
-import omnikryptec.util.XMLUtil;
+import de.omnikryptec.util.XMLUtil;
 import org.jdom2.Element;
 import org.joml.Vector2f;
 import org.joml.Vector3f;

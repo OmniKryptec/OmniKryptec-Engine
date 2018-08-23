@@ -1,7 +1,7 @@
 package de.omnikryptec.postprocessing.v2;
 
 import de.omnikryptec.postprocessing.main.FrameBufferObject;
-import omnikryptec.resource.texture.Texture;
+import de.omnikryptec.resource.texture.Texture;
 
 import java.util.ArrayList;
 import java.util.List;

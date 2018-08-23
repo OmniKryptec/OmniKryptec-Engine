@@ -1,8 +1,8 @@
 package de.omnikryptec.audio;
 
-import omnikryptec.util.Util;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.util.Util;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 
 import javax.swing.*;
 import java.util.ArrayList;

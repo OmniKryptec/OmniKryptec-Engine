@@ -1,12 +1,12 @@
 package de.omnikryptec.gameobject;
 
-import omnikryptec.gameobject.component.Component;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.Scene3D;
-import omnikryptec.test.saving.DataMap;
-import omnikryptec.test.saving.DataMapSerializable;
-import omnikryptec.util.EnumCollection.UpdateType;
-import omnikryptec.util.exceptions.OmniKryptecException;
+import de.omnikryptec.gameobject.component.Component;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.main.Scene3D;
+import de.omnikryptec.test.saving.DataMap;
+import de.omnikryptec.test.saving.DataMapSerializable;
+import de.omnikryptec.util.EnumCollection.UpdateType;
+import de.omnikryptec.util.exceptions.OmniKryptecException;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -218,7 +218,7 @@ public abstract class GameObject implements DataMapSerializable {
      * @param type
      * @return the component
      */
-    @SuppressWarnings("unchecked")
+    
     public final <T> T getComponent(Class<T> type) {
         if (componentsPreLogic != null) {
             for (Component<?> c : componentsPreLogic) {
@@ -243,7 +243,7 @@ public abstract class GameObject implements DataMapSerializable {
      * @param type
      * @return a ArrayList of Components or an Empty ArrayList
      */
-    @SuppressWarnings("unchecked")
+    
     public final <T> ArrayList<T> getComponents(Class<T> type) {
         final ArrayList<T> cp = new ArrayList<>();
         if (componentsPreLogic != null) {
@@ -404,7 +404,7 @@ public abstract class GameObject implements DataMapSerializable {
         return this;
     }
 
-    @SuppressWarnings("unchecked")
+    
     public static final <T> T byName(Class<? extends T> c, String name, boolean onlySame) {
         for (GameObject gameObject : gameObjects) {
             if ((!onlySame && c.isAssignableFrom(gameObject.getClass()) || (onlySame && gameObject.getClass() == c)) && (gameObject.getName() == null ? name == null : gameObject.getName().equals(name))) {

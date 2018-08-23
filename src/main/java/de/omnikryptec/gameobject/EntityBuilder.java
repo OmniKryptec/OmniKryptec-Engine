@@ -1,9 +1,9 @@
 package de.omnikryptec.gameobject;
 
 import de.codemakers.io.file.AdvancedFile;
-import omnikryptec.resource.model.Model;
-import omnikryptec.resource.model.TexturedModel;
-import omnikryptec.resource.texture.SimpleTexture;
+import de.omnikryptec.resource.model.Model;
+import de.omnikryptec.resource.model.TexturedModel;
+import de.omnikryptec.resource.texture.SimpleTexture;
 
 /**
  *

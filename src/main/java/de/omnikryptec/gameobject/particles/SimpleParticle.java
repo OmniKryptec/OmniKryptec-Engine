@@ -1,8 +1,8 @@
 package de.omnikryptec.gameobject.particles;
 
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.resource.texture.ParticleAtlas;
-import omnikryptec.util.EnumCollection.RenderType;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.resource.texture.ParticleAtlas;
+import de.omnikryptec.util.EnumCollection.RenderType;
 import org.joml.Vector3f;
 
 public class SimpleParticle extends Particle {

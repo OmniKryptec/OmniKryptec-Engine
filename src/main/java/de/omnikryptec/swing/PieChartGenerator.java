@@ -1,8 +1,9 @@
 package de.omnikryptec.swing;
 
 import de.codemakers.io.file.AdvancedFile;
-import omnikryptec.util.logger.Commands;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.util.Color;
+import de.omnikryptec.util.logger.Commands;
+import de.omnikryptec.util.logger.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,9 +17,9 @@ import java.util.Random;
  * @author Panzer1119
  */
 public class PieChartGenerator {
-
+    
     private static final Random random = new Random();
-
+    
     public static final void main(String[] args) {
         final ArrayList<ChartData> chartDatas = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
@@ -35,7 +36,7 @@ public class PieChartGenerator {
             Logger.logErr("Error while writing Image to File: " + ex, ex);
         }
     }
-
+    
     /**
      * Creates a PieChart based on the given ChartDatas
      *
@@ -48,12 +49,13 @@ public class PieChartGenerator {
      * size)
      * @param withPercentage Boolean If the percentage of each ChartData should
      * be shown beside the name
+     *
      * @return BufferedImage Created PieChart
      */
     public static final BufferedImage createPieChart(ArrayList<ChartData> chartDatas, int width, int height, float diameterFactor, float fontSizeFactor, boolean withPercentage, String format) {
         return createPieChart(chartDatas.toArray(new ChartData[chartDatas.size()]), width, height, diameterFactor, fontSizeFactor, withPercentage, format);
     }
-
+    
     /**
      * Creates a PieChart based on the given ChartDatas
      *
@@ -66,6 +68,7 @@ public class PieChartGenerator {
      * size)
      * @param withPercentage Boolean If the percentage of each ChartData should
      * be shown beside the name
+     *
      * @return BufferedImage Created PieChart
      */
     public static final BufferedImage createPieChart(ChartData[] chartDatas, int width, int height, float diameterFactor, float fontSizeFactor, boolean withPercentage, String format) {
@@ -159,9 +162,9 @@ public class PieChartGenerator {
         }
         return image;
     }
-
+    
     public static final Color generateRandomColor() {
         return new Color(random.nextInt(256) / 255.0F, random.nextInt(256) / 255.0F, random.nextInt(256) / 255.0F);
     }
-
+    
 }

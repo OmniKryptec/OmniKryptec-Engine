@@ -1,15 +1,15 @@
 package de.omnikryptec.gameobject.terrain;
 
 import de.omnikryptec.gameobject.Entity;
-import omnikryptec.renderer.d3.RendererRegistration;
-import omnikryptec.resource.model.Material;
-import omnikryptec.resource.model.Model;
-import omnikryptec.resource.model.TexturedModel;
-import omnikryptec.resource.objConverter.ModelData;
-import omnikryptec.resource.objConverter.Vertex;
-import omnikryptec.resource.texture.Texture;
-import omnikryptec.util.EnumCollection.Dimension;
-import omnikryptec.util.Maths;
+import de.omnikryptec.renderer.d3.RendererRegistration;
+import de.omnikryptec.resource.model.Material;
+import de.omnikryptec.resource.model.Model;
+import de.omnikryptec.resource.model.TexturedModel;
+import de.omnikryptec.resource.objConverter.ModelData;
+import de.omnikryptec.resource.objConverter.Vertex;
+import de.omnikryptec.resource.texture.Texture;
+import de.omnikryptec.util.EnumCollection.Dimension;
+import de.omnikryptec.util.Maths;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 

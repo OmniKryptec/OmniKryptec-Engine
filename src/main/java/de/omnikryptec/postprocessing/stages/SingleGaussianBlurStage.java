@@ -1,11 +1,11 @@
 package de.omnikryptec.postprocessing.stages;
 
-import omnikryptec.display.Display;
-import omnikryptec.postprocessing.main.FrameBufferObject;
-import omnikryptec.postprocessing.main.PostProcessingStageShaded;
-import omnikryptec.shader.base.Shader;
-import omnikryptec.shader.files.postprocessing.GaussianBlurShader;
-import omnikryptec.util.EnumCollection.DepthbufferType;
+import de.omnikryptec.display.Display;
+import de.omnikryptec.postprocessing.main.FrameBufferObject;
+import de.omnikryptec.postprocessing.main.PostProcessingStageShaded;
+import de.omnikryptec.shader.base.Shader;
+import de.omnikryptec.shader.files.postprocessing.GaussianBlurShader;
+import de.omnikryptec.util.EnumCollection.DepthbufferType;
 
 import java.util.List;
 

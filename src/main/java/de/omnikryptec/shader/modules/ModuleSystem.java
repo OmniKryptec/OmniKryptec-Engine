@@ -1,8 +1,8 @@
 package de.omnikryptec.shader.modules;
 
 import de.codemakers.io.file.AdvancedFile;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;

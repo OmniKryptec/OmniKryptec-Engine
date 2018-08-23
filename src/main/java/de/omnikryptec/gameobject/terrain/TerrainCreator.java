@@ -1,8 +1,8 @@
 package de.omnikryptec.gameobject.terrain;
 
-import omnikryptec.resource.model.Model;
-import omnikryptec.resource.objConverter.ModelData;
-import omnikryptec.resource.texture.Texture;
+import de.omnikryptec.resource.model.Model;
+import de.omnikryptec.resource.objConverter.ModelData;
+import de.omnikryptec.resource.texture.Texture;
 
 public class TerrainCreator {
 	

@@ -24,7 +24,7 @@ public class RenderMap<K, V> {
         return map.get(key);
     }
 
-    @SuppressWarnings("unchecked")
+    
     public K[] keysArray() {
         if (keysDirty) {
             keys = map.keySet().toArray((K[]) Array.newInstance(keyclass, map.size()));

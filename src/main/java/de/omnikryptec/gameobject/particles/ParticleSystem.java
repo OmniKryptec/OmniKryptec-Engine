@@ -1,8 +1,8 @@
 package de.omnikryptec.gameobject.particles;
 
 import de.omnikryptec.gameobject.GameObject3D;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.util.Maths;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.util.Maths;
 import org.joml.Vector3f;
 
 import java.util.Random;

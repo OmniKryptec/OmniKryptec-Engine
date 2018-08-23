@@ -1,7 +1,7 @@
 package de.omnikryptec.resource.objConverter;
 
 import de.codemakers.io.file.AdvancedFile;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.util.logger.Logger;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 

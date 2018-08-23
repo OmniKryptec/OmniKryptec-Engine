@@ -1,16 +1,16 @@
 package de.omnikryptec.renderer.d3;
 
 import de.omnikryptec.gameobject.Entity;
+import de.omnikryptec.main.AbstractScene3D;
 import de.omnikryptec.resource.model.AdvancedModel;
-import omnikryptec.main.AbstractScene3D;
-import omnikryptec.shader.base.Shader;
-import omnikryptec.shader.base.ShaderPack;
-import omnikryptec.util.FrustrumFilter;
-import omnikryptec.util.Level;
-import omnikryptec.util.Priority;
-import omnikryptec.util.Util;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.shader.base.Shader;
+import de.omnikryptec.shader.base.ShaderPack;
+import de.omnikryptec.util.FrustrumFilter;
+import de.omnikryptec.util.Level;
+import de.omnikryptec.util.Priority;
+import de.omnikryptec.util.Util;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 
 import java.util.List;
 

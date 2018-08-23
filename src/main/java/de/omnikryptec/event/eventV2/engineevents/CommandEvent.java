@@ -1,8 +1,8 @@
 package de.omnikryptec.event.eventV2.engineevents;
 
-import omnikryptec.event.eventV2.Event;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.util.logger.Command;
+import de.omnikryptec.event.eventV2.Event;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.util.logger.Command;
 
 public class CommandEvent extends Event {
 

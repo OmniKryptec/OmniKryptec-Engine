@@ -63,7 +63,7 @@ public class DistinctMap<A extends Object, B extends Object> {
             return (a == null ? this.a == null : a.equals(this.a)) && (b == null ? this.b == null : b.equals(this.b));
         }
         
-        @SuppressWarnings("unchecked")
+        
         @Override
         public final boolean equals(Object object) {
             if (object == null) {
@@ -155,7 +155,7 @@ public class DistinctMap<A extends Object, B extends Object> {
         return entry;
     }
 
-    @SuppressWarnings("unchecked")
+    
 	public final DistinctEntry<A, B> add(Object object) {
         DistinctEntry<A, B> entry = get(object);
         if (entry == null) {
@@ -278,7 +278,7 @@ public class DistinctMap<A extends Object, B extends Object> {
         return entry.getB();
     }
 
-    @SuppressWarnings("unchecked")
+    
 	@Override
     public boolean equals(Object object) {
         if (object == null) {

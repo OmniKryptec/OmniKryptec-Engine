@@ -2,6 +2,7 @@ package de.omnikryptec.test;
 
 import de.omnikryptec.gameobject.Entity;
 import de.omnikryptec.graphics.GraphicsUtil;
+import de.omnikryptec.main.AbstractScene3D;
 import de.omnikryptec.postprocessing.main.FrameBufferObject;
 import de.omnikryptec.renderer.d3.RenderConfiguration;
 import de.omnikryptec.renderer.d3.RenderConfiguration.AllowedRenderer;
@@ -11,7 +12,6 @@ import de.omnikryptec.resource.model.AdvancedModel;
 import de.omnikryptec.shader.base.Shader;
 import de.omnikryptec.util.EnumCollection.DepthbufferType;
 import de.omnikryptec.util.FrustrumFilter;
-import omnikryptec.main.AbstractScene3D;
 
 import java.util.List;
 

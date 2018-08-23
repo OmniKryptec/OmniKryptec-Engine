@@ -1,19 +1,19 @@
 package de.omnikryptec.gameobject.terrain;
 
 import de.omnikryptec.gameobject.Entity;
-import omnikryptec.graphics.GraphicsUtil;
-import omnikryptec.main.AbstractScene3D;
-import omnikryptec.renderer.d3.RenderMap;
-import omnikryptec.renderer.d3.Renderer;
-import omnikryptec.renderer.d3.RendererRegistration;
-import omnikryptec.resource.model.AdvancedModel;
-import omnikryptec.resource.model.TexturedModel;
-import omnikryptec.shader.base.Shader;
-import omnikryptec.shader.base.ShaderGroup;
-import omnikryptec.shader.base.ShaderPack;
-import omnikryptec.util.FrustrumFilter;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.graphics.GraphicsUtil;
+import de.omnikryptec.main.AbstractScene3D;
+import de.omnikryptec.renderer.d3.RenderMap;
+import de.omnikryptec.renderer.d3.Renderer;
+import de.omnikryptec.renderer.d3.RendererRegistration;
+import de.omnikryptec.resource.model.AdvancedModel;
+import de.omnikryptec.resource.model.TexturedModel;
+import de.omnikryptec.shader.base.Shader;
+import de.omnikryptec.shader.base.ShaderGroup;
+import de.omnikryptec.shader.base.ShaderPack;
+import de.omnikryptec.util.FrustrumFilter;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;

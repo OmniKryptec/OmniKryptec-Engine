@@ -1,13 +1,13 @@
 package de.omnikryptec.postprocessing.main;
 
-import omnikryptec.graphics.GraphicsUtil;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.resource.model.Model;
-import omnikryptec.util.Instance;
-import omnikryptec.util.ModelUtil;
-import omnikryptec.util.profiler.Profilable;
-import omnikryptec.util.profiler.ProfileContainer;
-import omnikryptec.util.profiler.Profiler;
+import de.omnikryptec.graphics.GraphicsUtil;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.resource.model.Model;
+import de.omnikryptec.util.Instance;
+import de.omnikryptec.util.ModelUtil;
+import de.omnikryptec.util.profiler.Profilable;
+import de.omnikryptec.util.profiler.ProfileContainer;
+import de.omnikryptec.util.profiler.Profiler;
 import org.lwjgl.opengl.GL30;
 
 import java.util.ArrayList;

@@ -1,9 +1,9 @@
 package de.omnikryptec.resource.loader;
 
 import de.codemakers.io.file.AdvancedFile;
-import omnikryptec.resource.loader.annotations.DefaultLoader;
-import omnikryptec.resource.model.Model;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.resource.loader.annotations.DefaultLoader;
+import de.omnikryptec.resource.model.Model;
+import de.omnikryptec.util.logger.Logger;
 
 import java.util.Properties;
 

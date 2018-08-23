@@ -1,6 +1,6 @@
 package de.omnikryptec.swing;
 
-import omnikryptec.util.Color;
+import de.omnikryptec.util.Color;
 
 /**
  *

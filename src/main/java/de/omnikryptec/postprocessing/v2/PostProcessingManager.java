@@ -1,8 +1,8 @@
 package de.omnikryptec.postprocessing.v2;
 
-import omnikryptec.graphics.GraphicsUtil;
-import omnikryptec.resource.model.Model;
-import omnikryptec.util.ModelUtil;
+import de.omnikryptec.graphics.GraphicsUtil;
+import de.omnikryptec.resource.model.Model;
+import de.omnikryptec.util.ModelUtil;
 
 import java.util.HashMap;
 import java.util.Map;

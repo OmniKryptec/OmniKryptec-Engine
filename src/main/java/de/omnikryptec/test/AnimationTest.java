@@ -14,6 +14,8 @@ import de.omnikryptec.gameobject.Entity;
 import de.omnikryptec.gameobject.EntityBuilder;
 import de.omnikryptec.gameobject.GameObject;
 import de.omnikryptec.graphics.GraphicsUtil;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.main.Scene3D;
 import de.omnikryptec.resource.loader.ResourceLoader;
 import de.omnikryptec.resource.model.Model;
 import de.omnikryptec.resource.model.TexturedModel;
@@ -23,14 +25,12 @@ import de.omnikryptec.settings.GameSettings;
 import de.omnikryptec.settings.Key;
 import de.omnikryptec.settings.KeyGroup;
 import de.omnikryptec.settings.KeySettings;
+import de.omnikryptec.test.saving.DataMapSerializer;
+import de.omnikryptec.test.saving.XMLSerializer;
 import de.omnikryptec.util.NativesLoader;
 import de.omnikryptec.util.OSUtil;
 import de.omnikryptec.util.logger.Logger;
 import de.omnikryptec.util.profiler.LiveProfiler;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.main.Scene3D;
-import omnikryptec.test.saving.DataMapSerializer;
-import omnikryptec.test.saving.XMLSerializer;
 import org.joml.Matrix3f;
 import org.joml.Quaternionf;
 import org.joml.Vector4f;
@@ -166,11 +166,13 @@ public class AnimationTest {
                 camera.getTransform().increaseRotation(0, 90, 0);
                 entity_brunnen.getTransform().increasePosition(8, 1, 0);
             }
+            /* //FIXME fix the EventSystem
             OmniKryptecEngine.instance().getEventsystem().addEventHandler((e) -> {
                 input();
                 logic();
                 AnimatedModel.updateAllAnimatedModels();
             }, EventType.RENDER_FRAME_EVENT);
+            */
             InputManager.setCamera(camera);
             InputManager.setLongButtonPressEnabled(true);
             OmniKryptecEngine.instance().startLoop();

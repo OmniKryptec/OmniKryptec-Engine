@@ -1,10 +1,10 @@
 package de.omnikryptec.gameobject.component;
 
 import de.omnikryptec.gameobject.GameObject2D;
-import omnikryptec.physics.AdvancedBody;
-import omnikryptec.physics.Dyn4JPhysicsWorld;
-import omnikryptec.util.Instance;
-import omnikryptec.util.Priority;
+import de.omnikryptec.physics.AdvancedBody;
+import de.omnikryptec.physics.Dyn4JPhysicsWorld;
+import de.omnikryptec.util.Instance;
+import de.omnikryptec.util.Priority;
 
 @Priority(value = -1)
 @ComponentAnnotation(supportedGameObjectClass = GameObject2D.class)

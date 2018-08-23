@@ -1,9 +1,9 @@
 package de.omnikryptec.util;
 
 import de.codemakers.util.Returner;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 
 import java.util.Properties;
 import java.util.function.Consumer;
@@ -16,9 +16,9 @@ import static de.codemakers.io.file.AdvancedFile.NOT_FOUND;
  * @author Panzer1119
  */
 public class Util {
-
-	public static final String LINE_TERM = "\n";
-	
+    
+    public static final String LINE_TERM = "\n";
+    
     public static final String replaceAll(String string, String toReplace, String with) {
         if (string == null || toReplace == null || with == null) {
             return "";
@@ -28,7 +28,7 @@ public class Util {
         }
         return string;
     }
-
+    
     public static final String[] adjustLength(String[] array, boolean returnnew) {
         String[] names = array;
         int tmp = 0;
@@ -48,16 +48,16 @@ public class Util {
         }
         return array;
     }
-
+    
     public static final String[] merge(Object... b) {
         String[][] array = createString2d(b);
-        String[] newone = new String[]{""};
+        String[] newone = new String[] {""};
         for (int i = 0; i < array.length; i++) {
             newone = mergeS(newone, array[i]);
         }
         return newone;
     }
-
+    
     public static final String[] mergeS(String[] a, String[] b) {
         if (a.length == 0) {
             return b;
@@ -71,19 +71,19 @@ public class Util {
         }
         return newone;
     }
-
+    
     private static String[][] createString2d(Object[] objs) {
         String[][] array = new String[objs.length][];
         for (int i = 0; i < array.length; i++) {
             if (objs[i] instanceof String[]) {
                 array[i] = (String[]) objs[i];
             } else if (objs[i] instanceof String) {
-                array[i] = new String[]{(String) objs[i]};
+                array[i] = new String[] {(String) objs[i]};
             }
         }
         return array;
     }
-
+    
     /**
      * Stops a Thread until its dead or the Time is over
      *
@@ -113,7 +113,7 @@ public class Util {
             times++;
         }
     }
-
+    
     public static final double getCurrentTime() {
         try {
             return OmniKryptecEngine.instance().getDisplayManager().getCurrentTime();
@@ -121,7 +121,7 @@ public class Util {
             return System.currentTimeMillis();
         }
     }
-
+    
     public static final float extractPrio(Class<?> clazz, float def) {
         if (clazz.isAnnotationPresent(Priority.class)) {
             return clazz.getAnnotation(Priority.class).value();
@@ -132,7 +132,7 @@ public class Util {
             return def;
         }
     }
-
+    
     public static final float extractLvl(Class<?> clazz, float def) {
         if (clazz.isAnnotationPresent(Level.class)) {
             return clazz.getAnnotation(Level.class).value();
@@ -143,7 +143,7 @@ public class Util {
             return def;
         }
     }
-
+    
     public static final <T> void consume(Consumer<T> consumer, T t) {
         try {
             consumer.accept(t);
@@ -151,7 +151,7 @@ public class Util {
             ex.printStackTrace();
         }
     }
-
+    
     public static final <S, F> void finish(boolean succeeded, Consumer<S> success, Consumer<F> failure, S s, F f) {
         try {
             if (succeeded && success != null) {
@@ -166,7 +166,7 @@ public class Util {
     
     
     public static String getString(Properties p, String key, String defaults) {
-    	return p==null?defaults:Returner.of(p.getProperty(key)).or(defaults);
+        return p == null ? defaults : Returner.of(p.getProperty(key)).or(defaults);
     }
     
 }

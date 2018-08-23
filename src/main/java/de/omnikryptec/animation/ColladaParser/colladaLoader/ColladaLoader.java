@@ -2,8 +2,8 @@ package de.omnikryptec.animation.ColladaParser.colladaLoader;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.animation.ColladaParser.dataStructures.*;
-import omnikryptec.util.Instance;
-import omnikryptec.util.XMLUtil;
+import de.omnikryptec.util.Instance;
+import de.omnikryptec.util.XMLUtil;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.joml.Matrix4f;

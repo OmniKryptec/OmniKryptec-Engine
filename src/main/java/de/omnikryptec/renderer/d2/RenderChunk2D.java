@@ -3,10 +3,10 @@ package de.omnikryptec.renderer.d2;
 import de.omnikryptec.gameobject.GameObject2D;
 import de.omnikryptec.gameobject.Light2D;
 import de.omnikryptec.gameobject.Sprite;
+import de.omnikryptec.main.AbstractScene2D;
+import de.omnikryptec.main.GameObjectContainer;
+import de.omnikryptec.main.OmniKryptecEngine;
 import de.omnikryptec.settings.GameSettings;
-import omnikryptec.main.AbstractScene2D;
-import omnikryptec.main.GameObjectContainer;
-import omnikryptec.main.OmniKryptecEngine;
 
 import java.util.ArrayList;
 

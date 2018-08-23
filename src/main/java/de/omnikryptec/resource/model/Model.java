@@ -4,7 +4,7 @@ import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.resource.loader.ResourceObject;
 import de.omnikryptec.resource.objConverter.ModelData;
 import de.omnikryptec.resource.objConverter.ObjLoader;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.util.logger.Logger;
 import org.lwjgl.opengl.GL15;
 
 import java.io.InputStream;

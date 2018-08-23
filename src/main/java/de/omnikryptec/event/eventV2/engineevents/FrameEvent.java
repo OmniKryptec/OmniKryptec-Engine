@@ -1,7 +1,7 @@
 package de.omnikryptec.event.eventV2.engineevents;
 
-import omnikryptec.event.eventV2.Event;
-import omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.event.eventV2.Event;
+import de.omnikryptec.main.OmniKryptecEngine;
 
 public class FrameEvent extends Event {
 

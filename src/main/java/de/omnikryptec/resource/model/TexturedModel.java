@@ -1,7 +1,7 @@
 package de.omnikryptec.resource.model;
 
 import de.omnikryptec.resource.texture.Texture;
-import omnikryptec.test.saving.DataMap;
+import de.omnikryptec.test.saving.DataMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,7 +70,7 @@ public class TexturedModel implements AdvancedModel {
 		return this;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	private final TexturedModel deleteAll(boolean all) {
 		ArrayList<TexturedModel> tms = (ArrayList<TexturedModel>) texturedModels.get(name).clone();
 		if (tms != null) {

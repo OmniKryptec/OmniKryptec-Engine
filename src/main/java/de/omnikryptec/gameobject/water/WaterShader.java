@@ -1,6 +1,6 @@
 package de.omnikryptec.gameobject.water;
 
-import omnikryptec.shader.base.Shader;
+import de.omnikryptec.shader.base.Shader;
 
 /**
  * WaterShader

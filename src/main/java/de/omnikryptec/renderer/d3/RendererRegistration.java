@@ -2,10 +2,10 @@ package de.omnikryptec.renderer.d3;
 
 import de.omnikryptec.animation.renderer.AnimatedModelRenderer;
 import de.omnikryptec.gameobject.terrain.TerrainRenderer;
-import omnikryptec.util.SerializationUtil;
-import omnikryptec.util.exceptions.OmniKryptecException;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.util.SerializationUtil;
+import de.omnikryptec.util.exceptions.OmniKryptecException;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 
 import java.util.LinkedList;
 import java.util.List;

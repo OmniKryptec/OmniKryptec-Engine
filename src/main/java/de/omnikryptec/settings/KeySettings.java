@@ -1,8 +1,8 @@
 package de.omnikryptec.settings;
 
 import de.codemakers.serialization.XMLable;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 import org.jdom2.Element;
 import org.lwjgl.glfw.GLFW;
 

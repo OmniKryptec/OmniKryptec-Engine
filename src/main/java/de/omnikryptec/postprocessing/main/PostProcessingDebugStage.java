@@ -1,10 +1,10 @@
 package de.omnikryptec.postprocessing.main;
 
-import omnikryptec.display.Display;
-import omnikryptec.graphics.GraphicsUtil;
-import omnikryptec.shader.files.postprocessing.DebugShader;
-import omnikryptec.util.EnumCollection.BlendMode;
-import omnikryptec.util.EnumCollection.DepthbufferType;
+import de.omnikryptec.display.Display;
+import de.omnikryptec.graphics.GraphicsUtil;
+import de.omnikryptec.shader.files.postprocessing.DebugShader;
+import de.omnikryptec.util.EnumCollection.BlendMode;
+import de.omnikryptec.util.EnumCollection.DepthbufferType;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;

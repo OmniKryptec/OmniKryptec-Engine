@@ -1,6 +1,6 @@
 package de.omnikryptec.resource.objConverter;
 
-import omnikryptec.util.EnumCollection.Dimension;
+import de.omnikryptec.util.EnumCollection.Dimension;
 
 public class ModelData {
 

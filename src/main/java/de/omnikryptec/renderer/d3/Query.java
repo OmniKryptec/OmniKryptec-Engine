@@ -1,6 +1,6 @@
 package de.omnikryptec.renderer.d3;
 
-import omnikryptec.graphics.OpenGL;
+import de.omnikryptec.graphics.OpenGL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 

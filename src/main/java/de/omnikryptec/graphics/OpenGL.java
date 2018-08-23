@@ -1,8 +1,8 @@
 package de.omnikryptec.graphics;
 
 import de.omnikryptec.resource.texture.Texture;
-import omnikryptec.util.logger.LogLevel;
-import omnikryptec.util.logger.Logger;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 import org.lwjgl.opengl.*;
 
 import java.lang.reflect.Field;

@@ -1,7 +1,7 @@
 package de.omnikryptec.postprocessing.stages;
 
-import omnikryptec.postprocessing.main.FrameBufferObject;
-import omnikryptec.postprocessing.main.PostProcessingStage;
+import de.omnikryptec.postprocessing.main.FrameBufferObject;
+import de.omnikryptec.postprocessing.main.PostProcessingStage;
 
 import java.util.List;
 

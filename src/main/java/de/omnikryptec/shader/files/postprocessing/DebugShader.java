@@ -1,9 +1,9 @@
 package de.omnikryptec.shader.files.postprocessing;
 
 import de.codemakers.io.file.AdvancedFile;
-import omnikryptec.shader.base.Shader;
-import omnikryptec.shader.base.UniformSampler;
-import omnikryptec.shader.base.UniformVec3;
+import de.omnikryptec.shader.base.Shader;
+import de.omnikryptec.shader.base.UniformSampler;
+import de.omnikryptec.shader.base.UniformVec3;
 
 public class DebugShader extends Shader {
 

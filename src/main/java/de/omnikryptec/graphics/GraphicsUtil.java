@@ -2,12 +2,12 @@ package de.omnikryptec.graphics;
 
 import de.omnikryptec.gameobject.Camera;
 import de.omnikryptec.gameobject.Entity;
+import de.omnikryptec.main.OmniKryptecEngine;
 import de.omnikryptec.settings.GameSettings;
-import omnikryptec.main.OmniKryptecEngine;
-import omnikryptec.util.Color;
-import omnikryptec.util.EnumCollection.BlendMode;
-import omnikryptec.util.EnumCollection.RenderType;
-import omnikryptec.util.EnumCollection.UpdateType;
+import de.omnikryptec.util.Color;
+import de.omnikryptec.util.EnumCollection.BlendMode;
+import de.omnikryptec.util.EnumCollection.RenderType;
+import de.omnikryptec.util.EnumCollection.UpdateType;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;

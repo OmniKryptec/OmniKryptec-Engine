@@ -3,9 +3,9 @@ package de.omnikryptec.util.logger;
 import de.codemakers.io.file.AdvancedFile;
 import de.codemakers.lang.LanguageManager;
 import de.codemakers.lang.LanguageReloader;
+import de.omnikryptec.main.OmniKryptecEngine;
 import de.omnikryptec.util.EnumCollection.GameState;
 import de.omnikryptec.util.logger.LogEntryFormatter.LogEntryFormatTile;
-import omnikryptec.main.OmniKryptecEngine;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -18,27 +18,27 @@ import java.awt.event.*;
 import java.io.BufferedWriter;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 
 /**
- *
  * @author Panzer1119
  */
 public class Console extends JFrame implements ActionListener, LanguageReloader, KeyListener, WindowListener {
-
+    
     /**
      *
      */
     private static final long serialVersionUID = 6039442939368637162L;
-
+    
     public static final String ICON = "/omnikryptec/res/icons/Farm-Fresh_application_xp_terminal.png";
-
+    
     protected final HashMap<LogLevel, Boolean> logLevelVisibilities = new HashMap<LogLevel, Boolean>() {
         /**
          *
          */
         private static final long serialVersionUID = 1290229250089508063L;
-
+        
         {
             for (LogLevel ll : LogLevel.values()) {
                 put(ll, false);
@@ -50,11 +50,10 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
          *
          */
         private static final long serialVersionUID = 4298043426018363787L;
-
+        
         {
             for (LogLevel ll : LogLevel.values()) {
-                final JCheckBoxMenuItem cbmi = new JCheckBoxMenuItem(
-                        String.format(getLang("show_f", "Show %s"), ll.toLocalizedText()));
+                final JCheckBoxMenuItem cbmi = new JCheckBoxMenuItem(String.format(getLang("show_f", "Show %s"), ll.toLocalizedText()));
                 put(cbmi, ll);
             }
         }
@@ -66,10 +65,10 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
     private boolean exitWhenLastOne = true;
     private WizardSaveAs wizardSaveAs = null;
     private boolean blockAdding = false;
-
+    
     private final SpinnerNumberModel spinnerNumberModel_fontSize = new SpinnerNumberModel(13, 0, 20, 1);
     private final JSpinner spinner = new JSpinner(spinnerNumberModel_fontSize);
-
+    
     public Console() {
         initComponents();
         init();
@@ -84,7 +83,7 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
         LanguageManager.addLanguageReloader(this);
         reloadLanguage();
     }
-
+    
     private void initListeners() {
         textField_input.addKeyListener(this);
         button_input.addActionListener(this);
@@ -102,11 +101,11 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
             setFont((int) spinner.getModel().getValue());
         });
     }
-
+    
     private void setFont(int size) {
         textPane.setFont(new Font(Font.MONOSPACED, Font.PLAIN, size));
     }
-
+    
     private void init() {
         setFont(13);
         setSize(new Dimension(1200, 500));
@@ -120,7 +119,7 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
             getCheckBoxMenuItem(ll).setSelected(false);
         }
     }
-
+    
     private boolean processInput() {
         boolean done = processInput(textField_input.getText());
         if (done) {
@@ -128,7 +127,7 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
         }
         return done;
     }
-
+    
     private boolean processInput(String input) {
         if (input == null || input.isEmpty()) {
             return false;
@@ -145,7 +144,7 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
             return false;
         }
     }
-
+    
     private final void showFontSizeChanger() {
         final int oldFontSize = (int) spinner.getModel().getValue();
         final int result = JOptionPane.showOptionDialog(this, spinner, getLang("console_change_font_size_q", "Enter new font size"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
@@ -155,7 +154,7 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
             setFont((int) spinner.getModel().getValue());
         }
     }
-
+    
     private void goConsoleCommand(int go) {
         depth += go;
         if (depth < 0) {
@@ -169,7 +168,7 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
             textField_input.setText(logInput.get(logInput.size() - depth).getLogEntry().toString());
         }
     }
-
+    
     public Console reloadConsole(ArrayList<LogEntry> logEntries, boolean update) {
         blockAdding = true;
         StyledDocument doc = textPane.getStyledDocument();
@@ -197,7 +196,7 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
         blockAdding = false;
         return this;
     }
-
+    
     public Console addToConsole(LogEntry logEntry, boolean update) {
         while (blockAdding) {
             try {
@@ -223,11 +222,11 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
         }
         return this;
     }
-
+    
     public void reloadConsole() {
         reloadConsole(true);
     }
-
+    
     public void closeConsole() {
         if (visible || showed) {
             dispose();
@@ -237,7 +236,7 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
         reloadConsole();
         checkForExit();
     }
-
+    
     public void hideConsole() {
         if (visible && showed) {
             setVisible(false);
@@ -247,7 +246,7 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
         reloadConsole();
         checkForExit();
     }
-
+    
     public void showConsole(Component c) {
         if (wizardSaveAs == null) {
             wizardSaveAs = new WizardSaveAs(this);
@@ -261,7 +260,7 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
         }
         reloadConsole();
     }
-
+    
     public void reShowConsole(Component c) {
         if (!visible && showed) {
             reloadCheckBoxSelectionsFromSave();
@@ -273,12 +272,11 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
         }
         reloadConsole();
     }
-
+    
     private void checkForExit() {
         if (exitWhenLastOne) {
             try {
-                if (OmniKryptecEngine.instance() == null
-                        || OmniKryptecEngine.instance().getState() == GameState.STOPPED) {
+                if (OmniKryptecEngine.instance() == null || OmniKryptecEngine.instance().getState() == GameState.STOPPED) {
                     Commands.COMMANDEXIT.run("-java");
                 }
             } catch (Exception ex) {
@@ -286,16 +284,16 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
             }
         }
     }
-
+    
     public boolean isExitWhenLastOne() {
         return exitWhenLastOne;
     }
-
+    
     public Console setExitWhenLastOne(boolean exitWhenLastOne) {
         this.exitWhenLastOne = exitWhenLastOne;
         return this;
     }
-
+    
     private void reloadCheckBoxSelectionsFromSave() {
         M2C1.setSelected(LogEntryFormatter.isPrinting(Logger.LOGENTRYFORMAT, LogEntryFormatTile.DATETIME)); // Timestamp
         M2C2.setSelected(LogEntryFormatter.isPrinting(Logger.LOGENTRYFORMAT, LogEntryFormatTile.CLASSLINE)); // Appearance
@@ -306,25 +304,22 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
             cbmi.setSelected(logLevelVisibilities.get(logLevelCheckBoxes.get(cbmi)));
         }
     }
-
+    
     private void reloadCheckBoxSelectionsToSave() {
-        Logger.setLogEntryFormat(LogEntryFormatter.toggleFormat(LogEntry.STANDARD_LOGENTRYFORMAT, M2C1.isSelected(),
-                M2C2.isSelected(), M2C3.isSelected(), M2C4.isSelected(),
-                LogEntryFormatter.isPrinting(Logger.LOGENTRYFORMAT, LogEntryFormatTile.MESSAGE),
-                LogEntryFormatter.isPrinting(Logger.LOGENTRYFORMAT, LogEntryFormatTile.EXCEPTION)));
+        Logger.setLogEntryFormat(LogEntryFormatter.toggleFormat(LogEntry.STANDARD_LOGENTRYFORMAT, M2C1.isSelected(), M2C2.isSelected(), M2C3.isSelected(), M2C4.isSelected(), LogEntryFormatter.isPrinting(Logger.LOGENTRYFORMAT, LogEntryFormatTile.MESSAGE), LogEntryFormatter.isPrinting(Logger.LOGENTRYFORMAT, LogEntryFormatTile.EXCEPTION)));
         Logger.setDebugMode(M2C5.isSelected());
         for (LogLevel ll : logLevelVisibilities.keySet()) {
             logLevelVisibilities.put(ll, getCheckBoxMenuItem(ll).isSelected());
         }
         reloadConsole(true);
     }
-
+    
     public Console reloadConsole(boolean update) {
         final ArrayList<LogEntry> logEntries = getLogEntriesSorted(update, logLevelVisibilities);
         reloadConsole(logEntries, true);
         return this;
     }
-
+    
     public ArrayList<LogEntry> getLogEntriesSorted(boolean update, HashMap<LogLevel, Boolean> logLevels) {
         final ArrayList<LogEntry> logEntries = new ArrayList<>();
         Logger.blockInput = true;
@@ -342,42 +337,38 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
         }
         return logEntries;
     }
-
+    
     public boolean isShowed() {
         return showed;
     }
-
+    
     @Override
     public boolean isVisible() {
         return visible;
     }
-
+    
     private JCheckBoxMenuItem getCheckBoxMenuItem(LogLevel logLevel) {
-        return omnikryptec.test.Utils.getKeysByValue(logLevelCheckBoxes, logLevel).toArray(new JCheckBoxMenuItem[1])[0];
+        return de.omnikryptec.test.Utils.getKeysByValue(logLevelCheckBoxes, logLevel).toArray(new JCheckBoxMenuItem[1])[0];
     }
-
+    
     protected ArrayList<JCheckBoxMenuItem> getCheckBoxMenuItems() {
         final ArrayList<JCheckBoxMenuItem> checkBoxMenuItems = new ArrayList<>();
         for (JCheckBoxMenuItem cbmi : logLevelCheckBoxes.keySet()) {
             checkBoxMenuItems.add(cbmi);
         }
-        checkBoxMenuItems.sort((JCheckBoxMenuItem o1, JCheckBoxMenuItem o2) -> {
-            return logLevelCheckBoxes.get(o1).getLevel() - logLevelCheckBoxes.get(o2).getLevel();
-        });
+        checkBoxMenuItems.sort(Comparator.comparingInt((JCheckBoxMenuItem o) -> logLevelCheckBoxes.get(o).getLevel()));
         return checkBoxMenuItems;
     }
-
+    
     protected ArrayList<LogLevel> getLogLevels() {
         final ArrayList<LogLevel> logLevels = new ArrayList<>();
         for (LogLevel ll : logLevelVisibilities.keySet()) {
             logLevels.add(ll);
         }
-        logLevels.sort((LogLevel o1, LogLevel o2) -> {
-            return o1.getLevel() - o2.getLevel();
-        });
+        logLevels.sort(Comparator.comparingInt(LogLevel::getLevel));
         return logLevels;
     }
-
+    
     public AdvancedFile saveAs() {
         AdvancedFile file = null;
         try {
@@ -412,7 +403,7 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
         }
         return file;
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -421,7 +412,7 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
     // <editor-fold defaultstate="collapsed" desc="Generated
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+        
         panel_input = new javax.swing.JPanel();
         textField_input = new javax.swing.JTextField();
         button_input = new javax.swing.JButton();
@@ -445,93 +436,80 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
         M2C5 = new javax.swing.JCheckBoxMenuItem();
         M2S3 = new javax.swing.JPopupMenu.Separator();
         M2I1 = new javax.swing.JMenuItem();
-
+        
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
+        
         button_input.setText("Enter");
-
+        
         javax.swing.GroupLayout panel_inputLayout = new javax.swing.GroupLayout(panel_input);
         panel_input.setLayout(panel_inputLayout);
-        panel_inputLayout.setHorizontalGroup(
-            panel_inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel_inputLayout.createSequentialGroup()
-                .addComponent(textField_input, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(button_input, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE))
-        );
-        panel_inputLayout.setVerticalGroup(
-            panel_inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_inputLayout.createSequentialGroup()
-                .addGap(0, 11, Short.MAX_VALUE)
-                .addGroup(panel_inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(textField_input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(button_input)))
-        );
-
+        panel_inputLayout.setHorizontalGroup(panel_inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(panel_inputLayout.createSequentialGroup().addComponent(textField_input, javax.swing.GroupLayout.DEFAULT_SIZE, 328, Short.MAX_VALUE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(button_input, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)));
+        panel_inputLayout.setVerticalGroup(panel_inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_inputLayout.createSequentialGroup().addGap(0, 11, Short.MAX_VALUE).addGroup(panel_inputLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(textField_input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(button_input))));
+        
         getContentPane().add(panel_input, java.awt.BorderLayout.PAGE_END);
-
+        
         textPane.setEditable(false);
         scrollPane.setViewportView(textPane);
-
+        
         getContentPane().add(scrollPane, java.awt.BorderLayout.CENTER);
-
+        
         M1.setText("File");
-
+        
         M1I3.setText("Reload");
         M1.add(M1I3);
         M1.add(M1S2);
-
+        
         M1I4.setText("Save As");
         M1.add(M1I4);
         M1.add(M1S1);
-
+        
         M1I2.setText("Restart");
         M1.add(M1I2);
-
+        
         M1I1.setText("Exit");
         M1.add(M1I1);
-
+        
         menubar.add(M1);
-
+        
         M2.setText("Options");
-        for(JCheckBoxMenuItem cbmi : getCheckBoxMenuItems()) {
+        for (JCheckBoxMenuItem cbmi : getCheckBoxMenuItems()) {
             cbmi.addActionListener(this);
             M2.add(cbmi);
         }
         M2.add(M2S1);
-
+        
         M2C1.setSelected(true);
         M2C1.setText("Show Timestamp");
         M2.add(M2C1);
-
+        
         M2C2.setSelected(true);
         M2C2.setText("Show Appearance");
         M2.add(M2C2);
-
+        
         M2C3.setSelected(true);
         M2C3.setText("Show Thread");
         M2.add(M2C3);
-
+        
         M2C4.setSelected(true);
         M2C4.setText("Show Level");
         M2.add(M2C4);
         M2.add(M2S2);
-
+        
         M2C5.setSelected(true);
         M2C5.setText("Enable Debug Mode");
         M2.add(M2C5);
         M2.add(M2S3);
-
+        
         M2I1.setText("Change Font Size");
         M2.add(M2I1);
-
+        
         menubar.add(M2);
-
+        
         setJMenuBar(menubar);
-
+        
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     /**
      * @param args the command line arguments
      */
@@ -540,10 +518,10 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
         // <editor-fold defaultstate="collapsed" desc=" Look and feel setting
         // code (optional) ">
         /*
-		 * If Nimbus (introduced in Java SE 6) is not available, stay with the
-		 * default look and feel. For details see
-		 * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.
-		 * html
+         * If Nimbus (introduced in Java SE 6) is not available, stay with the
+         * default look and feel. For details see
+         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.
+         * html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -563,16 +541,11 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
         }
         // </editor-fold>
         // </editor-fold>
-
+        
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new Console().setVisible(true);
-            }
-        });
+        java.awt.EventQueue.invokeLater(() -> new Console().setVisible(true));
     }
-
+    
     public static ArrayList<LogEntry> sortLogEntries(ArrayList<LogEntry> array, boolean ascending) {
         array.sort((Object o1, Object o2) -> {
             LogEntry le1 = (LogEntry) o1;
@@ -590,7 +563,7 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
         });
         return array;
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu M1;
     private javax.swing.JMenuItem M1I1;
@@ -616,7 +589,7 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
     private javax.swing.JTextField textField_input;
     private javax.swing.JTextPane textPane;
     // End of variables declaration//GEN-END:variables
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == button_input) {
@@ -636,7 +609,7 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
             reloadCheckBoxSelectionsToSave();
         }
     }
-
+    
     @Override
     public void keyTyped(KeyEvent e) {
         if (e.getSource() == textField_input) {
@@ -645,7 +618,7 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
             }
         }
     }
-
+    
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getSource() == textField_input) {
@@ -656,42 +629,42 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
             }
         }
     }
-
+    
     @Override
     public void keyReleased(KeyEvent e) {
     }
-
+    
     @Override
     public void windowOpened(WindowEvent e) {
     }
-
+    
     @Override
     public void windowClosing(WindowEvent e) {
         if (e.getSource() == this) {
             hideConsole();
         }
     }
-
+    
     @Override
     public void windowClosed(WindowEvent e) {
     }
-
+    
     @Override
     public void windowIconified(WindowEvent e) {
     }
-
+    
     @Override
     public void windowDeiconified(WindowEvent e) {
     }
-
+    
     @Override
     public void windowActivated(WindowEvent e) {
     }
-
+    
     @Override
     public void windowDeactivated(WindowEvent e) {
     }
-
+    
     @Override
     public void reloadLanguage() {
         setTitle(getLang("console", "Console"));
@@ -712,5 +685,5 @@ public class Console extends JFrame implements ActionListener, LanguageReloader,
             cbmi.setText(String.format(getLang("show_f", "Show %s"), logLevelCheckBoxes.get(cbmi).toLocalizedText()));
         }
     }
-
+    
 }

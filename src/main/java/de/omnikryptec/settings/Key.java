@@ -1,7 +1,7 @@
 package de.omnikryptec.settings;
 
-import omnikryptec.event.input.InputManager;
-import omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.event.input.InputManager;
+import de.omnikryptec.main.OmniKryptecEngine;
 import org.jdom2.Element;
 import org.lwjgl.glfw.GLFW;
 

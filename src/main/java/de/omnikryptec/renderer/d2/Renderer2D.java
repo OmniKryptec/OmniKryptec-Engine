@@ -1,8 +1,8 @@
 package de.omnikryptec.renderer.d2;
 
 import de.omnikryptec.gameobject.Sprite;
-import omnikryptec.main.AbstractScene2D;
-import omnikryptec.main.ChunkCoord2D;
+import de.omnikryptec.main.AbstractScene2D;
+import de.omnikryptec.main.ChunkCoord2D;
 
 import java.util.Comparator;
 import java.util.HashMap;

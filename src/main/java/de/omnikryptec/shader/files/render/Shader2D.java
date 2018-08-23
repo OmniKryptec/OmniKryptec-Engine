@@ -2,9 +2,9 @@ package de.omnikryptec.shader.files.render;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.graphics.SpriteBatch;
-import omnikryptec.shader.base.Shader;
-import omnikryptec.shader.base.UniformMatrix;
-import omnikryptec.shader.base.UniformSampler;
+import de.omnikryptec.shader.base.Shader;
+import de.omnikryptec.shader.base.UniformMatrix;
+import de.omnikryptec.shader.base.UniformSampler;
 
 public class Shader2D extends Shader {
 
