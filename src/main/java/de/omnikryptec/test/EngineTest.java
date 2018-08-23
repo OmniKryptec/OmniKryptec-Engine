@@ -15,7 +15,7 @@ import de.omnikryptec.util.NativesLoader;
 import de.omnikryptec.util.logger.Logger;
 
 public class EngineTest {
-
+    
     public static void main(String[] args) {
         try {
             NativesLoader.loadNatives();
@@ -23,14 +23,11 @@ public class EngineTest {
             Logger.setDebugMode(true);
             Logger.CONSOLE.setExitWhenLastOne(true);
             Logger.showConsoleDirect();
-
-            DisplayManager.createDisplay("Test",
-                    new GameSettings().setAnisotropicLevel(32).setMultisamples(32));
-            Model brunnen = new Model("",
-                    ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")));
+            
+            DisplayManager.createDisplay("Test", new GameSettings().setAnisotropicLevel(32).setMultisamples(32));
+            Model brunnen = new Model("", ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/de/omnikryptec/test/brunnen.obj")));
             // Model brunnen = Model.generateQuad();
-            SimpleTexture brunnent = SimpleTexture
-                    .newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create();
+            SimpleTexture brunnent = SimpleTexture.newTextureb(EngineTest.class.getResourceAsStream("/de/omnikryptec/test/brunnen.png")).create();
             TexturedModel tm = new TexturedModel("brunnen", brunnen, brunnent);
             tm.getMaterial().setFloat(Material.REFLECTIVITY, 0.5f);
             OmniKryptecEngine.instance().addAndSetScene(new Scene3D("test", new Camera() {
@@ -40,15 +37,15 @@ public class EngineTest {
                     // getRelativePos().z+1*DisplayManager.instance().getDeltaTime());
                     // increaseRelativeRot(10*DisplayManager.instance().getDeltaTime(),
                     // 0,0);
-
+                    
                 }
-
+                
             }.setPerspectiveProjection(75, 1000, 0.1f)));
-
+            
             Entity ent = new Entity(tm);
             Entity ent2 = new Entity(tm);
             Entity ent3 = new Entity(tm);
-
+            
             OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(ent);
             OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(ent2);
             OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(ent3);
@@ -66,5 +63,5 @@ public class EngineTest {
             Logger.logErr("Error: " + ex, ex);
         }
     }
-
+    
 }

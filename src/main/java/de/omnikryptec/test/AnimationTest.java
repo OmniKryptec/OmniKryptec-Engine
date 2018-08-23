@@ -139,7 +139,7 @@ public class AnimationTest {
             ResourceLoader.currentInstance().addRessourceObject("res:model.dae:AnimatedModel", animatedModel);
             ResourceLoader.currentInstance().addRessourceObject("omnikryptec:test:brunnen", new TexturedModel("omnikryptec:test:brunnen", ResourceLoader.currentInstance().getResource(Model.class, "omnikryptec:test:brunnen.obj"), ResourceLoader.currentInstance().getResource(SimpleTexture.class, "omnikryptec:test:brunnen.png")));
 
-            //entityBuilder_brunnen = new EntityBuilder().setTexturedModelName("omnikryptec:test:brunnen.png").loadModel("/omnikryptec/test/brunnen.obj").setTexture(ResourceLoader.getInstance().getData(SimpleTexture.class, "omnikryptec:test:brunnen.png"))/*.loadTexture("brunnen.png", "/omnikryptec/test/brunnen.png")*/;
+            //entityBuilder_brunnen = new EntityBuilder().setTexturedModelName("omnikryptec:test:brunnen.png").loadModel("/de/omnikryptec/test/brunnen.obj").setTexture(ResourceLoader.getInstance().getData(SimpleTexture.class, "omnikryptec:test:brunnen.png"))/*.loadTexture("brunnen.png", "/de/omnikryptec/test/brunnen.png")*/;
             entityBuilder_brunnen = new EntityBuilder().setTexturedModel(ResourceLoader.currentInstance().getResource(TexturedModel.class, "omnikryptec:test:brunnen"));
             entity_brunnen = entityBuilder_brunnen.create("entity_brunnen");
 

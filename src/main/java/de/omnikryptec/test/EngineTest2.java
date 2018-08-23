@@ -49,11 +49,11 @@ public class EngineTest2 {
     static AdvancedModel testdings;
     static FloorReflectionRenderer testrend;
 
-    static final String KERNEL = "kernel void sum(global const float* a, global const float* b, global float* result, int const size) {\r\n" + 
-    		"    const int itemId = get_global_id(0); \r\n" + 
-    		"    if(itemId < size) {\r\n" + 
-    		"        result[itemId] = a[itemId] + b[itemId];\r\n" + 
-    		"    }\r\n" + 
+    static final String KERNEL = "kernel void sum(global const float* a, global const float* b, global float* result, int const size) {\r\n" +
+    		"    const int itemId = get_global_id(0); \r\n" +
+    		"    if(itemId < size) {\r\n" +
+    		"        result[itemId] = a[itemId] + b[itemId];\r\n" +
+    		"    }\r\n" +
     		"} ";
     
     public static void main(String[] args) {
@@ -163,7 +163,7 @@ public class EngineTest2 {
             // CompleteGaussianBlurStage(false, 0.05f, 0.05f));
             // PostProcessing.instance().addStage(new DebugRenderer());
 
-            final AdvancedFile res = new AdvancedFile(true, "res");
+            final AdvancedFile res = new AdvancedFile(true, "res"); //TODO Move this to the test
 //            final AdvancedFile test = new AdvancedFile(true, "omnikryptec", "test");
 //            //System.out.println(res);
             ResourceLoader.createInstanceDefault(true, false);
@@ -189,11 +189,11 @@ public class EngineTest2 {
 //            SimpleTexture js = ResourceLoader.currentInstance().getTexture("res:js.png")/*SimpleTexture.newTexture(new AdvancedFile(true, res, "js.png"))*/;
 //            //SimpleTexture jn = ResourceLoader.currentInstance().getTexture("res:jn.png")/*SimpleTexture.newTexture(new AdvancedFile(true, res, "jn.png"))*/;
 //            //OmniKryptecEngine.instance().getEventsystem().addEventHandler(new EngineTest2(), EventType.AFTER_FRAME, EventType.RENDER_FRAME_EVENT);
-//            Model brunnen = ResourceLoader.currentInstance().getResource(Model.class, "res:brunnen.obj")/*new Model("", ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.obj")))*/;
+//            Model brunnen = ResourceLoader.currentInstance().getResource(Model.class, "res:brunnen.obj")/*new Model("", ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/de/omnikryptec/test/brunnen.obj")))*/;
 //            // Model brunnen = ModelUtil.generateQuad();
-//            SimpleTexture brunnent = ResourceLoader.currentInstance().getTexture("omnikryptec:test:brunnen.png")/*SimpleTexture.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen.png")).create()*/;
-//            SimpleTexture brunnen_norm = ResourceLoader.currentInstance().getTexture("omnikryptec:test:brunnen_normal.png")/*SimpleTexture.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/brunnen_normal.png")).create()*/;
-//            SimpleTexture brunnen_specular = ResourceLoader.currentInstance().getTexture("omnikryptec:test:brunnen_specular.png")/*SimpleTexture.newTexture("/omnikryptec/test/brunnen_specular.png")*/;
+//            SimpleTexture brunnent = ResourceLoader.currentInstance().getTexture("omnikryptec:test:brunnen.png")/*SimpleTexture.newTextureb(EngineTest.class.getResourceAsStream("/de/omnikryptec/test/brunnen.png")).create()*/;
+//            SimpleTexture brunnen_norm = ResourceLoader.currentInstance().getTexture("omnikryptec:test:brunnen_normal.png")/*SimpleTexture.newTextureb(EngineTest.class.getResourceAsStream("/de/omnikryptec/test/brunnen_normal.png")).create()*/;
+//            SimpleTexture brunnen_specular = ResourceLoader.currentInstance().getTexture("omnikryptec:test:brunnen_specular.png")/*SimpleTexture.newTexture("/de/omnikryptec/test/brunnen_specular.png")*/;
             SimpleTexture baum = ResourceLoader.currentInstance().getTexture("res:final_tree_3.png")/*SimpleTexture.newTexture(new AdvancedFile(true, res, "final_tree_3.png"))*/;
 //            //System.out.println(new AdvancedFile(true, res, "final_tree_3.obj"));
 //            Model baumM = ResourceLoader.currentInstance().getResource(Model.class, "res:final_tree_3.obj")/*Model.newModel(new AdvancedFile(true, res, "final_tree_3.obj"))*/;
@@ -237,13 +237,13 @@ public class EngineTest2 {
 //            Instance.getCurrent3DCamera().getTransform().setPosition(0, 0, 200);
 //            // OmniKryptecEngine.instance().addAndSetScene(null);
 //            // Instance.getCurrentCamera().getTransform().setPosition(0, 0, 0);
-//            Model pine = ResourceLoader.currentInstance().getResource(Model.class, "omnikryptec:test:pine.obj")/*new Model("", ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine.obj")))*/;
+//            Model pine = ResourceLoader.currentInstance().getResource(Model.class, "omnikryptec:test:pine.obj")/*new Model("", ObjLoader.loadOBJ(EngineTest.class.getResourceAsStream("/de/omnikryptec/test/pine.obj")))*/;
 //            //Model bauer = new Model("", ColladaLoader.loadColladaModel(new AdvancedFile(true, "res", "model.dae"), 50).getMeshData());
 //            SimpleTexture bauert = ResourceLoader.currentInstance().getTexture("res:diffuse.png")/*SimpleTexture.newTexture("/res/diffuse.png")*/;
-//            SimpleTexture pinet = ResourceLoader.currentInstance().getTexture("omnikryptec:test:pine2.png")/*SimpleTexture.newTextureb(EngineTest.class.getResourceAsStream("/omnikryptec/test/pine2.png")).create()*/;
+//            SimpleTexture pinet = ResourceLoader.currentInstance().getTexture("omnikryptec:test:pine2.png")/*SimpleTexture.newTextureb(EngineTest.class.getResourceAsStream("/de/omnikryptec/test/pine2.png")).create()*/;
 //
 //            SimpleAnimation animation = new SimpleAnimation(1, brunnent, pinet);
-//            SimpleTexture pine_normal = ResourceLoader.currentInstance().getTexture("omnikryptec:test:pine2_normal.png")/*SimpleTexture.newTexture("/omnikryptec/test/pine2_normal.png")*/;
+//            SimpleTexture pine_normal = ResourceLoader.currentInstance().getTexture("omnikryptec:test:pine2_normal.png")/*SimpleTexture.newTexture("/de/omnikryptec/test/pine2_normal.png")*/;
 //
 //            TexturedModel ptm = new TexturedModel("pine", pine, pinet);
 //            ptm.getMaterial().setTexture(Material.NORMAL, pine_normal);
@@ -324,7 +324,7 @@ public class EngineTest2 {
 //            // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
 //            Instance.getGameSettings().setMultithreadedParticles(true);
 //            system = new AttractedPaticleSystem(0, 0, 0,
-//                    new ParticleAtlas(ResourceLoader.currentInstance().getTexture("omnikryptec:test:cosmic.png")/*SimpleTexture.newTexture("/omnikryptec/test/cosmic.png")*/, 4, BlendMode.ADDITIVE),
+//                    new ParticleAtlas(ResourceLoader.currentInstance().getTexture("omnikryptec:test:cosmic.png")/*SimpleTexture.newTexture("/de/omnikryptec/test/cosmic.png")*/, 4, BlendMode.ADDITIVE),
 //                    1000, 0, 1000, 1f, RenderType.ALWAYS).setParticlesAttractingEachOther(false).setAverageMass(100)
 //                    .setMassError(0.75f);
 //            // system.setParent(Instance.getCurrentCamera());
@@ -380,7 +380,7 @@ public class EngineTest2 {
 //            system.setEndcolor(new Color(1, 1, 0));
 //            // OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(system);
 //            // ParticleMaster.instance().addParticle(new Particle(new
-//            // ParticleTexture(SimpleTexture.newTexture("/omnikryptec/test/cosmic.png"),
+//            // ParticleTexture(SimpleTexture.newTexture("/de/omnikryptec/test/cosmic.png"),
 //            // 4,true)));
 //
 //            // l.getTransform().setPosition(0, 200, 0);

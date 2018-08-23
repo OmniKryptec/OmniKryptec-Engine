@@ -110,10 +110,10 @@ public class JBulletTest2 {
                 }
 
             }.setPerspectiveProjection(75, 0.1F, 1000).addComponent(new AudioListenerComponent3D())));
-            entityBuilder_brunnen = new EntityBuilder().loadModel("/omnikryptec/test/brunnen.obj")
-                    .loadTexture("/omnikryptec/test/brunnen.png");
-            entityBuilder_pine = new EntityBuilder().loadModel("/omnikryptec/test/pine.obj")
-                    .loadTexture("/omnikryptec/test/pine2.png");
+            entityBuilder_brunnen = new EntityBuilder().loadModel("/de/omnikryptec/test/brunnen.obj")
+                    .loadTexture("/de/omnikryptec/test/brunnen.png");
+            entityBuilder_pine = new EntityBuilder().loadModel("/de/omnikryptec/test/pine.obj")
+                    .loadTexture("/de/omnikryptec/test/pine2.png");
             final SimpleTexture backgroundTexture = SimpleTexture.newTextureb("/omnikryptec/gameobject/terrain/grassy2.png")
                     .create();
             final SimpleTexture rTexture = SimpleTexture.newTextureb("/omnikryptec/gameobject/terrain/mud.png").create();

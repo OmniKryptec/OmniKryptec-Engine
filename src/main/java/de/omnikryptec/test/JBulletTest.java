@@ -274,10 +274,10 @@ public class JBulletTest {
             // the
             // thirdPerson
             // mode
-            entityBuilder_brunnen = new EntityBuilder().loadModel("/omnikryptec/test/brunnen.obj")
-                    .loadTexture("/omnikryptec/test/brunnen.png");
-            entityBuilder_pine = new EntityBuilder().loadModel("/omnikryptec/test/pine.obj")
-                    .loadTexture("/omnikryptec/test/pine2.png");
+            entityBuilder_brunnen = new EntityBuilder().loadModel("/de/omnikryptec/test/brunnen.obj")
+                    .loadTexture("/de/omnikryptec/test/brunnen.png");
+            entityBuilder_pine = new EntityBuilder().loadModel("/de/omnikryptec/test/pine.obj")
+                    .loadTexture("/de/omnikryptec/test/pine2.png");
             final Entity entity_1 = entityBuilder_brunnen.create();
             OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(entity_1);
             OmniKryptecEngine.instance().getCurrent3DScene().getCamera().getTransform().increasePosition(0, 3, 0);
