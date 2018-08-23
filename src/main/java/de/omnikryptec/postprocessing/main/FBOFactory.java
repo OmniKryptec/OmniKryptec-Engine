@@ -1,0 +1,7 @@
+package de.omnikryptec.postprocessing.main;
+
+public interface FBOFactory {
+
+	FrameBufferObject[] getAllFBOs();
+
+}
