@@ -144,5 +144,9 @@ jar {
     }
     from ('src/main/java') {
         include '**/*.glsl'
+        include '**/*.module'
+        include '**/*.txt'
+        include '**/*.png'
+        include '**/*.cfg'
     }
 }
