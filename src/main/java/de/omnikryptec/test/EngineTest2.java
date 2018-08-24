@@ -283,7 +283,7 @@ public class EngineTest2 {
 
             //((DefaultGameLoop)OmniKryptecEngine.instance().getLoop()).setMode(DefaultGameLoop.MODE_GUI);
 
-            ProgressBar bar = new ProgressBar(null, null, 0.25f, 0.25f, 0.5f, 0.2f);
+            ProgressBar bar = new ProgressBar(null, null, 0.1f, 0.25f, 0.8f, 0.01f);
             OmniKryptecEngine.instance().setGui(bar);
             bar.getColor().set(1, 0, 0);
             bar.getBarColor().set(0, 1, 0);
@@ -297,7 +297,7 @@ public class EngineTest2 {
 			}, 100, 100);
             TexturedGuiContainer guic = new TexturedGuiContainer(ResourceLoader.MISSING_TEXTURE, 0, 0, 1, 1);
             guic.getColor().set(1, 1, 0);
-            bar.add(guic);
+           // bar.add(guic);
             OmniKryptecEngine.instance().startLoop();
         } catch (Exception ex) {
             Logger.logErr("Error: " + ex, ex);

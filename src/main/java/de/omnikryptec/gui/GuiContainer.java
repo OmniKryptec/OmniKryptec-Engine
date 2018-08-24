@@ -17,6 +17,7 @@
 package de.omnikryptec.gui;
 
 import de.omnikryptec.graphics.SpriteBatch;
+import de.omnikryptec.postprocessing.main.FrameBufferObject;
 
 import java.util.ArrayList;
 import java.util.List;

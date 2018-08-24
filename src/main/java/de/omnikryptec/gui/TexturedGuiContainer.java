@@ -30,6 +30,8 @@ public class TexturedGuiContainer extends GuiContainer{
 		this.texture = t;
 		this.x = x;
 		this.y = y;
+		this.w = w;
+		this.h = h;
 	}
 		
 	public TexturedGuiContainer setX(float x) {
