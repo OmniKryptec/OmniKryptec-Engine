@@ -26,7 +26,7 @@ public class TexturedGuiContainer extends GuiContainer{
 	private Texture texture;
 	private float x,y,w,h;
 	
-	public TexturedGuiContainer(Texture t, float x, float y) {
+	public TexturedGuiContainer(Texture t, float x, float y, float w, float h) {
 		this.texture = t;
 		this.x = x;
 		this.y = y;

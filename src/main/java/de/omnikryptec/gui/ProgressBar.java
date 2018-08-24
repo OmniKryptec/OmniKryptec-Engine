@@ -26,9 +26,10 @@ public class ProgressBar extends TexturedGuiContainer {
 	private Texture bartexture;
 	private float value = 0;
 	
-	public ProgressBar(Texture t, Texture b, float x, float y) {
-		super(t, x, y);
+	public ProgressBar(Texture t, Texture b, float x, float y, float w, float h) {
+		super(t, x, y,w,h);
 		this.bartexture = b;
+		
 	}
 
 	public ProgressBar setValue(float b) {

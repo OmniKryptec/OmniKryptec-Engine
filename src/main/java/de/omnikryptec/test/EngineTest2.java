@@ -31,9 +31,13 @@ import de.omnikryptec.gameobject.GameObject3D;
 import de.omnikryptec.gameobject.Light3D;
 import de.omnikryptec.gameobject.particles.AttractedPaticleSystem;
 import de.omnikryptec.gameobject.particles.ParticleAttractor;
+import de.omnikryptec.gui.ProgressBar;
+import de.omnikryptec.gui.TexturedGuiContainer;
+import de.omnikryptec.main.DefaultGameLoop;
 import de.omnikryptec.main.OmniKryptecEngine;
 import de.omnikryptec.main.Scene3D;
 import de.omnikryptec.opencl.core.*;
+import de.omnikryptec.postprocessing.stages.ColorSpaceStage;
 import de.omnikryptec.renderer.d3.FloorReflectionRenderer;
 import de.omnikryptec.renderer.d3.RendererRegistration;
 import de.omnikryptec.resource.loader.ResourceLoader;
@@ -53,6 +57,9 @@ import org.lwjgl.opencl.CL10;
 
 import java.nio.FloatBuffer;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 /**
  *
@@ -105,7 +112,7 @@ public class EngineTest2 {
                     .setInteger(GameSettings.HIGHEST_SHADER_LVL, 1000000)
                     .setBoolean(GameSettings.LIGHT_2D, false),
                     new GLFWInfo(3, 2, true, false, 1280, 720));
-            Display.setAspectRatio(4 / 3.0);
+            Display.setAspectRatio(16.0 / 9);
             OpenCL.create();
             CLPlatform platform = OpenCL.getPlatform(0);
             CLDevice device = platform.createDeviceData(CL10.CL_DEVICE_TYPE_ALL).getDevice(0);
@@ -147,38 +154,10 @@ public class EngineTest2 {
             // }
             // }).start();
             // rend = new TestRenderer();
-            // PostProcessing.instance().addStage(new
-            // DeferredLightStage(DeferredLightPrepare.ATT_LIGHT_PREPARE,
-            // DeferredLightPrepare.DEFAULT_LIGHT_PREPARE));
-            // PostProcessing.instance().addStage(new BloomStage(new
-            // CompleteGaussianBlurStage(true, 0.4f, 0.4f), new Vector4f(1, 0,
-            // 0, 0), new Vector2f(1, 6)));
-            //OmniKryptecEngine.instance().getPostprocessor().addStage(new FogStage().setDensity(0.25f));
-            //OmniKryptecEngine.instance().getPostprocessor().addStage(new
-            //CompleteGaussianBlurStage(false,0.1f,0.1f));
-            // PostProcessing.instance().addStage(new ColorSpaceStage(2,2,2));
-            // PostProcessing.instance().addStage(new
-            // CompleteGaussianBlurStage(true,0.5f,0.5f));
-            // PostProcessing.instance().addStage(new
-            // ContrastchangeStage(0.75f));
-            //
-            // // PostProcessing.instance().addStage(new BrightnessfilterStage(new
-            // // Vector4f(0, 0, 0, 0)));
-            // RenderUtil.goWireframe(true);
-            // PostProcessing.instance().setEnabled(false);
-            // PostProcessing.instance().addStage(new
-            // FogStage().setDensity(0.05f).setFog(0, 0.5f, 0,
-            // 0.8f).setGradient(2));
-            // PostProcessing.instance().addStage(new
-            // CompleteGaussianBlurStage(false, 0.6f, 0.6f));
-            // PostProcessing.instance().addStage(new
-            // CompleteGaussianBlurStage(false, 0.3f, 0.3f));
-            // PostProcessing.instance().addStage(new
-            // CompleteGaussianBlurStage(false, 0.1f, 0.1f));
-            // PostProcessing.instance().addStage(new
-            // CompleteGaussianBlurStage(false, 0.05f, 0.05f));
-            // PostProcessing.instance().addStage(new DebugRenderer());
 
+
+          
+            
             final AdvancedFile res = new AdvancedFile(true, "res"); //TODO Move this to the test
 //            final AdvancedFile test = new AdvancedFile(true, "omnikryptec", "test");
 //            //System.out.println(res);
@@ -226,18 +205,8 @@ public class EngineTest2 {
             // tm.getMaterial().setTexture(Material.SPECULAR, );
             tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.6f))
                     .setFloat(Material.DAMPER, 1.01f).setVector3f(Material.SHADERINFO, new Vector3f(1));
-            //OmniKryptecEngine.instance().ENGINE_BUS.registerEventHandler(new EngineTest2());
-//            sim = SimulationFactory.createDynamicSimulation(SimulationFactory.POSITION, 3, SimulationFactory.VELOCITY, 3, SimulationFactory.ACCELERATION, 3, SimulationFactory.MASS, 1);
-//            sim.addPerAllStep(new NBodySim());
-//            sim.addPerAllStep(new BakePosition());
-//            ParticleDefinition def = new ParticleDefinition();
-//            sim.addSingle(def, SimulationFactory.POSITION, 0f, 0f, 10f, SimulationFactory.MASS, 10000000000f, SimulationFactory.VELOCITY, 3f, 3f, 0f);
-//            sim.addSingle(def, SimulationFactory.POSITION, 10f, 0f, 0f, SimulationFactory.MASS, 10000000000f, SimulationFactory.VELOCITY, 0f, 3f, 3f);
-//            sim.addSingle(def, SimulationFactory.POSITION, 0f, 10f, 0f, SimulationFactory.MASS, 10000000000f, SimulationFactory.VELOCITY, 3f, 0f, 3f);
-//            for(int i=0; i<250; i++) {
-//            	sim.simulate(0.5f);
-//            }
-//            printFloatBuffer(sim.getBuffers().get(SimulationFactory.POSITION).getBuffer());
+
+            
             OmniKryptecEngine.instance().addAndSetScene(new Scene3D("test", (Camera) new Camera() {
 
                 @Override
@@ -288,7 +257,7 @@ public class EngineTest2 {
             // }
             System.out.println("Generating objs...");
             int cube = 20;
-            int abstand = 5;
+            int abstand = 10;
             float scale = 1;
             int objcount = 0;
             for (int x = -cube; x < cube; x += abstand) {
@@ -306,136 +275,29 @@ public class EngineTest2 {
                     }
                 }
             }
-//            GameObject3D go;
-//            // go = new GameObject().setRelativePos(x, y, z);
-//            go = (GameObject3D) new Entity(tm).setColor(1, 0, 0, 1).setUpdateType(UpdateType.STATIC);
-//            go.getTransform().setDirty().setScale(scale).setPosition(100, -100, 0).getRotationSimple().rotate(0,
-//                    0, 0);
-//            Instance.getCurrent3DScene().addGameObject(go);
-//            // system.addAttractor(new
-//            // ParticleAttractor(go).setAcceleration(10).setMode(AttractorMode.KILL_ON_REACH).setTolerance(5));
-//            objcount++;
-//            //	System.out.println(Arrays.toString(Display.getViewportData()));
-//            for (int i = 0; i < 100; i++) {
-//                GameObject2D gom;
-//                gom = new Sprite("dumm" + i, i % 2 == 0 ? js : jn, null) {
-////					 @Override
-////					 public void paint(SpriteBatch s) {
-////						 s.color().set(1, 1, 1, 1);
-////						 s.fillRect(0, 0, 1000, 1000);
-////					 }
-//
-//                }.setColor(new Color(1, 1, 1, 0.5f));
-//                gom.getTransform().setScale(1.5f).setPosition(i * 100, i * 70);
-//                Instance.getCurrent2DScene().addGameObject(gom);
-//            }
-//            Light2D lllll = new Light2D("dickes fettes licht2d", animation, null);
-//            Instance.getCurrent2DScene().addGameObject(lllll);
-//            System.out.println("Done: " + objcount + " Objects.");
-//            // Instance.getCurrentScene().addGameObject(new Entity(tm).setColor(0, 1, 0,
-//            // 1).setScale(new
-//            // Vector3f(scale,scale,scale)).setUpdateType(UpdateType.SEMISTATIC).setRelativePos(0,
-//            // 0, 0));
-//            Instance.getCurrent2DScene().setCamera(Instance.getCurrent3DCamera());
-//            // ParticleSystem - unoptimisiert 70FPS - optimisiert 83 FPS
-//            Instance.getGameSettings().setMultithreadedParticles(true);
-//            system = new AttractedPaticleSystem(0, 0, 0,
-//                    new ParticleAtlas(ResourceLoader.currentInstance().getTexture("omnikryptec:test:cosmic.png")/*SimpleTexture.newTexture("/de/omnikryptec/test/cosmic.png")*/, 4, BlendMode.ADDITIVE),
-//                    1000, 0, 1000, 1f, RenderType.ALWAYS).setParticlesAttractingEachOther(false).setAverageMass(100)
-//                    .setMassError(0.75f);
-//            // system.setParent(Instance.getCurrentCamera());
-//            system.setSpawnArea(new ParticleSpawnArea(ParticleSpawnAreaType.SHPERE, new Vector3f(0, 1, 0), 20));
-//            // system.setTimeMultiplier(3);
-//            // system.setAverageStartScale(0.01f);
-//            // system.setAverageEndScale(1);
-//            // system.setSystemLifeLength(20);
-//            // For AttractedPaticleSystem
-//            // system.addAttractor(0, 0, 0, 50F, 50F, AttractorMode.NOTHING, false);
-//
-//            // system.addAttractor(150,600,0, 35.0F, 50F,
-//            // AttractorMode.STOP_FOREVER_ON_REACH);
-//            // system.addAttractor(-500,500,100, 40.0F, 50F,
-//            // AttractorMode.STOP_FOREVER_ON_REACH);
-//            // system.getLastAddedAttractor().setAttenuation(0, 0.1f, 1); //Der nicht
-//            // system.addAttractor(-200,-150,0, 35.0F, 50F,
-//            // AttractorMode.STOP_FOREVER_ON_REACH);
-//            testrend = new FloorReflectionRenderer(new RenderConfiguration(),
-//                    new FrameBufferObject(320, 180, DepthbufferType.NONE), 0);
-//            testrend.getRenderConfig().setRendererData(AllowedRenderer.EvElse, testrend);
-//            testrend.registerAndAddToCurrentScene();
-//
-//            // Instance.getCurrentScene().getRenderConfig().setShaderLvl(0);
-//            attractor = new ParticleAttractor(0, -10, 0).setGravitation(100f).setDistanceTolerance(10)
-//                    .setMode(AttractorMode.STOP_UNTIL_DISABLED_ON_REACH);
-//            system.addAttractor(attractor);
-//            system.setSpawnOffsets(new Vector3f[]{new Vector3f(0, 0, 200)});
-//            // system.addAttractor(150,600,0, 350000.0F, 50F,
-//            // AttractorMode.STOP_FOREVER_ON_REACH);
-//            // system.addAttractor(-500,500,100, 40.0F, 50F,
-//            // AttractorMode.STOP_FOREVER_ON_REACH);
-//            // system.getLastAddedAttractor().setAttenuation(0, 0.1f, 1);
-//            // system.addAttractor(-200,-150,0, 35.0F, 50F,
-//            // AttractorMode.STOP_FOREVER_ON_REACH);
-//            // system.addAttractor(50,-200,-200, 35.0F, 50F,
-//            // AttractorMode.STOP_FOREVER_ON_REACH);
-//            // system.getLastAddedAttractor().setAttenuation(0, 1, 1);
-//            // system.addAttractor(attractor=new
-//            // ParticleAttractor(0,0,0).setAcceleration(11.0F).setTolerance(50F).setMode(AttractorMode.STOP_UNTIL_DISABLED_ON_REACH));
-//            // system.addAttractor(-250, 0, -250, 10.0F, 50F,
-//            // AttractorMode.STOP_FOREVER_ON_REACH);
-//            // system.addAttractor(0, 0, 500, 10.0F, 50F,
-//            // AttractorMode.STOP_FOREVER_ON_REACH);
-//            // system.addAttractor(attractor = new
-//            // ParticleAttractor(system).setAcceleration(0).setTolerance(25).setMode(AttractorMode.NOTHING));
-//            // system.addAttractor(0, 300, 500, 200.0F, 100.0F, false);
-//            // system.addAttractor(-200, 300, 0, 75.0F, 50.0F, true);
-//            // system.addAttractor(200, 300, 0, 75.0F, 50.0F, true);
-//            // system.setSystemLifeLength(ParticleSystem.LIFELENGTH_SYSTEM_ONETICKBURST);
-//            system.setGlobal(true);
-//            system.setStartcolor(new Color(1, 0, 1));
-//            system.setEndcolor(new Color(1, 1, 0));
-//            // OmniKryptecEngine.instance().getCurrent3DScene().addGameObject(system);
-//            // ParticleMaster.instance().addParticle(new Particle(new
-//            // ParticleTexture(SimpleTexture.newTexture("/de/omnikryptec/test/cosmic.png"),
-//            // 4,true)));
-//
-//            // l.getTransform().setPosition(0, 200, 0);
-//            // OmniKryptecEngine.instance().getCurrentScene()
-//            // .addGameObject(l.setAttenuation(1, 0f, 0).setCuttOffRange(50).setColor(1, 0f,
-//            // 0f).setConeDegrees(35).setConeAttenuation(0.8f, 0.1f, 0).setConeDirection(0,
-//            // -1, 0));
+
             l = new Light3D();
             OmniKryptecEngine.instance().getCurrent3DScene()
                     .addGameObject((GameObject3D) l.setAttenuation(1, 0, 0).setColor(1, 1, 1).setDirectional(true)
                             .setConeAttenuation(1, 0, 0).setConeDegrees(55).setDirection(0, -1, 0).setGlobal(true));
-//            l.getTransform().setPosition(0, 0, 0);
-//            // Light l2 = new Light();
-//            // OmniKryptecEngine.instance().getCurrentScene()
-//            // .addGameObject(l2.setAttenuation(1, 0, 0).setColor(1, 0,
-//            // 1).setDirectional(false)
-//            // .setConeAttenuation(1, 0, 0).setConeDegrees(30).setDirection(0, -1,
-//            // 0).setGlobal(true));
-//            // l2.getTransform().setPosition(0, 100, 0);
-//            // Light l3 = new Light();
-//            // OmniKryptecEngine.instance().getCurrentScene()
-//            // .addGameObject(l3.setAttenuation(1, 0, 0).setColor(0, 0,
-//            // 1).setDirectional(false)
-//            // .setConeAttenuation(1, 0, 0).setConeDegrees(30).setDirection(0, -0.75f,
-//            // 0.25f).setGlobal(true));
-//            // l3.getTransform().setPosition(100, 100, 0);
-//            // ent.setParent(OmniKryptecEngine.instance().getCurrentScene().getCamera());
-//            // OmniKryptecEngine.instance().getCurrentScene().addGameObject(new
-//            // Light().setColor(1, 1, 0).setRadius(100));
-//            // OmniKryptecEngine.instance().getCurrentScene().addGameObject(new
-//            // Light().setColor(1, 0, 1).setRadius(100).setRelativePos(50, 50,
-//            // 50));
-//            // OmniKryptecEngine.instance().getCurrentScene().addGameObject(new
-//            // Light().setColor(1, 1,
-//            // 1).setRadius(-1).setShader(LightPrepare.DEFAULT_LIGHT_PREPARE));
-//            // .instance().getCurrentScene().addGameObject(new
-//            // Light().setColor(0, 0, 1).setRadius(100).setRelativePos(50, 50,
-//            // 0));
-            
+
+            //((DefaultGameLoop)OmniKryptecEngine.instance().getLoop()).setMode(DefaultGameLoop.MODE_GUI);
+
+            ProgressBar bar = new ProgressBar(null, null, 0.25f, 0.25f, 0.5f, 0.2f);
+            OmniKryptecEngine.instance().setGui(bar);
+            bar.getColor().set(1, 0, 0);
+            bar.getBarColor().set(0, 1, 0);
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+				
+				@Override
+				public void run() {
+					bar.setValue(bar.getValue()+0.01f);
+				}
+			}, 100, 100);
+            TexturedGuiContainer guic = new TexturedGuiContainer(ResourceLoader.MISSING_TEXTURE, 0, 0, 1, 1);
+            guic.getColor().set(1, 1, 0);
+            bar.add(guic);
             OmniKryptecEngine.instance().startLoop();
         } catch (Exception ex) {
             Logger.logErr("Error: " + ex, ex);
