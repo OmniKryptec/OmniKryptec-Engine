@@ -160,7 +160,7 @@ public class Display {
 		return aspectratio;
 	}
 	
-	public static int[] getViewportdata() {
+	public static int[] getViewportData() {
 		return viewport;
 	}
 	

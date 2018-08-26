@@ -16,6 +16,7 @@
 
 package de.omnikryptec.event.input;
 
+import de.omnikryptec.display.Display;
 import de.omnikryptec.settings.KeySettings;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.*;
@@ -157,6 +158,26 @@ public class MouseHandler implements InputHandler {
 		return position;
 	}
 
+	public final float getPosRefinedX() {
+		float f = position.x - Display.getViewportData()[0];
+		if (f > Display.getViewportData()[2] || f < 0) {
+			return -1;
+		}
+		return f;
+	}
+
+	public final float getPosRefinedY() {
+		float f = position.y - Display.getViewportData()[1];
+		if (f > Display.getViewportData()[3] || f < 0) {
+			return -1;
+		}
+		return Display.getViewportData()[3] - f;
+	}
+
+	public final Vector2f getPosInVP() {
+		return new Vector2f(getPosRefinedX(), getPosRefinedY());
+	}
+	
 	public final Vector2f getScrollOffset() {
 		return scrollOffset;
 	}

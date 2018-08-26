@@ -298,6 +298,7 @@ public class EngineTest2 {
             TexturedGuiContainer guic = new TexturedGuiContainer(ResourceLoader.MISSING_TEXTURE, 0, 0, 1, 1);
             guic.getColor().set(1, 1, 0);
            // bar.add(guic);
+            OmniKryptecEngine.instance().ENGINE_BUS.registerEventHandler(new EngineTest2());
             OmniKryptecEngine.instance().startLoop();
         } catch (Exception ex) {
             Logger.logErr("Error: " + ex, ex);
@@ -329,7 +330,7 @@ public class EngineTest2 {
 
         // system.generateParticles(1);
         if (ev.getType() == FrameType.ENDSCENE) {
-        	
+        	System.out.println(InputManager.getMouseHandler().getPosInVP());
         	// SpriteBatch testb = new SpriteBatch(new
             // Camera().setDefaultScreenSpaceProjection(), new Shader2D(), 100);
             // //testb.getCamera().getTransform().setPosition(0, 0, 10);
