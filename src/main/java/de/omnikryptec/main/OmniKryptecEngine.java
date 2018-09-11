@@ -129,6 +129,9 @@ public class OmniKryptecEngine implements Profilable {
 	private ShutdownOption shutdownOption = ShutdownOption.JAVA;
 	private GameState state = GameState.STOPPED;
 
+	private FrameBufferObject scenefbo;
+	private FrameBufferObject unsampledfbo, normalfbo, specularfbo, extrainfofbo;
+
 	private boolean cleaned;
 
 	public static final String ENGINE_EVENT_BUS_NAME = "OmnikryptecEvents-3141";
@@ -202,7 +205,7 @@ public class OmniKryptecEngine implements Profilable {
 	final GuiRenderer getGuiRenderer() {
 		return guirenderer;
 	}
-	
+
 	public final void startLoop() {
 		if (gameloop != null) {
 			gameloop.run();
@@ -254,8 +257,6 @@ public class OmniKryptecEngine implements Profilable {
 		// }
 	}
 
-	private FrameBufferObject scenefbo;
-	private FrameBufferObject unsampledfbo, normalfbo, specularfbo, extrainfofbo;
 	// private FrameBufferObject[] add;
 
 	public static class FboModes {
@@ -350,14 +351,13 @@ public class OmniKryptecEngine implements Profilable {
 	}
 
 	void sceneToScreen(boolean pp) {
-		if(pp) {
+		if (pp) {
 			postpro.doPostProcessing(/* add, */ unsampledfbo, normalfbo, specularfbo, extrainfofbo);
-		}else {
+		} else {
 			unsampledfbo.resolveToScreen();
 		}
 	}
 
-	
 	final double getRender3DTimeMS() {
 		return scene3DCurrent == null ? 0 : scene3DCurrent.getRenderTimeMS();
 	}
@@ -491,7 +491,7 @@ public class OmniKryptecEngine implements Profilable {
 		guirenderer.setGui(parent);
 		return this;
 	}
-	
+
 	public final AbstractScene3D getCurrent3DScene() {
 		return scene3DCurrent;
 	}

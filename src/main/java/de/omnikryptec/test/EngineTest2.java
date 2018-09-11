@@ -56,6 +56,7 @@ import org.joml.Vector3f;
 import org.lwjgl.opencl.CL10;
 
 import java.nio.FloatBuffer;
+import java.util.HashMap;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -79,8 +80,31 @@ public class EngineTest2 {
     		"    }\r\n" +
     		"} ";
     
+    public static Object someS(Object k) {
+    	return k;
+    }
+    
     public static void main(String[] args) {
-        try {
+//       int hm = 30;
+//    	HashMap<String, Object> test = new HashMap<>();
+//    	for(int i=0; i<hm; i++) {
+//    		test.put(i+"", "gurke"+i);
+//    	}
+//    	int ttt = 0;
+//    	int rofl=0;
+//    	double amount = 2_00_000_000;
+//    	long time = System.currentTimeMillis();
+//    	for(int i=0; i<amount; i++) {
+//    		//Object p = someS(rofl);
+//    		Object p = test.get(rofl+"");
+//    		ttt += p.hashCode();
+//    		rofl++;
+//    		rofl%=hm;
+//    	}
+//    	long time2 = System.currentTimeMillis();
+//    	System.out.println("All time: "+(time2-time)+"ms Each: "+(time2-time)/amount+"ms ttt: "+ttt);
+//    	System.exit(0);
+    	try {
 
             // int abc = 1000000;
             // long time = System.currentTimeMillis();
