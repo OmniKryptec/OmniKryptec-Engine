@@ -16,6 +16,12 @@
 
 package de.omnikryptec.postprocessing.main;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.lwjgl.opengl.GL30;
+
 import de.omnikryptec.graphics.GraphicsUtil;
 import de.omnikryptec.main.OmniKryptecEngine;
 import de.omnikryptec.resource.model.Model;
@@ -24,11 +30,6 @@ import de.omnikryptec.util.ModelUtil;
 import de.omnikryptec.util.profiler.Profilable;
 import de.omnikryptec.util.profiler.ProfileContainer;
 import de.omnikryptec.util.profiler.Profiler;
-import org.lwjgl.opengl.GL30;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class PostProcessing implements Profilable {
 

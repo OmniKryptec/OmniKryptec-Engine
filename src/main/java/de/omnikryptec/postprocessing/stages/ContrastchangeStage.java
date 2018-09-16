@@ -16,14 +16,14 @@
 
 package de.omnikryptec.postprocessing.stages;
 
+import java.util.List;
+
 import de.omnikryptec.display.Display;
 import de.omnikryptec.postprocessing.main.FrameBufferObject;
 import de.omnikryptec.postprocessing.main.PostProcessingStageShaded;
 import de.omnikryptec.shader.base.Shader;
 import de.omnikryptec.shader.files.postprocessing.ContrastchangeShader;
 import de.omnikryptec.util.EnumCollection.DepthbufferType;
-
-import java.util.List;
 
 public class ContrastchangeStage extends PostProcessingStageShaded {
 

@@ -16,6 +16,8 @@
 
 package de.omnikryptec.gameobject.component;
 
+import org.joml.Vector3f;
+
 import de.omnikryptec.audio.AudioManager;
 import de.omnikryptec.gameobject.GameObject3D;
 import de.omnikryptec.main.AbstractScene3D;
@@ -24,7 +26,6 @@ import de.omnikryptec.util.ConverterUtil;
 import de.omnikryptec.util.Priority;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
-import org.joml.Vector3f;
 
 /**
  * Component for listening the sounds

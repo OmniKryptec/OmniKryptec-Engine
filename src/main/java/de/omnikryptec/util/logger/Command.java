@@ -16,13 +16,13 @@
 
 package de.omnikryptec.util.logger;
 
-import de.omnikryptec.event.eventV2.engineevents.CommandEvent;
-import de.omnikryptec.util.exceptions.UnsupportedCharacterException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import de.omnikryptec.event.eventV2.engineevents.CommandEvent;
+import de.omnikryptec.util.exceptions.UnsupportedCharacterException;
 
 /**
  *

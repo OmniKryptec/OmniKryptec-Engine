@@ -16,9 +16,20 @@
 
 package de.omnikryptec.test;
 
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Random;
+
+import javax.imageio.ImageIO;
+import javax.vecmath.Quat4f;
+import javax.vecmath.Vector3f;
+
+import org.lwjgl.glfw.GLFW;
+
 import com.bulletphysics.collision.shapes.StaticPlaneShape;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
+
 import de.omnikryptec.audio.AudioEffectState;
 import de.omnikryptec.audio.AudioManager;
 import de.omnikryptec.audio.AudioSource;
@@ -56,14 +67,6 @@ import de.omnikryptec.util.PhysicsUtil;
 import de.omnikryptec.util.logger.Logger;
 import de.pcfreak9000.noise.components.NoiseWrapper;
 import de.pcfreak9000.noise.noises.OpenSimplexNoise;
-import org.lwjgl.glfw.GLFW;
-
-import javax.imageio.ImageIO;
-import javax.vecmath.Quat4f;
-import javax.vecmath.Vector3f;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  *

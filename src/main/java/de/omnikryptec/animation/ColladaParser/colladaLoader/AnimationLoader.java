@@ -16,16 +16,17 @@
 
 package de.omnikryptec.animation.ColladaParser.colladaLoader;
 
-import de.omnikryptec.animation.ColladaParser.dataStructures.AnimationData;
-import de.omnikryptec.animation.ColladaParser.dataStructures.JointTransformData;
-import de.omnikryptec.animation.ColladaParser.dataStructures.KeyFrameData;
-import de.omnikryptec.util.XMLUtil;
+import java.nio.FloatBuffer;
+import java.util.List;
+
 import org.jdom2.Element;
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 
-import java.nio.FloatBuffer;
-import java.util.List;
+import de.omnikryptec.animation.ColladaParser.dataStructures.AnimationData;
+import de.omnikryptec.animation.ColladaParser.dataStructures.JointTransformData;
+import de.omnikryptec.animation.ColladaParser.dataStructures.KeyFrameData;
+import de.omnikryptec.util.XMLUtil;
 
 /**
  * Loads an animation for a model from a collada XML file.

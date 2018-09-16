@@ -24,7 +24,11 @@ import de.omnikryptec.main.Scene3D;
 import de.omnikryptec.resource.model.AdvancedModel;
 import de.omnikryptec.resource.model.Material;
 import de.omnikryptec.settings.GameSettings;
-import de.omnikryptec.shader.base.*;
+import de.omnikryptec.shader.base.Shader;
+import de.omnikryptec.shader.base.UniformMatrix;
+import de.omnikryptec.shader.base.UniformMatrixArray;
+import de.omnikryptec.shader.base.UniformSampler;
+import de.omnikryptec.shader.base.UniformVec3;
 import de.omnikryptec.util.EnumCollection.BlendMode;
 import de.omnikryptec.util.Instance;
 

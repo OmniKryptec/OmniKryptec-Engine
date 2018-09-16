@@ -16,9 +16,9 @@
 
 package de.omnikryptec.gameobject.particlesV2;
 
-import org.lwjgl.BufferUtils;
-
 import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
 
 public class ParticleFloatBuffer {
 

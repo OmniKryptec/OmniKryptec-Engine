@@ -16,17 +16,21 @@
 
 package de.omnikryptec.main;
 
-import de.omnikryptec.gameobject.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+import de.omnikryptec.gameobject.Camera;
+import de.omnikryptec.gameobject.Entity;
+import de.omnikryptec.gameobject.GameObject;
+import de.omnikryptec.gameobject.GameObject3D;
+import de.omnikryptec.gameobject.Light3D;
 import de.omnikryptec.renderer.d3.RenderChunk3D;
 import de.omnikryptec.test.saving.DataMap;
 import de.omnikryptec.util.Instance;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 public class Scene3D extends AbstractScene3D {
 

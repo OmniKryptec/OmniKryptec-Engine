@@ -16,6 +16,8 @@
 
 package de.omnikryptec.renderer.d3;
 
+import java.util.List;
+
 import de.omnikryptec.gameobject.Entity;
 import de.omnikryptec.main.AbstractScene3D;
 import de.omnikryptec.resource.model.AdvancedModel;
@@ -28,8 +30,6 @@ import de.omnikryptec.util.Priority;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
-
-import java.util.List;
 
 @Priority
 @Level

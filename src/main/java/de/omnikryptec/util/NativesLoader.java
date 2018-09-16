@@ -16,12 +16,12 @@
 
 package de.omnikryptec.util;
 
+import java.util.function.Consumer;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.util.OSUtil.OS;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
-
-import java.util.function.Consumer;
 
 /**
  * NativesLoader

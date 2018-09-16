@@ -16,15 +16,15 @@
 
 package de.omnikryptec.renderer.d3;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import de.omnikryptec.animation.renderer.AnimatedModelRenderer;
 import de.omnikryptec.gameobject.terrain.TerrainRenderer;
 import de.omnikryptec.util.SerializationUtil;
 import de.omnikryptec.util.exceptions.OmniKryptecException;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class RendererRegistration {
 

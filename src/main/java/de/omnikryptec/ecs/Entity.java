@@ -12,4 +12,8 @@ public class Entity {
 		this.ID = 0;
 		this.comps = new HashMap<>();
 	}
+	
+	public Map<Integer, Component> getComponents(){
+		return comps;
+	}
 }

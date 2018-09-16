@@ -16,12 +16,13 @@
 
 package de.omnikryptec.display;
 
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWErrorCallback;
+
 import de.omnikryptec.event.input.InputManager;
 import de.omnikryptec.graphics.OpenGL;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWErrorCallback;
 
 public class Display {
 

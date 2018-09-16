@@ -16,6 +16,13 @@
 
 package de.omnikryptec.graphics;
 
+import java.nio.FloatBuffer;
+
+import org.joml.Math;
+import org.joml.Vector2f;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+
 import de.omnikryptec.collision.d2.Rectangle;
 import de.omnikryptec.gameobject.Camera;
 import de.omnikryptec.gameobject.Sprite;
@@ -26,12 +33,6 @@ import de.omnikryptec.shader.base.Shader;
 import de.omnikryptec.shader.files.render.Shader2D;
 import de.omnikryptec.util.Color;
 import de.omnikryptec.util.exceptions.OmniKryptecException;
-import org.joml.Math;
-import org.joml.Vector2f;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-
-import java.nio.FloatBuffer;
 
 public class SpriteBatch {
 	public static final int FLOATS_PER_VERTEX = 8;

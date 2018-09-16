@@ -16,14 +16,14 @@
 
 package de.omnikryptec.test.saving;
 
-import de.codemakers.util.ArrayUtil;
-import de.omnikryptec.util.logger.Logger;
-
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import de.codemakers.util.ArrayUtil;
+import de.omnikryptec.util.logger.Logger;
 
 /**
  * DataMapSerializer

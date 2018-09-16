@@ -16,18 +16,19 @@
 
 package de.omnikryptec.physics;
 
+import javax.vecmath.Quat4f;
+import javax.vecmath.Vector3f;
+
 import com.bulletphysics.collision.shapes.CollisionShape;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
 import com.bulletphysics.linearmath.MotionState;
+
 import de.omnikryptec.gameobject.Entity;
 import de.omnikryptec.gameobject.GameObject3D;
 import de.omnikryptec.resource.model.Model;
 import de.omnikryptec.resource.model.TexturedModel;
 import de.omnikryptec.util.PhysicsUtil;
-
-import javax.vecmath.Quat4f;
-import javax.vecmath.Vector3f;
 
 /**
  *

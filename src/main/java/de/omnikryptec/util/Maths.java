@@ -16,11 +16,18 @@
 
 package de.omnikryptec.util;
 
-import de.omnikryptec.display.Display;
-import org.joml.*;
-import org.joml.Math;
-
 import java.util.Random;
+
+import org.joml.AxisAngle4f;
+import org.joml.Math;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
+
+import de.omnikryptec.display.Display;
 
 public class Maths {
 

@@ -16,18 +16,6 @@
 
 package de.omnikryptec.postprocessing.main;
 
-import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.display.Display;
-import de.omnikryptec.graphics.OpenGL;
-import de.omnikryptec.resource.texture.Texture;
-import de.omnikryptec.settings.GameSettings;
-import de.omnikryptec.util.EnumCollection.DepthbufferType;
-import de.omnikryptec.util.Instance;
-import de.omnikryptec.util.logger.Logger;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.*;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
@@ -36,6 +24,24 @@ import java.time.LocalDateTime;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL14;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
+
+import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.display.Display;
+import de.omnikryptec.graphics.OpenGL;
+import de.omnikryptec.resource.texture.Texture;
+import de.omnikryptec.settings.GameSettings;
+import de.omnikryptec.util.EnumCollection.DepthbufferType;
+import de.omnikryptec.util.Instance;
+import de.omnikryptec.util.logger.Logger;
 
 public class FrameBufferObject extends Texture {
     

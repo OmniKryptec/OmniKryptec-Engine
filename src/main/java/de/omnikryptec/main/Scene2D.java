@@ -16,6 +16,8 @@
 
 package de.omnikryptec.main;
 
+import java.util.HashMap;
+
 import de.omnikryptec.gameobject.Camera;
 import de.omnikryptec.gameobject.GameObject2D;
 import de.omnikryptec.renderer.d2.DefaultRenderer2D;
@@ -23,8 +25,6 @@ import de.omnikryptec.renderer.d2.RenderChunk2D;
 import de.omnikryptec.renderer.d2.Renderer2D;
 import de.omnikryptec.util.Instance;
 import de.omnikryptec.util.logger.Logger;
-
-import java.util.HashMap;
 
 public class Scene2D extends AbstractScene2D {
 

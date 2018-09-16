@@ -16,6 +16,9 @@
 
 package de.omnikryptec.shader.files.render;
 
+import org.joml.Vector3f;
+import org.joml.Vector4f;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.gameobject.Light3D;
 import de.omnikryptec.graphics.GraphicsUtil;
@@ -25,10 +28,15 @@ import de.omnikryptec.resource.model.AdvancedModel;
 import de.omnikryptec.resource.model.Material;
 import de.omnikryptec.resource.texture.Texture;
 import de.omnikryptec.settings.GameSettings;
-import de.omnikryptec.shader.base.*;
+import de.omnikryptec.shader.base.Attribute;
+import de.omnikryptec.shader.base.Shader;
+import de.omnikryptec.shader.base.UniformBoolean;
+import de.omnikryptec.shader.base.UniformInt;
+import de.omnikryptec.shader.base.UniformMatrix;
+import de.omnikryptec.shader.base.UniformSampler;
+import de.omnikryptec.shader.base.UniformVec3;
+import de.omnikryptec.shader.base.UniformVec4;
 import de.omnikryptec.util.Maths;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 public class ForwardMeshShader extends Shader {
 

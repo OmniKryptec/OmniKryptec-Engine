@@ -16,12 +16,9 @@
 
 package de.omnikryptec.test.saving;
 
-import de.omnikryptec.util.logger.Logger;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.input.SAXBuilder;
-import org.jdom2.output.Format;
-import org.jdom2.output.XMLOutputter;
+import static de.omnikryptec.util.SerializationUtil.cast;
+import static de.omnikryptec.util.SerializationUtil.castArray;
+import static de.omnikryptec.util.SerializationUtil.classForName;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -30,7 +27,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static de.omnikryptec.util.SerializationUtil.*;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+
+import de.omnikryptec.util.logger.Logger;
 
 /**
  * XMLSerializer

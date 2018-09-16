@@ -16,15 +16,15 @@
 
 package de.omnikryptec.shader.modules;
 
-import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.util.logger.LogLevel;
-import de.omnikryptec.util.logger.Logger;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 
 public class ModuleSystem {
 

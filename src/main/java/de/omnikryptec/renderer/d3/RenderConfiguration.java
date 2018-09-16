@@ -16,13 +16,14 @@
 
 package de.omnikryptec.renderer.d3;
 
-import de.omnikryptec.util.EnumCollection.RendererTime;
-import org.joml.Vector4f;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.joml.Vector4f;
+
+import de.omnikryptec.util.EnumCollection.RendererTime;
 
 public class RenderConfiguration implements Cloneable{
 

@@ -16,6 +16,11 @@
 
 package de.omnikryptec.gameobject;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import de.omnikryptec.gameobject.component.Component;
 import de.omnikryptec.main.OmniKryptecEngine;
 import de.omnikryptec.main.Scene3D;
@@ -23,11 +28,6 @@ import de.omnikryptec.test.saving.DataMap;
 import de.omnikryptec.test.saving.DataMapSerializable;
 import de.omnikryptec.util.EnumCollection.UpdateType;
 import de.omnikryptec.util.exceptions.OmniKryptecException;
-
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 /**
  *

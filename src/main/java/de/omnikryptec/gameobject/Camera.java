@@ -16,15 +16,16 @@
 
 package de.omnikryptec.gameobject;
 
+import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+
 import de.omnikryptec.display.Display;
 import de.omnikryptec.test.saving.DataMap;
 import de.omnikryptec.util.EnumCollection.UpdateType;
 import de.omnikryptec.util.Maths;
 import de.omnikryptec.util.SerializationUtil;
-import org.joml.Matrix4f;
-import org.joml.Matrix4fc;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 public class Camera extends GameObject3D {
 

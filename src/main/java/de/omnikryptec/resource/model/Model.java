@@ -16,14 +16,15 @@
 
 package de.omnikryptec.resource.model;
 
+import java.io.InputStream;
+
+import org.lwjgl.opengl.GL15;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.resource.loader.ResourceObject;
 import de.omnikryptec.resource.objConverter.ModelData;
 import de.omnikryptec.resource.objConverter.ObjLoader;
 import de.omnikryptec.util.logger.Logger;
-import org.lwjgl.opengl.GL15;
-
-import java.io.InputStream;
 
 public class Model implements ResourceObject {
 

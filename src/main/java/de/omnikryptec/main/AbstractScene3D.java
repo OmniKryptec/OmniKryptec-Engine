@@ -16,6 +16,9 @@
 
 package de.omnikryptec.main;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import de.omnikryptec.gameobject.Camera;
 import de.omnikryptec.gameobject.GameObject3D;
 import de.omnikryptec.gameobject.Light3D;
@@ -29,9 +32,6 @@ import de.omnikryptec.util.EnumCollection.RendererTime;
 import de.omnikryptec.util.PhysicsUtil;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public abstract class AbstractScene3D extends AbstractScene<GameObject3D> implements DataMapSerializable {
 

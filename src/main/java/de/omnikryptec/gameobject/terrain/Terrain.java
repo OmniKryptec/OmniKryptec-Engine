@@ -16,6 +16,11 @@
 
 package de.omnikryptec.gameobject.terrain;
 
+import java.util.ArrayList;
+
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+
 import de.omnikryptec.gameobject.Entity;
 import de.omnikryptec.renderer.d3.RendererRegistration;
 import de.omnikryptec.resource.model.Material;
@@ -26,10 +31,6 @@ import de.omnikryptec.resource.objConverter.Vertex;
 import de.omnikryptec.resource.texture.Texture;
 import de.omnikryptec.util.EnumCollection.Dimension;
 import de.omnikryptec.util.Maths;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
-
-import java.util.ArrayList;
 
 /**
  * Terrain

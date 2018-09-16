@@ -16,19 +16,20 @@
 
 package de.omnikryptec.animation.loaders;
 
+import java.util.HashMap;
+
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.animation.Animation;
+import de.omnikryptec.animation.JointTransform;
+import de.omnikryptec.animation.KeyFrame;
 import de.omnikryptec.animation.ColladaParser.colladaLoader.ColladaLoader;
 import de.omnikryptec.animation.ColladaParser.dataStructures.AnimationData;
 import de.omnikryptec.animation.ColladaParser.dataStructures.JointTransformData;
 import de.omnikryptec.animation.ColladaParser.dataStructures.KeyFrameData;
-import de.omnikryptec.animation.JointTransform;
-import de.omnikryptec.animation.KeyFrame;
 import de.omnikryptec.util.Quaternion;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
-
-import java.util.HashMap;
 
 /**
  * This class loads up an animation collada file, gets the information from it,

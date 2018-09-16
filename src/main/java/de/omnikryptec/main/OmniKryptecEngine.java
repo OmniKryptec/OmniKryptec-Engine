@@ -16,6 +16,12 @@
 
 package de.omnikryptec.main;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.lwjgl.opengl.GL30;
+
 import de.codemakers.logger.ILogger;
 import de.omnikryptec.display.Display;
 import de.omnikryptec.display.DisplayManager;
@@ -47,11 +53,6 @@ import de.omnikryptec.util.logger.Logger;
 import de.omnikryptec.util.profiler.Profilable;
 import de.omnikryptec.util.profiler.ProfileContainer;
 import de.omnikryptec.util.profiler.Profiler;
-import org.lwjgl.opengl.GL30;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  *

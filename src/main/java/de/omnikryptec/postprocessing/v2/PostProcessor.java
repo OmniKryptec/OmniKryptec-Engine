@@ -16,11 +16,11 @@
 
 package de.omnikryptec.postprocessing.v2;
 
-import de.omnikryptec.postprocessing.main.FrameBufferObject;
-import de.omnikryptec.resource.texture.Texture;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import de.omnikryptec.postprocessing.main.FrameBufferObject;
+import de.omnikryptec.resource.texture.Texture;
 
 public class PostProcessor extends PostProcessingTask {
 

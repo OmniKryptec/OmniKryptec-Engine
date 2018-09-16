@@ -16,12 +16,13 @@
 
 package de.omnikryptec.gameobject.particles;
 
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+
 import de.omnikryptec.gameobject.Camera;
 import de.omnikryptec.resource.texture.ParticleAtlas;
 import de.omnikryptec.util.Color;
 import de.omnikryptec.util.EnumCollection.RenderType;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
 
 public class Particle {
 

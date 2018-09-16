@@ -16,15 +16,16 @@
 
 package de.omnikryptec.util;
 
-import de.omnikryptec.util.logger.Logger;
+import java.io.InputStream;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
 
-import java.io.InputStream;
-import java.util.List;
-import java.util.stream.Collectors;
+import de.omnikryptec.util.logger.Logger;
 
 /**
  *

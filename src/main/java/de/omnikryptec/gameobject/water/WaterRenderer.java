@@ -16,6 +16,8 @@
 
 package de.omnikryptec.gameobject.water;
 
+import java.util.List;
+
 import de.omnikryptec.gameobject.Entity;
 import de.omnikryptec.main.AbstractScene3D;
 import de.omnikryptec.renderer.d3.Renderer;
@@ -28,8 +30,6 @@ import de.omnikryptec.util.FrustrumFilter;
 import de.omnikryptec.util.KeyArrayHashMap;
 import de.omnikryptec.util.Level;
 import de.omnikryptec.util.Priority;
-
-import java.util.List;
 
 /**
  * WaterRenderer

@@ -16,10 +16,10 @@
 
 package de.omnikryptec.resource.objConverter;
 
-import org.joml.Vector3f;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.joml.Vector3f;
 
 public class Vertex {
 

@@ -16,6 +16,9 @@
 
 package de.omnikryptec.renderer.d2;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import de.omnikryptec.event.eventV2.EventSubscription;
 import de.omnikryptec.event.eventV2.engineevents.ResizeEvent;
 import de.omnikryptec.gameobject.Light2D;
@@ -30,9 +33,6 @@ import de.omnikryptec.util.Color;
 import de.omnikryptec.util.EnumCollection.BlendMode;
 import de.omnikryptec.util.FrustrumFilter;
 import de.omnikryptec.util.Instance;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class DefaultRenderer2D implements Renderer2D {
 

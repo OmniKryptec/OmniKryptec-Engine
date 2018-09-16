@@ -16,13 +16,14 @@
 
 package de.omnikryptec.resource.model;
 
-import de.omnikryptec.graphics.OpenGL;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+
+import de.omnikryptec.graphics.OpenGL;
 
 public class VertexArrayObject {
 

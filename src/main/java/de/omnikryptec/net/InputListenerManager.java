@@ -16,10 +16,10 @@
 
 package de.omnikryptec.net;
 
-import de.omnikryptec.util.logger.Logger;
-
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
+
+import de.omnikryptec.util.logger.Logger;
 
 /**
  * InputListenerManager

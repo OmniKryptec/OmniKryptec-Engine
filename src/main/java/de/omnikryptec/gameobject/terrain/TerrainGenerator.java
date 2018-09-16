@@ -16,8 +16,9 @@
 
 package de.omnikryptec.gameobject.terrain;
 
-import de.pcfreak9000.noise.noises.Noise;
 import org.joml.Vector3f;
+
+import de.pcfreak9000.noise.noises.Noise;
 
 public class TerrainGenerator implements Noise {
 

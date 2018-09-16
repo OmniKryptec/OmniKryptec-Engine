@@ -16,9 +16,13 @@
 
 package de.omnikryptec.gameobject.component;
 
+import javax.vecmath.Quat4f;
+import javax.vecmath.Vector3f;
+
 import com.bulletphysics.collision.dispatch.CollisionObject;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
+
 import de.omnikryptec.gameobject.Entity;
 import de.omnikryptec.gameobject.GameObject;
 import de.omnikryptec.gameobject.GameObject3D;
@@ -29,9 +33,6 @@ import de.omnikryptec.renderer.d3.RenderChunk3D;
 import de.omnikryptec.util.Priority;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
-
-import javax.vecmath.Quat4f;
-import javax.vecmath.Vector3f;
 
 /**
  * Component for physics

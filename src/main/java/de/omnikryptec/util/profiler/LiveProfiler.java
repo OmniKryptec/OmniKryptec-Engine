@@ -16,17 +16,23 @@
 
 package de.omnikryptec.util.profiler;
 
-import de.omnikryptec.gameobject.particles.ParticleMaster;
-import de.omnikryptec.main.OmniKryptecEngine;
-import de.omnikryptec.swing.ChartData;
-import de.omnikryptec.swing.PieChartGenerator;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+import de.omnikryptec.gameobject.particles.ParticleMaster;
+import de.omnikryptec.main.OmniKryptecEngine;
+import de.omnikryptec.swing.ChartData;
+import de.omnikryptec.swing.PieChartGenerator;
 
 /**
  * LiveProfiler

@@ -19,8 +19,6 @@ package de.omnikryptec.util;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 
-import de.omnikryptec.renderer.d3.RenderChunk3D;
-
 public class KeyArrayHashMap<K, V> {
 
     private Class<K> keyclass;

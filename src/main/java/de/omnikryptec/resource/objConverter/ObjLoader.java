@@ -16,15 +16,16 @@
 
 package de.omnikryptec.resource.objConverter;
 
-import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.util.logger.Logger;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+
+import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.util.logger.Logger;
 
 public class ObjLoader {
 

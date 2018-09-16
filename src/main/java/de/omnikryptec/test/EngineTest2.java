@@ -16,13 +16,19 @@
 
 package de.omnikryptec.test;
 
+import java.nio.FloatBuffer;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import org.joml.Vector3f;
+import org.lwjgl.opencl.CL10;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.codemakers.lang.LanguageManager;
 import de.omnikryptec.display.Display;
 import de.omnikryptec.display.DisplayManager;
 import de.omnikryptec.display.GLFWInfo;
-import de.omnikryptec.ecs.Component;
-import de.omnikryptec.ecs.ComponentSystem;
 import de.omnikryptec.event.eventV2.EventSubscription;
 import de.omnikryptec.event.eventV2.engineevents.FrameEvent;
 import de.omnikryptec.event.eventV2.engineevents.FrameEvent.FrameType;
@@ -35,11 +41,15 @@ import de.omnikryptec.gameobject.particles.AttractedPaticleSystem;
 import de.omnikryptec.gameobject.particles.ParticleAttractor;
 import de.omnikryptec.gui.ProgressBar;
 import de.omnikryptec.gui.TexturedGuiContainer;
-import de.omnikryptec.main.DefaultGameLoop;
 import de.omnikryptec.main.OmniKryptecEngine;
 import de.omnikryptec.main.Scene3D;
-import de.omnikryptec.opencl.core.*;
-import de.omnikryptec.postprocessing.stages.ColorSpaceStage;
+import de.omnikryptec.opencl.core.CLCommandQueue;
+import de.omnikryptec.opencl.core.CLContext;
+import de.omnikryptec.opencl.core.CLDevice;
+import de.omnikryptec.opencl.core.CLKernel;
+import de.omnikryptec.opencl.core.CLPlatform;
+import de.omnikryptec.opencl.core.CLProgram;
+import de.omnikryptec.opencl.core.OpenCL;
 import de.omnikryptec.renderer.d3.FloorReflectionRenderer;
 import de.omnikryptec.renderer.d3.RendererRegistration;
 import de.omnikryptec.resource.loader.ResourceLoader;
@@ -51,19 +61,9 @@ import de.omnikryptec.resource.texture.SimpleTexture;
 import de.omnikryptec.settings.GameSettings;
 import de.omnikryptec.util.EnumCollection.UpdateType;
 import de.omnikryptec.util.Instance;
-import de.omnikryptec.util.Maths;
 import de.omnikryptec.util.NativesLoader;
-import de.omnikryptec.util.Util;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
-import org.joml.Vector3f;
-import org.lwjgl.opencl.CL10;
-
-import java.nio.FloatBuffer;
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 /**

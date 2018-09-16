@@ -17,7 +17,13 @@
 package de.omnikryptec.shader.files.postprocessing;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.shader.base.*;
+import de.omnikryptec.shader.base.Shader;
+import de.omnikryptec.shader.base.UniformFloat;
+import de.omnikryptec.shader.base.UniformMatrix;
+import de.omnikryptec.shader.base.UniformSampler;
+import de.omnikryptec.shader.base.UniformVec2;
+import de.omnikryptec.shader.base.UniformVec3;
+import de.omnikryptec.shader.base.UniformVec4;
 
 public class FogShader extends Shader {
 

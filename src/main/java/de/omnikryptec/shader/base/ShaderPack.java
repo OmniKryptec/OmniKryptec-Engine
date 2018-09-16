@@ -16,10 +16,10 @@
 
 package de.omnikryptec.shader.base;
 
+import java.util.HashMap;
+
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
-
-import java.util.HashMap;
 
 public class ShaderPack {
 

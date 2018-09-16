@@ -16,12 +16,12 @@
 
 package de.omnikryptec.postprocessing.v2;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.omnikryptec.graphics.GraphicsUtil;
 import de.omnikryptec.resource.model.Model;
 import de.omnikryptec.util.ModelUtil;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class PostProcessingManager {
 	

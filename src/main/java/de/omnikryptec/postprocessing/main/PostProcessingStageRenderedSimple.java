@@ -16,11 +16,11 @@
 
 package de.omnikryptec.postprocessing.main;
 
+import java.util.List;
+
 import de.omnikryptec.display.Display;
 import de.omnikryptec.shader.base.Shader;
 import de.omnikryptec.util.EnumCollection.DepthbufferType;
-
-import java.util.List;
 
 public class PostProcessingStageRenderedSimple extends PostProcessingStageShaded {
 

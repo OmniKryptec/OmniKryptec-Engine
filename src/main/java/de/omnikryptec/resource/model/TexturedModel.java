@@ -16,11 +16,11 @@
 
 package de.omnikryptec.resource.model;
 
-import de.omnikryptec.resource.texture.Texture;
-import de.omnikryptec.test.saving.DataMap;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import de.omnikryptec.resource.texture.Texture;
+import de.omnikryptec.test.saving.DataMap;
 
 public class TexturedModel implements AdvancedModel {
 

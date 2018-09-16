@@ -16,12 +16,12 @@
 
 package de.omnikryptec.resource.loader;
 
+import java.util.Properties;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.resource.loader.annotations.DefaultLoader;
 import de.omnikryptec.resource.texture.SimpleTexture;
 import de.omnikryptec.util.logger.Logger;
-
-import java.util.Properties;
 
 /**
  * DefaultTextureLoader

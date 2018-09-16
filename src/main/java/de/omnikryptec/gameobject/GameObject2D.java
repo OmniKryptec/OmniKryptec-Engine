@@ -16,13 +16,13 @@
 
 package de.omnikryptec.gameobject;
 
+import java.util.ArrayList;
+
 import de.omnikryptec.renderer.d2.RenderChunk2D;
 import de.omnikryptec.util.EnumCollection.UpdateType;
 import de.omnikryptec.util.Instance;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
-
-import java.util.ArrayList;
 
 public class GameObject2D extends GameObject implements Transformable2D {
 

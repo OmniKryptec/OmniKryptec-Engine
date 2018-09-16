@@ -16,14 +16,15 @@
 
 package de.omnikryptec.gameobject;
 
+import java.util.ArrayList;
+
+import org.joml.Matrix4f;
+
 import de.omnikryptec.renderer.d3.RenderChunk3D;
 import de.omnikryptec.util.EnumCollection.UpdateType;
 import de.omnikryptec.util.Instance;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
-import org.joml.Matrix4f;
-
-import java.util.ArrayList;
 
 public class GameObject3D extends GameObject implements Transformable3D {
 

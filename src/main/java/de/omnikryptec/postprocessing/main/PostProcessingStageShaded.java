@@ -16,9 +16,9 @@
 
 package de.omnikryptec.postprocessing.main;
 
-import de.omnikryptec.shader.base.Shader;
-
 import java.util.List;
+
+import de.omnikryptec.shader.base.Shader;
 
 public abstract class PostProcessingStageShaded extends PostProcessingStage {
 

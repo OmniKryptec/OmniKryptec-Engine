@@ -16,9 +16,9 @@
 
 package de.omnikryptec.resource.loader;
 
-import de.codemakers.io.file.AdvancedFile;
-
 import java.util.Properties;
+
+import de.codemakers.io.file.AdvancedFile;
 
 /**
  * Loader Interface

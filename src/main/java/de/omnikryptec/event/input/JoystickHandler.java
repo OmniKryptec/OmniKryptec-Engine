@@ -16,13 +16,14 @@
 
 package de.omnikryptec.event.input;
 
-import de.omnikryptec.settings.KeySettings;
-import org.lwjgl.glfw.GLFW;
-
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.lwjgl.glfw.GLFW;
+
+import de.omnikryptec.settings.KeySettings;
 
 /**
  * JoystickHandler

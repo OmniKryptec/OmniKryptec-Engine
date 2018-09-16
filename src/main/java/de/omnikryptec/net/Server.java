@@ -16,10 +16,6 @@
 
 package de.omnikryptec.net;
 
-import de.omnikryptec.util.AdvancedThreadFactory;
-import de.omnikryptec.util.logger.LogLevel;
-import de.omnikryptec.util.logger.Logger;
-
 import java.io.Serializable;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -27,6 +23,10 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import de.omnikryptec.util.AdvancedThreadFactory;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 
 /**
  * Server

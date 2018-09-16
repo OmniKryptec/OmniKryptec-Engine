@@ -16,13 +16,14 @@
 
 package de.omnikryptec.settings;
 
-import de.codemakers.serialization.XMLable;
-import de.omnikryptec.util.logger.LogLevel;
-import de.omnikryptec.util.logger.Logger;
+import java.util.ArrayList;
+
 import org.jdom2.Element;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.ArrayList;
+import de.codemakers.serialization.XMLable;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 
 /**
  * KeySettings

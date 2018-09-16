@@ -16,18 +16,19 @@
 
 package de.omnikryptec.resource.model;
 
-import de.omnikryptec.graphics.OpenGL;
-import de.omnikryptec.util.logger.LogLevel;
-import de.omnikryptec.util.logger.Logger;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+
+import de.omnikryptec.graphics.OpenGL;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 
 public class VertexBufferObject {
 

@@ -16,6 +16,14 @@
 
 package de.omnikryptec.test;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.io.InputStream;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+
 import de.codemakers.lang.LanguageManager;
 import de.codemakers.lang.LanguageReloader;
 import de.omnikryptec.swing.JCheckBoxList;
@@ -24,10 +32,6 @@ import de.omnikryptec.util.debug.VariableChangeListener;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
 import de.omnikryptec.util.logger.SystemInputStream;
-
-import javax.swing.*;
-import java.awt.*;
-import java.io.InputStream;
 
 /**
  *

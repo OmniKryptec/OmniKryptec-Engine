@@ -16,17 +16,18 @@
 
 package de.omnikryptec.animation.ColladaParser.colladaLoader;
 
-import de.omnikryptec.animation.ColladaParser.dataStructures.AnimatedVertex;
-import de.omnikryptec.animation.ColladaParser.dataStructures.MeshData;
-import de.omnikryptec.animation.ColladaParser.dataStructures.VertexSkinData;
-import de.omnikryptec.util.XMLUtil;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jdom2.Element;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import java.util.ArrayList;
-import java.util.List;
+import de.omnikryptec.animation.ColladaParser.dataStructures.AnimatedVertex;
+import de.omnikryptec.animation.ColladaParser.dataStructures.MeshData;
+import de.omnikryptec.animation.ColladaParser.dataStructures.VertexSkinData;
+import de.omnikryptec.util.XMLUtil;
 
 /**
  * Loads the mesh data for a model from a collada XML file.

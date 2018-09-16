@@ -13,8 +13,12 @@ public class EventBus {
 		this.eventQueue = new ConcurrentLinkedQueue<>();
 	}
 	
-	public void enqueue(Event e) {
-		eventQueue.add(e);
+	public void enqueueOrPost(Event e) {
+		if(e.isPostDirect()) {
+			processEvent(e);
+		}else {
+			eventQueue.add(e);
+		}
 	}
 	
 	public void processQueuedEvents() {
@@ -33,6 +37,6 @@ public class EventBus {
 	}
 	
 	private void processEvent(Event e) {
-		
+		//dispatch event
 	}
 }

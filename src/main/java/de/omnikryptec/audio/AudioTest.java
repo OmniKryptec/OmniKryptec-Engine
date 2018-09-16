@@ -16,15 +16,17 @@
 
 package de.omnikryptec.audio;
 
+import java.util.Arrays;
+
+import javax.swing.Timer;
+
+import org.joml.Vector3f;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.util.NativesLoader;
 import de.omnikryptec.util.logger.Commands;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
-import org.joml.Vector3f;
-
-import javax.swing.*;
-import java.util.Arrays;
 
 /**
  * Test class for the audio functions

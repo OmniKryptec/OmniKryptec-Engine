@@ -16,12 +16,13 @@
 
 package de.omnikryptec.gameobject.particles;
 
+import java.util.Random;
+
+import org.joml.Vector3f;
+
 import de.omnikryptec.gameobject.GameObject3D;
 import de.omnikryptec.main.OmniKryptecEngine;
 import de.omnikryptec.util.Maths;
-import org.joml.Vector3f;
-
-import java.util.Random;
 
 public class ParticleSystem extends GameObject3D{
 	

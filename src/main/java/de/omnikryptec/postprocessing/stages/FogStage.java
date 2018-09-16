@@ -16,6 +16,10 @@
 
 package de.omnikryptec.postprocessing.stages;
 
+import java.util.List;
+
+import org.joml.Vector4f;
+
 import de.omnikryptec.display.Display;
 import de.omnikryptec.gameobject.Camera;
 import de.omnikryptec.main.OmniKryptecEngine;
@@ -24,9 +28,6 @@ import de.omnikryptec.postprocessing.main.PostProcessingStageShaded;
 import de.omnikryptec.shader.base.Shader;
 import de.omnikryptec.shader.files.postprocessing.FogShader;
 import de.omnikryptec.util.EnumCollection.DepthbufferType;
-import org.joml.Vector4f;
-
-import java.util.List;
 
 public class FogStage extends PostProcessingStageShaded {
 

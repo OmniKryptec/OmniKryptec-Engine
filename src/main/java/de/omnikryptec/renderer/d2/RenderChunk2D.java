@@ -16,6 +16,8 @@
 
 package de.omnikryptec.renderer.d2;
 
+import java.util.ArrayList;
+
 import de.omnikryptec.gameobject.GameObject2D;
 import de.omnikryptec.gameobject.Light2D;
 import de.omnikryptec.gameobject.Sprite;
@@ -23,8 +25,6 @@ import de.omnikryptec.main.AbstractScene2D;
 import de.omnikryptec.main.GameObjectContainer;
 import de.omnikryptec.main.OmniKryptecEngine;
 import de.omnikryptec.settings.GameSettings;
-
-import java.util.ArrayList;
 
 public class RenderChunk2D implements GameObjectContainer<GameObject2D> {
 

@@ -16,6 +16,14 @@
 
 package de.omnikryptec.renderer.d3;
 
+import java.nio.FloatBuffer;
+import java.util.List;
+
+import org.joml.Matrix4f;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL31;
+
 import de.omnikryptec.gameobject.Entity;
 import de.omnikryptec.main.AbstractScene3D;
 import de.omnikryptec.resource.model.AdvancedModel;
@@ -31,13 +39,6 @@ import de.omnikryptec.util.Instance;
 import de.omnikryptec.util.KeyArrayHashMap;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
-import org.joml.Matrix4f;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL31;
-
-import java.nio.FloatBuffer;
-import java.util.List;
 
 public class SimpleMeshRenderer extends Renderer{
     public static final int INSTANCED_DATA_LENGTH = 20;

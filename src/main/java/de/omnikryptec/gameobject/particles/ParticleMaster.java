@@ -16,6 +16,16 @@
 
 package de.omnikryptec.gameobject.particles;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import de.codemakers.util.ArrayUtil;
 import de.omnikryptec.gameobject.Camera;
 import de.omnikryptec.resource.texture.ParticleAtlas;
@@ -24,12 +34,6 @@ import de.omnikryptec.util.Instance;
 import de.omnikryptec.util.profiler.Profilable;
 import de.omnikryptec.util.profiler.ProfileContainer;
 import de.omnikryptec.util.profiler.Profiler;
-
-import java.util.*;
-import java.util.Map.Entry;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class ParticleMaster implements Profilable {
 

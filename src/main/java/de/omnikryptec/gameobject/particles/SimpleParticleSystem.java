@@ -16,12 +16,13 @@
 
 package de.omnikryptec.gameobject.particles;
 
+import org.joml.Vector3f;
+
 import de.omnikryptec.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
 import de.omnikryptec.resource.texture.ParticleAtlas;
 import de.omnikryptec.util.Color;
 import de.omnikryptec.util.EnumCollection.RenderType;
 import de.omnikryptec.util.Maths;
-import org.joml.Vector3f;
 
 public class SimpleParticleSystem extends ParticleSystem {
 

@@ -16,7 +16,7 @@
 
 package de.omnikryptec.util.logger;
 
-import java.awt.*;
+import java.awt.Component;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.time.Instant;

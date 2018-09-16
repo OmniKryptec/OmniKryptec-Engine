@@ -16,6 +16,10 @@
 
 package de.omnikryptec.gameobject.component;
 
+import java.util.ArrayList;
+
+import org.joml.Vector3f;
+
 import de.omnikryptec.audio.AudioSource;
 import de.omnikryptec.gameobject.GameObject3D;
 import de.omnikryptec.main.AbstractScene3D;
@@ -23,9 +27,6 @@ import de.omnikryptec.main.OmniKryptecEngine;
 import de.omnikryptec.renderer.d3.RenderChunk3D;
 import de.omnikryptec.util.Blocker;
 import de.omnikryptec.util.Priority;
-import org.joml.Vector3f;
-
-import java.util.ArrayList;
 
 /**
  * Component for creating sounds

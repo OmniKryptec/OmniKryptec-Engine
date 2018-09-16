@@ -16,10 +16,10 @@
 
 package de.omnikryptec.postprocessing.stages;
 
+import java.util.List;
+
 import de.omnikryptec.postprocessing.main.FrameBufferObject;
 import de.omnikryptec.postprocessing.main.PostProcessingStage;
-
-import java.util.List;
 
 public class CompleteGaussianBlurStage extends PostProcessingStage {
 

@@ -16,13 +16,14 @@
 
 package de.omnikryptec.util;
 
+import org.joml.FrustumIntersection;
+import org.joml.Vector2f;
+import org.joml.Vector4f;
+
 import de.omnikryptec.gameobject.Camera;
 import de.omnikryptec.gameobject.Entity;
 import de.omnikryptec.gameobject.Sprite;
 import de.omnikryptec.graphics.GraphicsUtil;
-import org.joml.FrustumIntersection;
-import org.joml.Vector2f;
-import org.joml.Vector4f;
 
 public class FrustrumFilter {
 

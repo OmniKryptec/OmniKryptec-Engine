@@ -16,9 +16,10 @@
 
 package de.omnikryptec.audio;
 
+import org.lwjgl.openal.AL10;
+
 import de.omnikryptec.util.AudioUtil;
 import de.omnikryptec.util.logger.Logger;
-import org.lwjgl.openal.AL10;
 
 /**
  * Cached sound

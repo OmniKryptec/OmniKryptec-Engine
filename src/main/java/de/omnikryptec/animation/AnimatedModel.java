@@ -16,16 +16,17 @@
 
 package de.omnikryptec.animation;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.joml.Matrix4f;
+
 import de.omnikryptec.resource.loader.ResourceLoader;
 import de.omnikryptec.resource.model.AdvancedModel;
 import de.omnikryptec.resource.model.Material;
 import de.omnikryptec.resource.model.Model;
 import de.omnikryptec.resource.texture.Texture;
 import de.omnikryptec.test.saving.DataMap;
-import org.joml.Matrix4f;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * AnimatedModel

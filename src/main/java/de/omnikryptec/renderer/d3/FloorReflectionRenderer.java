@@ -16,6 +16,10 @@
 
 package de.omnikryptec.renderer.d3;
 
+import java.util.List;
+
+import org.joml.Vector4f;
+
 import de.omnikryptec.gameobject.Entity;
 import de.omnikryptec.graphics.GraphicsUtil;
 import de.omnikryptec.main.AbstractScene3D;
@@ -26,10 +30,6 @@ import de.omnikryptec.util.EnumCollection.RendererTime;
 import de.omnikryptec.util.FrustrumFilter;
 import de.omnikryptec.util.Instance;
 import de.omnikryptec.util.KeyArrayHashMap;
-
-import org.joml.Vector4f;
-
-import java.util.List;
 
 
 public class FloorReflectionRenderer extends Renderer{

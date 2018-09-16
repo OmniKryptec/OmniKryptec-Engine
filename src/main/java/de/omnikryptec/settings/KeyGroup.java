@@ -16,10 +16,10 @@
 
 package de.omnikryptec.settings;
 
-import org.jdom2.Element;
-
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import org.jdom2.Element;
 
 /**
  * Key group

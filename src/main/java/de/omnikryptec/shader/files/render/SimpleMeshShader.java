@@ -16,14 +16,19 @@
 
 package de.omnikryptec.shader.files.render;
 
+import org.joml.Vector4f;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.graphics.GraphicsUtil;
 import de.omnikryptec.main.AbstractScene3D;
 import de.omnikryptec.resource.model.AdvancedModel;
 import de.omnikryptec.resource.model.Material;
 import de.omnikryptec.resource.texture.Texture;
-import de.omnikryptec.shader.base.*;
-import org.joml.Vector4f;
+import de.omnikryptec.shader.base.Attribute;
+import de.omnikryptec.shader.base.Shader;
+import de.omnikryptec.shader.base.UniformMatrix;
+import de.omnikryptec.shader.base.UniformSampler;
+import de.omnikryptec.shader.base.UniformVec4;
 
 public class SimpleMeshShader extends Shader {
 

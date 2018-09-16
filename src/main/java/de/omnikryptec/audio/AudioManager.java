@@ -34,26 +34,33 @@
  */
 package de.omnikryptec.audio;
 
-import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.gameobject.component.Component;
-import de.omnikryptec.util.AudioUtil;
-import de.omnikryptec.util.logger.LogLevel;
-import de.omnikryptec.util.logger.Logger;
-import org.apache.commons.io.IOUtils;
-import org.joml.Vector3f;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.openal.*;
+import static org.lwjgl.openal.EXTEfx.ALC_MAX_AUXILIARY_SENDS;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 
-import static org.lwjgl.openal.EXTEfx.ALC_MAX_AUXILIARY_SENDS;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+import org.apache.commons.io.IOUtils;
+import org.joml.Vector3f;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.openal.AL;
+import org.lwjgl.openal.AL10;
+import org.lwjgl.openal.AL11;
+import org.lwjgl.openal.ALC;
+import org.lwjgl.openal.ALC10;
+import org.lwjgl.openal.ALCCapabilities;
+
+import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.gameobject.component.Component;
+import de.omnikryptec.util.AudioUtil;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 
 /**
  * Main audio manager class

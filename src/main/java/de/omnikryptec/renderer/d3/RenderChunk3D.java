@@ -16,6 +16,15 @@
 
 package de.omnikryptec.renderer.d3;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import org.joml.Vector3f;
+
 import de.omnikryptec.gameobject.Entity;
 import de.omnikryptec.gameobject.GameObject;
 import de.omnikryptec.gameobject.GameObject3D;
@@ -31,9 +40,6 @@ import de.omnikryptec.util.KeyArrayHashMap;
 import de.omnikryptec.util.SerializationUtil;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
-import org.joml.Vector3f;
-
-import java.util.*;
 
 public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<GameObject3D> {
 

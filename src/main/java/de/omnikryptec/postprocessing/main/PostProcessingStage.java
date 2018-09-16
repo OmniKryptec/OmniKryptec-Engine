@@ -16,10 +16,11 @@
 
 package de.omnikryptec.postprocessing.main;
 
-import de.omnikryptec.graphics.GraphicsUtil;
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
-import java.util.List;
+import de.omnikryptec.graphics.GraphicsUtil;
 
 public abstract class PostProcessingStage {
 

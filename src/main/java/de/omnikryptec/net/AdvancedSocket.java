@@ -16,12 +16,6 @@
 
 package de.omnikryptec.net;
 
-import de.omnikryptec.util.AdvancedThreadFactory;
-import de.omnikryptec.util.Util;
-import de.omnikryptec.util.logger.LogLevel;
-import de.omnikryptec.util.logger.Logger;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -37,6 +31,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+
+import javax.swing.Timer;
+
+import de.omnikryptec.util.AdvancedThreadFactory;
+import de.omnikryptec.util.Util;
+import de.omnikryptec.util.logger.LogLevel;
+import de.omnikryptec.util.logger.Logger;
 
 /**
  * AdvancedSocket

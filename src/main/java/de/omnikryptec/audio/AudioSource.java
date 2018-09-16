@@ -16,10 +16,10 @@
 
 package de.omnikryptec.audio;
 
+import java.util.ArrayList;
+
 import org.joml.Vector3f;
 import org.lwjgl.openal.AL10;
-
-import java.util.ArrayList;
 
 /**
  * Source which plays the sounds

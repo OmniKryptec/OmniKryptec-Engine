@@ -16,12 +16,13 @@
 
 package de.omnikryptec.util.debug;
 
-import de.omnikryptec.util.logger.Logger;
-
-import javax.swing.*;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
+
+import javax.swing.Timer;
+
+import de.omnikryptec.util.logger.Logger;
 
 /**
  * This object does something if a specified value for a variable is detected

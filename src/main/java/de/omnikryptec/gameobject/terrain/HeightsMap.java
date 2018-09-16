@@ -16,9 +16,9 @@
 
 package de.omnikryptec.gameobject.terrain;
 
-import de.pcfreak9000.noise.noises.Noise;
-
 import java.awt.image.BufferedImage;
+
+import de.pcfreak9000.noise.noises.Noise;
 
 public class HeightsMap implements Noise {
 

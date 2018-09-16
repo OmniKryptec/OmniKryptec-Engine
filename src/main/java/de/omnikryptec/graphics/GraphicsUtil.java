@@ -16,6 +16,11 @@
 
 package de.omnikryptec.graphics;
 
+import org.joml.Vector3f;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+
 import de.omnikryptec.gameobject.Camera;
 import de.omnikryptec.gameobject.Entity;
 import de.omnikryptec.main.OmniKryptecEngine;
@@ -24,10 +29,6 @@ import de.omnikryptec.util.Color;
 import de.omnikryptec.util.EnumCollection.BlendMode;
 import de.omnikryptec.util.EnumCollection.RenderType;
 import de.omnikryptec.util.EnumCollection.UpdateType;
-import org.joml.Vector3f;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 
 public class GraphicsUtil {
 

@@ -16,9 +16,13 @@
 
 package de.omnikryptec.gameobject.component;
 
-import de.omnikryptec.gameobject.GameObject;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.lang.annotation.*;
+import de.omnikryptec.gameobject.GameObject;
 
 @Target(value = {ElementType.TYPE })
 @Retention(value = RetentionPolicy.RUNTIME)

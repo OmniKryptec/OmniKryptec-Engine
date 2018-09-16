@@ -16,6 +16,11 @@
 
 package de.omnikryptec.postprocessing.stages;
 
+import java.util.List;
+
+import org.joml.Vector2f;
+import org.joml.Vector4f;
+
 import de.omnikryptec.display.Display;
 import de.omnikryptec.postprocessing.main.FrameBufferObject;
 import de.omnikryptec.postprocessing.main.PostProcessingStage;
@@ -23,10 +28,6 @@ import de.omnikryptec.postprocessing.main.PostProcessingStageRenderedSimple;
 import de.omnikryptec.shader.files.postprocessing.BrightnessHighlighterShader;
 import de.omnikryptec.shader.files.postprocessing.CombineShader;
 import de.omnikryptec.util.EnumCollection.DepthbufferType;
-import org.joml.Vector2f;
-import org.joml.Vector4f;
-
-import java.util.List;
 
 public class BloomStage extends PostProcessingStage {
 

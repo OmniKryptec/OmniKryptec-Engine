@@ -16,6 +16,9 @@
 
 package de.omnikryptec.display;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
+
 import de.omnikryptec.audio.AudioManager;
 import de.omnikryptec.graphics.GraphicsUtil;
 import de.omnikryptec.main.OmniKryptecEngine;
@@ -26,8 +29,6 @@ import de.omnikryptec.util.logger.Logger;
 import de.omnikryptec.util.profiler.Profilable;
 import de.omnikryptec.util.profiler.ProfileContainer;
 import de.omnikryptec.util.profiler.Profiler;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
 
 /**
  * Display managing class
