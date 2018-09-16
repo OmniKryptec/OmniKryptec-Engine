@@ -28,6 +28,7 @@ import de.omnikryptec.shader.files.render.SimpleMeshShader;
 import de.omnikryptec.util.Color;
 import de.omnikryptec.util.FrustrumFilter;
 import de.omnikryptec.util.Instance;
+import de.omnikryptec.util.KeyArrayHashMap;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
 import org.joml.Matrix4f;
@@ -55,7 +56,7 @@ public class SimpleMeshRenderer extends Renderer{
     private Model model;
 
     @Override
-    public long render(AbstractScene3D s, RenderMap<AdvancedModel, List<Entity>> entities, Shader shader, FrustrumFilter filter) {
+    public long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, Shader shader, FrustrumFilter filter) {
     	vertcount = 0;
         for (AdvancedModel advancedModel : entities.keysArray()) {
             if (advancedModel == null || !(advancedModel instanceof TexturedModel)) {

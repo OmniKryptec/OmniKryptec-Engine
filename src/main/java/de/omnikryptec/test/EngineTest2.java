@@ -49,6 +49,7 @@ import de.omnikryptec.resource.texture.SimpleTexture;
 import de.omnikryptec.settings.GameSettings;
 import de.omnikryptec.util.EnumCollection.UpdateType;
 import de.omnikryptec.util.Instance;
+import de.omnikryptec.util.Maths;
 import de.omnikryptec.util.NativesLoader;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;

@@ -29,6 +29,7 @@ import de.omnikryptec.shader.files.render.ForwardMeshShader;
 import de.omnikryptec.util.Color;
 import de.omnikryptec.util.FrustrumFilter;
 import de.omnikryptec.util.Instance;
+import de.omnikryptec.util.KeyArrayHashMap;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
 import org.joml.Matrix4f;
@@ -60,7 +61,7 @@ public class ForwardMeshRenderer extends Renderer{
     private Model model;
 
     @Override
-    public long render(AbstractScene3D s, RenderMap<AdvancedModel, List<Entity>> entities, Shader b, FrustrumFilter f) {
+    public long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, Shader b, FrustrumFilter f) {
         if (!OmniKryptecEngine.instance().getDisplayManager().getSettings().isLightForwardAllowed() && Logger.isDebugMode()) {
             Logger.log("Forward light is not enabled. Will not render.", LogLevel.WARNING);
             return 0;

@@ -337,7 +337,7 @@ public class Maths {
         }
         return ts[0];
     }
-
+    
     /**
      *
      * @param x the value
@@ -375,10 +375,6 @@ public class Maths {
      */
     public static float invert(float x, float min, float range) {
         return range - x + 2 * min;
-    }
-
-    public static double normalStandardDistribution(double x) {
-        return SOMECONSTANT * Math.exp(-0.5 * x * x);
     }
 
     public static int toPowerOfTwo(int n) {

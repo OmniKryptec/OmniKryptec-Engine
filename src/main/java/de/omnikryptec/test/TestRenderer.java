@@ -22,12 +22,12 @@ import de.omnikryptec.main.AbstractScene3D;
 import de.omnikryptec.postprocessing.main.FrameBufferObject;
 import de.omnikryptec.renderer.d3.RenderConfiguration;
 import de.omnikryptec.renderer.d3.RenderConfiguration.AllowedRenderer;
-import de.omnikryptec.renderer.d3.RenderMap;
 import de.omnikryptec.renderer.d3.Renderer;
 import de.omnikryptec.resource.model.AdvancedModel;
 import de.omnikryptec.shader.base.Shader;
 import de.omnikryptec.util.EnumCollection.DepthbufferType;
 import de.omnikryptec.util.FrustrumFilter;
+import de.omnikryptec.util.KeyArrayHashMap;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class TestRenderer extends Renderer{
 	}
 
 	@Override
-	protected long render(AbstractScene3D s, RenderMap<AdvancedModel, List<Entity>> entities, Shader started,
+	protected long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, Shader started,
 			FrustrumFilter filter) {
 		fbo.bindFrameBuffer();
 		GraphicsUtil.clear(0, 0, 0, 0);

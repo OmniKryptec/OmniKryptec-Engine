@@ -27,6 +27,7 @@ import de.omnikryptec.resource.model.AdvancedModel;
 import de.omnikryptec.resource.model.Material;
 import de.omnikryptec.test.saving.DataMap;
 import de.omnikryptec.test.saving.DataMapSerializable;
+import de.omnikryptec.util.KeyArrayHashMap;
 import de.omnikryptec.util.SerializationUtil;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
@@ -36,7 +37,7 @@ import java.util.*;
 
 public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<GameObject3D> {
 
-	static final int DEFAULT_CAPACITY = 50;
+	public static final int DEFAULT_CAPACITY = 50;
 
 	private static int WIDTH = OmniKryptecEngine.instance().getDisplayManager().getSettings().getChunkWidth();
 	private static int HEIGHT = OmniKryptecEngine.instance().getDisplayManager().getSettings().getChunkHeight();
@@ -91,7 +92,7 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 		this.isglobal = global;
 	}
 
-	private final RenderMap<Renderer, RenderMap<AdvancedModel, List<Entity>>> chunk = new RenderMap<>(Renderer.class);
+	private final KeyArrayHashMap<Renderer, KeyArrayHashMap<AdvancedModel, List<Entity>>> chunk = new KeyArrayHashMap<>(Renderer.class);
 	private final List<Renderer> prios = new ArrayList<>();
 	private final ArrayList<GameObject> other = new ArrayList<>();
 	private final List<Light3D> lights = new ArrayList<>();
@@ -114,7 +115,7 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 
 	private Entity tmp;
 	private Renderer tmpr;
-	private RenderMap<AdvancedModel, List<Entity>> map;
+	private KeyArrayHashMap<AdvancedModel, List<Entity>> map;
 	private List<Entity> list;
 	private Material m;
 	private AdvancedModel am;
@@ -131,7 +132,7 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 						if ((tmpr = m.getRenderer()) != null) {
 							map = chunk.get(tmpr);
 							if (map == null) {
-								map = new RenderMap<>(AdvancedModel.class);
+								map = new KeyArrayHashMap<>(AdvancedModel.class);
 								chunk.put(tmpr, map);
 								prios.add(tmpr);
 								prios.sort(priority_sorter);
@@ -225,7 +226,7 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 		return z;
 	}
 
-	private RenderMap<AdvancedModel, List<Entity>> tmpmap;
+	private KeyArrayHashMap<AdvancedModel, List<Entity>> tmpmap;
 	private List<Entity> tmplist;
 
 	public void logic() {
@@ -248,7 +249,7 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 
 	private LinkedList<Renderer> renderlist;
 	private long vertcount = 0;
-	private RenderMap<AdvancedModel, List<Entity>> rendermap;
+	private KeyArrayHashMap<AdvancedModel, List<Entity>> rendermap;
 
 	public long render(RenderConfiguration config) {
 		vertcount = 0;
@@ -284,7 +285,7 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 			entities.add((Entity) entity);
 		});
 		for (Renderer renderer : chunk.keysArray()) {
-			RenderMap<AdvancedModel, List<Entity>> temp = chunk.get(renderer);
+			KeyArrayHashMap<AdvancedModel, List<Entity>> temp = chunk.get(renderer);
 			for (AdvancedModel advancedModel : temp.keysArray()) {
 				entities.addAll(temp.get(advancedModel));
 			}
@@ -298,7 +299,7 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 		final HashMap<Class<?>, ArrayList<Entity>> classesEntities = new HashMap<>();
 		final HashMap<String, ArrayList<String>> chunk_renderer_entities = new HashMap<>();
 		for (Renderer renderer : chunk.keysArray()) {
-			RenderMap<AdvancedModel, List<Entity>> rendererModels = chunk.get(renderer);
+			KeyArrayHashMap<AdvancedModel, List<Entity>> rendererModels = chunk.get(renderer);
 			for (AdvancedModel advancedModel : rendererModels.keysArray()) {
 				final List<Entity> entities = rendererModels.get(advancedModel);
 				ArrayList<Entity> listTemp = classesEntities.get(renderer.getClass());
@@ -383,7 +384,7 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 				Object.class);
 		if (chunk_renderer_entities != null) {
 			chunk_renderer_entities.keySet().stream().forEach((c) -> {
-				final RenderMap<AdvancedModel, List<Entity>> rendererModels = new RenderMap<>(AdvancedModel.class);
+				final KeyArrayHashMap<AdvancedModel, List<Entity>> rendererModels = new KeyArrayHashMap<>(AdvancedModel.class);
 				final Object object = chunk_renderer_entities.get(c);
 				if (object != null && object instanceof List) {
 					((List) object).stream().forEach((name) -> {

@@ -14,21 +14,29 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.renderer.d3;
+package de.omnikryptec.util;
 
 import java.lang.reflect.Array;
 import java.util.HashMap;
 
-public class RenderMap<K, V> {
+import de.omnikryptec.renderer.d3.RenderChunk3D;
+
+public class KeyArrayHashMap<K, V> {
 
     private Class<K> keyclass;
-    private HashMap<K, V> map = new HashMap<>(RenderChunk3D.DEFAULT_CAPACITY, 0.7f);
+    private HashMap<K, V> map;
     private K[] keys;
 
     private boolean keysDirty = true;
 
-    public RenderMap(Class<K> keyclass) {
+    public KeyArrayHashMap(Class<K> keyclass) {
+    	this.keyclass = keyclass;
+    	this.map = new HashMap<>();
+    }
+    
+    public KeyArrayHashMap(Class<K> keyclass, int initCapacity, float lf) {
         this.keyclass = keyclass;
+        this.map = new HashMap<>(initCapacity, lf);
     }
 
     public void put(K k, V v) {

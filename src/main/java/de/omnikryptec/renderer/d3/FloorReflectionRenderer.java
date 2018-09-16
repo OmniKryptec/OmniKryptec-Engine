@@ -25,6 +25,8 @@ import de.omnikryptec.shader.base.Shader;
 import de.omnikryptec.util.EnumCollection.RendererTime;
 import de.omnikryptec.util.FrustrumFilter;
 import de.omnikryptec.util.Instance;
+import de.omnikryptec.util.KeyArrayHashMap;
+
 import org.joml.Vector4f;
 
 import java.util.List;
@@ -52,7 +54,7 @@ public class FloorReflectionRenderer extends Renderer{
 	}
 	
 	@Override
-	protected long render(AbstractScene3D s, RenderMap<AdvancedModel, List<Entity>> entities, Shader started,
+	protected long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, Shader started,
 			FrustrumFilter filter) {
 		texture.bindFrameBuffer();
 		GraphicsUtil.clear(0, 0, 0, 1);

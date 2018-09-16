@@ -20,7 +20,6 @@ import de.omnikryptec.animation.AnimatedModel;
 import de.omnikryptec.gameobject.Entity;
 import de.omnikryptec.graphics.GraphicsUtil;
 import de.omnikryptec.main.AbstractScene3D;
-import de.omnikryptec.renderer.d3.RenderMap;
 import de.omnikryptec.renderer.d3.Renderer;
 import de.omnikryptec.renderer.d3.RendererRegistration;
 import de.omnikryptec.resource.model.AdvancedModel;
@@ -28,6 +27,7 @@ import de.omnikryptec.shader.base.Shader;
 import de.omnikryptec.shader.base.ShaderGroup;
 import de.omnikryptec.shader.base.ShaderPack;
 import de.omnikryptec.util.FrustrumFilter;
+import de.omnikryptec.util.KeyArrayHashMap;
 import de.omnikryptec.util.Level;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
@@ -65,7 +65,7 @@ public class AnimatedModelRenderer extends Renderer {
     private long vertcount = 0;
 
     @Override
-    protected long render(AbstractScene3D s, RenderMap<AdvancedModel, List<Entity>> entities, Shader ownshader, FrustrumFilter filter) {
+    protected long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, Shader ownshader, FrustrumFilter filter) {
         vertcount = 0;
         //TODO in den shader verschieben bei onRenderStart odaso
         //((AnimatedModelShader)shaderpack.getDefaultShader()).lightDirection.loadVec3(LIGHT_DIR);

@@ -22,6 +22,7 @@ import de.omnikryptec.resource.model.AdvancedModel;
 import de.omnikryptec.shader.base.Shader;
 import de.omnikryptec.shader.base.ShaderPack;
 import de.omnikryptec.util.FrustrumFilter;
+import de.omnikryptec.util.KeyArrayHashMap;
 import de.omnikryptec.util.Level;
 import de.omnikryptec.util.Priority;
 import de.omnikryptec.util.Util;
@@ -55,12 +56,12 @@ public abstract class Renderer{
         prio = Util.extractPrio(getClass(), 0);
     }
 
-    protected abstract long render(AbstractScene3D s, RenderMap<AdvancedModel, List<Entity>> entities, Shader started, FrustrumFilter filter);
+    protected abstract long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, Shader started, FrustrumFilter filter);
 
     private Shader tmps = null;
     private long tmplong;
     
-    public final long render(AbstractScene3D s, RenderMap<AdvancedModel, List<Entity>> entities, RenderConfiguration config) {
+    public final long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, RenderConfiguration config) {
     	cur = config;
     	if(usesShader) {
 	        tmps = shaderpack.getShader(config.getShaderpackKey(), config.getShaderLvl());
