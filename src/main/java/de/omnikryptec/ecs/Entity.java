@@ -5,6 +5,7 @@ import com.google.common.collect.MutableClassToInstanceMap;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Entity {
     
@@ -20,4 +21,9 @@ public class Entity {
     public Map<Integer, Component> getComponents() {
         return comps;
     }
+    
+    public Set<Class<? extends Component>> getComponentClasses() {
+        return components.keySet();
+    }
+    
 }
