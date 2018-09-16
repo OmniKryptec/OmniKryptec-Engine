@@ -53,6 +53,7 @@ import de.omnikryptec.util.EnumCollection.UpdateType;
 import de.omnikryptec.util.Instance;
 import de.omnikryptec.util.Maths;
 import de.omnikryptec.util.NativesLoader;
+import de.omnikryptec.util.Util;
 import de.omnikryptec.util.logger.LogLevel;
 import de.omnikryptec.util.logger.Logger;
 import org.joml.Vector3f;
@@ -108,7 +109,6 @@ public class EngineTest2 {
 //    	System.out.println("All time: "+(time2-time)+"ms Each: "+(time2-time)/amount+"ms ttt: "+ttt);
 //    	System.exit(0);
     	try {
-
             // int abc = 1000000;
             // long time = System.currentTimeMillis();
             // for(int i=0; i<abc; i++) {

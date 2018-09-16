@@ -5,6 +5,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import de.omnikryptec.util.Util;
+
 public abstract class ParallelComponentSystem extends ComponentSystem {
 
 	private ExecutorService service;
@@ -16,6 +18,7 @@ public abstract class ParallelComponentSystem extends ComponentSystem {
 	}
 
 	public ParallelComponentSystem(ExecutorService service, int activatorSize) {
+		Util.ensureNonNull(service, "ExecutorService must not be null!");
 		this.service = service;
 		this.activatorSize = activatorSize;
 	}
