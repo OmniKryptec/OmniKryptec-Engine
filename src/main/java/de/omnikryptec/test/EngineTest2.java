@@ -21,6 +21,8 @@ import de.codemakers.lang.LanguageManager;
 import de.omnikryptec.display.Display;
 import de.omnikryptec.display.DisplayManager;
 import de.omnikryptec.display.GLFWInfo;
+import de.omnikryptec.ecs.Component;
+import de.omnikryptec.ecs.ComponentSystem;
 import de.omnikryptec.event.eventV2.EventSubscription;
 import de.omnikryptec.event.eventV2.engineevents.FrameEvent;
 import de.omnikryptec.event.eventV2.engineevents.FrameEvent.FrameType;
