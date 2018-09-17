@@ -7,16 +7,16 @@ import com.google.common.collect.Multimap;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EntityManager {
     
+    private final AtomicBoolean updating = new AtomicBoolean(false);
     private BiMap<Long, Entity> entities;
     private Multimap<ComponentSystem, Entity> entitiesPerSystem;
     //private Multimap<Integer, ComponentSystem> systemsPerComponentType;
     //private Multimap<ComponentSystem, Integer> componentTypesPerSystem;
     private Set<ComponentSystem> componentSystems;
-    
-    private boolean updating = false;
     
     public EntityManager() {
         entities = HashBiMap.create();
@@ -34,6 +34,7 @@ public class EntityManager {
     }
     
     public void addEntity(Entity entity) {
+        //componentSystems.stream().filter((componentSystem) -> entity.getComponentClasses().containsAll(componentSystem.usesComponentClasses())).forEach((componentSystem) -> entitiesPerSystem.put(componentSystem, entity)); //Alternative for the below code
         for (ComponentSystem componentSystem : componentSystems) {
             //if(entity.getComponents().keySet().containsAll(componentSystem.usesComponents())) {
             if (entity.getComponentClasses().containsAll(componentSystem.usesComponentClasses())) {
@@ -51,16 +52,16 @@ public class EntityManager {
     
     public void updateSystems(float dt) {
         if (isUpdating()) {
-            throw new IllegalStateException("Already updating!");
+            throw new IllegalStateException(getClass().getSimpleName() + " is already updating!");
         }
-        updating = true;
+        updating.set(true);
         for (ComponentSystem componentSystem : componentSystems) {
             componentSystem.update(this, entitiesPerSystem.get(componentSystem), dt);
         }
-        updating = false;
+        updating.set(false);
     }
     
     public boolean isUpdating() {
-        return updating;
+        return updating.get();
     }
 }
