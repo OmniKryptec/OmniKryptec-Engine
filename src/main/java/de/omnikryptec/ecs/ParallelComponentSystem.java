@@ -35,7 +35,7 @@ public abstract class ParallelComponentSystem extends ComponentSystem {
 			}
 			try {
 				service.shutdown();
-				service.awaitTermination(5, TimeUnit.DAYS);
+				service.awaitTermination(1, TimeUnit.MINUTES);
 			} catch (InterruptedException e1) {
 				throw new RuntimeException(e1);
 			}
