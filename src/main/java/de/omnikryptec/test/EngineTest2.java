@@ -57,6 +57,7 @@ import de.omnikryptec.resource.model.AdvancedModel;
 import de.omnikryptec.resource.model.Material;
 import de.omnikryptec.resource.model.Model;
 import de.omnikryptec.resource.model.TexturedModel;
+import de.omnikryptec.resource.objConverter.EdgeCollapse;
 import de.omnikryptec.resource.texture.SimpleTexture;
 import de.omnikryptec.settings.GameSettings;
 import de.omnikryptec.util.EnumCollection.UpdateType;
@@ -221,6 +222,7 @@ public class EngineTest2 {
 //            Model baumM = ResourceLoader.currentInstance().getResource(Model.class, "res:final_tree_3.obj")/*Model.newModel(new AdvancedFile(true, res, "final_tree_3.obj"))*/;
              //Model baumM = Model.newModel(new AdvancedFile(true, res, "final_tree_3."));
             Model baumM = ResourceLoader.currentInstance().getResource("res:final_tree_3.obj");
+            baumM = new Model("testbaum", EdgeCollapse.collapseEdges(baumM.getModelData(), 0.4f));
 //            AtlasTexture rmvp = new AtlasTexture(brunnent, 0.25f, 0.25f, 0.5f, 0.5f);
 //            Model BLOCK = ResourceLoader.currentInstance().getResource(Model.class, "res:block.obj")/*new Model("", ObjLoader.loadOBJ(new AdvancedFile(true, res, "block.obj")))*/;
             TexturedModel tm = new TexturedModel("brunnen", baumM, baum);
