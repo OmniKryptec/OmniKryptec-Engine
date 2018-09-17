@@ -1,11 +1,11 @@
 package de.omnikryptec.ecs;
 
+import de.omnikryptec.util.Util;
+
 import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
-import de.omnikryptec.util.Util;
 
 public abstract class ParallelComponentSystem extends ComponentSystem {
 
@@ -34,6 +34,7 @@ public abstract class ParallelComponentSystem extends ComponentSystem {
 				service.submit(() -> updateIndividual(mgr, e, dt));
 			}
 			try {
+				service.shutdown();
 				service.awaitTermination(5, TimeUnit.DAYS);
 			} catch (InterruptedException e1) {
 				throw new RuntimeException(e1);
