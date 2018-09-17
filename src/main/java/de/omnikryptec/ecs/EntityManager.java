@@ -25,27 +25,27 @@ public class EntityManager {
         componentSystems = new HashSet<>();
     }
     
-    public long getEntityId(Entity e) {
-        return entities.inverse().get(e);
+    public long getEntityId(Entity entity) {
+        return entities.inverse().get(entity);
     }
     
-    public Entity getEntity(long e) {
-        return entities.get(e);
+    public Entity getEntity(long id) {
+        return entities.get(id);
     }
     
-    public void addEntity(Entity e) {
-        for (ComponentSystem sys : componentSystems) {
-            //if(e.getComponents().keySet().containsAll(sys.usesComponents())) {
-            if (e.getComponentClasses().containsAll(sys.usesComponentClasses())) {
-                entitiesPerSystem.put(sys, e);
+    public void addEntity(Entity entity) {
+        for (ComponentSystem componentSystem : componentSystems) {
+            //if(entity.getComponents().keySet().containsAll(componentSystem.usesComponents())) {
+            if (entity.getComponentClasses().containsAll(componentSystem.usesComponentClasses())) {
+                entitiesPerSystem.put(componentSystem, entity);
             }
         }
     }
     
-    public void addSystem(ComponentSystem sys) {
-        componentSystems.add(sys);
-        //		for(Integer i : sys.usesComponents()) {
-        //			systemsPerComponentType.put(i, sys);
+    public void addSystem(ComponentSystem componentSystem) {
+        componentSystems.add(componentSystem);
+        //		for(Integer id : componentSystem.usesComponents()) {
+        //			systemsPerComponentType.put(id, componentSystem);
         //		}
     }
     
@@ -54,8 +54,8 @@ public class EntityManager {
             throw new IllegalStateException("Already updating!");
         }
         updating = true;
-        for (ComponentSystem cs : componentSystems) {
-            cs.update(this, entitiesPerSystem.get(cs), dt);
+        for (ComponentSystem componentSystem : componentSystems) {
+            componentSystem.update(this, entitiesPerSystem.get(componentSystem), dt);
         }
         updating = false;
     }

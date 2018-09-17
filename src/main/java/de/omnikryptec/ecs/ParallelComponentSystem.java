@@ -8,40 +8,40 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public abstract class ParallelComponentSystem extends ComponentSystem {
-
-	private ExecutorService service;
-	private int activatorSize;
-
-	public ParallelComponentSystem(int threads, int activatorsize) {
-		this.service = Executors.newFixedThreadPool(threads);
-		this.activatorSize = activatorsize;
-	}
-
-	public ParallelComponentSystem(ExecutorService service, int activatorSize) {
-		Util.ensureNonNull(service, "ExecutorService must not be null!");
-		this.service = service;
-		this.activatorSize = activatorSize;
-	}
-
-	@Override
-	public void update(EntityManager mgr, Collection<Entity> entities, float dt) {
-		if (entities.size() < activatorSize) {
-			for (Entity e : entities) {
-				updateIndividual(mgr, e, dt);
-			}
-		} else {
-			for (Entity e : entities) {
-				service.submit(() -> updateIndividual(mgr, e, dt));
-			}
-			try {
-				service.shutdown();
-				service.awaitTermination(1, TimeUnit.MINUTES);
-			} catch (InterruptedException e1) {
-				throw new RuntimeException(e1);
-			}
-		}
-	}
-
-	public abstract void updateIndividual(EntityManager mgr, Entity e, float dt);
-
+    
+    private ExecutorService executorService;
+    private int activationSize;
+    
+    public ParallelComponentSystem(int threads, int activationSize) {
+        this.executorService = Executors.newFixedThreadPool(threads);
+        this.activationSize = activationSize;
+    }
+    
+    public ParallelComponentSystem(ExecutorService executorService, int activationSize) {
+        Util.ensureNonNull(executorService, "ExecutorService must not be null!");
+        this.executorService = executorService;
+        this.activationSize = activationSize;
+    }
+    
+    @Override
+    public void update(EntityManager entityManager, Collection<Entity> entities, float dt) {
+        if (entities.size() < activationSize) {
+            for (Entity entity : entities) {
+                updateIndividual(entityManager, entity, dt);
+            }
+        } else {
+            for (Entity entity : entities) {
+                executorService.submit(() -> updateIndividual(entityManager, entity, dt));
+            }
+            try {
+                executorService.shutdown();
+                executorService.awaitTermination(1, TimeUnit.MINUTES);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }
+    
+    public abstract void updateIndividual(EntityManager entityManager, Entity entity, float dt);
+    
 }

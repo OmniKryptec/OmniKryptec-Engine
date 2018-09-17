@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class Entity {
     
-    public final long ID;
+    public final long ID; //TODO Please make this lowercase
     private Map<Integer, Component> comps;
     private ClassToInstanceMap<Component> components = MutableClassToInstanceMap.create();
     
