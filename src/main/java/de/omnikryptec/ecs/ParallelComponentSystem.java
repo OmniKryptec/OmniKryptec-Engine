@@ -1,12 +1,11 @@
 package de.omnikryptec.ecs;
 
+import de.omnikryptec.util.Util;
+
 import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-
-import de.omnikryptec.util.Util;
 
 public abstract class ParallelComponentSystem extends ComponentSystem {
     
@@ -31,24 +30,33 @@ public abstract class ParallelComponentSystem extends ComponentSystem {
                 updateIndividual(entityManager, entity, dt);
             }
         } else {
+            entities.parallelStream().map((entity) -> executorService.submit(() -> updateIndividual(entityManager, entity, dt))).forEach((future) -> {
+                try {
+                    future.get(1, TimeUnit.MINUTES);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+            /*
             Future<?> future = null;
-        	for (Entity entity : entities) {
+            for (Entity entity : entities) {
                 future = executorService.submit(() -> updateIndividual(entityManager, entity, dt));
             }
-        	if(future!=null) {
-        		try {
-					future.get(1, TimeUnit.MINUTES);
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-        	}
-//Better reuse the Executioner...
-//            try {
-//                executorService.shutdown();
-//                executorService.awaitTermination(1, TimeUnit.MINUTES);
-//            } catch (InterruptedException ex) {
-//                throw new RuntimeException(ex);
-//            }
+            if (future != null) {
+                try {
+                    future.get(1, TimeUnit.MINUTES);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            */
+            //Better reuse the Executioner...
+            //            try {
+            //                executorService.shutdown();
+            //                executorService.awaitTermination(1, TimeUnit.MINUTES);
+            //            } catch (InterruptedException ex) {
+            //                throw new RuntimeException(ex);
+            //            }
         }
     }
     
