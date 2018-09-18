@@ -9,19 +9,18 @@ import com.google.common.collect.MutableClassToInstanceMap;
 
 public class Entity {
     
-    public final long ID; //TODO Please make this lowercase
-    private Map<Integer, Component> comps;
-    private ClassToInstanceMap<Component> components = MutableClassToInstanceMap.create();
+    public final long ID; //TODO Please make this lowercase // No, but maybe this will become uneccessary
+    private ClassToInstanceMap<Component> components;
     
     public Entity() {
         this.ID = 0;
-        this.comps = new HashMap<>();
+        this.components = MutableClassToInstanceMap.create();    }
+    
+    public ClassToInstanceMap<Component> getComponents() {
+        return components;
     }
     
-    public Map<Integer, Component> getComponents() {
-        return comps;
-    }
-    
+    @Deprecated
     public Set<Class<? extends Component>> getComponentClasses() {
         return components.keySet();
     }
