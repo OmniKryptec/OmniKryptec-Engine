@@ -74,6 +74,6 @@ public abstract class ParallelComponentSystem extends ComponentSystem {
         }
     }
     
-    public abstract void updateIndividual(EntityManager entityManager, Entity entity, float dt);
+    public abstract void updateIndividual(EntityManager entityManager, Entity entity, float deltTime);
     
 }

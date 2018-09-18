@@ -37,7 +37,7 @@ public class EntityManager {
         //componentSystems.stream().filter((componentSystem) -> entity.getComponentClasses().containsAll(componentSystem.usesComponentClasses())).forEach((componentSystem) -> entitiesPerSystem.put(componentSystem, entity)); //Alternative for the below code
         for (ComponentSystem componentSystem : componentSystems) {
             //if(entity.getComponents().keySet().containsAll(componentSystem.usesComponents())) {
-            if (entity.getComponentClasses().containsAll(componentSystem.usesComponentClasses())) {
+            if (entity.getComponents().keySet().containsAll(componentSystem.usesComponentClasses())) {
                 entitiesPerSystem.put(componentSystem, entity);
             }
         }

@@ -2,12 +2,13 @@ package de.omnikryptec.event.eventV3;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EventBus {
 
 	private Queue<Event> eventQueue;
 	
-	private boolean processing = false;
+	private final AtomicBoolean processing = new AtomicBoolean(false);
 	
 	public EventBus() {
 		this.eventQueue = new ConcurrentLinkedQueue<>();
@@ -22,18 +23,18 @@ public class EventBus {
 	}
 	
 	public void processQueuedEvents() {
-		if(isProcessing()) {
+		if(processing.get()) {
 			throw new IllegalStateException("Already processing!");
 		}
-		processing = true;
+		processing.set(true);
 		while(!eventQueue.isEmpty()) {
 			processEvent(eventQueue.poll());
 		}
-		processing = false;
+		processing.set(false);
 	}
 	
 	public boolean isProcessing() {
-		return processing;
+		return processing.get();
 	}
 	
 	private void processEvent(Event e) {
