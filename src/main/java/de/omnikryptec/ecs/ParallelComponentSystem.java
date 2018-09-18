@@ -32,22 +32,25 @@ public abstract class ParallelComponentSystem extends ComponentSystem {
                 updateIndividual(entityManager, entity, dt);
             }
         } else {
-        	Collection<Callable<?>> tasks = new ArrayList<>();
-        	for (Entity entity : entities) {
-                tasks.add(()->{updateIndividual(entityManager, entity, dt); return null;});
+            final Collection<Callable<Void>> tasks = new ArrayList<>();
+            for (Entity entity : entities) {
+                tasks.add(() -> {
+                    updateIndividual(entityManager, entity, dt);
+                    return null;
+                });
             }
-        	try {
-				executorService.invokeAll(tasks, 1, TimeUnit.MINUTES);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-//            entities.parallelStream().map((entity) -> executorService.submit(() -> updateIndividual(entityManager, entity, dt))).forEach((future) -> {
-//                try {
-//                    future.get(1, TimeUnit.MINUTES);
-//                } catch (Exception ex) {
-//                    throw new RuntimeException(ex);
-//                }
-//            });
+            try {
+                executorService.invokeAll(tasks, 1, TimeUnit.MINUTES);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            //            entities.parallelStream().map((entity) -> executorService.submit(() -> updateIndividual(entityManager, entity, dt))).forEach((future) -> {
+            //                try {
+            //                    future.get(1, TimeUnit.MINUTES);
+            //                } catch (Exception ex) {
+            //                    throw new RuntimeException(ex);
+            //                }
+            //            });
             /*
             Future<?> future = null;
             for (Entity entity : entities) {
