@@ -26,16 +26,16 @@ public abstract class ParallelComponentSystem extends ComponentSystem {
     }
     
     @Override
-    public void update(EntityManager entityManager, Collection<Entity> entities, float dt) {
+    public void update(EntityManager entityManager, Collection<Entity> entities, float deltaTime) {
         if (entities.size() < activationSize) {
             for (Entity entity : entities) {
-                updateIndividual(entityManager, entity, dt);
+                updateIndividual(entityManager, entity, deltaTime);
             }
         } else {
             final Collection<Callable<Void>> tasks = new ArrayList<>();
             for (Entity entity : entities) {
                 tasks.add(() -> {
-                    updateIndividual(entityManager, entity, dt);
+                    updateIndividual(entityManager, entity, deltaTime);
                     return null;
                 });
             }
@@ -74,6 +74,6 @@ public abstract class ParallelComponentSystem extends ComponentSystem {
         }
     }
     
-    public abstract void updateIndividual(EntityManager entityManager, Entity entity, float deltTime);
+    public abstract void updateIndividual(EntityManager entityManager, Entity entity, float deltaTime);
     
 }

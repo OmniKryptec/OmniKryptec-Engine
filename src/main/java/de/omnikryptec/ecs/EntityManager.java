@@ -1,13 +1,13 @@
 package de.omnikryptec.ecs;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Multimap;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EntityManager {
     
@@ -50,13 +50,13 @@ public class EntityManager {
         //		}
     }
     
-    public void updateSystems(float dt) {
+    public void updateSystems(float deltaTime) {
         if (isUpdating()) {
             throw new IllegalStateException(getClass().getSimpleName() + " is already updating!");
         }
         updating.set(true);
         for (ComponentSystem componentSystem : componentSystems) {
-            componentSystem.update(this, entitiesPerSystem.get(componentSystem), dt);
+            componentSystem.update(this, entitiesPerSystem.get(componentSystem), deltaTime);
         }
         updating.set(false);
     }
