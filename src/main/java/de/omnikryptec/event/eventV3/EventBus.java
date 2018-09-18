@@ -14,8 +14,8 @@ public class EventBus {
 		this.eventQueue = new ConcurrentLinkedQueue<>();
 	}
 	
-	public void enqueueOrPost(Event e) {
-		if(e.isPostDirect()) {
+	public void enqueueOrPost(Event e, boolean postImmediately) {
+		if(postImmediately) {
 			processEvent(e);
 		}else {
 			eventQueue.add(e);
