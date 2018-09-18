@@ -2,7 +2,9 @@ package de.omnikryptec.ecs;
 
 import de.omnikryptec.util.Util;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -30,13 +32,22 @@ public abstract class ParallelComponentSystem extends ComponentSystem {
                 updateIndividual(entityManager, entity, dt);
             }
         } else {
-            entities.parallelStream().map((entity) -> executorService.submit(() -> updateIndividual(entityManager, entity, dt))).forEach((future) -> {
-                try {
-                    future.get(1, TimeUnit.MINUTES);
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-            });
+        	Collection<Callable<?>> tasks = new ArrayList<>();
+        	for (Entity entity : entities) {
+                tasks.add(()->{updateIndividual(entityManager, entity, dt); return null;});
+            }
+        	try {
+				executorService.invokeAll(tasks, 1, TimeUnit.MINUTES);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+//            entities.parallelStream().map((entity) -> executorService.submit(() -> updateIndividual(entityManager, entity, dt))).forEach((future) -> {
+//                try {
+//                    future.get(1, TimeUnit.MINUTES);
+//                } catch (Exception ex) {
+//                    throw new RuntimeException(ex);
+//                }
+//            });
             /*
             Future<?> future = null;
             for (Entity entity : entities) {
