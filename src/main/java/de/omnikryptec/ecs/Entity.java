@@ -1,4 +1,4 @@
-package de.omnikryptec.old.ecs;
+package de.omnikryptec.ecs;
 
 import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.MutableClassToInstanceMap;
