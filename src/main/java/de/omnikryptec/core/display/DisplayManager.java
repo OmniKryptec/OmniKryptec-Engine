@@ -88,6 +88,18 @@ public class DisplayManager {
 		return settings;
 	}
 
+	public final DisplayUpdater getUpdater() {
+		return displayUpdater;
+	}
+	
+	public final Display getDisplay() {
+		return display;
+	}
+	
+	public final Smoother getDeltaTimeSmoother() {
+		return deltaTimeSmoother;
+	}
+	
 	public final DisplayManager close() {
 		AudioManager.cleanup();
 		OpenCL.cleanup();
