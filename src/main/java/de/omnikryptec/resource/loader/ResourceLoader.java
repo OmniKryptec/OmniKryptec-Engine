@@ -21,6 +21,8 @@ import com.google.common.collect.Multimap;
 import de.codemakers.base.logger.LogLevel;
 import de.codemakers.base.logger.Logger;
 import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.resource.loader.annotations.DefaultLoader;
+import org.reflections.Reflections;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -31,11 +33,104 @@ import java.util.stream.Stream;
 public class ResourceLoader implements IResourceLoader {
     
     public static final long OPTION_LOAD_XML_INFO = 1 << 0;
+    private static ResourceLoader INSTANCE = createDefaultInstance(false);
     private final Multimap<Class<? extends ResourceObject>, ResourceObject> resourceObjects = HashMultimap.create();
     private final Map<Integer, List<StagedAdvancedFile>> priorityStagedAdvancedFiles = new ConcurrentHashMap<>();
     private final List<IResourceLoader> resourceLoaders = new CopyOnWriteArrayList<>();
     private final AtomicBoolean loading = new AtomicBoolean(false);
     private ExecutorService executorService = null;
+    
+    public static ResourceLoader createDefaultInstance(boolean searchForDefaultLoaders) {
+        return createDefaultInstance(false, searchForDefaultLoaders);
+    }
+    
+    public static ResourceLoader createDefaultInstance(boolean asCurrent, boolean searchForDefaultLoaders) {
+        final ResourceLoader resourceLoader = new ResourceLoader();
+        if (asCurrent) {
+            INSTANCE = resourceLoader;
+        }
+        if (searchForDefaultLoaders) {
+            return resourceLoader.addDefaultResourceLoaders(false);
+        }
+        //TODO Add the default ResourceLoaders to the resourceLoader
+        return resourceLoader;
+    }
+    
+    public static ResourceLoader createInstance() {
+        return createInstance(false);
+    }
+    
+    public static ResourceLoader createInstance(boolean asCurrent) {
+        final ResourceLoader resourceLoader = new ResourceLoader();
+        if (asCurrent) {
+            INSTANCE = resourceLoader;
+        }
+        return resourceLoader;
+    }
+    
+    public static void resetInstance() {
+        INSTANCE = null;
+        createInstance(true);
+    }
+    
+    public static ResourceLoader currentInstance() {
+        return INSTANCE;
+    }
+    
+    public static List<IResourceLoader> getDefaultLoaders() {
+        return getDefaultLoaders(true);
+    }
+    
+    public static List<IResourceLoader> getDefaultLoaders(boolean distinct) {
+        try {
+            if (distinct) {
+                final List<Class<?>> classes = new ArrayList<>();
+                new Reflections(ResourceLoader.class.getPackage()).getTypesAnnotatedWith(DefaultLoader.class).forEach((clazz) -> {
+                    final int priority = clazz.getAnnotation(DefaultLoader.class).priority();
+                    if (classes.isEmpty()) {
+                        classes.add(clazz);
+                    } else {
+                        final Iterator<Class<?>> iterator = classes.iterator();
+                        boolean found = false;
+                        while (iterator.hasNext()) {
+                            final Class<?> clazz_ = iterator.next();
+                            if (clazz_ != clazz && clazz_.getSimpleName().equals(clazz.getSimpleName())) {
+                                final int priority_ = clazz_.getAnnotation(DefaultLoader.class).priority();
+                                found = true;
+                                if (priority_ < priority) {
+                                    iterator.remove();
+                                    classes.add(clazz);
+                                } else if (priority_ == priority) {
+                                    classes.add(clazz);
+                                }
+                            }
+                        }
+                        if (!found) {
+                            classes.add(clazz);
+                        }
+                    }
+                });
+                return classes.stream().map((clazz) -> {
+                    try {
+                        return (IResourceLoader) clazz.newInstance();
+                    } catch (Exception ex) {
+                        return null;
+                    }
+                }).filter(Objects::nonNull).collect(Collectors.toList());
+            } else {
+                return new Reflections(ResourceLoader.class.getPackage()).getTypesAnnotatedWith(DefaultLoader.class).stream().map((clazz) -> {
+                    try {
+                        return (IResourceLoader) clazz.newInstance();
+                    } catch (Exception ex) {
+                        return null;
+                    }
+                }).filter(Objects::nonNull).collect(Collectors.toList());
+            }
+        } catch (Exception ex) {
+            Logger.handleError(ex);
+            return new ArrayList<>();
+        }
+    }
     
     @Override
     public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) throws Exception {
@@ -281,6 +376,16 @@ public class ResourceLoader implements IResourceLoader {
     public ResourceLoader clearResourceLoaders() {
         checkAndErrorIfLoading(true);
         resourceLoaders.clear();
+        return this;
+    }
+    
+    public ResourceLoader addDefaultResourceLoaders() {
+        getDefaultLoaders().forEach(this::addResourceLoader);
+        return this;
+    }
+    
+    public ResourceLoader addDefaultResourceLoaders(boolean distinct) {
+        getDefaultLoaders(distinct).forEach(this::addResourceLoader);
         return this;
     }
     
