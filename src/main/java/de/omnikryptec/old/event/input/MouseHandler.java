@@ -16,7 +16,7 @@
 
 package de.omnikryptec.old.event.input;
 
-import de.omnikryptec.old.display.Display;
+import de.omnikryptec.core.display.Display;
 import de.omnikryptec.old.settings.KeySettings;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.*;

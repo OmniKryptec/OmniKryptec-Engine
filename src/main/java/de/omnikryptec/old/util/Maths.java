@@ -16,9 +16,10 @@
 
 package de.omnikryptec.old.util;
 
-import de.omnikryptec.old.display.Display;
 import org.joml.*;
 import org.joml.Math;
+
+import de.omnikryptec.core.display.Display;
 
 import java.util.Random;
 

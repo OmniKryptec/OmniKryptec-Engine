@@ -16,7 +16,7 @@
 
 package de.omnikryptec.old.postprocessing.main;
 
-import de.omnikryptec.old.display.Display;
+import de.omnikryptec.core.display.Display;
 import de.omnikryptec.old.graphics.GraphicsUtil;
 import de.omnikryptec.old.shader.files.postprocessing.DebugShader;
 import de.omnikryptec.old.util.EnumCollection.BlendMode;

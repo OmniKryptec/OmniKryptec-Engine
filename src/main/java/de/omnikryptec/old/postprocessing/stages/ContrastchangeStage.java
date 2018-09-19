@@ -16,7 +16,7 @@
 
 package de.omnikryptec.old.postprocessing.stages;
 
-import de.omnikryptec.old.display.Display;
+import de.omnikryptec.core.display.Display;
 import de.omnikryptec.old.postprocessing.main.FrameBufferObject;
 import de.omnikryptec.old.postprocessing.main.PostProcessingStageShaded;
 import de.omnikryptec.old.shader.base.Shader;

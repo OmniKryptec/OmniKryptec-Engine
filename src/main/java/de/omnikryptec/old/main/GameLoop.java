@@ -16,8 +16,8 @@
 
 package de.omnikryptec.old.main;
 
+import de.omnikryptec.core.display.Display;
 import de.omnikryptec.old.audio.AudioManager;
-import de.omnikryptec.old.display.Display;
 import de.omnikryptec.old.event.eventV2.engineevents.FrameEvent;
 import de.omnikryptec.old.event.eventV2.engineevents.FrameEvent.FrameType;
 import de.omnikryptec.old.event.eventV2.engineevents.ResizeEvent;

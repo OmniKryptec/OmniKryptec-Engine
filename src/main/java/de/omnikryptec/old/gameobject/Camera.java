@@ -16,7 +16,7 @@
 
 package de.omnikryptec.old.gameobject;
 
-import de.omnikryptec.old.display.Display;
+import de.omnikryptec.core.display.Display;
 import de.omnikryptec.old.test.saving.DataMap;
 import de.omnikryptec.old.util.EnumCollection.UpdateType;
 import de.omnikryptec.old.util.Maths;

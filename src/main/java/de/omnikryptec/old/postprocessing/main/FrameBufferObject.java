@@ -17,7 +17,7 @@
 package de.omnikryptec.old.postprocessing.main;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.old.display.Display;
+import de.omnikryptec.core.display.Display;
 import de.omnikryptec.old.graphics.OpenGL;
 import de.omnikryptec.old.resource.texture.Texture;
 import de.omnikryptec.old.settings.GameSettings;

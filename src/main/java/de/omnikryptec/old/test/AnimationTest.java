@@ -17,12 +17,12 @@
 package de.omnikryptec.old.test;
 
 import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.core.display.DisplayManager;
+import de.omnikryptec.core.display.GLFWInfo;
 import de.omnikryptec.old.animation.AnimatedModel;
 import de.omnikryptec.old.animation.Animation;
 import de.omnikryptec.old.animation.ColladaParser.dataStructures.AnimatedModelData;
 import de.omnikryptec.old.animation.loaders.AnimatedModelLoader;
-import de.omnikryptec.old.display.DisplayManager;
-import de.omnikryptec.old.display.GLFWInfo;
 import de.omnikryptec.old.event.input.CursorType;
 import de.omnikryptec.old.event.input.InputManager;
 import de.omnikryptec.old.gameobject.Camera;

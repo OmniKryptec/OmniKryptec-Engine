@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.old.display;
+package de.omnikryptec.core.display;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;

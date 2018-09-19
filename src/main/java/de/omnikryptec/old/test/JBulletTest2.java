@@ -19,12 +19,13 @@ package de.omnikryptec.old.test;
 import com.bulletphysics.collision.shapes.StaticPlaneShape;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
+
+import de.omnikryptec.core.display.DisplayManager;
+import de.omnikryptec.core.display.GLFWInfo;
 import de.omnikryptec.old.audio.AudioEffectState;
 import de.omnikryptec.old.audio.AudioManager;
 import de.omnikryptec.old.audio.AudioSource;
 import de.omnikryptec.old.audio.StreamedSound;
-import de.omnikryptec.old.display.DisplayManager;
-import de.omnikryptec.old.display.GLFWInfo;
 import de.omnikryptec.old.event.input.CursorType;
 import de.omnikryptec.old.event.input.InputManager;
 import de.omnikryptec.old.gameobject.Camera;

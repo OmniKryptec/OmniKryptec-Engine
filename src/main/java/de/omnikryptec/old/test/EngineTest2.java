@@ -18,10 +18,10 @@ package de.omnikryptec.old.test;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.codemakers.lang.LanguageManager;
+import de.omnikryptec.core.display.Display;
+import de.omnikryptec.core.display.DisplayManager;
+import de.omnikryptec.core.display.GLFWInfo;
 import de.omnikryptec.old.core.*;
-import de.omnikryptec.old.display.Display;
-import de.omnikryptec.old.display.DisplayManager;
-import de.omnikryptec.old.display.GLFWInfo;
 import de.omnikryptec.old.event.eventV2.EventSubscription;
 import de.omnikryptec.old.event.eventV2.engineevents.FrameEvent;
 import de.omnikryptec.old.event.eventV2.engineevents.FrameEvent.FrameType;
