@@ -1,59 +1,50 @@
+/*
+ *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package de.omnikryptec.ecs;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
-import com.google.common.collect.Multimap;
-
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class EntityManager {
+public abstract class EntityManager {
     
-    private final AtomicBoolean updating = new AtomicBoolean(false);
-    private BiMap<Long, Entity> entities;
-    private Multimap<ComponentSystem, Entity> entitiesPerSystem;
-    private Set<ComponentSystem> componentSystems;
+    protected final AtomicBoolean updating = new AtomicBoolean(false);
     
-    public EntityManager() {
-        entities = HashBiMap.create();
-        entitiesPerSystem = ArrayListMultimap.create();
-        componentSystems = new HashSet<>();
-    }
+    public abstract long getId(Entity entity);
     
-    public long getEntityId(Entity entity) {
-        return entities.inverse().get(entity);
-    }
+    public abstract Entity getEntity(long id);
     
-    public Entity getEntity(long id) {
-        return entities.get(id);
-    }
+    public abstract boolean addEntity(Entity entity);
     
-    public void addEntity(Entity entity) {
-        for (ComponentSystem componentSystem : componentSystems) {
-            if (entity.getComponents().keySet().containsAll(componentSystem.usesComponentClasses())) {
-                entitiesPerSystem.put(componentSystem, entity);
-            }
-        }
-    }
+    public abstract boolean removeEntity(Entity entity);
     
-    public void addSystem(ComponentSystem componentSystem) {
-        componentSystems.add(componentSystem);
-    }
+    public abstract boolean removeEntity(long id);
     
-    public void updateSystems(float deltaTime) {
-        if (isUpdating()) {
-            throw new IllegalStateException(getClass().getSimpleName() + " is already updating!");
-        }
-        updating.set(true);
-        for (ComponentSystem componentSystem : componentSystems) {
-            componentSystem.update(this, entitiesPerSystem.get(componentSystem), deltaTime);
-        }
-        updating.set(false);
-    }
+    public abstract Collection<Entity> getEntities();
+    
+    public abstract boolean addComponentSystem(ComponentSystem componentSystem);
+    
+    public abstract boolean removeComponentSystem(ComponentSystem componentSystem);
+    
+    public abstract Collection<ComponentSystem> getComponentSystems();
+    
+    public abstract void update(float deltaTime);
     
     public boolean isUpdating() {
         return updating.get();
     }
+    
 }
