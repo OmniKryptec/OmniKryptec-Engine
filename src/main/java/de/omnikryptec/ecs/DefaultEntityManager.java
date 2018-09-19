@@ -8,11 +8,9 @@ import com.google.common.collect.Multimap;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DefaultEntityManager extends EntityManager {
     
-    private final AtomicBoolean updating = new AtomicBoolean(false);
     private BiMap<Long, Entity> entities;
     private Multimap<ComponentSystem, Entity> entitiesPerSystem;
     private Set<ComponentSystem> componentSystems;
