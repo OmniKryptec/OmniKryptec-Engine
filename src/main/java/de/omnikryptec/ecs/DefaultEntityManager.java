@@ -34,6 +34,9 @@ public class DefaultEntityManager extends EntityManager {
     
     @Override
     public boolean addEntity(Entity entity) {
+        if (entity == null) {
+            return false;
+        }
         boolean added = false;
         entities.put(entity.ID, entity);
         for (ComponentSystem componentSystem : componentSystems) {
@@ -46,6 +49,9 @@ public class DefaultEntityManager extends EntityManager {
     
     @Override
     public boolean removeEntity(Entity entity) {
+        if (entity == null) {
+            return false;
+        }
         entities.remove(entity);
         return entitiesPerSystem.keySet().stream().anyMatch((componentSystem) -> entitiesPerSystem.remove(componentSystem, entity));
     }
@@ -62,11 +68,17 @@ public class DefaultEntityManager extends EntityManager {
     
     @Override
     public boolean addComponentSystem(ComponentSystem componentSystem) {
+        if (componentSystem == null) {
+            return false;
+        }
         return componentSystems.add(componentSystem);
     }
     
     @Override
     public boolean removeComponentSystem(ComponentSystem componentSystem) {
+        if (componentSystem == null) {
+            return false;
+        }
         entitiesPerSystem.removeAll(componentSystem);
         return componentSystems.remove(componentSystem);
     }
