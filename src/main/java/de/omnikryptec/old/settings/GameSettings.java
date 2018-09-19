@@ -18,8 +18,8 @@ package de.omnikryptec.old.settings;
 
 import de.codemakers.serialization.XMLable;
 import de.codemakers.util.Returner;
-import de.omnikryptec.old.display.Display;
-import de.omnikryptec.old.display.DisplayManager;
+import de.omnikryptec.core.display.Display;
+import de.omnikryptec.core.display.DisplayManager;
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.postprocessing.main.FBOFactory;
 import de.omnikryptec.old.postprocessing.main.FrameBufferObject;

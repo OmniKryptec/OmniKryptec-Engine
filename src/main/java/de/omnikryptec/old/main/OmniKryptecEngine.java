@@ -17,8 +17,8 @@
 package de.omnikryptec.old.main;
 
 import de.codemakers.logger.ILogger;
-import de.omnikryptec.old.display.Display;
-import de.omnikryptec.old.display.DisplayManager;
+import de.omnikryptec.core.display.Display;
+import de.omnikryptec.core.display.DisplayManager;
 import de.omnikryptec.old.event.eventV2.EventBus;
 import de.omnikryptec.old.event.eventV2.engineevents.CleanupEvent;
 import de.omnikryptec.old.event.eventV2.engineevents.ErrorEvent;

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.old.display;
+package de.omnikryptec.core.display;
 
 import de.omnikryptec.old.audio.AudioManager;
 import de.omnikryptec.old.core.OpenCL;
@@ -34,7 +34,7 @@ import org.lwjgl.opengl.GL30;
  * 
  * @author pcfreak9000 &amp; Panzer1119
  */
-public class DisplayManager implements Profilable{
+public class DisplayManager {
 
 	private static int sync = 240;
 
@@ -334,10 +334,5 @@ public class DisplayManager implements Profilable{
 
 	public final long getSmoothedFPS() {
 		return Math.round(1.0 / (getSmoothedDeltaTime()));
-	}
-
-	@Override
-	public ProfileContainer[] getProfiles() {
-		return new ProfileContainer[]{new ProfileContainer(Profiler.DISPLAY_UPDATE_TIME, getUpdateTimeMS()), new ProfileContainer(Profiler.DISPLAY_IDLE_TIME, getIdleTimeMS())};
 	}
 }

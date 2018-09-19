@@ -16,7 +16,7 @@
 
 package de.omnikryptec.old.event.input;
 
-import de.omnikryptec.old.display.Display;
+import de.omnikryptec.core.display.Display;
 import de.omnikryptec.old.gameobject.Camera;
 import de.omnikryptec.old.gameobject.GameObject3D;
 import de.omnikryptec.old.main.OmniKryptecEngine;

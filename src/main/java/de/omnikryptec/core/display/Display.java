@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.old.display;
+package de.omnikryptec.core.display;
 
 import de.omnikryptec.old.event.input.InputManager;
 import de.omnikryptec.old.graphics.OpenGL;
@@ -25,13 +25,13 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 
 public class Display {
 
-	private static GLFWErrorCallback errorCallback;
-	private static Window window;
-	private static double lastsynced;
-	private static int[] viewport = new int[4];
-	private static double aspectratio=-1;
+	private GLFWErrorCallback errorCallback;
+	private Window window;
+	private double lastsynced;
+	private int[] viewport = new int[4];
+	private double aspectratio=-1;
 
-	static void create(String name, GLFWInfo info) {
+	Display(String name, GLFWInfo info) {
 		GLFW.glfwInit();
 		GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(Logger.NEWSYSERR));
 		window = new Window(name, info);
@@ -46,19 +46,19 @@ public class Display {
 		Logger.log("Successfully created GLContext and the Window!", LogLevel.FINEST);
 	}
 
-	static GLFWErrorCallback getErrorCallback() {
+	GLFWErrorCallback getErrorCallback() {
 		return errorCallback;
 	}
 
-	public static boolean shouldBeFullscreen() {
+	public boolean shouldBeFullscreen() {
 		return window.shouldBeFullscreen();
 	}
 
-	public static boolean wasResized() {
+	public boolean wasResized() {
 		return window.wasResized();
 	}
 
-	static void update() {
+	void update() {
 		window.swapBuffers();
 		GLFW.glfwPollEvents();
 		if (wasResized()) {
@@ -67,17 +67,17 @@ public class Display {
 		}
 	}
 
-	static void destroy() {
+	void destroy() {
 		window.dispose();
 		InputManager.closeCallbacks();
 		GLFW.glfwTerminate();
 	}
 
-	static final double getCurrentTime() {
+	final double getCurrentTime() {
 		return GLFW.glfwGetTime() * 1000;
 	}
 
-	static void sync(int fps) {
+	void sync(int fps) {
 		double target = lastsynced + (1000.0 / fps);
 		try {
 			while ((lastsynced = getCurrentTime()) < target) {
@@ -87,54 +87,54 @@ public class Display {
 		}
 	}
 
-	public static boolean isCloseRequested() {
+	public boolean isCloseRequested() {
 		return window.isCloseRequested();
 	}
 
-	public static boolean isActive() {
+	public boolean isActive() {
 		return window.isActive();
 	}
 
-	public static int getWidth() {
+	public int getWidth() {
 		//return getBufferWidth();
 		return viewport[2];
 	}
 
-	public static int getHeight() {
+	public int getHeight() {
 		//return getBufferHeight();
 		return viewport[3];
 	}
 	
-	public static int getBufferWidth() {
+	public int getBufferWidth() {
 		return window.getBufferWidth();
 	}
 
-	public static int getBufferHeight() {
+	public int getBufferHeight() {
 		return window.getBufferHeight();
 	}
 
-	public static final long getID() {
+	public final long getID() {
 		return window.getID();
 	}
 
-	public static final void show() {
+	public final void show() {
 		window.show();
 	}
 
-	public static final void resetViewport() {
+	public final void resetViewport() {
 		OpenGL.gl11viewport(0, 0, getBufferWidth(), getBufferHeight());
 	}
 
-	public static final void setARViewPort() {
+	public final void setARViewPort() {
 		//resetViewport();
 		OpenGL.gl11viewport(viewport);
 	}
 	
-	public static final void resetAspectRatio() {
+	public final void resetAspectRatio() {
 		setAspectRatio(-1);
 	}
 
-	public static final int[] calculateViewport(int w, int h) {
+	public final int[] calculateViewport(int w, int h) {
 		int[] viewport = new int[4];
 		viewport[0] = 0;
 		viewport[1] = 0;
@@ -152,19 +152,19 @@ public class Display {
 		return viewport;
 	}
 
-	private static final void calcViewport() {
+	private final void calcViewport() {
 		viewport = calculateViewport(getBufferWidth(), getBufferHeight());
 	}
 	
-	public static double getAspectRatio() {
+	public double getAspectRatio() {
 		return aspectratio;
 	}
 	
-	public static int[] getViewportData() {
+	public int[] getViewportData() {
 		return viewport;
 	}
 	
-	public static final void setAspectRatio(double a) {
+	public final void setAspectRatio(double a) {
 		aspectratio = a;
 		calcViewport();
 		setARViewPort();

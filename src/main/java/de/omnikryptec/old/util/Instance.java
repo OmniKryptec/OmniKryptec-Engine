@@ -16,8 +16,8 @@
 
 package de.omnikryptec.old.util;
 
+import de.omnikryptec.core.display.DisplayManager;
 import de.omnikryptec.old.animation.renderer.AnimatedModelRenderer;
-import de.omnikryptec.old.display.DisplayManager;
 import de.omnikryptec.old.event.eventV2.EventBus;
 import de.omnikryptec.old.gameobject.Camera;
 import de.omnikryptec.old.gameobject.particles.ParticleMaster;

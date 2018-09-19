@@ -34,8 +34,9 @@ import com.bulletphysics.dynamics.constraintsolver.SequentialImpulseConstraintSo
 import com.bulletphysics.linearmath.DefaultMotionState;
 import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
-import de.omnikryptec.old.display.DisplayManager;
-import de.omnikryptec.old.display.GLFWInfo;
+
+import de.omnikryptec.core.display.DisplayManager;
+import de.omnikryptec.core.display.GLFWInfo;
 import de.omnikryptec.old.event.input.InputManager;
 import de.omnikryptec.old.gameobject.Camera;
 import de.omnikryptec.old.gameobject.Entity;
