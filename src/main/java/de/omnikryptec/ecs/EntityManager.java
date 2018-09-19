@@ -14,14 +14,11 @@ public class EntityManager {
     private final AtomicBoolean updating = new AtomicBoolean(false);
     private BiMap<Long, Entity> entities;
     private Multimap<ComponentSystem, Entity> entitiesPerSystem;
-    //private Multimap<Integer, ComponentSystem> systemsPerComponentType;
-    //private Multimap<ComponentSystem, Integer> componentTypesPerSystem;
     private Set<ComponentSystem> componentSystems;
     
     public EntityManager() {
         entities = HashBiMap.create();
         entitiesPerSystem = ArrayListMultimap.create();
-        //systemsPerComponentType = ArrayListMultimap.create();
         componentSystems = new HashSet<>();
     }
     
@@ -34,9 +31,7 @@ public class EntityManager {
     }
     
     public void addEntity(Entity entity) {
-        //componentSystems.stream().filter((componentSystem) -> entity.getComponentClasses().containsAll(componentSystem.usesComponentClasses())).forEach((componentSystem) -> entitiesPerSystem.put(componentSystem, entity)); //Alternative for the below code
         for (ComponentSystem componentSystem : componentSystems) {
-            //if(entity.getComponents().keySet().containsAll(componentSystem.usesComponents())) {
             if (entity.getComponents().keySet().containsAll(componentSystem.usesComponentClasses())) {
                 entitiesPerSystem.put(componentSystem, entity);
             }
@@ -45,9 +40,6 @@ public class EntityManager {
     
     public void addSystem(ComponentSystem componentSystem) {
         componentSystems.add(componentSystem);
-        //		for(Integer id : componentSystem.usesComponents()) {
-        //			systemsPerComponentType.put(id, componentSystem);
-        //		}
     }
     
     public void updateSystems(float deltaTime) {

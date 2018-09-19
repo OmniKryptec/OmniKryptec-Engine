@@ -16,12 +16,13 @@
 
 package de.omnikryptec.core.display;
 
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWErrorCallback;
+
 import de.omnikryptec.old.event.input.InputManager;
 import de.omnikryptec.old.graphics.OpenGL;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWErrorCallback;
 
 public class Display {
 
@@ -29,7 +30,7 @@ public class Display {
 	private Window window;
 	private double lastsynced;
 	private int[] viewport = new int[4];
-	private double aspectratio=-1;
+	private double aspectratio = -1;
 
 	Display(String name, GLFWInfo info) {
 		GLFW.glfwInit();
@@ -41,6 +42,7 @@ public class Display {
 		}
 		calcViewport();
 		setARViewPort();
+		// TODO Eventbased?
 		InputManager.initCallbacks();
 		lastsynced = getCurrentTime();
 		Logger.log("Successfully created GLContext and the Window!", LogLevel.FINEST);
@@ -96,15 +98,15 @@ public class Display {
 	}
 
 	public int getWidth() {
-		//return getBufferWidth();
+		// return getBufferWidth();
 		return viewport[2];
 	}
 
 	public int getHeight() {
-		//return getBufferHeight();
+		// return getBufferHeight();
 		return viewport[3];
 	}
-	
+
 	public int getBufferWidth() {
 		return window.getBufferWidth();
 	}
@@ -126,10 +128,10 @@ public class Display {
 	}
 
 	public final void setARViewPort() {
-		//resetViewport();
+		// resetViewport();
 		OpenGL.gl11viewport(viewport);
 	}
-	
+
 	public final void resetAspectRatio() {
 		setAspectRatio(-1);
 	}
@@ -155,19 +157,19 @@ public class Display {
 	private final void calcViewport() {
 		viewport = calculateViewport(getBufferWidth(), getBufferHeight());
 	}
-	
+
 	public double getAspectRatio() {
 		return aspectratio;
 	}
-	
+
 	public int[] getViewportData() {
 		return viewport;
 	}
-	
+
 	public final void setAspectRatio(double a) {
 		aspectratio = a;
 		calcViewport();
 		setARViewPort();
 	}
-	
+
 }
