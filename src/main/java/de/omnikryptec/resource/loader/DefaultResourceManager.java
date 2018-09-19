@@ -352,6 +352,10 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
         return resourceObjects.containsKey(clazz);
     }
     
+    public DefaultResourceManager stageAdvancedFiles(AdvancedFile... advancedFiles) {
+        return stageAdvancedFiles(0, 0L, advancedFiles);
+    }
+    
     public DefaultResourceManager stageAdvancedFiles(long options, AdvancedFile... advancedFiles) {
         return stageAdvancedFiles(0, options, advancedFiles);
     }
