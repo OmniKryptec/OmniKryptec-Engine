@@ -312,7 +312,6 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
     
     @Override
     public boolean removeResource(long id) {
-        checkAndErrorIfLoading(true);
         final ResourceObject resourceObject = getResource(id);
         if (resourceObject == null) {
             return false;
@@ -323,7 +322,6 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
     
     @Override
     public boolean removeResource(String name) {
-        checkAndErrorIfLoading(true);
         Objects.requireNonNull(name);
         final ResourceObject resourceObject = getResource(name);
         if (resourceObject == null) {
@@ -335,7 +333,6 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
     
     @Override
     public boolean addResources(ResourceObject... resourceObjects) {
-        checkAndErrorIfLoading(true);
         if (resourceObjects.length == 0) {
             return false;
         }
@@ -344,7 +341,6 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
     
     @Override
     public <T extends ResourceObject> boolean addResources(Class<T> clazz, T... resourceObjects) {
-        checkAndErrorIfLoading(true);
         Objects.requireNonNull(clazz);
         if (resourceObjects.length == 0) {
             return false;
