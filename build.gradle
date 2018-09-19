@@ -26,6 +26,7 @@ targetCompatibility = 1.8
 
 project.ext.lwjglVersion = "3.1.5"
 project.ext.jomlVersion = "1.9.6"
+project.ext.cjpbaseVersion = "v1.8.0_172-alpha.25"
 
 switch (OperatingSystem.current()) {
     case OperatingSystem.WINDOWS:
@@ -41,6 +42,7 @@ switch (OperatingSystem.current()) {
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
     flatDir {
         dirs 'libs'
     }
@@ -83,8 +85,9 @@ dependencies {
     compile group: 'org.dyn4j', name: 'dyn4j', version: '3.2.4'
     // https://mvnrepository.com/artifact/org.reflections/reflections
     compile group: 'org.reflections', name: 'reflections', version: '0.9.11'
+    implementation "com.github.Panzer1119:CJP-Base:$cjpbaseVersion"
     // CUSTOM LIBS BEGIN
-    compile name: 'JavaPlus'
+    //compile name: 'JavaPlus'
     compile name: 'MathPlus'
     compile name: 'NetworkPlus'
     compile name: 'LanguagePlus'
@@ -127,8 +130,9 @@ dependencies {
     extraLibs group: 'org.dyn4j', name: 'dyn4j', version: '3.2.4'
     // https://mvnrepository.com/artifact/org.reflections/reflections
     extraLibs group: 'org.reflections', name: 'reflections', version: '0.9.11'
+    extraLibs "com.github.Panzer1119:CJP-Base:$cjpbaseVersion"
     // CUSTOM LIBS BEGIN
-    extraLibs name: 'JavaPlus'
+    //extraLibs name: 'JavaPlus'
     extraLibs name: 'MathPlus'
     extraLibs name: 'NetworkPlus'
     extraLibs name: 'LanguagePlus'
