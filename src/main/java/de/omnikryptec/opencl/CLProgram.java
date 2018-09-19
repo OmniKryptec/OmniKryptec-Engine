@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.old.core;
+package de.omnikryptec.opencl;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opencl.CL10;

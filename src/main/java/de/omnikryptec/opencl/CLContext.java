@@ -14,37 +14,40 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.old.core;
+package de.omnikryptec.opencl;
 
 import org.lwjgl.opencl.CL10;
+import org.lwjgl.opencl.CLContextCallback;
+import org.lwjgl.system.MemoryUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CLCommandQueue {
+public class CLContext {
+
+	private static List<CLContext> contexts = new ArrayList<>();
 	
-	private static List<CLCommandQueue> queues = new ArrayList<>();
+	private CLContextCallback contextCB;
+	private long context;
 	
-	private long id;
-	
-	public CLCommandQueue(CLContext context, CLDevice device, int options) {
-		id = CL10.clCreateCommandQueue(context.getID(), device.getID(), options, OpenCL.tmpBuffer);
-		if(OpenCL.tmpBuffer.get(0)!=CL10.CL_SUCCESS) {
-			System.err.println("OpenCL ComQueue Err: "+OpenCL.tmpBuffer.get(0));
-		}
+	public CLContext(CLDevice device) {
+		context = CL10.clCreateContext(device.getParent().getCTXProps(), device.getID(), contextCB = CLContextCallback.create((errinfo, private_info, cb, user_data) -> {
+            System.err.println("[LWJGL] cl_context_callback");
+            System.err.println("\tInfo: " + MemoryUtil.memUTF8(errinfo));
+        }), MemoryUtil.NULL, null);
 	}
 	
 	public long getID() {
-		return id;
+		return context;
 	}
 	
-	public void finish() {
-		CL10.clFinish(getID());
+	CLContextCallback getCB() {
+		return contextCB;
 	}
 	
 	public static void cleanup() {
-		for(CLCommandQueue q : queues) {
-			CL10.clReleaseCommandQueue(q.getID());
+		for(CLContext c : contexts) {
+			CL10.clReleaseContext(c.getID());
 		}
 	}
 }

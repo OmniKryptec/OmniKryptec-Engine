@@ -14,24 +14,23 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.old.core;
+package de.omnikryptec.opencl;
 
 import org.lwjgl.opencl.CL10;
 
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CLKernel {
+public class CLCommandQueue {
 	
-	private static List<CLKernel> kernels = new ArrayList<>();
+	private static List<CLCommandQueue> queues = new ArrayList<>();
 	
 	private long id;
 	
-	public CLKernel(CLProgram prog, String method) {
-		id = CL10.clCreateKernel(prog.getID(), method, OpenCL.tmpBuffer);
+	public CLCommandQueue(CLContext context, CLDevice device, int options) {
+		id = CL10.clCreateCommandQueue(context.getID(), device.getID(), options, OpenCL.tmpBuffer);
 		if(OpenCL.tmpBuffer.get(0)!=CL10.CL_SUCCESS) {
-			System.err.println("OpenCL Kernel Err: "+OpenCL.searchConstants(OpenCL.tmpBuffer.get(0)));
+			System.err.println("OpenCL ComQueue Err: "+OpenCL.tmpBuffer.get(0));
 		}
 	}
 	
@@ -39,25 +38,13 @@ public class CLKernel {
 		return id;
 	}
 	
-	public CLKernel setArg(int i, FloatBuffer buffer) {
-		CL10.clSetKernelArg(getID(), i, buffer);
-		return this;
-	}
-	
-	public void enqueue(CLCommandQueue queue, int dim, int worksize_gl, int worksize_loc) {
-		//CL10.clEnqueueNDRangeKernel(queue.getID(), getID(), 0, null, null, null, null, null);
-		CL10.nclEnqueueNDRangeKernel(queue.getID(), getID(), dim, 0, worksize_gl, worksize_loc, 0, 0, 0);
+	public void finish() {
+		CL10.clFinish(getID());
 	}
 	
 	public static void cleanup() {
-		for(CLKernel k : kernels) {
-			CL10.clReleaseKernel(k.getID());
+		for(CLCommandQueue q : queues) {
+			CL10.clReleaseCommandQueue(q.getID());
 		}
 	}
-
-	public CLKernel setArg(int i, int someInt) {
-		CL10.clSetKernelArg(getID(), i, someInt);
-		return this;
-	}
-
 }

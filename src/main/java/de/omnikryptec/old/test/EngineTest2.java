@@ -21,7 +21,6 @@ import de.codemakers.lang.LanguageManager;
 import de.omnikryptec.core.display.Display;
 import de.omnikryptec.core.display.DisplayManager;
 import de.omnikryptec.core.display.GLFWInfo;
-import de.omnikryptec.old.core.*;
 import de.omnikryptec.old.event.eventV2.EventSubscription;
 import de.omnikryptec.old.event.eventV2.engineevents.FrameEvent;
 import de.omnikryptec.old.event.eventV2.engineevents.FrameEvent.FrameType;
@@ -50,6 +49,8 @@ import de.omnikryptec.old.util.Instance;
 import de.omnikryptec.old.util.NativesLoader;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
+import de.omnikryptec.opencl.*;
+
 import org.joml.Vector3f;
 import org.lwjgl.opencl.CL10;
 
