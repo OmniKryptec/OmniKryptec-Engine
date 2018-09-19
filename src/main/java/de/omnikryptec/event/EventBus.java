@@ -1,4 +1,4 @@
-package de.omnikryptec.old.event.eventV3;
+package de.omnikryptec.event;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
