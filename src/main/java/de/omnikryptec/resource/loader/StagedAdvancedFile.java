@@ -39,7 +39,7 @@ public class StagedAdvancedFile {
     }
     
     public final boolean isLoadingXMLInfo() {
-        return (options & ResourceLoader.OPTION_LOAD_XML_INFO) != 0;
+        return (options & DefaultResourceManager.OPTION_LOAD_XML_INFO) != 0;
     }
     
     @Override

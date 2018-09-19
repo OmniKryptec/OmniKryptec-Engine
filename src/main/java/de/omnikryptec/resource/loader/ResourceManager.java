@@ -42,4 +42,6 @@ public interface ResourceManager {
     
     boolean addResources(ResourceObject... resourceObjects);
     
+    <T extends ResourceObject> boolean addResources(Class<T> clazz, T... resourceObjects);
+    
 }
