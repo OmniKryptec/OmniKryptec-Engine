@@ -25,9 +25,9 @@ import java.util.Properties;
 
 public interface IResourceLoader {
     
-    boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, IResourceLoader resourceLoader) throws Exception;
+    boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) throws Exception;
     
-    default boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, IResourceLoader resourceLoader, ToughConsumer<Throwable> failure) {
+    default boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader, ToughConsumer<Throwable> failure) {
         try {
             return load(advancedFile, superFile, properties, resourceLoader);
         } catch (Exception ex) {
@@ -40,13 +40,13 @@ public interface IResourceLoader {
         }
     }
     
-    default boolean loadWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, IResourceLoader resourceLoader) {
+    default boolean loadWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
         return load(advancedFile, superFile, properties, resourceLoader, null);
     }
     
-    LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, IResourceLoader resourceLoader) throws Exception;
+    LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) throws Exception;
     
-    default LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, IResourceLoader resourceLoader, ToughConsumer<Throwable> failure) {
+    default LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader, ToughConsumer<Throwable> failure) {
         try {
             return accept(advancedFile, superFile, properties, resourceLoader);
         } catch (Exception ex) {
@@ -59,11 +59,11 @@ public interface IResourceLoader {
         }
     }
     
-    default LoadingType acceptWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, IResourceLoader resourceLoader) {
+    default LoadingType acceptWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
         return accept(advancedFile, superFile, properties, resourceLoader, null);
     }
     
-    default String generateName(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, IResourceLoader resourceLoader) throws Exception {
+    default String generateName(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) throws Exception {
         String path = advancedFile.getPath();
         if (superFile.isDirectory()) {
             path = path.substring(superFile.getPath().length());
@@ -79,7 +79,7 @@ public interface IResourceLoader {
         return name;
     }
     
-    default String generateName(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, IResourceLoader resourceLoader, ToughConsumer<Throwable> failure) {
+    default String generateName(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader, ToughConsumer<Throwable> failure) {
         try {
             return generateName(advancedFile, superFile, properties, resourceLoader);
         } catch (Exception ex) {
@@ -92,7 +92,7 @@ public interface IResourceLoader {
         }
     }
     
-    default String generateNameWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, IResourceLoader resourceLoader) {
+    default String generateNameWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
         return generateName(advancedFile, superFile, properties, resourceLoader, null);
     }
     

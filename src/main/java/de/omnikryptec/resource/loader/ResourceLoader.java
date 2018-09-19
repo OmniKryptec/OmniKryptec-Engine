@@ -23,8 +23,7 @@ import de.codemakers.base.logger.Logger;
 import de.codemakers.io.file.AdvancedFile;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -32,23 +31,23 @@ import java.util.stream.Stream;
 public class ResourceLoader implements IResourceLoader {
     
     public static final long OPTION_LOAD_XML_INFO = 1 << 0;
-    
     private final Multimap<Class<? extends ResourceObject>, ResourceObject> resourceObjects = HashMultimap.create();
     private final Map<Integer, List<StagedAdvancedFile>> priorityStagedAdvancedFiles = new ConcurrentHashMap<>();
     private final List<IResourceLoader> resourceLoaders = new CopyOnWriteArrayList<>();
     private final AtomicBoolean loading = new AtomicBoolean(false);
+    private ExecutorService executorService = null;
     
     @Override
-    public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, IResourceLoader resourceLoader) throws Exception {
+    public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) throws Exception {
         return loadIntern(advancedFile, superFile, properties, resourceLoader);
     }
     
     @Override
-    public LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, IResourceLoader resourceLoader) throws Exception {
+    public LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) throws Exception {
         return getResourceLoadersForAdvancedFile(advancedFile, superFile, properties, resourceLoader).isEmpty() ? LoadingType.NOT : LoadingType.NORMAL;
     }
     
-    private boolean loadIntern(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, IResourceLoader resourceLoader) throws Exception {
+    private boolean loadIntern(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) throws Exception {
         if (advancedFile == null || !advancedFile.exists()) {
             return false;
         }
@@ -68,15 +67,96 @@ public class ResourceLoader implements IResourceLoader {
                 Logger.log(String.format("Failed to load \"%s\"%s, no ResourceLoaders available", advancedFile, Objects.equals(advancedFile, superFile) ? "" : String.format(" (in \"%s\")", superFile)), LogLevel.WARNING);
                 return false;
             }
-            final AtomicBoolean loaded = new AtomicBoolean(false);
+            final AtomicBoolean mayLoaded = new AtomicBoolean(false);
             for (IResourceLoader resourceLoader_ : resourceLoaders) {
-                //TODO
+                final LoadingType loadingType = resourceLoader_.accept(advancedFile, superFile, properties_temp, resourceLoader);
+                if (loadingType == LoadingType.NORMAL) {
+                    try {
+                        executorService.submit(() -> {
+                            try {
+                                resourceLoader_.load(advancedFile, superFile, properties_temp, resourceLoader);
+                            } catch (Exception ex) {
+                                Logger.logErr(String.format("Error while loading multithreaded intern \"%s\"%s", advancedFile, Objects.equals(advancedFile, superFile) ? "" : String.format(" (in \"%s\")", superFile)), ex);
+                            }
+                        });
+                        mayLoaded.set(true);
+                    } catch (Exception ex) {
+                        Logger.logErr(String.format("Error while loading multithreaded \"%s\"%s", advancedFile, Objects.equals(advancedFile, superFile) ? "" : String.format(" (in \"%s\")", superFile)), ex);
+                    }
+                } else if (loadingType == LoadingType.OPENGL) {
+                    try {
+                        mayLoaded.set(resourceLoader_.load(advancedFile, superFile, properties_temp, resourceLoader));
+                    } catch (Exception ex) {
+                        Logger.logErr(String.format("Error while loading \"%s\"%s", advancedFile, Objects.equals(advancedFile, superFile) ? "" : String.format(" (in \"%s\")", superFile)), ex);
+                    }
+                }
             }
-            if (!loaded.get()) {
+            if (!mayLoaded.get()) {
                 Logger.log(String.format("Failed to load \"%s\"%s", advancedFile, Objects.equals(advancedFile, superFile) ? "" : String.format(" (in \"%s\")", superFile)), LogLevel.WARNING);
             }
-            return loaded.get();
+            return mayLoaded.get();
         }
+    }
+    
+    public boolean loadStagedAdvancedFiles() {
+        return loadStagedAdvancedFiles(true);
+    }
+    
+    public boolean loadStagedAdvancedFiles(boolean clearData) {
+        return loadStagedAdvancedFiles(clearData, 5, TimeUnit.MINUTES);
+    }
+    
+    public boolean loadStagedAdvancedFiles(boolean clearData, long timeout, TimeUnit unit) {
+        resetExecutor();
+        loading.set(true);
+        try {
+            if (clearData) {
+                loading.set(false);
+                clearResourceObjects();
+                loading.set(true);
+            }
+            final List<StagedAdvancedFile> stagedAdvancedFiles = getStagedAdvancedFilesSorted();
+            stagedAdvancedFiles.forEach((stagedAdvancedFile) -> {
+                try {
+                    load(stagedAdvancedFile.getAdvancedFile(), stagedAdvancedFile.getAdvancedFile(), null, this);
+                } catch (Exception ex) {
+                    Logger.handleError(ex);
+                }
+            });
+            if (executorService != null) {
+                executorService.shutdown();
+                executorService.awaitTermination(timeout, unit);
+            }
+            loading.set(false);
+            return true;
+        } catch (Exception ex) {
+            loading.set(false);
+            Logger.handleError(ex);
+            return false;
+        }
+    }
+    
+    public ResourceLoader clearResourceObjects() {
+        checkAndErrorIfLoading(true);
+        resourceObjects.clear();
+        return this;
+    }
+    
+    private ResourceLoader resetExecutor() {
+        checkAndErrorIfLoading(true);
+        try {
+            if (executorService != null) {
+                executorService.shutdownNow();
+            }
+            executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        } catch (Exception ex) {
+            Logger.handleError(ex);
+        }
+        return this;
+    }
+    
+    public ExecutorService getExecutorService() {
+        return executorService;
     }
     
     @Override
@@ -147,6 +227,12 @@ public class ResourceLoader implements IResourceLoader {
         return this;
     }
     
+    public List<StagedAdvancedFile> getStagedAdvancedFilesSorted() {
+        final List<StagedAdvancedFile> stagedAdvancedFilesSorted = new ArrayList<>();
+        priorityStagedAdvancedFiles.keySet().stream().sorted((i_1, i_2) -> i_2 - i_1).forEach((priority) -> stagedAdvancedFilesSorted.addAll(priorityStagedAdvancedFiles.get(priority)));
+        return stagedAdvancedFilesSorted;
+    }
+    
     public boolean isLoading() {
         return loading.get();
     }
@@ -188,7 +274,7 @@ public class ResourceLoader implements IResourceLoader {
         return resourceLoaders;
     }
     
-    public List<IResourceLoader> getResourceLoadersForAdvancedFile(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, IResourceLoader resourceLoader) {
+    public List<IResourceLoader> getResourceLoadersForAdvancedFile(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
         return resourceLoaders.stream().filter((resourceLoader_) -> resourceLoader_.acceptWithoutException(advancedFile, superFile, properties, resourceLoader) != LoadingType.NOT).collect(Collectors.toList());
     }
     
