@@ -1,4 +1,4 @@
-package de.omnikryptec.old.ecs;
+package de.omnikryptec.ecs;
 
 import de.omnikryptec.old.util.Util;
 

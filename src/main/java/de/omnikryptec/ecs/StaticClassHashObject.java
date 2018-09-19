@@ -1,4 +1,4 @@
-package de.omnikryptec.old.ecs;
+package de.omnikryptec.ecs;
 
 /**
  * {@link #hashCode()} is now an ID for this class's child.
