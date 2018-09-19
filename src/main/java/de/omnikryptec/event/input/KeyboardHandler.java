@@ -16,12 +16,11 @@
 
 package de.omnikryptec.event.input;
 
-import java.util.Arrays;
-
+import de.omnikryptec.settings.KeySettings;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWKeyCallback;
 
-import de.omnikryptec.settings.KeySettings;
+import java.util.Arrays;
 
 /**
  * KeyboardHandler
@@ -29,14 +28,14 @@ import de.omnikryptec.settings.KeySettings;
  * @author Panzer1119
  */
 public class KeyboardHandler implements InputHandler {
-
+    
+    protected final InputState[] keys = new InputState[65536];
     private final KeyboardHandler ME = this;
     private final long window;
     private final GLFWKeyCallback keyCallback;
-    protected final InputState[] keys = new InputState[65536];
     private InputState[] keys_lastTime = null;
     private String inputString = "";
-
+    
     public KeyboardHandler(long window) {
         this.window = window;
         this.keyCallback = new GLFWKeyCallback() {
@@ -47,16 +46,16 @@ public class KeyboardHandler implements InputHandler {
                 }
                 final InputState inputState = InputState.ofState(action);
                 keys[key] = inputState;
-                if(inputState == InputState.PRESSED || inputState == InputState.REPEATED) {
+                if (inputState == InputState.PRESSED || inputState == InputState.REPEATED) {
                     final String keyString = GLFW.glfwGetKeyName(key, scancode); //FIXME Da stand irgendwas von, dass man das nicht benutzen soll?
-                    if(keyString != null) {
+                    if (keyString != null) {
                         inputString += keyString;
                     }
                 }
             }
         };
     }
-
+    
     public final GLFWKeyCallback initKeybCallback() {
         GLFW.glfwSetKeyCallback(window, keyCallback);
         return keyCallback;
@@ -67,35 +66,35 @@ public class KeyboardHandler implements InputHandler {
         keyCallback.close();
         return this;
     }
-
-    public final InputState getKeyState(int keyCode) {
+    
+    public final synchronized InputState getKeyState(int keyCode) {
         return keys[keyCode];
     }
-
-    public final boolean isKeyNothing(int keyCode) {
+    
+    public final synchronized boolean isKeyNothing(int keyCode) {
         return keys[keyCode] == InputState.NOTHING;
     }
-
-    public final boolean isKeyReleased(int keyCode) {
+    
+    public final synchronized boolean isKeyReleased(int keyCode) {
         return keys[keyCode] == InputState.RELEASED;
     }
-
-    public final boolean isKeyPressed(int keyCode) {
+    
+    public final synchronized boolean isKeyPressed(int keyCode) {
         return keys[keyCode] == InputState.PRESSED;
     }
-
-    public final boolean isKeyRepeated(int keyCode) {
+    
+    public final synchronized boolean isKeyRepeated(int keyCode) {
         return keys[keyCode] == InputState.REPEATED;
     }
-
+    
     @Override
-    public final KeyboardHandler preUpdate() {
+    public final synchronized KeyboardHandler preUpdate() {
         keys_lastTime = Arrays.copyOf(keys, keys.length);
         return this;
     }
     
     @Override
-    public final KeyboardHandler updateKeySettings(double currentTime, KeySettings keySettings) {
+    public final synchronized KeyboardHandler updateKeySettings(double currentTime, KeySettings keySettings) {
         for (int i = 0; i < keys.length; i++) {
             if (keys_lastTime[i] != keys[i]) {
                 keySettings.updateKeys(currentTime, i, true);
@@ -112,5 +111,5 @@ public class KeyboardHandler implements InputHandler {
     public final synchronized String getInputString() {
         return inputString;
     }
-
+    
 }

@@ -16,14 +16,16 @@
 
 package de.omnikryptec.event.input;
 
+import de.omnikryptec.settings.KeySettings;
+import org.lwjgl.glfw.GLFW;
+
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.lwjgl.glfw.GLFW;
-
-import de.omnikryptec.settings.KeySettings;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * JoystickHandler
@@ -31,84 +33,37 @@ import de.omnikryptec.settings.KeySettings;
  * @author Panzer1119
  */
 public class JoystickHandler implements InputHandler {
-
-    private static final ArrayList<JoystickHandler> joystickHandlers = new ArrayList<>();
-
+    
+    private static final List<JoystickHandler> joystickHandlers = new CopyOnWriteArrayList<>();
+    
     //private final JoystickHandler ME = this;
     private final int joystick;
     protected FloatBuffer dataAxes = null;
     protected ByteBuffer dataButtons = null;
     protected ByteBuffer dataHats = null;
-
+    
     public JoystickHandler(int joystick) {
         this.joystick = joystick;
     }
-
-    public final JoystickHandler update() {
-        if (!isConnected()) {
-            return this;
-        }
-        dataAxes = GLFW.glfwGetJoystickAxes(joystick);
-        dataButtons = GLFW.glfwGetJoystickButtons(joystick);
-        dataHats = GLFW.glfwGetJoystickHats(joystick);
-        return this;
-    }
-
-    public final JoystickHandler init() {
-        if (!joystickHandlers.contains(this)) {
-            joystickHandlers.add(this);
-        }
-        return this;
-    }
-
-    @Override
-    public final JoystickHandler close() {
-        joystickHandlers.remove(this);
-        return this;
-    }
-
-    public final int getJoystick() {
-        return joystick;
-    }
-
-    public final FloatBuffer getDataAxes() {
-        return dataAxes;
-    }
-
-    public final ByteBuffer getDataButtons() {
-        return dataButtons;
-    }
-
-    public final ByteBuffer getDataHats() {
-        return dataHats;
-    }
-
-    public final String getName() {
-        return getName(joystick);
-    }
-
-    public final boolean isConnected() {
-        return isConnected(joystick);
-    }
-
+    
     public static final String getName(int joystick) {
         return GLFW.glfwGetJoystickName(joystick);
     }
-
+    
     public static final boolean isConnected(int joystick) {
         return getName(joystick) != null;
     }
-
-    public static final ArrayList<Integer> getJoysticks() {
-        final ArrayList<Integer> joysticks = new ArrayList<>();
+    
+    public static final List<Integer> getJoysticks() {
+        final List<Integer> joysticks = new ArrayList<>();
         for (int i = GLFW.GLFW_JOYSTICK_1; i <= GLFW.GLFW_JOYSTICK_LAST; i++) {
             joysticks.add(i);
         }
         return joysticks;
     }
-
-    public static final HashMap<Integer, String> getConnectedJoysticks() {
-        final HashMap<Integer, String> joysticks = new HashMap<>();
+    
+    public static final Map<Integer, String> getConnectedJoysticks() {
+        final Map<Integer, String> joysticks = new HashMap<>();
         getJoysticks().stream().forEach((joystick) -> {
             final String name = getName(joystick);
             if (name != null) {
@@ -117,33 +72,80 @@ public class JoystickHandler implements InputHandler {
         });
         return joysticks;
     }
-
-    protected static final void updateAll() {
-        if(joystickHandlers.isEmpty()) {
+    
+    protected static final synchronized void updateAll() {
+        if (joystickHandlers.isEmpty()) {
             return;
         }
-        for(JoystickHandler joystickHandler : joystickHandlers) {
+        for (JoystickHandler joystickHandler : joystickHandlers) {
             joystickHandler.update();
         }
     }
     
-    protected static final void updateAll(double currentTime, KeySettings keySettings) {
-        if(joystickHandlers.isEmpty()) {
+    protected static final synchronized void updateAll(double currentTime, KeySettings keySettings) {
+        if (joystickHandlers.isEmpty()) {
             return;
         }
-        for(JoystickHandler joystickHandler : joystickHandlers) {
+        for (JoystickHandler joystickHandler : joystickHandlers) {
             joystickHandler.updateKeySettings(currentTime, keySettings);
         }
     }
-
-    @Override
-    public final JoystickHandler preUpdate() {
+    
+    public final synchronized JoystickHandler update() {
+        if (!isConnected()) {
+            return this;
+        }
+        dataAxes = GLFW.glfwGetJoystickAxes(joystick);
+        dataButtons = GLFW.glfwGetJoystickButtons(joystick);
+        dataHats = GLFW.glfwGetJoystickHats(joystick);
+        return this;
+    }
+    
+    public final JoystickHandler init() {
+        if (!joystickHandlers.contains(this)) {
+            joystickHandlers.add(this);
+        }
         return this;
     }
     
     @Override
-    public final JoystickHandler updateKeySettings(double currentTime, KeySettings keySettings) {
+    public final JoystickHandler close() {
+        joystickHandlers.remove(this);
         return this;
     }
-
+    
+    public final synchronized int getJoystick() {
+        return joystick;
+    }
+    
+    public final synchronized FloatBuffer getDataAxes() {
+        return dataAxes;
+    }
+    
+    public final synchronized ByteBuffer getDataButtons() {
+        return dataButtons;
+    }
+    
+    public final synchronized ByteBuffer getDataHats() {
+        return dataHats;
+    }
+    
+    public final synchronized String getName() {
+        return getName(joystick);
+    }
+    
+    public final synchronized boolean isConnected() {
+        return isConnected(joystick);
+    }
+    
+    @Override
+    public final synchronized JoystickHandler preUpdate() {
+        return this;
+    }
+    
+    @Override
+    public final synchronized JoystickHandler updateKeySettings(double currentTime, KeySettings keySettings) {
+        return this;
+    }
+    
 }

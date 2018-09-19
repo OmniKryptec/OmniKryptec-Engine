@@ -24,11 +24,11 @@ import de.omnikryptec.settings.KeySettings;
  * @author Panzer1119
  */
 public interface InputHandler {
-
-    public InputHandler preUpdate();
-
-    public InputHandler close();
-
-    public InputHandler updateKeySettings(double currentTime, KeySettings keySettings);
-
+    
+    InputHandler preUpdate();
+    
+    InputHandler close();
+    
+    InputHandler updateKeySettings(double currentTime, KeySettings keySettings);
+    
 }
