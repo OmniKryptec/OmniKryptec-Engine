@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Multimap;
+import de.codemakers.base.logger.Logger;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -11,9 +12,9 @@ import java.util.Set;
 
 public class DefaultEntityManager extends EntityManager {
     
-    private BiMap<Long, Entity> entities;
-    private Multimap<ComponentSystem, Entity> entitiesPerSystem;
-    private Set<ComponentSystem> componentSystems;
+    private final BiMap<Long, Entity> entities;
+    private final Multimap<ComponentSystem, Entity> entitiesPerSystem;
+    private final Set<ComponentSystem> componentSystems;
     
     public DefaultEntityManager() {
         entities = HashBiMap.create();
@@ -34,6 +35,7 @@ public class DefaultEntityManager extends EntityManager {
     @Override
     public boolean addEntity(Entity entity) {
         boolean added = false;
+        entities.put(entity.ID, entity);
         for (ComponentSystem componentSystem : componentSystems) {
             if (entity.getComponents().keySet().containsAll(componentSystem.usesComponentClasses())) {
                 added = entitiesPerSystem.put(componentSystem, entity);
@@ -81,7 +83,11 @@ public class DefaultEntityManager extends EntityManager {
         }
         updating.set(true);
         for (ComponentSystem componentSystem : componentSystems) {
-            componentSystem.update(this, entitiesPerSystem.get(componentSystem), deltaTime);
+            try {
+                componentSystem.update(this, entitiesPerSystem.get(componentSystem), deltaTime);
+            } catch (Exception ex) {
+                Logger.handleError(ex);
+            }
         }
         updating.set(false);
     }
