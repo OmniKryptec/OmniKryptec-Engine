@@ -328,7 +328,7 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
             return false;
         }
         resourceObjects.remove(resourceObject.getClass(), resourceObject);
-        return false;
+        return true;
     }
     
     @Override
