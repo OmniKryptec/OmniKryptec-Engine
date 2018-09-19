@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ResourceLoader implements IResourceLoader {
+public class ResourceLoader implements IResourceLoader, ResourceManager {
     
     public static final long OPTION_LOAD_XML_INFO = 1 << 0;
     private static ResourceLoader INSTANCE = createDefaultInstance(false);
@@ -207,7 +207,7 @@ public class ResourceLoader implements IResourceLoader {
         try {
             if (clearData) {
                 loading.set(false);
-                clearResourceObjects();
+                clearResources();
                 loading.set(true);
             }
             final List<StagedAdvancedFile> stagedAdvancedFiles = getStagedAdvancedFilesSorted();
@@ -231,12 +231,6 @@ public class ResourceLoader implements IResourceLoader {
         }
     }
     
-    public ResourceLoader clearResourceObjects() {
-        checkAndErrorIfLoading(true);
-        resourceObjects.clear();
-        return this;
-    }
-    
     private ResourceLoader resetExecutor() {
         checkAndErrorIfLoading(true);
         try {
@@ -256,17 +250,20 @@ public class ResourceLoader implements IResourceLoader {
     
     @Override
     public <T extends ResourceObject> T getResource(long id) {
+        checkAndErrorIfLoading(true);
         return (T) resourceObjects.values().stream().filter((resourceObject) -> resourceObject.getId() == id).findFirst().orElse(null);
     }
     
     @Override
     public <T extends ResourceObject> T getResource(String name) {
+        checkAndErrorIfLoading(true);
         Objects.requireNonNull(name);
         return (T) resourceObjects.values().stream().filter((resourceObject) -> name.equals(resourceObject.getName())).findFirst().orElse(null);
     }
     
     @Override
     public <T extends ResourceObject> T getResource(Class<T> clazz, long id) {
+        checkAndErrorIfLoading(true);
         if (!containsClass(clazz)) {
             return null;
         }
@@ -275,6 +272,7 @@ public class ResourceLoader implements IResourceLoader {
     
     @Override
     public <T extends ResourceObject> T getResource(Class<T> clazz, String name) {
+        checkAndErrorIfLoading(true);
         Objects.requireNonNull(name);
         if (!containsClass(clazz)) {
             return null;
@@ -283,7 +281,8 @@ public class ResourceLoader implements IResourceLoader {
     }
     
     @Override
-    public <T extends ResourceObject> List<T> getResources(Class<T> clazz) {
+    public <T extends ResourceObject> Collection<T> getResources(Class<T> clazz) {
+        checkAndErrorIfLoading(true);
         if (!containsClass(clazz)) {
             return new ArrayList<>();
         }
@@ -291,8 +290,53 @@ public class ResourceLoader implements IResourceLoader {
     }
     
     @Override
-    public List<ResourceObject> getAllResources() {
+    public Collection<ResourceObject> getAllResources() {
+        checkAndErrorIfLoading(true);
         return resourceObjects.values().stream().collect(Collectors.toList());
+    }
+    
+    @Override
+    public boolean clearResources() {
+        checkAndErrorIfLoading(true);
+        resourceObjects.clear();
+        return resourceObjects.isEmpty();
+    }
+    
+    @Override
+    public <T extends ResourceObject> boolean clearResources(Class<T> clazz) {
+        checkAndErrorIfLoading(true);
+        Objects.requireNonNull(clazz);
+        resourceObjects.removeAll(clazz);
+        return true;
+    }
+    
+    @Override
+    public boolean removeResource(long id) {
+        checkAndErrorIfLoading(true);
+        final ResourceObject resourceObject = getResource(id);
+        if (resourceObject == null) {
+            return false;
+        }
+        resourceObjects.remove(resourceObject.getClass(), resourceObject);
+        return true;
+    }
+    
+    @Override
+    public boolean removeResource(String name) {
+        checkAndErrorIfLoading(true);
+        Objects.requireNonNull(name);
+        final ResourceObject resourceObject = getResource(name);
+        if (resourceObject == null) {
+            return false;
+        }
+        resourceObjects.remove(resourceObject.getClass(), resourceObject);
+        return false;
+    }
+    
+    @Override
+    public boolean addResources(ResourceObject... resourceObjects) {
+        checkAndErrorIfLoading(true);
+        return false;
     }
     
     public boolean containsClass(Class<? extends ResourceObject> clazz) {

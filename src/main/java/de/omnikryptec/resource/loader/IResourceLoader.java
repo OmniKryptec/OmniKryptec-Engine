@@ -20,7 +20,6 @@ import de.codemakers.base.logger.Logger;
 import de.codemakers.base.util.tough.ToughConsumer;
 import de.codemakers.io.file.AdvancedFile;
 
-import java.util.List;
 import java.util.Properties;
 
 public interface IResourceLoader {
@@ -95,17 +94,5 @@ public interface IResourceLoader {
     default String generateNameWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
         return generateName(advancedFile, superFile, properties, resourceLoader, null);
     }
-    
-    <T extends ResourceObject> T getResource(long id);
-    
-    <T extends ResourceObject> T getResource(String name);
-    
-    <T extends ResourceObject> T getResource(Class<T> clazz, long id);
-    
-    <T extends ResourceObject> T getResource(Class<T> clazz, String name);
-    
-    <T extends ResourceObject> List<T> getResources(Class<T> clazz);
-    
-    List<ResourceObject> getAllResources();
     
 }
