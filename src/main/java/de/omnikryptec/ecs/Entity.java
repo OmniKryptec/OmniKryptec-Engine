@@ -3,9 +3,6 @@ package de.omnikryptec.ecs;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.collect.ClassToInstanceMap;
-import com.google.common.collect.MutableClassToInstanceMap;
-
 import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.ecs.component.ComponentType;
 

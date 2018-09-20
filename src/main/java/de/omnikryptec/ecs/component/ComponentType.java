@@ -8,7 +8,7 @@ public class ComponentType {
 	private static int index = 0;
 	private static Map<Class<? extends Component>, ComponentType> componentTypes = new HashMap<>();
 	
-	public static ComponentType of(Class<? extends Component> clazz) {
+	public static synchronized ComponentType of(Class<? extends Component> clazz) {
 		if(!componentTypes.containsKey(clazz)) {
 			componentTypes.put(clazz, new ComponentType());
 		}

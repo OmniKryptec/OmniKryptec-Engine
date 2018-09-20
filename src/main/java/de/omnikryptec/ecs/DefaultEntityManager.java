@@ -1,14 +1,15 @@
 package de.omnikryptec.ecs;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Multimap;
-import de.codemakers.base.logger.Logger;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import de.codemakers.base.logger.Logger;
 
 public class DefaultEntityManager extends EntityManager {
     
