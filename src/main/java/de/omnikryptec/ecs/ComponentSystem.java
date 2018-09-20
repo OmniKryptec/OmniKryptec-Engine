@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import de.omnikryptec.ecs.component.Component;
 
-public abstract class ComponentSystem extends StaticClassHashObject {
+public abstract class ComponentSystem {
     
     public abstract void update(EntityManager entityManager, Collection<Entity> entities, float deltaTime);
         
