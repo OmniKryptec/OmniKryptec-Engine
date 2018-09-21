@@ -14,8 +14,9 @@ public class Entity {
         this.components = new HashMap<>();
     }
 
-    public void addComponent(Component component) {
+    public Entity addComponent(Component component) {
     	this.components.put(ComponentType.of(component.getClass()), component);
+    	return this;
     }
     
 	public <C extends Component>C getComponent(ComponentType componentType) {
