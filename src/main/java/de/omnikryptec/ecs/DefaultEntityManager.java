@@ -10,6 +10,7 @@ import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Multimap;
 
 import de.codemakers.base.logger.Logger;
+import de.omnikryptec.ecs.systems.ComponentSystem;
 
 public class DefaultEntityManager extends EntityManager {
     

@@ -19,6 +19,8 @@ package de.omnikryptec.ecs;
 import java.util.Collection;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import de.omnikryptec.ecs.systems.ComponentSystem;
+
 public abstract class EntityManager {
     
     protected final AtomicBoolean updating = new AtomicBoolean(false);
