@@ -9,8 +9,8 @@ public class Test {
 		System.out.println("Started...");
 		EntityManager manager = new EntityManager();
 		manager.addSystem(new DoSomethingSystem(), false);
-		int updt = 10000;
-		int ents = 1_000_000;
+		int updt = 1000;
+		int ents = 1_000_00;
 		for (int i = 0; i < ents; i++) {
 			manager.addEntity(new Entity().addComponent(new SomeDataComponent()));
 		}

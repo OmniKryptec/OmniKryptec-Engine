@@ -8,7 +8,7 @@ import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityManager;
 import de.omnikryptec.ecs.Family;
 
-public abstract class ParallelComponentSystem extends ComponentSystem{
+public abstract class ParallelComponentSystem extends ComponentSystem implements IndividualUpdater{
 
 	private ExecutorService executorService;
 	private int size;
@@ -46,6 +46,4 @@ public abstract class ParallelComponentSystem extends ComponentSystem{
 	
 	public abstract void updateThreaded(EntityManager entityManager, List<Entity> entities, float deltaTime);
 	
-    public abstract void updateIndividual(EntityManager entityManager, Entity entity, float deltaTime);
-
 }
