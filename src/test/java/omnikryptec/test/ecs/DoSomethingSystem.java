@@ -9,10 +9,10 @@ import de.omnikryptec.ecs.systems.GroupParallelComponentSystem;
 import de.omnikryptec.ecs.systems.IndividualParallelComponentSystem;
 import de.omnikryptec.ecs.systems.IterativeComponentSystem;
 
-public class DoSomethingSystem extends IndividualParallelComponentSystem{
+public class DoSomethingSystem extends IterativeComponentSystem{
 
 	protected DoSomethingSystem() {
-		super(new Family(ComponentType.of(SomeDataComponent.class)), 8, 0);
+		super(new Family(ComponentType.of(SomeDataComponent.class)));
 	}
 
 	private ComponentMapper<SomeDataComponent> mapper = new ComponentMapper<>(SomeDataComponent.class);
