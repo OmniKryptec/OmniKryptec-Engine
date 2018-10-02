@@ -8,9 +8,11 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
 import de.omnikryptec.ecs.systems.ComponentSystem;
+import de.omnikryptec.old.util.CountingMap;
 
 public class EntityManager {
 
+	private CountingMap<Family> systemsPerFamilies;
 	private ListMultimap<Family, Entity> entitiesForSystems;
 	private List<ComponentSystem> systems;
 	private Collection<Entity> all;
@@ -19,6 +21,7 @@ public class EntityManager {
 		this.entitiesForSystems = ArrayListMultimap.create();
 		this.systems = new ArrayList<>();
 		this.all = new ArrayList<>();
+		systemsPerFamilies = new CountingMap<>();
 	}
 
 	public void addEntity(Entity entity) {
@@ -41,6 +44,7 @@ public class EntityManager {
 
 	public void addSystem(ComponentSystem componentSystem, boolean checkExistingEntities) {
 		systems.add(componentSystem);
+		systemsPerFamilies.increment(componentSystem.getRequiredComponents());
 		if (checkExistingEntities && !all.isEmpty()) {
 			if (!entitiesForSystems.containsKey(componentSystem.getRequiredComponents())) {
 				for (Entity e : all) {
@@ -54,6 +58,10 @@ public class EntityManager {
 
 	public void removeSystem(ComponentSystem componentSystem) {
 		systems.remove(componentSystem);
+		if (systemsPerFamilies.decrement(componentSystem.getRequiredComponents()) == 0) {
+			systemsPerFamilies.remove(componentSystem.getRequiredComponents());
+			entitiesForSystems.removeAll(componentSystem.getRequiredComponents());
+		}
 	}
 
 	public void update(float deltaTime) {

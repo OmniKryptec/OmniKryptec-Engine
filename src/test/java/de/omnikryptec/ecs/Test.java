@@ -8,9 +8,10 @@ public class Test {
 	public static void main(String[] args) {
 		System.out.println("Started...");
 		EntityManager manager = new EntityManager();
-		manager.addSystem(new DoSomethingSystem(), false);
+		DoSomethingSystem system = new DoSomethingSystem();
+		manager.addSystem(system, false);
 		int updt = 100;
-		int ents = 1_000_000;
+		int ents = 1_000;
 		for (int i = 0; i < ents; i++) {
 			manager.addEntity(new Entity().addComponent(new SomeDataComponent()));
 		}
@@ -21,6 +22,7 @@ public class Test {
 		}
 		long time2 = System.currentTimeMillis() - time;
 		System.out.println("Time per update: " + time2 / (double) updt + "ms");
+		manager.removeSystem(system);
 	}
 
 }
