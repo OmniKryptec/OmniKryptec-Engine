@@ -19,8 +19,8 @@ package de.omnikryptec.old.main;
 import de.omnikryptec.old.gameobject.Camera;
 import de.omnikryptec.old.gameobject.GameObject;
 import de.omnikryptec.old.physics.PhysicsWorld;
-import de.omnikryptec.old.util.Color;
 import de.omnikryptec.old.util.EnumCollection.FrameState;
+import de.omnikryptec.util.data.Color;
 
 public abstract class AbstractScene<T extends GameObject> implements GameObjectContainer<T> {
 

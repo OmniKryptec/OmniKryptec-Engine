@@ -35,7 +35,6 @@ import de.omnikryptec.old.resource.model.VertexBufferObject;
 import de.omnikryptec.old.resource.texture.SimpleTexture;
 import de.omnikryptec.old.settings.GameSettings;
 import de.omnikryptec.old.shader.base.Shader;
-import de.omnikryptec.old.util.Color;
 import de.omnikryptec.old.util.EnumCollection.DepthbufferType;
 import de.omnikryptec.old.util.EnumCollection.GameLoopShutdownOption;
 import de.omnikryptec.old.util.EnumCollection.GameState;
@@ -47,6 +46,8 @@ import de.omnikryptec.old.util.logger.Logger;
 import de.omnikryptec.old.util.profiler.Profilable;
 import de.omnikryptec.old.util.profiler.ProfileContainer;
 import de.omnikryptec.old.util.profiler.Profiler;
+import de.omnikryptec.util.data.Color;
+
 import org.lwjgl.opengl.GL30;
 
 import java.util.ArrayList;

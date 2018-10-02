@@ -20,10 +20,11 @@ import de.omnikryptec.old.gameobject.Camera;
 import de.omnikryptec.old.gameobject.Entity;
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.settings.GameSettings;
-import de.omnikryptec.old.util.Color;
 import de.omnikryptec.old.util.EnumCollection.BlendMode;
 import de.omnikryptec.old.util.EnumCollection.RenderType;
 import de.omnikryptec.old.util.EnumCollection.UpdateType;
+import de.omnikryptec.util.data.Color;
+
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;

@@ -1,4 +1,4 @@
-package de.omnikryptec.ecs;
+package de.omnikryptec.util.data;
 
 import java.util.BitSet;
 

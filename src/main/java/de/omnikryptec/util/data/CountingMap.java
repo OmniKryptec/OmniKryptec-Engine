@@ -1,4 +1,4 @@
-package de.omnikryptec.old.util;
+package de.omnikryptec.util.data;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,6 +1,7 @@
 package de.omnikryptec.ecs;
 
 import de.omnikryptec.ecs.component.ComponentType;
+import de.omnikryptec.util.data.AdvancedBitSet;
 
 public class Family {
 

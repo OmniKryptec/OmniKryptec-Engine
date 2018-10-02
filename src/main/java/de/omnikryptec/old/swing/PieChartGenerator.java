@@ -17,9 +17,9 @@
 package de.omnikryptec.old.swing;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.old.util.Color;
 import de.omnikryptec.old.util.logger.Commands;
 import de.omnikryptec.old.util.logger.Logger;
+import de.omnikryptec.util.data.Color;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

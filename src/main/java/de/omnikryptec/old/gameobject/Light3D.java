@@ -16,9 +16,10 @@
 
 package de.omnikryptec.old.gameobject;
 
-import de.omnikryptec.old.util.Color;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+
+import de.omnikryptec.util.data.Color;
 
 public class Light3D extends GameObject3D {
 	

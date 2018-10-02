@@ -26,8 +26,8 @@ import de.omnikryptec.old.main.AbstractScene2D;
 import de.omnikryptec.old.main.ChunkCoord2D;
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.settings.GameSettings;
-import de.omnikryptec.old.util.Color;
 import de.omnikryptec.old.util.EnumCollection.BlendMode;
+import de.omnikryptec.util.data.Color;
 import de.omnikryptec.old.util.FrustrumFilter;
 import de.omnikryptec.old.util.Instance;
 

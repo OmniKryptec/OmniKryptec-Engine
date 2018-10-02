@@ -24,11 +24,11 @@ import de.omnikryptec.old.resource.model.TexturedModel;
 import de.omnikryptec.old.resource.texture.SimpleTexture;
 import de.omnikryptec.old.test.saving.DataMap;
 import de.omnikryptec.old.test.saving.DataMapSerializable;
-import de.omnikryptec.old.util.Color;
 import de.omnikryptec.old.util.EnumCollection.RenderType;
 import de.omnikryptec.old.util.SerializationUtil;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
+import de.omnikryptec.util.data.Color;
 
 public class Entity extends GameObject3D implements DataMapSerializable {
 

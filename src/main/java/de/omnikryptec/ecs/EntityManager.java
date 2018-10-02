@@ -8,7 +8,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
 import de.omnikryptec.ecs.systems.ComponentSystem;
-import de.omnikryptec.old.util.CountingMap;
+import de.omnikryptec.util.data.CountingMap;
 
 public class EntityManager {
 

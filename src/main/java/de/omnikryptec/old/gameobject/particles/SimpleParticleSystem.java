@@ -18,8 +18,8 @@ package de.omnikryptec.old.gameobject.particles;
 
 import de.omnikryptec.old.gameobject.particles.ParticleSpawnArea.ParticleSpawnAreaType;
 import de.omnikryptec.old.resource.texture.ParticleAtlas;
-import de.omnikryptec.old.util.Color;
 import de.omnikryptec.old.util.EnumCollection.RenderType;
+import de.omnikryptec.util.data.Color;
 import de.omnikryptec.old.util.Maths;
 import org.joml.Vector3f;
 

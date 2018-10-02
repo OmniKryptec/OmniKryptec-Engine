@@ -18,7 +18,7 @@ package de.omnikryptec.old.gui;
 
 import de.omnikryptec.old.graphics.SpriteBatch;
 import de.omnikryptec.old.resource.texture.Texture;
-import de.omnikryptec.old.util.Color;
+import de.omnikryptec.util.data.Color;
 
 public class ProgressBar extends TexturedGuiContainer {
 

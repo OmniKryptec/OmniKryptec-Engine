@@ -24,8 +24,9 @@ import de.omnikryptec.old.resource.texture.SimpleTexture;
 import de.omnikryptec.old.resource.texture.Texture;
 import de.omnikryptec.old.shader.base.Shader;
 import de.omnikryptec.old.shader.files.render.Shader2D;
-import de.omnikryptec.old.util.Color;
 import de.omnikryptec.old.util.exceptions.OmniKryptecException;
+import de.omnikryptec.util.data.Color;
+
 import org.joml.Math;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;

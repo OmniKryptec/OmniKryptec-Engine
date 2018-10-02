@@ -18,6 +18,8 @@ package de.omnikryptec.old.util;
 
 import de.omnikryptec.old.gameobject.GameObject;
 import de.omnikryptec.old.util.logger.Logger;
+import de.omnikryptec.util.data.Color;
+
 import org.joml.*;
 
 import java.lang.reflect.Array;

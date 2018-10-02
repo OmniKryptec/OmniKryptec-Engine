@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.old.util;
+package de.omnikryptec.util.data;
 
 import org.joml.Vector4f;
 

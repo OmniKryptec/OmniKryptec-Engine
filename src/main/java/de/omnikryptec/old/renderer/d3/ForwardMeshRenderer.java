@@ -26,12 +26,13 @@ import de.omnikryptec.old.shader.base.Shader;
 import de.omnikryptec.old.shader.base.ShaderGroup;
 import de.omnikryptec.old.shader.base.ShaderPack;
 import de.omnikryptec.old.shader.files.render.ForwardMeshShader;
-import de.omnikryptec.old.util.Color;
 import de.omnikryptec.old.util.FrustrumFilter;
 import de.omnikryptec.old.util.Instance;
 import de.omnikryptec.old.util.KeyArrayHashMap;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
+import de.omnikryptec.util.data.Color;
+
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
