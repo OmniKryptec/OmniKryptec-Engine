@@ -19,7 +19,7 @@ public abstract class GroupParallelComponentSystem extends ParallelComponentSyst
 
 	@Override
 	public void updateThreaded(EntityManager entityManager, List<Entity> entities, float deltaTime) {
-		List<List<Entity>> lists = Lists.partition(entities, entities.size() / numThreads());
+		List<List<Entity>> lists = Lists.partition(entities, (int) Math.ceil(entities.size() / (double) numThreads()));
 		Collection<Callable<Void>> tasks = new ArrayList<>();
 		for (List<Entity> el : lists) {
 			tasks.add(() -> {

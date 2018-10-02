@@ -13,4 +13,8 @@ public class ComponentMapper<C extends Component> {
 	public C get(Entity entity) {
 		return entity.getComponent(componentType);
 	}
+	
+	public ComponentType getType() {
+		return componentType;
+	}
 }
