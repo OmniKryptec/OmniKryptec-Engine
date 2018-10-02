@@ -10,11 +10,12 @@ import com.google.common.collect.Lists;
 
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityManager;
+import de.omnikryptec.ecs.Family;
 
 public abstract class GroupParallelComponentSystem extends ParallelComponentSystem {
 
-	public GroupParallelComponentSystem(int threads, int activationSize) {
-		super(threads, activationSize);
+	public GroupParallelComponentSystem(Family required, int threads, int activationSize) {
+		super(required, threads, activationSize);
 	}
 
 	@Override

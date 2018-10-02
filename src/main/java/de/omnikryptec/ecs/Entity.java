@@ -1,6 +1,5 @@
 package de.omnikryptec.ecs;
 
-import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,22 +9,27 @@ import de.omnikryptec.ecs.component.ComponentType;
 public class Entity {
     
 	private Map<ComponentType, Component> components;
-	private BitSet bitset;
+	private Family family;
 	
     public Entity() {
         this.components = new HashMap<>();
-        this.bitset = new BitSet();
+        //TODO retrieve an existing family with Family.of?
+        this.family = new Family();
     }
 
     public Entity addComponent(Component component) {
     	ComponentType type = ComponentType.of(component.getClass());
     	this.components.put(type, component);
-    	this.bitset.set(type.getId());
+    	this.family.add(type);
     	return this;
     }
     
 	public <C extends Component>C getComponent(ComponentType componentType) {
 		return (C) components.get(componentType);
+	}
+
+	public Family getFamily() {
+		return family;
 	}
     
 }

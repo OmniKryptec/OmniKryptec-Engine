@@ -6,6 +6,7 @@ import java.util.concurrent.Executors;
 
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityManager;
+import de.omnikryptec.ecs.Family;
 
 public abstract class ParallelComponentSystem extends ComponentSystem{
 
@@ -13,7 +14,8 @@ public abstract class ParallelComponentSystem extends ComponentSystem{
 	private int size;
 	private int activationSize;
 	
-	public ParallelComponentSystem(int threads, int activationSize) {
+	public ParallelComponentSystem(Family required, int threads, int activationSize) {
+		super(required);
 		this.size = threads;
 		this.activationSize = activationSize;
 		this.executorService = Executors.newFixedThreadPool(threads);

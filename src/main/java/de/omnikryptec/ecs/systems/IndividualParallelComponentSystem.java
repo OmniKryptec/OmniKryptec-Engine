@@ -8,11 +8,12 @@ import java.util.concurrent.TimeUnit;
 
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityManager;
+import de.omnikryptec.ecs.Family;
 
 public abstract class IndividualParallelComponentSystem extends ParallelComponentSystem {
 
-	public IndividualParallelComponentSystem(int threads, int activationSize) {
-		super(threads, activationSize);
+	public IndividualParallelComponentSystem(Family required, int threads, int activationSize) {
+		super(required, threads, activationSize);
 	}
 
 	@Override
