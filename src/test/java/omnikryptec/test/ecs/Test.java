@@ -4,19 +4,23 @@ import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityManager;
 
 public class Test {
-	
+
 	public static void main(String[] args) {
 		System.out.println("Started...");
-		SomeDataComponent c = new SomeDataComponent();
-		Entity e = new Entity().addComponent(c);
 		EntityManager manager = new EntityManager();
 		manager.addSystem(new DoSomethingSystem(), false);
-		manager.addEntity(e);
+		int updt = 10000;
+		int ents = 1_000_000;
+		for (int i = 0; i < ents; i++) {
+			manager.addEntity(new Entity().addComponent(new SomeDataComponent()));
+		}
 		System.out.println("Starting updates...");
-		for(int i=0; i<10; i++) {
+		long time = System.currentTimeMillis();
+		for (int i = 0; i < updt; i++) {
 			manager.update(1);
 		}
-		System.out.println(c.alonglong);
+		long time2 = System.currentTimeMillis() - time;
+		System.out.println("Time per update: " + time2 / (double) updt + "ms");
 	}
-	
+
 }
