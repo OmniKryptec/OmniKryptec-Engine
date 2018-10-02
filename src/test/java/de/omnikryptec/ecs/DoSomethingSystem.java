@@ -1,4 +1,4 @@
-package omnikryptec.test.ecs;
+package de.omnikryptec.ecs;
 
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityManager;
