@@ -7,8 +7,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import de.omnikryptec.ecs.Entity;
-import de.omnikryptec.ecs.EntityManager;
 import de.omnikryptec.ecs.Family;
+import de.omnikryptec.ecs.IEntityManager;
 
 public abstract class IndividualParallelComponentSystem extends ParallelComponentSystem {
 
@@ -17,7 +17,7 @@ public abstract class IndividualParallelComponentSystem extends ParallelComponen
 	}
 
 	@Override
-	public void updateThreaded(EntityManager entityManager, List<Entity> entities, float deltaTime) {
+	public void updateThreaded(IEntityManager entityManager, List<Entity> entities, float deltaTime) {
 		final Collection<Callable<Void>> tasks = new ArrayList<>();
 		for (Entity entity : entities) {
 			tasks.add(() -> {

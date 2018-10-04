@@ -16,6 +16,10 @@
 
 package de.omnikryptec.old.postprocessing.stages;
 
+import java.util.List;
+
+import org.lwjgl.opengl.GL30;
+
 import de.omnikryptec.core.display.Display;
 import de.omnikryptec.old.gameobject.Camera;
 import de.omnikryptec.old.gameobject.Light2D;
@@ -27,9 +31,6 @@ import de.omnikryptec.old.renderer.d2.DefaultRenderer2D;
 import de.omnikryptec.old.util.EnumCollection.BlendMode;
 import de.omnikryptec.old.util.EnumCollection.DepthbufferType;
 import de.omnikryptec.old.util.Instance;
-import org.lwjgl.opengl.GL30;
-
-import java.util.List;
 
 public class Light2DProcessor extends PostProcessingStage {
 

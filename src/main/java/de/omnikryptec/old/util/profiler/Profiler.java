@@ -16,14 +16,14 @@
 
 package de.omnikryptec.old.util.profiler;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import de.omnikryptec.old.util.Util;
 import de.omnikryptec.old.util.error.ErrorItem;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class Profiler implements ErrorItem {
     

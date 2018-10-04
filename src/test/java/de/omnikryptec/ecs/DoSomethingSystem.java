@@ -18,7 +18,7 @@ public class DoSomethingSystem extends IterativeComponentSystem{
 	private ComponentMapper<SomeDataComponent> mapper = new ComponentMapper<>(SomeDataComponent.class);
 
 	@Override
-	public void updateIndividual(EntityManager manager, Entity entity, float deltaTime) {
+	public void updateIndividual(IEntityManager manager, Entity entity, float deltaTime) {
 		mapper.get(entity).alonglong++;
 	}
 

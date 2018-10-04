@@ -16,6 +16,10 @@
 
 package de.omnikryptec.old.gameobject;
 
+import org.joml.Matrix4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+
 import de.omnikryptec.old.graphics.GraphicsUtil;
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.renderer.d2.RenderChunk2D;
@@ -26,9 +30,6 @@ import de.omnikryptec.old.test.saving.DataMapSerializable;
 import de.omnikryptec.old.util.EnumCollection.UpdateType;
 import de.omnikryptec.old.util.Maths;
 import de.omnikryptec.old.util.SerializationUtil;
-import org.joml.Matrix4f;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 public class Transform3D implements DataMapSerializable, Positionable3D {
 

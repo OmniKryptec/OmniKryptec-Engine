@@ -16,9 +16,9 @@
 
 package de.omnikryptec.old.shader.base;
 
-import de.omnikryptec.old.util.exceptions.OmniKryptecException;
-
 import java.util.HashMap;
+
+import de.omnikryptec.old.util.exceptions.OmniKryptecException;
 
 public class ShaderGroup {
 	

@@ -16,10 +16,10 @@
 
 package de.omnikryptec.old.animation.ColladaParser.dataStructures;
 
-import org.joml.Matrix4f;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.joml.Matrix4f;
 
 /**
  * Contains the extracted data for a single joint in the model. This stores the

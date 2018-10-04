@@ -16,9 +16,9 @@
 
 package de.omnikryptec.old.animation;
 
-import org.joml.Matrix4f;
-
 import java.util.ArrayList;
+
+import org.joml.Matrix4f;
 
 /**
  * Joint

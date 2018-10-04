@@ -16,19 +16,30 @@
 
 package de.omnikryptec.old.resource.loader;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import org.reflections.Reflections;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.codemakers.properties.XMLProperties;
 import de.omnikryptec.old.resource.loader.annotations.DefaultLoader;
 import de.omnikryptec.old.resource.texture.SimpleTexture;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
-import org.reflections.Reflections;
-
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * ResourceLoader

@@ -16,15 +16,16 @@
 
 package de.omnikryptec.old.postprocessing.stages;
 
+import java.util.List;
+
+import org.joml.Vector4f;
+
 import de.omnikryptec.core.display.Display;
 import de.omnikryptec.old.postprocessing.main.FrameBufferObject;
 import de.omnikryptec.old.postprocessing.main.PostProcessingStageShaded;
 import de.omnikryptec.old.shader.base.Shader;
 import de.omnikryptec.old.shader.files.postprocessing.FilterShader;
 import de.omnikryptec.old.util.EnumCollection.DepthbufferType;
-import org.joml.Vector4f;
-
-import java.util.List;
 
 public class FilterStage extends PostProcessingStageShaded {
 

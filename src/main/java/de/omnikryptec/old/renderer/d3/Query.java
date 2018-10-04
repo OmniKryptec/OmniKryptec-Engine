@@ -16,12 +16,13 @@
 
 package de.omnikryptec.old.renderer.d3;
 
-import de.omnikryptec.old.graphics.OpenGL;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
-import java.util.ArrayList;
-import java.util.List;
+import de.omnikryptec.old.graphics.OpenGL;
 
 public class Query {
 	

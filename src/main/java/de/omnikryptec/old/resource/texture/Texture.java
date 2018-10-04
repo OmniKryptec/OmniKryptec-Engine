@@ -16,9 +16,10 @@
 
 package de.omnikryptec.old.resource.texture;
 
+import org.lwjgl.opengl.GL11;
+
 import de.omnikryptec.old.graphics.OpenGL;
 import de.omnikryptec.old.resource.loader.ResourceObject;
-import org.lwjgl.opengl.GL11;
 
 public abstract class Texture implements ResourceObject {
 

@@ -16,6 +16,14 @@
 
 package de.omnikryptec.old.test;
 
+import java.nio.FloatBuffer;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import org.joml.Vector3f;
+import org.lwjgl.opencl.CL10;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.codemakers.lang.LanguageManager;
 import de.omnikryptec.core.display.Display;
@@ -49,15 +57,13 @@ import de.omnikryptec.old.util.Instance;
 import de.omnikryptec.old.util.NativesLoader;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
-import de.omnikryptec.opencl.*;
-
-import org.joml.Vector3f;
-import org.lwjgl.opencl.CL10;
-
-import java.nio.FloatBuffer;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
+import de.omnikryptec.opencl.CLCommandQueue;
+import de.omnikryptec.opencl.CLContext;
+import de.omnikryptec.opencl.CLDevice;
+import de.omnikryptec.opencl.CLKernel;
+import de.omnikryptec.opencl.CLPlatform;
+import de.omnikryptec.opencl.CLProgram;
+import de.omnikryptec.opencl.OpenCL;
 
 
 /**

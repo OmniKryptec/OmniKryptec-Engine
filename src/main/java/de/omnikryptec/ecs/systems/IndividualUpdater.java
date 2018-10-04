@@ -1,9 +1,9 @@
 package de.omnikryptec.ecs.systems;
 
 import de.omnikryptec.ecs.Entity;
-import de.omnikryptec.ecs.EntityManager;
+import de.omnikryptec.ecs.IEntityManager;
 
 public interface IndividualUpdater {
 	
-	void updateIndividual(EntityManager manager, Entity entity, float deltaTime);
+	void updateIndividual(IEntityManager manager, Entity entity, float deltaTime);
 }

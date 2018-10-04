@@ -16,13 +16,14 @@
 
 package de.omnikryptec.old.resource.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.joml.Vector3f;
+
 import de.omnikryptec.old.renderer.d3.Renderer;
 import de.omnikryptec.old.renderer.d3.RendererRegistration;
 import de.omnikryptec.old.resource.texture.Texture;
-import org.joml.Vector3f;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class Material {
 	

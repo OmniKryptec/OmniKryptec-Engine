@@ -16,8 +16,9 @@
 
 package de.omnikryptec.old.physics;
 
-import de.omnikryptec.old.util.ConverterUtil;
 import org.dyn4j.geometry.Rectangle;
+
+import de.omnikryptec.old.util.ConverterUtil;
 
 public class AdvancedRectangle extends Rectangle{
 	

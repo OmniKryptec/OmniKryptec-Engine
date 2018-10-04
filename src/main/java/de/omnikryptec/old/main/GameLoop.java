@@ -16,6 +16,8 @@
 
 package de.omnikryptec.old.main;
 
+import java.util.Vector;
+
 import de.omnikryptec.core.display.Display;
 import de.omnikryptec.old.audio.AudioManager;
 import de.omnikryptec.old.event.eventV2.engineevents.FrameEvent;
@@ -26,8 +28,6 @@ import de.omnikryptec.old.graphics.GraphicsUtil;
 import de.omnikryptec.old.util.EnumCollection.GameLoopShutdownOption;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
-
-import java.util.Vector;
 
 public abstract class GameLoop {
 

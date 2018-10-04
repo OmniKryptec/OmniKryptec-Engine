@@ -16,9 +16,6 @@
 
 package de.omnikryptec.old.event.input;
 
-import de.omnikryptec.old.settings.KeySettings;
-import org.lwjgl.glfw.GLFW;
-
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -26,6 +23,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+import org.lwjgl.glfw.GLFW;
+
+import de.omnikryptec.old.settings.KeySettings;
 
 /**
  * JoystickHandler

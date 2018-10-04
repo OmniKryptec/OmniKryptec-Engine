@@ -16,6 +16,8 @@
 
 package de.omnikryptec.old.resource.loader;
 
+import java.util.Properties;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.old.animation.ColladaParser.colladaLoader.ColladaLoader;
 import de.omnikryptec.old.animation.ColladaParser.dataStructures.AnimatedModelData;
@@ -23,8 +25,6 @@ import de.omnikryptec.old.resource.loader.annotations.DefaultLoader;
 import de.omnikryptec.old.settings.GameSettings;
 import de.omnikryptec.old.util.Instance;
 import de.omnikryptec.old.util.logger.Logger;
-
-import java.util.Properties;
 
 /**
  * DefaultAnimatedModelDataLoader

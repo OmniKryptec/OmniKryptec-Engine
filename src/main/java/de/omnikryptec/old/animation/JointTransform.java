@@ -16,9 +16,10 @@
 
 package de.omnikryptec.old.animation;
 
-import de.omnikryptec.old.util.Quaternion;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+
+import de.omnikryptec.old.util.Quaternion;
 
 /**
  * JointTransform

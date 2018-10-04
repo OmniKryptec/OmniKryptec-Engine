@@ -16,6 +16,14 @@
 
 package de.omnikryptec.old.test;
 
+import java.util.Random;
+import java.util.zip.Deflater;
+
+import org.joml.Matrix3f;
+import org.joml.Quaternionf;
+import org.joml.Vector4f;
+import org.lwjgl.glfw.GLFW;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.display.DisplayManager;
 import de.omnikryptec.core.display.GLFWInfo;
@@ -47,13 +55,6 @@ import de.omnikryptec.old.util.NativesLoader;
 import de.omnikryptec.old.util.OSUtil;
 import de.omnikryptec.old.util.logger.Logger;
 import de.omnikryptec.old.util.profiler.LiveProfiler;
-import org.joml.Matrix3f;
-import org.joml.Quaternionf;
-import org.joml.Vector4f;
-import org.lwjgl.glfw.GLFW;
-
-import java.util.Random;
-import java.util.zip.Deflater;
 
 /**
  * AnimationTest

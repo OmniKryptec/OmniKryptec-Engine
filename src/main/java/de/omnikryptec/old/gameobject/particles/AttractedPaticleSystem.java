@@ -16,12 +16,13 @@
 
 package de.omnikryptec.old.gameobject.particles;
 
+import java.util.LinkedList;
+
+import org.joml.Vector3f;
+
 import de.omnikryptec.old.gameobject.GameObject3D;
 import de.omnikryptec.old.resource.texture.ParticleAtlas;
 import de.omnikryptec.old.util.EnumCollection.RenderType;
-import org.joml.Vector3f;
-
-import java.util.LinkedList;
 
 /**
  * AttractedPaticleSystem

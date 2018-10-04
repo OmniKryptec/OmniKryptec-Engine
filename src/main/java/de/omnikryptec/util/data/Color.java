@@ -18,7 +18,7 @@ package de.omnikryptec.util.data;
 
 import org.joml.Vector4f;
 
-public class Color {
+public class Color implements Cloneable{
 
     private Vector4f color = new Vector4f();
 
@@ -50,15 +50,19 @@ public class Color {
         this.color = color;
     }
 
-    public Color(Color c) {
-        this(c.getArray());
+    /**
+     * Cloning constructor
+     * @param c to be cloned
+     */
+    private Color(Color c) {
+    	this.color.set(c.color);
     }
 
     public Color(java.awt.Color color) {
         this(color.getRGBComponents(null));
     }
 
-    public final Vector4f getNewVector4f() {
+    public final Vector4f getVector4fNew() {
         return new Vector4f(color);
     }
 
@@ -129,7 +133,7 @@ public class Color {
         return this;
     }
 
-    public final Color setFrom(java.awt.Color color) {
+    public final Color setFromAWT(java.awt.Color color) {
         setFrom(color.getRGBComponents(null));
         return this;
     }
@@ -138,7 +142,8 @@ public class Color {
         return new java.awt.Color(getR(), getG(), getB(), getA());
     }
 
-    public final Color getClone() {
+    @Override
+    public final Color clone() {
         return new Color(this);
     }
 

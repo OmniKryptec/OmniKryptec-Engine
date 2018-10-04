@@ -16,13 +16,14 @@
 
 package de.omnikryptec.old.audio;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import javax.swing.Timer;
+
 import de.omnikryptec.old.util.Util;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
-
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * AudioPlaylist

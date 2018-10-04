@@ -9,8 +9,8 @@ import java.util.concurrent.TimeUnit;
 import com.google.common.collect.Lists;
 
 import de.omnikryptec.ecs.Entity;
-import de.omnikryptec.ecs.EntityManager;
 import de.omnikryptec.ecs.Family;
+import de.omnikryptec.ecs.IEntityManager;
 
 public abstract class GroupParallelComponentSystem extends ParallelComponentSystem {
 
@@ -19,7 +19,7 @@ public abstract class GroupParallelComponentSystem extends ParallelComponentSyst
 	}
 
 	@Override
-	public void updateThreaded(EntityManager entityManager, List<Entity> entities, float deltaTime) {
+	public void updateThreaded(IEntityManager entityManager, List<Entity> entities, float deltaTime) {
 		List<List<Entity>> lists = Lists.partition(entities, (int) Math.ceil(entities.size() / (double) numThreads()));
 		Collection<Callable<Void>> tasks = new ArrayList<>();
 		for (List<Entity> el : lists) {

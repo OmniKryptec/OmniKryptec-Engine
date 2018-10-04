@@ -16,14 +16,21 @@
 
 package de.omnikryptec.old.graphics;
 
-import de.omnikryptec.old.resource.texture.Texture;
-import de.omnikryptec.old.util.logger.LogLevel;
-import de.omnikryptec.old.util.logger.Logger;
-import org.lwjgl.opengl.*;
-
 import java.lang.reflect.Field;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL31;
+import org.lwjgl.opengl.GL33;
+
+import de.omnikryptec.old.resource.texture.Texture;
+import de.omnikryptec.old.util.logger.LogLevel;
+import de.omnikryptec.old.util.logger.Logger;
 
 public class OpenGL {
 	

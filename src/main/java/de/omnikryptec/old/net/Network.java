@@ -16,12 +16,12 @@
 
 package de.omnikryptec.old.net;
 
-import de.omnikryptec.old.util.logger.Logger;
-
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+
+import de.omnikryptec.old.util.logger.Logger;
 
 /**
  * Some Network Constants and methods

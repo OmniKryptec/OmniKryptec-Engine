@@ -16,10 +16,10 @@
 
 package de.omnikryptec.old.gui;
 
-import de.omnikryptec.old.graphics.SpriteBatch;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import de.omnikryptec.old.graphics.SpriteBatch;
 
 public abstract class GuiContainer {
 

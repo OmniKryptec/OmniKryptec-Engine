@@ -16,16 +16,18 @@
 
 package de.omnikryptec.old.swing;
 
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Random;
+
+import javax.imageio.ImageIO;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.old.util.logger.Commands;
 import de.omnikryptec.old.util.logger.Logger;
 import de.omnikryptec.util.data.Color;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * PieChartGenerator

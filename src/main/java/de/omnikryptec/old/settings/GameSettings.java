@@ -16,6 +16,13 @@
 
 package de.omnikryptec.old.settings;
 
+import java.util.HashMap;
+
+import org.jdom2.Element;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
+
 import de.codemakers.serialization.XMLable;
 import de.codemakers.util.Returner;
 import de.omnikryptec.core.display.Display;
@@ -25,12 +32,6 @@ import de.omnikryptec.old.postprocessing.main.FBOFactory;
 import de.omnikryptec.old.postprocessing.main.FrameBufferObject;
 import de.omnikryptec.old.postprocessing.main.RenderTarget;
 import de.omnikryptec.old.util.EnumCollection.RenderType;
-import org.jdom2.Element;
-import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
-
-import java.util.HashMap;
 
 /**
  * GameSettings

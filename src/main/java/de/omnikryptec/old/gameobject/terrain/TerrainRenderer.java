@@ -16,6 +16,10 @@
 
 package de.omnikryptec.old.gameobject.terrain;
 
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+
 import de.omnikryptec.old.gameobject.Entity;
 import de.omnikryptec.old.graphics.GraphicsUtil;
 import de.omnikryptec.old.main.AbstractScene3D;
@@ -30,9 +34,6 @@ import de.omnikryptec.old.util.FrustrumFilter;
 import de.omnikryptec.old.util.KeyArrayHashMap;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
-import org.lwjgl.opengl.GL11;
-
-import java.util.List;
 
 /**
  *

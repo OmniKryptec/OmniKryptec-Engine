@@ -16,16 +16,17 @@
 
 package de.omnikryptec.old.postprocessing.main;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.lwjgl.opengl.GL11;
+
 import de.omnikryptec.core.display.Display;
 import de.omnikryptec.old.graphics.GraphicsUtil;
 import de.omnikryptec.old.shader.files.postprocessing.DebugShader;
 import de.omnikryptec.old.util.EnumCollection.BlendMode;
 import de.omnikryptec.old.util.EnumCollection.DepthbufferType;
-import org.lwjgl.opengl.GL11;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class PostProcessingDebugStage extends PostProcessingStage {
 

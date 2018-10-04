@@ -16,16 +16,22 @@
 
 package de.omnikryptec.old.util;
 
-import de.omnikryptec.old.gameobject.GameObject;
-import de.omnikryptec.old.util.logger.Logger;
-import de.omnikryptec.util.data.Color;
-
-import org.joml.*;
-
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
+import org.joml.Quaternionf;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
+
+import de.omnikryptec.old.gameobject.GameObject;
+import de.omnikryptec.old.util.logger.Logger;
+import de.omnikryptec.util.data.Color;
 
 /**
  *

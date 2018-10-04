@@ -16,10 +16,11 @@
 
 package de.omnikryptec.old.gameobject;
 
+import org.joml.Vector2f;
+
 import de.omnikryptec.old.renderer.d2.RenderChunk2D;
 import de.omnikryptec.old.settings.GameSettings;
 import de.omnikryptec.old.util.Maths;
-import org.joml.Vector2f;
 
 public class Transform2D implements Positionable2D{
 	

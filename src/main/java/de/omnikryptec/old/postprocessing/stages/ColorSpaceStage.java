@@ -16,15 +16,16 @@
 
 package de.omnikryptec.old.postprocessing.stages;
 
+import java.util.List;
+
+import org.joml.Vector3f;
+
 import de.omnikryptec.core.display.Display;
 import de.omnikryptec.old.postprocessing.main.FrameBufferObject;
 import de.omnikryptec.old.postprocessing.main.PostProcessingStageShaded;
 import de.omnikryptec.old.shader.base.Shader;
 import de.omnikryptec.old.shader.files.postprocessing.ColorSpaceShader;
 import de.omnikryptec.old.util.EnumCollection.DepthbufferType;
-import org.joml.Vector3f;
-
-import java.util.List;
 
 public class ColorSpaceStage extends PostProcessingStageShaded {
 

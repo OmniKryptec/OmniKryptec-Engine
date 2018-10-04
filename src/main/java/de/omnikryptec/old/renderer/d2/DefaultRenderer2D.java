@@ -16,6 +16,9 @@
 
 package de.omnikryptec.old.renderer.d2;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import de.omnikryptec.old.event.eventV2.EventSubscription;
 import de.omnikryptec.old.event.eventV2.engineevents.ResizeEvent;
 import de.omnikryptec.old.gameobject.Light2D;
@@ -27,12 +30,9 @@ import de.omnikryptec.old.main.ChunkCoord2D;
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.settings.GameSettings;
 import de.omnikryptec.old.util.EnumCollection.BlendMode;
-import de.omnikryptec.util.data.Color;
 import de.omnikryptec.old.util.FrustrumFilter;
 import de.omnikryptec.old.util.Instance;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import de.omnikryptec.util.data.Color;
 
 public class DefaultRenderer2D implements Renderer2D {
 

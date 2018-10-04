@@ -16,14 +16,15 @@
 
 package de.omnikryptec.old.physics;
 
+import org.dyn4j.dynamics.Body;
+import org.dyn4j.geometry.Vector2;
+import org.joml.Vector2f;
+
 import de.omnikryptec.old.gameobject.GameObject2D;
 import de.omnikryptec.old.gameobject.Transform2D;
 import de.omnikryptec.old.settings.GameSettings;
 import de.omnikryptec.old.util.ConverterUtil;
 import de.omnikryptec.old.util.Instance;
-import org.dyn4j.dynamics.Body;
-import org.dyn4j.geometry.Vector2;
-import org.joml.Vector2f;
 
 public class AdvancedBody extends Body{
 

@@ -16,12 +16,17 @@
 
 package de.omnikryptec.old.event.input;
 
+import java.util.Arrays;
+
+import org.joml.Vector2f;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWCursorEnterCallback;
+import org.lwjgl.glfw.GLFWCursorPosCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
+import org.lwjgl.glfw.GLFWScrollCallback;
+
 import de.omnikryptec.core.display.Display;
 import de.omnikryptec.old.settings.KeySettings;
-import org.joml.Vector2f;
-import org.lwjgl.glfw.*;
-
-import java.util.Arrays;
 
 /**
  * MouseHandler

@@ -16,21 +16,26 @@
 
 package de.omnikryptec.old.util.logger;
 
-import de.codemakers.io.file.AdvancedFile;
-import de.codemakers.lang.LanguageManager;
-import de.codemakers.lang.LanguageReloader;
-import de.omnikryptec.old.swing.JCheckBoxList;
-import de.omnikryptec.old.util.logger.LogEntryFormatter.LogEntryFormatTile;
-
-import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.time.Instant;
 import java.util.HashMap;
+
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.EtchedBorder;
+
+import de.codemakers.io.file.AdvancedFile;
+import de.codemakers.lang.LanguageManager;
+import de.codemakers.lang.LanguageReloader;
+import de.omnikryptec.old.swing.JCheckBoxList;
+import de.omnikryptec.old.util.logger.LogEntryFormatter.LogEntryFormatTile;
 
 /**
  *

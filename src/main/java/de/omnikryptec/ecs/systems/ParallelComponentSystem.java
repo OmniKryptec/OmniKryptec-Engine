@@ -5,8 +5,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.omnikryptec.ecs.Entity;
-import de.omnikryptec.ecs.EntityManager;
 import de.omnikryptec.ecs.Family;
+import de.omnikryptec.ecs.IEntityManager;
 
 public abstract class ParallelComponentSystem extends ComponentSystem implements IndividualUpdater{
 
@@ -34,7 +34,7 @@ public abstract class ParallelComponentSystem extends ComponentSystem implements
 	}
 	
 	@Override
-	public final void update(EntityManager entityManager, List<Entity> entities, float deltaTime) {
+	public final void update(IEntityManager entityManager, List<Entity> entities, float deltaTime) {
 		if(entities.size()<activationSize) {
 			for(Entity e : entities) {
 				updateIndividual(entityManager, e, deltaTime);
@@ -44,6 +44,6 @@ public abstract class ParallelComponentSystem extends ComponentSystem implements
 		}
 	}
 	
-	public abstract void updateThreaded(EntityManager entityManager, List<Entity> entities, float deltaTime);
+	public abstract void updateThreaded(IEntityManager entityManager, List<Entity> entities, float deltaTime);
 	
 }

@@ -16,6 +16,8 @@
 
 package de.omnikryptec.old.test;
 
+import java.util.List;
+
 import de.omnikryptec.old.gameobject.Entity;
 import de.omnikryptec.old.graphics.GraphicsUtil;
 import de.omnikryptec.old.main.AbstractScene3D;
@@ -28,8 +30,6 @@ import de.omnikryptec.old.shader.base.Shader;
 import de.omnikryptec.old.util.EnumCollection.DepthbufferType;
 import de.omnikryptec.old.util.FrustrumFilter;
 import de.omnikryptec.old.util.KeyArrayHashMap;
-
-import java.util.List;
 
 public class TestRenderer extends Renderer{
 

@@ -16,12 +16,12 @@
 
 package de.omnikryptec.opencl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.opencl.CL10;
 import org.lwjgl.opencl.CLContextCallback;
 import org.lwjgl.system.MemoryUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CLContext {
 

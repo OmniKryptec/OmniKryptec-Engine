@@ -18,12 +18,12 @@ package de.omnikryptec.old.animation.loaders;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.old.animation.AnimatedModel;
+import de.omnikryptec.old.animation.Joint;
 import de.omnikryptec.old.animation.ColladaParser.colladaLoader.ColladaLoader;
 import de.omnikryptec.old.animation.ColladaParser.dataStructures.AnimatedModelData;
 import de.omnikryptec.old.animation.ColladaParser.dataStructures.JointData;
 import de.omnikryptec.old.animation.ColladaParser.dataStructures.MeshData;
 import de.omnikryptec.old.animation.ColladaParser.dataStructures.SkeletonData;
-import de.omnikryptec.old.animation.Joint;
 import de.omnikryptec.old.renderer.d3.Renderer;
 import de.omnikryptec.old.renderer.d3.RendererRegistration;
 import de.omnikryptec.old.resource.model.Model;

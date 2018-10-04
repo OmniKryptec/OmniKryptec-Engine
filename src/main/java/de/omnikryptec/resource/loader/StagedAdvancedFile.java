@@ -16,9 +16,9 @@
 
 package de.omnikryptec.resource.loader;
 
-import de.codemakers.io.file.AdvancedFile;
-
 import java.util.Objects;
+
+import de.codemakers.io.file.AdvancedFile;
 
 public class StagedAdvancedFile {
     

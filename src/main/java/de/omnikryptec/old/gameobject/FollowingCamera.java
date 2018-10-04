@@ -16,12 +16,13 @@
 
 package de.omnikryptec.old.gameobject;
 
-import de.omnikryptec.old.event.input.InputManager;
-import de.omnikryptec.old.main.OmniKryptecEngine;
-import de.omnikryptec.old.util.Maths;
 import org.joml.AxisAngle4f;
 import org.joml.Math;
 import org.joml.Vector3f;
+
+import de.omnikryptec.old.event.input.InputManager;
+import de.omnikryptec.old.main.OmniKryptecEngine;
+import de.omnikryptec.old.util.Maths;
 
 /**
  *

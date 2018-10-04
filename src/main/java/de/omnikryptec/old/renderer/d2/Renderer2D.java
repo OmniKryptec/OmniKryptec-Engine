@@ -16,12 +16,12 @@
 
 package de.omnikryptec.old.renderer.d2;
 
+import java.util.Comparator;
+import java.util.HashMap;
+
 import de.omnikryptec.old.gameobject.Sprite;
 import de.omnikryptec.old.main.AbstractScene2D;
 import de.omnikryptec.old.main.ChunkCoord2D;
-
-import java.util.Comparator;
-import java.util.HashMap;
 
 public interface Renderer2D {
 	

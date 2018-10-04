@@ -16,12 +16,12 @@
 
 package de.omnikryptec.old.shader.modules;
 
-import de.omnikryptec.old.util.logger.Logger;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+
+import de.omnikryptec.old.util.logger.Logger;
 
 public class Module {
 	private String name;

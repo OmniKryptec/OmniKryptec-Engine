@@ -9,7 +9,7 @@ public class Test {
 		System.out.println("Started...");
 		EntityManager manager = new EntityManager();
 		DoSomethingSystem system = new DoSomethingSystem();
-		manager.addSystem(system, false);
+		manager.addSystem(system);
 		int updt = 100;
 		int ents = 1_000;
 		for (int i = 0; i < ents; i++) {

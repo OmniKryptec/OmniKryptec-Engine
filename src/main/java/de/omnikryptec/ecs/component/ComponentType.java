@@ -15,6 +15,10 @@ public class ComponentType {
 		return componentTypes.get(clazz);
 	}
 	
+	public static int getTypes() {
+		return index;
+	}
+	
 	private int id;
 	
 	private ComponentType() {

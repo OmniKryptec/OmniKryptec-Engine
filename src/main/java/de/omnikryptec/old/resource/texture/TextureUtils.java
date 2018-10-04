@@ -16,17 +16,24 @@
 
 package de.omnikryptec.old.resource.texture;
 
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.util.Properties;
+
+import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL14;
+import org.lwjgl.opengl.GL30;
+
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
 import de.omnikryptec.old.graphics.OpenGL;
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.util.Util;
 import de.omnikryptec.old.util.logger.Logger;
-import org.lwjgl.opengl.*;
-
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.util.Properties;
 
 public class TextureUtils {
 

@@ -16,9 +16,10 @@
 
 package de.omnikryptec.old.util;
 
-import de.omnikryptec.old.settings.GameSettings;
 import org.dyn4j.geometry.Vector2;
 import org.joml.Vector2f;
+
+import de.omnikryptec.old.settings.GameSettings;
 
 /**
  *

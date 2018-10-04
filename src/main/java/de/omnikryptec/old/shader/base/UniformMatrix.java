@@ -16,11 +16,11 @@
 
 package de.omnikryptec.old.shader.base;
 
+import java.nio.FloatBuffer;
+
 import org.joml.Matrix4fc;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
-
-import java.nio.FloatBuffer;
 
 public class UniformMatrix extends Uniform {
 

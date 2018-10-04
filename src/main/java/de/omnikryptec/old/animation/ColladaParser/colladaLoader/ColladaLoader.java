@@ -16,13 +16,18 @@
 
 package de.omnikryptec.old.animation.ColladaParser.colladaLoader;
 
-import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.old.animation.ColladaParser.dataStructures.*;
-import de.omnikryptec.old.util.Instance;
-import de.omnikryptec.old.util.XMLUtil;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.joml.Matrix4f;
+
+import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.old.animation.ColladaParser.dataStructures.AnimatedModelData;
+import de.omnikryptec.old.animation.ColladaParser.dataStructures.AnimationData;
+import de.omnikryptec.old.animation.ColladaParser.dataStructures.MeshData;
+import de.omnikryptec.old.animation.ColladaParser.dataStructures.SkeletonData;
+import de.omnikryptec.old.animation.ColladaParser.dataStructures.SkinningData;
+import de.omnikryptec.old.util.Instance;
+import de.omnikryptec.old.util.XMLUtil;
 
 /**
  * Loads a model from a collada XML file.

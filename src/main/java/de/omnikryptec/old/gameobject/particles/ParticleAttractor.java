@@ -16,9 +16,10 @@
 
 package de.omnikryptec.old.gameobject.particles;
 
+import org.joml.Vector3f;
+
 import de.omnikryptec.old.gameobject.GameObject;
 import de.omnikryptec.old.gameobject.GameObject3D;
-import org.joml.Vector3f;
 
 public class ParticleAttractor {
 

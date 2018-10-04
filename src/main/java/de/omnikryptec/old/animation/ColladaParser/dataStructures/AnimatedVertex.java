@@ -16,8 +16,9 @@
 
 package de.omnikryptec.old.animation.ColladaParser.dataStructures;
 
-import de.omnikryptec.old.resource.objConverter.Vertex;
 import org.joml.Vector3f;
+
+import de.omnikryptec.old.resource.objConverter.Vertex;
 
 public class AnimatedVertex extends Vertex {
 

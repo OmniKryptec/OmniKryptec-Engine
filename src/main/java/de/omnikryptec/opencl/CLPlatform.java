@@ -16,13 +16,13 @@
 
 package de.omnikryptec.opencl;
 
+import java.nio.IntBuffer;
+import java.util.HashMap;
+
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.opencl.CL;
 import org.lwjgl.opencl.CL10;
 import org.lwjgl.opencl.CLCapabilities;
-
-import java.nio.IntBuffer;
-import java.util.HashMap;
 
 public class CLPlatform {
 

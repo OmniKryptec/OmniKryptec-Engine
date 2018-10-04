@@ -16,11 +16,12 @@
 
 package de.omnikryptec.old.physics;
 
+import org.dyn4j.dynamics.ContinuousDetectionMode;
+import org.dyn4j.dynamics.World;
+
 import de.omnikryptec.old.graphics.GraphicsUtil;
 import de.omnikryptec.old.settings.GameSettings;
 import de.omnikryptec.old.util.Instance;
-import org.dyn4j.dynamics.ContinuousDetectionMode;
-import org.dyn4j.dynamics.World;
 
 public class Dyn4JPhysicsWorld extends PhysicsWorld {
 

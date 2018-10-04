@@ -16,11 +16,12 @@
 
 package de.omnikryptec.old.event.input;
 
-import de.omnikryptec.old.settings.KeySettings;
+import java.util.Arrays;
+
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWKeyCallback;
 
-import java.util.Arrays;
+import de.omnikryptec.old.settings.KeySettings;
 
 /**
  * KeyboardHandler

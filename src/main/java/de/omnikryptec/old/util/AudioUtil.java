@@ -16,9 +16,9 @@
 
 package de.omnikryptec.old.util;
 
-import org.lwjgl.openal.AL10;
-
 import javax.sound.sampled.AudioFormat;
+
+import org.lwjgl.openal.AL10;
 
 /**
  *

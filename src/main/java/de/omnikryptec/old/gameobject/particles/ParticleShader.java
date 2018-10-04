@@ -16,7 +16,11 @@
 
 package de.omnikryptec.old.gameobject.particles;
 
-import de.omnikryptec.old.shader.base.*;
+import de.omnikryptec.old.shader.base.Attribute;
+import de.omnikryptec.old.shader.base.Shader;
+import de.omnikryptec.old.shader.base.UniformFloat;
+import de.omnikryptec.old.shader.base.UniformMatrix;
+import de.omnikryptec.old.shader.base.UniformVec4;
 
 public class ParticleShader extends Shader {
 

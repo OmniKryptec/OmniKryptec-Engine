@@ -16,7 +16,7 @@
 
 package de.omnikryptec.old.util.debug;
 
-import javax.swing.*;
+import javax.swing.Timer;
 
 /**
  * Listener which does something if a variable gets changed

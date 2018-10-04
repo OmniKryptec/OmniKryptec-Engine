@@ -16,14 +16,15 @@
 
 package de.omnikryptec.old.animation.ColladaParser.colladaLoader;
 
-import de.omnikryptec.old.animation.ColladaParser.dataStructures.SkinningData;
-import de.omnikryptec.old.animation.ColladaParser.dataStructures.VertexSkinData;
-import de.omnikryptec.old.util.XMLUtil;
-import org.jdom2.Element;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.jdom2.Element;
+
+import de.omnikryptec.old.animation.ColladaParser.dataStructures.SkinningData;
+import de.omnikryptec.old.animation.ColladaParser.dataStructures.VertexSkinData;
+import de.omnikryptec.old.util.XMLUtil;
 
 /**
  * Loads a Skin

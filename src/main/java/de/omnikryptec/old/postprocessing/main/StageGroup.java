@@ -16,12 +16,13 @@
 
 package de.omnikryptec.old.postprocessing.main;
 
-import de.omnikryptec.core.display.Display;
-import de.omnikryptec.old.util.EnumCollection.DepthbufferType;
-import org.lwjgl.opengl.GL30;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.lwjgl.opengl.GL30;
+
+import de.omnikryptec.core.display.Display;
+import de.omnikryptec.old.util.EnumCollection.DepthbufferType;
 
 public class StageGroup extends PostProcessingStage {
 

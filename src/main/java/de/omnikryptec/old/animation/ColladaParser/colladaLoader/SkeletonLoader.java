@@ -16,15 +16,16 @@
 
 package de.omnikryptec.old.animation.ColladaParser.colladaLoader;
 
-import de.omnikryptec.old.animation.ColladaParser.dataStructures.JointData;
-import de.omnikryptec.old.animation.ColladaParser.dataStructures.SkeletonData;
-import de.omnikryptec.old.util.XMLUtil;
+import java.nio.FloatBuffer;
+import java.util.List;
+
 import org.jdom2.Element;
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
 
-import java.nio.FloatBuffer;
-import java.util.List;
+import de.omnikryptec.old.animation.ColladaParser.dataStructures.JointData;
+import de.omnikryptec.old.animation.ColladaParser.dataStructures.SkeletonData;
+import de.omnikryptec.old.util.XMLUtil;
 
 /**
  * Loads the Skeleton

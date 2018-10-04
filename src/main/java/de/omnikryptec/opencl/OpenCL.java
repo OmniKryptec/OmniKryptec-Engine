@@ -16,13 +16,18 @@
 
 package de.omnikryptec.opencl;
 
-import org.lwjgl.PointerBuffer;
-import org.lwjgl.opencl.*;
-import org.lwjgl.system.MemoryStack;
-
 import java.lang.reflect.Field;
 import java.nio.IntBuffer;
 import java.util.HashMap;
+
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.opencl.CL;
+import org.lwjgl.opencl.CL10;
+import org.lwjgl.opencl.CL12;
+import org.lwjgl.opencl.CL20;
+import org.lwjgl.opencl.CL21;
+import org.lwjgl.opencl.CL22;
+import org.lwjgl.system.MemoryStack;
 
 public class OpenCL {
 

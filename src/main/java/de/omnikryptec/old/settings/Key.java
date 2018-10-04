@@ -16,10 +16,11 @@
 
 package de.omnikryptec.old.settings;
 
-import de.omnikryptec.old.event.input.InputManager;
-import de.omnikryptec.old.main.OmniKryptecEngine;
 import org.jdom2.Element;
 import org.lwjgl.glfw.GLFW;
+
+import de.omnikryptec.old.event.input.InputManager;
+import de.omnikryptec.old.main.OmniKryptecEngine;
 
 /**
  * Key

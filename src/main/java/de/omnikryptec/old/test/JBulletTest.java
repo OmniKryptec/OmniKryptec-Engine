@@ -16,6 +16,15 @@
 
 package de.omnikryptec.old.test;
 
+import java.util.HashMap;
+
+import javax.vecmath.Matrix4f;
+import javax.vecmath.Quat4f;
+import javax.vecmath.Vector3f;
+
+import org.joml.Quaternionf;
+import org.lwjgl.glfw.GLFW;
+
 import com.bulletphysics.collision.broadphase.BroadphaseInterface;
 import com.bulletphysics.collision.broadphase.DbvtBroadphase;
 import com.bulletphysics.collision.dispatch.CollisionConfiguration;
@@ -49,13 +58,6 @@ import de.omnikryptec.old.util.ConverterUtil;
 import de.omnikryptec.old.util.NativesLoader;
 import de.omnikryptec.old.util.PhysicsUtil;
 import de.omnikryptec.old.util.logger.Logger;
-import org.joml.Quaternionf;
-import org.lwjgl.glfw.GLFW;
-
-import javax.vecmath.Matrix4f;
-import javax.vecmath.Quat4f;
-import javax.vecmath.Vector3f;
-import java.util.HashMap;
 
 /**
  *

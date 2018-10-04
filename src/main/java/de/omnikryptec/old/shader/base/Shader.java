@@ -16,6 +16,17 @@
 
 package de.omnikryptec.old.shader.base;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.joml.Vector4f;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL32;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.old.gameobject.Entity;
 import de.omnikryptec.old.graphics.OpenGL;
@@ -29,16 +40,6 @@ import de.omnikryptec.old.util.Instance;
 import de.omnikryptec.old.util.exceptions.OmniKryptecException;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
-import org.joml.Vector4f;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL32;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Shader {
 

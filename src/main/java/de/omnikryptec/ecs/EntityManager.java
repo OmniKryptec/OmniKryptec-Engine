@@ -10,66 +10,77 @@ import com.google.common.collect.ListMultimap;
 import de.omnikryptec.ecs.systems.ComponentSystem;
 import de.omnikryptec.util.data.CountingMap;
 
-public class EntityManager {
+public class EntityManager implements IEntityManager {
 
 	private CountingMap<Family> systemsPerFamilies;
-	private ListMultimap<Family, Entity> entitiesForSystems;
+	private ListMultimap<Family, Entity> entitiesPerFamily;
+	private ListMultimap<Entity, Family> familiesPerEntity;
 	private List<ComponentSystem> systems;
 	private Collection<Entity> all;
 
 	public EntityManager() {
-		this.entitiesForSystems = ArrayListMultimap.create();
+		this.entitiesPerFamily = ArrayListMultimap.create();
 		this.systems = new ArrayList<>();
 		this.all = new ArrayList<>();
-		systemsPerFamilies = new CountingMap<>();
+		this.systemsPerFamilies = new CountingMap<>();
 	}
 
+	@Override
 	public void addEntity(Entity entity) {
 		for (ComponentSystem system : systems) {
-			if (entity.getFamily().contains(system.getRequiredComponents())) {
-				entitiesForSystems.put(system.getRequiredComponents(), entity);
+			if (entity.getFamily().contains(system.getFamily())) {
+				entitiesPerFamily.put(system.getFamily(), entity);
+				familiesPerEntity.put(entity, system.getFamily());
 			}
 		}
 		all.add(entity);
 	}
 
+	@Override
 	public void removeEntity(Entity entity) {
-		for (Family f : entitiesForSystems.keySet()) {
-			if (entity.getFamily().contains(f)) {
-				entitiesForSystems.remove(f, entity);
-			}
-		}
 		all.remove(entity);
+		for (Family f : familiesPerEntity.get(entity)) {
+				entitiesPerFamily.remove(f, entity);
+		}
+		familiesPerEntity.removeAll(entity);
 	}
 
-	public void addSystem(ComponentSystem componentSystem, boolean checkExistingEntities) {
-		systems.add(componentSystem);
-		systemsPerFamilies.increment(componentSystem.getRequiredComponents());
-		if (checkExistingEntities && !all.isEmpty()) {
-			if (!entitiesForSystems.containsKey(componentSystem.getRequiredComponents())) {
+	@Override
+	public void addSystem(ComponentSystem componentSystem) {
+		systemsPerFamilies.increment(componentSystem.getFamily());
+		if (!all.isEmpty()) {
+			if (!entitiesPerFamily.containsKey(componentSystem.getFamily())) {
 				for (Entity e : all) {
-					if (e.getFamily().contains(componentSystem.getRequiredComponents())) {
-						entitiesForSystems.put(componentSystem.getRequiredComponents(), e);
+					if (e.getFamily().contains(componentSystem.getFamily())) {
+						entitiesPerFamily.put(componentSystem.getFamily(), e);
+						familiesPerEntity.put(e, componentSystem.getFamily());
 					}
 				}
 			}
 		}
+		systems.add(componentSystem);
 	}
 
+	@Override
 	public void removeSystem(ComponentSystem componentSystem) {
 		systems.remove(componentSystem);
-		if (systemsPerFamilies.decrement(componentSystem.getRequiredComponents()) == 0) {
-			systemsPerFamilies.remove(componentSystem.getRequiredComponents());
-			entitiesForSystems.removeAll(componentSystem.getRequiredComponents());
+		if (systemsPerFamilies.decrement(componentSystem.getFamily()) == 0) {
+			systemsPerFamilies.remove(componentSystem.getFamily());
+			entitiesPerFamily.removeAll(componentSystem.getFamily());
+			for(Entity e : all) {
+				familiesPerEntity.remove(e, componentSystem.getFamily());
+			}
 		}
 	}
 
+	@Override
 	public void update(float deltaTime) {
 		for (ComponentSystem system : systems) {
-			system.update(this, entitiesForSystems.get(system.getRequiredComponents()), deltaTime);
+			system.update(this, entitiesPerFamily.get(system.getFamily()), deltaTime);
 		}
 	}
 
+	@Override
 	public Collection<Entity> getAll() {
 		return all;
 	}

@@ -16,11 +16,11 @@
 
 package de.omnikryptec.old.resource.texture;
 
-import de.omnikryptec.old.main.OmniKryptecEngine;
-import de.omnikryptec.old.settings.GameSettings;
-
 import java.io.InputStream;
 import java.util.Properties;
+
+import de.omnikryptec.old.main.OmniKryptecEngine;
+import de.omnikryptec.old.settings.GameSettings;
 
 public class TextureBuilder {
 

@@ -16,6 +16,16 @@
 
 package de.omnikryptec.old.gameobject.particles;
 
+import java.nio.FloatBuffer;
+import java.util.List;
+import java.util.Map;
+
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+
 import de.omnikryptec.old.gameobject.Camera;
 import de.omnikryptec.old.graphics.GraphicsUtil;
 import de.omnikryptec.old.graphics.OpenGL;
@@ -26,15 +36,6 @@ import de.omnikryptec.old.util.EnumCollection.BlendMode;
 import de.omnikryptec.old.util.FrustrumFilter;
 import de.omnikryptec.old.util.Maths;
 import de.omnikryptec.old.util.ModelUtil;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-
-import java.nio.FloatBuffer;
-import java.util.List;
-import java.util.Map;
 
 public class ParticleRenderer {
 

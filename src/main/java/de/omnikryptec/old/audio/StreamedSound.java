@@ -16,20 +16,22 @@
 
 package de.omnikryptec.old.audio;
 
-import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.old.util.AudioUtil;
-import de.omnikryptec.old.util.logger.LogLevel;
-import de.omnikryptec.old.util.logger.Logger;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.openal.AL10;
-
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.ArrayList;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+
+import org.lwjgl.BufferUtils;
+import org.lwjgl.openal.AL10;
+
+import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.old.util.AudioUtil;
+import de.omnikryptec.old.util.logger.LogLevel;
+import de.omnikryptec.old.util.logger.Logger;
 
 /**
  * Streamed sound

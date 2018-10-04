@@ -16,10 +16,10 @@
 
 package de.omnikryptec.old.util.action;
 
-import de.omnikryptec.old.util.logger.Logger;
-
 import java.util.Arrays;
 import java.util.LinkedList;
+
+import de.omnikryptec.old.util.logger.Logger;
 
 /**
  * ActionProcessor

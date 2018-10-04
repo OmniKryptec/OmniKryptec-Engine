@@ -16,12 +16,12 @@
 
 package de.omnikryptec.old.net;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import de.omnikryptec.old.util.logger.Commands;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 /**
  * ClientTest

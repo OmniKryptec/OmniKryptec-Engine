@@ -16,11 +16,11 @@
 
 package de.omnikryptec.resource.loader;
 
+import java.util.Properties;
+
 import de.codemakers.base.logger.Logger;
 import de.codemakers.base.util.tough.ToughConsumer;
 import de.codemakers.io.file.AdvancedFile;
-
-import java.util.Properties;
 
 public interface ResourceLoader {
     

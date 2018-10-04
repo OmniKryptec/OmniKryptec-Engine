@@ -16,6 +16,11 @@
 
 package de.omnikryptec.old.animation.renderer;
 
+import java.util.List;
+
+import org.joml.Vector3f;
+import org.lwjgl.opengl.GL11;
+
 import de.omnikryptec.old.animation.AnimatedModel;
 import de.omnikryptec.old.gameobject.Entity;
 import de.omnikryptec.old.graphics.GraphicsUtil;
@@ -31,10 +36,6 @@ import de.omnikryptec.old.util.KeyArrayHashMap;
 import de.omnikryptec.old.util.Level;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
-import org.joml.Vector3f;
-import org.lwjgl.opengl.GL11;
-
-import java.util.List;
 
 /**
  *

@@ -16,15 +16,15 @@
 
 package de.omnikryptec.old.util;
 
-import de.codemakers.util.Returner;
-import de.omnikryptec.old.main.OmniKryptecEngine;
-import de.omnikryptec.old.util.logger.LogLevel;
-import de.omnikryptec.old.util.logger.Logger;
+import static de.codemakers.io.file.AdvancedFile.NOT_FOUND;
 
 import java.util.Properties;
 import java.util.function.Consumer;
 
-import static de.codemakers.io.file.AdvancedFile.NOT_FOUND;
+import de.codemakers.util.Returner;
+import de.omnikryptec.old.main.OmniKryptecEngine;
+import de.omnikryptec.old.util.logger.LogLevel;
+import de.omnikryptec.old.util.logger.Logger;
 
 /**
  * Util

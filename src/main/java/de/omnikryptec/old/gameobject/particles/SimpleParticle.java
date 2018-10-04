@@ -16,10 +16,11 @@
 
 package de.omnikryptec.old.gameobject.particles;
 
+import org.joml.Vector3f;
+
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.resource.texture.ParticleAtlas;
 import de.omnikryptec.old.util.EnumCollection.RenderType;
-import org.joml.Vector3f;
 
 public class SimpleParticle extends Particle {
 

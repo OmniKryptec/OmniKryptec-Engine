@@ -16,17 +16,17 @@
 
 package de.omnikryptec.old.util;
 
-import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.old.main.OmniKryptecEngine;
-import de.omnikryptec.old.util.logger.LogLevel;
-import de.omnikryptec.old.util.logger.Logger;
-
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.jar.JarFile;
+
+import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.old.main.OmniKryptecEngine;
+import de.omnikryptec.old.util.logger.LogLevel;
+import de.omnikryptec.old.util.logger.Logger;
 
 /**
  * @author Panzer1119

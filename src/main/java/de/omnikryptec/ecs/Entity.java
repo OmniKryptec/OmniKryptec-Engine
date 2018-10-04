@@ -13,7 +13,6 @@ public class Entity {
 	
     public Entity() {
         this.components = new HashMap<>();
-        //TODO retrieve an existing family with Family.of?
         this.family = new Family();
     }
 

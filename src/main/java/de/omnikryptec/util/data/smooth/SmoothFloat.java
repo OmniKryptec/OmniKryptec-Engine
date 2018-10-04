@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.old.util;
+package de.omnikryptec.util.data.smooth;
 
 public class SmoothFloat {
 
@@ -30,9 +30,7 @@ public class SmoothFloat {
 	}
 
 	public void update(float delta) {
-		float offset = target - actual;
-		float change = offset * delta * agility;
-		actual += change;
+		actual += (target - actual) * delta * agility;
 	}
 
 	
@@ -46,6 +44,7 @@ public class SmoothFloat {
 
 	public void instantIncrease(float increase) {
 		this.actual += increase;
+		this.target = actual;
 	}
 
 	public float get() {

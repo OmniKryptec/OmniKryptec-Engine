@@ -16,11 +16,12 @@
 
 package de.omnikryptec.old.animation;
 
-import de.omnikryptec.old.util.Instance;
-import de.omnikryptec.old.util.Maths;
+import java.util.HashMap;
+
 import org.joml.Matrix4f;
 
-import java.util.HashMap;
+import de.omnikryptec.old.util.Instance;
+import de.omnikryptec.old.util.Maths;
 
 /**
  * Animator
