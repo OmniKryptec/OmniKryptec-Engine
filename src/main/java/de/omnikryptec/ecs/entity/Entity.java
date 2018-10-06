@@ -3,15 +3,15 @@ package de.omnikryptec.ecs.entity;
 import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.family.Family;
-import de.omnikryptec.util.data.SimpleDynamicArray;
+import de.omnikryptec.util.data.DynamicArray;
 
 public class Entity {
     
-	private SimpleDynamicArray<Component> components;
+	private DynamicArray<Component> components;
 	private Family family;
 	
     public Entity() {
-        this.components = new SimpleDynamicArray<>();
+        this.components = new DynamicArray<>();
         this.family = new Family();
     }
 
