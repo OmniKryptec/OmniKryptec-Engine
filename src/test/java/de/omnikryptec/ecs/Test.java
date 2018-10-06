@@ -11,7 +11,7 @@ public class Test {
 		DoSomethingSystem system = new DoSomethingSystem();
 		manager.addSystem(system);
 		int updt = 100;
-		int ents = 1_000;
+		int ents = 1_000_00;
 		for (int i = 0; i < ents; i++) {
 			manager.addEntity(new Entity().addComponent(new SomeDataComponent()));
 		}

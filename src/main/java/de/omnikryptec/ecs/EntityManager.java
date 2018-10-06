@@ -2,6 +2,7 @@ package de.omnikryptec.ecs;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -12,16 +13,22 @@ import de.omnikryptec.util.data.CountingMap;
 
 public class EntityManager implements IEntityManager {
 
+	//Families
 	private CountingMap<Family> systemsPerFamilies;
 	private ListMultimap<Family, Entity> entitiesPerFamily;
 	private ListMultimap<Entity, Family> familiesPerEntity;
+	//Systems
 	private List<ComponentSystem> systems;
+	//Entities
 	private Collection<Entity> all;
-
+	private Collection<Entity> unmodifiableAll;
+	
 	public EntityManager() {
 		this.entitiesPerFamily = ArrayListMultimap.create();
+		this.familiesPerEntity = ArrayListMultimap.create();
 		this.systems = new ArrayList<>();
 		this.all = new ArrayList<>();
+		this.unmodifiableAll = Collections.unmodifiableCollection(all);
 		this.systemsPerFamilies = new CountingMap<>();
 	}
 
@@ -59,10 +66,12 @@ public class EntityManager implements IEntityManager {
 			}
 		}
 		systems.add(componentSystem);
+		componentSystem.addedToEntityManager(this);
 	}
 
 	@Override
 	public void removeSystem(ComponentSystem componentSystem) {
+		componentSystem.removedFromEntityManager(this);
 		systems.remove(componentSystem);
 		if (systemsPerFamilies.decrement(componentSystem.getFamily()) == 0) {
 			systemsPerFamilies.remove(componentSystem.getFamily());
@@ -76,13 +85,18 @@ public class EntityManager implements IEntityManager {
 	@Override
 	public void update(float deltaTime) {
 		for (ComponentSystem system : systems) {
-			system.update(this, entitiesPerFamily.get(system.getFamily()), deltaTime);
+			system.update(this, deltaTime);
 		}
 	}
 
 	@Override
 	public Collection<Entity> getAll() {
-		return all;
+		return unmodifiableAll;
+	}
+
+	@Override
+	public List<Entity> getEntitesFor(Family f) {
+		return Collections.unmodifiableList(entitiesPerFamily.get(f));
 	}
 
 }

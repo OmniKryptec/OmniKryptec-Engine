@@ -34,7 +34,7 @@ public abstract class ParallelComponentSystem extends ComponentSystem implements
 	}
 	
 	@Override
-	public final void update(IEntityManager entityManager, List<Entity> entities, float deltaTime) {
+	public final void update(IEntityManager entityManager, float deltaTime) {
 		if(entities.size()<activationSize) {
 			for(Entity e : entities) {
 				updateIndividual(entityManager, e, deltaTime);

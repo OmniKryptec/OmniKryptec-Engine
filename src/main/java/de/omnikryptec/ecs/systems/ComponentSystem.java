@@ -9,6 +9,7 @@ import de.omnikryptec.ecs.IEntityManager;
 public abstract class ComponentSystem {
     
 	private Family family;
+	protected List<Entity> entities;
 	
 	protected ComponentSystem(Family required) {
 		this.family = required;
@@ -18,6 +19,14 @@ public abstract class ComponentSystem {
 		return family;
 	}
 
-	public abstract void update(IEntityManager entityManager, List<Entity> entities, float deltaTime);
+	public void addedToEntityManager(IEntityManager entitymgr) {
+		entities = entitymgr.getEntitesFor(family);
+	}
+	
+	public void removedFromEntityManager(IEntityManager entitymgr) {
+		entities = null;
+	}
+	
+	public abstract void update(IEntityManager entityManager, float deltaTime);
 	    
 }
