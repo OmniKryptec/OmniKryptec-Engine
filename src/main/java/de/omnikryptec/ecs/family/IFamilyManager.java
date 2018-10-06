@@ -10,4 +10,5 @@ public interface IFamilyManager {
 	IFamilyManager addFilter(Family family);
 	IFamilyManager removeFilter(Family family);
 	IFamilyManager addFilteredEntity(Entity entity);
+	IFamilyManager removeFilteredEntity(Entity entity);
 }

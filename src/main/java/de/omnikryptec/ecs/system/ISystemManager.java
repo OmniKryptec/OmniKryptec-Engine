@@ -9,6 +9,7 @@ public interface ISystemManager {
 	
 	Collection<ComponentSystem> getAll();
 	
+	//TODO let the IECSManager do this with getAll?
 	void update(float deltatime);
 	
 }

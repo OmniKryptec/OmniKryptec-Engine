@@ -25,13 +25,13 @@ public class FamilyManager implements IFamilyManager {
 	}
 
 	@Override
-	public IFamilyManager addFilter(Family family) {
+	public FamilyManager addFilter(Family family) {
 		uniqueFilters.add(family);
 		return this;
 	}
 
 	@Override
-	public IFamilyManager removeFilter(Family family) {
+	public FamilyManager removeFilter(Family family) {
 		if (uniqueFilters.contains(family)) {
 			uniqueFilters.remove(family);
 			if (uniqueFilters.count(family) == 0) {
@@ -42,7 +42,18 @@ public class FamilyManager implements IFamilyManager {
 	}
 
 	@Override
-	public IFamilyManager addFilteredEntity(Entity entity) {
+	public FamilyManager addFilteredEntity(Entity entity) {
+		for(Family filter : uniqueFilters.elementSet()) {
+			if(entity.getFamily().contains(filter)) {
+				filteredEntities.put(filter, entity);
+			}
+		}
+		return this;
+	}
+
+	@Override
+	public FamilyManager removeFilteredEntity(Entity entity) {
+		//TODO
 		return this;
 	}
 
