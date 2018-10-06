@@ -3,7 +3,6 @@ package de.omnikryptec.ecs.entity;
 import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.family.Family;
-import de.omnikryptec.util.data.DynamicArray;
 import de.omnikryptec.util.data.SimpleDynamicArray;
 
 public class Entity {
