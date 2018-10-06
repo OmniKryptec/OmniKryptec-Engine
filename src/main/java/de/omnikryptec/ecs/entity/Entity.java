@@ -4,27 +4,28 @@ import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.family.Family;
 import de.omnikryptec.util.data.DynamicArray;
+import de.omnikryptec.util.data.SimpleDynamicArray;
 
 public class Entity {
     
-	private DynamicArray<Component> components;
+	private SimpleDynamicArray<Component> components;
 	private Family family;
 	
     public Entity() {
-        this.components = new DynamicArray<>();
+        this.components = new SimpleDynamicArray<>();
         this.family = new Family();
     }
 
     public Entity addComponent(Component component) {
     	ComponentType type = ComponentType.of(component.getClass());
-    	this.components.add(type.getId(), component);
+    	this.components.set(type.getId(), component);
     	this.family.add(type);
     	return this;
     }
     
     public Entity removeComponent(Component component) {
     	ComponentType type = ComponentType.ofExisting(component.getClass());
-    	this.components.remove(type.getId());
+    	this.components.set(type.getId(), null);
     	this.family.remove(type);
     	return this;
     }
