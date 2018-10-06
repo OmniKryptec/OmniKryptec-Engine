@@ -5,6 +5,7 @@ import java.util.Map;
 
 import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.ecs.component.ComponentType;
+import de.omnikryptec.ecs.family.Family;
 
 public class Entity {
     

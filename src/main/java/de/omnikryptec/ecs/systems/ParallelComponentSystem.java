@@ -5,8 +5,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.omnikryptec.ecs.Entity;
-import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IEntityManager;
+import de.omnikryptec.ecs.family.Family;
 
 public abstract class ParallelComponentSystem extends ComponentSystem implements IndividualUpdater{
 

@@ -3,8 +3,8 @@ package de.omnikryptec.ecs.systems;
 import java.util.List;
 
 import de.omnikryptec.ecs.Entity;
-import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IEntityManager;
+import de.omnikryptec.ecs.family.Family;
 
 public abstract class ComponentSystem {
     

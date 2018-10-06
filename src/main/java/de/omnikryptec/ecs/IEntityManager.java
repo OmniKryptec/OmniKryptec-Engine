@@ -3,6 +3,7 @@ package de.omnikryptec.ecs;
 import java.util.Collection;
 import java.util.List;
 
+import de.omnikryptec.ecs.family.Family;
 import de.omnikryptec.ecs.systems.ComponentSystem;
 
 public interface IEntityManager {

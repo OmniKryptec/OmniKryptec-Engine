@@ -2,9 +2,9 @@ package de.omnikryptec.ecs;
 
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityManager;
-import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
+import de.omnikryptec.ecs.family.Family;
 import de.omnikryptec.ecs.systems.GroupParallelComponentSystem;
 import de.omnikryptec.ecs.systems.IndividualParallelComponentSystem;
 import de.omnikryptec.ecs.systems.IterativeComponentSystem;

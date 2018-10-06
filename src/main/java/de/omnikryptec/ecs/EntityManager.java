@@ -8,6 +8,7 @@ import java.util.List;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
+import de.omnikryptec.ecs.family.Family;
 import de.omnikryptec.ecs.systems.ComponentSystem;
 import de.omnikryptec.util.data.CountingMap;
 

@@ -1,8 +1,8 @@
 package de.omnikryptec.ecs.systems;
 
 import de.omnikryptec.ecs.Entity;
-import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IEntityManager;
+import de.omnikryptec.ecs.family.Family;
 
 public abstract class IterativeComponentSystem extends ComponentSystem implements IndividualUpdater{
 

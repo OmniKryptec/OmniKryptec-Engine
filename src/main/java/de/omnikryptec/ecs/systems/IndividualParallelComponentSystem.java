@@ -7,8 +7,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import de.omnikryptec.ecs.Entity;
-import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IEntityManager;
+import de.omnikryptec.ecs.family.Family;
 
 public abstract class IndividualParallelComponentSystem extends ParallelComponentSystem {
 
