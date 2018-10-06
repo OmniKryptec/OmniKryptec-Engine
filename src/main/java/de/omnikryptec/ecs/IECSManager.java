@@ -3,10 +3,11 @@ package de.omnikryptec.ecs;
 import java.util.Collection;
 import java.util.List;
 
+import de.omnikryptec.ecs.entity.Entity;
 import de.omnikryptec.ecs.family.Family;
-import de.omnikryptec.ecs.systems.ComponentSystem;
+import de.omnikryptec.ecs.system.ComponentSystem;
 
-public interface IEntityManager {
+public interface IECSManager {
 
 	void addEntity(Entity entity);
 	void removeEntity(Entity entity);

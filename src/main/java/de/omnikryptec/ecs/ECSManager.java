@@ -8,11 +8,12 @@ import java.util.List;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
+import de.omnikryptec.ecs.entity.Entity;
 import de.omnikryptec.ecs.family.Family;
-import de.omnikryptec.ecs.systems.ComponentSystem;
+import de.omnikryptec.ecs.system.ComponentSystem;
 import de.omnikryptec.util.data.CountingMap;
 
-public class EntityManager implements IEntityManager {
+public class ECSManager implements IECSManager {
 
 	//Families
 	private CountingMap<Family> systemsPerFamilies;
@@ -24,7 +25,7 @@ public class EntityManager implements IEntityManager {
 	private Collection<Entity> all;
 	private Collection<Entity> unmodifiableAll;
 	
-	public EntityManager() {
+	public ECSManager() {
 		this.entitiesPerFamily = ArrayListMultimap.create();
 		this.familiesPerEntity = ArrayListMultimap.create();
 		this.systems = new ArrayList<>();

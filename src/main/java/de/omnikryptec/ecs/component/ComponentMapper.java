@@ -1,6 +1,6 @@
 package de.omnikryptec.ecs.component;
 
-import de.omnikryptec.ecs.Entity;
+import de.omnikryptec.ecs.entity.Entity;
 
 public class ComponentMapper<C extends Component> {
 

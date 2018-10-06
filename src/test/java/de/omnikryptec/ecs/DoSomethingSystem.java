@@ -1,13 +1,13 @@
 package de.omnikryptec.ecs;
 
-import de.omnikryptec.ecs.Entity;
-import de.omnikryptec.ecs.EntityManager;
+import de.omnikryptec.ecs.ECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
+import de.omnikryptec.ecs.entity.Entity;
 import de.omnikryptec.ecs.family.Family;
-import de.omnikryptec.ecs.systems.GroupParallelComponentSystem;
-import de.omnikryptec.ecs.systems.IndividualParallelComponentSystem;
-import de.omnikryptec.ecs.systems.IterativeComponentSystem;
+import de.omnikryptec.ecs.system.GroupParallelComponentSystem;
+import de.omnikryptec.ecs.system.IndividualParallelComponentSystem;
+import de.omnikryptec.ecs.system.IterativeComponentSystem;
 
 public class DoSomethingSystem extends IterativeComponentSystem{
 
@@ -18,7 +18,7 @@ public class DoSomethingSystem extends IterativeComponentSystem{
 	private ComponentMapper<SomeDataComponent> mapper = new ComponentMapper<>(SomeDataComponent.class);
 
 	@Override
-	public void updateIndividual(IEntityManager manager, Entity entity, float deltaTime) {
+	public void updateIndividual(IECSManager manager, Entity entity, float deltaTime) {
 		mapper.get(entity).alonglong++;
 	}
 

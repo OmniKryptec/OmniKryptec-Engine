@@ -1,9 +1,9 @@
-package de.omnikryptec.ecs.systems;
+package de.omnikryptec.ecs.system;
 
 import java.util.List;
 
-import de.omnikryptec.ecs.Entity;
-import de.omnikryptec.ecs.IEntityManager;
+import de.omnikryptec.ecs.IECSManager;
+import de.omnikryptec.ecs.entity.Entity;
 import de.omnikryptec.ecs.family.Family;
 
 public abstract class ComponentSystem {
@@ -19,14 +19,14 @@ public abstract class ComponentSystem {
 		return family;
 	}
 
-	public void addedToEntityManager(IEntityManager entitymgr) {
+	public void addedToEntityManager(IECSManager entitymgr) {
 		entities = entitymgr.getEntitesFor(family);
 	}
 	
-	public void removedFromEntityManager(IEntityManager entitymgr) {
+	public void removedFromEntityManager(IECSManager entitymgr) {
 		entities = null;
 	}
 	
-	public abstract void update(IEntityManager entityManager, float deltaTime);
+	public abstract void update(IECSManager entityManager, float deltaTime);
 	    
 }

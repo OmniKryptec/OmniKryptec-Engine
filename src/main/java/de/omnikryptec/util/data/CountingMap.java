@@ -34,4 +34,5 @@ public class CountingMap<T> {
 	public long remove(T t) {
 		return map.remove(t);
 	}
+ 
 }

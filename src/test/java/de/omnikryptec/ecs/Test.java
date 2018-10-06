@@ -1,13 +1,13 @@
 package de.omnikryptec.ecs;
 
-import de.omnikryptec.ecs.Entity;
-import de.omnikryptec.ecs.EntityManager;
+import de.omnikryptec.ecs.ECSManager;
+import de.omnikryptec.ecs.entity.Entity;
 
 public class Test {
 
 	public static void main(String[] args) {
 		System.out.println("Started...");
-		EntityManager manager = new EntityManager();
+		ECSManager manager = new ECSManager();
 		DoSomethingSystem system = new DoSomethingSystem();
 		manager.addSystem(system);
 		int updt = 100;

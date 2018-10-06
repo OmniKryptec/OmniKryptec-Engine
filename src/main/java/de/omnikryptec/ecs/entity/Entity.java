@@ -1,4 +1,4 @@
-package de.omnikryptec.ecs;
+package de.omnikryptec.ecs.entity;
 
 import java.util.HashMap;
 import java.util.Map;

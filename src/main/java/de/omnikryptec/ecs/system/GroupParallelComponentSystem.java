@@ -1,4 +1,4 @@
-package de.omnikryptec.ecs.systems;
+package de.omnikryptec.ecs.system;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,8 +8,8 @@ import java.util.concurrent.TimeUnit;
 
 import com.google.common.collect.Lists;
 
-import de.omnikryptec.ecs.Entity;
-import de.omnikryptec.ecs.IEntityManager;
+import de.omnikryptec.ecs.IECSManager;
+import de.omnikryptec.ecs.entity.Entity;
 import de.omnikryptec.ecs.family.Family;
 
 public abstract class GroupParallelComponentSystem extends ParallelComponentSystem {
@@ -19,7 +19,7 @@ public abstract class GroupParallelComponentSystem extends ParallelComponentSyst
 	}
 
 	@Override
-	public void updateThreaded(IEntityManager entityManager, List<Entity> entities, float deltaTime) {
+	public void updateThreaded(IECSManager entityManager, List<Entity> entities, float deltaTime) {
 		List<List<Entity>> lists = Lists.partition(entities, (int) Math.ceil(entities.size() / (double) numThreads()));
 		Collection<Callable<Void>> tasks = new ArrayList<>();
 		for (List<Entity> el : lists) {

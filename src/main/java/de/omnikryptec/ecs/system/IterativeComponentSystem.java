@@ -1,7 +1,7 @@
-package de.omnikryptec.ecs.systems;
+package de.omnikryptec.ecs.system;
 
-import de.omnikryptec.ecs.Entity;
-import de.omnikryptec.ecs.IEntityManager;
+import de.omnikryptec.ecs.IECSManager;
+import de.omnikryptec.ecs.entity.Entity;
 import de.omnikryptec.ecs.family.Family;
 
 public abstract class IterativeComponentSystem extends ComponentSystem implements IndividualUpdater{
@@ -11,7 +11,7 @@ public abstract class IterativeComponentSystem extends ComponentSystem implement
 	}
 	
 	@Override
-	public final void update(IEntityManager entityManager, float deltaTime) {
+	public final void update(IECSManager entityManager, float deltaTime) {
 		for(Entity e : entities) {
 			updateIndividual(entityManager, e, deltaTime);
 		}
