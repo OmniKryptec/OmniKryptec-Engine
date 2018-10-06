@@ -17,7 +17,6 @@ public class DoSomethingSystem extends IterativeComponentSystem{
 	@Override
 	public void updateIndividual(IECSManager manager, Entity entity, float deltaTime) {
 		mapper.get(entity).alonglong++;
-		manager.removeSystem(this);
 	}
 
 }

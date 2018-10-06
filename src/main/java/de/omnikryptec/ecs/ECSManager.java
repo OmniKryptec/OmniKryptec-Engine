@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import de.omnikryptec.ecs.ECSManager.ECSSystemTask.ECSSysTaskType;
 import de.omnikryptec.ecs.entity.Entity;
 import de.omnikryptec.ecs.entity.EntityManager;
 import de.omnikryptec.ecs.entity.IEntityManager;
@@ -16,41 +15,41 @@ import de.omnikryptec.ecs.system.ComponentSystem;
 import de.omnikryptec.ecs.system.ISystemManager;
 import de.omnikryptec.ecs.system.SystemManager;
 
-public class ECSManager implements IECSManager{
+public class ECSManager implements IECSManager {
 
 	private IEntityManager entityManager;
 	private IFamilyManager familyManager;
 	private ISystemManager systemManager;
-	
+
 	private boolean updating = false;
 	private Queue<ECSSystemTask> systemTasks;
-	
-	private static class ECSSystemTask{
-		
-		private static enum ECSSysTaskType{
+
+	private static class ECSSystemTask {
+
+		private static enum ECSSysTaskType {
 			REMOVE, ADD;
 		}
-		
+
 		public ECSSystemTask(ComponentSystem sys, ECSSysTaskType t) {
 			this.system = sys;
 			this.type = t;
 		}
-		
+
 		ComponentSystem system;
 		ECSSysTaskType type;
 	}
-	
+
 	public ECSManager() {
 		this(new EntityManager(), new FamilyManager(), new SystemManager());
 	}
-	
+
 	public ECSManager(IEntityManager entityManager, IFamilyManager familyManager, ISystemManager systemManager) {
 		this.systemTasks = new LinkedList<>();
 		this.entityManager = entityManager;
 		this.familyManager = familyManager;
 		this.systemManager = systemManager;
 	}
-	
+
 	@Override
 	public void addEntity(Entity entity) {
 		entityManager.addEntity(entity);
@@ -65,9 +64,9 @@ public class ECSManager implements IECSManager{
 
 	@Override
 	public void addSystem(ComponentSystem system) {
-		if(updating) {
+		if (updating) {
 			systemTasks.add(new ECSSystemTask(system, ECSSystemTask.ECSSysTaskType.ADD));
-		}else {
+		} else {
 			addSysInt(system);
 		}
 	}
@@ -77,12 +76,12 @@ public class ECSManager implements IECSManager{
 		familyManager.addFilter(system.getFamily());
 		system.addedToEntityManager(this);
 	}
-	
+
 	@Override
 	public void removeSystem(ComponentSystem system) {
-		if(updating) {
+		if (updating) {
 			systemTasks.add(new ECSSystemTask(system, ECSSystemTask.ECSSysTaskType.REMOVE));
-		}else{
+		} else {
 			remSysInt(system);
 		}
 	}
@@ -92,7 +91,7 @@ public class ECSManager implements IECSManager{
 		familyManager.removeFilter(system.getFamily());
 		system.removedFromEntityManager(this);
 	}
-	
+
 	@Override
 	public List<Entity> getEntitesFor(Family f) {
 		return familyManager.getEntitiesFor(f);
@@ -102,7 +101,7 @@ public class ECSManager implements IECSManager{
 	public void update(float deltaTime) {
 		updating = true;
 		Collection<ComponentSystem> systems = systemManager.getAll();
-		for(ComponentSystem system : systems) {
+		for (ComponentSystem system : systems) {
 			system.update(this, deltaTime);
 		}
 		updating = false;
@@ -110,9 +109,9 @@ public class ECSManager implements IECSManager{
 	}
 
 	private void runTasks() {
-		while(!systemTasks.isEmpty()) {
+		while (!systemTasks.isEmpty()) {
 			ECSSystemTask t = systemTasks.poll();
-			switch(t.type) {
+			switch (t.type) {
 			case ADD:
 				addSysInt(t.system);
 				break;
@@ -121,16 +120,14 @@ public class ECSManager implements IECSManager{
 				break;
 			default:
 				throw new RuntimeException("Weird type");
-				break;
-			
 			}
 		}
 	}
-	
+
 	public boolean isUpdating() {
 		return updating;
 	}
-	
+
 	@Override
 	public Collection<Entity> getAll() {
 		return entityManager.getAll();
