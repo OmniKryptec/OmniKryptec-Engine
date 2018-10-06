@@ -8,10 +8,16 @@ public class ComponentType {
 	private static int index = 0;
 	private static Map<Class<? extends Component>, ComponentType> componentTypes = new HashMap<>();
 	
-	public static synchronized ComponentType of(Class<? extends Component> clazz) {
+	public static ComponentType of(Class<? extends Component> clazz) {
 		if(!componentTypes.containsKey(clazz)) {
-			componentTypes.put(clazz, new ComponentType());
+			synchronized (componentTypes) {
+				componentTypes.put(clazz, new ComponentType());
+			}
 		}
+		return componentTypes.get(clazz);
+	}
+	
+	public static ComponentType ofExisting(Class<? extends Component> clazz) {
 		return componentTypes.get(clazz);
 	}
 	

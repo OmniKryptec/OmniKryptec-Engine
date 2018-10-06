@@ -1,8 +1,9 @@
 package de.omnikryptec.util.data.pool;
 
-public interface Pool<T> {
+public abstract class Pool<T> {
 
-	T obtain();
-	void free(T t);
+	public abstract T next();
+	protected abstract T newObject();
+	public abstract void free(T t);
 	
 }

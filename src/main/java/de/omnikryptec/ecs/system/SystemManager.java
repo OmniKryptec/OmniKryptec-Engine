@@ -32,12 +32,4 @@ public class SystemManager implements ISystemManager{
 		return unmodifiableSystems;
 	}
 
-	@Override
-	public void update(float deltatime) {
-		for(ComponentSystem system : systems) {
-			//TODO
-			system.update(null, deltatime);
-		}
-	}
-
 }

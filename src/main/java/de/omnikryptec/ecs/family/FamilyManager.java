@@ -3,20 +3,20 @@ package de.omnikryptec.ecs.family;
 import java.util.Collections;
 import java.util.List;
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Multiset;
-
 import de.omnikryptec.ecs.entity.Entity;
+import de.omnikryptec.util.data.CountingMap;
 
 public class FamilyManager implements IFamilyManager {
-
-	private Multiset<Family> uniqueFilters;
+	
+	private CountingMap<Family> uniqueFilters;
 	private ListMultimap<Family, Entity> filteredEntities;
-
+	private ListMultimap<Entity, Family> reverseFilteredEntities;
+	
 	public FamilyManager() {
-		uniqueFilters = HashMultiset.create();
+		uniqueFilters = new CountingMap<>();
 		filteredEntities = ArrayListMultimap.create();
+		reverseFilteredEntities = ArrayListMultimap.create();
 	}
 
 	@Override
@@ -26,15 +26,14 @@ public class FamilyManager implements IFamilyManager {
 
 	@Override
 	public FamilyManager addFilter(Family family) {
-		uniqueFilters.add(family);
+		uniqueFilters.increment(family);
 		return this;
 	}
 
 	@Override
 	public FamilyManager removeFilter(Family family) {
-		if (uniqueFilters.contains(family)) {
-			uniqueFilters.remove(family);
-			if (uniqueFilters.count(family) == 0) {
+		if (uniqueFilters.keySet().contains(family)) {
+			if (uniqueFilters.decrement(family) == 0) {
 				filteredEntities.removeAll(family);
 			}
 		}
@@ -43,9 +42,10 @@ public class FamilyManager implements IFamilyManager {
 
 	@Override
 	public FamilyManager addFilteredEntity(Entity entity) {
-		for(Family filter : uniqueFilters.elementSet()) {
+		for(Family filter : uniqueFilters.keySet()) {
 			if(entity.getFamily().contains(filter)) {
 				filteredEntities.put(filter, entity);
+				reverseFilteredEntities.put(entity, filter);
 			}
 		}
 		return this;
@@ -53,7 +53,10 @@ public class FamilyManager implements IFamilyManager {
 
 	@Override
 	public FamilyManager removeFilteredEntity(Entity entity) {
-		//TODO
+		for(Family filter : reverseFilteredEntities.get(entity)) {
+			filteredEntities.remove(filter, entity);
+		}
+		reverseFilteredEntities.removeAll(entity);
 		return this;
 	}
 

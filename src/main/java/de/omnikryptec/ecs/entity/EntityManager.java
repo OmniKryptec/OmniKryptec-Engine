@@ -1,8 +1,8 @@
 package de.omnikryptec.ecs.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 
 public class EntityManager implements IEntityManager{
 
@@ -11,7 +11,7 @@ public class EntityManager implements IEntityManager{
 	
 	public EntityManager() {
 		//TODO Set or List?!
-		this.entities = new HashSet<>();
+		this.entities = new ArrayList<>();
 		this.unmodifiableEntities = Collections.unmodifiableCollection(this.entities);
 	}
 	
