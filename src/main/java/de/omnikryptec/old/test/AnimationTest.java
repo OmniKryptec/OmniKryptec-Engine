@@ -25,8 +25,8 @@ import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.core.display.DisplayManager;
-import de.omnikryptec.core.display.GLFWInfo;
+import de.omnikryptec.graphics.display.DisplayManager;
+import de.omnikryptec.graphics.display.GLFWInfo;
 import de.omnikryptec.old.animation.AnimatedModel;
 import de.omnikryptec.old.animation.Animation;
 import de.omnikryptec.old.animation.ColladaParser.dataStructures.AnimatedModelData;

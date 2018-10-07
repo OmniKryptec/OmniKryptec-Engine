@@ -25,7 +25,7 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 
-import de.omnikryptec.core.display.Display;
+import de.omnikryptec.graphics.display.Display;
 import de.omnikryptec.old.gameobject.Camera;
 import de.omnikryptec.old.gameobject.GameObject3D;
 import de.omnikryptec.old.main.OmniKryptecEngine;

@@ -257,7 +257,7 @@ public class VertexArrayObject {
 		return lengths;
 	}
 
-	//TODO ?
+	//TOD- ?
 	public final VertexArrayObject storeBufferf(int vertexcount, int[] lengths, FloatBuffer buffer) {
 		if(dataVboTmp==null) {
 			dataVboTmp = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);

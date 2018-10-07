@@ -51,7 +51,7 @@ public class TerrainRenderer extends Renderer {
     private TexturedModel model;
     private long vertcount = 0;
 
-    // TODO change something
+    // TOD- change something
     @Override
     protected long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, Shader ownshader, FrustrumFilter filter) {
         vertcount = 0;

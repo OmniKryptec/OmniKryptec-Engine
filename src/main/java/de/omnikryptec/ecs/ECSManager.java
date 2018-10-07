@@ -20,46 +20,75 @@ public class ECSManager implements IECSManager {
 
 	private boolean updating = false;
 	private Queue<ECSSystemTask> systemTasks;
-
+	private Queue<ECSEntityTask> entityTasks;
+	
+	private static enum ECSTaskType {
+		REMOVE, ADD;
+	}
+	
 	private static class ECSSystemTask {
-
-		private static enum ECSSysTaskType {
-			REMOVE, ADD;
-		}
-
-		public ECSSystemTask(ComponentSystem sys, ECSSysTaskType t) {
+		
+		ComponentSystem system;
+		ECSTaskType type;
+		
+		private ECSSystemTask(ComponentSystem sys, ECSTaskType t) {
 			this.system = sys;
 			this.type = t;
 		}
-
-		ComponentSystem system;
-		ECSSysTaskType type;
 	}
 
+	private static class ECSEntityTask {
+		
+		Entity entity;
+		ECSTaskType type;
+		
+		private ECSEntityTask(Entity e, ECSTaskType t) {
+			this.entity = e;
+			this.type = t;
+		}
+	}
+	
 	public ECSManager() {
 		this(new EntityManager(), new SystemManager());
 	}
 
 	public ECSManager(IEntityManager entityManager, ISystemManager systemManager) {
 		this.systemTasks = new LinkedList<>();
+		this.entityTasks = new LinkedList<>();
 		this.entityManager = entityManager;
 		this.systemManager = systemManager;
 	}
 
 	@Override
 	public void addEntity(Entity entity) {
-		entityManager.addEntity(entity);
+		if (updating) {
+			entityTasks.add(new ECSEntityTask(entity, ECSTaskType.ADD));
+		} else {
+			addEntityInt(entity);
+		}
 	}
 
+	private void addEntityInt(Entity e) {
+		entityManager.addEntity(e);
+	}
+	
 	@Override
 	public void removeEntity(Entity entity) {
-		entityManager.removeEntity(entity);
+		if (updating) {
+			entityTasks.add(new ECSEntityTask(entity, ECSTaskType.REMOVE));
+		} else {
+			remEntityInt(entity);
+		}
 	}
 
+	private void remEntityInt(Entity e) {
+		entityManager.removeEntity(e);
+	}
+	
 	@Override
 	public void addSystem(ComponentSystem system) {
 		if (updating) {
-			systemTasks.add(new ECSSystemTask(system, ECSSystemTask.ECSSysTaskType.ADD));
+			systemTasks.add(new ECSSystemTask(system, ECSTaskType.ADD));
 		} else {
 			addSysInt(system);
 		}
@@ -76,7 +105,7 @@ public class ECSManager implements IECSManager {
 	@Override
 	public void removeSystem(ComponentSystem system) {
 		if (updating) {
-			systemTasks.add(new ECSSystemTask(system, ECSSystemTask.ECSSysTaskType.REMOVE));
+			systemTasks.add(new ECSSystemTask(system, ECSTaskType.REMOVE));
 		} else {
 			remSysInt(system);
 		}
@@ -115,6 +144,19 @@ public class ECSManager implements IECSManager {
 				break;
 			case REMOVE:
 				remSysInt(t.system);
+				break;
+			default:
+				throw new RuntimeException("Weird type");
+			}
+		}
+		while (!entityTasks.isEmpty()) {
+			ECSEntityTask t = entityTasks.poll();
+			switch (t.type) {
+			case ADD:
+				addEntityInt(t.entity);
+				break;
+			case REMOVE:
+				remEntityInt(t.entity);
 				break;
 			default:
 				throw new RuntimeException("Weird type");

@@ -17,6 +17,10 @@
 package de.omnikryptec.old.animation.renderer;
 
 import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.graphics.shader.base.UniformMatrix;
+import de.omnikryptec.graphics.shader.base.UniformMatrixArray;
+import de.omnikryptec.graphics.shader.base.UniformSampler;
+import de.omnikryptec.graphics.shader.base.UniformVec3;
 import de.omnikryptec.old.animation.AnimatedModel;
 import de.omnikryptec.old.gameobject.Entity;
 import de.omnikryptec.old.graphics.GraphicsUtil;
@@ -25,10 +29,6 @@ import de.omnikryptec.old.resource.model.AdvancedModel;
 import de.omnikryptec.old.resource.model.Material;
 import de.omnikryptec.old.settings.GameSettings;
 import de.omnikryptec.old.shader.base.Shader;
-import de.omnikryptec.old.shader.base.UniformMatrix;
-import de.omnikryptec.old.shader.base.UniformMatrixArray;
-import de.omnikryptec.old.shader.base.UniformSampler;
-import de.omnikryptec.old.shader.base.UniformVec3;
 import de.omnikryptec.old.util.EnumCollection.BlendMode;
 import de.omnikryptec.old.util.Instance;
 

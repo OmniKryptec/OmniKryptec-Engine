@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.core.display;
+package de.omnikryptec.graphics.display;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;

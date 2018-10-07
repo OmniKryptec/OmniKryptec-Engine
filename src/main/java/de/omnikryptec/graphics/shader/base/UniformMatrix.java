@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.old.shader.base;
+package de.omnikryptec.graphics.shader.base;
 
 import java.nio.FloatBuffer;
 

@@ -21,7 +21,7 @@ import java.util.List;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
 
-import de.omnikryptec.core.display.Display;
+import de.omnikryptec.graphics.display.Display;
 import de.omnikryptec.old.postprocessing.main.FrameBufferObject;
 import de.omnikryptec.old.postprocessing.main.PostProcessingStage;
 import de.omnikryptec.old.postprocessing.main.PostProcessingStageRenderedSimple;

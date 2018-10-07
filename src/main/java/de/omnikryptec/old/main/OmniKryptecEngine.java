@@ -23,8 +23,8 @@ import java.util.stream.Collectors;
 import org.lwjgl.opengl.GL30;
 
 import de.codemakers.logger.ILogger;
-import de.omnikryptec.core.display.Display;
-import de.omnikryptec.core.display.DisplayManager;
+import de.omnikryptec.graphics.display.Display;
+import de.omnikryptec.graphics.display.DisplayManager;
 import de.omnikryptec.old.event.eventV2.EventBus;
 import de.omnikryptec.old.event.eventV2.engineevents.CleanupEvent;
 import de.omnikryptec.old.event.eventV2.engineevents.ErrorEvent;
@@ -102,7 +102,7 @@ public class OmniKryptecEngine implements Profilable {
 	}
 
 	// public static void main(String[] args) {
-	// // TODO say that this is a library?
+	// // TOD- say that this is a library?
 	// }
 	public static enum ShutdownOption {
 		JAVA(2), ENGINE(1), NOTHING(0);

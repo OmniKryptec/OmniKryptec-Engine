@@ -21,7 +21,7 @@ import org.joml.Matrix4fc;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import de.omnikryptec.core.display.Display;
+import de.omnikryptec.graphics.display.Display;
 import de.omnikryptec.old.test.saving.DataMap;
 import de.omnikryptec.old.util.EnumCollection.UpdateType;
 import de.omnikryptec.old.util.Maths;

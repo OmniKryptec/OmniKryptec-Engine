@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.core.display;
+package de.omnikryptec.graphics.display;
 
 /**
  * OpenGLInfo class

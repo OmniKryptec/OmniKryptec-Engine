@@ -316,7 +316,7 @@ public class ResourceLoader implements Loader {
         if (data == null && SimpleTexture.class.isAssignableFrom(c)) {
             return (T) MISSING_TEXTURE;
         }
-        if (data == null || (!c.isAssignableFrom(data.getClass()) && c != data.getClass())) { //TODO Gucken ob das isAssignableFrom so richtig herum ist
+        if (data == null || (!c.isAssignableFrom(data.getClass()) && c != data.getClass())) { //TOD- Gucken ob das isAssignableFrom so richtig herum ist
             if (data != null) {
                 Logger.log("Wrong Class for " + data);
             }
@@ -337,7 +337,7 @@ public class ResourceLoader implements Loader {
             return dataOld;
         }
         final List<T> data = dataOld;
-        List<ResourceObject> d = loadedData.values().stream().filter((object) -> (object != null && (c == null || c.isAssignableFrom(object.getClass())))).collect(Collectors.toList()); //TODO Gucken ob das isAssignableFrom so richtig herum ist
+        List<ResourceObject> d = loadedData.values().stream().filter((object) -> (object != null && (c == null || c.isAssignableFrom(object.getClass())))).collect(Collectors.toList()); //TOD- Gucken ob das isAssignableFrom so richtig herum ist
         d.stream().forEach((object) -> data.add((T) object));
         d.clear();
         return data;

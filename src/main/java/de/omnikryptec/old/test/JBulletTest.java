@@ -44,8 +44,8 @@ import com.bulletphysics.linearmath.DefaultMotionState;
 import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 
-import de.omnikryptec.core.display.DisplayManager;
-import de.omnikryptec.core.display.GLFWInfo;
+import de.omnikryptec.graphics.display.DisplayManager;
+import de.omnikryptec.graphics.display.GLFWInfo;
 import de.omnikryptec.old.event.input.InputManager;
 import de.omnikryptec.old.gameobject.Camera;
 import de.omnikryptec.old.gameobject.Entity;
@@ -117,7 +117,7 @@ public class JBulletTest {
 
     private static void logic() {
         if (!physicsPause && physicsSpeed > 0) {
-            //TODO dynamicsWorld.stepSimulation((1.0F / DisplayManager.instance().getFPS()) * physicsSpeed);
+            //TOD- dynamicsWorld.stepSimulation((1.0F / DisplayManager.instance().getFPS()) * physicsSpeed);
         }
         final HashMap<Entity, RigidBody> ballsToBeRemoved = new HashMap<>();
         for (Entity e : balls.keySet()) {
@@ -278,7 +278,7 @@ public class JBulletTest {
 
             }.setPerspectiveProjection(75, 1000, 0.1F)));
 
-            OmniKryptecEngine.instance().addAndSetScene(new Scene3D("TestScene", getCamera(1))); // TODO
+            OmniKryptecEngine.instance().addAndSetScene(new Scene3D("TestScene", getCamera(1))); // TOD-
             // Set
             // this
             // to

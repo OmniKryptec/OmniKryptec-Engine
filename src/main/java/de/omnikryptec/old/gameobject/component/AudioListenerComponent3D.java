@@ -75,7 +75,7 @@ public class AudioListenerComponent3D extends Component<GameObject3D> {
         }
         position = instance.getTransform().getPosition(true);
         velocity.set(0, 0, 0);
-        //TODO sind die eulerangles richtig herum?
+        //TOD- sind die eulerangles richtig herum?
         rotation = instance.getTransform().getRotation(true).getEulerAnglesXYZ(new Vector3f());
         if (isUsingPhysics) {
             physicsComponent.getBody().getAngularVelocity(velocity);

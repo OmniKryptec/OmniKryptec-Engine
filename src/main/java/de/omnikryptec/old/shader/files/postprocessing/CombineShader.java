@@ -17,9 +17,9 @@
 package de.omnikryptec.old.shader.files.postprocessing;
 
 import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.graphics.shader.base.UniformSampler;
+import de.omnikryptec.graphics.shader.base.UniformVec2;
 import de.omnikryptec.old.shader.base.Shader;
-import de.omnikryptec.old.shader.base.UniformSampler;
-import de.omnikryptec.old.shader.base.UniformVec2;
 
 public class CombineShader extends Shader {
 

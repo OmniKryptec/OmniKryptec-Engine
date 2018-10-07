@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import de.omnikryptec.core.display.Display;
+import de.omnikryptec.graphics.display.Display;
 import de.omnikryptec.old.graphics.GraphicsUtil;
 import de.omnikryptec.old.shader.files.postprocessing.DebugShader;
 import de.omnikryptec.old.util.EnumCollection.BlendMode;

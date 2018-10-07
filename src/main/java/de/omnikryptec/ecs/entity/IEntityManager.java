@@ -8,6 +8,7 @@ public interface IEntityManager {
 
 	IEntityManager addEntity(Entity entity);
 	IEntityManager removeEntity(Entity entity);
+	IEntityManager updateFilteredEntity(Entity entity);
 	
 	List<Entity> getEntitiesFor(BitSet family);
 	IEntityManager addFilter(BitSet family);

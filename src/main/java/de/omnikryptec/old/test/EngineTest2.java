@@ -26,9 +26,9 @@ import org.lwjgl.opencl.CL10;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.codemakers.lang.LanguageManager;
-import de.omnikryptec.core.display.Display;
-import de.omnikryptec.core.display.DisplayManager;
-import de.omnikryptec.core.display.GLFWInfo;
+import de.omnikryptec.graphics.display.Display;
+import de.omnikryptec.graphics.display.DisplayManager;
+import de.omnikryptec.graphics.display.GLFWInfo;
 import de.omnikryptec.old.event.eventV2.EventSubscription;
 import de.omnikryptec.old.event.eventV2.engineevents.FrameEvent;
 import de.omnikryptec.old.event.eventV2.engineevents.FrameEvent.FrameType;
@@ -185,7 +185,7 @@ public class EngineTest2 {
 
           
             
-            final AdvancedFile res = new AdvancedFile(true, "res"); //TODO Move this to the test
+            final AdvancedFile res = new AdvancedFile(true, "res"); //TOD- Move this to the test
 //            final AdvancedFile test = new AdvancedFile(true, "omnikryptec", "test");
 //            //System.out.println(res);
             ResourceLoader.createInstanceDefault(true, false);

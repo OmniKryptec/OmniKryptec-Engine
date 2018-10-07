@@ -6,21 +6,28 @@ import de.omnikryptec.ecs.component.ComponentType;
 
 public class Family {
 
-	public static BitSet of(ComponentType ...types) {
+	public static BitSet of(ComponentType... types) {
 		BitSet bitset = new BitSet();
-		for(ComponentType type : types) {
+		for (ComponentType type : types) {
 			bitset.set(type.getId());
 		}
 		return bitset;
 	}
-	
-	public static boolean contains(BitSet input, BitSet other) {
-		int i = other.nextSetBit(0);
+
+	/**
+	 * 
+	 * 
+	 * @param input        the bitset that is to be checked
+	 * @param trueRequired the filter
+	 * @return true if all bits that are set in trueRequired are also true in input.
+	 */
+	public static boolean containsTrueBits(BitSet input, BitSet trueRequired) {
+		int i = trueRequired.nextSetBit(0);
 		while (i != -1) {
 			if (!input.get(i)) {
 				return false;
 			}
-			i = other.nextSetBit(i+1);
+			i = trueRequired.nextSetBit(i + 1);
 		}
 		return true;
 	}

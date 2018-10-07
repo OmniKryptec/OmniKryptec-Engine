@@ -16,9 +16,9 @@
 
 package de.omnikryptec.old.gameobject.terrain;
 
+import de.omnikryptec.graphics.shader.base.UniformMatrix;
+import de.omnikryptec.graphics.shader.base.UniformSampler;
 import de.omnikryptec.old.shader.base.Shader;
-import de.omnikryptec.old.shader.base.UniformMatrix;
-import de.omnikryptec.old.shader.base.UniformSampler;
 
 /**
  *

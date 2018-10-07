@@ -35,7 +35,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.core.display.Display;
+import de.omnikryptec.graphics.display.Display;
 import de.omnikryptec.old.graphics.OpenGL;
 import de.omnikryptec.old.resource.texture.Texture;
 import de.omnikryptec.old.settings.GameSettings;
@@ -253,7 +253,7 @@ public class FrameBufferObject extends Texture {
     
     public int getTexture(int index) {
         if (multisample != GameSettings.NO_MULTISAMPLING) {
-            throw new RuntimeException("This framebuffer is multisampled and has no textures."); //TODO What Exception should be here?
+            throw new IllegalStateException("This framebuffer is multisampled and has no textures.");
         }
         return colBuffers[index];
     }

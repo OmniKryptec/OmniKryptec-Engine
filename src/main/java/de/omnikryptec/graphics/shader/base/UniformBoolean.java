@@ -14,24 +14,24 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.old.shader.base;
+package de.omnikryptec.graphics.shader.base;
 
 import org.lwjgl.opengl.GL20;
 
-public class UniformSampler extends Uniform {
+public class UniformBoolean extends Uniform {
 
-	private int currentValue;
+	private boolean currentBool;
 	private boolean used = false;
 
-	public UniformSampler(String name) {
+	public UniformBoolean(String name) {
 		super(name);
 	}
 
-	public void loadTexUnit(int texUnit) {
-		if (isFound() && (!used || currentValue != texUnit)) {
-			GL20.glUniform1i(super.getLocation(), texUnit);
+	public void loadBoolean(boolean bool) {
+		if (isFound()&&(!used || currentBool != bool)) {
+			GL20.glUniform1f(super.getLocation(), bool ? 1f : 0f);
 			used = true;
-			currentValue = texUnit;
+			currentBool = bool;
 		}
 	}
 

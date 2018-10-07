@@ -1,4 +1,4 @@
-package de.omnikryptec.core.display;
+package de.omnikryptec.graphics.display;
 
 public class DisplayUpdater {
 

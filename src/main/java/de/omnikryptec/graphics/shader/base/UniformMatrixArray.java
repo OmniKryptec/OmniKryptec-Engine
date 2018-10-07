@@ -14,9 +14,11 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.old.shader.base;
+package de.omnikryptec.graphics.shader.base;
 
 import org.joml.Matrix4f;
+
+import de.omnikryptec.old.shader.base.Shader;
 
 /**
  * UniformMatrixArray

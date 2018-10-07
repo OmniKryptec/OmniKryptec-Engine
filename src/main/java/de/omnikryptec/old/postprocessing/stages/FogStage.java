@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.joml.Vector4f;
 
-import de.omnikryptec.core.display.Display;
+import de.omnikryptec.graphics.display.Display;
 import de.omnikryptec.old.gameobject.Camera;
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.postprocessing.main.FrameBufferObject;

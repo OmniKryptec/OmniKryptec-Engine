@@ -49,7 +49,7 @@ import de.omnikryptec.old.util.logger.Logger;
 @Level(value = 1)
 public class AnimatedModelRenderer extends Renderer {
 
-	//TODO das hier ist gurke
+	//TOD- das hier ist gurke
     public static final Vector3f LIGHT_DIR = new Vector3f(0.2f, -0.3f, -0.8f);
 
     /**
@@ -68,7 +68,7 @@ public class AnimatedModelRenderer extends Renderer {
     @Override
     protected long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, Shader ownshader, FrustrumFilter filter) {
         vertcount = 0;
-        //TODO in den shader verschieben bei onRenderStart odaso
+        //TOD- in den shader verschieben bei onRenderStart odaso
         //((AnimatedModelShader)shaderpack.getDefaultShader()).lightDirection.loadVec3(LIGHT_DIR);
         for (AdvancedModel advancedModel : entities.keysArray()) {
             if (advancedModel == null || !(advancedModel instanceof AnimatedModel)) {

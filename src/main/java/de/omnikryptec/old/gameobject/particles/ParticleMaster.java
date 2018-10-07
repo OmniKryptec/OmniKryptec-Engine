@@ -166,7 +166,7 @@ public class ParticleMaster implements Profilable {
             if (cansetWantsUpdateLastFalse) {
                 list1.wantsUpdateLast = false;
             }
-            //Brauch man es bei anderen vlt auch nicht? TODO
+            //Brauch man es bei anderen vlt auch nicht? TOD-
             if (!(entry.getKey().getBlendMode() == BlendMode.ALPHA)) {
                 ArrayUtil.parallelSortArrayListAsArray(list, Sorting.PARTICLE_COMPARATOR);
                 //list.sort(Sorting.PARTICLE_COMPARATOR); //Sorry You Are Too Slow

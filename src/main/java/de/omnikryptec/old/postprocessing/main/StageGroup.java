@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL30;
 
-import de.omnikryptec.core.display.Display;
+import de.omnikryptec.graphics.display.Display;
 import de.omnikryptec.old.util.EnumCollection.DepthbufferType;
 
 public class StageGroup extends PostProcessingStage {

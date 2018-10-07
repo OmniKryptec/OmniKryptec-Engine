@@ -273,7 +273,7 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 		return scene;
 	}
 
-	// TODO seperate all lights and important lights!
+	// TOD- seperate all lights and important lights!
 	private final List<Light3D> lightstoreturn = new ArrayList<>();
 
 	public List<Light3D> getImportantLights() {

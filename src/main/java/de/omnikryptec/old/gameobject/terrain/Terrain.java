@@ -90,7 +90,7 @@ public class Terrain extends Entity {
     	return getHeightOfTerrain(wx, wz, size);
     }
     
-    //TODO to be tested!!
+    //TOD- to be tested!!
     public float getHeightOfTerrain(float worldX, float worldZ, float size) {
 		if(heights==null||heights.length==0){
 			return getTransform().getPosition(true).y;

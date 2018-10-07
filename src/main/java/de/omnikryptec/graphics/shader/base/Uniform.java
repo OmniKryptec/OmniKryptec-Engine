@@ -14,10 +14,11 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.old.shader.base;
+package de.omnikryptec.graphics.shader.base;
 
 import org.lwjgl.opengl.GL20;
 
+import de.omnikryptec.old.shader.base.Shader;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
 

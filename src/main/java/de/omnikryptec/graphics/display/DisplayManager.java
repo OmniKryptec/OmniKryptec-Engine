@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.core.display;
+package de.omnikryptec.graphics.display;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
@@ -66,7 +66,7 @@ public class DisplayManager {
 			}
 			GraphicsUtil.cullBackFaces(true);
 			GraphicsUtil.enableDepthTesting(true);
-			// TODO
+			// TODO OpenGL stuff
 			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 			deltaTimeSmoother = new Smoother();
 			Logger.log("Successfully created the Display!", LogLevel.FINEST);

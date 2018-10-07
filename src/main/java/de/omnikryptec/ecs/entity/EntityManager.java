@@ -35,7 +35,7 @@ public class EntityManager implements IEntityManager{
 		entities.add(entity);
 		entity.entityManager = this;
 		for (BitSet filter : uniqueFilters.keySet()) {
-			if (Family.contains(entity.getFamily(), filter)) {
+			if (Family.containsTrueBits(entity.getComponents(), filter)) {
 				filteredEntities.put(filter, entity);
 				reverseFilteredEntities.put(entity, filter);
 			}
@@ -46,6 +46,7 @@ public class EntityManager implements IEntityManager{
 	@Override
 	public EntityManager removeEntity(Entity entity) {
 		entities.remove(entity);
+		entity.entityManager = null;
 		for (BitSet filter : reverseFilteredEntities.get(entity)) {
 			filteredEntities.remove(filter, entity);
 		}
@@ -70,7 +71,7 @@ public class EntityManager implements IEntityManager{
 		}
 		if (uniqueFilters.increment(family) == 1) {
 			for(Entity e : entities) {
-				if(Family.contains(e.getFamily(), family)) {
+				if(Family.containsTrueBits(e.getComponents(), family)) {
 					filteredEntities.put(family, e);
 					reverseFilteredEntities.put(e, family);
 				}
@@ -92,4 +93,12 @@ public class EntityManager implements IEntityManager{
 		return this;
 	}
 
+	@Override
+	public IEntityManager updateFilteredEntity(Entity entity) {
+		//TODO better method of doing things
+		removeEntity(entity);
+		addEntity(entity);
+		return this;
+	}
+	
 }

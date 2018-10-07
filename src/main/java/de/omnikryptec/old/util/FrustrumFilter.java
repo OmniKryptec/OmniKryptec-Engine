@@ -66,7 +66,7 @@ public class FrustrumFilter {
 			return true;
 		}
 		vec2 = s.getTransform().getPosition(true);
-		//TODO ?? 
+		//TOD- ?? 
 		return intersection.testAab(vec2.x, vec2.y, 0, vec2.x+s.getWidth(), vec2.y+s.getHeight(), 0);
 	}
 

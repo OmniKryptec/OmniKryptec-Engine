@@ -16,7 +16,7 @@
 
 package de.omnikryptec.old.test;
 
-import de.omnikryptec.core.display.DisplayManager;
+import de.omnikryptec.graphics.display.DisplayManager;
 import de.omnikryptec.old.gameobject.Camera;
 import de.omnikryptec.old.gameobject.Entity;
 import de.omnikryptec.old.main.OmniKryptecEngine;

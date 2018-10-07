@@ -2,19 +2,21 @@ package de.omnikryptec.ecs.entity;
 
 import java.util.BitSet;
 
+import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.util.data.DynamicArray;
 
 public class Entity {
     
-	private DynamicArray<Component> components;
-	private BitSet family;
-	IEntityManager entityManager;
+	private DynamicArray<Component> componentsArray;
+	private BitSet components;
+	//TODO better way of accessing and changing this (maybe an AbstractEntityManager?)
+	protected IEntityManager entityManager;
 	
     public Entity() {
-        this.components = new DynamicArray<>();
-        this.family = new BitSet();
+        this.componentsArray = new DynamicArray<>();
+        this.components = new BitSet();
     }
 
     public Entity addComponent(Component component) {
@@ -23,8 +25,11 @@ public class Entity {
     }
     
     public Entity addComponent(ComponentType type, Component component) {
-    	this.components.set(type.getId(), component);
-    	this.family.set(type.getId());
+    	this.componentsArray.set(type.getId(), component);
+    	this.components.set(type.getId());
+    	if(hasEntityManager()) {
+    		this.entityManager.updateFilteredEntity(this);
+    	}
     	return this;
     }
     
@@ -34,21 +39,28 @@ public class Entity {
     }
     
     public Entity removeComponent(ComponentType componentType) {
-    	this.components.set(componentType.getId(), null);
-    	this.family.clear(componentType.getId());
+    	this.componentsArray.set(componentType.getId(), null);
+    	this.components.clear(componentType.getId());
+    	if(hasEntityManager()) {
+    		this.entityManager.updateFilteredEntity(this);
+    	}
     	return this;
     }
     
 	public <C extends Component>C getComponent(ComponentType componentType) {
-		return (C) components.get(componentType.getId());
+		return (C) componentsArray.get(componentType.getId());
 	}
 
 	public boolean hasComponent(ComponentType type) {
-		return family.get(type.getId());
+		return components.get(type.getId());
 	}
-
-	public BitSet getFamily() {
-		return family;
+	
+	public BitSet getComponents() {
+		return components;
 	}
     
+	private boolean hasEntityManager() {
+		return entityManager != null;
+	}
+	
 }
