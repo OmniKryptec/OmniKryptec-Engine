@@ -26,12 +26,19 @@ public class FamilyManager implements IFamilyManager {
 
 	@Override
 	public FamilyManager addFilter(Family family) {
+		if(family.isEmpty()) {
+			throw new IllegalArgumentException("Empty family");
+		}
 		uniqueFilters.increment(family);
+		//TODO filter existing entities?
 		return this;
 	}
 
 	@Override
 	public FamilyManager removeFilter(Family family) {
+		if(family.isEmpty()) {
+			throw new IllegalArgumentException("Empty family");
+		}
 		if (uniqueFilters.keySet().contains(family)) {
 			if (uniqueFilters.decrement(family) == 0) {
 				filteredEntities.removeAll(family);

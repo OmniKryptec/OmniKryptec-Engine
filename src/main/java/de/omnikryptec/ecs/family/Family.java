@@ -32,6 +32,10 @@ public class Family {
 	public boolean contains(Family family) {
 		return bitSet.contains(family.bitSet);
 	}
+	
+	public boolean isEmpty() {
+		return this.bitSet.isEmpty();
+	}
 
 	public AdvancedBitSet getBits() {
 		return bitSet;

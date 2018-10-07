@@ -73,7 +73,9 @@ public class ECSManager implements IECSManager {
 
 	private void addSysInt(ComponentSystem system) {
 		systemManager.addSystem(system);
-		familyManager.addFilter(system.getFamily());
+		if(!system.getFamily().isEmpty()) {
+			familyManager.addFilter(system.getFamily());
+		}
 		system.addedToEntityManager(this);
 	}
 
@@ -88,7 +90,9 @@ public class ECSManager implements IECSManager {
 
 	private void remSysInt(ComponentSystem system) {
 		systemManager.removeSystem(system);
-		familyManager.removeFilter(system.getFamily());
+		if(!system.getFamily().isEmpty()) {
+			familyManager.removeFilter(system.getFamily());
+		}
 		system.removedFromEntityManager(this);
 	}
 
