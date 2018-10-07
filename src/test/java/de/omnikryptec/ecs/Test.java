@@ -24,5 +24,5 @@ public class Test {
 		System.out.println("Time per entity: " + time2 * 1000 / (double) (updt * ents) + " mikro-s");
 		manager.removeSystem(system);
 	}
-
+	
 }

@@ -37,4 +37,27 @@ public class DynamicArray<E> {
 	public int size() {
 		return array.length;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null) {
+			return false;
+		}
+		if(this == obj) {
+			return true;
+		}
+		if(obj instanceof DynamicArray) {
+			DynamicArray<?> other = (DynamicArray<?>)obj;
+			if(other.size()!=this.size()) {
+				return false;
+			}
+			for(int i=0; i<size(); i++) {
+				if(!other.get(i).equals(get(i))) {
+					return false;
+				}
+			}
+			return true;
+		}
+		return false;
+	}
 }
