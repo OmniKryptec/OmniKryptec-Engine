@@ -1,6 +1,7 @@
 package de.omnikryptec.ecs.system;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -8,11 +9,10 @@ import java.util.concurrent.TimeUnit;
 
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.entity.Entity;
-import de.omnikryptec.ecs.family.Family;
 
 public abstract class IndividualParallelComponentSystem extends ParallelComponentSystem {
 
-	public IndividualParallelComponentSystem(Family required, int threads, int activationSize) {
+	public IndividualParallelComponentSystem(BitSet required, int threads, int activationSize) {
 		super(required, threads, activationSize);
 	}
 

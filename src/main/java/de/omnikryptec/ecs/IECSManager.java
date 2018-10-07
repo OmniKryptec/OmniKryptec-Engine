@@ -1,10 +1,10 @@
 package de.omnikryptec.ecs;
 
+import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
 
 import de.omnikryptec.ecs.entity.Entity;
-import de.omnikryptec.ecs.family.Family;
 import de.omnikryptec.ecs.system.ComponentSystem;
 
 public interface IECSManager {
@@ -15,7 +15,7 @@ public interface IECSManager {
 	void addSystem(ComponentSystem system);
 	void removeSystem(ComponentSystem system);
 	
-	List<Entity> getEntitesFor(Family f);
+	List<Entity> getEntitesFor(BitSet f);
 	
 	void update(float deltaTime);
 	Collection<Entity> getAll();

@@ -1,6 +1,7 @@
 package de.omnikryptec.ecs.system;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -10,11 +11,10 @@ import com.google.common.collect.Lists;
 
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.entity.Entity;
-import de.omnikryptec.ecs.family.Family;
 
 public abstract class GroupParallelComponentSystem extends ParallelComponentSystem {
 
-	public GroupParallelComponentSystem(Family required, int threads, int activationSize) {
+	public GroupParallelComponentSystem(BitSet required, int threads, int activationSize) {
 		super(required, threads, activationSize);
 	}
 

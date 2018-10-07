@@ -1,5 +1,6 @@
 package de.omnikryptec.ecs;
 
+import java.util.BitSet;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,9 +9,6 @@ import java.util.Queue;
 import de.omnikryptec.ecs.entity.Entity;
 import de.omnikryptec.ecs.entity.EntityManager;
 import de.omnikryptec.ecs.entity.IEntityManager;
-import de.omnikryptec.ecs.family.Family;
-import de.omnikryptec.ecs.family.FamilyManager;
-import de.omnikryptec.ecs.family.IFamilyManager;
 import de.omnikryptec.ecs.system.ComponentSystem;
 import de.omnikryptec.ecs.system.ISystemManager;
 import de.omnikryptec.ecs.system.SystemManager;
@@ -18,7 +16,6 @@ import de.omnikryptec.ecs.system.SystemManager;
 public class ECSManager implements IECSManager {
 
 	private IEntityManager entityManager;
-	private IFamilyManager familyManager;
 	private ISystemManager systemManager;
 
 	private boolean updating = false;
@@ -40,26 +37,23 @@ public class ECSManager implements IECSManager {
 	}
 
 	public ECSManager() {
-		this(new EntityManager(), new FamilyManager(), new SystemManager());
+		this(new EntityManager(), new SystemManager());
 	}
 
-	public ECSManager(IEntityManager entityManager, IFamilyManager familyManager, ISystemManager systemManager) {
+	public ECSManager(IEntityManager entityManager, ISystemManager systemManager) {
 		this.systemTasks = new LinkedList<>();
 		this.entityManager = entityManager;
-		this.familyManager = familyManager;
 		this.systemManager = systemManager;
 	}
 
 	@Override
 	public void addEntity(Entity entity) {
 		entityManager.addEntity(entity);
-		familyManager.addFilteredEntity(entity);
 	}
 
 	@Override
 	public void removeEntity(Entity entity) {
 		entityManager.removeEntity(entity);
-		familyManager.removeFilteredEntity(entity);
 	}
 
 	@Override
@@ -74,7 +68,7 @@ public class ECSManager implements IECSManager {
 	private void addSysInt(ComponentSystem system) {
 		systemManager.addSystem(system);
 		if(!system.getFamily().isEmpty()) {
-			familyManager.addFilter(system.getFamily());
+			entityManager.addFilter(system.getFamily());
 		}
 		system.addedToEntityManager(this);
 	}
@@ -91,14 +85,14 @@ public class ECSManager implements IECSManager {
 	private void remSysInt(ComponentSystem system) {
 		systemManager.removeSystem(system);
 		if(!system.getFamily().isEmpty()) {
-			familyManager.removeFilter(system.getFamily());
+			entityManager.removeFilter(system.getFamily());
 		}
 		system.removedFromEntityManager(this);
 	}
 
 	@Override
-	public List<Entity> getEntitesFor(Family f) {
-		return familyManager.getEntitiesFor(f);
+	public List<Entity> getEntitesFor(BitSet f) {
+		return entityManager.getEntitiesFor(f);
 	}
 
 	@Override

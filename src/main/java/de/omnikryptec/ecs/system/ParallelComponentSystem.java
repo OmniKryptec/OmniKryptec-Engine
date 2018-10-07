@@ -1,12 +1,12 @@
 package de.omnikryptec.ecs.system;
 
+import java.util.BitSet;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.entity.Entity;
-import de.omnikryptec.ecs.family.Family;
 
 public abstract class ParallelComponentSystem extends ComponentSystem implements IndividualUpdater{
 
@@ -14,7 +14,7 @@ public abstract class ParallelComponentSystem extends ComponentSystem implements
 	private int size;
 	private int activationSize;
 	
-	public ParallelComponentSystem(Family required, int threads, int activationSize) {
+	public ParallelComponentSystem(BitSet required, int threads, int activationSize) {
 		super(required);
 		this.size = threads;
 		this.activationSize = activationSize;

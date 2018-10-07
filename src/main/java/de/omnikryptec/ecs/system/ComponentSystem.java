@@ -1,21 +1,21 @@
 package de.omnikryptec.ecs.system;
 
+import java.util.BitSet;
 import java.util.List;
 
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.entity.Entity;
-import de.omnikryptec.ecs.family.Family;
 
 public abstract class ComponentSystem {
     
-	private Family family;
+	private BitSet family;
 	protected List<Entity> entities;
 	
-	protected ComponentSystem(Family required) {
+	protected ComponentSystem(BitSet required) {
 		this.family = required;
 	}
 	
-	public Family getFamily() {
+	public BitSet getFamily() {
 		return family;
 	}
 

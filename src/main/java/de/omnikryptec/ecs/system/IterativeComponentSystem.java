@@ -1,12 +1,13 @@
 package de.omnikryptec.ecs.system;
 
+import java.util.BitSet;
+
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.entity.Entity;
-import de.omnikryptec.ecs.family.Family;
 
 public abstract class IterativeComponentSystem extends ComponentSystem implements IndividualUpdater{
 
-	protected IterativeComponentSystem(Family required) {
+	protected IterativeComponentSystem(BitSet required) {
 		super(required);
 	}
 	
