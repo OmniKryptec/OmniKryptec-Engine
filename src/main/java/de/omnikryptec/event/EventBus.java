@@ -34,7 +34,7 @@ public class EventBus {
 		} else {
 			methods = object.getClass().getDeclaredMethods();
 		}
-		boolean annotationFound=false;
+		boolean annotationFound = false;
 		for (Method m : methods) {
 			if (object == null && !Modifier.isStatic(m.getModifiers())) {
 				throw new IllegalArgumentException("Nonstatic event listener registered by class");
@@ -57,8 +57,8 @@ public class EventBus {
 				}
 			}
 		}
-		if(!annotationFound) {
-			throw new IllegalArgumentException("No EventSubscriptions found: "+object);
+		if (!annotationFound) {
+			throw new IllegalArgumentException("No EventSubscriptions found: " + object);
 		}
 	}
 
@@ -86,8 +86,12 @@ public class EventBus {
 	}
 
 	private void processEvent(Event event) {
-		for (IEventListener listener : listeners.get(event.getClass())) {
-			listener.invoke(event);
-		}
+		Class<?> someclazz = event.getClass();
+		do {
+			for (IEventListener listener : listeners.get((Class<? extends Event>) someclazz)) {
+				listener.invoke(event);
+			}
+			someclazz = someclazz.getSuperclass();
+		} while (someclazz != Object.class && someclazz != null);
 	}
 }

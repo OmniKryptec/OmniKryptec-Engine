@@ -6,12 +6,20 @@ public class Test {
 		EventBus bus = new EventBus();
 		bus.register(new Test());
 		bus.enqueueOrPost(new Event(), false);
+		bus.enqueueOrPost(new TestEvent(), false);
+		bus.enqueueOrPost(new TestEvent.TestEvent2(), false);
 		bus.processQueuedEvents();
 	}
 	
 	@EventSubscription
-	public void test(Event e) {
+	public void test(TestEvent.TestEvent2 e) {
 		System.out.println(e);
+	}
+	
+	public static class TestEvent extends Event{
+		public static class TestEvent2 extends TestEvent{
+			
+		}
 	}
 
 }
