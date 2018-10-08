@@ -28,7 +28,7 @@ import de.codemakers.io.file.AdvancedFile;
 import de.codemakers.lang.LanguageManager;
 import de.omnikryptec.graphics.display.Display;
 import de.omnikryptec.graphics.display.DisplayManager;
-import de.omnikryptec.graphics.display.GLFWInfo;
+import de.omnikryptec.graphics.display.WindowInfo;
 import de.omnikryptec.old.event.eventV2.EventSubscription;
 import de.omnikryptec.old.event.eventV2.engineevents.FrameEvent;
 import de.omnikryptec.old.event.eventV2.engineevents.FrameEvent.FrameType;
@@ -138,7 +138,7 @@ public class EngineTest2 {
                     .setLightForward(true).setUseRenderChunking(false).setUseFrustrumCulling(true)
                     .setInteger(GameSettings.HIGHEST_SHADER_LVL, 1000000)
                     .setBoolean(GameSettings.LIGHT_2D, false),
-                    new GLFWInfo(3, 2, true, false, 1280, 720));
+                    new WindowInfo(3, 2, true, false, 1280, 720));
             Display.setAspectRatio(16.0 / 9);
             OpenCL.create();
             CLPlatform platform = OpenCL.getPlatform(0);

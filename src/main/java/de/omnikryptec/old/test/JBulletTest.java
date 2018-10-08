@@ -45,7 +45,7 @@ import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 
 import de.omnikryptec.graphics.display.DisplayManager;
-import de.omnikryptec.graphics.display.GLFWInfo;
+import de.omnikryptec.graphics.display.WindowInfo;
 import de.omnikryptec.old.event.input.InputManager;
 import de.omnikryptec.old.gameobject.Camera;
 import de.omnikryptec.old.gameobject.Entity;
@@ -266,7 +266,7 @@ public class JBulletTest {
             Logger.CONSOLE.setExitWhenLastOne(true);
             Logger.showConsoleDirect();
 
-            DisplayManager.createDisplay("JBulletTest", new GameSettings().setAnisotropicLevel(32).setMultisamples(32)/*.setInitialFPSCap(30)*/.setChunkRenderOffsets(2, 2, 2).setLightForward(true), new GLFWInfo(4, 3, false, false, 1280, 720));
+            DisplayManager.createDisplay("JBulletTest", new GameSettings().setAnisotropicLevel(32).setMultisamples(32)/*.setInitialFPSCap(30)*/.setChunkRenderOffsets(2, 2, 2).setLightForward(true), new WindowInfo(4, 3, false, false, 1280, 720));
 
             // PostProcessing.instance().addStage(new LightRenderer());
             OmniKryptecEngine.instance().addAndSetScene(new Scene3D("TestScene", new Camera() {

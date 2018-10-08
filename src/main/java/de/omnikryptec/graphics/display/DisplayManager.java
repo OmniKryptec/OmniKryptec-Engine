@@ -50,10 +50,10 @@ public class DisplayManager {
 	}
 
 	public DisplayManager(String name, GameSettings settings) {
-		this(name, settings, new GLFWInfo());
+		this(name, settings, new WindowInfo());
 	}
 
-	public DisplayManager(String name, GameSettings settings, GLFWInfo info) {
+	public DisplayManager(String name, GameSettings settings, WindowInfo info) {
 		this.settings = Util.ensureNonNull(settings, "GameSettings must not be null!");
 		if (settings.getBoolean(GameSettings.FASTMATH)) {
 			System.setProperty("joml.fastmath", "true");

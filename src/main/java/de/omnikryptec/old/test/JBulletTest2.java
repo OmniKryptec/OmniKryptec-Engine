@@ -31,7 +31,7 @@ import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
 
 import de.omnikryptec.graphics.display.DisplayManager;
-import de.omnikryptec.graphics.display.GLFWInfo;
+import de.omnikryptec.graphics.display.WindowInfo;
 import de.omnikryptec.old.audio.AudioEffectState;
 import de.omnikryptec.old.audio.AudioManager;
 import de.omnikryptec.old.audio.AudioSource;
@@ -110,7 +110,7 @@ public class JBulletTest2 {
             keySettings.setKey(grabMouse);
             keySettings.setKey("physicsFaster", GLFW.GLFW_KEY_PERIOD, true);
             keySettings.setKey("physicsSlower", GLFW.GLFW_KEY_COMMA, true);
-            DisplayManager.createDisplay("JBullet Test2", gameSettings, new GLFWInfo(4, 3, true, false, 1280, 720));
+            DisplayManager.createDisplay("JBullet Test2", gameSettings, new WindowInfo(4, 3, true, false, 1280, 720));
             OmniKryptecEngine.instance().getSettings().getKeySettings().setKey("sprint", GLFW.GLFW_KEY_LEFT_CONTROL, true);
             OmniKryptecEngine.instance().addAndSetScene(new Scene3D("Test-Scene", (Camera) new Camera() {
 

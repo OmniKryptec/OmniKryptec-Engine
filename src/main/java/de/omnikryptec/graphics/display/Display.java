@@ -32,7 +32,8 @@ public class Display {
 	private int[] viewport = new int[4];
 	private double aspectratio = -1;
 
-	Display(String name, GLFWInfo info) {
+	Display(String name, WindowInfo info) {
+		//init has nothing to do with the Display, move it to a different position
 		GLFW.glfwInit();
 		GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(Logger.NEWSYSERR));
 		window = new Window(name, info);
@@ -42,7 +43,7 @@ public class Display {
 		}
 		calcViewport();
 		setARViewPort();
-		// TODO Eventbased?
+		// TODO Eventbased? / Input has nothing to do with the Display, move it to a different position
 		InputManager.initCallbacks();
 		lastsynced = getCurrentTime();
 		Logger.log("Successfully created GLContext and the Window!", LogLevel.FINEST);

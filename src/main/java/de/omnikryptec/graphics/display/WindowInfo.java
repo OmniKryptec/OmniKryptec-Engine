@@ -21,28 +21,30 @@ package de.omnikryptec.graphics.display;
  *
  * @author pcfreak9000 &amp; Panzer1119
  */
-public class GLFWInfo {
+public class WindowInfo {
 
+	//TODO version has nothing to do with the Window
 	private int majVers = 3;
 	private int minVers = 3;
+	
 	private boolean resizeable;
 	private int width = 0, height = 0;
 	private boolean fullscreen = false;
 	private int[] lockWindowAspectRatio = { -1, -1 };
 
-	public GLFWInfo() {
+	public WindowInfo() {
 		this(800, 600);
 	}
 
-	public GLFWInfo(int width, int height) {
+	public WindowInfo(int width, int height) {
 		this(false, width, height);
 	}
 
-	public GLFWInfo(boolean fullscreen, int width, int height) {
+	public WindowInfo(boolean fullscreen, int width, int height) {
 		this(true, fullscreen, width, height);
 	}
 
-	public GLFWInfo(boolean resizeable, boolean fullscreen, int width, int height) {
+	public WindowInfo(boolean resizeable, boolean fullscreen, int width, int height) {
 		this(3, 2, resizeable, fullscreen, width, height);
 	}
 
@@ -56,7 +58,7 @@ public class GLFWInfo {
 	 * @param resizeable Boolean Resizeable
 	 * @param width      Integer Width
 	 */
-	public GLFWInfo(int majVers, int minVers, boolean resizeable, boolean fullscreen, int width, int height) {
+	public WindowInfo(int majVers, int minVers, boolean resizeable, boolean fullscreen, int width, int height) {
 		this.majVers = majVers;
 		this.minVers = minVers;
 		this.resizeable = resizeable;
@@ -65,7 +67,7 @@ public class GLFWInfo {
 		this.height = height;
 	}
 
-	public GLFWInfo setLockWindowAspectRatio(int w, int h) {
+	public WindowInfo setLockWindowAspectRatio(int w, int h) {
 		lockWindowAspectRatio[0] = w;
 		lockWindowAspectRatio[1] = h;
 		return this;

@@ -34,8 +34,8 @@ class Window {
 	private int width, height, fwidth, fheight;
 	private boolean isfullscreen = false;
 
-	Window(String name, GLFWInfo info) {
-		Util.ensureNonNull(info, "GLFWInfo must not be null!");
+	Window(String name, WindowInfo info) {
+		Util.ensureNonNull(info, "WindowInfo must not be null!");
 		Util.ensureNonNull(name, "Window label must not be null!");
 		width = info.getWidth();
 		height = info.getHeight();

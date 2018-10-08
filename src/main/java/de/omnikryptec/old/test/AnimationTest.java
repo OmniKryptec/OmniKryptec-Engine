@@ -26,7 +26,7 @@ import org.lwjgl.glfw.GLFW;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.graphics.display.DisplayManager;
-import de.omnikryptec.graphics.display.GLFWInfo;
+import de.omnikryptec.graphics.display.WindowInfo;
 import de.omnikryptec.old.animation.AnimatedModel;
 import de.omnikryptec.old.animation.Animation;
 import de.omnikryptec.old.animation.ColladaParser.dataStructures.AnimatedModelData;
@@ -112,7 +112,7 @@ public class AnimationTest {
             keySettings.setKey("alternativeMouseGrabbed", GLFW.GLFW_KEY_L, true);
             keySettings.setKey("lower", GLFW.GLFW_KEY_COMMA, true);
             keySettings.setKey("higher", GLFW.GLFW_KEY_PERIOD, true);
-            DisplayManager.createDisplay("Animation Test", gameSettings, new GLFWInfo(4, 3, false, false, 1280, 720));
+            DisplayManager.createDisplay("Animation Test", gameSettings, new WindowInfo(4, 3, false, false, 1280, 720));
             OmniKryptecEngine.instance().addAndSetScene((scene = new Scene3D("Test-Scene", camera = ((Camera) new Camera() {
 
                 @Override

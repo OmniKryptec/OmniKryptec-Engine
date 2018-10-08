@@ -2,7 +2,6 @@ package de.omnikryptec.ecs.entity;
 
 import java.util.BitSet;
 
-import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.util.data.DynamicArray;
