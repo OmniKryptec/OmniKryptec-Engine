@@ -28,7 +28,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.graphics.shader.base.Uniform;
+import de.omnikryptec.graphics.shader.base.uniform.Uniform;
 import de.omnikryptec.old.gameobject.Entity;
 import de.omnikryptec.old.graphics.OpenGL;
 import de.omnikryptec.old.graphics.SpriteBatch;

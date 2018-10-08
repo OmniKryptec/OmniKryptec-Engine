@@ -20,12 +20,12 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.graphics.shader.base.UniformBoolean;
-import de.omnikryptec.graphics.shader.base.UniformInt;
-import de.omnikryptec.graphics.shader.base.UniformMatrix;
-import de.omnikryptec.graphics.shader.base.UniformSampler;
-import de.omnikryptec.graphics.shader.base.UniformVec3;
-import de.omnikryptec.graphics.shader.base.UniformVec4;
+import de.omnikryptec.graphics.shader.base.uniform.UniformBoolean;
+import de.omnikryptec.graphics.shader.base.uniform.UniformInt;
+import de.omnikryptec.graphics.shader.base.uniform.UniformMatrix;
+import de.omnikryptec.graphics.shader.base.uniform.UniformSampler;
+import de.omnikryptec.graphics.shader.base.uniform.UniformVec3;
+import de.omnikryptec.graphics.shader.base.uniform.UniformVec4;
 import de.omnikryptec.old.gameobject.Light3D;
 import de.omnikryptec.old.graphics.GraphicsUtil;
 import de.omnikryptec.old.main.AbstractScene3D;

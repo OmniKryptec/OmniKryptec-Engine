@@ -16,9 +16,9 @@
 
 package de.omnikryptec.old.gameobject.particles;
 
-import de.omnikryptec.graphics.shader.base.UniformFloat;
-import de.omnikryptec.graphics.shader.base.UniformMatrix;
-import de.omnikryptec.graphics.shader.base.UniformVec4;
+import de.omnikryptec.graphics.shader.base.uniform.UniformFloat;
+import de.omnikryptec.graphics.shader.base.uniform.UniformMatrix;
+import de.omnikryptec.graphics.shader.base.uniform.UniformVec4;
 import de.omnikryptec.old.shader.base.Attribute;
 import de.omnikryptec.old.shader.base.Shader;
 

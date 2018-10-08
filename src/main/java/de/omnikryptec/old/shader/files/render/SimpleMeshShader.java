@@ -19,9 +19,9 @@ package de.omnikryptec.old.shader.files.render;
 import org.joml.Vector4f;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.graphics.shader.base.UniformMatrix;
-import de.omnikryptec.graphics.shader.base.UniformSampler;
-import de.omnikryptec.graphics.shader.base.UniformVec4;
+import de.omnikryptec.graphics.shader.base.uniform.UniformMatrix;
+import de.omnikryptec.graphics.shader.base.uniform.UniformSampler;
+import de.omnikryptec.graphics.shader.base.uniform.UniformVec4;
 import de.omnikryptec.old.graphics.GraphicsUtil;
 import de.omnikryptec.old.main.AbstractScene3D;
 import de.omnikryptec.old.resource.model.AdvancedModel;
