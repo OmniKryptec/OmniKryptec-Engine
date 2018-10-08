@@ -4,10 +4,12 @@ import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
 
+import de.omnikryptec.core.Updateable;
 import de.omnikryptec.ecs.impl.ECSManager;
 import de.omnikryptec.ecs.system.ComponentSystem;
 
-public interface IECSManager {
+//TODO is updateable useful here?
+public interface IECSManager extends Updateable{
 
 	//TODO useful or too much?
 	public static IECSManager createDefault() {
@@ -24,6 +26,5 @@ public interface IECSManager {
 	
 	List<Entity> getEntitesFor(BitSet f);
 	
-	void update(float deltaTime);
 	Collection<Entity> getAll();
 }

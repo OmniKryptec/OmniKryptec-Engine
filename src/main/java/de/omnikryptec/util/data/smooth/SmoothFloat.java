@@ -16,7 +16,9 @@
 
 package de.omnikryptec.util.data.smooth;
 
-public class SmoothFloat {
+import de.omnikryptec.core.Updateable;
+
+public class SmoothFloat implements Updateable{
 
 	private float agility;
 	private float target;
@@ -28,6 +30,7 @@ public class SmoothFloat {
 		this.agility = agility;
 	}
 
+	@Override
 	public void update(float deltaTime) {
 		actual += (target - actual) * deltaTime * agility;
 	}

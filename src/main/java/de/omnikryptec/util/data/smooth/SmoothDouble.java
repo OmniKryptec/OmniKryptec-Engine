@@ -1,6 +1,8 @@
 package de.omnikryptec.util.data.smooth;
 
-public class SmoothDouble {
+import de.omnikryptec.core.Updateable;
+
+public class SmoothDouble implements Updateable{
 
 	private double agility;
 	private double target;
@@ -12,7 +14,8 @@ public class SmoothDouble {
 		this.agility = agility;
 	}
 
-	public void update(double deltaTime) {
+	@Override
+	public void update(float deltaTime) {
 		actual += (target - actual) * deltaTime * agility;
 	}
 	
