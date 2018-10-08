@@ -1,4 +1,4 @@
-package de.omnikryptec.ecs.entity;
+package de.omnikryptec.ecs.impl;
 
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -9,31 +9,30 @@ import java.util.List;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
-import de.omnikryptec.ecs.Family;
+import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.util.data.CountingMap;
 
-public class EntityManager implements IEntityManager{
+public class EntityManager {
 
+	
 	private Collection<Entity> entities;
 	private Collection<Entity> unmodifiableEntities;
-	
+
 	private CountingMap<BitSet> uniqueFilters;
 	private ListMultimap<BitSet, Entity> filteredEntities;
 	private ListMultimap<Entity, BitSet> reverseFilteredEntities;
-	
+
 	public EntityManager() {
-		//TODO Set or List?!
+		// TODO Set or List?!
 		this.entities = new ArrayList<>();
 		this.unmodifiableEntities = Collections.unmodifiableCollection(this.entities);
 		this.uniqueFilters = new CountingMap<>();
 		this.filteredEntities = ArrayListMultimap.create();
 		this.reverseFilteredEntities = ArrayListMultimap.create();
 	}
-	
-	@Override
+
 	public EntityManager addEntity(Entity entity) {
 		entities.add(entity);
-		entity.entityManager = this;
 		for (BitSet filter : uniqueFilters.keySet()) {
 			if (Family.containsTrueBits(entity.getComponents(), filter)) {
 				filteredEntities.put(filter, entity);
@@ -43,10 +42,8 @@ public class EntityManager implements IEntityManager{
 		return this;
 	}
 
-	@Override
 	public EntityManager removeEntity(Entity entity) {
 		entities.remove(entity);
-		entity.entityManager = null;
 		for (BitSet filter : reverseFilteredEntities.get(entity)) {
 			filteredEntities.remove(filter, entity);
 		}
@@ -54,24 +51,21 @@ public class EntityManager implements IEntityManager{
 		return this;
 	}
 
-	@Override
 	public Collection<Entity> getAll() {
 		return unmodifiableEntities;
 	}
 
-	@Override
 	public List<Entity> getEntitiesFor(BitSet family) {
 		return Collections.unmodifiableList(filteredEntities.get(family));
 	}
 
-	@Override
-	public IEntityManager addFilter(BitSet family) {
+	public EntityManager addFilter(BitSet family) {
 		if (family.isEmpty()) {
 			throw new IllegalArgumentException("Empty family");
 		}
 		if (uniqueFilters.increment(family) == 1) {
-			for(Entity e : entities) {
-				if(Family.containsTrueBits(e.getComponents(), family)) {
+			for (Entity e : entities) {
+				if (Family.containsTrueBits(e.getComponents(), family)) {
 					filteredEntities.put(family, e);
 					reverseFilteredEntities.put(e, family);
 				}
@@ -80,8 +74,7 @@ public class EntityManager implements IEntityManager{
 		return this;
 	}
 
-	@Override
-	public IEntityManager removeFilter(BitSet family) {
+	public EntityManager removeFilter(BitSet family) {
 		if (family.isEmpty()) {
 			throw new IllegalArgumentException("Empty family");
 		}
@@ -93,12 +86,19 @@ public class EntityManager implements IEntityManager{
 		return this;
 	}
 
-	@Override
-	public IEntityManager updateFilteredEntity(Entity entity) {
-		//TODO better method of doing things
-		removeEntity(entity);
-		addEntity(entity);
+	public EntityManager updateEntityFamilyStatus(Entity entity) {
+		for (BitSet family : uniqueFilters) {
+			boolean niceFamily = Family.containsTrueBits(entity.getComponents(), family);
+			boolean alreadySet = reverseFilteredEntities.containsEntry(entity, family);
+			if (niceFamily && !alreadySet) {
+				reverseFilteredEntities.put(entity, family);
+				filteredEntities.put(family, entity);
+			} else if (!niceFamily && alreadySet) {
+				reverseFilteredEntities.remove(entity, family);
+				filteredEntities.remove(family, entity);
+			}
+		}
 		return this;
 	}
-	
+
 }

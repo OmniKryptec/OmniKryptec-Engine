@@ -1,10 +1,11 @@
 package de.omnikryptec.util.data;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 //Surprisingly faster than a guava Multiset
-public class CountingMap<T> {
+public class CountingMap<T> implements Iterable<T>{
 
 	private Map<T, Long> map = new HashMap<>();
 	private boolean retainZeros = false;
@@ -50,6 +51,11 @@ public class CountingMap<T> {
 
 	public Set<T> keySet() {
 		return map.keySet();
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return map.keySet().iterator();
 	}
 
 }

@@ -2,8 +2,8 @@ package de.omnikryptec.ecs.system;
 
 import java.util.BitSet;
 
+import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
-import de.omnikryptec.ecs.entity.Entity;
 
 public abstract class IterativeComponentSystem extends ComponentSystem implements IndividualUpdater{
 

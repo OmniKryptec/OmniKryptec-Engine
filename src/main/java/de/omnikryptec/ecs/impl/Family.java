@@ -1,4 +1,4 @@
-package de.omnikryptec.ecs;
+package de.omnikryptec.ecs.impl;
 
 import java.util.BitSet;
 
@@ -19,7 +19,7 @@ public class Family {
 	 * 
 	 * @param input        the bitset that is to be checked
 	 * @param trueRequired the filter
-	 * @return true if all bits that are set in trueRequired are also true in input.
+	 * @return true if all bits that are set to true in trueRequired are also true in input.
 	 */
 	public static boolean containsTrueBits(BitSet input, BitSet trueRequired) {
 		int i = trueRequired.nextSetBit(0);

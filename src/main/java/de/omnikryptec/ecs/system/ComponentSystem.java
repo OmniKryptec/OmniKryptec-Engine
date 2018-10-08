@@ -3,8 +3,8 @@ package de.omnikryptec.ecs.system;
 import java.util.BitSet;
 import java.util.List;
 
+import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
-import de.omnikryptec.ecs.entity.Entity;
 
 public abstract class ComponentSystem {
     

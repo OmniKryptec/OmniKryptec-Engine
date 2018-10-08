@@ -9,8 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 import com.google.common.collect.Lists;
 
+import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
-import de.omnikryptec.ecs.entity.Entity;
 
 public abstract class GroupParallelComponentSystem extends ParallelComponentSystem {
 
