@@ -17,7 +17,7 @@ public abstract class FixedPool<T> extends Pool<T> {
 
 	public FixedPool(Class<T> clazz, int size, boolean prewarm) {
 		poolable = Poolable.class.isAssignableFrom(clazz);
-		free = new FixedStack<>(clazz, size);
+		free = new FixedStack<>(size);
 		if (prewarm) {
 			for (int i = 0; i < size; i++) {
 				free.push(newObject());
@@ -40,7 +40,8 @@ public abstract class FixedPool<T> extends Pool<T> {
 		}
 	}
 
-	public int getFreeCached() {
-		return free.filledSize();
+	@Override
+	public int available() {
+		return Math.max(1, free.filled());
 	}
 }

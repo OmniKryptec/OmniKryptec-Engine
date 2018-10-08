@@ -46,7 +46,7 @@ public class ExecutorsUtil {
 		}
 	}
 	
-	public static int getLogicalCores() {
+	public static int getAvailableProcessors() {
 		return Runtime.getRuntime().availableProcessors();
 	}
 }

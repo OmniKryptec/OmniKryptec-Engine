@@ -23,4 +23,11 @@ public abstract class FakePool<T> extends Pool<T> {
 	public void free(T t) {
 	}
 
+	/**
+	 * Always returns 1
+	 */
+	@Override
+	public int available() {
+		return 1;
+	}
 }
