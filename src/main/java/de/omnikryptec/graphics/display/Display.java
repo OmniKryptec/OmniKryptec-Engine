@@ -33,7 +33,7 @@ public class Display {
 	private double aspectratio = -1;
 
 	Display(String name, WindowInfo info) {
-		//init has nothing to do with the Display, move it to a different position
+		//TODO init has nothing to do with the Display, move it to a different position
 		GLFW.glfwInit();
 		GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(Logger.NEWSYSERR));
 		window = new Window(name, info);
