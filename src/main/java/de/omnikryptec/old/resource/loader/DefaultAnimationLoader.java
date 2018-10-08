@@ -22,7 +22,6 @@ import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.old.animation.Animation;
 import de.omnikryptec.old.animation.loaders.AnimationLoader;
 import de.omnikryptec.old.resource.loader.annotations.DefaultLoader;
-import de.omnikryptec.old.util.logger.Logger;
 
 /**
  * DefaultAnimationLoader

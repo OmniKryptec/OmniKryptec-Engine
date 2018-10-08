@@ -11,6 +11,8 @@ public abstract class ComponentSystem {
 	private BitSet family;
 	protected List<Entity> entities;
 	
+	protected boolean enabled=true;
+	
 	protected ComponentSystem(BitSet required) {
 		this.family = required;
 	}
@@ -25,6 +27,14 @@ public abstract class ComponentSystem {
 	
 	public void removedFromEntityManager(IECSManager entitymgr) {
 		entities = null;
+	}
+	
+	public boolean isEnabled() {
+		return enabled;
+	}
+	
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 	
 	public abstract void update(IECSManager entityManager, float deltaTime);

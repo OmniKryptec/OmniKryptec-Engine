@@ -24,7 +24,6 @@ import de.omnikryptec.old.animation.ColladaParser.dataStructures.AnimatedModelDa
 import de.omnikryptec.old.resource.loader.annotations.DefaultLoader;
 import de.omnikryptec.old.settings.GameSettings;
 import de.omnikryptec.old.util.Instance;
-import de.omnikryptec.old.util.logger.Logger;
 
 /**
  * DefaultAnimatedModelDataLoader

@@ -12,17 +12,22 @@ public class Test {
 		manager.addSystem(system);
 		int updt = 100;
 		int ents = 1_000_00;
+		System.out.println("Testing with "+ents+" entities and "+updt+" updates");
+		long time = System.currentTimeMillis();
 		for (int i = 0; i < ents; i++) {
 			manager.addEntity(new Entity().addComponent(new SomeDataComponent()));
 		}
+		long time2 = System.currentTimeMillis();
+		System.out.println("Initialization took "+(time2-time)*1000+" micro-s");
+		System.out.println("Per Entity: "+(time2-time)/(double)ents*1000+" micro-s");
 		System.out.println("Starting updates...");
-		long time = System.currentTimeMillis();
+		time = System.currentTimeMillis();
 		for (int i = 0; i < updt; i++) {
 			manager.update(1);
 		}
-		long time2 = System.currentTimeMillis() - time;
-		System.out.println("Time per update: " + time2 * 1000 / (double) updt + " mikro-s");
-		System.out.println("Time per entity: " + time2 * 1000 / (double) (updt * ents) + " mikro-s");
+		time2 = System.currentTimeMillis() - time;
+		System.out.println("Time per update: " + time2 * 1000 / (double) updt + " micro-s");
+		System.out.println("Time per entity: " + time2 * 1000 / (double) (updt * ents) + " micro-s");
 		manager.removeSystem(system);
 		ExecutorsUtil.shutdownNowAll();
 	}

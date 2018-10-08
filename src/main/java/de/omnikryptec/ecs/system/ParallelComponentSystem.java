@@ -3,7 +3,6 @@ package de.omnikryptec.ecs.system;
 import java.util.BitSet;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
@@ -42,9 +41,7 @@ public abstract class ParallelComponentSystem extends ComponentSystem implements
 					updateIndividual(entityManager, e, deltaTime);
 				}
 			} else {
-				System.out.println("threading started");
 				updateThreaded(entityManager, entities, deltaTime);
-				System.out.println("threading done");
 			}
 		}
 	}

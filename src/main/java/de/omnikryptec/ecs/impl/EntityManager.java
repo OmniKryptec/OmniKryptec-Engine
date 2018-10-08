@@ -1,9 +1,9 @@
 package de.omnikryptec.ecs.impl;
 
-import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -23,8 +23,8 @@ public class EntityManager {
 	private ListMultimap<Entity, BitSet> reverseFilteredEntities;
 
 	public EntityManager() {
-		// TODO Set or List?!
-		this.entities = new ArrayList<>();
+		// HashSet is a few microsecs slower than ArrayList on average but when removing entities its twice as fast but what about adding entities?!?!?!
+		this.entities = new HashSet<>();
 		this.unmodifiableEntities = Collections.unmodifiableCollection(this.entities);
 		this.uniqueFilters = new CountingMap<>();
 		this.filteredEntities = ArrayListMultimap.create();
@@ -32,22 +32,26 @@ public class EntityManager {
 	}
 
 	public EntityManager addEntity(Entity entity) {
-		entities.add(entity);
-		for (BitSet filter : uniqueFilters.keySet()) {
-			if (Family.containsTrueBits(entity.getComponents(), filter)) {
-				filteredEntities.put(filter, entity);
-				reverseFilteredEntities.put(entity, filter);
+		if(entities.add(entity)) {
+			if(!entity.getComponents().isEmpty()) {
+				for (BitSet filter : uniqueFilters.keySet()) {
+					if (Family.containsTrueBits(entity.getComponents(), filter)) {
+						filteredEntities.put(filter, entity);
+						reverseFilteredEntities.put(entity, filter);
+					}
+				}
 			}
 		}
 		return this;
 	}
 
 	public EntityManager removeEntity(Entity entity) {
-		entities.remove(entity);
-		for (BitSet filter : reverseFilteredEntities.get(entity)) {
-			filteredEntities.remove(filter, entity);
+		if(entities.remove(entity)) {
+			for (BitSet filter : reverseFilteredEntities.get(entity)) {
+				filteredEntities.remove(filter, entity);
+			}
+			reverseFilteredEntities.removeAll(entity);
 		}
-		reverseFilteredEntities.removeAll(entity);
 		return this;
 	}
 

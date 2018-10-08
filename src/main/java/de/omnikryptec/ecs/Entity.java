@@ -7,12 +7,12 @@ import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.util.data.DynamicArray;
 
 public class Entity {
-
+	
 	protected IECSManager iecsManager;
 		
 	protected DynamicArray<Component> componentsArray;
 	protected BitSet components;
-	
+		
     public Entity() {
         this.componentsArray = new DynamicArray<>();
         this.components = new BitSet();

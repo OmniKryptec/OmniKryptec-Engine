@@ -2,7 +2,6 @@ package de.omnikryptec.ecs.impl;
 
 import java.util.BitSet;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -51,8 +50,8 @@ public class ECSManager implements IECSManager {
 	}
 
 	public ECSManager(EntityManager entityManager, SystemManager systemManager) {
-		this.systemTasks = new LinkedList<>();
-		this.entityTasks = new LinkedList<>();
+		this.systemTasks = new ConcurrentLinkedQueue<>();
+		this.entityTasks = new ConcurrentLinkedQueue<>();
 		this.entityManager = entityManager;
 		this.systemManager = systemManager;
 	}
@@ -138,10 +137,12 @@ public class ECSManager implements IECSManager {
 		updating = true;
 		Collection<ComponentSystem> systems = systemManager.getAll();
 		for (ComponentSystem system : systems) {
-			system.update(this, deltaTime);
+			if(system.isEnabled()) {
+				system.update(this, deltaTime);
+				runTasks();
+			}
 		}
 		updating = false;
-		runTasks();
 	}
 
 	private void runTasks() {
