@@ -10,6 +10,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
 import de.omnikryptec.ecs.Entity;
+import de.omnikryptec.ecs.Family;
 import de.omnikryptec.util.data.CountingMap;
 
 public class EntityManager {

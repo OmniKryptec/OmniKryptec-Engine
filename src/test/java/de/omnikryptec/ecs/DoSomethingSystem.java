@@ -2,7 +2,6 @@ package de.omnikryptec.ecs;
 
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
-import de.omnikryptec.ecs.impl.Family;
 import de.omnikryptec.ecs.system.IterativeComponentSystem;
 
 public class DoSomethingSystem extends IterativeComponentSystem{

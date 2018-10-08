@@ -18,8 +18,7 @@ package de.omnikryptec.util.data.smooth;
 
 public class SmoothFloat {
 
-	private final float agility;
-
+	private float agility;
 	private float target;
 	private float actual;
 
@@ -29,19 +28,10 @@ public class SmoothFloat {
 		this.agility = agility;
 	}
 
-	public void update(float delta) {
-		actual += (target - actual) * delta * agility;
+	public void update(float deltaTime) {
+		actual += (target - actual) * deltaTime * agility;
 	}
-
 	
-	public void increaseTarget(float dT) {
-		this.target += dT;
-	}
-
-	public void setTarget(float target) {
-		this.target = target;
-	}
-
 	public void instantIncrease(float increase) {
 		this.actual += increase;
 		this.target = actual;
@@ -54,9 +44,25 @@ public class SmoothFloat {
 	public float getTarget() {
 		return target;
 	}
+
+	public void increaseTarget(float deltaTarget) {
+		this.target += deltaTarget;
+	}
+
+	public void setTarget(float target) {
+		this.target = target;
+	}
 	
 	public void setValue(float f) {
 		actual = f;
+	}
+	
+	public float getAgility() {
+		return agility;
+	}
+	
+	public void setAgility(float a) {
+		this.agility = a;
 	}
 	
 	public void setValueAndTarget(float f) {

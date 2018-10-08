@@ -2,8 +2,7 @@ package de.omnikryptec.util.data.smooth;
 
 public class SmoothDouble {
 
-	private final double agility;
-
+	private double agility;
 	private double target;
 	private double actual;
 
@@ -13,19 +12,10 @@ public class SmoothDouble {
 		this.agility = agility;
 	}
 
-	public void update(double delta) {
-		actual += (target - actual) * delta * agility;
+	public void update(double deltaTime) {
+		actual += (target - actual) * deltaTime * agility;
 	}
-
 	
-	public void increaseTarget(double dT) {
-		this.target += dT;
-	}
-
-	public void setTarget(double target) {
-		this.target = target;
-	}
-
 	public void instantIncrease(double increase) {
 		this.actual += increase;
 		this.target = actual;
@@ -38,9 +28,25 @@ public class SmoothDouble {
 	public double getTarget() {
 		return target;
 	}
+
+	public void increaseTarget(double deltaTarget) {
+		this.target += deltaTarget;
+	}
+
+	public void setTarget(double target) {
+		this.target = target;
+	}
 	
 	public void setValue(double f) {
 		actual = f;
+	}
+	
+	public double getAgility() {
+		return agility;
+	}
+	
+	public void setAgility(double a) {
+		this.agility = a;
 	}
 	
 	public void setValueAndTarget(double f) {
@@ -52,5 +58,6 @@ public class SmoothDouble {
 	public String toString() {
 		return "Value: "+actual+" Target: "+target+" Agility: "+agility;
 	}
+
 	
 }
