@@ -89,9 +89,11 @@ public class EventBus {
 		Class<?> someclazz = event.getClass();
 		do {
 			for (IEventListener listener : listeners.get((Class<? extends Event>) someclazz)) {
-				listener.invoke(event);
+				if (!event.isConsumeable() || !event.isConsumed()) {
+					listener.invoke(event);
+				}
 			}
 			someclazz = someclazz.getSuperclass();
-		} while (someclazz != Object.class && someclazz != null);
+		} while (event.triggersSuperEventListeners() && someclazz != Object.class && someclazz != null);
 	}
 }
