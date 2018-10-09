@@ -10,6 +10,8 @@ public class Test {
 		IECSManager manager = new ECSManager();
 		DoSomethingSystem system = new DoSomethingSystem();
 		manager.addSystem(system);
+		manager.addSystem(new AnotherSystem());
+		manager.addSystem(new SomeOtherSystem());
 		int updt = 100;
 		int ents = 1_000_00;
 		System.out.println("Testing with "+ents+" entities and "+updt+" updates");

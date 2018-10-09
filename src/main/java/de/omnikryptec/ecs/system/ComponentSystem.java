@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
+import de.omnikryptec.util.Util;
 
 public abstract class ComponentSystem {
     
@@ -14,6 +15,7 @@ public abstract class ComponentSystem {
 	protected boolean enabled=true;
 	
 	protected ComponentSystem(BitSet required) {
+		Util.ensureNonNull(required, "BitSet must not be null (but can be empty)");
 		this.family = required;
 	}
 	
@@ -35,6 +37,10 @@ public abstract class ComponentSystem {
 	
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+	
+	public int priority() {
+		return 0;
 	}
 	
 	public abstract void update(IECSManager entityManager, float deltaTime);
