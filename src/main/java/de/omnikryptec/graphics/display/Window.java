@@ -63,6 +63,7 @@ class Window {
 				onResize(width, height);
 			}
 		}));
+		//TODO move
 		GLFW.glfwMakeContextCurrent(window);
 		GL.createCapabilities();
 		onResize(width, height);

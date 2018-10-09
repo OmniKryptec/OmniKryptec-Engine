@@ -17,25 +17,19 @@
 package de.omnikryptec.graphics.display;
 
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWErrorCallback;
 
+import de.omnikryptec.core.StateManager;
 import de.omnikryptec.old.event.input.InputManager;
 import de.omnikryptec.old.graphics.OpenGL;
-import de.omnikryptec.old.util.logger.LogLevel;
-import de.omnikryptec.old.util.logger.Logger;
 
 public class Display {
 
-	private GLFWErrorCallback errorCallback;
 	private Window window;
 	private double lastsynced;
 	private int[] viewport = new int[4];
 	private double aspectratio = -1;
 
-	Display(String name, WindowInfo info) {
-		//TODO init has nothing to do with the Display, move it to a different position
-		GLFW.glfwInit();
-		GLFW.glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(Logger.NEWSYSERR));
+	Display(String name, WindowInfo info) {		
 		window = new Window(name, info);
 		if (info.lockWindowAspectRatio()[0] > 0 && info.lockWindowAspectRatio()[1] > 0) {
 			GLFW.glfwSetWindowAspectRatio(window.getID(), info.lockWindowAspectRatio()[0],
@@ -46,11 +40,6 @@ public class Display {
 		// TODO Eventbased? / Input has nothing to do with the Display, move it to a different position
 		InputManager.initCallbacks();
 		lastsynced = getCurrentTime();
-		Logger.log("Successfully created GLContext and the Window!", LogLevel.FINEST);
-	}
-
-	GLFWErrorCallback getErrorCallback() {
-		return errorCallback;
 	}
 
 	public boolean shouldBeFullscreen() {
@@ -63,7 +52,7 @@ public class Display {
 
 	void update() {
 		window.swapBuffers();
-		GLFW.glfwPollEvents();
+		StateManager.pollEvents();
 		if (wasResized()) {
 			calcViewport();
 			setARViewPort();
@@ -72,10 +61,11 @@ public class Display {
 
 	void destroy() {
 		window.dispose();
+		//TODO move
 		InputManager.closeCallbacks();
-		GLFW.glfwTerminate();
 	}
 
+	@Deprecated
 	final double getCurrentTime() {
 		return GLFW.glfwGetTime() * 1000;
 	}
