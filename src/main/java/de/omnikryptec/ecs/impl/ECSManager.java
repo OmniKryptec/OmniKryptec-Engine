@@ -1,5 +1,6 @@
 package de.omnikryptec.ecs.impl;
 
+import java.util.ArrayDeque;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
@@ -46,12 +47,21 @@ public class ECSManager implements IECSManager {
 	}
 
 	public ECSManager() {
-		this(new EntityManager(), new SystemManager());
+		this(false);
+	}
+	
+	public ECSManager(boolean concurrent) {
+		this(concurrent, new EntityManager(), new SystemManager());
 	}
 
-	public ECSManager(EntityManager entityManager, SystemManager systemManager) {
-		this.systemTasks = new ConcurrentLinkedQueue<>();
-		this.entityTasks = new ConcurrentLinkedQueue<>();
+	public ECSManager(boolean concurrent, EntityManager entityManager, SystemManager systemManager) {
+		if(concurrent) {
+			this.systemTasks = new ConcurrentLinkedQueue<>();
+			this.entityTasks = new ConcurrentLinkedQueue<>();
+		}else {
+			this.systemTasks = new ArrayDeque<>();
+			this.entityTasks = new ArrayDeque<>();
+		}
 		this.entityManager = entityManager;
 		this.systemManager = systemManager;
 	}
