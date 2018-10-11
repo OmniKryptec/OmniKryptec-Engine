@@ -11,7 +11,7 @@ public abstract class GLBuffer {
 		this.type = type;
 		this.pointer = GL15.glGenBuffers();
 	}
-	
+		
 	public void delete() {
 		GL15.glDeleteBuffers(pointer);
 	}
