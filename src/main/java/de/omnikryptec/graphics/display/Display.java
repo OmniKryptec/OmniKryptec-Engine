@@ -29,7 +29,7 @@ public class Display {
 	private int[] viewport = new int[4];
 	private double aspectratio = -1;
 
-	Display(String name, WindowInfo info) {		
+	Display(String name, WindowInfo info) {
 		window = new Window(name, info);
 		if (info.lockWindowAspectRatio()[0] > 0 && info.lockWindowAspectRatio()[1] > 0) {
 			GLFW.glfwSetWindowAspectRatio(window.getID(), info.lockWindowAspectRatio()[0],

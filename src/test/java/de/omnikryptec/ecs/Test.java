@@ -1,7 +1,6 @@
 package de.omnikryptec.ecs;
 
 import de.omnikryptec.ecs.impl.ECSManager;
-import de.omnikryptec.util.ExecutorsUtil;
 
 public class Test {
 
@@ -31,7 +30,6 @@ public class Test {
 		System.out.println("Time per update: " + time2 * 1000 / (double) updt + " micro-s");
 		System.out.println("Time per entity: " + time2 * 1000 / (double) (updt * ents) + " micro-s");
 		manager.removeSystem(system);
-		ExecutorsUtil.shutdownNowAll();
 	}
 	
 }

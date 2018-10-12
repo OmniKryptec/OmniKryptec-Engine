@@ -8,13 +8,16 @@ import java.util.List;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Multimap;
 
 import de.omnikryptec.ecs.Entity;
+import de.omnikryptec.ecs.EntityListener;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.util.data.CountingMap;
 
 public class EntityManager {
 
+	private Multimap<BitSet, EntityListener> listeners;
 	
 	private Collection<Entity> entities;
 	private Collection<Entity> unmodifiableEntities;
@@ -30,6 +33,7 @@ public class EntityManager {
 		this.uniqueFilters = new CountingMap<>();
 		this.filteredEntities = ArrayListMultimap.create();
 		this.reverseFilteredEntities = ArrayListMultimap.create();
+		this.listeners = ArrayListMultimap.create();
 	}
 
 	public EntityManager addEntity(Entity entity) {
@@ -104,6 +108,16 @@ public class EntityManager {
 			}
 		}
 		return this;
+	}
+	
+	//private 
+	
+	public void addEntityListener(BitSet family, EntityListener listener) {
+		listeners.put(family, listener);
+	}
+	
+	public void removeEnityListener(BitSet family, EntityListener listener) {
+		listeners.remove(family, listener);
 	}
 
 }

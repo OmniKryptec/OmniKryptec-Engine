@@ -9,6 +9,7 @@ import de.omnikryptec.util.Util;
 
 public abstract class ComponentSystem {
     
+	
 	private BitSet family;
 	protected List<Entity> entities;
 	
@@ -23,14 +24,6 @@ public abstract class ComponentSystem {
 		return family;
 	}
 
-	public void addedToEntityManager(IECSManager entitymgr) {
-		entities = entitymgr.getEntitesFor(family);
-	}
-	
-	public void removedFromEntityManager(IECSManager entitymgr) {
-		entities = null;
-	}
-	
 	public boolean isEnabled() {
 		return enabled;
 	}
@@ -38,11 +31,21 @@ public abstract class ComponentSystem {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+
+	public void addedToIECSManager(IECSManager iecsManager) {
+		entities = iecsManager.getEntitesFor(family);
+	}
+	
+	public void removedFromIECSManager(IECSManager iecsManager) {
+		entities = null;
+	}
 	
 	public int priority() {
 		return 0;
 	}
 	
-	public abstract void update(IECSManager entityManager, float deltaTime);
+	public abstract void update(IECSManager iecsManager, float deltaTime);
+
+	
 	    
 }

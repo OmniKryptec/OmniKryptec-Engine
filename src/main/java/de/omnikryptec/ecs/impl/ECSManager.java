@@ -8,6 +8,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import de.omnikryptec.ecs.Entity;
+import de.omnikryptec.ecs.EntityListener;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.system.ComponentSystem;
 
@@ -108,7 +109,7 @@ public class ECSManager implements IECSManager {
 		if (!system.getFamily().isEmpty()) {
 			entityManager.addFilter(system.getFamily());
 		}
-		system.addedToEntityManager(this);
+		system.addedToIECSManager(this);
 	}
 
 	@Override
@@ -125,7 +126,7 @@ public class ECSManager implements IECSManager {
 		if (!system.getFamily().isEmpty()) {
 			entityManager.removeFilter(system.getFamily());
 		}
-		system.removedFromEntityManager(this);
+		system.removedFromIECSManager(this);
 	}
 
 	@Override
@@ -194,5 +195,15 @@ public class ECSManager implements IECSManager {
 	@Override
 	public Collection<Entity> getAll() {
 		return entityManager.getAll();
+	}
+
+	@Override
+	public void addEntityListener(BitSet family, EntityListener listener) {
+		
+	}
+
+	@Override
+	public void removeEntityListener(BitSet family, EntityListener listener) {
+		
 	}
 }

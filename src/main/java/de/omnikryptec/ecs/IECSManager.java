@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import de.omnikryptec.core.Updateable;
+import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.ecs.impl.ECSManager;
 import de.omnikryptec.ecs.system.ComponentSystem;
 
@@ -18,13 +19,21 @@ public interface IECSManager extends Updateable{
 	
 	void addEntity(Entity entity);
 	void removeEntity(Entity entity);
-	
-	void onEntityComponentsChanged(Entity entity);
-	
+		
 	void addSystem(ComponentSystem system);
 	void removeSystem(ComponentSystem system);
 	
 	List<Entity> getEntitesFor(BitSet f);
 	
 	Collection<Entity> getAll();
+	
+	/**
+	 * Called by the entity when it's {@link Component}s changed.
+	 * @param entity the entity those Components changed
+	 */
+	void onEntityComponentsChanged(Entity entity);
+
+	void addEntityListener(BitSet family, EntityListener listener);
+	void removeEntityListener(BitSet family, EntityListener listener);
+	
 }
