@@ -98,7 +98,7 @@ public class VertexBufferObject {
         buffer.put(data);
         buffer.flip();
         bind();
-        OpenGL.gl15bufferData(type, buffer.capacity() * 4, GL15.GL_STREAM_DRAW);
+        OpenGL.gl15bufferData(type, buffer.capacity() * 4, GL15.GL_DYNAMIC_DRAW);
         OpenGL.gl15bufferSubData(type, 0, buffer);
     }
 
