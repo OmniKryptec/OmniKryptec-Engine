@@ -197,6 +197,8 @@ public class ECSManager implements IECSManager {
 		return entityManager.getAll();
 	}
 
+	//TODO entity listener
+	
 	@Override
 	public void addEntityListener(BitSet family, EntityListener listener) {
 		

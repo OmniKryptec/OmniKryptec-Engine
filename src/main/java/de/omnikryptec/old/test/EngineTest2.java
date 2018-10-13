@@ -29,6 +29,13 @@ import de.codemakers.lang.LanguageManager;
 import de.omnikryptec.graphics.display.Display;
 import de.omnikryptec.graphics.display.DisplayManager;
 import de.omnikryptec.graphics.display.WindowInfo;
+import de.omnikryptec.libapi.opencl.CLCommandQueue;
+import de.omnikryptec.libapi.opencl.CLContext;
+import de.omnikryptec.libapi.opencl.CLDevice;
+import de.omnikryptec.libapi.opencl.CLKernel;
+import de.omnikryptec.libapi.opencl.CLPlatform;
+import de.omnikryptec.libapi.opencl.CLProgram;
+import de.omnikryptec.libapi.opencl.OpenCL;
 import de.omnikryptec.old.event.eventV2.EventSubscription;
 import de.omnikryptec.old.event.eventV2.engineevents.FrameEvent;
 import de.omnikryptec.old.event.eventV2.engineevents.FrameEvent.FrameType;
@@ -57,13 +64,6 @@ import de.omnikryptec.old.util.Instance;
 import de.omnikryptec.old.util.NativesLoader;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
-import de.omnikryptec.opencl.CLCommandQueue;
-import de.omnikryptec.opencl.CLContext;
-import de.omnikryptec.opencl.CLDevice;
-import de.omnikryptec.opencl.CLKernel;
-import de.omnikryptec.opencl.CLPlatform;
-import de.omnikryptec.opencl.CLProgram;
-import de.omnikryptec.opencl.OpenCL;
 
 
 /**

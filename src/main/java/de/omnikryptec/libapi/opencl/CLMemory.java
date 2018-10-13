@@ -14,37 +14,31 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.opencl;
+package de.omnikryptec.libapi.opencl;
 
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.opencl.CL10;
 
-public class CLCommandQueue {
-	
-	private static List<CLCommandQueue> queues = new ArrayList<>();
+public class CLMemory {
+
+	private static List<CLMemory> memorys = new ArrayList<>();
 	
 	private long id;
 	
-	public CLCommandQueue(CLContext context, CLDevice device, int options) {
-		id = CL10.clCreateCommandQueue(context.getID(), device.getID(), options, OpenCL.tmpBuffer);
-		if(OpenCL.tmpBuffer.get(0)!=CL10.CL_SUCCESS) {
-			System.err.println("OpenCL ComQueue Err: "+OpenCL.tmpBuffer.get(0));
-		}
+	public CLMemory(CLContext context, int memOptions, FloatBuffer buffer) {
+		id = CL10.clCreateBuffer(context.getID(), memOptions, buffer, null);
 	}
 	
 	public long getID() {
 		return id;
 	}
 	
-	public void finish() {
-		CL10.clFinish(getID());
-	}
-	
 	public static void cleanup() {
-		for(CLCommandQueue q : queues) {
-			CL10.clReleaseCommandQueue(q.getID());
+		for(CLMemory m : memorys) {
+			CL10.clReleaseMemObject(m.getID());
 		}
 	}
 }

@@ -19,13 +19,13 @@ package de.omnikryptec.graphics.display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
+import de.omnikryptec.libapi.opencl.OpenCL;
 import de.omnikryptec.old.audio.AudioManager;
 import de.omnikryptec.old.graphics.GraphicsUtil;
 import de.omnikryptec.old.settings.GameSettings;
 import de.omnikryptec.old.util.Util;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
-import de.omnikryptec.opencl.OpenCL;
 
 /**
  * Display managing class

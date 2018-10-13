@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.opencl;
+package de.omnikryptec.libapi.opencl;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;

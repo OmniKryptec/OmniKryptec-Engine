@@ -1,4 +1,4 @@
-package de.omnikryptec.opengl.buffer;
+package de.omnikryptec.libapi.opengl.buffer;
 
 import org.lwjgl.opengl.GL15;
 
