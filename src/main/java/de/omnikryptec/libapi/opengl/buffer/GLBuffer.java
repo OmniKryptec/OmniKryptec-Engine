@@ -11,7 +11,7 @@ public abstract class GLBuffer {
 	
 	static void cleanup() {
 		for(GLBuffer buffer : all) {
-			buffer.delete();
+			buffer.deleteBuffer();
 		}
 	}
 	
@@ -23,23 +23,24 @@ public abstract class GLBuffer {
 		this.pointer = GL15.glGenBuffers();
 	}
 		
-	public void delete() {
+	public void deleteBuffer() {
 		GL15.glDeleteBuffers(pointer);
 	}
 	
-	public int id() {
+	public int bufferId() {
 		return pointer;
 	}
 	
-	public int target() {
+	public int bufferType() {
 		return type;
 	}
 	
-	public void bind() {
+	public void bindBuffer() {
 		GL15.glBindBuffer(type, pointer);
 	}
 	
-	public void unbind() {
+	@Deprecated
+	public void unbindBuffer() {
 		GL15.glBindBuffer(type, 0);
 	}
 	
