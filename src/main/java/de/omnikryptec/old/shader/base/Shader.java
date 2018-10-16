@@ -270,6 +270,7 @@ public class Shader {
             }
             reader.close();
             String toreturn = SHADERMODULES.compute(shaderSrc.toString());
+            System.out.println(toreturn);
             String[] sttt = toreturn.split("\n");
             for (String s : sttt) {
                 if (s.toLowerCase().trim().startsWith("uniform")) {
