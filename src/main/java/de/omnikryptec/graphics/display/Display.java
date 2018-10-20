@@ -61,8 +61,6 @@ public class Display {
 
 	void destroy() {
 		window.dispose();
-		//TODO move
-		InputManager.closeCallbacks();
 	}
 
 	@Deprecated

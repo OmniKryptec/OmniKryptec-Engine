@@ -3,6 +3,8 @@ package de.omnikryptec.core;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
+import de.omnikryptec.old.event.input.InputManager;
+
 public class StateManager {
 	
 	private static boolean initialized = false;
@@ -23,6 +25,7 @@ public class StateManager {
 
 	public static void shutdown() {
 		if(initialized) {
+			InputManager.closeCallbacks();
 			GLFW.glfwTerminate();
 			initialized = false;
 			System.out.println("Shut down GLFW");
