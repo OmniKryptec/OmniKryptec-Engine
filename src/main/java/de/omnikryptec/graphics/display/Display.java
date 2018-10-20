@@ -29,12 +29,8 @@ public class Display {
 	private int[] viewport = new int[4];
 	private double aspectratio = -1;
 
-	Display(String name, WindowInfo info) {
-		window = new Window(name, info);
-		if (info.lockWindowAspectRatio()[0] > 0 && info.lockWindowAspectRatio()[1] > 0) {
-			GLFW.glfwSetWindowAspectRatio(window.getID(), info.lockWindowAspectRatio()[0],
-					info.lockWindowAspectRatio()[1]);
-		}
+	Display(String name, Window window) {
+		this.window = window;
 		calcViewport();
 		setARViewPort();
 		// TODO Eventbased? / Input has nothing to do with the Display, move it to a different position
@@ -105,7 +101,7 @@ public class Display {
 	}
 
 	public final long getID() {
-		return window.getID();
+		return window.getWindowID();
 	}
 
 	public final void show() {

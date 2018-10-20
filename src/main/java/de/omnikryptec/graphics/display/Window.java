@@ -22,115 +22,114 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
 
-import de.omnikryptec.old.util.Util;
+import de.omnikryptec.util.Util;
 
-class Window {
+abstract class Window {
 	private GLFWFramebufferSizeCallback framebufferSizeCallback;
 	private boolean resized = false;
-	private long window = 0;
+	private final long windowId;
 	private int width, height, fwidth, fheight;
 	private boolean isfullscreen = false;
+	private boolean active = false;
 
-	Window(String name, WindowInfo info) {
-		Util.ensureNonNull(info, "WindowInfo must not be null!");
-		Util.ensureNonNull(name, "Window label must not be null!");
-		width = info.getWidth();
-		height = info.getHeight();
+	Window(WindowInfo info) {
+		this.width = info.getWidth();
+		this.height = info.getHeight();
+		Util.ensureNonNull(info.getName(), "Window label must not be null!");
 		GLFW.glfwDefaultWindowHints();
-		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, info.wantsResizeable() ? GL11.GL_TRUE : GL11.GL_FALSE);
-		if (info.getMajorVersion() > 3 || (info.getMajorVersion() > 2 && info.getMinorVersion() > 1)) {
-			GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, info.getMajorVersion());
-			GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, info.getMinorVersion());
-			GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
-		}
-		if (info.wantsFullscreen()) {
+		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, info.isResizeable() ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
+		setAdditionalGlfwWindowHints();
+		if (info.isFullscreen()) {
 			GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
 			width = vidMode.width();
 			height = vidMode.height();
 			isfullscreen = true;
 		}
-		window = GLFW.glfwCreateWindow(width, height, name, info.wantsFullscreen() ? GLFW.glfwGetPrimaryMonitor() : 0,
-				0);
-		if (window == 0) {
+		windowId = GLFW.glfwCreateWindow(width, height, info.getName(), info.isFullscreen() ? GLFW.glfwGetPrimaryMonitor() : 0, 0);
+		if (windowId == 0) {
 			throw new RuntimeException("Failed to create window");
 		}
-		GLFW.glfwSetFramebufferSizeCallback(window, (framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
+		if (info.isLockAspectRatio() && info.isResizeable()) {
+			GLFW.glfwSetWindowAspectRatio(windowId, width, height);
+		}
+		GLFW.glfwSetFramebufferSizeCallback(windowId, (framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
 			@Override
 			public void invoke(long window, int width, int height) {
 				onResize(width, height);
 			}
 		}));
-		//TODO move
-		GLFW.glfwMakeContextCurrent(window);
-		GL.createCapabilities();
-		onResize(width, height);
+		IntBuffer framebufferWidth = BufferUtils.createIntBuffer(1), framebufferHeight = BufferUtils.createIntBuffer(1);
+		GLFW.glfwGetFramebufferSize(windowId, framebufferWidth, framebufferHeight);
+		fwidth = framebufferWidth.get();
+		fheight = framebufferHeight.get();
+		onInitFinish();
 	}
 
-	long getID() {
-		return window;
+	protected abstract void setAdditionalGlfwWindowHints();
+
+	protected abstract void onInitFinish();
+
+	protected long getWindowID() {
+		return windowId;
 	}
 
-	void show() {
-		GLFW.glfwShowWindow(window);
+	protected void show() {
+		GLFW.glfwShowWindow(windowId);
 	}
 
-	void dispose() {
-		GLFW.glfwDestroyWindow(window);
+	protected void dispose() {
+		GLFW.glfwDestroyWindow(windowId);
 	}
 
-	void swapBuffers() {
-		active = GLFW.glfwGetWindowAttrib(window, GLFW.GLFW_FOCUSED) == GL11.GL_TRUE;
+	protected void swapBuffers() {
+		active = GLFW.glfwGetWindowAttrib(windowId, GLFW.GLFW_FOCUSED) == GLFW.GLFW_TRUE;
 		resized = false;
-		GLFW.glfwSwapBuffers(window);
+		GLFW.glfwSwapBuffers(windowId);
 	}
 
-	boolean shouldBeFullscreen() {
+	public boolean shouldBeFullscreen() {
 		return isfullscreen;
 	}
 
-	boolean wasResized() {
+	public boolean wasResized() {
 		return resized;
 	}
 
-	private boolean active = false;
-
-	boolean isActive() {
+	public boolean isActive() {
 		return active;
 	}
 
-	boolean isCloseRequested() {
-		return GLFW.glfwWindowShouldClose(window);
+	public boolean isCloseRequested() {
+		return GLFW.glfwWindowShouldClose(windowId);
 	}
 
-	int getWidth() {
+	public int getWidth() {
 		return width;
 	}
 
-	int getHeight() {
+	public int getHeight() {
 		return height;
 	}
 
-	int getBufferWidth() {
+	public int getBufferWidth() {
 		return fwidth;
 	}
 
-	int getBufferHeight() {
+	public int getBufferHeight() {
 		return fheight;
 	}
 
-	GLFWFramebufferSizeCallback getDisplaySizeCallback() {
+	protected GLFWFramebufferSizeCallback getDisplaySizeCallback() {
 		return framebufferSizeCallback;
 	}
 
-	private void onResize(int w, int h) {
+	protected void onResize(int w, int h) {
 		width = w;
 		height = h;
 		resized = true;
 		IntBuffer framebufferWidth = BufferUtils.createIntBuffer(1), framebufferHeight = BufferUtils.createIntBuffer(1);
-		GLFW.glfwGetFramebufferSize(window, framebufferWidth, framebufferHeight);
+		GLFW.glfwGetFramebufferSize(windowId, framebufferWidth, framebufferHeight);
 		fwidth = framebufferWidth.get();
 		fheight = framebufferHeight.get();
 	}
