@@ -28,7 +28,7 @@ public interface IECSManager extends Updateable{
 	Collection<Entity> getAll();
 	
 	/**
-	 * Called by the entity when it's {@link Component}s changed.
+	 * Called by the entity after it's {@link Component}s changed.
 	 * @param entity the entity those Components changed
 	 */
 	void onEntityComponentsChanged(Entity entity);

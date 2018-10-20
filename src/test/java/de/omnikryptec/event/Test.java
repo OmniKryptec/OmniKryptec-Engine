@@ -12,7 +12,7 @@ public class Test {
 	}
 	
 	@EventSubscription
-	public void test(TestEvent.TestEvent2 e) {
+	public void test(TestEvent e) {
 		System.out.println(e);
 	}
 	

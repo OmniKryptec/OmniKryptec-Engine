@@ -17,7 +17,7 @@ import de.omnikryptec.util.data.CountingMap;
 
 public class EntityManager {
 
-	private Multimap<BitSet, EntityListener> listeners;
+	private Multimap<BitSet, EntityListener> familyListeners;
 	
 	private Collection<Entity> entities;
 	private Collection<Entity> unmodifiableEntities;
@@ -33,7 +33,7 @@ public class EntityManager {
 		this.uniqueFilters = new CountingMap<>();
 		this.filteredEntities = ArrayListMultimap.create();
 		this.reverseFilteredEntities = ArrayListMultimap.create();
-		this.listeners = ArrayListMultimap.create();
+		this.familyListeners = ArrayListMultimap.create();
 	}
 
 	public EntityManager addEntity(Entity entity) {
@@ -43,6 +43,9 @@ public class EntityManager {
 					if (Family.containsTrueBits(entity.getComponents(), filter)) {
 						filteredEntities.put(filter, entity);
 						reverseFilteredEntities.put(entity, filter);
+						for(EntityListener l : familyListeners.get(filter)) {
+							l.entityAdded(entity);
+						}
 					}
 				}
 			}
@@ -77,6 +80,9 @@ public class EntityManager {
 				if (Family.containsTrueBits(e.getComponents(), family)) {
 					filteredEntities.put(family, e);
 					reverseFilteredEntities.put(e, family);
+					for(EntityListener l : familyListeners.get(family)) {
+						l.entityAdded(e);
+					}
 				}
 			}
 		}
@@ -89,7 +95,13 @@ public class EntityManager {
 		}
 		if (uniqueFilters.keySet().contains(family)) {
 			if (uniqueFilters.decrement(family) == 0) {
-				filteredEntities.removeAll(family);
+				List<Entity> removed = filteredEntities.removeAll(family);
+				Collection<EntityListener> listeners = familyListeners.get(family);
+				for(EntityListener l : listeners) {
+					for(Entity e : removed) {
+						l.entityRemoved(e);
+					}
+				}
 			}
 		}
 		return this;
@@ -102,22 +114,26 @@ public class EntityManager {
 			if (niceFamily && !alreadySet) {
 				reverseFilteredEntities.put(entity, family);
 				filteredEntities.put(family, entity);
+				for(EntityListener l : familyListeners.get(family)) {
+					l.entityAdded(entity);
+				}
 			} else if (!niceFamily && alreadySet) {
 				reverseFilteredEntities.remove(entity, family);
 				filteredEntities.remove(family, entity);
+				for(EntityListener l : familyListeners.get(family)) {
+					l.entityRemoved(entity);
+				}
 			}
 		}
 		return this;
 	}
-	
-	//private 
-	
+		
 	public void addEntityListener(BitSet family, EntityListener listener) {
-		listeners.put(family, listener);
+		familyListeners.put(family, listener);
 	}
 	
 	public void removeEnityListener(BitSet family, EntityListener listener) {
-		listeners.remove(family, listener);
+		familyListeners.remove(family, listener);
 	}
 
 }

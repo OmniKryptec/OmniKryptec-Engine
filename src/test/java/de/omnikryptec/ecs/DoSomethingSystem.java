@@ -2,9 +2,10 @@ package de.omnikryptec.ecs;
 
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
+import de.omnikryptec.ecs.system.GroupParallelComponentSystem;
 import de.omnikryptec.ecs.system.IterativeComponentSystem;
 
-public class DoSomethingSystem extends IterativeComponentSystem{
+public class DoSomethingSystem extends GroupParallelComponentSystem{
 
 	protected DoSomethingSystem() {
 		super(Family.of(ComponentType.of(SomeDataComponent.class)));

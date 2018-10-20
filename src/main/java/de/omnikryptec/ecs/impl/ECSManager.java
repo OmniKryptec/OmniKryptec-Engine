@@ -1,6 +1,7 @@
 package de.omnikryptec.ecs.impl;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
@@ -16,6 +17,8 @@ public class ECSManager implements IECSManager {
 
 	private EntityManager entityManager;
 	private SystemManager systemManager;
+
+	private Collection<EntityListener> listeners;
 
 	private boolean updating = false;
 	private Queue<ECSSystemTask> systemTasks;
@@ -50,21 +53,22 @@ public class ECSManager implements IECSManager {
 	public ECSManager() {
 		this(false);
 	}
-	
+
 	public ECSManager(boolean concurrent) {
 		this(concurrent, new EntityManager(), new SystemManager());
 	}
 
 	public ECSManager(boolean concurrent, EntityManager entityManager, SystemManager systemManager) {
-		if(concurrent) {
+		if (concurrent) {
 			this.systemTasks = new ConcurrentLinkedQueue<>();
 			this.entityTasks = new ConcurrentLinkedQueue<>();
-		}else {
+		} else {
 			this.systemTasks = new ArrayDeque<>();
 			this.entityTasks = new ArrayDeque<>();
 		}
 		this.entityManager = entityManager;
 		this.systemManager = systemManager;
+		this.listeners = new ArrayList<>();
 	}
 
 	@Override
@@ -79,6 +83,9 @@ public class ECSManager implements IECSManager {
 	private void addEntityInt(Entity e) {
 		e.onIECSManagerAdded(this);
 		entityManager.addEntity(e);
+		for (EntityListener l : listeners) {
+			l.entityAdded(e);
+		}
 	}
 
 	@Override
@@ -93,6 +100,9 @@ public class ECSManager implements IECSManager {
 	private void remEntityInt(Entity e) {
 		e.onIECSManagerRemoved(this);
 		entityManager.removeEntity(e);
+		for (EntityListener l : listeners) {
+			l.entityRemoved(e);
+		}
 	}
 
 	@Override
@@ -148,7 +158,7 @@ public class ECSManager implements IECSManager {
 		updating = true;
 		Collection<ComponentSystem> systems = systemManager.getAll();
 		for (ComponentSystem system : systems) {
-			if(system.isEnabled()) {
+			if (system.isEnabled()) {
 				system.update(this, deltaTime);
 				runTasks();
 			}
@@ -167,7 +177,7 @@ public class ECSManager implements IECSManager {
 				remSysInt(t.system);
 				break;
 			default:
-				throw new IllegalArgumentException("Wrong or unexpected type for systemtask: "+t.type);
+				throw new IllegalArgumentException("Wrong or unexpected type for systemtask: " + t.type);
 			}
 		}
 		while (!entityTasks.isEmpty()) {
@@ -183,7 +193,7 @@ public class ECSManager implements IECSManager {
 				entityManager.updateEntityFamilyStatus(t.entity);
 				break;
 			default:
-				throw new IllegalArgumentException("Wrong or unexpected type for entitytask: "+t.type);
+				throw new IllegalArgumentException("Wrong or unexpected type for entitytask: " + t.type);
 			}
 		}
 	}
@@ -197,15 +207,21 @@ public class ECSManager implements IECSManager {
 		return entityManager.getAll();
 	}
 
-	//TODO entity listener
-	
 	@Override
 	public void addEntityListener(BitSet family, EntityListener listener) {
-		
+		if (family != null) {
+			entityManager.addEntityListener(family, listener);
+		} else {
+			listeners.add(listener);
+		}
 	}
 
 	@Override
 	public void removeEntityListener(BitSet family, EntityListener listener) {
-		
+		if (family != null) {
+			entityManager.removeEnityListener(family, listener);
+		} else {
+			listeners.remove(listener);
+		}
 	}
 }
