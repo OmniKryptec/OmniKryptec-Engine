@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL15;
 
-import de.omnikryptec.core.StateManager;
+import de.omnikryptec.libapi.glfw.StateManager;
 
 public abstract class GLBuffer {
 

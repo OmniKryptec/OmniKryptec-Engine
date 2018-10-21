@@ -31,7 +31,7 @@ import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.linearmath.Transform;
 
 import de.omnikryptec.graphics.display.DisplayManager;
-import de.omnikryptec.graphics.display.WindowInfo;
+import de.omnikryptec.libapi.glfw.WindowInfo;
 import de.omnikryptec.old.audio.AudioEffectState;
 import de.omnikryptec.old.audio.AudioManager;
 import de.omnikryptec.old.audio.AudioSource;

@@ -45,7 +45,7 @@ import com.bulletphysics.linearmath.MotionState;
 import com.bulletphysics.linearmath.Transform;
 
 import de.omnikryptec.graphics.display.DisplayManager;
-import de.omnikryptec.graphics.display.WindowInfo;
+import de.omnikryptec.libapi.glfw.WindowInfo;
 import de.omnikryptec.old.event.input.InputManager;
 import de.omnikryptec.old.gameobject.Camera;
 import de.omnikryptec.old.gameobject.Entity;

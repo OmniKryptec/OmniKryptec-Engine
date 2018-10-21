@@ -16,131 +16,81 @@
 
 package de.omnikryptec.graphics.display;
 
-import org.lwjgl.glfw.GLFW;
-
-import de.omnikryptec.core.StateManager;
+import de.omnikryptec.libapi.glfw.StateManager;
+import de.omnikryptec.libapi.glfw.Window;
 import de.omnikryptec.old.event.input.InputManager;
 import de.omnikryptec.old.graphics.OpenGL;
+import de.omnikryptec.util.Maths;
 
 public class Display {
 
-	private Window window;
+	private Window<?> window;
 	private double lastsynced;
 	private int[] viewport = new int[4];
 	private double aspectratio = -1;
 
-	Display(String name, Window window) {
+	Display(String name, Window<?> window) {
 		this.window = window;
 		calcViewport();
 		setARViewPort();
-		// TODO Eventbased? / Input has nothing to do with the Display, move it to a different position
+		// TODO Eventbased? / Input has nothing to do with the Display, move it to a
+		// different position
 		InputManager.initCallbacks();
-		lastsynced = getCurrentTime();
-	}
-
-	public boolean shouldBeFullscreen() {
-		return window.shouldBeFullscreen();
-	}
-
-	public boolean wasResized() {
-		return window.wasResized();
+		lastsynced = StateManager.active().getTime();
 	}
 
 	void update() {
 		window.swapBuffers();
-		StateManager.pollEvents();
-		if (wasResized()) {
+		StateManager.active().pollEvents();
+		if (window.wasResized()) {
 			calcViewport();
 			setARViewPort();
 		}
 	}
 
-	void destroy() {
-		window.dispose();
-	}
-
-	@Deprecated
-	final double getCurrentTime() {
-		return GLFW.glfwGetTime() * 1000;
-	}
-
 	void sync(int fps) {
 		double target = lastsynced + (1000.0 / fps);
 		try {
-			while ((lastsynced = getCurrentTime()) < target) {
+			while ((lastsynced = StateManager.active().getTime()) < target) {
 				Thread.sleep(1);
 			}
 		} catch (InterruptedException ex) {
 		}
 	}
 
-	public boolean isCloseRequested() {
-		return window.isCloseRequested();
-	}
-
-	public boolean isActive() {
-		return window.isActive();
-	}
-
 	public int getWidth() {
-		// return getBufferWidth();
 		return viewport[2];
 	}
 
 	public int getHeight() {
-		// return getBufferHeight();
 		return viewport[3];
 	}
 
-	public int getBufferWidth() {
-		return window.getBufferWidth();
-	}
-
-	public int getBufferHeight() {
-		return window.getBufferHeight();
-	}
-
-	public final long getID() {
-		return window.getWindowID();
+	public final Window<?> getWindow() {
+		return window;
 	}
 
 	public final void show() {
 		window.show();
 	}
 
+	// TODO opengl does not belong to this class
+	// *********************************************************/
 	public final void resetViewport() {
-		OpenGL.gl11viewport(0, 0, getBufferWidth(), getBufferHeight());
+		OpenGL.gl11viewport(0, 0, window.getBufferWidth(), window.getBufferHeight());
 	}
 
 	public final void setARViewPort() {
-		// resetViewport();
 		OpenGL.gl11viewport(viewport);
 	}
+	// *********************************************************/
 
 	public final void resetAspectRatio() {
 		setAspectRatio(-1);
 	}
 
-	public final int[] calculateViewport(int w, int h) {
-		int[] viewport = new int[4];
-		viewport[0] = 0;
-		viewport[1] = 0;
-		viewport[2] = w;
-		viewport[3] = h;
-		if (aspectratio > 0) {
-			if ((double) w / (double) h <= aspectratio) {
-				viewport[3] = (int) (w * (1.0 / aspectratio));
-				viewport[1] = (int) ((h - viewport[3]) * 0.5);
-			} else {
-				viewport[2] = (int) (h * aspectratio);
-				viewport[0] = (int) ((w - viewport[2]) * 0.5);
-			}
-		}
-		return viewport;
-	}
-
 	private final void calcViewport() {
-		viewport = calculateViewport(getBufferWidth(), getBufferHeight());
+		viewport = Maths.calculateViewport(aspectratio, window.getBufferWidth(), window.getBufferHeight());
 	}
 
 	public double getAspectRatio() {

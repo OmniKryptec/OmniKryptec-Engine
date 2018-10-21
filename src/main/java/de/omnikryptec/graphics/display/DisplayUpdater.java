@@ -1,5 +1,7 @@
 package de.omnikryptec.graphics.display;
 
+import de.omnikryptec.libapi.glfw.StateManager;
+
 public class DisplayUpdater {
 
 	private double updateTime = 0;
@@ -15,16 +17,16 @@ public class DisplayUpdater {
 
 	public void update(Display display) {
 		if (framecount == 0) {
-			lasttime = display.getCurrentTime();
-			fpstime = display.getCurrentTime() / 1000.0;
+			lasttime = StateManager.active().getTime();
+			fpstime = StateManager.active().getTime() / 1000.0;
 		}
-		double currentFrameTime = display.getCurrentTime();
+		double currentFrameTime = StateManager.active().getTime();
 		deltatime = (currentFrameTime - lasttime) / 1000.0;
 		frontruntime += deltatime;
 		lasttime = currentFrameTime;
-		double tmptime = display.getCurrentTime();
+		double tmptime = StateManager.active().getTime();
 		display.update();
-		updateTime = display.getCurrentTime() - tmptime;
+		updateTime = StateManager.active().getTime() - tmptime;
 		framecount++;
 		if (fps) {
 			fps1++;

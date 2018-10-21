@@ -1,6 +1,6 @@
-package de.omnikryptec.graphics.display;
+package de.omnikryptec.libapi.glfw;
 
-public class WindowInfo {
+public abstract class WindowInfo<T extends WindowInfo<?>> {
 
 	private int width = 800;
 	private int height = 600;
@@ -9,34 +9,37 @@ public class WindowInfo {
 	private boolean lockAspectRatio = false;
 	private String name = "Display";
 
-	public WindowInfo setWidth(int width) {
+	WindowInfo() {
+	}
+
+	public T setWidth(int width) {
 		this.width = width;
-		return this;
+		return (T) this;
 	}
 
-	public WindowInfo setHeight(int height) {
+	public T setHeight(int height) {
 		this.height = height;
-		return this;
+		return (T) this;
 	}
 
-	public WindowInfo setFullscreen(boolean fullscreen) {
+	public T setFullscreen(boolean fullscreen) {
 		this.fullscreen = fullscreen;
-		return this;
+		return (T) this;
 	}
 
-	public WindowInfo setResizeable(boolean resizeable) {
+	public T setResizeable(boolean resizeable) {
 		this.resizeable = resizeable;
-		return this;
+		return (T) this;
 	}
 
-	public WindowInfo setLockAspectRatio(boolean lockAspectRatio) {
+	public T setLockAspectRatio(boolean lockAspectRatio) {
 		this.lockAspectRatio = lockAspectRatio;
-		return this;
+		return (T) this;
 	}
 
-	public WindowInfo setName(String name) {
+	public T setName(String name) {
 		this.name = name;
-		return this;
+		return (T) this;
 	}
 
 	public int getWidth() {

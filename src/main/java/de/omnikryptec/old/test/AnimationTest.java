@@ -26,7 +26,7 @@ import org.lwjgl.glfw.GLFW;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.graphics.display.DisplayManager;
-import de.omnikryptec.graphics.display.WindowInfo;
+import de.omnikryptec.libapi.glfw.WindowInfo;
 import de.omnikryptec.old.animation.AnimatedModel;
 import de.omnikryptec.old.animation.Animation;
 import de.omnikryptec.old.animation.ColladaParser.dataStructures.AnimatedModelData;

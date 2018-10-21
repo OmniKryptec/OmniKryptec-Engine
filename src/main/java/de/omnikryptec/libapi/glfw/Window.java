@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.graphics.display;
+package de.omnikryptec.libapi.glfw;
 
 import java.nio.IntBuffer;
 
@@ -25,21 +25,21 @@ import org.lwjgl.glfw.GLFWVidMode;
 
 import de.omnikryptec.util.Util;
 
-abstract class Window {
-	private GLFWFramebufferSizeCallback framebufferSizeCallback;
+public abstract class Window<T extends WindowInfo<?>> {
+	private final GLFWFramebufferSizeCallback framebufferSizeCallback;
 	private boolean resized = false;
 	private final long windowId;
 	private int width, height, fwidth, fheight;
 	private boolean isfullscreen = false;
 	private boolean active = false;
 
-	Window(WindowInfo info) {
+	Window(T info) {
+		Util.ensureNonNull(info, "Window info must not be null!");
 		this.width = info.getWidth();
 		this.height = info.getHeight();
-		Util.ensureNonNull(info.getName(), "Window label must not be null!");
 		GLFW.glfwDefaultWindowHints();
 		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, info.isResizeable() ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
-		setAdditionalGlfwWindowHints();
+		setAdditionalGlfwWindowHints(info);
 		if (info.isFullscreen()) {
 			GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
 			width = vidMode.width();
@@ -63,26 +63,23 @@ abstract class Window {
 		GLFW.glfwGetFramebufferSize(windowId, framebufferWidth, framebufferHeight);
 		fwidth = framebufferWidth.get();
 		fheight = framebufferHeight.get();
-		onInitFinish();
 	}
 
-	protected abstract void setAdditionalGlfwWindowHints();
+	protected abstract void setAdditionalGlfwWindowHints(T info);
 
-	protected abstract void onInitFinish();
-
-	protected long getWindowID() {
+	public long getWindowID() {
 		return windowId;
 	}
 
-	protected void show() {
+	public void show() {
 		GLFW.glfwShowWindow(windowId);
 	}
 
-	protected void dispose() {
+	public void dispose() {
 		GLFW.glfwDestroyWindow(windowId);
 	}
 
-	protected void swapBuffers() {
+	public void swapBuffers() {
 		active = GLFW.glfwGetWindowAttrib(windowId, GLFW.GLFW_FOCUSED) == GLFW.GLFW_TRUE;
 		resized = false;
 		GLFW.glfwSwapBuffers(windowId);

@@ -19,13 +19,10 @@ package de.omnikryptec.graphics.display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
-import de.omnikryptec.libapi.opencl.OpenCL;
 import de.omnikryptec.old.audio.AudioManager;
 import de.omnikryptec.old.graphics.GraphicsUtil;
 import de.omnikryptec.old.settings.GameSettings;
 import de.omnikryptec.old.util.Util;
-import de.omnikryptec.old.util.logger.LogLevel;
-import de.omnikryptec.old.util.logger.Logger;
 
 /**
  * Display managing class
@@ -55,7 +52,7 @@ public class DisplayManager {
 			System.setProperty("joml.fastmath", "true");
 		}
 		try {
-			display = new Display(name, info);
+			display = new Display(name, null);
 			AudioManager.init();
 			if (settings.getMultiSamples() != GameSettings.NO_MULTISAMPLING) {
 				GraphicsUtil.antialias(true);
@@ -98,9 +95,8 @@ public class DisplayManager {
 	}
 
 	public final DisplayManager close() {
-		AudioManager.cleanup();
-		OpenCL.cleanup();
-		display.destroy();
+		//TODO OpenCL.cleanup();
+		display.getWindow().dispose();
 		return this;
 	}
 }

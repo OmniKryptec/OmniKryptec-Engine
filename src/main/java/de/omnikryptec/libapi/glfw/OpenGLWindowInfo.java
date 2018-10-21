@@ -1,8 +1,11 @@
-package de.omnikryptec.graphics.display;
+package de.omnikryptec.libapi.glfw;
 
-public class OpenGLWindowInfo extends WindowInfo{
+public class OpenGLWindowInfo extends WindowInfo<OpenGLWindowInfo> {
 
-	private int majVersion=1, minVersion=0;
+	private int majVersion = 1, minVersion = 0;
+
+	public OpenGLWindowInfo() {
+	}
 
 	public int getMajVersion() {
 		return majVersion;
@@ -21,7 +24,5 @@ public class OpenGLWindowInfo extends WindowInfo{
 		this.minVersion = minVersion;
 		return this;
 	}
-	
-	
-	
+
 }

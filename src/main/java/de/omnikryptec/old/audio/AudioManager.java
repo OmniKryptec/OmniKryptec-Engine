@@ -57,6 +57,7 @@ import org.lwjgl.openal.ALC10;
 import org.lwjgl.openal.ALCCapabilities;
 
 import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.libapi.glfw.StateManager;
 import de.omnikryptec.old.gameobject.component.Component;
 import de.omnikryptec.old.util.AudioUtil;
 import de.omnikryptec.old.util.logger.LogLevel;
@@ -339,10 +340,14 @@ public class AudioManager {
         }
     }
 
+    static {
+    	StateManager.registerResourceShutdownHook(()->cleanup());
+    }
+    
     /**
      * Cleans up every Sound and destroys the OpenAL AudioSystem
      */
-    public static final void cleanup() {
+    private static final void cleanup() {
         for (AudioSource source : AudioSource.audioSources) {
             source.delete();
         }

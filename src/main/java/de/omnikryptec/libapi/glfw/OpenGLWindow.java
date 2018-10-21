@@ -1,31 +1,25 @@
-package de.omnikryptec.graphics.display;
+package de.omnikryptec.libapi.glfw;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;
 
-public class OpenGLWindow extends Window {
+public class OpenGLWindow extends Window<OpenGLWindowInfo> {
 
-	private int mav, miv;
-
-	OpenGLWindow(OpenGLWindowInfo info) {
+	public OpenGLWindow(OpenGLWindowInfo info) {
 		super(info);
-		this.mav = info.getMajVersion();
-		this.miv = info.getMinVersion();
+		GLFW.glfwMakeContextCurrent(getWindowID());
+		GL.createCapabilities();
 	}
 
 	@Override
-	protected void setAdditionalGlfwWindowHints() {
+	protected void setAdditionalGlfwWindowHints(OpenGLWindowInfo info) {
+		int mav = info.getMajVersion();
+		int miv = info.getMinVersion();
 		if (mav > 3 || (mav > 2 && miv > 1)) {
 			GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, mav);
 			GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, miv);
 			GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
 		}
-	}
-
-	@Override
-	protected void onInitFinish() {
-		GLFW.glfwMakeContextCurrent(getWindowID());
-		GL.createCapabilities();
 	}
 
 }

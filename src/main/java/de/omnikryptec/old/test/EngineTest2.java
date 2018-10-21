@@ -28,7 +28,7 @@ import de.codemakers.io.file.AdvancedFile;
 import de.codemakers.lang.LanguageManager;
 import de.omnikryptec.graphics.display.Display;
 import de.omnikryptec.graphics.display.DisplayManager;
-import de.omnikryptec.graphics.display.WindowInfo;
+import de.omnikryptec.libapi.glfw.WindowInfo;
 import de.omnikryptec.libapi.opencl.CLCommandQueue;
 import de.omnikryptec.libapi.opencl.CLContext;
 import de.omnikryptec.libapi.opencl.CLDevice;

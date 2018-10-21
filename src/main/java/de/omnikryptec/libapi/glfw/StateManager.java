@@ -1,4 +1,4 @@
-package de.omnikryptec.core;
+package de.omnikryptec.libapi.glfw;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,31 +7,31 @@ import java.util.Collection;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
-public class StateManager {
+public final class StateManager {
 	
-	private static boolean initialized = false;
 	private static final Collection<Runnable> shutdownHooks = new ArrayList<>();
-
+	private static StateManager instance;
+	
 	static {
 		Runtime.getRuntime().addShutdownHook(new Thread(()->shutdown(), "Engine-Shutdown-Hooks"));
 	}
 	
 	public static void init() {
-		if(initialized) {
+		if(isInitialized()) {
 			throw new IllegalStateException("GLFW has already been initialized");
 		}
 		if (GLFW.glfwInit()) {
 			GLFWErrorCallback.createThrow().set();
-			initialized = true;
+			instance = new StateManager();
 			System.out.println("Initialized GLFW");
 		} else {
-			initialized = false;
+			instance = null;
 			throw new RuntimeException("Error while initializing GLFW");
 		}
 	}
 
 	public static void shutdown() {
-		if(initialized) {
+		if(isInitialized()) {
 			for(Runnable r : shutdownHooks) {
 				try {
 					r.run();
@@ -41,7 +41,7 @@ public class StateManager {
 				}
 			}
 			GLFW.glfwTerminate();
-			initialized = false;
+			instance = null;
 			System.out.println("Shut down GLFW");
 		}
 	}
@@ -51,19 +51,19 @@ public class StateManager {
 	}
 	
 	public static boolean isInitialized() {
-		return initialized;
+		return instance!=null;
 	}
 
-
-	//TODO move? (Instance class or object?)
-	/********************************************/
-	public static void pollEvents() {
+	public static StateManager active() {
+		return instance;
+	}
+	
+	public void pollEvents() {
 		GLFW.glfwPollEvents();
 	}
 	
-	public static double getTime() {
+	public double getTime() {
 		return GLFW.glfwGetTime();
 	}
-	/********************************************/
 	
 }
