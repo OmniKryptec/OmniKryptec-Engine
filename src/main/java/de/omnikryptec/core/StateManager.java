@@ -1,13 +1,16 @@
 package de.omnikryptec.core;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
-
-import de.omnikryptec.old.event.input.InputManager;
 
 public class StateManager {
 	
 	private static boolean initialized = false;
+	private static final Collection<Runnable> shutdownHooks = new ArrayList<>();
 	
 	public static void init() {
 		if(initialized) {
@@ -16,6 +19,7 @@ public class StateManager {
 		if (GLFW.glfwInit()) {
 			GLFWErrorCallback.createThrow().set();
 			initialized = true;
+			Runtime.getRuntime().addShutdownHook(new Thread(()->shutdown(), "Engine-Shutdown-Hooks"));
 			System.out.println("Initialized GLFW");
 		} else {
 			initialized = false;
@@ -25,11 +29,22 @@ public class StateManager {
 
 	public static void shutdown() {
 		if(initialized) {
-			InputManager.closeCallbacks();
+			for(Runnable r : shutdownHooks) {
+				try {
+					r.run();
+				}catch(Exception e) {
+					System.err.println("Exception in shutdown hook: "+e);
+					e.printStackTrace();
+				}
+			}
 			GLFW.glfwTerminate();
 			initialized = false;
 			System.out.println("Shut down GLFW");
 		}
+	}
+	
+	public static void registerResourceShutdownHook(Runnable...runnables) {
+		shutdownHooks.addAll(Arrays.asList(runnables));
 	}
 	
 	public static boolean isInitialized() {

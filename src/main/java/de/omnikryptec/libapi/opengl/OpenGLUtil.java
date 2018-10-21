@@ -1,10 +1,12 @@
-package de.omnikryptec.util;
+package de.omnikryptec.libapi.opengl;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+
+import de.omnikryptec.util.data.Color;
 
 public class OpenGLUtil {
 
@@ -22,6 +24,27 @@ public class OpenGLUtil {
 		}
 	}
 
+	public static enum PolyMode {
+		FILL(GL11.GL_FILL), LINE(GL11.GL_LINE), POINT(GL11.GL_POINT);
+
+		public final int id;
+
+		private PolyMode(int id) {
+			this.id = id;
+		}
+	}
+
+	public static enum BufferType {
+		COLOR(GL11.GL_COLOR_BUFFER_BIT), DEPTH(GL11.GL_DEPTH_BUFFER_BIT), ACCUM(GL11.GL_ACCUM_BUFFER_BIT),
+		STENCIL(GL11.GL_STENCIL_BUFFER_BIT);
+
+		public final int id;
+
+		private BufferType(int id) {
+			this.id = id;
+		}
+	}
+
 	public static enum Feature {
 		BLEND(GL11.GL_BLEND), DEPTH_TEST(GL11.GL_DEPTH_TEST), CULL_FACES(GL11.GL_CULL_FACE),
 		MULTISAMPLE(GL13.GL_MULTISAMPLE), SCISSORTEST(GL11.GL_SCISSOR_TEST);
@@ -31,13 +54,15 @@ public class OpenGLUtil {
 		private Feature(int id) {
 			this.id = id;
 		}
+		
 	}
 
-	private static final Object DEPTH_MASK_KEY = GL11.GL_DEPTH_WRITEMASK;
-	private static final Object CULL_FACE_KEY = Feature.CULL_FACES; 
-	
-	private static Map<Feature, Boolean> featureCache = new HashMap<>();
-	private static Map<Object, Object> cache = new HashMap<>();
+	private static enum CACHE_ENUM{
+		DEPTH_MASK_KEY, CULL_FACE_KEY, POLY_MODE_KEY
+	}
+
+	private static Map<Feature, Boolean> featureCache = new EnumMap<>(Feature.class);
+	private static Map<CACHE_ENUM, Object> cache = new EnumMap<>(CACHE_ENUM.class);
 	private static BlendMode blendMode = null;
 
 	public static boolean isFeatureEnabled(Feature f) {
@@ -77,10 +102,10 @@ public class OpenGLUtil {
 	}
 
 	public static void setCullMode(CullMode mode) {
-		Object o = cache.get(CULL_FACE_KEY);
+		Object o = cache.get(CACHE_ENUM.CULL_FACE_KEY);
 		if (o == null || ((CullMode) o) != mode) {
 			GL11.glCullFace(mode.id);
-			cache.put(CULL_FACE_KEY, mode);
+			cache.put(CACHE_ENUM.CULL_FACE_KEY, mode);
 		}
 	}
 
@@ -89,11 +114,35 @@ public class OpenGLUtil {
 	}
 
 	public static void setDepthMask(boolean b) {
-		Object o = cache.get(DEPTH_MASK_KEY);
+		Object o = cache.get(CACHE_ENUM.DEPTH_MASK_KEY);
 		if (o == null || ((boolean) o) != b) {
 			GL11.glDepthMask(b);
-			cache.put(DEPTH_MASK_KEY, b);
+			cache.put(CACHE_ENUM.DEPTH_MASK_KEY, b);
 		}
+	}
+
+	public static void setPolyMode(PolyMode mode) {
+		Object o = cache.get(CACHE_ENUM.POLY_MODE_KEY);
+		if (o == null || ((PolyMode) o) != mode) {
+			GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, mode.id);
+			cache.put(CACHE_ENUM.POLY_MODE_KEY, mode);
+		}
+	}
+
+	public static void setClearColor(Color color) {
+		setClearColor(color.getR(), color.getG(), color.getB(), color.getA());
+	}
+
+	public static void setClearColor(float r, float g, float b, float a) {
+		GL11.glClearColor(r, g, b, a);
+	}
+
+	public static void clear(BufferType... buffers) {
+		int mask = 0;
+		for (BufferType b : buffers) {
+			mask |= b.id;
+		}
+		GL11.glClear(mask);
 	}
 
 }
