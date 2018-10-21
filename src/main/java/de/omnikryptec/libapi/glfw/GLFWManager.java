@@ -7,22 +7,22 @@ import java.util.Collection;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
-public final class StateManager {
-	
+public final class GLFWManager {
+
 	private static final Collection<Runnable> shutdownHooks = new ArrayList<>();
-	private static StateManager instance;
-	
+	private static GLFWManager instance;
+
 	static {
-		Runtime.getRuntime().addShutdownHook(new Thread(()->shutdown(), "Engine-Shutdown-Hooks"));
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown(), "Engine-Shutdown-Hooks"));
 	}
-	
+
 	public static void init() {
-		if(isInitialized()) {
+		if (isInitialized()) {
 			throw new IllegalStateException("GLFW has already been initialized");
 		}
 		if (GLFW.glfwInit()) {
 			GLFWErrorCallback.createThrow().set();
-			instance = new StateManager();
+			instance = new GLFWManager();
 			System.out.println("Initialized GLFW");
 		} else {
 			instance = null;
@@ -31,12 +31,12 @@ public final class StateManager {
 	}
 
 	public static void shutdown() {
-		if(isInitialized()) {
-			for(Runnable r : shutdownHooks) {
+		if (isInitialized()) {
+			for (Runnable r : shutdownHooks) {
 				try {
 					r.run();
-				}catch(Exception e) {
-					System.err.println("Exception in shutdown hook: "+e);
+				} catch (Exception e) {
+					System.err.println("Exception in shutdown hook '"+r+"': " + e);
 					e.printStackTrace();
 				}
 			}
@@ -45,25 +45,28 @@ public final class StateManager {
 			System.out.println("Shut down GLFW");
 		}
 	}
-	
-	public static void registerResourceShutdownHook(Runnable...runnables) {
+
+	public static void registerResourceShutdownHooks(Runnable... runnables) {
 		shutdownHooks.addAll(Arrays.asList(runnables));
 	}
-	
+
 	public static boolean isInitialized() {
-		return instance!=null;
+		return instance != null;
 	}
 
-	public static StateManager active() {
+	public static GLFWManager active() {
 		return instance;
 	}
-	
+
+	private GLFWManager() {
+	}
+
 	public void pollEvents() {
 		GLFW.glfwPollEvents();
 	}
-	
+
 	public double getTime() {
 		return GLFW.glfwGetTime();
 	}
-	
+
 }

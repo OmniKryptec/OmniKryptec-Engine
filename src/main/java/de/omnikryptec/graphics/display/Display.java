@@ -16,12 +16,13 @@
 
 package de.omnikryptec.graphics.display;
 
-import de.omnikryptec.libapi.glfw.StateManager;
+import de.omnikryptec.libapi.glfw.GLFWManager;
 import de.omnikryptec.libapi.glfw.Window;
 import de.omnikryptec.old.event.input.InputManager;
 import de.omnikryptec.old.graphics.OpenGL;
 import de.omnikryptec.util.Maths;
 
+//TODO unneccessary: just wrapping Window and doing weird stuff here, viewport stuff might be useful though
 public class Display {
 
 	private Window<?> window;
@@ -29,19 +30,19 @@ public class Display {
 	private int[] viewport = new int[4];
 	private double aspectratio = -1;
 
-	Display(String name, Window<?> window) {
+	Display(Window<?> window) {
 		this.window = window;
 		calcViewport();
 		setARViewPort();
 		// TODO Eventbased? / Input has nothing to do with the Display, move it to a
 		// different position
 		InputManager.initCallbacks();
-		lastsynced = StateManager.active().getTime();
+		lastsynced = GLFWManager.active().getTime();
 	}
 
 	void update() {
 		window.swapBuffers();
-		StateManager.active().pollEvents();
+		GLFWManager.active().pollEvents();
 		if (window.wasResized()) {
 			calcViewport();
 			setARViewPort();
@@ -51,7 +52,7 @@ public class Display {
 	void sync(int fps) {
 		double target = lastsynced + (1000.0 / fps);
 		try {
-			while ((lastsynced = StateManager.active().getTime()) < target) {
+			while ((lastsynced = GLFWManager.active().getTime()) < target) {
 				Thread.sleep(1);
 			}
 		} catch (InterruptedException ex) {
@@ -68,10 +69,6 @@ public class Display {
 
 	public final Window<?> getWindow() {
 		return window;
-	}
-
-	public final void show() {
-		window.show();
 	}
 
 	// TODO opengl does not belong to this class

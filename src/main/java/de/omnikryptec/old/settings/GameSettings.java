@@ -45,6 +45,8 @@ public class GameSettings implements XMLable {
      */
     public static final int NO_MULTISAMPLING = 0;
 
+    //TODO switch to enum or int as keys (int hashcode is faster than String)
+    
     /**
      * OpenGL int
      */

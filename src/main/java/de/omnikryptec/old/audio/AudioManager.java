@@ -57,7 +57,7 @@ import org.lwjgl.openal.ALC10;
 import org.lwjgl.openal.ALCCapabilities;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.libapi.glfw.StateManager;
+import de.omnikryptec.libapi.glfw.GLFWManager;
 import de.omnikryptec.old.gameobject.component.Component;
 import de.omnikryptec.old.util.AudioUtil;
 import de.omnikryptec.old.util.logger.LogLevel;
@@ -341,7 +341,7 @@ public class AudioManager {
     }
 
     static {
-    	StateManager.registerResourceShutdownHook(()->cleanup());
+    	GLFWManager.registerResourceShutdownHooks(()->cleanup());
     }
     
     /**

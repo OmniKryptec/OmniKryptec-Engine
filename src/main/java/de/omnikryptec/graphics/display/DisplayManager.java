@@ -43,25 +43,21 @@ public class DisplayManager {
 	}
 
 	public DisplayManager(GameSettings settings) {
-		this("Display", settings);
-	}
-
-	public DisplayManager(String name, GameSettings settings) {
 		this.settings = Util.ensureNonNull(settings, "GameSettings must not be null!");
 		if (settings.getBoolean(GameSettings.FASTMATH)) {
 			System.setProperty("joml.fastmath", "true");
 		}
 		try {
-			display = new Display(name, null);
+			display = new Display(null);
 			AudioManager.init();
 			if (settings.getMultiSamples() != GameSettings.NO_MULTISAMPLING) {
 				GraphicsUtil.antialias(true);
 			}
-			// TODO OpenGL stuff
+			// TODO opengl does not belong to this class
 			GraphicsUtil.cullBackFaces(true);
 			GraphicsUtil.enableDepthTesting(true);
 			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
-			// ****
+			// *****************************************
 			deltaTimeSmoother = new Smoother();
 			System.out.println("Created the display");
 		} catch (Exception ex) {
@@ -95,7 +91,7 @@ public class DisplayManager {
 	}
 
 	public final DisplayManager close() {
-		//TODO OpenCL.cleanup();
+		//TODO move OpenCL.cleanup();
 		display.getWindow().dispose();
 		return this;
 	}
