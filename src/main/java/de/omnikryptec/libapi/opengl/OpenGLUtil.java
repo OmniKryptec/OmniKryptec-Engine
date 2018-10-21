@@ -35,8 +35,8 @@ public class OpenGLUtil {
 	}
 
 	public static enum BufferType {
-		COLOR(GL11.GL_COLOR_BUFFER_BIT), DEPTH(GL11.GL_DEPTH_BUFFER_BIT), ACCUM(GL11.GL_ACCUM_BUFFER_BIT),
-		STENCIL(GL11.GL_STENCIL_BUFFER_BIT);
+		COLOR(GL11.GL_COLOR_BUFFER_BIT), DEPTH(GL11.GL_DEPTH_BUFFER_BIT), @Deprecated
+		ACCUM(GL11.GL_ACCUM_BUFFER_BIT), STENCIL(GL11.GL_STENCIL_BUFFER_BIT);
 
 		public final int id;
 
@@ -54,10 +54,10 @@ public class OpenGLUtil {
 		private Feature(int id) {
 			this.id = id;
 		}
-		
+
 	}
 
-	private static enum CACHE_ENUM{
+	private static enum CACHE_ENUM {
 		DEPTH_MASK_KEY, CULL_FACE_KEY, POLY_MODE_KEY
 	}
 

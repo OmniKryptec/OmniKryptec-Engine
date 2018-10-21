@@ -9,7 +9,8 @@ import java.util.concurrent.TimeUnit;
 
 public class ExecutorsUtil {
 
-	private static Collection<ExecutorService> allExecutors = new ArrayList<>();
+	private static final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
+	private static final Collection<ExecutorService> allExecutors = new ArrayList<>();
 
 	public static ExecutorService newFixedThreadPool(int nthreads) {
 		ExecutorService service = Executors.newFixedThreadPool(nthreads);
@@ -47,6 +48,6 @@ public class ExecutorsUtil {
 	}
 	
 	public static int getAvailableProcessors() {
-		return Runtime.getRuntime().availableProcessors();
+		return AVAILABLE_PROCESSORS;
 	}
 }
