@@ -60,12 +60,13 @@ public class DisplayManager {
 			if (settings.getMultiSamples() != GameSettings.NO_MULTISAMPLING) {
 				GraphicsUtil.antialias(true);
 			}
+			// TODO OpenGL stuff
 			GraphicsUtil.cullBackFaces(true);
 			GraphicsUtil.enableDepthTesting(true);
-			// TODO OpenGL stuff
 			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
+			// ****
 			deltaTimeSmoother = new Smoother();
-			Logger.log("Successfully created the Display!", LogLevel.FINEST);
+			System.out.println("Created the display");
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
@@ -87,15 +88,15 @@ public class DisplayManager {
 	public final DisplayUpdater getUpdater() {
 		return displayUpdater;
 	}
-	
+
 	public final Display getDisplay() {
 		return display;
 	}
-	
+
 	public final Smoother getDeltaTimeSmoother() {
 		return deltaTimeSmoother;
 	}
-	
+
 	public final DisplayManager close() {
 		AudioManager.cleanup();
 		OpenCL.cleanup();
