@@ -11,6 +11,10 @@ public class StateManager {
 	
 	private static boolean initialized = false;
 	private static final Collection<Runnable> shutdownHooks = new ArrayList<>();
+
+	static {
+		Runtime.getRuntime().addShutdownHook(new Thread(()->shutdown(), "Engine-Shutdown-Hooks"));
+	}
 	
 	public static void init() {
 		if(initialized) {
@@ -19,7 +23,6 @@ public class StateManager {
 		if (GLFW.glfwInit()) {
 			GLFWErrorCallback.createThrow().set();
 			initialized = true;
-			Runtime.getRuntime().addShutdownHook(new Thread(()->shutdown(), "Engine-Shutdown-Hooks"));
 			System.out.println("Initialized GLFW");
 		} else {
 			initialized = false;
