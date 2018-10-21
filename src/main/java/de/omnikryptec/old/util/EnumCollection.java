@@ -16,6 +16,7 @@
 
 package de.omnikryptec.old.util;
 
+@Deprecated //As retarded as the Instance-class
 public class EnumCollection {
 
 	public static enum FrameState {

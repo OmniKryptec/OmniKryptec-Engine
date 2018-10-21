@@ -131,6 +131,7 @@ public class Util {
 		}
 	}
 
+	@Deprecated //evil/weird hack
 	public static final double getCurrentTime() {
 		try {
 			return OmniKryptecEngine.instance().getDisplayManager().getCurrentTime();
@@ -192,6 +193,7 @@ public class Util {
 		return obj;
 	}
 
+	@Deprecated //Properties is very old
 	public static String getString(Properties p, String key, String defaults) {
 		return p == null ? defaults : Returner.of(p.getProperty(key)).or(defaults);
 	}

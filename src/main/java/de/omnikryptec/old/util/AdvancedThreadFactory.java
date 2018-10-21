@@ -29,7 +29,7 @@ public class AdvancedThreadFactory implements ThreadFactory {
     private final ThreadGroup group;
     private final AtomicInteger threadNumber = new AtomicInteger(1);
     private String name;
-
+    //TODO improve
     public AdvancedThreadFactory() {
         this("");
     }

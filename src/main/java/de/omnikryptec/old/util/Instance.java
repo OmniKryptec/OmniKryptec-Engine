@@ -39,6 +39,7 @@ import de.omnikryptec.old.resource.loader.ResourceObject;
 import de.omnikryptec.old.settings.GameSettings;
 import de.omnikryptec.old.settings.KeySettings;
 
+@Deprecated //TODO make better wrapping class so no class is needed that just collects other functions or constants
 public class Instance {
     
     public static final int DISPLAYMANAGER_DISABLE_FPS_CAP = DisplayManager.DISABLE_FPS_CAP;
