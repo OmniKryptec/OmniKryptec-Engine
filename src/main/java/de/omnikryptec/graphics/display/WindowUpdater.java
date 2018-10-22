@@ -35,9 +35,9 @@ public class WindowUpdater {
 	}
 
 	/**
-	 * Updates the window maintained by this object and all the corresponding values
-	 * presented by this class. This includes swapping the buffers and polling
-	 * events.<br>
+	 * Updates the window maintained by this object and the values accessable by the
+	 * functions of this class (e.g. {@link #getDeltaTime()}.<br>
+	 * The update includes swapping the buffers and polling events.<br>
 	 * <br>
 	 * This function can limit the framerate by setting this Thread to sleep. This
 	 * will happen if the frames per second (not counted) are greater than the
