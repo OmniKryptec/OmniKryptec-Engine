@@ -103,10 +103,11 @@ public class WindowUpdater {
 	}
 
 	/**
-	 * An instance of {@link Smoother} that can be used to retrieve delta times
-	 * smoothed over multiple frames.
+	 * An instance of {@link Smoother} that can be used to retrieve a delta time
+	 * smoothed over multiple frames, in seconds.
 	 * 
 	 * @return the delta time smoother
+	 * @see #getDeltaTime()
 	 */
 	public final Smoother getDeltaTimeSmoother() {
 		return deltaTimeSmoother;
