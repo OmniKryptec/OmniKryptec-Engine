@@ -36,7 +36,7 @@ public final class GLFWManager {
 				try {
 					r.run();
 				} catch (Exception e) {
-					System.err.println("Exception in shutdown hook '"+r+"': " + e);
+					System.err.println("Exception in shutdown hook '" + r + "': " + e);
 					e.printStackTrace();
 				}
 			}
@@ -65,6 +65,15 @@ public final class GLFWManager {
 		GLFW.glfwPollEvents();
 	}
 
+	/**
+	 * Returns the value of the GLFW timer. The timer measures time elapsed since GLFW was initialized.
+	 * 
+	 * The resolution of the timer is system dependent, but is usually on the order
+	 * of a few micro- or nanoseconds. It uses the highest-resolution monotonictime
+	 * source on each supported platform.
+	 * 
+	 * @return the current value, in seconds, or zero if an error occurred
+	 */
 	public double getTime() {
 		return GLFW.glfwGetTime();
 	}
