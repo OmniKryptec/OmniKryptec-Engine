@@ -27,8 +27,11 @@ public class Smoother {
 	}
 
 	public void setSmoothingSize(int i) {
-		smoothed = new double[i];
-		pointer = 0;
+		double[] array = new double[i];
+		System.arraycopy(smoothed, 0, array, 0, Math.min(smoothed.length, array.length));
+		pointer = smoothed.length;
+		pointer %= array.length;
+		smoothed = array;
 	}
 
 	public long getInverse() {

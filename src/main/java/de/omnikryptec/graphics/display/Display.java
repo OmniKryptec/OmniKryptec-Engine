@@ -23,41 +23,33 @@ import de.omnikryptec.old.graphics.OpenGL;
 import de.omnikryptec.util.Maths;
 
 //TODO unneccessary: just wrapping Window and doing weird stuff here, viewport stuff might be useful though
+@Deprecated
 public class Display {
 
-	private Window<?> window;
-	private double lastsynced;
+	//private Window<?> window;
 	private int[] viewport = new int[4];
 	private double aspectratio = -1;
 
 	Display(Window<?> window) {
-		this.window = window;
+		//this.window = window;
 		calcViewport();
 		setARViewPort();
 		// TODO Eventbased? / Input has nothing to do with the Display, move it to a
 		// different position
 		InputManager.initCallbacks();
-		lastsynced = GLFWManager.active().getTime();
+		//lastsynced = GLFWManager.active().getTime();
 	}
 
 	void update() {
-		window.swapBuffers();
-		GLFWManager.active().pollEvents();
-		if (window.wasResized()) {
+		//window.swapBuffers();
+		//TODO not implemented yet
+		//if (window.wasResized()) {
 			calcViewport();
 			setARViewPort();
-		}
+		//}
 	}
 
-	void sync(int fps) {
-		double target = lastsynced + (1000.0 / fps);
-		try {
-			while ((lastsynced = GLFWManager.active().getTime()) < target) {
-				Thread.sleep(1);
-			}
-		} catch (InterruptedException ex) {
-		}
-	}
+	
 
 	public int getWidth() {
 		return viewport[2];
@@ -67,14 +59,10 @@ public class Display {
 		return viewport[3];
 	}
 
-	public final Window<?> getWindow() {
-		return window;
-	}
-
 	// TODO opengl does not belong to this class
 	// *********************************************************/
 	public final void resetViewport() {
-		OpenGL.gl11viewport(0, 0, window.getBufferWidth(), window.getBufferHeight());
+		OpenGL.gl11viewport(0, 0, /*window.getBufferWidth(), window.getBufferHeight()*/0,0);
 	}
 
 	public final void setARViewPort() {
@@ -87,7 +75,7 @@ public class Display {
 	}
 
 	private final void calcViewport() {
-		viewport = Maths.calculateViewport(aspectratio, window.getBufferWidth(), window.getBufferHeight());
+		viewport = Maths.calculateViewport(aspectratio, /*window.getBufferWidth(), window.getBufferHeight()*/0,0);
 	}
 
 	public double getAspectRatio() {

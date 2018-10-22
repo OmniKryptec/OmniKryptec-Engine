@@ -16,69 +16,68 @@
 
 package de.omnikryptec.graphics.display;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
-
-import de.omnikryptec.old.audio.AudioManager;
-import de.omnikryptec.old.graphics.GraphicsUtil;
+import de.omnikryptec.libapi.glfw.OpenGLWindow;
+import de.omnikryptec.libapi.glfw.OpenGLWindowInfo;
+import de.omnikryptec.libapi.glfw.Window;
+import de.omnikryptec.libapi.glfw.WindowInfo;
 import de.omnikryptec.old.settings.GameSettings;
-import de.omnikryptec.old.util.Util;
 
 /**
  * Display managing class
  * 
  * @author pcfreak9000 &amp; Panzer1119
  */
+@Deprecated
 public class DisplayManager {
 
 	public static final int DISABLE_FPS_CAP = 0;
 
-	private DisplayUpdater displayUpdater;
-	private GameSettings settings;
+	private WindowUpdater displayUpdater;
 	private Display display;
-	private Smoother deltaTimeSmoother;
-
+	
+	private Window<?> window;
+	
 	public DisplayManager() {
-		this(new GameSettings());
+		this(new GameSettings(), new OpenGLWindowInfo());
 	}
 
-	public DisplayManager(GameSettings settings) {
-		this.settings = Util.ensureNonNull(settings, "GameSettings must not be null!");
-		if (settings.getBoolean(GameSettings.FASTMATH)) {
-			System.setProperty("joml.fastmath", "true");
-		}
+	public DisplayManager(GameSettings settings, WindowInfo<?> info) {
+//		this.settings = Util.ensureNonNull(settings, "GameSettings must not be null!");
+		// TODO move fastmath to initializer
+//		if (settings.getBoolean(GameSettings.OmnikryptecSettings.FASTMATH)) {
+//			System.setProperty("joml.fastmath", "true");
+//		}
 		try {
-			display = new Display(null);
-			AudioManager.init();
-			if (settings.getMultiSamples() != GameSettings.NO_MULTISAMPLING) {
-				GraphicsUtil.antialias(true);
-			}
-			// TODO opengl does not belong to this class
-			GraphicsUtil.cullBackFaces(true);
-			GraphicsUtil.enableDepthTesting(true);
-			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
+			displayUpdater = new WindowUpdater(window);
+//			AudioManager.init();
+//			if (settings.getMultiSamples() != GameSettings.NO_MULTISAMPLING) {
+//				GraphicsUtil.antialias(true);
+//			}
+//			// TODO opengl does not belong to this class
+//			GraphicsUtil.cullBackFaces(true);
+//			GraphicsUtil.enableDepthTesting(true);
+//			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
 			// *****************************************
-			deltaTimeSmoother = new Smoother();
 			System.out.println("Created the display");
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
 	}
 
-	public final void updateDisplay() {
-		displayUpdater.update(display);
-		deltaTimeSmoother.push(displayUpdater.getDeltaTime());
-		int sync = settings.getInteger(GameSettings.FPS_CAP);
-		if (sync != DISABLE_FPS_CAP) {
-			display.sync(sync);
+	private Window<?> makeWindow(WindowInfo<?> info) {
+		if (info.getClass().equals(OpenGLWindowInfo.class)) {
+			return new OpenGLWindow((OpenGLWindowInfo) info);
+		} else {
+			throw new IllegalArgumentException("Wrong window type");
 		}
 	}
 
-	public final GameSettings getSettings() {
-		return settings;
+	public final void updateDisplay() {
+		int sync = 0;//settings.getInteger(GameSettings.FPS_CAP);
+		displayUpdater.update(sync);
 	}
 
-	public final DisplayUpdater getUpdater() {
+	public final WindowUpdater getUpdater() {
 		return displayUpdater;
 	}
 
@@ -86,13 +85,4 @@ public class DisplayManager {
 		return display;
 	}
 
-	public final Smoother getDeltaTimeSmoother() {
-		return deltaTimeSmoother;
-	}
-
-	public final DisplayManager close() {
-		//TODO move OpenCL.cleanup();
-		display.getWindow().dispose();
-		return this;
-	}
 }

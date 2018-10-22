@@ -2,6 +2,17 @@ package de.omnikryptec.util;
 
 public class Maths {
 
+	/**
+	 * Creates a viewport with a particular aspect ratio and the given width and
+	 * height. The viewport will be centered and of maximum size for the given
+	 * parameters. That means that either the final width or the final height might
+	 * be smaller than specified to maintain the given aspect ratio.
+	 * 
+	 * @param aspectRatio the aspect ratio
+	 * @param w           the maximum width
+	 * @param h           the maximum height
+	 * @return an array consisting of x1, y1, x2, y2; in that particular order
+	 */
 	public static int[] calculateViewport(double aspectRatio, int w, int h) {
 		int[] viewport = new int[4];
 		viewport[0] = 0;
@@ -19,5 +30,5 @@ public class Maths {
 		}
 		return viewport;
 	}
-	
+
 }
