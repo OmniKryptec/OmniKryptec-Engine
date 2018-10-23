@@ -28,7 +28,7 @@ import de.omnikryptec.util.Util;
 public abstract class Window<T extends WindowInfo<?>> {
 	private final GLFWFramebufferSizeCallback framebufferSizeCallback;
 	private boolean resized = false;
-	private final long windowId;
+	protected final long windowId;
 	private int width, height, fwidth, fheight;
 	private boolean isfullscreen = false;
 	private boolean active = false;
@@ -67,6 +67,8 @@ public abstract class Window<T extends WindowInfo<?>> {
 
 	protected abstract void setAdditionalGlfwWindowHints(T info);
 
+	protected abstract void swap();
+	
 	public long getWindowID() {
 		return windowId;
 	}
@@ -82,7 +84,7 @@ public abstract class Window<T extends WindowInfo<?>> {
 	public void swapBuffers() {
 		active = GLFW.glfwGetWindowAttrib(windowId, GLFW.GLFW_FOCUSED) == GLFW.GLFW_TRUE;
 		resized = false;
-		GLFW.glfwSwapBuffers(windowId);
+		swap();
 	}
 
 	public boolean shouldBeFullscreen() {

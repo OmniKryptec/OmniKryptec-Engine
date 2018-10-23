@@ -23,4 +23,9 @@ public class OpenGLWindow extends Window<OpenGLWindowInfo> {
 		}
 	}
 
+	@Override
+	protected void swap() {
+		GLFW.glfwSwapBuffers(windowId);		
+	}
+
 }

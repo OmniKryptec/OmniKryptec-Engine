@@ -1,5 +1,7 @@
 package de.omnikryptec.core;
 
+import org.lwjgl.system.Configuration;
+
 import de.omnikryptec.libapi.glfw.GLFWManager;
 
 public abstract class EngineLoader {
@@ -9,8 +11,9 @@ public abstract class EngineLoader {
 //				if (fastmath) {
 //					System.setProperty("joml.fastmath", "true");
 //				}
-//		if (debug) {
-//		}
+//		Configuration.DEBUG.set(debug);
+//		Configuration.DEBUG_LOADER.set(debug);
+//		Configuration.DEBUG_FUNCTIONS(debug && functionDebug);
 	}
 
 	public static void initialize() {
