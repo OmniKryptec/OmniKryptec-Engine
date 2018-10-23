@@ -3,7 +3,8 @@ package de.omnikryptec.libapi.glfw;
 public class OpenGLWindowInfo extends WindowInfo<OpenGLWindowInfo> {
 
 	private int majVersion = 1, minVersion = 0;
-
+	private boolean vsync = true;
+	
 	public OpenGLWindowInfo() {
 	}
 
@@ -22,6 +23,15 @@ public class OpenGLWindowInfo extends WindowInfo<OpenGLWindowInfo> {
 
 	public OpenGLWindowInfo setMinVersion(int minVersion) {
 		this.minVersion = minVersion;
+		return this;
+	}
+	
+	public boolean isVsync() {
+		return vsync;
+	}
+	
+	public OpenGLWindowInfo setVSync(boolean enabled) {
+		this.vsync = enabled;
 		return this;
 	}
 

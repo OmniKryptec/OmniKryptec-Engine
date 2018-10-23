@@ -43,6 +43,7 @@ public class WindowUpdater {
 	 * This function can limit the framerate by setting this Thread to sleep. This
 	 * will happen if the frames per second (not counted) are greater than the
 	 * specified maxfps or in other words, if idle time is available.<br>
+	 * The Framerate is limited to min(vsync, maxfps), if VSync is enabled.<br>
 	 * <br>
 	 * This method does not clear any buffers nor does it test if the closing of the
 	 * window is requested nor does it show the window.

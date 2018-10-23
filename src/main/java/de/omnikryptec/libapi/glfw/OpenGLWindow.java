@@ -9,6 +9,7 @@ public class OpenGLWindow extends Window<OpenGLWindowInfo> {
 		super(info);
 		GLFW.glfwMakeContextCurrent(getWindowID());
 		GL.createCapabilities();
+		GLFW.glfwSwapInterval(info.isVsync() ? 1 : 0);
 	}
 
 	@Override
