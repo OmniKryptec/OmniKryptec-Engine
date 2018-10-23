@@ -2,6 +2,7 @@ package de.omnikryptec.graphics.display;
 
 import de.omnikryptec.libapi.glfw.GLFWManager;
 import de.omnikryptec.libapi.glfw.Window;
+import de.omnikryptec.util.data.Smoother;
 
 /**
  * A wrapper class that is responsible to update a given {@link Window} and
@@ -41,7 +42,10 @@ public class WindowUpdater {
 	 * <br>
 	 * This function can limit the framerate by setting this Thread to sleep. This
 	 * will happen if the frames per second (not counted) are greater than the
-	 * specified maxfps or in other words, if idle time is available.
+	 * specified maxfps or in other words, if idle time is available.<br>
+	 * <br>
+	 * This method does not clear any buffers nor does it test if the closing of the
+	 * window is requested nor does it show the window.
 	 * 
 	 * @param maxfps limits the FPS for values greater than 0. Otherwise does
 	 *               nothing.
@@ -123,16 +127,16 @@ public class WindowUpdater {
 		return framecount;
 	}
 
-	/**
-	 * the amount of time the maintained window was in the foreground. For a
-	 * complete time since glfw initialization, see {@link GLFWManager#getTime()}.
-	 * 
-	 * @return window foreground time
-	 * @see GLFWManager#getTime()
-	 */
-	public double getFrontRunningTime() {
-		return frontruntime;
-	}
+//	/**
+//	 * the amount of time the maintained window was in the foreground. For a
+//	 * complete time since glfw initialization, see {@link GLFWManager#getTime()}.
+//	 * 
+//	 * @return window foreground time
+//	 * @see GLFWManager#getTime()
+//	 */
+//	public double getFrontRunningTime() {
+//		return frontruntime;
+//	}
 
 	/**
 	 * the counted frames per second. Counted means that the calls to

@@ -33,7 +33,7 @@ public abstract class Window<T extends WindowInfo<?>> {
 	private boolean isfullscreen = false;
 	private boolean active = false;
 
-	Window(T info) {
+	protected Window(T info) {
 		Util.ensureNonNull(info, "Window info must not be null!");
 		this.width = info.getWidth();
 		this.height = info.getHeight();

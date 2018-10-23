@@ -1,5 +1,7 @@
 package de.omnikryptec.util;
 
+import java.util.Random;
+
 public class Maths {
 
 	/**
@@ -30,5 +32,28 @@ public class Maths {
 		}
 		return viewport;
 	}
+	
+	public static <T> T getWeightedRandom(Random random, T[] ts, int[] weights) {
+        int sum = 0;
+        for (int i : weights) {
+            sum += i;
+        }
+        int rand = random.nextInt(sum - 1) + 1;
+        for (int i = 0; i < ts.length; i++) {
+            rand -= weights[i];
+            if (rand <= 0) {
+                return ts[i];
+            }
+        }
+        return ts[0];
+    }
+	
+	public static int toPowerOfTwo(int n) {
+        return 1 << (32 - Integer.numberOfLeadingZeros(n - 1));
+    }
+
+    public static boolean isPowerOfTwo(int n) {
+        return (n & -n) == n;
+    }
 
 }
