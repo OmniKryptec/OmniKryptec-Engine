@@ -8,10 +8,12 @@ public abstract class WindowInfo<T extends WindowInfo<?>> {
 	private boolean resizeable = true;
 	private boolean lockAspectRatio = false;
 	private String name = "Display";
-
-	WindowInfo() {
+	
+	protected WindowInfo() {
 	}
-
+	
+	public abstract Window<T> createWindow();
+	
 	public T setWidth(int width) {
 		this.width = width;
 		return (T) this;

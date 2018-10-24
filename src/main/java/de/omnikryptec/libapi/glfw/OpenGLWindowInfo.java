@@ -35,4 +35,9 @@ public class OpenGLWindowInfo extends WindowInfo<OpenGLWindowInfo> {
 		return this;
 	}
 
+	@Override
+	public OpenGLWindow createWindow() {
+		return new OpenGLWindow(this);
+	}
+
 }
