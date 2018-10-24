@@ -31,7 +31,7 @@ public abstract class Pool<T> {
 
 	/**
 	 * Return a used instance to this {@link Pool}. If {@code T}
-	 * implements{@link Poolable}, it must be {@link Poolable#reset()} here. The
+	 * implements {@link Poolable}, it must be {@link Poolable#reset()} here. The
 	 * freed instance might be reused by {@link #retrieve()}.
 	 * 
 	 * @param the instance to free
