@@ -1,7 +1,7 @@
 package de.omnikryptec.core;
 
 import de.omnikryptec.graphics.display.WindowUpdater;
-import de.omnikryptec.libapi.glfw.GLFWManager;
+import de.omnikryptec.libapi.glfw.LibAPIManager;
 import de.omnikryptec.libapi.glfw.OpenGLWindow;
 import de.omnikryptec.libapi.glfw.OpenGLWindowInfo;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
@@ -16,7 +16,7 @@ import de.omnikryptec.util.data.Color;
 public class BasicFunctionsTest {
 
 	public static void main(String[] args) {
-		GLFWManager.init();
+		LibAPIManager.init();
 		OpenGLWindow window = new OpenGLWindowInfo().createWindow();
 		window.show();
 		WindowUpdater updater = new WindowUpdater(window);

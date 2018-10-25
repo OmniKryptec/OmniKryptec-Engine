@@ -5,14 +5,14 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL15;
 
-import de.omnikryptec.libapi.glfw.GLFWManager;
+import de.omnikryptec.libapi.glfw.LibAPIManager;
 
 public abstract class GLBuffer {
 
 	private static final List<GLBuffer> all = new ArrayList<>();
 
 	static {
-		GLFWManager.registerResourceShutdownHooks(() -> cleanup());
+		LibAPIManager.registerResourceShutdownHooks(() -> cleanup());
 	}
 
 	private static void cleanup() {

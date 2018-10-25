@@ -16,7 +16,7 @@
 
 package de.omnikryptec.graphics.display;
 
-import de.omnikryptec.libapi.glfw.GLFWManager;
+import de.omnikryptec.libapi.glfw.LibAPIManager;
 import de.omnikryptec.libapi.glfw.Window;
 import de.omnikryptec.old.event.input.InputManager;
 import de.omnikryptec.old.graphics.OpenGL;

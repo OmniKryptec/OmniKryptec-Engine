@@ -11,11 +11,34 @@ import de.omnikryptec.core.Updateable;
 import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.ecs.impl.ECSManager;
 import de.omnikryptec.ecs.system.ComponentSystem;
+import de.omnikryptec.util.UnsupportedOperationException;
 
 //TODO is updateable useful here?
+/**
+ * An interface describing a general Entity Component System (ECS) consisting of
+ * {@link Entity}s, {@link ComponentSystem}s, {@link Component}s, and atleast
+ * one Manager, an {@link IECSManager}.<br>
+ * <br>
+ * In an ECS, Entities usually are only containers of Components. Components
+ * usually only hold Data. That means that usually both of them do not contain
+ * any game logic. ComponentSystems usually only contain logic and process only
+ * Entities that have certain Components. Entities with the same type of
+ * Components can be grouped in {@link Family}s (that might improve
+ * performance).
+ * 
+ * @author pcfreak9000
+ *
+ */
 public interface IECSManager extends Updateable {
 
-	// TODO useful or too much?
+	/**
+	 * the default implementation of an {@link IECSManager}. This is the
+	 * {@link ECSManager}.<br>
+	 * Supports all operations.
+	 * 
+	 * @return new instance of the default IECSManager
+	 */
+	@Nonnull
 	public static IECSManager createDefault() {
 		return new ECSManager();
 	}
@@ -54,6 +77,7 @@ public interface IECSManager extends Updateable {
 	 * @param f the family required
 	 * @return a list of entities matching the requirements
 	 */
+	@Nonnull
 	List<Entity> getEntitesFor(@Nonnull BitSet f);
 
 	/**
@@ -61,6 +85,7 @@ public interface IECSManager extends Updateable {
 	 * 
 	 * @return all entities added to this IECSManager
 	 */
+	@Nonnull
 	Collection<Entity> getAll();
 
 	/**
@@ -68,11 +93,41 @@ public interface IECSManager extends Updateable {
 	 * This method will most likely only be used internaly by the {@link Entity}.
 	 * 
 	 * @param entity the entity those Components changed
+	 * @throws UnsupportedOperationException if this operation is not supported by
+	 *                                       the implementation
 	 */
-	void onEntityComponentsChanged(@Nonnull Entity entity);
+	void onEntityComponentsChanged(@Nonnull Entity entity) throws UnsupportedOperationException;
 
-	void addEntityListener(@Nullable BitSet family, @Nonnull EntityListener listener);
+	/**
+	 * Add an {@link EntityListener} to this {@link IECSManager}.<br>
+	 * <br>
+	 * If the family is null, the listener will be registered for general entity
+	 * events.<br>
+	 * If the family is not null, the listener will be registered for entity events
+	 * of this specific family.
+	 * 
+	 * @param family   the family, or null
+	 * @param listener the entitylistener
+	 * @throws UnsupportedOperationException if this operation is not supported by
+	 *                                       the implementation
+	 */
+	void addEntityListener(@Nullable BitSet family, @Nonnull EntityListener listener)
+			throws UnsupportedOperationException;
 
-	void removeEntityListener(@Nullable BitSet family, @Nonnull EntityListener listener);
+	/**
+	 * Remove an {@link EntityListener} from this {@link IECSManager}.<br>
+	 * <br>
+	 * If the family is null, the listener will be removed from general entity
+	 * events.<br>
+	 * If the family is not null, the listener will be removed from entity events of
+	 * this specific family.
+	 * 
+	 * @param family   the family, or null
+	 * @param listener the entitylistener
+	 * @throws UnsupportedOperationException if this operation is not supported by
+	 *                                       the implementation
+	 */
+	void removeEntityListener(@Nullable BitSet family, @Nonnull EntityListener listener)
+			throws UnsupportedOperationException;
 
 }

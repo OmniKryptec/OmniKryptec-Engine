@@ -1,6 +1,8 @@
 package de.omnikryptec.graphics.display;
 
-import de.omnikryptec.libapi.glfw.GLFWManager;
+import javax.annotation.Nonnull;
+
+import de.omnikryptec.libapi.glfw.LibAPIManager;
 import de.omnikryptec.libapi.glfw.Window;
 import de.omnikryptec.util.data.Smoother;
 
@@ -54,10 +56,10 @@ public class WindowUpdater {
 	public void update(int maxfps) {
 		// TODO this is some crazy hack
 		if (framecount == 0) {
-			lasttime = GLFWManager.active().getTime();
-			fpstime = GLFWManager.active().getTime();
+			lasttime = LibAPIManager.active().getTime();
+			fpstime = LibAPIManager.active().getTime();
 		}
-		double currentFrameTime = GLFWManager.active().getTime();
+		double currentFrameTime = LibAPIManager.active().getTime();
 		deltatime = (currentFrameTime - lasttime);
 		deltaTimeSmoother.push(deltatime);
 		frontruntime += deltatime;
@@ -65,10 +67,10 @@ public class WindowUpdater {
 		if (maxfps > 0) {
 			sync(maxfps);
 		}
-		double tmptime = GLFWManager.active().getTime();
+		double tmptime = LibAPIManager.active().getTime();
 		window.swapBuffers();
-		swapTime = GLFWManager.active().getTime() - tmptime;
-		GLFWManager.active().pollEvents();
+		swapTime = LibAPIManager.active().getTime() - tmptime;
+		LibAPIManager.active().pollEvents();
 		framecount++;
 		if (fps) {
 			fps1++;
@@ -95,7 +97,7 @@ public class WindowUpdater {
 	private void sync(int fps) {
 		double target = lastsynced + (1.0 / fps);
 		try {
-			while ((lastsynced = GLFWManager.active().getTime()) < target) {
+			while ((lastsynced = LibAPIManager.active().getTime()) < target) {
 				Thread.sleep(1);
 			}
 		} catch (InterruptedException ex) {
@@ -114,6 +116,7 @@ public class WindowUpdater {
 	 * @return the delta time smoother
 	 * @see #getDeltaTime()
 	 */
+	@Nonnull
 	public final Smoother getDeltaTimeSmoother() {
 		return deltaTimeSmoother;
 	}

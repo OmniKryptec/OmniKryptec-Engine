@@ -2,7 +2,7 @@ package de.omnikryptec.core;
 
 import org.lwjgl.system.Configuration;
 
-import de.omnikryptec.libapi.glfw.GLFWManager;
+import de.omnikryptec.libapi.glfw.LibAPIManager;
 import de.omnikryptec.util.data.settings.Defaultable;
 import de.omnikryptec.util.data.settings.Settings;
 import de.omnikryptec.libapi.glfw.OpenGLWindowInfo;
@@ -27,10 +27,10 @@ public abstract class EngineLoader {
 	}
 
 	public static void setConfiguration(Settings<LoaderSetting> settings) {
-		boolean slowmath = settings.get(LoaderSetting.FASTMATH);
+		boolean fastmath = settings.get(LoaderSetting.FASTMATH);
 		boolean debug = settings.get(LoaderSetting.DEBUG);
 		boolean functionDebug = settings.get(LoaderSetting.DEBUG_FUNCTIONS);
-		if (!slowmath) {
+		if (fastmath) {
 			System.setProperty("joml.fastmath", "true");
 		}
 		Configuration.DEBUG.set(debug);
@@ -40,7 +40,7 @@ public abstract class EngineLoader {
 
 	public static void initialize() {
 		// Initialize everything required
-		GLFWManager.init();
+		LibAPIManager.init();
 		// Window, Audio, etc....
 	}
 
@@ -67,7 +67,7 @@ public abstract class EngineLoader {
 	public EngineLoader shutdown() {
 		onShutdown();
 		// Shut down, close window etc... / Do this as shutdown resource hook?!?!?!
-		GLFWManager.shutdown();
+		LibAPIManager.shutdown();
 		return this;
 	}
 

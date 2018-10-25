@@ -13,6 +13,12 @@ import de.omnikryptec.ecs.EntityListener;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.system.ComponentSystem;
 
+/**
+ * The default implementation of {@link IECSManager}.
+ * 
+ * @author pcfreak9000
+ *
+ */
 public class ECSManager implements IECSManager {
 
 	private EntityManager entityManager;

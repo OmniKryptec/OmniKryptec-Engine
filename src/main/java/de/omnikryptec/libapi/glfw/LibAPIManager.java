@@ -7,10 +7,10 @@ import java.util.Collection;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
-public final class GLFWManager {
+public final class LibAPIManager {
 
 	private static final Collection<Runnable> shutdownHooks = new ArrayList<>();
-	private static GLFWManager instance;
+	private static LibAPIManager instance;
 
 	static {
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown(), "Engine-Shutdown-Hooks"));
@@ -22,7 +22,7 @@ public final class GLFWManager {
 		}
 		if (GLFW.glfwInit()) {
 			GLFWErrorCallback.createThrow().set();
-			instance = new GLFWManager();
+			instance = new LibAPIManager();
 			System.out.println("Initialized GLFW");
 		} else {
 			instance = null;
@@ -54,11 +54,11 @@ public final class GLFWManager {
 		return instance != null;
 	}
 
-	public static GLFWManager active() {
+	public static LibAPIManager active() {
 		return instance;
 	}
 
-	private GLFWManager() {
+	private LibAPIManager() {
 	}
 
 	public void pollEvents() {
