@@ -12,7 +12,7 @@ import de.omnikryptec.libapi.glfw.WindowInfo;
 public abstract class EngineLoader {
 
 	public static enum LoaderSetting implements Defaultable {
-		DEBUG(false), DEBUG_FUNCTIONS(false), FASTMATH(true), WINDOW_INFO(new OpenGLWindowInfo());
+		DEBUG(false), DEBUG_FUNCTIONS(false), FASTMATH(true), WINDOW_INFO(new OpenGLWindowInfo()), SHOW_WINDOW_AFTER_CREATION(true);
 
 		private final Object defaultSetting;
 
@@ -58,6 +58,9 @@ public abstract class EngineLoader {
 		// or let them be loaded by Configuration.SHARED_LIBRARY and LIBRARY_PATH
 		initialize();
 		window = ((WindowInfo<?>) loaderSettings.get(LoaderSetting.WINDOW_INFO)).createWindow();
+		if((boolean) loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION)) {
+			window.show();
+		}
 		initialized();
 		// Start game loop? / Do nothing? / Extra command?
 		// Window opening and closing?
@@ -66,7 +69,7 @@ public abstract class EngineLoader {
 
 	public EngineLoader shutdown() {
 		onShutdown();
-		// Shut down, close window etc... / Do this as shutdown resource hook?!?!?!
+		// Shut down, close window etc...
 		LibAPIManager.shutdown();
 		return this;
 	}

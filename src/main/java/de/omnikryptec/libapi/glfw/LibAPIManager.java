@@ -13,20 +13,20 @@ public final class LibAPIManager {
 	private static LibAPIManager instance;
 
 	static {
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown(), "Engine-Shutdown-Hooks"));
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown(), "LibAPI-Shutdown-Hooks"));
 	}
 
 	public static void init() {
 		if (isInitialized()) {
-			throw new IllegalStateException("GLFW has already been initialized");
+			throw new IllegalStateException("Already initialized");
 		}
 		if (GLFW.glfwInit()) {
 			GLFWErrorCallback.createThrow().set();
 			instance = new LibAPIManager();
-			System.out.println("Initialized GLFW");
+			System.out.println("Initialized LibAPI");
 		} else {
 			instance = null;
-			throw new RuntimeException("Error while initializing GLFW");
+			throw new RuntimeException("Error while initializing LibAPI");
 		}
 	}
 
@@ -42,7 +42,7 @@ public final class LibAPIManager {
 			}
 			GLFW.glfwTerminate();
 			instance = null;
-			System.out.println("Shut down GLFW");
+			System.out.println("Terminated LibAPI");
 		}
 	}
 

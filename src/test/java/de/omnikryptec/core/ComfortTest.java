@@ -19,7 +19,6 @@ public class ComfortTest extends EngineLoader {
 
 	@Override
 	protected void initialized() {
-		getWindow().show();
 		WindowUpdater updater = new WindowUpdater(getWindow());
 		while (!getWindow().isCloseRequested()) {
 			updater.update(0);
