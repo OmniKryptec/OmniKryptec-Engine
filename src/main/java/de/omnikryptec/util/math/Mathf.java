@@ -4,9 +4,12 @@ import org.joml.Math;
 
 public strictfp class Mathf {
 
+	public static final float PI = (float) java.lang.Math.PI;
+	public static final float E = (float) java.lang.Math.E;
+
 	/**
-	 * All float values above or equal to this value are integer numbers, all float values
-	 * below or equal to (-1) * this value are integer numbers.
+	 * All float values above or equal to this value are integer numbers, all float
+	 * values below or equal to (-1) * this value are integer numbers.
 	 */
 	private static final float TWO_POW_23 = 8388608.0f;
 
@@ -90,5 +93,18 @@ public strictfp class Mathf {
 			intvalue++;
 		}
 		return intvalue;
+	}
+
+	public static float rint(float value) {
+		if (value != value) {
+			// NaN
+			return value;
+		}
+		if (value > 0 && value < TWO_POW_23) {
+			return (TWO_POW_23 + value) - TWO_POW_23;
+		} else if (value < 0 && value > -TWO_POW_23) {
+			return (-TWO_POW_23 + value) + TWO_POW_23;
+		}
+		return value;
 	}
 }

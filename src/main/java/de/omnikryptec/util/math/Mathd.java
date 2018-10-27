@@ -4,9 +4,12 @@ import org.joml.Math;
 
 public strictfp class Mathd {
 
+	public static final double PI = java.lang.Math.PI;
+	public static final double E = java.lang.Math.E;
+
 	/**
-	 * All double values above or equal to this value are integer numbers, all double values
-	 * below or equal to (-1) * this value are integer numbers.
+	 * All double values above or equal to this value are integer numbers, all
+	 * double values below or equal to (-1) * this value are integer numbers.
 	 */
 	private static final double TWO_POW_52 = 4503599627370496.0d;
 
@@ -90,5 +93,18 @@ public strictfp class Mathd {
 			intvalue++;
 		}
 		return intvalue;
+	}
+	
+	public static double rint(double value) {
+		if (value != value) {
+			// NaN
+			return value;
+		}
+		if (value > 0 && value < TWO_POW_52) {
+			return (TWO_POW_52 + value) - TWO_POW_52;
+		} else if (value < 0 && value > -TWO_POW_52) {
+			return (-TWO_POW_52 + value) + TWO_POW_52;
+		}
+		return value;
 	}
 }
