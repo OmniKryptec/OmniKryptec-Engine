@@ -1,8 +1,8 @@
-package de.omnikryptec.util;
+package de.omnikryptec.util.math;
 
 import java.util.Random;
 
-public class Maths {
+public class MathUtil {
 
 	/**
 	 * Creates a viewport with a particular aspect ratio and the given width and

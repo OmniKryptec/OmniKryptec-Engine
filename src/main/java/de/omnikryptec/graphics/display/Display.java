@@ -20,7 +20,7 @@ import de.omnikryptec.libapi.glfw.LibAPIManager;
 import de.omnikryptec.libapi.glfw.Window;
 import de.omnikryptec.old.event.input.InputManager;
 import de.omnikryptec.old.graphics.OpenGL;
-import de.omnikryptec.util.Maths;
+import de.omnikryptec.util.math.MathUtil;
 
 //TODO unneccessary: just wrapping Window and doing weird stuff here, viewport stuff might be useful though
 @Deprecated
@@ -75,7 +75,7 @@ public class Display {
 	}
 
 	private final void calcViewport() {
-		viewport = Maths.calculateViewport(aspectratio, /*window.getBufferWidth(), window.getBufferHeight()*/0,0);
+		viewport = MathUtil.calculateViewport(aspectratio, /*window.getBufferWidth(), window.getBufferHeight()*/0,0);
 	}
 
 	public double getAspectRatio() {
