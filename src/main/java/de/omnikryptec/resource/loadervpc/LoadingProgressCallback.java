@@ -2,6 +2,7 @@ package de.omnikryptec.resource.loadervpc;
 
 public interface LoadingProgressCallback {
 	
-	void onProgressChange(int processed, int all);
-	
+	void onLoadingStart(int max);
+	void onProgressChange(int processed);
+	void onLoadingDone();
 }

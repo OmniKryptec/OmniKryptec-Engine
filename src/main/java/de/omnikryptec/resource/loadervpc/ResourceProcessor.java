@@ -39,17 +39,11 @@ public abstract class ResourceProcessor {
 	private List<ResourceLocation> staged;
 
 	private Processor processor;
-	
+
 	public ResourceProcessor() {
 		this.callbacks = new ArrayList<>();
 		this.staged = new ArrayList<>();
 		this.processor = new Processor();
-	}
-
-	private void notifyProgressChangeCallbacks(int processed, int all) {
-		for (LoadingProgressCallback callback : callbacks) {
-			callback.onProgressChange(processed, all);
-		}
 	}
 
 	public void addCallback(LoadingProgressCallback callback) {
@@ -71,7 +65,7 @@ public abstract class ResourceProcessor {
 	public void processStaged(float notifyProgress) {
 		processor.processStaged(notifyProgress);
 	}
-	
+
 	private class Processor {
 		private boolean notifyProgress;
 		private int size;
@@ -92,13 +86,17 @@ public abstract class ResourceProcessor {
 				for (ResourceLocation top : staged) {
 					size = countFiles(top.getLocation(), size);
 				}
-				notifyProgressChangeCallbacks(0, size);
+				for (LoadingProgressCallback callback : callbacks) {
+					callback.onLoadingStart(size);
+				}
 			}
 			for (ResourceLocation stagedFile : staged) {
 				processStagedIntern(stagedFile.getLocation());
 			}
 			if (notifyProgress) {
-				notifyProgressChangeCallbacks(size, size);
+				for (LoadingProgressCallback callback : callbacks) {
+					callback.onLoadingDone();
+				}
 			}
 		}
 
@@ -111,7 +109,9 @@ public abstract class ResourceProcessor {
 				load(false, null, file);
 				processed++;
 				if (notifyProgress && ((quotient = (processed / (float) size)) - lastquo) >= notifyfraction) {
-					notifyProgressChangeCallbacks(processed, size);
+					for (LoadingProgressCallback callback : callbacks) {
+						callback.onProgressChange(processed);
+					}
 					lastquo = quotient;
 				}
 			}
