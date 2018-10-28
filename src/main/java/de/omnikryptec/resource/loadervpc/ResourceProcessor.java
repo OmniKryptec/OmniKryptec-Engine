@@ -38,9 +38,12 @@ public abstract class ResourceProcessor {
 	private Collection<LoadingProgressCallback> callbacks;
 	private List<ResourceLocation> staged;
 
+	private Processor processor;
+	
 	public ResourceProcessor() {
 		this.callbacks = new ArrayList<>();
 		this.staged = new ArrayList<>();
+		this.processor = new Processor();
 	}
 
 	private void notifyProgressChangeCallbacks(int processed, int all) {
@@ -65,52 +68,66 @@ public abstract class ResourceProcessor {
 		staged.clear();
 	}
 
-	public void processStaged(boolean notifyProgress) {
-		int size = 0;
-		int processed = 0;
-		float quotient = 0;
-		float lastquo = 0;
-		Collections.sort(staged);
-		if (notifyProgress) {
-			for (ResourceLocation top : staged) {
-				size = countFiles(top.getLocation(), size);
+	public void processStaged(float notifyProgress) {
+		processor.processStaged(notifyProgress);
+	}
+	
+	private class Processor {
+		private boolean notifyProgress;
+		private int size;
+		private int processed;
+		private float quotient;
+		private float lastquo;
+		private float notifyfraction;
+
+		private void processStaged(float notifyfraction) {
+			this.notifyfraction = notifyfraction;
+			this.notifyProgress = notifyfraction >= 0.0f;
+			this.size = 0;
+			this.processed = 0;
+			this.quotient = 0;
+			this.lastquo = 0;
+			Collections.sort(staged);
+			if (notifyProgress) {
+				for (ResourceLocation top : staged) {
+					size = countFiles(top.getLocation(), size);
+				}
+				notifyProgressChangeCallbacks(0, size);
 			}
-			notifyProgressChangeCallbacks(0, size);
+			for (ResourceLocation stagedFile : staged) {
+				processStagedIntern(stagedFile.getLocation());
+			}
+			if (notifyProgress) {
+				notifyProgressChangeCallbacks(size, size);
+			}
 		}
-		for (ResourceLocation stagedFile : staged) {
-			if (stagedFile.getLocation().isDirectory()) {
-				for (AdvancedFile subFile : stagedFile.getLocation().listFiles()) {
-					load(false, null, subFile);
-					processed++;
-					if (notifyProgress && ((quotient = (processed / (float) size)) - lastquo) >= 1f) {
-						notifyProgressChangeCallbacks(processed, size);
-						lastquo = quotient;
-					}
+
+		private void processStagedIntern(AdvancedFile file) {
+			if (file.isDirectory()) {
+				for (AdvancedFile subFile : file.listFiles()) {
+					processStagedIntern(subFile);
 				}
 			} else {
-				load(false, null, stagedFile.getLocation());
+				load(false, null, file);
 				processed++;
-				if (notifyProgress && ((quotient = (processed / (float) size)) - lastquo) >= 1f) {
+				if (notifyProgress && ((quotient = (processed / (float) size)) - lastquo) >= notifyfraction) {
 					notifyProgressChangeCallbacks(processed, size);
 					lastquo = quotient;
 				}
 			}
 		}
-		if (notifyProgress) {
-			notifyProgressChangeCallbacks(size, size);
-		}
-	}
 
-	private int countFiles(AdvancedFile file, int old) {
-		if (file.isDirectory()) {
-			List<AdvancedFile> filesHere = file.listFiles();
-			for (AdvancedFile f : filesHere) {
-				old = countFiles(f, old);
+		private int countFiles(AdvancedFile file, int old) {
+			if (file.isDirectory()) {
+				List<AdvancedFile> filesHere = file.listFiles();
+				for (AdvancedFile f : filesHere) {
+					old = countFiles(f, old);
+				}
+			} else {
+				old++;
 			}
-		} else {
-			old++;
+			return old;
 		}
-		return old;
 	}
 
 	@Deprecated // TODO multithreaded, loader, names, etc.
