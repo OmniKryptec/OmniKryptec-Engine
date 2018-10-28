@@ -24,12 +24,26 @@ public class Test {
 		};
 		p.addCallback(new LoadingProgressCallback() {
 
+			private int max;
+			
 			@Override
-			public void onProgressChange(int processed, int all) {
-				System.out.println(processed);
-				System.out.println("/" + all);
+			public void onLoadingStart(int max) {
+				this.max = max;
 			}
+
+			@Override
+			public void onProgressChange(int processed) {
+				System.out.println(processed+"/"+max);
+			}
+
+			@Override
+			public void onLoadingDone() {				
+			}
+
+			
 		});
+		System.out.println(new File("").exists());
+		System.out.println(new AdvancedFile().exists());
 		p.stage(new AdvancedFile("src/main/java"));
 		p.processStaged(0.1f);
 	}
