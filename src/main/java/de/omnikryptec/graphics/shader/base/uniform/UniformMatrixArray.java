@@ -37,12 +37,12 @@ public class UniformMatrixArray extends Uniform {
 		}
 	}
 
-	@Override
+	/*@Override
 	protected final void storeUniformLocation(Shader programID) {
 		for (UniformMatrix uniformMatrix : uniformMatrices) {
 			uniformMatrix.storeUniformLocation(programID);
 		}
-	}
+	}*/
 
 	public final UniformMatrixArray loadMatrixArray(Matrix4f[] matrices) {
 		for (int i = 0; i < matrices.length; i++) {

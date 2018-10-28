@@ -18,9 +18,6 @@ package de.omnikryptec.graphics.shader.base.uniform;
 
 import org.lwjgl.opengl.GL20;
 
-import de.omnikryptec.old.shader.base.Shader;
-import de.omnikryptec.old.util.logger.LogLevel;
-import de.omnikryptec.old.util.logger.Logger;
 
 public abstract class Uniform {
 
@@ -39,17 +36,17 @@ public abstract class Uniform {
 		this.name = name;
 	}
 
-	protected void storeUniformLocation(Shader shader) {
-		location = GL20.glGetUniformLocation(shader.getId(), name);
-		if(location == NOT_FOUND) {
-			isfound = false;
-			if (!muted && Logger.isDebugMode()) {
-				Logger.log(shader.getName() + ": No uniform variable called " + name + " found!", LogLevel.WARNING);
-			}
-		}else {
-			isfound = true;
-		}
-	}
+//	protected void storeUniformLocation(Shader shader) {
+//		location = GL20.glGetUniformLocation(shader.getId(), name);
+//		if(location == NOT_FOUND) {
+//			isfound = false;
+//			if (!muted /*&& Logger.isDebugMode()*/) {
+//				System.out.println(shader.getName() + ": No uniform variable called " + name + " found!"/*, LogLevel.WARNING*/);
+//			}
+//		}else {
+//			isfound = true;
+//		}
+//	}
 
 	protected int getLocation() {
 		return location;
