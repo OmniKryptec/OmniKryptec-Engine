@@ -34,6 +34,7 @@ public abstract class Uniform {
 	
 	protected Uniform(String name, boolean mute) {
 		this.name = name;
+		this.muted = mute;
 	}
 
 //	protected void storeUniformLocation(Shader shader) {
