@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.test;
+package de.omnikryptec.util;
 
 import de.codemakers.base.logger.Logger;
 
