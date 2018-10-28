@@ -86,12 +86,13 @@ dependencies {
     compile group: 'org.dyn4j', name: 'dyn4j', version: '3.2.4'
     // https://mvnrepository.com/artifact/org.reflections/reflections
     compile group: 'org.reflections', name: 'reflections', version: '0.9.11'
+    compile 'com.google.guava:guava:27.0-jre'
     implementation "com.github.Panzer1119:CJP-Base:$cjpbaseVersion"
     // CUSTOM LIBS BEGIN
     //compile name: 'JavaPlus'
-    compile name: 'MathPlus'
-    compile name: 'NetworkPlus'
-    compile name: 'LanguagePlus'
+    //compile name: 'MathPlus'
+    //compile name: 'NetworkPlus'
+    //compile name: 'LanguagePlus'
     compile name: 'jbullet'
     compile name: 'noise-functions'
     // CUSTOM LIBS END
@@ -131,12 +132,13 @@ dependencies {
     extraLibs group: 'org.dyn4j', name: 'dyn4j', version: '3.2.4'
     // https://mvnrepository.com/artifact/org.reflections/reflections
     extraLibs group: 'org.reflections', name: 'reflections', version: '0.9.11'
+    extraLibs 'com.google.guava:guava:27.0-jre'
     extraLibs "com.github.Panzer1119:CJP-Base:$cjpbaseVersion"
     // CUSTOM LIBS BEGIN
     //extraLibs name: 'JavaPlus'
-    extraLibs name: 'MathPlus'
-    extraLibs name: 'NetworkPlus'
-    extraLibs name: 'LanguagePlus'
+    //extraLibs name: 'MathPlus'
+    //extraLibs name: 'NetworkPlus'
+    //extraLibs name: 'LanguagePlus'
     extraLibs name: 'jbullet'
     extraLibs name: 'noise-functions'
     // CUSTOM LIBS END
