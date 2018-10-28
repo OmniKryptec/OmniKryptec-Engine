@@ -16,80 +16,74 @@
 
 package de.omnikryptec.graphics.display;
 
-import de.omnikryptec.libapi.glfw.LibAPIManager;
-import de.omnikryptec.libapi.glfw.Window;
-import de.omnikryptec.old.event.input.InputManager;
-import de.omnikryptec.old.graphics.OpenGL;
-import de.omnikryptec.util.math.MathUtil;
-
 //TODO unneccessary: just wrapping Window and doing weird stuff here, viewport stuff might be useful though
 @Deprecated
 public class Display {
 
-	//private Window<?> window;
-	private int[] viewport = new int[4];
-	private double aspectratio = -1;
-
-	Display(Window<?> window) {
-		//this.window = window;
-		calcViewport();
-		setARViewPort();
-		// TODO Eventbased? / Input has nothing to do with the Display, move it to a
-		// different position
-		InputManager.initCallbacks();
-		//lastsynced = GLFWManager.active().getTime();
-	}
-
-	void update() {
-		//window.swapBuffers();
-		//TODO not implemented yet
-		//if (window.wasResized()) {
-			calcViewport();
-			setARViewPort();
-		//}
-	}
-
-	
-
-	public int getWidth() {
-		return viewport[2];
-	}
-
-	public int getHeight() {
-		return viewport[3];
-	}
-
-	// TODO opengl does not belong to this class
-	// *********************************************************/
-	public final void resetViewport() {
-		OpenGL.gl11viewport(0, 0, /*window.getBufferWidth(), window.getBufferHeight()*/0,0);
-	}
-
-	public final void setARViewPort() {
-		OpenGL.gl11viewport(viewport);
-	}
-	// *********************************************************/
-
-	public final void resetAspectRatio() {
-		setAspectRatio(-1);
-	}
-
-	private final void calcViewport() {
-		viewport = MathUtil.calculateViewport(aspectratio, /*window.getBufferWidth(), window.getBufferHeight()*/0,0);
-	}
-
-	public double getAspectRatio() {
-		return aspectratio;
-	}
-
-	public int[] getViewportData() {
-		return viewport;
-	}
-
-	public final void setAspectRatio(double a) {
-		aspectratio = a;
-		calcViewport();
-		setARViewPort();
-	}
+//	//private Window<?> window;
+//	private int[] viewport = new int[4];
+//	private double aspectratio = -1;
+//
+//	Display(Window<?> window) {
+//		//this.window = window;
+//		calcViewport();
+//		setARViewPort();
+//		// TODO Eventbased? / Input has nothing to do with the Display, move it to a
+//		// different position
+//		InputManager.initCallbacks();
+//		//lastsynced = GLFWManager.active().getTime();
+//	}
+//
+//	void update() {
+//		//window.swapBuffers();
+//		//TODO not implemented yet
+//		//if (window.wasResized()) {
+//			calcViewport();
+//			setARViewPort();
+//		//}
+//	}
+//
+//	
+//
+//	public int getWidth() {
+//		return viewport[2];
+//	}
+//
+//	public int getHeight() {
+//		return viewport[3];
+//	}
+//
+//	// TODO opengl does not belong to this class
+//	// *********************************************************/
+//	public final void resetViewport() {
+//		OpenGL.gl11viewport(0, 0, /*window.getBufferWidth(), window.getBufferHeight()*/0,0);
+//	}
+//
+//	public final void setARViewPort() {
+//		OpenGL.gl11viewport(viewport);
+//	}
+//	// *********************************************************/
+//
+//	public final void resetAspectRatio() {
+//		setAspectRatio(-1);
+//	}
+//
+//	private final void calcViewport() {
+//		viewport = MathUtil.calculateViewport(aspectratio, /*window.getBufferWidth(), window.getBufferHeight()*/0,0);
+//	}
+//
+//	public double getAspectRatio() {
+//		return aspectratio;
+//	}
+//
+//	public int[] getViewportData() {
+//		return viewport;
+//	}
+//
+//	public final void setAspectRatio(double a) {
+//		aspectratio = a;
+//		calcViewport();
+//		setARViewPort();
+//	}
 
 }

@@ -18,8 +18,6 @@ package de.omnikryptec.graphics.shader.base.uniform;
 
 import org.joml.Matrix4f;
 
-import de.omnikryptec.old.shader.base.Shader;
-
 /**
  * UniformMatrixArray
  *

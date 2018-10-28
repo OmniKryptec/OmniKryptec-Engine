@@ -11,8 +11,8 @@ import com.google.common.collect.Lists;
 
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
-import de.omnikryptec.old.util.Maths;
 import de.omnikryptec.util.ExecutorsUtil;
+import de.omnikryptec.util.math.Mathd;
 
 public abstract class GroupParallelComponentSystem extends ParallelComponentSystem {
 
@@ -26,7 +26,7 @@ public abstract class GroupParallelComponentSystem extends ParallelComponentSyst
 
 	@Override
 	public void updateThreaded(IECSManager entityManager, List<Entity> entities, float deltaTime) {
-		List<List<Entity>> lists = Lists.partition(entities, (int) Maths.fastCeild(entities.size() / (double) numThreads()));
+		List<List<Entity>> lists = Lists.partition(entities, (int) Mathd.ceil(entities.size() / (double) numThreads()));
 		Collection<Callable<Void>> tasks = new ArrayList<>(numThreads());
 		for (List<Entity> el : lists) {
 			tasks.add(() -> {
