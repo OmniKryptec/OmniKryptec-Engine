@@ -38,12 +38,12 @@ public class MathUtil {
         for (int i : weights) {
             sum += i;
         }
-        int rand = random.nextInt(sum - 1) + 1;
+        int rand = random.nextInt(sum) + 1;
         for (int i = 0; i < ts.length; i++) {
-            rand -= weights[i];
-            if (rand <= 0) {
+            if (rand <= weights[i]) {
                 return ts[i];
             }
+            rand -= weights[i];
         }
         return ts[0];
     }

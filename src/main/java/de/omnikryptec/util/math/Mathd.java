@@ -94,7 +94,7 @@ public strictfp class Mathd {
 		}
 		return intvalue;
 	}
-	
+
 	public static double rint(double value) {
 		if (value != value) {
 			// NaN
@@ -107,4 +107,13 @@ public strictfp class Mathd {
 		}
 		return value;
 	}
+	
+	public static long round(double value) {
+		return (long) rint(value);
+	}
+
+	public static int roundi(double value) {
+		return (int) rint(value);
+	}
+
 }

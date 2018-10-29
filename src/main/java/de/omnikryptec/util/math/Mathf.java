@@ -107,4 +107,12 @@ public strictfp class Mathf {
 		}
 		return value;
 	}
+
+	public static int round(float value) {
+		return (int) rint(value);
+	}
+
+	public static long roundl(float value) {
+		return (long) rint(value);
+	}
 }
