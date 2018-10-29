@@ -6,10 +6,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.util.ExecutorsUtil;
 
-public abstract class ResourceProcessor {
+public class ResourceProcessor {
 
 	public static class ResourceLocation implements Comparable<ResourceLocation> {
 
@@ -36,6 +39,7 @@ public abstract class ResourceProcessor {
 	}
 
 	private Collection<LoadingProgressCallback> callbacks;
+	private Collection<ResourceLoader<?>> loaders;
 	private List<ResourceLocation> staged;
 
 	private Processor processor;
@@ -43,6 +47,7 @@ public abstract class ResourceProcessor {
 	public ResourceProcessor() {
 		this.callbacks = new ArrayList<>();
 		this.staged = new ArrayList<>();
+		this.loaders = new ArrayList<>();
 		this.processor = new Processor();
 	}
 
@@ -66,6 +71,10 @@ public abstract class ResourceProcessor {
 		processor.processStaged(notifyProgress);
 	}
 
+	public void instantLoad(AdvancedFile file) {
+		processor.loadSimple(file);
+	}
+
 	private class Processor {
 		private boolean notifyProgress;
 		private int size;
@@ -73,6 +82,17 @@ public abstract class ResourceProcessor {
 		private float quotient;
 		private float lastquo;
 		private float notifyfraction;
+		private ExecutorService executorService;
+
+		private Processor() {
+		}
+
+		private void resetExecutor() {
+			if (executorService != null && !executorService.isShutdown()) {
+				ExecutorsUtil.shutdownNow(executorService);
+			}
+			executorService = ExecutorsUtil.newFixedThreadPool(ExecutorsUtil.getAvailableProcessors());
+		}
 
 		private void processStaged(float notifyfraction) {
 			this.notifyfraction = notifyfraction;
@@ -90,13 +110,34 @@ public abstract class ResourceProcessor {
 					callback.onLoadingStart(size);
 				}
 			}
+			resetExecutor();
 			for (ResourceLocation stagedFile : staged) {
 				processStagedIntern(stagedFile.getLocation());
 			}
+			ExecutorsUtil.shutdown(executorService, 1, TimeUnit.HOURS);
 			if (notifyProgress) {
 				for (LoadingProgressCallback callback : callbacks) {
 					callback.onLoadingDone();
 				}
+			}
+		}
+
+		private void loadSimple(AdvancedFile file) {
+			boolean many = countFiles(file, 0) > 1;
+			if (many) {
+				resetExecutor();
+			}
+			loadSimpleIntern(many, file);
+			ExecutorsUtil.shutdown(executorService, 1, TimeUnit.HOURS);
+		}
+
+		private void loadSimpleIntern(boolean exec, AdvancedFile file) {
+			if (file.isDirectory()) {
+				for (AdvancedFile subFile : file.listFiles()) {
+					loadSimpleIntern(exec, subFile);
+				}
+			} else {
+				load(exec, file);
 			}
 		}
 
@@ -106,7 +147,7 @@ public abstract class ResourceProcessor {
 					processStagedIntern(subFile);
 				}
 			} else {
-				load(false, null, file);
+				load(true, file);
 				processed++;
 				if (notifyProgress && ((quotient = (processed / (float) size)) - lastquo) >= notifyfraction) {
 					for (LoadingProgressCallback callback : callbacks) {
@@ -128,12 +169,22 @@ public abstract class ResourceProcessor {
 			}
 			return old;
 		}
+
+		// TODO names, etc.
+		private void load(boolean useExecutor, AdvancedFile file) {
+			Runnable r = () -> {
+				for (ResourceLoader<?> loader : loaders) {
+					if (file.getName().matches(loader.getFileNameRegex())) {
+						Resource res = loader.load(file);
+					}
+				}
+			};
+			if (useExecutor) {
+				executorService.submit(r);
+			} else {
+				r.run();
+			}
+		}
 	}
-
-	@Deprecated // TODO multithreaded, loader, names, etc.
-	public abstract void load(boolean override, String nameprefix, AdvancedFile file);
-
-	@Deprecated
-	public abstract void clear();
 
 }

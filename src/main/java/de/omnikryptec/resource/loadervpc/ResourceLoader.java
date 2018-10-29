@@ -6,4 +6,6 @@ public interface ResourceLoader<T extends Resource> {
 
 	T load(AdvancedFile file);
 	
+	String getFileNameRegex();
+	
 }
