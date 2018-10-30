@@ -46,22 +46,22 @@ public interface AdvancedModel extends ResourceObject {
      * @return String Name
      */
     @Override
-	public String getName();
-    
+    public String getName();
+
     /**
      * Deletes the Model
      * 
      * @return A reference to this AdvancedModel
      */
     public AdvancedModel delete();
-    
+
     /**
      * Copies this AdvancedModel
      * 
      * @return A copy of this AdvancedModel
      */
     public AdvancedModel copy();
-    
+
     /**
      * Returns a representation of this object in a DataMap
      * 
@@ -69,7 +69,7 @@ public interface AdvancedModel extends ResourceObject {
      * @return DataMap Data
      */
     public DataMap toDataMap(DataMap data);
-    
+
     /**
      * Loads values from a DataMap
      * 

@@ -22,36 +22,35 @@ import de.omnikryptec.old.shader.base.Shader;
 
 public abstract class PostProcessingStageShaded extends PostProcessingStage {
 
-	private Shader shader;
+    private Shader shader;
 
-	protected PostProcessingStageShaded() {
-	}
+    protected PostProcessingStageShaded() {
+    }
 
-	public PostProcessingStageShaded(Shader shader) {
-		this.shader = shader;
-	}
+    public PostProcessingStageShaded(Shader shader) {
+	this.shader = shader;
+    }
 
-	protected final void setShader(Shader shader) {
-		this.shader = shader;
-	}
-	
-	protected final Shader getShader(){
-		return shader;
-	}
-	
-	
-	@Override
-	public void render(FrameBufferObject before, List<FrameBufferObject> beforelist, int stage) {
-		shader.start();
-		bindTexture(before, beforelist, shader, stage);
-		renderQuad(true);
-		afterRendering();
-	}
+    protected final void setShader(Shader shader) {
+	this.shader = shader;
+    }
 
-	public abstract void bindTexture(FrameBufferObject before, List<FrameBufferObject> beforelist, Shader using,
-			int stage);
+    protected final Shader getShader() {
+	return shader;
+    }
 
-	public void afterRendering() {
-	}
+    @Override
+    public void render(FrameBufferObject before, List<FrameBufferObject> beforelist, int stage) {
+	shader.start();
+	bindTexture(before, beforelist, shader, stage);
+	renderQuad(true);
+	afterRendering();
+    }
+
+    public abstract void bindTexture(FrameBufferObject before, List<FrameBufferObject> beforelist, Shader using,
+	    int stage);
+
+    public void afterRendering() {
+    }
 
 }

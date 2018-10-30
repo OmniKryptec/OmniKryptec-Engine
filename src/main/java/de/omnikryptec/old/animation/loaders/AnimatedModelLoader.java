@@ -36,42 +36,48 @@ import de.omnikryptec.old.util.Instance;
 public class AnimatedModelLoader {
 
     /**
-     * Creates an AnimatedEntity from the data in an entity file. It loads up
-     * the collada model data, stores the extracted data in a VAO, sets up the
-     * joint heirarchy, and loads up the entity's texture.
+     * Creates an AnimatedEntity from the data in an entity file. It loads up the
+     * collada model data, stores the extracted data in a VAO, sets up the joint
+     * heirarchy, and loads up the entity's texture.
      *
-     * @param modelFile - the file containing the data for the entity.
+     * @param modelFile   - the file containing the data for the entity.
      * @param textureFile - the file containing the data for the entity.
      * @return The animated entity (no animation applied though)
      */
-    public static AnimatedModel loadModel(String name, AdvancedFile modelFile, AdvancedFile textureFile, Renderer renderer) {
-        AnimatedModelData entityData = ColladaLoader.loadColladaModel(name, modelFile, Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_WEIGHTS));
-        MeshData meshData = entityData.getMeshData();
-        Model model = new Model(name, meshData);
-        VertexArrayObject vao = model.getVao();
-        vao.bind();
-        vao.createIntAttribute(4, meshData.getJointIds(), 3);
-        vao.createAttribute(5, meshData.getVertexWeights(), 3);
-        Texture texture = loadTexture(name, textureFile);
-        SkeletonData skeletonData = entityData.getJointsData();
-        Joint headJoint = createJoints(skeletonData.headJoint);
-        AnimatedModel animatedModel = new AnimatedModel(modelFile.getName(), model, texture, headJoint, skeletonData.jointCount);
-        animatedModel.getMaterial().setRenderer(renderer == null ? RendererRegistration.DEF_ANIMATEDMODEL_RENDERER : renderer);
-        return animatedModel;
+    public static AnimatedModel loadModel(String name, AdvancedFile modelFile, AdvancedFile textureFile,
+	    Renderer renderer) {
+	AnimatedModelData entityData = ColladaLoader.loadColladaModel(name, modelFile,
+		Instance.getGameSettings().getInteger(GameSettings.ANIMATION_MAX_WEIGHTS));
+	MeshData meshData = entityData.getMeshData();
+	Model model = new Model(name, meshData);
+	VertexArrayObject vao = model.getVao();
+	vao.bind();
+	vao.createIntAttribute(4, meshData.getJointIds(), 3);
+	vao.createAttribute(5, meshData.getVertexWeights(), 3);
+	Texture texture = loadTexture(name, textureFile);
+	SkeletonData skeletonData = entityData.getJointsData();
+	Joint headJoint = createJoints(skeletonData.headJoint);
+	AnimatedModel animatedModel = new AnimatedModel(modelFile.getName(), model, texture, headJoint,
+		skeletonData.jointCount);
+	animatedModel.getMaterial()
+		.setRenderer(renderer == null ? RendererRegistration.DEF_ANIMATEDMODEL_RENDERER : renderer);
+	return animatedModel;
     }
 
-    public static AnimatedModel createModel(String name, AnimatedModelData entityData, Texture texture, Renderer renderer) {
-        MeshData meshData = entityData.getMeshData();
-        Model model = new Model(name, meshData);
-        VertexArrayObject vao = model.getVao();
-        vao.bind();
-        vao.createIntAttribute(4, meshData.getJointIds(), 3);
-        vao.createAttribute(5, meshData.getVertexWeights(), 3);
-        SkeletonData skeletonData = entityData.getJointsData();
-        Joint headJoint = createJoints(skeletonData.headJoint);
-        AnimatedModel animatedModel = new AnimatedModel(name, model, texture, headJoint, skeletonData.jointCount);
-        animatedModel.getMaterial().setRenderer(renderer == null ? RendererRegistration.DEF_ANIMATEDMODEL_RENDERER : renderer);
-        return animatedModel;
+    public static AnimatedModel createModel(String name, AnimatedModelData entityData, Texture texture,
+	    Renderer renderer) {
+	MeshData meshData = entityData.getMeshData();
+	Model model = new Model(name, meshData);
+	VertexArrayObject vao = model.getVao();
+	vao.bind();
+	vao.createIntAttribute(4, meshData.getJointIds(), 3);
+	vao.createAttribute(5, meshData.getVertexWeights(), 3);
+	SkeletonData skeletonData = entityData.getJointsData();
+	Joint headJoint = createJoints(skeletonData.headJoint);
+	AnimatedModel animatedModel = new AnimatedModel(name, model, texture, headJoint, skeletonData.jointCount);
+	animatedModel.getMaterial()
+		.setRenderer(renderer == null ? RendererRegistration.DEF_ANIMATEDMODEL_RENDERER : renderer);
+	return animatedModel;
     }
 
     /**
@@ -81,8 +87,9 @@ public class AnimatedModelLoader {
      * @return The diffuse texture.
      */
     private static Texture loadTexture(String name, AdvancedFile textureFile) {
-        Texture diffuseTexture = SimpleTexture.newTextureb(name, textureFile.createInputStream()).anisotropic().create();
-        return diffuseTexture;
+	Texture diffuseTexture = SimpleTexture.newTextureb(name, textureFile.createInputStream()).anisotropic()
+		.create();
+	return diffuseTexture;
     }
 
     /**
@@ -93,11 +100,11 @@ public class AnimatedModelLoader {
      * @return The created joint, with all its descendants added.
      */
     private static Joint createJoints(JointData data) {
-        Joint joint = new Joint(data.index, data.nameId, data.bindLocalTransform);
-        data.children.stream().forEach((child) -> {
-            joint.addChild(createJoints(child));
-        });
-        return joint;
+	Joint joint = new Joint(data.index, data.nameId, data.bindLocalTransform);
+	data.children.stream().forEach((child) -> {
+	    joint.addChild(createJoints(child));
+	});
+	return joint;
     }
 
 //    /**

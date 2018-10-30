@@ -18,24 +18,23 @@ package de.omnikryptec.graphics.shader.base.uniform;
 
 import org.lwjgl.opengl.GL20;
 
-
 public abstract class Uniform {
 
-	private static final int NOT_FOUND = -1;
+    private static final int NOT_FOUND = -1;
 
-	private String name;
-	private int location;
-	private boolean muted=false;
-	private boolean isfound=false;
-	
-	protected Uniform(String name) {
-		this(name, false);
-	}
-	
-	protected Uniform(String name, boolean mute) {
-		this.name = name;
-		this.muted = mute;
-	}
+    private String name;
+    private int location;
+    private boolean muted = false;
+    private boolean isfound = false;
+
+    protected Uniform(String name) {
+	this(name, false);
+    }
+
+    protected Uniform(String name, boolean mute) {
+	this.name = name;
+	this.muted = mute;
+    }
 
 //	protected void storeUniformLocation(Shader shader) {
 //		location = GL20.glGetUniformLocation(shader.getId(), name);
@@ -49,22 +48,22 @@ public abstract class Uniform {
 //		}
 //	}
 
-	protected int getLocation() {
-		return location;
-	}
+    protected int getLocation() {
+	return location;
+    }
 
-	@Override
-	public String toString() {
-		return "Name: " + name + " Location: " + location;
-	}
+    @Override
+    public String toString() {
+	return "Name: " + name + " Location: " + location;
+    }
 
-	public Uniform mute() {
-		this.muted = true;
-		return this;
-	}
-	
-	public boolean isFound() {
-		return isfound;
-	}
-	
+    public Uniform mute() {
+	this.muted = true;
+	return this;
+    }
+
+    public boolean isFound() {
+	return isfound;
+    }
+
 }

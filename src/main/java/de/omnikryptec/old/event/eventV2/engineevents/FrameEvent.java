@@ -21,19 +21,19 @@ import de.omnikryptec.old.main.OmniKryptecEngine;
 
 public class FrameEvent extends Event {
 
-	public static enum FrameType {
-		PRE, POST, STARTSCENE, ENDSCENE
-	}
+    public static enum FrameType {
+	PRE, POST, STARTSCENE, ENDSCENE
+    }
 
-	private FrameType tp;
+    private FrameType tp;
 
-	public FrameEvent(FrameType tp) {
-		super(OmniKryptecEngine.instance().ENGINE_BUS);
-		this.tp = tp;
-	}
+    public FrameEvent(FrameType tp) {
+	super(OmniKryptecEngine.instance().ENGINE_BUS);
+	this.tp = tp;
+    }
 
-	public FrameType getType() {
-		return tp;
-	}
+    public FrameType getType() {
+	return tp;
+    }
 
 }

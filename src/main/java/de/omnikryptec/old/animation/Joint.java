@@ -39,14 +39,14 @@ public class Joint {
     /**
      * Creates a Joint used for the skeleton model
      *
-     * @param index Integer Index of the Joint
-     * @param name String Name of the Joint
+     * @param index              Integer Index of the Joint
+     * @param name               String Name of the Joint
      * @param localBindTransform Matrix4f Original Local Transformation Matrix
      */
     public Joint(int index, String name, Matrix4f localBindTransform) {
-        this.index = index;
-        this.name = name;
-        this.localBindTransform = localBindTransform;
+	this.index = index;
+	this.name = name;
+	this.localBindTransform = localBindTransform;
     }
 
     /**
@@ -55,7 +55,7 @@ public class Joint {
      * @return Integer Index
      */
     public final int getIndex() {
-        return index;
+	return index;
     }
 
     /**
@@ -64,7 +64,7 @@ public class Joint {
      * @return String Name
      */
     public final String getName() {
-        return name;
+	return name;
     }
 
     /**
@@ -73,7 +73,7 @@ public class Joint {
      * @return ArrayList Joint Children
      */
     public final ArrayList<Joint> getChildren() {
-        return children;
+	return children;
     }
 
     /**
@@ -83,8 +83,8 @@ public class Joint {
      * @return A reference to this Joint
      */
     public final Joint addChild(Joint child) {
-        this.children.add(child);
-        return this;
+	this.children.add(child);
+	return this;
     }
 
     /**
@@ -93,7 +93,7 @@ public class Joint {
      * @return Matrix4f Animated Transformation Matrix
      */
     public final Matrix4f getAnimatedTransform() {
-        return animatedTransform;
+	return animatedTransform;
     }
 
     /**
@@ -103,8 +103,8 @@ public class Joint {
      * @return A reference to this Joint
      */
     public final Joint setAnimationTransform(Matrix4f animationTransform) {
-        this.animatedTransform = animationTransform;
-        return this;
+	this.animatedTransform = animationTransform;
+	return this;
     }
 
     /**
@@ -113,7 +113,7 @@ public class Joint {
      * @return Matrix4f Inverse of the Bind Transformation Matrix
      */
     public final Matrix4f getInverseBindTransform() {
-        return inverseBindTransform;
+	return inverseBindTransform;
     }
 
     /**
@@ -123,13 +123,13 @@ public class Joint {
      * @return A reference to this Joint
      */
     protected Joint calculateInverseBindTransform(Matrix4f parentBindTransform) {
-        final Matrix4f bindTransform = new Matrix4f();
-        parentBindTransform.mul(localBindTransform, bindTransform);
-        bindTransform.invert(inverseBindTransform);
-        for(Joint child : children) {
-            child.calculateInverseBindTransform(bindTransform);
-        }
-        return this;
+	final Matrix4f bindTransform = new Matrix4f();
+	parentBindTransform.mul(localBindTransform, bindTransform);
+	bindTransform.invert(inverseBindTransform);
+	for (Joint child : children) {
+	    child.calculateInverseBindTransform(bindTransform);
+	}
+	return this;
     }
 
 }

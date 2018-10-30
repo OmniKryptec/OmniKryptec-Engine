@@ -42,8 +42,8 @@ import de.omnikryptec.old.util.logger.Logger;
 public class TerrainRenderer extends Renderer {
 
     public TerrainRenderer() {
-        super(new ShaderPack(new ShaderGroup(new TerrainShader())));
-        RendererRegistration.register(this);
+	super(new ShaderPack(new ShaderGroup(new TerrainShader())));
+	RendererRegistration.register(this);
     }
 
     private List<Entity> stapel;
@@ -53,49 +53,51 @@ public class TerrainRenderer extends Renderer {
 
     // TOD- change something
     @Override
-    protected long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, Shader ownshader, FrustrumFilter filter) {
-        vertcount = 0;
-        //shader.start();
-        TerrainShader.viewMatrix.loadMatrix(s.getCamera().getViewMatrix());
-        TerrainShader.projectionMatrix.loadMatrix(s.getCamera().getProjectionMatrix());
-        for (int i = 0; i < entities.keysArray().length; i++) {
-            if (!(entities.keysArray()[i] instanceof TexturedModel)) {
-                continue;
-            }
-            model = (TexturedModel) entities.keysArray()[i];
-            model.getModel().getVao().bind(0, 1, 2);
-            // model.getTexture().bindToUnit(0);
-            if (model.getMaterial().hasTransparency()) {
-                GraphicsUtil.cullBackFaces(false);
-            }
-            stapel = entities.get(model);
-            for (int j = 0; j < stapel.size(); j++) {
-                Entity entity = stapel.get(j);
-                if (entity instanceof Terrain) {
-                    terrain = (Terrain) entity;
-                } else {
-                    Logger.log("Non-Terrain GameObject tried to be rendered as a Terrain, but it failed", LogLevel.WARNING);
-                    continue;
-                }
-                TerrainTexturePack texturePack = terrain.getTexturePack();
-                texturePack.getBackgroundTexture().bindToUnitOptimized(0);
-                texturePack.getrTexture().bindToUnitOptimized(1);
-                texturePack.getgTexture().bindToUnitOptimized(2);
-                texturePack.getbTexture().bindToUnitOptimized(3);
-                terrain.getBlendMap().bindToUnitOptimized(4);
-                if (GraphicsUtil.inRenderRange(terrain, s.getCamera()) || true) {
-                    TerrainShader.transformationMatrix.loadMatrix(terrain.getTransformation());
-                    GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(),
-                            GL11.GL_UNSIGNED_INT, 0);
-                    vertcount += model.getModel().getModelData().getVertexCount();
-                }
-            }
-            stapel = null;
-            if (model.getMaterial().hasTransparency()) {
-                GraphicsUtil.cullBackFaces(true);
-            }
-        }
-        return vertcount;
+    protected long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, Shader ownshader,
+	    FrustrumFilter filter) {
+	vertcount = 0;
+	// shader.start();
+	TerrainShader.viewMatrix.loadMatrix(s.getCamera().getViewMatrix());
+	TerrainShader.projectionMatrix.loadMatrix(s.getCamera().getProjectionMatrix());
+	for (int i = 0; i < entities.keysArray().length; i++) {
+	    if (!(entities.keysArray()[i] instanceof TexturedModel)) {
+		continue;
+	    }
+	    model = (TexturedModel) entities.keysArray()[i];
+	    model.getModel().getVao().bind(0, 1, 2);
+	    // model.getTexture().bindToUnit(0);
+	    if (model.getMaterial().hasTransparency()) {
+		GraphicsUtil.cullBackFaces(false);
+	    }
+	    stapel = entities.get(model);
+	    for (int j = 0; j < stapel.size(); j++) {
+		Entity entity = stapel.get(j);
+		if (entity instanceof Terrain) {
+		    terrain = (Terrain) entity;
+		} else {
+		    Logger.log("Non-Terrain GameObject tried to be rendered as a Terrain, but it failed",
+			    LogLevel.WARNING);
+		    continue;
+		}
+		TerrainTexturePack texturePack = terrain.getTexturePack();
+		texturePack.getBackgroundTexture().bindToUnitOptimized(0);
+		texturePack.getrTexture().bindToUnitOptimized(1);
+		texturePack.getgTexture().bindToUnitOptimized(2);
+		texturePack.getbTexture().bindToUnitOptimized(3);
+		terrain.getBlendMap().bindToUnitOptimized(4);
+		if (GraphicsUtil.inRenderRange(terrain, s.getCamera()) || true) {
+		    TerrainShader.transformationMatrix.loadMatrix(terrain.getTransformation());
+		    GL11.glDrawElements(GL11.GL_TRIANGLES, model.getModel().getVao().getIndexCount(),
+			    GL11.GL_UNSIGNED_INT, 0);
+		    vertcount += model.getModel().getModelData().getVertexCount();
+		}
+	    }
+	    stapel = null;
+	    if (model.getMaterial().hasTransparency()) {
+		GraphicsUtil.cullBackFaces(true);
+	    }
+	}
+	return vertcount;
     }
 
 }

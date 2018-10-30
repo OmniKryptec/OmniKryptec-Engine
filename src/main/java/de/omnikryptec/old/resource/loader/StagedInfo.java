@@ -29,20 +29,20 @@ public class StagedInfo {
     private final AdvancedFile file;
 
     public StagedInfo(long options, AdvancedFile file) {
-        this.options = options;
-        this.file = file;
+	this.options = options;
+	this.file = file;
     }
 
     public final long getOptions() {
-        return options;
+	return options;
     }
 
     public final AdvancedFile getFile() {
-        return file;
+	return file;
     }
 
     public final boolean isLoadingXMLInfo() {
-        return (options | ResourceLoader.LOAD_XML_INFO) == options;
+	return (options | ResourceLoader.LOAD_XML_INFO) == options;
     }
 
 }

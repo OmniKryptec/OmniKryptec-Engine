@@ -18,64 +18,64 @@ package de.omnikryptec.util.data.smooth;
 
 import de.omnikryptec.core.Updateable;
 
-public class SmoothFloat implements Updateable{
+public class SmoothFloat implements Updateable {
 
-	private float agility;
-	private float target;
-	private float actual;
+    private float agility;
+    private float target;
+    private float actual;
 
-	public SmoothFloat(float initialValue, float agility) {
-		this.target = initialValue;
-		this.actual = initialValue;
-		this.agility = agility;
-	}
+    public SmoothFloat(float initialValue, float agility) {
+	this.target = initialValue;
+	this.actual = initialValue;
+	this.agility = agility;
+    }
 
-	@Override
-	public void update(float deltaTime) {
-		actual += (target - actual) * deltaTime * agility;
-	}
-	
-	public void instantIncrease(float increase) {
-		this.actual += increase;
-		this.target = actual;
-	}
+    @Override
+    public void update(float deltaTime) {
+	actual += (target - actual) * deltaTime * agility;
+    }
 
-	public float get() {
-		return actual;
-	}
+    public void instantIncrease(float increase) {
+	this.actual += increase;
+	this.target = actual;
+    }
 
-	public float getTarget() {
-		return target;
-	}
+    public float get() {
+	return actual;
+    }
 
-	public void increaseTarget(float deltaTarget) {
-		this.target += deltaTarget;
-	}
+    public float getTarget() {
+	return target;
+    }
 
-	public void setTarget(float target) {
-		this.target = target;
-	}
-	
-	public void setValue(float f) {
-		actual = f;
-	}
-	
-	public float getAgility() {
-		return agility;
-	}
-	
-	public void setAgility(float a) {
-		this.agility = a;
-	}
-	
-	public void setValueAndTarget(float f) {
-		setTarget(f);
-		setValue(f);
-	}
-	
-	@Override
-	public String toString() {
-		return "Value: "+actual+" Target: "+target+" Agility: "+agility;
-	}
+    public void increaseTarget(float deltaTarget) {
+	this.target += deltaTarget;
+    }
+
+    public void setTarget(float target) {
+	this.target = target;
+    }
+
+    public void setValue(float f) {
+	actual = f;
+    }
+
+    public float getAgility() {
+	return agility;
+    }
+
+    public void setAgility(float a) {
+	this.agility = a;
+    }
+
+    public void setValueAndTarget(float f) {
+	setTarget(f);
+	setValue(f);
+    }
+
+    @Override
+    public String toString() {
+	return "Value: " + actual + " Target: " + target + " Agility: " + agility;
+    }
 
 }

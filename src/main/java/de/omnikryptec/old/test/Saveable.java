@@ -22,10 +22,10 @@ package de.omnikryptec.old.test;
  */
 public interface Saveable {
 
-	public Object[] toData();
+    public Object[] toData();
 
-	default public String getName() {
-		return getClass().getSimpleName();
-	}
+    default public String getName() {
+	return getClass().getSimpleName();
+    }
 
 }

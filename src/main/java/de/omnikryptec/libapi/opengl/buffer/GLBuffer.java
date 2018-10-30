@@ -9,47 +9,47 @@ import de.omnikryptec.libapi.glfw.LibAPIManager;
 
 public abstract class GLBuffer {
 
-	private static final List<GLBuffer> all = new ArrayList<>();
+    private static final List<GLBuffer> all = new ArrayList<>();
 
-	static {
-		LibAPIManager.registerResourceShutdownHooks(() -> cleanup());
+    static {
+	LibAPIManager.registerResourceShutdownHooks(() -> cleanup());
+    }
+
+    private static void cleanup() {
+	while (!all.isEmpty()) {
+	    all.get(0).deleteBuffer();
 	}
+    }
 
-	private static void cleanup() {
-		while (!all.isEmpty()) {
-			all.get(0).deleteBuffer();
-		}
-	}
+    private final int pointer;
+    private final int type;
 
-	private final int pointer;
-	private final int type;
+    public GLBuffer(int type) {
+	this.type = type;
+	this.pointer = GL15.glGenBuffers();
+	all.add(this);
+    }
 
-	public GLBuffer(int type) {
-		this.type = type;
-		this.pointer = GL15.glGenBuffers();
-		all.add(this);
-	}
+    public void deleteBuffer() {
+	GL15.glDeleteBuffers(pointer);
+	all.remove(this);
+    }
 
-	public void deleteBuffer() {
-		GL15.glDeleteBuffers(pointer);
-		all.remove(this);
-	}
+    public int bufferId() {
+	return pointer;
+    }
 
-	public int bufferId() {
-		return pointer;
-	}
+    public int bufferType() {
+	return type;
+    }
 
-	public int bufferType() {
-		return type;
-	}
+    public void bindBuffer() {
+	GL15.glBindBuffer(type, pointer);
+    }
 
-	public void bindBuffer() {
-		GL15.glBindBuffer(type, pointer);
-	}
-
-	@Deprecated
-	public void unbindBuffer() {
-		GL15.glBindBuffer(type, 0);
-	}
+    @Deprecated
+    public void unbindBuffer() {
+	GL15.glBindBuffer(type, 0);
+    }
 
 }

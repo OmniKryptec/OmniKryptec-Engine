@@ -4,8 +4,8 @@ import de.codemakers.io.file.AdvancedFile;
 
 public interface ResourceLoader<T extends Resource> {
 
-	T load(AdvancedFile file);
-	
-	String getFileNameRegex();
-	
+    T load(AdvancedFile file);
+
+    String getFileNameRegex();
+
 }

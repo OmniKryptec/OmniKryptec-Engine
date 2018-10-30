@@ -40,15 +40,15 @@ public class Logger {
     private static ExecutorService THREADPOOL = null;
 
     static {
-        initializeThreadPool();
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try {
-                THREADPOOL.shutdown();
-                THREADPOOL.awaitTermination(1, TimeUnit.MINUTES);
-            } catch (Exception ex) {
-            }
-        }));
-        Commands.initialize();
+	initializeThreadPool();
+	Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+	    try {
+		THREADPOOL.shutdown();
+		THREADPOOL.awaitTermination(1, TimeUnit.MINUTES);
+	    } catch (Exception ex) {
+	    }
+	}));
+	Commands.initialize();
     }
 
     public static LogLevel minimumLogLevel = LogLevel.FINEST;
@@ -62,150 +62,150 @@ public class Logger {
     private static boolean enabled = false;
 
     public static final void setDebugMode(boolean debugMode) {
-        Logger.debugMode = debugMode;
+	Logger.debugMode = debugMode;
     }
 
     public static final boolean isDebugMode() {
-        return debugMode;
+	return debugMode;
     }
 
     public static final boolean enableLoggerRedirection(boolean enable) {
-        if (enable && !enabled) {
-            System.setOut(NEWSYSOUT);
-            System.setErr(NEWSYSERR);
-            System.setIn(NEWSYSIN.getNewInputStream());
-            NEWSYSIN.setActive(true);
-            enabled = true;
-            return true;
-        } else if (!enable && enabled) {
-            System.setOut(OLDSYSOUT);
-            System.setErr(OLDSYSERR);
-            NEWSYSIN.setActive(false);
-            System.setIn(OLDSYSIN);
-            enabled = false;
-            return true;
-        } else {
-            return false;
-        }
+	if (enable && !enabled) {
+	    System.setOut(NEWSYSOUT);
+	    System.setErr(NEWSYSERR);
+	    System.setIn(NEWSYSIN.getNewInputStream());
+	    NEWSYSIN.setActive(true);
+	    enabled = true;
+	    return true;
+	} else if (!enable && enabled) {
+	    System.setOut(OLDSYSOUT);
+	    System.setErr(OLDSYSERR);
+	    NEWSYSIN.setActive(false);
+	    System.setIn(OLDSYSIN);
+	    enabled = false;
+	    return true;
+	} else {
+	    return false;
+	}
     }
 
     public static final Console showConsoleDirect() {
-        return showConsole(null);
+	return showConsole(null);
     }
 
     public static final Console showConsole(Component c) {
-        new Thread(() -> CONSOLE.showConsole(c)).start();
-        try {
-            Thread.sleep(1000);
-        } catch (Exception ex) {
-        }
-        return CONSOLE;
+	new Thread(() -> CONSOLE.showConsole(c)).start();
+	try {
+	    Thread.sleep(1000);
+	} catch (Exception ex) {
+	}
+	return CONSOLE;
     }
 
     public static LogEntry logErr(Object message, Exception ex) {
-        LogEntry logEntry = NEWSYSERR.getLogEntry(message, Instant.now()).setException(ex);
-        log(logEntry);
-        return logEntry;
+	LogEntry logEntry = NEWSYSERR.getLogEntry(message, Instant.now()).setException(ex);
+	log(logEntry);
+	return logEntry;
     }
 
     public static final LogEntry log(Object message) {
-        return log(message, LogLevel.INFO);
+	return log(message, LogLevel.INFO);
     }
 
     public static final LogEntry log(Object message, LogLevel logLevel) {
-        return log(message, logLevel, logLevel.isBad());
+	return log(message, logLevel, logLevel.isBad());
     }
 
     public static final LogEntry log(Object message, LogLevel logLevel, boolean error) {
-        return log(message, logLevel, error, true);
+	return log(message, logLevel, error, true);
     }
 
     public static final LogEntry log(Object message, LogLevel logLevel, boolean error, boolean newLine) {
-        Instant instant = Instant.now();
-        LogEntry logEntry = null;
-        if (error) {
-            logEntry = NEWSYSERR.getLogEntry(message, instant);
-        } else {
-            logEntry = NEWSYSOUT.getLogEntry(message, instant);
-        }
-        logEntry.setLogLevel(logLevel);
-        logEntry.setNewLine(newLine);
-        log(logEntry);
-        return logEntry;
+	Instant instant = Instant.now();
+	LogEntry logEntry = null;
+	if (error) {
+	    logEntry = NEWSYSERR.getLogEntry(message, instant);
+	} else {
+	    logEntry = NEWSYSOUT.getLogEntry(message, instant);
+	}
+	logEntry.setLogLevel(logLevel);
+	logEntry.setNewLine(newLine);
+	log(logEntry);
+	return logEntry;
     }
 
     public static final void log(LogEntry logEntry) {
-        addLogEntry(logEntry);
+	addLogEntry(logEntry);
     }
 
     private static final void addLogEntry(LogEntry logEntry) {
-        if (THREADPOOL.isShutdown() || THREADPOOL.isTerminated()) {
-            initializeThreadPool();
-        }
-        THREADPOOL.submit(() -> {
-            try {
-                SystemOutputStream stream = null;
-                if (logEntry.getLogLevel().isBad()) {
-                    stream = NEWSYSERR;
-                } else {
-                    stream = NEWSYSOUT;
-                }
-                while (blockInput) {
-                    try {
-                        Thread.sleep(1);
-                    } catch (Exception ex) {
-                    }
-                }
-                LOG.add(logEntry);
-                if (logEntry.getLogLevel() == LogLevel.COMMAND && logEntry.getLogEntry() != null) {
-                    boolean found = Command.runCommand(logEntry.getLogEntry().toString().substring(1));
-                    if (!found) {
-                        LogEntry logEntryError = NEWSYSERR.getLogEntry("Command not found!", Instant.now());
-                        logEntryError.setLogEntryFormat(LogEntryFormatter
-                                .toggleFormat(logEntryError.getLogEntryFormat(), true, false, true, true, true, true));
-                        Logger.log(logEntryError);
-                    }
-                } else {
-                    stream.log(logEntry);
-                }
-                if (CONSOLE.isVisible() && CONSOLE.isShowed()) {
-                    CONSOLE.addToConsole(logEntry, false);
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace(OLDSYSERR);
-            }
-        });
+	if (THREADPOOL.isShutdown() || THREADPOOL.isTerminated()) {
+	    initializeThreadPool();
+	}
+	THREADPOOL.submit(() -> {
+	    try {
+		SystemOutputStream stream = null;
+		if (logEntry.getLogLevel().isBad()) {
+		    stream = NEWSYSERR;
+		} else {
+		    stream = NEWSYSOUT;
+		}
+		while (blockInput) {
+		    try {
+			Thread.sleep(1);
+		    } catch (Exception ex) {
+		    }
+		}
+		LOG.add(logEntry);
+		if (logEntry.getLogLevel() == LogLevel.COMMAND && logEntry.getLogEntry() != null) {
+		    boolean found = Command.runCommand(logEntry.getLogEntry().toString().substring(1));
+		    if (!found) {
+			LogEntry logEntryError = NEWSYSERR.getLogEntry("Command not found!", Instant.now());
+			logEntryError.setLogEntryFormat(LogEntryFormatter
+				.toggleFormat(logEntryError.getLogEntryFormat(), true, false, true, true, true, true));
+			Logger.log(logEntryError);
+		    }
+		} else {
+		    stream.log(logEntry);
+		}
+		if (CONSOLE.isVisible() && CONSOLE.isShowed()) {
+		    CONSOLE.addToConsole(logEntry, false);
+		}
+	    } catch (Exception ex) {
+		ex.printStackTrace(OLDSYSERR);
+	    }
+	});
     }
 
     private static final void initializeThreadPool() {
-        THREADPOOL = Executors.newFixedThreadPool(1);
+	THREADPOOL = Executors.newFixedThreadPool(1);
     }
 
     public static final boolean isLoggerRedirectionEnabled() {
-        return enabled;
+	return enabled;
     }
 
     public static final LogLevel getMinimumLogLevel() {
-        return minimumLogLevel;
+	return minimumLogLevel;
     }
 
     public static final void setMinimumLogLevel(LogLevel minimumLogLevel) {
-        Logger.minimumLogLevel = minimumLogLevel;
+	Logger.minimumLogLevel = minimumLogLevel;
     }
 
     public static final boolean isMinimumLogLevel(LogLevel logLevel) {
-        if (logLevel == null) {
-            return false;
-        }
-        return logLevel.getLevel() <= minimumLogLevel.getLevel();
+	if (logLevel == null) {
+	    return false;
+	}
+	return logLevel.getLevel() <= minimumLogLevel.getLevel();
     }
 
     public static final void setDateTimeFormat(String dateTimeFormat) {
-        DATETIMEFORMAT = dateTimeFormat;
+	DATETIMEFORMAT = dateTimeFormat;
     }
 
     public static final void setLogEntryFormat(String logEntryFormat) {
-        LOGENTRYFORMAT = logEntryFormat;
+	LOGENTRYFORMAT = logEntryFormat;
     }
 
 }

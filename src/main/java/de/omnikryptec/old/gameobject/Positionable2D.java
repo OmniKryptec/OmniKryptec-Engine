@@ -19,6 +19,6 @@ package de.omnikryptec.old.gameobject;
 import org.joml.Vector2f;
 
 public interface Positionable2D {
-	
-	Vector2f getPosition();
+
+    Vector2f getPosition();
 }

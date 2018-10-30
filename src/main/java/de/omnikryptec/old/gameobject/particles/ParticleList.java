@@ -19,8 +19,8 @@ package de.omnikryptec.old.gameobject.particles;
 import java.util.LinkedList;
 
 public class ParticleList {
-	
-	LinkedList<Particle> list = new LinkedList<>();
-	boolean wantsUpdateLast=false;
-	boolean mt;
+
+    LinkedList<Particle> list = new LinkedList<>();
+    boolean wantsUpdateLast = false;
+    boolean mt;
 }

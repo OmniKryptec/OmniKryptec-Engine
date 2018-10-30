@@ -42,19 +42,19 @@ public class Key implements IKey {
     /**
      * Constructs a key
      *
-     * @param name String Name
-     * @param key Integer Key
+     * @param name          String Name
+     * @param key           Integer Key
      * @param isKeyboardKey Boolean If the key is a keyboard key
      */
     public Key(String name, int key, boolean isKeyboardKey) {
-        this.name = name;
-        this.key = key;
-        this.isKeyboardKey = isKeyboardKey;
+	this.name = name;
+	this.key = key;
+	this.isKeyboardKey = isKeyboardKey;
     }
 
     @Override
     public final String getName() {
-        return name;
+	return name;
     }
 
     /**
@@ -64,8 +64,8 @@ public class Key implements IKey {
      * @return Key A reference to this Key
      */
     public final Key setKey(int key) {
-        this.key = key;
-        return this;
+	this.key = key;
+	return this;
     }
 
     /**
@@ -74,7 +74,7 @@ public class Key implements IKey {
      * @return Integer Keyboard/Mouse key reference
      */
     public final int getKey() {
-        return key;
+	return key;
     }
 
     /**
@@ -84,8 +84,8 @@ public class Key implements IKey {
      * @return Key A reference to this Key
      */
     public final Key setIsKeyboardKey(boolean isKeyboardKey) {
-        this.isKeyboardKey = isKeyboardKey;
-        return this;
+	this.isKeyboardKey = isKeyboardKey;
+	return this;
     }
 
     /**
@@ -94,7 +94,7 @@ public class Key implements IKey {
      * @return <tt>true</tt> if the key is a keyboard key
      */
     public final boolean isKeyboardKey() {
-        return isKeyboardKey;
+	return isKeyboardKey;
     }
 
     /**
@@ -103,7 +103,7 @@ public class Key implements IKey {
      * @return Float Last change
      */
     public final double getLastChange() {
-        return lastChange;
+	return lastChange;
     }
 
     /**
@@ -113,53 +113,55 @@ public class Key implements IKey {
      * @return Key A reference to this Key
      */
     public final Key setLastChange(double lastChange) {
-        this.lastChange = lastChange;
-        return this;
+	this.lastChange = lastChange;
+	return this;
     }
 
     @Override
     public final boolean isPressed() {
-        if (isKeyboardKey) {
-            return InputManager.isKeyboardKeyPressed(key);
-        } else {
-            return InputManager.isMouseButtonPressed(key);
-        }
+	if (isKeyboardKey) {
+	    return InputManager.isKeyboardKeyPressed(key);
+	} else {
+	    return InputManager.isMouseButtonPressed(key);
+	}
     }
 
     @Override
     public boolean isLongPressed(double minTime, double maxTime) {
-        final double currentTime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime();
-        final double pressedTime = (currentTime - lastChange);
-        final boolean isLongPressed = isPressed() && (pressedTime >= minTime && pressedTime <= maxTime);
-        if (isLongPressed) {
-            lastChange = currentTime;
-        }
-        return isLongPressed;
+	final double currentTime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime();
+	final double pressedTime = (currentTime - lastChange);
+	final boolean isLongPressed = isPressed() && (pressedTime >= minTime && pressedTime <= maxTime);
+	if (isLongPressed) {
+	    lastChange = currentTime;
+	}
+	return isLongPressed;
     }
 
     @Override
     public final boolean equals(Object o) {
-        if (o == null) {
-            return false;
-        }
-        if (o instanceof Key) {
-            final Key key_temp = (Key) o;
-            return key_temp.name.equals(name);
-        } else {
-            return false;
-        }
+	if (o == null) {
+	    return false;
+	}
+	if (o instanceof Key) {
+	    final Key key_temp = (Key) o;
+	    return key_temp.name.equals(name);
+	} else {
+	    return false;
+	}
     }
 
     @Override
     public final String toString() {
-        return String.format("Key: \"%s\" == %d, isKeyboardKey: %b", name, key, isKeyboardKey);
+	return String.format("Key: \"%s\" == %d, isKeyboardKey: %b", name, key, isKeyboardKey);
     }
 
     @Override
     public final Element toXML() {
-        final String key_name = GLFW.glfwGetKeyName(key, 0);
-        final boolean isInt = (key_name == null || key_name.isEmpty());
-        return new Element(getClass().getSimpleName()).setAttribute("name", name).setAttribute("key", (isInt) ? ("" + key) : key_name).setAttribute("isKeyboardKey", "" + isKeyboardKey).setAttribute("isInt", "" + isInt);
+	final String key_name = GLFW.glfwGetKeyName(key, 0);
+	final boolean isInt = (key_name == null || key_name.isEmpty());
+	return new Element(getClass().getSimpleName()).setAttribute("name", name)
+		.setAttribute("key", (isInt) ? ("" + key) : key_name).setAttribute("isKeyboardKey", "" + isKeyboardKey)
+		.setAttribute("isInt", "" + isInt);
     }
 
 }

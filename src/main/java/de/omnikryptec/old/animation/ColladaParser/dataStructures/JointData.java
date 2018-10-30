@@ -37,13 +37,13 @@ public class JointData {
     public final List<JointData> children = new ArrayList<>();
 
     public JointData(int index, String nameId, Matrix4f bindLocalTransform) {
-        this.index = index;
-        this.nameId = nameId;
-        this.bindLocalTransform = bindLocalTransform;
+	this.index = index;
+	this.nameId = nameId;
+	this.bindLocalTransform = bindLocalTransform;
     }
 
     public void addChild(JointData child) {
-        children.add(child);
+	children.add(child);
     }
 
 }

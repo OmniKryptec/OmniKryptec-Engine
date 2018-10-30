@@ -18,6 +18,6 @@ package de.omnikryptec.old.gameobject.particlesV2;
 
 public interface SimulatorPerParticle {
 
-	void step(float dt, int particleIndex, ParticleSimulation simulation);
-	
+    void step(float dt, int particleIndex, ParticleSimulation simulation);
+
 }

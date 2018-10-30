@@ -15,5 +15,3 @@
  */
 
 package de.omnikryptec.old.gameobject;
-
-

@@ -49,15 +49,15 @@ import de.omnikryptec.old.util.logger.Logger;
 @Level(value = 1)
 public class AnimatedModelRenderer extends Renderer {
 
-	//TOD- das hier ist gurke
+    // TOD- das hier ist gurke
     public static final Vector3f LIGHT_DIR = new Vector3f(0.2f, -0.3f, -0.8f);
 
     /**
      * Initializes the shader program used for rendering animated models.
      */
     public AnimatedModelRenderer() {
-        super(new ShaderPack(new ShaderGroup(new AnimatedModelShader())));
-        RendererRegistration.register(this);
+	super(new ShaderPack(new ShaderGroup(new AnimatedModelShader())));
+	RendererRegistration.register(this);
     }
 
     private List<Entity> stapel;
@@ -66,32 +66,35 @@ public class AnimatedModelRenderer extends Renderer {
     private long vertcount = 0;
 
     @Override
-    protected long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, Shader ownshader, FrustrumFilter filter) {
-        vertcount = 0;
-        //TOD- in den shader verschieben bei onRenderStart odaso
-        //((AnimatedModelShader)shaderpack.getDefaultShader()).lightDirection.loadVec3(LIGHT_DIR);
-        for (AdvancedModel advancedModel : entities.keysArray()) {
-            if (advancedModel == null || !(advancedModel instanceof AnimatedModel)) {
-                if (Logger.isDebugMode()) {
-                    Logger.log("Wrong renderer for AdvancedModel set! (" + advancedModel + ")", LogLevel.WARNING);
-                }
-                continue;
-            }
-            ownshader.onModelRenderStart(advancedModel);
-            stapel = entities.get(animatedModel);
-            if (stapel != null && !stapel.isEmpty()) {
-                for (int z = 0; z < stapel.size(); z++) {
-                    entity = stapel.get(z);
-                    if (entity != null && entity.isRenderingEnabled() && GraphicsUtil.inRenderRange(entity, s.getCamera())) {
-                    	ownshader.onRenderInstance(entity);
-                        GL11.glDrawElements(GL11.GL_TRIANGLES, animatedModel.getModel().getVao().getIndexCount(), GL11.GL_UNSIGNED_INT, 0);
-                        vertcount += animatedModel.getModel().getModelData().getVertexCount();
-                    }
-                }
-            }
-            stapel = null;
-        }
-        return vertcount;
+    protected long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, Shader ownshader,
+	    FrustrumFilter filter) {
+	vertcount = 0;
+	// TOD- in den shader verschieben bei onRenderStart odaso
+	// ((AnimatedModelShader)shaderpack.getDefaultShader()).lightDirection.loadVec3(LIGHT_DIR);
+	for (AdvancedModel advancedModel : entities.keysArray()) {
+	    if (advancedModel == null || !(advancedModel instanceof AnimatedModel)) {
+		if (Logger.isDebugMode()) {
+		    Logger.log("Wrong renderer for AdvancedModel set! (" + advancedModel + ")", LogLevel.WARNING);
+		}
+		continue;
+	    }
+	    ownshader.onModelRenderStart(advancedModel);
+	    stapel = entities.get(animatedModel);
+	    if (stapel != null && !stapel.isEmpty()) {
+		for (int z = 0; z < stapel.size(); z++) {
+		    entity = stapel.get(z);
+		    if (entity != null && entity.isRenderingEnabled()
+			    && GraphicsUtil.inRenderRange(entity, s.getCamera())) {
+			ownshader.onRenderInstance(entity);
+			GL11.glDrawElements(GL11.GL_TRIANGLES, animatedModel.getModel().getVao().getIndexCount(),
+				GL11.GL_UNSIGNED_INT, 0);
+			vertcount += animatedModel.getModel().getModelData().getVertexCount();
+		    }
+		}
+	    }
+	    stapel = null;
+	}
+	return vertcount;
     }
 
 }

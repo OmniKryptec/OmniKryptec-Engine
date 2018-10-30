@@ -31,12 +31,12 @@ public class KeyFrame {
     /**
      * Creates a KeyFrame
      *
-     * @param timestamp Float Timestamp in seconds
+     * @param timestamp      Float Timestamp in seconds
      * @param jointKeyFrames HashMap String JointTransform
      */
     public KeyFrame(float timestamp, HashMap<String, JointTransform> jointKeyFrames) {
-        this.timestamp = timestamp;
-        this.pose = jointKeyFrames;
+	this.timestamp = timestamp;
+	this.pose = jointKeyFrames;
     }
 
     /**
@@ -45,7 +45,7 @@ public class KeyFrame {
      * @return Flot Timestamp in seconds
      */
     protected final float getTimestamp() {
-        return timestamp;
+	return timestamp;
     }
 
     /**
@@ -54,15 +54,15 @@ public class KeyFrame {
      * @return HashMap String JointTransform
      */
     protected final HashMap<String, JointTransform> getJointKeyFrames() {
-        return pose;
+	return pose;
     }
 
     @Override
     public int hashCode() {
-        int hash = 1;
-        hash = hash * 2 + pose.hashCode();
-        hash = (int) (hash * 3 + timestamp + 0.5);
-        return hash;
+	int hash = 1;
+	hash = hash * 2 + pose.hashCode();
+	hash = (int) (hash * 3 + timestamp + 0.5);
+	return hash;
     }
-    
+
 }

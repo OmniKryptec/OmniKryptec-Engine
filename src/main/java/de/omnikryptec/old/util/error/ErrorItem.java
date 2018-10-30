@@ -17,7 +17,7 @@
 package de.omnikryptec.old.util.error;
 
 public interface ErrorItem {
- 
-	String getError();
-	
+
+    String getError();
+
 }

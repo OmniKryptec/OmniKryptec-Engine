@@ -24,22 +24,22 @@ import de.omnikryptec.old.resource.model.Model;
 import de.omnikryptec.old.util.ModelUtil;
 
 public class PostProcessingManager {
-	
-	private Model quad = ModelUtil.generateQuad();
-	private Map<Integer, PostProcessor> extra = new HashMap<>();
-	
-	public void execute() {
-		start();
-		
-		end();
-	}
-	
-	private void start() {
-		quad.getVao().bind(0, 1);
-		GraphicsUtil.enableDepthTesting(false);
-	}
 
-	private void end() {
-		GraphicsUtil.enableDepthTesting(true);
-	}
+    private Model quad = ModelUtil.generateQuad();
+    private Map<Integer, PostProcessor> extra = new HashMap<>();
+
+    public void execute() {
+	start();
+
+	end();
+    }
+
+    private void start() {
+	quad.getVao().bind(0, 1);
+	GraphicsUtil.enableDepthTesting(false);
+    }
+
+    private void end() {
+	GraphicsUtil.enableDepthTesting(true);
+    }
 }

@@ -31,46 +31,45 @@ import de.omnikryptec.old.util.FrustrumFilter;
 import de.omnikryptec.old.util.Instance;
 import de.omnikryptec.old.util.KeyArrayHashMap;
 
+public class FloorReflectionRenderer extends Renderer {
 
-public class FloorReflectionRenderer extends Renderer{
-	
-	private RenderConfiguration config;
-	private FrameBufferObject texture;
-	private float height=0;
-	
-	public FloorReflectionRenderer(RenderConfiguration c, FrameBufferObject texture, float height) {
-		this.config = c;
-		this.texture = texture;
-		if(this.texture == null) {
-			throw new NullPointerException("FBO is null!");
-		}
-		config.setClipPlane(new Vector4f(0, 1, 0, height));
-	}
+    private RenderConfiguration config;
+    private FrameBufferObject texture;
+    private float height = 0;
 
-	public FloorReflectionRenderer registerAndAddToCurrentScene() {
-		RendererRegistration.register(this);
-		Instance.getCurrent3DScene().addIndependentRenderer(this, RendererTime.PRE);
-		return this;
+    public FloorReflectionRenderer(RenderConfiguration c, FrameBufferObject texture, float height) {
+	this.config = c;
+	this.texture = texture;
+	if (this.texture == null) {
+	    throw new NullPointerException("FBO is null!");
 	}
-	
-	@Override
-	protected long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, Shader started,
-			FrustrumFilter filter) {
-		texture.bindFrameBuffer();
-		GraphicsUtil.clear(0, 0, 0, 1);
-		s.getCamera().reflect(height);
-		s.setTmpRenderConfig(config.clone().setShaderLvl(0));
-		long l = s.publicRender();
-		s.getCamera().reflect(height);
-		texture.unbindFrameBuffer();
-		return l;
-	}
-	
-	public FrameBufferObject getTexture() {
-		return texture;
-	}
-	
-	public RenderConfiguration getRenderConfig() {
-		return config;
-	}
+	config.setClipPlane(new Vector4f(0, 1, 0, height));
+    }
+
+    public FloorReflectionRenderer registerAndAddToCurrentScene() {
+	RendererRegistration.register(this);
+	Instance.getCurrent3DScene().addIndependentRenderer(this, RendererTime.PRE);
+	return this;
+    }
+
+    @Override
+    protected long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, Shader started,
+	    FrustrumFilter filter) {
+	texture.bindFrameBuffer();
+	GraphicsUtil.clear(0, 0, 0, 1);
+	s.getCamera().reflect(height);
+	s.setTmpRenderConfig(config.clone().setShaderLvl(0));
+	long l = s.publicRender();
+	s.getCamera().reflect(height);
+	texture.unbindFrameBuffer();
+	return l;
+    }
+
+    public FrameBufferObject getTexture() {
+	return texture;
+    }
+
+    public RenderConfiguration getRenderConfig() {
+	return config;
+    }
 }

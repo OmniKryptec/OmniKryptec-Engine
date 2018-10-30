@@ -39,57 +39,57 @@ public class Sound implements ISound {
     /**
      * Creates a new Sound
      *
-     * @param name String Name of the Sound
+     * @param name     String Name of the Sound
      * @param bufferID Integer BufferID
      */
     public Sound(String name, int bufferID) {
-        this.name = name;
-        this.bufferID = bufferID;
-        this.size = AL10.alGetBufferi(bufferID, AL10.AL_SIZE);
-        this.channels = AL10.alGetBufferi(bufferID, AL10.AL_CHANNELS);
-        this.bits = AL10.alGetBufferi(bufferID, AL10.AL_BITS);
-        this.frequency = AL10.alGetBufferi(bufferID, AL10.AL_FREQUENCY);
-        calculateLength();
+	this.name = name;
+	this.bufferID = bufferID;
+	this.size = AL10.alGetBufferi(bufferID, AL10.AL_SIZE);
+	this.channels = AL10.alGetBufferi(bufferID, AL10.AL_CHANNELS);
+	this.bits = AL10.alGetBufferi(bufferID, AL10.AL_BITS);
+	this.frequency = AL10.alGetBufferi(bufferID, AL10.AL_FREQUENCY);
+	calculateLength();
     }
 
     private final float calculateLength() {
-        length = ((((float) size) * 8.0F) / (((float) channels) * ((float) bits))) / ((float) frequency);
-        return length;
+	length = ((((float) size) * 8.0F) / (((float) channels) * ((float) bits))) / ((float) frequency);
+	return length;
     }
 
     @Override
     public final String getName() {
-        return name;
+	return name;
     }
 
     @Override
     public final int getBufferID() {
-        return bufferID;
+	return bufferID;
     }
 
     @Override
     public final int getSize() {
-        return size;
+	return size;
     }
 
     @Override
     public final int getChannels() {
-        return channels;
+	return channels;
     }
 
     @Override
     public final int getBits() {
-        return bits;
+	return bits;
     }
 
     @Override
     public final int getFrequency() {
-        return frequency;
+	return frequency;
     }
 
     @Override
     public final float getLength() {
-        return length;
+	return length;
     }
 
     /**
@@ -99,25 +99,25 @@ public class Sound implements ISound {
      * @return Sound A reference to this Sound
      */
     public final Sound setFrequency(int frequency) {
-        this.frequency = frequency;
-        calculateLength();
-        return this;
+	this.frequency = frequency;
+	calculateLength();
+	return this;
     }
 
     @Override
     public final boolean delete(AudioSource source) {
-        if (bufferID == -1) {
-            return false;
-        }
-        try {
-            AL10.alDeleteBuffers(bufferID);
-            return true;
-        } catch (Exception ex) {
-            if (Logger.isDebugMode()) {
-                Logger.logErr("Error while deleting existing " + toString() + ": " + ex, ex);
-            }
-            return false;
-        }
+	if (bufferID == -1) {
+	    return false;
+	}
+	try {
+	    AL10.alDeleteBuffers(bufferID);
+	    return true;
+	} catch (Exception ex) {
+	    if (Logger.isDebugMode()) {
+		Logger.logErr("Error while deleting existing " + toString() + ": " + ex, ex);
+	    }
+	    return false;
+	}
     }
 
     /**
@@ -127,36 +127,36 @@ public class Sound implements ISound {
      * @return Sound A reference to this Sound
      */
     public final Sound loadToAudioSource(AudioSource source) {
-        AL10.alSourcei(source.getSourceID(), AL10.AL_BUFFER, bufferID);
-        return this;
+	AL10.alSourcei(source.getSourceID(), AL10.AL_BUFFER, bufferID);
+	return this;
     }
 
     @Override
     public final String toString() {
-        return String.format(
-                "Sound [bufferdID = %d, size = %d, channels = %d, bits = %d, frequency = %d, length = %.2f]", bufferID,
-                size, channels, bits, frequency, length);
+	return String.format(
+		"Sound [bufferdID = %d, size = %d, channels = %d, bits = %d, frequency = %d, length = %.2f]", bufferID,
+		size, channels, bits, frequency, length);
     }
 
     @Override
     public SoundType getType() {
-        return SoundType.NORMAL;
+	return SoundType.NORMAL;
     }
 
     @Override
     public int getOpenALFormat() {
-        return AudioUtil.audioFormatToOpenALFormat(channels, bits);
+	return AudioUtil.audioFormatToOpenALFormat(channels, bits);
     }
 
     @Override
     public boolean play(AudioSource source) {
-        loadToAudioSource(source);
-        return true;
+	loadToAudioSource(source);
+	return true;
     }
 
     @Override
     public boolean stop(AudioSource source) {
-        return false;
+	return false;
     }
 
     @Override

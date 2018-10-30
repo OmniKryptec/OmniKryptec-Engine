@@ -41,129 +41,129 @@ public class SystemInputStream {
     private boolean isActive = false;
 
     public SystemInputStream(InputStream inputStreamOriginal) {
-        this.inputStreamOriginal = inputStreamOriginal;
-        this.thread = new Thread(() -> {
-            Logger.log("Thread System-InputStream started", LogLevel.FINE);
-            try {
-                while (true) {
-                    processData((byte) inputStreamOriginal.read());
-                }
-            } catch (Exception ex) {
-                Logger.logErr("Error while reading the System-InputStream: " + ex, ex);
-            }
-            Logger.log("Thread System-InputStream stopped", LogLevel.WARNING);
-        });
-        /*
-		 * this.inputStreamNew = new InputStream() {
-		 * 
-		 * @Override public int read() throws IOException { int read =
-		 * inputStreamOriginal.read(); if(read == -1) { setActive(false); }
-		 * processData((byte) read); return read; }
-		 * 
-		 * };
-         */
-        this.inputStreamNew = new InputStream() {
+	this.inputStreamOriginal = inputStreamOriginal;
+	this.thread = new Thread(() -> {
+	    Logger.log("Thread System-InputStream started", LogLevel.FINE);
+	    try {
+		while (true) {
+		    processData((byte) inputStreamOriginal.read());
+		}
+	    } catch (Exception ex) {
+		Logger.logErr("Error while reading the System-InputStream: " + ex, ex);
+	    }
+	    Logger.log("Thread System-InputStream stopped", LogLevel.WARNING);
+	});
+	/*
+	 * this.inputStreamNew = new InputStream() {
+	 * 
+	 * @Override public int read() throws IOException { int read =
+	 * inputStreamOriginal.read(); if(read == -1) { setActive(false); }
+	 * processData((byte) read); return read; }
+	 * 
+	 * };
+	 */
+	this.inputStreamNew = new InputStream() {
 
-            @Override
-            public int read() throws IOException {
-                // synchronized(buffer) {
-                // Logger.log("Read-Try: " + buffer.size());
-                while (buffer.isEmpty()) {
-                    try {
-                        Thread.sleep(100);
-                    } catch (Exception ex) {
-                    }
-                }
-                byte temp = buffer.getFirst();
-                buffer.pop();
-                // Logger.log("Return: " + temp);
-                // Logger.log("Can Read: " + buffer.size());
-                return temp;
-                // }
-            }
+	    @Override
+	    public int read() throws IOException {
+		// synchronized(buffer) {
+		// Logger.log("Read-Try: " + buffer.size());
+		while (buffer.isEmpty()) {
+		    try {
+			Thread.sleep(100);
+		    } catch (Exception ex) {
+		    }
+		}
+		byte temp = buffer.getFirst();
+		buffer.pop();
+		// Logger.log("Return: " + temp);
+		// Logger.log("Can Read: " + buffer.size());
+		return temp;
+		// }
+	    }
 
-            @Override
-            public int available() throws IOException {
-                // synchronized(buffer) {
-                if (buffer.isEmpty()) {
-                    return 1; // -1 or 1???
-                } else {
-                    return buffer.size();
-                }
-                // }
-            }
+	    @Override
+	    public int available() throws IOException {
+		// synchronized(buffer) {
+		if (buffer.isEmpty()) {
+		    return 1; // -1 or 1???
+		} else {
+		    return buffer.size();
+		}
+		// }
+	    }
 
-            @Override
-            public void close() throws IOException {
-                throw new IllegalStateException("The SystemInputStream can not be closed");
-            }
+	    @Override
+	    public void close() throws IOException {
+		throw new IllegalStateException("The SystemInputStream can not be closed");
+	    }
 
-            @Override
-            public String toString() {
-                return "Custom SystemInputStream";
-            }
+	    @Override
+	    public String toString() {
+		return "Custom SystemInputStream";
+	    }
 
-        };
+	};
     }
 
     public InputStream getOriginalInputStream() {
-        return inputStreamOriginal;
+	return inputStreamOriginal;
     }
 
     public InputStream getNewInputStream() {
-        return inputStreamNew;
+	return inputStreamNew;
     }
 
     public SystemInputStream setActive(boolean isActive) {
-        if (!this.isActive && isActive) {
-            thread.start();
-        } else if (this.isActive && !isActive) {
-            thread.interrupt();
-            // thread.stop();
-        }
-        this.isActive = isActive;
-        return this;
+	if (!this.isActive && isActive) {
+	    thread.start();
+	} else if (this.isActive && !isActive) {
+	    thread.interrupt();
+	    // thread.stop();
+	}
+	this.isActive = isActive;
+	return this;
     }
 
     public boolean isActive() {
-        return isActive;
+	return isActive;
     }
 
     private void processData(byte data) {
-        synchronized (buffer) {
-            buffer.addLast(data);
-            if (data == NEWLINEBYTE) {
-                final byte[] dataAll = new byte[lineBuffer.size()];
-                for (int i = 0; i < dataAll.length; i++) {
-                    dataAll[i] = lineBuffer.get(i);
-                }
-                lineBuffer.clear();
-                final String temp = new String(dataAll);
-                final LogEntry logEntry = new LogEntry(temp, Instant.now(),
-                        temp.startsWith(Command.COMMANDSTART) ? LogLevel.COMMAND : LogLevel.INPUT);
-                Logger.log(logEntry);
-            } else {
-                lineBuffer.add(data);
-            }
-        }
+	synchronized (buffer) {
+	    buffer.addLast(data);
+	    if (data == NEWLINEBYTE) {
+		final byte[] dataAll = new byte[lineBuffer.size()];
+		for (int i = 0; i < dataAll.length; i++) {
+		    dataAll[i] = lineBuffer.get(i);
+		}
+		lineBuffer.clear();
+		final String temp = new String(dataAll);
+		final LogEntry logEntry = new LogEntry(temp, Instant.now(),
+			temp.startsWith(Command.COMMANDSTART) ? LogLevel.COMMAND : LogLevel.INPUT);
+		Logger.log(logEntry);
+	    } else {
+		lineBuffer.add(data);
+	    }
+	}
     }
 
     public static String nextLine() {
-        try {
-            byte[] buffer = new byte[0];
-            while (Logger.NEWSYSIN.getNewInputStream().available() > 0) {
-                byte read = (byte) Logger.NEWSYSIN.getNewInputStream().read();
-                buffer = Arrays.copyOf(buffer, buffer.length + 1);
-                buffer[buffer.length - 1] = read;
-                if (read == ((byte) 10)) {
-                    return new String(buffer);
-                }
-            }
-            return null;
-        } catch (Exception ex) {
-            Logger.logErr("Error while reading next line: " + ex, ex);
-            return null;
-        }
+	try {
+	    byte[] buffer = new byte[0];
+	    while (Logger.NEWSYSIN.getNewInputStream().available() > 0) {
+		byte read = (byte) Logger.NEWSYSIN.getNewInputStream().read();
+		buffer = Arrays.copyOf(buffer, buffer.length + 1);
+		buffer[buffer.length - 1] = read;
+		if (read == ((byte) 10)) {
+		    return new String(buffer);
+		}
+	    }
+	    return null;
+	} catch (Exception ex) {
+	    Logger.logErr("Error while reading next line: " + ex, ex);
+	    return null;
+	}
     }
 
 }

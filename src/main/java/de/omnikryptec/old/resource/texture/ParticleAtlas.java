@@ -19,41 +19,41 @@ package de.omnikryptec.old.resource.texture;
 import de.omnikryptec.old.util.EnumCollection.BlendMode;
 
 public class ParticleAtlas {
-	private int numberOfRows;
-	private BlendMode blenddmode;
-	private Texture tex;
+    private int numberOfRows;
+    private BlendMode blenddmode;
+    private Texture tex;
 
-	public ParticleAtlas(Texture t, int numberOfRows, BlendMode blenddmode) {
-		this.tex = t;
-		this.numberOfRows = numberOfRows;
-		this.blenddmode = blenddmode;
-	}
+    public ParticleAtlas(Texture t, int numberOfRows, BlendMode blenddmode) {
+	this.tex = t;
+	this.numberOfRows = numberOfRows;
+	this.blenddmode = blenddmode;
+    }
 
-	public BlendMode getBlendMode() {
-		return blenddmode;
-	}
+    public BlendMode getBlendMode() {
+	return blenddmode;
+    }
 
-	public int getNumberOfRows() {
-		return numberOfRows;
-	}
+    public int getNumberOfRows() {
+	return numberOfRows;
+    }
 
-	public ParticleAtlas setBlendMode(BlendMode b) {
-		this.blenddmode = b;
-		return this;
-	}
+    public ParticleAtlas setBlendMode(BlendMode b) {
+	this.blenddmode = b;
+	return this;
+    }
 
-	public ParticleAtlas setNumberOfRows(int i) {
-		this.numberOfRows = i;
-		return this;
-	}
+    public ParticleAtlas setNumberOfRows(int i) {
+	this.numberOfRows = i;
+	return this;
+    }
 
-	public Texture getTexture() {
-		return tex;
-	}
+    public Texture getTexture() {
+	return tex;
+    }
 
-	public ParticleAtlas setTexture(Texture t) {
-		this.tex = t;
-		return this;
-	}
+    public ParticleAtlas setTexture(Texture t) {
+	this.tex = t;
+	return this;
+    }
 
 }

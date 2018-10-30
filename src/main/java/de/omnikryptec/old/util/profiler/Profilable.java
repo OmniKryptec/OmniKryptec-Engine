@@ -17,7 +17,7 @@
 package de.omnikryptec.old.util.profiler;
 
 public interface Profilable {
-	
-	ProfileContainer[] getProfiles();
-	
+
+    ProfileContainer[] getProfiles();
+
 }

@@ -18,6 +18,4 @@ package de.omnikryptec.old.gameobject.particlesV2;
 
 public class ParticleDefinition {
 
-
-	
 }

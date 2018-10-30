@@ -42,30 +42,31 @@ public class Server extends AdvancedServerSocket implements InputListenerManager
     /**
      * AdvancedThreadFactory Processor
      */
-    private final AdvancedThreadFactory advancedThreadFactoryProcessor = new AdvancedThreadFactory("Server-" + Integer.toHexString(hashCode()) + "-Thread-%d");
+    private final AdvancedThreadFactory advancedThreadFactoryProcessor = new AdvancedThreadFactory(
+	    "Server-" + Integer.toHexString(hashCode()) + "-Thread-%d");
     /**
      * ThreadPool for processing InputEvents
      */
-    private final ExecutorService executorInputProcessor = Executors.newFixedThreadPool(1, advancedThreadFactoryProcessor);
+    private final ExecutorService executorInputProcessor = Executors.newFixedThreadPool(1,
+	    advancedThreadFactoryProcessor);
 
     /**
-     * Creates a Server from a ServerSocket with the standard Server ThreadPool
-     * size
+     * Creates a Server from a ServerSocket with the standard Server ThreadPool size
      *
      * @param serverSocket ServerSocket
      */
     public Server(ServerSocket serverSocket) {
-        super(serverSocket);
+	super(serverSocket);
     }
 
     /**
      * Creates a Server from a ServerSocket
      *
-     * @param serverSocket ServerSocket
+     * @param serverSocket   ServerSocket
      * @param threadPoolSize ThreadPool size
      */
     public Server(ServerSocket serverSocket, int threadPoolSize) {
-        super(serverSocket, threadPoolSize);
+	super(serverSocket, threadPoolSize);
     }
 
     /**
@@ -74,99 +75,101 @@ public class Server extends AdvancedServerSocket implements InputListenerManager
      * @param port Port
      */
     public Server(int port) {
-        super(port);
+	super(port);
     }
 
     /**
      * Creates a Server
      *
-     * @param port Port
+     * @param port           Port
      * @param threadPoolSize ThreadPool size
      */
     public Server(int port, int threadPoolSize) {
-        super(port, threadPoolSize);
+	super(port, threadPoolSize);
     }
 
     @Override
     public final synchronized void processInput(Object object, AdvancedSocket socket, Instant timestamp) {
-        if (object instanceof InputEvent) {
-            final InputEvent event = (InputEvent) object;
-            if (event.getInputType() != null && socket != null) {
-                switch (event.getInputType()) {
-                    case CLIENT_LOGGED_OUT:
-                        if (Logger.isDebugMode()) {
-                            Logger.log("\"" + socket + "\" logged out", LogLevel.FINER);
-                        }
-                        if (socket instanceof Client) {
-                            final Client client = (Client) socket;
-                            registeredClients.remove(client);
-                        }
-                        broadcast(event, true, getRegisteredClientsAsArray());
-                        break;
-                    case CLIENT_LOGGED_IN:
-                        if (Logger.isDebugMode()) {
-                            Logger.log("\"" + socket + "\" logged in", LogLevel.FINER);
-                        }
-                        broadcast(event, true, getRegisteredClientsAsArray());
-                        if (socket instanceof Client) {
-                            final Client client = (Client) socket;
-                            if (!registeredClients.contains(client)) {
-                                registeredClients.add(client);
-                            }
-                        }
-                        break;
-                    case BROADCAST:
-                        if (Logger.isDebugMode()) {
-                            Logger.log("\"" + socket + "\" broadcasted: " + event, LogLevel.FINER);
-                        }
-                        if (event.getData() == null || event.getData().length == 0 || event.getData()[0] == null || !(event.getData()[0] instanceof AdvancedSocket[])) {
-                            broadcast(event, true, getRegisteredClientsAsArray());
-                        } else {
-                            boolean whitelist = true;
-                            if (event.getData().length >= 2 && event.getData()[1] instanceof Boolean) {
-                                whitelist = (Boolean) event.getData()[1];
-                            }
-                            final AdvancedSocket[] sockets = (AdvancedSocket[]) event.getData()[0];
-                            broadcast(event, whitelist, sockets);
-                        }
-                        break;
-                    default:
-                        fireInputEvent(event, null /*executorInputProcessor*/);
-                        break;
-                }
-            } else {
-                fireInputEvent(event, null /*executorInputProcessor*/);
-            }
-        } else {
-            fireInputEvent(new InputEvent(timestamp, socket, InputType.RAW_MESSAGE_RECEIVED, object), null /*executorInputProcessor*/);
-        }
+	if (object instanceof InputEvent) {
+	    final InputEvent event = (InputEvent) object;
+	    if (event.getInputType() != null && socket != null) {
+		switch (event.getInputType()) {
+		case CLIENT_LOGGED_OUT:
+		    if (Logger.isDebugMode()) {
+			Logger.log("\"" + socket + "\" logged out", LogLevel.FINER);
+		    }
+		    if (socket instanceof Client) {
+			final Client client = (Client) socket;
+			registeredClients.remove(client);
+		    }
+		    broadcast(event, true, getRegisteredClientsAsArray());
+		    break;
+		case CLIENT_LOGGED_IN:
+		    if (Logger.isDebugMode()) {
+			Logger.log("\"" + socket + "\" logged in", LogLevel.FINER);
+		    }
+		    broadcast(event, true, getRegisteredClientsAsArray());
+		    if (socket instanceof Client) {
+			final Client client = (Client) socket;
+			if (!registeredClients.contains(client)) {
+			    registeredClients.add(client);
+			}
+		    }
+		    break;
+		case BROADCAST:
+		    if (Logger.isDebugMode()) {
+			Logger.log("\"" + socket + "\" broadcasted: " + event, LogLevel.FINER);
+		    }
+		    if (event.getData() == null || event.getData().length == 0 || event.getData()[0] == null
+			    || !(event.getData()[0] instanceof AdvancedSocket[])) {
+			broadcast(event, true, getRegisteredClientsAsArray());
+		    } else {
+			boolean whitelist = true;
+			if (event.getData().length >= 2 && event.getData()[1] instanceof Boolean) {
+			    whitelist = (Boolean) event.getData()[1];
+			}
+			final AdvancedSocket[] sockets = (AdvancedSocket[]) event.getData()[0];
+			broadcast(event, whitelist, sockets);
+		    }
+		    break;
+		default:
+		    fireInputEvent(event, null /* executorInputProcessor */);
+		    break;
+		}
+	    } else {
+		fireInputEvent(event, null /* executorInputProcessor */);
+	    }
+	} else {
+	    fireInputEvent(new InputEvent(timestamp, socket, InputType.RAW_MESSAGE_RECEIVED, object),
+		    null /* executorInputProcessor */);
+	}
     }
 
     @Override
     public final synchronized AdvancedSocket onConnected(Socket socket, Instant timestamp) {
-        final Client client = new Client(socket, threadPoolSize);
-        //client.addInputListener(this);
-        client.addInputListener(new InputListener() {
-            @Override
-            public void inputReceived(InputEvent event) {
-                //Logger.log("RECEIVED: " + event, LogLevel.WARNING);
-                processInput(event, event.getAdvancedSocket(), event.getTimestamp());
-            }
-        });
-        client.setFromServerSocket(true);
-        client.connect(false);
-        return client;
+	final Client client = new Client(socket, threadPoolSize);
+	// client.addInputListener(this);
+	client.addInputListener(new InputListener() {
+	    @Override
+	    public void inputReceived(InputEvent event) {
+		// Logger.log("RECEIVED: " + event, LogLevel.WARNING);
+		processInput(event, event.getAdvancedSocket(), event.getTimestamp());
+	    }
+	});
+	client.setFromServerSocket(true);
+	client.connect(false);
+	return client;
     }
 
     @Override
     public final synchronized boolean onDisconnected(AdvancedSocket socketDisconnected, Instant timestamp) {
-        if (socketDisconnected == null) {
-            return true;
-        }
-        if (socketDisconnected instanceof Client) {
-            //((Client) socketDisconnected).removeInputListener(this);
-        }
-        return true;
+	if (socketDisconnected == null) {
+	    return true;
+	}
+	if (socketDisconnected instanceof Client) {
+	    // ((Client) socketDisconnected).removeInputListener(this);
+	}
+	return true;
     }
 
     /**
@@ -175,19 +178,17 @@ public class Server extends AdvancedServerSocket implements InputListenerManager
      * @return Registered Clients
      */
     protected final AdvancedSocket[] getRegisteredClientsAsArray() {
-        return registeredClients.toArray(new AdvancedSocket[registeredClients.size()]);
+	return registeredClients.toArray(new AdvancedSocket[registeredClients.size()]);
     }
-/*
-    @Override
-    public void inputReceived(InputEvent event) {
-        //Logger.log("RECEIVED: " + event, LogLevel.WARNING);
-        processInput(event, event.getAdvancedSocket(), event.getTimestamp());
-    }
-*/
+    /*
+     * @Override public void inputReceived(InputEvent event) {
+     * //Logger.log("RECEIVED: " + event, LogLevel.WARNING); processInput(event,
+     * event.getAdvancedSocket(), event.getTimestamp()); }
+     */
 
     @Override
     public String getName() {
-        return "SERVER";
+	return "SERVER";
     }
-    
+
 }

@@ -17,8 +17,8 @@
 package de.omnikryptec.old.gameobject.particlesV2;
 
 public interface SimulatorPerSimulation {
-	
-	void step(float dt, ParticleSimulation sim);
-	
-	boolean isOpenCLSimulation();
+
+    void step(float dt, ParticleSimulation sim);
+
+    boolean isOpenCLSimulation();
 }

@@ -31,29 +31,29 @@ import de.omnikryptec.old.util.EnumCollection.DepthbufferType;
 import de.omnikryptec.old.util.FrustrumFilter;
 import de.omnikryptec.old.util.KeyArrayHashMap;
 
-public class TestRenderer extends Renderer{
+public class TestRenderer extends Renderer {
 
-	private FrameBufferObject fbo = new FrameBufferObject(1280, 720, DepthbufferType.NONE);
-	
-	public TestRenderer() {
-		super(null);
-		usesShader = false;
-	}
+    private FrameBufferObject fbo = new FrameBufferObject(1280, 720, DepthbufferType.NONE);
 
-	@Override
-	protected long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, Shader started,
-			FrustrumFilter filter) {
-		fbo.bindFrameBuffer();
-		GraphicsUtil.clear(0, 0, 0, 0);
-		s.setTmpRenderConfig(new RenderConfiguration().setRendererData(AllowedRenderer.EvElse, this));
-		s.publicRender();
-		s.setUnTmpRenderConfig();
-		fbo.unbindFrameBuffer();
-		return 0;
-	}
-	
-	public FrameBufferObject getFBO() {
-		return fbo;
-	}
-	
+    public TestRenderer() {
+	super(null);
+	usesShader = false;
+    }
+
+    @Override
+    protected long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, Shader started,
+	    FrustrumFilter filter) {
+	fbo.bindFrameBuffer();
+	GraphicsUtil.clear(0, 0, 0, 0);
+	s.setTmpRenderConfig(new RenderConfiguration().setRendererData(AllowedRenderer.EvElse, this));
+	s.publicRender();
+	s.setUnTmpRenderConfig();
+	fbo.unbindFrameBuffer();
+	return 0;
+    }
+
+    public FrameBufferObject getFBO() {
+	return fbo;
+    }
+
 }

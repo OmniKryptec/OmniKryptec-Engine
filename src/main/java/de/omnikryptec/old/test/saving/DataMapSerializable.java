@@ -23,14 +23,14 @@ package de.omnikryptec.old.test.saving;
  */
 public interface DataMapSerializable {
 
-	public String getName();
+    public String getName();
 
-	public DataMap toDataMap(DataMap data);
+    public DataMap toDataMap(DataMap data);
 
-	public Object fromDataMap(DataMap data);
+    public Object fromDataMap(DataMap data);
 
-	public static Object newInstanceFromDataMap(DataMap data) {
-		return null;
-	}
+    public static Object newInstanceFromDataMap(DataMap data) {
+	return null;
+    }
 
 }

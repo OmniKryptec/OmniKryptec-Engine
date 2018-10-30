@@ -31,103 +31,103 @@ import de.omnikryptec.util.UnsupportedOperationException;
  */
 public interface IECSManager extends Updateable {
 
-	/**
-	 * the default implementation of an {@link IECSManager}. This is the
-	 * {@link ECSManager}.<br>
-	 * Supports all operations.
-	 * 
-	 * @return new instance of the default IECSManager
-	 */
-	@Nonnull
-	public static IECSManager createDefault() {
-		return new ECSManager();
-	}
+    /**
+     * the default implementation of an {@link IECSManager}. This is the
+     * {@link ECSManager}.<br>
+     * Supports all operations.
+     * 
+     * @return new instance of the default IECSManager
+     */
+    @Nonnull
+    public static IECSManager createDefault() {
+	return new ECSManager();
+    }
 
-	/**
-	 * Adds an {@link Entity} to this {@link IECSManager}.
-	 * 
-	 * @param entity the entity to add
-	 */
-	void addEntity(@Nonnull Entity entity);
+    /**
+     * Adds an {@link Entity} to this {@link IECSManager}.
+     * 
+     * @param entity the entity to add
+     */
+    void addEntity(@Nonnull Entity entity);
 
-	/**
-	 * Removes an {@link Entity} from this {@link IECSManager}
-	 * 
-	 * @param entity the entity to remove
-	 */
-	void removeEntity(@Nonnull Entity entity);
+    /**
+     * Removes an {@link Entity} from this {@link IECSManager}
+     * 
+     * @param entity the entity to remove
+     */
+    void removeEntity(@Nonnull Entity entity);
 
-	/**
-	 * Adds a {@link ComponentSystem} to this {@link IECSManager}.
-	 * 
-	 * @param system the system to add
-	 */
-	void addSystem(@Nonnull ComponentSystem system);
+    /**
+     * Adds a {@link ComponentSystem} to this {@link IECSManager}.
+     * 
+     * @param system the system to add
+     */
+    void addSystem(@Nonnull ComponentSystem system);
 
-	/**
-	 * Removes a {@link ComponentSystem} from this {@link IECSManager}.
-	 * 
-	 * @param system the system to remove
-	 */
-	void removeSystem(@Nonnull ComponentSystem system);
+    /**
+     * Removes a {@link ComponentSystem} from this {@link IECSManager}.
+     * 
+     * @param system the system to remove
+     */
+    void removeSystem(@Nonnull ComponentSystem system);
 
-	/**
-	 * Gets all the entities matching a certain {@link Family}.
-	 * 
-	 * @param f the family required
-	 * @return a list of entities matching the requirements
-	 */
-	@Nonnull
-	List<Entity> getEntitesFor(@Nonnull BitSet f);
+    /**
+     * Gets all the entities matching a certain {@link Family}.
+     * 
+     * @param f the family required
+     * @return a list of entities matching the requirements
+     */
+    @Nonnull
+    List<Entity> getEntitesFor(@Nonnull BitSet f);
 
-	/**
-	 * All via {@link #addEntity(Entity)} added entities.
-	 * 
-	 * @return all entities added to this IECSManager
-	 */
-	@Nonnull
-	Collection<Entity> getAll();
+    /**
+     * All via {@link #addEntity(Entity)} added entities.
+     * 
+     * @return all entities added to this IECSManager
+     */
+    @Nonnull
+    Collection<Entity> getAll();
 
-	/**
-	 * Called by the entity after it's {@link Component}s changed.<br>
-	 * This method will most likely only be used internaly by the {@link Entity}.
-	 * 
-	 * @param entity the entity those Components changed
-	 * @throws UnsupportedOperationException if this operation is not supported by
-	 *                                       the implementation
-	 */
-	void onEntityComponentsChanged(@Nonnull Entity entity) throws UnsupportedOperationException;
+    /**
+     * Called by the entity after it's {@link Component}s changed.<br>
+     * This method will most likely only be used internaly by the {@link Entity}.
+     * 
+     * @param entity the entity those Components changed
+     * @throws UnsupportedOperationException if this operation is not supported by
+     *                                       the implementation
+     */
+    void onEntityComponentsChanged(@Nonnull Entity entity) throws UnsupportedOperationException;
 
-	/**
-	 * Add an {@link EntityListener} to this {@link IECSManager}.<br>
-	 * <br>
-	 * If the family is null, the listener will be registered for general entity
-	 * events.<br>
-	 * If the family is not null, the listener will be registered for entity events
-	 * of this specific family.
-	 * 
-	 * @param family   the family, or null
-	 * @param listener the entitylistener
-	 * @throws UnsupportedOperationException if this operation is not supported by
-	 *                                       the implementation
-	 */
-	void addEntityListener(@Nullable BitSet family, @Nonnull EntityListener listener)
-			throws UnsupportedOperationException;
+    /**
+     * Add an {@link EntityListener} to this {@link IECSManager}.<br>
+     * <br>
+     * If the family is null, the listener will be registered for general entity
+     * events.<br>
+     * If the family is not null, the listener will be registered for entity events
+     * of this specific family.
+     * 
+     * @param family   the family, or null
+     * @param listener the entitylistener
+     * @throws UnsupportedOperationException if this operation is not supported by
+     *                                       the implementation
+     */
+    void addEntityListener(@Nullable BitSet family, @Nonnull EntityListener listener)
+	    throws UnsupportedOperationException;
 
-	/**
-	 * Remove an {@link EntityListener} from this {@link IECSManager}.<br>
-	 * <br>
-	 * If the family is null, the listener will be removed from general entity
-	 * events.<br>
-	 * If the family is not null, the listener will be removed from entity events of
-	 * this specific family.
-	 * 
-	 * @param family   the family, or null
-	 * @param listener the entitylistener
-	 * @throws UnsupportedOperationException if this operation is not supported by
-	 *                                       the implementation
-	 */
-	void removeEntityListener(@Nullable BitSet family, @Nonnull EntityListener listener)
-			throws UnsupportedOperationException;
+    /**
+     * Remove an {@link EntityListener} from this {@link IECSManager}.<br>
+     * <br>
+     * If the family is null, the listener will be removed from general entity
+     * events.<br>
+     * If the family is not null, the listener will be removed from entity events of
+     * this specific family.
+     * 
+     * @param family   the family, or null
+     * @param listener the entitylistener
+     * @throws UnsupportedOperationException if this operation is not supported by
+     *                                       the implementation
+     */
+    void removeEntityListener(@Nullable BitSet family, @Nonnull EntityListener listener)
+	    throws UnsupportedOperationException;
 
 }

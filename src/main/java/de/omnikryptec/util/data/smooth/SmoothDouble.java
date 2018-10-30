@@ -2,65 +2,64 @@ package de.omnikryptec.util.data.smooth;
 
 import de.omnikryptec.core.Updateable;
 
-public class SmoothDouble implements Updateable{
+public class SmoothDouble implements Updateable {
 
-	private double agility;
-	private double target;
-	private double actual;
+    private double agility;
+    private double target;
+    private double actual;
 
-	public SmoothDouble(double initialValue, double agility) {
-		this.target = initialValue;
-		this.actual = initialValue;
-		this.agility = agility;
-	}
+    public SmoothDouble(double initialValue, double agility) {
+	this.target = initialValue;
+	this.actual = initialValue;
+	this.agility = agility;
+    }
 
-	@Override
-	public void update(float deltaTime) {
-		actual += (target - actual) * deltaTime * agility;
-	}
-	
-	public void instantIncrease(double increase) {
-		this.actual += increase;
-		this.target = actual;
-	}
+    @Override
+    public void update(float deltaTime) {
+	actual += (target - actual) * deltaTime * agility;
+    }
 
-	public double get() {
-		return actual;
-	}
+    public void instantIncrease(double increase) {
+	this.actual += increase;
+	this.target = actual;
+    }
 
-	public double getTarget() {
-		return target;
-	}
+    public double get() {
+	return actual;
+    }
 
-	public void increaseTarget(double deltaTarget) {
-		this.target += deltaTarget;
-	}
+    public double getTarget() {
+	return target;
+    }
 
-	public void setTarget(double target) {
-		this.target = target;
-	}
-	
-	public void setValue(double f) {
-		actual = f;
-	}
-	
-	public double getAgility() {
-		return agility;
-	}
-	
-	public void setAgility(double a) {
-		this.agility = a;
-	}
-	
-	public void setValueAndTarget(double f) {
-		setTarget(f);
-		setValue(f);
-	}
-	
-	@Override
-	public String toString() {
-		return "Value: "+actual+" Target: "+target+" Agility: "+agility;
-	}
+    public void increaseTarget(double deltaTarget) {
+	this.target += deltaTarget;
+    }
 
-	
+    public void setTarget(double target) {
+	this.target = target;
+    }
+
+    public void setValue(double f) {
+	actual = f;
+    }
+
+    public double getAgility() {
+	return agility;
+    }
+
+    public void setAgility(double a) {
+	this.agility = a;
+    }
+
+    public void setValueAndTarget(double f) {
+	setTarget(f);
+	setValue(f);
+    }
+
+    @Override
+    public String toString() {
+	return "Value: " + actual + " Target: " + target + " Agility: " + agility;
+    }
+
 }

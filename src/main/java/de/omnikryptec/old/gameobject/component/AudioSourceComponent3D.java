@@ -43,11 +43,10 @@ public class AudioSourceComponent3D extends Component<GameObject3D> {
     /**
      * Normal constructor
      *
-     * @param sources AudioSource Array Initialize this component with
-     * AudioSources
+     * @param sources AudioSource Array Initialize this component with AudioSources
      */
     public AudioSourceComponent3D(AudioSource... sources) {
-        addSources(sources);
+	addSources(sources);
     }
 
     /**
@@ -56,8 +55,8 @@ public class AudioSourceComponent3D extends Component<GameObject3D> {
      * @return AudioSource ArrayList Sources
      */
     public final ArrayList<AudioSource> getSources() {
-        blocker.waitFor();
-        return sources;
+	blocker.waitFor();
+	return sources;
     }
 
     /**
@@ -67,12 +66,12 @@ public class AudioSourceComponent3D extends Component<GameObject3D> {
      * @return AudioSource AudioSource or null
      */
     public final AudioSource getSource(String name) {
-        for (AudioSource source : sources) {
-            if (source.getSound().getName().equals(name)) {
-                return source;
-            }
-        }
-        return null;
+	for (AudioSource source : sources) {
+	    if (source.getSound().getName().equals(name)) {
+		return source;
+	    }
+	}
+	return null;
     }
 
     /**
@@ -82,16 +81,16 @@ public class AudioSourceComponent3D extends Component<GameObject3D> {
      * @return AudioSourceComponent A reference to this AudioSourceComponent
      */
     public final AudioSourceComponent3D addSources(AudioSource... sources) {
-        if (sources == null || sources.length == 0) {
-            return this;
-        }
-        blocker.waitFor();
-        blocker.setBlocked(true);
-        for (AudioSource source : sources) {
-            this.sources.add(source);
-        }
-        blocker.setBlocked(false);
-        return this;
+	if (sources == null || sources.length == 0) {
+	    return this;
+	}
+	blocker.waitFor();
+	blocker.setBlocked(true);
+	for (AudioSource source : sources) {
+	    this.sources.add(source);
+	}
+	blocker.setBlocked(false);
+	return this;
     }
 
     /**
@@ -101,30 +100,30 @@ public class AudioSourceComponent3D extends Component<GameObject3D> {
      * @return AudioSourceComponent A reference to this AudioSourceComponent
      */
     public final AudioSourceComponent3D removeSources(AudioSource... sources) {
-        return removeSources(false, sources);
+	return removeSources(false, sources);
     }
 
     /**
      * Removes and deletes AudioSources
      *
-     * @param delete Boolean <tt>true</tt> if the AudioSources should be deleted
+     * @param delete  Boolean <tt>true</tt> if the AudioSources should be deleted
      * @param sources AudioSource Array AudioSources
      * @return AudioSourceComponent A reference to this AudioSourceComponent
      */
     public final AudioSourceComponent3D removeSources(boolean delete, AudioSource... sources) {
-        if (sources == null || sources.length == 0 || this.sources.isEmpty()) {
-            return this;
-        }
-        blocker.waitFor();
-        blocker.setBlocked(true);
-        for (AudioSource source : sources) {
-            this.sources.remove(source);
-            if (delete) {
-                source.delete();
-            }
-        }
-        blocker.setBlocked(false);
-        return this;
+	if (sources == null || sources.length == 0 || this.sources.isEmpty()) {
+	    return this;
+	}
+	blocker.waitFor();
+	blocker.setBlocked(true);
+	for (AudioSource source : sources) {
+	    this.sources.remove(source);
+	    if (delete) {
+		source.delete();
+	    }
+	}
+	blocker.setBlocked(false);
+	return this;
     }
 
     /**
@@ -133,11 +132,11 @@ public class AudioSourceComponent3D extends Component<GameObject3D> {
      * @return AudioSourceComponent A reference to this AudioSourceComponent
      */
     public final AudioSourceComponent3D deleteAllSources() {
-        for (AudioSource source : sources) {
-            source.delete();
-        }
-        sources.clear();
-        return this;
+	for (AudioSource source : sources) {
+	    source.delete();
+	}
+	sources.clear();
+	return this;
     }
 
     private float newDeltaPitch;
@@ -150,58 +149,57 @@ public class AudioSourceComponent3D extends Component<GameObject3D> {
 
     ;
 
-	@Override
+    @Override
     public final void execute(GameObject3D instance) {
-        blocker.waitFor();
-        blocker.setBlocked(true);
-        isUsingPhysics = false;
-        chunk = instance.getRenderChunk();
-        scene = null;
-        physicsComponent = null;
-        if (chunk != null) {
-            scene = chunk.getScene();
-            if (scene != null) {
-                if (scene.isUsingPhysics()) {
-                    physicsComponent = instance.getComponent(PhysicsComponent3D.class);
-                    isUsingPhysics = ((physicsComponent != null) && (physicsComponent.getBody() != null));
-                }
-            }
-        }
-        position = instance.getTransform().getPosition(true);
-        velocity.set(0, 0, 0);
-        if (isUsingPhysics) {
-            physicsComponent.getBody().getAngularVelocity(velocity);
-        }
-        rotation = instance.getTransform().getRotation(true).getEulerAnglesXYZ(new Vector3f());
-        for(AudioSource source : sources) {
-            source.setPosition(position);
-            source.setVelocity(velocity);
-            source.setOrientation(rotation);
-        }
-        if (scene != null && scene.isUsingPhysics()) {
-            paused = scene.getPhysicsWorld().isSimulationPaused();
-            newDeltaPitch = scene.getPhysicsWorld().getSimulationSpeed() - 1.0F;
-            for(AudioSource source : sources) {
-                if (source.isAffectedByPhysics()) {
-                    if (paused && source.isPlaying()) {
-                        source.pauseTemporarily();// FIXME StreamedSound stops
-                        // forever
-                    } else if (!paused && !source.isPlaying()) {
-                        source.continuePlayingTemporarily();
-                    }
-                    source.setDeltaPitch(newDeltaPitch);
-                }
-                source.updateState(OmniKryptecEngine.instance().getDeltaTimef());
-            }
-        }
-        blocker.setBlocked(false);
+	blocker.waitFor();
+	blocker.setBlocked(true);
+	isUsingPhysics = false;
+	chunk = instance.getRenderChunk();
+	scene = null;
+	physicsComponent = null;
+	if (chunk != null) {
+	    scene = chunk.getScene();
+	    if (scene != null) {
+		if (scene.isUsingPhysics()) {
+		    physicsComponent = instance.getComponent(PhysicsComponent3D.class);
+		    isUsingPhysics = ((physicsComponent != null) && (physicsComponent.getBody() != null));
+		}
+	    }
+	}
+	position = instance.getTransform().getPosition(true);
+	velocity.set(0, 0, 0);
+	if (isUsingPhysics) {
+	    physicsComponent.getBody().getAngularVelocity(velocity);
+	}
+	rotation = instance.getTransform().getRotation(true).getEulerAnglesXYZ(new Vector3f());
+	for (AudioSource source : sources) {
+	    source.setPosition(position);
+	    source.setVelocity(velocity);
+	    source.setOrientation(rotation);
+	}
+	if (scene != null && scene.isUsingPhysics()) {
+	    paused = scene.getPhysicsWorld().isSimulationPaused();
+	    newDeltaPitch = scene.getPhysicsWorld().getSimulationSpeed() - 1.0F;
+	    for (AudioSource source : sources) {
+		if (source.isAffectedByPhysics()) {
+		    if (paused && source.isPlaying()) {
+			source.pauseTemporarily();// FIXME StreamedSound stops
+			// forever
+		    } else if (!paused && !source.isPlaying()) {
+			source.continuePlayingTemporarily();
+		    }
+		    source.setDeltaPitch(newDeltaPitch);
+		}
+		source.updateState(OmniKryptecEngine.instance().getDeltaTimef());
+	    }
+	}
+	blocker.setBlocked(false);
     }
 
     @Override
     public final void onDelete(GameObject3D instance) {
-        blocker.waitFor();
-        deleteAllSources();
+	blocker.waitFor();
+	deleteAllSources();
     }
-
 
 }

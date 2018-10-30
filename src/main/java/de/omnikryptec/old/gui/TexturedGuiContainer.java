@@ -20,73 +20,73 @@ import de.omnikryptec.old.graphics.SpriteBatch;
 import de.omnikryptec.old.resource.texture.Texture;
 import de.omnikryptec.util.data.Color;
 
-public class TexturedGuiContainer extends GuiContainer{
-	
-	private Color color = new Color();
-	private Texture texture;
-	private float x,y,w,h;
-	
-	public TexturedGuiContainer(Texture t, float x, float y, float w, float h) {
-		this.texture = t;
-		this.x = x;
-		this.y = y;
-		this.w = w;
-		this.h = h;
-	}
-		
-	public TexturedGuiContainer setX(float x) {
-		this.x = x;
-		return this;
-	}
-	
-	public TexturedGuiContainer setY(float y) {
-		this.y = y;
-		return this;
-	}
-	
-	public TexturedGuiContainer setW(float w) {
-		this.w = w;
-		return this;
-	}
-	
-	public TexturedGuiContainer setH(float h) {
-		this.h = h;
-		return this;
-	}
-	
-	public TexturedGuiContainer setTexture(Texture t) {
-		this.texture = t;
-		return this;
-	}
-	
-	public Texture getTexture() {
-		return texture;
-	}
+public class TexturedGuiContainer extends GuiContainer {
 
-	public float getX() {
-		return x;
-	}
+    private Color color = new Color();
+    private Texture texture;
+    private float x, y, w, h;
 
-	public float getY() {
-		return y;
-	}
+    public TexturedGuiContainer(Texture t, float x, float y, float w, float h) {
+	this.texture = t;
+	this.x = x;
+	this.y = y;
+	this.w = w;
+	this.h = h;
+    }
 
-	public float getW() {
-		return w;
-	}
+    public TexturedGuiContainer setX(float x) {
+	this.x = x;
+	return this;
+    }
 
-	public float getH() {
-		return h;
-	}
-	
-	public Color getColor() {
-		return color;
-	}
-	
-	@Override
-	public void draw(SpriteBatch batch) {
-		batch.color().setFrom(color);
-		batch.draw(texture, x, y, w, h);
-	}
-	
+    public TexturedGuiContainer setY(float y) {
+	this.y = y;
+	return this;
+    }
+
+    public TexturedGuiContainer setW(float w) {
+	this.w = w;
+	return this;
+    }
+
+    public TexturedGuiContainer setH(float h) {
+	this.h = h;
+	return this;
+    }
+
+    public TexturedGuiContainer setTexture(Texture t) {
+	this.texture = t;
+	return this;
+    }
+
+    public Texture getTexture() {
+	return texture;
+    }
+
+    public float getX() {
+	return x;
+    }
+
+    public float getY() {
+	return y;
+    }
+
+    public float getW() {
+	return w;
+    }
+
+    public float getH() {
+	return h;
+    }
+
+    public Color getColor() {
+	return color;
+    }
+
+    @Override
+    public void draw(SpriteBatch batch) {
+	batch.color().setFrom(color);
+	batch.draw(texture, x, y, w, h);
+    }
+
 }

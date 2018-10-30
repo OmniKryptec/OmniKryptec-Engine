@@ -22,7 +22,5 @@ package de.omnikryptec.old.resource.loader;
  * @author Panzer1119
  */
 public enum LoadingType {
-    NOT,
-    NORMAL,
-    OPENGL;
+    NOT, NORMAL, OPENGL;
 }

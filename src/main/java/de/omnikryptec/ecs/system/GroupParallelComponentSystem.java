@@ -16,31 +16,31 @@ import de.omnikryptec.util.math.Mathd;
 
 public abstract class GroupParallelComponentSystem extends ParallelComponentSystem {
 
-	public GroupParallelComponentSystem(BitSet required) {
-		this(required, ExecutorsUtil.getAvailableProcessors(), ExecutorsUtil.getAvailableProcessors()*3);
-	}
-	
-	public GroupParallelComponentSystem(BitSet required, int threads, int activationSize) {
-		super(required, threads, activationSize);
-	}
+    public GroupParallelComponentSystem(BitSet required) {
+	this(required, ExecutorsUtil.getAvailableProcessors(), ExecutorsUtil.getAvailableProcessors() * 3);
+    }
 
-	@Override
-	public void updateThreaded(IECSManager entityManager, List<Entity> entities, float deltaTime) {
-		List<List<Entity>> lists = Lists.partition(entities, (int) Mathd.ceil(entities.size() / (double) numThreads()));
-		Collection<Callable<Void>> tasks = new ArrayList<>(numThreads());
-		for (List<Entity> el : lists) {
-			tasks.add(() -> {
-				for (Entity e : el) {
-					updateIndividual(entityManager, e, deltaTime);
-				}
-				return null;
-			});
+    public GroupParallelComponentSystem(BitSet required, int threads, int activationSize) {
+	super(required, threads, activationSize);
+    }
+
+    @Override
+    public void updateThreaded(IECSManager entityManager, List<Entity> entities, float deltaTime) {
+	List<List<Entity>> lists = Lists.partition(entities, (int) Mathd.ceil(entities.size() / (double) numThreads()));
+	Collection<Callable<Void>> tasks = new ArrayList<>(numThreads());
+	for (List<Entity> el : lists) {
+	    tasks.add(() -> {
+		for (Entity e : el) {
+		    updateIndividual(entityManager, e, deltaTime);
 		}
-		try {
-			getExecutor().invokeAll(tasks, 1, TimeUnit.MINUTES);
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
+		return null;
+	    });
 	}
+	try {
+	    getExecutor().invokeAll(tasks, 1, TimeUnit.MINUTES);
+	} catch (InterruptedException e) {
+	    throw new RuntimeException(e);
+	}
+    }
 
 }

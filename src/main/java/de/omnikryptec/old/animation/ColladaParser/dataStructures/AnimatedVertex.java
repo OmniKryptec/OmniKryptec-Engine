@@ -25,12 +25,12 @@ public class AnimatedVertex extends Vertex {
     private final VertexSkinData weightsData;
 
     public AnimatedVertex(int index, Vector3f position, VertexSkinData weightsData) {
-        super(index, position);
-        this.weightsData = weightsData;
+	super(index, position);
+	this.weightsData = weightsData;
     }
 
     public VertexSkinData getWeightsData() {
-        return weightsData;
+	return weightsData;
     }
 
 }

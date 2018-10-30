@@ -35,144 +35,141 @@ import de.omnikryptec.old.util.logger.Logger;
 
 public abstract class AbstractScene3D extends AbstractScene<GameObject3D> implements DataMapSerializable {
 
+    public static final AbstractScene3D byName(String name) {
+	if (OmniKryptecEngine.instance() != null) {
+	    for (AbstractScene3D scene : OmniKryptecEngine.instance().getScenes3D()) {
+		if (scene.getName() == null ? name == null : scene.getName().equals(name)) {
+		    return scene;
+		}
+	    }
+	    return null;
+	} else {
+	    return null;
+	}
+    }
 
+    private LinkedList<Renderer> prerender = new LinkedList<>();
+    private LinkedList<Renderer> postrender = new LinkedList<>();
+    private RenderConfiguration renderConfig = new RenderConfiguration();
+    private RenderConfiguration backup;
 
-	public static final AbstractScene3D byName(String name) {
-		if (OmniKryptecEngine.instance() != null) {
-			for (AbstractScene3D scene : OmniKryptecEngine.instance().getScenes3D()) {
-				if (scene.getName() == null ? name == null : scene.getName().equals(name)) {
-					return scene;
-				}
-			}
-			return null;
-		} else {
-			return null;
-		}
-	}
+    protected AbstractScene3D(String name, Camera cam) {
+	this.name = name;
+	this.camera = cam;
+    }
 
-	
-	private LinkedList<Renderer> prerender = new LinkedList<>();
-	private LinkedList<Renderer> postrender = new LinkedList<>();
-	private RenderConfiguration renderConfig = new RenderConfiguration();
-	private RenderConfiguration backup;
-	
-	protected AbstractScene3D(String name, Camera cam) {
-		this.name = name;
-		this.camera = cam;
+    @Override
+    public final void addGameObject(GameObject3D go) {
+	super.addGameObject(go);
+	if (go.hasChilds()) {
+	    for (GameObject3D g : go.getChilds()) {
+		addGameObject(g);
+	    }
 	}
-	
-	@Override
-	public final void addGameObject(GameObject3D go) {
-		super.addGameObject(go);
-		if(go.hasChilds()){
-			for(GameObject3D g : go.getChilds()){
-				addGameObject(g);
-			}
-		}
-	}
-	
-	@Override
-	public final GameObject3D removeGameObject(GameObject3D go, boolean delete) {
-		super.removeGameObject(go, delete);
-		if(go.hasChilds()){
-			for(GameObject3D g : go.getChilds()){
-				removeGameObject(g, delete);
-			}
-		}
-		return go;
-	}
-	
-	protected void preRender() {
-		ParticleMaster.resetTimes();
-		if(renderConfig.isRendererTimeAllowed(RendererTime.PRE)) {
-			for (Renderer r : prerender) {
-				if (renderConfig.getRenderer().contains(r)) {
-					r.render(this, null, renderConfig);
-					setUnTmpRenderConfig();
-				}
-			}
-		}
-	}
-	
-	protected void postRender() {
-		if(renderConfig.isRendererTimeAllowed(RendererTime.POST)) {
-			for (Renderer r : postrender) {
-				if (renderConfig.getRenderer().contains(r)) {
-					r.render(this, null, renderConfig);
-					setUnTmpRenderConfig();
-				}
-			}
-		}
-	}
-	
-	public final RenderConfiguration getRenderConfig() {
-		return renderConfig;
-	}
-	
-	public final AbstractScene3D setRenderConfig(RenderConfiguration config) {
-		this.renderConfig = config;
-		return this;
-	}
-	
-	public final AbstractScene3D setTmpRenderConfig(RenderConfiguration config) {
-		if(config != null) {
-			this.backup = this.renderConfig;
-			this.renderConfig = config;
-		}
-		return this;
-	}
-	
-	//Direkt nach postrender machen?
-	public final AbstractScene3D setUnTmpRenderConfig() {
-		if(backup!=null) {
-			this.renderConfig = backup;
-			this.backup = null;
-		}
-		return this;
-	}
-	
-	public final void publicParticlesRender() {
-		if(camera != null) {
-			ParticleMaster.instance().render(camera);
-		}
-	}
-	
-	public final void publicParticlesLogic() {
-		if (camera != null) {
-			ParticleMaster.instance().logic(camera);
-		}
-	}
-	
-	public final AbstractScene3D addIndependentRenderer(Renderer r, RendererTime t) {
-		if(r == null) {
-			if(Logger.isDebugMode()) {
-				Logger.log("Renderer is null!", LogLevel.WARNING);
-			}
-			return this;
-		}
-		RendererRegistration.exceptionIfNotRegistered(r);
-		if (t == RendererTime.PRE) {
-			prerender.add(r);
-		}
-		if(t == RendererTime.POST) {
-			postrender.add(r);
-		}
-		return this;
-	}
+    }
 
-	public final AbstractScene3D removeIndependentRenderer(Renderer r, RendererTime t) {
-		if (r != null && t == RendererTime.PRE) {
-			prerender.remove(r);
-		}
-		if(r != null && t == RendererTime.POST) {
-			postrender.remove(r);
-		}
-		return this;
+    @Override
+    public final GameObject3D removeGameObject(GameObject3D go, boolean delete) {
+	super.removeGameObject(go, delete);
+	if (go.hasChilds()) {
+	    for (GameObject3D g : go.getChilds()) {
+		removeGameObject(g, delete);
+	    }
 	}
+	return go;
+    }
 
-	public final AbstractScene3D useDefaultPhysics() {
-		return (AbstractScene3D)setPhysicsWorld(new JBulletPhysicsWorld(PhysicsUtil.createDefaultDynamicsWorld()));
+    protected void preRender() {
+	ParticleMaster.resetTimes();
+	if (renderConfig.isRendererTimeAllowed(RendererTime.PRE)) {
+	    for (Renderer r : prerender) {
+		if (renderConfig.getRenderer().contains(r)) {
+		    r.render(this, null, renderConfig);
+		    setUnTmpRenderConfig();
+		}
+	    }
 	}
+    }
 
-	public abstract List<Light3D> getLights();
+    protected void postRender() {
+	if (renderConfig.isRendererTimeAllowed(RendererTime.POST)) {
+	    for (Renderer r : postrender) {
+		if (renderConfig.getRenderer().contains(r)) {
+		    r.render(this, null, renderConfig);
+		    setUnTmpRenderConfig();
+		}
+	    }
+	}
+    }
+
+    public final RenderConfiguration getRenderConfig() {
+	return renderConfig;
+    }
+
+    public final AbstractScene3D setRenderConfig(RenderConfiguration config) {
+	this.renderConfig = config;
+	return this;
+    }
+
+    public final AbstractScene3D setTmpRenderConfig(RenderConfiguration config) {
+	if (config != null) {
+	    this.backup = this.renderConfig;
+	    this.renderConfig = config;
+	}
+	return this;
+    }
+
+    // Direkt nach postrender machen?
+    public final AbstractScene3D setUnTmpRenderConfig() {
+	if (backup != null) {
+	    this.renderConfig = backup;
+	    this.backup = null;
+	}
+	return this;
+    }
+
+    public final void publicParticlesRender() {
+	if (camera != null) {
+	    ParticleMaster.instance().render(camera);
+	}
+    }
+
+    public final void publicParticlesLogic() {
+	if (camera != null) {
+	    ParticleMaster.instance().logic(camera);
+	}
+    }
+
+    public final AbstractScene3D addIndependentRenderer(Renderer r, RendererTime t) {
+	if (r == null) {
+	    if (Logger.isDebugMode()) {
+		Logger.log("Renderer is null!", LogLevel.WARNING);
+	    }
+	    return this;
+	}
+	RendererRegistration.exceptionIfNotRegistered(r);
+	if (t == RendererTime.PRE) {
+	    prerender.add(r);
+	}
+	if (t == RendererTime.POST) {
+	    postrender.add(r);
+	}
+	return this;
+    }
+
+    public final AbstractScene3D removeIndependentRenderer(Renderer r, RendererTime t) {
+	if (r != null && t == RendererTime.PRE) {
+	    prerender.remove(r);
+	}
+	if (r != null && t == RendererTime.POST) {
+	    postrender.remove(r);
+	}
+	return this;
+    }
+
+    public final AbstractScene3D useDefaultPhysics() {
+	return (AbstractScene3D) setPhysicsWorld(new JBulletPhysicsWorld(PhysicsUtil.createDefaultDynamicsWorld()));
+    }
+
+    public abstract List<Light3D> getLights();
 }

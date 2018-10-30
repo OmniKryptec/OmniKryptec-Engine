@@ -27,23 +27,25 @@ import de.codemakers.io.file.AdvancedFile;
  */
 public interface Loader {
 
-    public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader);
+    public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
+	    ResourceLoader resourceLoader);
 
-    public LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader);
+    public LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
+	    ResourceLoader resourceLoader);
 
     default String generateName(AdvancedFile advancedFile, AdvancedFile superFile) {
-        String path = advancedFile.getPath();
-        if (superFile.isDirectory() /*&& !superFile.isIntern()*/) {
-            path = path.replace(superFile.getPath(), "");
-        }
-        String s = path.replace(AdvancedFile.PATH_SEPARATOR, ":");
-        if (s.startsWith(":")) {
-            s = s.substring(1, s.length());
-        }
-        if (s.endsWith(":")) {
-            s = s.substring(0, s.length() - 1);
-        }
-        return s;
+	String path = advancedFile.getPath();
+	if (superFile.isDirectory() /* && !superFile.isIntern() */) {
+	    path = path.replace(superFile.getPath(), "");
+	}
+	String s = path.replace(AdvancedFile.PATH_SEPARATOR, ":");
+	if (s.startsWith(":")) {
+	    s = s.substring(1, s.length());
+	}
+	if (s.endsWith(":")) {
+	    s = s.substring(0, s.length() - 1);
+	}
+	return s;
     }
 
 }

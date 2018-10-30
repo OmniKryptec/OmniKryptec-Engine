@@ -41,48 +41,49 @@ public class SkeletonLoader {
     private int jointCount = 0;
 
     public SkeletonLoader(Element visualSceneNode, List<String> boneOrder) {
-        this.armatureData = XMLUtil.getChildWithAttribute(XMLUtil.getChild(visualSceneNode, "visual_scene"), "node", "id", "Armature");
-        this.boneOrder = boneOrder;
+	this.armatureData = XMLUtil.getChildWithAttribute(XMLUtil.getChild(visualSceneNode, "visual_scene"), "node",
+		"id", "Armature");
+	this.boneOrder = boneOrder;
     }
 
     public final SkeletonData extractBoneData() {
-        final Element headNode = XMLUtil.getChild(armatureData, "node");
-        final JointData headJoint = loadJointData(headNode, true);
-        return new SkeletonData(jointCount, headJoint);
+	final Element headNode = XMLUtil.getChild(armatureData, "node");
+	final JointData headJoint = loadJointData(headNode, true);
+	return new SkeletonData(jointCount, headJoint);
     }
 
     private JointData loadJointData(Element jointNode, boolean isRoot) {
-        final JointData joint = extractMainJointData(jointNode, isRoot);
-        XMLUtil.getChildren(jointNode, "node").stream().forEach((childNode) -> {
-            joint.addChild(loadJointData(childNode, false));
-        });
-        return joint;
+	final JointData joint = extractMainJointData(jointNode, isRoot);
+	XMLUtil.getChildren(jointNode, "node").stream().forEach((childNode) -> {
+	    joint.addChild(loadJointData(childNode, false));
+	});
+	return joint;
     }
 
     private JointData extractMainJointData(Element jointNode, boolean isRoot) {
-        final String nameId = jointNode.getAttributeValue("id");
-        final int index = boneOrder.indexOf(nameId);
-        final String[] matrixData = XMLUtil.getChild(jointNode, "matrix").getText().split(" ");
-        final Matrix4f matrix = new Matrix4f();
-        matrix.set(convertData(matrixData));
-        matrix.transpose();
-        if (isRoot) {
-            // because in Blender z is up, but in our game y is up.
-            ColladaLoader.CORRECTION.mul(matrix, matrix);
-        }
-        jointCount++;
-        return new JointData(index, nameId, matrix);
+	final String nameId = jointNode.getAttributeValue("id");
+	final int index = boneOrder.indexOf(nameId);
+	final String[] matrixData = XMLUtil.getChild(jointNode, "matrix").getText().split(" ");
+	final Matrix4f matrix = new Matrix4f();
+	matrix.set(convertData(matrixData));
+	matrix.transpose();
+	if (isRoot) {
+	    // because in Blender z is up, but in our game y is up.
+	    ColladaLoader.CORRECTION.mul(matrix, matrix);
+	}
+	jointCount++;
+	return new JointData(index, nameId, matrix);
     }
 
     private FloatBuffer convertData(String[] rawData) {
-        final float[] matrixData = new float[16];
-        for (int i = 0; i < matrixData.length; i++) {
-            matrixData[i] = Float.parseFloat(rawData[i]);
-        }
-        final FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
-        buffer.put(matrixData);
-        buffer.flip();
-        return buffer;
+	final float[] matrixData = new float[16];
+	for (int i = 0; i < matrixData.length; i++) {
+	    matrixData[i] = Float.parseFloat(rawData[i]);
+	}
+	final FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
+	buffer.put(matrixData);
+	buffer.flip();
+	return buffer;
     }
 
 }

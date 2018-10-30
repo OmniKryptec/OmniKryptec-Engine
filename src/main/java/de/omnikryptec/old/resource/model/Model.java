@@ -29,7 +29,7 @@ import de.omnikryptec.old.util.logger.Logger;
 public class Model implements ResourceObject {
 
     public static enum VBO_TYPE {
-        NONE, SPRITEBATCH, RENDERING;
+	NONE, SPRITEBATCH, RENDERING;
     }
 
     private final String name;
@@ -38,93 +38,93 @@ public class Model implements ResourceObject {
     private VertexBufferObject vbo_updateable;
 
     public Model(String name, ModelData modelData) {
-        this.modelData = modelData;
-        vao = VertexArrayObject.create();
-        vao.storeData(modelData.getIndices(), modelData.getVertexCount(), new DataObject(modelData.getVertices()),
-                new DataObject(modelData.getTextureCoords()), new DataObject(modelData.getNormals()),
-                new DataObject(modelData.getTangents()));
-        this.name = name;
-        createVBO(VBO_TYPE.RENDERING);
+	this.modelData = modelData;
+	vao = VertexArrayObject.create();
+	vao.storeData(modelData.getIndices(), modelData.getVertexCount(), new DataObject(modelData.getVertices()),
+		new DataObject(modelData.getTextureCoords()), new DataObject(modelData.getNormals()),
+		new DataObject(modelData.getTangents()));
+	this.name = name;
+	createVBO(VBO_TYPE.RENDERING);
     }
 
-    //fuer instanced rendering
+    // fuer instanced rendering
     private void createVBO(VBO_TYPE t) {
-        if (t == VBO_TYPE.NONE) {
-            return;
-        }
-        vbo_updateable = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
-        if (t == VBO_TYPE.RENDERING) {
-            int i = 20;
-            vbo_updateable.addInstancedAttribute(getVao(), 4, 4, i, 0);
-            vbo_updateable.addInstancedAttribute(getVao(), 5, 4, i, 4);
-            vbo_updateable.addInstancedAttribute(getVao(), 6, 4, i, 8);
-            vbo_updateable.addInstancedAttribute(getVao(), 7, 4, i, 12);
-            vbo_updateable.addInstancedAttribute(getVao(), 8, 4, i, 16);
-        }
+	if (t == VBO_TYPE.NONE) {
+	    return;
+	}
+	vbo_updateable = VertexBufferObject.create(GL15.GL_ARRAY_BUFFER);
+	if (t == VBO_TYPE.RENDERING) {
+	    int i = 20;
+	    vbo_updateable.addInstancedAttribute(getVao(), 4, 4, i, 0);
+	    vbo_updateable.addInstancedAttribute(getVao(), 5, 4, i, 4);
+	    vbo_updateable.addInstancedAttribute(getVao(), 6, 4, i, 8);
+	    vbo_updateable.addInstancedAttribute(getVao(), 7, 4, i, 12);
+	    vbo_updateable.addInstancedAttribute(getVao(), 8, 4, i, 16);
+	}
     }
 
     public Model(String name, VertexArrayObject vao, VBO_TYPE type) {
-        this.name = name;
-        this.vao = vao;
-        createVBO(type);
+	this.name = name;
+	this.vao = vao;
+	createVBO(type);
     }
 
     public VertexBufferObject getUpdateableVBO() {
-        return vbo_updateable;
+	return vbo_updateable;
     }
 
     public VertexArrayObject getVao() {
-        return vao;
+	return vao;
     }
 
     public ModelData getModelData() {
-        return modelData;
+	return modelData;
     }
 
     public static Model newModel(AdvancedFile file) {
-        return newModel("", file);
+	return newModel("", file);
     }
 
     public static Model newModel(String name, AdvancedFile file) {
-        try {
-            return newModel(name, file.createInputStream());
-        } catch (Exception ex) {
-            Logger.logErr("Error while creating FileInputStream: " + ex, ex);
-            return null;
-        }
+	try {
+	    return newModel(name, file.createInputStream());
+	} catch (Exception ex) {
+	    Logger.logErr("Error while creating FileInputStream: " + ex, ex);
+	    return null;
+	}
     }
 
     public static Model newModel(String path) {
-        return newModel("", path);
+	return newModel("", path);
     }
 
     public static Model newModel(String name, String path) {
-        try {
-            return newModel(name, Model.class.getResourceAsStream(path));
-        } catch (Exception ex) {
-            Logger.logErr("Error while creating Stream from path: " + ex, ex);
-            return null;
-        }
+	try {
+	    return newModel(name, Model.class.getResourceAsStream(path));
+	} catch (Exception ex) {
+	    Logger.logErr("Error while creating Stream from path: " + ex, ex);
+	    return null;
+	}
     }
 
     public static Model newModel(InputStream inputStream) {
-        return newModel("", inputStream);
+	return newModel("", inputStream);
     }
 
     public static Model newModel(String name, InputStream inputStream) {
-        return new Model(name, ObjLoader.loadOBJ(inputStream));
+	return new Model(name, ObjLoader.loadOBJ(inputStream));
     }
 
     @Override
     public String getName() {
-        return name;
+	return name;
     }
 
-	@Override
-	public ResourceObject delete() {
-		vao.delete();
-		vbo_updateable.delete();
-		return this;
-	}
+    @Override
+    public ResourceObject delete() {
+	vao.delete();
+	vbo_updateable.delete();
+	return this;
+    }
 
 }

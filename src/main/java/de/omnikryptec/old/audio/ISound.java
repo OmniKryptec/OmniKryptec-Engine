@@ -27,7 +27,7 @@ public interface ISound {
      * Sound type (cached or streamed)
      */
     public static enum SoundType {
-        NORMAL, STREAM;
+    NORMAL, STREAM;
     }
 
     /**

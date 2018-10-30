@@ -35,82 +35,82 @@ public class Vertex {
     private Vector3f averagedTangent = new Vector3f(0, 0, 0);
 
     public Vertex(int index, Vector3f position) {
-        this.index = index;
-        this.position = position;
-        this.length = position.length();
+	this.index = index;
+	this.position = position;
+	this.length = position.length();
     }
 
     public void addTangent(Vector3f tangent) {
-        tangents.add(tangent);
+	tangents.add(tangent);
     }
 
     // NEW
     public Vertex duplicate(int newIndex) {
-        Vertex vertex = new Vertex(newIndex, position);
-        vertex.tangents = this.tangents;
-        return vertex;
+	Vertex vertex = new Vertex(newIndex, position);
+	vertex.tangents = this.tangents;
+	return vertex;
     }
 
     public void averageTangents() {
-        if (tangents.isEmpty()) {
-            return;
-        }
-        for (Vector3f tangent : tangents) {
-            averagedTangent.add(tangent);
-        }
-        averagedTangent.normalize();
+	if (tangents.isEmpty()) {
+	    return;
+	}
+	for (Vector3f tangent : tangents) {
+	    averagedTangent.add(tangent);
+	}
+	averagedTangent.normalize();
     }
 
     public Vector3f getAverageTangent() {
-        return averagedTangent;
+	return averagedTangent;
     }
 
     public int getIndex() {
-        return index;
+	return index;
     }
 
     public float getLengthSquared() {
-        return length;
+	return length;
     }
-    
+
     public float getLength() {
-        return (float) Math.sqrt(getLengthSquared());
+	return (float) Math.sqrt(getLengthSquared());
     }
 
     public boolean isSet() {
-        return textureIndex != NO_INDEX && normalIndex != NO_INDEX;
+	return textureIndex != NO_INDEX && normalIndex != NO_INDEX;
     }
 
     public boolean hasSameTextureAndNormal(int textureIndexOther, int normalIndexOther) {
-        return textureIndexOther == textureIndex && normalIndexOther == normalIndex;
+	return textureIndexOther == textureIndex && normalIndexOther == normalIndex;
     }
 
     public void setTextureIndex(int textureIndex) {
-        this.textureIndex = textureIndex;
+	this.textureIndex = textureIndex;
     }
 
     public void setNormalIndex(int normalIndex) {
-        this.normalIndex = normalIndex;
+	this.normalIndex = normalIndex;
     }
 
     public Vector3f getPosition() {
-        return position;
+	return position;
     }
 
     public int getTextureIndex() {
-        return textureIndex;
+	return textureIndex;
     }
 
     public int getNormalIndex() {
-        return normalIndex;
+	return normalIndex;
     }
 
     public Vertex getDuplicateVertex() {
-        return duplicateVertex;
+	return duplicateVertex;
     }
 
     public void setDuplicateVertex(Vertex duplicateVertex) {
-        this.duplicateVertex = duplicateVertex;
+	this.duplicateVertex = duplicateVertex;
     }
 
 }

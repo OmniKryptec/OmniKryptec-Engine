@@ -18,11 +18,10 @@ package de.omnikryptec.old.audio;
 
 /**
  * AudioEffectState
+ * 
  * @author Panzer1119
  */
 //test
 public enum AudioEffectState {
-    NOTHING,
-    FADE_IN,
-    FADE_OUT;
+    NOTHING, FADE_IN, FADE_OUT;
 }

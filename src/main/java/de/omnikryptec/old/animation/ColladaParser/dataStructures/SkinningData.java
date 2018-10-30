@@ -24,8 +24,8 @@ public class SkinningData {
     public final List<VertexSkinData> verticesSkinData;
 
     public SkinningData(List<String> jointOrder, List<VertexSkinData> verticesSkinData) {
-        this.jointOrder = jointOrder;
-        this.verticesSkinData = verticesSkinData;
+	this.jointOrder = jointOrder;
+	this.verticesSkinData = verticesSkinData;
     }
 
 }

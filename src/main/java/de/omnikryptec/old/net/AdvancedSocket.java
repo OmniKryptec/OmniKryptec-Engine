@@ -103,8 +103,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      */
     protected int connectionCheckTriesMax = Network.CONNECTION_CHECK_TRIES_MAX_STANDARD;
     /**
-     * Maximum time between sending the Ping and receiving the Pong in
-     * milliseconds
+     * Maximum time between sending the Ping and receiving the Pong in milliseconds
      */
     protected int connectionCheckAnswerTimeMax = Network.CONNECTION_ANSWER_TIME_STANDARD;
     /**
@@ -153,48 +152,49 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
     protected Instant lastPong = null;
 
     /**
-     * Creates an AdvancedSocket from a Socket with the standard Client ThreadPool size
+     * Creates an AdvancedSocket from a Socket with the standard Client ThreadPool
+     * size
      *
      * @param socket Socket
      */
     public AdvancedSocket(Socket socket) {
-        this(socket, Network.THREADPOOL_SIZE_CLIENT_STANDARD);
+	this(socket, Network.THREADPOOL_SIZE_CLIENT_STANDARD);
     }
-    
+
     /**
      * Creates an AdvancedSocket from a Socket
      *
-     * @param socket Socket
+     * @param socket         Socket
      * @param threadPoolSize ThreadPool size
      */
     public AdvancedSocket(Socket socket, int threadPoolSize) {
-        this.threadPoolSize = Math.min(threadPoolSize, Network.THREADPOOL_SIZE_CLIENT_MAX);
-        init();
-        setSocket(socket, false, false);
+	this.threadPoolSize = Math.min(threadPoolSize, Network.THREADPOOL_SIZE_CLIENT_MAX);
+	init();
+	setSocket(socket, false, false);
     }
 
     /**
      * Creates an AdvancedSocket with the standard Client ThreadPool size
      *
      * @param inetAddress InetAddress
-     * @param port Port
+     * @param port        Port
      */
     public AdvancedSocket(InetAddress inetAddress, int port) {
-        this(inetAddress, port, Network.THREADPOOL_SIZE_CLIENT_STANDARD);
+	this(inetAddress, port, Network.THREADPOOL_SIZE_CLIENT_STANDARD);
     }
 
     /**
      * Creates an AdvancedSocket
      *
-     * @param inetAddress InetAddress
-     * @param port Port
+     * @param inetAddress    InetAddress
+     * @param port           Port
      * @param threadPoolSize ThreadPool size
      */
     public AdvancedSocket(InetAddress inetAddress, int port, int threadPoolSize) {
-        this.threadPoolSize = Math.min(threadPoolSize, Network.THREADPOOL_SIZE_CLIENT_MAX);
-        init();
-        setInetAddress(inetAddress);
-        setPort(port);
+	this.threadPoolSize = Math.min(threadPoolSize, Network.THREADPOOL_SIZE_CLIENT_MAX);
+	init();
+	setInetAddress(inetAddress);
+	setPort(port);
     }
 
     /**
@@ -203,8 +203,8 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return A reference to this AdvancedSocket
      */
     private final AdvancedSocket init() {
-        resetReceiverThread();
-        return this;
+	resetReceiverThread();
+	return this;
     }
 
     /**
@@ -214,11 +214,11 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return A reference to this AdvancedSocket
      */
     private final AdvancedSocket resetExecutors(boolean immediately) {
-        advancedThreadFactoryReceiver.setName("AdvancedSocket-" + formatAddressAndPort() + "-Receiver-Thread-%d");
-        executorReceiver = resetExecutor(executorReceiver, advancedThreadFactoryReceiver, immediately);
-        advancedThreadFactoryTransmitter.setName("AdvancedSocket-" + formatAddressAndPort() + "-Transmitter-Thread-%d");
-        executorTransmitter = resetExecutor(executorTransmitter, advancedThreadFactoryTransmitter, immediately);
-        return this;
+	advancedThreadFactoryReceiver.setName("AdvancedSocket-" + formatAddressAndPort() + "-Receiver-Thread-%d");
+	executorReceiver = resetExecutor(executorReceiver, advancedThreadFactoryReceiver, immediately);
+	advancedThreadFactoryTransmitter.setName("AdvancedSocket-" + formatAddressAndPort() + "-Transmitter-Thread-%d");
+	executorTransmitter = resetExecutor(executorTransmitter, advancedThreadFactoryTransmitter, immediately);
+	return this;
     }
 
     /**
@@ -227,23 +227,24 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @param immediately If the running Threads should be killed immediately
      * @return New ThreadPool
      */
-    private final ExecutorService resetExecutor(ExecutorService executor, ThreadFactory threadFactory, boolean immediately) {
-        try {
-            if (executor != null) {
-                if (immediately) {
-                    executor.shutdownNow();
-                } else {
-                    executor.shutdown();
-                    executor.awaitTermination(1, TimeUnit.MINUTES);
-                }
-            }
-            return Executors.newFixedThreadPool(threadPoolSize, threadFactory);
-        } catch (Exception ex) {
-            if (Logger.isDebugMode()) {
-                Logger.logErr("Error while resetting executor: " + ex, ex);
-            }
-            return null;
-        }
+    private final ExecutorService resetExecutor(ExecutorService executor, ThreadFactory threadFactory,
+	    boolean immediately) {
+	try {
+	    if (executor != null) {
+		if (immediately) {
+		    executor.shutdownNow();
+		} else {
+		    executor.shutdown();
+		    executor.awaitTermination(1, TimeUnit.MINUTES);
+		}
+	    }
+	    return Executors.newFixedThreadPool(threadPoolSize, threadFactory);
+	} catch (Exception ex) {
+	    if (Logger.isDebugMode()) {
+		Logger.logErr("Error while resetting executor: " + ex, ex);
+	    }
+	    return null;
+	}
     }
 
     /**
@@ -252,44 +253,45 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return A reference to this AdvancedSocket
      */
     private final AdvancedSocket resetReceiverThread() {
-        Util.killThread(threadReceiver, Network.THREAD_KILL_DELAY_TIME_STANDARD, Network.THREAD_KILL_MAX_TIME_STANDARD);
-        threadReceiver = new Thread(() -> {
-            while (connected) {
-                try {
-                    final Object object = ois.readObject();
-                    if (object == null) {
-                        continue;
-                    }
-                    final Instant instantNow = Instant.now();
-                    if (object instanceof NetworkCommand) {
-                        final NetworkCommand command = (NetworkCommand) object;
-                        switch (command) {
-                            case PING:
-                                send(NetworkCommand.PONG);
-                                break;
-                            case PONG:
-                                lastPong = instantNow;
-                                break;
-                        }
-                    } else {
-                        executorReceiver.execute(() -> {
-                            processInput(object, instantNow);
-                        });
-                    }
-                } catch (IOException ex) {
-                    if (Logger.isDebugMode()) {
-                        Logger.log(formatAddressAndPort() + " disconnected!", LogLevel.WARNING);
-                        disconnect(true);
-                        break;
-                    }
-                } catch (Exception ex) {
-                    if (Logger.isDebugMode()) {
-                        Logger.logErr(String.format("Error while receiving from %s: %s", formatAddressAndPort(), ex), ex);
-                    }
-                }
-            }
-        });
-        return this;
+	Util.killThread(threadReceiver, Network.THREAD_KILL_DELAY_TIME_STANDARD, Network.THREAD_KILL_MAX_TIME_STANDARD);
+	threadReceiver = new Thread(() -> {
+	    while (connected) {
+		try {
+		    final Object object = ois.readObject();
+		    if (object == null) {
+			continue;
+		    }
+		    final Instant instantNow = Instant.now();
+		    if (object instanceof NetworkCommand) {
+			final NetworkCommand command = (NetworkCommand) object;
+			switch (command) {
+			case PING:
+			    send(NetworkCommand.PONG);
+			    break;
+			case PONG:
+			    lastPong = instantNow;
+			    break;
+			}
+		    } else {
+			executorReceiver.execute(() -> {
+			    processInput(object, instantNow);
+			});
+		    }
+		} catch (IOException ex) {
+		    if (Logger.isDebugMode()) {
+			Logger.log(formatAddressAndPort() + " disconnected!", LogLevel.WARNING);
+			disconnect(true);
+			break;
+		    }
+		} catch (Exception ex) {
+		    if (Logger.isDebugMode()) {
+			Logger.logErr(String.format("Error while receiving from %s: %s", formatAddressAndPort(), ex),
+				ex);
+		    }
+		}
+	    }
+	});
+	return this;
     }
 
     /**
@@ -298,38 +300,39 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return <tt>true</tt> if the connection is open
      */
     public final boolean checkConnection() {
-        try {
-            final Instant lastPongOld = lastPong;
-            boolean isConnected = true;
-            for (int i = 0; i < connectionCheckTriesMax; i++) {
-                final Instant instantNow = Instant.now();
-                send(NetworkCommand.PING);
-                while (lastPongOld != lastPong) {
-                    if (Duration.between(instantNow, Instant.now()).toMillis() > connectionCheckAnswerTimeMax) {
-                        isConnected = false;
-                        break;
-                    }
-                    try {
-                        Thread.sleep(connectionCheckAnswerDelayTime);
-                    } catch (Exception ex) {
-                    }
-                }
-                if (isConnected) {
-                    break;
-                } else {
-                    try {
-                        Thread.sleep(connectionCheckDelayTime);
-                    } catch (Exception ex) {
-                    }
-                }
-            }
-            return (connected = isConnected);
-        } catch (Exception ex) {
-            if (Logger.isDebugMode()) {
-                Logger.logErr(String.format("Error while checking connection to %s: %s", formatAddressAndPort(), ex), ex);
-            }
-            return false;
-        }
+	try {
+	    final Instant lastPongOld = lastPong;
+	    boolean isConnected = true;
+	    for (int i = 0; i < connectionCheckTriesMax; i++) {
+		final Instant instantNow = Instant.now();
+		send(NetworkCommand.PING);
+		while (lastPongOld != lastPong) {
+		    if (Duration.between(instantNow, Instant.now()).toMillis() > connectionCheckAnswerTimeMax) {
+			isConnected = false;
+			break;
+		    }
+		    try {
+			Thread.sleep(connectionCheckAnswerDelayTime);
+		    } catch (Exception ex) {
+		    }
+		}
+		if (isConnected) {
+		    break;
+		} else {
+		    try {
+			Thread.sleep(connectionCheckDelayTime);
+		    } catch (Exception ex) {
+		    }
+		}
+	    }
+	    return (connected = isConnected);
+	} catch (Exception ex) {
+	    if (Logger.isDebugMode()) {
+		Logger.logErr(String.format("Error while checking connection to %s: %s", formatAddressAndPort(), ex),
+			ex);
+	    }
+	    return false;
+	}
     }
 
     /**
@@ -338,19 +341,19 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @param delay Delay
      */
     private final void resetTimer(int delay) {
-        if (timer != null) {
-            timer.stop();
-            timer = null;
-        }
-        if (timer == null) {
-            timer = new Timer(delay, this);
-        }
+	if (timer != null) {
+	    timer.stop();
+	    timer = null;
+	}
+	if (timer == null) {
+	    timer = new Timer(delay, this);
+	}
     }
 
     /**
      * Processes Inputs
      *
-     * @param object Input
+     * @param object    Input
      * @param timestamp Timestamp
      */
     public abstract void processInput(Object object, Instant timestamp);
@@ -375,7 +378,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return <tt>true</tt> if the connection was successfully established
      */
     public final boolean connect() {
-        return connect(false);
+	return connect(false);
     }
 
     /**
@@ -385,62 +388,63 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return <tt>true</tt> if the connection was successfully established
      */
     public final boolean connect(boolean createNewSocket) {
-        return connect(createNewSocket, 0);
+	return connect(createNewSocket, 0);
     }
 
     /**
      * Connects the AdvancedSocket
      *
      * @param createNewSocket If a new Socket should be created
-     * @param tries How many tries it took till now
+     * @param tries           How many tries it took till now
      * @return <tt>true</tt> if the connection was successfully established
      */
     private final boolean connect(boolean createNewSocket, int tries) {
-        if (connected) {
-            if (Logger.isDebugMode()) {
-                Logger.log("Can not connect to " + formatAddressAndPort() + ", because there is already a connection established!", LogLevel.WARNING);
-            }
-            return false;
-        }
-        tries++;
-        if (tries > connectionTriesMax) {
-            return false;
-        }
-        try {
-            resetReceiverThread();
-            resetExecutors(true);
-            resetTimer(connectionCheckTimerDelay);
-            if (createNewSocket) {
-                closeStreams();
-            }
-            connected = connectSocket(createNewSocket);
-            if (connected) {
-                if (Logger.isDebugMode()) {
-                    Logger.log("Connected successfully to " + formatAddressAndPort(), LogLevel.FINE);
-                }
-                instantDisconnected = null;
-                onConnected((instantConnected = Instant.now()));
-            }
-            disconnected = !connected;
-            if (!connected) { //FIXME Das muesste !checkConnection() sein!
-                try {
-                    Thread.sleep(connectionDelayTime);
-                } catch (Exception ex) {
-                }
-                return connect(createNewSocket, tries);
-            } else {
-                threadReceiver.start();
-                if (connectionCheckTimerDelay > 0) {
-                    timer.start();
-                }
-                return connected;
-            }
-        } catch (Exception ex) {
-            if (Logger.isDebugMode()) {
-                Logger.logErr(String.format("Error while connecting to %s: %s", formatAddressAndPort(), ex), ex);
-            }
-            return false;
-        }
+	if (connected) {
+	    if (Logger.isDebugMode()) {
+		Logger.log("Can not connect to " + formatAddressAndPort()
+			+ ", because there is already a connection established!", LogLevel.WARNING);
+	    }
+	    return false;
+	}
+	tries++;
+	if (tries > connectionTriesMax) {
+	    return false;
+	}
+	try {
+	    resetReceiverThread();
+	    resetExecutors(true);
+	    resetTimer(connectionCheckTimerDelay);
+	    if (createNewSocket) {
+		closeStreams();
+	    }
+	    connected = connectSocket(createNewSocket);
+	    if (connected) {
+		if (Logger.isDebugMode()) {
+		    Logger.log("Connected successfully to " + formatAddressAndPort(), LogLevel.FINE);
+		}
+		instantDisconnected = null;
+		onConnected((instantConnected = Instant.now()));
+	    }
+	    disconnected = !connected;
+	    if (!connected) { // FIXME Das muesste !checkConnection() sein!
+		try {
+		    Thread.sleep(connectionDelayTime);
+		} catch (Exception ex) {
+		}
+		return connect(createNewSocket, tries);
+	    } else {
+		threadReceiver.start();
+		if (connectionCheckTimerDelay > 0) {
+		    timer.start();
+		}
+		return connected;
+	    }
+	} catch (Exception ex) {
+	    if (Logger.isDebugMode()) {
+		Logger.logErr(String.format("Error while connecting to %s: %s", formatAddressAndPort(), ex), ex);
+	    }
+	    return false;
+	}
     }
 
     /**
@@ -449,44 +453,44 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return <tt>true</tt> if the connection was successfully closed
      */
     public final boolean disconnect() {
-        return disconnect(true);
+	return disconnect(true);
     }
 
     /**
      * Disconnects the AdvancedSocket
      *
-     * @param immediately If the AdvancedSocket should be disconnected
-     * immediately
+     * @param immediately If the AdvancedSocket should be disconnected immediately
      * @return <tt>true</tt> if the connection was successfully closed
      */
     public final boolean disconnect(boolean immediately) {
-        if (disconnected) {
-            if (Logger.isDebugMode()) {
-                Logger.log("Can not disconnect from " + formatAddressAndPort() + ", because there is no connection established!", LogLevel.WARNING);
-            }
-            return false;
-        }
-        try {
-            onDisconnected((instantDisconnected = Instant.now()));
-            resetTimer(0);
-            resetReceiverThread();
-            resetExecutors(immediately);
-            closeStreams();
-            if (Network.closeSocket(socket)) {
-                socket = null;
-                disconnected = true;
-                if (Logger.isDebugMode()) {
-                    Logger.log("Disconnected successfully from " + formatAddressAndPort(), LogLevel.FINE);
-                }
-            }
-            connected = !disconnected;
-            return disconnected;
-        } catch (Exception ex) {
-            if (Logger.isDebugMode()) {
-                Logger.logErr(String.format("Error while disconnecting from %s: %s", formatAddressAndPort(), ex), ex);
-            }
-            return false;
-        }
+	if (disconnected) {
+	    if (Logger.isDebugMode()) {
+		Logger.log("Can not disconnect from " + formatAddressAndPort()
+			+ ", because there is no connection established!", LogLevel.WARNING);
+	    }
+	    return false;
+	}
+	try {
+	    onDisconnected((instantDisconnected = Instant.now()));
+	    resetTimer(0);
+	    resetReceiverThread();
+	    resetExecutors(immediately);
+	    closeStreams();
+	    if (Network.closeSocket(socket)) {
+		socket = null;
+		disconnected = true;
+		if (Logger.isDebugMode()) {
+		    Logger.log("Disconnected successfully from " + formatAddressAndPort(), LogLevel.FINE);
+		}
+	    }
+	    connected = !disconnected;
+	    return disconnected;
+	} catch (Exception ex) {
+	    if (Logger.isDebugMode()) {
+		Logger.logErr(String.format("Error while disconnecting from %s: %s", formatAddressAndPort(), ex), ex);
+	    }
+	    return false;
+	}
     }
 
     /**
@@ -496,27 +500,28 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return <tt>true</tt> if the connection was successfully established
      */
     private final boolean connectSocket(boolean createNewSocket) {
-        try {
-            if (Logger.isDebugMode()) {
-                Logger.log("Started connecting to " + formatAddressAndPort(), LogLevel.FINE);
-            }
-            if ((!isFromServerSocket && createNewSocket) || socket == null) {
-                Network.closeSocket(socket);
-                socket = new Socket(inetAddress, port);
-            }
-            setSocket(socket, true, createNewSocket);
-            return true;
-        } catch (IOException ex) {
-            if (Logger.isDebugMode()) {
-                Logger.log(String.format("Could not establish a connection to %s", formatAddressAndPort()), LogLevel.WARNING);
-            }
-            return false;
-        } catch (Exception ex) {
-            if (Logger.isDebugMode()) {
-                Logger.logErr(String.format("Error while connecting Socket to %s: %s", formatAddressAndPort(), ex), ex);
-            }
-            return false;
-        }
+	try {
+	    if (Logger.isDebugMode()) {
+		Logger.log("Started connecting to " + formatAddressAndPort(), LogLevel.FINE);
+	    }
+	    if ((!isFromServerSocket && createNewSocket) || socket == null) {
+		Network.closeSocket(socket);
+		socket = new Socket(inetAddress, port);
+	    }
+	    setSocket(socket, true, createNewSocket);
+	    return true;
+	} catch (IOException ex) {
+	    if (Logger.isDebugMode()) {
+		Logger.log(String.format("Could not establish a connection to %s", formatAddressAndPort()),
+			LogLevel.WARNING);
+	    }
+	    return false;
+	} catch (Exception ex) {
+	    if (Logger.isDebugMode()) {
+		Logger.logErr(String.format("Error while connecting Socket to %s: %s", formatAddressAndPort(), ex), ex);
+	    }
+	    return false;
+	}
     }
 
     /**
@@ -526,30 +531,30 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket send(Object object) {
-        if (socket == null || !connected) {
-            if (Logger.isDebugMode()) {
-                Logger.log("Could not send Object, because there is no Socket or its not connected!", LogLevel.WARNING);
-            }
-            return this;
-        }
-        Logger.log("SENT: " + object);
-        executorTransmitter.execute(() -> {
-            try {
-                getObjectOutputStream().writeObject(object);
-                getObjectOutputStream().flush();
-            } catch (SocketException ex) {
-                connected = false;
-                if (Logger.isDebugMode()) {
-                    Logger.log(formatAddressAndPort() + " disconnected!", LogLevel.WARNING);
-                    disconnect(true);
-                }
-            } catch (Exception ex) {
-                if (Logger.isDebugMode()) {
-                    Logger.logErr(String.format("Error while sending to %s: %s", formatAddressAndPort(), ex), ex);
-                }
-            }
-        });
-        return this;
+	if (socket == null || !connected) {
+	    if (Logger.isDebugMode()) {
+		Logger.log("Could not send Object, because there is no Socket or its not connected!", LogLevel.WARNING);
+	    }
+	    return this;
+	}
+	Logger.log("SENT: " + object);
+	executorTransmitter.execute(() -> {
+	    try {
+		getObjectOutputStream().writeObject(object);
+		getObjectOutputStream().flush();
+	    } catch (SocketException ex) {
+		connected = false;
+		if (Logger.isDebugMode()) {
+		    Logger.log(formatAddressAndPort() + " disconnected!", LogLevel.WARNING);
+		    disconnect(true);
+		}
+	    } catch (Exception ex) {
+		if (Logger.isDebugMode()) {
+		    Logger.logErr(String.format("Error while sending to %s: %s", formatAddressAndPort(), ex), ex);
+		}
+	    }
+	});
+	return this;
     }
 
     /**
@@ -558,7 +563,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return Formatted InetAddress
      */
     public final String formatAddress() {
-        return Network.formatInetAddress(inetAddress);
+	return Network.formatInetAddress(inetAddress);
     }
 
     /**
@@ -567,7 +572,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return Formatted InetAddress and Port
      */
     public final String formatAddressAndPort() {
-        return Network.formatInetAddressAndPort(inetAddress, port);
+	return Network.formatInetAddressAndPort(inetAddress, port);
     }
 
     /**
@@ -576,8 +581,8 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return ObjectOutputStream
      */
     public final ObjectOutputStream getObjectOutputStream() {
-        waitForStream(oos);
-        return oos;
+	waitForStream(oos);
+	return oos;
     }
 
     /**
@@ -586,8 +591,8 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return ObjectInputStream
      */
     public final ObjectInputStream getObjectInputStream() {
-        waitForStream(ois);
-        return ois;
+	waitForStream(ois);
+	return ois;
     }
 
     /**
@@ -596,20 +601,20 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @param object Stream
      */
     protected final void waitForStream(Object object) {
-        if (object != null) {
-            return;
-        }
-        int i = 0;
-        while (object == null) {
-            try {
-                Thread.sleep(Network.STREAM_DELAY_TIME);
-            } catch (Exception ex) {
-            }
-            i++;
-            if ((i * Network.STREAM_DELAY_TIME) >= Network.STREAM_TIME_MAX) {
-                break;
-            }
-        }
+	if (object != null) {
+	    return;
+	}
+	int i = 0;
+	while (object == null) {
+	    try {
+		Thread.sleep(Network.STREAM_DELAY_TIME);
+	    } catch (Exception ex) {
+	    }
+	    i++;
+	    if ((i * Network.STREAM_DELAY_TIME) >= Network.STREAM_TIME_MAX) {
+		break;
+	    }
+	}
     }
 
     /**
@@ -618,65 +623,67 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return A reference to this AdvancedSocket
      */
     private final AdvancedSocket closeStreams() {
-        try {
-            if (oos != null) {
-                oos.close();
-            }
-        } catch (Exception ex) {
-            if (Logger.isDebugMode()) {
-                Logger.logErr("Error while closing old ObjectOutputStream: " + ex, null);
-            }
-        }
-        oos = null;
-        try {
-            if (ois != null) {
-                ois.close();
-            }
-        } catch (Exception ex) {
-            if (Logger.isDebugMode()) {
-                Logger.logErr("Error while closing old ObjectInputStream: " + ex, null);
-            }
-        }
-        ois = null;
-        return this;
+	try {
+	    if (oos != null) {
+		oos.close();
+	    }
+	} catch (Exception ex) {
+	    if (Logger.isDebugMode()) {
+		Logger.logErr("Error while closing old ObjectOutputStream: " + ex, null);
+	    }
+	}
+	oos = null;
+	try {
+	    if (ois != null) {
+		ois.close();
+	    }
+	} catch (Exception ex) {
+	    if (Logger.isDebugMode()) {
+		Logger.logErr("Error while closing old ObjectInputStream: " + ex, null);
+	    }
+	}
+	ois = null;
+	return this;
     }
 
     /**
      * Sets the Streams
      *
-     * @param socket Socket from where the new Streams are coming
+     * @param socket          Socket from where the new Streams are coming
      * @param closeOldStreams If the old Streams should get closed
      * @return A reference to this AdvancedSocket
      */
     private final AdvancedSocket setStreams(Socket socket, boolean closeOldStreams) {
-        if (closeOldStreams) {
-            closeStreams();
-        }
-        try {
-            oos = new ObjectOutputStream(socket.getOutputStream());
-        } catch (IOException ex) {
-            connected = false;
-            if (Logger.isDebugMode()) {
-                Logger.log("Could not set ObjectOutputStream from Socket, because its already closed!", LogLevel.WARNING);
-            }
-        } catch (Exception ex) {
-            if (Logger.isDebugMode()) {
-                Logger.logErr("Error while setting ObjectOutputStream: " + ex, ex);
-            }
-        }
-        try {
-            ois = new ObjectInputStream(socket.getInputStream());
-        } catch (IOException ex) {
-            connected = false;
-            if (Logger.isDebugMode()) {
-                Logger.log("Could not set ObjectInputStream from Socket, because its already closed!", LogLevel.WARNING);
-            }
-        } catch (Exception ex) {
-            if (Logger.isDebugMode()) {
-                Logger.logErr("Error while setting ObjectInputStream: " + ex, ex);
-            }
-        }
-        return this;
+	if (closeOldStreams) {
+	    closeStreams();
+	}
+	try {
+	    oos = new ObjectOutputStream(socket.getOutputStream());
+	} catch (IOException ex) {
+	    connected = false;
+	    if (Logger.isDebugMode()) {
+		Logger.log("Could not set ObjectOutputStream from Socket, because its already closed!",
+			LogLevel.WARNING);
+	    }
+	} catch (Exception ex) {
+	    if (Logger.isDebugMode()) {
+		Logger.logErr("Error while setting ObjectOutputStream: " + ex, ex);
+	    }
+	}
+	try {
+	    ois = new ObjectInputStream(socket.getInputStream());
+	} catch (IOException ex) {
+	    connected = false;
+	    if (Logger.isDebugMode()) {
+		Logger.log("Could not set ObjectInputStream from Socket, because its already closed!",
+			LogLevel.WARNING);
+	    }
+	} catch (Exception ex) {
+	    if (Logger.isDebugMode()) {
+		Logger.logErr("Error while setting ObjectInputStream: " + ex, ex);
+	    }
+	}
+	return this;
     }
 
     /**
@@ -685,7 +692,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return Socket
      */
     public final Socket getSocket() {
-        return socket;
+	return socket;
     }
 
     /**
@@ -695,35 +702,36 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setSocket(Socket socket) {
-        return setSocket(socket, true, true);
+	return setSocket(socket, true, true);
     }
-    
+
     /**
      * Sets the Socket and Address
      *
-     * @param socket Socket
-     * @param setStreams If the streams should be setted
+     * @param socket          Socket
+     * @param setStreams      If the streams should be setted
      * @param closeOldStreams If the old Streams should get closed
      * @return A reference to this AdvancedSocket
      */
     protected final AdvancedSocket setSocket(Socket socket, boolean setStreams, boolean closeOldStreams) {
-        if (socket != null) {
-            this.socket = socket;
-            if (setStreams) {
-                setStreams(socket, closeOldStreams);
-            }
-            setInetAddress(socket.getInetAddress());
-            setPort(socket.getPort());
-        }
-        return this;
+	if (socket != null) {
+	    this.socket = socket;
+	    if (setStreams) {
+		setStreams(socket, closeOldStreams);
+	    }
+	    setInetAddress(socket.getInetAddress());
+	    setPort(socket.getPort());
+	}
+	return this;
     }
 
     /**
      * Returns the InetAddress
+     * 
      * @return InetAddress
      */
     public final InetAddress getInetAddress() {
-        return inetAddress;
+	return inetAddress;
     }
 
     /**
@@ -733,19 +741,19 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setInetAddress(InetAddress inetAddress) {
-        if (inetAddress != null) {
-            this.inetAddress = inetAddress;
-        } else {
-            try {
-                this.inetAddress = InetAddress.getLocalHost();
-            } catch (Exception ex) {
-                this.inetAddress = null;
-                if (Logger.isDebugMode()) {
-                    Logger.logErr("Can not resolve LocalHost from InetAddress: " + ex, ex);
-                }
-            }
-        }
-        return this;
+	if (inetAddress != null) {
+	    this.inetAddress = inetAddress;
+	} else {
+	    try {
+		this.inetAddress = InetAddress.getLocalHost();
+	    } catch (Exception ex) {
+		this.inetAddress = null;
+		if (Logger.isDebugMode()) {
+		    Logger.logErr("Can not resolve LocalHost from InetAddress: " + ex, ex);
+		}
+	    }
+	}
+	return this;
     }
 
     /**
@@ -754,7 +762,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return Port
      */
     public final int getPort() {
-        return port;
+	return port;
     }
 
     /**
@@ -764,12 +772,12 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setPort(int port) {
-        if (!Network.checkTCPPort(port)) {
-            this.port = Network.PORT_STANDARD;
-            return this;
-        }
-        this.port = port;
-        return this;
+	if (!Network.checkTCPPort(port)) {
+	    this.port = Network.PORT_STANDARD;
+	    return this;
+	}
+	this.port = port;
+	return this;
     }
 
     /**
@@ -778,19 +786,19 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return Maximum number of tries to (re)connect to a ServerSocket
      */
     public final int getConnectionTriesMax() {
-        return connectionTriesMax;
+	return connectionTriesMax;
     }
 
     /**
      * Sets the maximum number of tries to (re)connect to a ServerSocket
      *
      * @param connectionTimesMax Maximum number of tries to (re)connect to a
-     * ServerSocket
+     *                           ServerSocket
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setConnectionTimesMax(int connectionTimesMax) {
-        this.connectionTriesMax = connectionTimesMax;
-        return this;
+	this.connectionTriesMax = connectionTimesMax;
+	return this;
     }
 
     /**
@@ -799,41 +807,41 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return Milliseconds to wait between each (re)connection try
      */
     public final int getConnectionDelayTime() {
-        return connectionDelayTime;
+	return connectionDelayTime;
     }
 
     /**
      * Sets the milliseconds to wait between each (re)connection try
      *
-     * @param connectionDelayTime Milliseconds to wait between each
-     * (re)connection try
+     * @param connectionDelayTime Milliseconds to wait between each (re)connection
+     *                            try
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setConnectionDelayTime(int connectionDelayTime) {
-        this.connectionDelayTime = connectionDelayTime;
-        return this;
+	this.connectionDelayTime = connectionDelayTime;
+	return this;
     }
 
     /**
      * Returns if this AdvancedSocket is an AdvancedSocket created from a Server
      *
      * @return <tt>true</tt> if this AdvancedSocket is an AdvancedSocket created
-     * from a Server
+     *         from a Server
      */
     public final boolean isFromServerSocket() {
-        return isFromServerSocket;
+	return isFromServerSocket;
     }
 
     /**
      * Sets if this AdvancedSocket is an AdvancedSocket created from a Server
      *
-     * @param isFromServerSocket If this AdvancedSocket is an AdvancedSocket
-     * created from a Server
+     * @param isFromServerSocket If this AdvancedSocket is an AdvancedSocket created
+     *                           from a Server
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setFromServerSocket(boolean isFromServerSocket) {
-        this.isFromServerSocket = isFromServerSocket;
-        return this;
+	this.isFromServerSocket = isFromServerSocket;
+	return this;
     }
 
     /**
@@ -842,7 +850,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return ThreadPool size
      */
     public final int getThreadPoolSize() {
-        return threadPoolSize;
+	return threadPoolSize;
     }
 
     /**
@@ -851,7 +859,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return Timestamp of connection opening
      */
     public final Instant getInstantConnected() {
-        return instantConnected;
+	return instantConnected;
     }
 
     /**
@@ -860,7 +868,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return Timestamp of connection closing
      */
     public final Instant getInstantDisconnected() {
-        return instantDisconnected;
+	return instantDisconnected;
     }
 
     /**
@@ -869,15 +877,15 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return Duration of the connection time
      */
     public final Duration getConnectionDuration() {
-        if (instantConnected != null) {
-            if (instantDisconnected != null) {
-                return Duration.between(instantConnected, instantDisconnected);
-            } else {
-                return Duration.between(instantConnected, Instant.now());
-            }
-        } else {
-            return Duration.ZERO;
-        }
+	if (instantConnected != null) {
+	    if (instantDisconnected != null) {
+		return Duration.between(instantConnected, instantDisconnected);
+	    } else {
+		return Duration.between(instantConnected, Instant.now());
+	    }
+	} else {
+	    return Duration.ZERO;
+	}
     }
 
     /**
@@ -886,7 +894,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return Timestamp of the last Pong
      */
     public final Instant getLastPong() {
-        return lastPong;
+	return lastPong;
     }
 
     /**
@@ -895,43 +903,42 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return Maximum number of tries per connection checks
      */
     public final int getConnectionCheckTriesMax() {
-        return connectionCheckTriesMax;
+	return connectionCheckTriesMax;
     }
 
     /**
      * Sets the maximum number of tries per connection checks
      *
-     * @param connectionCheckTriesMax Maximum number of tries per connection
-     * checks
+     * @param connectionCheckTriesMax Maximum number of tries per connection checks
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setConnectionCheckTriesMax(int connectionCheckTriesMax) {
-        this.connectionCheckTriesMax = connectionCheckTriesMax;
-        return this;
+	this.connectionCheckTriesMax = connectionCheckTriesMax;
+	return this;
     }
 
     /**
-     * Returns the maximum time between sending the Ping and receiving the Pong
-     * in milliseconds
+     * Returns the maximum time between sending the Ping and receiving the Pong in
+     * milliseconds
      *
      * @return Maximum time between sending the Ping and receiving the Pong in
-     * milliseconds
+     *         milliseconds
      */
     public final int getConnectionCheckAnswerTimeMax() {
-        return connectionCheckAnswerTimeMax;
+	return connectionCheckAnswerTimeMax;
     }
 
     /**
      * Sets the maximum time between sending the Ping and receiving the Pong in
      * milliseconds
      *
-     * @param connectionCheckAnswerTimeMax Maximum time between sending the Ping
-     * and receiving the Pong in milliseconds
+     * @param connectionCheckAnswerTimeMax Maximum time between sending the Ping and
+     *                                     receiving the Pong in milliseconds
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setConnectionCheckAnswerTimeMax(int connectionCheckAnswerTimeMax) {
-        this.connectionCheckAnswerTimeMax = connectionCheckAnswerTimeMax;
-        return this;
+	this.connectionCheckAnswerTimeMax = connectionCheckAnswerTimeMax;
+	return this;
     }
 
     /**
@@ -940,41 +947,40 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return Delay time between each answer check in milliseconds
      */
     public final int getConnectionCheckAnswerDelayTime() {
-        return connectionCheckAnswerDelayTime;
+	return connectionCheckAnswerDelayTime;
     }
 
     /**
      * Sets the delay time between each answer check in milliseconds
      *
-     * @param connectionCheckAnswerDelayTime Delay time between each answer
-     * check in milliseconds
+     * @param connectionCheckAnswerDelayTime Delay time between each answer check in
+     *                                       milliseconds
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setConnectionCheckAnswerDelayTime(int connectionCheckAnswerDelayTime) {
-        this.connectionCheckAnswerDelayTime = connectionCheckAnswerDelayTime;
-        return this;
+	this.connectionCheckAnswerDelayTime = connectionCheckAnswerDelayTime;
+	return this;
     }
 
     /**
-     * Returns the delay time between each running connection check in
-     * milliseconds
+     * Returns the delay time between each running connection check in milliseconds
      *
      * @return Delay time between each running connection check in milliseconds
      */
     public final int getConnectionCheckDelayTime() {
-        return connectionCheckDelayTime;
+	return connectionCheckDelayTime;
     }
 
     /**
      * Sets the delay time between each running connection check in milliseconds
      *
-     * @param connectionCheckDelayTime Delay time between each running
-     * connection check in milliseconds
+     * @param connectionCheckDelayTime Delay time between each running connection
+     *                                 check in milliseconds
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setConnectionCheckDelayTime(int connectionCheckDelayTime) {
-        this.connectionCheckDelayTime = connectionCheckDelayTime;
-        return this;
+	this.connectionCheckDelayTime = connectionCheckDelayTime;
+	return this;
     }
 
     /**
@@ -983,19 +989,19 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return Delay time between each new connection check in milliseconds
      */
     public final int getConnectionCheckTimerDelay() {
-        return connectionCheckTimerDelay;
+	return connectionCheckTimerDelay;
     }
 
     /**
      * Sets the delay time between each new connection check in milliseconds
      *
-     * @param connectionCheckTimerDelay Delay time between each new connection
-     * check in milliseconds
+     * @param connectionCheckTimerDelay Delay time between each new connection check
+     *                                  in milliseconds
      * @return A reference to this AdvancedSocket
      */
     public final AdvancedSocket setConnectionCheckTimerDelay(int connectionCheckTimerDelay) {
-        this.connectionCheckTimerDelay = connectionCheckTimerDelay;
-        return this;
+	this.connectionCheckTimerDelay = connectionCheckTimerDelay;
+	return this;
     }
 
     /**
@@ -1004,7 +1010,7 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return <tt>true</tt> if the connection is open
      */
     public final boolean isConnected() {
-        return connected;
+	return connected;
     }
 
     /**
@@ -1013,19 +1019,20 @@ public abstract class AdvancedSocket implements ActionListener, Serializable {
      * @return <tt>true</tt> if the connection was closed
      */
     public final boolean isDisconnected() {
-        return disconnected;
+	return disconnected;
     }
 
     @Override
     public final void actionPerformed(ActionEvent e) {
-        if (e.getSource() == timer) {
-            checkConnection();
-        }
+	if (e.getSource() == timer) {
+	    checkConnection();
+	}
     }
 
     @Override
     public String toString() {
-        return String.format("%s to %s, Running time: %ds, Connected: %b, Disconnected: %b", getClass().getSimpleName(), formatAddressAndPort(), getConnectionDuration().getSeconds(), connected, disconnected);
+	return String.format("%s to %s, Running time: %ds, Connected: %b, Disconnected: %b", getClass().getSimpleName(),
+		formatAddressAndPort(), getConnectionDuration().getSeconds(), connected, disconnected);
     }
 
 }

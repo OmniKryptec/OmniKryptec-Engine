@@ -32,28 +32,27 @@ public class AnimatedModelData implements ResourceObject {
     private final MeshData mesh;
 
     public AnimatedModelData(String name, MeshData mesh, SkeletonData joints) {
-        this.name = name;
-        this.joints = joints;
-        this.mesh = mesh;
+	this.name = name;
+	this.joints = joints;
+	this.mesh = mesh;
     }
 
     public SkeletonData getJointsData() {
-        return joints;
+	return joints;
     }
 
     public MeshData getMeshData() {
-        return mesh;
+	return mesh;
     }
 
     @Override
     public String getName() {
-        return name;
+	return name;
     }
 
-	@Override
-	public ResourceObject delete() {
-		return this;
-	}
-
+    @Override
+    public ResourceObject delete() {
+	return this;
+    }
 
 }

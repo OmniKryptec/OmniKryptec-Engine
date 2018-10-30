@@ -24,11 +24,11 @@ import java.lang.annotation.Target;
 
 import de.omnikryptec.old.gameobject.GameObject;
 
-@Target(value = {ElementType.TYPE })
+@Target(value = { ElementType.TYPE })
 @Retention(value = RetentionPolicy.RUNTIME)
 @Inherited
 public @interface ComponentAnnotation {
-	
-	Class<? extends GameObject> supportedGameObjectClass();
-	//float level();
+
+    Class<? extends GameObject> supportedGameObjectClass();
+    // float level();
 }

@@ -22,8 +22,8 @@ package de.omnikryptec.old.test.saving;
  */
 public interface ObjectBuilder<T> {
 
-	public ObjectBuilder loadDataMap(DataMap data);
+    public ObjectBuilder loadDataMap(DataMap data);
 
-	public T build();
+    public T build();
 
 }

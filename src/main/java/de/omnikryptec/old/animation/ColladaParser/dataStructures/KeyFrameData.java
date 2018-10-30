@@ -25,11 +25,11 @@ public class KeyFrameData {
     public final List<JointTransformData> jointTransforms = new ArrayList<>();
 
     public KeyFrameData(float time) {
-        this.time = time;
+	this.time = time;
     }
 
     public void addJointTransform(JointTransformData transform) {
-        jointTransforms.add(transform);
+	jointTransforms.add(transform);
     }
 
 }

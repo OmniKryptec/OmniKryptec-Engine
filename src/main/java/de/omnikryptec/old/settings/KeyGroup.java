@@ -44,35 +44,34 @@ public class KeyGroup implements IKey {
      * @param keys Key Array First Keys
      */
     public KeyGroup(String name, Key... keys) {
-        this.name = name;
-        addKeys(keys);
+	this.name = name;
+	addKeys(keys);
     }
 
     @Override
     public final String getName() {
-        return name;
+	return name;
     }
 
     /**
      * Returns if all Keys in this KeyGroup are needed to be activated
      *
-     * @return <tt>true</tt> if all Keys in this KeyGroup are needed to be
-     * activated
+     * @return <tt>true</tt> if all Keys in this KeyGroup are needed to be activated
      */
     public final boolean isAllKeysNeedToBeActivated() {
-        return allKeysNeedToBeActivated;
+	return allKeysNeedToBeActivated;
     }
 
     /**
      * Sets if all Keys in this KeyGroup are needed to be activated
      *
      * @param allKeysNeedToBeActivated Boolean If all Keys in this KeyGroup are
-     * needed to be activated
+     *                                 needed to be activated
      * @return KeyGroup A reference to this KeyGroup
      */
     public final KeyGroup setAllKeysNeedToBeActivated(boolean allKeysNeedToBeActivated) {
-        this.allKeysNeedToBeActivated = allKeysNeedToBeActivated;
-        return this;
+	this.allKeysNeedToBeActivated = allKeysNeedToBeActivated;
+	return this;
     }
 
     /**
@@ -81,7 +80,7 @@ public class KeyGroup implements IKey {
      * @return ArrayList IKey IKeys
      */
     public final ArrayList<IKey> getKeys() {
-        return keys;
+	return keys;
     }
 
     /**
@@ -91,8 +90,8 @@ public class KeyGroup implements IKey {
      * @return KeyGroup A reference to this KeyGroup
      */
     public final KeyGroup addKey(Key key) {
-        this.keys.add(key);
-        return this;
+	this.keys.add(key);
+	return this;
     }
 
     /**
@@ -102,13 +101,13 @@ public class KeyGroup implements IKey {
      * @return KeyGroup A reference to this KeyGroup
      */
     public final KeyGroup addKeys(IKey[] keys) {
-        if (keys == null || keys.length == 0) {
-            return this;
-        }
-        for (IKey key : keys) {
-            this.keys.add(key);
-        }
-        return this;
+	if (keys == null || keys.length == 0) {
+	    return this;
+	}
+	for (IKey key : keys) {
+	    this.keys.add(key);
+	}
+	return this;
     }
 
     /**
@@ -118,82 +117,82 @@ public class KeyGroup implements IKey {
      * @return KeyGroup A reference to this KeyGroup
      */
     public final KeyGroup addKeys(ArrayList<IKey> keys) {
-        if (keys == null || keys.isEmpty()) {
-            return this;
-        }
-        for (IKey key : keys) {
-            this.keys.add(key);
-        }
-        return this;
+	if (keys == null || keys.isEmpty()) {
+	    return this;
+	}
+	for (IKey key : keys) {
+	    this.keys.add(key);
+	}
+	return this;
     }
 
     @Override
     public final boolean isPressed() {
-        if (keys.isEmpty()) {
-            return false;
-        }
-        boolean isPressed = allKeysNeedToBeActivated;
-        for (IKey key : keys) {
-            final boolean isPressed_ = key.isPressed();
-            if (!isPressed_ && allKeysNeedToBeActivated) {
-                isPressed = false;
-                break;
-            } else if (isPressed_ && !allKeysNeedToBeActivated) {
-                isPressed = true;
-                break;
-            }
-        }
-        return isPressed;
+	if (keys.isEmpty()) {
+	    return false;
+	}
+	boolean isPressed = allKeysNeedToBeActivated;
+	for (IKey key : keys) {
+	    final boolean isPressed_ = key.isPressed();
+	    if (!isPressed_ && allKeysNeedToBeActivated) {
+		isPressed = false;
+		break;
+	    } else if (isPressed_ && !allKeysNeedToBeActivated) {
+		isPressed = true;
+		break;
+	    }
+	}
+	return isPressed;
     }
 
     @Override
     public final boolean isLongPressed(double minTime, double maxTime) {
-        if (keys.isEmpty()) {
-            return false;
-        }
-        boolean isLongPressed = allKeysNeedToBeActivated;
-        boolean firstRight = false;
-        for (IKey key : keys) {
-            final boolean isPressed = key.isPressed();
-            final boolean isLongPressed_ = key.isLongPressed(minTime, maxTime);
-            if (!isLongPressed_ && allKeysNeedToBeActivated && !(firstRight && isPressed)) {
-                isLongPressed = false;
-                break;
-            } else if (isLongPressed_ && allKeysNeedToBeActivated) {
-                firstRight = true;
-            } else if (isLongPressed_ && !allKeysNeedToBeActivated) {
-                isLongPressed = true;
-                break;
-            }
-        }
-        return isLongPressed;
+	if (keys.isEmpty()) {
+	    return false;
+	}
+	boolean isLongPressed = allKeysNeedToBeActivated;
+	boolean firstRight = false;
+	for (IKey key : keys) {
+	    final boolean isPressed = key.isPressed();
+	    final boolean isLongPressed_ = key.isLongPressed(minTime, maxTime);
+	    if (!isLongPressed_ && allKeysNeedToBeActivated && !(firstRight && isPressed)) {
+		isLongPressed = false;
+		break;
+	    } else if (isLongPressed_ && allKeysNeedToBeActivated) {
+		firstRight = true;
+	    } else if (isLongPressed_ && !allKeysNeedToBeActivated) {
+		isLongPressed = true;
+		break;
+	    }
+	}
+	return isLongPressed;
     }
 
     @Override
     public final boolean equals(Object o) {
-        if (o == null) {
-            return false;
-        }
-        if (o instanceof KeyGroup) {
-            final KeyGroup keyGroup_temp = (KeyGroup) o;
-            return keyGroup_temp.name.equals(name);
-        } else {
-            return false;
-        }
+	if (o == null) {
+	    return false;
+	}
+	if (o instanceof KeyGroup) {
+	    final KeyGroup keyGroup_temp = (KeyGroup) o;
+	    return keyGroup_temp.name.equals(name);
+	} else {
+	    return false;
+	}
     }
 
     @Override
     public final String toString() {
-        return String.format("KeyGroup: \"%s\" (%d): %s", name, keys.size(), Arrays.toString(keys.toArray()));
+	return String.format("KeyGroup: \"%s\" (%d): %s", name, keys.size(), Arrays.toString(keys.toArray()));
     }
 
     @Override
     public final Element toXML() {
-        final Element element = new Element(getClass().getSimpleName());
-        element.setAttribute("name", name);
-        keys.forEach((key) -> element.addContent(key.toXML()));
-        element.setAttribute("allKeysNeedToBeActivated", "" + allKeysNeedToBeActivated);
-        return element;
+	final Element element = new Element(getClass().getSimpleName());
+	element.setAttribute("name", name);
+	keys.forEach((key) -> element.addContent(key.toXML()));
+	element.setAttribute("allKeysNeedToBeActivated", "" + allKeysNeedToBeActivated);
+	return element;
     }
 
 }

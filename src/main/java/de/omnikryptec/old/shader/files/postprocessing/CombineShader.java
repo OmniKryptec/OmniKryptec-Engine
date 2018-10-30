@@ -28,13 +28,12 @@ public class CombineShader extends Shader {
     public final UniformVec2 weights = new UniformVec2("weights");
 
     public CombineShader() {
-        super(DEF_SHADER_LOC_PP_VS,
-                new AdvancedFile(true, SHADER_LOCATION_PP, "combine_shader_frag.glsl"),
-                Shader.DEFAULT_PP_VERTEX_SHADER_POS_ATTR);
-        registerUniforms(sampler1, sampler2, weights);
-        start();
-        sampler1.loadTexUnit(0);
-        sampler2.loadTexUnit(1);
+	super(DEF_SHADER_LOC_PP_VS, new AdvancedFile(true, SHADER_LOCATION_PP, "combine_shader_frag.glsl"),
+		Shader.DEFAULT_PP_VERTEX_SHADER_POS_ATTR);
+	registerUniforms(sampler1, sampler2, weights);
+	start();
+	sampler1.loadTexUnit(0);
+	sampler2.loadTexUnit(1);
     }
 
 }

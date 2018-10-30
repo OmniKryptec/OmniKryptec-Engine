@@ -22,21 +22,21 @@ import de.omnikryptec.old.util.logger.Command;
 
 public class CommandEvent extends Event {
 
-	private Command c;
-	private String args;
+    private Command c;
+    private String args;
 
-	public CommandEvent(Command c, String args) {
-		super(OmniKryptecEngine.instance().ENGINE_BUS);
-		this.c = c;
-		this.args = args;
-	}
+    public CommandEvent(Command c, String args) {
+	super(OmniKryptecEngine.instance().ENGINE_BUS);
+	this.c = c;
+	this.args = args;
+    }
 
-	public Command getCommand() {
-		return c;
-	}
+    public Command getCommand() {
+	return c;
+    }
 
-	public String getArguments() {
-		return args;
-	}
+    public String getArguments() {
+	return args;
+    }
 
 }

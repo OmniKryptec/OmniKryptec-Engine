@@ -28,49 +28,48 @@ public class KeyArrayHashMap<K, V> {
     private boolean keysDirty = true;
 
     public KeyArrayHashMap(Class<K> keyclass) {
-    	this.keyclass = keyclass;
-    	this.map = new HashMap<>();
+	this.keyclass = keyclass;
+	this.map = new HashMap<>();
     }
-    
+
     public KeyArrayHashMap(Class<K> keyclass, int initCapacity, float lf) {
-        this.keyclass = keyclass;
-        this.map = new HashMap<>(initCapacity, lf);
+	this.keyclass = keyclass;
+	this.map = new HashMap<>(initCapacity, lf);
     }
 
     public void put(K k, V v) {
-        map.put(k, v);
-        keysDirty = true;
+	map.put(k, v);
+	keysDirty = true;
     }
 
     public V get(K key) {
-        return map.get(key);
+	return map.get(key);
     }
 
-    
     public K[] keysArray() {
-        if (keysDirty) {
-            keys = map.keySet().toArray((K[]) Array.newInstance(keyclass, map.size()));
-            keysDirty = false;
-        }
-        return keys;
+	if (keysDirty) {
+	    keys = map.keySet().toArray((K[]) Array.newInstance(keyclass, map.size()));
+	    keysDirty = false;
+	}
+	return keys;
     }
 
     public void remove(K tm) {
-        map.remove(tm);
-        keysDirty = true;
+	map.remove(tm);
+	keysDirty = true;
     }
 
     public boolean isEmpty() {
-        return map.isEmpty();
+	return map.isEmpty();
     }
 
-	public int size() {
-		return map.size();
-	}
+    public int size() {
+	return map.size();
+    }
 
-	public void clear() {
-		map.clear();
-		keysDirty = true;
-	}
+    public void clear() {
+	map.clear();
+	keysDirty = true;
+    }
 
 }

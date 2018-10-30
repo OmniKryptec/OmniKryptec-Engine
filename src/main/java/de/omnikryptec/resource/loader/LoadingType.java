@@ -17,9 +17,7 @@
 package de.omnikryptec.resource.loader;
 
 public enum LoadingType {
-    
-    NOT,
-    NORMAL,
-    OPENGL;
-    
+
+    NOT, NORMAL, OPENGL;
+
 }

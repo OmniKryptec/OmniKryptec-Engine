@@ -46,11 +46,11 @@ public class AudioSource {
      * Creates an empty AudioSource
      */
     public AudioSource() {
-        sourceID = AL10.alGenSources();
-        setVolume(1.0F);
-        setPitch(1.0F);
-        setPosition(0, 0, 0);
-        audioSources.add(this);
+	sourceID = AL10.alGenSources();
+	setVolume(1.0F);
+	setPitch(1.0F);
+	setPosition(0, 0, 0);
+	audioSources.add(this);
     }
 
     /**
@@ -60,7 +60,7 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource play(String name) {
-        return play(AudioManager.getSound(name));
+	return play(AudioManager.getSound(name));
     }
 
     /**
@@ -70,14 +70,14 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource play(ISound sound) {
-        stop();
-        if (sound == null) {
-            return this;
-        }
-        sound.play(this);
-        this.sound = sound;
-        continuePlaying();
-        return this;
+	stop();
+	if (sound == null) {
+	    return this;
+	}
+	sound.play(this);
+	this.sound = sound;
+	continuePlaying();
+	return this;
     }
 
     /**
@@ -86,19 +86,18 @@ public class AudioSource {
      * @return ISound Set ISound
      */
     public final ISound getSound() {
-        return sound;
+	return sound;
     }
 
     /**
      * Sets if the ISound should be played in a loop
      *
-     * @param loop Boolean <tt>true</tt> if the ISound should be played in a
-     * loop
+     * @param loop Boolean <tt>true</tt> if the ISound should be played in a loop
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setLooping(boolean loop) {
-        AL10.alSourcei(sourceID, AL10.AL_LOOPING, (loop ? AL10.AL_TRUE : AL10.AL_FALSE));
-        return this;
+	AL10.alSourcei(sourceID, AL10.AL_LOOPING, (loop ? AL10.AL_TRUE : AL10.AL_FALSE));
+	return this;
     }
 
     /**
@@ -107,7 +106,7 @@ public class AudioSource {
      * @return <tt>true</tt> if the AudioSource is playing
      */
     public final boolean isPlaying() {
-        return AL10.alGetSourcei(sourceID, AL10.AL_SOURCE_STATE) == AL10.AL_PLAYING;
+	return AL10.alGetSourcei(sourceID, AL10.AL_SOURCE_STATE) == AL10.AL_PLAYING;
     }
 
     /**
@@ -116,9 +115,9 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource pause() {
-        pause = true;
-        pauseTemporarily();
-        return this;
+	pause = true;
+	pauseTemporarily();
+	return this;
     }
 
     /**
@@ -127,8 +126,8 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource pauseTemporarily() {
-        AL10.alSourcePause(sourceID);
-        return this;
+	AL10.alSourcePause(sourceID);
+	return this;
     }
 
     /**
@@ -137,9 +136,9 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource continuePlaying() {
-        AL10.alSourcePlay(sourceID);
-        pause = false;
-        return this;
+	AL10.alSourcePlay(sourceID);
+	pause = false;
+	return this;
     }
 
     /**
@@ -148,10 +147,10 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource continuePlayingTemporarily() {
-        if (!pause && !isPlaying()) {
-            continuePlaying();
-        }
-        return this;
+	if (!pause && !isPlaying()) {
+	    continuePlaying();
+	}
+	return this;
     }
 
     /**
@@ -160,12 +159,12 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource stop() {
-        pause = true;
-        AL10.alSourceStop(sourceID);
-        if (sound != null) {
-            sound.stop(this);
-        }
-        return this;
+	pause = true;
+	AL10.alSourceStop(sourceID);
+	if (sound != null) {
+	    sound.stop(this);
+	}
+	return this;
     }
 
     /**
@@ -174,9 +173,9 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource restart() {
-        stop();
-        continuePlaying();
-        return this;
+	stop();
+	continuePlaying();
+	return this;
     }
 
     /**
@@ -185,12 +184,12 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource delete() {
-        stop();
-        AL10.alDeleteSources(sourceID);
-        if (sound != null) {
-            sound.delete(this);
-        }
-        return this;
+	stop();
+	AL10.alDeleteSources(sourceID);
+	if (sound != null) {
+	    sound.delete(this);
+	}
+	return this;
     }
 
     /**
@@ -200,15 +199,16 @@ public class AudioSource {
      * @return <tt>true</tt> if next frame also needs to be faded again
      */
     public final boolean fadeOneFrame(float deltaTime) {
-        final boolean out = (Math.max(volumeStart, volumeTarget) == volumeStart);
-        float newVolume = AudioManager.getDistanceModel().getFade(fadeTime, fadeTimeComplete / 1000.0F, Math.max(volumeStart, volumeTarget), Math.min(volumeStart, volumeTarget));
-        fadeTime += (deltaTime * (out ? 1.0F : -1.0F));
-        setVolume(newVolume);
-        if (out) {
-            return (getVolume() - volumeTarget) > 0.0F;
-        } else {
-            return (volumeTarget - getVolume()) > 0.0F;
-        }
+	final boolean out = (Math.max(volumeStart, volumeTarget) == volumeStart);
+	float newVolume = AudioManager.getDistanceModel().getFade(fadeTime, fadeTimeComplete / 1000.0F,
+		Math.max(volumeStart, volumeTarget), Math.min(volumeStart, volumeTarget));
+	fadeTime += (deltaTime * (out ? 1.0F : -1.0F));
+	setVolume(newVolume);
+	if (out) {
+	    return (getVolume() - volumeTarget) > 0.0F;
+	} else {
+	    return (volumeTarget - getVolume()) > 0.0F;
+	}
     }
 
     /**
@@ -218,8 +218,8 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setVolume(float volume) {
-        AL10.alSourcef(sourceID, AL10.AL_GAIN, volume);
-        return this;
+	AL10.alSourcef(sourceID, AL10.AL_GAIN, volume);
+	return this;
     }
 
     /**
@@ -228,7 +228,7 @@ public class AudioSource {
      * @return Float Volume
      */
     public final float getVolume() {
-        return AL10.alGetSourcef(sourceID, AL10.AL_GAIN);
+	return AL10.alGetSourcef(sourceID, AL10.AL_GAIN);
     }
 
     /**
@@ -237,8 +237,8 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     protected final AudioSource setRealPitch() {
-        AL10.alSourcef(sourceID, AL10.AL_PITCH, pitch + deltaPitch);
-        return this;
+	AL10.alSourcef(sourceID, AL10.AL_PITCH, pitch + deltaPitch);
+	return this;
     }
 
     /**
@@ -247,7 +247,7 @@ public class AudioSource {
      * @return Float Real pitch
      */
     public final float getRealPitch() {
-        return AL10.alGetSourcef(sourceID, AL10.AL_PITCH);
+	return AL10.alGetSourcef(sourceID, AL10.AL_PITCH);
     }
 
     /**
@@ -257,9 +257,9 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setPitch(float pitch) {
-        this.pitch = pitch;
-        setRealPitch();
-        return this;
+	this.pitch = pitch;
+	setRealPitch();
+	return this;
     }
 
     /**
@@ -268,7 +268,7 @@ public class AudioSource {
      * @return Float Setted pitch
      */
     public final float getPitch() {
-        return pitch;
+	return pitch;
     }
 
     /**
@@ -278,9 +278,9 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setDeltaPitch(float deltaPitch) {
-        this.deltaPitch = deltaPitch;
-        setRealPitch();
-        return this;
+	this.deltaPitch = deltaPitch;
+	setRealPitch();
+	return this;
     }
 
     /**
@@ -289,7 +289,7 @@ public class AudioSource {
      * @return Float Pitch delta
      */
     public final float getDeltaPitch() {
-        return deltaPitch;
+	return deltaPitch;
     }
 
     /**
@@ -299,8 +299,8 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setPosition(javax.vecmath.Vector3f position) {
-        setPosition(position.x, position.y, position.z);
-        return this;
+	setPosition(position.x, position.y, position.z);
+	return this;
     }
 
     /**
@@ -310,8 +310,8 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setPosition(Vector3f position) {
-        setPosition(position.x, position.y, position.z);
-        return this;
+	setPosition(position.x, position.y, position.z);
+	return this;
     }
 
     /**
@@ -323,8 +323,8 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setPosition(float x, float y, float z) {
-        AL10.alSource3f(sourceID, AL10.AL_POSITION, x, y, z);
-        return this;
+	AL10.alSource3f(sourceID, AL10.AL_POSITION, x, y, z);
+	return this;
     }
 
     /**
@@ -334,8 +334,8 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setOrientation(javax.vecmath.Vector3f orientation) {
-        setOrientation(orientation.x, orientation.y, orientation.z);
-        return this;
+	setOrientation(orientation.x, orientation.y, orientation.z);
+	return this;
     }
 
     /**
@@ -345,8 +345,8 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setOrientation(Vector3f orientation) {
-        setOrientation(orientation.x, orientation.y, orientation.z);
-        return this;
+	setOrientation(orientation.x, orientation.y, orientation.z);
+	return this;
     }
 
     /**
@@ -358,8 +358,8 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setOrientation(float x, float y, float z) {
-        AL10.alSource3f(sourceID, AL10.AL_ORIENTATION, x, y, z);
-        return this;
+	AL10.alSource3f(sourceID, AL10.AL_ORIENTATION, x, y, z);
+	return this;
     }
 
     /**
@@ -369,8 +369,8 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setVelocity(javax.vecmath.Vector3f velocity) {
-        setVelocity(velocity.x, velocity.y, velocity.z);
-        return this;
+	setVelocity(velocity.x, velocity.y, velocity.z);
+	return this;
     }
 
     /**
@@ -380,8 +380,8 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setVelocity(Vector3f velocity) {
-        setVelocity(velocity.x, velocity.y, velocity.z);
-        return this;
+	setVelocity(velocity.x, velocity.y, velocity.z);
+	return this;
     }
 
     /**
@@ -393,8 +393,8 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setVelocity(float x, float y, float z) {
-        AL10.alSource3f(sourceID, AL10.AL_VELOCITY, x, y, z);
-        return this;
+	AL10.alSource3f(sourceID, AL10.AL_VELOCITY, x, y, z);
+	return this;
     }
 
     /**
@@ -404,20 +404,20 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setRollOffFactor(float rollOffFactor) {
-        AL10.alSourcef(sourceID, AL10.AL_ROLLOFF_FACTOR, rollOffFactor);
-        return this;
+	AL10.alSourcef(sourceID, AL10.AL_ROLLOFF_FACTOR, rollOffFactor);
+	return this;
     }
 
     /**
      * Sets the reference distance
      *
-     * @param referenceDistance Float Reference distance (Reference distance is
-     * the point where the Volume = 1.0F)
+     * @param referenceDistance Float Reference distance (Reference distance is the
+     *                          point where the Volume = 1.0F)
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setReferenceDistance(float referenceDistance) {
-        AL10.alSourcef(sourceID, AL10.AL_REFERENCE_DISTANCE, referenceDistance);
-        return this;
+	AL10.alSourcef(sourceID, AL10.AL_REFERENCE_DISTANCE, referenceDistance);
+	return this;
     }
 
     /**
@@ -427,30 +427,29 @@ public class AudioSource {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setMaxDistance(float maxDistance) {
-        AL10.alSourcef(sourceID, AL10.AL_MAX_DISTANCE, maxDistance);
-        return this;
+	AL10.alSourcef(sourceID, AL10.AL_MAX_DISTANCE, maxDistance);
+	return this;
     }
 
     /**
      * Returns if this AudioSource is affected by the physics speed
      *
-     * @return <tt>true</tt> if this AudioSource is affected by the physics
-     * speed
+     * @return <tt>true</tt> if this AudioSource is affected by the physics speed
      */
     public final boolean isAffectedByPhysics() {
-        return affectedByPhysics;
+	return affectedByPhysics;
     }
 
     /**
      * Sets if this AudioSource is affected by the physics speed
      *
      * @param affectedByPhysics Boolean If this AudioSource is effected by the
-     * physics speed
+     *                          physics speed
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setAffectedByPhysics(boolean affectedByPhysics) {
-        this.affectedByPhysics = affectedByPhysics;
-        return this;
+	this.affectedByPhysics = affectedByPhysics;
+	return this;
     }
 
     /**
@@ -459,7 +458,7 @@ public class AudioSource {
      * @return AudioEffectState
      */
     public final AudioEffectState getEffectState() {
-        return effectState;
+	return effectState;
     }
 
     /**
@@ -469,27 +468,27 @@ public class AudioSource {
      * @return A reference to this AudioSource
      */
     public final AudioSource setEffectState(AudioEffectState effectState) {
-        if (this.effectState != effectState) {
-            switch (effectState) {
-                case NOTHING:
-                    break;
-                case FADE_IN:
-                    volumeStart = 0.0F;
-                    volumeTarget = getVolume();
-                    if (volumeTarget <= 0.0F) {
-                        volumeTarget = 1.0F;
-                    }
-                    fadeTime = fadeTimeComplete / 1000.0F;
-                    break;
-                case FADE_OUT:
-                    volumeStart = getVolume();
-                    volumeTarget = 0.0F;
-                    fadeTime = 0.0F;
-                    break;
-            }
-        }
-        this.effectState = effectState;
-        return this;
+	if (this.effectState != effectState) {
+	    switch (effectState) {
+	    case NOTHING:
+		break;
+	    case FADE_IN:
+		volumeStart = 0.0F;
+		volumeTarget = getVolume();
+		if (volumeTarget <= 0.0F) {
+		    volumeTarget = 1.0F;
+		}
+		fadeTime = fadeTimeComplete / 1000.0F;
+		break;
+	    case FADE_OUT:
+		volumeStart = getVolume();
+		volumeTarget = 0.0F;
+		fadeTime = 0.0F;
+		break;
+	    }
+	}
+	this.effectState = effectState;
+	return this;
     }
 
     /**
@@ -498,24 +497,24 @@ public class AudioSource {
      * @return A reference to this AudioSource
      */
     public final AudioSource updateState(float deltaTime) {
-        switch (effectState) {
-            case NOTHING:
-                break;
-            case FADE_IN:
-                if (!fadeOneFrame(deltaTime)) {
-                    effectState = AudioEffectState.NOTHING;
-                    setVolume(volumeTarget);
-                }
-                break;
-            case FADE_OUT:
-                if (!fadeOneFrame(deltaTime)) {
-                    effectState = AudioEffectState.NOTHING;
-                    setVolume(volumeTarget);
-                }
-                break;
+	switch (effectState) {
+	case NOTHING:
+	    break;
+	case FADE_IN:
+	    if (!fadeOneFrame(deltaTime)) {
+		effectState = AudioEffectState.NOTHING;
+		setVolume(volumeTarget);
+	    }
+	    break;
+	case FADE_OUT:
+	    if (!fadeOneFrame(deltaTime)) {
+		effectState = AudioEffectState.NOTHING;
+		setVolume(volumeTarget);
+	    }
+	    break;
 
-        }
-        return this;
+	}
+	return this;
     }
 
     /**
@@ -524,7 +523,7 @@ public class AudioSource {
      * @return Fading in and out time
      */
     public final float getFadeTimeComplete() {
-        return fadeTimeComplete;
+	return fadeTimeComplete;
     }
 
     /**
@@ -534,12 +533,12 @@ public class AudioSource {
      * @return A reference to this AudioSource
      */
     public final AudioSource setFadeTimeComplete(float fadeTimeComplete) {
-        this.fadeTimeComplete = fadeTimeComplete;
-        return this;
+	this.fadeTimeComplete = fadeTimeComplete;
+	return this;
     }
 
     protected final int getSourceID() {
-        return sourceID;
+	return sourceID;
     }
 
 }

@@ -17,7 +17,7 @@
 package de.omnikryptec.old.gameobject;
 
 public interface Transformable2D {
-	
-	Transform2D getTransform();
-	
+
+    Transform2D getTransform();
+
 }

@@ -22,27 +22,27 @@ import de.omnikryptec.old.resource.texture.Texture;
 public class Light2D extends Sprite {
 
     public Light2D() {
-        this("", null, null);
+	this("", null, null);
     }
 
     public Light2D(String name, Texture t) {
-        this(name, t, null);
+	this(name, t, null);
     }
 
     public Light2D(Texture t, GameObject2D p) {
-        this("", t, p);
+	this("", t, p);
     }
 
     public Light2D(String name, GameObject2D p) {
-        this(name, null, p);
+	this(name, null, p);
     }
 
     public Light2D(String name, Texture texture, GameObject2D parent) {
-        super(name, texture, parent);
+	super(name, texture, parent);
     }
 
     @Override
     public void paint(SpriteBatch batch) {
-        batch.draw(this, true);
+	batch.draw(this, true);
     }
 }

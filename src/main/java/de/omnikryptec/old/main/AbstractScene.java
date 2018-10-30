@@ -32,129 +32,131 @@ public abstract class AbstractScene<T extends GameObject> implements GameObjectC
 
     private double rendertime, logictime;
     private double tmptime;
-    
-    protected AbstractScene(){
+
+    protected AbstractScene() {
     }
-    
+
     public final FrameState getState() {
-        return state;
+	return state;
     }
 
     public Camera getCamera() {
-        return camera;
+	return camera;
     }
 
     public final AbstractScene<T> setCamera(Camera c) {
-        this.camera = c;
-        return this;
+	this.camera = c;
+	return this;
     }
 
     public final double getRenderTimeMS() {
-        return rendertime;
+	return rendertime;
     }
 
     public final double getLogicTimeMS() {
-        return logictime;
+	return logictime;
     }
 
     protected final AbstractScene<T> setName(String name) {
-        this.name = name;
-        return this;
+	this.name = name;
+	return this;
     }
 
     public final PhysicsWorld getPhysicsWorld() {
-        return physicsworld;
+	return physicsworld;
     }
 
     public final AbstractScene<T> setPhysicsWorld(PhysicsWorld physicsWorld) {
-        this.physicsworld = physicsWorld;
-        return this;
+	this.physicsworld = physicsWorld;
+	return this;
     }
 
     public final boolean isUsingPhysics() {
-        return physicsworld != null;
+	return physicsworld != null;
     }
 
     public final AbstractScene<T> setAmbientColor(float r, float g, float b) {
-        this.ambientcolor.set(r, g, b);
-        return this;
+	this.ambientcolor.set(r, g, b);
+	return this;
     }
 
     public final AbstractScene<T> setAmbientColor(Color f) {
-        this.ambientcolor = f;
-        return this;
+	this.ambientcolor = f;
+	return this;
     }
 
     public final Color getAmbientColor() {
-    	return ambientcolor;
+	return ambientcolor;
     }
 
     public final String getName() {
-        return name;
+	return name;
     }
 
     final void timedLogic() {
-		tmptime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime();
-		publicLogic();
-		logictime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime() - tmptime;
+	tmptime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime();
+	publicLogic();
+	logictime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime() - tmptime;
     }
-    
+
     public final void publicLogic() {
-		state = FrameState.LOGIC;
-		if(isUsingPhysics()) {
-			physicsworld.preLogic();
-		}
-		logic();
-		camera.doLogic();
-		if (isUsingPhysics()) {
-			physicsworld.stepSimulation();
-		}
-		state = FrameState.NULL;
+	state = FrameState.LOGIC;
+	if (isUsingPhysics()) {
+	    physicsworld.preLogic();
 	}
-    
+	logic();
+	camera.doLogic();
+	if (isUsingPhysics()) {
+	    physicsworld.stepSimulation();
+	}
+	state = FrameState.NULL;
+    }
+
     final void timedRender() {
-    	tmptime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime();
-    	publicRender();
-		rendertime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime() - tmptime;
+	tmptime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime();
+	publicRender();
+	rendertime = OmniKryptecEngine.instance().getDisplayManager().getCurrentTime() - tmptime;
     }
-    
+
     public final long publicRender() {
-		state = FrameState.RENDERING;
-		preRender();
-		long l = render();
-		postRender();
-		state = FrameState.NULL;
-		return l;
+	state = FrameState.RENDERING;
+	preRender();
+	long l = render();
+	postRender();
+	state = FrameState.NULL;
+	return l;
     }
-    
-    
+
     protected abstract void logic();
-    
+
     protected abstract long render();
 
-    protected void preRender() {}
-    
-    protected void postRender() {}
-    
-    protected abstract void addGameObject_(T g, boolean added);
-    protected abstract T removeGameObject_(T g, boolean delete);
-    
-	public void addGameObject(T go, boolean added){
-		addGameObject_(go, added);
-	}
+    protected void preRender() {
+    }
 
-	public T removeGameObject(T go, boolean delete){
-		removeGameObject_(go, delete);
-		return go;
-	}
-    
-	public final void realign(T g) {
-		removeGameObject_(g, false);
-		addGameObject_(g, false);
-	}
-	
+    protected void postRender() {
+    }
+
+    protected abstract void addGameObject_(T g, boolean added);
+
+    protected abstract T removeGameObject_(T g, boolean delete);
+
+    public void addGameObject(T go, boolean added) {
+	addGameObject_(go, added);
+    }
+
+    public T removeGameObject(T go, boolean delete) {
+	removeGameObject_(go, delete);
+	return go;
+    }
+
+    public final void realign(T g) {
+	removeGameObject_(g, false);
+	addGameObject_(g, false);
+    }
+
     @Override
     public String toString() {
-        return "Scene: " + name;
+	return "Scene: " + name;
     }
 }

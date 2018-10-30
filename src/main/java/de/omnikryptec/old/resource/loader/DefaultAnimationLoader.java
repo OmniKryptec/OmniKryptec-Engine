@@ -32,16 +32,26 @@ import de.omnikryptec.old.resource.loader.annotations.DefaultLoader;
 public class DefaultAnimationLoader implements Loader {
 
     @Override
-    public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
-        final String name = generateName(advancedFile, superFile) + ":Animation";
-        final Animation animation = AnimationLoader.loadAnimation(name, advancedFile);
-        //Logger.log(String.format("Loaded Animation \"%s\" from \"%s\" (in \"%s\")%s", name, advancedFile, superFile, (properties == null || properties.isEmpty()) ? "" : String.format(" (with properties %s)", properties))); //TOD- Only for testing!!! DELETE THIS!
-        return resourceLoader.addRessourceObject(name, animation);
+    public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
+	    ResourceLoader resourceLoader) {
+	final String name = generateName(advancedFile, superFile) + ":Animation";
+	final Animation animation = AnimationLoader.loadAnimation(name, advancedFile);
+	// Logger.log(String.format("Loaded Animation \"%s\" from \"%s\" (in \"%s\")%s",
+	// name, advancedFile, superFile, (properties == null || properties.isEmpty()) ?
+	// "" : String.format(" (with properties %s)", properties))); //TOD- Only for
+	// testing!!! DELETE THIS!
+	return resourceLoader.addRessourceObject(name, animation);
     }
 
     @Override
-    public LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceLoader resourceLoader) {
-        return advancedFile.getExtension().equalsIgnoreCase("dae") ? LoadingType.OPENGL : LoadingType.NOT; //TOD- Kann das hier auch Normal geloaded werden?
+    public LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
+	    ResourceLoader resourceLoader) {
+	return advancedFile.getExtension().equalsIgnoreCase("dae") ? LoadingType.OPENGL : LoadingType.NOT; // TOD- Kann
+													   // das hier
+													   // auch
+													   // Normal
+													   // geloaded
+													   // werden?
     }
 
 }

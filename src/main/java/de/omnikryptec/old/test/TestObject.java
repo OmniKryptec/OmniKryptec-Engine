@@ -22,15 +22,15 @@ package de.omnikryptec.old.test;
  */
 public class TestObject implements Saveable {
 
-	public String name = "";
+    public String name = "";
 
-	public TestObject(String name) {
-		this.name = name;
-	}
+    public TestObject(String name) {
+	this.name = name;
+    }
 
-	@Override
-	public Object[] toData() {
-		return new Object[] { "name", name };
-	}
+    @Override
+    public Object[] toData() {
+	return new Object[] { "name", name };
+    }
 
 }

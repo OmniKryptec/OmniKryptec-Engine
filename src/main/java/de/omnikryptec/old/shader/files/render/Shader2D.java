@@ -28,16 +28,16 @@ public class Shader2D extends Shader {
     private final UniformMatrix projview = new UniformMatrix("projview");
 
     public Shader2D() {
-        super(new AdvancedFile(true, SHADER_LOCATION_RENDER, "2d_vert.glsl"),
-                new AdvancedFile(true, SHADER_LOCATION_RENDER, "2d_frag.glsl"), "pos", "rgba", "uv");
-        registerUniforms(sampler, projview);
-        start();
-        sampler.loadTexUnit(0);
+	super(new AdvancedFile(true, SHADER_LOCATION_RENDER, "2d_vert.glsl"),
+		new AdvancedFile(true, SHADER_LOCATION_RENDER, "2d_frag.glsl"), "pos", "rgba", "uv");
+	registerUniforms(sampler, projview);
+	start();
+	sampler.loadTexUnit(0);
     }
 
     @Override
     public void onDrawBatchStart(SpriteBatch batch) {
-    	projview.loadMatrix(batch.getCamera().getProjectionViewMatrix());
+	projview.loadMatrix(batch.getCamera().getProjectionViewMatrix());
     }
 
 }

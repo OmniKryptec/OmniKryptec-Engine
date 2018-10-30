@@ -32,7 +32,7 @@ import de.omnikryptec.old.util.logger.Logger;
  *
  * @author Panzer1119
  */
-@Priority( value = 2f )
+@Priority(value = 2f)
 @ComponentAnnotation(supportedGameObjectClass = GameObject3D.class)
 public class AudioListenerComponent3D extends Component<GameObject3D> {
 
@@ -40,14 +40,15 @@ public class AudioListenerComponent3D extends Component<GameObject3D> {
      * Normal constructor
      */
     public AudioListenerComponent3D() {
-        boolean done = AudioManager.setBlockingComponent(this, this);
-        if (Logger.isDebugMode()) {
-            if (!done) {
-                Logger.log("AudioListenerComponent could not be set as the Main-AudioListenerComponent!", LogLevel.WARNING);
-            } else {
-                Logger.log("AudioListenerComponent was set as the Main-AudioListenerComponent", LogLevel.FINER);
-            }
-        }
+	boolean done = AudioManager.setBlockingComponent(this, this);
+	if (Logger.isDebugMode()) {
+	    if (!done) {
+		Logger.log("AudioListenerComponent could not be set as the Main-AudioListenerComponent!",
+			LogLevel.WARNING);
+	    } else {
+		Logger.log("AudioListenerComponent was set as the Main-AudioListenerComponent", LogLevel.FINER);
+	    }
+	}
     }
 
     private RenderChunk3D chunk;
@@ -59,33 +60,33 @@ public class AudioListenerComponent3D extends Component<GameObject3D> {
 
     ;
 
-	@Override
+    @Override
     public final void execute(GameObject3D instance) {
-		isUsingPhysics = false;
-        chunk = instance.getRenderChunk();
-        physicsComponent = null;
-        if (chunk != null) {
-            scene = chunk.getScene();
-            if (scene != null) {
-                if (scene.isUsingPhysics()) {
-                    physicsComponent = instance.getComponent(PhysicsComponent3D.class);
-                    isUsingPhysics = ((physicsComponent != null) && (physicsComponent.getBody() != null));
-                }
-            }
-        }
-        position = instance.getTransform().getPosition(true);
-        velocity.set(0, 0, 0);
-        //TOD- sind die eulerangles richtig herum?
-        rotation = instance.getTransform().getRotation(true).getEulerAnglesXYZ(new Vector3f());
-        if (isUsingPhysics) {
-            physicsComponent.getBody().getAngularVelocity(velocity);
-        }
-        AudioManager.setListenerData(this, position, rotation, ConverterUtil.convertVector3fToLWJGL(velocity));
+	isUsingPhysics = false;
+	chunk = instance.getRenderChunk();
+	physicsComponent = null;
+	if (chunk != null) {
+	    scene = chunk.getScene();
+	    if (scene != null) {
+		if (scene.isUsingPhysics()) {
+		    physicsComponent = instance.getComponent(PhysicsComponent3D.class);
+		    isUsingPhysics = ((physicsComponent != null) && (physicsComponent.getBody() != null));
+		}
+	    }
+	}
+	position = instance.getTransform().getPosition(true);
+	velocity.set(0, 0, 0);
+	// TOD- sind die eulerangles richtig herum?
+	rotation = instance.getTransform().getRotation(true).getEulerAnglesXYZ(new Vector3f());
+	if (isUsingPhysics) {
+	    physicsComponent.getBody().getAngularVelocity(velocity);
+	}
+	AudioManager.setListenerData(this, position, rotation, ConverterUtil.convertVector3fToLWJGL(velocity));
     }
 
     @Override
     public final void onDelete(GameObject3D instance) {
-        AudioManager.setBlockingComponent(this, null);
+	AudioManager.setBlockingComponent(this, null);
     }
 
 }

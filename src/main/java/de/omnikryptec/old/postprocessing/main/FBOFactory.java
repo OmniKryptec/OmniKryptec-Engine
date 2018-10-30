@@ -18,6 +18,6 @@ package de.omnikryptec.old.postprocessing.main;
 
 public interface FBOFactory {
 
-	FrameBufferObject[] getAllFBOs();
+    FrameBufferObject[] getAllFBOs();
 
 }

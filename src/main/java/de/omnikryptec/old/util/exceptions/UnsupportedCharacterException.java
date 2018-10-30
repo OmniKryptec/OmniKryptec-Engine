@@ -22,13 +22,13 @@ package de.omnikryptec.old.util.exceptions;
  */
 public class UnsupportedCharacterException extends Exception {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -493126597894968110L;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -493126597894968110L;
 
-	public UnsupportedCharacterException(String string) {
-		super(string);
-	}
+    public UnsupportedCharacterException(String string) {
+	super(string);
+    }
 
 }

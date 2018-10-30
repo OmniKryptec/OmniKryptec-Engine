@@ -127,7 +127,7 @@ public class Network {
      * @return New ID
      */
     public static final long generateID() {
-        return System.nanoTime();
+	return System.nanoTime();
     }
 
     /**
@@ -137,7 +137,7 @@ public class Network {
      * @return <tt>true</tt> if the TCP Port is already in use
      */
     public static final boolean existsTCPPort(int port) {
-        return registeredTCPPorts.containsKey(port);
+	return registeredTCPPorts.containsKey(port);
     }
 
     /**
@@ -146,13 +146,13 @@ public class Network {
      *
      * @param port TCP Port to get checked
      * @return <tt>true</tt> if the TCP Port is not in use and is a possible Port
-     * number
+     *         number
      */
     public static final boolean checkTCPPort(int port) {
-        if (existsTCPPort(port)) {
-            return false;
-        }
-        return ((port >= PORT_MIN) && (port <= PORT_MAX));
+	if (existsTCPPort(port)) {
+	    return false;
+	}
+	return ((port >= PORT_MIN) && (port <= PORT_MAX));
     }
 
     /**
@@ -162,22 +162,22 @@ public class Network {
      * @return <tt>true</tt> if the TCP Port was successfully registered
      */
     public static final boolean registerTCPPort(int port) {
-        return registerTCPPort(port, null);
+	return registerTCPPort(port, null);
     }
 
     /**
      * Registers a TCP Port to be used from now
      *
-     * @param port TCP Port to get registered
+     * @param port         TCP Port to get registered
      * @param serverSocket AdvancedServerSocket
      * @return <tt>true</tt> if the TCP Port was successfully registered
      */
     public static final boolean registerTCPPort(int port, AdvancedServerSocket serverSocket) {
-        if (!checkTCPPort(port)) {
-            return false;
-        }
-        registeredTCPPorts.put(port, serverSocket);
-        return true;
+	if (!checkTCPPort(port)) {
+	    return false;
+	}
+	registeredTCPPorts.put(port, serverSocket);
+	return true;
     }
 
     /**
@@ -187,11 +187,11 @@ public class Network {
      * @return <tt>true</tt> if the TCP Port was successfully unregistered
      */
     public static final boolean unregisterTCPPort(int port) {
-        if (!existsTCPPort(port)) {
-            return false;
-        }
-        registeredTCPPorts.remove(port);
-        return true;
+	if (!existsTCPPort(port)) {
+	    return false;
+	}
+	registeredTCPPorts.remove(port);
+	return true;
     }
 
     /**
@@ -201,9 +201,9 @@ public class Network {
      * @return AdvancedServerSocket
      */
     public static final AdvancedServerSocket getObjectFromTCPPort(int port) {
-        return registeredTCPPorts.get(port);
+	return registeredTCPPorts.get(port);
     }
-    
+
     /**
      * Checks if the given UDP Port is already in use
      *
@@ -211,22 +211,22 @@ public class Network {
      * @return <tt>true</tt> if the UDP Port is already in use
      */
     public static final boolean existsUDPPort(int port) {
-        return registeredUDPPorts.containsKey(port);
+	return registeredUDPPorts.containsKey(port);
     }
-    
+
     /**
      * Checks if the given UDP Port is not in use and between the lowest and highest
      * possible Port number
      *
      * @param port UDP Port to get checked
      * @return <tt>true</tt> if the UDP Port is not in use and is a possible Port
-     * number
+     *         number
      */
     public static final boolean checkUDPPort(int port) {
-        if (existsUDPPort(port)) {
-            return false;
-        }
-        return ((port >= PORT_MIN) && (port <= PORT_MAX));
+	if (existsUDPPort(port)) {
+	    return false;
+	}
+	return ((port >= PORT_MIN) && (port <= PORT_MAX));
     }
 
     /**
@@ -236,22 +236,22 @@ public class Network {
      * @return <tt>true</tt> if the UDP Port was successfully registered
      */
     public static final boolean registerUDPPort(int port) {
-        return registerUDPPort(port, null);
+	return registerUDPPort(port, null);
     }
 
     /**
      * Registers a UDP Port to be used from now
      *
-     * @param port UDP Port to get registered
+     * @param port         UDP Port to get registered
      * @param serverSocket AdvancedServerSocket
      * @return <tt>true</tt> if the UDP Port was successfully registered
      */
     public static final boolean registerUDPPort(int port, AdvancedServerSocket serverSocket) {
-        if (!checkUDPPort(port)) {
-            return false;
-        }
-        registeredUDPPorts.put(port, serverSocket);
-        return true;
+	if (!checkUDPPort(port)) {
+	    return false;
+	}
+	registeredUDPPorts.put(port, serverSocket);
+	return true;
     }
 
     /**
@@ -261,11 +261,11 @@ public class Network {
      * @return <tt>true</tt> if the UDP Port was successfully unregistered
      */
     public static final boolean unregisterUDPPort(int port) {
-        if (!existsUDPPort(port)) {
-            return false;
-        }
-        registeredUDPPorts.remove(port);
-        return true;
+	if (!existsUDPPort(port)) {
+	    return false;
+	}
+	registeredUDPPorts.remove(port);
+	return true;
     }
 
     /**
@@ -275,9 +275,9 @@ public class Network {
      * @return Object
      */
     public static final Object getObjectFromUDPPort(int port) {
-        return registeredUDPPorts.get(port);
+	return registeredUDPPorts.get(port);
     }
-    
+
     /**
      * Formats an InetAddress
      *
@@ -285,64 +285,66 @@ public class Network {
      * @return Formatted InetAddress
      */
     public final static String formatInetAddress(InetAddress inetAddress) {
-        return String.format("\"%s\"", ((inetAddress != null) ? inetAddress.getHostAddress() : ""));
+	return String.format("\"%s\"", ((inetAddress != null) ? inetAddress.getHostAddress() : ""));
     }
 
     /**
      * Formats an InetAddress and a Port
      *
      * @param inetAddress InetAddress to get formatted
-     * @param port Port to get formatted
+     * @param port        Port to get formatted
      * @return Formatted InetAddress and Port
      */
     public final static String formatInetAddressAndPort(InetAddress inetAddress, int port) {
-        return String.format("\"%s:%d\"", ((inetAddress != null) ? inetAddress.getHostAddress() : ""), port);
+	return String.format("\"%s:%d\"", ((inetAddress != null) ? inetAddress.getHostAddress() : ""), port);
     }
 
     /**
      * Closes a Socket until its really closed
+     * 
      * @param socket Socket to close
      * @return <tt>true</tt> if the Socket was successfully closed
      */
     public static final boolean closeSocket(Socket socket) {
-        if (socket == null) {
-            return true;
-        }
-        try {
-            socket.close();
-            while (!socket.isClosed()) {
-                socket.close();
-            }
-            return true;
-        } catch (Exception ex) {
-            if (Logger.isDebugMode()) {
-                Logger.logErr("Error while closing Socket: " + ex, ex);
-            }
-            return false;
-        }
+	if (socket == null) {
+	    return true;
+	}
+	try {
+	    socket.close();
+	    while (!socket.isClosed()) {
+		socket.close();
+	    }
+	    return true;
+	} catch (Exception ex) {
+	    if (Logger.isDebugMode()) {
+		Logger.logErr("Error while closing Socket: " + ex, ex);
+	    }
+	    return false;
+	}
     }
 
     /**
      * Closes a ServerSocket until its really closed
+     * 
      * @param serverSocket ServerSocket to close
      * @return <tt>true</tt> if the ServerSocket was successfully closed
      */
     public static final boolean closeServerSocket(ServerSocket serverSocket) {
-        if (serverSocket == null) {
-            return true;
-        }
-        try {
-            serverSocket.close();
-            while (!serverSocket.isClosed()) {
-                serverSocket.close();
-            }
-            return true;
-        } catch (Exception ex) {
-            if (Logger.isDebugMode()) {
-                Logger.logErr("Error while closing ServerSocket: " + ex, ex);
-            }
-            return false;
-        }
+	if (serverSocket == null) {
+	    return true;
+	}
+	try {
+	    serverSocket.close();
+	    while (!serverSocket.isClosed()) {
+		serverSocket.close();
+	    }
+	    return true;
+	} catch (Exception ex) {
+	    if (Logger.isDebugMode()) {
+		Logger.logErr("Error while closing ServerSocket: " + ex, ex);
+	    }
+	    return false;
+	}
     }
 
 }

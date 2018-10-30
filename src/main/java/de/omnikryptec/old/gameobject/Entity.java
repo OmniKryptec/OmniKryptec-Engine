@@ -38,36 +38,36 @@ public class Entity extends GameObject3D implements DataMapSerializable {
     private boolean renderingEnabled = true;
 
     public Entity() {
-        super();
+	super();
     }
 
     public Entity(String name) {
-        super(name);
+	super(name);
     }
 
     public Entity(AdvancedModel model) {
-        this("", model, null);
+	this("", model, null);
     }
 
     public Entity(String name, AdvancedModel model) {
-        this(name, model, null);
+	this(name, model, null);
     }
 
     public Entity(AdvancedModel model, GameObject3D parent) {
-        this("", model, parent);
+	this("", model, parent);
     }
 
     public Entity(String name, AdvancedModel model, GameObject3D parent) {
-        super(name, parent);
-        this.model = model;
+	super(name, parent);
+	this.model = model;
     }
 
     public Entity(Entity copy) {
-        super(copy.getName());
-        setValuesFrom(copy);
-        this.model = copy.model;
-        this.type = copy.type;
-        this.color = new Color(copy.color);
+	super(copy.getName());
+	setValuesFrom(copy);
+	this.model = copy.model;
+	this.type = copy.type;
+	this.color = new Color(copy.color);
     }
 
     /**
@@ -78,18 +78,18 @@ public class Entity extends GameObject3D implements DataMapSerializable {
      * @return this Entity
      */
     public Entity setRenderType(RenderType type) {
-        this.type = type;
-        return this;
+	this.type = type;
+	return this;
     }
 
     public RenderType getType() {
-        return type;
+	return type;
     }
 
     /**
      * sets the AdvancedModel of this Entity. if the AdvancedModel is changed at
-     * runtime, this method should be called to ensure that the right renderer
-     * will render this entity.
+     * runtime, this method should be called to ensure that the right renderer will
+     * render this entity.
      *
      * @see TexturedModel
      * @see AnimatedModel
@@ -97,10 +97,10 @@ public class Entity extends GameObject3D implements DataMapSerializable {
      * @return this Entity
      */
     public final Entity setAdvancedModel(AdvancedModel model) {
-        this.model = model;
-        //if renderer gets changed this entity must be treated differently 
-        checkChunkPos(true);
-        return this;
+	this.model = model;
+	// if renderer gets changed this entity must be treated differently
+	checkChunkPos(true);
+	return this;
     }
 
     /**
@@ -110,7 +110,7 @@ public class Entity extends GameObject3D implements DataMapSerializable {
      * @return Advanced Model
      */
     public final AdvancedModel getAdvancedModel() {
-        return model;
+	return model;
     }
 
     /**
@@ -121,8 +121,8 @@ public class Entity extends GameObject3D implements DataMapSerializable {
      * @return this Entity
      */
     public Entity setColor(Color c) {
-        this.color = c;
-        return this;
+	this.color = c;
+	return this;
     }
 
     /**
@@ -136,8 +136,8 @@ public class Entity extends GameObject3D implements DataMapSerializable {
      * @return this Entity
      */
     public Entity setColor(float r, float g, float b, float a) {
-        color.set(r, g, b, a);
-        return this;
+	color.set(r, g, b, a);
+	return this;
     }
 
     /**
@@ -147,100 +147,100 @@ public class Entity extends GameObject3D implements DataMapSerializable {
      * @return a color
      */
     public Color getColor() {
-        return color;
+	return color;
     }
 
     public static EntityBuilder newEntity() {
-        return new EntityBuilder();
+	return new EntityBuilder();
     }
 
     public static EntityBuilder newEntity(Model model) {
-        return new EntityBuilder(model);
+	return new EntityBuilder(model);
     }
 
     public static EntityBuilder newEntity(SimpleTexture texture) {
-        return new EntityBuilder(texture);
+	return new EntityBuilder(texture);
     }
 
     public Entity setValuesFrom(Entity toCopy) {
-        if (toCopy == null) {
-            return this;
-        }
-        super.setValuesFrom(toCopy);
-        color = toCopy.color.getClone();
-        model = toCopy.model;
-        type = toCopy.type;
-        return this;
+	if (toCopy == null) {
+	    return this;
+	}
+	super.setValuesFrom(toCopy);
+	color = toCopy.color.getClone();
+	model = toCopy.model;
+	type = toCopy.type;
+	return this;
     }
 
     @Override
     public DataMap toDataMap(DataMap data) {
-        DataMap data_temp = super.toDataMap(new DataMap("gameObject"));
-        data.put(data_temp.getName(), data_temp);
-        data.put("color", SerializationUtil.colorToString(color));
-        data.put("type", type.name());
-        if (model != null) {
-            data.put("model", model.toDataMap(new DataMap(model.getName())));
-        }
-        return data;
+	DataMap data_temp = super.toDataMap(new DataMap("gameObject"));
+	data.put(data_temp.getName(), data_temp);
+	data.put("color", SerializationUtil.colorToString(color));
+	data.put("type", type.name());
+	if (model != null) {
+	    data.put("model", model.toDataMap(new DataMap(model.getName())));
+	}
+	return data;
     }
 
     public static Entity newInstanceFromDataMap(DataMap data) {
-        if (data == null) {
-            return null;
-        }
-        String name = data.getDataMap("gameObject").getString("name");
-        if (name == null || name.isEmpty()) {
-            Logger.log("Failed to create new Entity");
-            return null;
-        }
-        final Entity entity = byName(Entity.class, name, false);
-        return (entity != null ? entity : new Entity()).fromDataMap(data);
+	if (data == null) {
+	    return null;
+	}
+	String name = data.getDataMap("gameObject").getString("name");
+	if (name == null || name.isEmpty()) {
+	    Logger.log("Failed to create new Entity");
+	    return null;
+	}
+	final Entity entity = byName(Entity.class, name, false);
+	return (entity != null ? entity : new Entity()).fromDataMap(data);
     }
 
     @Override
     public Entity fromDataMap(DataMap data) {
-        if (data == null) {
-            return null;
-        }
-        Logger.log("Creating Entity from DataMap: " + data.getName());
-        DataMap dataMap_temp = data.getDataMap("gameObject");
-        super.fromDataMap(dataMap_temp);
-        color = SerializationUtil.stringToColor(data.getString("color"));
-        String temp = data.getString("type");
-        if (temp != null) {
-            type = RenderType.valueOf(temp);
-        } else {
-            type = RenderType.ALWAYS;
-        }
-        dataMap_temp = data.getDataMap("model");
-        if (dataMap_temp != null) {
-            final String modelName = dataMap_temp.getName();
-            Logger.log("Loading AdvancedModel: " + modelName + ", for: " + this);
-            try {
-                model = ResourceLoader.currentInstance().getResource(AdvancedModel.class, modelName);
-                if (model != null) {
-                    model.fromDataMap(dataMap_temp);
-                } else if (Logger.isDebugMode()) {
-                    Logger.log("AdvancedModel is null!", LogLevel.WARNING);
-                }
-            } catch (Exception ex) {
-                model = null;
-                Logger.logErr("Error while setting up the advanced model: " + ex, ex);
-            }
-        } else if (Logger.isDebugMode()) {
-            model = null;
-            Logger.log("AdvancedModel DataMap is null!", LogLevel.WARNING);
-        }
-        return this;
+	if (data == null) {
+	    return null;
+	}
+	Logger.log("Creating Entity from DataMap: " + data.getName());
+	DataMap dataMap_temp = data.getDataMap("gameObject");
+	super.fromDataMap(dataMap_temp);
+	color = SerializationUtil.stringToColor(data.getString("color"));
+	String temp = data.getString("type");
+	if (temp != null) {
+	    type = RenderType.valueOf(temp);
+	} else {
+	    type = RenderType.ALWAYS;
+	}
+	dataMap_temp = data.getDataMap("model");
+	if (dataMap_temp != null) {
+	    final String modelName = dataMap_temp.getName();
+	    Logger.log("Loading AdvancedModel: " + modelName + ", for: " + this);
+	    try {
+		model = ResourceLoader.currentInstance().getResource(AdvancedModel.class, modelName);
+		if (model != null) {
+		    model.fromDataMap(dataMap_temp);
+		} else if (Logger.isDebugMode()) {
+		    Logger.log("AdvancedModel is null!", LogLevel.WARNING);
+		}
+	    } catch (Exception ex) {
+		model = null;
+		Logger.logErr("Error while setting up the advanced model: " + ex, ex);
+	    }
+	} else if (Logger.isDebugMode()) {
+	    model = null;
+	    Logger.log("AdvancedModel DataMap is null!", LogLevel.WARNING);
+	}
+	return this;
     }
 
     public boolean isRenderingEnabled() {
-        return renderingEnabled;
+	return renderingEnabled;
     }
 
     public void setRenderingEnabled(boolean renderingEnabled) {
-        this.renderingEnabled = renderingEnabled;
+	this.renderingEnabled = renderingEnabled;
     }
 
 }

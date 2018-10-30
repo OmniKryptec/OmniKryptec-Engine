@@ -41,16 +41,17 @@ import de.omnikryptec.old.util.Priority;
 public class WaterRenderer extends Renderer {
 
     public WaterRenderer() {
-        super(new ShaderPack(new ShaderGroup(new WaterShader())));
-        RendererRegistration.register(this);
+	super(new ShaderPack(new ShaderGroup(new WaterShader())));
+	RendererRegistration.register(this);
     }
 
     private List<Entity> stapel;
     private long vertcount = 0;
 
     @Override
-    protected long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, Shader started, FrustrumFilter filter) {
-        //TOD- Fill it out
-        return 0;
+    protected long render(AbstractScene3D s, KeyArrayHashMap<AdvancedModel, List<Entity>> entities, Shader started,
+	    FrustrumFilter filter) {
+	// TOD- Fill it out
+	return 0;
     }
 }

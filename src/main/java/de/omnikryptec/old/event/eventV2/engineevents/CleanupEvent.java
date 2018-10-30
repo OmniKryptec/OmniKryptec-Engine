@@ -21,8 +21,8 @@ import de.omnikryptec.old.main.OmniKryptecEngine;
 
 public class CleanupEvent extends Event {
 
-	public CleanupEvent() {
-		super(OmniKryptecEngine.instance().ENGINE_BUS);
-	}
+    public CleanupEvent() {
+	super(OmniKryptecEngine.instance().ENGINE_BUS);
+    }
 
 }

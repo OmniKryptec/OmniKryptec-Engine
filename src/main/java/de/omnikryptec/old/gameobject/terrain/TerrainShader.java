@@ -41,16 +41,16 @@ public class TerrainShader extends Shader {
     public static final UniformSampler blendMap = new UniformSampler("blendMap");
 
     public TerrainShader() {
-        super(TerrainShader.class.getResourceAsStream(SHADER_FOLDER + "terrainVertexShader.txt"),
-                TerrainShader.class.getResourceAsStream(SHADER_FOLDER + "terrainFragmentShader.txt"), "position",
-                "textureCoordinates", "normal", "tangents", transformationMatrix, projectionMatrix, viewMatrix,
-                backgroundTexture, rTexture, gTexture, bTexture, blendMap);
-        start();
-        backgroundTexture.loadTexUnit(0);
-        rTexture.loadTexUnit(1);
-        gTexture.loadTexUnit(2);
-        bTexture.loadTexUnit(3);
-        blendMap.loadTexUnit(4);
+	super(TerrainShader.class.getResourceAsStream(SHADER_FOLDER + "terrainVertexShader.txt"),
+		TerrainShader.class.getResourceAsStream(SHADER_FOLDER + "terrainFragmentShader.txt"), "position",
+		"textureCoordinates", "normal", "tangents", transformationMatrix, projectionMatrix, viewMatrix,
+		backgroundTexture, rTexture, gTexture, bTexture, blendMap);
+	start();
+	backgroundTexture.loadTexUnit(0);
+	rTexture.loadTexUnit(1);
+	gTexture.loadTexUnit(2);
+	bTexture.loadTexUnit(3);
+	blendMap.loadTexUnit(4);
     }
 
 }

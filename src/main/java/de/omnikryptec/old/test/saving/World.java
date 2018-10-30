@@ -39,101 +39,101 @@ public class World implements DataMapSerializable {
     private GameObject[] gameObjects = null;
 
     public World() {
-        this("");
+	this("");
     }
 
     public World(String name) {
-        this(name, null);
+	this(name, null);
     }
 
     public World(String name, GameObject[] gameObjects) {
-        this.name = name;
-        this.gameObjects = gameObjects;
+	this.name = name;
+	this.gameObjects = gameObjects;
     }
 
     @Override
     public String getName() {
-        return name;
+	return name;
     }
 
     public void setName(String name) {
-        this.name = name;
+	this.name = name;
     }
 
     public GameObject[] getGameObjects() {
-        return gameObjects;
+	return gameObjects;
     }
 
     public World setGameObjects(GameObject[] gameObjects) {
-        this.gameObjects = gameObjects;
-        return this;
+	this.gameObjects = gameObjects;
+	return this;
     }
 
     public World save(AdvancedFile file) {
-        ObjectManager.saveObjectToFile(this, file, true);
-        return this;
+	ObjectManager.saveObjectToFile(this, file, true);
+	return this;
     }
 
     @Override
     public String toString() {
-        return String.format("World \"%s\" with %d GameObjects", name, (gameObjects != null ? gameObjects.length : 0));
+	return String.format("World \"%s\" with %d GameObjects", name, (gameObjects != null ? gameObjects.length : 0));
     }
 
     public static World createInstance() {
-        return new World();
+	return new World();
     }
 
     public static World loadWorldFromFile(AdvancedFile file) {
-        return ObjectManager.loadObjectFromFile(file, World.createInstance());
+	return ObjectManager.loadObjectFromFile(file, World.createInstance());
     }
 
     @Override
     public DataMap toDataMap(DataMap data) {
-        data.put("name", name);
-        final ArrayList<Object> weights = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            weights.add((float) (Math.random() * 10.0));
-            weights.add(weights.clone());
-        }
-        final HashMap<Object, Object> test = new HashMap<>();
-        for (int i = 0; i < 3; i++) {
-            test.put(name + i, i * 1040L);
-            final HashMap<String, Long> test_2 = new HashMap<>();
-            for (int z = 0; z < 3; z++) {
-                test_2.put(name + z, z * 1040L);
-            }
-            test.put((i * 4), test_2);
-        }
-        data.put("weights", weights);
-        data.put("test", test);
-        int[] array_1d = new int[]{1, 2, 4545, 45};
-        int[][] array_2d = new int[][]{array_1d, array_1d};
-        int[][][] array_3d = new int[][][]{array_2d, array_2d};
-        data.put("array_1d", array_1d);
-        data.put("array_2d", array_2d);
-        data.put("array_3d", array_3d);
-        return data;
+	data.put("name", name);
+	final ArrayList<Object> weights = new ArrayList<>();
+	for (int i = 0; i < 2; i++) {
+	    weights.add((float) (Math.random() * 10.0));
+	    weights.add(weights.clone());
+	}
+	final HashMap<Object, Object> test = new HashMap<>();
+	for (int i = 0; i < 3; i++) {
+	    test.put(name + i, i * 1040L);
+	    final HashMap<String, Long> test_2 = new HashMap<>();
+	    for (int z = 0; z < 3; z++) {
+		test_2.put(name + z, z * 1040L);
+	    }
+	    test.put((i * 4), test_2);
+	}
+	data.put("weights", weights);
+	data.put("test", test);
+	int[] array_1d = new int[] { 1, 2, 4545, 45 };
+	int[][] array_2d = new int[][] { array_1d, array_1d };
+	int[][][] array_3d = new int[][][] { array_2d, array_2d };
+	data.put("array_1d", array_1d);
+	data.put("array_2d", array_2d);
+	data.put("array_3d", array_3d);
+	return data;
     }
 
     public static World newInstanceFromDataMap(DataMap data) {
-        return new World().fromDataMap(data);
+	return new World().fromDataMap(data);
     }
 
     @Override
     public World fromDataMap(DataMap data) {
-        Logger.log("Created World data.size() == " + data.size());
-        for (String g : data.keySet()) {
-            Object object = data.get(g);
-            String text = "" + object;
-            Class<?> c = object.getClass();
-            if (c.isArray()) {
-                text = Arrays.deepToString((Object[]) object);
-            }
-            Logger.log(g + " " + c.getName() + " " + text);
-        }
-        Logger.log(((Object[]) ((Object[]) ((Object[]) data.get("array_3d"))[0])[0]).getClass());
-        setName(data.getString("name"));
-        return this;
+	Logger.log("Created World data.size() == " + data.size());
+	for (String g : data.keySet()) {
+	    Object object = data.get(g);
+	    String text = "" + object;
+	    Class<?> c = object.getClass();
+	    if (c.isArray()) {
+		text = Arrays.deepToString((Object[]) object);
+	    }
+	    Logger.log(g + " " + c.getName() + " " + text);
+	}
+	Logger.log(((Object[]) ((Object[]) ((Object[]) data.get("array_3d"))[0])[0]).getClass());
+	setName(data.getString("name"));
+	return this;
     }
 
 }
