@@ -45,12 +45,22 @@ public class ResourceProcessor {
     private ResourceNameGenerator resourceNameGenerator;
 
     public ResourceProcessor() {
+	this(new DefaultResourceProvider(), ResourceNameGenerator.defaultNameGen());
+    }
+    
+    public ResourceProcessor(ResourceProvider resProv, ResourceNameGenerator nameGen) {
+	this.resourceProvider = resProv;
+	this.resourceNameGenerator = nameGen;
 	this.callbacks = new ArrayList<>();
 	this.staged = new ArrayList<>();
 	this.loadersThreadGroup = new ArrayList<>();
 	this.loadersMainThread = new ArrayList<>();
     }
 
+    public ResourceProvider getProvider() {
+	return resourceProvider;
+    }
+    
     public void addCallback(LoadingProgressCallback callback) {
 	callbacks.add(callback);
     }
@@ -75,13 +85,21 @@ public class ResourceProcessor {
 	new Processor(override).loadSimple(file);
     }
 
-    private void addResource(Resource res, AdvancedFile file, AdvancedFile superfile, boolean override) {
+    private void addResource(Object res, AdvancedFile file, AdvancedFile superfile, boolean override) {
 	if (res != null) {
 	    String name = resourceNameGenerator.genName(res, file, superfile);
 	    resourceProvider.add(res, name, override);
 	}
     }
 
+    public void addLoader(ResourceLoader<?> loader, boolean threadsafe) {
+	if(threadsafe) {
+	    loadersThreadGroup.add(loader);
+	}else {
+	    loadersMainThread.add(loader);
+	}
+    }
+    
     /*
      * Kind of messy, in here
      */
@@ -187,7 +205,12 @@ public class ResourceProcessor {
 	    Runnable r = () -> {
 		for (ResourceLoader<?> loader : loadersThreadGroup) {
 		    if (file.getName().matches(loader.getFileNameRegex())) {
-			Resource res = loader.load(file);
+			Object res = null;
+			try {
+			    res = loader.load(file);
+			} catch (Exception e) {
+			    e.printStackTrace();
+			}
 			addResource(res, file, superfile, override);
 		    }
 		}
@@ -199,7 +222,12 @@ public class ResourceProcessor {
 	    }
 	    for (ResourceLoader<?> loader : loadersMainThread) {
 		if (file.getName().matches(loader.getFileNameRegex())) {
-		    Resource res = loader.load(file);
+		    Object res = null;
+		    try {
+			res = loader.load(file);
+		    } catch (Exception e) {
+			e.printStackTrace();
+		    }
 		    addResource(res, file, superfile, override);
 		}
 	    }
