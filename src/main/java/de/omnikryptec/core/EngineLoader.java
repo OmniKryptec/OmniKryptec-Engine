@@ -155,7 +155,7 @@ public abstract class EngineLoader {
 
     private Window<?> window;
     private boolean booted;
-    
+
     public EngineLoader() {
     }
 
@@ -188,7 +188,7 @@ public abstract class EngineLoader {
     }
 
     public Window<?> getWindow() {
-	if(!booted) {
+	if (!booted) {
 	    throw new IllegalStateException("Window is not created yet");
 	}
 	return window;
@@ -197,7 +197,7 @@ public abstract class EngineLoader {
     public boolean isBooted() {
 	return booted;
     }
-    
+
     protected void config(Settings<LoaderSetting> settings) {
     }
 
