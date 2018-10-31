@@ -14,7 +14,7 @@ import de.omnikryptec.util.ExecutorsUtil;
 public abstract class IndividualParallelComponentSystem extends ParallelComponentSystem {
 
     public IndividualParallelComponentSystem(BitSet required) {
-	this(required, ExecutorsUtil.getAvailableProcessors(), ExecutorsUtil.getAvailableProcessors() * 5);
+	this(required, ExecutorsUtil.getAvailableThreads(), ExecutorsUtil.getAvailableThreads() * 5);
     }
 
     public IndividualParallelComponentSystem(BitSet required, int threads, int activationSize) {

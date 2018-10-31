@@ -17,7 +17,7 @@ import de.omnikryptec.util.math.Mathd;
 public abstract class GroupParallelComponentSystem extends ParallelComponentSystem {
 
     public GroupParallelComponentSystem(BitSet required) {
-	this(required, ExecutorsUtil.getAvailableProcessors(), ExecutorsUtil.getAvailableProcessors() * 3);
+	this(required, ExecutorsUtil.getAvailableThreads(), ExecutorsUtil.getAvailableThreads() * 3);
     }
 
     public GroupParallelComponentSystem(BitSet required, int threads, int activationSize) {

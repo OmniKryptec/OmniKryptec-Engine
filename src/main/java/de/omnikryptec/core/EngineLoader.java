@@ -1,5 +1,8 @@
 package de.omnikryptec.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import org.lwjgl.system.Configuration;
 
 import de.omnikryptec.libapi.glfw.LibAPIManager;
@@ -122,7 +125,7 @@ public abstract class EngineLoader {
      * 
      * @param settings the {@link Settings} to set the lib options from
      */
-    public static void setConfiguration(Settings<LoaderSetting> settings) {
+    public static void setConfiguration(@Nonnull Settings<LoaderSetting> settings) {
 	debug = settings.get(LoaderSetting.DEBUG);
 	boolean fastmath = settings.get(LoaderSetting.FASTMATH);
 	boolean functionDebug = settings.get(LoaderSetting.DEBUG_FUNCTIONS);
@@ -151,10 +154,12 @@ public abstract class EngineLoader {
     }
 
     private Window<?> window;
-
+    private boolean booted;
+    
     public EngineLoader() {
     }
 
+    @Nonnull
     public EngineLoader boot() {
 	Settings<LoaderSetting> loaderSettings = new Settings<>();
 	config(loaderSettings);
@@ -163,6 +168,7 @@ public abstract class EngineLoader {
 	// LIBRARY_PATH <-- Seems to work, so better use it
 	initialize();
 	window = ((WindowInfo<?>) loaderSettings.get(LoaderSetting.WINDOW_INFO)).createWindow();
+	booted = true;
 	if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.IMMEDIATELY) {
 	    window.show();
 	}
@@ -182,9 +188,16 @@ public abstract class EngineLoader {
     }
 
     public Window<?> getWindow() {
+	if(!booted) {
+	    throw new IllegalStateException("Window is not created yet");
+	}
 	return window;
     }
 
+    public boolean isBooted() {
+	return booted;
+    }
+    
     protected void config(Settings<LoaderSetting> settings) {
     }
 

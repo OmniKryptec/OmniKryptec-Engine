@@ -40,7 +40,7 @@ public class ResourceProcessor {
     private Collection<ResourceLoader<?>> loadersThreadGroup;
     private Collection<ResourceLoader<?>> loadersMainThread;
     private List<ResourceLocation> staged;
-
+    
     private ResourceProvider resourceProvider;
     private ResourceNameGenerator resourceNameGenerator;
 
@@ -113,7 +113,7 @@ public class ResourceProcessor {
 
 	private Processor(boolean override) {
 	    this.override = override;
-	    this.executorService = ExecutorsUtil.newFixedThreadPool(ExecutorsUtil.getAvailableProcessors());
+	    this.executorService = ExecutorsUtil.newFixedThreadPool(ExecutorsUtil.getAvailableThreads());
 	}
 
 	private void processStaged() {

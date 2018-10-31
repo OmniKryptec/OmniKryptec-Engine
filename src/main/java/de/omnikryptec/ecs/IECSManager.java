@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 
 import de.omnikryptec.core.Updateable;
 import de.omnikryptec.ecs.component.Component;
@@ -21,14 +22,15 @@ import de.omnikryptec.util.UnsupportedOperationException;
  * <br>
  * In an ECS, Entities usually are only containers of Components. Components
  * usually only hold Data. That means that usually both of them do not contain
- * any game logic. ComponentSystems usually only contain logic and process only
- * Entities that have certain Components. Entities with the same type of
- * Components can be grouped in {@link Family}s (that might improve
- * performance).
+ * any game logic. <br>
+ * ComponentSystems usually only contain logic and process only Entities that
+ * have certain Components. Entities with the same type of Components can be
+ * grouped in {@link Family}s (that might improve performance).
  * 
  * @author pcfreak9000
  *
  */
+@ParametersAreNonnullByDefault
 public interface IECSManager extends Updateable {
 
     /**
@@ -48,28 +50,28 @@ public interface IECSManager extends Updateable {
      * 
      * @param entity the entity to add
      */
-    void addEntity(@Nonnull Entity entity);
+    void addEntity(Entity entity);
 
     /**
      * Removes an {@link Entity} from this {@link IECSManager}
      * 
      * @param entity the entity to remove
      */
-    void removeEntity(@Nonnull Entity entity);
+    void removeEntity(Entity entity);
 
     /**
      * Adds a {@link ComponentSystem} to this {@link IECSManager}.
      * 
      * @param system the system to add
      */
-    void addSystem(@Nonnull ComponentSystem system);
+    void addSystem(ComponentSystem system);
 
     /**
      * Removes a {@link ComponentSystem} from this {@link IECSManager}.
      * 
      * @param system the system to remove
      */
-    void removeSystem(@Nonnull ComponentSystem system);
+    void removeSystem(ComponentSystem system);
 
     /**
      * Gets all the entities matching a certain {@link Family}.
@@ -78,7 +80,7 @@ public interface IECSManager extends Updateable {
      * @return a list of entities matching the requirements
      */
     @Nonnull
-    List<Entity> getEntitesFor(@Nonnull BitSet f);
+    List<Entity> getEntitesFor(BitSet f);
 
     /**
      * All via {@link #addEntity(Entity)} added entities.
@@ -96,7 +98,7 @@ public interface IECSManager extends Updateable {
      * @throws UnsupportedOperationException if this operation is not supported by
      *                                       the implementation
      */
-    void onEntityComponentsChanged(@Nonnull Entity entity) throws UnsupportedOperationException;
+    void onEntityComponentsChanged(Entity entity) throws UnsupportedOperationException;
 
     /**
      * Add an {@link EntityListener} to this {@link IECSManager}.<br>
@@ -111,7 +113,7 @@ public interface IECSManager extends Updateable {
      * @throws UnsupportedOperationException if this operation is not supported by
      *                                       the implementation
      */
-    void addEntityListener(@Nullable BitSet family, @Nonnull EntityListener listener)
+    void addEntityListener(@Nullable BitSet family, EntityListener listener)
 	    throws UnsupportedOperationException;
 
     /**
@@ -127,7 +129,7 @@ public interface IECSManager extends Updateable {
      * @throws UnsupportedOperationException if this operation is not supported by
      *                                       the implementation
      */
-    void removeEntityListener(@Nullable BitSet family, @Nonnull EntityListener listener)
+    void removeEntityListener(@Nullable BitSet family, EntityListener listener)
 	    throws UnsupportedOperationException;
 
 }

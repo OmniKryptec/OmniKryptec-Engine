@@ -14,6 +14,8 @@ public class ExecutorsUtil {
     private static final Queue<ExecutorService> allExecutors = new ConcurrentLinkedQueue<>();
     private static final AtomicBoolean lock = new AtomicBoolean(false);
 
+    private static int maxThreads = Integer.MAX_VALUE; // Math.max(AVAILABLE_PROCESSORS - 2, 2);
+
     public static ExecutorService newFixedThreadPool(int nthreads) {
 	ExecutorService service = Executors.newFixedThreadPool(nthreads);
 	register(service);
@@ -77,7 +79,11 @@ public class ExecutorsUtil {
 	}
     }
 
-    public static int getAvailableProcessors() {
-	return AVAILABLE_PROCESSORS;
+    public static int getAvailableThreads() {
+	return Math.min(AVAILABLE_PROCESSORS, maxThreads);
+    }
+
+    public static void setMaxThreads(int i) {
+	maxThreads = i;
     }
 }
