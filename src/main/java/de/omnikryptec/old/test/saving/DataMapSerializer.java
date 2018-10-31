@@ -22,7 +22,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import de.codemakers.util.ArrayUtil;
 import de.omnikryptec.old.util.logger.Logger;
 
 /**

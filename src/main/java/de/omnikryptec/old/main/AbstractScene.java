@@ -141,10 +141,12 @@ public abstract class AbstractScene<T extends GameObject> implements GameObjectC
 
     protected abstract T removeGameObject_(T g, boolean delete);
 
+    @Override
     public void addGameObject(T go, boolean added) {
 	addGameObject_(go, added);
     }
 
+    @Override
     public T removeGameObject(T go, boolean delete) {
 	removeGameObject_(go, delete);
 	return go;

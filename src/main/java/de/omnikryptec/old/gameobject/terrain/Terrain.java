@@ -132,15 +132,15 @@ public class Terrain extends Entity {
 	for (int i = 0; i < vertex_count; i++) {
 	    for (int j = 0; j < vertex_count; j++) {
 		final Vertex vertex = new Vertex(vertices.size(),
-			new Vector3f((float) (j / ((float) vertex_count - 1) * size),
-				(float) generator.getHeight(worldx + j, worldz + i),
-				(float) (i / ((float) vertex_count - 1) * size)));
+			new Vector3f(j / ((float) vertex_count - 1) * size,
+				generator.getHeight(worldx + j, worldz + i),
+				i / ((float) vertex_count - 1) * size));
 		vertices.add(vertex);
 		normal = generator.generateNormal(worldx + j, worldz + i);
 		vertex.setNormalIndex(normals.size());
 		normals.add(normal);
-		texture = new Vector2f((float) (j / ((float) vertex_count - 1)),
-			(float) (i / ((float) vertex_count - 1)));
+		texture = new Vector2f(j / ((float) vertex_count - 1),
+			i / ((float) vertex_count - 1));
 		vertex.setTextureIndex(textures.size());
 		textures.add(texture);
 	    }

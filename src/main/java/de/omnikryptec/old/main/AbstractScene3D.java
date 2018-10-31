@@ -79,6 +79,7 @@ public abstract class AbstractScene3D extends AbstractScene<GameObject3D> implem
 	return go;
     }
 
+    @Override
     protected void preRender() {
 	ParticleMaster.resetTimes();
 	if (renderConfig.isRendererTimeAllowed(RendererTime.PRE)) {
@@ -91,6 +92,7 @@ public abstract class AbstractScene3D extends AbstractScene<GameObject3D> implem
 	}
     }
 
+    @Override
     protected void postRender() {
 	if (renderConfig.isRendererTimeAllowed(RendererTime.POST)) {
 	    for (Renderer r : postrender) {

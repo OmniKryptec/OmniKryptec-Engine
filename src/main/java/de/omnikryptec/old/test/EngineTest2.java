@@ -25,9 +25,7 @@ import org.joml.Vector3f;
 import org.lwjgl.opencl.CL10;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.codemakers.lang.LanguageManager;
 import de.omnikryptec.graphics.display.Display;
-import de.omnikryptec.graphics.display.DisplayManager;
 import de.omnikryptec.libapi.glfw.WindowInfo;
 import de.omnikryptec.libapi.opencl.CLCommandQueue;
 import de.omnikryptec.libapi.opencl.CLContext;
@@ -231,7 +229,7 @@ public class EngineTest2 {
 	    tm.getMaterial().setHasTransparency(false).setVector3f(Material.REFLECTIVITY, new Vector3f(0.6f))
 		    .setFloat(Material.DAMPER, 1.01f).setVector3f(Material.SHADERINFO, new Vector3f(1));
 
-	    OmniKryptecEngine.instance().addAndSetScene(new Scene3D("test", (Camera) new Camera() {
+	    OmniKryptecEngine.instance().addAndSetScene(new Scene3D("test", new Camera() {
 
 		@Override
 		public void update() {

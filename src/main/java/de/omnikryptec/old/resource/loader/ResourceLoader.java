@@ -35,7 +35,6 @@ import java.util.stream.Collectors;
 import org.reflections.Reflections;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.codemakers.properties.XMLProperties;
 import de.omnikryptec.old.resource.loader.annotations.DefaultLoader;
 import de.omnikryptec.old.resource.texture.SimpleTexture;
 import de.omnikryptec.old.util.logger.LogLevel;

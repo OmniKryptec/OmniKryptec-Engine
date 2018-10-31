@@ -53,6 +53,7 @@ public interface AdvancedModel extends ResourceObject {
      * 
      * @return A reference to this AdvancedModel
      */
+    @Override
     public AdvancedModel delete();
 
     /**

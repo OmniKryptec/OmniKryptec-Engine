@@ -71,7 +71,7 @@ public class OpenGLUtil {
 
     public static void setEnabled(Feature feature, boolean b) {
 	Boolean cached = featureCache.get(feature);
-	if (cached == null || (((boolean) cached) != b)) {
+	if (cached == null || ((cached) != b)) {
 	    if (b) {
 		GL11.glEnable(feature.id);
 		featureCache.put(feature, true);

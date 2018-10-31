@@ -24,8 +24,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 
-import de.codemakers.lang.LanguageManager;
-import de.codemakers.lang.LanguageReloader;
 import de.omnikryptec.old.swing.JCheckBoxList;
 import de.omnikryptec.old.util.action.ActionProcessor;
 import de.omnikryptec.old.util.debug.VariableChangeListener;

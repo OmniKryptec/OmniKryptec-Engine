@@ -3,8 +3,6 @@ package de.omnikryptec.util;
 import java.util.Random;
 
 import de.omnikryptec.util.math.MathUtil;
-import de.omnikryptec.util.math.Mathd;
-import de.omnikryptec.util.math.Mathf;
 
 public class ARandomTest {
 

@@ -16,12 +16,9 @@
 
 package de.omnikryptec.old.util;
 
-import static de.codemakers.io.file.AdvancedFile.NOT_FOUND;
-
 import java.util.Properties;
 import java.util.function.Consumer;
 
-import de.codemakers.util.Returner;
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;

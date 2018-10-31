@@ -18,8 +18,6 @@ package de.omnikryptec.old.util.logger;
 
 import java.awt.Color;
 
-import de.codemakers.lang.LanguageManager;
-
 /**
  * LogLevel
  *

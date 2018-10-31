@@ -175,6 +175,7 @@ public class FrameBufferObject extends Texture {
     /**
      * Deletes the frame buffer and its attachments when the game closes.
      */
+    @Override
     public FrameBufferObject delete() {
 	if (type == DepthbufferType.DEPTH_RENDER_BUFFER) {
 	    GL30.glDeleteRenderbuffers(depthBuffer);

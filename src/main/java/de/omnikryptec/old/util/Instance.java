@@ -20,7 +20,6 @@ import java.time.format.DateTimeFormatter;
 
 import org.joml.Vector3f;
 
-import de.omnikryptec.graphics.display.DisplayManager;
 import de.omnikryptec.old.animation.renderer.AnimatedModelRenderer;
 import de.omnikryptec.old.event.eventV2.EventBus;
 import de.omnikryptec.old.gameobject.Camera;

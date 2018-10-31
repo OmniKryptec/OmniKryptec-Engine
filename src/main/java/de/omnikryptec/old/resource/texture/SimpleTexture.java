@@ -54,6 +54,7 @@ public class SimpleTexture extends Texture {
 	super.bindTexture(type, id);
     }
 
+    @Override
     public SimpleTexture delete() {
 	GL11.glDeleteTextures(id);
 	return this;

@@ -25,7 +25,6 @@ import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.graphics.display.DisplayManager;
 import de.omnikryptec.libapi.glfw.WindowInfo;
 import de.omnikryptec.old.animation.AnimatedModel;
 import de.omnikryptec.old.animation.Animation;
@@ -117,7 +116,7 @@ public class AnimationTest {
 	    keySettings.setKey("higher", GLFW.GLFW_KEY_PERIOD, true);
 	    DisplayManager.createDisplay("Animation Test", gameSettings, new WindowInfo(4, 3, false, false, 1280, 720));
 	    OmniKryptecEngine.instance()
-		    .addAndSetScene((scene = new Scene3D("Test-Scene", camera = ((Camera) new Camera() {
+		    .addAndSetScene((scene = new Scene3D("Test-Scene", camera = (new Camera() {
 
 			@Override
 			public final void update() {

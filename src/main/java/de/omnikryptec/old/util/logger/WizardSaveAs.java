@@ -32,8 +32,6 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EtchedBorder;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.codemakers.lang.LanguageManager;
-import de.codemakers.lang.LanguageReloader;
 import de.omnikryptec.old.swing.JCheckBoxList;
 import de.omnikryptec.old.util.logger.LogEntryFormatter.LogEntryFormatTile;
 

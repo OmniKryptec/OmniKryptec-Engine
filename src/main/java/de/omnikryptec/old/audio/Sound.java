@@ -53,7 +53,7 @@ public class Sound implements ISound {
     }
 
     private final float calculateLength() {
-	length = ((((float) size) * 8.0F) / (((float) channels) * ((float) bits))) / ((float) frequency);
+	length = (((size) * 8.0F) / (((float) channels) * ((float) bits))) / (frequency);
 	return length;
     }
 

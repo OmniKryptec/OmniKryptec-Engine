@@ -22,9 +22,7 @@ import java.util.stream.Collectors;
 
 import org.lwjgl.opengl.GL30;
 
-import de.codemakers.logger.ILogger;
 import de.omnikryptec.graphics.display.Display;
-import de.omnikryptec.graphics.display.DisplayManager;
 import de.omnikryptec.old.event.eventV2.EventBus;
 import de.omnikryptec.old.event.eventV2.engineevents.CleanupEvent;
 import de.omnikryptec.old.event.eventV2.engineevents.ErrorEvent;

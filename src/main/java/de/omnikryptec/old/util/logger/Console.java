@@ -43,8 +43,6 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.codemakers.lang.LanguageManager;
-import de.codemakers.lang.LanguageReloader;
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.util.EnumCollection.GameState;
 import de.omnikryptec.old.util.logger.LogEntryFormatter.LogEntryFormatTile;

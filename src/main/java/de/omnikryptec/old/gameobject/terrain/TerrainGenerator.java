@@ -71,7 +71,7 @@ public class TerrainGenerator implements Noise {
 	double hR = valueAt(worldX + 1, worldZ);
 	double hD = valueAt(worldX, worldZ - 1);
 	double hU = valueAt(worldX, worldZ + 1);
-	return (Vector3f) new Vector3f((float) (hL - hR), 2f, (float) (hD - hU)).normalize();
+	return new Vector3f((float) (hL - hR), 2f, (float) (hD - hU)).normalize();
     }
 
     @Override

@@ -209,7 +209,7 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 		    Logger.log("TexturedModel is null", LogLevel.WARNING);
 		}
 	    } else if (g instanceof Light3D) {
-		lights.remove((Light3D) g);
+		lights.remove(g);
 	    } else {
 		other.remove(g);
 	    }
@@ -281,6 +281,7 @@ public class RenderChunk3D implements DataMapSerializable, GameObjectContainer<G
 	return lights;
     }
 
+    @Override
     public int size() {
 	return chunk.size() + other.size() + lights.size();
     }

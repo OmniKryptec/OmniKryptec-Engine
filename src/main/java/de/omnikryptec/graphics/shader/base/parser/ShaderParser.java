@@ -1,9 +1,5 @@
 package de.omnikryptec.graphics.shader.base.parser;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 import org.lwjgl.opengl.GL40;

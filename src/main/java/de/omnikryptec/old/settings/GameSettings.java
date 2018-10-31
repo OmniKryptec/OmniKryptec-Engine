@@ -23,10 +23,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
-import de.codemakers.serialization.XMLable;
-import de.codemakers.util.Returner;
 import de.omnikryptec.graphics.display.Display;
-import de.omnikryptec.graphics.display.DisplayManager;
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.postprocessing.main.FBOFactory;
 import de.omnikryptec.old.postprocessing.main.FrameBufferObject;

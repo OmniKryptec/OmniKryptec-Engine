@@ -16,8 +16,6 @@
 
 package de.omnikryptec.old.settings;
 
-import de.codemakers.serialization.XMLable;
-
 /**
  * Key Interface
  *
