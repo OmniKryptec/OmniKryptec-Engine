@@ -92,11 +92,11 @@ public class ResourceProcessor {
 	}
     }
 
-    public void addLoader(ResourceLoader<?> loader, boolean threadsafe) {
-	if (threadsafe) {
-	    loadersThreadGroup.add(loader);
-	} else {
+    public void addLoader(ResourceLoader<?> loader) {
+	if (loader.requiresMainThread()) {
 	    loadersMainThread.add(loader);
+	} else {
+	    loadersThreadGroup.add(loader);
 	}
     }
 

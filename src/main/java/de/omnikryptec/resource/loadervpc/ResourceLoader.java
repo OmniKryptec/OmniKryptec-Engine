@@ -8,4 +8,6 @@ public interface ResourceLoader<T> {
 
     String getFileNameRegex();
 
+    boolean requiresMainThread();
+
 }

@@ -24,7 +24,12 @@ public class Test {
 	    public String getFileNameRegex() {
 		return ".*java";
 	    }
-	}, true);
+
+	    @Override
+	    public boolean requiresMainThread() {
+		return false;
+	    }
+	});
 	p.addCallback(new LoadingProgressCallback() {
 
 	    @Override
