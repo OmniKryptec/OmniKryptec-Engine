@@ -104,7 +104,10 @@ public class WindowUpdater {
 	}
     }
 
-    // TODO better somewhere else?
+    /**
+     * the {@link Window}, maintained by this object.
+     * @return a Window
+     */
     public Window<?> getWindow() {
 	return window;
     }
@@ -173,6 +176,13 @@ public class WindowUpdater {
      */
     public double getSwapTime() {
 	return swapTime;
+    }
+
+    /**
+     * Sets the deltatime to zero.
+     */
+    public void resetDeltaTime() {
+	this.deltatime = 0;
     }
 
 }
