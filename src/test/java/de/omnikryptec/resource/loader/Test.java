@@ -22,32 +22,39 @@ public class Test {
 
 	    @Override
 	    public String getFileNameRegex() {
-		return ".*er\\.java";
+		return ".*java";
 	    }
 	}, true);
 	p.addCallback(new LoadingProgressCallback() {
 
-	    private int max;
-
 	    @Override
-	    public void onLoadingStart(int max) {
-		this.max = max;
+	    public void onLoadingStart(int max, int maxstages) {
+		System.out.println("Max: "+max+" MaxS: "+maxstages);
 	    }
 
 	    @Override
-	    public void onProgressChange(int processed) {
-		System.out.println(processed + "/" + max);
+	    public void onStageChange(AdvancedFile file, int localmax, int stagenumber) {
+		System.out.println("Stagechange, lmax: "+localmax+ " S#: "+stagenumber);
+	    }
+
+	    @Override
+	    public void onProgressChange(AdvancedFile f, int localprocessed) {
+		System.out.println("P:"+localprocessed);
 	    }
 
 	    @Override
 	    public void onLoadingDone() {
+		System.out.println("Done!!!");
 	    }
+
+	    
 
 	});
 	p.stage(new AdvancedFile("src/main/java"));
-	p.processStaged(true, 0.1f);
-	System.out.println(p.getProvider().getAll(String.class).size());
-	System.out.println(p.getProvider().get(String.class, "de:omnikryptec:core:Updateable.java"));
+	p.stage(new AdvancedFile("src/test/java"));
+	p.processStaged(true);
+	//System.out.println(p.getProvider().getAll(String.class).size());
+	//System.out.println(p.getProvider().get(String.class, "de:omnikryptec:core:Updateable.java"));
     }
 
 }

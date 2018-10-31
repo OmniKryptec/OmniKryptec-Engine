@@ -26,7 +26,7 @@ public class ResourceProcessor {
 	    return priority;
 	}
 
-	public AdvancedFile getLocation() {
+	public AdvancedFile getFile() {
 	    return loc;
 	}
 
@@ -47,7 +47,7 @@ public class ResourceProcessor {
     public ResourceProcessor() {
 	this(new DefaultResourceProvider(), ResourceNameGenerator.defaultNameGen());
     }
-    
+
     public ResourceProcessor(ResourceProvider resProv, ResourceNameGenerator nameGen) {
 	this.resourceProvider = resProv;
 	this.resourceNameGenerator = nameGen;
@@ -60,7 +60,7 @@ public class ResourceProcessor {
     public ResourceProvider getProvider() {
 	return resourceProvider;
     }
-    
+
     public void addCallback(LoadingProgressCallback callback) {
 	callbacks.add(callback);
     }
@@ -77,8 +77,8 @@ public class ResourceProcessor {
 	staged.clear();
     }
 
-    public void processStaged(boolean override, float notifyProgress) {
-	new Processor(override).processStaged(notifyProgress);
+    public void processStaged(boolean override) {
+	new Processor(override).processStaged();
     }
 
     public void instantLoad(boolean override, AdvancedFile file) {
@@ -93,98 +93,73 @@ public class ResourceProcessor {
     }
 
     public void addLoader(ResourceLoader<?> loader, boolean threadsafe) {
-	if(threadsafe) {
+	if (threadsafe) {
 	    loadersThreadGroup.add(loader);
-	}else {
+	} else {
 	    loadersMainThread.add(loader);
 	}
     }
-    
+
     /*
      * Kind of messy, in here
      */
     private class Processor {
-	private boolean notifyProgress;
-	private int size;
-	private int processed;
-	private float quotient;
-	private float lastquo;
-	private float notifyfraction;
 	private boolean override;
-	private AdvancedFile superfile;
-
 	private ExecutorService executorService = null;
+
+	/* for #notifyProcessed() */
+	private int localprocessed;
+	/**/
 
 	private Processor(boolean override) {
 	    this.override = override;
+	    this.executorService = ExecutorsUtil.newFixedThreadPool(ExecutorsUtil.getAvailableProcessors());
 	}
 
-	private void resetExecutor() {
-	    if (executorService != null) {
-		throw new IllegalStateException("onetime-use only");
-	    }
-	    executorService = ExecutorsUtil.newFixedThreadPool(ExecutorsUtil.getAvailableProcessors());
-	}
-
-	private void processStaged(float notifyfraction) {
-	    this.notifyfraction = notifyfraction;
-	    this.notifyProgress = notifyfraction >= 0.0f;
+	private void processStaged() {
 	    Collections.sort(staged);
-	    if (notifyProgress) {
-		for (ResourceLocation top : staged) {
-		    size = countFiles(top.getLocation(), size);
-		}
-		for (LoadingProgressCallback callback : callbacks) {
-		    callback.onLoadingStart(size);
-		}
+	    int[] localmaxs = new int[staged.size()];
+	    int size = 0;
+	    for (int i = 0; i < staged.size(); i++) {
+		localmaxs[i] = countFiles(staged.get(i).getFile(), 0);
+		size += localmaxs[i];
 	    }
-	    resetExecutor();
-	    for (ResourceLocation stagedFile : staged) {
-		this.superfile = stagedFile.getLocation();
-		processStagedIntern(stagedFile.getLocation());
+	    notifyStart(size, staged.size());
+	    for (int i = 0; i < staged.size(); i++) {
+		AdvancedFile file = staged.get(i).getFile();
+		notifyStage(file, i, localmaxs[i]);
+		processStagedIntern(file, file);
 	    }
-	    ExecutorsUtil.shutdown(executorService, 1, TimeUnit.HOURS);
-	    if (notifyProgress) {
-		for (LoadingProgressCallback callback : callbacks) {
-		    callback.onLoadingDone();
-		}
-	    }
+	    notifyDone();
 	}
 
-	private void processStagedIntern(AdvancedFile file) {
+	private void processStagedIntern(AdvancedFile file, AdvancedFile superFile) {
 	    if (file.isDirectory()) {
 		for (AdvancedFile subFile : file.listFiles()) {
-		    processStagedIntern(subFile);
+		    processStagedIntern(subFile, superFile);
 		}
 	    } else {
-		load(true, file);
-		processed++;
-		if (notifyProgress && ((quotient = (processed / (float) size)) - lastquo) >= notifyfraction) {
-		    for (LoadingProgressCallback callback : callbacks) {
-			callback.onProgressChange(processed);
-		    }
-		    lastquo = quotient;
-		}
+		load(true, file, superFile);
+		notifyProcessed(file);
 	    }
 	}
 
 	private void loadSimple(AdvancedFile file) {
-	    boolean many = countFiles(file, 0) > 1;
-	    if (many) {
-		resetExecutor();
-	    }
-	    this.superfile = file;
-	    loadSimpleIntern(many, file);
-	    ExecutorsUtil.shutdown(executorService, 1, TimeUnit.HOURS);
+	    int size = countFiles(file, 0);
+	    notifyStart(size, 1);
+	    notifyStage(file, 0, size);
+	    loadSimpleIntern(size > 1, file, file);
+	    notifyDone();
 	}
 
-	private void loadSimpleIntern(boolean exec, AdvancedFile file) {
+	private void loadSimpleIntern(boolean exec, AdvancedFile file, AdvancedFile superFile) {
 	    if (file.isDirectory()) {
 		for (AdvancedFile subFile : file.listFiles()) {
-		    loadSimpleIntern(exec, subFile);
+		    loadSimpleIntern(exec, subFile, superFile);
 		}
 	    } else {
-		load(exec, file);
+		load(exec, file, superFile);
+		notifyProcessed(file);
 	    }
 	}
 
@@ -200,8 +175,34 @@ public class ResourceProcessor {
 	    return old;
 	}
 
-	// TODO names, etc.
-	private void load(boolean useExecutor, AdvancedFile file) {
+	private void notifyStage(AdvancedFile file, int stagenumber, int localmax) {
+	    localprocessed = 0;
+	    for (LoadingProgressCallback callback : callbacks) {
+		callback.onStageChange(file, localmax, stagenumber);
+	    }
+	}
+
+	private void notifyProcessed(AdvancedFile file) {
+	    localprocessed++;
+	    for (LoadingProgressCallback callback : callbacks) {
+		callback.onProgressChange(file, localprocessed);
+	    }
+	}
+
+	private void notifyStart(int size, int maxstages) {
+	    for (LoadingProgressCallback callback : callbacks) {
+		callback.onLoadingStart(size, maxstages);
+	    }
+	}
+
+	private void notifyDone() {
+	    ExecutorsUtil.shutdown(executorService, 1, TimeUnit.HOURS);
+	    for (LoadingProgressCallback callback : callbacks) {
+		callback.onLoadingDone();
+	    }
+	}
+
+	private void load(boolean useExecutor, AdvancedFile file, AdvancedFile superfile) {
 	    Runnable r = () -> {
 		for (ResourceLoader<?> loader : loadersThreadGroup) {
 		    if (file.getName().matches(loader.getFileNameRegex())) {
