@@ -19,63 +19,63 @@ package de.omnikryptec.util.data.smooth;
 import de.omnikryptec.core.Updateable;
 
 public class SmoothDouble implements Updateable {
-
+    
     private double agility;
     private double target;
     private double actual;
-
+    
     public SmoothDouble(double initialValue, double agility) {
-	this.target = initialValue;
-	this.actual = initialValue;
-	this.agility = agility;
+        this.target = initialValue;
+        this.actual = initialValue;
+        this.agility = agility;
     }
-
+    
     @Override
     public void update(float deltaTime) {
-	actual += (target - actual) * deltaTime * agility;
+        actual += (target - actual) * deltaTime * agility;
     }
-
+    
     public void instantIncrease(double increase) {
-	this.actual += increase;
-	this.target = actual;
+        this.actual += increase;
+        this.target = actual;
     }
-
+    
     public double get() {
-	return actual;
+        return actual;
     }
-
+    
     public double getTarget() {
-	return target;
+        return target;
     }
-
-    public void increaseTarget(double deltaTarget) {
-	this.target += deltaTarget;
-    }
-
+    
     public void setTarget(double target) {
-	this.target = target;
+        this.target = target;
     }
-
+    
+    public void increaseTarget(double deltaTarget) {
+        this.target += deltaTarget;
+    }
+    
     public void setValue(double f) {
-	actual = f;
+        actual = f;
     }
-
+    
     public double getAgility() {
-	return agility;
+        return agility;
     }
-
+    
     public void setAgility(double a) {
-	this.agility = a;
+        this.agility = a;
     }
-
+    
     public void setValueAndTarget(double f) {
-	setTarget(f);
-	setValue(f);
+        setTarget(f);
+        setValue(f);
     }
-
+    
     @Override
     public String toString() {
-	return "Value: " + actual + " Target: " + target + " Agility: " + agility;
+        return "Value: " + actual + " Target: " + target + " Agility: " + agility;
     }
-
+    
 }
