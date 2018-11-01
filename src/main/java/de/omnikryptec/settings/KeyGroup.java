@@ -18,13 +18,12 @@ package de.omnikryptec.settings;
 
 import de.codemakers.base.exceptions.NotYetImplementedRuntimeException;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
 
 public class KeyGroup implements IKey {
     
     private final String name;
-    private final ArrayList<IKey> keys = new ArrayList<>();
+    private final List<IKey> keys = new ArrayList<>();
     private boolean allIKeysNeedsToBePressed;
     
     /**
@@ -107,8 +106,32 @@ public class KeyGroup implements IKey {
      *
      * @return {@link de.omnikryptec.settings.IKey}s in this {@link de.omnikryptec.settings.KeyGroup}
      */
-    public ArrayList<IKey> getKeys() {
+    public List<IKey> getKeys() {
         return keys;
+    }
+    
+    /**
+     * Adds some {@link de.omnikryptec.settings.IKey}s to this {@link de.omnikryptec.settings.KeyGroup}
+     *
+     * @param keys {@link de.omnikryptec.settings.IKey}s to be added
+     *
+     * @return A reference to this {@link de.omnikryptec.settings.KeyGroup}
+     */
+    public KeyGroup addKeys(IKey... keys) {
+        this.keys.addAll(Arrays.asList(keys));
+        return this;
+    }
+    
+    /**
+     * Adds some {@link de.omnikryptec.settings.IKey}s to this {@link de.omnikryptec.settings.KeyGroup}
+     *
+     * @param keys {@link de.omnikryptec.settings.IKey}s to be added
+     *
+     * @return A reference to this {@link de.omnikryptec.settings.KeyGroup}
+     */
+    public KeyGroup addKeys(Collection<IKey> keys) {
+        this.keys.addAll(keys);
+        return this;
     }
     
     /**
