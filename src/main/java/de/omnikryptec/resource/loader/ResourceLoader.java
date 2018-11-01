@@ -16,92 +16,83 @@
 
 package de.omnikryptec.resource.loader;
 
-import java.util.Properties;
-
 import de.codemakers.base.logger.Logger;
 import de.codemakers.base.util.tough.ToughConsumer;
 import de.codemakers.io.file.AdvancedFile;
 
+import java.util.Properties;
+
 public interface ResourceLoader {
-
-    boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
-	    ResourceManager resourceManager) throws Exception;
-
-    default boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
-	    ResourceManager resourceManager, ToughConsumer<Throwable> failure) {
-	try {
-	    return load(advancedFile, superFile, properties, resourceManager);
-	} catch (Exception ex) {
-	    if (failure != null) {
-		failure.acceptWithoutException(ex);
-	    } else {
-		Logger.handleError(ex);
-	    }
-	    return false;
-	}
+    
+    boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceManager resourceManager) throws Exception;
+    
+    default boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceManager resourceManager, ToughConsumer<Throwable> failure) {
+        try {
+            return load(advancedFile, superFile, properties, resourceManager);
+        } catch (Exception ex) {
+            if (failure != null) {
+                failure.acceptWithoutException(ex);
+            } else {
+                Logger.handleError(ex);
+            }
+            return false;
+        }
     }
-
-    default boolean loadWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
-	    ResourceManager resourceManager) {
-	return load(advancedFile, superFile, properties, resourceManager, null);
+    
+    default boolean loadWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceManager resourceManager) {
+        return load(advancedFile, superFile, properties, resourceManager, null);
     }
-
-    LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
-	    ResourceManager resourceManager) throws Exception;
-
-    default LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
-	    ResourceManager resourceManager, ToughConsumer<Throwable> failure) {
-	try {
-	    return accept(advancedFile, superFile, properties, resourceManager);
-	} catch (Exception ex) {
-	    if (failure != null) {
-		failure.acceptWithoutException(ex);
-	    } else {
-		Logger.handleError(ex);
-	    }
-	    return LoadingType.NOT;
-	}
+    
+    LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceManager resourceManager) throws Exception;
+    
+    default LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceManager resourceManager, ToughConsumer<Throwable> failure) {
+        try {
+            return accept(advancedFile, superFile, properties, resourceManager);
+        } catch (Exception ex) {
+            if (failure != null) {
+                failure.acceptWithoutException(ex);
+            } else {
+                Logger.handleError(ex);
+            }
+            return LoadingType.NOT;
+        }
     }
-
-    default LoadingType acceptWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
-	    ResourceManager resourceManager) {
-	return accept(advancedFile, superFile, properties, resourceManager, null);
+    
+    default LoadingType acceptWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceManager resourceManager) {
+        return accept(advancedFile, superFile, properties, resourceManager, null);
     }
-
-    default String generateName(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
-	    ResourceManager resourceManager) throws Exception {
-	String path = advancedFile.getPath();
-	if (superFile.isDirectory()) {
-	    path = path.substring(superFile.getPath().length());
-	}
-	final String replacement = ":";
-	String name = path.replace(advancedFile.getSeparatorRegEx(), replacement);
-	if (name.startsWith(replacement)) {
-	    name = name.substring(replacement.length());
-	}
-	if (name.endsWith(replacement)) {
-	    name = name.substring(0, name.length() - replacement.length());
-	}
-	return name;
+    
+    default String generateName(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceManager resourceManager) throws Exception {
+        String path = advancedFile.getPath();
+        if (superFile.isDirectory()) {
+            path = path.substring(superFile.getPath().length());
+        }
+        final String replacement = ":";
+        String name = path.replace(advancedFile.getSeparatorRegEx(), replacement);
+        if (name.startsWith(replacement)) {
+            name = name.substring(replacement.length());
+        }
+        if (name.endsWith(replacement)) {
+            name = name.substring(0, name.length() - replacement.length());
+        }
+        return name;
     }
-
-    default String generateName(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
-	    ResourceManager resourceManager, ToughConsumer<Throwable> failure) {
-	try {
-	    return generateName(advancedFile, superFile, properties, resourceManager);
-	} catch (Exception ex) {
-	    if (failure != null) {
-		failure.acceptWithoutException(ex);
-	    } else {
-		Logger.handleError(ex);
-	    }
-	    return null;
-	}
+    
+    default String generateName(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceManager resourceManager, ToughConsumer<Throwable> failure) {
+        try {
+            return generateName(advancedFile, superFile, properties, resourceManager);
+        } catch (Exception ex) {
+            if (failure != null) {
+                failure.acceptWithoutException(ex);
+            } else {
+                Logger.handleError(ex);
+            }
+            return null;
+        }
     }
-
-    default String generateNameWithoutException(AdvancedFile advancedFile, AdvancedFile superFile,
-	    Properties properties, ResourceManager resourceManager) {
-	return generateName(advancedFile, superFile, properties, resourceManager, null);
+    
+    default String generateNameWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceManager resourceManager) {
+        return generateName(advancedFile, superFile, properties, resourceManager, null);
     }
-
+    
 }
