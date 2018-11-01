@@ -74,8 +74,12 @@ public abstract class Window<T extends WindowInfo<?>> {
 	return windowId;
     }
 
-    public void show() {
-	GLFW.glfwShowWindow(windowId);
+    public void setVisible(boolean b) {
+	if (b) {
+	    GLFW.glfwShowWindow(windowId);
+	} else {
+	    GLFW.glfwHideWindow(windowId);
+	}
     }
 
     public void dispose() {

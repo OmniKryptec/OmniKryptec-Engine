@@ -18,7 +18,7 @@ public class BasicFunctionsTest {
 	public static void main(String[] args) {
 		LibAPIManager.init();
 		OpenGLWindow window = new OpenGLWindowInfo().createWindow();
-		window.show();
+		window.setVisible(true);
 		WindowUpdater updater = new WindowUpdater(window);
 		while (!window.isCloseRequested()) {
 			updater.update(0);

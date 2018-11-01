@@ -14,6 +14,7 @@ import de.omnikryptec.util.data.Smoother;
  * @author pcfreak9000
  *
  */
+//TODO make abstract -> logic and render Updater etc. (deltatime is always needed)
 public class WindowUpdater {
 
     private double swapTime = 0;

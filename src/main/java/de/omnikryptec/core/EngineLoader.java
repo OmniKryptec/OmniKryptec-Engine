@@ -1,8 +1,6 @@
 package de.omnikryptec.core;
 
 import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
-
 import org.lwjgl.system.Configuration;
 
 import de.omnikryptec.libapi.glfw.LibAPIManager;
@@ -170,11 +168,11 @@ public abstract class EngineLoader {
 	window = ((WindowInfo<?>) loaderSettings.get(LoaderSetting.WINDOW_INFO)).createWindow();
 	booted = true;
 	if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.IMMEDIATELY) {
-	    window.show();
+	    window.setVisible(true);
 	}
 	onContextCreationFinish();
 	if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.AFTERINIT) {
-	    window.show();
+	    window.setVisible(true);
 	}
 	// Start game loop? / Do nothing? / Extra command?
 	return this;
