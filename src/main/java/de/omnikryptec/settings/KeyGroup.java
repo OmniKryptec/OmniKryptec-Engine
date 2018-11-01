@@ -62,7 +62,7 @@ public class KeyGroup implements IKey {
      */
     @Override
     public String getName() {
-        return null;
+        return name;
     }
     
     /**
