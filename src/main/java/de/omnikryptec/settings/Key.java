@@ -22,6 +22,11 @@ import java.util.Objects;
 
 public class Key implements IKey {
     
+    /**
+     * Default {@link de.omnikryptec.settings.Key} which can be returned instead of null
+     */
+    public static final Key DEFAULT_NULL_KEY = new Key("DEFAULT_NULL_KEY", -1);
+    
     private final String name;
     private int key;
     private boolean isKeyboardKey;

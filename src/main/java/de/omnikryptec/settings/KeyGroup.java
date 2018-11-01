@@ -22,6 +22,11 @@ import java.util.*;
 
 public class KeyGroup implements IKey {
     
+    /**
+     * Default {@link de.omnikryptec.settings.KeyGroup} which can be returned instead of null
+     */
+    public static final KeyGroup DEFAULT_NULL_KEY_GROUP = new KeyGroup("DEFAULT_NULL_KEY_GROUP");
+    
     private final String name;
     private final List<IKey> keys = new ArrayList<>();
     private boolean allIKeysNeedsToBePressed;
