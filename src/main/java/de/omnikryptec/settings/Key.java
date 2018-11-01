@@ -42,7 +42,7 @@ public class Key implements IKey {
      *
      * @param name Name of the {@link de.omnikryptec.settings.Key} (e.g. "Arrow Up")
      * @param key KeyCode (e.g. ((int) 'a'))
-     * @param isKeyboardKey True if the {@link de.omnikryptec.settings.Key} is a keyboard key
+     * @param isKeyboardKey <tt>true</tt> if the {@link de.omnikryptec.settings.Key} is a keyboard key
      */
     public Key(String name, int key, boolean isKeyboardKey) {
         this.name = name;
@@ -131,7 +131,7 @@ public class Key implements IKey {
     }
     
     /**
-     * @param keyboardKey True if this {@link de.omnikryptec.settings.Key} is a keyboard key
+     * @param keyboardKey <tt>true</tt> if this {@link de.omnikryptec.settings.Key} is a keyboard key
      *
      * @return A reference to this {@link de.omnikryptec.settings.Key}
      */

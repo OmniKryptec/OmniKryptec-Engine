@@ -16,13 +16,15 @@
 
 package de.omnikryptec.settings;
 
+import de.codemakers.base.exceptions.NotYetImplementedRuntimeException;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class KeyGroup implements IKey {
     
     private final String name;
-    private final ArrayList<de.omnikryptec.old.settings.IKey> keys = new ArrayList<>();
+    private final ArrayList<IKey> keys = new ArrayList<>();
     private boolean allIKeysNeedsToBePressed;
     
     /**
@@ -42,7 +44,7 @@ public class KeyGroup implements IKey {
      * A KeyGroup contains IKeys, which means a KeyGroup can contain multiple {@link de.omnikryptec.settings.KeyGroup}s or Keys
      *
      * @param name Name of the {@link de.omnikryptec.settings.KeyGroup}
-     * @param allIKeysNeedsToBePressed True if all {@link de.omnikryptec.settings.IKey}s in this {@link de.omnikryptec.settings.KeyGroup} have to be pressed at the same time
+     * @param allIKeysNeedsToBePressed <tt>true</tt> if all {@link de.omnikryptec.settings.IKey}s in this {@link de.omnikryptec.settings.KeyGroup} have to be pressed at the same time
      */
     public KeyGroup(String name, boolean allIKeysNeedsToBePressed) {
         this.name = name;
@@ -66,7 +68,21 @@ public class KeyGroup implements IKey {
      */
     @Override
     public boolean isPressed() {
-        return false;
+        if (keys.isEmpty()) {
+            return false;
+        }
+        boolean isPressed = allIKeysNeedsToBePressed;
+        for (IKey key : keys) {
+            final boolean isPressed_ = key.isPressed();
+            if (!isPressed_ && allIKeysNeedsToBePressed) {
+                isPressed = false;
+                break;
+            } else if (isPressed_ && !allIKeysNeedsToBePressed) {
+                isPressed = true;
+                break;
+            }
+        }
+        return isPressed;
     }
     
     /**
@@ -79,7 +95,41 @@ public class KeyGroup implements IKey {
      */
     @Override
     public boolean isLongPressed(double minTime, double maxTime) {
-        return false;
+        if (keys.isEmpty()) {
+            return false;
+        }
+        //TODO Implement
+        throw new NotYetImplementedRuntimeException();
+    }
+    
+    /**
+     * Returns all {@link de.omnikryptec.settings.IKey}s in this {@link de.omnikryptec.settings.KeyGroup}
+     *
+     * @return {@link de.omnikryptec.settings.IKey}s in this {@link de.omnikryptec.settings.KeyGroup}
+     */
+    public ArrayList<IKey> getKeys() {
+        return keys;
+    }
+    
+    /**
+     * Returns if all {@link de.omnikryptec.settings.IKey}s in this {@link de.omnikryptec.settings.KeyGroup} needs to be pressed at the same time
+     *
+     * @return <tt>true</tt> if all {@link de.omnikryptec.settings.IKey}s in this {@link de.omnikryptec.settings.KeyGroup} needs to be pressed at the same time
+     */
+    public boolean isAllIKeysNeedsToBePressed() {
+        return allIKeysNeedsToBePressed;
+    }
+    
+    /**
+     * Sets if all {@link de.omnikryptec.settings.IKey}s in this {@link de.omnikryptec.settings.KeyGroup} needs to be pressed at the same time
+     *
+     * @param allIKeysNeedsToBePressed <tt>true</tt> if all {@link de.omnikryptec.settings.IKey}s in this {@link de.omnikryptec.settings.KeyGroup} needs to be pressed at the same time
+     *
+     * @return A reference to this {@link de.omnikryptec.settings.KeyGroup}
+     */
+    public KeyGroup setAllIKeysNeedsToBePressed(boolean allIKeysNeedsToBePressed) {
+        this.allIKeysNeedsToBePressed = allIKeysNeedsToBePressed;
+        return this;
     }
     
     @Override
