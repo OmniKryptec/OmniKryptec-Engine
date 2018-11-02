@@ -14,31 +14,31 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.settings;
+package de.omnikryptec.util.settings.keys;
 
 public interface IKey {
     
     /**
-     * Returns the name of the {@link de.omnikryptec.settings.IKey}
+     * Returns the name of the {@link de.omnikryptec.util.settings.keys.IKey}
      *
-     * @return Name of the {@link de.omnikryptec.settings.IKey}
+     * @return Name of the {@link de.omnikryptec.util.settings.keys.IKey}
      */
     String getName();
     
     /**
-     * Returns if this {@link de.omnikryptec.settings.IKey} is being pressed
+     * Returns if this {@link de.omnikryptec.util.settings.keys.IKey} is being pressed
      *
-     * @return <tt>true</tt> if this {@link de.omnikryptec.settings.IKey} is pressed
+     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.IKey} is pressed
      */
     boolean isPressed();
     
     /**
-     * Returns if this {@link de.omnikryptec.settings.IKey} is being pressed for a specified time
+     * Returns if this {@link de.omnikryptec.util.settings.keys.IKey} is being pressed for a specified time
      *
      * @param minTime Float Minimum pressing time
      * @param maxTime Float Maximum pressing time
      *
-     * @return <tt>true</tt> if this {@link de.omnikryptec.settings.IKey} is pressed for the specified time
+     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.IKey} is pressed for the specified time
      */
     boolean isLongPressed(double minTime, double maxTime);
     

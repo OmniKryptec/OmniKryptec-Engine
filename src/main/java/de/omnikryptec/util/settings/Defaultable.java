@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.util.data.settings;
+package de.omnikryptec.util.settings;
 
 public interface Defaultable {
     

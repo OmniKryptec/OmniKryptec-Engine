@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.settings;
+package de.omnikryptec.util.settings.keys;
 
 import de.codemakers.base.exceptions.NotYetImplementedRuntimeException;
 
@@ -23,7 +23,7 @@ import java.util.*;
 public class KeyGroup implements IKey {
     
     /**
-     * Default {@link de.omnikryptec.settings.KeyGroup} which can be returned instead of null
+     * Default {@link de.omnikryptec.util.settings.keys.KeyGroup} which can be returned instead of null
      */
     public static final KeyGroup DEFAULT_NULL_KEY_GROUP = new KeyGroup("DEFAULT_NULL_KEY_GROUP");
     
@@ -32,23 +32,23 @@ public class KeyGroup implements IKey {
     private boolean allIKeysNeedsToBePressed;
     
     /**
-     * Constructs a {@link de.omnikryptec.settings.KeyGroup} (where all {@link de.omnikryptec.settings.IKey}s needs to be pressed at the same time)
+     * Constructs a {@link de.omnikryptec.util.settings.keys.KeyGroup} (where all {@link de.omnikryptec.util.settings.keys.IKey}s needs to be pressed at the same time)
      * <p>
-     * A KeyGroup contains IKeys, which means a KeyGroup can contain multiple {@link de.omnikryptec.settings.KeyGroup}s or Keys
+     * A KeyGroup contains IKeys, which means a KeyGroup can contain multiple {@link de.omnikryptec.util.settings.keys.KeyGroup}s or Keys
      *
-     * @param name Name of the {@link de.omnikryptec.settings.KeyGroup}
+     * @param name Name of the {@link de.omnikryptec.util.settings.keys.KeyGroup}
      */
     public KeyGroup(String name) {
         this(name, true);
     }
     
     /**
-     * Constructs a {@link de.omnikryptec.settings.KeyGroup}
+     * Constructs a {@link de.omnikryptec.util.settings.keys.KeyGroup}
      * <p>
-     * A KeyGroup contains IKeys, which means a KeyGroup can contain multiple {@link de.omnikryptec.settings.KeyGroup}s or Keys
+     * A KeyGroup contains IKeys, which means a KeyGroup can contain multiple {@link de.omnikryptec.util.settings.keys.KeyGroup}s or Keys
      *
-     * @param name Name of the {@link de.omnikryptec.settings.KeyGroup}
-     * @param allIKeysNeedsToBePressed <tt>true</tt> if all {@link de.omnikryptec.settings.IKey}s in this {@link de.omnikryptec.settings.KeyGroup} have to be pressed at the same time
+     * @param name Name of the {@link de.omnikryptec.util.settings.keys.KeyGroup}
+     * @param allIKeysNeedsToBePressed <tt>true</tt> if all {@link de.omnikryptec.util.settings.keys.IKey}s in this {@link de.omnikryptec.util.settings.keys.KeyGroup} have to be pressed at the same time
      */
     public KeyGroup(String name, boolean allIKeysNeedsToBePressed) {
         this.name = name;
@@ -56,9 +56,9 @@ public class KeyGroup implements IKey {
     }
     
     /**
-     * Returns the name of the {@link de.omnikryptec.settings.KeyGroup}
+     * Returns the name of the {@link de.omnikryptec.util.settings.keys.KeyGroup}
      *
-     * @return Name of the {@link de.omnikryptec.settings.KeyGroup}
+     * @return Name of the {@link de.omnikryptec.util.settings.keys.KeyGroup}
      */
     @Override
     public String getName() {
@@ -66,9 +66,9 @@ public class KeyGroup implements IKey {
     }
     
     /**
-     * Returns if this {@link de.omnikryptec.settings.KeyGroup} is being pressed
+     * Returns if this {@link de.omnikryptec.util.settings.keys.KeyGroup} is being pressed
      *
-     * @return <tt>true</tt> if this {@link de.omnikryptec.settings.KeyGroup} is pressed
+     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.KeyGroup} is pressed
      */
     @Override
     public boolean isPressed() {
@@ -90,12 +90,12 @@ public class KeyGroup implements IKey {
     }
     
     /**
-     * Returns if this {@link de.omnikryptec.settings.KeyGroup} is being pressed for a specified time
+     * Returns if this {@link de.omnikryptec.util.settings.keys.KeyGroup} is being pressed for a specified time
      *
      * @param minTime Float Minimum pressing time
      * @param maxTime Float Maximum pressing time
      *
-     * @return <tt>true</tt> if this {@link de.omnikryptec.settings.KeyGroup} is pressed for the specified time
+     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.KeyGroup} is pressed for the specified time
      */
     @Override
     public boolean isLongPressed(double minTime, double maxTime) {
@@ -107,20 +107,20 @@ public class KeyGroup implements IKey {
     }
     
     /**
-     * Returns all {@link de.omnikryptec.settings.IKey}s in this {@link de.omnikryptec.settings.KeyGroup}
+     * Returns all {@link de.omnikryptec.util.settings.keys.IKey}s in this {@link de.omnikryptec.util.settings.keys.KeyGroup}
      *
-     * @return {@link de.omnikryptec.settings.IKey}s in this {@link de.omnikryptec.settings.KeyGroup}
+     * @return {@link de.omnikryptec.util.settings.keys.IKey}s in this {@link de.omnikryptec.util.settings.keys.KeyGroup}
      */
     public List<IKey> getKeys() {
         return keys;
     }
     
     /**
-     * Adds some {@link de.omnikryptec.settings.IKey}s to this {@link de.omnikryptec.settings.KeyGroup}
+     * Adds some {@link de.omnikryptec.util.settings.keys.IKey}s to this {@link de.omnikryptec.util.settings.keys.KeyGroup}
      *
-     * @param keys {@link de.omnikryptec.settings.IKey}s to be added
+     * @param keys {@link de.omnikryptec.util.settings.keys.IKey}s to be added
      *
-     * @return A reference to this {@link de.omnikryptec.settings.KeyGroup}
+     * @return A reference to this {@link de.omnikryptec.util.settings.keys.KeyGroup}
      */
     public KeyGroup addKeys(IKey... keys) {
         this.keys.addAll(Arrays.asList(keys));
@@ -128,11 +128,11 @@ public class KeyGroup implements IKey {
     }
     
     /**
-     * Adds some {@link de.omnikryptec.settings.IKey}s to this {@link de.omnikryptec.settings.KeyGroup}
+     * Adds some {@link de.omnikryptec.util.settings.keys.IKey}s to this {@link de.omnikryptec.util.settings.keys.KeyGroup}
      *
-     * @param keys {@link de.omnikryptec.settings.IKey}s to be added
+     * @param keys {@link de.omnikryptec.util.settings.keys.IKey}s to be added
      *
-     * @return A reference to this {@link de.omnikryptec.settings.KeyGroup}
+     * @return A reference to this {@link de.omnikryptec.util.settings.keys.KeyGroup}
      */
     public KeyGroup addKeys(Collection<IKey> keys) {
         this.keys.addAll(keys);
@@ -140,20 +140,20 @@ public class KeyGroup implements IKey {
     }
     
     /**
-     * Returns if all {@link de.omnikryptec.settings.IKey}s in this {@link de.omnikryptec.settings.KeyGroup} needs to be pressed at the same time
+     * Returns if all {@link de.omnikryptec.util.settings.keys.IKey}s in this {@link de.omnikryptec.util.settings.keys.KeyGroup} needs to be pressed at the same time
      *
-     * @return <tt>true</tt> if all {@link de.omnikryptec.settings.IKey}s in this {@link de.omnikryptec.settings.KeyGroup} needs to be pressed at the same time
+     * @return <tt>true</tt> if all {@link de.omnikryptec.util.settings.keys.IKey}s in this {@link de.omnikryptec.util.settings.keys.KeyGroup} needs to be pressed at the same time
      */
     public boolean isAllIKeysNeedsToBePressed() {
         return allIKeysNeedsToBePressed;
     }
     
     /**
-     * Sets if all {@link de.omnikryptec.settings.IKey}s in this {@link de.omnikryptec.settings.KeyGroup} needs to be pressed at the same time
+     * Sets if all {@link de.omnikryptec.util.settings.keys.IKey}s in this {@link de.omnikryptec.util.settings.keys.KeyGroup} needs to be pressed at the same time
      *
-     * @param allIKeysNeedsToBePressed <tt>true</tt> if all {@link de.omnikryptec.settings.IKey}s in this {@link de.omnikryptec.settings.KeyGroup} needs to be pressed at the same time
+     * @param allIKeysNeedsToBePressed <tt>true</tt> if all {@link de.omnikryptec.util.settings.keys.IKey}s in this {@link de.omnikryptec.util.settings.keys.KeyGroup} needs to be pressed at the same time
      *
-     * @return A reference to this {@link de.omnikryptec.settings.KeyGroup}
+     * @return A reference to this {@link de.omnikryptec.util.settings.keys.KeyGroup}
      */
     public KeyGroup setAllIKeysNeedsToBePressed(boolean allIKeysNeedsToBePressed) {
         this.allIKeysNeedsToBePressed = allIKeysNeedsToBePressed;

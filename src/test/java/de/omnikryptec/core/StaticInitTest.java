@@ -6,7 +6,7 @@ import de.omnikryptec.libapi.glfw.Window;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.libapi.opengl.OpenGLUtil.BufferType;
 import de.omnikryptec.util.data.Color;
-import de.omnikryptec.util.data.settings.Settings;
+import de.omnikryptec.util.settings.Settings;
 
 public class StaticInitTest {
 

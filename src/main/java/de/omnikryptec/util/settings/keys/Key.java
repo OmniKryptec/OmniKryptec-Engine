@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.settings;
+package de.omnikryptec.util.settings.keys;
 
 import de.codemakers.base.exceptions.NotYetImplementedRuntimeException;
 
@@ -23,7 +23,7 @@ import java.util.Objects;
 public class Key implements IKey {
     
     /**
-     * Default {@link de.omnikryptec.settings.Key} which can be returned instead of null
+     * Default {@link de.omnikryptec.util.settings.keys.Key} which can be returned instead of null
      */
     public static final Key DEFAULT_NULL_KEY = new Key("DEFAULT_NULL_KEY", -1);
     
@@ -33,9 +33,9 @@ public class Key implements IKey {
     private double lastChange = 0.0F;
     
     /**
-     * Constructs a {@link de.omnikryptec.settings.Key} (as a keyboard key)
+     * Constructs a {@link de.omnikryptec.util.settings.keys.Key} (as a keyboard key)
      *
-     * @param name Name of the {@link de.omnikryptec.settings.Key} (e.g. "Arrow Up")
+     * @param name Name of the {@link de.omnikryptec.util.settings.keys.Key} (e.g. "Arrow Up")
      * @param key KeyCode (e.g. ((int) 'a'))
      */
     public Key(String name, int key) {
@@ -43,11 +43,11 @@ public class Key implements IKey {
     }
     
     /**
-     * Constructs a {@link de.omnikryptec.settings.Key}
+     * Constructs a {@link de.omnikryptec.util.settings.keys.Key}
      *
-     * @param name Name of the {@link de.omnikryptec.settings.Key} (e.g. "Arrow Up")
+     * @param name Name of the {@link de.omnikryptec.util.settings.keys.Key} (e.g. "Arrow Up")
      * @param key KeyCode (e.g. ((int) 'a'))
-     * @param isKeyboardKey <tt>true</tt> if the {@link de.omnikryptec.settings.Key} is a keyboard key
+     * @param isKeyboardKey <tt>true</tt> if the {@link de.omnikryptec.util.settings.keys.Key} is a keyboard key
      */
     public Key(String name, int key, boolean isKeyboardKey) {
         this.name = name;
@@ -56,9 +56,9 @@ public class Key implements IKey {
     }
     
     /**
-     * Returns the name of the {@link de.omnikryptec.settings.Key}
+     * Returns the name of the {@link de.omnikryptec.util.settings.keys.Key}
      *
-     * @return Name of the {@link de.omnikryptec.settings.Key}
+     * @return Name of the {@link de.omnikryptec.util.settings.keys.Key}
      */
     @Override
     public String getName() {
@@ -66,9 +66,9 @@ public class Key implements IKey {
     }
     
     /**
-     * Returns if this {@link de.omnikryptec.settings.Key} is being pressed
+     * Returns if this {@link de.omnikryptec.util.settings.keys.Key} is being pressed
      *
-     * @return <tt>true</tt> if this {@link de.omnikryptec.settings.Key} is pressed
+     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.Key} is pressed
      */
     @Override
     public boolean isPressed() {
@@ -81,12 +81,12 @@ public class Key implements IKey {
     }
     
     /**
-     * Returns if this {@link de.omnikryptec.settings.Key} is being pressed for a specified time
+     * Returns if this {@link de.omnikryptec.util.settings.keys.Key} is being pressed for a specified time
      *
      * @param minTime Float Minimum pressing time
      * @param maxTime Float Maximum pressing time
      *
-     * @return <tt>true</tt> if this {@link de.omnikryptec.settings.Key} is pressed for the specified time
+     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.Key} is pressed for the specified time
      */
     @Override
     public boolean isLongPressed(double minTime, double maxTime) {
@@ -119,7 +119,7 @@ public class Key implements IKey {
      *
      * @param key KeyCode (e.g. ((int) 'a'))
      *
-     * @return A reference to this {@link de.omnikryptec.settings.Key}
+     * @return A reference to this {@link de.omnikryptec.util.settings.keys.Key}
      */
     public Key setKey(int key) {
         this.key = key;
@@ -127,18 +127,18 @@ public class Key implements IKey {
     }
     
     /**
-     * Returns if this {@link de.omnikryptec.settings.Key} is a keyboard key
+     * Returns if this {@link de.omnikryptec.util.settings.keys.Key} is a keyboard key
      *
-     * @return <tt>true</tt> if this {@link de.omnikryptec.settings.Key} is a keyboard key
+     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.Key} is a keyboard key
      */
     public boolean isKeyboardKey() {
         return isKeyboardKey;
     }
     
     /**
-     * @param keyboardKey <tt>true</tt> if this {@link de.omnikryptec.settings.Key} is a keyboard key
+     * @param keyboardKey <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.Key} is a keyboard key
      *
-     * @return A reference to this {@link de.omnikryptec.settings.Key}
+     * @return A reference to this {@link de.omnikryptec.util.settings.keys.Key}
      */
     public Key setKeyboardKey(boolean keyboardKey) {
         isKeyboardKey = keyboardKey;
@@ -146,20 +146,20 @@ public class Key implements IKey {
     }
     
     /**
-     * Returns the last change of this {@link de.omnikryptec.settings.Key}
+     * Returns the last change of this {@link de.omnikryptec.util.settings.keys.Key}
      *
-     * @return Last change of this {@link de.omnikryptec.settings.Key}
+     * @return Last change of this {@link de.omnikryptec.util.settings.keys.Key}
      */
     public double getLastChange() { //FIXME Maybe use another System to determine long key presses
         return lastChange;
     }
     
     /**
-     * Sets the last change of this {@link de.omnikryptec.settings.Key}
+     * Sets the last change of this {@link de.omnikryptec.util.settings.keys.Key}
      *
-     * @param lastChange Last change of this {@link de.omnikryptec.settings.Key}
+     * @param lastChange Last change of this {@link de.omnikryptec.util.settings.keys.Key}
      *
-     * @return A reference to this {@link de.omnikryptec.settings.Key}
+     * @return A reference to this {@link de.omnikryptec.util.settings.keys.Key}
      */
     public Key setLastChange(double lastChange) {
         this.lastChange = lastChange;
