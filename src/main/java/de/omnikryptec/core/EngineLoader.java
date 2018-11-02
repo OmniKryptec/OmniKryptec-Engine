@@ -23,7 +23,6 @@ import de.omnikryptec.libapi.glfw.WindowInfo;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
-
 import org.lwjgl.system.Configuration;
 
 import javax.annotation.Nonnull;
@@ -42,8 +41,14 @@ import javax.annotation.Nonnull;
  * @author pcfreak9000
  */
 public abstract class EngineLoader {
-
+    
     private static boolean debug = (boolean) LoaderSetting.DEBUG.getDefault();
+    private IEngineLoop engineLoop;
+    private Window<?> window;
+    private boolean booted;
+    
+    public EngineLoader() {
+    }
 
     /**
      * Uses the settings to set library options. This method is only effective if no
@@ -58,23 +63,23 @@ public abstract class EngineLoader {
      * @param settings the {@link Settings} to set the lib options from
      */
     public static void setConfiguration(@Nonnull Settings<LoaderSetting> settings) {
-	debug = settings.get(LoaderSetting.DEBUG);
-	boolean fastmath = settings.get(LoaderSetting.FASTMATH);
-	boolean functionDebug = settings.get(LoaderSetting.DEBUG_FUNCTIONS);
-	if (fastmath) {
-	    System.setProperty("joml.fastmath", "true");
-	}
-	Configuration.DEBUG.set(debug);
-	Configuration.DEBUG_LOADER.set(debug);
-	Configuration.DEBUG_FUNCTIONS.set(debug && functionDebug);
+        debug = settings.get(LoaderSetting.DEBUG);
+        boolean fastmath = settings.get(LoaderSetting.FASTMATH);
+        boolean functionDebug = settings.get(LoaderSetting.DEBUG_FUNCTIONS);
+        if (fastmath) {
+            System.setProperty("joml.fastmath", "true");
+        }
+        Configuration.DEBUG.set(debug);
+        Configuration.DEBUG_LOADER.set(debug);
+        Configuration.DEBUG_FUNCTIONS.set(debug && functionDebug);
     }
 
     public static void initialize() {
-	// Initialize everything required
-	LibAPIManager.init();
-	// Audio, etc....
+        // Initialize everything required
+        LibAPIManager.init();
+        // Audio, etc....
     }
-
+    
     /**
      * The state of the debug-flag, set by {@link #setConfiguration(Settings)}
      *
@@ -83,172 +88,165 @@ public abstract class EngineLoader {
      * @see LoaderSetting.DEBUG
      */
     public static boolean isDebug() {
-	return debug;
+        return debug;
     }
-
-    private IEngineLoop engineLoop;
-    private Window<?> window;
-    private boolean booted;
-
-    public EngineLoader() {
-    }
-
+    
     @Nonnull
     public EngineLoader boot() {
-	if (booted) {
-	    throw new IllegalStateException("Was already booted");
-	}
-	Settings<LoaderSetting> loaderSettings = new Settings<>();
-	config(loaderSettings);
-	setConfiguration(loaderSettings);
-	// or let them (the natives) be loaded by Configuration.SHARED_LIBRARY and
-	// LIBRARY_PATH <-- Seems to work, so better use it
-	initialize();
-	window = ((WindowInfo<?>) loaderSettings.get(LoaderSetting.WINDOW_INFO)).createWindow();
-	engineLoop = loaderSettings.get(LoaderSetting.ENGINE_LOOP);
-	booted = true;
-	if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.IMMEDIATELY) {
-	    window.setVisible(true);
-	}
-	onContextCreationFinish();
-	if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.AFTERINIT) {
-	    window.setVisible(true);
-	}
-	onInitialized();
-	if (engineLoop != null) {
-	    engineLoop.init(this);
-	    if ((boolean) loaderSettings.get(LoaderSetting.START_ENGINE_LOOP_AFTER_INIT)) {
-		engineLoop.startLoop();
-	    }
-	}
-	return this;
+        if (booted) {
+            throw new IllegalStateException("Was already booted");
+        }
+        Settings<LoaderSetting> loaderSettings = new Settings<>();
+        config(loaderSettings);
+        setConfiguration(loaderSettings);
+        // or let them (the natives) be loaded by Configuration.SHARED_LIBRARY and
+        // LIBRARY_PATH <-- Seems to work, so better use it
+        initialize();
+        window = ((WindowInfo<?>) loaderSettings.get(LoaderSetting.WINDOW_INFO)).createWindow();
+        engineLoop = loaderSettings.get(LoaderSetting.ENGINE_LOOP);
+        booted = true;
+        if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.IMMEDIATELY) {
+            window.setVisible(true);
+        }
+        onContextCreationFinish();
+        if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.AFTERINIT) {
+            window.setVisible(true);
+        }
+        onInitialized();
+        if (engineLoop != null) {
+            engineLoop.init(this);
+            if ((boolean) loaderSettings.get(LoaderSetting.START_ENGINE_LOOP_AFTER_INIT)) {
+                engineLoop.startLoop();
+            }
+        }
+        return this;
     }
-
+    
     public void shutdown() {
-	onShutdown();
-	if (engineLoop != null) {
-	    engineLoop.stopLoop();
-	}
-	// Shutdown, etc...
-	window.dispose();
-	LibAPIManager.shutdown();
+        onShutdown();
+        if (engineLoop != null) {
+            engineLoop.stopLoop();
+        }
+        // Shutdown, etc...
+        window.dispose();
+        LibAPIManager.shutdown();
     }
-
+    
     public Window<?> getWindow() {
-	if (!booted) {
-	    throw new IllegalStateException("Window is not created yet");
-	}
-	return window;
+        if (!booted) {
+            throw new IllegalStateException("Window is not created yet");
+        }
+        return window;
     }
-
+    
     public IEngineLoop getEngineLoop() {
-	return engineLoop;
+        return engineLoop;
     }
-
+    
     public void switchGameloop(IEngineLoop newloop) {
-	Util.ensureNonNull(newloop);
-	boolean running = engineLoop.isRunning();
-	if (running) {
-	    engineLoop.stopLoop();
-	}
-	this.engineLoop = newloop;
-	if (running) {
-	    engineLoop.startLoop();
-	}
+        Util.ensureNonNull(newloop);
+        boolean running = engineLoop.isRunning();
+        if (running) {
+            engineLoop.stopLoop();
+        }
+        this.engineLoop = newloop;
+        if (running) {
+            engineLoop.startLoop();
+        }
     }
-
+    
     public boolean isBooted() {
-	return booted;
+        return booted;
     }
-
+    
     protected void config(Settings<LoaderSetting> settings) {
     }
-
+    
     protected abstract void onContextCreationFinish();
-
+    
     protected void onShutdown() {
     }
-
+    
     protected void onInitialized() {
     }
-
+    
     public static enum LoaderSetting implements Defaultable {
-	/**
-	 * Enables debug mode of the Omnikryptec-Engine and LWJGL. This might do
-	 * expensive checks, performance-wise.<br>
-	 * <br>
-	 * The default value is <code>false</code>.
-	 *
-	 * @see org.lwjgl.system.Configuration#DEBUG
-	 * @see org.lwjgl.system.Configuration#DEBUG_LOADER
-	 */
-	DEBUG(false),
-	/**
-	 * When enabled, lwjgl's capabilities classes will print an error message when
-	 * they fail to retrieve a function pointer. <br>
-	 * Requires {@link #DEBUG} to be enabled. <br>
-	 * <br>
-	 * The default value is <code>false</code>.
-	 *
-	 * @see org.lwjgl.system.Configuration#DEBUG_FUNCTIONS
-	 */
-	DEBUG_FUNCTIONS(false),
-	/**
-	 * Enables joml's fastmath. <br>
-	 * <br>
-	 * The default value is <code>true</code>.
-	 *
-	 * @see org.joml.Math
-	 */
-	FASTMATH(true),
-	/**
-	 * The window-/contextcreation information. Only in non-static cases of
-	 * {@link EngineLoader}.<br>
-	 * <br>
-	 * The default value is a default {@link OpenGLWindowInfo}.
-	 *
-	 * @see WindowInfo
-	 */
-	WINDOW_INFO(new OpenGLWindowInfo()),
-	/**
-	 * When to show the window after it's creation. Only in non-static cases of
-	 * {@link EngineLoader}. <br>
-	 * <br>
-	 * The default value is {@link WindowMakeVisible#IMMEDIATELY}.
-	 *
-	 * @see WindowMakeVisible
-	 */
-	SHOW_WINDOW_AFTER_CREATION(WindowMakeVisible.IMMEDIATELY),
-	/**
-	 * The option that defines if the gameloop should be started after
-	 * initialization. Only in non-static cases of {@link EngineLoader} and only for
-	 * non-null {@link #ENGINE_LOOP}.<br>
-	 * <br>
-	 * The default value is <code>true</code>
-	 */
-	START_ENGINE_LOOP_AFTER_INIT(true),
-	/**
-	 * The game-loop that might be started after initialization. Only in non-static
-	 * cases of {@link EngineLoader}<br>
-	 * <br>
-	 * The default value is {@link DefaultEngineLoop}
-	 * 
-	 * @see #START_ENGINE_LOOP_AFTER_INIT
-	 */
-	ENGINE_LOOP(new DefaultEngineLoop());
-
-	private final Object defaultSetting;
-
-	private LoaderSetting(Object def) {
-	    this.defaultSetting = def;
-	}
-
-	@Override
-	public Object getDefault() {
-	    return defaultSetting;
-	}
+        /**
+         * Enables debug mode of the Omnikryptec-Engine and LWJGL. This might do
+         * expensive checks, performance-wise.<br>
+         * <br>
+         * The default value is <code>false</code>.
+         *
+         * @see org.lwjgl.system.Configuration#DEBUG
+         * @see org.lwjgl.system.Configuration#DEBUG_LOADER
+         */
+        DEBUG(false),
+        /**
+         * When enabled, lwjgl's capabilities classes will print an error message when
+         * they fail to retrieve a function pointer. <br>
+         * Requires {@link #DEBUG} to be enabled. <br>
+         * <br>
+         * The default value is <code>false</code>.
+         *
+         * @see org.lwjgl.system.Configuration#DEBUG_FUNCTIONS
+         */
+        DEBUG_FUNCTIONS(false),
+        /**
+         * Enables joml's fastmath. <br>
+         * <br>
+         * The default value is <code>true</code>.
+         *
+         * @see org.joml.Math
+         */
+        FASTMATH(true),
+        /**
+         * The window-/contextcreation information. Only in non-static cases of
+         * {@link EngineLoader}.<br>
+         * <br>
+         * The default value is a default {@link OpenGLWindowInfo}.
+         *
+         * @see WindowInfo
+         */
+        WINDOW_INFO(new OpenGLWindowInfo()),
+        /**
+         * When to show the window after it's creation. Only in non-static cases of
+         * {@link EngineLoader}. <br>
+         * <br>
+         * The default value is {@link WindowMakeVisible#IMMEDIATELY}.
+         *
+         * @see WindowMakeVisible
+         */
+        SHOW_WINDOW_AFTER_CREATION(WindowMakeVisible.IMMEDIATELY),
+        /**
+         * The option that defines if the gameloop should be started after
+         * initialization. Only in non-static cases of {@link EngineLoader} and only for
+         * non-null {@link #ENGINE_LOOP}.<br>
+         * <br>
+         * The default value is <code>true</code>
+         */
+        START_ENGINE_LOOP_AFTER_INIT(true),
+        /**
+         * The game-loop that might be started after initialization. Only in non-static
+         * cases of {@link EngineLoader}<br>
+         * <br>
+         * The default value is {@link DefaultEngineLoop}
+         *
+         * @see #START_ENGINE_LOOP_AFTER_INIT
+         */
+        ENGINE_LOOP(new DefaultEngineLoop());
+        
+        private final Object defaultSetting;
+        
+        private LoaderSetting(Object def) {
+            this.defaultSetting = def;
+        }
+        
+        @Override
+        public Object getDefault() {
+            return defaultSetting;
+        }
     }
-
+    
     /**
      * Will only be used in non-static cases of {@link EngineLoader}. Defines when
      * to show the {@link Window}.
@@ -256,18 +254,18 @@ public abstract class EngineLoader {
      * @author pcfreak9000
      */
     public static enum WindowMakeVisible {
-	/**
-	 * Show the window immediately after creation, and before
-	 * {@link EngineLoader#onContextCreationFinish()}.
-	 */
-	IMMEDIATELY,
-	/**
-	 * Show the window after {@link EngineLoader#onContextCreationFinish()}.
-	 */
-	AFTERINIT,
-	/**
-	 * Never show the window.
-	 */
-	NEVER;
+        /**
+         * Show the window immediately after creation, and before
+         * {@link EngineLoader#onContextCreationFinish()}.
+         */
+        IMMEDIATELY,
+        /**
+         * Show the window after {@link EngineLoader#onContextCreationFinish()}.
+         */
+        AFTERINIT,
+        /**
+         * Never show the window.
+         */
+        NEVER;
     }
 }
