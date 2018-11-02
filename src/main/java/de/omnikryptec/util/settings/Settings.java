@@ -16,34 +16,171 @@
 
 package de.omnikryptec.util.settings;
 
-import java.util.HashMap;
+import de.codemakers.base.util.Require;
+import de.codemakers.base.util.interfaces.Copyable;
 
-public class Settings<K> {
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+
+public class Settings<K> implements Copyable {
     
-    private final HashMap<K, Object> settings_objects = new HashMap<>();
+    private final Map<K, Object> settings;
     
+    public Settings() {
+        this(new ConcurrentHashMap<>());
+    }
+    
+    public Settings(Map<K, Object> settings) {
+        this.settings = settings;
+    }
+    
+    /**
+     * Returns the value for the key
+     *
+     * @param key {@link K} Key
+     * @param <T> Type of the value
+     *
+     * @return Value for the key
+     */
     public <T> T get(K key) {
-        Object obj = settings_objects.get(key);
-        if (obj == null) {
+        Object object = settings.get(key);
+        if (object == null) {
             if (key instanceof Defaultable) {
-                obj = ((Defaultable) key).getDefault();
+                object = ((Defaultable) key).getDefault();
             }
         }
-        return (T) obj;
+        return (T) object;
     }
     
-    public <T> T getOrDefault(K key, T def) {
-        T t = get(key);
-        return t == null ? def : t;
+    /**
+     * Returns the value for the key (or the default value if null)
+     *
+     * @param key {@link K} Key
+     * @param defaultValue Default value
+     * @param <T> Type of the value
+     *
+     * @return Value for the key (or the default value if null)
+     */
+    public <T> T getOrDefault(K key, T defaultValue) {
+        final T t = get(key);
+        return t == null ? defaultValue : t;
     }
     
+    /**
+     * Sets a value for a key
+     *
+     * @param key {@link K} Key
+     * @param value Value to be set
+     *
+     * @return A reference to this {@link de.omnikryptec.util.settings.Settings}
+     */
     public Settings<K> set(K key, Object value) {
-        settings_objects.put(key, value);
+        settings.put(key, value);
         return this;
     }
     
-    public boolean has(K key) {
-        return settings_objects.containsKey(key);
+    /**
+     * Sets some values for some keys
+     *
+     * @param settings Settings map
+     *
+     * @return A reference to this {@link de.omnikryptec.util.settings.Settings}
+     */
+    public Settings<K> setAll(Map<K, Object> settings) {
+        this.settings.putAll(settings);
+        return this;
+    }
+    
+    /**
+     * Removes a key and its value from this {@link de.omnikryptec.util.settings.Settings}
+     *
+     * @param key {@link K} Key of the {@link java.util.Map.Entry<K, java.lang.Object>} to get removed
+     *
+     * @return A reference to this {@link de.omnikryptec.util.settings.Settings}
+     */
+    public Settings<K> remove(K key) {
+        settings.remove(key);
+        return this;
+    }
+    
+    /**
+     * Removes a key and its value from this {@link de.omnikryptec.util.settings.Settings} if the value for the key matches the given value
+     *
+     * @param key {@link K} Key of the {@link java.util.Map.Entry<K, java.lang.Object>} to get removed
+     * @param value Value to match if a {@link java.util.Map.Entry<K, java.lang.Object>} should get removed
+     *
+     * @return A reference to this {@link de.omnikryptec.util.settings.Settings}
+     */
+    public Settings<K> remove(K key, Object value) {
+        settings.remove(key, value);
+        return this;
+    }
+    
+    /**
+     * Returns <tt>true</tt> if this {@link de.omnikryptec.util.settings.Settings} has a specific key
+     *
+     * @param key {@link K} Key to be searched for
+     *
+     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.Settings} contains a value for the specified key
+     */
+    public boolean hasKey(K key) {
+        return settings.containsKey(key);
+    }
+    
+    /**
+     * Returns <tt>true</tt> if this {@link de.omnikryptec.util.settings.Settings} has a specific value
+     *
+     * @param value Value to be searched for
+     *
+     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.Settings} maps one or more keys to the specified value
+     */
+    public boolean hasValue(Object value) {
+        return settings.containsValue(value);
+    }
+    
+    /**
+     * Removes all {@link java.util.Map.Entry<K, java.lang.Object>}s of this {@link de.omnikryptec.util.settings.Settings}
+     */
+    public boolean clear() {
+        settings.clear();
+        return settings.isEmpty();
+    }
+    
+    @Override
+    public Copyable copy() {
+        return new Settings<K>().setAll(settings);
+    }
+    
+    @Override
+    public void set(Copyable copyable) {
+        final Settings<K> settings = Require.clazz(copyable, Settings.class);
+        if (settings != null) {
+            this.settings.clear();
+            this.settings.putAll(settings.settings);
+        }
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || !getClass().isAssignableFrom(o.getClass())) {
+            return false;
+        }
+        final Settings<?> settings1 = (Settings<?>) o;
+        return Objects.equals(settings, settings1.settings);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(settings);
+    }
+    
+    @Override
+    public String toString() {
+        return "Settings{" + "settings=" + settings + '}';
     }
     
 }
