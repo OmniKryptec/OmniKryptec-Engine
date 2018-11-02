@@ -103,4 +103,24 @@ public class InputManager {
         return keyboardHandler.getKeyState(keyCode);
     }
     
+    public boolean isKeyboardKeyPressed(int keyCode) {
+        if (keyCode < 0 || keyCode >= keyboardHandler.size()) {
+            return false;
+        }
+        return keyboardHandler.isKeyPressed(keyCode) || keyboardHandler.isKeyRepeated(keyCode);
+    }
+    
+    /* //TODO Implement MouseHandler
+    public boolean isMouseButtonPressed(int buttonCode) {
+        if (buttonCode < 0 || buttonCode >= mouseHandler.buttons.length) {
+            return false;
+        }
+        return mouseHandler.isButtonPressed(buttonCode);
+    }
+    */
+    
+    public long getWindow() {
+        return window;
+    }
+    
 }

@@ -147,4 +147,8 @@ public class KeyboardHandler implements InputHandler {
         return keys.length;
     }
     
+    public long getWindow() {
+        return window;
+    }
+    
 }
