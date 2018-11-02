@@ -95,6 +95,9 @@ public abstract class EngineLoader {
 
     @Nonnull
     public EngineLoader boot() {
+	if (booted) {
+	    throw new IllegalStateException("Was already booted");
+	}
 	Settings<LoaderSetting> loaderSettings = new Settings<>();
 	config(loaderSettings);
 	setConfiguration(loaderSettings);
