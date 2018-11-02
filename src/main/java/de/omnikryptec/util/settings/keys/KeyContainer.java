@@ -30,6 +30,26 @@ import java.util.stream.Collectors;
  */
 public class KeyContainer {
     
+    /**
+     * Default {@link de.omnikryptec.util.settings.keys.IKey} which can be returned instead of null
+     */
+    public static final IKey DEFAULT_NULL_IKEY = new IKey() {
+        @Override
+        public String getName() {
+            return null;
+        }
+        
+        @Override
+        public boolean isPressed() {
+            return false;
+        }
+        
+        @Override
+        public boolean isLongPressed(double minTime, double maxTime) {
+            return false;
+        }
+    };
+    
     final BiMap<String, IKey> keys = HashBiMap.create();
     
     /**
