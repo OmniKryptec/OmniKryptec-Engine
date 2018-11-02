@@ -16,9 +16,9 @@
 
 package de.omnikryptec.util.settings.keys;
 
-import java.util.*;
+import java.util.Objects;
 
-public class KeyGroup implements IKey {
+public class KeyGroup extends KeyContainer implements IKey {
     
     /**
      * Default {@link de.omnikryptec.util.settings.keys.KeyGroup} which can be returned instead of null
@@ -26,7 +26,6 @@ public class KeyGroup implements IKey {
     public static final KeyGroup DEFAULT_NULL_KEY_GROUP = new KeyGroup("DEFAULT_NULL_KEY_GROUP");
     
     private final String name;
-    private final List<IKey> keys = new ArrayList<>();
     private boolean allIKeysNeedsToBePressed;
     
     /**
@@ -70,11 +69,11 @@ public class KeyGroup implements IKey {
      */
     @Override
     public boolean isPressed() {
-        if (keys.isEmpty()) {
+        if (isEmpty()) {
             return false;
         }
         boolean isPressed = allIKeysNeedsToBePressed;
-        for (IKey key : keys) {
+        for (IKey key : getKeys()) {
             final boolean isPressed_ = key.isPressed();
             if (!isPressed_ && allIKeysNeedsToBePressed) {
                 isPressed = false;
@@ -97,12 +96,12 @@ public class KeyGroup implements IKey {
      */
     @Override
     public boolean isLongPressed(double minTime, double maxTime) {
-        if (keys.isEmpty()) {
+        if (isEmpty()) {
             return false;
         }
         boolean isLongPressed = allIKeysNeedsToBePressed;
         //boolean firstPressed = false;
-        for (IKey key : keys) {
+        for (IKey key : getKeys()) {
             //final boolean isPressed_ = key.isPressed();
             final boolean isLongPressed_ = key.isLongPressed(minTime, maxTime);
             /*
@@ -126,39 +125,6 @@ public class KeyGroup implements IKey {
             }
         }
         return isLongPressed;
-    }
-    
-    /**
-     * Returns all {@link de.omnikryptec.util.settings.keys.IKey}s in this {@link de.omnikryptec.util.settings.keys.KeyGroup}
-     *
-     * @return {@link de.omnikryptec.util.settings.keys.IKey}s in this {@link de.omnikryptec.util.settings.keys.KeyGroup}
-     */
-    public List<IKey> getKeys() {
-        return keys;
-    }
-    
-    /**
-     * Adds some {@link de.omnikryptec.util.settings.keys.IKey}s to this {@link de.omnikryptec.util.settings.keys.KeyGroup}
-     *
-     * @param keys {@link de.omnikryptec.util.settings.keys.IKey}s to be added
-     *
-     * @return A reference to this {@link de.omnikryptec.util.settings.keys.KeyGroup}
-     */
-    public KeyGroup addKeys(IKey... keys) {
-        this.keys.addAll(Arrays.asList(keys));
-        return this;
-    }
-    
-    /**
-     * Adds some {@link de.omnikryptec.util.settings.keys.IKey}s to this {@link de.omnikryptec.util.settings.keys.KeyGroup}
-     *
-     * @param keys {@link de.omnikryptec.util.settings.keys.IKey}s to be added
-     *
-     * @return A reference to this {@link de.omnikryptec.util.settings.keys.KeyGroup}
-     */
-    public KeyGroup addKeys(Collection<IKey> keys) {
-        this.keys.addAll(keys);
-        return this;
     }
     
     /**
@@ -190,18 +156,21 @@ public class KeyGroup implements IKey {
         if (o == null || !getClass().isAssignableFrom(o.getClass())) {
             return false;
         }
+        if (!super.equals(o)) {
+            return false;
+        }
         final KeyGroup keyGroup = (KeyGroup) o;
-        return allIKeysNeedsToBePressed == keyGroup.allIKeysNeedsToBePressed && Objects.equals(name, keyGroup.name) && Objects.equals(keys, keyGroup.keys);
+        return allIKeysNeedsToBePressed == keyGroup.allIKeysNeedsToBePressed && Objects.equals(name, keyGroup.name);
     }
     
     @Override
     public int hashCode() {
-        return Objects.hash(name, keys, allIKeysNeedsToBePressed);
+        return Objects.hash(super.hashCode(), name, allIKeysNeedsToBePressed);
     }
     
     @Override
     public String toString() {
-        return "KeyGroup{" + "name='" + name + '\'' + ", keys=" + keys + ", allIKeysNeedsToBePressed=" + allIKeysNeedsToBePressed + '}';
+        return "KeyGroup{" + "name='" + name + '\'' + ", allIKeysNeedsToBePressed=" + allIKeysNeedsToBePressed + ", keys=" + keys + '}';
     }
     
 }

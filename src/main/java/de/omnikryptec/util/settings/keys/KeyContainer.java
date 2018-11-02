@@ -29,7 +29,7 @@ import java.util.Set;
  */
 public class KeyContainer {
     
-    private final BiMap<String, IKey> keys = HashBiMap.create();
+    final BiMap<String, IKey> keys = HashBiMap.create();
     
     /**
      * Returns the {@link com.google.common.collect.BiMap<String, de.omnikryptec.util.settings.keys.IKey>} of this {@link de.omnikryptec.util.settings.keys.KeyContainer}
@@ -123,6 +123,32 @@ public class KeyContainer {
         Objects.requireNonNull(key);
         this.keys.remove(key.getName());
         return this;
+    }
+    
+    public boolean isEmpty() {
+        return keys.isEmpty();
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || !getClass().isAssignableFrom(o.getClass())) {
+            return false;
+        }
+        final KeyContainer that = (KeyContainer) o;
+        return Objects.equals(keys, that.keys);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(keys);
+    }
+    
+    @Override
+    public String toString() {
+        return "KeyContainer{" + "keys=" + keys + '}';
     }
     
 }
