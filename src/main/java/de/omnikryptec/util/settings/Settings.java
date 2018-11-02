@@ -18,6 +18,7 @@ package de.omnikryptec.util.settings;
 
 import de.codemakers.base.util.Require;
 import de.codemakers.base.util.interfaces.Copyable;
+import de.omnikryptec.util.Util;
 
 import java.util.Map;
 import java.util.Objects;
@@ -88,7 +89,7 @@ public class Settings<K> implements Copyable {
      * @return A reference to this {@link de.omnikryptec.util.settings.Settings}
      */
     public Settings<K> setAll(Map<K, Object> settings) {
-        Objects.requireNonNull(settings);
+        Util.ensureNonNull(settings);
         this.settings.putAll(settings);
         return this;
     }
@@ -157,7 +158,7 @@ public class Settings<K> implements Copyable {
     public void set(Copyable copyable) {
         final Settings<K> settings = Require.clazz(copyable, Settings.class);
         if (settings != null) {
-            Objects.requireNonNull(settings.settings);
+            Util.ensureNonNull(settings.settings);
             this.settings.clear();
             this.settings.putAll(settings.settings);
         }
