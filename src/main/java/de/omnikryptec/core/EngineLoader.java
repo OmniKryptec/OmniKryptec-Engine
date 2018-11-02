@@ -49,15 +49,15 @@ public abstract class EngineLoader {
     
     public EngineLoader() {
     }
-
+    
     /**
      * Uses the settings to set library options. This method is only effective if no
      * library functions have been called yet.<br>
      * The library options this method might modify:<br>
      * <ol>
-     * <li>{@link LoaderSetting.DEBUG}</li>
-     * <li>{@link LoaderSetting.DEBUG_FUNCTIONS}</li>
-     * <li>{@link LoaderSetting.FASTMATH}</li>
+     * <li>{@link LoaderSetting#DEBUG}</li>
+     * <li>{@link LoaderSetting#DEBUG_FUNCTIONS}</li>
+     * <li>{@link LoaderSetting#FASTMATH}</li>
      * </ol>
      *
      * @param settings the {@link Settings} to set the lib options from
@@ -73,7 +73,7 @@ public abstract class EngineLoader {
         Configuration.DEBUG_LOADER.set(debug);
         Configuration.DEBUG_FUNCTIONS.set(debug && functionDebug);
     }
-
+    
     public static void initialize() {
         // Initialize everything required
         LibAPIManager.init();
@@ -85,7 +85,7 @@ public abstract class EngineLoader {
      *
      * @return the state of the internal debug-flag.
      *
-     * @see LoaderSetting.DEBUG
+     * @see LoaderSetting#DEBUG
      */
     public static boolean isDebug() {
         return debug;
@@ -115,7 +115,7 @@ public abstract class EngineLoader {
         onInitialized();
         if (engineLoop != null) {
             engineLoop.init(this);
-            if ((boolean) loaderSettings.get(LoaderSetting.START_ENGINE_LOOP_AFTER_INIT)) {
+            if (loaderSettings.get(LoaderSetting.START_ENGINE_LOOP_AFTER_INIT)) {
                 engineLoop.startLoop();
             }
         }
@@ -170,7 +170,7 @@ public abstract class EngineLoader {
     protected void onInitialized() {
     }
     
-    public static enum LoaderSetting implements Defaultable {
+    public enum LoaderSetting implements Defaultable {
         /**
          * Enables debug mode of the Omnikryptec-Engine and LWJGL. This might do
          * expensive checks, performance-wise.<br>
@@ -237,7 +237,7 @@ public abstract class EngineLoader {
         
         private final Object defaultSetting;
         
-        private LoaderSetting(Object def) {
+        LoaderSetting(Object def) {
             this.defaultSetting = def;
         }
         
@@ -253,7 +253,7 @@ public abstract class EngineLoader {
      *
      * @author pcfreak9000
      */
-    public static enum WindowMakeVisible {
+    public enum WindowMakeVisible {
         /**
          * Show the window immediately after creation, and before
          * {@link EngineLoader#onContextCreationFinish()}.
@@ -266,6 +266,7 @@ public abstract class EngineLoader {
         /**
          * Never show the window.
          */
-        NEVER;
+        NEVER
     }
+    
 }
