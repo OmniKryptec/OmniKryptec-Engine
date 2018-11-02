@@ -16,7 +16,7 @@
 
 package de.omnikryptec.graphics.display;
 
-//TODO unneccessary: just wrapping Window and doing weird stuff here, viewport stuff might be useful though
+//TODO viewport stuff might be useful though
 @Deprecated
 public class Display {
     
@@ -28,7 +28,7 @@ public class Display {
     //		//this.window = window;
     //		calcViewport();
     //		setARViewPort();
-    //		// TODO Eventbased? / Input has nothing to do with the Display, move it to a
+    //		//  Eventbased? / Input has nothing to do with the Display, move it to a
     //		// different position
     //		InputManager.initCallbacks();
     //		//lastsynced = GLFWManager.active().getTime();
@@ -36,7 +36,7 @@ public class Display {
     //
     //	void update() {
     //		//window.swapBuffers();
-    //		//TODO not implemented yet
+    //		// not implemented yet
     //		//if (window.wasResized()) {
     //			calcViewport();
     //			setARViewPort();
@@ -53,7 +53,7 @@ public class Display {
     //		return viewport[3];
     //	}
     //
-    //	// TODO opengl does not belong to this class
+    //
     //	// *********************************************************/
     //	public final void resetViewport() {
     //		OpenGL.gl11viewport(0, 0, /*window.getBufferWidth(), window.getBufferHeight()*/0,0);
