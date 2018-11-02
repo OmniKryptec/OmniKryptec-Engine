@@ -18,6 +18,7 @@ package de.omnikryptec.util.settings.keys;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import de.omnikryptec.util.Util;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -75,7 +76,7 @@ public class KeyContainer {
      * @return A reference to this {@link de.omnikryptec.util.settings.keys.KeyContainer}
      */
     public KeyContainer setIKeys(List<IKey> keys) {
-        Objects.requireNonNull(keys);
+        Util.ensureNonNull(keys);
         this.keys.clear();
         keys.forEach(this::addIKey);
         return this;
@@ -89,7 +90,7 @@ public class KeyContainer {
      * @return A reference to this {@link de.omnikryptec.util.settings.keys.KeyContainer}
      */
     public KeyContainer addIKey(IKey key) {
-        Objects.requireNonNull(key);
+        Util.ensureNonNull(key);
         this.keys.put(key.getName(), key);
         return this;
     }
@@ -113,7 +114,7 @@ public class KeyContainer {
      * @return A reference to this {@link de.omnikryptec.util.settings.keys.KeyContainer}
      */
     public KeyContainer addIKeys(Collection<IKey> keys) {
-        Objects.requireNonNull(keys);
+        Util.ensureNonNull(keys);
         keys.forEach(this::addIKey);
         return this;
     }
@@ -138,7 +139,7 @@ public class KeyContainer {
      * @return A reference to this {@link de.omnikryptec.util.settings.keys.KeyContainer}
      */
     public KeyContainer removeIKey(IKey key) {
-        Objects.requireNonNull(key);
+        Util.ensureNonNull(key);
         this.keys.remove(key.getName());
         return this;
     }
