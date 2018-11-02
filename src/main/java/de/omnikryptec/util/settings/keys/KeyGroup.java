@@ -16,6 +16,7 @@
 
 package de.omnikryptec.util.settings.keys;
 
+import java.util.Collection;
 import java.util.Objects;
 
 public class KeyGroup extends KeyContainer implements IKey {
@@ -31,7 +32,7 @@ public class KeyGroup extends KeyContainer implements IKey {
     /**
      * Constructs a {@link de.omnikryptec.util.settings.keys.KeyGroup} (where all {@link de.omnikryptec.util.settings.keys.IKey}s needs to be pressed at the same time)
      * <p>
-     * A KeyGroup contains IKeys, which means a KeyGroup can contain multiple {@link de.omnikryptec.util.settings.keys.KeyGroup}s or Keys
+     * A KeyGroup contains {@link de.omnikryptec.util.settings.keys.IKey}s, which means a {@link de.omnikryptec.util.settings.keys.KeyGroup} can contain multiple {@link de.omnikryptec.util.settings.keys.KeyGroup}s or {@link de.omnikryptec.util.settings.keys.Key}s
      *
      * @param name Name of the {@link de.omnikryptec.util.settings.keys.KeyGroup}
      */
@@ -42,14 +43,30 @@ public class KeyGroup extends KeyContainer implements IKey {
     /**
      * Constructs a {@link de.omnikryptec.util.settings.keys.KeyGroup}
      * <p>
-     * A KeyGroup contains IKeys, which means a KeyGroup can contain multiple {@link de.omnikryptec.util.settings.keys.KeyGroup}s or Keys
+     * A KeyGroup contains {@link de.omnikryptec.util.settings.keys.IKey}s, which means a {@link de.omnikryptec.util.settings.keys.KeyGroup} can contain multiple {@link de.omnikryptec.util.settings.keys.KeyGroup}s or {@link de.omnikryptec.util.settings.keys.Key}s
      *
      * @param name Name of the {@link de.omnikryptec.util.settings.keys.KeyGroup}
      * @param allIKeysNeedsToBePressed <tt>true</tt> if all {@link de.omnikryptec.util.settings.keys.IKey}s in this {@link de.omnikryptec.util.settings.keys.KeyGroup} have to be pressed at the same time
      */
     public KeyGroup(String name, boolean allIKeysNeedsToBePressed) {
+        this(name, allIKeysNeedsToBePressed, null);
+    }
+    
+    /**
+     * Constructs a {@link de.omnikryptec.util.settings.keys.KeyGroup}
+     * <p>
+     * A KeyGroup contains {@link de.omnikryptec.util.settings.keys.IKey}s, which means a {@link de.omnikryptec.util.settings.keys.KeyGroup} can contain multiple {@link de.omnikryptec.util.settings.keys.KeyGroup}s or {@link de.omnikryptec.util.settings.keys.Key}s
+     *
+     * @param name Name of the {@link de.omnikryptec.util.settings.keys.KeyGroup}
+     * @param allIKeysNeedsToBePressed <tt>true</tt> if all {@link de.omnikryptec.util.settings.keys.IKey}s in this {@link de.omnikryptec.util.settings.keys.KeyGroup} have to be pressed at the same time
+     * @param keys {@link de.omnikryptec.util.settings.keys.IKey}s to be added
+     */
+    public KeyGroup(String name, boolean allIKeysNeedsToBePressed, Collection<IKey> keys) {
         this.name = name;
         this.allIKeysNeedsToBePressed = allIKeysNeedsToBePressed;
+        if (keys != null) {
+            addIKeys(keys);
+        }
     }
     
     /**

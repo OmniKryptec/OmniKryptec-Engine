@@ -19,9 +19,18 @@ package de.omnikryptec.util.settings;
 import de.omnikryptec.util.settings.keys.IKey;
 import de.omnikryptec.util.settings.keys.KeyContainer;
 
+import java.util.Collection;
+
 public class KeySettings extends KeyContainer {
     
     public KeySettings() {
+        this(null);
+    }
+    
+    public KeySettings(Collection<IKey> keys) {
+        if (keys != null) {
+            addIKeys(keys);
+        }
     }
     
     public boolean isPressed(String name) {
