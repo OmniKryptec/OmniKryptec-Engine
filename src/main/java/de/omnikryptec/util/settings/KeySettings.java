@@ -20,6 +20,7 @@ import com.google.common.collect.ObjectArrays;
 import de.omnikryptec.util.settings.keys.IKey;
 import de.omnikryptec.util.settings.keys.Key;
 import de.omnikryptec.util.settings.keys.KeyContainer;
+import de.omnikryptec.util.settings.keys.KeyGroup;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Collection;
@@ -54,6 +55,23 @@ public class KeySettings extends KeyContainer {
         if (keys != null) {
             addIKeys(keys);
         }
+    }
+    
+    public static void updateKeys(Collection<IKey> keys, double currentTime, int keyCode, boolean isKeyboardKey) {
+        for (IKey key : keys) {
+            if (key instanceof Key) {
+                final Key key_ = (Key) key;
+                if (key_.getKey() == keyCode && key_.isKeyboardKey() == isKeyboardKey) {
+                    key_.setLastChange(currentTime);
+                }
+            } else if (key instanceof KeyGroup) {
+                updateKeys(((KeyGroup) key).getIKeys(), currentTime, keyCode, isKeyboardKey);
+            }
+        }
+    }
+    
+    public void updateKeys(double currentTime, int keyCode, boolean isKeyboardKey) {
+        updateKeys(getIKeys(), currentTime, keyCode, isKeyboardKey);
     }
     
     public boolean isPressed(String name) {
