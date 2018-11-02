@@ -18,6 +18,10 @@ package de.omnikryptec.util;
 
 public class Util {
     
+    public static <T> T ensureNonNull(T obj) {
+	return ensureNonNull(obj, "Element is null");
+    }
+    
     public static <T> T ensureNonNull(T obj, String message) {
         if (obj == null) {
             NullPointerException exc = new NullPointerException(message);

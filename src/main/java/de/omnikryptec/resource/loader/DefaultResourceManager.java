@@ -22,6 +22,8 @@ import de.codemakers.base.logger.LogLevel;
 import de.codemakers.base.logger.Logger;
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.resource.loader.annotations.DefaultLoader;
+import de.omnikryptec.util.Util;
+
 import org.reflections.Reflections;
 
 import java.util.*;
@@ -341,7 +343,7 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
     
     @Override
     public <T extends ResourceObject> boolean addResources(Class<T> clazz, T... resourceObjects) {
-        Objects.requireNonNull(clazz);
+	Util.ensureNonNull(clazz);
         if (resourceObjects.length == 0) {
             return false;
         }
@@ -402,13 +404,13 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
     }
     
     public boolean addResourceObject(ResourceObject resourceObject) {
-        Objects.requireNonNull(resourceObject);
+	Util.ensureNonNull(resourceObject);
         return resourceObjects.put(resourceObject.getClass(), resourceObject);
     }
     
     public DefaultResourceManager addResourceLoader(ResourceLoader resourceLoader) {
         checkAndErrorIfLoading(true);
-        Objects.requireNonNull(resourceLoader);
+        Util.ensureNonNull(resourceLoader);
         if (equals(resourceLoader)) {
             return this;
         }
