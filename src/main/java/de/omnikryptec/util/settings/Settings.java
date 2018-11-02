@@ -88,6 +88,7 @@ public class Settings<K> implements Copyable {
      * @return A reference to this {@link de.omnikryptec.util.settings.Settings}
      */
     public Settings<K> setAll(Map<K, Object> settings) {
+        Objects.requireNonNull(settings);
         this.settings.putAll(settings);
         return this;
     }
@@ -156,6 +157,7 @@ public class Settings<K> implements Copyable {
     public void set(Copyable copyable) {
         final Settings<K> settings = Require.clazz(copyable, Settings.class);
         if (settings != null) {
+            Objects.requireNonNull(settings.settings);
             this.settings.clear();
             this.settings.putAll(settings.settings);
         }
