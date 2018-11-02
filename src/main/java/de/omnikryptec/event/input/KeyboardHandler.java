@@ -24,10 +24,11 @@ import java.util.Arrays;
 
 public class KeyboardHandler implements InputHandler {
     
-    private final byte KEY_NOTHING = -1;
-    private final byte KEY_RELEASED = GLFW.GLFW_RELEASE;
-    private final byte KEY_PRESSED = GLFW.GLFW_PRESS;
-    private final byte KEY_REPEATED = GLFW.GLFW_REPEAT;
+    public static final byte KEY_UNKNOWN = Byte.MIN_VALUE;
+    public static final byte KEY_NOTHING = -1;
+    public static final byte KEY_RELEASED = GLFW.GLFW_RELEASE;
+    public static final byte KEY_PRESSED = GLFW.GLFW_PRESS;
+    public static final byte KEY_REPEATED = GLFW.GLFW_REPEAT;
     
     //private final InputState[] keys = new InputState[65536];
     private final byte[] keys = new byte[65536];
@@ -108,6 +109,10 @@ public class KeyboardHandler implements InputHandler {
         return keys[keyCode];
     }
     
+    public synchronized boolean isKeyUnknown(int keyCode) {
+        return keys[keyCode] == KEY_UNKNOWN;
+    }
+    
     public synchronized boolean isKeyNothing(int keyCode) {
         return keys[keyCode] == KEY_NOTHING;
     }
@@ -136,6 +141,10 @@ public class KeyboardHandler implements InputHandler {
         final String temp = inputString;
         inputString = "";
         return temp;
+    }
+    
+    public int size() {
+        return keys.length;
     }
     
 }
