@@ -1,6 +1,6 @@
 package de.omnikryptec.core;
 
-public class DefaultEngineLoop extends AbstractEngineLoop{
+public class DefaultEngineLoop extends AbstractEngineLoop {
 
     @Override
     public void update() {

@@ -228,7 +228,7 @@ public abstract class EngineLoader {
 	 * The game-loop that might be started after initialization. Only in non-static
 	 * cases of {@link EngineLoader}<br>
 	 * <br>
-	 * The default value is Def
+	 * The default value is {@link DefaultEngineLoop}
 	 * 
 	 * @see #START_ENGINE_LOOP_AFTER_INIT
 	 */

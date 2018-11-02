@@ -8,25 +8,19 @@ import de.omnikryptec.util.settings.Settings;
 
 public class ComfortTest extends EngineLoader {
 
-	public static void main(String[] args) {
-		new ComfortTest().boot();
-	}
+    public static void main(String[] args) {
+	new ComfortTest().boot();
+    }
 
-	@Override
-	protected void config(Settings<LoaderSetting> settings) {
-		settings.set(LoaderSetting.DEBUG, true);
-	}
+    @Override
+    protected void config(Settings<LoaderSetting> settings) {
+	settings.set(LoaderSetting.DEBUG, true);
+	settings.set(LoaderSetting.ENGINE_LOOP, new Testloop());
+    }
 
-	@Override
-	protected void onContextCreationFinish() {
-		WindowUpdater updater = new WindowUpdater(getWindow());
-		while (!getWindow().isCloseRequested()) {
-			updater.update(0);
-			if (updater.getFrameCount() % 40 == 0) {
-				OpenGLUtil.setClearColor(Color.randomRGB());
-			}
-			OpenGLUtil.clear(BufferType.COLOR);
-		}
-	}
+    @Override
+    protected void onContextCreationFinish() {
+
+    }
 
 }
