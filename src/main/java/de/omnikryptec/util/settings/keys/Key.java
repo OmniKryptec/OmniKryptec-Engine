@@ -17,6 +17,7 @@
 package de.omnikryptec.util.settings.keys;
 
 import de.codemakers.base.exceptions.NotYetImplementedRuntimeException;
+import de.omnikryptec.libapi.glfw.LibAPIManager;
 
 import java.util.Objects;
 
@@ -83,8 +84,8 @@ public class Key implements IKey {
     /**
      * Returns if this {@link de.omnikryptec.util.settings.keys.Key} is being pressed for a specified time
      *
-     * @param minTime Float Minimum pressing time
-     * @param maxTime Float Maximum pressing time
+     * @param minTime Minimum pressing time
+     * @param maxTime Maximum pressing time
      *
      * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.Key} is pressed for the specified time
      */
@@ -96,7 +97,7 @@ public class Key implements IKey {
         if (!isPressed()) {
             return false;
         }
-        final double currentTime = -1; //TODO Implement time supplier
+        final double currentTime = LibAPIManager.active().getTime();
         final double pressedTime = currentTime - lastChange;
         if (pressedTime >= minTime && pressedTime <= maxTime) {
             this.lastChange = currentTime;

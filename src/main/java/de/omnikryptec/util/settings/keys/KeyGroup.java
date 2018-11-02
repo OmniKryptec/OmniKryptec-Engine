@@ -16,8 +16,6 @@
 
 package de.omnikryptec.util.settings.keys;
 
-import de.codemakers.base.exceptions.NotYetImplementedRuntimeException;
-
 import java.util.*;
 
 public class KeyGroup implements IKey {
@@ -92,8 +90,8 @@ public class KeyGroup implements IKey {
     /**
      * Returns if this {@link de.omnikryptec.util.settings.keys.KeyGroup} is being pressed for a specified time
      *
-     * @param minTime Float Minimum pressing time
-     * @param maxTime Float Maximum pressing time
+     * @param minTime Minimum pressing time
+     * @param maxTime Maximum pressing time
      *
      * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.KeyGroup} is pressed for the specified time
      */
@@ -102,8 +100,32 @@ public class KeyGroup implements IKey {
         if (keys.isEmpty()) {
             return false;
         }
-        //TODO Implement
-        throw new NotYetImplementedRuntimeException();
+        boolean isLongPressed = allIKeysNeedsToBePressed;
+        //boolean firstPressed = false;
+        for (IKey key : keys) {
+            //final boolean isPressed_ = key.isPressed();
+            final boolean isLongPressed_ = key.isLongPressed(minTime, maxTime);
+            /*
+            if (!isLongPressed_ && allIKeysNeedsToBePressed && !(firstPressed && isPressed_)) {
+                isLongPressed = false;
+                break;
+            } else if (isLongPressed_ && allIKeysNeedsToBePressed) {
+                firstPressed = true;
+            } else if (isLongPressed_) {
+                isLongPressed = true;
+                break;
+            }
+            //FIXME Why do we need 'firstPressed'??? Until we know why, keep the snippet below...
+            */
+            if (isLongPressed_ && !allIKeysNeedsToBePressed) {
+                isLongPressed = true;
+                break;
+            } else if (!isLongPressed_ && !allIKeysNeedsToBePressed) {
+                isLongPressed = false;
+                break;
+            }
+        }
+        return isLongPressed;
     }
     
     /**

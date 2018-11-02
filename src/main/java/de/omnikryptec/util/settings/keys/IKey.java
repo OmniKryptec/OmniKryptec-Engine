@@ -35,8 +35,8 @@ public interface IKey {
     /**
      * Returns if this {@link de.omnikryptec.util.settings.keys.IKey} is being pressed for a specified time
      *
-     * @param minTime Float Minimum pressing time
-     * @param maxTime Float Maximum pressing time
+     * @param minTime Minimum pressing time
+     * @param maxTime Maximum pressing time
      *
      * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.IKey} is pressed for the specified time
      */
