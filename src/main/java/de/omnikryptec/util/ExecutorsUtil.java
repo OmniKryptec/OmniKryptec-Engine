@@ -19,7 +19,7 @@ package de.omnikryptec.util;
 import java.util.Queue;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-
+//TODO this is weird a bit
 public class ExecutorsUtil {
     
     private static final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();

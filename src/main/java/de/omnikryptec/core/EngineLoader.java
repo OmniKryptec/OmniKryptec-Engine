@@ -20,6 +20,7 @@ import de.omnikryptec.libapi.glfw.LibAPIManager;
 import de.omnikryptec.libapi.glfw.OpenGLWindowInfo;
 import de.omnikryptec.libapi.glfw.Window;
 import de.omnikryptec.libapi.glfw.WindowInfo;
+import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
 
@@ -85,6 +86,7 @@ public abstract class EngineLoader {
 	return debug;
     }
 
+    private IEngineLoop engineLoop;
     private Window<?> window;
     private boolean booted;
 
@@ -100,6 +102,7 @@ public abstract class EngineLoader {
 	// LIBRARY_PATH <-- Seems to work, so better use it
 	initialize();
 	window = ((WindowInfo<?>) loaderSettings.get(LoaderSetting.WINDOW_INFO)).createWindow();
+	engineLoop = loaderSettings.get(LoaderSetting.ENGINE_LOOP);
 	booted = true;
 	if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.IMMEDIATELY) {
 	    window.setVisible(true);
@@ -108,12 +111,21 @@ public abstract class EngineLoader {
 	if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.AFTERINIT) {
 	    window.setVisible(true);
 	}
-	// Start game loop? / Do nothing? / Extra command?
+	onInitialized();
+	if (engineLoop != null) {
+	    engineLoop.init(this);
+	    if ((boolean) loaderSettings.get(LoaderSetting.START_ENGINE_LOOP_AFTER_INIT)) {
+		engineLoop.startLoop();
+	    }
+	}
 	return this;
     }
 
     public void shutdown() {
 	onShutdown();
+	if (engineLoop != null) {
+	    engineLoop.stopLoop();
+	}
 	// Shutdown, etc...
 	window.dispose();
 	LibAPIManager.shutdown();
@@ -126,6 +138,22 @@ public abstract class EngineLoader {
 	return window;
     }
 
+    public IEngineLoop getEngineLoop() {
+	return engineLoop;
+    }
+
+    public void switchGameloop(IEngineLoop newloop) {
+	Util.ensureNonNull(newloop);
+	boolean running = engineLoop.isRunning();
+	if (running) {
+	    engineLoop.stopLoop();
+	}
+	this.engineLoop = newloop;
+	if (running) {
+	    engineLoop.startLoop();
+	}
+    }
+
     public boolean isBooted() {
 	return booted;
     }
@@ -136,6 +164,9 @@ public abstract class EngineLoader {
     protected abstract void onContextCreationFinish();
 
     protected void onShutdown() {
+    }
+
+    protected void onInitialized() {
     }
 
     public static enum LoaderSetting implements Defaultable {
@@ -177,14 +208,31 @@ public abstract class EngineLoader {
 	 */
 	WINDOW_INFO(new OpenGLWindowInfo()),
 	/**
-	 * When to show the window, after it's creation. Only in non-static cases of
+	 * When to show the window after it's creation. Only in non-static cases of
 	 * {@link EngineLoader}. <br>
 	 * <br>
 	 * The default value is {@link WindowMakeVisible#IMMEDIATELY}.
 	 *
 	 * @see WindowMakeVisible
 	 */
-	SHOW_WINDOW_AFTER_CREATION(WindowMakeVisible.IMMEDIATELY);
+	SHOW_WINDOW_AFTER_CREATION(WindowMakeVisible.IMMEDIATELY),
+	/**
+	 * The option that defines if the gameloop should be started after
+	 * initialization. Only in non-static cases of {@link EngineLoader} and only for
+	 * non-null {@link #ENGINE_LOOP}.<br>
+	 * <br>
+	 * The default value is <code>true</code>
+	 */
+	START_ENGINE_LOOP_AFTER_INIT(true),
+	/**
+	 * The game-loop that might be started after initialization. Only in non-static
+	 * cases of {@link EngineLoader}<br>
+	 * <br>
+	 * The default value is Def
+	 * 
+	 * @see #START_ENGINE_LOOP_AFTER_INIT
+	 */
+	ENGINE_LOOP(new DefaultEngineLoop());
 
 	private final Object defaultSetting;
 
