@@ -19,13 +19,16 @@ package de.omnikryptec.event;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+import de.omnikryptec.core.Updateable;
+import de.omnikryptec.util.updater.Time;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class EventBus {
+public class EventBus implements Updateable{
     
     private final AtomicBoolean processing = new AtomicBoolean(false);
     private Multimap<Class<? extends Event>, IEventListener> listeners;
@@ -109,5 +112,10 @@ public class EventBus {
             }
             someclazz = someclazz.getSuperclass();
         } while (event.triggersSuperEventListeners() && someclazz != Object.class && someclazz != null);
+    }
+
+    @Override
+    public void update(Time time) {
+	processQueuedEvents();
     }
 }
