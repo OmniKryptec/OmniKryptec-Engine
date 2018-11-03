@@ -115,7 +115,7 @@ public abstract class EngineLoader {
         onInitialized();
         if (engineLoop != null) {
             engineLoop.init(this);
-            if (loaderSettings.get(LoaderSetting.START_ENGINE_LOOP_AFTER_INIT)) {
+            if ((boolean) loaderSettings.get(LoaderSetting.START_ENGINE_LOOP_AFTER_INIT)) {
                 engineLoop.startLoop();
             }
         }
