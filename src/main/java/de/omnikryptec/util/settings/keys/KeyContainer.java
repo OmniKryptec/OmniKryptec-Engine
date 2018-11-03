@@ -199,7 +199,7 @@ public class KeyContainer {
         if (this == o) {
             return true;
         }
-        if (o == null || !getClass().isAssignableFrom(o.getClass())) {
+        if (o == null || !(o instanceof KeyContainer)) {
             return false;
         }
         final KeyContainer that = (KeyContainer) o;
