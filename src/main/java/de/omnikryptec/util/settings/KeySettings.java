@@ -27,6 +27,12 @@ import java.util.Collection;
 
 public class KeySettings extends KeyContainer {
     
+    public static final byte KEY_UNKNOWN = Byte.MIN_VALUE;
+    public static final byte KEY_NOTHING = -1;
+    public static final byte KEY_RELEASED = GLFW.GLFW_RELEASE;
+    public static final byte KEY_PRESSED = GLFW.GLFW_PRESS;
+    public static final byte KEY_REPEATED = GLFW.GLFW_REPEAT;
+    
     public static final Key STANDARD_MOUSE_BUTTON_LEFT = new Key("mouseButtonLeft", GLFW.GLFW_MOUSE_BUTTON_LEFT, false);
     public static final Key STANDARD_MOUSE_BUTTON_RIGHT = new Key("mouseButtonRight", GLFW.GLFW_MOUSE_BUTTON_RIGHT, false);
     public static final Key STANDARD_MOUSE_BUTTON_MIDDLE = new Key("mouseButtonMiddle", GLFW.GLFW_MOUSE_BUTTON_MIDDLE, false);

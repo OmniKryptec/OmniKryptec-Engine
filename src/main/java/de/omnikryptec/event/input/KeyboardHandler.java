@@ -21,14 +21,9 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWKeyCallback;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class KeyboardHandler implements InputHandler {
-    
-    public static final byte KEY_UNKNOWN = Byte.MIN_VALUE;
-    public static final byte KEY_NOTHING = -1;
-    public static final byte KEY_RELEASED = GLFW.GLFW_RELEASE;
-    public static final byte KEY_PRESSED = GLFW.GLFW_PRESS;
-    public static final byte KEY_REPEATED = GLFW.GLFW_REPEAT;
     
     //private final InputState[] keys = new InputState[65536];
     //private final byte[] keys = new byte[65536];
@@ -36,11 +31,11 @@ public class KeyboardHandler implements InputHandler {
     private final KeyboardHandler ME = this;
     private final long window;
     private final GLFWKeyCallback keyCallback;
-    // Temp
-    private byte[] keysLastTime = null;
     // Configurable
     private boolean appendToString = false;
-    private String inputString = "";
+    // Temp
+    private byte[] keysLastTime = null;
+    private final AtomicReference<String> inputString = new AtomicReference<>("");
     
     public KeyboardHandler(long window) {
         this.window = window;
@@ -50,14 +45,16 @@ public class KeyboardHandler implements InputHandler {
                 if (ME.window != window) {
                     return;
                 }
-                //final InputState inputState = InputState.ofState(action);
-                //keys[key] = inputState;
-                final byte actionB = (byte) action;
-                keys[key] = actionB;
-                if (appendToString && (actionB == KEY_PRESSED || actionB == KEY_REPEATED)) {
-                    final String keyString = GLFW.glfwGetKeyName(key, scancode); //FIXME Is this deprecated?
-                    if (keyString != null) {
-                        inputString += keyString;
+                synchronized (keys) {
+                    //final InputState inputState = InputState.ofState(action);
+                    //keys[key] = inputState;
+                    final byte actionB = (byte) action;
+                    keys[key] = actionB;
+                    if (appendToString && (actionB == KeySettings.KEY_PRESSED || actionB == KeySettings.KEY_REPEATED)) {
+                        final String keyString = GLFW.glfwGetKeyName(key, scancode); //FIXME Is this deprecated?
+                        if (keyString != null) {
+                            inputString.updateAndGet((inputString_) -> inputString_ + keyString);
+                        }
                     }
                 }
             }
@@ -88,7 +85,7 @@ public class KeyboardHandler implements InputHandler {
     
     @Override
     public synchronized InputHandler postUpdate(double currentTime, KeySettings keySettings) {
-        keysLastTime = null; //FIXME Is this good for perfomance or not?
+        keysLastTime = null; //TODO Is this good for performance or not?
         return this;
     }
     
@@ -111,36 +108,36 @@ public class KeyboardHandler implements InputHandler {
     }
     
     public synchronized boolean isKeyUnknown(int keyCode) {
-        return keys[keyCode] == KEY_UNKNOWN;
+        return keys[keyCode] == KeySettings.KEY_UNKNOWN;
     }
     
     public synchronized boolean isKeyNothing(int keyCode) {
-        return keys[keyCode] == KEY_NOTHING;
+        return keys[keyCode] == KeySettings.KEY_NOTHING;
     }
     
     public synchronized boolean isKeyReleased(int keyCode) {
-        return keys[keyCode] == KEY_RELEASED;
+        return keys[keyCode] == KeySettings.KEY_RELEASED;
     }
     
     public synchronized boolean isKeyPressed(int keyCode) {
-        return keys[keyCode] == KEY_PRESSED;
+        return keys[keyCode] == KeySettings.KEY_PRESSED;
     }
     
     public synchronized boolean isKeyRepeated(int keyCode) {
-        return keys[keyCode] == KEY_REPEATED;
+        return keys[keyCode] == KeySettings.KEY_REPEATED;
     }
     
     public synchronized String getInputString() {
-        return inputString;
+        return inputString.get();
     }
     
     public synchronized void clearInputString() {
-        inputString = "";
+        inputString.set("");
     }
     
     public synchronized String consumeInputString() {
-        final String temp = inputString;
-        inputString = "";
+        final String temp = getInputString();
+        clearInputString();
         return temp;
     }
     
