@@ -14,12 +14,9 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.event.input;
+package de.omnikryptec.libapi.glfw.input;
 
 import de.omnikryptec.libapi.glfw.LibAPIManager;
-import de.omnikryptec.libapi.glfw.input.JoystickHandler;
-import de.omnikryptec.libapi.glfw.input.KeyboardHandler;
-import de.omnikryptec.libapi.glfw.input.MouseHandler;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.KeySettings;
 import org.joml.Vector2d;

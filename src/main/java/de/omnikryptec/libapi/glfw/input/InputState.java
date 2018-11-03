@@ -14,32 +14,34 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.event.input;
+package de.omnikryptec.libapi.glfw.input;
 
 import org.lwjgl.glfw.GLFW;
 
-public enum CursorType {
+@Deprecated
+public enum InputState {
     
-    NORMAL(GLFW.GLFW_CURSOR_NORMAL),
-    HIDDEN(GLFW.GLFW_CURSOR_HIDDEN),
-    DISABLED(GLFW.GLFW_CURSOR_DISABLED);
+    NOTHING(-1),
+    RELEASED(GLFW.GLFW_RELEASE),
+    PRESSED(GLFW.GLFW_PRESS),
+    REPEATED(GLFW.GLFW_REPEAT);
     
     private final int state;
     
-    CursorType(int state) {
+    InputState(int state) {
         this.state = state;
     }
     
-    public static CursorType ofState(int state) {
-        for (CursorType cursorType : values()) {
-            if (cursorType.state == state) {
-                return cursorType;
+    public static final InputState ofState(int state) {
+        for (InputState inputState : values()) {
+            if (inputState.state == state) {
+                return inputState;
             }
         }
-        return DISABLED;
+        return NOTHING;
     }
     
-    public int getState() {
+    public final int getState() {
         return state;
     }
     
