@@ -19,42 +19,41 @@ package de.omnikryptec.core;
 import de.omnikryptec.libapi.glfw.Window;
 
 public abstract class AbstractEngineLoop implements IEngineLoop {
-    
+
     protected boolean running = false;
     protected Window<?> window;
     private boolean shouldStop = false;
-    
+
     @Override
     public void init(EngineLoader loader) {
-        this.window = loader.getWindow();
+	this.window = loader.getWindow();
     }
-    
+
     @Override
     public void stopLoop() {
-        shouldStop = true;
+	shouldStop = true;
     }
-    
+
     public boolean shouldStop() {
-        return shouldStop || (window == null ? false : window.isCloseRequested());
+	return shouldStop || (window == null ? false : window.isCloseRequested());
     }
-    
+
     @Override
     public boolean isRunning() {
-        return running;
+	return running;
     }
-    
+
     @Override
     public void startLoop() {
-        shouldStop = false;
-        running = true;
-        try {
-            while (!shouldStop()) {
-                update();
-                renderAndSwap();
-            }
-        } finally {
-            running = false;
-        }
+	shouldStop = false;
+	running = true;
+	try {
+	    while (!shouldStop()) {
+
+	    }
+	} finally {
+	    running = false;
+	}
     }
-    
+
 }

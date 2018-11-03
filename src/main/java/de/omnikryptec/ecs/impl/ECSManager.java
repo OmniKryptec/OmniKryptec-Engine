@@ -16,6 +16,7 @@
 
 package de.omnikryptec.ecs.impl;
 
+import de.omnikryptec.core.Time;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityListener;
 import de.omnikryptec.ecs.IECSManager;
@@ -144,12 +145,12 @@ public class ECSManager implements IECSManager {
     }
     
     @Override
-    public void update(float deltaTime) {
+    public void update(Time time) {
         updating = true;
         Collection<ComponentSystem> systems = systemManager.getAll();
         for (ComponentSystem system : systems) {
             if (system.isEnabled()) {
-                system.update(this, deltaTime);
+                system.update(this, time);
                 runTasks();
             }
         }

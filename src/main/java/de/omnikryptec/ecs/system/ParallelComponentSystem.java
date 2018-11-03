@@ -16,6 +16,7 @@
 
 package de.omnikryptec.ecs.system;
 
+import de.omnikryptec.core.Time;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.util.ExecutorsUtil;
@@ -50,18 +51,18 @@ public abstract class ParallelComponentSystem extends ComponentSystem implements
     }
     
     @Override
-    public final void update(IECSManager entityManager, float deltaTime) {
+    public final void update(IECSManager entityManager, Time time) {
         if (entities.size() > 0) {
             if (entities.size() < activationSize) {
                 for (Entity e : entities) {
-                    updateIndividual(entityManager, e, deltaTime);
+                    updateIndividual(entityManager, e, time);
                 }
             } else {
-                updateThreaded(entityManager, entities, deltaTime);
+                updateThreaded(entityManager, entities, time);
             }
         }
     }
     
-    public abstract void updateThreaded(IECSManager entityManager, List<Entity> entities, float deltaTime);
+    public abstract void updateThreaded(IECSManager entityManager, List<Entity> entities, Time time);
     
 }

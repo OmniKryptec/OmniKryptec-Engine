@@ -16,6 +16,7 @@
 
 package de.omnikryptec.ecs.system;
 
+import de.omnikryptec.core.Time;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.util.Util;
@@ -58,6 +59,6 @@ public abstract class ComponentSystem {
         return 0;
     }
     
-    public abstract void update(IECSManager iecsManager, float deltaTime);
+    public abstract void update(IECSManager iecsManager, Time time);
     
 }

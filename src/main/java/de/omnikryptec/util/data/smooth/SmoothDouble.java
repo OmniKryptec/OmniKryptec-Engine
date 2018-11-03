@@ -16,6 +16,7 @@
 
 package de.omnikryptec.util.data.smooth;
 
+import de.omnikryptec.core.Time;
 import de.omnikryptec.core.Updateable;
 
 public class SmoothDouble implements Updateable {
@@ -31,8 +32,8 @@ public class SmoothDouble implements Updateable {
     }
     
     @Override
-    public void update(float deltaTime) {
-        actual += (target - actual) * deltaTime * agility;
+    public void update(Time time) {
+        actual += (target - actual) * time.delta * agility;
     }
     
     public void instantIncrease(double increase) {

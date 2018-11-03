@@ -16,16 +16,17 @@
 
 package de.omnikryptec.ecs.system;
 
-import de.omnikryptec.ecs.Entity;
-import de.omnikryptec.ecs.IECSManager;
-import de.omnikryptec.util.ExecutorsUtil;
-
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+
+import de.omnikryptec.core.Time;
+import de.omnikryptec.ecs.Entity;
+import de.omnikryptec.ecs.IECSManager;
+import de.omnikryptec.util.ExecutorsUtil;
 
 public abstract class IndividualParallelComponentSystem extends ParallelComponentSystem {
     
@@ -38,11 +39,11 @@ public abstract class IndividualParallelComponentSystem extends ParallelComponen
     }
     
     @Override
-    public void updateThreaded(IECSManager entityManager, List<Entity> entities, float deltaTime) {
+    public void updateThreaded(IECSManager entityManager, List<Entity> entities, Time time) {
         final Collection<Callable<Void>> tasks = new ArrayList<>(entities.size());
         for (Entity entity : entities) {
             tasks.add(() -> {
-                updateIndividual(entityManager, entity, deltaTime);
+                updateIndividual(entityManager, entity, time);
                 return null;
             });
         }

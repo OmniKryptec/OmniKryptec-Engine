@@ -25,9 +25,5 @@ public interface IEngineLoop {
     
     void stopLoop();
     
-    void update();
-    
-    void renderAndSwap();
-    
     boolean isRunning();
 }

@@ -16,6 +16,7 @@
 
 package de.omnikryptec.ecs.system;
 
+import de.omnikryptec.core.Time;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 
@@ -28,9 +29,9 @@ public abstract class IterativeComponentSystem extends ComponentSystem implement
     }
     
     @Override
-    public final void update(IECSManager entityManager, float deltaTime) {
+    public final void update(IECSManager entityManager, Time time) {
         for (Entity e : entities) {
-            updateIndividual(entityManager, e, deltaTime);
+            updateIndividual(entityManager, e, time);
         }
     }
     
