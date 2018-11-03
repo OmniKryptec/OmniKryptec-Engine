@@ -68,7 +68,7 @@ public class InputManager {
             keyboardHandler.preUpdate(currentTime_, keySettings);
             mouseHandler.preUpdate(currentTime_, keySettings);
         }
-        //TODO JoystickHandler needs to be updated anyway
+        JoystickHandler.preUpdateAll(currentTime_, keySettings);
         return this;
     }
     
@@ -81,7 +81,7 @@ public class InputManager {
             keyboardHandler.update(currentTime_, keySettings);
             mouseHandler.update(currentTime_, keySettings);
         }
-        //TODO JoystickHandler needs to be updated anyway
+        JoystickHandler.updateAll(currentTime_, keySettings);
         return this;
     }
     
@@ -93,13 +93,14 @@ public class InputManager {
             keyboardHandler.postUpdate(currentTime_, keySettings);
             mouseHandler.postUpdate(currentTime_, keySettings);
         }
-        //TODO JoystickHandler needs to be updated anyway
+        JoystickHandler.postUpdateAll(currentTime_, keySettings);
         return this;
     }
     
     public InputManager close() {
         keyboardHandler.close();
         mouseHandler.close();
+        JoystickHandler.closeAll();
         return this;
     }
     

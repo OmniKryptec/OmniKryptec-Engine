@@ -16,6 +16,7 @@
 
 package de.omnikryptec.event.input;
 
+import de.codemakers.base.logger.Logger;
 import de.omnikryptec.util.settings.KeySettings;
 import org.lwjgl.glfw.GLFW;
 
@@ -28,6 +29,10 @@ public class JoystickHandler implements InputHandler {
     
     private static final List<JoystickHandler> joystickHandlers = new CopyOnWriteArrayList<>();
     
+    static {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> closeAll(), JoystickHandler.class.getName() + "-Shutdown-Thread"));
+    }
+    
     private final int joystick;
     private FloatBuffer dataAxes = null;
     private ByteBuffer dataButtons = null;
@@ -35,6 +40,7 @@ public class JoystickHandler implements InputHandler {
     
     public JoystickHandler(int joystick) {
         this.joystick = joystick;
+        init();
     }
     
     @Override
@@ -139,11 +145,60 @@ public class JoystickHandler implements InputHandler {
         return joysticks;
     }
     
-    public static synchronized void updateAll() {
+    public static synchronized void preUpdateAll(double currentTime, KeySettings keySettings) {
         if (joystickHandlers.isEmpty()) {
             return;
         }
-        joystickHandlers.forEach((joystickHandler) -> joystickHandler.update(0.0, null));
+        for (JoystickHandler joystickHandler : joystickHandlers) {
+            try {
+                joystickHandler.preUpdate(currentTime, keySettings);
+            } catch (Exception ex) {
+                Logger.handleError(ex);
+            }
+        }
+    }
+    
+    public static synchronized void updateAll(double currentTime, KeySettings keySettings) {
+        if (joystickHandlers.isEmpty()) {
+            return;
+        }
+        for (JoystickHandler joystickHandler : joystickHandlers) {
+            try {
+                joystickHandler.update(currentTime, keySettings);
+            } catch (Exception ex) {
+                Logger.handleError(ex);
+            }
+        }
+    }
+    
+    public static synchronized void postUpdateAll(double currentTime, KeySettings keySettings) {
+        if (joystickHandlers.isEmpty()) {
+            return;
+        }
+        for (JoystickHandler joystickHandler : joystickHandlers) {
+            try {
+                joystickHandler.postUpdate(currentTime, keySettings);
+            } catch (Exception ex) {
+                Logger.handleError(ex);
+            }
+        }
+    }
+    
+    public static synchronized void closeAll() {
+        if (joystickHandlers.isEmpty()) {
+            return;
+        }
+        for (JoystickHandler joystickHandler : joystickHandlers) {
+            try {
+                joystickHandler.close();
+            } catch (Exception ex) {
+                Logger.handleError(ex);
+            }
+        }
+    }
+    
+    public static List<JoystickHandler> getJoystickHandlers() {
+        return joystickHandlers;
     }
     
     @Override
