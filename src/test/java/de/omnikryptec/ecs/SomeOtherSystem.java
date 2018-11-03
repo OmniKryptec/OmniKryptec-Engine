@@ -2,8 +2,8 @@ package de.omnikryptec.ecs;
 
 import java.util.BitSet;
 
-import de.omnikryptec.core.Time;
 import de.omnikryptec.ecs.system.ComponentSystem;
+import de.omnikryptec.util.updater.Time;
 
 public class SomeOtherSystem extends ComponentSystem{
 

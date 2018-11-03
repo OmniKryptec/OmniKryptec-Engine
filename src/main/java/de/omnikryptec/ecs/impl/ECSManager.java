@@ -16,11 +16,11 @@
 
 package de.omnikryptec.ecs.impl;
 
-import de.omnikryptec.core.Time;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityListener;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.system.ComponentSystem;
+import de.omnikryptec.util.updater.Time;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;

@@ -1,9 +1,9 @@
 package de.omnikryptec.ecs;
 
-import de.omnikryptec.core.Time;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.GroupParallelComponentSystem;
+import de.omnikryptec.util.updater.Time;
 
 public class DoSomethingSystem extends GroupParallelComponentSystem{
 

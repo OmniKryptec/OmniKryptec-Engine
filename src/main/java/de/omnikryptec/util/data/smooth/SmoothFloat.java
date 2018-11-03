@@ -16,8 +16,8 @@
 
 package de.omnikryptec.util.data.smooth;
 
-import de.omnikryptec.core.Time;
 import de.omnikryptec.core.Updateable;
+import de.omnikryptec.util.updater.Time;
 
 public class SmoothFloat implements Updateable {
 

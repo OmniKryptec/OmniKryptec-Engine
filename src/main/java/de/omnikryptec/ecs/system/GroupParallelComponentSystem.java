@@ -25,11 +25,11 @@ import java.util.concurrent.TimeUnit;
 
 import com.google.common.collect.Lists;
 
-import de.omnikryptec.core.Time;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.util.ExecutorsUtil;
 import de.omnikryptec.util.math.Mathd;
+import de.omnikryptec.util.updater.Time;
 
 public abstract class GroupParallelComponentSystem extends ParallelComponentSystem {
     

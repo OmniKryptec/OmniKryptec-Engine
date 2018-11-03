@@ -23,10 +23,10 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-import de.omnikryptec.core.Time;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.util.ExecutorsUtil;
+import de.omnikryptec.util.updater.Time;
 
 public abstract class IndividualParallelComponentSystem extends ParallelComponentSystem {
     

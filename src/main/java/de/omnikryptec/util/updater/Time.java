@@ -1,4 +1,4 @@
-package de.omnikryptec.core;
+package de.omnikryptec.util.updater;
 
 public class Time {
 

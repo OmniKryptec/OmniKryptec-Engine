@@ -16,6 +16,8 @@
 
 package de.omnikryptec.core;
 
+import de.omnikryptec.util.updater.Time;
+
 public interface Updateable {
     
     void update(Time time);

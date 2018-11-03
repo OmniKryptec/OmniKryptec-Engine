@@ -1,8 +1,8 @@
 package de.omnikryptec.ecs;
 
-import de.omnikryptec.core.Time;
 import de.omnikryptec.ecs.impl.ECSManager;
 import de.omnikryptec.util.ExecutorsUtil;
+import de.omnikryptec.util.updater.Time;
 
 public class Test {
 

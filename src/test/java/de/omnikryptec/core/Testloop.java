@@ -3,8 +3,8 @@ package de.omnikryptec.core;
 import de.omnikryptec.graphics.display.WindowUpdater;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.libapi.opengl.OpenGLUtil.BufferType;
-import de.omnikryptec.util.AbstractUpdater;
 import de.omnikryptec.util.data.Color;
+import de.omnikryptec.util.updater.AbstractUpdater;
 
 public class Testloop implements IEngineLoop {
     

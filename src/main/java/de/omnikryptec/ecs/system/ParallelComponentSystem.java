@@ -16,10 +16,10 @@
 
 package de.omnikryptec.ecs.system;
 
-import de.omnikryptec.core.Time;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.util.ExecutorsUtil;
+import de.omnikryptec.util.updater.Time;
 
 import java.util.BitSet;
 import java.util.List;

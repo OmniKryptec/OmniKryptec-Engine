@@ -14,9 +14,8 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.util;
+package de.omnikryptec.util.updater;
 
-import de.omnikryptec.core.Time;
 import de.omnikryptec.libapi.glfw.LibAPIManager;
 import de.omnikryptec.util.data.Smoother;
 
