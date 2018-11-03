@@ -2,6 +2,7 @@ package de.omnikryptec.ecs;
 
 import java.util.BitSet;
 
+import de.omnikryptec.core.Time;
 import de.omnikryptec.ecs.system.ComponentSystem;
 
 public class SomeOtherSystem extends ComponentSystem{
@@ -11,7 +12,7 @@ public class SomeOtherSystem extends ComponentSystem{
 	}
 
 	@Override
-	public void update(IECSManager entityManager, float deltaTime) {
+	public void update(IECSManager entityManager, Time deltaTime) {
 		//System.out.println("ma friends!");
 	}
 

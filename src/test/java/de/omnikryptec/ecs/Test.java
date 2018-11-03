@@ -1,5 +1,6 @@
 package de.omnikryptec.ecs;
 
+import de.omnikryptec.core.Time;
 import de.omnikryptec.ecs.impl.ECSManager;
 import de.omnikryptec.util.ExecutorsUtil;
 
@@ -25,7 +26,7 @@ public class Test {
 		System.out.println("Starting updates...");
 		time = System.currentTimeMillis();
 		for (int i = 0; i < updt; i++) {
-			manager.update(1);
+			manager.update(new Time(i, 0, 1));
 		}
 		time2 = System.currentTimeMillis() - time;
 		System.out.println("Time per update: " + time2 * 1000 / (double) updt + " micro-s");
