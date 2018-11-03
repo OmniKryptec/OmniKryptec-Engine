@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.libapi.glfw;
+package de.omnikryptec.libapi.glfw.window;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;

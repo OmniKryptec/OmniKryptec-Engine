@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.event.input;
+package de.omnikryptec.libapi.glfw.input;
 
 import de.omnikryptec.util.settings.KeySettings;
 import org.joml.Vector2d;

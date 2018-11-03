@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.event.input;
+package de.omnikryptec.libapi.glfw.input;
 
 import de.codemakers.base.logger.Logger;
 import de.omnikryptec.libapi.glfw.LibAPIManager;

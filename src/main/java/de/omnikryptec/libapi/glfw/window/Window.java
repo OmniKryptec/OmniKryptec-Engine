@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.libapi.glfw;
+package de.omnikryptec.libapi.glfw.window;
 
 import de.omnikryptec.util.Util;
 import org.lwjgl.BufferUtils;

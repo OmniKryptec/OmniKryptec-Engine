@@ -16,7 +16,7 @@
 
 package de.omnikryptec.core;
 
-import de.omnikryptec.libapi.glfw.Window;
+import de.omnikryptec.libapi.glfw.window.Window;
 
 public abstract class AbstractEngineLoop implements IEngineLoop {
 

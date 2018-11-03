@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.libapi.glfw;
+package de.omnikryptec.libapi.glfw.window;
 
 public class OpenGLWindowInfo extends WindowInfo<OpenGLWindowInfo> {
     

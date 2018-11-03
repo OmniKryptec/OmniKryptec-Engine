@@ -1,7 +1,7 @@
 package de.omnikryptec.graphics.display;
 
 import de.omnikryptec.libapi.glfw.LibAPIManager;
-import de.omnikryptec.libapi.glfw.Window;
+import de.omnikryptec.libapi.glfw.window.Window;
 import de.omnikryptec.util.updater.AbstractUpdater;
 
 public class WindowUpdater extends AbstractUpdater {

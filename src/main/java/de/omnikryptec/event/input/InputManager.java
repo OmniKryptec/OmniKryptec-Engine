@@ -17,6 +17,9 @@
 package de.omnikryptec.event.input;
 
 import de.omnikryptec.libapi.glfw.LibAPIManager;
+import de.omnikryptec.libapi.glfw.input.JoystickHandler;
+import de.omnikryptec.libapi.glfw.input.KeyboardHandler;
+import de.omnikryptec.libapi.glfw.input.MouseHandler;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.KeySettings;
 import org.joml.Vector2d;
@@ -183,6 +186,7 @@ public class InputManager {
     
     public InputManager setCursorType(CursorType cursorType) {
         Util.ensureNonNull(cursorType);
+        //TODO GLFW is libapi thing and does not belong here
         GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, cursorType.getState());
         this.cursorType = cursorType;
         return this;
