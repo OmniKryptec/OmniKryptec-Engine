@@ -22,9 +22,12 @@ import de.omnikryptec.util.settings.KeySettings;
 import org.joml.Vector2d;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class InputManager {
     
     private final long window;
+    private final AtomicReference<Double> currentTime = new AtomicReference<>(0.0);
     // Keyboard part
     private final KeyboardHandler keyboardHandler;
     private boolean longButtonPressEnabled = false;
@@ -57,34 +60,38 @@ public class InputManager {
     }
     
     public InputManager preUpdate() {
-        final double currentTime = LibAPIManager.active().getTime();
+        //final double currentTime = LibAPIManager.active().getTime(); //TODO Remove
+        currentTime.set(LibAPIManager.active().getTime());
+        final double currentTime_ = currentTime.get();
         final KeySettings keySettings = null; //FIXME KeySettings missing!
         if (longButtonPressEnabled) {
-            keyboardHandler.preUpdate(currentTime, keySettings);
-            mouseHandler.preUpdate(currentTime, keySettings);
+            keyboardHandler.preUpdate(currentTime_, keySettings);
+            mouseHandler.preUpdate(currentTime_, keySettings);
         }
         //TODO JoystickHandler needs to be updated anyway
         return this;
     }
     
     public InputManager update() {
-        final double currentTime = LibAPIManager.active().getTime();
+        //final double currentTime = LibAPIManager.active().getTime();
+        final double currentTime_ = currentTime.get();
         keyboardHandler.clearInputString();
         final KeySettings keySettings = null; //FIXME KeySettings missing!
         if (longButtonPressEnabled) {
-            keyboardHandler.update(currentTime, keySettings);
-            mouseHandler.update(currentTime, keySettings);
+            keyboardHandler.update(currentTime_, keySettings);
+            mouseHandler.update(currentTime_, keySettings);
         }
         //TODO JoystickHandler needs to be updated anyway
         return this;
     }
     
     public InputManager postUpdate() {
-        final double currentTime = LibAPIManager.active().getTime();
+        //final double currentTime = LibAPIManager.active().getTime();
+        final double currentTime_ = currentTime.get();
         final KeySettings keySettings = null; //FIXME KeySettings missing!
         if (longButtonPressEnabled) {
-            keyboardHandler.postUpdate(currentTime, keySettings);
-            mouseHandler.postUpdate(currentTime, keySettings);
+            keyboardHandler.postUpdate(currentTime_, keySettings);
+            mouseHandler.postUpdate(currentTime_, keySettings);
         }
         //TODO JoystickHandler needs to be updated anyway
         return this;
