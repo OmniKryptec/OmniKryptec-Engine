@@ -31,7 +31,8 @@ public class KeyboardHandler implements InputHandler {
     public static final byte KEY_REPEATED = GLFW.GLFW_REPEAT;
     
     //private final InputState[] keys = new InputState[65536];
-    private final byte[] keys = new byte[65536];
+    //private final byte[] keys = new byte[65536];
+    private final byte[] keys = new byte[GLFW.GLFW_KEY_LAST + 1]; //TODO Test if this includes every key
     private final KeyboardHandler ME = this;
     private final long window;
     private final GLFWKeyCallback keyCallback;
