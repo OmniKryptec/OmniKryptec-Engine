@@ -183,7 +183,6 @@ public class InputManager {
     
     public InputManager setCursorType(CursorType cursorType) {
         Util.ensureNonNull(cursorType);
-        //TODO GLFW is libapi thing and does not belong here
         GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, cursorType.getState());
         this.cursorType = cursorType;
         return this;
