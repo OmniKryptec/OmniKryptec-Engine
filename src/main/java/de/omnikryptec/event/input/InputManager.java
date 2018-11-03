@@ -18,6 +18,8 @@ package de.omnikryptec.event.input;
 
 import de.omnikryptec.libapi.glfw.LibAPIManager;
 import de.omnikryptec.util.Util;
+import de.omnikryptec.util.settings.KeySettings;
+import org.joml.Vector2d;
 import org.lwjgl.glfw.GLFW;
 
 public class InputManager {
@@ -27,52 +29,70 @@ public class InputManager {
     private final KeyboardHandler keyboardHandler;
     private boolean longButtonPressEnabled = false;
     // Mouse part
+    private final MouseHandler mouseHandler;
     private CursorType cursorType = CursorType.DISABLED;
     
     public InputManager(long window) {
-        this(window, new KeyboardHandler(window));
+        this(window, new KeyboardHandler(window), new MouseHandler(window));
     }
     
-    public InputManager(long window, KeyboardHandler keyboardHandler) {
+    public InputManager(long window, KeyboardHandler keyboardHandler, MouseHandler mouseHandler) {
         this.window = window;
         this.keyboardHandler = keyboardHandler;
+        this.mouseHandler = mouseHandler;
     }
     
     public KeyboardHandler getKeyboardHandler() {
         return keyboardHandler;
     }
     
+    public MouseHandler getMouseHandler() {
+        return mouseHandler;
+    }
+    
     public InputManager init() {
         keyboardHandler.init();
+        mouseHandler.init();
         return this;
     }
     
     public InputManager preUpdate() {
         final double currentTime = LibAPIManager.active().getTime();
+        final KeySettings keySettings = null; //FIXME KeySettings missing!
         if (longButtonPressEnabled) {
-            keyboardHandler.preUpdate(currentTime, null); //FIXME KeySettings missing!
+            keyboardHandler.preUpdate(currentTime, keySettings);
+            mouseHandler.preUpdate(currentTime, keySettings);
         }
+        //TODO JoystickHandler needs to be updated anyway
         return this;
     }
     
     public InputManager update() {
         final double currentTime = LibAPIManager.active().getTime();
+        keyboardHandler.clearInputString();
+        final KeySettings keySettings = null; //FIXME KeySettings missing!
         if (longButtonPressEnabled) {
-            keyboardHandler.update(currentTime, null); //FIXME KeySettings missing!
+            keyboardHandler.update(currentTime, keySettings);
+            mouseHandler.update(currentTime, keySettings);
         }
+        //TODO JoystickHandler needs to be updated anyway
         return this;
     }
     
     public InputManager postUpdate() {
         final double currentTime = LibAPIManager.active().getTime();
+        final KeySettings keySettings = null; //FIXME KeySettings missing!
         if (longButtonPressEnabled) {
-            keyboardHandler.postUpdate(currentTime, null); //FIXME KeySettings missing!
+            keyboardHandler.postUpdate(currentTime, keySettings);
+            mouseHandler.postUpdate(currentTime, keySettings);
         }
+        //TODO JoystickHandler needs to be updated anyway
         return this;
     }
     
     public InputManager close() {
         keyboardHandler.close();
+        mouseHandler.close();
         return this;
     }
     
@@ -85,20 +105,15 @@ public class InputManager {
         return this;
     }
     
-    public CursorType getCursorType() {
-        return cursorType;
+    public long getWindow() {
+        return window;
     }
     
-    public InputManager setCursorType(CursorType cursorType) {
-        Util.ensureNonNull(cursorType);
-        GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, cursorType.getState());
-        this.cursorType = cursorType;
-        return this;
-    }
+    // Keyboard part
     
     public byte getKeyboardKeyState(int keyCode) {
         if (keyCode < 0 || keyCode >= keyboardHandler.size()) {
-            return KeyboardHandler.KEY_UNKNOWN;
+            return KeySettings.KEY_UNKNOWN;
         }
         return keyboardHandler.getKeyState(keyCode);
     }
@@ -110,17 +125,43 @@ public class InputManager {
         return keyboardHandler.isKeyPressed(keyCode) || keyboardHandler.isKeyRepeated(keyCode);
     }
     
-    /* //TODO Implement MouseHandler
+    // Mouse part
+    
+    public byte getMouseButtonState(int buttonCode) {
+        if (buttonCode < 0 || buttonCode >= mouseHandler.size()) {
+            return KeySettings.KEY_UNKNOWN;
+        }
+        return mouseHandler.getButtonState(buttonCode);
+    }
+    
     public boolean isMouseButtonPressed(int buttonCode) {
-        if (buttonCode < 0 || buttonCode >= mouseHandler.buttons.length) {
+        if (buttonCode < 0 || buttonCode >= mouseHandler.size()) {
             return false;
         }
-        return mouseHandler.isButtonPressed(buttonCode);
+        return mouseHandler.isButtonPressed(buttonCode); // || mouseHandler.isButtonRepeated(buttonCode); //TODO Can a mouse buttons state be "REPEATED"?
     }
-    */
     
-    public long getWindow() {
-        return window;
+    public Vector2d getMousePosition() {
+        return mouseHandler.getPosition();
+    }
+    
+    public Vector2d getMouseScrollOffset() {
+        return mouseHandler.getScrollOffset();
+    }
+    
+    public boolean isMouseInsideWindow() {
+        return mouseHandler.isInsideWindow();
+    }
+    
+    public CursorType getCursorType() {
+        return cursorType;
+    }
+    
+    public InputManager setCursorType(CursorType cursorType) {
+        Util.ensureNonNull(cursorType);
+        GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, cursorType.getState());
+        this.cursorType = cursorType;
+        return this;
     }
     
 }
