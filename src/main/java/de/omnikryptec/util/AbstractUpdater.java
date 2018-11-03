@@ -16,6 +16,7 @@
 
 package de.omnikryptec.util;
 
+import de.omnikryptec.core.Time;
 import de.omnikryptec.libapi.glfw.LibAPIManager;
 import de.omnikryptec.util.data.Smoother;
 
@@ -130,9 +131,9 @@ public class AbstractUpdater {
      * the amount of calls to the {@link #update(int)} function since the creation
      * of this object.
      *
-     * @return the frame count
+     * @return the operation count
      */
-    public long getFrameCount() {
+    public long getOperationCount() {
 	return operationcount;
     }
 
@@ -178,6 +179,10 @@ public class AbstractUpdater {
 	this.deltatime = 0;
 	this.lasttime = LibAPIManager.active().getTime();
 	this.opstime = LibAPIManager.active().getTime();
+    }
+
+    public Time asTime() {
+	return new Time(getOperationCount(), LibAPIManager.active().getTime(), getDeltaTime());
     }
 
 }

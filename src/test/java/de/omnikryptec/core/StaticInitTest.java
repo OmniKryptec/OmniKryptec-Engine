@@ -19,7 +19,7 @@ public class StaticInitTest {
 	WindowUpdater updater = new WindowUpdater(window);
 	while (!window.isCloseRequested()) {
 	    updater.update(0);
-	    if (updater.getFrameCount() % 40 == 0) {
+	    if (updater.getOperationCount() % 40 == 0) {
 		OpenGLUtil.setClearColor(Color.randomRGB());
 	    }
 	    OpenGLUtil.clear(BufferType.COLOR);

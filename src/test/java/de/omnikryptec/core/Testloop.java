@@ -34,7 +34,7 @@ public class Testloop implements IEngineLoop {
     @Override
     public void renderAndSwap() {
         updater.update(0);
-        if (updater.getFrameCount() % 40 == 0) {
+        if (updater.getOperationCount() % 40 == 0) {
             OpenGLUtil.setClearColor(Color.randomRGB());
         }
         OpenGLUtil.clear(BufferType.COLOR);

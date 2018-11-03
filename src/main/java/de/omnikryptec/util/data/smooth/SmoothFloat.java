@@ -33,7 +33,7 @@ public class SmoothFloat implements Updateable {
 
     @Override
     public void update(Time time) {
-	actual += (target - actual) * time.delta * agility;
+	actual += (target - actual) * time.deltaf * agility;
     }
 
     public void instantIncrease(float increase) {

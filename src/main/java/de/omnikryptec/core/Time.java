@@ -4,12 +4,16 @@ public class Time {
 
     public final long opsCount;
     public final double current;
-    public final float delta;
+    public final double delta;
+    public final float currentf;
+    public final float deltaf;
 
-    public Time(long opsCount, double current, float delta) {
+    public Time(long opsCount, double current, double delta) {
 	this.opsCount = opsCount;
 	this.current = current;
 	this.delta = delta;
+	this.currentf = (float) current;
+	this.deltaf = (float) delta;
     }
 
 }
