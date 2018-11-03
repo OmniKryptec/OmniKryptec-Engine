@@ -35,7 +35,7 @@ public abstract class AbstractEngineLoop implements IEngineLoop {
     }
     
     public boolean shouldStop() {
-        return shouldStop || (window == null ? true : window.isCloseRequested());
+        return shouldStop || (window == null ? false : window.isCloseRequested());
     }
     
     @Override
