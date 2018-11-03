@@ -26,8 +26,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class MouseHandler implements InputHandler {
     
     private final byte[] buttons = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
-    private final Vector2d position = new Vector2d();
-    private final Vector2d scrollOffset = new Vector2d();
+    private final Vector2d position = new Vector2d(0.0, 0.0);
+    private final Vector2d scrollOffset = new Vector2d(0.0, 0.0);
     private final MouseHandler ME = this;
     private final long window;
     private final GLFWMouseButtonCallback mouseButtonCallback;

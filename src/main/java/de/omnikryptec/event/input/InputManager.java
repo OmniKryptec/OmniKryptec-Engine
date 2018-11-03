@@ -20,6 +20,7 @@ import de.omnikryptec.libapi.glfw.LibAPIManager;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.KeySettings;
 import org.joml.Vector2d;
+import org.joml.Vector4d;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -34,6 +35,21 @@ public class InputManager {
     // Mouse part
     private final MouseHandler mouseHandler;
     private CursorType cursorType = CursorType.DISABLED;
+    // Mouse delta part
+    private final Vector2d mousePositionLastTime = new Vector2d(0.0, 0.0);
+    private final Vector2d mouseScrollOffsetLastTime = new Vector2d(0.0, 0.0);
+    private final Vector2d mousePositionDelta = new Vector2d(0.0, 0.0);
+    private final Vector2d mouseScrollOffsetDelta = new Vector2d(0.0, 0.0);
+    /**
+     * x = Mouse Pos X Delta
+     * <br>
+     * y = Mouse Pos Y Delta
+     * <br>
+     * z = Mouse Scroll X Delta
+     * <br>
+     * w = Mouse Scroll Y Delta
+     */
+    private final Vector4d mouseDelta = new Vector4d(0.0, 0.0, 0.0, 0.0);
     
     public InputManager(long window) {
         this(window, new KeyboardHandler(window), new MouseHandler(window));
@@ -150,11 +166,11 @@ public class InputManager {
     }
     
     public Vector2d getMousePosition() {
-        return mouseHandler.getPosition();
+        return new Vector2d(mouseHandler.getPosition());
     }
     
     public Vector2d getMouseScrollOffset() {
-        return mouseHandler.getScrollOffset();
+        return new Vector2d(mouseHandler.getScrollOffset());
     }
     
     public boolean isMouseInsideWindow() {
@@ -170,6 +186,36 @@ public class InputManager {
         GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, cursorType.getState());
         this.cursorType = cursorType;
         return this;
+    }
+    
+    // Mouse delta part
+    
+    private void updateMouseDeltas(Vector2d mousePosition, Vector2d mouseScrollOffset) {
+        mousePositionDelta.x = (mousePosition.x - mousePositionLastTime.x);
+        mousePositionDelta.y = (mousePosition.y - mousePositionLastTime.y);
+        mouseScrollOffsetDelta.x = (mouseScrollOffset.x - mouseScrollOffsetLastTime.x);
+        mouseScrollOffsetDelta.y = (mouseScrollOffset.y - mouseScrollOffsetLastTime.y);
+        mouseDelta.x = mousePositionDelta.x;
+        mouseDelta.y = mousePositionDelta.y;
+        mouseDelta.z = mouseScrollOffsetDelta.x;
+        mouseDelta.w = mouseScrollOffsetDelta.y;
+        //TODO Maybe split this up, because this below was executed as the last part in the old update ("nextFrame") method
+        mousePositionLastTime.x = mousePosition.x;
+        mousePositionLastTime.y = mousePosition.y;
+        mouseScrollOffsetLastTime.x = mouseScrollOffset.x;
+        mouseScrollOffsetLastTime.y = mouseScrollOffset.y;
+    }
+    
+    public Vector2d getMousePositionDelta() {
+        return new Vector2d(mousePositionDelta);
+    }
+    
+    public Vector2d getMouseScrollOffsetDelta() {
+        return new Vector2d(mouseScrollOffsetDelta);
+    }
+    
+    public Vector4d getMouseDelta() {
+        return new Vector4d(mouseDelta);
     }
     
 }
