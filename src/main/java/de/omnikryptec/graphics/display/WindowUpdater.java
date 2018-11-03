@@ -1,207 +1,33 @@
-/*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
-
 package de.omnikryptec.graphics.display;
 
 import de.omnikryptec.libapi.glfw.LibAPIManager;
 import de.omnikryptec.libapi.glfw.Window;
-import de.omnikryptec.util.data.Smoother;
+import de.omnikryptec.util.AbstractUpdater;
 
-import javax.annotation.Nonnull;
+public class WindowUpdater extends AbstractUpdater {
 
-/**
- * A wrapper class that is responsible to update a given {@link Window} and
- * provide various often required functions like {@link #getDeltaTime()} or
- * {@link #getFPS()}.
- *
- * @author pcfreak9000
- */
-//TODO make abstract -> logic and render Updater etc. (deltatime is always needed)
-public class WindowUpdater {
-    
-    private double swapTime = 0;
-    private double fpstime = 0;
-    private double deltatime = 0;
-    private double lasttime = 0;
-    private double frontruntime = 0;
-    
-    private long framecount = 0;
-    
-    private long fps1 = 0, fps2 = 0;
-    private boolean fps = true;
-    
-    private double lastsynced;
-    
     private Window<?> window;
-    private Smoother deltaTimeSmoother;
+    private double swaptime;
     
     public WindowUpdater(Window<?> window) {
-        this.window = window;
-        this.deltaTimeSmoother = new Smoother();
+	this.window = window;
+    }
+
+    @Override
+    protected void operation() {
+	double time = LibAPIManager.active().getTime();
+	window.swapBuffers();
+	swaptime = LibAPIManager.active().getTime() - time;
+	LibAPIManager.active().pollEvents();
     }
     
-    /**
-     * Updates the window maintained by this object and the values accessable by the
-     * functions of this class (e.g. {@link #getDeltaTime()}.<br>
-     * The update includes swapping the buffers and polling events.<br>
-     * <br>
-     * This function can limit the framerate by setting this Thread to sleep. This
-     * will happen if the frames per second (not counted) are greater than the
-     * specified maxfps or in other words, if idle time is available.<br>
-     * The Framerate is limited to min(vsync, maxfps), if VSync is enabled.<br>
-     * <br>
-     * This method does not clear any buffers nor does it test if the closing of the
-     * window is requested nor does it show the window.
-     *
-     * @param maxfps limits the FPS for values greater than 0. Otherwise does
-     * nothing.
-     */
-    public void update(int maxfps) {
-        // TODO this is some crazy hack
-        if (framecount == 0) {
-            lasttime = LibAPIManager.active().getTime();
-            fpstime = LibAPIManager.active().getTime();
-        }
-        double currentFrameTime = LibAPIManager.active().getTime();
-        deltatime = (currentFrameTime - lasttime);
-        deltaTimeSmoother.push(deltatime);
-        frontruntime += deltatime;
-        lasttime = currentFrameTime;
-        if (maxfps > 0) {
-            sync(maxfps);
-        }
-        double tmptime = LibAPIManager.active().getTime();
-        window.swapBuffers();
-        swapTime = LibAPIManager.active().getTime() - tmptime;
-        LibAPIManager.active().pollEvents();
-        framecount++;
-        if (fps) {
-            fps1++;
-        } else {
-            fps2++;
-        }
-        if (frontruntime - fpstime >= 1.0) {
-            fpstime = frontruntime;
-            if (fps) {
-                fps = false;
-                fps2 = 0;
-            } else {
-                fps = true;
-                fps1 = 0;
-            }
-        }
-    }
-    
-    /**
-     * See {@link #update(int)}.
-     *
-     * @param fps maxfps, values smaller or equal to 0 confuse this function though.
-     */
-    private void sync(int fps) {
-        double target = lastsynced + (1.0 / fps);
-        try {
-            while ((lastsynced = LibAPIManager.active().getTime()) < target) {
-                Thread.sleep(1);
-            }
-        } catch (InterruptedException ex) {
-        }
-    }
-    
-    /**
-     * the {@link Window}, maintained by this object.
-     *
-     * @return a Window
-     */
-    public Window<?> getWindow() {
-        return window;
-    }
-    
-    /**
-     * An instance of {@link Smoother} that can be used to retrieve a delta time
-     * smoothed over multiple frames, in seconds.
-     *
-     * @return the delta time smoother
-     *
-     * @see #getDeltaTime()
-     */
-    @Nonnull
-    public final Smoother getDeltaTimeSmoother() {
-        return deltaTimeSmoother;
-    }
-    
-    /**
-     * the amount of calls to the {@link #update(int)} function since the creation
-     * of this object.
-     *
-     * @return the frame count
-     */
-    public long getFrameCount() {
-        return framecount;
-    }
-    
-    //	/**
-    //	 * the amount of time the maintained window was in the foreground. For a
-    //	 * complete time since glfw initialization, see {@link GLFWManager#getTime()}.
-    //	 *
-    //	 * @return window foreground time
-    //	 * @see GLFWManager#getTime()
-    //	 */
-    //	public double getFrontRunningTime() {
-    //		return frontruntime;
-    //	}
-    
-    /**
-     * the counted frames per second. Counted means that the calls to
-     * {@link #update(int)} will be counted each second, so the value of this
-     * function will only change once every second.
-     *
-     * @return frames per second
-     */
-    public long getFPS() {
-        return fps ? fps2 : fps1;
-    }
-    
-    /**
-     * the measured delta time. That is the elapsed time between the last and the
-     * last but one call to {@link #update(int)}, in seconds. For a smoothed value
-     * over multiple updates, see {@link #getDeltaTimeSmoother()}.
-     *
-     * @return delta time
-     *
-     * @see #getDeltaTimeSmoother()
-     */
-    public double getDeltaTime() {
-        return deltatime;
-    }
-    
-    /**
-     * The time spend on swapping the buffers the last time {@link #update(int)} was
-     * called, in seconds.
-     *
-     * @return swap time
-     */
     public double getSwapTime() {
-        return swapTime;
+	return swaptime;
     }
-    
-    /**
-     * Sets the deltatime to zero.
-     */
-    public void resetDeltaTime() {
-        this.deltatime = 0;
+
+    @Deprecated
+    public Window<?> getWindow(){
+	return window;
     }
     
 }
