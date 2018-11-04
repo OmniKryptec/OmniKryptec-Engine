@@ -4,6 +4,8 @@
     <excludeFromCompile>
       <directory url="file://$PROJECT_DIR$/src/main/java/de/omnikryptec/old" includeSubdirectories="true" />
       <file url="file://$PROJECT_DIR$/src/main/java/de/omnikryptec/graphics/display/Display.java" />
+      <file url="file://$PROJECT_DIR$/src/test/java/de/omnikryptec/core/Testloop.java" />
+      <file url="file://$PROJECT_DIR$/src/test/java/de/omnikryptec/core/ComfortTest.java" />
     </excludeFromCompile>
   </component>
 </project>

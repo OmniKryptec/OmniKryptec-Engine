@@ -16,25 +16,20 @@
 
 package de.omnikryptec.util.settings;
 
-import java.util.Map;
+import java.awt.*;
 
-public class GameSettings extends Settings<Integer> {
+public class GameSettingsTest {
     
-    public GameSettings() {
+    public static final int WINDOW_SIZE = 1;
+    
+    public static final void main(String[] args) throws Exception {
+        final GameSettings gameSettings_1 = new GameSettings();
+        System.out.println("gameSettings_1=" + gameSettings_1);
+        gameSettings_1.set(WINDOW_SIZE, new Dimension(200, 300));
+        System.out.println("gameSettings_1=" + gameSettings_1);
+        final Dimension window_size = gameSettings_1.get(WINDOW_SIZE);
+        System.out.println("window_size=" + window_size);
+        System.out.println(gameSettings_1.get(WINDOW_SIZE, Dimension.class));
+        
     }
-    
-    public GameSettings(Map<Integer, Object> settings) {
-        super(settings);
-    }
-    
-    @Override
-    public GameSettings copy() {
-        return (GameSettings) new GameSettings().setAll(settings);
-    }
-    
-    @Override
-    public String toString() {
-        return "GameSettings{" + "settings=" + settings + '}';
-    }
-    
 }
