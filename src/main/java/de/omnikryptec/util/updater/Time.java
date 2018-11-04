@@ -9,11 +9,11 @@ public class Time {
     public final float deltaf;
 
     public Time(long opsCount, double current, double delta) {
-	this.opsCount = opsCount;
-	this.current = current;
-	this.delta = delta;
-	this.currentf = (float) current;
-	this.deltaf = (float) delta;
+        this.opsCount = opsCount;
+        this.current = current;
+        this.delta = delta;
+        this.currentf = (float) current;
+        this.deltaf = (float) delta;
     }
 
 }

@@ -23,21 +23,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CLMemory {
-    
+
     private static List<CLMemory> memorys = new ArrayList<>();
-    
+
     private long id;
-    
+
     public CLMemory(CLContext context, int memOptions, FloatBuffer buffer) {
         id = CL10.clCreateBuffer(context.getID(), memOptions, buffer, null);
     }
-    
+
     public static void cleanup() {
         for (CLMemory m : memorys) {
             CL10.clReleaseMemObject(m.getID());
         }
     }
-    
+
     public long getID() {
         return id;
     }

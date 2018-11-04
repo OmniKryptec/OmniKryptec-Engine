@@ -29,15 +29,15 @@ import de.omnikryptec.util.ExecutorsUtil;
 import de.omnikryptec.util.updater.Time;
 
 public abstract class IndividualParallelComponentSystem extends ParallelComponentSystem {
-    
+
     public IndividualParallelComponentSystem(BitSet required) {
         this(required, ExecutorsUtil.getAvailableThreads(), ExecutorsUtil.getAvailableThreads() * 5);
     }
-    
+
     public IndividualParallelComponentSystem(BitSet required, int threads, int activationSize) {
         super(required, threads, activationSize);
     }
-    
+
     @Override
     public void updateThreaded(IECSManager entityManager, List<Entity> entities, Time time) {
         final Collection<Callable<Void>> tasks = new ArrayList<>(entities.size());
@@ -53,5 +53,5 @@ public abstract class IndividualParallelComponentSystem extends ParallelComponen
             throw new RuntimeException(e);
         }
     }
-    
+
 }

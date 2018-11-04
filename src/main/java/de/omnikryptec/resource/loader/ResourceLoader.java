@@ -23,10 +23,12 @@ import de.codemakers.io.file.AdvancedFile;
 import java.util.Properties;
 
 public interface ResourceLoader {
-    
-    boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceManager resourceManager) throws Exception;
-    
-    default boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceManager resourceManager, ToughConsumer<Throwable> failure) {
+
+    boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
+            ResourceManager resourceManager) throws Exception;
+
+    default boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
+            ResourceManager resourceManager, ToughConsumer<Throwable> failure) {
         try {
             return load(advancedFile, superFile, properties, resourceManager);
         } catch (Exception ex) {
@@ -38,14 +40,17 @@ public interface ResourceLoader {
             return false;
         }
     }
-    
-    default boolean loadWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceManager resourceManager) {
+
+    default boolean loadWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
+            ResourceManager resourceManager) {
         return load(advancedFile, superFile, properties, resourceManager, null);
     }
-    
-    LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceManager resourceManager) throws Exception;
-    
-    default LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceManager resourceManager, ToughConsumer<Throwable> failure) {
+
+    LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
+            ResourceManager resourceManager) throws Exception;
+
+    default LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
+            ResourceManager resourceManager, ToughConsumer<Throwable> failure) {
         try {
             return accept(advancedFile, superFile, properties, resourceManager);
         } catch (Exception ex) {
@@ -57,12 +62,14 @@ public interface ResourceLoader {
             return LoadingType.NOT;
         }
     }
-    
-    default LoadingType acceptWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceManager resourceManager) {
+
+    default LoadingType acceptWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
+            ResourceManager resourceManager) {
         return accept(advancedFile, superFile, properties, resourceManager, null);
     }
-    
-    default String generateName(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceManager resourceManager) throws Exception {
+
+    default String generateName(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
+            ResourceManager resourceManager) throws Exception {
         String path = advancedFile.getPath();
         if (superFile.isDirectory()) {
             path = path.substring(superFile.getPath().length());
@@ -77,8 +84,9 @@ public interface ResourceLoader {
         }
         return name;
     }
-    
-    default String generateName(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceManager resourceManager, ToughConsumer<Throwable> failure) {
+
+    default String generateName(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
+            ResourceManager resourceManager, ToughConsumer<Throwable> failure) {
         try {
             return generateName(advancedFile, superFile, properties, resourceManager);
         } catch (Exception ex) {
@@ -90,9 +98,10 @@ public interface ResourceLoader {
             return null;
         }
     }
-    
-    default String generateNameWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties, ResourceManager resourceManager) {
+
+    default String generateNameWithoutException(AdvancedFile advancedFile, AdvancedFile superFile,
+            Properties properties, ResourceManager resourceManager) {
         return generateName(advancedFile, superFile, properties, resourceManager, null);
     }
-    
+
 }

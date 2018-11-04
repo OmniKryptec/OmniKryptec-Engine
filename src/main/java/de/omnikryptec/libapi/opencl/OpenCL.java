@@ -25,37 +25,37 @@ import java.nio.IntBuffer;
 import java.util.HashMap;
 
 public class OpenCL {
-    
-    private static final Class<?>[] constantsClasses = {CL10.class, CL12.class, CL20.class, CL21.class, CL22.class};
+
+    private static final Class<?>[] constantsClasses = { CL10.class, CL12.class, CL20.class, CL21.class, CL22.class };
     static MemoryStack memStack;
     static IntBuffer tmpBuffer;
     private static HashMap<Integer, CLPlatform> createdPlatforms = new HashMap<>();
     private static PointerBuffer platforms;
-    
+
     static {
         memStack = MemoryStack.stackPush();
         tmpBuffer = memStack.mallocInt(1);
     }
-    
+
     private static void createPlatformData() {
         CL10.clGetPlatformIDs(null, tmpBuffer);
         assert tmpBuffer.get(0) != 0;
         platforms = memStack.mallocPointer(tmpBuffer.get(0));
         CL10.clGetPlatformIDs(platforms, (IntBuffer) null);
     }
-    
+
     public static PointerBuffer getPlatforms() {
         return platforms;
     }
-    
+
     public static CLPlatform getPlatform(int platformInd) {
         if (!createdPlatforms.containsKey(platformInd)) {
             createdPlatforms.put(platformInd, new CLPlatform(platforms.get(platformInd)));
         }
         return createdPlatforms.get(platformInd);
-        
+
     }
-    
+
     public static void cleanup() {
         CLKernel.cleanup();
         CLProgram.cleanup();
@@ -64,7 +64,7 @@ public class OpenCL {
         CLContext.cleanup();
         CL.destroy();
     }
-    
+
     public static void create() {
         try {
             CL.create();
@@ -72,7 +72,7 @@ public class OpenCL {
         }
         createPlatformData();
     }
-    
+
     public static String searchConstants(int i) {
         for (Class<?> c : constantsClasses) {
             Field[] fields = c.getFields();

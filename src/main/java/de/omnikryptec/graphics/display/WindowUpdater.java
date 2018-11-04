@@ -8,26 +8,26 @@ public class WindowUpdater extends AbstractUpdater {
 
     private Window<?> window;
     private double swaptime;
-    
+
     public WindowUpdater(Window<?> window) {
-	this.window = window;
+        this.window = window;
     }
 
     @Override
     protected void operation() {
-	double time = LibAPIManager.active().getTime();
-	window.swapBuffers();
-	swaptime = LibAPIManager.active().getTime() - time;
-	LibAPIManager.active().pollEvents();
+        double time = LibAPIManager.active().getTime();
+        window.swapBuffers();
+        swaptime = LibAPIManager.active().getTime() - time;
+        LibAPIManager.active().pollEvents();
     }
-    
+
     public double getSwapTime() {
-	return swaptime;
+        return swaptime;
     }
 
     @Deprecated
-    public Window<?> getWindow(){
-	return window;
+    public Window<?> getWindow() {
+        return window;
     }
-    
+
 }

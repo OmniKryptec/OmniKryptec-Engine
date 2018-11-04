@@ -19,71 +19,73 @@ package de.omnikryptec.graphics.display;
 //TODO viewport stuff might be useful though
 @Deprecated
 public class Display {
-    
-    //	//private Window<?> window;
-    //	private int[] viewport = new int[4];
-    //	private double aspectratio = -1;
+
+    // //private Window<?> window;
+    // private int[] viewport = new int[4];
+    // private double aspectratio = -1;
     //
-    //	Display(Window<?> window) {
-    //		//this.window = window;
-    //		calcViewport();
-    //		setARViewPort();
-    //		//  Eventbased? / Input has nothing to do with the Display, move it to a
-    //		// different position
-    //		InputManager.initCallbacks();
-    //		//lastsynced = GLFWManager.active().getTime();
-    //	}
+    // Display(Window<?> window) {
+    // //this.window = window;
+    // calcViewport();
+    // setARViewPort();
+    // // Eventbased? / Input has nothing to do with the Display, move it to a
+    // // different position
+    // InputManager.initCallbacks();
+    // //lastsynced = GLFWManager.active().getTime();
+    // }
     //
-    //	void update() {
-    //		//window.swapBuffers();
-    //		// not implemented yet
-    //		//if (window.wasResized()) {
-    //			calcViewport();
-    //			setARViewPort();
-    //		//}
-    //	}
-    //
-    //
-    //
-    //	public int getWidth() {
-    //		return viewport[2];
-    //	}
-    //
-    //	public int getHeight() {
-    //		return viewport[3];
-    //	}
+    // void update() {
+    // //window.swapBuffers();
+    // // not implemented yet
+    // //if (window.wasResized()) {
+    // calcViewport();
+    // setARViewPort();
+    // //}
+    // }
     //
     //
-    //	// *********************************************************/
-    //	public final void resetViewport() {
-    //		OpenGL.gl11viewport(0, 0, /*window.getBufferWidth(), window.getBufferHeight()*/0,0);
-    //	}
     //
-    //	public final void setARViewPort() {
-    //		OpenGL.gl11viewport(viewport);
-    //	}
-    //	// *********************************************************/
+    // public int getWidth() {
+    // return viewport[2];
+    // }
     //
-    //	public final void resetAspectRatio() {
-    //		setAspectRatio(-1);
-    //	}
+    // public int getHeight() {
+    // return viewport[3];
+    // }
     //
-    //	private final void calcViewport() {
-    //		viewport = MathUtil.calculateViewport(aspectratio, /*window.getBufferWidth(), window.getBufferHeight()*/0,0);
-    //	}
     //
-    //	public double getAspectRatio() {
-    //		return aspectratio;
-    //	}
+    // // *********************************************************/
+    // public final void resetViewport() {
+    // OpenGL.gl11viewport(0, 0, /*window.getBufferWidth(),
+    // window.getBufferHeight()*/0,0);
+    // }
     //
-    //	public int[] getViewportData() {
-    //		return viewport;
-    //	}
+    // public final void setARViewPort() {
+    // OpenGL.gl11viewport(viewport);
+    // }
+    // // *********************************************************/
     //
-    //	public final void setAspectRatio(double a) {
-    //		aspectratio = a;
-    //		calcViewport();
-    //		setARViewPort();
-    //	}
-    
+    // public final void resetAspectRatio() {
+    // setAspectRatio(-1);
+    // }
+    //
+    // private final void calcViewport() {
+    // viewport = MathUtil.calculateViewport(aspectratio, /*window.getBufferWidth(),
+    // window.getBufferHeight()*/0,0);
+    // }
+    //
+    // public double getAspectRatio() {
+    // return aspectratio;
+    // }
+    //
+    // public int[] getViewportData() {
+    // return viewport;
+    // }
+    //
+    // public final void setAspectRatio(double a) {
+    // aspectratio = a;
+    // calcViewport();
+    // setARViewPort();
+    // }
+
 }

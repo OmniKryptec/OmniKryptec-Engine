@@ -23,16 +23,16 @@ import de.omnikryptec.util.updater.Time;
 import java.util.BitSet;
 
 public abstract class IterativeComponentSystem extends ComponentSystem implements IndividualUpdater {
-    
+
     protected IterativeComponentSystem(BitSet required) {
         super(required);
     }
-    
+
     @Override
     public final void update(IECSManager entityManager, Time time) {
         for (Entity e : entities) {
             updateIndividual(entityManager, e, time);
         }
     }
-    
+
 }

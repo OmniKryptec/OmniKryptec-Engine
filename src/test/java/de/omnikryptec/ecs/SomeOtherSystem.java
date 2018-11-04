@@ -5,20 +5,20 @@ import java.util.BitSet;
 import de.omnikryptec.ecs.system.ComponentSystem;
 import de.omnikryptec.util.updater.Time;
 
-public class SomeOtherSystem extends ComponentSystem{
+public class SomeOtherSystem extends ComponentSystem {
 
-	protected SomeOtherSystem() {
-		super(new BitSet());
-	}
+    protected SomeOtherSystem() {
+        super(new BitSet());
+    }
 
-	@Override
-	public void update(IECSManager entityManager, Time deltaTime) {
-		//System.out.println("ma friends!");
-	}
+    @Override
+    public void update(IECSManager entityManager, Time deltaTime) {
+        // System.out.println("ma friends!");
+    }
 
-	@Override
-	public int priority() {
-		return 100;
-	}
-	
+    @Override
+    public int priority() {
+        return 100;
+    }
+
 }

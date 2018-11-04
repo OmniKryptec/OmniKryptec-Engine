@@ -12,18 +12,18 @@ import de.omnikryptec.util.updater.AbstractUpdater;
 public class StaticInitTest {
 
     public static void main(String[] args) {
-	EngineLoader.initialize();
-	EngineLoader.setConfiguration(new Settings<>());
-	Window<?> window = new OpenGLWindowInfo().createWindow();
-	window.setVisible(true);
-	WindowUpdater updater = new WindowUpdater(window);
-	while (!window.isCloseRequested()) {
-	    updater.update(0);
-	    if (updater.getOperationCount() % 40 == 0) {
-		OpenGLUtil.setClearColor(Color.randomRGB());
-	    }
-	    OpenGLUtil.clear(BufferType.COLOR);
-	}
+        EngineLoader.initialize();
+        EngineLoader.setConfiguration(new Settings<>());
+        Window<?> window = new OpenGLWindowInfo().createWindow();
+        window.setVisible(true);
+        WindowUpdater updater = new WindowUpdater(window);
+        while (!window.isCloseRequested()) {
+            updater.update(0);
+            if (updater.getOperationCount() % 40 == 0) {
+                OpenGLUtil.setClearColor(Color.randomRGB());
+            }
+            OpenGLUtil.clear(BufferType.COLOR);
+        }
     }
 
 }

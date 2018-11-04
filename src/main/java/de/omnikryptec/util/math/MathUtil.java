@@ -19,7 +19,7 @@ package de.omnikryptec.util.math;
 import java.util.Random;
 
 public class MathUtil {
-    
+
     /**
      * Creates a viewport with a particular aspect ratio and the given width and
      * height. The viewport will be centered and of maximum size for the given
@@ -27,8 +27,8 @@ public class MathUtil {
      * be smaller than specified to maintain the given aspect ratio.
      *
      * @param aspectRatio the aspect ratio
-     * @param w the maximum width
-     * @param h the maximum height
+     * @param w           the maximum width
+     * @param h           the maximum height
      *
      * @return an array consisting of x1, y1, x2, y2; in that particular order
      */
@@ -49,7 +49,7 @@ public class MathUtil {
         }
         return viewport;
     }
-    
+
     public static <T> T getWeightedRandom(Random random, T[] ts, int[] weights) {
         int sum = 0;
         for (int i : weights) {
@@ -64,13 +64,13 @@ public class MathUtil {
         }
         return ts[0];
     }
-    
+
     public static int toPowerOfTwo(int n) {
         return 1 << (32 - Integer.numberOfLeadingZeros(n - 1));
     }
-    
+
     public static boolean isPowerOfTwo(int n) {
         return (n & -n) == n;
     }
-    
+
 }

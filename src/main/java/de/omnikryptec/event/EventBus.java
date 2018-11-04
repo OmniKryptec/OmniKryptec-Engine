@@ -28,21 +28,21 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class EventBus implements Updateable{
-    
+public class EventBus implements Updateable {
+
     private final AtomicBoolean processing = new AtomicBoolean(false);
     private Multimap<Class<? extends Event>, IEventListener> listeners;
     private Queue<Event> eventQueue;
-    
+
     public EventBus() {
         this.eventQueue = new ConcurrentLinkedQueue<>();
         this.listeners = ArrayListMultimap.create();
     }
-    
+
     public void register(IEventListener listener, Class<? extends Event> eventtype) {
         listeners.put(eventtype, listener);
     }
-    
+
     public void register(Object object) {
         Method[] methods;
         if (object instanceof Class<?>) {
@@ -78,7 +78,7 @@ public class EventBus implements Updateable{
             throw new IllegalArgumentException("No EventSubscriptions found: " + object);
         }
     }
-    
+
     public void enqueueOrPost(Event event, boolean postImmediately) {
         if (postImmediately) {
             processEvent(event);
@@ -86,7 +86,7 @@ public class EventBus implements Updateable{
             eventQueue.add(event);
         }
     }
-    
+
     public void processQueuedEvents() {
         if (processing.get()) {
             throw new IllegalStateException("Already processing!");
@@ -97,11 +97,11 @@ public class EventBus implements Updateable{
         }
         processing.set(false);
     }
-    
+
     public boolean isProcessing() {
         return processing.get();
     }
-    
+
     private void processEvent(Event event) {
         Class<?> someclazz = event.getClass();
         do {
@@ -116,6 +116,6 @@ public class EventBus implements Updateable{
 
     @Override
     public void update(Time time) {
-	processQueuedEvents();
+        processQueuedEvents();
     }
 }

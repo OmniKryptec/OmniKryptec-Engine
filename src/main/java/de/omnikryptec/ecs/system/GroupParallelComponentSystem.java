@@ -32,15 +32,15 @@ import de.omnikryptec.util.math.Mathd;
 import de.omnikryptec.util.updater.Time;
 
 public abstract class GroupParallelComponentSystem extends ParallelComponentSystem {
-    
+
     public GroupParallelComponentSystem(BitSet required) {
         this(required, ExecutorsUtil.getAvailableThreads(), ExecutorsUtil.getAvailableThreads() * 3);
     }
-    
+
     public GroupParallelComponentSystem(BitSet required, int threads, int activationSize) {
         super(required, threads, activationSize);
     }
-    
+
     @Override
     public void updateThreaded(IECSManager entityManager, List<Entity> entities, Time time) {
         List<List<Entity>> lists = Lists.partition(entities, (int) Mathd.ceil(entities.size() / (double) numThreads()));
@@ -59,5 +59,5 @@ public abstract class GroupParallelComponentSystem extends ParallelComponentSyst
             throw new RuntimeException(e);
         }
     }
-    
+
 }

@@ -19,17 +19,15 @@ package de.omnikryptec.libapi.glfw.input;
 import org.lwjgl.glfw.GLFW;
 
 public enum CursorType {
-    
-    NORMAL(GLFW.GLFW_CURSOR_NORMAL),
-    HIDDEN(GLFW.GLFW_CURSOR_HIDDEN),
-    DISABLED(GLFW.GLFW_CURSOR_DISABLED);
-    
+
+    NORMAL(GLFW.GLFW_CURSOR_NORMAL), HIDDEN(GLFW.GLFW_CURSOR_HIDDEN), DISABLED(GLFW.GLFW_CURSOR_DISABLED);
+
     private final int state;
-    
+
     CursorType(int state) {
         this.state = state;
     }
-    
+
     public static CursorType ofState(int state) {
         for (CursorType cursorType : values()) {
             if (cursorType.state == state) {
@@ -38,9 +36,9 @@ public enum CursorType {
         }
         return DISABLED;
     }
-    
+
     public int getState() {
         return state;
     }
-    
+
 }

@@ -7,14 +7,14 @@ import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.updater.AbstractUpdater;
 
 public class Testloop implements IEngineLoop {
-    
+
     private WindowUpdater updater;
-    
+
     @Override
     public void init(EngineLoader loader) {
         this.updater = new WindowUpdater(loader.getWindow());
     }
-    
+
     @Override
     public void startLoop() {
         while (!updater.getWindow().isCloseRequested()) {
@@ -22,15 +22,15 @@ public class Testloop implements IEngineLoop {
             renderAndSwap();
         }
     }
-    
+
     @Override
     public void stopLoop() {
     }
-    
+
     @Override
     public void update() {
     }
-    
+
     @Override
     public void renderAndSwap() {
         updater.update(0);
@@ -39,11 +39,11 @@ public class Testloop implements IEngineLoop {
         }
         OpenGLUtil.clear(BufferType.COLOR);
     }
-    
+
     @Override
     public boolean isRunning() {
-        
+
         return false;
     }
-    
+
 }

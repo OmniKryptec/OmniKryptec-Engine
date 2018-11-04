@@ -45,7 +45,7 @@ public class AbstractUpdater {
     private Smoother deltaTimeSmoother;
 
     public AbstractUpdater() {
-	this.deltaTimeSmoother = new Smoother();
+        this.deltaTimeSmoother = new Smoother();
     }
 
     /**
@@ -63,31 +63,31 @@ public class AbstractUpdater {
      *               nothing.
      */
     public void update(int maxops) {
-	double currentFrameTime = LibAPIManager.active().getTime();
-	deltatime = (currentFrameTime - lasttime);
-	deltaTimeSmoother.push(deltatime);
-	frontruntime += deltatime;
-	lasttime = currentFrameTime;
-	if (maxops > 0) {
-	    sync(maxops);
-	}
-	operation();
-	operationcount++;
-	if (ops) {
-	    ops1++;
-	} else {
-	    ops2++;
-	}
-	if (frontruntime - opstime >= 1.0) {
-	    opstime = frontruntime;
-	    if (ops) {
-		ops = false;
-		ops2 = 0;
-	    } else {
-		ops = true;
-		ops1 = 0;
-	    }
-	}
+        double currentFrameTime = LibAPIManager.active().getTime();
+        deltatime = (currentFrameTime - lasttime);
+        deltaTimeSmoother.push(deltatime);
+        frontruntime += deltatime;
+        lasttime = currentFrameTime;
+        if (maxops > 0) {
+            sync(maxops);
+        }
+        operation();
+        operationcount++;
+        if (ops) {
+            ops1++;
+        } else {
+            ops2++;
+        }
+        if (frontruntime - opstime >= 1.0) {
+            opstime = frontruntime;
+            if (ops) {
+                ops = false;
+                ops2 = 0;
+            } else {
+                ops = true;
+                ops1 = 0;
+            }
+        }
     }
 
     /**
@@ -104,13 +104,13 @@ public class AbstractUpdater {
      * @param ops maxops, values smaller or equal to 0 confuse this function though.
      */
     private void sync(int ops) {
-	double target = lastsynced + (1.0 / ops);
-	try {
-	    while ((lastsynced = LibAPIManager.active().getTime()) < target) {
-		Thread.sleep(1);
-	    }
-	} catch (InterruptedException ex) {
-	}
+        double target = lastsynced + (1.0 / ops);
+        try {
+            while ((lastsynced = LibAPIManager.active().getTime()) < target) {
+                Thread.sleep(1);
+            }
+        } catch (InterruptedException ex) {
+        }
     }
 
     /**
@@ -123,7 +123,7 @@ public class AbstractUpdater {
      */
     @Nonnull
     public final Smoother getDeltaTimeSmoother() {
-	return deltaTimeSmoother;
+        return deltaTimeSmoother;
     }
 
     /**
@@ -133,7 +133,7 @@ public class AbstractUpdater {
      * @return the operation count
      */
     public long getOperationCount() {
-	return operationcount;
+        return operationcount;
     }
 
     // /**
@@ -155,7 +155,7 @@ public class AbstractUpdater {
      * @return operations per second
      */
     public long getOPS() {
-	return ops ? ops2 : ops1;
+        return ops ? ops2 : ops1;
     }
 
     /**
@@ -168,20 +168,20 @@ public class AbstractUpdater {
      * @see #getDeltaTimeSmoother()
      */
     public double getDeltaTime() {
-	return deltatime;
+        return deltatime;
     }
 
     /**
      * Sets the deltatime to zero.
      */
     public void resetDeltaTime() {
-	this.deltatime = 0;
-	this.lasttime = LibAPIManager.active().getTime();
-	this.opstime = LibAPIManager.active().getTime();
+        this.deltatime = 0;
+        this.lasttime = LibAPIManager.active().getTime();
+        this.opstime = LibAPIManager.active().getTime();
     }
 
     public Time asTime() {
-	return new Time(getOperationCount(), LibAPIManager.active().getTime(), getDeltaTime());
+        return new Time(getOperationCount(), LibAPIManager.active().getTime(), getDeltaTime());
     }
 
 }

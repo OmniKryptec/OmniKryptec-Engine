@@ -17,7 +17,7 @@
 package de.omnikryptec.util.settings;
 
 public interface Defaultable {
-    
+
     Object getDefault();
-    
+
 }

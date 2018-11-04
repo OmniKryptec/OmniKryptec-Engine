@@ -27,16 +27,16 @@ import de.omnikryptec.util.data.CountingMap;
 import java.util.*;
 
 public class EntityManager {
-    
+
     private Multimap<BitSet, EntityListener> familyListeners;
-    
+
     private Collection<Entity> entities;
     private Collection<Entity> unmodifiableEntities;
-    
+
     private CountingMap<BitSet> uniqueFilters;
     private ListMultimap<BitSet, Entity> filteredEntities;
     private ListMultimap<Entity, BitSet> reverseFilteredEntities;
-    
+
     public EntityManager() {
         // HashSet is a few microsecs slower than ArrayList on average but when removing
         // entities its twice as fast but what about adding entities?!?!?!
@@ -47,7 +47,7 @@ public class EntityManager {
         this.reverseFilteredEntities = ArrayListMultimap.create();
         this.familyListeners = ArrayListMultimap.create();
     }
-    
+
     public EntityManager addEntity(Entity entity) {
         if (entities.add(entity)) {
             if (!entity.getComponents().isEmpty()) {
@@ -64,7 +64,7 @@ public class EntityManager {
         }
         return this;
     }
-    
+
     public EntityManager removeEntity(Entity entity) {
         if (entities.remove(entity)) {
             for (BitSet filter : reverseFilteredEntities.get(entity)) {
@@ -74,15 +74,15 @@ public class EntityManager {
         }
         return this;
     }
-    
+
     public Collection<Entity> getAll() {
         return unmodifiableEntities;
     }
-    
+
     public List<Entity> getEntitiesFor(BitSet family) {
         return Collections.unmodifiableList(filteredEntities.get(family));
     }
-    
+
     public EntityManager addFilter(BitSet family) {
         if (family.isEmpty()) {
             throw new IllegalArgumentException("Empty family");
@@ -100,7 +100,7 @@ public class EntityManager {
         }
         return this;
     }
-    
+
     public EntityManager removeFilter(BitSet family) {
         if (family.isEmpty()) {
             throw new IllegalArgumentException("Empty family");
@@ -118,7 +118,7 @@ public class EntityManager {
         }
         return this;
     }
-    
+
     public EntityManager updateEntityFamilyStatus(Entity entity) {
         for (BitSet family : uniqueFilters) {
             boolean niceFamily = Family.containsTrueBits(entity.getComponents(), family);
@@ -139,13 +139,13 @@ public class EntityManager {
         }
         return this;
     }
-    
+
     public void addEntityListener(BitSet family, EntityListener listener) {
         familyListeners.put(family, listener);
     }
-    
+
     public void removeEnityListener(BitSet family, EntityListener listener) {
         familyListeners.remove(family, listener);
     }
-    
+
 }

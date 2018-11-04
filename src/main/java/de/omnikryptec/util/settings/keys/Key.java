@@ -22,40 +22,47 @@ import de.omnikryptec.libapi.glfw.LibAPIManager;
 import java.util.Objects;
 
 public class Key implements IKey {
-    
+
     /**
-     * Default {@link de.omnikryptec.util.settings.keys.Key} which can be returned instead of null
+     * Default {@link de.omnikryptec.util.settings.keys.Key} which can be returned
+     * instead of null
      */
     public static final Key DEFAULT_NULL_KEY = new Key("DEFAULT_NULL_KEY", -1);
-    
+
     private final String name;
     private int key;
     private boolean isKeyboardKey;
     private double lastChange = 0.0F;
-    
+
     /**
-     * Constructs a {@link de.omnikryptec.util.settings.keys.Key} (as a keyboard key)
+     * Constructs a {@link de.omnikryptec.util.settings.keys.Key} (as a keyboard
+     * key)
      *
-     * @param name Name of the {@link de.omnikryptec.util.settings.keys.Key} (e.g. "Arrow Up")
-     * @param key KeyCode (e.g. {@link org.lwjgl.glfw.GLFW#GLFW_KEY_A})
+     * @param name Name of the {@link de.omnikryptec.util.settings.keys.Key} (e.g.
+     *             "Arrow Up")
+     * @param key  KeyCode (e.g. {@link org.lwjgl.glfw.GLFW#GLFW_KEY_A})
      */
     public Key(String name, int key) {
         this(name, key, true);
     }
-    
+
     /**
      * Constructs a {@link de.omnikryptec.util.settings.keys.Key}
      *
-     * @param name Name of the {@link de.omnikryptec.util.settings.keys.Key} (e.g. "Arrow Up")
-     * @param key KeyCode (e.g. {@link org.lwjgl.glfw.GLFW#GLFW_KEY_A})
-     * @param isKeyboardKey <tt>true</tt> if the {@link de.omnikryptec.util.settings.keys.Key} is a keyboard key
+     * @param name          Name of the
+     *                      {@link de.omnikryptec.util.settings.keys.Key} (e.g.
+     *                      "Arrow Up")
+     * @param key           KeyCode (e.g. {@link org.lwjgl.glfw.GLFW#GLFW_KEY_A})
+     * @param isKeyboardKey <tt>true</tt> if the
+     *                      {@link de.omnikryptec.util.settings.keys.Key} is a
+     *                      keyboard key
      */
     public Key(String name, int key, boolean isKeyboardKey) {
         this.name = name;
         this.key = key;
         this.isKeyboardKey = isKeyboardKey;
     }
-    
+
     /**
      * Returns the name of the {@link de.omnikryptec.util.settings.keys.Key}
      *
@@ -65,29 +72,33 @@ public class Key implements IKey {
     public String getName() {
         return name;
     }
-    
+
     /**
-     * Returns if this {@link de.omnikryptec.util.settings.keys.Key} is being pressed
+     * Returns if this {@link de.omnikryptec.util.settings.keys.Key} is being
+     * pressed
      *
-     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.Key} is pressed
+     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.Key}
+     *         is pressed
      */
     @Override
     public boolean isPressed() {
         if (isKeyboardKey) {
-            //TODO Implement InputManager
+            // TODO Implement InputManager
         } else {
-            //TODO Implement InputManager
+            // TODO Implement InputManager
         }
         throw new NotYetImplementedRuntimeException();
     }
-    
+
     /**
-     * Returns if this {@link de.omnikryptec.util.settings.keys.Key} is being pressed for a specified time
+     * Returns if this {@link de.omnikryptec.util.settings.keys.Key} is being
+     * pressed for a specified time
      *
      * @param minTime Minimum pressing time
      * @param maxTime Maximum pressing time
      *
-     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.Key} is pressed for the specified time
+     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.Key}
+     *         is pressed for the specified time
      */
     @Override
     public boolean isLongPressed(double minTime, double maxTime) {
@@ -105,7 +116,7 @@ public class Key implements IKey {
         }
         return false;
     }
-    
+
     /**
      * Returns the KeyCode
      *
@@ -114,7 +125,7 @@ public class Key implements IKey {
     public int getKey() {
         return key;
     }
-    
+
     /**
      * Sets the KeyCode
      *
@@ -126,18 +137,22 @@ public class Key implements IKey {
         this.key = key;
         return this;
     }
-    
+
     /**
-     * Returns if this {@link de.omnikryptec.util.settings.keys.Key} is a keyboard key
+     * Returns if this {@link de.omnikryptec.util.settings.keys.Key} is a keyboard
+     * key
      *
-     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.Key} is a keyboard key
+     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.Key}
+     *         is a keyboard key
      */
     public boolean isKeyboardKey() {
         return isKeyboardKey;
     }
-    
+
     /**
-     * @param keyboardKey <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.Key} is a keyboard key
+     * @param keyboardKey <tt>true</tt> if this
+     *                    {@link de.omnikryptec.util.settings.keys.Key} is a
+     *                    keyboard key
      *
      * @return A reference to this {@link de.omnikryptec.util.settings.keys.Key}
      */
@@ -145,20 +160,21 @@ public class Key implements IKey {
         isKeyboardKey = keyboardKey;
         return this;
     }
-    
+
     /**
      * Returns the last change of this {@link de.omnikryptec.util.settings.keys.Key}
      *
      * @return Last change of this {@link de.omnikryptec.util.settings.keys.Key}
      */
-    public double getLastChange() { //FIXME Maybe use another System to determine long key presses
+    public double getLastChange() { // FIXME Maybe use another System to determine long key presses
         return lastChange;
     }
-    
+
     /**
      * Sets the last change of this {@link de.omnikryptec.util.settings.keys.Key}
      *
-     * @param lastChange Last change of this {@link de.omnikryptec.util.settings.keys.Key}
+     * @param lastChange Last change of this
+     *                   {@link de.omnikryptec.util.settings.keys.Key}
      *
      * @return A reference to this {@link de.omnikryptec.util.settings.keys.Key}
      */
@@ -166,7 +182,7 @@ public class Key implements IKey {
         this.lastChange = lastChange;
         return this;
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -178,15 +194,16 @@ public class Key implements IKey {
         final Key key1 = (Key) o;
         return key == key1.key && isKeyboardKey == key1.isKeyboardKey && Objects.equals(name, key1.name);
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(name, key, isKeyboardKey);
     }
-    
+
     @Override
     public String toString() {
-        return "Key{" + "name='" + name + '\'' + ", key=" + key + ", isKeyboardKey=" + isKeyboardKey + ", lastChange=" + lastChange + '}';
+        return "Key{" + "name='" + name + '\'' + ", key=" + key + ", isKeyboardKey=" + isKeyboardKey + ", lastChange="
+                + lastChange + '}';
     }
-    
+
 }

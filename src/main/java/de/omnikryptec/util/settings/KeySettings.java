@@ -26,16 +26,18 @@ import org.lwjgl.glfw.GLFW;
 import java.util.Collection;
 
 public class KeySettings extends KeyContainer {
-    
+
     public static final byte KEY_UNKNOWN = Byte.MIN_VALUE;
     public static final byte KEY_NOTHING = -1;
     public static final byte KEY_RELEASED = GLFW.GLFW_RELEASE;
     public static final byte KEY_PRESSED = GLFW.GLFW_PRESS;
     public static final byte KEY_REPEATED = GLFW.GLFW_REPEAT;
-    
+
     public static final Key STANDARD_MOUSE_BUTTON_LEFT = new Key("mouseButtonLeft", GLFW.GLFW_MOUSE_BUTTON_LEFT, false);
-    public static final Key STANDARD_MOUSE_BUTTON_RIGHT = new Key("mouseButtonRight", GLFW.GLFW_MOUSE_BUTTON_RIGHT, false);
-    public static final Key STANDARD_MOUSE_BUTTON_MIDDLE = new Key("mouseButtonMiddle", GLFW.GLFW_MOUSE_BUTTON_MIDDLE, false);
+    public static final Key STANDARD_MOUSE_BUTTON_RIGHT = new Key("mouseButtonRight", GLFW.GLFW_MOUSE_BUTTON_RIGHT,
+            false);
+    public static final Key STANDARD_MOUSE_BUTTON_MIDDLE = new Key("mouseButtonMiddle", GLFW.GLFW_MOUSE_BUTTON_MIDDLE,
+            false);
     public static final Key STANDARD_KEY_MOVE_FORWARD = new Key("moveForward", GLFW.GLFW_KEY_W);
     public static final Key STANDARD_KEY_MOVE_BACKWARD = new Key("moveBackward", GLFW.GLFW_KEY_S);
     public static final Key STANDARD_KEY_MOVE_RIGHT = new Key("moveRight", GLFW.GLFW_KEY_D);
@@ -48,21 +50,26 @@ public class KeySettings extends KeyContainer {
     public static final Key STANDARD_KEY_TURN_PITCH_DOWN = new Key("turnPitchDown", GLFW.GLFW_KEY_DOWN);
     public static final Key STANDARD_KEY_TURN_ROLL_RIGHT = new Key("turnRollRight", GLFW.GLFW_KEY_E);
     public static final Key STANDARD_KEY_TURN_ROLL_LEFT = new Key("turnRollLeft", GLFW.GLFW_KEY_Q);
-    
-    public static final Key[] STANDARD_MOUSE_BUTTONS = new Key[] {STANDARD_MOUSE_BUTTON_LEFT, STANDARD_MOUSE_BUTTON_RIGHT, STANDARD_MOUSE_BUTTON_MIDDLE};
-    public static final Key[] STANDARD_KEYBOARD_KEYS = new Key[] {STANDARD_KEY_MOVE_FORWARD, STANDARD_KEY_MOVE_BACKWARD, STANDARD_KEY_MOVE_RIGHT, STANDARD_KEY_MOVE_LEFT, STANDARD_KEY_MOVE_UP, STANDARD_KEY_MOVE_DOWN, STANDARD_KEY_TURN_YAW_RIGHT, STANDARD_KEY_TURN_YAW_LEFT, STANDARD_KEY_TURN_PITCH_UP, STANDARD_KEY_TURN_PITCH_DOWN, STANDARD_KEY_TURN_ROLL_RIGHT, STANDARD_KEY_TURN_ROLL_LEFT};
-    public static final Key[] STANDARD_KEYS = ObjectArrays.concat(STANDARD_MOUSE_BUTTONS, STANDARD_KEYBOARD_KEYS, Key.class);
-    
+
+    public static final Key[] STANDARD_MOUSE_BUTTONS = new Key[] { STANDARD_MOUSE_BUTTON_LEFT,
+            STANDARD_MOUSE_BUTTON_RIGHT, STANDARD_MOUSE_BUTTON_MIDDLE };
+    public static final Key[] STANDARD_KEYBOARD_KEYS = new Key[] { STANDARD_KEY_MOVE_FORWARD,
+            STANDARD_KEY_MOVE_BACKWARD, STANDARD_KEY_MOVE_RIGHT, STANDARD_KEY_MOVE_LEFT, STANDARD_KEY_MOVE_UP,
+            STANDARD_KEY_MOVE_DOWN, STANDARD_KEY_TURN_YAW_RIGHT, STANDARD_KEY_TURN_YAW_LEFT, STANDARD_KEY_TURN_PITCH_UP,
+            STANDARD_KEY_TURN_PITCH_DOWN, STANDARD_KEY_TURN_ROLL_RIGHT, STANDARD_KEY_TURN_ROLL_LEFT };
+    public static final Key[] STANDARD_KEYS = ObjectArrays.concat(STANDARD_MOUSE_BUTTONS, STANDARD_KEYBOARD_KEYS,
+            Key.class);
+
     public KeySettings() {
         this(null);
     }
-    
+
     public KeySettings(Collection<IKey> keys) {
         if (keys != null) {
             addIKeys(keys);
         }
     }
-    
+
     public static void updateKeys(Collection<IKey> keys, double currentTime, int keyCode, boolean isKeyboardKey) {
         for (IKey key : keys) {
             if (key instanceof Key) {
@@ -75,19 +82,19 @@ public class KeySettings extends KeyContainer {
             }
         }
     }
-    
+
     public void updateKeys(double currentTime, int keyCode, boolean isKeyboardKey) {
         updateKeys(getIKeys(), currentTime, keyCode, isKeyboardKey);
     }
-    
+
     public boolean isPressed(String name) {
         final IKey key = getIKey(name);
         return key == null ? false : key.isPressed();
     }
-    
+
     public boolean isLongPressed(String name, double minTime, double maxTime) {
         final IKey key = getIKey(name);
         return key == null ? false : key.isLongPressed(minTime, maxTime);
     }
-    
+
 }

@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MouseHandler implements InputHandler {
-    
+
     private final byte[] buttons = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
     private final Vector2d position = new Vector2d(0.0, 0.0);
     private final Vector2d scrollOffset = new Vector2d(0.0, 0.0);
@@ -38,7 +38,7 @@ public class MouseHandler implements InputHandler {
     private final AtomicBoolean insideWindow = new AtomicBoolean(false);
     // Temp
     private byte[] buttonsLastTime = null;
-    
+
     public MouseHandler(long window) {
         this.window = window;
         this.mouseButtonCallback = new GLFWMouseButtonCallback() {
@@ -86,7 +86,7 @@ public class MouseHandler implements InputHandler {
             }
         };
     }
-    
+
     @Override
     public synchronized InputHandler init() {
         GLFW.glfwSetMouseButtonCallback(window, mouseButtonCallback);
@@ -95,13 +95,13 @@ public class MouseHandler implements InputHandler {
         GLFW.glfwSetCursorEnterCallback(window, cursorEnterCallback);
         return this;
     }
-    
+
     @Override
     public synchronized InputHandler preUpdate(double currentTime, KeySettings keySettings) {
         buttonsLastTime = Arrays.copyOf(buttons, buttons.length);
         return this;
     }
-    
+
     @Override
     public synchronized InputHandler update(double currentTime, KeySettings keySettings) {
         for (int i = 0; i < buttons.length; i++) {
@@ -111,13 +111,13 @@ public class MouseHandler implements InputHandler {
         }
         return this;
     }
-    
+
     @Override
     public synchronized InputHandler postUpdate(double currentTime, KeySettings keySettings) {
-        buttonsLastTime = null; //TODO Is this good for performance or not?
+        buttonsLastTime = null; // TODO Is this good for performance or not?
         return this;
     }
-    
+
     @Override
     public synchronized InputHandler close() {
         mouseButtonCallback.close();
@@ -126,49 +126,49 @@ public class MouseHandler implements InputHandler {
         cursorEnterCallback.close();
         return this;
     }
-    
+
     public synchronized byte getButtonState(int buttonCode) {
         return buttons[buttonCode];
     }
-    
+
     public synchronized boolean isButtonUnknown(int buttonCode) {
         return buttons[buttonCode] == KeySettings.KEY_UNKNOWN;
     }
-    
+
     public synchronized boolean isButtonNothing(int buttonCode) {
         return buttons[buttonCode] == KeySettings.KEY_NOTHING;
     }
-    
+
     public synchronized boolean isButtonReleased(int buttonCode) {
         return buttons[buttonCode] == KeySettings.KEY_RELEASED;
     }
-    
+
     public synchronized boolean isButtonPressed(int buttonCode) {
         return buttons[buttonCode] == KeySettings.KEY_PRESSED;
     }
-    
+
     public synchronized boolean isButtonRepeated(int buttonCode) {
         return buttons[buttonCode] == KeySettings.KEY_REPEATED;
     }
-    
+
     public synchronized Vector2dc getPosition() {
         return position;
     }
-    
+
     public synchronized Vector2dc getScrollOffset() {
         return scrollOffset;
     }
-    
+
     public synchronized boolean isInsideWindow() {
         return insideWindow.get();
     }
-    
+
     public int size() {
         return buttons.length;
     }
-    
+
     public long getWindow() {
         return window;
     }
-    
+
 }

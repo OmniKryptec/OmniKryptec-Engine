@@ -23,13 +23,13 @@ import org.lwjgl.opengl.GL20;
 import java.nio.FloatBuffer;
 
 public class UniformMatrix extends Uniform {
-    
+
     private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
-    
+
     public UniformMatrix(String name) {
         super(name);
     }
-    
+
     public void loadMatrix(Matrix4fc matrix) {
         if (isFound()) {
             matrixBuffer.put(matrix.m00());
@@ -54,5 +54,5 @@ public class UniformMatrix extends Uniform {
             GL20.glUniformMatrix4fv(super.getLocation(), false, matrixBuffer);
         }
     }
-    
+
 }

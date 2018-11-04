@@ -24,17 +24,17 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public final class LibAPIManager {
-    
+
     private static final Collection<Runnable> shutdownHooks = new ArrayList<>();
     private static LibAPIManager instance;
-    
+
     static {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown(), "LibAPI-Shutdown-Hooks"));
     }
-    
+
     private LibAPIManager() {
     }
-    
+
     public static void init() {
         if (isInitialized()) {
             throw new IllegalStateException("Already initialized");
@@ -48,7 +48,7 @@ public final class LibAPIManager {
             throw new RuntimeException("Error while initializing LibAPI");
         }
     }
-    
+
     public static void shutdown() {
         if (isInitialized()) {
             for (Runnable r : shutdownHooks) {
@@ -64,23 +64,23 @@ public final class LibAPIManager {
             System.out.println("Terminated LibAPI");
         }
     }
-    
+
     public static void registerResourceShutdownHooks(Runnable... runnables) {
         shutdownHooks.addAll(Arrays.asList(runnables));
     }
-    
+
     public static boolean isInitialized() {
         return instance != null;
     }
-    
+
     public static LibAPIManager active() {
         return instance;
     }
-    
+
     public void pollEvents() {
         GLFW.glfwPollEvents();
     }
-    
+
     /**
      * Returns the value of the GLFW timer. The timer measures time elapsed since
      * GLFW was initialized.
@@ -94,5 +94,5 @@ public final class LibAPIManager {
     public double getTime() {
         return GLFW.glfwGetTime();
     }
-    
+
 }

@@ -24,56 +24,64 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * This class is just for the {@link de.omnikryptec.util.settings.KeySettings} and {@link de.omnikryptec.util.settings.keys.KeyGroup} class
+ * This class is just for the {@link de.omnikryptec.util.settings.KeySettings}
+ * and {@link de.omnikryptec.util.settings.keys.KeyGroup} class
  */
 public class KeyContainer {
-    
+
     /**
-     * Default {@link de.omnikryptec.util.settings.keys.IKey} which can be returned instead of null
+     * Default {@link de.omnikryptec.util.settings.keys.IKey} which can be returned
+     * instead of null
      */
     public static final IKey DEFAULT_NULL_IKEY = new IKey() {
         @Override
         public String getName() {
             return null;
         }
-        
+
         @Override
         public boolean isPressed() {
             return false;
         }
-        
+
         @Override
         public boolean isLongPressed(double minTime, double maxTime) {
             return false;
         }
     };
-    
+
     final BiMap<String, IKey> keys = HashBiMap.create();
-    
+
     /**
-     * Returns the {@link com.google.common.collect.BiMap<String, de.omnikryptec.util.settings.keys.IKey>} of this {@link de.omnikryptec.util.settings.keys.KeyContainer}
+     * Returns the {@link com.google.common.collect.BiMap<String,
+     * de.omnikryptec.util.settings.keys.IKey>} of this
+     * {@link de.omnikryptec.util.settings.keys.KeyContainer}
      *
-     * @return {@link com.google.common.collect.BiMap<String, de.omnikryptec.util.settings.keys.IKey>}
+     * @return {@link com.google.common.collect.BiMap<String,
+     *         de.omnikryptec.util.settings.keys.IKey>}
      */
     BiMap<String, IKey> getIKeysBiMap() {
         return keys;
     }
-    
+
     /**
-     * Returns all {@link de.omnikryptec.util.settings.keys.IKey}s of this {@link de.omnikryptec.util.settings.keys.KeyContainer}
+     * Returns all {@link de.omnikryptec.util.settings.keys.IKey}s of this
+     * {@link de.omnikryptec.util.settings.keys.KeyContainer}
      *
      * @return {@link de.omnikryptec.util.settings.keys.IKey}s
      */
     public Set<IKey> getIKeys() {
         return keys.values();
     }
-    
+
     /**
-     * Sets the {@link de.omnikryptec.util.settings.keys.IKey}s of this {@link de.omnikryptec.util.settings.keys.KeyContainer}
+     * Sets the {@link de.omnikryptec.util.settings.keys.IKey}s of this
+     * {@link de.omnikryptec.util.settings.keys.KeyContainer}
      *
      * @param keys {@link de.omnikryptec.util.settings.keys.IKey}s
      *
-     * @return A reference to this {@link de.omnikryptec.util.settings.keys.KeyContainer}
+     * @return A reference to this
+     *         {@link de.omnikryptec.util.settings.keys.KeyContainer}
      */
     public KeyContainer setIKeys(List<IKey> keys) {
         Util.ensureNonNull(keys);
@@ -81,119 +89,134 @@ public class KeyContainer {
         keys.forEach(this::addIKey);
         return this;
     }
-    
+
     /**
-     * Adds a {@link de.omnikryptec.util.settings.keys.IKey} to this {@link de.omnikryptec.util.settings.keys.KeyContainer}
+     * Adds a {@link de.omnikryptec.util.settings.keys.IKey} to this
+     * {@link de.omnikryptec.util.settings.keys.KeyContainer}
      *
      * @param key {@link de.omnikryptec.util.settings.keys.IKey} to be added
      *
-     * @return A reference to this {@link de.omnikryptec.util.settings.keys.KeyContainer}
+     * @return A reference to this
+     *         {@link de.omnikryptec.util.settings.keys.KeyContainer}
      */
     public KeyContainer addIKey(IKey key) {
         Util.ensureNonNull(key);
         this.keys.put(key.getName(), key);
         return this;
     }
-    
+
     /**
-     * Adds some {@link de.omnikryptec.util.settings.keys.IKey}s to this {@link de.omnikryptec.util.settings.keys.KeyContainer}
+     * Adds some {@link de.omnikryptec.util.settings.keys.IKey}s to this
+     * {@link de.omnikryptec.util.settings.keys.KeyContainer}
      *
      * @param keys {@link de.omnikryptec.util.settings.keys.IKey}s to be added
      *
-     * @return A reference to this {@link de.omnikryptec.util.settings.keys.KeyContainer}
+     * @return A reference to this
+     *         {@link de.omnikryptec.util.settings.keys.KeyContainer}
      */
     public KeyContainer addIKeys(IKey... keys) {
         return addIKeys(Arrays.asList(keys));
     }
-    
+
     /**
-     * Adds some {@link de.omnikryptec.util.settings.keys.IKey}s to this {@link de.omnikryptec.util.settings.keys.KeyContainer}
+     * Adds some {@link de.omnikryptec.util.settings.keys.IKey}s to this
+     * {@link de.omnikryptec.util.settings.keys.KeyContainer}
      *
      * @param keys {@link de.omnikryptec.util.settings.keys.IKey}s to be added
      *
-     * @return A reference to this {@link de.omnikryptec.util.settings.keys.KeyContainer}
+     * @return A reference to this
+     *         {@link de.omnikryptec.util.settings.keys.KeyContainer}
      */
     public KeyContainer addIKeys(Collection<IKey> keys) {
         Util.ensureNonNull(keys);
         keys.forEach(this::addIKey);
         return this;
     }
-    
+
     /**
-     * Removes a {@link de.omnikryptec.util.settings.keys.IKey} specified by its name
+     * Removes a {@link de.omnikryptec.util.settings.keys.IKey} specified by its
+     * name
      *
-     * @param name Name of the {@link de.omnikryptec.util.settings.keys.IKey} to get removed
+     * @param name Name of the {@link de.omnikryptec.util.settings.keys.IKey} to get
+     *             removed
      *
-     * @return A reference to this {@link de.omnikryptec.util.settings.keys.KeyContainer}
+     * @return A reference to this
+     *         {@link de.omnikryptec.util.settings.keys.KeyContainer}
      */
     public KeyContainer removeIKey(String name) {
         this.keys.remove(name);
         return this;
     }
-    
+
     /**
      * Removes a {@link de.omnikryptec.util.settings.keys.IKey}
      *
      * @param key {@link de.omnikryptec.util.settings.keys.IKey} to get removed
      *
-     * @return A reference to this {@link de.omnikryptec.util.settings.keys.KeyContainer}
+     * @return A reference to this
+     *         {@link de.omnikryptec.util.settings.keys.KeyContainer}
      */
     public KeyContainer removeIKey(IKey key) {
         Util.ensureNonNull(key);
         this.keys.remove(key.getName());
         return this;
     }
-    
-    //TODO Javadoc!
-    
+
+    // TODO Javadoc!
+
     public KeyContainer addKey(String name, int keyCode) {
         return addIKey(new Key(name, keyCode));
     }
-    
+
     public KeyContainer addKey(String name, int keyCode, boolean isKeyboardKey) {
         return addIKey(new Key(name, keyCode, isKeyboardKey));
     }
-    
-    //TODO Javadoc!
-    
+
+    // TODO Javadoc!
+
     public <T extends IKey> T getIKey(String name) {
         return getIKey(name, null);
     }
-    
+
     public <T extends IKey> T getIKey(String name, T defaultValue) {
         final IKey key = keys.get(name);
         return key == null ? defaultValue : (T) key;
     }
-    
+
     public Key getKey(String name) {
         return (Key) keys.get(name);
     }
-    
+
     public List<Key> getKeys() {
-        return keys.values().stream().filter((key) -> key instanceof Key).map((key) -> (Key) key).collect(Collectors.toList());
+        return keys.values().stream().filter((key) -> key instanceof Key).map((key) -> (Key) key)
+                .collect(Collectors.toList());
     }
-    
+
     public List<Key> getKeys(boolean isKeyboardKey) {
-        return keys.values().stream().filter((key) -> key instanceof Key).map((key) -> (Key) key).filter((key) -> key.isKeyboardKey() == isKeyboardKey).collect(Collectors.toList());
+        return keys.values().stream().filter((key) -> key instanceof Key).map((key) -> (Key) key)
+                .filter((key) -> key.isKeyboardKey() == isKeyboardKey).collect(Collectors.toList());
     }
-    
+
     public KeyGroup getKeyGroup(String name) {
         return (KeyGroup) keys.get(name);
     }
-    
+
     public List<KeyGroup> getKeyGroups() {
-        return keys.values().stream().filter((key) -> key instanceof KeyGroup).map((key) -> (KeyGroup) key).collect(Collectors.toList());
+        return keys.values().stream().filter((key) -> key instanceof KeyGroup).map((key) -> (KeyGroup) key)
+                .collect(Collectors.toList());
     }
-    
+
     /**
-     * Returns <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.KeyContainer} is empty
+     * Returns <tt>true</tt> if this
+     * {@link de.omnikryptec.util.settings.keys.KeyContainer} is empty
      *
-     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.KeyContainer} is empty
+     * @return <tt>true</tt> if this
+     *         {@link de.omnikryptec.util.settings.keys.KeyContainer} is empty
      */
     public boolean isEmpty() {
         return keys.isEmpty();
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -205,15 +228,15 @@ public class KeyContainer {
         final KeyContainer that = (KeyContainer) o;
         return Objects.equals(keys, that.keys);
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(keys);
     }
-    
+
     @Override
     public String toString() {
         return "KeyContainer{" + "keys=" + keys + '}';
     }
-    
+
 }

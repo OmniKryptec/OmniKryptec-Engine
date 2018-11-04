@@ -20,23 +20,23 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class EventHandler implements IEventListener {
-    
+
     private Object handler;
     private Method m;
-    
+
     public EventHandler(Object handler, Method m) {
         this.handler = handler;
         this.m = m;
     }
-    
+
     public Object getHandler() {
         return handler;
     }
-    
+
     public Method getMethod() {
         return m;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (obj == this) {
@@ -50,7 +50,7 @@ public class EventHandler implements IEventListener {
         }
         return false;
     }
-    
+
     @Override
     public void invoke(Event ev) {
         // TODO make this faster (ASM/bytecode manipulation) because this is slow af
@@ -60,5 +60,5 @@ public class EventHandler implements IEventListener {
             e.printStackTrace();
         }
     }
-    
+
 }

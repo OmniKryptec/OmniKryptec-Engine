@@ -31,7 +31,7 @@ public abstract class Window<T extends WindowInfo<?>> {
     private int width, height, fwidth, fheight;
     private boolean isfullscreen = false;
     private boolean active = false;
-    
+
     protected Window(T info) {
         Util.ensureNonNull(info, "Window info must not be null!");
         this.width = info.getWidth();
@@ -45,7 +45,8 @@ public abstract class Window<T extends WindowInfo<?>> {
             height = vidMode.height();
             isfullscreen = true;
         }
-        windowId = GLFW.glfwCreateWindow(width, height, info.getName(), info.isFullscreen() ? GLFW.glfwGetPrimaryMonitor() : 0, 0);
+        windowId = GLFW.glfwCreateWindow(width, height, info.getName(),
+                info.isFullscreen() ? GLFW.glfwGetPrimaryMonitor() : 0, 0);
         if (windowId == 0) {
             throw new RuntimeException("Failed to create window");
         }
@@ -63,15 +64,15 @@ public abstract class Window<T extends WindowInfo<?>> {
         fwidth = framebufferWidth.get();
         fheight = framebufferHeight.get();
     }
-    
+
     protected abstract void setAdditionalGlfwWindowHints(T info);
-    
+
     protected abstract void swap();
-    
+
     public long getWindowID() {
         return windowId;
     }
-    
+
     public void setVisible(boolean b) {
         if (b) {
             GLFW.glfwShowWindow(windowId);
@@ -79,53 +80,53 @@ public abstract class Window<T extends WindowInfo<?>> {
             GLFW.glfwHideWindow(windowId);
         }
     }
-    
+
     public void dispose() {
         GLFW.glfwDestroyWindow(windowId);
     }
-    
+
     public void swapBuffers() {
         active = GLFW.glfwGetWindowAttrib(windowId, GLFW.GLFW_FOCUSED) == GLFW.GLFW_TRUE;
         resized = false;
         swap();
     }
-    
+
     public boolean shouldBeFullscreen() {
         return isfullscreen;
     }
-    
+
     public boolean wasResized() {
         return resized;
     }
-    
+
     public boolean isActive() {
         return active;
     }
-    
+
     public boolean isCloseRequested() {
         return GLFW.glfwWindowShouldClose(windowId);
     }
-    
+
     public int getWidth() {
         return width;
     }
-    
+
     public int getHeight() {
         return height;
     }
-    
+
     public int getBufferWidth() {
         return fwidth;
     }
-    
+
     public int getBufferHeight() {
         return fheight;
     }
-    
+
     protected GLFWFramebufferSizeCallback getDisplaySizeCallback() {
         return framebufferSizeCallback;
     }
-    
+
     protected void onResize(int w, int h) {
         width = w;
         height = h;

@@ -26,34 +26,34 @@ public abstract class AbstractEngineLoop implements IEngineLoop {
 
     @Override
     public void init(EngineLoader loader) {
-	this.window = loader.getWindow();
+        this.window = loader.getWindow();
     }
 
     @Override
     public void stopLoop() {
-	shouldStop = true;
+        shouldStop = true;
     }
 
     public boolean shouldStop() {
-	return shouldStop || (window == null ? false : window.isCloseRequested());
+        return shouldStop || (window == null ? false : window.isCloseRequested());
     }
 
     @Override
     public boolean isRunning() {
-	return running;
+        return running;
     }
 
     @Override
     public void startLoop() {
-	shouldStop = false;
-	running = true;
-	try {
-	    while (!shouldStop()) {
+        shouldStop = false;
+        running = true;
+        try {
+            while (!shouldStop()) {
 
-	    }
-	} finally {
-	    running = false;
-	}
+            }
+        } finally {
+            running = false;
+        }
     }
 
 }

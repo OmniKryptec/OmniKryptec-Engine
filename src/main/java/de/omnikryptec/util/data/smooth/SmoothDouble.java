@@ -20,63 +20,63 @@ import de.omnikryptec.core.Updateable;
 import de.omnikryptec.util.updater.Time;
 
 public class SmoothDouble implements Updateable {
-    
+
     private double agility;
     private double target;
     private double actual;
-    
+
     public SmoothDouble(double initialValue, double agility) {
         this.target = initialValue;
         this.actual = initialValue;
         this.agility = agility;
     }
-    
+
     @Override
     public void update(Time time) {
         actual += (target - actual) * time.delta * agility;
     }
-    
+
     public void instantIncrease(double increase) {
         this.actual += increase;
         this.target = actual;
     }
-    
+
     public double get() {
         return actual;
     }
-    
+
     public double getTarget() {
         return target;
     }
-    
+
     public void setTarget(double target) {
         this.target = target;
     }
-    
+
     public void increaseTarget(double deltaTarget) {
         this.target += deltaTarget;
     }
-    
+
     public void setValue(double f) {
         actual = f;
     }
-    
+
     public double getAgility() {
         return agility;
     }
-    
+
     public void setAgility(double a) {
         this.agility = a;
     }
-    
+
     public void setValueAndTarget(double f) {
         setTarget(f);
         setValue(f);
     }
-    
+
     @Override
     public String toString() {
         return "Value: " + actual + " Target: " + target + " Agility: " + agility;
     }
-    
+
 }

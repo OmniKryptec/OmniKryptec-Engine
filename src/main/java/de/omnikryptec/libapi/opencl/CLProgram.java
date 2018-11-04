@@ -24,28 +24,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CLProgram {
-    
+
     private static List<CLProgram> programs = new ArrayList<>();
-    
+
     private long id;
-    
+
     public CLProgram(CLContext context, CharSequence source) {
         id = CL10.clCreateProgramWithSource(context.getID(), source, OpenCL.tmpBuffer);
         if (OpenCL.tmpBuffer.get(0) != CL10.CL_SUCCESS) {
             System.err.println("OpenCL Prog Err: " + OpenCL.searchConstants(OpenCL.tmpBuffer.get(0)));
         }
     }
-    
+
     public static void cleanup() {
         for (CLProgram p : programs) {
             CL10.clReleaseProgram(p.getID());
         }
     }
-    
+
     public long getID() {
         return id;
     }
-    
+
     public CLProgram build(CLDevice device, int errorsize) {
         int error = CL10.clBuildProgram(id, device.getID(), "", null, 0);
         if (error != CL10.CL_SUCCESS) {

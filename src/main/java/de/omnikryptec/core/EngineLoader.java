@@ -41,15 +41,15 @@ import javax.annotation.Nonnull;
  * @author pcfreak9000
  */
 public abstract class EngineLoader {
-    
+
     private static boolean debug = (boolean) LoaderSetting.DEBUG.getDefault();
     private IEngineLoop engineLoop;
     private Window<?> window;
     private boolean booted;
-    
+
     public EngineLoader() {
     }
-    
+
     /**
      * Uses the settings to set library options. This method is only effective if no
      * library functions have been called yet.<br>
@@ -73,13 +73,13 @@ public abstract class EngineLoader {
         Configuration.DEBUG_LOADER.set(debug);
         Configuration.DEBUG_FUNCTIONS.set(debug && functionDebug);
     }
-    
+
     public static void initialize() {
         // Initialize everything required
         LibAPIManager.init();
         // Audio, etc....
     }
-    
+
     /**
      * The state of the debug-flag, set by {@link #setConfiguration(Settings)}
      *
@@ -90,7 +90,7 @@ public abstract class EngineLoader {
     public static boolean isDebug() {
         return debug;
     }
-    
+
     @Nonnull
     public EngineLoader boot() {
         if (booted) {
@@ -121,7 +121,7 @@ public abstract class EngineLoader {
         }
         return this;
     }
-    
+
     public void shutdown() {
         onShutdown();
         if (engineLoop != null) {
@@ -131,18 +131,18 @@ public abstract class EngineLoader {
         window.dispose();
         LibAPIManager.shutdown();
     }
-    
+
     public Window<?> getWindow() {
         if (!booted) {
             throw new IllegalStateException("Window is not created yet");
         }
         return window;
     }
-    
+
     public IEngineLoop getEngineLoop() {
         return engineLoop;
     }
-    
+
     public void switchGameloop(IEngineLoop newloop) {
         Util.ensureNonNull(newloop);
         boolean running = engineLoop.isRunning();
@@ -154,22 +154,22 @@ public abstract class EngineLoader {
             engineLoop.startLoop();
         }
     }
-    
+
     public boolean isBooted() {
         return booted;
     }
-    
+
     protected void config(Settings<LoaderSetting> settings) {
     }
-    
+
     protected abstract void onContextCreationFinish();
-    
+
     protected void onShutdown() {
     }
-    
+
     protected void onInitialized() {
     }
-    
+
     public enum LoaderSetting implements Defaultable {
         /**
          * Enables debug mode of the Omnikryptec-Engine and LWJGL. This might do
@@ -234,19 +234,19 @@ public abstract class EngineLoader {
          * @see #START_ENGINE_LOOP_AFTER_INIT
          */
         ENGINE_LOOP(new DefaultEngineLoop());
-        
+
         private final Object defaultSetting;
-        
+
         LoaderSetting(Object def) {
             this.defaultSetting = def;
         }
-        
+
         @Override
         public Object getDefault() {
             return defaultSetting;
         }
     }
-    
+
     /**
      * Will only be used in non-static cases of {@link EngineLoader}. Defines when
      * to show the {@link Window}.
@@ -268,5 +268,5 @@ public abstract class EngineLoader {
          */
         NEVER
     }
-    
+
 }

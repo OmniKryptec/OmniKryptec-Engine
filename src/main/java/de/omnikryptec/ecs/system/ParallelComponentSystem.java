@@ -26,30 +26,30 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 
 public abstract class ParallelComponentSystem extends ComponentSystem implements IndividualUpdater {
-    
+
     private ExecutorService executorService;
     private int size;
     private int activationSize;
-    
+
     public ParallelComponentSystem(BitSet required, int threads, int activationSize) {
         super(required);
         this.size = threads;
         this.activationSize = activationSize;
         this.executorService = ExecutorsUtil.newFixedThreadPool(threads);
     }
-    
+
     protected final ExecutorService getExecutor() {
         return executorService;
     }
-    
+
     public int numThreads() {
         return size;
     }
-    
+
     public int getActivationSize() {
         return activationSize;
     }
-    
+
     @Override
     public final void update(IECSManager entityManager, Time time) {
         if (entities.size() > 0) {
@@ -62,7 +62,7 @@ public abstract class ParallelComponentSystem extends ComponentSystem implements
             }
         }
     }
-    
+
     public abstract void updateThreaded(IECSManager entityManager, List<Entity> entities, Time time);
-    
+
 }

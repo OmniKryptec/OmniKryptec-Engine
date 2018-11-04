@@ -28,7 +28,7 @@ import java.util.BitSet;
  * @see IECSManager
  */
 public class Family {
-    
+
     /**
      * Creates a new BitSet with all indices set to true if a corresponding
      * {@link ComponentType} is required.
@@ -45,17 +45,17 @@ public class Family {
         }
         return bitset;
     }
-    
+
     /**
      * Checks if all bits that are set to true in the second argument, are also true
      * in the first argument. If a bit in the second argument is zero, it will be
      * ignored.
      *
-     * @param input the bitset that is to be checked
+     * @param input        the bitset that is to be checked
      * @param trueRequired the filter
      *
      * @return true if all bits that are set to true in trueRequired are also true
-     * in input.
+     *         in input.
      */
     public static boolean containsTrueBits(@Nonnull BitSet input, @Nonnull BitSet trueRequired) {
         int i = trueRequired.nextSetBit(0);
@@ -67,5 +67,5 @@ public class Family {
         }
         return true;
     }
-    
+
 }
