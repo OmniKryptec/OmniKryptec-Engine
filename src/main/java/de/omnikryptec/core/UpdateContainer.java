@@ -34,7 +34,7 @@ public class UpdateContainer implements Updateable {
     @Override
     public void preUpdate(Time time) {
 	for (Updateable updt : updateables.get(UpdateType.PRE)) {
-	    updt.update(time);
+	    updt.preUpdate(time);
 	}
     }
 
@@ -48,7 +48,7 @@ public class UpdateContainer implements Updateable {
     @Override
     public void postUpdate(Time time) {
 	for (Updateable updt : updateables.get(UpdateType.POST)) {
-	    updt.update(time);
+	    updt.postUpdate(time);
 	}
     }
 
