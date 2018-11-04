@@ -1,61 +1,47 @@
 package de.omnikryptec.core;
 
-import com.google.common.collect.Multimap;
-import com.google.common.collect.MultimapBuilder;
+import java.util.ArrayList;
+import java.util.List;
+
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.updater.Time;
 
 public class UpdateContainer implements Updateable {
-    
-    public enum UpdateType {
-        PRE,
-        MAIN,
-        POST
-    }
-    
-    private final Multimap<UpdateType, Updateable> updateables;
-    
+
+    private final List<Updateable> updateables;
+
     public UpdateContainer() {
-        updateables = MultimapBuilder.enumKeys(UpdateType.class).arrayListValues().build();
+        updateables = new ArrayList<>();
     }
-    
-    public Multimap<UpdateType, Updateable> getUpdateables() {
-        return updateables;
-    }
-    
-    public UpdateContainer addUpdateable(Updateable updateable, UpdateType... updateTypes) {
+
+    public UpdateContainer addUpdateable(Updateable updateable) {
         Util.ensureNonNull(updateable);
         if (updateable == this) {
             throw new IllegalArgumentException("Can't add this");
         }
-        if (updateTypes == null || updateTypes.length == 0) {
-            updateTypes = UpdateType.values();
-        }
-        for (UpdateType updateType : updateTypes) {
-            updateables.put(updateType, updateable);
-        }
+        updateables.add(updateable);
         return this;
     }
-    
+
     @Override
     public void preUpdate(Time time) {
-        for (Updateable updateable : updateables.get(UpdateType.PRE)) {
+        for (Updateable updateable : updateables) {
             updateable.preUpdate(time);
         }
     }
-    
+
     @Override
     public void update(Time time) {
-        for (Updateable updateable : updateables.get(UpdateType.MAIN)) {
+        for (Updateable updateable : updateables) {
             updateable.update(time);
         }
     }
-    
+
     @Override
     public void postUpdate(Time time) {
-        for (Updateable updateable : updateables.get(UpdateType.POST)) {
+        for (Updateable updateable : updateables) {
             updateable.postUpdate(time);
         }
     }
-    
+
 }
