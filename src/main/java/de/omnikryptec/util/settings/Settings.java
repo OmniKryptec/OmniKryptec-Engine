@@ -113,6 +113,10 @@ public class Settings<K> implements Copyable {
      * @return A reference to this {@link de.omnikryptec.util.settings.Settings}
      */
     public Settings<K> set(K key, Object value) {
+        Util.ensureNonNull(key);
+        if (value == null) {
+            return remove(key);
+        }
         settings.put(key, value);
         return this;
     }
@@ -126,7 +130,9 @@ public class Settings<K> implements Copyable {
      */
     public Settings<K> setAll(Map<K, Object> settings) {
         Util.ensureNonNull(settings);
-        this.settings.putAll(settings);
+        for (Map.Entry<K, Object> entry : settings.entrySet()) {
+            set(entry.getKey(), entry.getValue());
+        }
         return this;
     }
     
