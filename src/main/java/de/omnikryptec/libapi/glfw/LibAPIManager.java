@@ -69,12 +69,7 @@ public final class LibAPIManager {
     
     @Deprecated
     public static void registerResourceShutdownHooks(Runnable... runnables) {
-        shutdownHooks.addAll(Arrays.asList(runnables).stream().map((runnable) -> new ToughRunnable() {
-            @Override
-            public void run() throws Exception {
-                runnable.run();
-            }
-        }).collect(Collectors.toList()));
+        shutdownHooks.addAll(Arrays.asList(runnables).stream().map((runnable) -> (ToughRunnable) () -> runnable.run()).collect(Collectors.toList()));
     }
     
     public static boolean isInitialized() {
