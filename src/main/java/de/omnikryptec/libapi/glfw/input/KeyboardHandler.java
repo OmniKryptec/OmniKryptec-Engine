@@ -31,11 +31,11 @@ public class KeyboardHandler implements InputHandler {
     private final KeyboardHandler ME = this;
     private final long window;
     private final GLFWKeyCallback keyCallback;
+    private final AtomicReference<String> inputString = new AtomicReference<>("");
     // Configurable
     private boolean appendToString = false;
     // Temp
     private byte[] keysLastTime = null;
-    private final AtomicReference<String> inputString = new AtomicReference<>("");
     
     public KeyboardHandler(long window) {
         this.window = window;

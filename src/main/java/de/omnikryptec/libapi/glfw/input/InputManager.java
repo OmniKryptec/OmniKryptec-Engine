@@ -31,10 +31,8 @@ public class InputManager {
     private final AtomicReference<Double> currentTime = new AtomicReference<>(0.0);
     // Keyboard part
     private final KeyboardHandler keyboardHandler;
-    private boolean longButtonPressEnabled = false;
     // Mouse part
     private final MouseHandler mouseHandler;
-    private CursorType cursorType = CursorType.DISABLED;
     // Mouse delta part
     private final Vector2d mousePositionLastTime = new Vector2d(0.0, 0.0);
     private final Vector2d mouseScrollOffsetLastTime = new Vector2d(0.0, 0.0);
@@ -50,6 +48,8 @@ public class InputManager {
      * w = Mouse Scroll Y Delta
      */
     private final Vector4d mouseDelta = new Vector4d(0.0, 0.0, 0.0, 0.0);
+    private boolean longButtonPressEnabled = false;
+    private CursorType cursorType = CursorType.DISABLED;
     
     public InputManager(long window) {
         this(window, new KeyboardHandler(window), new MouseHandler(window));
