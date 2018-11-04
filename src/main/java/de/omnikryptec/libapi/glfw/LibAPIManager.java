@@ -50,15 +50,15 @@ public final class LibAPIManager {
     }
 
     public static void shutdown() {
-        if (isInitialized()) {
-            for (Runnable r : shutdownHooks) {
-                try {
-                    r.run();
-                } catch (Exception e) {
-                    System.err.println("Exception in shutdown hook '" + r + "': " + e);
-                    e.printStackTrace();
-                }
+        for (Runnable r : shutdownHooks) {
+            try {
+                r.run();
+            } catch (Exception e) {
+                System.err.println("Exception in shutdown hook '" + r + "': " + e);
+                e.printStackTrace();
             }
+        }
+        if (isInitialized()) {
             GLFW.glfwTerminate();
             instance = null;
             System.out.println("Terminated LibAPI");
