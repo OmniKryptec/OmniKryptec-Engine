@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Settings<K> implements Copyable {
 
-    private final Map<K, Object> settings;
+    final Map<K, Object> settings;
 
     public Settings() {
         this(new ConcurrentHashMap<>());
