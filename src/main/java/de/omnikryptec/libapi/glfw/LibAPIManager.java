@@ -19,13 +19,15 @@ package de.omnikryptec.libapi.glfw;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
+import de.codemakers.base.util.tough.ToughRunnable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
 public final class LibAPIManager {
 
-    private static final Collection<Runnable> shutdownHooks = new ArrayList<>();
+    private static final Collection<ToughRunnable> shutdownHooks = new ArrayList<>();
     private static LibAPIManager instance;
 
     static {
@@ -50,7 +52,7 @@ public final class LibAPIManager {
     }
 
     public static void shutdown() {
-        for (Runnable r : shutdownHooks) {
+        for (ToughRunnable r : shutdownHooks) {
             try {
                 r.run();
             } catch (Exception e) {
@@ -65,7 +67,7 @@ public final class LibAPIManager {
         }
     }
 
-    public static void registerResourceShutdownHooks(Runnable... runnables) {
+    public static void registerResourceShutdownHooks(ToughRunnable... runnables) {
         shutdownHooks.addAll(Arrays.asList(runnables));
     }
 
