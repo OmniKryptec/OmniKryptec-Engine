@@ -161,7 +161,7 @@ public class Settings<K> implements Copyable {
     }
 
     @Override
-    public Copyable copy() {
+    public Settings copy() {
         return new Settings<K>().setAll(settings);
     }
 
