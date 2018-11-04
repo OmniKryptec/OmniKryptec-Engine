@@ -17,6 +17,7 @@
 package de.omnikryptec.util.settings;
 
 import java.awt.*;
+import java.util.Arrays;
 
 public class GameSettingsTest {
     
@@ -24,11 +25,17 @@ public class GameSettingsTest {
     
     public static final void main(String[] args) throws Exception {
         final GameSettings gameSettings_1 = new GameSettings();
+        gameSettings_1.set(235, null);
         System.out.println("gameSettings_1=" + gameSettings_1);
         gameSettings_1.set(WINDOW_SIZE, new Dimension(200, 300));
         System.out.println("gameSettings_1=" + gameSettings_1);
         final Dimension window_size = gameSettings_1.get(WINDOW_SIZE);
         System.out.println("window_size=" + window_size);
         System.out.println(gameSettings_1.get(WINDOW_SIZE, Dimension.class));
+        final int[] window_size_ = gameSettings_1.update(WINDOW_SIZE, (dimension) -> new int[] {dimension.width, dimension.height}, Dimension.class);
+        System.out.println("window_size_=" + Arrays.toString(window_size_));
+        System.out.println("gameSettings_1=" + gameSettings_1);
+        gameSettings_1.update(WINDOW_SIZE, (dimension) -> null);
+        System.out.println("gameSettings_1=" + gameSettings_1);
     }
 }

@@ -18,6 +18,7 @@ package de.omnikryptec.util.settings;
 
 import de.codemakers.base.util.Require;
 import de.codemakers.base.util.interfaces.Copyable;
+import de.codemakers.base.util.tough.ToughFunction;
 import de.omnikryptec.util.Util;
 
 import java.util.List;
@@ -59,12 +60,12 @@ public class Settings<K> implements Copyable {
      * Returns the value for the key and casts it to the clazz
      *
      * @param key {@link K} Key
-     * @param clazz Class of the Value
+     * @param clazz Class of the value
      * @param <T> Type of the value
      *
      * @return Value for the key
      */
-    public <T> T get(K key, T clazz) {
+    public <T> T get(K key, Class<T> clazz) {
         Object object = settings.get(key);
         if (object == null) {
             if (key instanceof Defaultable) {
@@ -93,12 +94,12 @@ public class Settings<K> implements Copyable {
      *
      * @param key {@link K} Key
      * @param defaultValue Default value
-     * @param clazz Class of the Value
+     * @param clazz Class of the value
      * @param <T> Type of the value
      *
      * @return Value for the key (or the default value if null)
      */
-    public <T> T getOrDefault(K key, T defaultValue, T clazz) {
+    public <T> T getOrDefault(K key, T defaultValue, Class<T> clazz) {
         final T t = get(key);
         return t == null ? defaultValue : t;
     }
@@ -127,6 +128,44 @@ public class Settings<K> implements Copyable {
         Util.ensureNonNull(settings);
         this.settings.putAll(settings);
         return this;
+    }
+    
+    /**
+     * Alters an value in this {@link de.omnikryptec.util.settings.Settings}
+     *
+     * @param key Key to alter
+     * @param function Function which alters the value
+     * @param <R> Type of the altered value
+     * @param <T> Type of the current value
+     *
+     * @return Altered value
+     */
+    public <R, T> R update(K key, ToughFunction<T, R> function) {
+        Util.ensureNonNull(key);
+        final T value = get(key);
+        final R result = function.applyWithoutException(value);
+        set(key, result);
+        return result;
+    }
+    
+    
+    /**
+     * Alters an value in this {@link de.omnikryptec.util.settings.Settings}
+     *
+     * @param key Key to alter
+     * @param function Function which alters the value
+     * @param clazz Class of the value
+     * @param <R> Type of the altered value
+     * @param <T> Type of the current value
+     *
+     * @return Altered value
+     */
+    public <R, T> R update(K key, ToughFunction<T, R> function, Class<T> clazz) {
+        Util.ensureNonNull(key);
+        final T value = get(key, clazz);
+        final R result = function.applyWithoutException(value);
+        set(key, result);
+        return result;
     }
     
     /**
