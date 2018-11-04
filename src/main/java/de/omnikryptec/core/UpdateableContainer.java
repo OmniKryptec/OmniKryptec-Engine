@@ -25,18 +25,18 @@ public class UpdateableContainer implements Updateable {
         }
     }
 
-    public void removeUpdateable(Updateable...updateables) {
+    public void removeUpdateable(Updateable... updateables) {
         Util.ensureNonNull(updateables);
         for (Updateable updateable : updateables) {
             Util.ensureNonNull(updateable);
             this.updateables.remove(updateable);
         }
     }
-    
+
     public void clear() {
         updateables.clear();
     }
-    
+
     @Override
     public void preUpdate(Time time) {
         for (Updateable updateable : updateables) {
