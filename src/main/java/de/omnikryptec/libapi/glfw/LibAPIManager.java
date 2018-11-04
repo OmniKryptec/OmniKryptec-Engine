@@ -16,25 +16,27 @@
 
 package de.omnikryptec.libapi.glfw;
 
+import de.codemakers.base.util.tough.ToughRunnable;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public final class LibAPIManager {
-
-    private static final Collection<Runnable> shutdownHooks = new ArrayList<>();
+    
+    private static final Collection<ToughRunnable> shutdownHooks = new ArrayList<>();
     private static LibAPIManager instance;
-
+    
     static {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown(), "LibAPI-Shutdown-Hooks"));
     }
-
+    
     private LibAPIManager() {
     }
-
+    
     public static void init() {
         if (isInitialized()) {
             throw new IllegalStateException("Already initialized");
@@ -48,39 +50,45 @@ public final class LibAPIManager {
             throw new RuntimeException("Error while initializing LibAPI");
         }
     }
-
+    
     public static void shutdown() {
-        for (Runnable r : shutdownHooks) {
-            try {
-                r.run();
-            } catch (Exception e) {
-                System.err.println("Exception in shutdown hook '" + r + "': " + e);
-                e.printStackTrace();
-            }
-        }
+        shutdownHooks.forEach((toughRunnable) -> toughRunnable.run((throwable) -> {
+            System.err.println(String.format("Exception in LibAPI ShutdownHook \"%s\": %s", toughRunnable, throwable));
+            throwable.printStackTrace();
+        }));
         if (isInitialized()) {
             GLFW.glfwTerminate();
             instance = null;
             System.out.println("Terminated LibAPI");
         }
     }
-
-    public static void registerResourceShutdownHooks(Runnable... runnables) {
+    
+    public static void registerResourceShutdownHooks(ToughRunnable... runnables) {
         shutdownHooks.addAll(Arrays.asList(runnables));
     }
-
+    
+    @Deprecated
+    public static void registerResourceShutdownHooks(Runnable... runnables) {
+        shutdownHooks.addAll(Arrays.asList(runnables).stream().map((runnable) -> new ToughRunnable() {
+            @Override
+            public void run() throws Exception {
+                runnable.run();
+            }
+        }).collect(Collectors.toList()));
+    }
+    
     public static boolean isInitialized() {
         return instance != null;
     }
-
+    
     public static LibAPIManager active() {
         return instance;
     }
-
+    
     public void pollEvents() {
         GLFW.glfwPollEvents();
     }
-
+    
     /**
      * Returns the value of the GLFW timer. The timer measures time elapsed since
      * GLFW was initialized.
@@ -94,5 +102,5 @@ public final class LibAPIManager {
     public double getTime() {
         return GLFW.glfwGetTime();
     }
-
+    
 }
