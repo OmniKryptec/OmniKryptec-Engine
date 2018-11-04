@@ -23,7 +23,6 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 public final class LibAPIManager {
     
@@ -65,11 +64,6 @@ public final class LibAPIManager {
     
     public static void registerResourceShutdownHooks(ToughRunnable... runnables) {
         shutdownHooks.addAll(Arrays.asList(runnables));
-    }
-    
-    @Deprecated
-    public static void registerResourceShutdownHooks(Runnable... runnables) {
-        shutdownHooks.addAll(Arrays.asList(runnables).stream().map((runnable) -> (ToughRunnable) () -> runnable.run()).collect(Collectors.toList()));
     }
     
     public static boolean isInitialized() {
