@@ -19,6 +19,7 @@ package de.omnikryptec.util.settings;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 public class GameSettings extends Settings<Integer> {
     
     public GameSettings() {
