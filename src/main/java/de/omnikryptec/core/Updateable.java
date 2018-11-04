@@ -19,7 +19,13 @@ package de.omnikryptec.core;
 import de.omnikryptec.util.updater.Time;
 
 public interface Updateable {
-    
+
+    default void preUpdate(Time time) {
+    }
+
     void update(Time time);
-    
+
+    default void postUpdate(Time time) {
+    }
+
 }
