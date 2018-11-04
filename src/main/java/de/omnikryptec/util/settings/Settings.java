@@ -154,7 +154,6 @@ public class Settings<K> implements Copyable {
         return result;
     }
     
-    
     /**
      * Alters an value in this {@link de.omnikryptec.util.settings.Settings}
      *
