@@ -20,7 +20,9 @@ import de.omnikryptec.libapi.glfw.LibAPIManager;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.KeySettings;
 import org.joml.Vector2d;
+import org.joml.Vector2dc;
 import org.joml.Vector4d;
+import org.joml.Vector4dc;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -165,12 +167,12 @@ public class InputManager {
         return mouseHandler.isButtonPressed(buttonCode); // || mouseHandler.isButtonRepeated(buttonCode); //TODO Can a mouse buttons state be "REPEATED"?
     }
     
-    public Vector2d getMousePosition() {
-        return new Vector2d(mouseHandler.getPosition());
+    public Vector2dc getMousePosition() {
+        return mouseHandler.getPosition();
     }
     
-    public Vector2d getMouseScrollOffset() {
-        return new Vector2d(mouseHandler.getScrollOffset());
+    public Vector2dc getMouseScrollOffset() {
+        return mouseHandler.getScrollOffset();
     }
     
     public boolean isMouseInsideWindow() {
@@ -206,16 +208,16 @@ public class InputManager {
         mouseScrollOffsetLastTime.y = mouseScrollOffset.y;
     }
     
-    public Vector2d getMousePositionDelta() {
-        return new Vector2d(mousePositionDelta);
+    public Vector2dc getMousePositionDelta() {
+        return mousePositionDelta;
     }
     
-    public Vector2d getMouseScrollOffsetDelta() {
-        return new Vector2d(mouseScrollOffsetDelta);
+    public Vector2dc getMouseScrollOffsetDelta() {
+        return mouseScrollOffsetDelta;
     }
     
-    public Vector4d getMouseDelta() {
-        return new Vector4d(mouseDelta);
+    public Vector4dc getMouseDelta() {
+        return mouseDelta;
     }
     
 }

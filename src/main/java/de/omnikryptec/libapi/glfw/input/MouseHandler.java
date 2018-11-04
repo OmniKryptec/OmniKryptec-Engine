@@ -18,6 +18,7 @@ package de.omnikryptec.libapi.glfw.input;
 
 import de.omnikryptec.util.settings.KeySettings;
 import org.joml.Vector2d;
+import org.joml.Vector2dc;
 import org.lwjgl.glfw.*;
 
 import java.util.Arrays;
@@ -150,11 +151,11 @@ public class MouseHandler implements InputHandler {
         return buttons[buttonCode] == KeySettings.KEY_REPEATED;
     }
     
-    public synchronized Vector2d getPosition() {
+    public synchronized Vector2dc getPosition() {
         return position;
     }
     
-    public synchronized Vector2d getScrollOffset() {
+    public synchronized Vector2dc getScrollOffset() {
         return scrollOffset;
     }
     
