@@ -18,17 +18,19 @@ public class UpdateContainer implements Updateable {
 	updateables = MultimapBuilder.enumKeys(UpdateType.class).arrayListValues().build();
     }
 
-    public void addUpdateable(Updateable updateable, UpdateType ...types) {
-	Util.ensureNonNull(types);
+    public void addUpdateable(Updateable updateable, UpdateType... types) {
 	Util.ensureNonNull(updateable);
-	if(updateable == this) {
+	if (updateable == this) {
 	    throw new IllegalArgumentException("Can't add this");
 	}
-	for(UpdateType t : types) {
+	if (types == null || types.length == 0) {
+	    types = UpdateType.values();
+	}
+	for (UpdateType t : types) {
 	    updateables.put(t, updateable);
 	}
     }
-    
+
     @Override
     public void preUpdate(Time time) {
 	for (Updateable updt : updateables.get(UpdateType.PRE)) {
