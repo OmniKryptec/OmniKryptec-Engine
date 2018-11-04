@@ -16,6 +16,7 @@
 
 package de.omnikryptec.util.settings;
 
+import java.util.List;
 import java.util.Map;
 
 public class GameSettings extends Settings<Integer> {
@@ -28,8 +29,44 @@ public class GameSettings extends Settings<Integer> {
     }
     
     @Override
+    public GameSettings set(Integer key, Object value) {
+        super.set(key, value);
+        return this;
+    }
+    
+    @Override
+    public GameSettings setAll(Map<Integer, Object> settings) {
+        super.setAll(settings);
+        return this;
+    }
+    
+    @Override
+    public GameSettings remove(Integer key) {
+        super.remove(key);
+        return this;
+    }
+    
+    @Override
+    public GameSettings removeAll(List<Integer> keys) {
+        super.removeAll(keys);
+        return this;
+    }
+    
+    @Override
+    public GameSettings remove(Integer key, Object value) {
+        super.remove(key, value);
+        return this;
+    }
+    
+    @Override
+    public GameSettings removeAll(Map<Integer, Object> settings) {
+        super.removeAll(settings);
+        return this;
+    }
+    
+    @Override
     public GameSettings copy() {
-        return (GameSettings) new GameSettings().setAll(settings);
+        return new GameSettings().setAll(settings);
     }
     
     @Override

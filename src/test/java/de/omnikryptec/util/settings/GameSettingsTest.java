@@ -30,6 +30,5 @@ public class GameSettingsTest {
         final Dimension window_size = gameSettings_1.get(WINDOW_SIZE);
         System.out.println("window_size=" + window_size);
         System.out.println(gameSettings_1.get(WINDOW_SIZE, Dimension.class));
-        
     }
 }

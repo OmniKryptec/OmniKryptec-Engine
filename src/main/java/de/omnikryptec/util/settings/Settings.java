@@ -20,6 +20,7 @@ import de.codemakers.base.util.Require;
 import de.codemakers.base.util.interfaces.Copyable;
 import de.omnikryptec.util.Util;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
@@ -143,9 +144,22 @@ public class Settings<K> implements Copyable {
     }
     
     /**
+     * Removes some keys and their values from this
+     * {@link de.omnikryptec.util.settings.Settings}
+     *
+     * @param keys Keys to get removed
+     *
+     * @return A reference to this {@link de.omnikryptec.util.settings.Settings}
+     */
+    public Settings<K> removeAll(List<K> keys) {
+        Util.ensureNonNull(settings);
+        keys.forEach(this::remove);
+        return this;
+    }
+    
+    /**
      * Removes a key and its value from this
-     * {@link de.omnikryptec.util.settings.Settings} if the value for the key
-     * matches the given value
+     * {@link de.omnikryptec.util.settings.Settings} if the current value for the key matches the given value
      *
      * @param key {@link K} Key of the {@link java.util.Map.Entry<K,
      * java.lang.Object>} to get removed
@@ -156,6 +170,20 @@ public class Settings<K> implements Copyable {
      */
     public Settings<K> remove(K key, Object value) {
         settings.remove(key, value);
+        return this;
+    }
+    
+    /**
+     * Removes some keys and their values from this
+     * {@link de.omnikryptec.util.settings.Settings} if the current value for they key matches the given value
+     *
+     * @param settings Keys and values to get removed
+     *
+     * @return A reference to this {@link de.omnikryptec.util.settings.Settings}
+     */
+    public Settings<K> removeAll(Map<K, Object> settings) {
+        Util.ensureNonNull(settings);
+        settings.forEach(this::remove);
         return this;
     }
     
