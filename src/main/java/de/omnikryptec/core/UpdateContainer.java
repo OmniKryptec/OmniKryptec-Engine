@@ -13,43 +13,48 @@ public class UpdateContainer implements Updateable {
         POST
     }
     
-    private Multimap<UpdateType, Updateable> updateables;
+    private final Multimap<UpdateType, Updateable> updateables;
     
     public UpdateContainer() {
         updateables = MultimapBuilder.enumKeys(UpdateType.class).arrayListValues().build();
     }
     
-    public void addUpdateable(Updateable updateable, UpdateType... types) {
+    public Multimap<UpdateType, Updateable> getUpdateables() {
+        return updateables;
+    }
+    
+    public UpdateContainer addUpdateable(Updateable updateable, UpdateType... updateTypes) {
         Util.ensureNonNull(updateable);
         if (updateable == this) {
             throw new IllegalArgumentException("Can't add this");
         }
-        if (types == null || types.length == 0) {
-            types = UpdateType.values();
+        if (updateTypes == null || updateTypes.length == 0) {
+            updateTypes = UpdateType.values();
         }
-        for (UpdateType t : types) {
-            updateables.put(t, updateable);
+        for (UpdateType updateType : updateTypes) {
+            updateables.put(updateType, updateable);
         }
+        return this;
     }
     
     @Override
     public void preUpdate(Time time) {
-        for (Updateable updt : updateables.get(UpdateType.PRE)) {
-            updt.preUpdate(time);
+        for (Updateable updateable : updateables.get(UpdateType.PRE)) {
+            updateable.preUpdate(time);
         }
     }
     
     @Override
     public void update(Time time) {
-        for (Updateable updt : updateables.get(UpdateType.MAIN)) {
-            updt.update(time);
+        for (Updateable updateable : updateables.get(UpdateType.MAIN)) {
+            updateable.update(time);
         }
     }
     
     @Override
     public void postUpdate(Time time) {
-        for (Updateable updt : updateables.get(UpdateType.POST)) {
-            updt.postUpdate(time);
+        for (Updateable updateable : updateables.get(UpdateType.POST)) {
+            updateable.postUpdate(time);
         }
     }
     
