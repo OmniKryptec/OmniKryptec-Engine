@@ -16,6 +16,7 @@
 
 package de.omnikryptec.core.test_p_1;
 
+import de.codemakers.base.util.ArrayUtil;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.updater.Time;
 
@@ -29,21 +30,33 @@ public class UpdateableContainer implements Updateable {
     
     public boolean addUpdateable(Updateable updateable) {
         Util.ensureNonNull(updateable);
+        if (updateable == this) {
+            throw new IllegalArgumentException("Can't add this");
+        }
         return updateables.add(updateable);
     }
     
     public boolean addUpdateable(Updateable... updateables) {
         Util.ensureNonNull(updateables);
+        if (ArrayUtil.arrayContains(updateables, this)) {
+            throw new IllegalArgumentException("Can't add this");
+        }
         return this.updateables.addAll(Arrays.asList(updateables));
     }
     
     public boolean removeUpdateable(Updateable updateable) {
         Util.ensureNonNull(updateable);
+        if (updateable == this) {
+            throw new IllegalArgumentException("Can't add this");
+        }
         return updateables.remove(updateable);
     }
     
     public boolean removeUpdateables(Updateable... updateables) {
         Util.ensureNonNull(updateables);
+        if (ArrayUtil.arrayContains(updateables, this)) {
+            throw new IllegalArgumentException("Can't add this");
+        }
         return this.updateables.removeAll(Arrays.asList(updateables));
     }
     
