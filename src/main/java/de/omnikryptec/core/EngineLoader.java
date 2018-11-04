@@ -242,8 +242,8 @@ public abstract class EngineLoader {
         }
 
         @Override
-        public Object getDefault() {
-            return defaultSetting;
+        public <T>T getDefault() {
+            return (T) defaultSetting;
         }
     }
 
