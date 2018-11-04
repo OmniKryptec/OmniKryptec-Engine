@@ -21,7 +21,7 @@ public interface Defaultable {
     default <T> T getDefault(Class<T> clazz) {
         return getDefault();
     }
-    
+
     <T> T getDefault();
 
 }
