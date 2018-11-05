@@ -34,7 +34,7 @@ import de.omnikryptec.util.updater.Time;
 public abstract class GroupParallelComponentSystem extends ParallelComponentSystem {
 
     public GroupParallelComponentSystem(BitSet required) {
-        this(required, ExecutorsUtil.getAvailableThreads(), ExecutorsUtil.getAvailableThreads() * 3);
+        this(required, ExecutorsUtil.AVAILABLE_PROCESSORS, ExecutorsUtil.AVAILABLE_PROCESSORS * 3);
     }
 
     public GroupParallelComponentSystem(BitSet required, int threads, int activationSize) {

@@ -31,7 +31,7 @@ import de.omnikryptec.util.updater.Time;
 public abstract class IndividualParallelComponentSystem extends ParallelComponentSystem {
 
     public IndividualParallelComponentSystem(BitSet required) {
-        this(required, ExecutorsUtil.getAvailableThreads(), ExecutorsUtil.getAvailableThreads() * 5);
+        this(required, ExecutorsUtil.AVAILABLE_PROCESSORS, ExecutorsUtil.AVAILABLE_PROCESSORS * 5);
     }
 
     public IndividualParallelComponentSystem(BitSet required, int threads, int activationSize) {

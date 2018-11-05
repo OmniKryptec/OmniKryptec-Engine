@@ -20,14 +20,15 @@ import java.util.Queue;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-//TODO this is weird a bit
 public class ExecutorsUtil {
 
-    private static final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
+    public static final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
     private static final Queue<ExecutorService> allExecutors = new ConcurrentLinkedQueue<>();
     private static final AtomicBoolean lock = new AtomicBoolean(false);
 
-    private static int maxThreads = Integer.MAX_VALUE; // Math.max(AVAILABLE_PROCESSORS - 2, 2);
+    public static ExecutorService newFixedThreadPool() {
+        return newFixedThreadPool(AVAILABLE_PROCESSORS);
+    }
 
     public static ExecutorService newFixedThreadPool(int nthreads) {
         ExecutorService service = Executors.newFixedThreadPool(nthreads);
@@ -92,11 +93,4 @@ public class ExecutorsUtil {
         }
     }
 
-    public static int getAvailableThreads() {
-        return Math.min(AVAILABLE_PROCESSORS, maxThreads);
-    }
-
-    public static void setMaxThreads(int i) {
-        maxThreads = i;
-    }
 }

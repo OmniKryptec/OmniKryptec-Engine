@@ -128,7 +128,7 @@ public class ResourceProcessor {
 
         private Processor(boolean override) {
             this.override = override;
-            this.executorService = ExecutorsUtil.newFixedThreadPool(ExecutorsUtil.getAvailableThreads());
+            this.executorService = ExecutorsUtil.newFixedThreadPool();
         }
 
         private void processStaged() {
