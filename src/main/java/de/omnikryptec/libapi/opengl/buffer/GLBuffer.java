@@ -16,8 +16,9 @@
 
 package de.omnikryptec.libapi.opengl.buffer;
 
-import de.omnikryptec.libapi.glfw.LibAPIManager;
 import org.lwjgl.opengl.GL15;
+
+import de.omnikryptec.libapi.LibAPIManager;
 
 import java.util.ArrayList;
 import java.util.List;

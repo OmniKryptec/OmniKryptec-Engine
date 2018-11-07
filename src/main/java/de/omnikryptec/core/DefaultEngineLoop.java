@@ -16,6 +16,44 @@
 
 package de.omnikryptec.core;
 
-public class DefaultEngineLoop extends AbstractEngineLoop {
+import de.omnikryptec.libapi.exposed.window.Window;
+
+public class DefaultEngineLoop implements IEngineLoop {
+
+    private boolean running = false;
+    private Window<?> window;
+    private boolean shouldStop = false;
+
+    @Override
+    public void init(EngineLoader loader) {
+        this.window = loader.getWindow();
+    }
+
+    @Override
+    public void stopLoop() {
+        shouldStop = true;
+    }
+
+    public boolean shouldStop() {
+        return shouldStop || (window == null ? false : window.isCloseRequested());
+    }
+
+    @Override
+    public boolean isRunning() {
+        return running;
+    }
+
+    @Override
+    public void startLoop() {
+        shouldStop = false;
+        running = true;
+        try {
+            while (!shouldStop()) {
+
+            }
+        } finally {
+            running = false;
+        }
+    }
 
 }

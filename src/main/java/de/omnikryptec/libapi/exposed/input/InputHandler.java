@@ -14,32 +14,20 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.libapi.glfw.input;
+package de.omnikryptec.libapi.exposed.input;
 
-import org.lwjgl.glfw.GLFW;
+import de.omnikryptec.util.settings.KeySettings;
 
-@Deprecated
-public enum InputState {
+public interface InputHandler {
 
-    NOTHING(-1), RELEASED(GLFW.GLFW_RELEASE), PRESSED(GLFW.GLFW_PRESS), REPEATED(GLFW.GLFW_REPEAT);
+    InputHandler init();
 
-    private final int state;
+    InputHandler preUpdate(double currentTime, KeySettings keySettings);
 
-    InputState(int state) {
-        this.state = state;
-    }
+    InputHandler update(double currentTime, KeySettings keySettings);
 
-    public static final InputState ofState(int state) {
-        for (InputState inputState : values()) {
-            if (inputState.state == state) {
-                return inputState;
-            }
-        }
-        return NOTHING;
-    }
+    InputHandler postUpdate(double currentTime, KeySettings keySettings);
 
-    public final int getState() {
-        return state;
-    }
+    InputHandler close();
 
 }

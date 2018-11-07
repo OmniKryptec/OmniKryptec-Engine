@@ -14,20 +14,31 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.libapi.glfw.input;
+package de.omnikryptec.libapi.exposed.input;
 
-import de.omnikryptec.util.settings.KeySettings;
+import org.lwjgl.glfw.GLFW;
 
-public interface InputHandler {
+public enum CursorType {
 
-    InputHandler init();
+    NORMAL(GLFW.GLFW_CURSOR_NORMAL), HIDDEN(GLFW.GLFW_CURSOR_HIDDEN), DISABLED(GLFW.GLFW_CURSOR_DISABLED);
 
-    InputHandler preUpdate(double currentTime, KeySettings keySettings);
+    private final int state;
 
-    InputHandler update(double currentTime, KeySettings keySettings);
+    CursorType(int state) {
+        this.state = state;
+    }
 
-    InputHandler postUpdate(double currentTime, KeySettings keySettings);
+    public static CursorType ofState(int state) {
+        for (CursorType cursorType : values()) {
+            if (cursorType.state == state) {
+                return cursorType;
+            }
+        }
+        return DISABLED;
+    }
 
-    InputHandler close();
+    public int getState() {
+        return state;
+    }
 
 }

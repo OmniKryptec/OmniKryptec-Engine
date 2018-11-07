@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.libapi.glfw.input;
+package de.omnikryptec.libapi.exposed.input;
 
 import de.omnikryptec.util.settings.KeySettings;
 import org.lwjgl.glfw.GLFW;

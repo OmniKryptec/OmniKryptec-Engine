@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.libapi.glfw.window;
+package de.omnikryptec.libapi.exposed.window;
 
 public abstract class WindowInfo<T extends WindowInfo<?>> {
 

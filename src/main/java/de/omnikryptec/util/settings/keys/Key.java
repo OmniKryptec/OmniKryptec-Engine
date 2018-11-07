@@ -17,7 +17,7 @@
 package de.omnikryptec.util.settings.keys;
 
 import de.codemakers.base.exceptions.NotYetImplementedRuntimeException;
-import de.omnikryptec.libapi.glfw.LibAPIManager;
+import de.omnikryptec.libapi.LibAPIManager;
 
 import java.util.Objects;
 

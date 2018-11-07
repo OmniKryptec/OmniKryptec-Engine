@@ -14,10 +14,10 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.libapi.glfw.input;
+package de.omnikryptec.libapi.exposed.input;
 
 import de.codemakers.base.logger.Logger;
-import de.omnikryptec.libapi.glfw.LibAPIManager;
+import de.omnikryptec.libapi.LibAPIManager;
 import de.omnikryptec.util.settings.KeySettings;
 import org.lwjgl.glfw.GLFW;
 

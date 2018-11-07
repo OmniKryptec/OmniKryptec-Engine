@@ -16,7 +16,7 @@
 
 package de.omnikryptec.util.updater;
 
-import de.omnikryptec.libapi.glfw.LibAPIManager;
+import de.omnikryptec.libapi.LibAPIManager;
 import de.omnikryptec.util.data.Smoother;
 
 import javax.annotation.Nonnull;

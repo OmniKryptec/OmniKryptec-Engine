@@ -16,10 +16,10 @@
 
 package de.omnikryptec.core;
 
-import de.omnikryptec.libapi.glfw.LibAPIManager;
-import de.omnikryptec.libapi.glfw.window.OpenGLWindowInfo;
-import de.omnikryptec.libapi.glfw.window.Window;
-import de.omnikryptec.libapi.glfw.window.WindowInfo;
+import de.omnikryptec.libapi.LibAPIManager;
+import de.omnikryptec.libapi.exposed.window.OpenGLWindowInfo;
+import de.omnikryptec.libapi.exposed.window.Window;
+import de.omnikryptec.libapi.exposed.window.WindowInfo;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;

@@ -1,9 +1,9 @@
 package de.omnikryptec.core;
 
 import de.omnikryptec.graphics.display.WindowUpdater;
-import de.omnikryptec.libapi.glfw.LibAPIManager;
-import de.omnikryptec.libapi.glfw.window.OpenGLWindow;
-import de.omnikryptec.libapi.glfw.window.OpenGLWindowInfo;
+import de.omnikryptec.libapi.LibAPIManager;
+import de.omnikryptec.libapi.exposed.window.OpenGLWindow;
+import de.omnikryptec.libapi.exposed.window.OpenGLWindowInfo;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.libapi.opengl.OpenGLUtil.BufferType;
 import de.omnikryptec.util.data.Color;

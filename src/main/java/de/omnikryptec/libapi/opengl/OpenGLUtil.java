@@ -16,6 +16,7 @@
 
 package de.omnikryptec.libapi.opengl;
 
+import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Color;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -27,7 +28,6 @@ public class OpenGLUtil {
 
     private static Map<Feature, Boolean> featureCache = new EnumMap<>(Feature.class);
     private static Map<CACHE_ENUM, Object> cache = new EnumMap<>(CACHE_ENUM.class);
-    private static BlendMode blendMode = null;
 
     public static boolean isFeatureEnabled(Feature f) {
         return featureCache.get(f) == null ? false : featureCache.get(f);
@@ -46,9 +46,10 @@ public class OpenGLUtil {
         }
     }
 
-    public static void setBlendMode(BlendMode mode) {
-        if (blendMode != mode) {
-            switch (mode) {
+    public static void setBlendMode(BlendMode blendModeNew) {
+        BlendMode blendModeOld = (BlendMode) cache.get(CACHE_ENUM.BLEND_MODE);
+        if (blendModeOld == null || blendModeOld != blendModeNew) {
+            switch (blendModeNew) {
             case ADDITIVE:
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
                 break;
@@ -61,7 +62,7 @@ public class OpenGLUtil {
             default:
                 throw new IllegalArgumentException("Illegal blend mode");
             }
-            blendMode = mode;
+            cache.put(CACHE_ENUM.BLEND_MODE, blendModeNew);
         }
     }
 
@@ -157,7 +158,7 @@ public class OpenGLUtil {
     }
 
     private static enum CACHE_ENUM {
-        DEPTH_MASK_KEY, CULL_FACE_KEY, POLY_MODE_KEY
+        DEPTH_MASK_KEY, CULL_FACE_KEY, POLY_MODE_KEY, BLEND_MODE;
     }
 
 }
