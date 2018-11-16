@@ -54,11 +54,11 @@ public abstract class EngineLoader {
      * Uses the settings to set library options. This method is only effective if no
      * library functions have been called yet.<br>
      * The library options this method might modify:<br>
-     * <ol>
+     * <ul>
      * <li>{@link LoaderSetting#DEBUG}</li>
      * <li>{@link LoaderSetting#DEBUG_FUNCTIONS}</li>
      * <li>{@link LoaderSetting#FASTMATH}</li>
-     * </ol>
+     * </ul>
      *
      * @param settings the {@link Settings} to set the lib options from
      */
