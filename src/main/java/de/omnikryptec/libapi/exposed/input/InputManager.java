@@ -16,9 +16,12 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
+import de.omnikryptec.core.Updateable;
 import de.omnikryptec.libapi.LibAPIManager;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.KeySettings;
+import de.omnikryptec.util.updater.Time;
+
 import org.joml.Vector2d;
 import org.joml.Vector2dc;
 import org.joml.Vector4d;
@@ -27,10 +30,10 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.concurrent.atomic.AtomicReference;
 
-public class InputManager {
+public class InputManager implements Updateable{
     
     private final long window;
-    private final AtomicReference<Double> currentTime = new AtomicReference<>(0.0);
+    //private final AtomicReference<Double> currentTime = new AtomicReference<>(0.0);
     // Keyboard part
     private final KeyboardHandler keyboardHandler;
     // Mouse part
@@ -74,42 +77,39 @@ public class InputManager {
         return this;
     }
     
-    public InputManager preUpdate() {
+    public void preUpdate(Time time) {
         // final double currentTime = LibAPIManager.active().getTime(); //TODO Remove
-        currentTime.set(LibAPIManager.active().getTime());
-        final double currentTime_ = currentTime.get();
+        //currentTime.set(LibAPIManager.active().getTime());
+        //final double currentTime_ = currentTime.get();
         final KeySettings keySettings = null; // FIXME KeySettings missing!
         if (longButtonPressEnabled) {
-            keyboardHandler.preUpdate(currentTime_, keySettings);
-            mouseHandler.preUpdate(currentTime_, keySettings);
+            keyboardHandler.preUpdate(time.current, keySettings);
+            mouseHandler.preUpdate(time.current, keySettings);
         }
-        JoystickHandler.preUpdateAll(currentTime_, keySettings);
-        return this;
+        JoystickHandler.preUpdateAll(time.current, keySettings);
     }
     
-    public InputManager update() {
+    public void update(Time time) {
         // final double currentTime = LibAPIManager.active().getTime();
-        final double currentTime_ = currentTime.get();
+        //final double currentTime_ = currentTime.get();
         keyboardHandler.clearInputString();
         final KeySettings keySettings = null; // FIXME KeySettings missing!
         if (longButtonPressEnabled) {
-            keyboardHandler.update(currentTime_, keySettings);
-            mouseHandler.update(currentTime_, keySettings);
+            keyboardHandler.update(time.current, keySettings);
+            mouseHandler.update(time.current, keySettings);
         }
-        JoystickHandler.updateAll(currentTime_, keySettings);
-        return this;
+        JoystickHandler.updateAll(time.current, keySettings);
     }
     
-    public InputManager postUpdate() {
+    public void postUpdate(Time time) {
         // final double currentTime = LibAPIManager.active().getTime();
-        final double currentTime_ = currentTime.get();
+        //final double currentTime_ = currentTime.get();
         final KeySettings keySettings = null; // FIXME KeySettings missing!
         if (longButtonPressEnabled) {
-            keyboardHandler.postUpdate(currentTime_, keySettings);
-            mouseHandler.postUpdate(currentTime_, keySettings);
+            keyboardHandler.postUpdate(time.current, keySettings);
+            mouseHandler.postUpdate(time.current, keySettings);
         }
-        JoystickHandler.postUpdateAll(currentTime_, keySettings);
-        return this;
+        JoystickHandler.postUpdateAll(time.current, keySettings);
     }
     
     public InputManager close() {
