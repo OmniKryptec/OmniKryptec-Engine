@@ -36,6 +36,12 @@ public class UpdateableContainer implements Updateable {
     public void clear() {
         updateables.clear();
     }
+    
+    public void everyUpdate(Time time) {
+        preUpdate(time);
+        update(time);
+        postUpdate(time);
+    }
 
     @Override
     public void preUpdate(Time time) {

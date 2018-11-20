@@ -16,6 +16,8 @@
 
 package de.omnikryptec.core;
 
+import de.omnikryptec.core.loop.DefaultEngineLoop;
+import de.omnikryptec.core.loop.IEngineLoop;
 import de.omnikryptec.libapi.LibAPIManager;
 import de.omnikryptec.libapi.exposed.window.OpenGLWindowInfo;
 import de.omnikryptec.libapi.exposed.window.Window;

@@ -14,7 +14,9 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.core;
+package de.omnikryptec.core.loop;
+
+import de.omnikryptec.core.EngineLoader;
 
 public interface IEngineLoop {
 

@@ -1,5 +1,6 @@
 package de.omnikryptec.core;
 
+import de.omnikryptec.core.loop.IEngineLoop;
 import de.omnikryptec.graphics.display.WindowUpdater;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.libapi.opengl.OpenGLUtil.BufferType;

@@ -14,8 +14,10 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.core;
+package de.omnikryptec.core.loop;
 
+import de.omnikryptec.core.EngineLoader;
+import de.omnikryptec.graphics.display.WindowUpdater;
 import de.omnikryptec.libapi.exposed.window.Window;
 
 public class DefaultEngineLoop implements IEngineLoop {
@@ -24,9 +26,12 @@ public class DefaultEngineLoop implements IEngineLoop {
     private Window<?> window;
     private boolean shouldStop = false;
 
+    private WindowUpdater windowUpdater;
+    
     @Override
     public void init(EngineLoader loader) {
         this.window = loader.getWindow();
+        this.windowUpdater = new WindowUpdater(window);
     }
 
     @Override
@@ -49,7 +54,7 @@ public class DefaultEngineLoop implements IEngineLoop {
         running = true;
         try {
             while (!shouldStop()) {
-
+                windowUpdater.update(0);
             }
         } finally {
             running = false;
