@@ -5,9 +5,9 @@ public class Test {
     public static void main(String[] args) {
         EventBus bus = new EventBus();
         bus.register(new Test());
-        bus.enqueueOrPost(new Event(), false);
-        bus.enqueueOrPost(new TestEvent(), false);
-        bus.enqueueOrPost(new TestEvent.TestEvent2(), false);
+        bus.enqueue(new Event());
+        bus.enqueue(new TestEvent());
+        bus.enqueue(new TestEvent.TestEvent2());
         bus.processQueuedEvents();
     }
 
