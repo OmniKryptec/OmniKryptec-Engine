@@ -23,10 +23,12 @@ public class EventHandler implements IEventListener {
 
     private Object handler;
     private Method m;
+    private boolean receiveConsumed;
 
-    public EventHandler(Object handler, Method m) {
+    public EventHandler(Object handler, Method m, boolean receiveConsumed) {
         this.handler = handler;
         this.m = m;
+        this.receiveConsumed = receiveConsumed;
     }
 
     public Object getHandler() {
@@ -53,12 +55,17 @@ public class EventHandler implements IEventListener {
 
     @Override
     public void invoke(Event ev) {
-        // TODO make this faster (ASM/bytecode manipulation) because this is slow af
         try {
+            // TODO make this faster (ASM/bytecode manipulation) because this is slow af
             m.invoke(handler, ev);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean receiveConsumed() {
+        return receiveConsumed;
     }
 
 }

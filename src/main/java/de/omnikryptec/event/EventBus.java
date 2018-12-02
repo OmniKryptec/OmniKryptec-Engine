@@ -56,9 +56,10 @@ public class EventBus implements Updateable {
             if (object == null && !Modifier.isStatic(m.getModifiers())) {
                 throw new IllegalArgumentException("Nonstatic event listener registered by class");
             }
-            if (m.isAnnotationPresent(EventSubscription.class)) {
+            EventSubscription esub = m.getAnnotation(EventSubscription.class);
+            if (esub != null) {
                 annotationFound = true;
-                EventHandler handler = new EventHandler(object, m);
+                EventHandler handler = new EventHandler(object, m, esub.receiveConsumed());
                 Class<?>[] cls = m.getParameterTypes();
                 if (cls.length != 1) {
                     throw new IllegalArgumentException("Wrong amount of parameter types in event listener: " + object);
@@ -79,12 +80,12 @@ public class EventBus implements Updateable {
         }
     }
 
-    public void enqueueOrPost(Event event, boolean postImmediately) {
-        if (postImmediately) {
-            processEvent(event);
-        } else {
-            eventQueue.add(event);
-        }
+    public void post(Event event) {
+        processEvent(event);
+    }
+
+    public void enqueue(Event event) {
+        eventQueue.add(event);
     }
 
     public void processQueuedEvents() {
@@ -106,7 +107,7 @@ public class EventBus implements Updateable {
         Class<?> someclazz = event.getClass();
         do {
             for (IEventListener listener : listeners.get((Class<? extends Event>) someclazz)) {
-                if (!event.isConsumeable() || !event.isConsumed()) {
+                if (!event.isConsumeable() || !event.isConsumed() || listener.receiveConsumed()) {
                     listener.invoke(event);
                 }
             }

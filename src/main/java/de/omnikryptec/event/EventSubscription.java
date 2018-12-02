@@ -28,4 +28,5 @@ public @interface EventSubscription {
     // TODO subscription args
     // float priority() default 0;
     // String eventBusName() default "";
+    boolean receiveConsumed() default false;
 }
