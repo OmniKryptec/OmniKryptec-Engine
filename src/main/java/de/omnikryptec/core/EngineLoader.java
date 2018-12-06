@@ -19,14 +19,13 @@ package de.omnikryptec.core;
 import de.omnikryptec.core.loop.DefaultEngineLoop;
 import de.omnikryptec.core.loop.IEngineLoop;
 import de.omnikryptec.libapi.LibAPIManager;
+import de.omnikryptec.libapi.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.OpenGLWindowInfo;
 import de.omnikryptec.libapi.exposed.window.Window;
 import de.omnikryptec.libapi.exposed.window.WindowInfo;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
-import org.lwjgl.system.Configuration;
-
 import javax.annotation.Nonnull;
 
 /**
@@ -44,36 +43,11 @@ import javax.annotation.Nonnull;
  */
 public abstract class EngineLoader {
 
-    private static boolean debug = (boolean) LoaderSetting.DEBUG.getDefault();
     private IEngineLoop engineLoop;
     private Window<?> window;
     private boolean booted;
 
     public EngineLoader() {
-    }
-
-    /**
-     * Uses the settings to set library options. This method is only effective if no
-     * library functions have been called yet.<br>
-     * The library options this method might modify:<br>
-     * <ul>
-     * <li>{@link LoaderSetting#DEBUG}</li>
-     * <li>{@link LoaderSetting#DEBUG_FUNCTIONS}</li>
-     * <li>{@link LoaderSetting#FASTMATH}</li>
-     * </ul>
-     *
-     * @param settings the {@link Settings} to set the lib options from
-     */
-    public static void setConfiguration(@Nonnull Settings<LoaderSetting> settings) {
-        debug = settings.get(LoaderSetting.DEBUG);
-        boolean fastmath = settings.get(LoaderSetting.FASTMATH);
-        boolean functionDebug = settings.get(LoaderSetting.DEBUG_FUNCTIONS);
-        if (fastmath) {
-            System.setProperty("joml.fastmath", "true");
-        }
-        Configuration.DEBUG.set(debug);
-        Configuration.DEBUG_LOADER.set(debug);
-        Configuration.DEBUG_FUNCTIONS.set(debug && functionDebug);
     }
 
     public static void initialize() {
@@ -82,25 +56,14 @@ public abstract class EngineLoader {
         // Audio, etc....
     }
 
-    /**
-     * The state of the debug-flag, set by {@link #setConfiguration(Settings)}
-     *
-     * @return the state of the internal debug-flag.
-     *
-     * @see LoaderSetting#DEBUG
-     */
-    public static boolean isDebug() {
-        return debug;
-    }
-
     @Nonnull
     public EngineLoader boot() {
         if (booted) {
             throw new IllegalStateException("Was already booted");
         }
         Settings<LoaderSetting> loaderSettings = new Settings<>();
-        config(loaderSettings);
-        setConfiguration(loaderSettings);
+        Settings<LibSetting> libSettings = new Settings<>();
+        config(loaderSettings, libSettings);
         // or let them (the natives) be loaded by Configuration.SHARED_LIBRARY and
         // LIBRARY_PATH <-- Seems to work, so better use it
         initialize();
@@ -161,7 +124,7 @@ public abstract class EngineLoader {
         return booted;
     }
 
-    protected void config(Settings<LoaderSetting> settings) {
+    protected void config(Settings<LoaderSetting> loadersettings, Settings<LibSetting> libsettings) {
     }
 
     protected abstract void onContextCreationFinish();
@@ -173,34 +136,7 @@ public abstract class EngineLoader {
     }
 
     public enum LoaderSetting implements Defaultable {
-        /**
-         * Enables debug mode of the Omnikryptec-Engine and LWJGL. This might do
-         * expensive checks, performance-wise.<br>
-         * <br>
-         * The default value is <code>false</code>.
-         *
-         * @see org.lwjgl.system.Configuration#DEBUG
-         * @see org.lwjgl.system.Configuration#DEBUG_LOADER
-         */
-        DEBUG(false),
-        /**
-         * When enabled, lwjgl's capabilities classes will print an error message when
-         * they fail to retrieve a function pointer. <br>
-         * Requires {@link #DEBUG} to be enabled. <br>
-         * <br>
-         * The default value is <code>false</code>.
-         *
-         * @see org.lwjgl.system.Configuration#DEBUG_FUNCTIONS
-         */
-        DEBUG_FUNCTIONS(false),
-        /**
-         * Enables joml's fastmath. <br>
-         * <br>
-         * The default value is <code>true</code>.
-         *
-         * @see org.joml.Math
-         */
-        FASTMATH(true),
+
         /**
          * The window-/contextcreation information. Only in non-static cases of
          * {@link EngineLoader}.<br>
@@ -244,7 +180,7 @@ public abstract class EngineLoader {
         }
 
         @Override
-        public <T>T getDefault() {
+        public <T> T getDefault() {
             return (T) defaultSetting;
         }
     }

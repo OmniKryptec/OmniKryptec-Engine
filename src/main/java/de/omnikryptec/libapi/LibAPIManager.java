@@ -16,27 +16,76 @@
 
 package de.omnikryptec.libapi;
 
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWErrorCallback;
-
-import de.codemakers.base.util.tough.ToughRunnable;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-public final class LibAPIManager {
+import javax.annotation.Nonnull;
 
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.system.Configuration;
+
+import de.codemakers.base.util.tough.ToughRunnable;
+import de.omnikryptec.core.EngineLoader.LoaderSetting;
+import de.omnikryptec.util.settings.Defaultable;
+import de.omnikryptec.util.settings.Settings;
+
+public final class LibAPIManager {
+    
+    public static enum LibSetting implements Defaultable {
+        /**
+         * Enables debug mode of the Omnikryptec-Engine and LWJGL. This might do
+         * expensive checks, performance-wise.<br>
+         * <br>
+         * The default value is <code>false</code>.
+         *
+         * @see org.lwjgl.system.Configuration#DEBUG
+         * @see org.lwjgl.system.Configuration#DEBUG_LOADER
+         */
+        DEBUG(false),
+        /**
+         * When enabled, lwjgl's capabilities classes will print an error message when
+         * they fail to retrieve a function pointer. <br>
+         * Requires {@link #DEBUG} to be enabled. <br>
+         * <br>
+         * The default value is <code>false</code>.
+         *
+         * @see org.lwjgl.system.Configuration#DEBUG_FUNCTIONS
+         */
+        DEBUG_FUNCTIONS(false),
+        /**
+         * Enables joml's fastmath. <br>
+         * <br>
+         * The default value is <code>true</code>.
+         *
+         * @see org.joml.Math
+         */
+        FASTMATH(true);
+        
+        private final Object defaultSetting;
+        
+        LibSetting(final Object def) {
+            this.defaultSetting = def;
+        }
+        
+        @Override
+        public <T> T getDefault() {
+            return (T) this.defaultSetting;
+        }
+    }
+    
     private static final Collection<ToughRunnable> shutdownHooks = new ArrayList<>();
     private static LibAPIManager instance;
-
+    private static boolean debug = (boolean) LibSetting.DEBUG.getDefault();
+    
     static {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown(), "LibAPI-Shutdown-Hooks"));
     }
-
+    
     private LibAPIManager() {
     }
-
+    
     public static void init() {
         if (isInitialized()) {
             throw new IllegalStateException("Already initialized");
@@ -50,12 +99,12 @@ public final class LibAPIManager {
             throw new RuntimeException("Error while initializing LibAPI");
         }
     }
-
+    
     public static void shutdown() {
-        for (ToughRunnable r : shutdownHooks) {
+        for (final ToughRunnable r : shutdownHooks) {
             try {
                 r.run();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 System.err.println("Exception in shutdown hook '" + r + "': " + e);
                 e.printStackTrace();
             }
@@ -66,23 +115,23 @@ public final class LibAPIManager {
             System.out.println("Terminated LibAPI");
         }
     }
-
-    public static void registerResourceShutdownHooks(ToughRunnable... runnables) {
+    
+    public static void registerResourceShutdownHooks(final ToughRunnable... runnables) {
         shutdownHooks.addAll(Arrays.asList(runnables));
     }
-
+    
     public static boolean isInitialized() {
         return instance != null;
     }
-
+    
     public static LibAPIManager active() {
         return instance;
     }
-
+    
     public void pollEvents() {
         GLFW.glfwPollEvents();
     }
-
+    
     /**
      * Returns the value of the GLFW timer. The timer measures time elapsed since
      * GLFW was initialized.
@@ -96,5 +145,33 @@ public final class LibAPIManager {
     public double getTime() {
         return GLFW.glfwGetTime();
     }
-
+    
+    /**
+     * Uses the settings to set library options. This method is only effective if no
+     * library functions have been called yet.<br>
+     * The library options this method might modify:<br>
+     * <ul>
+     * <li>{@link LoaderSetting#DEBUG}</li>
+     * <li>{@link LoaderSetting#DEBUG_FUNCTIONS}</li>
+     * <li>{@link LoaderSetting#FASTMATH}</li>
+     * </ul>
+     *
+     * @param settings the {@link Settings} to set the lib options from
+     */
+    public static void setConfiguration(@Nonnull final Settings<LibSetting> settings) {
+        if (isInitialized()) {
+            // TODO Logger.WARNING(might not get set)
+            throw new IllegalStateException();
+        }
+        debug = settings.get(LibSetting.DEBUG);
+        final boolean fastmath = settings.get(LibSetting.FASTMATH);
+        final boolean functionDebug = settings.get(LibSetting.DEBUG_FUNCTIONS);
+        if (fastmath) {
+            System.setProperty("joml.fastmath", "true");
+        }
+        Configuration.DEBUG.set(debug);
+        Configuration.DEBUG_LOADER.set(debug);
+        Configuration.DEBUG_FUNCTIONS.set(debug && functionDebug);
+    }
+    
 }
