@@ -116,7 +116,7 @@ public class EventBus implements Updateable {
     }
 
     @Override
-    public void update(final Time time) {
+    public void postUpdate(final Time time) {
         processQueuedEvents();
     }
 }

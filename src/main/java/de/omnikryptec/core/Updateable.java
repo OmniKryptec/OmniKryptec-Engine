@@ -24,7 +24,8 @@ public interface Updateable {
     default void preUpdate(final Time time) {
     }
 
-    void update(Time time);
+    default void update(Time time) {
+    }
 
     default void postUpdate(final Time time) {
     }
