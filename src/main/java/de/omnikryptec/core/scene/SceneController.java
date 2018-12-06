@@ -1,6 +1,6 @@
 package de.omnikryptec.core.scene;
 
-import de.omnikryptec.core.UpdateableContainer;
+import de.omnikryptec.core.UpdateablesStorage;
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
@@ -26,28 +26,28 @@ public class SceneController {
     private final Settings<ControllerSettings> controllerSettings;
     
     //Rendering and Mainthread stuff
-    private UpdateableContainer updtContainerSync;
+    private UpdateablesStorage updtContainerSync;
     //Might happen on another Thread
-    private UpdateableContainer updtContainerAsync;
+    private UpdateablesStorage updtContainerAsync;
 
     //    private EventBus eventbusSync;
     //    private EventBus eventbusAsync;
 
     public SceneController() {
         this.controllerSettings = new Settings<>();
-        this.updtContainerSync = new UpdateableContainer();
-        this.updtContainerAsync = new UpdateableContainer();
+        this.updtContainerSync = new UpdateablesStorage();
+        this.updtContainerAsync = new UpdateablesStorage();
         //        this.eventbusSync = new EventBus();
         //        this.eventbusAsync = new EventBus();
         //        this.updtContainerSync.addUpdateables(eventbusSync);
         //        this.updtContainerAsync.addUpdateables(eventbusAsync);
     }
 
-    public UpdateableContainer getUpdateableContainerSync() {
+    public UpdateablesStorage getUpdateableContainerSync() {
         return updtContainerSync;
     }
 
-    public UpdateableContainer getUpdateableContainerAsync() {
+    public UpdateablesStorage getUpdateableContainerAsync() {
         return updtContainerAsync;
     }
     

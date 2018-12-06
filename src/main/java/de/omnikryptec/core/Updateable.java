@@ -16,6 +16,7 @@
 
 package de.omnikryptec.core;
 
+import de.omnikryptec.core.UpdateablesStorage.ExecuteMode;
 import de.omnikryptec.util.updater.Time;
 
 public interface Updateable {
@@ -26,6 +27,10 @@ public interface Updateable {
     void update(Time time);
 
     default void postUpdate(Time time) {
+    }
+    
+    default ExecuteMode defaultExecuteMode() {
+        return ExecuteMode.OneByOne;
     }
 
 }
