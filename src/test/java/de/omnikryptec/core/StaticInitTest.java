@@ -1,6 +1,7 @@
 package de.omnikryptec.core;
 
 import de.omnikryptec.graphics.display.WindowUpdater;
+import de.omnikryptec.libapi.LibAPIManager;
 import de.omnikryptec.libapi.exposed.window.OpenGLWindowInfo;
 import de.omnikryptec.libapi.exposed.window.Window;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
@@ -12,7 +13,7 @@ public class StaticInitTest {
 
     public static void main(final String[] args) {
         EngineLoader.initialize();
-        EngineLoader.setConfiguration(new Settings<>());
+        LibAPIManager.setConfiguration(new Settings<>());
         final Window<?> window = new OpenGLWindowInfo().createWindow();
         window.setVisible(true);
         final WindowUpdater updater = new WindowUpdater(window);

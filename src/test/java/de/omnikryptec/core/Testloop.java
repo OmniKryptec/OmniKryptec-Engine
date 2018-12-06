@@ -27,11 +27,9 @@ public class Testloop implements IEngineLoop {
     public void stopLoop() {
     }
 
-    @Override
     public void update() {
     }
 
-    @Override
     public void renderAndSwap() {
         this.updater.update(0);
         if (this.updater.getOperationCount() % 40 == 0) {
