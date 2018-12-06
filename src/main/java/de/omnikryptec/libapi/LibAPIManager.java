@@ -86,10 +86,16 @@ public final class LibAPIManager {
     private LibAPIManager() {
     }
     
+    @Deprecated
     public static void init() {
+        init(new Settings<>());
+    }
+    
+    public static void init(@Nonnull final Settings<LibSetting> settings) {
         if (isInitialized()) {
             throw new IllegalStateException("Already initialized");
         }
+        setConfiguration(settings);
         if (GLFW.glfwInit()) {
             GLFWErrorCallback.createThrow().set();
             instance = new LibAPIManager();
@@ -150,15 +156,10 @@ public final class LibAPIManager {
      * Uses the settings to set library options. This method is only effective if no
      * library functions have been called yet.<br>
      * The library options this method might modify:<br>
-     * <ul>
-     * <li>{@link LoaderSetting#DEBUG}</li>
-     * <li>{@link LoaderSetting#DEBUG_FUNCTIONS}</li>
-     * <li>{@link LoaderSetting#FASTMATH}</li>
-     * </ul>
      *
      * @param settings the {@link Settings} to set the lib options from
      */
-    public static void setConfiguration(@Nonnull final Settings<LibSetting> settings) {
+    private static void setConfiguration(@Nonnull final Settings<LibSetting> settings) {
         if (isInitialized()) {
             // TODO Logger.WARNING(might not get set)
             throw new IllegalStateException();
