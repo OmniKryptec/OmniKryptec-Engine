@@ -25,32 +25,32 @@ public class Smoother {
         this(300);
     }
 
-    public Smoother(int size) {
+    public Smoother(final int size) {
         setSmoothingSize(size);
     }
 
-    public void push(double d) {
-        smoothed[pointer] = d;
-        pointer++;
-        pointer %= smoothed.length;
+    public void push(final double d) {
+        this.smoothed[this.pointer] = d;
+        this.pointer++;
+        this.pointer %= this.smoothed.length;
     }
 
     public double get() {
         double del = 0;
-        for (int i = 0; i < smoothed.length; i++) {
-            del += smoothed[i];
+        for (int i = 0; i < this.smoothed.length; i++) {
+            del += this.smoothed[i];
         }
-        return del / smoothed.length;
+        return del / this.smoothed.length;
     }
 
-    public void setSmoothingSize(int i) {
-        double[] array = new double[i];
-        if (smoothed != null) {
-            System.arraycopy(smoothed, 0, array, 0, Math.min(smoothed.length, array.length));
-            pointer = smoothed.length;
-            pointer %= array.length;
+    public void setSmoothingSize(final int i) {
+        final double[] array = new double[i];
+        if (this.smoothed != null) {
+            System.arraycopy(this.smoothed, 0, array, 0, Math.min(this.smoothed.length, array.length));
+            this.pointer = this.smoothed.length;
+            this.pointer %= array.length;
         }
-        smoothed = array;
+        this.smoothed = array;
     }
 
     public long getInverse() {

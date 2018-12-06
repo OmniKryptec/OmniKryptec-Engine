@@ -21,7 +21,7 @@ import org.lwjgl.opengl.GL;
 
 public class OpenGLWindow extends Window<OpenGLWindowInfo> {
 
-    public OpenGLWindow(OpenGLWindowInfo info) {
+    public OpenGLWindow(final OpenGLWindowInfo info) {
         super(info);
         GLFW.glfwMakeContextCurrent(getWindowID());
         GL.createCapabilities();
@@ -29,9 +29,9 @@ public class OpenGLWindow extends Window<OpenGLWindowInfo> {
     }
 
     @Override
-    protected void setAdditionalGlfwWindowHints(OpenGLWindowInfo info) {
-        int mav = info.getMajVersion();
-        int miv = info.getMinVersion();
+    protected void setAdditionalGlfwWindowHints(final OpenGLWindowInfo info) {
+        final int mav = info.getMajVersion();
+        final int miv = info.getMinVersion();
         if (mav > 3 || (mav > 2 && miv > 1)) {
             GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, mav);
             GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, miv);
@@ -41,7 +41,7 @@ public class OpenGLWindow extends Window<OpenGLWindowInfo> {
 
     @Override
     protected void swap() {
-        GLFW.glfwSwapBuffers(windowId);
+        GLFW.glfwSwapBuffers(this.windowId);
     }
 
 }

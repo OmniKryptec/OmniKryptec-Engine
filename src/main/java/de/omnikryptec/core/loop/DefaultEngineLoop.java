@@ -29,35 +29,35 @@ public class DefaultEngineLoop implements IEngineLoop {
     private WindowUpdater windowUpdater;
     
     @Override
-    public void init(EngineLoader loader) {
+    public void init(final EngineLoader loader) {
         this.window = loader.getWindow();
-        this.windowUpdater = new WindowUpdater(window);
+        this.windowUpdater = new WindowUpdater(this.window);
     }
 
     @Override
     public void stopLoop() {
-        shouldStop = true;
+        this.shouldStop = true;
     }
 
     public boolean shouldStop() {
-        return shouldStop || (window == null ? false : window.isCloseRequested());
+        return this.shouldStop || (this.window == null ? false : this.window.isCloseRequested());
     }
 
     @Override
     public boolean isRunning() {
-        return running;
+        return this.running;
     }
 
     @Override
     public void startLoop() {
-        shouldStop = false;
-        running = true;
+        this.shouldStop = false;
+        this.running = true;
         try {
             while (!shouldStop()) {
-                windowUpdater.update(0);
+                this.windowUpdater.update(0);
             }
         } finally {
-            running = false;
+            this.running = false;
         }
     }
 

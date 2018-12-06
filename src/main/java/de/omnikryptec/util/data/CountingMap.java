@@ -24,55 +24,55 @@ import java.util.Set;
 //Surprisingly faster than a guava Multiset
 public class CountingMap<T> implements Iterable<T> {
 
-    private Map<T, Long> map = new HashMap<>();
+    private final Map<T, Long> map = new HashMap<>();
     private boolean retainZeros = false;
 
     public CountingMap() {
         this(false);
     }
 
-    public CountingMap(boolean retainZeros) {
+    public CountingMap(final boolean retainZeros) {
         this.retainZeros = retainZeros;
     }
 
-    public long get(T t) {
-        return map.containsKey(t) ? map.get(t) : 0;
+    public long get(final T t) {
+        return this.map.containsKey(t) ? this.map.get(t) : 0;
     }
 
-    public long increment(T t) {
+    public long increment(final T t) {
         return increment(t, 1);
     }
 
-    public long increment(T t, long amount) {
+    public long increment(final T t, final long amount) {
         long l;
-        map.put(t, l = get(t) + amount);
+        this.map.put(t, l = get(t) + amount);
         return l;
     }
 
-    public long decrement(T t) {
+    public long decrement(final T t) {
         return decrement(t, 1);
     }
 
-    public long decrement(T t, long amount) {
+    public long decrement(final T t, final long amount) {
         long l;
-        map.put(t, l = get(t) - amount);
-        if (!retainZeros && l == 0) {
+        this.map.put(t, l = get(t) - amount);
+        if (!this.retainZeros && l == 0) {
             remove(t);
         }
         return l;
     }
 
-    public long remove(T t) {
-        return map.remove(t);
+    public long remove(final T t) {
+        return this.map.remove(t);
     }
 
     public Set<T> keySet() {
-        return map.keySet();
+        return this.map.keySet();
     }
 
     @Override
     public Iterator<T> iterator() {
-        return map.keySet().iterator();
+        return this.map.keySet().iterator();
     }
 
 }

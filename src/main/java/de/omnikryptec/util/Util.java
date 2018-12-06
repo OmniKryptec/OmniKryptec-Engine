@@ -18,14 +18,15 @@ package de.omnikryptec.util;
 
 public class Util {
 
-    public static <T> T ensureNonNull(T obj) {
+    public static <T> T ensureNonNull(final T obj) {
         return ensureNonNull(obj, null);
     }
 
-    public static <T> T ensureNonNull(T obj, String message) {
+    public static <T> T ensureNonNull(final T obj, final String message) {
         if (obj == null) {
-            NullPointerException exc = message == null ? new NullPointerException() : new NullPointerException(message);
-            StackTraceElement[] nst = new StackTraceElement[exc.getStackTrace().length - 1];
+            final NullPointerException exc = message == null ? new NullPointerException()
+                    : new NullPointerException(message);
+            final StackTraceElement[] nst = new StackTraceElement[exc.getStackTrace().length - 1];
             System.arraycopy(exc.getStackTrace(), 1, nst, 0, exc.getStackTrace().length - 1);
             exc.setStackTrace(nst);
             throw exc;

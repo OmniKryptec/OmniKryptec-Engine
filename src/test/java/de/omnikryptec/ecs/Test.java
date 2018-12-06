@@ -6,15 +6,15 @@ import de.omnikryptec.util.updater.Time;
 
 public class Test {
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         System.out.println("Started...");
-        IECSManager manager = new ECSManager();
-        DoSomethingSystem system = new DoSomethingSystem();
+        final IECSManager manager = new ECSManager();
+        final DoSomethingSystem system = new DoSomethingSystem();
         manager.addSystem(system);
         // manager.addSystem(new AnotherSystem());
         // manager.addSystem(new SomeOtherSystem());
-        int updt = 100;
-        int ents = 1_000_000;
+        final int updt = 100;
+        final int ents = 1_000_000;
         System.out.println("Testing with " + ents + " entities and " + updt + " updates");
         long time = System.currentTimeMillis();
         for (int i = 0; i < ents; i++) {

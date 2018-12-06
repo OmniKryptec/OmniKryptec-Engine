@@ -8,7 +8,7 @@ public class Time {
     public final float currentf;
     public final float deltaf;
 
-    public Time(long opsCount, double current, double delta) {
+    public Time(final long opsCount, final double current, final double delta) {
         this.opsCount = opsCount;
         this.current = current;
         this.delta = delta;

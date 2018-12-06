@@ -16,21 +16,21 @@
 
 package de.omnikryptec.ecs.system;
 
+import java.util.BitSet;
+
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.util.updater.Time;
 
-import java.util.BitSet;
-
 public abstract class IterativeComponentSystem extends ComponentSystem implements IndividualUpdater {
 
-    protected IterativeComponentSystem(BitSet required) {
+    protected IterativeComponentSystem(final BitSet required) {
         super(required);
     }
 
     @Override
-    public final void update(IECSManager entityManager, Time time) {
-        for (Entity e : entities) {
+    public final void update(final IECSManager entityManager, final Time time) {
+        for (final Entity e : this.entities) {
             updateIndividual(entityManager, e, time);
         }
     }

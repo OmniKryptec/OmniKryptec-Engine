@@ -16,21 +16,33 @@
 
 package de.omnikryptec.resource.loader;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import org.reflections.Reflections;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+
 import de.codemakers.base.logger.LogLevel;
 import de.codemakers.base.logger.Logger;
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.resource.loader.annotations.DefaultLoader;
 import de.omnikryptec.util.Util;
-
-import org.reflections.Reflections;
-
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class DefaultResourceManager implements ResourceLoader, ResourceManager {
 
@@ -42,11 +54,12 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
     private final AtomicBoolean loading = new AtomicBoolean(false);
     private ExecutorService executorService = null;
 
-    public static DefaultResourceManager createDefaultInstance(boolean searchForDefaultLoaders) {
+    public static DefaultResourceManager createDefaultInstance(final boolean searchForDefaultLoaders) {
         return createDefaultInstance(false, searchForDefaultLoaders);
     }
 
-    public static DefaultResourceManager createDefaultInstance(boolean asCurrent, boolean searchForDefaultLoaders) {
+    public static DefaultResourceManager createDefaultInstance(final boolean asCurrent,
+            final boolean searchForDefaultLoaders) {
         final DefaultResourceManager defaultResourceManager = new DefaultResourceManager();
         if (asCurrent) {
             INSTANCE = defaultResourceManager;
@@ -62,7 +75,7 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
         return createInstance(false);
     }
 
-    public static DefaultResourceManager createInstance(boolean asCurrent) {
+    public static DefaultResourceManager createInstance(final boolean asCurrent) {
         final DefaultResourceManager defaultResourceManager = new DefaultResourceManager();
         if (asCurrent) {
             INSTANCE = defaultResourceManager;
@@ -83,7 +96,7 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
         return getDefaultLoaders(true);
     }
 
-    public static List<ResourceLoader> getDefaultLoaders(boolean distinct) {
+    public static List<ResourceLoader> getDefaultLoaders(final boolean distinct) {
         try {
             if (distinct) {
                 final List<Class<?>> classes = new ArrayList<>();
@@ -116,7 +129,7 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
                 return classes.stream().map((clazz) -> {
                     try {
                         return (ResourceLoader) clazz.newInstance();
-                    } catch (Exception ex) {
+                    } catch (final Exception ex) {
                         return null;
                     }
                 }).filter(Objects::nonNull).collect(Collectors.toList());
@@ -125,33 +138,33 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
                         .getTypesAnnotatedWith(DefaultLoader.class).stream().map((clazz) -> {
                             try {
                                 return (ResourceLoader) clazz.newInstance();
-                            } catch (Exception ex) {
+                            } catch (final Exception ex) {
                                 return null;
                             }
                         }).filter(Objects::nonNull).collect(Collectors.toList());
             }
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             Logger.handleError(ex);
             return new ArrayList<>();
         }
     }
 
     @Override
-    public boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
-            ResourceManager resourceManager) throws Exception {
+    public boolean load(final AdvancedFile advancedFile, final AdvancedFile superFile, final Properties properties,
+            final ResourceManager resourceManager) throws Exception {
         return loadIntern(advancedFile, superFile, properties, resourceManager);
     }
 
     @Override
-    public LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
-            ResourceManager resourceManager) throws Exception {
+    public LoadingType accept(final AdvancedFile advancedFile, final AdvancedFile superFile,
+            final Properties properties, final ResourceManager resourceManager) throws Exception {
         return getResourceLoadersForAdvancedFile(advancedFile, superFile, properties, resourceManager).isEmpty()
                 ? LoadingType.NOT
                 : LoadingType.NORMAL;
     }
 
-    private boolean loadIntern(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
-            ResourceManager resourceManager) throws Exception {
+    private boolean loadIntern(final AdvancedFile advancedFile, final AdvancedFile superFile,
+            final Properties properties, final ResourceManager resourceManager) throws Exception {
         if (advancedFile == null || !advancedFile.exists()) {
             return false;
         }
@@ -159,7 +172,7 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
             return advancedFile.listFiles().stream().allMatch((advancedFile_) -> {
                 try {
                     return loadIntern(advancedFile_, superFile, properties, resourceManager);
-                } catch (Exception ex) {
+                } catch (final Exception ex) {
                     Logger.handleError(ex);
                     return false;
                 }
@@ -175,15 +188,15 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
                 return false;
             }
             final AtomicBoolean mayLoaded = new AtomicBoolean(false);
-            for (ResourceLoader resourceLoader_ : resourceLoaders) {
+            for (final ResourceLoader resourceLoader_ : resourceLoaders) {
                 final LoadingType loadingType = resourceLoader_.accept(advancedFile, superFile, properties_temp,
                         resourceManager);
                 if (loadingType == LoadingType.NORMAL) {
                     try {
-                        executorService.submit(() -> {
+                        this.executorService.submit(() -> {
                             try {
                                 resourceLoader_.load(advancedFile, superFile, properties_temp, resourceManager);
-                            } catch (Exception ex) {
+                            } catch (final Exception ex) {
                                 Logger.logErr(String.format("Error while loading multithreaded intern \"%s\"%s",
                                         advancedFile, Objects.equals(advancedFile, superFile) ? ""
                                                 : String.format(" (in \"%s\")", superFile)),
@@ -191,7 +204,7 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
                             }
                         });
                         mayLoaded.set(true);
-                    } catch (Exception ex) {
+                    } catch (final Exception ex) {
                         Logger.logErr(String.format("Error while loading multithreaded \"%s\"%s", advancedFile,
                                 Objects.equals(advancedFile, superFile) ? ""
                                         : String.format(" (in \"%s\")", superFile)),
@@ -200,7 +213,7 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
                 } else if (loadingType == LoadingType.OPENGL) {
                     try {
                         mayLoaded.set(resourceLoader_.load(advancedFile, superFile, properties_temp, resourceManager));
-                    } catch (Exception ex) {
+                    } catch (final Exception ex) {
                         Logger.logErr(String.format("Error while loading \"%s\"%s", advancedFile,
                                 Objects.equals(advancedFile, superFile) ? ""
                                         : String.format(" (in \"%s\")", superFile)),
@@ -221,35 +234,35 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
         return loadStagedAdvancedFiles(true);
     }
 
-    public boolean loadStagedAdvancedFiles(boolean clearData) {
+    public boolean loadStagedAdvancedFiles(final boolean clearData) {
         return loadStagedAdvancedFiles(clearData, 5, TimeUnit.MINUTES);
     }
 
-    public boolean loadStagedAdvancedFiles(boolean clearData, long timeout, TimeUnit unit) {
+    public boolean loadStagedAdvancedFiles(final boolean clearData, final long timeout, final TimeUnit unit) {
         resetExecutor();
-        loading.set(true);
+        this.loading.set(true);
         try {
             if (clearData) {
-                loading.set(false);
+                this.loading.set(false);
                 clearResources();
-                loading.set(true);
+                this.loading.set(true);
             }
             final List<StagedAdvancedFile> stagedAdvancedFiles = getStagedAdvancedFilesSorted();
             stagedAdvancedFiles.forEach((stagedAdvancedFile) -> {
                 try {
                     load(stagedAdvancedFile.getAdvancedFile(), stagedAdvancedFile.getAdvancedFile(), null, this);
-                } catch (Exception ex) {
+                } catch (final Exception ex) {
                     Logger.handleError(ex);
                 }
             });
-            if (executorService != null) {
-                executorService.shutdown();
-                executorService.awaitTermination(timeout, unit);
+            if (this.executorService != null) {
+                this.executorService.shutdown();
+                this.executorService.awaitTermination(timeout, unit);
             }
-            loading.set(false);
+            this.loading.set(false);
             return true;
-        } catch (Exception ex) {
-            loading.set(false);
+        } catch (final Exception ex) {
+            this.loading.set(false);
             Logger.handleError(ex);
             return false;
         }
@@ -258,110 +271,110 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
     private DefaultResourceManager resetExecutor() {
         checkAndErrorIfLoading(true);
         try {
-            if (executorService != null) {
-                executorService.shutdownNow();
+            if (this.executorService != null) {
+                this.executorService.shutdownNow();
             }
-            executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        } catch (Exception ex) {
+            this.executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        } catch (final Exception ex) {
             Logger.handleError(ex);
         }
         return this;
     }
 
     public ExecutorService getExecutorService() {
-        return executorService;
+        return this.executorService;
     }
 
     @Override
-    public <T extends ResourceObject> T getResource(long id) {
+    public <T extends ResourceObject> T getResource(final long id) {
         checkAndErrorIfLoading(true);
-        return (T) resourceObjects.values().stream().filter((resourceObject) -> resourceObject.getId() == id)
+        return (T) this.resourceObjects.values().stream().filter((resourceObject) -> resourceObject.getId() == id)
                 .findFirst().orElse(null);
     }
 
     @Override
-    public <T extends ResourceObject> T getResource(String name) {
+    public <T extends ResourceObject> T getResource(final String name) {
         checkAndErrorIfLoading(true);
         Objects.requireNonNull(name);
-        return (T) resourceObjects.values().stream().filter((resourceObject) -> name.equals(resourceObject.getName()))
-                .findFirst().orElse(null);
+        return (T) this.resourceObjects.values().stream()
+                .filter((resourceObject) -> name.equals(resourceObject.getName())).findFirst().orElse(null);
     }
 
     @Override
-    public <T extends ResourceObject> T getResource(Class<T> clazz, long id) {
+    public <T extends ResourceObject> T getResource(final Class<T> clazz, final long id) {
         checkAndErrorIfLoading(true);
         if (!containsClass(clazz)) {
             return null;
         }
-        return (T) resourceObjects.get(clazz).stream().filter((resourceObject) -> resourceObject.getId() == id)
+        return (T) this.resourceObjects.get(clazz).stream().filter((resourceObject) -> resourceObject.getId() == id)
                 .findFirst().orElse(null);
     }
 
     @Override
-    public <T extends ResourceObject> T getResource(Class<T> clazz, String name) {
+    public <T extends ResourceObject> T getResource(final Class<T> clazz, final String name) {
         checkAndErrorIfLoading(true);
         Objects.requireNonNull(name);
         if (!containsClass(clazz)) {
             return null;
         }
-        return (T) resourceObjects.get(clazz).stream().filter((resourceObject) -> name.equals(resourceObject.getName()))
-                .findFirst().orElse(null);
+        return (T) this.resourceObjects.get(clazz).stream()
+                .filter((resourceObject) -> name.equals(resourceObject.getName())).findFirst().orElse(null);
     }
 
     @Override
-    public <T extends ResourceObject> Collection<T> getResources(Class<T> clazz) {
+    public <T extends ResourceObject> Collection<T> getResources(final Class<T> clazz) {
         checkAndErrorIfLoading(true);
         if (!containsClass(clazz)) {
             return new ArrayList<>();
         }
-        return resourceObjects.get(clazz).stream().map((resourceObject) -> (T) resourceObject)
+        return this.resourceObjects.get(clazz).stream().map((resourceObject) -> (T) resourceObject)
                 .collect(Collectors.toList());
     }
 
     @Override
     public Collection<ResourceObject> getAllResources() {
         checkAndErrorIfLoading(true);
-        return resourceObjects.values().stream().collect(Collectors.toList());
+        return this.resourceObjects.values().stream().collect(Collectors.toList());
     }
 
     @Override
     public boolean clearResources() {
         checkAndErrorIfLoading(true);
-        resourceObjects.clear();
-        return resourceObjects.isEmpty();
+        this.resourceObjects.clear();
+        return this.resourceObjects.isEmpty();
     }
 
     @Override
-    public <T extends ResourceObject> boolean clearResources(Class<T> clazz) {
+    public <T extends ResourceObject> boolean clearResources(final Class<T> clazz) {
         checkAndErrorIfLoading(true);
         Objects.requireNonNull(clazz);
-        resourceObjects.removeAll(clazz);
+        this.resourceObjects.removeAll(clazz);
         return true;
     }
 
     @Override
-    public boolean removeResource(long id) {
+    public boolean removeResource(final long id) {
         final ResourceObject resourceObject = getResource(id);
         if (resourceObject == null) {
             return false;
         }
-        resourceObjects.remove(resourceObject.getClass(), resourceObject);
+        this.resourceObjects.remove(resourceObject.getClass(), resourceObject);
         return true;
     }
 
     @Override
-    public boolean removeResource(String name) {
+    public boolean removeResource(final String name) {
         Objects.requireNonNull(name);
         final ResourceObject resourceObject = getResource(name);
         if (resourceObject == null) {
             return false;
         }
-        resourceObjects.remove(resourceObject.getClass(), resourceObject);
+        this.resourceObjects.remove(resourceObject.getClass(), resourceObject);
         return true;
     }
 
     @Override
-    public boolean addResources(ResourceObject... resourceObjects) {
+    public boolean addResources(final ResourceObject... resourceObjects) {
         if (resourceObjects.length == 0) {
             return false;
         }
@@ -370,7 +383,7 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
     }
 
     @Override
-    public <T extends ResourceObject> boolean addResources(Class<T> clazz, T... resourceObjects) {
+    public <T extends ResourceObject> boolean addResources(final Class<T> clazz, final T... resourceObjects) {
         Util.ensureNonNull(clazz);
         if (resourceObjects.length == 0) {
             return false;
@@ -378,28 +391,29 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
         return this.resourceObjects.putAll(clazz, Arrays.asList(resourceObjects));
     }
 
-    public boolean containsClass(Class<? extends ResourceObject> clazz) {
-        return resourceObjects.containsKey(clazz);
+    public boolean containsClass(final Class<? extends ResourceObject> clazz) {
+        return this.resourceObjects.containsKey(clazz);
     }
 
-    public DefaultResourceManager stageAdvancedFiles(AdvancedFile... advancedFiles) {
+    public DefaultResourceManager stageAdvancedFiles(final AdvancedFile... advancedFiles) {
         return stageAdvancedFiles(0, 0L, advancedFiles);
     }
 
-    public DefaultResourceManager stageAdvancedFiles(long options, AdvancedFile... advancedFiles) {
+    public DefaultResourceManager stageAdvancedFiles(final long options, final AdvancedFile... advancedFiles) {
         return stageAdvancedFiles(0, options, advancedFiles);
     }
 
-    public DefaultResourceManager stageAdvancedFiles(int priority, AdvancedFile... advancedFiles) {
+    public DefaultResourceManager stageAdvancedFiles(final int priority, final AdvancedFile... advancedFiles) {
         return stageAdvancedFiles(priority, 0L, advancedFiles);
     }
 
-    public DefaultResourceManager stageAdvancedFiles(int priority, long options, AdvancedFile... advancedFiles) {
+    public DefaultResourceManager stageAdvancedFiles(final int priority, final long options,
+            final AdvancedFile... advancedFiles) {
         checkAndErrorIfLoading(true);
         if (advancedFiles == null || advancedFiles.length == 0) {
             return this;
         }
-        priorityStagedAdvancedFiles.computeIfAbsent(priority, (key) -> new CopyOnWriteArrayList<>())
+        this.priorityStagedAdvancedFiles.computeIfAbsent(priority, (key) -> new CopyOnWriteArrayList<>())
                 .addAll(Stream.of(advancedFiles).map((advancedFile) -> new StagedAdvancedFile(options, advancedFile))
                         .collect(Collectors.toList()));
         return this;
@@ -407,22 +421,22 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
 
     public DefaultResourceManager clearStagedAdvancedFiles() {
         checkAndErrorIfLoading(true);
-        priorityStagedAdvancedFiles.clear();
+        this.priorityStagedAdvancedFiles.clear();
         return this;
     }
 
     public List<StagedAdvancedFile> getStagedAdvancedFilesSorted() {
         final List<StagedAdvancedFile> stagedAdvancedFilesSorted = new ArrayList<>();
-        priorityStagedAdvancedFiles.keySet().stream().sorted((i_1, i_2) -> i_2 - i_1)
-                .forEach((priority) -> stagedAdvancedFilesSorted.addAll(priorityStagedAdvancedFiles.get(priority)));
+        this.priorityStagedAdvancedFiles.keySet().stream().sorted((i_1, i_2) -> i_2 - i_1).forEach(
+                (priority) -> stagedAdvancedFilesSorted.addAll(this.priorityStagedAdvancedFiles.get(priority)));
         return stagedAdvancedFilesSorted;
     }
 
     public boolean isLoading() {
-        return loading.get();
+        return this.loading.get();
     }
 
-    public boolean checkAndErrorIfLoading(boolean throwException) {
+    public boolean checkAndErrorIfLoading(final boolean throwException) {
         if (isLoading()) {
             if (throwException) {
                 throw new IllegalStateException(getClass().getSimpleName() + " is currently loading");
@@ -434,40 +448,41 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
         }
     }
 
-    public boolean addResourceObject(ResourceObject resourceObject) {
+    public boolean addResourceObject(final ResourceObject resourceObject) {
         Util.ensureNonNull(resourceObject);
-        return resourceObjects.put(resourceObject.getClass(), resourceObject);
+        return this.resourceObjects.put(resourceObject.getClass(), resourceObject);
     }
 
-    public DefaultResourceManager addResourceLoader(ResourceLoader resourceLoader) {
+    public DefaultResourceManager addResourceLoader(final ResourceLoader resourceLoader) {
         checkAndErrorIfLoading(true);
         Util.ensureNonNull(resourceLoader);
         if (equals(resourceLoader)) {
             return this;
         }
-        resourceLoaders.add(resourceLoader);
+        this.resourceLoaders.add(resourceLoader);
         return this;
     }
 
-    public DefaultResourceManager removeResourceLoader(ResourceLoader resourceLoader) {
+    public DefaultResourceManager removeResourceLoader(final ResourceLoader resourceLoader) {
         checkAndErrorIfLoading(true);
-        resourceLoaders.remove(resourceLoader);
+        this.resourceLoaders.remove(resourceLoader);
         return this;
     }
 
     public List<ResourceLoader> getResourceLoaders() {
-        return resourceLoaders;
+        return this.resourceLoaders;
     }
 
-    public List<ResourceLoader> getResourceLoadersForAdvancedFile(AdvancedFile advancedFile, AdvancedFile superFile,
-            Properties properties, ResourceManager resourceManager) {
-        return resourceLoaders.stream().filter((resourceLoader_) -> resourceLoader_.acceptWithoutException(advancedFile,
-                superFile, properties, resourceManager) != LoadingType.NOT).collect(Collectors.toList());
+    public List<ResourceLoader> getResourceLoadersForAdvancedFile(final AdvancedFile advancedFile,
+            final AdvancedFile superFile, final Properties properties, final ResourceManager resourceManager) {
+        return this.resourceLoaders.stream().filter((resourceLoader_) -> resourceLoader_
+                .acceptWithoutException(advancedFile, superFile, properties, resourceManager) != LoadingType.NOT)
+                .collect(Collectors.toList());
     }
 
     public DefaultResourceManager clearResourceLoaders() {
         checkAndErrorIfLoading(true);
-        resourceLoaders.clear();
+        this.resourceLoaders.clear();
         return this;
     }
 
@@ -476,7 +491,7 @@ public class DefaultResourceManager implements ResourceLoader, ResourceManager {
         return this;
     }
 
-    public DefaultResourceManager addDefaultResourceLoaders(boolean distinct) {
+    public DefaultResourceManager addDefaultResourceLoaders(final boolean distinct) {
         getDefaultLoaders(distinct).forEach(this::addResourceLoader);
         return this;
     }

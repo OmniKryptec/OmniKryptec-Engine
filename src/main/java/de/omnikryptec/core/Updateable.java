@@ -21,12 +21,12 @@ import de.omnikryptec.util.updater.Time;
 
 public interface Updateable {
 
-    default void preUpdate(Time time) {
+    default void preUpdate(final Time time) {
     }
 
     void update(Time time);
 
-    default void postUpdate(Time time) {
+    default void postUpdate(final Time time) {
     }
     
     default ExecuteMode defaultExecuteMode() {

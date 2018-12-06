@@ -31,55 +31,55 @@ public abstract class WindowInfo<T extends WindowInfo<?>> {
     public abstract Window<T> createWindow();
 
     public int getWidth() {
-        return width;
+        return this.width;
     }
 
-    public T setWidth(int width) {
+    public T setWidth(final int width) {
         this.width = width;
         return (T) this;
     }
 
     public int getHeight() {
-        return height;
+        return this.height;
     }
 
-    public T setHeight(int height) {
+    public T setHeight(final int height) {
         this.height = height;
         return (T) this;
     }
 
     public boolean isFullscreen() {
-        return fullscreen;
+        return this.fullscreen;
     }
 
-    public T setFullscreen(boolean fullscreen) {
+    public T setFullscreen(final boolean fullscreen) {
         this.fullscreen = fullscreen;
         return (T) this;
     }
 
     public boolean isResizeable() {
-        return resizeable;
+        return this.resizeable;
     }
 
-    public T setResizeable(boolean resizeable) {
+    public T setResizeable(final boolean resizeable) {
         this.resizeable = resizeable;
         return (T) this;
     }
 
     public boolean isLockAspectRatio() {
-        return lockAspectRatio;
+        return this.lockAspectRatio;
     }
 
-    public T setLockAspectRatio(boolean lockAspectRatio) {
+    public T setLockAspectRatio(final boolean lockAspectRatio) {
         this.lockAspectRatio = lockAspectRatio;
         return (T) this;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
-    public T setName(String name) {
+    public T setName(final String name) {
         this.name = name;
         return (T) this;
     }

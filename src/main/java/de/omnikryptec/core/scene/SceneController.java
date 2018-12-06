@@ -1,34 +1,32 @@
 package de.omnikryptec.core.scene;
 
 import de.omnikryptec.core.UpdateablesStorage;
-import de.omnikryptec.event.EventBus;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
-import de.omnikryptec.util.updater.Time;
 
 public class SceneController {
 
-    public enum ControllerSettings implements Defaultable{
+    public enum ControllerSettings implements Defaultable {
         UPDATES_SYNC_PER_S(0), UPDATES_ASYNC_PER_S(0);
 
         private final Object object;
         
-        private ControllerSettings(Object object) {
+        private ControllerSettings(final Object object) {
             this.object = object;
         }
         
         @Override
         public <T> T getDefault() {
-            return (T) object;
+            return (T) this.object;
         }
     }
     
     private final Settings<ControllerSettings> controllerSettings;
     
     //Rendering and Mainthread stuff
-    private UpdateablesStorage updtContainerSync;
+    private final UpdateablesStorage updtContainerSync;
     //Might happen on another Thread
-    private UpdateablesStorage updtContainerAsync;
+    private final UpdateablesStorage updtContainerAsync;
 
     //    private EventBus eventbusSync;
     //    private EventBus eventbusAsync;
@@ -44,14 +42,14 @@ public class SceneController {
     }
 
     public UpdateablesStorage getUpdateableContainerSync() {
-        return updtContainerSync;
+        return this.updtContainerSync;
     }
 
     public UpdateablesStorage getUpdateableContainerAsync() {
-        return updtContainerAsync;
+        return this.updtContainerAsync;
     }
     
-    public Settings<ControllerSettings> getSettings(){
-        return controllerSettings;
+    public Settings<ControllerSettings> getSettings() {
+        return this.controllerSettings;
     }
 }

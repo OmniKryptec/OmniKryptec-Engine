@@ -16,10 +16,10 @@
 
 package de.omnikryptec.util.updater;
 
+import javax.annotation.Nonnull;
+
 import de.omnikryptec.libapi.LibAPIManager;
 import de.omnikryptec.util.data.Smoother;
-
-import javax.annotation.Nonnull;
 
 /**
  * A wrapper class that is responsible to run an {@link #operation()} in a
@@ -42,7 +42,7 @@ public class AbstractUpdater {
 
     private double lastsynced;
 
-    private Smoother deltaTimeSmoother;
+    private final Smoother deltaTimeSmoother;
 
     public AbstractUpdater() {
         this.deltaTimeSmoother = new Smoother();
@@ -62,30 +62,30 @@ public class AbstractUpdater {
      * @param maxops limits the OPS for values greater than 0. Otherwise does
      *               nothing.
      */
-    public void update(int maxops) {
-        double currentFrameTime = LibAPIManager.active().getTime();
-        deltatime = (currentFrameTime - lasttime);
-        deltaTimeSmoother.push(deltatime);
-        frontruntime += deltatime;
-        lasttime = currentFrameTime;
+    public void update(final int maxops) {
+        final double currentFrameTime = LibAPIManager.active().getTime();
+        this.deltatime = (currentFrameTime - this.lasttime);
+        this.deltaTimeSmoother.push(this.deltatime);
+        this.frontruntime += this.deltatime;
+        this.lasttime = currentFrameTime;
         if (maxops > 0) {
             sync(maxops);
         }
         operation();
-        operationcount++;
-        if (ops) {
-            ops1++;
+        this.operationcount++;
+        if (this.ops) {
+            this.ops1++;
         } else {
-            ops2++;
+            this.ops2++;
         }
-        if (frontruntime - opstime >= 1.0) {
-            opstime = frontruntime;
-            if (ops) {
-                ops = false;
-                ops2 = 0;
+        if (this.frontruntime - this.opstime >= 1.0) {
+            this.opstime = this.frontruntime;
+            if (this.ops) {
+                this.ops = false;
+                this.ops2 = 0;
             } else {
-                ops = true;
-                ops1 = 0;
+                this.ops = true;
+                this.ops1 = 0;
             }
         }
     }
@@ -103,13 +103,13 @@ public class AbstractUpdater {
      *
      * @param ops maxops, values smaller or equal to 0 confuse this function though.
      */
-    private void sync(int ops) {
-        double target = lastsynced + (1.0 / ops);
+    private void sync(final int ops) {
+        final double target = this.lastsynced + (1.0 / ops);
         try {
-            while ((lastsynced = LibAPIManager.active().getTime()) < target) {
+            while ((this.lastsynced = LibAPIManager.active().getTime()) < target) {
                 Thread.sleep(1);
             }
-        } catch (InterruptedException ex) {
+        } catch (final InterruptedException ex) {
         }
     }
 
@@ -123,7 +123,7 @@ public class AbstractUpdater {
      */
     @Nonnull
     public final Smoother getDeltaTimeSmoother() {
-        return deltaTimeSmoother;
+        return this.deltaTimeSmoother;
     }
 
     /**
@@ -133,7 +133,7 @@ public class AbstractUpdater {
      * @return the operation count
      */
     public long getOperationCount() {
-        return operationcount;
+        return this.operationcount;
     }
 
     // /**
@@ -155,7 +155,7 @@ public class AbstractUpdater {
      * @return operations per second
      */
     public long getOPS() {
-        return ops ? ops2 : ops1;
+        return this.ops ? this.ops2 : this.ops1;
     }
 
     /**
@@ -168,7 +168,7 @@ public class AbstractUpdater {
      * @see #getDeltaTimeSmoother()
      */
     public double getDeltaTime() {
-        return deltatime;
+        return this.deltatime;
     }
 
     /**

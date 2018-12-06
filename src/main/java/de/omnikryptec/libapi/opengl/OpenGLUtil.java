@@ -16,25 +16,25 @@
 
 package de.omnikryptec.libapi.opengl;
 
-import de.omnikryptec.util.Util;
-import de.omnikryptec.util.data.Color;
+import java.util.EnumMap;
+import java.util.Map;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
-import java.util.EnumMap;
-import java.util.Map;
+import de.omnikryptec.util.data.Color;
 
 public class OpenGLUtil {
 
     private static Map<Feature, Boolean> featureCache = new EnumMap<>(Feature.class);
     private static Map<CACHE_ENUM, Object> cache = new EnumMap<>(CACHE_ENUM.class);
 
-    public static boolean isFeatureEnabled(Feature f) {
+    public static boolean isFeatureEnabled(final Feature f) {
         return featureCache.get(f) == null ? false : featureCache.get(f);
     }
 
-    public static void setEnabled(Feature feature, boolean b) {
-        Boolean cached = featureCache.get(feature);
+    public static void setEnabled(final Feature feature, final boolean b) {
+        final Boolean cached = featureCache.get(feature);
         if (cached == null || ((cached) != b)) {
             if (b) {
                 GL11.glEnable(feature.id);
@@ -46,8 +46,8 @@ public class OpenGLUtil {
         }
     }
 
-    public static void setBlendMode(BlendMode blendModeNew) {
-        BlendMode blendModeOld = (BlendMode) cache.get(CACHE_ENUM.BLEND_MODE);
+    public static void setBlendMode(final BlendMode blendModeNew) {
+        final BlendMode blendModeOld = (BlendMode) cache.get(CACHE_ENUM.BLEND_MODE);
         if (blendModeOld == null || blendModeOld != blendModeNew) {
             switch (blendModeNew) {
             case ADDITIVE:
@@ -66,45 +66,45 @@ public class OpenGLUtil {
         }
     }
 
-    public static void setCullMode(CullMode mode) {
-        Object o = cache.get(CACHE_ENUM.CULL_FACE_KEY);
+    public static void setCullMode(final CullMode mode) {
+        final Object o = cache.get(CACHE_ENUM.CULL_FACE_KEY);
         if (o == null || ((CullMode) o) != mode) {
             GL11.glCullFace(mode.id);
             cache.put(CACHE_ENUM.CULL_FACE_KEY, mode);
         }
     }
 
-    public static void setScissor(int x, int y, int width, int height) {
+    public static void setScissor(final int x, final int y, final int width, final int height) {
         GL11.glScissor(x, y, width, height);
     }
 
-    public static void setDepthMask(boolean b) {
-        Object o = cache.get(CACHE_ENUM.DEPTH_MASK_KEY);
+    public static void setDepthMask(final boolean b) {
+        final Object o = cache.get(CACHE_ENUM.DEPTH_MASK_KEY);
         if (o == null || ((boolean) o) != b) {
             GL11.glDepthMask(b);
             cache.put(CACHE_ENUM.DEPTH_MASK_KEY, b);
         }
     }
 
-    public static void setPolyMode(PolyMode mode) {
-        Object o = cache.get(CACHE_ENUM.POLY_MODE_KEY);
+    public static void setPolyMode(final PolyMode mode) {
+        final Object o = cache.get(CACHE_ENUM.POLY_MODE_KEY);
         if (o == null || ((PolyMode) o) != mode) {
             GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, mode.id);
             cache.put(CACHE_ENUM.POLY_MODE_KEY, mode);
         }
     }
 
-    public static void setClearColor(Color color) {
+    public static void setClearColor(final Color color) {
         setClearColor(color.getR(), color.getG(), color.getB(), color.getA());
     }
 
-    public static void setClearColor(float r, float g, float b, float a) {
+    public static void setClearColor(final float r, final float g, final float b, final float a) {
         GL11.glClearColor(r, g, b, a);
     }
 
-    public static void clear(BufferType... buffers) {
+    public static void clear(final BufferType... buffers) {
         int mask = 0;
-        for (BufferType b : buffers) {
+        for (final BufferType b : buffers) {
             mask |= b.id;
         }
         GL11.glClear(mask);
@@ -119,7 +119,7 @@ public class OpenGLUtil {
 
         public final int id;
 
-        private CullMode(int id) {
+        private CullMode(final int id) {
             this.id = id;
         }
     }
@@ -129,7 +129,7 @@ public class OpenGLUtil {
 
         public final int id;
 
-        private PolyMode(int id) {
+        private PolyMode(final int id) {
             this.id = id;
         }
     }
@@ -140,7 +140,7 @@ public class OpenGLUtil {
 
         public final int id;
 
-        private BufferType(int id) {
+        private BufferType(final int id) {
             this.id = id;
         }
     }
@@ -151,7 +151,7 @@ public class OpenGLUtil {
 
         public final int id;
 
-        private Feature(int id) {
+        private Feature(final int id) {
             this.id = id;
         }
 

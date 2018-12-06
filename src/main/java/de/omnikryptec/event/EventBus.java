@@ -16,31 +16,31 @@
 
 package de.omnikryptec.event;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-
-import de.omnikryptec.core.Updateable;
-import de.omnikryptec.util.updater.Time;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+
+import de.omnikryptec.core.Updateable;
+import de.omnikryptec.util.updater.Time;
+
 public class EventBus implements Updateable {
 
     private final AtomicBoolean processing = new AtomicBoolean(false);
-    private Multimap<Class<? extends Event>, IEventListener> listeners;
-    private Queue<Event> eventQueue;
+    private final Multimap<Class<? extends Event>, IEventListener> listeners;
+    private final Queue<Event> eventQueue;
 
     public EventBus() {
         this.eventQueue = new ConcurrentLinkedQueue<>();
         this.listeners = ArrayListMultimap.create();
     }
 
-    public void register(IEventListener listener, Class<? extends Event> eventtype) {
-        listeners.put(eventtype, listener);
+    public void register(final IEventListener listener, final Class<? extends Event> eventtype) {
+        this.listeners.put(eventtype, listener);
     }
 
     public void register(Object object) {
@@ -52,20 +52,20 @@ public class EventBus implements Updateable {
             methods = object.getClass().getDeclaredMethods();
         }
         boolean annotationFound = false;
-        for (Method m : methods) {
+        for (final Method m : methods) {
             if (object == null && !Modifier.isStatic(m.getModifiers())) {
                 throw new IllegalArgumentException("Nonstatic event listener registered by class");
             }
-            EventSubscription esub = m.getAnnotation(EventSubscription.class);
+            final EventSubscription esub = m.getAnnotation(EventSubscription.class);
             if (esub != null) {
                 annotationFound = true;
-                EventHandler handler = new EventHandler(object, m, esub.receiveConsumed());
-                Class<?>[] cls = m.getParameterTypes();
+                final EventHandler handler = new EventHandler(object, m, esub.receiveConsumed());
+                final Class<?>[] cls = m.getParameterTypes();
                 if (cls.length != 1) {
                     throw new IllegalArgumentException("Wrong amount of parameter types in event listener: " + object);
                 } else {
                     if (Event.class.isAssignableFrom(cls[0])) {
-                        if (listeners.containsKey(cls[0]) && listeners.containsEntry(cls[0], handler)) {
+                        if (this.listeners.containsKey(cls[0]) && this.listeners.containsEntry(cls[0], handler)) {
                             continue;
                         }
                         register(handler, (Class<? extends Event>) cls[0]);
@@ -80,33 +80,33 @@ public class EventBus implements Updateable {
         }
     }
 
-    public void post(Event event) {
+    public void post(final Event event) {
         processEvent(event);
     }
 
-    public void enqueue(Event event) {
-        eventQueue.add(event);
+    public void enqueue(final Event event) {
+        this.eventQueue.add(event);
     }
 
     public void processQueuedEvents() {
-        if (processing.get()) {
+        if (this.processing.get()) {
             throw new IllegalStateException("Already processing!");
         }
-        processing.set(true);
-        while (!eventQueue.isEmpty()) {
-            processEvent(eventQueue.poll());
+        this.processing.set(true);
+        while (!this.eventQueue.isEmpty()) {
+            processEvent(this.eventQueue.poll());
         }
-        processing.set(false);
+        this.processing.set(false);
     }
 
     public boolean isProcessing() {
-        return processing.get();
+        return this.processing.get();
     }
 
-    private void processEvent(Event event) {
+    private void processEvent(final Event event) {
         Class<?> someclazz = event.getClass();
         do {
-            for (IEventListener listener : listeners.get((Class<? extends Event>) someclazz)) {
+            for (final IEventListener listener : this.listeners.get((Class<? extends Event>) someclazz)) {
                 if (!event.isConsumeable() || !event.isConsumed() || listener.receiveConsumed()) {
                     listener.invoke(event);
                 }
@@ -116,7 +116,7 @@ public class EventBus implements Updateable {
     }
 
     @Override
-    public void update(Time time) {
+    public void update(final Time time) {
         processQueuedEvents();
     }
 }

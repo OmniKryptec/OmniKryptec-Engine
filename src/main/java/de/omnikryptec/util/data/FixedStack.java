@@ -25,7 +25,7 @@ package de.omnikryptec.util.data;
  */
 public class FixedStack<T> {
 
-    private Object[] array;
+    private final Object[] array;
     private int index = 0;
 
     /**
@@ -33,11 +33,11 @@ public class FixedStack<T> {
      *
      * @param size the size of the new stack.
      */
-    public FixedStack(int size) {
+    public FixedStack(final int size) {
         if (size <= 0) {
             throw new IllegalArgumentException("Size must ne greater than 0!");
         }
-        array = new Object[size];
+        this.array = new Object[size];
     }
 
     /**
@@ -45,9 +45,9 @@ public class FixedStack<T> {
      *
      * @param i the object to be added
      */
-    public void push(T i) {
-        array[index] = i;
-        index++;
+    public void push(final T i) {
+        this.array[this.index] = i;
+        this.index++;
     }
 
     /**
@@ -56,8 +56,8 @@ public class FixedStack<T> {
      * @return the top element
      */
     public T pop() {
-        index--;
-        return (T) array[index];
+        this.index--;
+        return (T) this.array[this.index];
     }
 
     /**
@@ -66,21 +66,21 @@ public class FixedStack<T> {
      * @return the top element
      */
     public T top() {
-        return (T) array[index - 1];
+        return (T) this.array[this.index - 1];
     }
 
     /**
      * @return if this {@link FixedStack} is empty
      */
     public boolean isEmpty() {
-        return index == 0;
+        return this.index == 0;
     }
 
     /**
      * @return if this {@link FixedStack} is full
      */
     public boolean isFull() {
-        return index == array.length;
+        return this.index == this.array.length;
     }
 
     /**
@@ -89,7 +89,7 @@ public class FixedStack<T> {
      * @return used capacity
      */
     public int filled() {
-        return index;
+        return this.index;
     }
 
     /**
@@ -98,7 +98,7 @@ public class FixedStack<T> {
      * @return total capacity
      */
     public int total() {
-        return array.length;
+        return this.array.length;
     }
 
     /**
@@ -106,9 +106,9 @@ public class FixedStack<T> {
      * other words, this {@link FixedStack} is emptied.
      */
     public void clear() {
-        for (int i = 0; i < index; i++) {
-            array[i] = null;
+        for (int i = 0; i < this.index; i++) {
+            this.array[i] = null;
         }
-        index = 0;
+        this.index = 0;
     }
 }

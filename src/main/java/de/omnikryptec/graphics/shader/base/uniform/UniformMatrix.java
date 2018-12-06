@@ -16,21 +16,21 @@
 
 package de.omnikryptec.graphics.shader.base.uniform;
 
+import java.nio.FloatBuffer;
+
 import org.joml.Matrix4fc;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
-
-import java.nio.FloatBuffer;
 
 public class UniformMatrix extends Uniform {
 
     private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
-    public UniformMatrix(String name) {
+    public UniformMatrix(final String name) {
         super(name);
     }
 
-    public void loadMatrix(Matrix4fc matrix) {
+    public void loadMatrix(final Matrix4fc matrix) {
         if (isFound()) {
             matrixBuffer.put(matrix.m00());
             matrixBuffer.put(matrix.m01());

@@ -16,10 +16,11 @@
 
 package de.omnikryptec.ecs;
 
-import de.omnikryptec.ecs.component.ComponentType;
+import java.util.BitSet;
 
 import javax.annotation.Nonnull;
-import java.util.BitSet;
+
+import de.omnikryptec.ecs.component.ComponentType;
 
 /**
  * A utility class to help with families/filters in Entity Component Systems.
@@ -38,9 +39,9 @@ public class Family {
      * @return a new bitset
      */
     @Nonnull
-    public static BitSet of(@Nonnull ComponentType... types) {
-        BitSet bitset = new BitSet();
-        for (ComponentType type : types) {
+    public static BitSet of(@Nonnull final ComponentType... types) {
+        final BitSet bitset = new BitSet();
+        for (final ComponentType type : types) {
             bitset.set(type.getId());
         }
         return bitset;
@@ -57,7 +58,7 @@ public class Family {
      * @return true if all bits that are set to true in trueRequired are also true
      *         in input.
      */
-    public static boolean containsTrueBits(@Nonnull BitSet input, @Nonnull BitSet trueRequired) {
+    public static boolean containsTrueBits(@Nonnull final BitSet input, @Nonnull final BitSet trueRequired) {
         int i = trueRequired.nextSetBit(0);
         while (i != -1) {
             if (!input.get(i)) {

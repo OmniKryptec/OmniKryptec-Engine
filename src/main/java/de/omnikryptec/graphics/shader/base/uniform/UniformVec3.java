@@ -16,9 +16,10 @@
 
 package de.omnikryptec.graphics.shader.base.uniform;
 
-import de.omnikryptec.util.data.Color;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL20;
+
+import de.omnikryptec.util.data.Color;
 
 public class UniformVec3 extends Uniform {
     private float currentX;
@@ -26,31 +27,31 @@ public class UniformVec3 extends Uniform {
     private float currentZ;
     private boolean used = false;
 
-    public UniformVec3(String name) {
+    public UniformVec3(final String name) {
         super(name);
     }
 
-    public void loadVec3(Vector3f vector) {
+    public void loadVec3(final Vector3f vector) {
         if (vector != null) {
             loadVec3(vector.x, vector.y, vector.z);
         }
     }
 
-    public void loadVec3(float[] array) {
+    public void loadVec3(final float[] array) {
         loadVec3(array[0], array[1], array[2]);
     }
 
-    public void loadVec3(float x, float y, float z) {
-        if (isFound() && (!used || x != currentX || y != currentY || z != currentZ)) {
+    public void loadVec3(final float x, final float y, final float z) {
+        if (isFound() && (!this.used || x != this.currentX || y != this.currentY || z != this.currentZ)) {
             this.currentX = x;
             this.currentY = y;
             this.currentZ = z;
-            used = true;
+            this.used = true;
             GL20.glUniform3f(super.getLocation(), x, y, z);
         }
     }
 
-    public void loadColor(Color color) {
+    public void loadColor(final Color color) {
         loadVec3(color.getR(), color.getG(), color.getB());
     }
 

@@ -2,8 +2,8 @@ package de.omnikryptec.event;
 
 public class Test {
 
-    public static void main(String[] args) {
-        EventBus bus = new EventBus();
+    public static void main(final String[] args) {
+        final EventBus bus = new EventBus();
         bus.register(new Test());
         bus.enqueue(new Event());
         bus.enqueue(new TestEvent());
@@ -12,7 +12,7 @@ public class Test {
     }
 
     @EventSubscription
-    public void test(TestEvent e) {
+    public void test(final TestEvent e) {
         System.out.println(e);
     }
 

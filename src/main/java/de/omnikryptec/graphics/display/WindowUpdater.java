@@ -6,28 +6,28 @@ import de.omnikryptec.util.updater.AbstractUpdater;
 
 public class WindowUpdater extends AbstractUpdater {
 
-    private Window<?> window;
+    private final Window<?> window;
     private double swaptime;
 
-    public WindowUpdater(Window<?> window) {
+    public WindowUpdater(final Window<?> window) {
         this.window = window;
     }
 
     @Override
     protected void operation() {
-        double time = LibAPIManager.active().getTime();
-        window.swapBuffers();
-        swaptime = LibAPIManager.active().getTime() - time;
+        final double time = LibAPIManager.active().getTime();
+        this.window.swapBuffers();
+        this.swaptime = LibAPIManager.active().getTime() - time;
         LibAPIManager.active().pollEvents();
     }
 
     public double getSwapTime() {
-        return swaptime;
+        return this.swaptime;
     }
 
     @Deprecated
     public Window<?> getWindow() {
-        return window;
+        return this.window;
     }
 
 }

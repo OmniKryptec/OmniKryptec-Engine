@@ -25,58 +25,58 @@ public class SmoothDouble implements Updateable {
     private double target;
     private double actual;
 
-    public SmoothDouble(double initialValue, double agility) {
+    public SmoothDouble(final double initialValue, final double agility) {
         this.target = initialValue;
         this.actual = initialValue;
         this.agility = agility;
     }
 
     @Override
-    public void update(Time time) {
-        actual += (target - actual) * time.delta * agility;
+    public void update(final Time time) {
+        this.actual += (this.target - this.actual) * time.delta * this.agility;
     }
 
-    public void instantIncrease(double increase) {
+    public void instantIncrease(final double increase) {
         this.actual += increase;
-        this.target = actual;
+        this.target = this.actual;
     }
 
     public double get() {
-        return actual;
+        return this.actual;
     }
 
     public double getTarget() {
-        return target;
+        return this.target;
     }
 
-    public void setTarget(double target) {
+    public void setTarget(final double target) {
         this.target = target;
     }
 
-    public void increaseTarget(double deltaTarget) {
+    public void increaseTarget(final double deltaTarget) {
         this.target += deltaTarget;
     }
 
-    public void setValue(double f) {
-        actual = f;
+    public void setValue(final double f) {
+        this.actual = f;
     }
 
     public double getAgility() {
-        return agility;
+        return this.agility;
     }
 
-    public void setAgility(double a) {
+    public void setAgility(final double a) {
         this.agility = a;
     }
 
-    public void setValueAndTarget(double f) {
+    public void setValueAndTarget(final double f) {
         setTarget(f);
         setValue(f);
     }
 
     @Override
     public String toString() {
-        return "Value: " + actual + " Target: " + target + " Agility: " + agility;
+        return "Value: " + this.actual + " Target: " + this.target + " Agility: " + this.agility;
     }
 
 }

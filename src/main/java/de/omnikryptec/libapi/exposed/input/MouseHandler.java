@@ -16,13 +16,18 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
-import de.omnikryptec.util.settings.KeySettings;
-import org.joml.Vector2d;
-import org.joml.Vector2dc;
-import org.lwjgl.glfw.*;
-
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.joml.Vector2d;
+import org.joml.Vector2dc;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWCursorEnterCallback;
+import org.lwjgl.glfw.GLFWCursorPosCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
+import org.lwjgl.glfw.GLFWScrollCallback;
+
+import de.omnikryptec.util.settings.KeySettings;
 
 public class MouseHandler implements InputHandler {
 
@@ -39,73 +44,73 @@ public class MouseHandler implements InputHandler {
     // Temp
     private byte[] buttonsLastTime = null;
 
-    public MouseHandler(long window) {
+    public MouseHandler(final long window) {
         this.window = window;
         this.mouseButtonCallback = new GLFWMouseButtonCallback() {
             @Override
-            public void invoke(long window, int button, int action, int mods) {
-                if (ME.window != window) {
+            public void invoke(final long window, final int button, final int action, final int mods) {
+                if (MouseHandler.this.ME.window != window) {
                     return;
                 }
-                synchronized (buttons) {
-                    buttons[button] = (byte) action;
+                synchronized (MouseHandler.this.buttons) {
+                    MouseHandler.this.buttons[button] = (byte) action;
                 }
             }
         };
         this.cursorPosCallback = new GLFWCursorPosCallback() {
             @Override
-            public void invoke(long window, double xpos, double ypos) {
-                if (ME.window != window) {
+            public void invoke(final long window, final double xpos, final double ypos) {
+                if (MouseHandler.this.ME.window != window) {
                     return;
                 }
-                synchronized (position) {
-                    position.x = xpos;
-                    position.y = ypos;
+                synchronized (MouseHandler.this.position) {
+                    MouseHandler.this.position.x = xpos;
+                    MouseHandler.this.position.y = ypos;
                 }
             }
         };
         this.scrollCallback = new GLFWScrollCallback() {
             @Override
-            public void invoke(long window, double xoffset, double yoffset) {
-                if (ME.window != window) {
+            public void invoke(final long window, final double xoffset, final double yoffset) {
+                if (MouseHandler.this.ME.window != window) {
                     return;
                 }
-                synchronized (scrollOffset) {
-                    scrollOffset.x = xoffset;
-                    scrollOffset.y = yoffset;
+                synchronized (MouseHandler.this.scrollOffset) {
+                    MouseHandler.this.scrollOffset.x = xoffset;
+                    MouseHandler.this.scrollOffset.y = yoffset;
                 }
             }
         };
         this.cursorEnterCallback = new GLFWCursorEnterCallback() {
             @Override
-            public void invoke(long window, boolean entered) {
-                if (ME.window != window) {
+            public void invoke(final long window, final boolean entered) {
+                if (MouseHandler.this.ME.window != window) {
                     return;
                 }
-                insideWindow.set(entered);
+                MouseHandler.this.insideWindow.set(entered);
             }
         };
     }
 
     @Override
     public synchronized InputHandler init() {
-        GLFW.glfwSetMouseButtonCallback(window, mouseButtonCallback);
-        GLFW.glfwSetCursorPosCallback(window, cursorPosCallback);
-        GLFW.glfwSetScrollCallback(window, scrollCallback);
-        GLFW.glfwSetCursorEnterCallback(window, cursorEnterCallback);
+        GLFW.glfwSetMouseButtonCallback(this.window, this.mouseButtonCallback);
+        GLFW.glfwSetCursorPosCallback(this.window, this.cursorPosCallback);
+        GLFW.glfwSetScrollCallback(this.window, this.scrollCallback);
+        GLFW.glfwSetCursorEnterCallback(this.window, this.cursorEnterCallback);
         return this;
     }
 
     @Override
-    public synchronized InputHandler preUpdate(double currentTime, KeySettings keySettings) {
-        buttonsLastTime = Arrays.copyOf(buttons, buttons.length);
+    public synchronized InputHandler preUpdate(final double currentTime, final KeySettings keySettings) {
+        this.buttonsLastTime = Arrays.copyOf(this.buttons, this.buttons.length);
         return this;
     }
 
     @Override
-    public synchronized InputHandler update(double currentTime, KeySettings keySettings) {
-        for (int i = 0; i < buttons.length; i++) {
-            if (buttonsLastTime[i] != buttons[i]) {
+    public synchronized InputHandler update(final double currentTime, final KeySettings keySettings) {
+        for (int i = 0; i < this.buttons.length; i++) {
+            if (this.buttonsLastTime[i] != this.buttons[i]) {
                 keySettings.updateKeys(currentTime, i, false);
             }
         }
@@ -113,62 +118,62 @@ public class MouseHandler implements InputHandler {
     }
 
     @Override
-    public synchronized InputHandler postUpdate(double currentTime, KeySettings keySettings) {
-        buttonsLastTime = null; // TODO Is this good for performance or not?
+    public synchronized InputHandler postUpdate(final double currentTime, final KeySettings keySettings) {
+        this.buttonsLastTime = null; // TODO Is this good for performance or not?
         return this;
     }
 
     @Override
     public synchronized InputHandler close() {
-        mouseButtonCallback.close();
-        cursorPosCallback.close();
-        scrollCallback.close();
-        cursorEnterCallback.close();
+        this.mouseButtonCallback.close();
+        this.cursorPosCallback.close();
+        this.scrollCallback.close();
+        this.cursorEnterCallback.close();
         return this;
     }
 
-    public synchronized byte getButtonState(int buttonCode) {
-        return buttons[buttonCode];
+    public synchronized byte getButtonState(final int buttonCode) {
+        return this.buttons[buttonCode];
     }
 
-    public synchronized boolean isButtonUnknown(int buttonCode) {
-        return buttons[buttonCode] == KeySettings.KEY_UNKNOWN;
+    public synchronized boolean isButtonUnknown(final int buttonCode) {
+        return this.buttons[buttonCode] == KeySettings.KEY_UNKNOWN;
     }
 
-    public synchronized boolean isButtonNothing(int buttonCode) {
-        return buttons[buttonCode] == KeySettings.KEY_NOTHING;
+    public synchronized boolean isButtonNothing(final int buttonCode) {
+        return this.buttons[buttonCode] == KeySettings.KEY_NOTHING;
     }
 
-    public synchronized boolean isButtonReleased(int buttonCode) {
-        return buttons[buttonCode] == KeySettings.KEY_RELEASED;
+    public synchronized boolean isButtonReleased(final int buttonCode) {
+        return this.buttons[buttonCode] == KeySettings.KEY_RELEASED;
     }
 
-    public synchronized boolean isButtonPressed(int buttonCode) {
-        return buttons[buttonCode] == KeySettings.KEY_PRESSED;
+    public synchronized boolean isButtonPressed(final int buttonCode) {
+        return this.buttons[buttonCode] == KeySettings.KEY_PRESSED;
     }
 
-    public synchronized boolean isButtonRepeated(int buttonCode) {
-        return buttons[buttonCode] == KeySettings.KEY_REPEATED;
+    public synchronized boolean isButtonRepeated(final int buttonCode) {
+        return this.buttons[buttonCode] == KeySettings.KEY_REPEATED;
     }
 
     public synchronized Vector2dc getPosition() {
-        return position;
+        return this.position;
     }
 
     public synchronized Vector2dc getScrollOffset() {
-        return scrollOffset;
+        return this.scrollOffset;
     }
 
     public synchronized boolean isInsideWindow() {
-        return insideWindow.get();
+        return this.insideWindow.get();
     }
 
     public int size() {
-        return buttons.length;
+        return this.buttons.length;
     }
 
     public long getWindow() {
-        return window;
+        return this.window;
     }
 
 }

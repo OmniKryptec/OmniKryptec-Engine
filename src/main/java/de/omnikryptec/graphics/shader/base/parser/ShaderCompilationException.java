@@ -20,7 +20,7 @@ public class ShaderCompilationException extends RuntimeException {
 
     private static final long serialVersionUID = 3014987664747632177L;
 
-    public ShaderCompilationException(String program, String error) {
+    public ShaderCompilationException(final String program, final String error) {
         super("Compilation problem in program \"" + program + "\": " + error);
     }
 

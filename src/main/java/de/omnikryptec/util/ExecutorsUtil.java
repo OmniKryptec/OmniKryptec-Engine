@@ -17,7 +17,11 @@
 package de.omnikryptec.util;
 
 import java.util.Queue;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ExecutorsUtil {
@@ -30,49 +34,49 @@ public class ExecutorsUtil {
         return newFixedThreadPool(AVAILABLE_PROCESSORS);
     }
 
-    public static ExecutorService newFixedThreadPool(int nthreads) {
-        ExecutorService service = Executors.newFixedThreadPool(nthreads);
+    public static ExecutorService newFixedThreadPool(final int nthreads) {
+        final ExecutorService service = Executors.newFixedThreadPool(nthreads);
         register(service);
         return service;
     }
 
-    public static ExecutorService newFixedTHreadPool(int nthreads, ThreadFactory threadfactory) {
-        ExecutorService service = Executors.newFixedThreadPool(nthreads, threadfactory);
+    public static ExecutorService newFixedTHreadPool(final int nthreads, final ThreadFactory threadfactory) {
+        final ExecutorService service = Executors.newFixedThreadPool(nthreads, threadfactory);
         register(service);
         return service;
     }
 
-    public static void register(ExecutorService executorService) {
+    public static void register(final ExecutorService executorService) {
         if (lock.get()) {
             throw new IllegalStateException("Currently shutdowning all");
         }
         allExecutors.add(executorService);
     }
 
-    public static void unregister(ExecutorService executorService) {
+    public static void unregister(final ExecutorService executorService) {
         if (lock.get()) {
             throw new IllegalStateException("Currently shutdowning all");
         }
         allExecutors.remove(executorService);
     }
 
-    public static void shutdownNow(ExecutorService executorService) {
+    public static void shutdownNow(final ExecutorService executorService) {
         shutdown(executorService, 1, TimeUnit.MILLISECONDS);
     }
 
-    public static void shutdown(ExecutorService executorService, long time, TimeUnit unit) {
+    public static void shutdown(final ExecutorService executorService, final long time, final TimeUnit unit) {
         if (lock.get()) {
             throw new IllegalStateException("Already shutdowning all");
         }
         shutdownIntern(executorService, time, unit);
     }
 
-    private static void shutdownIntern(ExecutorService executorService, long time, TimeUnit unit) {
+    private static void shutdownIntern(final ExecutorService executorService, final long time, final TimeUnit unit) {
         executorService.shutdownNow();
         allExecutors.remove(executorService);
         try {
             executorService.awaitTermination(time, unit);
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             throw new RuntimeException("Awaiting termination failed:" + executorService, e);
         }
     }
@@ -86,7 +90,7 @@ public class ExecutorsUtil {
             while (!allExecutors.isEmpty()) {
                 shutdownIntern(allExecutors.peek(), 1, TimeUnit.MILLISECONDS);
             }
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             throw new RuntimeException(ex);
         } finally {
             lock.set(false);

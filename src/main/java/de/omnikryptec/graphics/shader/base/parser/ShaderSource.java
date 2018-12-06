@@ -21,17 +21,17 @@ public class ShaderSource {
     private final int shaderType;
     private final String source;
 
-    ShaderSource(int type, String src) {
+    ShaderSource(final int type, final String src) {
         this.shaderType = type;
         this.source = src;
     }
 
     public int getType() {
-        return shaderType;
+        return this.shaderType;
     }
 
     public String getSource() {
-        return source;
+        return this.source;
     }
 
 }

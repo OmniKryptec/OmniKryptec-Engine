@@ -23,15 +23,15 @@ public class UniformInt extends Uniform {
     private int currentValue;
     private boolean used = false;
 
-    public UniformInt(String name) {
+    public UniformInt(final String name) {
         super(name);
     }
 
-    public void loadInt(int value) {
-        if (isFound() && (!used || currentValue != value)) {
+    public void loadInt(final int value) {
+        if (isFound() && (!this.used || this.currentValue != value)) {
             GL20.glUniform1i(super.getLocation(), value);
-            used = true;
-            currentValue = value;
+            this.used = true;
+            this.currentValue = value;
         }
     }
 

@@ -20,16 +20,16 @@ public abstract class Uniform {
 
     private static final int NOT_FOUND = -1;
 
-    private String name;
+    private final String name;
     private int location;
     private boolean muted = false;
-    private boolean isfound = false;
+    private final boolean isfound = false;
 
-    protected Uniform(String name) {
+    protected Uniform(final String name) {
         this(name, false);
     }
 
-    protected Uniform(String name, boolean mute) {
+    protected Uniform(final String name, final boolean mute) {
         this.name = name;
         this.muted = mute;
     }
@@ -48,12 +48,12 @@ public abstract class Uniform {
     // }
 
     protected int getLocation() {
-        return location;
+        return this.location;
     }
 
     @Override
     public String toString() {
-        return "Name: " + name + " Location: " + location;
+        return "Name: " + this.name + " Location: " + this.location;
     }
 
     public Uniform mute() {
@@ -62,7 +62,7 @@ public abstract class Uniform {
     }
 
     public boolean isFound() {
-        return isfound;
+        return this.isfound;
     }
 
 }

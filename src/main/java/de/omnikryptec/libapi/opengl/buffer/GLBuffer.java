@@ -16,12 +16,12 @@
 
 package de.omnikryptec.libapi.opengl.buffer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.opengl.GL15;
 
 import de.omnikryptec.libapi.LibAPIManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class GLBuffer {
 
@@ -34,7 +34,7 @@ public abstract class GLBuffer {
     private final int pointer;
     private final int type;
 
-    public GLBuffer(int type) {
+    public GLBuffer(final int type) {
         this.type = type;
         this.pointer = GL15.glGenBuffers();
         all.add(this);
@@ -47,25 +47,25 @@ public abstract class GLBuffer {
     }
 
     public void deleteBuffer() {
-        GL15.glDeleteBuffers(pointer);
+        GL15.glDeleteBuffers(this.pointer);
         all.remove(this);
     }
 
     public int bufferId() {
-        return pointer;
+        return this.pointer;
     }
 
     public int bufferType() {
-        return type;
+        return this.type;
     }
 
     public void bindBuffer() {
-        GL15.glBindBuffer(type, pointer);
+        GL15.glBindBuffer(this.type, this.pointer);
     }
 
     @Deprecated
     public void unbindBuffer() {
-        GL15.glBindBuffer(type, 0);
+        GL15.glBindBuffer(this.type, 0);
     }
 
 }

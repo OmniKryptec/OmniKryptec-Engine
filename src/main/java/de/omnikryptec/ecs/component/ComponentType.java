@@ -23,13 +23,13 @@ public class ComponentType {
 
     private static int index = 0;
     private static Map<Class<? extends Component>, ComponentType> componentTypes = new HashMap<>();
-    private int id;
+    private final int id;
 
     private ComponentType() {
-        id = index++;
+        this.id = index++;
     }
 
-    public static ComponentType of(Class<? extends Component> clazz) {
+    public static ComponentType of(final Class<? extends Component> clazz) {
         if (!componentTypes.containsKey(clazz)) {
             synchronized (componentTypes) {
                 componentTypes.put(clazz, new ComponentType());
@@ -38,7 +38,7 @@ public class ComponentType {
         return componentTypes.get(clazz);
     }
 
-    public static ComponentType ofExisting(Class<? extends Component> clazz) {
+    public static ComponentType ofExisting(final Class<? extends Component> clazz) {
         return componentTypes.get(clazz);
     }
 
@@ -47,16 +47,16 @@ public class ComponentType {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     @Override
     public int hashCode() {
-        return id;
+        return this.id;
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
@@ -64,7 +64,7 @@ public class ComponentType {
             return false;
         }
         if (obj instanceof ComponentType) {
-            if (id == ((ComponentType) obj).id) {
+            if (this.id == ((ComponentType) obj).id) {
                 return true;
             }
         }

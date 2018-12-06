@@ -16,10 +16,10 @@
 
 package de.omnikryptec.util.settings.keys;
 
+import java.util.Objects;
+
 import de.codemakers.base.exceptions.NotYetImplementedRuntimeException;
 import de.omnikryptec.libapi.LibAPIManager;
-
-import java.util.Objects;
 
 public class Key implements IKey {
 
@@ -42,7 +42,7 @@ public class Key implements IKey {
      *             "Arrow Up")
      * @param key  KeyCode (e.g. {@link org.lwjgl.glfw.GLFW#GLFW_KEY_A})
      */
-    public Key(String name, int key) {
+    public Key(final String name, final int key) {
         this(name, key, true);
     }
 
@@ -57,7 +57,7 @@ public class Key implements IKey {
      *                      {@link de.omnikryptec.util.settings.keys.Key} is a
      *                      keyboard key
      */
-    public Key(String name, int key, boolean isKeyboardKey) {
+    public Key(final String name, final int key, final boolean isKeyboardKey) {
         this.name = name;
         this.key = key;
         this.isKeyboardKey = isKeyboardKey;
@@ -70,7 +70,7 @@ public class Key implements IKey {
      */
     @Override
     public String getName() {
-        return name;
+        return this.name;
     }
 
     /**
@@ -82,7 +82,7 @@ public class Key implements IKey {
      */
     @Override
     public boolean isPressed() {
-        if (isKeyboardKey) {
+        if (this.isKeyboardKey) {
             // TODO Implement InputManager
         } else {
             // TODO Implement InputManager
@@ -101,7 +101,7 @@ public class Key implements IKey {
      *         is pressed for the specified time
      */
     @Override
-    public boolean isLongPressed(double minTime, double maxTime) {
+    public boolean isLongPressed(final double minTime, final double maxTime) {
         if (true) {
             throw new NotYetImplementedRuntimeException();
         }
@@ -109,7 +109,7 @@ public class Key implements IKey {
             return false;
         }
         final double currentTime = LibAPIManager.active().getTime();
-        final double pressedTime = currentTime - lastChange;
+        final double pressedTime = currentTime - this.lastChange;
         if (pressedTime >= minTime && pressedTime <= maxTime) {
             this.lastChange = currentTime;
             return true;
@@ -123,7 +123,7 @@ public class Key implements IKey {
      * @return KeyCode
      */
     public int getKey() {
-        return key;
+        return this.key;
     }
 
     /**
@@ -133,7 +133,7 @@ public class Key implements IKey {
      *
      * @return A reference to this {@link de.omnikryptec.util.settings.keys.Key}
      */
-    public Key setKey(int key) {
+    public Key setKey(final int key) {
         this.key = key;
         return this;
     }
@@ -146,7 +146,7 @@ public class Key implements IKey {
      *         is a keyboard key
      */
     public boolean isKeyboardKey() {
-        return isKeyboardKey;
+        return this.isKeyboardKey;
     }
 
     /**
@@ -156,8 +156,8 @@ public class Key implements IKey {
      *
      * @return A reference to this {@link de.omnikryptec.util.settings.keys.Key}
      */
-    public Key setKeyboardKey(boolean keyboardKey) {
-        isKeyboardKey = keyboardKey;
+    public Key setKeyboardKey(final boolean keyboardKey) {
+        this.isKeyboardKey = keyboardKey;
         return this;
     }
 
@@ -167,7 +167,7 @@ public class Key implements IKey {
      * @return Last change of this {@link de.omnikryptec.util.settings.keys.Key}
      */
     public double getLastChange() { // FIXME Maybe use another System to determine long key presses
-        return lastChange;
+        return this.lastChange;
     }
 
     /**
@@ -178,13 +178,13 @@ public class Key implements IKey {
      *
      * @return A reference to this {@link de.omnikryptec.util.settings.keys.Key}
      */
-    public Key setLastChange(double lastChange) {
+    public Key setLastChange(final double lastChange) {
         this.lastChange = lastChange;
         return this;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -192,18 +192,18 @@ public class Key implements IKey {
             return false;
         }
         final Key key1 = (Key) o;
-        return key == key1.key && isKeyboardKey == key1.isKeyboardKey && Objects.equals(name, key1.name);
+        return this.key == key1.key && this.isKeyboardKey == key1.isKeyboardKey && Objects.equals(this.name, key1.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, key, isKeyboardKey);
+        return Objects.hash(this.name, this.key, this.isKeyboardKey);
     }
 
     @Override
     public String toString() {
-        return "Key{" + "name='" + name + '\'' + ", key=" + key + ", isKeyboardKey=" + isKeyboardKey + ", lastChange="
-                + lastChange + '}';
+        return "Key{" + "name='" + this.name + '\'' + ", key=" + this.key + ", isKeyboardKey=" + this.isKeyboardKey
+                + ", lastChange=" + this.lastChange + '}';
     }
 
 }

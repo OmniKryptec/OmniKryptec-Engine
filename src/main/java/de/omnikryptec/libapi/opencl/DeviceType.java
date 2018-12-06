@@ -16,10 +16,10 @@
 
 package de.omnikryptec.libapi.opencl;
 
-import org.lwjgl.opencl.CL10;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.lwjgl.opencl.CL10;
 
 public enum DeviceType {
     CPU(CL10.CL_DEVICE_TYPE_CPU), GPU(CL10.CL_DEVICE_TYPE_GPU), DEFAULT(CL10.CL_DEVICE_TYPE_DEFAULT),
@@ -27,12 +27,12 @@ public enum DeviceType {
 
     public final int CL_INT;
 
-    private DeviceType(int clint) {
+    private DeviceType(final int clint) {
         this.CL_INT = clint;
     }
 
-    public static DeviceType[] toTypes(int in) {
-        List<DeviceType> ts = new ArrayList<>();
+    public static DeviceType[] toTypes(final int in) {
+        final List<DeviceType> ts = new ArrayList<>();
         if (in != DeviceType.UNKNOWN.CL_INT) {
             for (int i = 0; i < DeviceType.values().length; i++) {
                 if (DeviceType.values()[i].CL_INT > 0) {
@@ -49,7 +49,7 @@ public enum DeviceType {
         return ts.toArray(new DeviceType[ts.size()]);
     }
 
-    public static DeviceType toType(int i) {
+    public static DeviceType toType(final int i) {
         return toTypes(i)[0];
     }
 }

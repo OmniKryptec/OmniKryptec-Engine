@@ -16,13 +16,14 @@
 
 package de.omnikryptec.libapi.exposed.window;
 
-import de.omnikryptec.util.Util;
+import java.nio.IntBuffer;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 
-import java.nio.IntBuffer;
+import de.omnikryptec.util.Util;
 
 public abstract class Window<T extends WindowInfo<?>> {
     protected final long windowId;
@@ -32,7 +33,7 @@ public abstract class Window<T extends WindowInfo<?>> {
     private boolean isfullscreen = false;
     private boolean active = false;
 
-    protected Window(T info) {
+    protected Window(final T info) {
         Util.ensureNonNull(info, "Window info must not be null!");
         this.width = info.getWidth();
         this.height = info.getHeight();
@@ -40,29 +41,31 @@ public abstract class Window<T extends WindowInfo<?>> {
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, info.isResizeable() ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
         setAdditionalGlfwWindowHints(info);
         if (info.isFullscreen()) {
-            GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
-            width = vidMode.width();
-            height = vidMode.height();
-            isfullscreen = true;
+            final GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+            this.width = vidMode.width();
+            this.height = vidMode.height();
+            this.isfullscreen = true;
         }
-        windowId = GLFW.glfwCreateWindow(width, height, info.getName(),
+        this.windowId = GLFW.glfwCreateWindow(this.width, this.height, info.getName(),
                 info.isFullscreen() ? GLFW.glfwGetPrimaryMonitor() : 0, 0);
-        if (windowId == 0) {
+        if (this.windowId == 0) {
             throw new RuntimeException("Failed to create window");
         }
         if (info.isLockAspectRatio() && info.isResizeable()) {
-            GLFW.glfwSetWindowAspectRatio(windowId, width, height);
+            GLFW.glfwSetWindowAspectRatio(this.windowId, this.width, this.height);
         }
-        GLFW.glfwSetFramebufferSizeCallback(windowId, (framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
-            @Override
-            public void invoke(long window, int width, int height) {
-                onResize(width, height);
-            }
-        }));
-        IntBuffer framebufferWidth = BufferUtils.createIntBuffer(1), framebufferHeight = BufferUtils.createIntBuffer(1);
-        GLFW.glfwGetFramebufferSize(windowId, framebufferWidth, framebufferHeight);
-        fwidth = framebufferWidth.get();
-        fheight = framebufferHeight.get();
+        GLFW.glfwSetFramebufferSizeCallback(this.windowId,
+                (this.framebufferSizeCallback = new GLFWFramebufferSizeCallback() {
+                    @Override
+                    public void invoke(final long window, final int width, final int height) {
+                        onResize(width, height);
+                    }
+                }));
+        final IntBuffer framebufferWidth = BufferUtils.createIntBuffer(1),
+                framebufferHeight = BufferUtils.createIntBuffer(1);
+        GLFW.glfwGetFramebufferSize(this.windowId, framebufferWidth, framebufferHeight);
+        this.fwidth = framebufferWidth.get();
+        this.fheight = framebufferHeight.get();
     }
 
     protected abstract void setAdditionalGlfwWindowHints(T info);
@@ -70,70 +73,71 @@ public abstract class Window<T extends WindowInfo<?>> {
     protected abstract void swap();
 
     public long getWindowID() {
-        return windowId;
+        return this.windowId;
     }
 
-    public void setVisible(boolean b) {
+    public void setVisible(final boolean b) {
         if (b) {
-            GLFW.glfwShowWindow(windowId);
+            GLFW.glfwShowWindow(this.windowId);
         } else {
-            GLFW.glfwHideWindow(windowId);
+            GLFW.glfwHideWindow(this.windowId);
         }
     }
 
     public void dispose() {
-        GLFW.glfwDestroyWindow(windowId);
+        GLFW.glfwDestroyWindow(this.windowId);
     }
 
     public void swapBuffers() {
-        active = GLFW.glfwGetWindowAttrib(windowId, GLFW.GLFW_FOCUSED) == GLFW.GLFW_TRUE;
-        resized = false;
+        this.active = GLFW.glfwGetWindowAttrib(this.windowId, GLFW.GLFW_FOCUSED) == GLFW.GLFW_TRUE;
+        this.resized = false;
         swap();
     }
 
     public boolean shouldBeFullscreen() {
-        return isfullscreen;
+        return this.isfullscreen;
     }
 
     public boolean wasResized() {
-        return resized;
+        return this.resized;
     }
 
     public boolean isActive() {
-        return active;
+        return this.active;
     }
 
     public boolean isCloseRequested() {
-        return GLFW.glfwWindowShouldClose(windowId);
+        return GLFW.glfwWindowShouldClose(this.windowId);
     }
 
     public int getWidth() {
-        return width;
+        return this.width;
     }
 
     public int getHeight() {
-        return height;
+        return this.height;
     }
 
     public int getBufferWidth() {
-        return fwidth;
+        return this.fwidth;
     }
 
     public int getBufferHeight() {
-        return fheight;
+        return this.fheight;
     }
 
     protected GLFWFramebufferSizeCallback getDisplaySizeCallback() {
-        return framebufferSizeCallback;
+        return this.framebufferSizeCallback;
     }
 
-    protected void onResize(int w, int h) {
-        width = w;
-        height = h;
-        resized = true;
-        IntBuffer framebufferWidth = BufferUtils.createIntBuffer(1), framebufferHeight = BufferUtils.createIntBuffer(1);
-        GLFW.glfwGetFramebufferSize(windowId, framebufferWidth, framebufferHeight);
-        fwidth = framebufferWidth.get();
-        fheight = framebufferHeight.get();
+    protected void onResize(final int w, final int h) {
+        this.width = w;
+        this.height = h;
+        this.resized = true;
+        final IntBuffer framebufferWidth = BufferUtils.createIntBuffer(1),
+                framebufferHeight = BufferUtils.createIntBuffer(1);
+        GLFW.glfwGetFramebufferSize(this.windowId, framebufferWidth, framebufferHeight);
+        this.fwidth = framebufferWidth.get();
+        this.fheight = framebufferHeight.get();
     }
 }

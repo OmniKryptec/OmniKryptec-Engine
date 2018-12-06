@@ -16,41 +16,39 @@
 
 package de.omnikryptec.ecs.impl;
 
-import de.omnikryptec.ecs.system.ComponentSystem;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
-import java.util.*;
+import de.omnikryptec.ecs.system.ComponentSystem;
 
 public class SystemManager {
 
-    private static final Comparator<ComponentSystem> COMPARATOR = new Comparator<ComponentSystem>() {
+    private static final Comparator<ComponentSystem> COMPARATOR = (o1, o2) -> o2.priority() - o1.priority();
 
-        @Override
-        public int compare(ComponentSystem o1, ComponentSystem o2) {
-            return o2.priority() - o1.priority();
-        }
-    };
-
-    private List<ComponentSystem> systems;
-    private Collection<ComponentSystem> unmodifiableSystems;
+    private final List<ComponentSystem> systems;
+    private final Collection<ComponentSystem> unmodifiableSystems;
 
     public SystemManager() {
         this.systems = new ArrayList<>();
         this.unmodifiableSystems = Collections.unmodifiableCollection(this.systems);
     }
 
-    public SystemManager addSystem(ComponentSystem system) {
-        systems.add(system);
-        Collections.sort(systems, COMPARATOR);
+    public SystemManager addSystem(final ComponentSystem system) {
+        this.systems.add(system);
+        Collections.sort(this.systems, COMPARATOR);
         return this;
     }
 
-    public SystemManager removeSystem(ComponentSystem system) {
-        systems.remove(system);
+    public SystemManager removeSystem(final ComponentSystem system) {
+        this.systems.remove(system);
         return this;
     }
 
     public Collection<ComponentSystem> getAll() {
-        return unmodifiableSystems;
+        return this.unmodifiableSystems;
     }
 
 }

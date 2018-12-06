@@ -16,14 +16,16 @@
 
 package de.omnikryptec.util.settings;
 
+import java.util.Collection;
+
+import org.lwjgl.glfw.GLFW;
+
 import com.google.common.collect.ObjectArrays;
+
 import de.omnikryptec.util.settings.keys.IKey;
 import de.omnikryptec.util.settings.keys.Key;
 import de.omnikryptec.util.settings.keys.KeyContainer;
 import de.omnikryptec.util.settings.keys.KeyGroup;
-import org.lwjgl.glfw.GLFW;
-
-import java.util.Collection;
 
 public class KeySettings extends KeyContainer {
 
@@ -64,14 +66,15 @@ public class KeySettings extends KeyContainer {
         this(null);
     }
 
-    public KeySettings(Collection<IKey> keys) {
+    public KeySettings(final Collection<IKey> keys) {
         if (keys != null) {
             addIKeys(keys);
         }
     }
 
-    public static void updateKeys(Collection<IKey> keys, double currentTime, int keyCode, boolean isKeyboardKey) {
-        for (IKey key : keys) {
+    public static void updateKeys(final Collection<IKey> keys, final double currentTime, final int keyCode,
+            final boolean isKeyboardKey) {
+        for (final IKey key : keys) {
             if (key instanceof Key) {
                 final Key key_ = (Key) key;
                 if (key_.getKey() == keyCode && key_.isKeyboardKey() == isKeyboardKey) {
@@ -83,16 +86,16 @@ public class KeySettings extends KeyContainer {
         }
     }
 
-    public void updateKeys(double currentTime, int keyCode, boolean isKeyboardKey) {
+    public void updateKeys(final double currentTime, final int keyCode, final boolean isKeyboardKey) {
         updateKeys(getIKeys(), currentTime, keyCode, isKeyboardKey);
     }
 
-    public boolean isPressed(String name) {
+    public boolean isPressed(final String name) {
         final IKey key = getIKey(name);
         return key == null ? false : key.isPressed();
     }
 
-    public boolean isLongPressed(String name, double minTime, double maxTime) {
+    public boolean isLongPressed(final String name, final double minTime, final double maxTime) {
         final IKey key = getIKey(name);
         return key == null ? false : key.isLongPressed(minTime, maxTime);
     }

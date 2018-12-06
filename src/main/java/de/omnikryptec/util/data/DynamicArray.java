@@ -25,37 +25,37 @@ public class DynamicArray<E> {
         this(10, 2);
     }
 
-    public DynamicArray(int initialSize, int grow) {
+    public DynamicArray(final int initialSize, final int grow) {
         this.array = new Object[grow];
         this.grow = grow;
     }
 
-    public void set(int index, E e) {
-        if (index >= array.length) {
+    public void set(final int index, final E e) {
+        if (index >= this.array.length) {
             grow();
         }
-        array[index] = e;
+        this.array[index] = e;
     }
 
-    public E get(int index) {
+    public E get(final int index) {
         if (index < 0 || index >= size()) {
             return null;
         }
-        return (E) array[index];
+        return (E) this.array[index];
     }
 
     private void grow() {
-        Object[] newArray = new Object[size() + grow];
-        System.arraycopy(array, 0, newArray, 0, array.length);
-        array = newArray;
+        final Object[] newArray = new Object[size() + this.grow];
+        System.arraycopy(this.array, 0, newArray, 0, this.array.length);
+        this.array = newArray;
     }
 
     public int size() {
-        return array.length;
+        return this.array.length;
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == null) {
             return false;
         }
@@ -63,7 +63,7 @@ public class DynamicArray<E> {
             return true;
         }
         if (obj instanceof DynamicArray) {
-            DynamicArray<?> other = (DynamicArray<?>) obj;
+            final DynamicArray<?> other = (DynamicArray<?>) obj;
             if (other.size() != this.size()) {
                 return false;
             }

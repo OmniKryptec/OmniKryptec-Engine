@@ -26,22 +26,22 @@ public class Event {
     private boolean consumed = false;
 
     public boolean isConsumeable() {
-        return consumeable;
+        return this.consumeable;
     }
 
     public boolean triggersSuperEventListeners() {
-        return triggerSuperEventListeners;
+        return this.triggerSuperEventListeners;
     }
 
     public void consume() {
-        if (consumeable) {
-            consumed = true;
+        if (this.consumeable) {
+            this.consumed = true;
         } else {
             throw new IllegalStateException("This event is not consumeable!");
         }
     }
 
     public boolean isConsumed() {
-        return consumed;
+        return this.consumed;
     }
 }

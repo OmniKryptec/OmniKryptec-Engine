@@ -25,28 +25,28 @@ public class OpenGLWindowInfo extends WindowInfo<OpenGLWindowInfo> {
     }
 
     public int getMajVersion() {
-        return majVersion;
+        return this.majVersion;
     }
 
-    public OpenGLWindowInfo setMajVersion(int majVersion) {
+    public OpenGLWindowInfo setMajVersion(final int majVersion) {
         this.majVersion = majVersion;
         return this;
     }
 
     public int getMinVersion() {
-        return minVersion;
+        return this.minVersion;
     }
 
-    public OpenGLWindowInfo setMinVersion(int minVersion) {
+    public OpenGLWindowInfo setMinVersion(final int minVersion) {
         this.minVersion = minVersion;
         return this;
     }
 
     public boolean isVsync() {
-        return vsync;
+        return this.vsync;
     }
 
-    public OpenGLWindowInfo setVSync(boolean enabled) {
+    public OpenGLWindowInfo setVSync(final boolean enabled) {
         this.vsync = enabled;
         return this;
     }

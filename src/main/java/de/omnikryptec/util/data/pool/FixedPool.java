@@ -29,36 +29,36 @@ import de.omnikryptec.util.data.FixedStack;
  */
 public abstract class FixedPool<T> extends Pool<T> {
 
-    private FixedStack<T> free;
+    private final FixedStack<T> free;
     private boolean poolable = false;
 
-    public FixedPool(Class<T> clazz, int size, boolean prewarm) {
-        poolable = Poolable.class.isAssignableFrom(clazz);
-        free = new FixedStack<>(size);
+    public FixedPool(final Class<T> clazz, final int size, final boolean prewarm) {
+        this.poolable = Poolable.class.isAssignableFrom(clazz);
+        this.free = new FixedStack<>(size);
         if (prewarm) {
             for (int i = 0; i < size; i++) {
-                free.push(newObject());
+                this.free.push(newObject());
             }
         }
     }
 
     @Override
     public T retrieve() {
-        return free.isEmpty() ? newObject() : free.pop();
+        return this.free.isEmpty() ? newObject() : this.free.pop();
     }
 
     @Override
-    public void free(T t) {
-        if (poolable) {
+    public void free(final T t) {
+        if (this.poolable) {
             ((Poolable) t).reset();
         }
-        if (!free.isFull()) {
-            free.push(t);
+        if (!this.free.isFull()) {
+            this.free.push(t);
         }
     }
 
     @Override
     public int available() {
-        return Math.max(1, free.filled());
+        return Math.max(1, this.free.filled());
     }
 }

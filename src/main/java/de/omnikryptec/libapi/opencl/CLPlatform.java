@@ -16,62 +16,64 @@
 
 package de.omnikryptec.libapi.opencl;
 
+import java.nio.IntBuffer;
+import java.util.HashMap;
+
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.opencl.CL;
 import org.lwjgl.opencl.CL10;
 import org.lwjgl.opencl.CLCapabilities;
 
-import java.nio.IntBuffer;
-import java.util.HashMap;
-
 public class CLPlatform {
 
     private static HashMap<Integer, CLDevice> createdDevices = new HashMap<>();
 
-    private CLCapabilities platformCaps;
-    private PointerBuffer devices, ctxProps;
-    private long platform;
+    private final CLCapabilities platformCaps;
+    private PointerBuffer devices;
+
+    private final PointerBuffer ctxProps;
+    private final long platform;
     private int devs = -1;
 
-    CLPlatform(long id) {
+    CLPlatform(final long id) {
         this.platform = id;
-        platformCaps = CL.createPlatformCapabilities(id);
-        ctxProps = OpenCL.memStack.mallocPointer(3);
-        ctxProps.put(0, CL10.CL_CONTEXT_PLATFORM).put(2, 0);
-        ctxProps.put(1, id);
+        this.platformCaps = CL.createPlatformCapabilities(id);
+        this.ctxProps = OpenCL.memStack.mallocPointer(3);
+        this.ctxProps.put(0, CL10.CL_CONTEXT_PLATFORM).put(2, 0);
+        this.ctxProps.put(1, id);
     }
 
     public CLCapabilities getPlatCaps() {
-        return platformCaps;
+        return this.platformCaps;
     }
 
     public long getID() {
-        return platform;
+        return this.platform;
     }
 
     public PointerBuffer getCTXProps() {
-        return ctxProps;
+        return this.ctxProps;
     }
 
-    public CLPlatform createDeviceData(int clDeviceFilter) {
-        CL10.clGetDeviceIDs(platform, clDeviceFilter, null, OpenCL.tmpBuffer);
-        devs = OpenCL.tmpBuffer.get(0);
-        devices = OpenCL.memStack.mallocPointer(devs);
-        CL10.clGetDeviceIDs(platform, clDeviceFilter, devices, (IntBuffer) null);
+    public CLPlatform createDeviceData(final int clDeviceFilter) {
+        CL10.clGetDeviceIDs(this.platform, clDeviceFilter, null, OpenCL.tmpBuffer);
+        this.devs = OpenCL.tmpBuffer.get(0);
+        this.devices = OpenCL.memStack.mallocPointer(this.devs);
+        CL10.clGetDeviceIDs(this.platform, clDeviceFilter, this.devices, (IntBuffer) null);
         return this;
     }
 
     public PointerBuffer getDevices() {
-        return devices;
+        return this.devices;
     }
 
     public int getDevicesSize() {
-        return devs;
+        return this.devs;
     }
 
-    public CLDevice getDevice(int deviceInd) {
+    public CLDevice getDevice(final int deviceInd) {
         if (!createdDevices.containsKey(deviceInd)) {
-            createdDevices.put(deviceInd, new CLDevice(devices.get(deviceInd), this));
+            createdDevices.put(deviceInd, new CLDevice(this.devices.get(deviceInd), this));
         }
         return createdDevices.get(deviceInd);
 

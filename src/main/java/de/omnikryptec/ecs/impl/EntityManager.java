@@ -16,26 +16,31 @@
 
 package de.omnikryptec.ecs.impl;
 
+import java.util.BitSet;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
+
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityListener;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.util.data.CountingMap;
 
-import java.util.*;
-
 public class EntityManager {
 
-    private Multimap<BitSet, EntityListener> familyListeners;
+    private final Multimap<BitSet, EntityListener> familyListeners;
 
-    private Collection<Entity> entities;
-    private Collection<Entity> unmodifiableEntities;
+    private final Collection<Entity> entities;
+    private final Collection<Entity> unmodifiableEntities;
 
-    private CountingMap<BitSet> uniqueFilters;
-    private ListMultimap<BitSet, Entity> filteredEntities;
-    private ListMultimap<Entity, BitSet> reverseFilteredEntities;
+    private final CountingMap<BitSet> uniqueFilters;
+    private final ListMultimap<BitSet, Entity> filteredEntities;
+    private final ListMultimap<Entity, BitSet> reverseFilteredEntities;
 
     public EntityManager() {
         // HashSet is a few microsecs slower than ArrayList on average but when removing
@@ -48,14 +53,14 @@ public class EntityManager {
         this.familyListeners = ArrayListMultimap.create();
     }
 
-    public EntityManager addEntity(Entity entity) {
-        if (entities.add(entity)) {
+    public EntityManager addEntity(final Entity entity) {
+        if (this.entities.add(entity)) {
             if (!entity.getComponents().isEmpty()) {
-                for (BitSet filter : uniqueFilters.keySet()) {
+                for (final BitSet filter : this.uniqueFilters.keySet()) {
                     if (Family.containsTrueBits(entity.getComponents(), filter)) {
-                        filteredEntities.put(filter, entity);
-                        reverseFilteredEntities.put(entity, filter);
-                        for (EntityListener l : familyListeners.get(filter)) {
+                        this.filteredEntities.put(filter, entity);
+                        this.reverseFilteredEntities.put(entity, filter);
+                        for (final EntityListener l : this.familyListeners.get(filter)) {
                             l.entityAdded(entity);
                         }
                     }
@@ -65,34 +70,34 @@ public class EntityManager {
         return this;
     }
 
-    public EntityManager removeEntity(Entity entity) {
-        if (entities.remove(entity)) {
-            for (BitSet filter : reverseFilteredEntities.get(entity)) {
-                filteredEntities.remove(filter, entity);
+    public EntityManager removeEntity(final Entity entity) {
+        if (this.entities.remove(entity)) {
+            for (final BitSet filter : this.reverseFilteredEntities.get(entity)) {
+                this.filteredEntities.remove(filter, entity);
             }
-            reverseFilteredEntities.removeAll(entity);
+            this.reverseFilteredEntities.removeAll(entity);
         }
         return this;
     }
 
     public Collection<Entity> getAll() {
-        return unmodifiableEntities;
+        return this.unmodifiableEntities;
     }
 
-    public List<Entity> getEntitiesFor(BitSet family) {
-        return Collections.unmodifiableList(filteredEntities.get(family));
+    public List<Entity> getEntitiesFor(final BitSet family) {
+        return Collections.unmodifiableList(this.filteredEntities.get(family));
     }
 
-    public EntityManager addFilter(BitSet family) {
+    public EntityManager addFilter(final BitSet family) {
         if (family.isEmpty()) {
             throw new IllegalArgumentException("Empty family");
         }
-        if (uniqueFilters.increment(family) == 1) {
-            for (Entity e : entities) {
+        if (this.uniqueFilters.increment(family) == 1) {
+            for (final Entity e : this.entities) {
                 if (Family.containsTrueBits(e.getComponents(), family)) {
-                    filteredEntities.put(family, e);
-                    reverseFilteredEntities.put(e, family);
-                    for (EntityListener l : familyListeners.get(family)) {
+                    this.filteredEntities.put(family, e);
+                    this.reverseFilteredEntities.put(e, family);
+                    for (final EntityListener l : this.familyListeners.get(family)) {
                         l.entityAdded(e);
                     }
                 }
@@ -101,16 +106,16 @@ public class EntityManager {
         return this;
     }
 
-    public EntityManager removeFilter(BitSet family) {
+    public EntityManager removeFilter(final BitSet family) {
         if (family.isEmpty()) {
             throw new IllegalArgumentException("Empty family");
         }
-        if (uniqueFilters.keySet().contains(family)) {
-            if (uniqueFilters.decrement(family) == 0) {
-                List<Entity> removed = filteredEntities.removeAll(family);
-                Collection<EntityListener> listeners = familyListeners.get(family);
-                for (EntityListener l : listeners) {
-                    for (Entity e : removed) {
+        if (this.uniqueFilters.keySet().contains(family)) {
+            if (this.uniqueFilters.decrement(family) == 0) {
+                final List<Entity> removed = this.filteredEntities.removeAll(family);
+                final Collection<EntityListener> listeners = this.familyListeners.get(family);
+                for (final EntityListener l : listeners) {
+                    for (final Entity e : removed) {
                         l.entityRemoved(e);
                     }
                 }
@@ -119,20 +124,20 @@ public class EntityManager {
         return this;
     }
 
-    public EntityManager updateEntityFamilyStatus(Entity entity) {
-        for (BitSet family : uniqueFilters) {
-            boolean niceFamily = Family.containsTrueBits(entity.getComponents(), family);
-            boolean alreadySet = reverseFilteredEntities.containsEntry(entity, family);
+    public EntityManager updateEntityFamilyStatus(final Entity entity) {
+        for (final BitSet family : this.uniqueFilters) {
+            final boolean niceFamily = Family.containsTrueBits(entity.getComponents(), family);
+            final boolean alreadySet = this.reverseFilteredEntities.containsEntry(entity, family);
             if (niceFamily && !alreadySet) {
-                reverseFilteredEntities.put(entity, family);
-                filteredEntities.put(family, entity);
-                for (EntityListener l : familyListeners.get(family)) {
+                this.reverseFilteredEntities.put(entity, family);
+                this.filteredEntities.put(family, entity);
+                for (final EntityListener l : this.familyListeners.get(family)) {
                     l.entityAdded(entity);
                 }
             } else if (!niceFamily && alreadySet) {
-                reverseFilteredEntities.remove(entity, family);
-                filteredEntities.remove(family, entity);
-                for (EntityListener l : familyListeners.get(family)) {
+                this.reverseFilteredEntities.remove(entity, family);
+                this.filteredEntities.remove(family, entity);
+                for (final EntityListener l : this.familyListeners.get(family)) {
                     l.entityRemoved(entity);
                 }
             }
@@ -140,12 +145,12 @@ public class EntityManager {
         return this;
     }
 
-    public void addEntityListener(BitSet family, EntityListener listener) {
-        familyListeners.put(family, listener);
+    public void addEntityListener(final BitSet family, final EntityListener listener) {
+        this.familyListeners.put(family, listener);
     }
 
-    public void removeEnityListener(BitSet family, EntityListener listener) {
-        familyListeners.remove(family, listener);
+    public void removeEnityListener(final BitSet family, final EntityListener listener) {
+        this.familyListeners.remove(family, listener);
     }
 
 }

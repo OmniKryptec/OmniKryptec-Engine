@@ -16,43 +16,44 @@
 
 package de.omnikryptec.resource.loadervpc;
 
+import java.util.Collection;
+
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import de.omnikryptec.util.Util;
 
-import java.util.Collection;
+import de.omnikryptec.util.Util;
 
 public class DefaultResourceProvider implements ResourceProvider {
 
-    private Table<Class<?>, String, Object> resourceTable;
+    private final Table<Class<?>, String, Object> resourceTable;
 
     public DefaultResourceProvider() {
         this.resourceTable = HashBasedTable.create();
     }
 
     @Override
-    public <T> T get(Class<T> clazz, String name) {
-        return (T) resourceTable.get(clazz, name);
+    public <T> T get(final Class<T> clazz, final String name) {
+        return (T) this.resourceTable.get(clazz, name);
     }
 
     @Override
-    public <T> Collection<T> getAll(Class<T> clazz) {
-        return (Collection<T>) resourceTable.row(clazz).values();
+    public <T> Collection<T> getAll(final Class<T> clazz) {
+        return (Collection<T>) this.resourceTable.row(clazz).values();
     }
 
     @Override
-    public void add(Object resource, String name, boolean override) {
+    public void add(final Object resource, final String name, final boolean override) {
         Util.ensureNonNull(resource, "Resource must not be null!");
         Util.ensureNonNull(name, "Name must not be null!");
-        boolean contained = resourceTable.contains(resource.getClass(), name);
+        final boolean contained = this.resourceTable.contains(resource.getClass(), name);
         if (!contained || override) {
-            resourceTable.put(resource.getClass(), name, resource);
+            this.resourceTable.put(resource.getClass(), name, resource);
         }
     }
 
     @Override
     public void clear() {
-        resourceTable.clear();
+        this.resourceTable.clear();
     }
 
 }

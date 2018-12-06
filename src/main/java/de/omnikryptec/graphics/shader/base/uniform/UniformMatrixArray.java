@@ -27,11 +27,11 @@ public class UniformMatrixArray extends Uniform {
 
     private final UniformMatrix[] uniformMatrices;
 
-    public UniformMatrixArray(String name, int size) {
+    public UniformMatrixArray(final String name, final int size) {
         super(name);
-        uniformMatrices = new UniformMatrix[size];
+        this.uniformMatrices = new UniformMatrix[size];
         for (int i = 0; i < size; i++) {
-            uniformMatrices[i] = new UniformMatrix(name + "[" + i + "]");
+            this.uniformMatrices[i] = new UniformMatrix(name + "[" + i + "]");
         }
     }
 
@@ -41,9 +41,9 @@ public class UniformMatrixArray extends Uniform {
      * uniformMatrix.storeUniformLocation(programID); } }
      */
 
-    public final UniformMatrixArray loadMatrixArray(Matrix4f[] matrices) {
+    public final UniformMatrixArray loadMatrixArray(final Matrix4f[] matrices) {
         for (int i = 0; i < matrices.length; i++) {
-            uniformMatrices[i].loadMatrix(matrices[i]);
+            this.uniformMatrices[i].loadMatrix(matrices[i]);
         }
         return this;
     }

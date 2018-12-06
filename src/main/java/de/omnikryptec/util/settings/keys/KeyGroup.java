@@ -42,7 +42,7 @@ public class KeyGroup extends KeyContainer implements IKey {
      *
      * @param name Name of the {@link de.omnikryptec.util.settings.keys.KeyGroup}
      */
-    public KeyGroup(String name) {
+    public KeyGroup(final String name) {
         this(name, true);
     }
     
@@ -54,15 +54,15 @@ public class KeyGroup extends KeyContainer implements IKey {
      * multiple {@link de.omnikryptec.util.settings.keys.KeyGroup}s or
      * {@link de.omnikryptec.util.settings.keys.Key}s
      *
-     * @param name Name of the
-     * {@link de.omnikryptec.util.settings.keys.KeyGroup}
+     * @param name                     Name of the
+     *                                 {@link de.omnikryptec.util.settings.keys.KeyGroup}
      * @param allIKeysNeedsToBePressed <tt>true</tt> if all
-     * {@link de.omnikryptec.util.settings.keys.IKey}s
-     * in this
-     * {@link de.omnikryptec.util.settings.keys.KeyGroup}
-     * have to be pressed at the same time
+     *                                 {@link de.omnikryptec.util.settings.keys.IKey}s
+     *                                 in this
+     *                                 {@link de.omnikryptec.util.settings.keys.KeyGroup}
+     *                                 have to be pressed at the same time
      */
-    public KeyGroup(String name, boolean allIKeysNeedsToBePressed) {
+    public KeyGroup(final String name, final boolean allIKeysNeedsToBePressed) {
         this(name, allIKeysNeedsToBePressed, null);
     }
     
@@ -74,17 +74,17 @@ public class KeyGroup extends KeyContainer implements IKey {
      * multiple {@link de.omnikryptec.util.settings.keys.KeyGroup}s or
      * {@link de.omnikryptec.util.settings.keys.Key}s
      *
-     * @param name Name of the
-     * {@link de.omnikryptec.util.settings.keys.KeyGroup}
+     * @param name                     Name of the
+     *                                 {@link de.omnikryptec.util.settings.keys.KeyGroup}
      * @param allIKeysNeedsToBePressed <tt>true</tt> if all
-     * {@link de.omnikryptec.util.settings.keys.IKey}s
-     * in this
-     * {@link de.omnikryptec.util.settings.keys.KeyGroup}
-     * have to be pressed at the same time
-     * @param keys {@link de.omnikryptec.util.settings.keys.IKey}s
-     * to be added
+     *                                 {@link de.omnikryptec.util.settings.keys.IKey}s
+     *                                 in this
+     *                                 {@link de.omnikryptec.util.settings.keys.KeyGroup}
+     *                                 have to be pressed at the same time
+     * @param keys                     {@link de.omnikryptec.util.settings.keys.IKey}s
+     *                                 to be added
      */
-    public KeyGroup(String name, boolean allIKeysNeedsToBePressed, Collection<IKey> keys) {
+    public KeyGroup(final String name, final boolean allIKeysNeedsToBePressed, final Collection<IKey> keys) {
         this.name = name;
         this.allIKeysNeedsToBePressed = allIKeysNeedsToBePressed;
         if (keys != null) {
@@ -99,7 +99,7 @@ public class KeyGroup extends KeyContainer implements IKey {
      */
     @Override
     public String getName() {
-        return name;
+        return this.name;
     }
     
     /**
@@ -107,20 +107,20 @@ public class KeyGroup extends KeyContainer implements IKey {
      * pressed
      *
      * @return <tt>true</tt> if this
-     * {@link de.omnikryptec.util.settings.keys.KeyGroup} is pressed
+     *         {@link de.omnikryptec.util.settings.keys.KeyGroup} is pressed
      */
     @Override
     public boolean isPressed() {
         if (isEmpty()) {
             return false;
         }
-        boolean isPressed = allIKeysNeedsToBePressed;
-        for (IKey key : getKeys()) {
+        boolean isPressed = this.allIKeysNeedsToBePressed;
+        for (final IKey key : getKeys()) {
             final boolean isPressed_ = key.isPressed();
-            if (!isPressed_ && allIKeysNeedsToBePressed) {
+            if (!isPressed_ && this.allIKeysNeedsToBePressed) {
                 isPressed = false;
                 break;
-            } else if (isPressed_ && !allIKeysNeedsToBePressed) {
+            } else if (isPressed_ && !this.allIKeysNeedsToBePressed) {
                 isPressed = true;
                 break;
             }
@@ -136,29 +136,30 @@ public class KeyGroup extends KeyContainer implements IKey {
      * @param maxTime Maximum pressing time
      *
      * @return <tt>true</tt> if this
-     * {@link de.omnikryptec.util.settings.keys.KeyGroup} is pressed for the
-     * specified time
+     *         {@link de.omnikryptec.util.settings.keys.KeyGroup} is pressed for the
+     *         specified time
      */
     @Override
-    public boolean isLongPressed(double minTime, double maxTime) {
+    public boolean isLongPressed(final double minTime, final double maxTime) {
         if (isEmpty()) {
             return false;
         }
-        boolean isLongPressed = allIKeysNeedsToBePressed;
+        boolean isLongPressed = this.allIKeysNeedsToBePressed;
         // boolean firstPressed = false;
-        for (IKey key : getKeys()) {
+        for (final IKey key : getKeys()) {
             // final boolean isPressed_ = key.isPressed();
             final boolean isLongPressed_ = key.isLongPressed(minTime, maxTime);
             /*
-             if (!isLongPressed_ && allIKeysNeedsToBePressed && !(firstPressed &&
-             isPressed_)) { isLongPressed = false; break; } else if (isLongPressed_ &&
-             allIKeysNeedsToBePressed) { firstPressed = true; } else if (isLongPressed_) {
-             isLongPressed = true; break; } //FIXME Why do we need 'firstPressed'??? Until we know why, keep the snippet below...
+             * if (!isLongPressed_ && allIKeysNeedsToBePressed && !(firstPressed &&
+             * isPressed_)) { isLongPressed = false; break; } else if (isLongPressed_ &&
+             * allIKeysNeedsToBePressed) { firstPressed = true; } else if (isLongPressed_) {
+             * isLongPressed = true; break; } //FIXME Why do we need 'firstPressed'??? Until
+             * we know why, keep the snippet below...
              */
-            if (isLongPressed_ && !allIKeysNeedsToBePressed) {
+            if (isLongPressed_ && !this.allIKeysNeedsToBePressed) {
                 isLongPressed = true;
                 break;
-            } else if (!isLongPressed_ && !allIKeysNeedsToBePressed) {
+            } else if (!isLongPressed_ && !this.allIKeysNeedsToBePressed) {
                 isLongPressed = false;
                 break;
             }
@@ -172,11 +173,11 @@ public class KeyGroup extends KeyContainer implements IKey {
      * same time
      *
      * @return <tt>true</tt> if all {@link de.omnikryptec.util.settings.keys.IKey}s
-     * in this {@link de.omnikryptec.util.settings.keys.KeyGroup} needs to
-     * be pressed at the same time
+     *         in this {@link de.omnikryptec.util.settings.keys.KeyGroup} needs to
+     *         be pressed at the same time
      */
     public boolean isAllIKeysNeedsToBePressed() {
-        return allIKeysNeedsToBePressed;
+        return this.allIKeysNeedsToBePressed;
     }
     
     /**
@@ -185,21 +186,21 @@ public class KeyGroup extends KeyContainer implements IKey {
      * same time
      *
      * @param allIKeysNeedsToBePressed <tt>true</tt> if all
-     * {@link de.omnikryptec.util.settings.keys.IKey}s
-     * in this
-     * {@link de.omnikryptec.util.settings.keys.KeyGroup}
-     * needs to be pressed at the same time
+     *                                 {@link de.omnikryptec.util.settings.keys.IKey}s
+     *                                 in this
+     *                                 {@link de.omnikryptec.util.settings.keys.KeyGroup}
+     *                                 needs to be pressed at the same time
      *
      * @return A reference to this
-     * {@link de.omnikryptec.util.settings.keys.KeyGroup}
+     *         {@link de.omnikryptec.util.settings.keys.KeyGroup}
      */
-    public KeyGroup setAllIKeysNeedsToBePressed(boolean allIKeysNeedsToBePressed) {
+    public KeyGroup setAllIKeysNeedsToBePressed(final boolean allIKeysNeedsToBePressed) {
         this.allIKeysNeedsToBePressed = allIKeysNeedsToBePressed;
         return this;
     }
     
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -210,17 +211,19 @@ public class KeyGroup extends KeyContainer implements IKey {
             return false;
         }
         final KeyGroup keyGroup = (KeyGroup) o;
-        return allIKeysNeedsToBePressed == keyGroup.allIKeysNeedsToBePressed && Objects.equals(name, keyGroup.name);
+        return this.allIKeysNeedsToBePressed == keyGroup.allIKeysNeedsToBePressed
+                && Objects.equals(this.name, keyGroup.name);
     }
     
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, allIKeysNeedsToBePressed);
+        return Objects.hash(super.hashCode(), this.name, this.allIKeysNeedsToBePressed);
     }
     
     @Override
     public String toString() {
-        return "KeyGroup{" + "name='" + name + '\'' + ", allIKeysNeedsToBePressed=" + allIKeysNeedsToBePressed + ", keys=" + keys + '}';
+        return "KeyGroup{" + "name='" + this.name + '\'' + ", allIKeysNeedsToBePressed=" + this.allIKeysNeedsToBePressed
+                + ", keys=" + this.keys + '}';
     }
     
 }

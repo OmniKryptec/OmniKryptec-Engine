@@ -16,12 +16,13 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
-import de.omnikryptec.util.settings.KeySettings;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWKeyCallback;
 
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
+import de.omnikryptec.util.settings.KeySettings;
 
 public class KeyboardHandler implements InputHandler {
 
@@ -33,27 +34,28 @@ public class KeyboardHandler implements InputHandler {
     private final GLFWKeyCallback keyCallback;
     private final AtomicReference<String> inputString = new AtomicReference<>("");
     // Configurable
-    private boolean appendToString = false;
+    private final boolean appendToString = false;
     // Temp
     private byte[] keysLastTime = null;
 
-    public KeyboardHandler(long window) {
+    public KeyboardHandler(final long window) {
         this.window = window;
         this.keyCallback = new GLFWKeyCallback() {
             @Override
-            public void invoke(long window, int key, int scancode, int action, int mods) {
-                if (ME.window != window) {
+            public void invoke(final long window, final int key, final int scancode, final int action, final int mods) {
+                if (KeyboardHandler.this.ME.window != window) {
                     return;
                 }
-                synchronized (keys) {
+                synchronized (KeyboardHandler.this.keys) {
                     // final InputState inputState = InputState.ofState(action);
                     // keys[key] = inputState;
                     final byte actionB = (byte) action;
-                    keys[key] = actionB;
-                    if (appendToString && (actionB == KeySettings.KEY_PRESSED || actionB == KeySettings.KEY_REPEATED)) {
+                    KeyboardHandler.this.keys[key] = actionB;
+                    if (KeyboardHandler.this.appendToString
+                            && (actionB == KeySettings.KEY_PRESSED || actionB == KeySettings.KEY_REPEATED)) {
                         final String keyString = GLFW.glfwGetKeyName(key, scancode); // FIXME Is this deprecated?
                         if (keyString != null) {
-                            inputString.updateAndGet((inputString_) -> inputString_ + keyString);
+                            KeyboardHandler.this.inputString.updateAndGet((inputString_) -> inputString_ + keyString);
                         }
                     }
                 }
@@ -63,20 +65,20 @@ public class KeyboardHandler implements InputHandler {
 
     @Override
     public synchronized InputHandler init() {
-        GLFW.glfwSetKeyCallback(window, keyCallback);
+        GLFW.glfwSetKeyCallback(this.window, this.keyCallback);
         return this;
     }
 
     @Override
-    public synchronized InputHandler preUpdate(double currentTime, KeySettings keySettings) {
-        keysLastTime = Arrays.copyOf(keys, keys.length);
+    public synchronized InputHandler preUpdate(final double currentTime, final KeySettings keySettings) {
+        this.keysLastTime = Arrays.copyOf(this.keys, this.keys.length);
         return this;
     }
 
     @Override
-    public synchronized InputHandler update(double currentTime, KeySettings keySettings) {
-        for (int i = 0; i < keys.length; i++) {
-            if (keysLastTime[i] != keys[i]) {
+    public synchronized InputHandler update(final double currentTime, final KeySettings keySettings) {
+        for (int i = 0; i < this.keys.length; i++) {
+            if (this.keysLastTime[i] != this.keys[i]) {
                 keySettings.updateKeys(currentTime, i, true);
             }
         }
@@ -84,15 +86,15 @@ public class KeyboardHandler implements InputHandler {
     }
 
     @Override
-    public synchronized InputHandler postUpdate(double currentTime, KeySettings keySettings) {
-        keysLastTime = null; // TODO Is this good for performance or not?
+    public synchronized InputHandler postUpdate(final double currentTime, final KeySettings keySettings) {
+        this.keysLastTime = null; // TODO Is this good for performance or not?
         return this;
     }
 
     @Override
     public synchronized InputHandler close() {
-        if (keyCallback != null) {
-            keyCallback.close();
+        if (this.keyCallback != null) {
+            this.keyCallback.close();
         }
         return this;
     }
@@ -102,36 +104,36 @@ public class KeyboardHandler implements InputHandler {
      * keys[keyCode]; }
      */
 
-    public byte getKeyState(int keyCode) {
-        return keys[keyCode];
+    public byte getKeyState(final int keyCode) {
+        return this.keys[keyCode];
     }
 
-    public synchronized boolean isKeyUnknown(int keyCode) {
-        return keys[keyCode] == KeySettings.KEY_UNKNOWN;
+    public synchronized boolean isKeyUnknown(final int keyCode) {
+        return this.keys[keyCode] == KeySettings.KEY_UNKNOWN;
     }
 
-    public synchronized boolean isKeyNothing(int keyCode) {
-        return keys[keyCode] == KeySettings.KEY_NOTHING;
+    public synchronized boolean isKeyNothing(final int keyCode) {
+        return this.keys[keyCode] == KeySettings.KEY_NOTHING;
     }
 
-    public synchronized boolean isKeyReleased(int keyCode) {
-        return keys[keyCode] == KeySettings.KEY_RELEASED;
+    public synchronized boolean isKeyReleased(final int keyCode) {
+        return this.keys[keyCode] == KeySettings.KEY_RELEASED;
     }
 
-    public synchronized boolean isKeyPressed(int keyCode) {
-        return keys[keyCode] == KeySettings.KEY_PRESSED;
+    public synchronized boolean isKeyPressed(final int keyCode) {
+        return this.keys[keyCode] == KeySettings.KEY_PRESSED;
     }
 
-    public synchronized boolean isKeyRepeated(int keyCode) {
-        return keys[keyCode] == KeySettings.KEY_REPEATED;
+    public synchronized boolean isKeyRepeated(final int keyCode) {
+        return this.keys[keyCode] == KeySettings.KEY_REPEATED;
     }
 
     public synchronized String getInputString() {
-        return inputString.get();
+        return this.inputString.get();
     }
 
     public synchronized void clearInputString() {
-        inputString.set("");
+        this.inputString.set("");
     }
 
     public synchronized String consumeInputString() {
@@ -141,11 +143,11 @@ public class KeyboardHandler implements InputHandler {
     }
 
     public int size() {
-        return keys.length;
+        return this.keys.length;
     }
 
     public long getWindow() {
-        return window;
+        return this.window;
     }
 
 }

@@ -16,6 +16,8 @@
 
 package de.omnikryptec.core;
 
+import javax.annotation.Nonnull;
+
 import de.omnikryptec.core.loop.DefaultEngineLoop;
 import de.omnikryptec.core.loop.IEngineLoop;
 import de.omnikryptec.libapi.LibAPIManager;
@@ -26,7 +28,6 @@ import de.omnikryptec.libapi.exposed.window.WindowInfo;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
-import javax.annotation.Nonnull;
 
 /**
  * The application entry point of the Omnikryptec-Engine. Can be used static and
@@ -58,30 +59,30 @@ public abstract class EngineLoader {
 
     @Nonnull
     public EngineLoader boot() {
-        if (booted) {
+        if (this.booted) {
             throw new IllegalStateException("Was already booted");
         }
-        Settings<LoaderSetting> loaderSettings = new Settings<>();
-        Settings<LibSetting> libSettings = new Settings<>();
+        final Settings<LoaderSetting> loaderSettings = new Settings<>();
+        final Settings<LibSetting> libSettings = new Settings<>();
         config(loaderSettings, libSettings);
         // or let them (the natives) be loaded by Configuration.SHARED_LIBRARY and
         // LIBRARY_PATH <-- Seems to work, so better use it
         initialize();
-        window = ((WindowInfo<?>) loaderSettings.get(LoaderSetting.WINDOW_INFO)).createWindow();
-        engineLoop = loaderSettings.get(LoaderSetting.ENGINE_LOOP);
-        booted = true;
+        this.window = ((WindowInfo<?>) loaderSettings.get(LoaderSetting.WINDOW_INFO)).createWindow();
+        this.engineLoop = loaderSettings.get(LoaderSetting.ENGINE_LOOP);
+        this.booted = true;
         if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.IMMEDIATELY) {
-            window.setVisible(true);
+            this.window.setVisible(true);
         }
         onContextCreationFinish();
         if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.AFTERINIT) {
-            window.setVisible(true);
+            this.window.setVisible(true);
         }
         onInitialized();
-        if (engineLoop != null) {
-            engineLoop.init(this);
+        if (this.engineLoop != null) {
+            this.engineLoop.init(this);
             if ((boolean) loaderSettings.get(LoaderSetting.START_ENGINE_LOOP_AFTER_INIT)) {
-                engineLoop.startLoop();
+                this.engineLoop.startLoop();
             }
         }
         return this;
@@ -89,42 +90,42 @@ public abstract class EngineLoader {
 
     public void shutdown() {
         onShutdown();
-        if (engineLoop != null) {
-            engineLoop.stopLoop();
+        if (this.engineLoop != null) {
+            this.engineLoop.stopLoop();
         }
         // Shutdown, etc...
-        window.dispose();
+        this.window.dispose();
         LibAPIManager.shutdown();
     }
 
     public Window<?> getWindow() {
-        if (!booted) {
+        if (!this.booted) {
             throw new IllegalStateException("Window is not created yet");
         }
-        return window;
+        return this.window;
     }
 
     public IEngineLoop getEngineLoop() {
-        return engineLoop;
+        return this.engineLoop;
     }
 
-    public void switchGameloop(IEngineLoop newloop) {
+    public void switchGameloop(final IEngineLoop newloop) {
         Util.ensureNonNull(newloop);
-        boolean running = engineLoop.isRunning();
+        final boolean running = this.engineLoop.isRunning();
         if (running) {
-            engineLoop.stopLoop();
+            this.engineLoop.stopLoop();
         }
         this.engineLoop = newloop;
         if (running) {
-            engineLoop.startLoop();
+            this.engineLoop.startLoop();
         }
     }
 
     public boolean isBooted() {
-        return booted;
+        return this.booted;
     }
 
-    protected void config(Settings<LoaderSetting> loadersettings, Settings<LibSetting> libsettings) {
+    protected void config(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings) {
     }
 
     protected abstract void onContextCreationFinish();
@@ -175,13 +176,13 @@ public abstract class EngineLoader {
 
         private final Object defaultSetting;
 
-        LoaderSetting(Object def) {
+        LoaderSetting(final Object def) {
             this.defaultSetting = def;
         }
 
         @Override
         public <T> T getDefault() {
-            return (T) defaultSetting;
+            return (T) this.defaultSetting;
         }
     }
 

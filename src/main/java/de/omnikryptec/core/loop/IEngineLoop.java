@@ -20,7 +20,7 @@ import de.omnikryptec.core.EngineLoader;
 
 public interface IEngineLoop {
 
-    default void init(EngineLoader loader) {
+    default void init(final EngineLoader loader) {
     }
 
     void startLoop();

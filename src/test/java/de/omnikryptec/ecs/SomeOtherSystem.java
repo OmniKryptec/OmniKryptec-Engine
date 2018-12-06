@@ -12,7 +12,7 @@ public class SomeOtherSystem extends ComponentSystem {
     }
 
     @Override
-    public void update(IECSManager entityManager, Time deltaTime) {
+    public void update(final IECSManager entityManager, final Time deltaTime) {
         // System.out.println("ma friends!");
     }
 

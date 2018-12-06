@@ -18,7 +18,7 @@ package de.omnikryptec.util.settings;
 
 public interface Defaultable {
 
-    default <T> T getDefault(Class<T> clazz) {
+    default <T> T getDefault(final Class<T> clazz) {
         return getDefault();
     }
 

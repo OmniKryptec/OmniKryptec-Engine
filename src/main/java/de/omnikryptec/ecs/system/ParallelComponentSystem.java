@@ -16,22 +16,22 @@
 
 package de.omnikryptec.ecs.system;
 
+import java.util.BitSet;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.util.ExecutorsUtil;
 import de.omnikryptec.util.updater.Time;
 
-import java.util.BitSet;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-
 public abstract class ParallelComponentSystem extends ComponentSystem implements IndividualUpdater {
 
-    private ExecutorService executorService;
-    private int size;
-    private int activationSize;
+    private final ExecutorService executorService;
+    private final int size;
+    private final int activationSize;
 
-    public ParallelComponentSystem(BitSet required, int threads, int activationSize) {
+    public ParallelComponentSystem(final BitSet required, final int threads, final int activationSize) {
         super(required);
         this.size = threads;
         this.activationSize = activationSize;
@@ -39,26 +39,26 @@ public abstract class ParallelComponentSystem extends ComponentSystem implements
     }
 
     protected final ExecutorService getExecutor() {
-        return executorService;
+        return this.executorService;
     }
 
     public int numThreads() {
-        return size;
+        return this.size;
     }
 
     public int getActivationSize() {
-        return activationSize;
+        return this.activationSize;
     }
 
     @Override
-    public final void update(IECSManager entityManager, Time time) {
-        if (entities.size() > 0) {
-            if (entities.size() < activationSize) {
-                for (Entity e : entities) {
+    public final void update(final IECSManager entityManager, final Time time) {
+        if (this.entities.size() > 0) {
+            if (this.entities.size() < this.activationSize) {
+                for (final Entity e : this.entities) {
                     updateIndividual(entityManager, e, time);
                 }
             } else {
-                updateThreaded(entityManager, entities, time);
+                updateThreaded(entityManager, this.entities, time);
             }
         }
     }

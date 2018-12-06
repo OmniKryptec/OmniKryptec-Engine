@@ -32,8 +32,8 @@ public class MathUtil {
      *
      * @return an array consisting of x1, y1, x2, y2; in that particular order
      */
-    public static int[] calculateViewport(double aspectRatio, int w, int h) {
-        int[] viewport = new int[4];
+    public static int[] calculateViewport(final double aspectRatio, final int w, final int h) {
+        final int[] viewport = new int[4];
         viewport[0] = 0;
         viewport[1] = 0;
         viewport[2] = w;
@@ -50,9 +50,9 @@ public class MathUtil {
         return viewport;
     }
 
-    public static <T> T getWeightedRandom(Random random, T[] ts, int[] weights) {
+    public static <T> T getWeightedRandom(final Random random, final T[] ts, final int[] weights) {
         int sum = 0;
-        for (int i : weights) {
+        for (final int i : weights) {
             sum += i;
         }
         int rand = random.nextInt(sum) + 1;
@@ -65,11 +65,11 @@ public class MathUtil {
         return ts[0];
     }
 
-    public static int toPowerOfTwo(int n) {
+    public static int toPowerOfTwo(final int n) {
         return 1 << (32 - Integer.numberOfLeadingZeros(n - 1));
     }
 
-    public static boolean isPowerOfTwo(int n) {
+    public static boolean isPowerOfTwo(final int n) {
         return (n & -n) == n;
     }
 

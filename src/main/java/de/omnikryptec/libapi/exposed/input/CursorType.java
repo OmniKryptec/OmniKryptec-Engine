@@ -24,12 +24,12 @@ public enum CursorType {
 
     private final int state;
 
-    CursorType(int state) {
+    CursorType(final int state) {
         this.state = state;
     }
 
-    public static CursorType ofState(int state) {
-        for (CursorType cursorType : values()) {
+    public static CursorType ofState(final int state) {
+        for (final CursorType cursorType : values()) {
             if (cursorType.state == state) {
                 return cursorType;
             }
@@ -38,7 +38,7 @@ public enum CursorType {
     }
 
     public int getState() {
-        return state;
+        return this.state;
     }
 
 }

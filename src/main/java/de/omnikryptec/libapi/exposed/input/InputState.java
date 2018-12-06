@@ -25,12 +25,12 @@ public enum InputState {
 
     private final int state;
 
-    InputState(int state) {
+    InputState(final int state) {
         this.state = state;
     }
 
-    public static final InputState ofState(int state) {
-        for (InputState inputState : values()) {
+    public static final InputState ofState(final int state) {
+        for (final InputState inputState : values()) {
             if (inputState.state == state) {
                 return inputState;
             }
@@ -39,7 +39,7 @@ public enum InputState {
     }
 
     public final int getState() {
-        return state;
+        return this.state;
     }
 
 }

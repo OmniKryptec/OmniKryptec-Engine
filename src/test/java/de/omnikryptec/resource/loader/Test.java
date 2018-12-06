@@ -1,20 +1,20 @@
 package de.omnikryptec.resource.loader;
 
+import java.util.stream.Collectors;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
 import de.omnikryptec.resource.loadervpc.ResourceLoader;
 import de.omnikryptec.resource.loadervpc.ResourceProcessor;
 
-import java.util.stream.Collectors;
-
 public class Test {
 
-    public static void main(String[] args) {
-        ResourceProcessor p = new ResourceProcessor();
+    public static void main(final String[] args) {
+        final ResourceProcessor p = new ResourceProcessor();
         p.addLoader(new ResourceLoader<String>() {
 
             @Override
-            public String load(AdvancedFile file) throws Exception {
+            public String load(final AdvancedFile file) throws Exception {
                 return file.createBufferedReader().lines().collect(Collectors.joining("\n"));
             }
 
@@ -31,17 +31,17 @@ public class Test {
         p.addCallback(new LoadingProgressCallback() {
 
             @Override
-            public void onLoadingStart(int max, int maxstages) {
+            public void onLoadingStart(final int max, final int maxstages) {
                 System.out.println("Max: " + max + " MaxS: " + maxstages);
             }
 
             @Override
-            public void onStageChange(AdvancedFile file, int localmax, int stagenumber) {
+            public void onStageChange(final AdvancedFile file, final int localmax, final int stagenumber) {
                 System.out.println("Stagechange, lmax: " + localmax + " S#: " + stagenumber);
             }
 
             @Override
-            public void onProgressChange(AdvancedFile f, int localprocessed) {
+            public void onProgressChange(final AdvancedFile f, final int localprocessed) {
                 System.out.println("P:" + localprocessed);
             }
 

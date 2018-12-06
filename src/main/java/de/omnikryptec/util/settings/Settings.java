@@ -16,15 +16,15 @@
 
 package de.omnikryptec.util.settings;
 
-import de.codemakers.base.util.Require;
-import de.codemakers.base.util.interfaces.Copyable;
-import de.codemakers.base.util.tough.ToughFunction;
-import de.omnikryptec.util.Util;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+
+import de.codemakers.base.util.Require;
+import de.codemakers.base.util.interfaces.Copyable;
+import de.codemakers.base.util.tough.ToughFunction;
+import de.omnikryptec.util.Util;
 
 public class Settings<K> implements Copyable {
     
@@ -34,7 +34,7 @@ public class Settings<K> implements Copyable {
         this(new ConcurrentHashMap<>());
     }
     
-    public Settings(Map<K, Object> settings) {
+    public Settings(final Map<K, Object> settings) {
         this.settings = settings;
     }
     
@@ -42,12 +42,12 @@ public class Settings<K> implements Copyable {
      * Returns the value for the key
      *
      * @param key {@link K} Key
-     * @param <T> Type of the value
+     * @param     <T> Type of the value
      *
      * @return Value for the key
      */
-    public <T> T get(K key) {
-        Object object = settings.get(key);
+    public <T> T get(final K key) {
+        Object object = this.settings.get(key);
         if (object == null) {
             if (key instanceof Defaultable) {
                 object = ((Defaultable) key).getDefault();
@@ -59,14 +59,14 @@ public class Settings<K> implements Copyable {
     /**
      * Returns the value for the key and casts it to the clazz
      *
-     * @param key {@link K} Key
+     * @param key   {@link K} Key
      * @param clazz Class of the value
-     * @param <T> Type of the value
+     * @param       <T> Type of the value
      *
      * @return Value for the key
      */
-    public <T> T get(K key, Class<T> clazz) {
-        Object object = settings.get(key);
+    public <T> T get(final K key, final Class<T> clazz) {
+        Object object = this.settings.get(key);
         if (object == null) {
             if (key instanceof Defaultable) {
                 object = ((Defaultable) key).getDefault();
@@ -78,28 +78,29 @@ public class Settings<K> implements Copyable {
     /**
      * Returns the value for the key (or the default value if null)
      *
-     * @param key {@link K} Key
+     * @param key          {@link K} Key
      * @param defaultValue Default value
-     * @param <T> Type of the value
+     * @param              <T> Type of the value
      *
      * @return Value for the key (or the default value if null)
      */
-    public <T> T getOrDefault(K key, T defaultValue) {
+    public <T> T getOrDefault(final K key, final T defaultValue) {
         final T t = get(key);
         return t == null ? defaultValue : t;
     }
     
     /**
-     * Returns the value for the key (or the default value if null) and casts it to the clazz
+     * Returns the value for the key (or the default value if null) and casts it to
+     * the clazz
      *
-     * @param key {@link K} Key
+     * @param key          {@link K} Key
      * @param defaultValue Default value
-     * @param clazz Class of the value
-     * @param <T> Type of the value
+     * @param clazz        Class of the value
+     * @param              <T> Type of the value
      *
      * @return Value for the key (or the default value if null)
      */
-    public <T> T getOrDefault(K key, T defaultValue, Class<T> clazz) {
+    public <T> T getOrDefault(final K key, final T defaultValue, final Class<T> clazz) {
         final T t = get(key);
         return t == null ? defaultValue : t;
     }
@@ -107,17 +108,17 @@ public class Settings<K> implements Copyable {
     /**
      * Sets a value for a key
      *
-     * @param key {@link K} Key
+     * @param key   {@link K} Key
      * @param value Value to be set
      *
      * @return A reference to this {@link de.omnikryptec.util.settings.Settings}
      */
-    public Settings<K> set(K key, Object value) {
+    public Settings<K> set(final K key, final Object value) {
         Util.ensureNonNull(key);
         if (value == null) {
             return remove(key);
         }
-        settings.put(key, value);
+        this.settings.put(key, value);
         return this;
     }
     
@@ -128,9 +129,9 @@ public class Settings<K> implements Copyable {
      *
      * @return A reference to this {@link de.omnikryptec.util.settings.Settings}
      */
-    public Settings<K> setAll(Map<K, Object> settings) {
+    public Settings<K> setAll(final Map<K, Object> settings) {
         Util.ensureNonNull(settings);
-        for (Map.Entry<K, Object> entry : settings.entrySet()) {
+        for (final Map.Entry<K, Object> entry : settings.entrySet()) {
             set(entry.getKey(), entry.getValue());
         }
         return this;
@@ -139,14 +140,14 @@ public class Settings<K> implements Copyable {
     /**
      * Alters an value in this {@link de.omnikryptec.util.settings.Settings}
      *
-     * @param key Key to alter
+     * @param key      Key to alter
      * @param function Function which alters the value
-     * @param <R> Type of the altered value
-     * @param <T> Type of the current value
+     * @param          <R> Type of the altered value
+     * @param          <T> Type of the current value
      *
      * @return Altered value
      */
-    public <R, T> R update(K key, ToughFunction<T, R> function) {
+    public <R, T> R update(final K key, final ToughFunction<T, R> function) {
         Util.ensureNonNull(key);
         final T value = get(key);
         final R result = function.applyWithoutException(value);
@@ -157,15 +158,15 @@ public class Settings<K> implements Copyable {
     /**
      * Alters an value in this {@link de.omnikryptec.util.settings.Settings}
      *
-     * @param key Key to alter
+     * @param key      Key to alter
      * @param function Function which alters the value
-     * @param clazz Class of the value
-     * @param <R> Type of the altered value
-     * @param <T> Type of the current value
+     * @param clazz    Class of the value
+     * @param          <R> Type of the altered value
+     * @param          <T> Type of the current value
      *
      * @return Altered value
      */
-    public <R, T> R update(K key, ToughFunction<T, R> function, Class<T> clazz) {
+    public <R, T> R update(final K key, final ToughFunction<T, R> function, final Class<T> clazz) {
         Util.ensureNonNull(key);
         final T value = get(key, clazz);
         final R result = function.applyWithoutException(value);
@@ -178,12 +179,12 @@ public class Settings<K> implements Copyable {
      * {@link de.omnikryptec.util.settings.Settings}
      *
      * @param key {@link K} Key of the {@link java.util.Map.Entry<K,
-     * java.lang.Object>} to get removed
+     *            java.lang.Object>} to get removed
      *
      * @return A reference to this {@link de.omnikryptec.util.settings.Settings}
      */
-    public Settings<K> remove(K key) {
-        settings.remove(key);
+    public Settings<K> remove(final K key) {
+        this.settings.remove(key);
         return this;
     }
     
@@ -195,37 +196,39 @@ public class Settings<K> implements Copyable {
      *
      * @return A reference to this {@link de.omnikryptec.util.settings.Settings}
      */
-    public Settings<K> removeAll(List<K> keys) {
-        Util.ensureNonNull(settings);
+    public Settings<K> removeAll(final List<K> keys) {
+        Util.ensureNonNull(this.settings);
         keys.forEach(this::remove);
         return this;
     }
     
     /**
      * Removes a key and its value from this
-     * {@link de.omnikryptec.util.settings.Settings} if the current value for the key matches the given value
+     * {@link de.omnikryptec.util.settings.Settings} if the current value for the
+     * key matches the given value
      *
-     * @param key {@link K} Key of the {@link java.util.Map.Entry<K,
-     * java.lang.Object>} to get removed
+     * @param key   {@link K} Key of the {@link java.util.Map.Entry<K,
+     *              java.lang.Object>} to get removed
      * @param value Value to match if a {@link java.util.Map.Entry<K,
-     * java.lang.Object>} should get removed
+     *              java.lang.Object>} should get removed
      *
      * @return A reference to this {@link de.omnikryptec.util.settings.Settings}
      */
-    public Settings<K> remove(K key, Object value) {
-        settings.remove(key, value);
+    public Settings<K> remove(final K key, final Object value) {
+        this.settings.remove(key, value);
         return this;
     }
     
     /**
      * Removes some keys and their values from this
-     * {@link de.omnikryptec.util.settings.Settings} if the current value for they key matches the given value
+     * {@link de.omnikryptec.util.settings.Settings} if the current value for they
+     * key matches the given value
      *
      * @param settings Keys and values to get removed
      *
      * @return A reference to this {@link de.omnikryptec.util.settings.Settings}
      */
-    public Settings<K> removeAll(Map<K, Object> settings) {
+    public Settings<K> removeAll(final Map<K, Object> settings) {
         Util.ensureNonNull(settings);
         settings.forEach(this::remove);
         return this;
@@ -238,10 +241,10 @@ public class Settings<K> implements Copyable {
      * @param key {@link K} Key to be searched for
      *
      * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.Settings}
-     * contains a value for the specified key
+     *         contains a value for the specified key
      */
-    public boolean hasKey(K key) {
-        return settings.containsKey(key);
+    public boolean hasKey(final K key) {
+        return this.settings.containsKey(key);
     }
     
     /**
@@ -251,10 +254,10 @@ public class Settings<K> implements Copyable {
      * @param value Value to be searched for
      *
      * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.Settings}
-     * maps one or more keys to the specified value
+     *         maps one or more keys to the specified value
      */
-    public boolean hasValue(Object value) {
-        return settings.containsValue(value);
+    public boolean hasValue(final Object value) {
+        return this.settings.containsValue(value);
     }
     
     /**
@@ -262,17 +265,17 @@ public class Settings<K> implements Copyable {
      * {@link de.omnikryptec.util.settings.Settings}
      */
     public boolean clear() {
-        settings.clear();
-        return settings.isEmpty();
+        this.settings.clear();
+        return this.settings.isEmpty();
     }
     
     @Override
     public Settings<K> copy() {
-        return new Settings<K>().setAll(settings);
+        return new Settings<K>().setAll(this.settings);
     }
     
     @Override
-    public void set(Copyable copyable) {
+    public void set(final Copyable copyable) {
         final Settings<K> settings = Require.clazz(copyable, Settings.class);
         if (settings != null) {
             Util.ensureNonNull(settings.settings);
@@ -282,7 +285,7 @@ public class Settings<K> implements Copyable {
     }
     
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
@@ -290,17 +293,17 @@ public class Settings<K> implements Copyable {
             return false;
         }
         final Settings<?> settings1 = (Settings<?>) o;
-        return Objects.equals(settings, settings1.settings);
+        return Objects.equals(this.settings, settings1.settings);
     }
     
     @Override
     public int hashCode() {
-        return Objects.hash(settings);
+        return Objects.hash(this.settings);
     }
     
     @Override
     public String toString() {
-        return "Settings{" + "settings=" + settings + '}';
+        return "Settings{" + "settings=" + this.settings + '}';
     }
     
 }

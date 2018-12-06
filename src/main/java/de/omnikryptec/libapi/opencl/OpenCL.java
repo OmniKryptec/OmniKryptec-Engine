@@ -16,13 +16,18 @@
 
 package de.omnikryptec.libapi.opencl;
 
-import org.lwjgl.PointerBuffer;
-import org.lwjgl.opencl.*;
-import org.lwjgl.system.MemoryStack;
-
 import java.lang.reflect.Field;
 import java.nio.IntBuffer;
 import java.util.HashMap;
+
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.opencl.CL;
+import org.lwjgl.opencl.CL10;
+import org.lwjgl.opencl.CL12;
+import org.lwjgl.opencl.CL20;
+import org.lwjgl.opencl.CL21;
+import org.lwjgl.opencl.CL22;
+import org.lwjgl.system.MemoryStack;
 
 public class OpenCL {
 
@@ -48,7 +53,7 @@ public class OpenCL {
         return platforms;
     }
 
-    public static CLPlatform getPlatform(int platformInd) {
+    public static CLPlatform getPlatform(final int platformInd) {
         if (!createdPlatforms.containsKey(platformInd)) {
             createdPlatforms.put(platformInd, new CLPlatform(platforms.get(platformInd)));
         }
@@ -68,21 +73,21 @@ public class OpenCL {
     public static void create() {
         try {
             CL.create();
-        } catch (Exception e) {
+        } catch (final Exception e) {
         }
         createPlatformData();
     }
 
-    public static String searchConstants(int i) {
-        for (Class<?> c : constantsClasses) {
-            Field[] fields = c.getFields();
-            for (Field f : fields) {
+    public static String searchConstants(final int i) {
+        for (final Class<?> c : constantsClasses) {
+            final Field[] fields = c.getFields();
+            for (final Field f : fields) {
                 try {
                     if (i == f.getInt(null)) {
                         return f.getName();
                     }
-                } catch (IllegalArgumentException e) {
-                } catch (IllegalAccessException e) {
+                } catch (final IllegalArgumentException e) {
+                } catch (final IllegalAccessException e) {
                 }
             }
         }

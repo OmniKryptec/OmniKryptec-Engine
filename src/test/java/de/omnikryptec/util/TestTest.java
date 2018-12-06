@@ -16,20 +16,17 @@
 
 package de.omnikryptec.util;
 
-import de.codemakers.base.logger.Logger;
-import de.omnikryptec.util.math.Mathf;
-
 public class TestTest {
 
-    public static final void main(String[] args) throws Exception {
+    public static final void main(final String[] args) throws Exception {
         int count = 0;
-        long time = System.nanoTime();
+        final long time = System.nanoTime();
         for (float f = 0; f < 100; f += 0.25f) {
             Math.sqrt(f);
             // Mathf.sqrtNewton(f, 0.01f);
             count++;
         }
-        long time2 = System.nanoTime();
+        final long time2 = System.nanoTime();
         System.out.println((time2 - time) / count + "ns");
     }
 

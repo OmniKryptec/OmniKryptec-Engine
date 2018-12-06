@@ -27,7 +27,7 @@ public class NoFreeInstanceException extends Exception {
      */
     private static final long serialVersionUID = -278590286814990547L;
 
-    public NoFreeInstanceException(String msg) {
+    public NoFreeInstanceException(final String msg) {
         super(msg);
     }
 

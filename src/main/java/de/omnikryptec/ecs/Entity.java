@@ -16,11 +16,11 @@
 
 package de.omnikryptec.ecs;
 
+import java.util.BitSet;
+
 import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.util.data.DynamicArray;
-
-import java.util.BitSet;
 
 public class Entity {
 
@@ -34,11 +34,11 @@ public class Entity {
         this.components = new BitSet();
     }
 
-    public Entity addComponent(Component component) {
+    public Entity addComponent(final Component component) {
         return addComponent(ComponentType.of(component.getClass()), component);
     }
 
-    public Entity addComponent(ComponentType type, Component component) {
+    public Entity addComponent(final ComponentType type, final Component component) {
         this.componentsArray.set(type.getId(), component);
         this.components.set(type.getId());
         if (hasIECSManager()) {
@@ -47,11 +47,11 @@ public class Entity {
         return this;
     }
 
-    public Entity removeComponent(ComponentType type) {
+    public Entity removeComponent(final ComponentType type) {
         return removeComponent(type, null);
     }
 
-    public Entity removeComponent(ComponentType componentType, Component component) {
+    public Entity removeComponent(final ComponentType componentType, final Component component) {
         // Only remove if there exists a component of that type to remove
         if (this.components.get(componentType.getId())) {
             this.componentsArray.set(componentType.getId(), null);
@@ -63,31 +63,31 @@ public class Entity {
         return this;
     }
 
-    public <C extends Component> C getComponent(ComponentType componentType) {
-        return (C) componentsArray.get(componentType.getId());
+    public <C extends Component> C getComponent(final ComponentType componentType) {
+        return (C) this.componentsArray.get(componentType.getId());
     }
 
-    public boolean hasComponent(ComponentType type) {
-        return components.get(type.getId());
+    public boolean hasComponent(final ComponentType type) {
+        return this.components.get(type.getId());
     }
 
     public BitSet getComponents() {
-        return components;
+        return this.components;
     }
 
     public boolean hasIECSManager() {
-        return iecsManager != null;
+        return this.iecsManager != null;
     }
 
     public IECSManager getIECSManager() {
-        return iecsManager;
+        return this.iecsManager;
     }
 
-    public void onIECSManagerAdded(IECSManager manager) {
+    public void onIECSManagerAdded(final IECSManager manager) {
         this.iecsManager = manager;
     }
 
-    public void onIECSManagerRemoved(IECSManager manager) {
+    public void onIECSManagerRemoved(final IECSManager manager) {
         this.iecsManager = null;
     }
 }

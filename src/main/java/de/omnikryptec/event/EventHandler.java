@@ -21,32 +21,32 @@ import java.lang.reflect.Method;
 
 public class EventHandler implements IEventListener {
 
-    private Object handler;
-    private Method m;
-    private boolean receiveConsumed;
+    private final Object handler;
+    private final Method m;
+    private final boolean receiveConsumed;
 
-    public EventHandler(Object handler, Method m, boolean receiveConsumed) {
+    public EventHandler(final Object handler, final Method m, final boolean receiveConsumed) {
         this.handler = handler;
         this.m = m;
         this.receiveConsumed = receiveConsumed;
     }
 
     public Object getHandler() {
-        return handler;
+        return this.handler;
     }
 
     public Method getMethod() {
-        return m;
+        return this.m;
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == this) {
             return true;
         }
         if (obj instanceof EventHandler) {
-            EventHandler sec = (EventHandler) obj;
-            if (sec.m.equals(m)) {
+            final EventHandler sec = (EventHandler) obj;
+            if (sec.m.equals(this.m)) {
                 return true;
             }
         }
@@ -54,10 +54,10 @@ public class EventHandler implements IEventListener {
     }
 
     @Override
-    public void invoke(Event ev) {
+    public void invoke(final Event ev) {
         try {
             // TODO make this faster (ASM/bytecode manipulation) because this is slow af
-            m.invoke(handler, ev);
+            this.m.invoke(this.handler, ev);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             e.printStackTrace();
         }
@@ -65,7 +65,7 @@ public class EventHandler implements IEventListener {
 
     @Override
     public boolean receiveConsumed() {
-        return receiveConsumed;
+        return this.receiveConsumed;
     }
 
 }

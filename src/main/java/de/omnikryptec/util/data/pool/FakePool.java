@@ -36,7 +36,7 @@ public abstract class FakePool<T> extends Pool<T> {
      * Does nothing.
      */
     @Override
-    public void free(T t) {
+    public void free(final T t) {
     }
 
     /**

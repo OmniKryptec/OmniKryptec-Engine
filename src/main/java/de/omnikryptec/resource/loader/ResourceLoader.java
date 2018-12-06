@@ -16,22 +16,22 @@
 
 package de.omnikryptec.resource.loader;
 
+import java.util.Properties;
+
 import de.codemakers.base.logger.Logger;
 import de.codemakers.base.util.tough.ToughConsumer;
 import de.codemakers.io.file.AdvancedFile;
-
-import java.util.Properties;
 
 public interface ResourceLoader {
 
     boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
             ResourceManager resourceManager) throws Exception;
 
-    default boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
-            ResourceManager resourceManager, ToughConsumer<Throwable> failure) {
+    default boolean load(final AdvancedFile advancedFile, final AdvancedFile superFile, final Properties properties,
+            final ResourceManager resourceManager, final ToughConsumer<Throwable> failure) {
         try {
             return load(advancedFile, superFile, properties, resourceManager);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             if (failure != null) {
                 failure.acceptWithoutException(ex);
             } else {
@@ -41,19 +41,20 @@ public interface ResourceLoader {
         }
     }
 
-    default boolean loadWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
-            ResourceManager resourceManager) {
+    default boolean loadWithoutException(final AdvancedFile advancedFile, final AdvancedFile superFile,
+            final Properties properties, final ResourceManager resourceManager) {
         return load(advancedFile, superFile, properties, resourceManager, null);
     }
 
     LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
             ResourceManager resourceManager) throws Exception;
 
-    default LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
-            ResourceManager resourceManager, ToughConsumer<Throwable> failure) {
+    default LoadingType accept(final AdvancedFile advancedFile, final AdvancedFile superFile,
+            final Properties properties, final ResourceManager resourceManager,
+            final ToughConsumer<Throwable> failure) {
         try {
             return accept(advancedFile, superFile, properties, resourceManager);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             if (failure != null) {
                 failure.acceptWithoutException(ex);
             } else {
@@ -63,13 +64,13 @@ public interface ResourceLoader {
         }
     }
 
-    default LoadingType acceptWithoutException(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
-            ResourceManager resourceManager) {
+    default LoadingType acceptWithoutException(final AdvancedFile advancedFile, final AdvancedFile superFile,
+            final Properties properties, final ResourceManager resourceManager) {
         return accept(advancedFile, superFile, properties, resourceManager, null);
     }
 
-    default String generateName(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
-            ResourceManager resourceManager) throws Exception {
+    default String generateName(final AdvancedFile advancedFile, final AdvancedFile superFile,
+            final Properties properties, final ResourceManager resourceManager) throws Exception {
         String path = advancedFile.getPath();
         if (superFile.isDirectory()) {
             path = path.substring(superFile.getPath().length());
@@ -85,11 +86,12 @@ public interface ResourceLoader {
         return name;
     }
 
-    default String generateName(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
-            ResourceManager resourceManager, ToughConsumer<Throwable> failure) {
+    default String generateName(final AdvancedFile advancedFile, final AdvancedFile superFile,
+            final Properties properties, final ResourceManager resourceManager,
+            final ToughConsumer<Throwable> failure) {
         try {
             return generateName(advancedFile, superFile, properties, resourceManager);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             if (failure != null) {
                 failure.acceptWithoutException(ex);
             } else {
@@ -99,8 +101,8 @@ public interface ResourceLoader {
         }
     }
 
-    default String generateNameWithoutException(AdvancedFile advancedFile, AdvancedFile superFile,
-            Properties properties, ResourceManager resourceManager) {
+    default String generateNameWithoutException(final AdvancedFile advancedFile, final AdvancedFile superFile,
+            final Properties properties, final ResourceManager resourceManager) {
         return generateName(advancedFile, superFile, properties, resourceManager, null);
     }
 

@@ -25,58 +25,58 @@ public class SmoothFloat implements Updateable {
     private float target;
     private float actual;
 
-    public SmoothFloat(float initialValue, float agility) {
+    public SmoothFloat(final float initialValue, final float agility) {
         this.target = initialValue;
         this.actual = initialValue;
         this.agility = agility;
     }
 
     @Override
-    public void update(Time time) {
-        actual += (target - actual) * time.deltaf * agility;
+    public void update(final Time time) {
+        this.actual += (this.target - this.actual) * time.deltaf * this.agility;
     }
 
-    public void instantIncrease(float increase) {
+    public void instantIncrease(final float increase) {
         this.actual += increase;
-        this.target = actual;
+        this.target = this.actual;
     }
 
     public float get() {
-        return actual;
+        return this.actual;
     }
 
     public float getTarget() {
-        return target;
+        return this.target;
     }
 
-    public void setTarget(float target) {
+    public void setTarget(final float target) {
         this.target = target;
     }
 
-    public void increaseTarget(float deltaTarget) {
+    public void increaseTarget(final float deltaTarget) {
         this.target += deltaTarget;
     }
 
-    public void setValue(float f) {
-        actual = f;
+    public void setValue(final float f) {
+        this.actual = f;
     }
 
     public float getAgility() {
-        return agility;
+        return this.agility;
     }
 
-    public void setAgility(float a) {
+    public void setAgility(final float a) {
         this.agility = a;
     }
 
-    public void setValueAndTarget(float f) {
+    public void setValueAndTarget(final float f) {
         setTarget(f);
         setValue(f);
     }
 
     @Override
     public String toString() {
-        return "Value: " + actual + " Target: " + target + " Agility: " + agility;
+        return "Value: " + this.actual + " Target: " + this.target + " Agility: " + this.agility;
     }
 
 }

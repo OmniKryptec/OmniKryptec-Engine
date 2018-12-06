@@ -33,21 +33,22 @@ import de.omnikryptec.util.updater.Time;
 
 public abstract class GroupParallelComponentSystem extends ParallelComponentSystem {
 
-    public GroupParallelComponentSystem(BitSet required) {
+    public GroupParallelComponentSystem(final BitSet required) {
         this(required, ExecutorsUtil.AVAILABLE_PROCESSORS, ExecutorsUtil.AVAILABLE_PROCESSORS * 3);
     }
 
-    public GroupParallelComponentSystem(BitSet required, int threads, int activationSize) {
+    public GroupParallelComponentSystem(final BitSet required, final int threads, final int activationSize) {
         super(required, threads, activationSize);
     }
 
     @Override
-    public void updateThreaded(IECSManager entityManager, List<Entity> entities, Time time) {
-        List<List<Entity>> lists = Lists.partition(entities, (int) Mathd.ceil(entities.size() / (double) numThreads()));
-        Collection<Callable<Void>> tasks = new ArrayList<>(numThreads());
-        for (List<Entity> el : lists) {
+    public void updateThreaded(final IECSManager entityManager, final List<Entity> entities, final Time time) {
+        final List<List<Entity>> lists = Lists.partition(entities,
+                (int) Mathd.ceil(entities.size() / (double) numThreads()));
+        final Collection<Callable<Void>> tasks = new ArrayList<>(numThreads());
+        for (final List<Entity> el : lists) {
             tasks.add(() -> {
-                for (Entity e : el) {
+                for (final Entity e : el) {
                     updateIndividual(entityManager, e, time);
                 }
                 return null;
@@ -55,7 +56,7 @@ public abstract class GroupParallelComponentSystem extends ParallelComponentSyst
         }
         try {
             getExecutor().invokeAll(tasks, 1, TimeUnit.MINUTES);
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             throw new RuntimeException(e);
         }
     }

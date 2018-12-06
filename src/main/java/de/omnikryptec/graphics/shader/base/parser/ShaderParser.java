@@ -29,13 +29,13 @@ public class ShaderParser {
 
     private String currentContext;
 
-    public void parse(String programName, String... sources) {
+    public void parse(final String programName, final String... sources) {
         if (programName == null || programName.equals("")) {
             throw new NullPointerException("Illegal program name");
         }
-        currentContext = programName;
+        this.currentContext = programName;
         for (int i = 0; i < sources.length; i++) {
-            String[] lines = sources[i].split("[\n\r]+");
+            final String[] lines = sources[i].split("[\n\r]+");
             for (int j = 0; j < lines.length; j++) {
                 if (lines[j].startsWith(PARSER_STATEMENT_INDICATOR + SHADER_INDICATOR)) {
 
@@ -79,7 +79,7 @@ public class ShaderParser {
         case "GL_COMPUTE_SHADER":
             return GL43.GL_COMPUTE_SHADER;
         default:
-            throw new ShaderCompilationException(currentContext, "Illegal shadertype : " + s);
+            throw new ShaderCompilationException(this.currentContext, "Illegal shadertype : " + s);
         }
     }
 }
