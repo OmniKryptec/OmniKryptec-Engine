@@ -9,7 +9,7 @@ import com.google.common.collect.MultimapBuilder;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.updater.Time;
 
-public class UpdateablesStorage implements Updateable {
+public class UpdateableContainer implements Updateable {
     
     public static enum ExecuteMode {
         Embracing, OneByOne
@@ -22,7 +22,7 @@ public class UpdateablesStorage implements Updateable {
     private final Multimap<ExecuteMode, Updateable> updateables;
     private final Map<Updateable, ExecuteTime> updtTimes;
     
-    public UpdateablesStorage() {
+    public UpdateableContainer() {
         this.updateables = MultimapBuilder.enumKeys(ExecuteMode.class).arrayListValues().build();
         this.updtTimes = new HashMap<>();
     }

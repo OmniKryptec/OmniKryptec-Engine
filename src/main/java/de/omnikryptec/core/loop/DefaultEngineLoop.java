@@ -16,22 +16,43 @@
 
 package de.omnikryptec.core.loop;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import de.omnikryptec.core.EngineLoader;
+import de.omnikryptec.core.scene.GameController;
+import de.omnikryptec.core.scene.GameController.ControllerSetting;
 import de.omnikryptec.graphics.display.WindowUpdater;
 import de.omnikryptec.libapi.exposed.window.Window;
+import de.omnikryptec.util.updater.AbstractUpdater;
 
 public class DefaultEngineLoop implements IEngineLoop {
 
-    private boolean running = false;
-    private Window<?> window;
+    private final Runnable asyncTasks = new Runnable() {
+
+        private AbstractUpdater updater = new AbstractUpdater();
+
+        @Override
+        public void run() {
+            while (running.get()) {
+                this.updater.update(
+                        DefaultEngineLoop.this.gameController.getSettings().get(ControllerSetting.UPDATES_ASYNC_PER_S));
+                DefaultEngineLoop.this.gameController.updateAsync(this.updater.asTime());
+            }
+        }
+    };
+
+    private AtomicBoolean running = new AtomicBoolean(false);
     private boolean shouldStop = false;
 
+    private Window<?> window;
     private WindowUpdater windowUpdater;
-    
+    private GameController gameController;
+
     @Override
     public void init(final EngineLoader loader) {
         this.window = loader.getWindow();
         this.windowUpdater = new WindowUpdater(this.window);
+        this.gameController = loader.getController();
     }
 
     @Override
@@ -45,19 +66,22 @@ public class DefaultEngineLoop implements IEngineLoop {
 
     @Override
     public boolean isRunning() {
-        return this.running;
+        return this.running.get();
     }
 
     @Override
     public void startLoop() {
         this.shouldStop = false;
-        this.running = true;
+        this.running.set(true);
+        new Thread(asyncTasks).start();
         try {
+            this.windowUpdater.resetDeltaTime();
             while (!shouldStop()) {
-                this.windowUpdater.update(0);
+                this.windowUpdater.update(this.gameController.getSettings().get(ControllerSetting.UPDATES_SYNC_PER_S));
+                this.gameController.updateSync(this.windowUpdater.asTime());
             }
         } finally {
-            this.running = false;
+            this.running.set(false);
         }
     }
 

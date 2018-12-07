@@ -12,8 +12,7 @@ import de.omnikryptec.util.settings.Settings;
 public class StaticInitTest {
 
     public static void main(final String[] args) {
-        EngineLoader.initialize();
-        LibAPIManager.setConfiguration(new Settings<>());
+        EngineLoader.initialize(new Settings<>());
         final Window<?> window = new OpenGLWindowInfo().createWindow();
         window.setVisible(true);
         final WindowUpdater updater = new WindowUpdater(window);

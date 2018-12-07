@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 
 import de.omnikryptec.core.loop.DefaultEngineLoop;
 import de.omnikryptec.core.loop.IEngineLoop;
+import de.omnikryptec.core.scene.GameController;
 import de.omnikryptec.libapi.LibAPIManager;
 import de.omnikryptec.libapi.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.OpenGLWindowInfo;
@@ -43,20 +44,21 @@ import de.omnikryptec.util.settings.Settings;
  * @author pcfreak9000
  */
 public abstract class EngineLoader {
-    
+
     private IEngineLoop engineLoop;
     private Window<?> window;
+    private GameController gameController;
     private boolean booted;
-    
+
     public EngineLoader() {
     }
-    
+
     public static void initialize(Settings<LibSetting> libsettings) {
         // Initialize everything required
         LibAPIManager.init(libsettings);
         // Audio, etc....
     }
-    
+
     @Nonnull
     public EngineLoader boot() {
         if (this.booted) {
@@ -70,15 +72,15 @@ public abstract class EngineLoader {
         initialize(libSettings);
         this.window = ((WindowInfo<?>) loaderSettings.get(LoaderSetting.WINDOW_INFO)).createWindow();
         this.engineLoop = loaderSettings.get(LoaderSetting.ENGINE_LOOP);
+        this.gameController = new GameController();
         this.booted = true;
         if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.IMMEDIATELY) {
             this.window.setVisible(true);
         }
-        onContextCreationFinish();
+        onInitialized(gameController);
         if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.AFTERINIT) {
             this.window.setVisible(true);
         }
-        onInitialized();
         if (this.engineLoop != null) {
             this.engineLoop.init(this);
             if ((boolean) loaderSettings.get(LoaderSetting.START_ENGINE_LOOP_AFTER_INIT)) {
@@ -87,7 +89,7 @@ public abstract class EngineLoader {
         }
         return this;
     }
-    
+
     public void shutdown() {
         onShutdown();
         if (this.engineLoop != null) {
@@ -97,18 +99,28 @@ public abstract class EngineLoader {
         this.window.dispose();
         LibAPIManager.shutdown();
     }
-    
+
     public Window<?> getWindow() {
+        checkBooted();
+        return this.window;
+    }
+
+    public IEngineLoop getEngineLoop() {
+        checkBooted();
+        return this.engineLoop;
+    }
+
+    public GameController getController() {
+        checkBooted();
+        return this.gameController;
+    }
+
+    private void checkBooted() {
         if (!this.booted) {
             throw new IllegalStateException("Window is not created yet");
         }
-        return this.window;
     }
-    
-    public IEngineLoop getEngineLoop() {
-        return this.engineLoop;
-    }
-    
+
     public void switchGameloop(final IEngineLoop newloop) {
         Util.ensureNonNull(newloop);
         final boolean running = this.engineLoop.isRunning();
@@ -120,24 +132,21 @@ public abstract class EngineLoader {
             this.engineLoop.startLoop();
         }
     }
-    
+
     public boolean isBooted() {
         return this.booted;
     }
-    
+
     protected void config(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings) {
     }
-    
-    protected abstract void onContextCreationFinish();
-    
+
+    protected abstract void onInitialized(GameController gameController);
+
     protected void onShutdown() {
     }
-    
-    protected void onInitialized() {
-    }
-    
+
     public enum LoaderSetting implements Defaultable {
-        
+
         /**
          * The window-/contextcreation information. Only in non-static cases of
          * {@link EngineLoader}.<br>
@@ -173,19 +182,19 @@ public abstract class EngineLoader {
          * @see #START_ENGINE_LOOP_AFTER_INIT
          */
         ENGINE_LOOP(new DefaultEngineLoop());
-        
+
         private final Object defaultSetting;
-        
+
         LoaderSetting(final Object def) {
             this.defaultSetting = def;
         }
-        
+
         @Override
         public <T> T getDefault() {
             return (T) this.defaultSetting;
         }
     }
-    
+
     /**
      * Will only be used in non-static cases of {@link EngineLoader}. Defines when
      * to show the {@link Window}.
@@ -207,5 +216,5 @@ public abstract class EngineLoader {
          */
         NEVER
     }
-    
+
 }

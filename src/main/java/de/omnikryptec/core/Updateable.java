@@ -16,7 +16,7 @@
 
 package de.omnikryptec.core;
 
-import de.omnikryptec.core.UpdateablesStorage.ExecuteMode;
+import de.omnikryptec.core.UpdateableContainer.ExecuteMode;
 import de.omnikryptec.util.updater.Time;
 
 public interface Updateable {
