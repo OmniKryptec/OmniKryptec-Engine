@@ -35,4 +35,9 @@ public class Scene {
         return this.updtContainerAsync;
     }
 
+    public SceneBuilder createBuilder() {
+        //TODO cachen or good enough?
+        return new SceneBuilder(this);
+    }
+
 }
