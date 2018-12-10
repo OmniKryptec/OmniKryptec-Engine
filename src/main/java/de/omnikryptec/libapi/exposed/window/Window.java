@@ -24,8 +24,28 @@ import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 
 import de.omnikryptec.util.Util;
+import de.omnikryptec.util.settings.Defaultable;
+import de.omnikryptec.util.settings.Settings;
 
 public abstract class Window<T extends WindowInfo<?>> {
+
+    public static enum WindowSetting implements Defaultable {
+        Width(800), Height(600), Fullscreen(false), Name("Display"), Resizeable(true), LockAspectRatio(false),
+        API("OpenGL");
+
+        private final Object def;
+
+        private WindowSetting(Object def) {
+            this.def = def;
+        }
+
+        @Override
+        public <T> T getDefault() {
+            return (T) def;
+        }
+
+    }
+
     protected final long windowId;
     private final GLFWFramebufferSizeCallback framebufferSizeCallback;
     private boolean resized = false;
@@ -33,25 +53,26 @@ public abstract class Window<T extends WindowInfo<?>> {
     private boolean isfullscreen = false;
     private boolean active = false;
 
-    protected Window(final T info) {
+    protected Window(final Settings<WindowSetting> info) {
         Util.ensureNonNull(info, "Window info must not be null!");
-        this.width = info.getWidth();
-        this.height = info.getHeight();
+        this.width = info.get(WindowSetting.Width);
+        this.height = info.get(WindowSetting.Height);
         GLFW.glfwDefaultWindowHints();
-        GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, info.isResizeable() ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
+        GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE,
+                (boolean) info.get(WindowSetting.Resizeable) ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
         setAdditionalGlfwWindowHints(info);
-        if (info.isFullscreen()) {
+        if ((boolean) info.get(WindowSetting.Fullscreen)) {
             final GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
             this.width = vidMode.width();
             this.height = vidMode.height();
             this.isfullscreen = true;
         }
-        this.windowId = GLFW.glfwCreateWindow(this.width, this.height, info.getName(),
-                info.isFullscreen() ? GLFW.glfwGetPrimaryMonitor() : 0, 0);
+        this.windowId = GLFW.glfwCreateWindow(this.width, this.height, (String) info.get(WindowSetting.Name),
+                (boolean) info.get(WindowSetting.Fullscreen) ? GLFW.glfwGetPrimaryMonitor() : 0, 0);
         if (this.windowId == 0) {
             throw new RuntimeException("Failed to create window");
         }
-        if (info.isLockAspectRatio() && info.isResizeable()) {
+        if ((boolean) info.get(WindowSetting.LockAspectRatio) && (boolean) info.get(WindowSetting.Resizeable)) {
             GLFW.glfwSetWindowAspectRatio(this.windowId, this.width, this.height);
         }
         GLFW.glfwSetFramebufferSizeCallback(this.windowId,
@@ -68,7 +89,7 @@ public abstract class Window<T extends WindowInfo<?>> {
         this.fheight = framebufferHeight.get();
     }
 
-    protected abstract void setAdditionalGlfwWindowHints(T info);
+    protected abstract void setAdditionalGlfwWindowHints(Settings<WindowSetting> info);
 
     protected abstract void swap();
 

@@ -19,9 +19,11 @@ package de.omnikryptec.libapi.exposed.window;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;
 
+import de.omnikryptec.util.settings.Settings;
+
 public class OpenGLWindow extends Window<OpenGLWindowInfo> {
 
-    public OpenGLWindow(final OpenGLWindowInfo info) {
+    public OpenGLWindow(final Settings<WindowSetting> info) {
         super(info);
         GLFW.glfwMakeContextCurrent(getWindowID());
         GL.createCapabilities();
@@ -29,7 +31,7 @@ public class OpenGLWindow extends Window<OpenGLWindowInfo> {
     }
 
     @Override
-    protected void setAdditionalGlfwWindowHints(final OpenGLWindowInfo info) {
+    protected void setAdditionalGlfwWindowHints(final Settings<WindowSetting> info) {
         final int mav = info.getMajVersion();
         final int miv = info.getMinVersion();
         if (mav > 3 || (mav > 2 && miv > 1)) {
