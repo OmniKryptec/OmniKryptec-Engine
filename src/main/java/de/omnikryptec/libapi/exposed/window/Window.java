@@ -30,8 +30,7 @@ import de.omnikryptec.util.settings.Settings;
 public abstract class Window<T extends WindowInfo<?>> {
 
     public static enum WindowSetting implements Defaultable {
-        Width(800), Height(600), Fullscreen(false), Name("Display"), Resizeable(true), LockAspectRatio(false),
-        API("OpenGL");
+        Width(800), Height(600), Fullscreen(false), Name("Display"), Resizeable(true), LockAspectRatio(false);
 
         private final Object def;
 
