@@ -16,6 +16,7 @@
 
 package de.omnikryptec.libapi;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -28,7 +29,10 @@ import org.lwjgl.system.Configuration;
 
 import de.codemakers.base.util.tough.ToughRunnable;
 import de.omnikryptec.core.EngineLoader.LoaderSetting;
+import de.omnikryptec.libapi.exposed.render.RendererAPI;
+import de.omnikryptec.libapi.opengl.OpenGLRendererAPI;
 import de.omnikryptec.util.settings.Defaultable;
+import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
 public final class LibAPIManager {
@@ -75,9 +79,20 @@ public final class LibAPIManager {
         }
     }
     
+    public static enum DefaultRenderer {
+        OpenGL(OpenGLRendererAPI.class);
+        private final Class<? extends RendererAPI> rapi;
+        
+        private DefaultRenderer(Class<? extends RendererAPI> rapi) {
+            this.rapi = rapi;
+        }
+    }
+    
     private static final Collection<ToughRunnable> shutdownHooks = new ArrayList<>();
     private static LibAPIManager instance;
     private static boolean debug = (boolean) LibSetting.DEBUG.getDefault();
+    
+    private RendererAPI rendererApi;
     
     static {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown(), "LibAPI-Shutdown-Hooks"));
@@ -132,6 +147,34 @@ public final class LibAPIManager {
     
     public static LibAPIManager active() {
         return instance;
+    }
+    
+    public void setRenderer(DefaultRenderer defaultRenderer, Settings<IntegerKey> apisettings) {
+        Class<? extends RendererAPI> apiclazz = defaultRenderer.rapi;
+        try {
+            Constructor<? extends RendererAPI> rApiConstructor = apiclazz.getConstructor(apisettings.getClass());
+            if (!rApiConstructor.isAccessible()) {
+                rApiConstructor.setAccessible(true);
+            }
+            setRenderer(rApiConstructor.newInstance(apisettings));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void setRenderer(RendererAPI api) {
+        if (isRendererSet()) {
+            throw new IllegalStateException("Renderer is set!");
+        }
+        rendererApi = api;
+    }
+    
+    public boolean isRendererSet() {
+        return rendererApi != null;
+    }
+    
+    public RendererAPI getRenderer() {
+        return rendererApi;
     }
     
     public void pollEvents() {
