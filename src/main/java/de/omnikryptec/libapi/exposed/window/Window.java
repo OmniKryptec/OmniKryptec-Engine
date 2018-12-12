@@ -23,6 +23,7 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 
+import de.omnikryptec.libapi.LibAPIManager;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
@@ -59,7 +60,7 @@ public abstract class Window<T extends WindowInfo<?>> {
         GLFW.glfwDefaultWindowHints();
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE,
                 (boolean) info.get(WindowSetting.Resizeable) ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
-        setAdditionalGlfwWindowHints(info);
+        LibAPIManager.active().getRenderer().window_setHints(this);
         if ((boolean) info.get(WindowSetting.Fullscreen)) {
             final GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
             this.width = vidMode.width();
@@ -159,5 +160,6 @@ public abstract class Window<T extends WindowInfo<?>> {
         GLFW.glfwGetFramebufferSize(this.windowId, framebufferWidth, framebufferHeight);
         this.fwidth = framebufferWidth.get();
         this.fheight = framebufferHeight.get();
+        LibAPIManager.active().getRenderer().window_Resized(this, width, height);
     }
 }

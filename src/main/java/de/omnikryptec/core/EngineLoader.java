@@ -28,7 +28,9 @@ import de.omnikryptec.libapi.exposed.window.Window;
 import de.omnikryptec.libapi.exposed.window.WindowInfo;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Defaultable;
+import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
+import de.omnikryptec.libapi.exposed.render.RenderAPI;
 
 /**
  * The application entry point of the Omnikryptec-Engine. Can be used static and
@@ -53,9 +55,11 @@ public abstract class EngineLoader {
     public EngineLoader() {
     }
 
-    public static void initialize(Settings<LibSetting> libsettings) {
+    public static void initialize(Settings<LibSetting> libsettings, Class<? extends RenderAPI> renderapi,
+            Settings<IntegerKey> apisettings) {
         // Initialize everything required
         LibAPIManager.init(libsettings);
+        LibAPIManager.active().setRenderer(renderapi, apisettings);
         // Audio, etc....
     }
 
@@ -66,11 +70,12 @@ public abstract class EngineLoader {
         }
         final Settings<LoaderSetting> loaderSettings = new Settings<>();
         final Settings<LibSetting> libSettings = new Settings<>();
-        config(loaderSettings, libSettings);
+        final Settings<IntegerKey> rapiSettings = new Settings<>();
+        config(loaderSettings, libSettings, rapiSettings);
         // or let them (the natives) be loaded by Configuration.SHARED_LIBRARY and
         // LIBRARY_PATH <-- Seems to work, so better use it
-        initialize(libSettings);
-        this.window = ((WindowInfo<?>) loaderSettings.get(LoaderSetting.WINDOW_INFO)).createWindow();
+        initialize(libSettings, loaderSettings.get(LoaderSetting.RENDER_API), rapiSettings);
+        //this.window = ((WindowInfo<?>) loaderSettings.get(LoaderSetting.WINDOW_INFO)).createWindow();
         this.engineLoop = loaderSettings.get(LoaderSetting.ENGINE_LOOP);
         this.gameController = new GameController();
         this.booted = true;
@@ -137,7 +142,8 @@ public abstract class EngineLoader {
         return this.booted;
     }
 
-    protected void config(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings) {
+    protected void config(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
+            final Settings<IntegerKey> apisettings) {
     }
 
     protected abstract void onInitialized(GameController gameController);
@@ -148,14 +154,13 @@ public abstract class EngineLoader {
     public enum LoaderSetting implements Defaultable {
 
         /**
-         * The window-/contextcreation information. Only in non-static cases of
+         * The rendering API to use by the engine. Only in non-static cases of
          * {@link EngineLoader}.<br>
          * <br>
-         * The default value is a default {@link OpenGLWindowInfo}.
+         * The default value is a default {@link RenderAPI#OpenGL}.
          *
-         * @see WindowInfo
          */
-        WINDOW_INFO(new OpenGLWindowInfo()),
+        RENDER_API(RenderAPI.OpenGL),
         /**
          * When to show the window after it's creation. Only in non-static cases of
          * {@link EngineLoader}. <br>
