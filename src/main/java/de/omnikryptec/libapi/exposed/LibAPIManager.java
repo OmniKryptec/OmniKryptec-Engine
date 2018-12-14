@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.libapi;
+package de.omnikryptec.libapi.exposed;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -28,9 +28,7 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.system.Configuration;
 
 import de.codemakers.base.util.tough.ToughRunnable;
-import de.omnikryptec.core.EngineLoader.LoaderSetting;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
-import de.omnikryptec.libapi.opengl.OpenGLRendererAPI;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
@@ -172,9 +170,7 @@ public final class LibAPIManager {
         }
         try {
             Constructor<? extends RenderAPI> rApiConstructor = apiclazz.getConstructor(apisettings.getClass());
-            if (!rApiConstructor.isAccessible()) {
-                rApiConstructor.setAccessible(true);
-            }
+            rApiConstructor.setAccessible(true);
             renderApi = rApiConstructor.newInstance(apisettings);
         } catch (NoSuchMethodException ex) {
             throw new IllegalArgumentException("Invalid RendererAPI: Missing constructor", ex);
@@ -187,7 +183,7 @@ public final class LibAPIManager {
         return renderApi != null;
     }
 
-    public RenderAPI getRenderer() {
+    public RenderAPI getRenderAPI() {
         return renderApi;
     }
 

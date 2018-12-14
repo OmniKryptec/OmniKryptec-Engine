@@ -18,18 +18,17 @@ package de.omnikryptec.core;
 
 import javax.annotation.Nonnull;
 
-import de.omnikryptec.core.loop.DefaultEngineLoop;
-import de.omnikryptec.core.loop.IEngineLoop;
+import de.omnikryptec.core.loop.DefaultGameLoop;
+import de.omnikryptec.core.loop.IGameLoop;
 import de.omnikryptec.core.scene.GameController;
-import de.omnikryptec.libapi.LibAPIManager;
-import de.omnikryptec.libapi.LibAPIManager.LibSetting;
-import de.omnikryptec.libapi.exposed.window.OpenGLWindowInfo;
 import de.omnikryptec.libapi.exposed.window.Window;
-import de.omnikryptec.libapi.exposed.window.WindowInfo;
+import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 
 /**
@@ -47,8 +46,8 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
  */
 public abstract class EngineLoader {
 
-    private IEngineLoop engineLoop;
-    private Window<?> window;
+    private IGameLoop engineLoop;
+    private Window window;
     private GameController gameController;
     private boolean booted;
 
@@ -70,12 +69,13 @@ public abstract class EngineLoader {
         }
         final Settings<LoaderSetting> loaderSettings = new Settings<>();
         final Settings<LibSetting> libSettings = new Settings<>();
+        final Settings<WindowSetting> windowSettings = new Settings<>();
         final Settings<IntegerKey> rapiSettings = new Settings<>();
-        config(loaderSettings, libSettings, rapiSettings);
+        config(loaderSettings, libSettings, windowSettings, rapiSettings);
         // or let them (the natives) be loaded by Configuration.SHARED_LIBRARY and
         // LIBRARY_PATH <-- Seems to work, so better use it
         initialize(libSettings, loaderSettings.get(LoaderSetting.RENDER_API), rapiSettings);
-        //this.window = ((WindowInfo<?>) loaderSettings.get(LoaderSetting.WINDOW_INFO)).createWindow();
+        this.window = LibAPIManager.active().getRenderAPI().createWindow(windowSettings);
         this.engineLoop = loaderSettings.get(LoaderSetting.ENGINE_LOOP);
         this.gameController = new GameController();
         this.booted = true;
@@ -105,12 +105,12 @@ public abstract class EngineLoader {
         LibAPIManager.shutdown();
     }
 
-    public Window<?> getWindow() {
+    public Window getWindow() {
         checkBooted();
         return this.window;
     }
 
-    public IEngineLoop getEngineLoop() {
+    public IGameLoop getEngineLoop() {
         checkBooted();
         return this.engineLoop;
     }
@@ -126,7 +126,7 @@ public abstract class EngineLoader {
         }
     }
 
-    public void switchGameloop(final IEngineLoop newloop) {
+    public void switchGameloop(final IGameLoop newloop) {
         Util.ensureNonNull(newloop);
         final boolean running = this.engineLoop.isRunning();
         if (running) {
@@ -143,7 +143,7 @@ public abstract class EngineLoader {
     }
 
     protected void config(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
-            final Settings<IntegerKey> apisettings) {
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
     }
 
     protected abstract void onInitialized(GameController gameController);
@@ -186,7 +186,7 @@ public abstract class EngineLoader {
          *
          * @see #START_ENGINE_LOOP_AFTER_INIT
          */
-        ENGINE_LOOP(new DefaultEngineLoop());
+        ENGINE_LOOP(new DefaultGameLoop());
 
         private final Object defaultSetting;
 

@@ -1,12 +1,12 @@
 package de.omnikryptec.libapi.exposed.render;
 
 import de.omnikryptec.libapi.exposed.window.Window;
-import de.omnikryptec.libapi.opengl.OpenGLRendererAPI;
+import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
+import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
+import de.omnikryptec.util.settings.Settings;
 
 public interface RenderAPI {
-    public static final Class<OpenGLRendererAPI> OpenGL = OpenGLRendererAPI.class;
+    public static final Class<OpenGLRenderAPI> OpenGL = OpenGLRenderAPI.class;
 
-    void window_setHints(Window window);
-    void window_Resized(Window window, int width, int height);
-    void window_swap(Window window);
+    Window createWindow(Settings<WindowSetting> windowsettings);
 }

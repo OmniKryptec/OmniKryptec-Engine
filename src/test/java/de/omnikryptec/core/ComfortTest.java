@@ -2,7 +2,9 @@ package de.omnikryptec.core;
 
 import de.omnikryptec.core.scene.GameController;
 import de.omnikryptec.core.scene.SceneBuilder;
-import de.omnikryptec.libapi.LibAPIManager.LibSetting;
+import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
+import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
+import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
 public class ComfortTest extends EngineLoader {
@@ -12,8 +14,9 @@ public class ComfortTest extends EngineLoader {
     }
 
     @Override
-    protected void config(final Settings<LoaderSetting> settings, final Settings<LibSetting> libsettings) {
-        libsettings.set(LibSetting.DEBUG, true);
+    protected void config(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
+        libsettings.set(LibSetting.DEBUG, false);
     }
 
     @Override

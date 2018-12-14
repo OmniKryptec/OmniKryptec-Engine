@@ -1,15 +1,14 @@
-package de.omnikryptec.graphics.display;
+package de.omnikryptec.libapi.exposed.window;
 
-import de.omnikryptec.libapi.LibAPIManager;
-import de.omnikryptec.libapi.exposed.window.Window;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.updater.AbstractUpdater;
 
 public class WindowUpdater extends AbstractUpdater {
 
-    private final Window<?> window;
+    private final Window window;
     private double swaptime;
 
-    public WindowUpdater(final Window<?> window) {
+    public WindowUpdater(final Window window) {
         this.window = window;
     }
 
@@ -26,7 +25,7 @@ public class WindowUpdater extends AbstractUpdater {
     }
 
     @Deprecated
-    public Window<?> getWindow() {
+    public Window getWindow() {
         return this.window;
     }
 

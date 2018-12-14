@@ -1,12 +1,12 @@
 package de.omnikryptec.core;
 
-import de.omnikryptec.core.loop.IEngineLoop;
-import de.omnikryptec.graphics.display.WindowUpdater;
+import de.omnikryptec.core.loop.IGameLoop;
+import de.omnikryptec.libapi.exposed.window.WindowUpdater;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.libapi.opengl.OpenGLUtil.BufferType;
 import de.omnikryptec.util.data.Color;
 
-public class Testloop implements IEngineLoop {
+public class Testloop implements IGameLoop {
 
     private WindowUpdater updater;
 

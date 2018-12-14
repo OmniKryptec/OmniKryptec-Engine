@@ -18,7 +18,7 @@ package de.omnikryptec.core.loop;
 
 import de.omnikryptec.core.EngineLoader;
 
-public interface IEngineLoop {
+public interface IGameLoop {
 
     default void init(final EngineLoader loader) {
     }

@@ -23,12 +23,11 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 
-import de.omnikryptec.libapi.LibAPIManager;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
 
-public abstract class Window<T extends WindowInfo<?>> {
+public abstract class Window {
 
     public static enum WindowSetting implements Defaultable {
         Width(800), Height(600), Fullscreen(false), Name("Display"), Resizeable(true), LockAspectRatio(false);
@@ -53,14 +52,14 @@ public abstract class Window<T extends WindowInfo<?>> {
     private boolean isfullscreen = false;
     private boolean active = false;
 
-    protected Window(final Settings<WindowSetting> info) {
-        Util.ensureNonNull(info, "Window info must not be null!");
+    protected Window(final Settings<WindowSetting> info, Object...hints) {
+        Util.ensureNonNull(info, "Window settings must not be null!");
         this.width = info.get(WindowSetting.Width);
         this.height = info.get(WindowSetting.Height);
         GLFW.glfwDefaultWindowHints();
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE,
                 (boolean) info.get(WindowSetting.Resizeable) ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
-        LibAPIManager.active().getRenderer().window_setHints(this);
+        setAdditionalGlfwWindowHints(hints);
         if ((boolean) info.get(WindowSetting.Fullscreen)) {
             final GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
             this.width = vidMode.width();
@@ -89,7 +88,7 @@ public abstract class Window<T extends WindowInfo<?>> {
         this.fheight = framebufferHeight.get();
     }
 
-    protected abstract void setAdditionalGlfwWindowHints(Settings<WindowSetting> info);
+    protected abstract void setAdditionalGlfwWindowHints(Object...hints);
 
     protected abstract void swap();
 
@@ -160,6 +159,5 @@ public abstract class Window<T extends WindowInfo<?>> {
         GLFW.glfwGetFramebufferSize(this.windowId, framebufferWidth, framebufferHeight);
         this.fwidth = framebufferWidth.get();
         this.fheight = framebufferHeight.get();
-        LibAPIManager.active().getRenderer().window_Resized(this, width, height);
     }
 }

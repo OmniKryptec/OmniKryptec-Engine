@@ -19,7 +19,7 @@ package de.omnikryptec.util.settings.keys;
 import java.util.Objects;
 
 import de.codemakers.base.exceptions.NotYetImplementedRuntimeException;
-import de.omnikryptec.libapi.LibAPIManager;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 
 public class Key implements IKey {
 

@@ -28,7 +28,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.lwjgl.glfw.GLFW;
 
 import de.codemakers.base.logger.Logger;
-import de.omnikryptec.libapi.LibAPIManager;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.settings.KeySettings;
 
 public class JoystickHandler implements InputHandler {

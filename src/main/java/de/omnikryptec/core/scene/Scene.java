@@ -36,7 +36,7 @@ public class Scene {
     }
 
     public SceneBuilder createBuilder() {
-        //TODO cachen or good enough?
+        //TODO cache or good enough?
         return new SceneBuilder(this);
     }
 

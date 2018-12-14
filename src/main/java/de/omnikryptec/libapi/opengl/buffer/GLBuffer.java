@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL15;
 
-import de.omnikryptec.libapi.LibAPIManager;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 
 public abstract class GLBuffer {
 

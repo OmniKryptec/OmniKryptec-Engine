@@ -14,26 +14,29 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.libapi.exposed.window;
+package de.omnikryptec.libapi.opengl;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;
 
+import de.omnikryptec.libapi.exposed.window.Window;
+import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
-public class OpenGLWindow extends Window<OpenGLWindowInfo> {
+public class OpenGLWindow extends Window {
 
-    public OpenGLWindow(final Settings<WindowSetting> info) {
-        super(info);
+    public OpenGLWindow(final Settings<WindowSetting> info, final Settings<IntegerKey> apisettings) {
+        super(info, apisettings);
         GLFW.glfwMakeContextCurrent(getWindowID());
         GL.createCapabilities();
-        GLFW.glfwSwapInterval(info.isVsync() ? 1 : 0);
+        GLFW.glfwSwapInterval((boolean) apisettings.get(OpenGLRenderAPI.VSYNC) ? 1 : 0);
     }
 
     @Override
-    protected void setAdditionalGlfwWindowHints(final Settings<WindowSetting> info) {
-        final int mav = info.getMajVersion();
-        final int miv = info.getMinVersion();
+    protected void setAdditionalGlfwWindowHints(Object...hints) {
+        final Settings<IntegerKey> apisettings = (Settings<IntegerKey>)hints[0];
+        final int mav = apisettings.get(OpenGLRenderAPI.MAJOR_VERSION);
+        final int miv = apisettings.get(OpenGLRenderAPI.MINOR_VERSION);
         if (mav > 3 || (mav > 2 && miv > 1)) {
             GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, mav);
             GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, miv);
@@ -43,6 +46,7 @@ public class OpenGLWindow extends Window<OpenGLWindowInfo> {
 
     @Override
     protected void swap() {
+        GLFW.glfwSwapBuffers(windowId);
     }
 
 }

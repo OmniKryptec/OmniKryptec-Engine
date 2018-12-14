@@ -21,11 +21,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.scene.GameController;
 import de.omnikryptec.core.scene.GameController.ControllerSetting;
-import de.omnikryptec.graphics.display.WindowUpdater;
 import de.omnikryptec.libapi.exposed.window.Window;
+import de.omnikryptec.libapi.exposed.window.WindowUpdater;
 import de.omnikryptec.util.updater.AbstractUpdater;
 
-public class DefaultEngineLoop implements IEngineLoop {
+public class DefaultGameLoop implements IGameLoop {
 
     private final Runnable asyncTasks = new Runnable() {
 
@@ -33,10 +33,11 @@ public class DefaultEngineLoop implements IEngineLoop {
 
         @Override
         public void run() {
+            updater.resetDeltaTime();
             while (running.get()) {
                 this.updater.update(
-                        DefaultEngineLoop.this.gameController.getSettings().get(ControllerSetting.UPDATES_ASYNC_PER_S));
-                DefaultEngineLoop.this.gameController.updateAsync(this.updater.asTime());
+                        DefaultGameLoop.this.gameController.getSettings().get(ControllerSetting.UPDATES_ASYNC_PER_S));
+                DefaultGameLoop.this.gameController.updateAsync(this.updater.asTime());
             }
         }
     };
@@ -44,7 +45,7 @@ public class DefaultEngineLoop implements IEngineLoop {
     private AtomicBoolean running = new AtomicBoolean(false);
     private boolean shouldStop = false;
 
-    private Window<?> window;
+    private Window window;
     private WindowUpdater windowUpdater;
     private GameController gameController;
 
