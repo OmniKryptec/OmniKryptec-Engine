@@ -34,6 +34,29 @@ public class EventBus implements Updateable {
     private final Multimap<Class<? extends Event>, IEventListener> listeners;
     private final Queue<Event> eventQueue;
 
+    public final ReadableEventBus READ_ONLY = new ReadableEventBus() {
+        
+        @Override
+        public void register(Object object) {
+            EventBus.this.register(object);
+        }
+        
+        @Override
+        public void register(IEventListener listener, Class<? extends Event> eventtype) {
+            EventBus.this.register(listener, eventtype);
+        }
+        
+        @Override
+        public void post(Event event) {
+            EventBus.this.post(event);
+        }
+        
+        @Override
+        public void enqueue(Event event) {
+            EventBus.this.enqueue(event);
+        }
+    };
+    
     public EventBus() {
         this.eventQueue = new ConcurrentLinkedQueue<>();
         this.listeners = ArrayListMultimap.create();
