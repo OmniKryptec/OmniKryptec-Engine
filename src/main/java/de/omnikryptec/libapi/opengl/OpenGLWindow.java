@@ -24,17 +24,17 @@ import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
 public class OpenGLWindow extends Window {
-
+    
     public OpenGLWindow(final Settings<WindowSetting> info, final Settings<IntegerKey> apisettings) {
         super(info, apisettings);
         GLFW.glfwMakeContextCurrent(getWindowID());
         GL.createCapabilities();
-        GLFW.glfwSwapInterval((boolean) apisettings.get(OpenGLRenderAPI.VSYNC) ? 1 : 0);
+        setVSync(info.get(WindowSetting.VSync));
     }
-
+    
     @Override
-    protected void setAdditionalGlfwWindowHints(Object...hints) {
-        final Settings<IntegerKey> apisettings = (Settings<IntegerKey>)hints[0];
+    protected void setAdditionalGlfwWindowHints(Object... hints) {
+        final Settings<IntegerKey> apisettings = (Settings<IntegerKey>) hints[0];
         final int mav = apisettings.get(OpenGLRenderAPI.MAJOR_VERSION);
         final int miv = apisettings.get(OpenGLRenderAPI.MINOR_VERSION);
         if (mav > 3 || (mav > 2 && miv > 1)) {
@@ -43,10 +43,15 @@ public class OpenGLWindow extends Window {
             GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
         }
     }
-
+    
     @Override
     protected void swap() {
         GLFW.glfwSwapBuffers(windowId);
     }
-
+    
+    @Override
+    public void setVSync(boolean vsync) {
+        GLFW.glfwSwapInterval(vsync ? 1 : 0);
+    }
+    
 }

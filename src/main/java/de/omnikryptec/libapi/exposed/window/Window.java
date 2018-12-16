@@ -30,7 +30,7 @@ import de.omnikryptec.util.settings.Settings;
 public abstract class Window {
 
     public static enum WindowSetting implements Defaultable {
-        Width(800), Height(600), Fullscreen(false), Name("Display"), Resizeable(true), LockAspectRatio(false);
+        Width(800), Height(600), Fullscreen(false), Name("Display"), Resizeable(true), LockAspectRatio(false), VSync(true);
 
         private final Object def;
 
@@ -92,6 +92,8 @@ public abstract class Window {
 
     protected abstract void swap();
 
+    public abstract void setVSync(boolean vsync);
+    
     public long getWindowID() {
         return this.windowId;
     }
