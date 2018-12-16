@@ -10,7 +10,7 @@ import de.omnikryptec.util.settings.Settings;
 public class ComfortTest extends EngineLoader {
 
     public static void main(final String[] args) {
-        new ComfortTest().boot();
+        new ComfortTest().start();
     }
 
     @Override

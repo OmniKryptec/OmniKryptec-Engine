@@ -36,7 +36,7 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
  * non-static.<br>
  * <ul>
  * <li>In the non-static case, the engine will be started via
- * {@link #boot()}.</li>
+ * {@link #start()}.</li>
  * <li>In the static case, this class only provides utility functions.</li>
  * </ul>
  * The use of this class is not a requirement to use the Engine; librarys and
@@ -63,7 +63,7 @@ public abstract class EngineLoader {
     }
 
     @Nonnull
-    public EngineLoader boot() {
+    public EngineLoader start() {
         if (this.booted) {
             throw new IllegalStateException("Was already booted");
         }
