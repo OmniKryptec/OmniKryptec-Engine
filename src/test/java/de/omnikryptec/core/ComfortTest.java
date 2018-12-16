@@ -1,6 +1,5 @@
 package de.omnikryptec.core;
 
-import de.omnikryptec.core.scene.GameController;
 import de.omnikryptec.core.scene.SceneBuilder;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
@@ -14,18 +13,19 @@ public class ComfortTest extends EngineLoader {
     }
     
     @Override
-    protected void config(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
+    protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
-        libsettings.set(LibSetting.DEBUG, false);
+        libsettings.set(LibSetting.DEBUG, true);
+        windowSettings.set(WindowSetting.Name, "ComfortTest-Window");
     }
     
     @Override
-    protected void onInitialized(final GameController gc) {
+    protected void onInitialized() {
         //SceneBuilder builder = gc.getGlobalScene().createBuilder();
         //builder.addGraphicsClearTest();
         final SceneBuilder builder = new SceneBuilder();
         builder.addGraphicsClearTest();
-        gc.setLocalScene(builder.get());
+        getGameController().setLocalScene(builder.get());
     }
     
 }

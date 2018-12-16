@@ -73,19 +73,19 @@ public abstract class EngineLoader {
         final Settings<LibSetting> libSettings = new Settings<>();
         final Settings<WindowSetting> windowSettings = new Settings<>();
         final Settings<IntegerKey> rapiSettings = new Settings<>();
-        config(loaderSettings, libSettings, windowSettings, rapiSettings);
+        configure(loaderSettings, libSettings, windowSettings, rapiSettings);
         // or let them (the natives) be loaded by Configuration.SHARED_LIBRARY and
         // LIBRARY_PATH <-- Seems to work, so better use it
         initialize(libSettings, loaderSettings.get(LoaderSetting.RENDER_API), rapiSettings);
         this.window = LibAPIManager.active().getRenderAPI().createWindow(windowSettings);
-        this.gameLoop = loaderSettings.get(LoaderSetting.ENGINE_LOOP);
+        this.gameLoop = loaderSettings.get(LoaderSetting.GAME_LOOP);
         this.gameController = new GameController();
         this.updateController = new UpdateController(gameController, window);
         this.started = true;
         if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.IMMEDIATELY) {
             this.window.setVisible(true);
         }
-        onInitialized(this.gameController);
+        onInitialized();
         if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.AFTERINIT) {
             this.window.setVisible(true);
         }
@@ -110,28 +110,28 @@ public abstract class EngineLoader {
     }
     
     public Window getWindow() {
-        checkBooted();
+        checkStarted();
         return this.window;
     }
     
     public IGameLoop getEngineLoop() {
-        checkBooted();
+        checkStarted();
         return this.gameLoop;
     }
     
     public GameController getGameController() {
-        checkBooted();
+        checkStarted();
         return this.gameController;
     }
     
     public UpdateController getUpdateController() {
-        checkBooted();
+        checkStarted();
         return updateController;
     }
     
-    private void checkBooted() {
+    private void checkStarted() {
         if (!this.started) {
-            throw new IllegalStateException("Window is not created yet");
+            throw new IllegalStateException("EngineLoader has not been started yet");
         }
     }
     
@@ -147,15 +147,15 @@ public abstract class EngineLoader {
         }
     }
     
-    public boolean isBooted() {
+    public boolean isStarted() {
         return this.started;
     }
     
-    protected void config(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
+    protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
     }
     
-    protected abstract void onInitialized(GameController gameController);
+    protected abstract void onInitialized();
     
     protected void onShutdown() {
     }
@@ -166,7 +166,7 @@ public abstract class EngineLoader {
          * The rendering API to use by the engine. Only in non-static cases of
          * {@link EngineLoader}.<br>
          * <br>
-         * The default value is a default {@link RenderAPI#OpenGL}.
+         * The default value is {@link RenderAPI#OpenGL}.
          *
          */
         RENDER_API(RenderAPI.OpenGL),
@@ -182,7 +182,7 @@ public abstract class EngineLoader {
         /**
          * The option that defines if the gameloop should be started after
          * initialization. Only in non-static cases of {@link EngineLoader} and only for
-         * non-null {@link #ENGINE_LOOP}.<br>
+         * non-null {@link #GAME_LOOP}.<br>
          * <br>
          * The default value is <code>true</code>
          */
@@ -195,7 +195,7 @@ public abstract class EngineLoader {
          *
          * @see #START_ENGINE_LOOP_AFTER_INIT
          */
-        ENGINE_LOOP(new DefaultGameLoop());
+        GAME_LOOP(new DefaultGameLoop());
         
         private final Object defaultSetting;
         
@@ -212,7 +212,8 @@ public abstract class EngineLoader {
     /**
      * Will only be used in non-static cases of {@link EngineLoader}. Defines when
      * to show the {@link Window}.
-     *
+     * 
+     * @see Window#setVisible(boolean)
      * @author pcfreak9000
      */
     public enum WindowMakeVisible {

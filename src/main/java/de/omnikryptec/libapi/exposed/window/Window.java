@@ -31,6 +31,11 @@ public abstract class Window {
     
     public static enum WindowSetting implements Defaultable {
         Width(800), Height(600), Fullscreen(false), Name("Display"), Resizeable(true), LockAspectRatio(false),
+        /**
+         * @see Window#setVSync(boolean)
+         * @see de.omnikryptec.core.scene.UpdateController#setSyncUpdatesPerSecond(int)
+         * @see de.omnikryptec.core.scene.UpdateController#setAsyncUpdatesPerSecond(int)
+         */
         VSync(true);
         
         private final Object def;
@@ -94,7 +99,7 @@ public abstract class Window {
     protected abstract void swap();
     
     public abstract void setVSync(boolean vsync);
-
+    
     public long getWindowID() {
         return this.windowId;
     }
