@@ -19,7 +19,7 @@ package de.omnikryptec.graphics.display;
 //TODO viewport stuff might be useful though
 @Deprecated
 public class Display {
-
+    
     // //private Window<?> window;
     // private int[] viewport = new int[4];
     // private double aspectratio = -1;
@@ -87,5 +87,5 @@ public class Display {
     // calcViewport();
     // setARViewPort();
     // }
-
+    
 }

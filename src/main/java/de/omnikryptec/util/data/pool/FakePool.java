@@ -26,19 +26,19 @@ package de.omnikryptec.util.data.pool;
  * @author pcfreak9000
  */
 public abstract class FakePool<T> extends Pool<T> {
-
+    
     @Override
     public T retrieve() {
         return newObject();
     }
-
+    
     /**
      * Does nothing.
      */
     @Override
     public void free(final T t) {
     }
-
+    
     /**
      * Always returns 1
      */

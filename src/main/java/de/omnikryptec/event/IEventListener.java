@@ -17,9 +17,9 @@
 package de.omnikryptec.event;
 
 public interface IEventListener {
-
+    
     void invoke(Event ev);
-
+    
     default boolean receiveConsumed() {
         return false;
     }

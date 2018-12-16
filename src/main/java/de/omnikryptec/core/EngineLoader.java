@@ -21,15 +21,15 @@ import javax.annotation.Nonnull;
 import de.omnikryptec.core.loop.DefaultGameLoop;
 import de.omnikryptec.core.loop.IGameLoop;
 import de.omnikryptec.core.scene.GameController;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
+import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.window.Window;
 import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
-import de.omnikryptec.libapi.exposed.LibAPIManager;
-import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
-import de.omnikryptec.libapi.exposed.render.RenderAPI;
 
 /**
  * The application entry point of the Omnikryptec-Engine. Can be used static and
@@ -45,23 +45,23 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
  * @author pcfreak9000
  */
 public abstract class EngineLoader {
-
+    
     private IGameLoop engineLoop;
     private Window window;
     private GameController gameController;
     private boolean booted;
-
+    
     public EngineLoader() {
     }
-
-    public static void initialize(Settings<LibSetting> libsettings, Class<? extends RenderAPI> renderapi,
-            Settings<IntegerKey> apisettings) {
+    
+    public static void initialize(final Settings<LibSetting> libsettings, final Class<? extends RenderAPI> renderapi,
+            final Settings<IntegerKey> apisettings) {
         // Initialize everything required
         LibAPIManager.init(libsettings);
         LibAPIManager.active().setRenderer(renderapi, apisettings);
         // Audio, etc....
     }
-
+    
     @Nonnull
     public EngineLoader start() {
         if (this.booted) {
@@ -82,7 +82,7 @@ public abstract class EngineLoader {
         if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.IMMEDIATELY) {
             this.window.setVisible(true);
         }
-        onInitialized(gameController);
+        onInitialized(this.gameController);
         if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.AFTERINIT) {
             this.window.setVisible(true);
         }
@@ -94,7 +94,7 @@ public abstract class EngineLoader {
         }
         return this;
     }
-
+    
     public void shutdown() {
         onShutdown();
         if (this.engineLoop != null) {
@@ -104,28 +104,28 @@ public abstract class EngineLoader {
         this.window.dispose();
         LibAPIManager.shutdown();
     }
-
+    
     public Window getWindow() {
         checkBooted();
         return this.window;
     }
-
+    
     public IGameLoop getEngineLoop() {
         checkBooted();
         return this.engineLoop;
     }
-
+    
     public GameController getController() {
         checkBooted();
         return this.gameController;
     }
-
+    
     private void checkBooted() {
         if (!this.booted) {
             throw new IllegalStateException("Window is not created yet");
         }
     }
-
+    
     public void switchGameloop(final IGameLoop newloop) {
         Util.ensureNonNull(newloop);
         final boolean running = this.engineLoop.isRunning();
@@ -137,22 +137,22 @@ public abstract class EngineLoader {
             this.engineLoop.startLoop();
         }
     }
-
+    
     public boolean isBooted() {
         return this.booted;
     }
-
+    
     protected void config(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
     }
-
+    
     protected abstract void onInitialized(GameController gameController);
-
+    
     protected void onShutdown() {
     }
-
+    
     public enum LoaderSetting implements Defaultable {
-
+        
         /**
          * The rendering API to use by the engine. Only in non-static cases of
          * {@link EngineLoader}.<br>
@@ -187,19 +187,19 @@ public abstract class EngineLoader {
          * @see #START_ENGINE_LOOP_AFTER_INIT
          */
         ENGINE_LOOP(new DefaultGameLoop());
-
+        
         private final Object defaultSetting;
-
+        
         LoaderSetting(final Object def) {
             this.defaultSetting = def;
         }
-
+        
         @Override
         public <T> T getDefault() {
             return (T) this.defaultSetting;
         }
     }
-
+    
     /**
      * Will only be used in non-static cases of {@link EngineLoader}. Defines when
      * to show the {@link Window}.
@@ -221,5 +221,5 @@ public abstract class EngineLoader {
          */
         NEVER
     }
-
+    
 }

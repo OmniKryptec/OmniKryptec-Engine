@@ -19,9 +19,9 @@ package de.omnikryptec.resource.loader;
 import de.codemakers.base.util.interfaces.Snowflake;
 
 public interface ResourceObject extends Snowflake {
-
+    
     String getName();
-
+    
     ResourceObject delete() throws Exception;
-
+    
 }

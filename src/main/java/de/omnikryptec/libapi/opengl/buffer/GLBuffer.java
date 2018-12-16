@@ -24,48 +24,48 @@ import org.lwjgl.opengl.GL15;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 
 public abstract class GLBuffer {
-
+    
     private static final List<GLBuffer> all = new ArrayList<>();
-
+    
     static {
         LibAPIManager.registerResourceShutdownHooks(() -> cleanup());
     }
-
+    
     private final int pointer;
     private final int type;
-
+    
     public GLBuffer(final int type) {
         this.type = type;
         this.pointer = GL15.glGenBuffers();
         all.add(this);
     }
-
+    
     private static void cleanup() {
         while (!all.isEmpty()) {
             all.get(0).deleteBuffer();
         }
     }
-
+    
     public void deleteBuffer() {
         GL15.glDeleteBuffers(this.pointer);
         all.remove(this);
     }
-
+    
     public int bufferId() {
         return this.pointer;
     }
-
+    
     public int bufferType() {
         return this.type;
     }
-
+    
     public void bindBuffer() {
         GL15.glBindBuffer(this.type, this.pointer);
     }
-
+    
     @Deprecated
     public void unbindBuffer() {
         GL15.glBindBuffer(this.type, 0);
     }
-
+    
 }

@@ -17,7 +17,7 @@
 package de.omnikryptec.util;
 
 public class TestTest {
-
+    
     public static final void main(final String[] args) throws Exception {
         int count = 0;
         final long time = System.nanoTime();
@@ -29,5 +29,5 @@ public class TestTest {
         final long time2 = System.nanoTime();
         System.out.println((time2 - time) / count + "ns");
     }
-
+    
 }

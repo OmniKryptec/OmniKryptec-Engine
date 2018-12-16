@@ -26,55 +26,55 @@ import de.omnikryptec.libapi.exposed.window.WindowUpdater;
 import de.omnikryptec.util.updater.AbstractUpdater;
 
 public class DefaultGameLoop implements IGameLoop {
-
+    
     private final Runnable asyncTasks = new Runnable() {
-
-        private AbstractUpdater updater = new AbstractUpdater();
-
+        
+        private final AbstractUpdater updater = new AbstractUpdater();
+        
         @Override
         public void run() {
-            updater.resetDeltaTime();
-            while (running.get()) {
+            this.updater.resetDeltaTime();
+            while (DefaultGameLoop.this.running.get()) {
                 this.updater.update(
                         DefaultGameLoop.this.gameController.getSettings().get(ControllerSetting.UPDATES_ASYNC_PER_S));
                 DefaultGameLoop.this.gameController.updateAsync(this.updater.asTime());
             }
         }
     };
-
-    private AtomicBoolean running = new AtomicBoolean(false);
+    
+    private final AtomicBoolean running = new AtomicBoolean(false);
     private boolean shouldStop = false;
-
+    
     private Window window;
     private WindowUpdater windowUpdater;
     private GameController gameController;
-
+    
     @Override
     public void init(final EngineLoader loader) {
         this.window = loader.getWindow();
         this.windowUpdater = new WindowUpdater(this.window);
         this.gameController = loader.getController();
     }
-
+    
     @Override
     public void stopLoop() {
         this.shouldStop = true;
     }
-
+    
     public boolean shouldStop() {
         return this.shouldStop || (this.window == null ? false : this.window.isCloseRequested());
     }
-
+    
     @Override
     public boolean isRunning() {
         return this.running.get();
     }
-
+    
     @Override
     public void startLoop() {
         this.shouldStop = false;
         this.running.set(true);
-        new Thread(asyncTasks).start();
+        new Thread(this.asyncTasks).start();
         try {
             this.windowUpdater.resetDeltaTime();
             while (!shouldStop()) {
@@ -85,5 +85,5 @@ public class DefaultGameLoop implements IGameLoop {
             this.running.set(false);
         }
     }
-
+    
 }

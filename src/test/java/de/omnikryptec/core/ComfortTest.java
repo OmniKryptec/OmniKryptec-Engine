@@ -8,24 +8,24 @@ import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
 public class ComfortTest extends EngineLoader {
-
+    
     public static void main(final String[] args) {
         new ComfortTest().start();
     }
-
+    
     @Override
     protected void config(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
         libsettings.set(LibSetting.DEBUG, false);
     }
-
+    
     @Override
-    protected void onInitialized(GameController gc) {
+    protected void onInitialized(final GameController gc) {
         //SceneBuilder builder = gc.getGlobalScene().createBuilder();
         //builder.addGraphicsClearTest();
-        SceneBuilder builder = new SceneBuilder();
+        final SceneBuilder builder = new SceneBuilder();
         builder.addGraphicsClearTest();
         gc.setLocalScene(builder.get());
     }
-
+    
 }

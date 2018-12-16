@@ -22,13 +22,13 @@ import org.lwjgl.opengl.GL40;
 import org.lwjgl.opengl.GL43;
 
 public class ShaderParser {
-
+    
     public static final String PARSER_STATEMENT_INDICATOR = "$";
     public static final String SHADER_INDICATOR = "shader ";
     public static final String MODULE_INDICATOR = "module ";
-
+    
     private String currentContext;
-
+    
     public void parse(final String programName, final String... sources) {
         if (programName == null || programName.equals("")) {
             throw new NullPointerException("Illegal program name");
@@ -38,7 +38,7 @@ public class ShaderParser {
             final String[] lines = sources[i].split("[\n\r]+");
             for (int j = 0; j < lines.length; j++) {
                 if (lines[j].startsWith(PARSER_STATEMENT_INDICATOR + SHADER_INDICATOR)) {
-
+                    
                 }
             }
         }
@@ -56,7 +56,7 @@ public class ShaderParser {
          * SHADER_INDICATOR + "\" or \"" + MODULE_INDICATOR + "\""); } } }
          */
     }
-
+    
     private int type(String s) {
         s = s.toUpperCase().trim();
         switch (s) {

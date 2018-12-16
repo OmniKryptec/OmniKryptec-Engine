@@ -24,23 +24,23 @@ import com.google.common.collect.Table;
 import de.omnikryptec.util.Util;
 
 public class DefaultResourceProvider implements ResourceProvider {
-
+    
     private final Table<Class<?>, String, Object> resourceTable;
-
+    
     public DefaultResourceProvider() {
         this.resourceTable = HashBasedTable.create();
     }
-
+    
     @Override
     public <T> T get(final Class<T> clazz, final String name) {
         return (T) this.resourceTable.get(clazz, name);
     }
-
+    
     @Override
     public <T> Collection<T> getAll(final Class<T> clazz) {
         return (Collection<T>) this.resourceTable.row(clazz).values();
     }
-
+    
     @Override
     public void add(final Object resource, final String name, final boolean override) {
         Util.ensureNonNull(resource, "Resource must not be null!");
@@ -50,10 +50,10 @@ public class DefaultResourceProvider implements ResourceProvider {
             this.resourceTable.put(resource.getClass(), name, resource);
         }
     }
-
+    
     @Override
     public void clear() {
         this.resourceTable.clear();
     }
-
+    
 }
