@@ -46,7 +46,7 @@ import de.omnikryptec.util.settings.Settings;
  */
 public abstract class EngineLoader {
     
-    private IGameLoop engineLoop;
+    private IGameLoop gameLoop;
     private Window window;
     private GameController gameController;
     private boolean booted;
@@ -76,7 +76,7 @@ public abstract class EngineLoader {
         // LIBRARY_PATH <-- Seems to work, so better use it
         initialize(libSettings, loaderSettings.get(LoaderSetting.RENDER_API), rapiSettings);
         this.window = LibAPIManager.active().getRenderAPI().createWindow(windowSettings);
-        this.engineLoop = loaderSettings.get(LoaderSetting.ENGINE_LOOP);
+        this.gameLoop = loaderSettings.get(LoaderSetting.ENGINE_LOOP);
         this.gameController = new GameController();
         this.booted = true;
         if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.IMMEDIATELY) {
@@ -86,10 +86,10 @@ public abstract class EngineLoader {
         if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.AFTERINIT) {
             this.window.setVisible(true);
         }
-        if (this.engineLoop != null) {
-            this.engineLoop.init(this);
+        if (this.gameLoop != null) {
+            this.gameLoop.init(this);
             if ((boolean) loaderSettings.get(LoaderSetting.START_ENGINE_LOOP_AFTER_INIT)) {
-                this.engineLoop.startLoop();
+                this.gameLoop.startLoop();
             }
         }
         return this;
@@ -97,8 +97,8 @@ public abstract class EngineLoader {
     
     public void shutdown() {
         onShutdown();
-        if (this.engineLoop != null) {
-            this.engineLoop.stopLoop();
+        if (this.gameLoop != null) {
+            this.gameLoop.stopLoop();
         }
         // Shutdown, etc...
         this.window.dispose();
@@ -112,7 +112,7 @@ public abstract class EngineLoader {
     
     public IGameLoop getEngineLoop() {
         checkBooted();
-        return this.engineLoop;
+        return this.gameLoop;
     }
     
     public GameController getController() {
@@ -128,13 +128,13 @@ public abstract class EngineLoader {
     
     public void switchGameloop(final IGameLoop newloop) {
         Util.ensureNonNull(newloop);
-        final boolean running = this.engineLoop.isRunning();
+        final boolean running = this.gameLoop.isRunning();
         if (running) {
-            this.engineLoop.stopLoop();
+            this.gameLoop.stopLoop();
         }
-        this.engineLoop = newloop;
+        this.gameLoop = newloop;
         if (running) {
-            this.engineLoop.startLoop();
+            this.gameLoop.startLoop();
         }
     }
     
