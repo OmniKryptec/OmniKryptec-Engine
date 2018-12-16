@@ -24,4 +24,8 @@ public class WindowUpdater extends AbstractUpdater {
         return this.swaptime;
     }
     
+    public Window getWindow() {
+        return window;
+    }
+    
 }

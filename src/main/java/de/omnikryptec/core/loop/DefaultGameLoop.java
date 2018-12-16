@@ -19,25 +19,17 @@ package de.omnikryptec.core.loop;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import de.omnikryptec.core.EngineLoader;
-import de.omnikryptec.core.scene.GameController;
-import de.omnikryptec.core.scene.GameController.ControllerSetting;
-import de.omnikryptec.libapi.exposed.window.Window;
-import de.omnikryptec.libapi.exposed.window.WindowUpdater;
-import de.omnikryptec.util.updater.AbstractUpdater;
+import de.omnikryptec.core.scene.UpdateController;
 
 public class DefaultGameLoop implements IGameLoop {
     
     private final Runnable asyncTasks = new Runnable() {
         
-        private final AbstractUpdater updater = new AbstractUpdater();
-        
         @Override
         public void run() {
-            this.updater.resetDeltaTime();
+            updateController.getAsyncUpdater().resetDeltaTime();
             while (DefaultGameLoop.this.running.get()) {
-                this.updater.update(
-                        DefaultGameLoop.this.gameController.getSettings().get(ControllerSetting.UPDATES_ASYNC_PER_S));
-                DefaultGameLoop.this.gameController.updateAsync(this.updater.asTime());
+                updateController.updateAsync();
             }
         }
     };
@@ -45,15 +37,11 @@ public class DefaultGameLoop implements IGameLoop {
     private final AtomicBoolean running = new AtomicBoolean(false);
     private boolean shouldStop = false;
     
-    private Window window;
-    private WindowUpdater windowUpdater;
-    private GameController gameController;
+    private UpdateController updateController;
     
     @Override
     public void init(final EngineLoader loader) {
-        this.window = loader.getWindow();
-        this.windowUpdater = new WindowUpdater(this.window);
-        this.gameController = loader.getController();
+        this.updateController = loader.getUpdateController();
     }
     
     @Override
@@ -62,7 +50,8 @@ public class DefaultGameLoop implements IGameLoop {
     }
     
     public boolean shouldStop() {
-        return this.shouldStop || (this.window == null ? false : this.window.isCloseRequested());
+        return this.shouldStop || (this.updateController == null ? false
+                : this.updateController.getWindowUpdater().getWindow().isCloseRequested());
     }
     
     @Override
@@ -72,14 +61,16 @@ public class DefaultGameLoop implements IGameLoop {
     
     @Override
     public void startLoop() {
+        if (this.running.get()) {
+            throw new IllegalStateException();
+        }
         this.shouldStop = false;
         this.running.set(true);
         new Thread(this.asyncTasks).start();
         try {
-            this.windowUpdater.resetDeltaTime();
+            this.updateController.getWindowUpdater().resetDeltaTime();
             while (!shouldStop()) {
-                this.windowUpdater.update(this.gameController.getSettings().get(ControllerSetting.UPDATES_SYNC_PER_S));
-                this.gameController.updateSync(this.windowUpdater.asTime());
+                this.updateController.updateSync();
             }
         } finally {
             this.running.set(false);

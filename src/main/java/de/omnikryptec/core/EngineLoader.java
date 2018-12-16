@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import de.omnikryptec.core.loop.DefaultGameLoop;
 import de.omnikryptec.core.loop.IGameLoop;
 import de.omnikryptec.core.scene.GameController;
+import de.omnikryptec.core.scene.UpdateController;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
@@ -49,7 +50,8 @@ public abstract class EngineLoader {
     private IGameLoop gameLoop;
     private Window window;
     private GameController gameController;
-    private boolean booted;
+    private UpdateController updateController;
+    private boolean started;
     
     public EngineLoader() {
     }
@@ -64,7 +66,7 @@ public abstract class EngineLoader {
     
     @Nonnull
     public EngineLoader start() {
-        if (this.booted) {
+        if (this.started) {
             throw new IllegalStateException("Was already booted");
         }
         final Settings<LoaderSetting> loaderSettings = new Settings<>();
@@ -78,7 +80,8 @@ public abstract class EngineLoader {
         this.window = LibAPIManager.active().getRenderAPI().createWindow(windowSettings);
         this.gameLoop = loaderSettings.get(LoaderSetting.ENGINE_LOOP);
         this.gameController = new GameController();
-        this.booted = true;
+        this.updateController = new UpdateController(gameController, window);
+        this.started = true;
         if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.IMMEDIATELY) {
             this.window.setVisible(true);
         }
@@ -88,7 +91,7 @@ public abstract class EngineLoader {
         }
         if (this.gameLoop != null) {
             this.gameLoop.init(this);
-            if ((boolean) loaderSettings.get(LoaderSetting.START_ENGINE_LOOP_AFTER_INIT)) {
+            if ((boolean) loaderSettings.get(LoaderSetting.START_GAME_LOOP_AFTER_INIT)) {
                 this.gameLoop.startLoop();
             }
         }
@@ -102,6 +105,7 @@ public abstract class EngineLoader {
         }
         // Shutdown, etc...
         this.window.dispose();
+        this.started = false;
         LibAPIManager.shutdown();
     }
     
@@ -115,13 +119,18 @@ public abstract class EngineLoader {
         return this.gameLoop;
     }
     
-    public GameController getController() {
+    public GameController getGameController() {
         checkBooted();
         return this.gameController;
     }
     
+    public UpdateController getUpdateController() {
+        checkBooted();
+        return updateController;
+    }
+    
     private void checkBooted() {
-        if (!this.booted) {
+        if (!this.started) {
             throw new IllegalStateException("Window is not created yet");
         }
     }
@@ -139,7 +148,7 @@ public abstract class EngineLoader {
     }
     
     public boolean isBooted() {
-        return this.booted;
+        return this.started;
     }
     
     protected void config(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
@@ -177,7 +186,7 @@ public abstract class EngineLoader {
          * <br>
          * The default value is <code>true</code>
          */
-        START_ENGINE_LOOP_AFTER_INIT(true),
+        START_GAME_LOOP_AFTER_INIT(true),
         /**
          * The game-loop that might be started after initialization. Only in non-static
          * cases of {@link EngineLoader}<br>

@@ -79,7 +79,7 @@ public class SceneBuilder {
         addUpdateable(new Updateable() {
             @Override
             public void update(final Time time) {
-                if (time.opsCount % 40 == 0) {
+                if (time.opCount % 40 == 0) {
                     OpenGLUtil.setClearColor(Color.randomRGB());
                 }
                 OpenGLUtil.clear(BufferType.COLOR);

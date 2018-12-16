@@ -1,37 +1,14 @@
 package de.omnikryptec.core.scene;
 
-import de.omnikryptec.util.settings.Defaultable;
-import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class GameController {
     
-    public enum ControllerSetting implements Defaultable {
-        UPDATES_SYNC_PER_S(144), UPDATES_ASYNC_PER_S(144);
-        
-        private final Object object;
-        
-        private ControllerSetting(final Object object) {
-            this.object = object;
-        }
-        
-        @Override
-        public <T> T getDefault() {
-            return (T) this.object;
-        }
-    }
-    
-    private final Settings<ControllerSetting> controllerSettings;
     private final Scene globalScene;
     private Scene localScene;
     
     public GameController() {
-        this.controllerSettings = new Settings<>();
         this.globalScene = new Scene();
-    }
-    
-    public Settings<ControllerSetting> getSettings() {
-        return this.controllerSettings;
     }
     
     public Scene getGlobalScene() {
@@ -60,7 +37,7 @@ public class GameController {
         getGlobalScene().getUpdateableContainerSync().update(time);
         getGlobalScene().getUpdateableContainerSync().postUpdate(time);
     }
-
+    
     public void updateAsync(final Time time) {
         getGlobalScene().getUpdateableContainerAsync().preUpdate(time);
         if (hasScene()) {

@@ -181,7 +181,7 @@ public class AbstractUpdater {
     }
     
     public Time asTime() {
-        return new Time(getOperationCount(), LibAPIManager.active().getTime(), getDeltaTime());
+        return new Time(getOperationCount(), getOPS(), LibAPIManager.active().getTime(), getDeltaTime());
     }
     
 }
