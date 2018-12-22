@@ -31,6 +31,12 @@ public abstract class GLBuffer {
         LibAPIManager.registerResourceShutdownHooks(() -> cleanup());
     }
     
+    private static void cleanup() {
+        while (!all.isEmpty()) {
+            all.get(0).deleteBuffer();
+        }
+    }
+    
     private final int pointer;
     private final int type;
     
@@ -38,12 +44,6 @@ public abstract class GLBuffer {
         this.type = type;
         this.pointer = GL15.glGenBuffers();
         all.add(this);
-    }
-    
-    private static void cleanup() {
-        while (!all.isEmpty()) {
-            all.get(0).deleteBuffer();
-        }
     }
     
     public void deleteBuffer() {

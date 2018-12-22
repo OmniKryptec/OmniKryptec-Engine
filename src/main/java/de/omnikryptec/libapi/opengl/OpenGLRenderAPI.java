@@ -10,9 +10,9 @@ public class OpenGLRenderAPI implements RenderAPI {
     
     public static final IntegerKey MAJOR_VERSION = new IntegerKey(0, 1);
     public static final IntegerKey MINOR_VERSION = new IntegerKey(1, 0);
-
+    
     private final Settings<IntegerKey> apisettings;
-
+    
     public OpenGLRenderAPI(final Settings<IntegerKey> apisettings) {
         this.apisettings = apisettings;
     }

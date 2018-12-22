@@ -22,6 +22,7 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
+import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.util.data.Color;
 
 public class OpenGLUtil {
@@ -159,6 +160,25 @@ public class OpenGLUtil {
     
     private static enum CACHE_ENUM {
         DEPTH_MASK_KEY, CULL_FACE_KEY, POLY_MODE_KEY, BLEND_MODE;
+    }
+    
+    public static int typeId(Type t) {
+        switch (t) {
+        case FLOAT:
+            return GL11.GL_FLOAT;
+        default:
+            throw new IllegalArgumentException(t + "");
+        }
+    }
+    
+    
+    public static int sizeof(Type t) {
+        switch (t) {
+        case FLOAT:
+            return 4;
+        default:
+            throw new IllegalArgumentException(t + "");
+        }
     }
     
 }
