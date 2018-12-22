@@ -11,12 +11,12 @@ public class VertexBufferLayout {
     public static class VertexBufferElement {
         private final Type type;
         private final int count;
-        private final boolean normalized;
+        private final boolean normalize;
 
         public VertexBufferElement(final Type type, final int count, final boolean normalized) {
             this.type = type;
             this.count = count;
-            this.normalized = normalized;
+            this.normalize = normalized;
         }
 
         public Type getType() {
@@ -27,8 +27,8 @@ public class VertexBufferLayout {
             return this.count;
         }
 
-        public boolean isNormalized() {
-            return this.normalized;
+        public boolean normalize() {
+            return this.normalize;
         }
 
     }
