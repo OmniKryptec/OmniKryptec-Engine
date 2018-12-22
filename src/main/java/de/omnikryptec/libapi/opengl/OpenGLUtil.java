@@ -19,6 +19,7 @@ package de.omnikryptec.libapi.opengl;
 import java.util.EnumMap;
 import java.util.Map;
 
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL30;
@@ -48,10 +49,19 @@ public class OpenGLUtil {
     
     private static int lastVertexArray = 0;
     
-    public static void bindVertexArray(int vertexArray) {
-        if (vertexArray != lastVertexArray) {
+    public static void bindVertexArray(int vertexArray, boolean override) {
+        if (vertexArray != lastVertexArray || override) {
             lastVertexArray = vertexArray;
             GL30.glBindVertexArray(vertexArray);
+        }
+    }
+    
+    private static final int[] lastBoundTextures = new int[32];
+    
+    public static void bindTexture(int unit, int target, int id, boolean override) {
+        if (lastBoundTextures[unit] != id || override) {
+            GL13.glActiveTexture(unit);
+            GL11.glBindTexture(target, id);
         }
     }
     

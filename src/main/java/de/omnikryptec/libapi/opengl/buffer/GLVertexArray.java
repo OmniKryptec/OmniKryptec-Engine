@@ -24,12 +24,12 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
 
     @Override
     public void bindArray() {
-        OpenGLUtil.bindVertexArray(this.pointer);
+        OpenGLUtil.bindVertexArray(this.pointer, false);
     }
 
     @Override
     public void unbindArray() {
-        OpenGLUtil.bindVertexArray(0);
+        OpenGLUtil.bindVertexArray(0, true);
     }
 
     @Override
