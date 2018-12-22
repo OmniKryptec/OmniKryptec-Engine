@@ -17,24 +17,24 @@
 package de.omnikryptec.util.data;
 
 public class Smoother {
-    
+
     private double[] smoothed;
     private int pointer;
-    
+
     public Smoother() {
         this(300);
     }
-    
+
     public Smoother(final int size) {
         setSmoothingSize(size);
     }
-    
+
     public void push(final double d) {
         this.smoothed[this.pointer] = d;
         this.pointer++;
         this.pointer %= this.smoothed.length;
     }
-    
+
     public double get() {
         double del = 0;
         for (int i = 0; i < this.smoothed.length; i++) {
@@ -42,7 +42,7 @@ public class Smoother {
         }
         return del / this.smoothed.length;
     }
-    
+
     public void setSmoothingSize(final int i) {
         final double[] array = new double[i];
         if (this.smoothed != null) {
@@ -52,7 +52,7 @@ public class Smoother {
         }
         this.smoothed = array;
     }
-    
+
     public long getInverse() {
         return Math.round(1.0 / (get()));
     }

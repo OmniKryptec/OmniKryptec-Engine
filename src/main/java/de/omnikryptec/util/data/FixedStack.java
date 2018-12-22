@@ -24,10 +24,10 @@ package de.omnikryptec.util.data;
  * @author pcfreak9000
  */
 public class FixedStack<T> {
-    
+
     private final Object[] array;
     private int index = 0;
-    
+
     /**
      * Creates a new {@link FixedStack}.
      *
@@ -39,7 +39,7 @@ public class FixedStack<T> {
         }
         this.array = new Object[size];
     }
-    
+
     /**
      * Adds an object on top of this {@link FixedStack}.
      *
@@ -49,7 +49,7 @@ public class FixedStack<T> {
         this.array[this.index] = i;
         this.index++;
     }
-    
+
     /**
      * Retrieves and removes the top element of this {@link FixedStack}.
      *
@@ -59,7 +59,7 @@ public class FixedStack<T> {
         this.index--;
         return (T) this.array[this.index];
     }
-    
+
     /**
      * Retrieves, but does not remove, the top element of this {@link FixedStack}.
      *
@@ -68,21 +68,21 @@ public class FixedStack<T> {
     public T top() {
         return (T) this.array[this.index - 1];
     }
-    
+
     /**
      * @return if this {@link FixedStack} is empty
      */
     public boolean isEmpty() {
         return this.index == 0;
     }
-    
+
     /**
      * @return if this {@link FixedStack} is full
      */
     public boolean isFull() {
         return this.index == this.array.length;
     }
-    
+
     /**
      * The amount of objects stored in this {@link FixedStack}.
      *
@@ -91,7 +91,7 @@ public class FixedStack<T> {
     public int filled() {
         return this.index;
     }
-    
+
     /**
      * The total capacity of this {@link FixedStack}.
      *
@@ -100,7 +100,7 @@ public class FixedStack<T> {
     public int total() {
         return this.array.length;
     }
-    
+
     /**
      * Sets all entries of this {@link FixedStack} to null and its index to 0. In
      * other words, this {@link FixedStack} is emptied.

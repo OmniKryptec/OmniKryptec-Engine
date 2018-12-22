@@ -21,12 +21,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class KeySettingsTest {
-    
+
     public static final void main(final String[] args) throws Exception {
         System.out.println("KeySettings.STANDARD_KEYS=\n"
                 + Stream.of(KeySettings.STANDARD_KEYS).map(Objects::toString).collect(Collectors.joining("\n")));
         System.out.println();
         System.out.println(KeySettings.STANDARD_KEY_MOVE_FORWARD);
     }
-    
+
 }

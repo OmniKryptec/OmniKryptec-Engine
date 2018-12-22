@@ -17,43 +17,43 @@
 package de.omnikryptec.util.data;
 
 public class DynamicArray<E> {
-    
+
     private Object[] array;
     private int grow;
-    
+
     public DynamicArray() {
         this(10, 2);
     }
-    
+
     public DynamicArray(final int initialSize, final int grow) {
         this.array = new Object[grow];
         this.grow = grow;
     }
-    
+
     public void set(final int index, final E e) {
         if (index >= this.array.length) {
             grow();
         }
         this.array[index] = e;
     }
-    
+
     public E get(final int index) {
         if (index < 0 || index >= size()) {
             return null;
         }
         return (E) this.array[index];
     }
-    
+
     private void grow() {
         final Object[] newArray = new Object[size() + this.grow];
         System.arraycopy(this.array, 0, newArray, 0, this.array.length);
         this.array = newArray;
     }
-    
+
     public int size() {
         return this.array.length;
     }
-    
+
     @Override
     public boolean equals(final Object obj) {
         if (obj == null) {

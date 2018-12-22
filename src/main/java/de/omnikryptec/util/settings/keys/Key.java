@@ -22,18 +22,18 @@ import de.codemakers.base.exceptions.NotYetImplementedRuntimeException;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 
 public class Key implements IKey {
-    
+
     /**
      * Default {@link de.omnikryptec.util.settings.keys.Key} which can be returned
      * instead of null
      */
     public static final Key DEFAULT_NULL_KEY = new Key("DEFAULT_NULL_KEY", -1);
-    
+
     private final String name;
     private int key;
     private boolean isKeyboardKey;
     private double lastChange = 0.0F;
-    
+
     /**
      * Constructs a {@link de.omnikryptec.util.settings.keys.Key} (as a keyboard
      * key)
@@ -45,7 +45,7 @@ public class Key implements IKey {
     public Key(final String name, final int key) {
         this(name, key, true);
     }
-    
+
     /**
      * Constructs a {@link de.omnikryptec.util.settings.keys.Key}
      *
@@ -62,7 +62,7 @@ public class Key implements IKey {
         this.key = key;
         this.isKeyboardKey = isKeyboardKey;
     }
-    
+
     /**
      * Returns the name of the {@link de.omnikryptec.util.settings.keys.Key}
      *
@@ -72,7 +72,7 @@ public class Key implements IKey {
     public String getName() {
         return this.name;
     }
-    
+
     /**
      * Returns if this {@link de.omnikryptec.util.settings.keys.Key} is being
      * pressed
@@ -89,7 +89,7 @@ public class Key implements IKey {
         }
         throw new NotYetImplementedRuntimeException();
     }
-    
+
     /**
      * Returns if this {@link de.omnikryptec.util.settings.keys.Key} is being
      * pressed for a specified time
@@ -116,7 +116,7 @@ public class Key implements IKey {
         }
         return false;
     }
-    
+
     /**
      * Returns the KeyCode
      *
@@ -125,7 +125,7 @@ public class Key implements IKey {
     public int getKey() {
         return this.key;
     }
-    
+
     /**
      * Sets the KeyCode
      *
@@ -137,7 +137,7 @@ public class Key implements IKey {
         this.key = key;
         return this;
     }
-    
+
     /**
      * Returns if this {@link de.omnikryptec.util.settings.keys.Key} is a keyboard
      * key
@@ -148,7 +148,7 @@ public class Key implements IKey {
     public boolean isKeyboardKey() {
         return this.isKeyboardKey;
     }
-    
+
     /**
      * @param keyboardKey <tt>true</tt> if this
      *                    {@link de.omnikryptec.util.settings.keys.Key} is a
@@ -160,7 +160,7 @@ public class Key implements IKey {
         this.isKeyboardKey = keyboardKey;
         return this;
     }
-    
+
     /**
      * Returns the last change of this {@link de.omnikryptec.util.settings.keys.Key}
      *
@@ -169,7 +169,7 @@ public class Key implements IKey {
     public double getLastChange() { // FIXME Maybe use another System to determine long key presses
         return this.lastChange;
     }
-    
+
     /**
      * Sets the last change of this {@link de.omnikryptec.util.settings.keys.Key}
      *
@@ -182,7 +182,7 @@ public class Key implements IKey {
         this.lastChange = lastChange;
         return this;
     }
-    
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -194,16 +194,16 @@ public class Key implements IKey {
         final Key key1 = (Key) o;
         return this.key == key1.key && this.isKeyboardKey == key1.isKeyboardKey && Objects.equals(this.name, key1.name);
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(this.name, this.key, this.isKeyboardKey);
     }
-    
+
     @Override
     public String toString() {
         return "Key{" + "name='" + this.name + '\'' + ", key=" + this.key + ", isKeyboardKey=" + this.isKeyboardKey
                 + ", lastChange=" + this.lastChange + '}';
     }
-    
+
 }

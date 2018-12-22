@@ -19,17 +19,17 @@ package de.omnikryptec.ecs.component;
 import de.omnikryptec.ecs.Entity;
 
 public class ComponentMapper<C extends Component> {
-    
+
     private final ComponentType componentType;
-    
+
     public ComponentMapper(final Class<C> componentClass) {
         this.componentType = ComponentType.of(componentClass);
     }
-    
+
     public C get(final Entity entity) {
         return entity.getComponent(this.componentType);
     }
-    
+
     public ComponentType getType() {
         return this.componentType;
     }

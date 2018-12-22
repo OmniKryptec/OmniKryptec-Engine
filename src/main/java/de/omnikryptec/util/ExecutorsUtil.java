@@ -25,52 +25,52 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ExecutorsUtil {
-    
+
     public static final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
     private static final Queue<ExecutorService> allExecutors = new ConcurrentLinkedQueue<>();
     private static final AtomicBoolean lock = new AtomicBoolean(false);
-    
+
     public static ExecutorService newFixedThreadPool() {
         return newFixedThreadPool(AVAILABLE_PROCESSORS);
     }
-    
+
     public static ExecutorService newFixedThreadPool(final int nthreads) {
         final ExecutorService service = Executors.newFixedThreadPool(nthreads);
         register(service);
         return service;
     }
-    
+
     public static ExecutorService newFixedTHreadPool(final int nthreads, final ThreadFactory threadfactory) {
         final ExecutorService service = Executors.newFixedThreadPool(nthreads, threadfactory);
         register(service);
         return service;
     }
-    
+
     public static void register(final ExecutorService executorService) {
         if (lock.get()) {
             throw new IllegalStateException("Currently shutdowning all");
         }
         allExecutors.add(executorService);
     }
-    
+
     public static void unregister(final ExecutorService executorService) {
         if (lock.get()) {
             throw new IllegalStateException("Currently shutdowning all");
         }
         allExecutors.remove(executorService);
     }
-    
+
     public static void shutdownNow(final ExecutorService executorService) {
         shutdown(executorService, 1, TimeUnit.MILLISECONDS);
     }
-    
+
     public static void shutdown(final ExecutorService executorService, final long time, final TimeUnit unit) {
         if (lock.get()) {
             throw new IllegalStateException("Already shutdowning all");
         }
         shutdownIntern(executorService, time, unit);
     }
-    
+
     private static void shutdownIntern(final ExecutorService executorService, final long time, final TimeUnit unit) {
         executorService.shutdownNow();
         allExecutors.remove(executorService);
@@ -80,7 +80,7 @@ public class ExecutorsUtil {
             throw new RuntimeException("Awaiting termination failed:" + executorService, e);
         }
     }
-    
+
     public static void shutdownNowAll() {
         if (lock.get()) {
             throw new IllegalStateException("Already shutdowning");
@@ -96,5 +96,5 @@ public class ExecutorsUtil {
             lock.set(false);
         }
     }
-    
+
 }

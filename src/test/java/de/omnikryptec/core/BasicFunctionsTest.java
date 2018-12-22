@@ -16,7 +16,7 @@ import de.omnikryptec.util.settings.Settings;
  *
  */
 public class BasicFunctionsTest {
-    
+
     public static void main(final String[] args) {
         LibAPIManager.init(new Settings<>());
         LibAPIManager.active().setRenderer(RenderAPI.OpenGL, new Settings<>());
@@ -31,5 +31,5 @@ public class BasicFunctionsTest {
             OpenGLUtil.clear(BufferType.COLOR);
         }
     }
-    
+
 }

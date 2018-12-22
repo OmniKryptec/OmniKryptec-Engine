@@ -17,11 +17,11 @@
 package de.omnikryptec.util;
 
 public class Util {
-    
+
     public static <T> T ensureNonNull(final T obj) {
         return ensureNonNull(obj, null);
     }
-    
+
     public static <T> T ensureNonNull(final T obj, final String message) {
         if (obj == null) {
             final NullPointerException exc = message == null ? new NullPointerException()
@@ -33,5 +33,5 @@ public class Util {
         }
         return obj;
     }
-    
+
 }

@@ -21,9 +21,9 @@ import org.lwjgl.opengl.GL15;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 
 public class GLVertexBuffer extends GLBuffer implements VertexBuffer {
-    
+
     public GLVertexBuffer() {
         super(GL15.GL_ARRAY_BUFFER);
     }
-    
+
 }

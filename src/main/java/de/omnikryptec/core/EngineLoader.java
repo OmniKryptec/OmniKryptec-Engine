@@ -46,16 +46,16 @@ import de.omnikryptec.util.settings.Settings;
  * @author pcfreak9000
  */
 public abstract class EngineLoader {
-    
+
     private IGameLoop gameLoop;
     private Window window;
     private GameController gameController;
     private UpdateController updateController;
     private boolean started;
-    
+
     public EngineLoader() {
     }
-    
+
     public static void initialize(final Settings<LibSetting> libsettings, final Class<? extends RenderAPI> renderapi,
             final Settings<IntegerKey> apisettings) {
         // Initialize everything required
@@ -63,7 +63,7 @@ public abstract class EngineLoader {
         LibAPIManager.active().setRenderer(renderapi, apisettings);
         // Audio, etc....
     }
-    
+
     @Nonnull
     public EngineLoader start() {
         if (this.started) {
@@ -80,7 +80,7 @@ public abstract class EngineLoader {
         this.window = LibAPIManager.active().getRenderAPI().createWindow(windowSettings);
         this.gameLoop = loaderSettings.get(LoaderSetting.GAME_LOOP);
         this.gameController = new GameController();
-        this.updateController = new UpdateController(gameController, window);
+        this.updateController = new UpdateController(this.gameController, this.window);
         this.started = true;
         if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.IMMEDIATELY) {
             this.window.setVisible(true);
@@ -97,7 +97,7 @@ public abstract class EngineLoader {
         }
         return this;
     }
-    
+
     public void shutdown() {
         onShutdown();
         if (this.gameLoop != null) {
@@ -108,33 +108,33 @@ public abstract class EngineLoader {
         this.started = false;
         LibAPIManager.shutdown();
     }
-    
+
     public Window getWindow() {
         checkStarted();
         return this.window;
     }
-    
+
     public IGameLoop getEngineLoop() {
         checkStarted();
         return this.gameLoop;
     }
-    
+
     public GameController getGameController() {
         checkStarted();
         return this.gameController;
     }
-    
+
     public UpdateController getUpdateController() {
         checkStarted();
-        return updateController;
+        return this.updateController;
     }
-    
+
     private void checkStarted() {
         if (!this.started) {
             throw new IllegalStateException("EngineLoader has not been started yet");
         }
     }
-    
+
     public void switchGameloop(final IGameLoop newloop) {
         Util.ensureNonNull(newloop);
         final boolean running = this.gameLoop.isRunning();
@@ -146,22 +146,22 @@ public abstract class EngineLoader {
             this.gameLoop.startLoop();
         }
     }
-    
+
     public boolean isStarted() {
         return this.started;
     }
-    
+
     protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
     }
-    
+
     protected abstract void onInitialized();
-    
+
     protected void onShutdown() {
     }
-    
+
     public enum LoaderSetting implements Defaultable {
-        
+
         /**
          * The rendering API to use by the engine. Only in non-static cases of
          * {@link EngineLoader}.<br>
@@ -196,23 +196,23 @@ public abstract class EngineLoader {
          * @see #START_ENGINE_LOOP_AFTER_INIT
          */
         GAME_LOOP(new DefaultGameLoop());
-        
+
         private final Object defaultSetting;
-        
+
         LoaderSetting(final Object def) {
             this.defaultSetting = def;
         }
-        
+
         @Override
         public <T> T getDefault() {
             return (T) this.defaultSetting;
         }
     }
-    
+
     /**
      * Will only be used in non-static cases of {@link EngineLoader}. Defines when
      * to show the {@link Window}.
-     * 
+     *
      * @see Window#setVisible(boolean)
      * @author pcfreak9000
      */
@@ -231,5 +231,5 @@ public abstract class EngineLoader {
          */
         NEVER
     }
-    
+
 }

@@ -7,43 +7,43 @@ import java.util.List;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 
 public class VertexBufferLayout {
-    
+
     public static class VertexBufferElement {
-        private Type type;
-        private int count;
-        private boolean normalized;
-        
-        public VertexBufferElement(Type type, int count, boolean normalized) {
+        private final Type type;
+        private final int count;
+        private final boolean normalized;
+
+        public VertexBufferElement(final Type type, final int count, final boolean normalized) {
             this.type = type;
             this.count = count;
             this.normalized = normalized;
         }
-        
+
         public Type getType() {
-            return type;
+            return this.type;
         }
-        
+
         public int getCount() {
-            return count;
+            return this.count;
         }
-        
+
         public boolean isNormalized() {
-            return normalized;
+            return this.normalized;
         }
-        
+
     }
-    
-    private List<VertexBufferElement> elements;
-    
+
+    private final List<VertexBufferElement> elements;
+
     public VertexBufferLayout() {
         this.elements = new ArrayList<>();
     }
-    
-    public void push(Type type, int count, boolean normalized) {
-        elements.add(new VertexBufferElement(type, count, normalized));
+
+    public void push(final Type type, final int count, final boolean normalized) {
+        this.elements.add(new VertexBufferElement(type, count, normalized));
     }
 
     public List<VertexBufferElement> getElements() {
-        return Collections.unmodifiableList(elements);
+        return Collections.unmodifiableList(this.elements);
     }
 }

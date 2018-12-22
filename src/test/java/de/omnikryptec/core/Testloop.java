@@ -8,16 +8,16 @@ import de.omnikryptec.libapi.opengl.OpenGLUtil.BufferType;
 import de.omnikryptec.util.data.Color;
 
 public class Testloop implements IGameLoop {
-    
+
     private WindowUpdater updater;
     private Window window;
-
+    
     @Override
     public void init(final EngineLoader loader) {
         this.updater = new WindowUpdater(loader.getWindow());
         this.window = loader.getWindow();
     }
-    
+
     @Override
     public void startLoop() {
         while (!this.window.isCloseRequested()) {
@@ -25,14 +25,14 @@ public class Testloop implements IGameLoop {
             renderAndSwap();
         }
     }
-    
+
     @Override
     public void stopLoop() {
     }
-    
+
     public void update() {
     }
-    
+
     public void renderAndSwap() {
         this.updater.update(0);
         if (this.updater.getOperationCount() % 40 == 0) {
@@ -40,11 +40,11 @@ public class Testloop implements IGameLoop {
         }
         OpenGLUtil.clear(BufferType.COLOR);
     }
-    
+
     @Override
     public boolean isRunning() {
-        
+
         return false;
     }
-    
+
 }

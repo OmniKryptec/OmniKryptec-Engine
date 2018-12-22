@@ -20,15 +20,15 @@ import org.lwjgl.glfw.GLFW;
 
 @Deprecated
 public enum InputState {
-    
+
     NOTHING(-1), RELEASED(GLFW.GLFW_RELEASE), PRESSED(GLFW.GLFW_PRESS), REPEATED(GLFW.GLFW_REPEAT);
-    
+
     private final int state;
-    
+
     InputState(final int state) {
         this.state = state;
     }
-    
+
     public static final InputState ofState(final int state) {
         for (final InputState inputState : values()) {
             if (inputState.state == state) {
@@ -37,9 +37,9 @@ public enum InputState {
         }
         return NOTHING;
     }
-    
+
     public final int getState() {
         return this.state;
     }
-    
+
 }

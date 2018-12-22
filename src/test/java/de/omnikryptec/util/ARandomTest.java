@@ -5,7 +5,7 @@ import java.util.Random;
 import de.omnikryptec.util.math.MathUtil;
 
 public class ARandomTest {
-    
+
     public static void main(final String[] args) {
         /*
          * System.out.println(Math.rint(-1.5)); System.out.println(Mathf.ceil(-1.5f));
@@ -31,5 +31,5 @@ public class ARandomTest {
         System.out.println("b: " + b);
         System.out.println("/: " + a / (double) (a + b));
     }
-    
+
 }

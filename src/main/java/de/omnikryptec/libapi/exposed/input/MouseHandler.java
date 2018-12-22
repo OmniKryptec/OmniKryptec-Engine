@@ -30,7 +30,7 @@ import org.lwjgl.glfw.GLFWScrollCallback;
 import de.omnikryptec.util.settings.KeySettings;
 
 public class MouseHandler implements InputHandler {
-    
+
     private final byte[] buttons = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
     private final Vector2d position = new Vector2d(0.0, 0.0);
     private final Vector2d scrollOffset = new Vector2d(0.0, 0.0);
@@ -43,7 +43,7 @@ public class MouseHandler implements InputHandler {
     private final AtomicBoolean insideWindow = new AtomicBoolean(false);
     // Temp
     private byte[] buttonsLastTime = null;
-    
+
     public MouseHandler(final long window) {
         this.window = window;
         this.mouseButtonCallback = new GLFWMouseButtonCallback() {
@@ -91,7 +91,7 @@ public class MouseHandler implements InputHandler {
             }
         };
     }
-    
+
     @Override
     public synchronized InputHandler init() {
         GLFW.glfwSetMouseButtonCallback(this.window, this.mouseButtonCallback);
@@ -100,13 +100,13 @@ public class MouseHandler implements InputHandler {
         GLFW.glfwSetCursorEnterCallback(this.window, this.cursorEnterCallback);
         return this;
     }
-    
+
     @Override
     public synchronized InputHandler preUpdate(final double currentTime, final KeySettings keySettings) {
         this.buttonsLastTime = Arrays.copyOf(this.buttons, this.buttons.length);
         return this;
     }
-    
+
     @Override
     public synchronized InputHandler update(final double currentTime, final KeySettings keySettings) {
         for (int i = 0; i < this.buttons.length; i++) {
@@ -116,13 +116,13 @@ public class MouseHandler implements InputHandler {
         }
         return this;
     }
-    
+
     @Override
     public synchronized InputHandler postUpdate(final double currentTime, final KeySettings keySettings) {
         this.buttonsLastTime = null; // TODO Is this good for performance or not?
         return this;
     }
-    
+
     @Override
     public synchronized InputHandler close() {
         this.mouseButtonCallback.close();
@@ -131,49 +131,49 @@ public class MouseHandler implements InputHandler {
         this.cursorEnterCallback.close();
         return this;
     }
-    
+
     public synchronized byte getButtonState(final int buttonCode) {
         return this.buttons[buttonCode];
     }
-    
+
     public synchronized boolean isButtonUnknown(final int buttonCode) {
         return this.buttons[buttonCode] == KeySettings.KEY_UNKNOWN;
     }
-    
+
     public synchronized boolean isButtonNothing(final int buttonCode) {
         return this.buttons[buttonCode] == KeySettings.KEY_NOTHING;
     }
-    
+
     public synchronized boolean isButtonReleased(final int buttonCode) {
         return this.buttons[buttonCode] == KeySettings.KEY_RELEASED;
     }
-    
+
     public synchronized boolean isButtonPressed(final int buttonCode) {
         return this.buttons[buttonCode] == KeySettings.KEY_PRESSED;
     }
-    
+
     public synchronized boolean isButtonRepeated(final int buttonCode) {
         return this.buttons[buttonCode] == KeySettings.KEY_REPEATED;
     }
-    
+
     public synchronized Vector2dc getPosition() {
         return this.position;
     }
-    
+
     public synchronized Vector2dc getScrollOffset() {
         return this.scrollOffset;
     }
-    
+
     public synchronized boolean isInsideWindow() {
         return this.insideWindow.get();
     }
-    
+
     public int size() {
         return this.buttons.length;
     }
-    
+
     public long getWindow() {
         return this.window;
     }
-    
+
 }

@@ -5,52 +5,52 @@ import de.omnikryptec.libapi.exposed.window.WindowUpdater;
 import de.omnikryptec.util.updater.AbstractUpdater;
 
 public class UpdateController {
-    
-    private GameController gameController;
-    private WindowUpdater windowUpdater;
-    private AbstractUpdater asyncUpdater;
-    
+
+    private final GameController gameController;
+    private final WindowUpdater windowUpdater;
+    private final AbstractUpdater asyncUpdater;
+
     private int syncUpdatesPerSecond = 144;
     private int asyncUpdatesPerSecond = 144;
-    
-    public UpdateController(GameController gameController, Window window) {
+
+    public UpdateController(final GameController gameController, final Window window) {
         this.gameController = gameController;
         this.windowUpdater = new WindowUpdater(window);
         this.asyncUpdater = new AbstractUpdater();
     }
-    
+
     public WindowUpdater getWindowUpdater() {
-        return windowUpdater;
+        return this.windowUpdater;
     }
-    
+
     public AbstractUpdater getAsyncUpdater() {
-        return asyncUpdater;
+        return this.asyncUpdater;
     }
-    
+
     public void updateSync() {
-        windowUpdater.update(syncUpdatesPerSecond);
-        gameController.updateSync(windowUpdater.asTime());
+        this.windowUpdater.update(this.syncUpdatesPerSecond);
+        this.gameController.updateSync(this.windowUpdater.asTime());
     }
-    
+
     public void updateAsync() {
-        asyncUpdater.update(asyncUpdatesPerSecond);
-        gameController.updateAsync(asyncUpdater.asTime());
+        this.asyncUpdater.update(this.asyncUpdatesPerSecond);
+        this.gameController.updateAsync(this.asyncUpdater.asTime());
     }
-    
+
     public int getSyncUpdatesPerSecond() {
-        return syncUpdatesPerSecond;
+        return this.syncUpdatesPerSecond;
     }
-    
-    public void setSyncUpdatesPerSecond(int syncUpdatesPerSecond) {
+
+    public void setSyncUpdatesPerSecond(final int syncUpdatesPerSecond) {
         this.syncUpdatesPerSecond = syncUpdatesPerSecond;
     }
-    
+
     public int getAsyncUpdatesPerSecond() {
-        return asyncUpdatesPerSecond;
+        return this.asyncUpdatesPerSecond;
     }
-    
-    public void setAsyncUpdatesPerSecond(int asyncUpdatesPerSecond) {
+
+    public void setAsyncUpdatesPerSecond(final int asyncUpdatesPerSecond) {
         this.asyncUpdatesPerSecond = asyncUpdatesPerSecond;
     }
-    
+
 }
