@@ -59,6 +59,7 @@ public class OpenGLUtil {
     private static final int[] lastBoundTextures = new int[32];
     
     public static void bindTexture(int unit, int target, int id, boolean override) {
+        unit += GL13.GL_TEXTURE0;
         if (lastBoundTextures[unit] != id || override) {
             GL13.glActiveTexture(unit);
             GL11.glBindTexture(target, id);

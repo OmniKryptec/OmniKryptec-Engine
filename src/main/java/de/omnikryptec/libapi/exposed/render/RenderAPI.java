@@ -4,6 +4,8 @@ import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.window.Window;
 import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
 import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
+import de.omnikryptec.resource.TextureConfig;
+import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.settings.Settings;
 
 public interface RenderAPI {
@@ -18,4 +20,10 @@ public interface RenderAPI {
     }
 
     Window createWindow(Settings<WindowSetting> windowsettings);
+    
+    IndexBuffer createIndexBuffer();
+    VertexBuffer createVertexBuffer();
+    VertexArray createVertexArray();
+    
+    Texture createTexture2D(TextureData textureData, TextureConfig textureConfig);
 }
