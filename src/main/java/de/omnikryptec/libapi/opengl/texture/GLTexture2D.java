@@ -66,10 +66,22 @@ public class GLTexture2D extends GLTexture {
     
     //TODO maybe move the static methods in another class for broader use
     
+    private TextureData data;
+    
     public GLTexture2D(TextureData texture, TextureConfig config) {
         super(GL11.GL_TEXTURE_2D);
         bindTexture(0);
         loadTexture(texture, config);
+    }
+    
+    @Override
+    public int getWidth() {
+        return data.getWidth();
+    }
+    
+    @Override
+    public int getHeight() {   
+        return data.getHeight();
     }
     
 }
