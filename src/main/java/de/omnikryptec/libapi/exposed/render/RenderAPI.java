@@ -10,19 +10,21 @@ import de.omnikryptec.util.settings.Settings;
 
 public interface RenderAPI {
     public static final Class<OpenGLRenderAPI> OpenGL = OpenGLRenderAPI.class;
-
+    
     public static RenderAPI get() {
         return LibAPIManager.active().getRenderAPI();
     }
-
+    
     public static enum Type {
         FLOAT
     }
-
+    
     Window createWindow(Settings<WindowSetting> windowsettings);
     
     IndexBuffer createIndexBuffer();
+    
     VertexBuffer createVertexBuffer();
+    
     VertexArray createVertexArray();
     
     Texture createTexture2D(TextureData textureData, TextureConfig textureConfig);

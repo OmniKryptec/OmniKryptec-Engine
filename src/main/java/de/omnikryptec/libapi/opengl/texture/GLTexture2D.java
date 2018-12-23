@@ -80,7 +80,7 @@ public class GLTexture2D extends GLTexture {
     }
     
     @Override
-    public int getHeight() {   
+    public int getHeight() {
         return data.getHeight();
     }
     
