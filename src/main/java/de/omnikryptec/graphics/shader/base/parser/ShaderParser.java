@@ -52,7 +52,7 @@ public class ShaderParser {
                 String word = words[i];
                 if (word.startsWith(PARSER_STATEMENT_INDICATOR) && out != -1) {
                     in = i;
-                    if (word.length() == 1 || !word.endsWith(PARSER_STATEMENT_INDICATOR)) {
+                    if (word.length() == PARSER_STATEMENT_INDICATOR.length() || !word.endsWith(PARSER_STATEMENT_INDICATOR)) {
                         out = -1;
                         continue;
                     }
