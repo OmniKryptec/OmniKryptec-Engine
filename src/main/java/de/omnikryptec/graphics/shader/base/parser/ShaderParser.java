@@ -121,6 +121,7 @@ public class ShaderParser {
     private String decodeStatement(String statement, int line) {
         if (statement.startsWith(DEFINITIONS_INDICATOR)) {
             statement = statement.replace(DEFINITIONS_INDICATOR, "");
+            //TODO empty statements (no names) -> throw exception
             if (statement.startsWith(SHADER_INDICATOR)) {
                 ShaderType type = type(statement.replace(SHADER_INDICATOR, ""));
                 definitions.push(new SourceDescription(type));
