@@ -16,6 +16,8 @@
 
 package de.omnikryptec.graphics.shader.base.parser;
 
+import java.util.ArrayDeque;
+
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL32;
 import org.lwjgl.opengl.GL40;
@@ -28,16 +30,21 @@ public class ShaderParser {
     }
     
     public static final String PARSER_STATEMENT_INDICATOR = "$";
+    
+    public static final String DEFINITIONS_INDICATOR = "define ";
     public static final String SHADER_INDICATOR = "shader ";
     public static final String MODULE_INDICATOR = "module ";
     
     private String currentContext;
+    
+    private ArrayDeque<SourceDescription> definitions;
     
     public void parse(final String programName, final String... sources) {
         if (programName == null || programName.equals("")) {
             throw new NullPointerException("Illegal program name");
         }
         this.currentContext = programName;
+        this.definitions = new ArrayDeque<>();
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < sources.length; i++) {
             builder.append(sources[i]);
@@ -52,7 +59,8 @@ public class ShaderParser {
                 String word = words[i];
                 if (word.startsWith(PARSER_STATEMENT_INDICATOR) && out != -1) {
                     in = i;
-                    if (word.length() == PARSER_STATEMENT_INDICATOR.length() || !word.endsWith(PARSER_STATEMENT_INDICATOR)) {
+                    if (word.length() == PARSER_STATEMENT_INDICATOR.length()
+                            || !word.endsWith(PARSER_STATEMENT_INDICATOR)) {
                         out = -1;
                         continue;
                     }
@@ -82,7 +90,20 @@ public class ShaderParser {
     }
     
     private void decodeStatement(String statement) {
-        System.out.println(statement);
+        if (statement.startsWith(DEFINITIONS_INDICATOR)) {
+            statement = statement.replace(DEFINITIONS_INDICATOR, "");
+            if (statement.startsWith(SHADER_INDICATOR)) {
+                ShaderType type = type(statement.replace(SHADER_INDICATOR, ""));
+                definitions.push(new SourceDescription(type));
+            } else if (statement.startsWith(MODULE_INDICATOR)) {
+                definitions.push(new SourceDescription(null));
+            }
+        } else {
+            if (definitions.isEmpty()) {
+                throw new ShaderCompilationException(currentContext, "No shader/module context");
+            }
+            
+        }
     }
     
     private ShaderType type(String s) {

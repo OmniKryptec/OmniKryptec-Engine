@@ -16,17 +16,19 @@
 
 package de.omnikryptec.graphics.shader.base.parser;
 
+import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
+
 public class ShaderSource {
 
-    private final int shaderType;
+    private final ShaderType shaderType;
     private final String source;
 
-    ShaderSource(final int type, final String src) {
+    ShaderSource(final ShaderType type, final String src) {
         this.shaderType = type;
         this.source = src;
     }
 
-    public int getType() {
+    public ShaderType getType() {
         return this.shaderType;
     }
 
