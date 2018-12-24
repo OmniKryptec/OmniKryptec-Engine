@@ -6,7 +6,7 @@ import de.omnikryptec.graphics.shader.base.parser.ShaderParser;
 import de.omnikryptec.util.math.MathUtil;
 
 public class ARandomTest {
-
+    
     public static void main(final String[] args) {
         /*
          * System.out.println(Math.rint(-1.5)); System.out.println(Mathf.ceil(-1.5f));
@@ -17,7 +17,7 @@ public class ARandomTest {
          * if(Mathd.rint(f)!=Math.rint(f)) { System.out.println(f); } }
          */
         ShaderParser parser = new ShaderParser();
-        parser.parse("kek", "$soosen handel$");
+        parser.parse("kek", "$define shader VERTEX$ mega $ soosen handel$", "$define module kek$ bonobo");
     }
-
+    
 }

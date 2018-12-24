@@ -16,24 +16,33 @@
 
 package de.omnikryptec.graphics.shader.base.parser;
 
+import java.util.Collections;
+import java.util.List;
+
 import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 
 public class ShaderSource {
-
+    
     private final ShaderType shaderType;
     private final String source;
-
-    ShaderSource(final ShaderType type, final String src) {
+    private final List<String> moduleNames;
+    
+    ShaderSource(final ShaderType type, final String src, List<String> moduleNames) {
         this.shaderType = type;
         this.source = src;
+        this.moduleNames = Collections.unmodifiableList(moduleNames);
     }
-
+    
     public ShaderType getType() {
         return this.shaderType;
     }
-
+    
     public String getSource() {
         return this.source;
     }
-
+    
+    public List<String> getModuleNames() {
+        return moduleNames;
+    }
+    
 }

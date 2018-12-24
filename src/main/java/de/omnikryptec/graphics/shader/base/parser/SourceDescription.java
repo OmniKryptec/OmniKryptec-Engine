@@ -5,21 +5,27 @@ import java.util.List;
 
 import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 
-public class SourceDescription {
+class SourceDescription {
     
     private ShaderType type;
     private List<String> modules;
+    private StringBuilder source;
     
-    public SourceDescription(ShaderType type) {
+    SourceDescription(ShaderType type) {
         this.type = type;
         this.modules = new ArrayList<>();
+        this.source = new StringBuilder();
     }
     
-    public ShaderType getType() {
+    ShaderType type() {
         return type;
     }
     
-    public List<String> getModules() {
+    List<String> modules() {
         return modules;
+    }
+    
+    StringBuilder source() {
+        return source;
     }
 }
