@@ -22,64 +22,92 @@ import org.lwjgl.opengl.GL40;
 import org.lwjgl.opengl.GL43;
 
 public class ShaderParser {
-
+    
+    public static enum ShaderType {
+        Vertex, Fragment, Geometry, TessellationControl, TessellationEvaluation, Compute;
+    }
+    
     public static final String PARSER_STATEMENT_INDICATOR = "$";
     public static final String SHADER_INDICATOR = "shader ";
     public static final String MODULE_INDICATOR = "module ";
-
+    
     private String currentContext;
-
+    
     public void parse(final String programName, final String... sources) {
         if (programName == null || programName.equals("")) {
             throw new NullPointerException("Illegal program name");
         }
         this.currentContext = programName;
+        StringBuilder builder = new StringBuilder();
         for (int i = 0; i < sources.length; i++) {
-            final String[] lines = sources[i].split("[\n\r]+");
-            for (int j = 0; j < lines.length; j++) {
-                if (lines[j].startsWith(PARSER_STATEMENT_INDICATOR + SHADER_INDICATOR)) {
-
+            builder.append(sources[i]);
+            builder.append('\n');
+        }
+        int in = 0;
+        int out = 0;
+        String[] lines = builder.toString().split("[\n\r]+");
+        for (int k = 0; k < lines.length; k++) {
+            String[] words = lines[k].split("\\s+");
+            for (int i = 0; i < words.length; i++) {
+                String word = words[i];
+                if (word.startsWith(PARSER_STATEMENT_INDICATOR) && out != -1) {
+                    in = i;
+                    if (word.length() == 1 || !word.endsWith(PARSER_STATEMENT_INDICATOR)) {
+                        out = -1;
+                        continue;
+                    }
+                }
+                if (word.endsWith(PARSER_STATEMENT_INDICATOR)) {
+                    out = i;
+                    StringBuilder statement = new StringBuilder();
+                    for (int j = in; j <= out; j++) {
+                        statement.append(words[j]);
+                        statement.append(' ');
+                    }
+                    String statementString = statement.toString().replace(PARSER_STATEMENT_INDICATOR, "").trim();
+                    if (statementString.isEmpty()) {
+                        throw new ShaderCompilationException(programName,
+                                "Empty statement in line " + (k + 1) + ": " + lines[k]);
+                    } else {
+                        decodeStatement(statementString);
+                    }
                 }
             }
+            if (out < in) {
+                throw new ShaderCompilationException(programName,
+                        "Unclosed parser-statement in line " + (k + 1) + ": " + lines[k]);
+            }
         }
-        /*
-         * List<String> individualSources = new ArrayList<>(); for (String src :
-         * sources) { String[] all = src.split(PARSER_STATEMENT_INDICATOR + INDICATOR);
-         * individualSources.addAll(Arrays.asList(all)); } for (String s :
-         * individualSources) { if
-         * (s.startsWith(SHADER_INDICATOR)||s.startsWith(MODULE_INDICATOR)) {
-         *
-         * } else { if (s.indexOf(" ") == -1) { throw new
-         * ShaderCompilationException(currentContext, "invalid identifier: " + s); }
-         * else { throw new ShaderCompilationException(currentContext,
-         * "cannot find symbol: " + s.substring(0, s.indexOf(" ")) + "; expected \"" +
-         * SHADER_INDICATOR + "\" or \"" + MODULE_INDICATOR + "\""); } } }
-         */
+        
     }
-
-    private int type(String s) {
+    
+    private void decodeStatement(String statement) {
+        System.out.println(statement);
+    }
+    
+    private ShaderType type(String s) {
         s = s.toUpperCase().trim();
         switch (s) {
         case "FRAGMENT":
         case "GL_FRAGMENT_SHADER":
-            return GL20.GL_FRAGMENT_SHADER;
+            return ShaderType.Fragment;
         case "VERTEX":
         case "GL_VERTEX_SHADER":
-            return GL20.GL_VERTEX_SHADER;
+            return ShaderType.Vertex;
         case "GEOMETRY":
         case "GL_GEOMETRY_SHADER":
-            return GL32.GL_GEOMETRY_SHADER;
+            return ShaderType.Geometry;
         case "TESS_CONTROL":
         case "GL_TESS_CONTROL_SHADER":
-            return GL40.GL_TESS_CONTROL_SHADER;
+            return ShaderType.TessellationControl;
         case "TESS_EVALUATION":
         case "GL_TESS_EVALUATION_SHADER":
-            return GL40.GL_TESS_EVALUATION_SHADER;
+            return ShaderType.TessellationEvaluation;
         case "COMPUTE":
         case "GL_COMPUTE_SHADER":
-            return GL43.GL_COMPUTE_SHADER;
+            return ShaderType.Compute;
         default:
-            throw new ShaderCompilationException(this.currentContext, "Illegal shadertype : " + s);
+            throw new ShaderCompilationException(this.currentContext, "Illegal shadertype: " + s);
         }
     }
 }

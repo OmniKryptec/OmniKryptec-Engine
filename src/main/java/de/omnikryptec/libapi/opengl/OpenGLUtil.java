@@ -22,8 +22,13 @@ import java.util.Map;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL32;
+import org.lwjgl.opengl.GL40;
+import org.lwjgl.opengl.GL43;
 
+import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.util.data.Color;
 
@@ -63,6 +68,26 @@ public class OpenGLUtil {
         if (lastBoundTextures[unit] != id || override) {
             GL13.glActiveTexture(unit);
             GL11.glBindTexture(target, id);
+        }
+    }
+    
+    public static int typeId(ShaderType shaderType) {
+        switch (shaderType) {
+        case Compute:
+            return GL43.GL_COMPUTE_SHADER;
+        case Fragment:
+            return GL20.GL_FRAGMENT_SHADER;
+        case Geometry:
+            return GL32.GL_GEOMETRY_SHADER;
+        case TessellationControl:
+            return GL40.GL_TESS_CONTROL_SHADER;
+        case TessellationEvaluation:
+            return GL40.GL_TESS_EVALUATION_SHADER;
+        case Vertex:
+            return GL20.GL_VERTEX_SHADER;
+        default:
+            throw new IllegalArgumentException(shaderType + "");
+            
         }
     }
     

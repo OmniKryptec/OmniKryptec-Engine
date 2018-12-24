@@ -2,6 +2,7 @@ package de.omnikryptec.util;
 
 import java.util.Random;
 
+import de.omnikryptec.graphics.shader.base.parser.ShaderParser;
 import de.omnikryptec.util.math.MathUtil;
 
 public class ARandomTest {
@@ -15,21 +16,8 @@ public class ARandomTest {
          * ops) + "ns"); for (double f = -100.0; f <= 100.0; f += 0.0125) {
          * if(Mathd.rint(f)!=Math.rint(f)) { System.out.println(f); } }
          */
-        final Integer[] somearray = new Integer[] { 100, 50 };
-        final int[] weights = new int[] { 2, 1 };
-        int a = 0, b = 0;
-        final Random random = new Random();
-        for (int i = 0; i < 100000000; i++) {
-            final int s = MathUtil.getWeightedRandom(random, somearray, weights);
-            if (s == 100) {
-                a++;
-            } else {
-                b++;
-            }
-        }
-        System.out.println("a: " + a);
-        System.out.println("b: " + b);
-        System.out.println("/: " + a / (double) (a + b));
+        ShaderParser parser = new ShaderParser();
+        parser.parse("kek", "$soosen handel$");
     }
 
 }
