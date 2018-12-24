@@ -1,5 +1,6 @@
 package de.omnikryptec.libapi.exposed.render;
 
+import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.window.Window;
 import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
@@ -28,4 +29,6 @@ public interface RenderAPI {
     VertexArray createVertexArray();
     
     Texture createTexture2D(TextureData textureData, TextureConfig textureConfig);
+    
+    Shader createShader(ShaderType type, String source);
 }

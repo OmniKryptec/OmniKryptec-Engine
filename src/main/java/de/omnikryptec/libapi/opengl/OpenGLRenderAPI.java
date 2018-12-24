@@ -1,7 +1,9 @@
 package de.omnikryptec.libapi.opengl;
 
+import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 import de.omnikryptec.libapi.exposed.render.IndexBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.libapi.exposed.render.Shader;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
@@ -50,6 +52,11 @@ public class OpenGLRenderAPI implements RenderAPI {
     @Override
     public Texture createTexture2D(TextureData textureData, TextureConfig textureConfig) {
         return new GLTexture2D(textureData, textureConfig);
+    }
+    
+    @Override
+    public Shader createShader(ShaderType type, String source) {
+        return new GLShader();
     }
     
 }
