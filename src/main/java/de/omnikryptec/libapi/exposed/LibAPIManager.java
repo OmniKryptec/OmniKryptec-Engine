@@ -83,9 +83,9 @@ public final class LibAPIManager {
     private static boolean debug = (boolean) LibSetting.DEBUG.getDefault();
     private RenderAPI renderApi;
     
-    static {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown(), "LibAPI-Shutdown-Hooks"));
-    }
+    //    static {
+    //        Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown(), "LibAPI-Shutdown-Hooks"));
+    //    }
     
     private LibAPIManager() {
     }
@@ -133,15 +133,15 @@ public final class LibAPIManager {
     }
     
     public static void shutdown() {
-        for (final ToughRunnable r : shutdownHooks) {
-            try {
-                r.run();
-            } catch (final Exception e) {
-                System.err.println("Exception in shutdown hook '" + r + "': " + e);
-                e.printStackTrace();
-            }
-        }
         if (isInitialized()) {
+            for (final ToughRunnable r : shutdownHooks) {
+                try {
+                    r.run();
+                } catch (final Exception e) {
+                    System.err.println("Exception in shutdown hook '" + r + "': " + e);
+                    e.printStackTrace();
+                }
+            }
             GLFW.glfwTerminate();
             instance = null;
             System.out.println("Terminated LibAPI");
@@ -156,6 +156,7 @@ public final class LibAPIManager {
         return instance != null;
     }
     
+    //TODO move
     public boolean debug() {
         return debug;
     }

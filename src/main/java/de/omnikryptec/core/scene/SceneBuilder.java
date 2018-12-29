@@ -1,10 +1,19 @@
 package de.omnikryptec.core.scene;
 
+import org.lwjgl.opengl.GL11;
+
 import de.omnikryptec.core.Updateable;
 import de.omnikryptec.core.UpdateableContainer.ExecuteMode;
 import de.omnikryptec.core.UpdateableContainer.ExecuteTime;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.event.EventBus;
+import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
+import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
+import de.omnikryptec.libapi.exposed.render.Shader;
+import de.omnikryptec.libapi.exposed.render.VertexArray;
+import de.omnikryptec.libapi.exposed.render.VertexBuffer;
+import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.libapi.opengl.OpenGLUtil.BufferType;
 import de.omnikryptec.util.data.Color;
@@ -53,7 +62,7 @@ public class SceneBuilder {
         this.config = new Config();
         return this;
     }
-
+    
     public void addUpdateable(final Updateable updt) {
         if (this.config.async) {
             this.scene.getUpdateableContainerAsync().addUpdateable(this.config.mode, this.config.time, updt);
@@ -83,6 +92,27 @@ public class SceneBuilder {
                     OpenGLUtil.setClearColor(Color.randomRGB());
                 }
                 OpenGLUtil.clear(BufferType.COLOR);
+            }
+        });
+    }
+    
+    public void addGraphicsBasicImplTest() {
+        VertexBuffer buffer = RenderAPI.get().createVertexBuffer();
+        buffer.storeData(new float[] { -0.5f, -0.5f, 0, 0.5f, 0.5f, -0.5f }, false);
+        VertexArray array = RenderAPI.get().createVertexArray();
+        array.addVertexBuffer(buffer, new VertexBufferLayout.VertexBufferElement(Type.FLOAT, 2, true));
+        String vertex = "#version 330 core\nlayout(location = 0) in vec4 pos;\nvoid main() {\ngl_Position = pos;}";
+        String fragment = "#version 330 core\nout vec4 col;\nvoid main() {\ncol = vec4(1.0, 0.0, 1.0, 1.0);}";
+        Shader shader = RenderAPI.get().createShader();
+        shader.create(new Shader.ShaderAttachment(ShaderType.Vertex, vertex),
+                new Shader.ShaderAttachment(ShaderType.Fragment, fragment));
+        addUpdateable(new Updateable() {
+            @Override
+            public void update(Time time) {
+                shader.bindShader();
+                array.bindArray();
+                GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
+                array.unbindArray();
             }
         });
     }

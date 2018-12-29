@@ -65,7 +65,7 @@ public abstract class EngineLoader {
     }
     
     @Nonnull
-    public EngineLoader start() {
+    public void start() {
         if (this.started) {
             throw new IllegalStateException("Was already booted");
         }
@@ -93,20 +93,24 @@ public abstract class EngineLoader {
             this.gameLoop.init(this);
             if ((boolean) loaderSettings.get(LoaderSetting.START_GAME_LOOP_AFTER_INIT)) {
                 this.gameLoop.startLoop();
+                if ((boolean) loaderSettings.get(LoaderSetting.SHUTDOWN_ON_LOOP_EXIT)) {
+                    shutdown();
+                }
             }
         }
-        return this;
     }
     
     public void shutdown() {
-        onShutdown();
-        if (this.gameLoop != null) {
-            this.gameLoop.stopLoop();
+        if (started) {
+            onShutdown();
+            if (this.gameLoop != null) {
+                this.gameLoop.stopLoop();
+            }
+            // Shutdown, etc...
+            this.window.dispose();
+            this.started = false;
+            LibAPIManager.shutdown();
         }
-        // Shutdown, etc...
-        this.window.dispose();
-        this.started = false;
-        LibAPIManager.shutdown();
     }
     
     public Window getWindow() {
@@ -195,7 +199,9 @@ public abstract class EngineLoader {
          *
          * @see #START_ENGINE_LOOP_AFTER_INIT
          */
-        GAME_LOOP(new DefaultGameLoop());
+        GAME_LOOP(new DefaultGameLoop()),
+        //TODO javadoc
+        SHUTDOWN_ON_LOOP_EXIT(true);
         
         private final Object defaultSetting;
         

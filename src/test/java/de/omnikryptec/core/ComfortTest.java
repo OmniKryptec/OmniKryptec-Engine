@@ -21,11 +21,13 @@ public class ComfortTest extends EngineLoader {
     
     @Override
     protected void onInitialized() {
-        //SceneBuilder builder = gc.getGlobalScene().createBuilder();
+        SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
         //builder.addGraphicsClearTest();
-        final SceneBuilder builder = new SceneBuilder();
+        //final SceneBuilder builder = new SceneBuilder();
+        //builder.addGraphicsClearTest();
         builder.addGraphicsClearTest();
-        getGameController().setLocalScene(builder.get());
+        builder.addGraphicsBasicImplTest();
+        //getGameController().setLocalScene(builder.get());
     }
     
 }

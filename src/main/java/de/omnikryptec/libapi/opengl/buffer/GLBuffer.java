@@ -43,6 +43,7 @@ public abstract class GLBuffer extends AutoDelete {
         return this.type;
     }
     
+    //TODO currently bound buffer
     public void bindBuffer() {
         GL15.glBindBuffer(this.type, this.pointer);
     }

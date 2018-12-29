@@ -24,4 +24,8 @@ public class ShaderCompilationException extends RuntimeException {
         super("Compilation problem in program \"" + program + "\": " + error);
     }
     
+    public ShaderCompilationException(String error) {
+        super(error);
+    }
+    
 }

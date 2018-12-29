@@ -31,11 +31,13 @@ public class GLVertexBuffer extends GLBuffer implements VertexBuffer {
 
     @Override
     public void storeData(final FloatBuffer data, final boolean dynamic) {
+        bindBuffer();
         GL15.glBufferData(bufferType(), data, dynamic ? GL15.GL_DYNAMIC_DRAW : GL15.GL_STATIC_DRAW);
     }
     
     @Override
     public void storeData(final IntBuffer data, final boolean dynamic) {
+        bindBuffer();
         GL15.glBufferData(bufferType(), data, dynamic ? GL15.GL_DYNAMIC_DRAW : GL15.GL_STATIC_DRAW);
     }
 
