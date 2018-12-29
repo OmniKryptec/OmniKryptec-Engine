@@ -19,29 +19,29 @@ package de.omnikryptec.resource.loader;
 import java.util.Collection;
 
 public interface ResourceManager {
-
+    
     <T extends ResourceObject> T getResource(long id);
-
+    
     <T extends ResourceObject> T getResource(String name);
-
+    
     <T extends ResourceObject> T getResource(Class<T> clazz, long id);
-
+    
     <T extends ResourceObject> T getResource(Class<T> clazz, String name);
-
+    
     <T extends ResourceObject> Collection<T> getResources(Class<T> clazz);
-
+    
     Collection<ResourceObject> getAllResources();
-
+    
     boolean clearResources();
-
+    
     <T extends ResourceObject> boolean clearResources(Class<T> clazz);
-
+    
     boolean removeResource(long id);
-
+    
     boolean removeResource(String name);
-
+    
     boolean addResources(ResourceObject... resourceObjects);
-
+    
     <T extends ResourceObject> boolean addResources(Class<T> clazz, T... resourceObjects);
-
+    
 }

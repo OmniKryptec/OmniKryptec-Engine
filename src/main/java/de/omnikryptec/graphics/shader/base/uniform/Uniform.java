@@ -17,23 +17,23 @@
 package de.omnikryptec.graphics.shader.base.uniform;
 
 public abstract class Uniform {
-
+    
     private static final int NOT_FOUND = -1;
-
+    
     private final String name;
     private int location;
     private boolean muted = false;
     private final boolean isfound = false;
-
+    
     protected Uniform(final String name) {
         this(name, false);
     }
-
+    
     protected Uniform(final String name, final boolean mute) {
         this.name = name;
         this.muted = mute;
     }
-
+    
     // protected void storeUniformLocation(Shader shader) {
     // location = GL20.glGetUniformLocation(shader.getId(), name);
     // if(location == NOT_FOUND) {
@@ -46,23 +46,23 @@ public abstract class Uniform {
     // isfound = true;
     // }
     // }
-
+    
     protected int getLocation() {
         return this.location;
     }
-
+    
     @Override
     public String toString() {
         return "Name: " + this.name + " Location: " + this.location;
     }
-
+    
     public Uniform mute() {
         this.muted = true;
         return this;
     }
-
+    
     public boolean isFound() {
         return this.isfound;
     }
-
+    
 }

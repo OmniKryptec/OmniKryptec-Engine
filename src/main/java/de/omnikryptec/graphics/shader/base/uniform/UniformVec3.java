@@ -26,21 +26,21 @@ public class UniformVec3 extends Uniform {
     private float currentY;
     private float currentZ;
     private boolean used = false;
-
+    
     public UniformVec3(final String name) {
         super(name);
     }
-
+    
     public void loadVec3(final Vector3f vector) {
         if (vector != null) {
             loadVec3(vector.x, vector.y, vector.z);
         }
     }
-
+    
     public void loadVec3(final float[] array) {
         loadVec3(array[0], array[1], array[2]);
     }
-
+    
     public void loadVec3(final float x, final float y, final float z) {
         if (isFound() && (!this.used || x != this.currentX || y != this.currentY || z != this.currentZ)) {
             this.currentX = x;
@@ -50,9 +50,9 @@ public class UniformVec3 extends Uniform {
             GL20.glUniform3f(super.getLocation(), x, y, z);
         }
     }
-
+    
     public void loadColor(final Color color) {
         loadVec3(color.getR(), color.getG(), color.getB());
     }
-
+    
 }

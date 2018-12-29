@@ -5,7 +5,7 @@ import de.omnikryptec.util.ExecutorsUtil;
 import de.omnikryptec.util.updater.Time;
 
 public class Test {
-
+    
     public static void main(final String[] args) {
         System.out.println("Started...");
         final IECSManager manager = new ECSManager();
@@ -34,5 +34,5 @@ public class Test {
         manager.removeSystem(system);
         ExecutorsUtil.shutdownNowAll();
     }
-
+    
 }

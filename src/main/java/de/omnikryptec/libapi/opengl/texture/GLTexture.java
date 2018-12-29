@@ -7,31 +7,31 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 
 public abstract class GLTexture extends AutoDelete implements Texture {
-    
+
     private final int pointer;
     private final int type;
-    
-    public GLTexture(int type) {
+
+    public GLTexture(final int type) {
         this.pointer = GL11.glGenTextures();
         this.type = type;
     }
-    
+
     public int textureId() {
-        return pointer;
+        return this.pointer;
     }
-    
+
     public int textureType() {
-        return type;
+        return this.type;
     }
-    
+
     @Override
-    public void bindTexture(int unit) {
-        OpenGLUtil.bindTexture(unit, type, pointer, false);
+    public void bindTexture(final int unit) {
+        OpenGLUtil.bindTexture(unit, this.type, this.pointer, false);
     }
-    
+
     @Override
     protected void deleteRaw() {
-        GL11.glDeleteTextures(pointer);
+        GL11.glDeleteTextures(this.pointer);
     }
-    
+
 }

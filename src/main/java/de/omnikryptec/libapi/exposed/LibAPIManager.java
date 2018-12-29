@@ -34,7 +34,7 @@ import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
 public final class LibAPIManager {
-
+    
     public static enum LibSetting implements Defaultable {
         /**
          * Enables debug mode of the Omnikryptec-Engine and LWJGL. This might do
@@ -64,37 +64,37 @@ public final class LibAPIManager {
          * @see org.joml.Math
          */
         FASTMATH(true);
-
+        
         private final Object defaultSetting;
-
+        
         LibSetting(final Object def) {
             this.defaultSetting = def;
         }
-
+        
         @Override
         public <T> T getDefault() {
             return (T) this.defaultSetting;
         }
     }
-
+    
     private static final Collection<ToughRunnable> shutdownHooks = new ArrayList<>();
     private static LibAPIManager instance;
-
+    
     private static boolean debug = (boolean) LibSetting.DEBUG.getDefault();
     private RenderAPI renderApi;
-
+    
     static {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown(), "LibAPI-Shutdown-Hooks"));
     }
-
+    
     private LibAPIManager() {
     }
-
+    
     @Deprecated
     public static void init() {
         init(new Settings<>());
     }
-
+    
     public static void init(@Nonnull final Settings<LibSetting> settings) {
         if (isInitialized()) {
             throw new IllegalStateException("Already initialized");
@@ -109,7 +109,7 @@ public final class LibAPIManager {
             throw new RuntimeException("Error while initializing LibAPI");
         }
     }
-
+    
     /**
      * Uses the settings to set library options. This method is only effective if no
      * library functions have been called yet.<br>
@@ -131,7 +131,7 @@ public final class LibAPIManager {
         Configuration.DEBUG_LOADER.set(debug);
         Configuration.DEBUG_FUNCTIONS.set(debug && functionDebug);
     }
-
+    
     public static void shutdown() {
         for (final ToughRunnable r : shutdownHooks) {
             try {
@@ -147,23 +147,23 @@ public final class LibAPIManager {
             System.out.println("Terminated LibAPI");
         }
     }
-
+    
     public static void registerResourceShutdownHooks(final ToughRunnable... runnables) {
         shutdownHooks.addAll(Arrays.asList(runnables));
     }
-
+    
     public static boolean isInitialized() {
         return instance != null;
     }
-
+    
     public boolean debug() {
         return debug;
     }
-
+    
     public static LibAPIManager active() {
         return instance;
     }
-
+    
     public void setRenderer(final Class<? extends RenderAPI> apiclazz, final Settings<IntegerKey> apisettings) {
         if (isRendererSet()) {
             throw new IllegalStateException("Renderer is already set!");
@@ -178,19 +178,19 @@ public final class LibAPIManager {
             ex.printStackTrace();
         }
     }
-
+    
     public boolean isRendererSet() {
         return this.renderApi != null;
     }
-
+    
     public RenderAPI getRenderAPI() {
         return this.renderApi;
     }
-
+    
     public void pollEvents() {
         GLFW.glfwPollEvents();
     }
-
+    
     /**
      * Returns the value of the GLFW timer. The timer measures time elapsed since
      * GLFW was initialized.
@@ -204,5 +204,5 @@ public final class LibAPIManager {
     public double getTime() {
         return GLFW.glfwGetTime();
     }
-
+    
 }

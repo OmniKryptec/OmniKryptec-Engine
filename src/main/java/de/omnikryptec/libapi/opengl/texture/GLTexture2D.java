@@ -14,8 +14,8 @@ import de.omnikryptec.resource.TextureConfig.WrappingMode;
 import de.omnikryptec.resource.TextureData;
 
 public class GLTexture2D extends GLTexture {
-    
-    private static void loadTexture(TextureData texture, TextureConfig config) {
+
+    private static void loadTexture(final TextureData texture, final TextureConfig config) {
         GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, texture.getWidth(), texture.getHeight(), 0, GL12.GL_BGRA,
                 GL11.GL_UNSIGNED_BYTE, texture.getBuffer());
@@ -41,8 +41,8 @@ public class GLTexture2D extends GLTexture {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, decodeWrap(config.wrappingMode()));
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, decodeWrap(config.wrappingMode()));
     }
-    
-    private static int decodeMagMin(MagMinFilter filter) {
+
+    private static int decodeMagMin(final MagMinFilter filter) {
         switch (filter) {
         case Linear:
             return GL11.GL_LINEAR;
@@ -52,8 +52,8 @@ public class GLTexture2D extends GLTexture {
             throw new IllegalArgumentException();
         }
     }
-    
-    private static int decodeWrap(WrappingMode mode) {
+
+    private static int decodeWrap(final WrappingMode mode) {
         switch (mode) {
         case ClampToEdge:
             return GL12.GL_CLAMP_TO_EDGE;
@@ -63,25 +63,25 @@ public class GLTexture2D extends GLTexture {
             throw new IllegalArgumentException();
         }
     }
-    
+
     //TODO maybe move the static methods in another class for broader use
-    
+
     private TextureData data;
-    
-    public GLTexture2D(TextureData texture, TextureConfig config) {
+
+    public GLTexture2D(final TextureData texture, final TextureConfig config) {
         super(GL11.GL_TEXTURE_2D);
         bindTexture(0);
         loadTexture(texture, config);
     }
-    
+
     @Override
     public int getWidth() {
-        return data.getWidth();
+        return this.data.getWidth();
     }
-    
+
     @Override
     public int getHeight() {
-        return data.getHeight();
+        return this.data.getHeight();
     }
-    
+
 }

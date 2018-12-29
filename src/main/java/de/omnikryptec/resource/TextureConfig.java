@@ -1,63 +1,63 @@
 package de.omnikryptec.resource;
 
 public class TextureConfig {
-    
+
     public static enum WrappingMode {
         ClampToEdge, Repeat
     }
-    
+
     public static enum MagMinFilter {
         Nearest, Linear
     }
-    
+
     private float anisotropic;
     private boolean mipmap;
-    
+
     private WrappingMode wrappingMode;
     private MagMinFilter minFilter;
     private MagMinFilter magFilter;
-    
+
     public float anisotropicValue() {
-        return anisotropic;
+        return this.anisotropic;
     }
-    
+
     public boolean mipmap() {
-        return mipmap;
+        return this.mipmap;
     }
-    
+
     public WrappingMode wrappingMode() {
-        return wrappingMode;
+        return this.wrappingMode;
     }
-    
+
     public MagMinFilter minFilter() {
-        return minFilter;
+        return this.minFilter;
     }
-    
+
     public MagMinFilter magFilter() {
-        return magFilter;
+        return this.magFilter;
     }
-    
-    public TextureConfig anisotropic(float value) {
+
+    public TextureConfig anisotropic(final float value) {
         this.anisotropic = value;
         return this;
     }
-    
-    public TextureConfig mipmap(boolean value) {
+
+    public TextureConfig mipmap(final boolean value) {
         this.mipmap = value;
         return this;
     }
-    
-    public TextureConfig wrappingMode(WrappingMode mode) {
+
+    public TextureConfig wrappingMode(final WrappingMode mode) {
         this.wrappingMode = mode;
         return this;
     }
-    
-    public TextureConfig minFilter(MagMinFilter filter) {
+
+    public TextureConfig minFilter(final MagMinFilter filter) {
         this.minFilter = filter;
         return this;
     }
-    
-    public TextureConfig magFilter(MagMinFilter filter) {
+
+    public TextureConfig magFilter(final MagMinFilter filter) {
         this.magFilter = filter;
         return this;
     }

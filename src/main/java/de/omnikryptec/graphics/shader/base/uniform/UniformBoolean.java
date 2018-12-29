@@ -19,14 +19,14 @@ package de.omnikryptec.graphics.shader.base.uniform;
 import org.lwjgl.opengl.GL20;
 
 public class UniformBoolean extends Uniform {
-
+    
     private boolean currentBool;
     private boolean used = false;
-
+    
     public UniformBoolean(final String name) {
         super(name);
     }
-
+    
     public void loadBoolean(final boolean bool) {
         if (isFound() && (!this.used || this.currentBool != bool)) {
             GL20.glUniform1f(super.getLocation(), bool ? 1f : 0f);
@@ -34,5 +34,5 @@ public class UniformBoolean extends Uniform {
             this.currentBool = bool;
         }
     }
-
+    
 }

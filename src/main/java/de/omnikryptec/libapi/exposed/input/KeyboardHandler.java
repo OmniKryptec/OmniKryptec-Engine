@@ -25,7 +25,7 @@ import org.lwjgl.glfw.GLFWKeyCallback;
 import de.omnikryptec.util.settings.KeySettings;
 
 public class KeyboardHandler implements InputHandler {
-
+    
     // private final InputState[] keys = new InputState[65536];
     // private final byte[] keys = new byte[65536];
     private final byte[] keys = new byte[GLFW.GLFW_KEY_LAST + 1]; // TODO Test if this includes every key
@@ -37,7 +37,7 @@ public class KeyboardHandler implements InputHandler {
     private final boolean appendToString = false;
     // Temp
     private byte[] keysLastTime = null;
-
+    
     public KeyboardHandler(final long window) {
         this.window = window;
         this.keyCallback = new GLFWKeyCallback() {
@@ -62,19 +62,19 @@ public class KeyboardHandler implements InputHandler {
             }
         };
     }
-
+    
     @Override
     public synchronized InputHandler init() {
         GLFW.glfwSetKeyCallback(this.window, this.keyCallback);
         return this;
     }
-
+    
     @Override
     public synchronized InputHandler preUpdate(final double currentTime, final KeySettings keySettings) {
         this.keysLastTime = Arrays.copyOf(this.keys, this.keys.length);
         return this;
     }
-
+    
     @Override
     public synchronized InputHandler update(final double currentTime, final KeySettings keySettings) {
         for (int i = 0; i < this.keys.length; i++) {
@@ -84,13 +84,13 @@ public class KeyboardHandler implements InputHandler {
         }
         return this;
     }
-
+    
     @Override
     public synchronized InputHandler postUpdate(final double currentTime, final KeySettings keySettings) {
         this.keysLastTime = null; // TODO Is this good for performance or not?
         return this;
     }
-
+    
     @Override
     public synchronized InputHandler close() {
         if (this.keyCallback != null) {
@@ -98,56 +98,56 @@ public class KeyboardHandler implements InputHandler {
         }
         return this;
     }
-
+    
     /*
      * public synchronized InputState getKeyState(int keyCode) { return
      * keys[keyCode]; }
      */
-
+    
     public byte getKeyState(final int keyCode) {
         return this.keys[keyCode];
     }
-
+    
     public synchronized boolean isKeyUnknown(final int keyCode) {
         return this.keys[keyCode] == KeySettings.KEY_UNKNOWN;
     }
-
+    
     public synchronized boolean isKeyNothing(final int keyCode) {
         return this.keys[keyCode] == KeySettings.KEY_NOTHING;
     }
-
+    
     public synchronized boolean isKeyReleased(final int keyCode) {
         return this.keys[keyCode] == KeySettings.KEY_RELEASED;
     }
-
+    
     public synchronized boolean isKeyPressed(final int keyCode) {
         return this.keys[keyCode] == KeySettings.KEY_PRESSED;
     }
-
+    
     public synchronized boolean isKeyRepeated(final int keyCode) {
         return this.keys[keyCode] == KeySettings.KEY_REPEATED;
     }
-
+    
     public synchronized String getInputString() {
         return this.inputString.get();
     }
-
+    
     public synchronized void clearInputString() {
         this.inputString.set("");
     }
-
+    
     public synchronized String consumeInputString() {
         final String temp = getInputString();
         clearInputString();
         return temp;
     }
-
+    
     public int size() {
         return this.keys.length;
     }
-
+    
     public long getWindow() {
         return this.window;
     }
-
+    
 }

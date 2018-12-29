@@ -24,19 +24,19 @@ import org.lwjgl.opengl.GL15;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 
 public class GLVertexBuffer extends GLBuffer implements VertexBuffer {
-    
+
     public GLVertexBuffer() {
         super(GL15.GL_ARRAY_BUFFER);
     }
+
+    @Override
+    public void storeData(final FloatBuffer data, final boolean dynamic) {
+        GL15.glBufferData(bufferType(), data, dynamic ? GL15.GL_DYNAMIC_DRAW : GL15.GL_STATIC_DRAW);
+    }
     
     @Override
-    public void storeData(FloatBuffer data, boolean dynamic) {
+    public void storeData(final IntBuffer data, final boolean dynamic) {
         GL15.glBufferData(bufferType(), data, dynamic ? GL15.GL_DYNAMIC_DRAW : GL15.GL_STATIC_DRAW);
     }
 
-    @Override
-    public void storeData(IntBuffer data, boolean dynamic) {
-        GL15.glBufferData(bufferType(), data, dynamic ? GL15.GL_DYNAMIC_DRAW : GL15.GL_STATIC_DRAW);
-    }
-    
 }

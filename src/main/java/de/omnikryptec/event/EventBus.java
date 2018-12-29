@@ -29,43 +29,43 @@ import de.omnikryptec.core.Updateable;
 import de.omnikryptec.util.updater.Time;
 
 public class EventBus implements Updateable {
-
+    
     private final AtomicBoolean processing = new AtomicBoolean(false);
     private final Multimap<Class<? extends Event>, IEventListener> listeners;
     private final Queue<Event> eventQueue;
-
+    
     public final ReadableEventBus READ_ONLY = new ReadableEventBus() {
-        
+
         @Override
         public void register(final Object object) {
             EventBus.this.register(object);
         }
-        
+
         @Override
         public void register(final IEventListener listener, final Class<? extends Event> eventtype) {
             EventBus.this.register(listener, eventtype);
         }
-        
+
         @Override
         public void post(final Event event) {
             EventBus.this.post(event);
         }
-        
+
         @Override
         public void enqueue(final Event event) {
             EventBus.this.enqueue(event);
         }
     };
-    
+
     public EventBus() {
         this.eventQueue = new ConcurrentLinkedQueue<>();
         this.listeners = ArrayListMultimap.create();
     }
-
+    
     public void register(final IEventListener listener, final Class<? extends Event> eventtype) {
         this.listeners.put(eventtype, listener);
     }
-
+    
     public void register(Object object) {
         Method[] methods;
         if (object instanceof Class<?>) {
@@ -102,15 +102,15 @@ public class EventBus implements Updateable {
             throw new IllegalArgumentException("No EventSubscriptions found: " + object);
         }
     }
-
+    
     public void post(final Event event) {
         processEvent(event);
     }
-
+    
     public void enqueue(final Event event) {
         this.eventQueue.add(event);
     }
-
+    
     public void processQueuedEvents() {
         if (this.processing.get()) {
             throw new IllegalStateException("Already processing!");
@@ -121,11 +121,11 @@ public class EventBus implements Updateable {
         }
         this.processing.set(false);
     }
-
+    
     public boolean isProcessing() {
         return this.processing.get();
     }
-
+    
     private void processEvent(final Event event) {
         Class<?> someclazz = event.getClass();
         do {
@@ -137,7 +137,7 @@ public class EventBus implements Updateable {
             someclazz = someclazz.getSuperclass();
         } while (event.triggersSuperEventListeners() && someclazz != Object.class && someclazz != null);
     }
-
+    
     @Override
     public void postUpdate(final Time time) {
         processQueuedEvents();

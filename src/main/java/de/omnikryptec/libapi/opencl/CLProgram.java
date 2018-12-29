@@ -24,28 +24,28 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opencl.CL10;
 
 public class CLProgram {
-
+    
     private static List<CLProgram> programs = new ArrayList<>();
-
+    
     private final long id;
-
+    
     public CLProgram(final CLContext context, final CharSequence source) {
         this.id = CL10.clCreateProgramWithSource(context.getID(), source, OpenCL.tmpBuffer);
         if (OpenCL.tmpBuffer.get(0) != CL10.CL_SUCCESS) {
             System.err.println("OpenCL Prog Err: " + OpenCL.searchConstants(OpenCL.tmpBuffer.get(0)));
         }
     }
-
+    
     public static void cleanup() {
         for (final CLProgram p : programs) {
             CL10.clReleaseProgram(p.getID());
         }
     }
-
+    
     public long getID() {
         return this.id;
     }
-
+    
     public CLProgram build(final CLDevice device, final int errorsize) {
         final int error = CL10.clBuildProgram(this.id, device.getID(), "", null, 0);
         if (error != CL10.CL_SUCCESS) {

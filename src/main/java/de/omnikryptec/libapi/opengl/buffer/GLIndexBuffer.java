@@ -7,14 +7,14 @@ import org.lwjgl.opengl.GL15;
 import de.omnikryptec.libapi.exposed.render.IndexBuffer;
 
 public class GLIndexBuffer extends GLBuffer implements IndexBuffer {
-    
+
     public GLIndexBuffer() {
         super(GL15.GL_ELEMENT_ARRAY_BUFFER);
     }
-    
+
     @Override
-    public void storeData(IntBuffer data, boolean dynamic) {
+    public void storeData(final IntBuffer data, final boolean dynamic) {
         GL15.glBufferData(bufferType(), data, dynamic ? GL15.GL_DYNAMIC_DRAW : GL15.GL_STATIC_DRAW);
     }
-    
+
 }
