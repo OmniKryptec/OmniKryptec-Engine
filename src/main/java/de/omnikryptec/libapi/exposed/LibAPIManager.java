@@ -28,6 +28,7 @@ import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.system.Configuration;
 
 import de.codemakers.base.util.tough.ToughRunnable;
+import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
@@ -76,6 +77,8 @@ public final class LibAPIManager {
             return (T) this.defaultSetting;
         }
     }
+    
+    public static final EventBus LIBAPI_EVENTBUS = new EventBus();
     
     private static final Collection<ToughRunnable> shutdownHooks = new ArrayList<>();
     private static LibAPIManager instance;
