@@ -14,6 +14,7 @@ public class GLIndexBuffer extends GLBuffer implements IndexBuffer {
 
     @Override
     public void storeData(final IntBuffer data, final boolean dynamic) {
+        bindBuffer();
         GL15.glBufferData(bufferType(), data, dynamic ? GL15.GL_DYNAMIC_DRAW : GL15.GL_STATIC_DRAW);
     }
 
