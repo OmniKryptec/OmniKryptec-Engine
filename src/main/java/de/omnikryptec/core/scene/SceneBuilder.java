@@ -19,6 +19,13 @@ import de.omnikryptec.libapi.opengl.OpenGLUtil.BufferType;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.updater.Time;
 
+/**
+ * A class to simplify configuring and adding {@link Updateable}s to a
+ * {@link Scene}.
+ * 
+ * @author pcfreak9000
+ * @see Scene#createBuilder()
+ */
 public class SceneBuilder {
     
     private class Config {
@@ -30,39 +37,85 @@ public class SceneBuilder {
     private final Scene scene;
     private Config config;
     
+    /**
+     * Creates a new {@link SceneBuilder} with a new, empty {@link Scene}
+     */
     public SceneBuilder() {
         this(new Scene());
     }
     
+    /**
+     * Creates a {@link SceneBuilder} with an existing {@link Scene}
+     * 
+     * @param scene the scene
+     * @see Scene#createBuilder()
+     */
     SceneBuilder(final Scene scene) {
         this.scene = scene;
         this.config = new Config();
     }
     
+    /**
+     * The scene in its current state
+     * 
+     * @return the scene
+     */
     public Scene get() {
         return this.scene;
     }
     
+    /**
+     * The next {@link Updateable} will be added to the async pipeline.
+     * 
+     * @return this
+     */
     public SceneBuilder async() {
         this.config.async = true;
         return this;
     }
     
+    /**
+     * Sets the {@link ExecuteTime} of the next {@link Updateable} added.
+     * 
+     * @param time the execute time
+     * @return this
+     * @see ExecuteTime
+     */
     public SceneBuilder time(final ExecuteTime time) {
         this.config.time = time;
         return this;
     }
     
+    /**
+     * Sets the {@link ExecuteMode} of the next {@link Updateable} added.
+     * 
+     * @param mode the execute mode
+     * @return this
+     * @see ExecuteMode
+     */
     public SceneBuilder mode(final ExecuteMode mode) {
         this.config.mode = mode;
         return this;
     }
     
+    /**
+     * Resets the config to its defaults: synchronized, {@link ExecuteTime#Normal}
+     * and {@link ExecuteMode#Default}
+     * 
+     * @return this
+     */
     public SceneBuilder resetConfig() {
         this.config = new Config();
         return this;
     }
     
+    /**
+     * adds an {@link Updateable} with the currently set configurations and resets
+     * the config afterwards.
+     * 
+     * @param updt the updateable
+     * @see #resetConfig()
+     */
     public void addUpdateable(final Updateable updt) {
         if (this.config.async) {
             this.scene.getUpdateableContainerAsync().addUpdateable(this.config.mode, this.config.time, updt);

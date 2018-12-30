@@ -12,9 +12,19 @@ import de.omnikryptec.util.updater.Time;
 public class UpdateableContainer implements Updateable {
     
     public static enum ExecuteMode {
-        Embracing, OneByOne
+        Embracing, OneByOne, Default
     }
     
+    /**
+     * This enum configures how the three methods of {@link Updateable} are actually
+     * called. <br>
+     * For example, the {@link Updateable#update(Time)} can be called in the
+     * {@link Updateable#postUpdate(Time)} spot by using the
+     * {@link ExecuteTime#OneBehind} option.
+     * 
+     * @author pcfreak9000
+     *
+     */
     public static enum ExecuteTime {
         OneAhead, Normal, OneBehind
     }
@@ -37,10 +47,11 @@ public class UpdateableContainer implements Updateable {
     
     public void addUpdateable(final ExecuteMode exmode, final ExecuteTime time, final Updateable updt) {
         Util.ensureNonNull(updt);
+        Util.ensureNonNull(exmode);
         if (updt == this) {
             throw new IllegalArgumentException("argument == this");
         }
-        this.updateables.put(exmode == null ? updt.defaultExecuteMode() : exmode, updt);
+        this.updateables.put(exmode == ExecuteMode.Default ? updt.defaultExecuteMode() : exmode, updt);
         this.updtTimes.put(updt, Util.ensureNonNull(time));
     }
     

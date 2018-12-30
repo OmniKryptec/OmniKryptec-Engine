@@ -56,6 +56,13 @@ public abstract class EngineLoader {
     public EngineLoader() {
     }
     
+    /**
+     * Initializes various parts of the {@link LibAPIManager}.
+     * 
+     * @param libsettings Settings configuring the {@link LibAPIManager}
+     * @param renderapi   the RenderAPI to use
+     * @param apisettings Settings of the RenderAPI (this is RenderAPI specific)
+     */
     public static void initialize(final Settings<LibSetting> libsettings, final Class<? extends RenderAPI> renderapi,
             final Settings<IntegerKey> apisettings) {
         // Initialize everything required
@@ -64,6 +71,15 @@ public abstract class EngineLoader {
         // Audio, etc....
     }
     
+    /**
+     * Starts the engine. The start paramters can be set in
+     * {@link #configure(Settings, Settings, Settings, Settings)}. <br>
+     * Then the engine gets {@link #initialize(Settings, Class, Settings)} and the
+     * {@link Window}, {@link IGameLoop}, {@link GameController} and
+     * {@link UpdateController} are created.<br>
+     * After or before making the window visible, {@link #onInitialized()} is
+     * called. If so configured, the gameloop will be started.
+     */
     @Nonnull
     public void start() {
         if (this.started) {
@@ -100,6 +116,11 @@ public abstract class EngineLoader {
         }
     }
     
+    /**
+     * Shuts down the engine. Only if it has been started by {@link #start()}.<br>
+     * First {@link #onShutdown()} gets called. A gameloop that might be running
+     * gets stopped, the window gets disposed and the LibAPIManager gets shut down.
+     */
     public void shutdown() {
         if (started) {
             onShutdown();
@@ -200,7 +221,14 @@ public abstract class EngineLoader {
          * @see #START_ENGINE_LOOP_AFTER_INIT
          */
         GAME_LOOP(new DefaultGameLoop()),
-        //TODO javadoc
+        
+        /**
+         * Shutdown the engine if the gameloop exits. Only if
+         * {@link #START_GAME_LOOP_AFTER_INIT} is set to <code>true</code>. Only in
+         * non-static cases of {@link EngineLoader}<br>
+         * <br>
+         * The default value is <code>true</code>
+         */
         SHUTDOWN_ON_LOOP_EXIT(true);
         
         private final Object defaultSetting;
