@@ -37,7 +37,7 @@ import de.omnikryptec.util.settings.Settings;
  * non-static.<br>
  * <ul>
  * <li>In the non-static case, the engine will be started via
- * {@link #start()}.</li>
+ * {@link de.omnikryptec.core.EngineLoader#start()}.</li>
  * <li>In the static case, this class only provides utility functions.</li>
  * </ul>
  * The use of this class is not a requirement to use the Engine; librarys and
