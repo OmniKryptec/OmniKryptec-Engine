@@ -8,6 +8,7 @@ import de.omnikryptec.core.UpdateableContainer.ExecuteTime;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
+import de.omnikryptec.libapi.exposed.render.IndexBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.Shader;
@@ -31,7 +32,7 @@ public class SceneBuilder {
     private class Config {
         private boolean async = false;
         private ExecuteTime time = ExecuteTime.Normal;
-        private ExecuteMode mode = null;
+        private ExecuteMode mode = ExecuteMode.Default;
     }
     
     private final Scene scene;
@@ -151,7 +152,9 @@ public class SceneBuilder {
     
     public void addGraphicsBasicImplTest() {
         VertexBuffer buffer = RenderAPI.get().createVertexBuffer();
-        buffer.storeData(new float[] { -0.5f, -0.5f, 0, 0.5f, 0.5f, -0.5f }, false);
+        buffer.storeData(new float[] { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f }, false);
+        IndexBuffer indexBuffer = RenderAPI.get().createIndexBuffer();
+        indexBuffer.storeData(new int[] { 0, 1, 2, 0, 2, 3 }, false);
         VertexArray array = RenderAPI.get().createVertexArray();
         array.addVertexBuffer(buffer, new VertexBufferLayout.VertexBufferElement(Type.FLOAT, 2, true));
         String vertex = "#version 330 core\nlayout(location = 0) in vec4 pos;\nvoid main() {\ngl_Position = pos;}";
@@ -164,7 +167,8 @@ public class SceneBuilder {
             public void update(Time time) {
                 shader.bindShader();
                 array.bindArray();
-                GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
+                GL11.glDrawElements(GL11.GL_TRIANGLES, array.getIndexBuffer().size(), GL11.GL_UNSIGNED_INT, 0);
+                //GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 3);
                 array.unbindArray();
             }
         });
