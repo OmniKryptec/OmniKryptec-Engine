@@ -18,6 +18,10 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
     private final int pointer;
     private int vaaIndex = 0;
     
+    private int vertexCount;
+    
+    private boolean indexBuffer;
+    
     public GLVertexArray() {
         this.pointer = GL30.glGenVertexArrays();
     }
@@ -43,14 +47,19 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
     
     @Override
     public void addVertexBuffer(final VertexBuffer buffer, final VertexBufferLayout layout) {
-        bindArray();
-        buffer.bindBuffer();
         final List<VertexBufferElement> elements = layout.getElements();
         int stride = 0;
         int offset = 0;
+        int perVertexCount = 0;
         for (final VertexBufferElement element : elements) {
             stride += element.getCount() * OpenGLUtil.sizeof(element.getType());
+            perVertexCount += element.getCount();
         }
+        if (!hasIndexBuffer()) {
+            vertexCount = buffer.size() / perVertexCount;
+        }
+        bindArray();
+        buffer.bindBuffer();
         for (int i = 0; i < elements.size(); i++) {
             final VertexBufferElement element = elements.get(i);
             GL20.glEnableVertexAttribArray(i);
@@ -64,6 +73,9 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
     
     @Override
     public void addVertexBuffer(final VertexBuffer buffer, final VertexBufferElement element) {
+        if (!hasIndexBuffer()) {
+            vertexCount = buffer.size() / element.getCount();
+        }
         bindArray();
         buffer.bindBuffer();
         GL20.glEnableVertexAttribArray(this.vaaIndex);
@@ -75,9 +87,21 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
     
     @Override
     public void setIndexBuffer(final IndexBuffer buffer) {
+        this.vertexCount = buffer.size();
+        this.indexBuffer = true;
         bindArray();
         buffer.bindBuffer();
         unbindArray();
+    }
+    
+    @Override
+    public int vertexCount() {
+        return vertexCount;
+    }
+    
+    @Override
+    public boolean hasIndexBuffer() {
+        return indexBuffer;
     }
     
 }

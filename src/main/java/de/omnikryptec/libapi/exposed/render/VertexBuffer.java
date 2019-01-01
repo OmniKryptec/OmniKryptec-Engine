@@ -11,21 +11,21 @@ public interface VertexBuffer {
 
     void unbindBuffer();
 
-    void storeData(FloatBuffer data, boolean dynamic);
+    void storeData(FloatBuffer data, boolean dynamic, int size);
 
     default void storeData(final float[] data, final boolean dynamic) {
         final FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
         buffer.put(data);
-        buffer.flip();
-        storeData(buffer, dynamic);
+        storeData(buffer, dynamic, data.length);
     }
 
-    void storeData(IntBuffer data, boolean dynamic);
+    void storeData(IntBuffer data, boolean dynamic, int size);
 
     default void storeData(final int[] data, final boolean dynamic) {
         final IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
         buffer.put(data);
-        buffer.flip();
-        storeData(buffer, dynamic);
+        storeData(buffer, dynamic, data.length);
     }
+    
+    int size();
 }

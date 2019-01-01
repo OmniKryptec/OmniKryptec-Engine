@@ -1,38 +1,46 @@
 package de.omnikryptec.util.settings;
 
 public class IntegerKey implements Defaultable {
-
+    
+    private static int next = 0;
+    
+    public static IntegerKey next(Object object) {
+        IntegerKey key = new IntegerKey(next, object);
+        next++;
+        return key;
+    }
+    
     private final int value;
     private final Object defObj;
-
+    
     public IntegerKey(final int value) {
         this(value, null);
     }
-
+    
     public IntegerKey(final int value, final Object defObject) {
         this.value = value;
         this.defObj = defObject;
     }
-
+    
     public int get() {
         return this.value;
     }
-
+    
     @Override
     public <T> T getDefault() {
         return (T) this.defObj;
     }
-
+    
     @Override
     public int hashCode() {
         return this.value;
     }
-
+    
     @Override
     public String toString() {
         return Integer.toString(this.value);
     }
-
+    
     @Override
     public boolean equals(final Object obj) {
         if (obj == null) {

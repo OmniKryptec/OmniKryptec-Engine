@@ -23,6 +23,10 @@ public class VertexBufferLayout {
             return this.type;
         }
         
+        /**
+         * Number of values per vertex
+         * @return per-vertex count
+         */
         public int getCount() {
             return this.count;
         }

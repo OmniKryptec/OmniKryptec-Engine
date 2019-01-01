@@ -13,4 +13,8 @@ public interface VertexArray {
     void addVertexBuffer(VertexBuffer buffer, VertexBufferElement element);
 
     void setIndexBuffer(IndexBuffer buffer);
+    
+    boolean hasIndexBuffer();
+    
+    int vertexCount();
 }
