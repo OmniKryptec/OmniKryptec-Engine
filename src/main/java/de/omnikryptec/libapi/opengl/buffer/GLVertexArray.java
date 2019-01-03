@@ -16,6 +16,11 @@
 
 package de.omnikryptec.libapi.opengl.buffer;
 
+import java.util.List;
+
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
+
 import de.omnikryptec.libapi.exposed.AutoDelete;
 import de.omnikryptec.libapi.exposed.render.IndexBuffer;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
@@ -23,43 +28,39 @@ import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout.VertexBufferElement;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
-
-import java.util.List;
 
 public class GLVertexArray extends AutoDelete implements VertexArray {
-    
+
     private final int pointer;
     private int vaaIndex = 0;
-    
+
     private int vertexCount;
-    
+
     private boolean indexBuffer;
-    
+
     public GLVertexArray() {
         this.pointer = GL30.glGenVertexArrays();
     }
-    
+
     @Override
     public void bindArray() {
         OpenGLUtil.bindVertexArray(this.pointer, false);
     }
-    
+
     @Override
     public void unbindArray() {
         OpenGLUtil.bindVertexArray(0, true);
     }
-    
+
     @Override
     protected void deleteRaw() {
         GL30.glDeleteVertexArrays(this.pointer);
     }
-    
+
     public int arrayId() {
         return this.pointer;
     }
-    
+
     @Override
     public void addVertexBuffer(final VertexBuffer buffer, final VertexBufferLayout layout) {
         final List<VertexBufferElement> elements = layout.getElements();
@@ -71,7 +72,7 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
             perVertexCount += element.getCount();
         }
         if (!hasIndexBuffer()) {
-            vertexCount = buffer.size() / perVertexCount;
+            this.vertexCount = buffer.size() / perVertexCount;
         }
         bindArray();
         buffer.bindBuffer();
@@ -85,11 +86,11 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
         }
         unbindArray();
     }
-    
+
     @Override
     public void addVertexBuffer(final VertexBuffer buffer, final VertexBufferElement element) {
         if (!hasIndexBuffer()) {
-            vertexCount = buffer.size() / element.getCount();
+            this.vertexCount = buffer.size() / element.getCount();
         }
         bindArray();
         buffer.bindBuffer();
@@ -99,7 +100,7 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
         this.vaaIndex++;
         unbindArray();
     }
-    
+
     @Override
     public void setIndexBuffer(final IndexBuffer buffer) {
         this.vertexCount = buffer.size();
@@ -108,15 +109,15 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
         buffer.bindBuffer();
         unbindArray();
     }
-    
+
     @Override
     public int vertexCount() {
-        return vertexCount;
+        return this.vertexCount;
     }
-    
+
     @Override
     public boolean hasIndexBuffer() {
-        return indexBuffer;
+        return this.indexBuffer;
     }
-    
+
 }

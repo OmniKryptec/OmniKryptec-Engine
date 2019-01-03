@@ -20,48 +20,48 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public class MeshData {
-    
+
     public static enum PrimitiveType {
         POINT(1), LINE(2), Triangle(3), Quad(4);
-        
-        private PrimitiveType(int vc) {
+
+        private PrimitiveType(final int vc) {
             this.vertexCount = vc;
         }
-        
+
         public final int vertexCount;
     }
-    
+
     public static enum VertexAttribute {
         Position, Normal, Tangent, Bitangent, TextureCoord, Index;
     }
-    
+
     private PrimitiveType primitiveType;
-    
-    private Map<VertexAttribute, Object> vertexData = new EnumMap<>(VertexAttribute.class);
-    
-    public MeshData(Object... objects) {
+
+    private final Map<VertexAttribute, Object> vertexData = new EnumMap<>(VertexAttribute.class);
+
+    public MeshData(final Object... objects) {
         if (objects.length % 2 != 0) {
             throw new IllegalArgumentException();
         }
         VertexAttribute current = null;
-        for (Object o : objects) {
+        for (final Object o : objects) {
             if (o instanceof VertexAttribute) {
                 current = (VertexAttribute) o;
             } else {
-                vertexData.put(current, o);
+                this.vertexData.put(current, o);
             }
         }
     }
-    
-    public boolean hasVertexAttribute(VertexAttribute attribute) {
-        return vertexData.containsKey(attribute);
+
+    public boolean hasVertexAttribute(final VertexAttribute attribute) {
+        return this.vertexData.containsKey(attribute);
     }
-    
-    public <T> T getAttribute(VertexAttribute attribute) {
-        return (T) vertexData.get(attribute);
+
+    public <T> T getAttribute(final VertexAttribute attribute) {
+        return (T) this.vertexData.get(attribute);
     }
-    
+
     public PrimitiveType getPrimitiveType() {
-        return primitiveType;
+        return this.primitiveType;
     }
 }

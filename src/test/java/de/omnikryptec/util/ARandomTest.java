@@ -16,13 +16,13 @@
 
 package de.omnikryptec.util;
 
+import java.util.List;
+
 import de.omnikryptec.graphics.shader.base.parser.ShaderParser;
 import de.omnikryptec.graphics.shader.base.parser.ShaderSource;
 
-import java.util.List;
-
 public class ARandomTest {
-
+    
     public static void main(final String[] args) {
         /*
          * System.out.println(Math.rint(-1.5)); System.out.println(Mathf.ceil(-1.5f));
@@ -42,5 +42,5 @@ public class ARandomTest {
             System.out.println();
         }
     }
-
+    
 }

@@ -17,15 +17,15 @@
 package de.omnikryptec.graphics.shader.base.parser;
 
 public class ShaderCompilationException extends RuntimeException {
-    
+
     private static final long serialVersionUID = 3014987664747632177L;
-    
+
     public ShaderCompilationException(final String program, final String error) {
         super("Compilation problem in program \"" + program + "\": " + error);
     }
-    
-    public ShaderCompilationException(String error) {
+
+    public ShaderCompilationException(final String error) {
         super(error);
     }
-    
+
 }

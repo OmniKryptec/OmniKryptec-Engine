@@ -24,6 +24,7 @@ import de.omnikryptec.util.data.Color;
 import org.lwjgl.opengl.*;
 
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 
 public class OpenGLUtil {
@@ -43,25 +44,6 @@ public class OpenGLUtil {
             return 4;
         default:
             throw new IllegalArgumentException(t + "");
-        }
-    }
-    
-    private static int lastVertexArray = 0;
-    
-    public static void bindVertexArray(final int vertexArray, final boolean override) {
-        if (vertexArray != lastVertexArray || override) {
-            GL30.glBindVertexArray(vertexArray);
-            lastVertexArray = vertexArray;
-        }
-    }
-    
-    private static final int[] lastBoundTextures = new int[32];
-    
-    public static void bindTexture(final int unit, final int target, final int id, final boolean override) {
-        if (lastBoundTextures[unit] != id || override) {
-            GL13.glActiveTexture(unit + GL13.GL_TEXTURE0);
-            GL11.glBindTexture(target, id);
-            lastBoundTextures[unit] = id;
         }
     }
     
@@ -100,7 +82,25 @@ public class OpenGLUtil {
         }
     }
     
+    private static int lastVertexArray = 0;
+    private static final int[] lastBoundTextures = new int[32];
     private static int currentShader;
+    private static Map<Integer, Integer> lastBoundBuffer = new HashMap<>();
+    
+    public static void bindVertexArray(final int vertexArray, final boolean override) {
+        if (vertexArray != lastVertexArray || override) {
+            GL30.glBindVertexArray(vertexArray);
+            lastVertexArray = vertexArray;
+        }
+    }
+    
+    public static void bindTexture(final int unit, final int target, final int id, final boolean override) {
+        if (lastBoundTextures[unit] != id || override) {
+            GL13.glActiveTexture(unit + GL13.GL_TEXTURE0);
+            GL11.glBindTexture(target, id);
+            lastBoundTextures[unit] = id;
+        }
+    }
     
     public static void useProgram(final int id) {
         if (currentShader != id) {
@@ -109,6 +109,13 @@ public class OpenGLUtil {
         }
     }
     
+    //TODO test if slow
+    public static void bindBuffer(final int target, final int buffer, final boolean override) {
+        if (lastBoundBuffer.get(target) != buffer || override) {
+            GL15.glBindBuffer(target, buffer);
+            lastBoundBuffer.put(target, buffer);
+        }
+    }
     //TODO remake below this
     
     private static Map<Feature, Boolean> featureCache = new EnumMap<>(Feature.class);

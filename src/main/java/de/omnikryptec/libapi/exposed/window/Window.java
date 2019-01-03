@@ -16,18 +16,21 @@
 
 package de.omnikryptec.libapi.exposed.window;
 
+import java.nio.IntBuffer;
+
+import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
+import org.lwjgl.glfw.GLFWVidMode;
+
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.glfw.*;
-
-import java.nio.IntBuffer;
 
 public abstract class Window {
-    
+
     public static enum WindowSetting implements Defaultable {
         Width(800), Height(600), Fullscreen(false), Name("Display"), Resizeable(true), LockAspectRatio(false),
         /**
@@ -36,26 +39,26 @@ public abstract class Window {
          * @see de.omnikryptec.core.scene.UpdateController#setAsyncUpdatesPerSecond(int)
          */
         VSync(true);
-        
+
         private final Object def;
-        
+
         private WindowSetting(final Object def) {
             this.def = def;
         }
-        
+
         @Override
         public <T> T getDefault() {
             return (T) this.def;
         }
-        
+
     }
-    
+
     protected final long windowId;
     private boolean resized = false;
     private int width, height, fwidth, fheight;
     private boolean isfullscreen = false;
     private boolean active = false;
-    
+
     protected Window(final Settings<WindowSetting> info, final Object... hints) {
         Util.ensureNonNull(info, "Window settings must not be null!");
         this.width = info.get(WindowSetting.Width);
@@ -85,17 +88,17 @@ public abstract class Window {
         this.fwidth = framebufferWidth.get();
         this.fheight = framebufferHeight.get();
     }
-    
+
     protected abstract void setAdditionalGlfwWindowHints(Object... hints);
-    
+
     protected abstract void swap();
-    
+
     public abstract void setVSync(boolean vsync);
-    
+
     public long getWindowID() {
         return this.windowId;
     }
-    
+
     public void setVisible(final boolean b) {
         if (b) {
             GLFW.glfwShowWindow(this.windowId);
@@ -103,51 +106,51 @@ public abstract class Window {
             GLFW.glfwHideWindow(this.windowId);
         }
     }
-    
+
     public void dispose() {
         GLFW.glfwDestroyWindow(this.windowId);
     }
-    
+
     public void swapBuffers() {
         this.active = GLFW.glfwGetWindowAttrib(this.windowId, GLFW.GLFW_FOCUSED) == GLFW.GLFW_TRUE;
         this.resized = false;
         swap();
     }
-    
+
     public boolean shouldBeFullscreen() {
         return this.isfullscreen;
     }
-    
+
     public boolean wasResized() {
         return this.resized;
     }
-    
+
     public boolean isActive() {
         return this.active;
     }
-    
+
     public boolean isCloseRequested() {
         return GLFW.glfwWindowShouldClose(this.windowId);
     }
-    
+
     public int getWidth() {
         return this.width;
     }
-    
+
     public int getHeight() {
         return this.height;
     }
-    
+
     public int getBufferWidth() {
         return this.fwidth;
     }
-    
+
     public int getBufferHeight() {
         return this.fheight;
     }
-    
+
     private void registerCallbacks() {
-        EventBus windowBus = LibAPIManager.LIBAPI_EVENTBUS;
+        final EventBus windowBus = LibAPIManager.LIBAPI_EVENTBUS;
         GLFW.glfwSetFramebufferSizeCallback(this.windowId, (new GLFWFramebufferSizeCallback() {
             @Override
             public void invoke(final long window, final int width, final int height) {
@@ -155,29 +158,14 @@ public abstract class Window {
                 windowBus.post(new WindowEvent.WindowResized(width, height));
             }
         }));
-        GLFW.glfwSetWindowFocusCallback(windowId, new GLFWWindowFocusCallbackI() {
-            
-            @Override
-            public void invoke(long window, boolean focused) {
-                windowBus.post(new WindowEvent.WindowFocused(focused));
-            }
-        });
-        GLFW.glfwSetWindowIconifyCallback(windowId, new GLFWWindowIconifyCallbackI() {
-            
-            @Override
-            public void invoke(long window, boolean iconified) {
-                windowBus.post(new WindowEvent.WindowIconified(iconified));
-            }
-        });
-        GLFW.glfwSetWindowMaximizeCallback(windowId, new GLFWWindowMaximizeCallbackI() {
-            
-            @Override
-            public void invoke(long window, boolean maximized) {
-                windowBus.post(new WindowEvent.WindowMaximized(maximized));
-            }
-        });
+        GLFW.glfwSetWindowFocusCallback(this.windowId,
+                (window, focused) -> windowBus.post(new WindowEvent.WindowFocused(focused)));
+        GLFW.glfwSetWindowIconifyCallback(this.windowId,
+                (window, iconified) -> windowBus.post(new WindowEvent.WindowIconified(iconified)));
+        GLFW.glfwSetWindowMaximizeCallback(this.windowId,
+                (window, maximized) -> windowBus.post(new WindowEvent.WindowMaximized(maximized)));
     }
-    
+
     protected void onResize(final int w, final int h) {
         this.width = w;
         this.height = h;

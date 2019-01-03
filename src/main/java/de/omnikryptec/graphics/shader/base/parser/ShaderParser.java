@@ -16,40 +16,45 @@
 
 package de.omnikryptec.graphics.shader.base.parser;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class ShaderParser {
-
+    
     public static enum ShaderType {
         Vertex, Fragment, Geometry, TessellationControl, TessellationEvaluation, Compute;
     }
-
+    
     public static final String PARSER_STATEMENT_INDICATOR = "$";
-
+    
     public static final String DEFINITIONS_INDICATOR = "define ";
     public static final String SHADER_INDICATOR = "shader ";
     public static final String MODULE_INDICATOR = "module ";
     public static final String HEADER_INDICATOR = "header";
-
+    
     private static final String HEADER_REPLACE_MARKER = "%%%ndf84nbvkHRM%%%";
-
+    
     private final Deque<SourceDescription> definitions;
-
+    
     private final Map<String, SourceDescription> modules;
-
+    
     private final Map<String, Supplier<String>> provider;
-
+    
     private String currentContext;
-
+    
     private boolean headerMode;
-
+    
     public ShaderParser() {
         this.definitions = new ArrayDeque<>();
         this.modules = new HashMap<>();
         this.provider = new HashMap<>();
     }
-
+    
     public void parse(final String programName, final String... sources) {
         if (programName == null || programName.equals("") || sources.length == 0) {
             throw new NullPointerException(sources.length == 0 ? "invalid sources" : "programName are invalid");
@@ -124,15 +129,15 @@ public class ShaderParser {
             }
         }
     }
-
+    
     public void addProvider(final String id, final String provided) {
         addProvider(id, () -> provided);
     }
-
+    
     public void addProvider(final String id, final Supplier<String> provider) {
         this.provider.put(id, provider);
     }
-
+    
     public List<ShaderSource> process() {
         final List<ShaderSource> finished = new ArrayList<>();
         for (final SourceDescription desc : this.definitions) {
@@ -144,7 +149,7 @@ public class ShaderParser {
         }
         return finished;
     }
-
+    
     private String makeSource(final SourceDescription desc) {
         String rawSrc = desc.source().toString();
         if (rawSrc.contains(HEADER_REPLACE_MARKER)) {
@@ -154,7 +159,7 @@ public class ShaderParser {
         }
         return rawSrc.trim();
     }
-
+    
     private void reduce(final SourceDescription desc) {
         while (!desc.modules().isEmpty()) {
             final SourceDescription another = this.modules.get(desc.modules().remove(0));
@@ -172,7 +177,7 @@ public class ShaderParser {
             desc.source().append(another.source());
         }
     }
-
+    
     private String decodeToken(String token, final int line) {
         if (token.startsWith(DEFINITIONS_INDICATOR)) {
             token = token.replace(DEFINITIONS_INDICATOR, "");
@@ -211,7 +216,7 @@ public class ShaderParser {
         }
         throw new ShaderCompilationException(this.currentContext, "Illegal token: " + token + " (line " + line + ")");
     }
-
+    
     private ShaderType type(String s) {
         s = s.toUpperCase().trim();
         switch (s) {

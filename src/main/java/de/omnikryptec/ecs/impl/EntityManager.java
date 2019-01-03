@@ -16,27 +16,32 @@
 
 package de.omnikryptec.ecs.impl;
 
+import java.util.BitSet;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimap;
+
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityListener;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.util.data.CountingMap;
 
-import java.util.*;
-
 public class EntityManager {
-    
+
     private final Multimap<BitSet, EntityListener> familyListeners;
-    
+
     private final Collection<Entity> entities;
     private final Collection<Entity> unmodifiableEntities;
-    
+
     private final CountingMap<BitSet> uniqueFilters;
     private final ListMultimap<BitSet, Entity> filteredEntities;
     private final ListMultimap<Entity, BitSet> reverseFilteredEntities;
-    
+
     public EntityManager() {
         // HashSet is a few microsecs slower than ArrayList on average but when removing
         // entities its twice as fast but what about adding entities?!?!?!
@@ -47,7 +52,7 @@ public class EntityManager {
         this.reverseFilteredEntities = ArrayListMultimap.create();
         this.familyListeners = ArrayListMultimap.create();
     }
-    
+
     public EntityManager addEntity(final Entity entity) {
         if (this.entities.add(entity)) {
             if (!entity.getComponents().isEmpty()) {
@@ -64,7 +69,7 @@ public class EntityManager {
         }
         return this;
     }
-    
+
     public EntityManager removeEntity(final Entity entity) {
         if (this.entities.remove(entity)) {
             for (final BitSet filter : this.reverseFilteredEntities.get(entity)) {
@@ -74,15 +79,15 @@ public class EntityManager {
         }
         return this;
     }
-    
+
     public Collection<Entity> getAll() {
         return this.unmodifiableEntities;
     }
-    
+
     public List<Entity> getEntitiesFor(final BitSet family) {
         return Collections.unmodifiableList(this.filteredEntities.get(family));
     }
-    
+
     public EntityManager addFilter(final BitSet family) {
         if (family.isEmpty()) {
             throw new IllegalArgumentException("Empty family");
@@ -100,7 +105,7 @@ public class EntityManager {
         }
         return this;
     }
-    
+
     public EntityManager removeFilter(final BitSet family) {
         if (family.isEmpty()) {
             throw new IllegalArgumentException("Empty family");
@@ -118,7 +123,7 @@ public class EntityManager {
         }
         return this;
     }
-    
+
     public EntityManager updateEntityFamilyStatus(final Entity entity) {
         for (final BitSet family : this.uniqueFilters) {
             final boolean niceFamily = Family.containsTrueBits(entity.getComponents(), family);
@@ -139,13 +144,13 @@ public class EntityManager {
         }
         return this;
     }
-    
+
     public void addEntityListener(final BitSet family, final EntityListener listener) {
         this.familyListeners.put(family, listener);
     }
-    
+
     public void removeEnityListener(final BitSet family, final EntityListener listener) {
         this.familyListeners.remove(family, listener);
     }
-    
+
 }

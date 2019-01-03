@@ -16,45 +16,45 @@
 
 package de.omnikryptec.core.loop;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.scene.UpdateController;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class DefaultGameLoop implements IGameLoop {
-    
+
     private final Runnable asyncTasks = () -> {
         DefaultGameLoop.this.updateController.getAsyncUpdater().resetDeltaTime();
         while (DefaultGameLoop.this.running.get()) {
             DefaultGameLoop.this.updateController.updateAsync();
         }
     };
-    
+
     private final AtomicBoolean running = new AtomicBoolean(false);
     private boolean shouldStop = false;
-    
+
     private UpdateController updateController;
-    
+
     @Override
     public void init(final EngineLoader loader) {
         this.updateController = loader.getUpdateController();
     }
-    
+
     @Override
     public void stopLoop() {
         this.shouldStop = true;
     }
-    
+
     public boolean shouldStop() {
         return this.shouldStop || (this.updateController == null ? false
                 : this.updateController.getWindowUpdater().getWindow().isCloseRequested());
     }
-    
+
     @Override
     public boolean isRunning() {
         return this.running.get();
     }
-    
+
     @Override
     public void startLoop() {
         if (this.running.get()) {
@@ -72,5 +72,5 @@ public class DefaultGameLoop implements IGameLoop {
             this.running.set(false);
         }
     }
-    
+
 }

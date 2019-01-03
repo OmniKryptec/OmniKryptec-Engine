@@ -1,13 +1,11 @@
 package de.omnikryptec.resource;
 
-import java.util.List;
-
 public class MeshFile {
-    
+
     public final MeshData[] meshes;
-    
-    public MeshFile(MeshData... meshDatas) {
+
+    public MeshFile(final MeshData... meshDatas) {
         this.meshes = meshDatas;
     }
-    
+
 }

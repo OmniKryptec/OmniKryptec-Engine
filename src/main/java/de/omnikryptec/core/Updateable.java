@@ -20,18 +20,18 @@ import de.omnikryptec.core.UpdateableContainer.ExecuteMode;
 import de.omnikryptec.util.updater.Time;
 
 public interface Updateable {
-    
+
     default void preUpdate(final Time time) {
     }
-    
+
     default void update(final Time time) {
     }
-    
+
     default void postUpdate(final Time time) {
     }
-
+    
     default ExecuteMode defaultExecuteMode() {
         return ExecuteMode.OneByOne;
     }
-    
+
 }

@@ -19,14 +19,14 @@ package de.omnikryptec.graphics.shader.base.uniform;
 import org.lwjgl.opengl.GL20;
 
 public class UniformFloat extends Uniform {
-    
+
     private float currentValue;
     private boolean used = false;
-    
+
     public UniformFloat(final String name) {
         super(name);
     }
-    
+
     public void loadFloat(final float value) {
         if (isFound() && (!this.used || this.currentValue != value)) {
             GL20.glUniform1f(super.getLocation(), value);
@@ -34,5 +34,5 @@ public class UniformFloat extends Uniform {
             this.currentValue = value;
         }
     }
-    
+
 }

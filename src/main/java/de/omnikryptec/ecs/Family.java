@@ -16,10 +16,11 @@
 
 package de.omnikryptec.ecs;
 
-import de.omnikryptec.ecs.component.ComponentType;
+import java.util.BitSet;
 
 import javax.annotation.Nonnull;
-import java.util.BitSet;
+
+import de.omnikryptec.ecs.component.ComponentType;
 
 /**
  * A utility class to help with families/filters in Entity Component Systems.
@@ -28,7 +29,7 @@ import java.util.BitSet;
  * @see IECSManager
  */
 public class Family {
-    
+
     /**
      * Creates a new BitSet with all indices set to true if a corresponding
      * {@link ComponentType} is required.
@@ -45,7 +46,7 @@ public class Family {
         }
         return bitset;
     }
-    
+
     /**
      * Checks if all bits that are set to true in the second argument, are also true
      * in the first argument. If a bit in the second argument is zero, it will be
@@ -67,5 +68,5 @@ public class Family {
         }
         return true;
     }
-    
+
 }

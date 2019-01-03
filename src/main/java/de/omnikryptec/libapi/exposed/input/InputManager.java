@@ -16,18 +16,19 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
-import de.omnikryptec.core.Updateable;
-import de.omnikryptec.util.Util;
-import de.omnikryptec.util.settings.KeySettings;
-import de.omnikryptec.util.updater.Time;
 import org.joml.Vector2d;
 import org.joml.Vector2dc;
 import org.joml.Vector4d;
 import org.joml.Vector4dc;
 import org.lwjgl.glfw.GLFW;
 
+import de.omnikryptec.core.Updateable;
+import de.omnikryptec.util.Util;
+import de.omnikryptec.util.settings.KeySettings;
+import de.omnikryptec.util.updater.Time;
+
 public class InputManager implements Updateable {
-    
+
     private final long window;
     //private final AtomicReference<Double> currentTime = new AtomicReference<>(0.0);
     // Keyboard part
@@ -48,34 +49,34 @@ public class InputManager implements Updateable {
     private final Vector4d mouseDelta = new Vector4d(0.0, 0.0, 0.0, 0.0);
     private boolean longButtonPressEnabled = false;
     private CursorType cursorType = CursorType.DISABLED;
-    
+
     public InputManager(final long window) {
         this(window, new KeyboardHandler(window), new MouseHandler(window));
     }
-    
+
     public InputManager(final long window, final KeyboardHandler keyboardHandler, final MouseHandler mouseHandler) {
         this.window = window;
         this.keyboardHandler = keyboardHandler;
         this.mouseHandler = mouseHandler;
     }
-    
+
     public KeyboardHandler getKeyboardHandler() {
         return this.keyboardHandler;
     }
-    
+
     public MouseHandler getMouseHandler() {
         return this.mouseHandler;
     }
-    
+
     public InputManager init() {
         this.keyboardHandler.init();
         this.mouseHandler.init();
         return this;
     }
-    
+
     @Override
     public void preUpdate(final Time time) {
-        // final double currentTime = LibAPIManager.active().getTime(); //TODO Remove
+        // final double currentTime = LibAPIManager.active().getTime(); //TOD Remove
         //currentTime.set(LibAPIManager.active().getTime());
         //final double currentTime_ = currentTime.get();
         final KeySettings keySettings = null; // FIXME KeySettings missing!
@@ -85,7 +86,7 @@ public class InputManager implements Updateable {
         }
         JoystickHandler.preUpdateAll(time.current, keySettings);
     }
-    
+
     @Override
     public void update(final Time time) {
         // final double currentTime = LibAPIManager.active().getTime();
@@ -98,7 +99,7 @@ public class InputManager implements Updateable {
         }
         JoystickHandler.updateAll(time.current, keySettings);
     }
-    
+
     @Override
     public void postUpdate(final Time time) {
         // final double currentTime = LibAPIManager.active().getTime();
@@ -110,84 +111,84 @@ public class InputManager implements Updateable {
         }
         JoystickHandler.postUpdateAll(time.current, keySettings);
     }
-    
+
     public InputManager close() {
         this.keyboardHandler.close();
         this.mouseHandler.close();
         JoystickHandler.closeAll();
         return this;
     }
-    
+
     public boolean isLongButtonPressEnabled() {
         return this.longButtonPressEnabled;
     }
-    
+
     public InputManager setLongButtonPressEnabled(final boolean longButtonPressEnabled) {
         this.longButtonPressEnabled = longButtonPressEnabled;
         return this;
     }
-    
+
     public long getWindow() {
         return this.window;
     }
-    
+
     // Keyboard part
-    
+
     public byte getKeyboardKeyState(final int keyCode) {
         if (keyCode < 0 || keyCode >= this.keyboardHandler.size()) {
             return KeySettings.KEY_UNKNOWN;
         }
         return this.keyboardHandler.getKeyState(keyCode);
     }
-    
+
     public boolean isKeyboardKeyPressed(final int keyCode) {
         if (keyCode < 0 || keyCode >= this.keyboardHandler.size()) {
             return false;
         }
         return this.keyboardHandler.isKeyPressed(keyCode) || this.keyboardHandler.isKeyRepeated(keyCode);
     }
-    
+
     // Mouse part
-    
+
     public byte getMouseButtonState(final int buttonCode) {
         if (buttonCode < 0 || buttonCode >= this.mouseHandler.size()) {
             return KeySettings.KEY_UNKNOWN;
         }
         return this.mouseHandler.getButtonState(buttonCode);
     }
-    
+
     public boolean isMouseButtonPressed(final int buttonCode) {
         if (buttonCode < 0 || buttonCode >= this.mouseHandler.size()) {
             return false;
         }
         return this.mouseHandler.isButtonPressed(buttonCode); // || mouseHandler.isButtonRepeated(buttonCode); //TODO Can a mouse buttons state be "REPEATED"?
     }
-    
+
     public Vector2dc getMousePosition() {
         return this.mouseHandler.getPosition();
     }
-    
+
     public Vector2dc getMouseScrollOffset() {
         return this.mouseHandler.getScrollOffset();
     }
-    
+
     public boolean isMouseInsideWindow() {
         return this.mouseHandler.isInsideWindow();
     }
-    
+
     public CursorType getCursorType() {
         return this.cursorType;
     }
-    
+
     public InputManager setCursorType(final CursorType cursorType) {
         Util.ensureNonNull(cursorType);
         GLFW.glfwSetInputMode(this.window, GLFW.GLFW_CURSOR, cursorType.getState());
         this.cursorType = cursorType;
         return this;
     }
-    
+
     // Mouse delta part
-    
+
     private void updateMouseDeltas(final Vector2d mousePosition, final Vector2d mouseScrollOffset) {
         this.mousePositionDelta.x = (mousePosition.x - this.mousePositionLastTime.x);
         this.mousePositionDelta.y = (mousePosition.y - this.mousePositionLastTime.y);
@@ -203,17 +204,17 @@ public class InputManager implements Updateable {
         this.mouseScrollOffsetLastTime.x = mouseScrollOffset.x;
         this.mouseScrollOffsetLastTime.y = mouseScrollOffset.y;
     }
-    
+
     public Vector2dc getMousePositionDelta() {
         return this.mousePositionDelta;
     }
-    
+
     public Vector2dc getMouseScrollOffsetDelta() {
         return this.mouseScrollOffsetDelta;
     }
-    
+
     public Vector4dc getMouseDelta() {
         return this.mouseDelta;
     }
-    
+
 }

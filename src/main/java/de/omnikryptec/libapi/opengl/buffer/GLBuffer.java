@@ -16,39 +16,40 @@
 
 package de.omnikryptec.libapi.opengl.buffer;
 
-import de.omnikryptec.libapi.exposed.AutoDelete;
 import org.lwjgl.opengl.GL15;
 
+import de.omnikryptec.libapi.exposed.AutoDelete;
+import de.omnikryptec.libapi.opengl.OpenGLUtil;
+
 public abstract class GLBuffer extends AutoDelete {
-    
+
     private final int pointer;
     private final int type;
-    
+
     public GLBuffer(final int type) {
         this.type = type;
         this.pointer = GL15.glGenBuffers();
     }
-    
+
     @Override
     protected void deleteRaw() {
         GL15.glDeleteBuffers(this.pointer);
     }
-    
+
     public int bufferId() {
         return this.pointer;
     }
-    
+
     public int bufferType() {
         return this.type;
     }
-    
-    //TODO currently bound buffer
+
     public void bindBuffer() {
-        GL15.glBindBuffer(this.type, this.pointer);
+        OpenGLUtil.bindBuffer(this.type, this.pointer, false);
     }
-    
+
     public void unbindBuffer() {
-        GL15.glBindBuffer(this.type, 0);
+        OpenGLUtil.bindBuffer(this.type, this.pointer, true);
     }
-    
+
 }
