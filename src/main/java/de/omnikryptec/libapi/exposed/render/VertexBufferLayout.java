@@ -23,22 +23,33 @@ import java.util.List;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 
 public class VertexBufferLayout {
-
+    
     public static class VertexBufferElement {
         private final Type type;
         private final int count;
         private final boolean normalize;
-
-        public VertexBufferElement(final Type type, final int count, final boolean normalized) {
+        
+        /**
+         * 
+         * @param type      the {@link Type} of the data
+         * @param count     per-vertex count of the data
+         * @param normalize normalize the data?
+         */
+        public VertexBufferElement(final Type type, final int count, final boolean normalize) {
             this.type = type;
             this.count = count;
-            this.normalize = normalized;
+            this.normalize = normalize;
         }
-
+        
+        /**
+         * The {@link Type} of the data
+         * 
+         * @return type of the data
+         */
         public Type getType() {
             return this.type;
         }
-
+        
         /**
          * Number of values per vertex
          * 
@@ -47,23 +58,33 @@ public class VertexBufferLayout {
         public int getCount() {
             return this.count;
         }
-
+        
+        /**
+         * If the data should be normalized
+         * @return
+         */
         public boolean normalize() {
             return this.normalize;
         }
-
+        
     }
-
+    
     private final List<VertexBufferElement> elements;
-
+    
     public VertexBufferLayout() {
         this.elements = new ArrayList<>();
     }
-
-    public void push(final Type type, final int count, final boolean normalized) {
-        this.elements.add(new VertexBufferElement(type, count, normalized));
+    
+    /**
+     * 
+     * @param type      the {@link Type} of the data
+     * @param count     per-vertex count of the data
+     * @param normalize normalize the data?
+     */
+    public void push(final Type type, final int count, final boolean normalize) {
+        this.elements.add(new VertexBufferElement(type, count, normalize));
     }
-
+    
     public List<VertexBufferElement> getElements() {
         return Collections.unmodifiableList(this.elements);
     }

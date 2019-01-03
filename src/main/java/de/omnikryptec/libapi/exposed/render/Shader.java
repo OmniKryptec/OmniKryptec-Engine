@@ -19,20 +19,29 @@ package de.omnikryptec.libapi.exposed.render;
 import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 
 public interface Shader {
-
+    
     public static class ShaderAttachment {
-
+        
         public ShaderAttachment(final ShaderType type, final String source) {
             this.shaderType = type;
             this.source = source;
         }
-
+        
         public final ShaderType shaderType;
         public final String source;
     }
-
+    
+    /**
+     * Binds this {@link Shader}
+     */
     void bindShader();
-
+    
+    /**
+     * Supplies the individual shaders (e.g. vertex- and fragmentshader) to
+     * initialize this {@link Shader} program.
+     * 
+     * @param shaderAttachments the individual shaders
+     */
     void create(ShaderAttachment... shaderAttachments);
-
+    
 }
