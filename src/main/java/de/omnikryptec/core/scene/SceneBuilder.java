@@ -177,7 +177,7 @@ public class SceneBuilder {
         //indexBuffer.storeData((int[]) data.getAttribute(VertexAttribute.Index), false);
         
         final VertexArray array = RenderAPI.get().createVertexArray();
-        array.addVertexBuffer(buffer, new VertexBufferLayout.VertexBufferElement(Type.FLOAT, 3, true));
+        array.addVertexBuffer(buffer, new VertexBufferLayout.VertexBufferElement(Type.FLOAT, 2, true));
         array.setIndexBuffer(indexBuffer);
         
         final String vertex = "#version 330 core\nlayout(location = 0) in vec4 pos;\nvoid main() {\ngl_Position = pos;}";

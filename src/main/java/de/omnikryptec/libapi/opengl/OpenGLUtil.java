@@ -16,16 +16,24 @@
 
 package de.omnikryptec.libapi.opengl;
 
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL32;
+import org.lwjgl.opengl.GL40;
+import org.lwjgl.opengl.GL43;
+
 import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.resource.MeshData.PrimitiveType;
 import de.omnikryptec.util.data.Color;
-import org.lwjgl.opengl.*;
-
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
 
 public class OpenGLUtil {
     
@@ -67,7 +75,7 @@ public class OpenGLUtil {
         }
     }
     
-    public static int typeId(PrimitiveType primitiveType) {
+    public static int typeId(final PrimitiveType primitiveType) {
         switch (primitiveType) {
         case POINT:
             return GL11.GL_POINTS;
@@ -82,10 +90,16 @@ public class OpenGLUtil {
         }
     }
     
+    public static void flushErrors() {
+        int e = 0;
+        while ((e = GL11.glGetError()) != GL11.GL_NO_ERROR) {
+            System.err.println("OpenGL error: " + e);
+        }
+    }
+    
     private static int lastVertexArray = 0;
     private static final int[] lastBoundTextures = new int[32];
     private static int currentShader;
-    private static Map<Integer, Integer> lastBoundBuffer = new HashMap<>();
     
     public static void bindVertexArray(final int vertexArray, final boolean override) {
         if (vertexArray != lastVertexArray || override) {
@@ -109,14 +123,10 @@ public class OpenGLUtil {
         }
     }
     
-    //TODO test if slow
-    public static void bindBuffer(final int target, final int buffer, final boolean override) {
-        if (lastBoundBuffer.get(target) != buffer || override) {
-            GL15.glBindBuffer(target, buffer);
-            lastBoundBuffer.put(target, buffer);
-        }
+    public static void bindBuffer(final int target, final int buffer/* , final boolean override */) {
+        GL15.glBindBuffer(target, buffer);
     }
-    //TODO remake below this
+    //TODO redo below this
     
     private static Map<Feature, Boolean> featureCache = new EnumMap<>(Feature.class);
     private static Map<CACHE_ENUM, Object> cache = new EnumMap<>(CACHE_ENUM.class);
