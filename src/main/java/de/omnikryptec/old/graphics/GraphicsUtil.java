@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,11 +16,6 @@
 
 package de.omnikryptec.old.graphics;
 
-import org.joml.Vector3f;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
-
 import de.omnikryptec.old.gameobject.Camera;
 import de.omnikryptec.old.gameobject.Entity;
 import de.omnikryptec.old.main.OmniKryptecEngine;
@@ -29,6 +24,10 @@ import de.omnikryptec.old.util.EnumCollection.BlendMode;
 import de.omnikryptec.old.util.EnumCollection.RenderType;
 import de.omnikryptec.old.util.EnumCollection.UpdateType;
 import de.omnikryptec.util.data.Color;
+import org.joml.Vector3f;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 
 public class GraphicsUtil {
 

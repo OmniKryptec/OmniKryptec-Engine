@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,15 +16,14 @@
 
 package de.omnikryptec.old.animation.ColladaParser.colladaLoader;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.jdom2.Element;
-
 import de.omnikryptec.old.animation.ColladaParser.dataStructures.SkinningData;
 import de.omnikryptec.old.animation.ColladaParser.dataStructures.VertexSkinData;
 import de.omnikryptec.old.util.XMLUtil;
+import org.jdom2.Element;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Loads a Skin

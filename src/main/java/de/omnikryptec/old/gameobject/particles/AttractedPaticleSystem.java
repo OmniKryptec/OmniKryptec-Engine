@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,13 +16,12 @@
 
 package de.omnikryptec.old.gameobject.particles;
 
-import java.util.LinkedList;
-
-import org.joml.Vector3f;
-
 import de.omnikryptec.old.gameobject.GameObject3D;
 import de.omnikryptec.old.resource.texture.ParticleAtlas;
 import de.omnikryptec.old.util.EnumCollection.RenderType;
+import org.joml.Vector3f;
+
+import java.util.LinkedList;
 
 /**
  * AttractedPaticleSystem

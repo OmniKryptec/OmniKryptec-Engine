@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,19 +16,18 @@
 
 package de.omnikryptec.old.physics;
 
-import javax.vecmath.Quat4f;
-import javax.vecmath.Vector3f;
-
 import com.bulletphysics.collision.shapes.CollisionShape;
 import com.bulletphysics.dynamics.RigidBody;
 import com.bulletphysics.dynamics.RigidBodyConstructionInfo;
 import com.bulletphysics.linearmath.MotionState;
-
 import de.omnikryptec.old.gameobject.Entity;
 import de.omnikryptec.old.gameobject.GameObject3D;
 import de.omnikryptec.old.resource.model.Model;
 import de.omnikryptec.old.resource.model.TexturedModel;
 import de.omnikryptec.old.util.PhysicsUtil;
+
+import javax.vecmath.Quat4f;
+import javax.vecmath.Vector3f;
 
 /**
  *

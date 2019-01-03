@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 package de.omnikryptec.old.animation.ColladaParser.dataStructures;
 
+import org.joml.Matrix4f;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.joml.Matrix4f;
 
 /**
  * Contains the extracted data for a single joint in the model. This stores the

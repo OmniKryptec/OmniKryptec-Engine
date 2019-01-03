@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,13 +16,6 @@
 
 package de.omnikryptec.old.graphics;
 
-import java.nio.FloatBuffer;
-
-import org.joml.Math;
-import org.joml.Vector2f;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-
 import de.omnikryptec.old.d2.Rectangle;
 import de.omnikryptec.old.gameobject.Camera;
 import de.omnikryptec.old.gameobject.Sprite;
@@ -33,6 +26,12 @@ import de.omnikryptec.old.shader.base.Shader;
 import de.omnikryptec.old.shader.files.render.Shader2D;
 import de.omnikryptec.old.util.exceptions.OmniKryptecException;
 import de.omnikryptec.util.data.Color;
+import org.joml.Math;
+import org.joml.Vector2f;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+
+import java.nio.FloatBuffer;
 
 public class SpriteBatch {
     public static final int FLOATS_PER_VERTEX = 8;

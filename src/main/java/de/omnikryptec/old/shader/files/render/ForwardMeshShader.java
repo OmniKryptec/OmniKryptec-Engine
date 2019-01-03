@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,16 +16,8 @@
 
 package de.omnikryptec.old.shader.files.render;
 
-import org.joml.Vector3f;
-import org.joml.Vector4f;
-
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.graphics.shader.base.uniform.UniformBoolean;
-import de.omnikryptec.graphics.shader.base.uniform.UniformInt;
-import de.omnikryptec.graphics.shader.base.uniform.UniformMatrix;
-import de.omnikryptec.graphics.shader.base.uniform.UniformSampler;
-import de.omnikryptec.graphics.shader.base.uniform.UniformVec3;
-import de.omnikryptec.graphics.shader.base.uniform.UniformVec4;
+import de.omnikryptec.graphics.shader.base.uniform.*;
 import de.omnikryptec.old.gameobject.Light3D;
 import de.omnikryptec.old.graphics.GraphicsUtil;
 import de.omnikryptec.old.main.AbstractScene3D;
@@ -37,6 +29,8 @@ import de.omnikryptec.old.settings.GameSettings;
 import de.omnikryptec.old.shader.base.Attribute;
 import de.omnikryptec.old.shader.base.Shader;
 import de.omnikryptec.old.util.Maths;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 public class ForwardMeshShader extends Shader {
 

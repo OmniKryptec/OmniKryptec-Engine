@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,24 +16,10 @@
 
 package de.omnikryptec.old.test;
 
-import java.nio.FloatBuffer;
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import org.joml.Vector3f;
-import org.lwjgl.opencl.CL10;
-
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.graphics.display.Display;
 import de.omnikryptec.libapi.glfw.WindowInfo;
-import de.omnikryptec.libapi.opencl.CLCommandQueue;
-import de.omnikryptec.libapi.opencl.CLContext;
-import de.omnikryptec.libapi.opencl.CLDevice;
-import de.omnikryptec.libapi.opencl.CLKernel;
-import de.omnikryptec.libapi.opencl.CLPlatform;
-import de.omnikryptec.libapi.opencl.CLProgram;
-import de.omnikryptec.libapi.opencl.OpenCL;
+import de.omnikryptec.libapi.opencl.*;
 import de.omnikryptec.old.event.eventV2.EventSubscription;
 import de.omnikryptec.old.event.eventV2.engineevents.FrameEvent;
 import de.omnikryptec.old.event.eventV2.engineevents.FrameEvent.FrameType;
@@ -62,6 +48,13 @@ import de.omnikryptec.old.util.Instance;
 import de.omnikryptec.old.util.NativesLoader;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
+import org.joml.Vector3f;
+import org.lwjgl.opencl.CL10;
+
+import java.nio.FloatBuffer;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *

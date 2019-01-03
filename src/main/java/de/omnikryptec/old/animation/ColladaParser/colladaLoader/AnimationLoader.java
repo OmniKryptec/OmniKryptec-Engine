@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,17 +16,16 @@
 
 package de.omnikryptec.old.animation.ColladaParser.colladaLoader;
 
-import java.nio.FloatBuffer;
-import java.util.List;
-
-import org.jdom2.Element;
-import org.joml.Matrix4f;
-import org.lwjgl.BufferUtils;
-
 import de.omnikryptec.old.animation.ColladaParser.dataStructures.AnimationData;
 import de.omnikryptec.old.animation.ColladaParser.dataStructures.JointTransformData;
 import de.omnikryptec.old.animation.ColladaParser.dataStructures.KeyFrameData;
 import de.omnikryptec.old.util.XMLUtil;
+import org.jdom2.Element;
+import org.joml.Matrix4f;
+import org.lwjgl.BufferUtils;
+
+import java.nio.FloatBuffer;
+import java.util.List;
 
 /**
  * Loads an animation for a model from a collada XML file.

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 package de.omnikryptec.old.gameobject.water;
 
-import java.util.List;
-
 import de.omnikryptec.old.gameobject.Entity;
 import de.omnikryptec.old.main.AbstractScene3D;
 import de.omnikryptec.old.renderer.d3.Renderer;
@@ -30,6 +28,8 @@ import de.omnikryptec.old.util.FrustrumFilter;
 import de.omnikryptec.old.util.KeyArrayHashMap;
 import de.omnikryptec.old.util.Level;
 import de.omnikryptec.old.util.Priority;
+
+import java.util.List;
 
 /**
  * WaterRenderer

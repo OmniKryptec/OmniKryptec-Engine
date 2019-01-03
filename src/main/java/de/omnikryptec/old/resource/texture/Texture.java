@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 
 package de.omnikryptec.old.resource.texture;
 
-import org.lwjgl.opengl.GL11;
-
 import de.omnikryptec.old.graphics.OpenGL;
 import de.omnikryptec.old.resource.loader.ResourceObject;
+import org.lwjgl.opengl.GL11;
 
 public abstract class Texture implements ResourceObject {
 

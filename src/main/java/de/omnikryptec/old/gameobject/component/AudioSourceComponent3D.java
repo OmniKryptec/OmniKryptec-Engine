@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,10 +16,6 @@
 
 package de.omnikryptec.old.gameobject.component;
 
-import java.util.ArrayList;
-
-import org.joml.Vector3f;
-
 import de.omnikryptec.old.audio.AudioSource;
 import de.omnikryptec.old.gameobject.GameObject3D;
 import de.omnikryptec.old.main.AbstractScene3D;
@@ -27,6 +23,9 @@ import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.renderer.d3.RenderChunk3D;
 import de.omnikryptec.old.util.Blocker;
 import de.omnikryptec.old.util.Priority;
+import org.joml.Vector3f;
+
+import java.util.ArrayList;
 
 /**
  * Component for creating sounds

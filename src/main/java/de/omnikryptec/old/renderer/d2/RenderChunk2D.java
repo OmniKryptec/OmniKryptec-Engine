@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 package de.omnikryptec.old.renderer.d2;
 
-import java.util.ArrayList;
-
 import de.omnikryptec.old.gameobject.GameObject2D;
 import de.omnikryptec.old.gameobject.Light2D;
 import de.omnikryptec.old.gameobject.Sprite;
@@ -25,6 +23,8 @@ import de.omnikryptec.old.main.AbstractScene2D;
 import de.omnikryptec.old.main.GameObjectContainer;
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.settings.GameSettings;
+
+import java.util.ArrayList;
 
 public class RenderChunk2D implements GameObjectContainer<GameObject2D> {
 

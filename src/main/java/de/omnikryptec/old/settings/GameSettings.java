@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,19 +16,18 @@
 
 package de.omnikryptec.old.settings;
 
-import java.util.HashMap;
-
-import org.jdom2.Element;
-import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
-
 import de.omnikryptec.graphics.display.Display;
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.postprocessing.main.FBOFactory;
 import de.omnikryptec.old.postprocessing.main.FrameBufferObject;
 import de.omnikryptec.old.postprocessing.main.RenderTarget;
 import de.omnikryptec.old.util.EnumCollection.RenderType;
+import org.jdom2.Element;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
+
+import java.util.HashMap;
 
 /**
  * GameSettings

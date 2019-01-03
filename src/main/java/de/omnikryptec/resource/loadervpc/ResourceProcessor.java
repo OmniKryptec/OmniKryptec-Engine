@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,15 +16,15 @@
 
 package de.omnikryptec.resource.loadervpc;
 
+import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.util.ExecutorsUtil;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.util.ExecutorsUtil;
 
 public class ResourceProcessor {
     

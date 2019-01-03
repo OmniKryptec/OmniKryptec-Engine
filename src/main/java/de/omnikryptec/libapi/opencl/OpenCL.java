@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,18 +16,13 @@
 
 package de.omnikryptec.libapi.opencl;
 
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.opencl.*;
+import org.lwjgl.system.MemoryStack;
+
 import java.lang.reflect.Field;
 import java.nio.IntBuffer;
 import java.util.HashMap;
-
-import org.lwjgl.PointerBuffer;
-import org.lwjgl.opencl.CL;
-import org.lwjgl.opencl.CL10;
-import org.lwjgl.opencl.CL12;
-import org.lwjgl.opencl.CL20;
-import org.lwjgl.opencl.CL21;
-import org.lwjgl.opencl.CL22;
-import org.lwjgl.system.MemoryStack;
 
 public class OpenCL {
     

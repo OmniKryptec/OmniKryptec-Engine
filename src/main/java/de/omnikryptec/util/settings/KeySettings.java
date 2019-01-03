@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,16 +16,14 @@
 
 package de.omnikryptec.util.settings;
 
-import java.util.Collection;
-
-import org.lwjgl.glfw.GLFW;
-
 import com.google.common.collect.ObjectArrays;
-
 import de.omnikryptec.util.settings.keys.IKey;
 import de.omnikryptec.util.settings.keys.Key;
 import de.omnikryptec.util.settings.keys.KeyContainer;
 import de.omnikryptec.util.settings.keys.KeyGroup;
+import org.lwjgl.glfw.GLFW;
+
+import java.util.Collection;
 
 public class KeySettings extends KeyContainer {
     

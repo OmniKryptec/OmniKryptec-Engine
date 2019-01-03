@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 package de.omnikryptec.old.renderer.d2;
 
-import java.util.Comparator;
-import java.util.HashMap;
-
 import de.omnikryptec.old.gameobject.Sprite;
 import de.omnikryptec.old.main.AbstractScene2D;
 import de.omnikryptec.old.main.ChunkCoord2D;
+
+import java.util.Comparator;
+import java.util.HashMap;
 
 public interface Renderer2D {
 

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,11 +16,6 @@
 
 package de.omnikryptec.old.gameobject.terrain;
 
-import java.util.ArrayList;
-
-import org.joml.Vector2f;
-import org.joml.Vector3f;
-
 import de.omnikryptec.old.gameobject.Entity;
 import de.omnikryptec.old.renderer.d3.RendererRegistration;
 import de.omnikryptec.old.resource.model.Material;
@@ -31,6 +26,10 @@ import de.omnikryptec.old.resource.objConverter.Vertex;
 import de.omnikryptec.old.resource.texture.Texture;
 import de.omnikryptec.old.util.EnumCollection.Dimension;
 import de.omnikryptec.old.util.Maths;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+
+import java.util.ArrayList;
 
 /**
  * Terrain

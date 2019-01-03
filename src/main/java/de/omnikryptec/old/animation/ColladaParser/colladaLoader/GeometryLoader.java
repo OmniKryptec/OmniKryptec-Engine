@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,18 +16,17 @@
 
 package de.omnikryptec.old.animation.ColladaParser.colladaLoader;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import de.omnikryptec.old.animation.ColladaParser.dataStructures.AnimatedVertex;
+import de.omnikryptec.old.animation.ColladaParser.dataStructures.MeshData;
+import de.omnikryptec.old.animation.ColladaParser.dataStructures.VertexSkinData;
+import de.omnikryptec.old.util.XMLUtil;
 import org.jdom2.Element;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import de.omnikryptec.old.animation.ColladaParser.dataStructures.AnimatedVertex;
-import de.omnikryptec.old.animation.ColladaParser.dataStructures.MeshData;
-import de.omnikryptec.old.animation.ColladaParser.dataStructures.VertexSkinData;
-import de.omnikryptec.old.util.XMLUtil;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Loads the mesh data for a model from a collada XML file.

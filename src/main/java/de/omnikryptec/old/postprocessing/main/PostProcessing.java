@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,12 +16,6 @@
 
 package de.omnikryptec.old.postprocessing.main;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.lwjgl.opengl.GL30;
-
 import de.omnikryptec.old.graphics.GraphicsUtil;
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.resource.model.Model;
@@ -30,6 +24,11 @@ import de.omnikryptec.old.util.ModelUtil;
 import de.omnikryptec.old.util.profiler.Profilable;
 import de.omnikryptec.old.util.profiler.ProfileContainer;
 import de.omnikryptec.old.util.profiler.Profiler;
+import org.lwjgl.opengl.GL30;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class PostProcessing implements Profilable {
 

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 package de.omnikryptec.core.loop;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.scene.UpdateController;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DefaultGameLoop implements IGameLoop {
     

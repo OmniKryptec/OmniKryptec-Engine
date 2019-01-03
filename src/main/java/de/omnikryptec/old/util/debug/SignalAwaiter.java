@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,13 +16,12 @@
 
 package de.omnikryptec.old.util.debug;
 
+import de.omnikryptec.old.util.logger.Logger;
+
+import javax.swing.*;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
-
-import javax.swing.Timer;
-
-import de.omnikryptec.old.util.logger.Logger;
 
 /**
  * This object does something if a specified value for a variable is detected

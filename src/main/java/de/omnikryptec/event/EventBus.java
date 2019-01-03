@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,17 +16,16 @@
 
 package de.omnikryptec.event;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import de.omnikryptec.core.Updateable;
+import de.omnikryptec.util.updater.Time;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-
-import de.omnikryptec.core.Updateable;
-import de.omnikryptec.util.updater.Time;
 
 public class EventBus implements Updateable {
     

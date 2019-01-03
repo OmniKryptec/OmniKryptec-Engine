@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,24 +16,6 @@
 
 package de.omnikryptec.old.postprocessing.main;
 
-import java.awt.image.BufferedImage;
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.time.LocalDateTime;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.imageio.ImageIO;
-
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL14;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
-
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.graphics.display.Display;
 import de.omnikryptec.old.graphics.OpenGL;
@@ -42,6 +24,18 @@ import de.omnikryptec.old.settings.GameSettings;
 import de.omnikryptec.old.util.EnumCollection.DepthbufferType;
 import de.omnikryptec.old.util.Instance;
 import de.omnikryptec.old.util.logger.Logger;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.*;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.time.LocalDateTime;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FrameBufferObject extends Texture {
 

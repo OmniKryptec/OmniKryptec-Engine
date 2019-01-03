@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,10 +15,6 @@
  */
 
 package de.omnikryptec.old.util;
-
-import java.time.format.DateTimeFormatter;
-
-import org.joml.Vector3f;
 
 import de.omnikryptec.old.animation.renderer.AnimatedModelRenderer;
 import de.omnikryptec.old.event.eventV2.EventBus;
@@ -37,6 +33,9 @@ import de.omnikryptec.old.resource.loader.ResourceLoader;
 import de.omnikryptec.old.resource.loader.ResourceObject;
 import de.omnikryptec.old.settings.GameSettings;
 import de.omnikryptec.old.settings.KeySettings;
+import org.joml.Vector3f;
+
+import java.time.format.DateTimeFormatter;
 
 @Deprecated // TODO make better wrapping class so no class is needed that just collects
 	    // other functions or constants

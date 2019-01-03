@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,16 +16,6 @@
 
 package de.omnikryptec.old.gameobject.particles;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
 import de.omnikryptec.old.gameobject.Camera;
 import de.omnikryptec.old.resource.texture.ParticleAtlas;
 import de.omnikryptec.old.util.EnumCollection.BlendMode;
@@ -33,6 +23,12 @@ import de.omnikryptec.old.util.Instance;
 import de.omnikryptec.old.util.profiler.Profilable;
 import de.omnikryptec.old.util.profiler.ProfileContainer;
 import de.omnikryptec.old.util.profiler.Profiler;
+
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class ParticleMaster implements Profilable {
 

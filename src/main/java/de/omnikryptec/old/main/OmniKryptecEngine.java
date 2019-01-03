@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,12 +15,6 @@
  */
 
 package de.omnikryptec.old.main;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.lwjgl.opengl.GL30;
 
 import de.omnikryptec.graphics.display.Display;
 import de.omnikryptec.old.event.eventV2.EventBus;
@@ -51,6 +45,11 @@ import de.omnikryptec.old.util.profiler.Profilable;
 import de.omnikryptec.old.util.profiler.ProfileContainer;
 import de.omnikryptec.old.util.profiler.Profiler;
 import de.omnikryptec.util.data.Color;
+import org.lwjgl.opengl.GL30;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,11 +16,6 @@
 
 package de.omnikryptec.old.gameobject;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 import de.omnikryptec.old.gameobject.component.Component;
 import de.omnikryptec.old.main.OmniKryptecEngine;
 import de.omnikryptec.old.main.Scene3D;
@@ -28,6 +23,11 @@ import de.omnikryptec.old.test.saving.DataMap;
 import de.omnikryptec.old.test.saving.DataMapSerializable;
 import de.omnikryptec.old.util.EnumCollection.UpdateType;
 import de.omnikryptec.old.util.exceptions.OmniKryptecException;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  *

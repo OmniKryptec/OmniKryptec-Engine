@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,16 +16,15 @@
 
 package de.omnikryptec.old.postprocessing.stages;
 
-import java.util.List;
-
-import org.joml.Vector4f;
-
 import de.omnikryptec.graphics.display.Display;
 import de.omnikryptec.old.postprocessing.main.FrameBufferObject;
 import de.omnikryptec.old.postprocessing.main.PostProcessingStageShaded;
 import de.omnikryptec.old.shader.base.Shader;
 import de.omnikryptec.old.shader.files.postprocessing.FilterShader;
 import de.omnikryptec.old.util.EnumCollection.DepthbufferType;
+import org.joml.Vector4f;
+
+import java.util.List;
 
 public class FilterStage extends PostProcessingStageShaded {
 

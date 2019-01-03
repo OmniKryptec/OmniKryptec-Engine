@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,17 +16,16 @@
 
 package de.omnikryptec.old.resource.texture;
 
+import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.old.graphics.OpenGL;
+import de.omnikryptec.old.util.logger.Logger;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
-
-import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.old.graphics.OpenGL;
-import de.omnikryptec.old.util.logger.Logger;
 
 public class SimpleTexture extends Texture {
 

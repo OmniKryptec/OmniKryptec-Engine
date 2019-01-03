@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 package de.omnikryptec.old.resource.loader;
 
-import java.util.Properties;
-
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.old.animation.ColladaParser.colladaLoader.ColladaLoader;
 import de.omnikryptec.old.animation.ColladaParser.dataStructures.AnimatedModelData;
 import de.omnikryptec.old.resource.loader.annotations.DefaultLoader;
 import de.omnikryptec.old.settings.GameSettings;
 import de.omnikryptec.old.util.Instance;
+
+import java.util.Properties;
 
 /**
  * DefaultAnimatedModelDataLoader

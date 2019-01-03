@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 package de.omnikryptec.old.shader.files.render;
 
-import org.joml.Vector4f;
-
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.graphics.shader.base.uniform.UniformMatrix;
 import de.omnikryptec.graphics.shader.base.uniform.UniformSampler;
@@ -29,6 +27,7 @@ import de.omnikryptec.old.resource.model.Material;
 import de.omnikryptec.old.resource.texture.Texture;
 import de.omnikryptec.old.shader.base.Attribute;
 import de.omnikryptec.old.shader.base.Shader;
+import org.joml.Vector4f;
 
 public class SimpleMeshShader extends Shader {
 

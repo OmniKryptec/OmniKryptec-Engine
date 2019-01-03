@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,11 +16,10 @@
 
 package de.omnikryptec.old.gameobject;
 
-import org.joml.Vector2f;
-
 import de.omnikryptec.old.renderer.d2.RenderChunk2D;
 import de.omnikryptec.old.settings.GameSettings;
 import de.omnikryptec.old.util.Maths;
+import org.joml.Vector2f;
 
 public class Transform2D implements Positionable2D {
 

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,9 +16,8 @@
 
 package de.omnikryptec.util.data;
 
-import org.joml.Vector4f;
-
 import de.omnikryptec.util.math.Mathf;
+import org.joml.Vector4f;
 
 public class Color implements Cloneable {
     

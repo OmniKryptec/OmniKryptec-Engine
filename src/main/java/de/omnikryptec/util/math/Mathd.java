@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,10 +17,7 @@
 package de.omnikryptec.util.math;
 
 import org.joml.Math;
-import org.joml.Quaterniondc;
-import org.joml.Vector2dc;
-import org.joml.Vector3dc;
-import org.joml.Vector4dc;
+import org.joml.*;
 
 public strictfp class Mathd {
     

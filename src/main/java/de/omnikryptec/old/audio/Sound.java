@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,10 +16,9 @@
 
 package de.omnikryptec.old.audio;
 
-import org.lwjgl.openal.AL10;
-
 import de.omnikryptec.old.util.AudioUtil;
 import de.omnikryptec.old.util.logger.Logger;
+import org.lwjgl.openal.AL10;
 
 /**
  * Cached sound

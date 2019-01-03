@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,20 +16,19 @@
 
 package de.omnikryptec.old.animation.loaders;
 
-import java.util.HashMap;
-
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
-
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.old.animation.Animation;
-import de.omnikryptec.old.animation.JointTransform;
-import de.omnikryptec.old.animation.KeyFrame;
 import de.omnikryptec.old.animation.ColladaParser.colladaLoader.ColladaLoader;
 import de.omnikryptec.old.animation.ColladaParser.dataStructures.AnimationData;
 import de.omnikryptec.old.animation.ColladaParser.dataStructures.JointTransformData;
 import de.omnikryptec.old.animation.ColladaParser.dataStructures.KeyFrameData;
+import de.omnikryptec.old.animation.JointTransform;
+import de.omnikryptec.old.animation.KeyFrame;
 import de.omnikryptec.old.util.Quaternion;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+
+import java.util.HashMap;
 
 /**
  * This class loads up an animation collada file, gets the information from it,

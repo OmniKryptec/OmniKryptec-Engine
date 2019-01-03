@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 package de.omnikryptec.old.postprocessing.v2;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.omnikryptec.old.postprocessing.main.FrameBufferObject;
 import de.omnikryptec.old.resource.texture.Texture;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PostProcessor extends PostProcessingTask {
 

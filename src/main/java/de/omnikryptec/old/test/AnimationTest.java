@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -15,14 +15,6 @@
  */
 
 package de.omnikryptec.old.test;
-
-import java.util.Random;
-import java.util.zip.Deflater;
-
-import org.joml.Matrix3f;
-import org.joml.Quaternionf;
-import org.joml.Vector4f;
-import org.lwjgl.glfw.GLFW;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.libapi.glfw.WindowInfo;
@@ -54,6 +46,13 @@ import de.omnikryptec.old.util.NativesLoader;
 import de.omnikryptec.old.util.OSUtil;
 import de.omnikryptec.old.util.logger.Logger;
 import de.omnikryptec.old.util.profiler.LiveProfiler;
+import org.joml.Matrix3f;
+import org.joml.Quaternionf;
+import org.joml.Vector4f;
+import org.lwjgl.glfw.GLFW;
+
+import java.util.Random;
+import java.util.zip.Deflater;
 
 /**
  * AnimationTest

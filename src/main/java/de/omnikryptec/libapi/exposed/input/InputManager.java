@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,16 +16,15 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
+import de.omnikryptec.core.Updateable;
+import de.omnikryptec.util.Util;
+import de.omnikryptec.util.settings.KeySettings;
+import de.omnikryptec.util.updater.Time;
 import org.joml.Vector2d;
 import org.joml.Vector2dc;
 import org.joml.Vector4d;
 import org.joml.Vector4dc;
 import org.lwjgl.glfw.GLFW;
-
-import de.omnikryptec.core.Updateable;
-import de.omnikryptec.util.Util;
-import de.omnikryptec.util.settings.KeySettings;
-import de.omnikryptec.util.updater.Time;
 
 public class InputManager implements Updateable {
     

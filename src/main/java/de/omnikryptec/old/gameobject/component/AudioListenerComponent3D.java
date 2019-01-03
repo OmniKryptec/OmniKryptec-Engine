@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 package de.omnikryptec.old.gameobject.component;
 
-import org.joml.Vector3f;
-
 import de.omnikryptec.old.audio.AudioManager;
 import de.omnikryptec.old.gameobject.GameObject3D;
 import de.omnikryptec.old.main.AbstractScene3D;
@@ -26,6 +24,7 @@ import de.omnikryptec.old.util.ConverterUtil;
 import de.omnikryptec.old.util.Priority;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
+import org.joml.Vector3f;
 
 /**
  * Component for listening the sounds

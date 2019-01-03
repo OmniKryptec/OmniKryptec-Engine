@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,20 +16,16 @@
 
 package de.omnikryptec.old.test;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.io.InputStream;
-
-import javax.swing.DefaultListModel;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-
 import de.omnikryptec.old.swing.JCheckBoxList;
 import de.omnikryptec.old.util.action.ActionProcessor;
 import de.omnikryptec.old.util.debug.VariableChangeListener;
 import de.omnikryptec.old.util.logger.LogLevel;
 import de.omnikryptec.old.util.logger.Logger;
 import de.omnikryptec.old.util.logger.SystemInputStream;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.InputStream;
 
 /**
  *

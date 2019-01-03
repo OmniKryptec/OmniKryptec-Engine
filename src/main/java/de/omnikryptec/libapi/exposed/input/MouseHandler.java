@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,18 +16,13 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicBoolean;
-
+import de.omnikryptec.util.settings.KeySettings;
 import org.joml.Vector2d;
 import org.joml.Vector2dc;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWCursorEnterCallback;
-import org.lwjgl.glfw.GLFWCursorPosCallback;
-import org.lwjgl.glfw.GLFWMouseButtonCallback;
-import org.lwjgl.glfw.GLFWScrollCallback;
+import org.lwjgl.glfw.*;
 
-import de.omnikryptec.util.settings.KeySettings;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MouseHandler implements InputHandler {
     

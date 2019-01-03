@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,12 +16,11 @@
 
 package de.omnikryptec.libapi.opengl.buffer;
 
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-
+import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 import org.lwjgl.opengl.GL15;
 
-import de.omnikryptec.libapi.exposed.render.VertexBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 public class GLVertexBuffer extends GLBuffer implements VertexBuffer {
     

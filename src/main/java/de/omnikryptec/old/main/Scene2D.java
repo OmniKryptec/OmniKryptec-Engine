@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 package de.omnikryptec.old.main;
 
-import java.util.HashMap;
-
 import de.omnikryptec.old.gameobject.Camera;
 import de.omnikryptec.old.gameobject.GameObject2D;
 import de.omnikryptec.old.renderer.d2.DefaultRenderer2D;
@@ -25,6 +23,8 @@ import de.omnikryptec.old.renderer.d2.RenderChunk2D;
 import de.omnikryptec.old.renderer.d2.Renderer2D;
 import de.omnikryptec.old.util.Instance;
 import de.omnikryptec.old.util.logger.Logger;
+
+import java.util.HashMap;
 
 public class Scene2D extends AbstractScene2D {
 

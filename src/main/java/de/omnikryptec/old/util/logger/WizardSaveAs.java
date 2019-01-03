@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2018 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,24 +16,19 @@
 
 package de.omnikryptec.old.util.logger;
 
-import java.awt.Component;
+import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.old.swing.JCheckBoxList;
+import de.omnikryptec.old.util.logger.LogEntryFormatter.LogEntryFormatTile;
+
+import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.time.Instant;
 import java.util.HashMap;
-
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
-import javax.swing.JCheckBox;
-import javax.swing.JFileChooser;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.border.EtchedBorder;
-
-import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.old.swing.JCheckBoxList;
-import de.omnikryptec.old.util.logger.LogEntryFormatter.LogEntryFormatTile;
 
 /**
  *
