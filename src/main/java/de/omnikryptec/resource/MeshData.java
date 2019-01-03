@@ -16,12 +16,52 @@
 
 package de.omnikryptec.resource;
 
+import java.util.EnumMap;
+import java.util.Map;
+
 public class MeshData {
     
     public static enum PrimitiveType {
-        Triangle, Quad;
+        POINT(1), LINE(2), Triangle(3), Quad(4);
+        
+        private PrimitiveType(int vc) {
+            this.vertexCount = vc;
+        }
+        
+        public final int vertexCount;
+    }
+    
+    public static enum VertexAttribute {
+        Position, Normal, Tangent, Bitangent, TextureCoord, Index;
     }
     
     private PrimitiveType primitiveType;
     
+    private Map<VertexAttribute, Object> vertexData = new EnumMap<>(VertexAttribute.class);
+    
+    public MeshData(Object... objects) {
+        if (objects.length % 2 != 0) {
+            throw new IllegalArgumentException();
+        }
+        VertexAttribute current = null;
+        for (Object o : objects) {
+            if (o instanceof VertexAttribute) {
+                current = (VertexAttribute) o;
+            } else {
+                vertexData.put(current, o);
+            }
+        }
+    }
+    
+    public boolean hasVertexAttribute(VertexAttribute attribute) {
+        return vertexData.containsKey(attribute);
+    }
+    
+    public <T> T getAttribute(VertexAttribute attribute) {
+        return (T) vertexData.get(attribute);
+    }
+    
+    public PrimitiveType getPrimitiveType() {
+        return primitiveType;
+    }
 }

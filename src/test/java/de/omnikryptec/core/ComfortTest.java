@@ -40,9 +40,10 @@ public class ComfortTest extends EngineLoader {
         SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
         //builder.addGraphicsClearTest();
         //final SceneBuilder builder = new SceneBuilder();
-        //builder.addGraphicsClearTest();
         builder.addGraphicsClearTest();
         builder.addGraphicsBasicImplTest();
+        
+        
         //getGameController().setLocalScene(builder.get());
     }
     

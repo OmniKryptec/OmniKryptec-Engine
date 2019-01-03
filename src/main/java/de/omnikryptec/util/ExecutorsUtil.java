@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ExecutorsUtil {
     
+    //TODO better available threads management etc
     public static final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
     private static final Queue<ExecutorService> allExecutors = new ConcurrentLinkedQueue<>();
     private static final AtomicBoolean lock = new AtomicBoolean(false);
@@ -57,18 +58,24 @@ public class ExecutorsUtil {
     }
     
     public static void shutdownNow(final ExecutorService executorService) {
-        shutdown(executorService, 1, TimeUnit.MILLISECONDS);
+        shutdown(executorService, 1, TimeUnit.MILLISECONDS, true);
     }
     
-    public static void shutdown(final ExecutorService executorService, final long time, final TimeUnit unit) {
+    public static void shutdown(final ExecutorService executorService, final long time, final TimeUnit unit,
+            final boolean now) {
         if (lock.get()) {
             throw new IllegalStateException("Already shutdowning all");
         }
-        shutdownIntern(executorService, time, unit);
+        shutdownIntern(executorService, time, unit, now);
     }
     
-    private static void shutdownIntern(final ExecutorService executorService, final long time, final TimeUnit unit) {
-        executorService.shutdownNow();
+    private static void shutdownIntern(final ExecutorService executorService, final long time, final TimeUnit unit,
+            final boolean now) {
+        if (now) {
+            executorService.shutdownNow();
+        } else {
+            executorService.shutdown();
+        }
         allExecutors.remove(executorService);
         try {
             executorService.awaitTermination(time, unit);
@@ -84,7 +91,7 @@ public class ExecutorsUtil {
         lock.set(true);
         try {
             while (!allExecutors.isEmpty()) {
-                shutdownIntern(allExecutors.peek(), 1, TimeUnit.MILLISECONDS);
+                shutdownIntern(allExecutors.peek(), 1, TimeUnit.MILLISECONDS, true);
             }
         } catch (final Exception ex) {
             throw new RuntimeException(ex);

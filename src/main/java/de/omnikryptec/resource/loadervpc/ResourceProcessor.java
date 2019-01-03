@@ -57,7 +57,11 @@ public class ResourceProcessor {
     }
     
     public void stage(final AdvancedFile file) {
-        stage(new ResourceLocation(0, file));
+        stage(file, 0);
+    }
+    
+    public void stage(final AdvancedFile file, final int priority) {
+        stage(new ResourceLocation(priority, file));
     }
     
     public void stage(final ResourceLocation file) {
@@ -212,7 +216,7 @@ public class ResourceProcessor {
         }
         
         private void notifyDone() {
-            ExecutorsUtil.shutdown(this.executorService, 1, TimeUnit.HOURS);
+            ExecutorsUtil.shutdown(this.executorService, 1, TimeUnit.HOURS, false);
             for (final LoadingProgressCallback callback : ResourceProcessor.this.callbacks) {
                 callback.onLoadingDone();
             }

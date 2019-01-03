@@ -85,23 +85,27 @@ public class OpenGLUtil {
         }
     }
     
+    public static int typeId(PrimitiveType primitiveType) {
+        switch (primitiveType) {
+        case POINT:
+            return GL11.GL_POINTS;
+        case LINE:
+            return GL11.GL_LINES;
+        case Triangle:
+            return GL11.GL_TRIANGLES;
+        case Quad:
+            return GL11.GL_QUADS;
+        default:
+            throw new IllegalArgumentException(primitiveType + "");
+        }
+    }
+    
     private static int currentShader;
     
     public static void useProgram(final int id) {
         if (currentShader != id) {
             GL20.glUseProgram(id);
             currentShader = id;
-        }
-    }
-    
-    public static int typeId(PrimitiveType type) {
-        switch (type) {
-        case Quad:
-            return GL11.GL_QUADS;
-        case Triangle:
-            return GL11.GL_TRIANGLES;
-        default:
-            throw new IllegalArgumentException(type + "");
         }
     }
     

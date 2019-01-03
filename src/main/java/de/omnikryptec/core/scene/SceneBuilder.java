@@ -26,6 +26,8 @@ import de.omnikryptec.libapi.exposed.render.*;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.libapi.opengl.OpenGLUtil.BufferType;
+import de.omnikryptec.resource.MeshData;
+import de.omnikryptec.resource.MeshData.VertexAttribute;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.updater.Time;
 import org.lwjgl.opengl.GL11;
@@ -162,13 +164,16 @@ public class SceneBuilder {
     
     public void addGraphicsBasicImplTest() {
         VertexBuffer buffer = RenderAPI.get().createVertexBuffer();
+        
         buffer.storeData(new float[] { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f }, false);
+        //buffer.storeData((float[]) data.getAttribute(VertexAttribute.Position), false);
         
         IndexBuffer indexBuffer = RenderAPI.get().createIndexBuffer();
         indexBuffer.storeData(new int[] { 0, 1, 2, 2, 1, 3 }, false);
+        //indexBuffer.storeData((int[]) data.getAttribute(VertexAttribute.Index), false);
         
         VertexArray array = RenderAPI.get().createVertexArray();
-        array.addVertexBuffer(buffer, new VertexBufferLayout.VertexBufferElement(Type.FLOAT, 2, true));
+        array.addVertexBuffer(buffer, new VertexBufferLayout.VertexBufferElement(Type.FLOAT, 3, true));
         array.setIndexBuffer(indexBuffer);
         
         String vertex = "#version 330 core\nlayout(location = 0) in vec4 pos;\nvoid main() {\ngl_Position = pos;}";
