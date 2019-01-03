@@ -61,6 +61,7 @@ public class VertexBufferLayout {
         
         /**
          * If the data should be normalized
+         * 
          * @return
          */
         public boolean normalize() {
