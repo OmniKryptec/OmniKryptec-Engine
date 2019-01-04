@@ -42,7 +42,7 @@ public class ComponentType {
         return componentTypes.get(clazz);
     }
 
-    public static int getTypes() {
+    public static int getTypesSize() {
         return index;
     }
 

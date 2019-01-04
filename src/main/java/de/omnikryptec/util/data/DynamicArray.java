@@ -16,44 +16,74 @@
 
 package de.omnikryptec.util.data;
 
+import java.util.Objects;
+
 public class DynamicArray<E> {
-
+    
     private Object[] array;
-    private int grow;
-
+    
     public DynamicArray() {
-        this(10, 2);
+        this(10);
     }
-
-    public DynamicArray(final int initialSize, final int grow) {
-        this.array = new Object[grow];
-        this.grow = grow;
+    
+    public DynamicArray(final int initialSize) {
+        this.array = new Object[initialSize];
     }
-
+    
     public void set(final int index, final E e) {
         if (index >= this.array.length) {
-            grow();
+            grow(index - array.length + 1);
         }
         this.array[index] = e;
     }
-
+    
     public E get(final int index) {
         if (index < 0 || index >= size()) {
             return null;
         }
         return (E) this.array[index];
     }
-
-    private void grow() {
-        final Object[] newArray = new Object[size() + this.grow];
+    
+    private void grow(int amount) {
+        final Object[] newArray = new Object[size() + amount];
         System.arraycopy(this.array, 0, newArray, 0, this.array.length);
         this.array = newArray;
     }
-
+    
     public int size() {
         return this.array.length;
     }
-
+    
+    public void trim() {
+        int index = array.length - 1;
+        while (array[index] == null) {
+            index--;
+        }
+        if (index < array.length - 1) {
+            Object[] newArray = new Object[index + 1];
+            System.arraycopy(array, 0, newArray, 0, newArray.length);
+            this.array = newArray;
+        }
+    }
+    
+    public boolean contains(Object object) {
+        for (Object i : array) {
+            if (Objects.equals(i, object)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public int indexOf(Object object) {
+        for (int i = 0; i < array.length; i++) {
+            if (Objects.equals(array[i], object)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
     @Override
     public boolean equals(final Object obj) {
         if (obj == null) {
