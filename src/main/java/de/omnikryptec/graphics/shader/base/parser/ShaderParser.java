@@ -23,8 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
+import com.google.common.collect.Table;
+import com.google.common.collect.Tables;
 
 import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
 
@@ -47,25 +47,36 @@ public class ShaderParser {
     
     public static ShaderParser instance() {
         if (instance == null) {
-            instance = new ShaderParser();
+            instance = create();
         }
         return instance;
     }
     
+    public static ShaderParser create() {
+        return create(null, false, false);
+    }
+    
+    //TODO make more dynamic, e.g. changes in zuper are reflected in here but NOT vice-versa
+    public static ShaderParser create(ShaderParser zuper, boolean inheritModules, boolean inheritProvider) {
+        return new ShaderParser(
+                inheritModules ? (HashMap<String, SourceDescription>) zuper.modules.clone() : new HashMap<>(),
+                inheritProvider ? (HashMap<String, Supplier<String>>) zuper.provider.clone() : new HashMap<>());
+    }
+    
     private final Deque<SourceDescription> definitions;
     
-    private final Map<String, SourceDescription> modules;
+    private final HashMap<String, SourceDescription> modules;
     
-    private final Map<String, Supplier<String>> provider;
+    private final HashMap<String, Supplier<String>> provider;
     
     private String currentContext;
     
     private boolean headerMode;
     
-    public ShaderParser() {
+    private ShaderParser(HashMap<String, SourceDescription> modules, HashMap<String, Supplier<String>> provider) {
         this.definitions = new ArrayDeque<>();
-        this.modules = new HashMap<>();
-        this.provider = new HashMap<>();
+        this.modules = modules;
+        this.provider = provider;
     }
     
     public void parse(final String... sources) {
@@ -142,25 +153,29 @@ public class ShaderParser {
         }
     }
     
-    public void addProvider(final String id, final String provided) {
-        addProvider(id, () -> provided);
+    public void addTokenReplacer(final String id, final String provided) {
+        addTokenReplacer(id, () -> provided);
     }
     
-    public void addProvider(final String id, final Supplier<String> provider) {
+    public void addTokenReplacer(final String id, final Supplier<String> provider) {
         this.provider.put(id, provider);
     }
     
-    //FIXME this is ugly af and not nice to use
-    public Map<String, Map<ShaderType, ShaderSource>> process() {
-        final Map<String, Map<ShaderType, ShaderSource>> finished = new HashMap<>();
+    private static final com.google.common.base.Supplier<Map<ShaderType, ShaderSource>> ENUM_MAP_FACTORY = new com.google.common.base.Supplier<Map<ShaderType, ShaderSource>>() {
+        @Override
+        public Map<ShaderType, ShaderSource> get() {
+            return new EnumMap<>(ShaderType.class);
+        }
+    };
+    
+    public Table<String, ShaderType, ShaderSource> createCurrentShaderTable() {
+        final Table<String, ShaderType, ShaderSource> finished = Tables.newCustomTable(new HashMap<>(),
+                ENUM_MAP_FACTORY);
         for (final SourceDescription desc : this.definitions) {
             if (desc.type() != null) {
                 reduce(desc);
                 final ShaderSource source = new ShaderSource(desc.type(), makeSource(desc));
-                if (!finished.containsKey(desc.context())) {
-                    finished.put(desc.context(), new EnumMap<>(ShaderType.class));
-                }
-                finished.get(desc.context()).put(source.getType(), source);
+                finished.put(desc.context(), source.shaderType, source);
             }
         }
         return finished;
@@ -171,7 +186,8 @@ public class ShaderParser {
         if (rawSrc.contains(HEADER_REPLACE_MARKER)) {
             rawSrc = rawSrc.replace(HEADER_REPLACE_MARKER, "\n" + desc.header().toString().trim() + "\n");
         } else {
-            throw new IllegalStateException("no headers found");
+            rawSrc = rawSrc.replace(HEADER_REPLACE_MARKER, "\n");
+            System.err.println("No headers found in context " + desc.context() + " in shader " + desc.type());
         }
         return rawSrc.trim();
     }

@@ -16,9 +16,11 @@
 
 package de.omnikryptec.util;
 
-import java.util.List;
+import com.google.common.collect.Table;
+import com.google.common.collect.Table.Cell;
 
 import de.omnikryptec.graphics.shader.base.parser.ShaderParser;
+import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
 
 public class ARandomTest {
@@ -32,13 +34,13 @@ public class ARandomTest {
          * ops) + "ns"); for (double f = -100.0; f <= 100.0; f += 0.0125) {
          * if(Mathd.rint(f)!=Math.rint(f)) { System.out.println(f); } }
          */
-        final ShaderParser parser = new ShaderParser();
-        parser.addProvider("spacko", "kekekekeke");
+        final ShaderParser parser = ShaderParser.create();
+        parser.addTokenReplacer("spacko", "kekekekeke");
         parser.parse("dd", "$define module kek$ $header$ w $header$ bonobo $spacko$");
         parser.parse("kek", "$define shader VERTEX$ $header$ v $header$ mega  $module kek$");
-        final List<ShaderSource> src = parser.process();
-        for (final ShaderSource s : src) {
-            System.out.println(s.getSource());
+        final Table<String, ShaderType, ShaderSource> src = parser.createCurrentShaderTable();
+        for (final Cell<String, ShaderType, ShaderSource> s : src.cellSet()) {
+            System.out.println(s.getValue().source);
             System.out.println();
         }
     }

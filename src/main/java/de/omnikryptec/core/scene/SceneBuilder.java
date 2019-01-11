@@ -18,6 +18,8 @@ package de.omnikryptec.core.scene;
 
 import org.lwjgl.opengl.GL11;
 
+import com.google.common.collect.Table;
+
 import de.omnikryptec.core.Updateable;
 import de.omnikryptec.core.UpdateableContainer.ExecuteMode;
 import de.omnikryptec.core.UpdateableContainer.ExecuteTime;
@@ -182,13 +184,13 @@ public class SceneBuilder {
         array.addVertexBuffer(buffer, new VertexBufferLayout.VertexBufferElement(Type.FLOAT, 2, true));
         array.setIndexBuffer(indexBuffer);
         
-        final String vertex = "#version 330 core\nlayout(location = 0) in vec4 pos;\nvoid main() {\ngl_Position = pos;}";
-        final String fragment = "#version 330 core\nout vec4 col;\nvoid main() {\ncol = vec4(1.0, 0.0, 1.0, 1.0);}";
+        final String vertex = "$define shader VERTEX test$ #version 330 core\nlayout(location = 0) in vec4 pos;\nvoid main() {\ngl_Position = pos;}";
+        ShaderParser.instance().parse(vertex);
+        final String fragment = "$define shader FRAGMENT test$ #version 330 core\nout vec4 col;\nvoid main() {\ncol = vec4(1.0, 0.0, 1.0, 1.0);}";
         final Shader shader = RenderAPI.get().createShader();
-        ShaderParser.instance().parse(vertex, fragment);
-        
-        shader.create(new ShaderSource(ShaderType.Vertex, vertex),
-                new ShaderSource(ShaderType.Fragment, fragment));
+        ShaderParser.instance().parse(fragment);
+        Table<String, ShaderType, ShaderSource> data = ShaderParser.instance().createCurrentShaderTable();
+        shader.create(data.get("test", ShaderType.Vertex), data.get("test", ShaderType.Fragment));
         
         addUpdateable(new Updateable() {
             @Override
