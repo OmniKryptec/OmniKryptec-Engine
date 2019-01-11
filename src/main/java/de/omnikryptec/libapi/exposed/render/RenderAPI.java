@@ -17,6 +17,7 @@
 package de.omnikryptec.libapi.exposed.render;
 
 import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.window.Window;
 import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
 import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;

@@ -18,15 +18,16 @@ package de.omnikryptec.libapi.opengl;
 
 import de.omnikryptec.libapi.exposed.render.IndexBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
-import de.omnikryptec.libapi.exposed.render.Shader;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
+import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.window.Window;
 import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
 import de.omnikryptec.libapi.opengl.buffer.GLIndexBuffer;
 import de.omnikryptec.libapi.opengl.buffer.GLVertexArray;
 import de.omnikryptec.libapi.opengl.buffer.GLVertexBuffer;
+import de.omnikryptec.libapi.opengl.shader.GLShader;
 import de.omnikryptec.libapi.opengl.texture.GLTexture2D;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;

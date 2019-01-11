@@ -23,11 +23,13 @@ import de.omnikryptec.core.UpdateableContainer.ExecuteMode;
 import de.omnikryptec.core.UpdateableContainer.ExecuteTime;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.event.EventBus;
+import de.omnikryptec.graphics.shader.base.parser.ShaderParser;
 import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 import de.omnikryptec.libapi.exposed.render.IndexBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
-import de.omnikryptec.libapi.exposed.render.Shader;
+import de.omnikryptec.libapi.exposed.render.shader.Shader;
+import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
@@ -183,8 +185,10 @@ public class SceneBuilder {
         final String vertex = "#version 330 core\nlayout(location = 0) in vec4 pos;\nvoid main() {\ngl_Position = pos;}";
         final String fragment = "#version 330 core\nout vec4 col;\nvoid main() {\ncol = vec4(1.0, 0.0, 1.0, 1.0);}";
         final Shader shader = RenderAPI.get().createShader();
-        shader.create(new Shader.ShaderAttachment(ShaderType.Vertex, vertex),
-                new Shader.ShaderAttachment(ShaderType.Fragment, fragment));
+        ShaderParser.instance().parse(vertex, fragment);
+        
+        shader.create(new ShaderSource(ShaderType.Vertex, vertex),
+                new ShaderSource(ShaderType.Fragment, fragment));
         
         addUpdateable(new Updateable() {
             @Override

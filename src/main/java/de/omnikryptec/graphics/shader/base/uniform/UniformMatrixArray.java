@@ -18,28 +18,23 @@ package de.omnikryptec.graphics.shader.base.uniform;
 
 import org.joml.Matrix4f;
 
+import de.omnikryptec.libapi.opengl.shader.GLUniformMatrix;
+
 /**
  * UniformMatrixArray
  *
  * @author Panzer1119
  */
-public class UniformMatrixArray extends Uniform {
+public class UniformMatrixArray {
 
-    private final UniformMatrix[] uniformMatrices;
+    private final GLUniformMatrix[] uniformMatrices;
 
     public UniformMatrixArray(final String name, final int size) {
-        super(name);
-        this.uniformMatrices = new UniformMatrix[size];
+        this.uniformMatrices = new GLUniformMatrix[size];
         for (int i = 0; i < size; i++) {
-            this.uniformMatrices[i] = new UniformMatrix(name + "[" + i + "]");
+            this.uniformMatrices[i] = new GLUniformMatrix(name + "[" + i + "]");
         }
     }
-
-    /*
-     * @Override protected final void storeUniformLocation(Shader programID) { for
-     * (UniformMatrix uniformMatrix : uniformMatrices) {
-     * uniformMatrix.storeUniformLocation(programID); } }
-     */
 
     public final UniformMatrixArray loadMatrixArray(final Matrix4f[] matrices) {
         for (int i = 0; i < matrices.length; i++) {

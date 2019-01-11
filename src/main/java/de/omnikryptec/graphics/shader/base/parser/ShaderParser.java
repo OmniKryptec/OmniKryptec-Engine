@@ -17,12 +17,16 @@
 package de.omnikryptec.graphics.shader.base.parser;
 
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
+import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+
+import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
 
 public class ShaderParser {
     
@@ -38,6 +42,15 @@ public class ShaderParser {
     public static final String HEADER_INDICATOR = "header";
     
     private static final String HEADER_REPLACE_MARKER = "%%%ndf84nbvkHRM%%%";
+    
+    private static ShaderParser instance;
+    
+    public static ShaderParser instance() {
+        if (instance == null) {
+            instance = new ShaderParser();
+        }
+        return instance;
+    }
     
     private final Deque<SourceDescription> definitions;
     
@@ -55,11 +68,10 @@ public class ShaderParser {
         this.provider = new HashMap<>();
     }
     
-    public void parse(final String programName, final String... sources) {
-        if (programName == null || programName.equals("") || sources.length == 0) {
-            throw new NullPointerException(sources.length == 0 ? "invalid sources" : "programName are invalid");
+    public void parse(final String... sources) {
+        if (sources.length == 0) {
+            throw new NullPointerException("invalid sources");
         }
-        this.currentContext = programName;
         final StringBuilder builder = new StringBuilder();
         for (int i = 0; i < sources.length; i++) {
             builder.append(sources[i]);
@@ -92,7 +104,7 @@ public class ShaderParser {
                     }
                     final String statementString = statement.toString().replace(PARSER_STATEMENT_INDICATOR, "").trim();
                     if (statementString.isEmpty()) {
-                        throw new ShaderCompilationException(programName,
+                        throw new ShaderCompilationException(this.currentContext,
                                 "Empty statement (line " + (k + 1) + ": " + lines[k] + ")");
                     } else {
                         final String repl = decodeToken(statementString, k + 1);
@@ -113,7 +125,7 @@ public class ShaderParser {
                 }
             }
             if (out < in) {
-                throw new ShaderCompilationException(programName,
+                throw new ShaderCompilationException(this.currentContext,
                         "Unclosed parser-statement (line " + (k + 1) + ": " + lines[k] + ")");
             }
             final SourceDescription desc = this.definitions.peek();
@@ -138,13 +150,17 @@ public class ShaderParser {
         this.provider.put(id, provider);
     }
     
-    public List<ShaderSource> process() {
-        final List<ShaderSource> finished = new ArrayList<>();
+    //FIXME this is ugly af and not nice to use
+    public Map<String, Map<ShaderType, ShaderSource>> process() {
+        final Map<String, Map<ShaderType, ShaderSource>> finished = new HashMap<>();
         for (final SourceDescription desc : this.definitions) {
             if (desc.type() != null) {
                 reduce(desc);
                 final ShaderSource source = new ShaderSource(desc.type(), makeSource(desc));
-                finished.add(source);
+                if (!finished.containsKey(desc.context())) {
+                    finished.put(desc.context(), new EnumMap<>(ShaderType.class));
+                }
+                finished.get(desc.context()).put(source.getType(), source);
             }
         }
         return finished;
@@ -186,12 +202,17 @@ public class ShaderParser {
             }
             this.headerMode = false;
             if (token.startsWith(SHADER_INDICATOR)) {
-                final ShaderType type = type(token.replace(SHADER_INDICATOR, "").trim());
-                this.definitions.push(new SourceDescription(type));
+                String[] array = token.replace(SHADER_INDICATOR, "").trim().split("\\s+");
+                final ShaderType type = type(array[0].trim());
+                String name = array[1].trim();
+                this.definitions.push(new SourceDescription(type, name));
+                this.currentContext = name;
                 return "";
             } else if (token.startsWith(MODULE_INDICATOR)) {
-                this.definitions.push(new SourceDescription(null));
-                this.modules.put(token.replace(MODULE_INDICATOR, "").trim(), this.definitions.peek());
+                String name = token.replace(MODULE_INDICATOR, "").trim();
+                this.definitions.push(new SourceDescription(null, name));
+                this.modules.put(name, this.definitions.peek());
+                this.currentContext = name;
                 return "";
             }
         } else {

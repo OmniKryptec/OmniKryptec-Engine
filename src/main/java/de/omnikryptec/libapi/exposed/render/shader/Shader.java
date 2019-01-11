@@ -14,22 +14,9 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.libapi.exposed.render;
-
-import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
+package de.omnikryptec.libapi.exposed.render.shader;
 
 public interface Shader {
-    
-    public static class ShaderAttachment {
-        
-        public ShaderAttachment(final ShaderType type, final String source) {
-            this.shaderType = type;
-            this.source = source;
-        }
-        
-        public final ShaderType shaderType;
-        public final String source;
-    }
     
     /**
      * Binds this {@link Shader}
@@ -42,6 +29,7 @@ public interface Shader {
      * 
      * @param shaderAttachments the individual shaders
      */
-    void create(ShaderAttachment... shaderAttachments);
+    void create(ShaderSource... shaderAttachments);
     
+    <T> T getUniform(String name);
 }

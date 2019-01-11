@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.graphics.shader.base.uniform;
+package de.omnikryptec.libapi.opengl.shader;
 
 import java.nio.FloatBuffer;
 
@@ -22,14 +22,16 @@ import org.joml.Matrix4fc;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 
-public class UniformMatrix extends Uniform {
+import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
 
+public class GLUniformMatrix extends GLUniform implements UniformMatrix {
+    
     private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
-
-    public UniformMatrix(final String name) {
+    
+    public GLUniformMatrix(final String name) {
         super(name);
     }
-
+    
     public void loadMatrix(final Matrix4fc matrix) {
         if (isFound()) {
             matrixBuffer.put(matrix.m00());
@@ -54,5 +56,5 @@ public class UniformMatrix extends Uniform {
             GL20.glUniformMatrix4fv(super.getLocation(), false, matrixBuffer);
         }
     }
-
+    
 }

@@ -14,18 +14,25 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.graphics.shader.base.parser;
+package de.omnikryptec.libapi.opengl.shader;
 
-public class ShaderCompilationException extends RuntimeException {
+import org.lwjgl.opengl.GL20;
 
-    private static final long serialVersionUID = 3014987664747632177L;
+public class GLUniformInt extends GLUniform {
 
-    public ShaderCompilationException(final String program, final String error) {
-        super("Compilation problem in context \"" + program + "\": " + error);
+    private int currentValue;
+    private boolean used = false;
+
+    public GLUniformInt(final String name) {
+        super(name);
     }
 
-    public ShaderCompilationException(final String error) {
-        super(error);
+    public void loadInt(final int value) {
+        if (isFound() && (!this.used || this.currentValue != value)) {
+            GL20.glUniform1i(super.getLocation(), value);
+            this.used = true;
+            this.currentValue = value;
+        }
     }
 
 }

@@ -14,25 +14,29 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.graphics.shader.base.uniform;
+package de.omnikryptec.libapi.opengl.shader;
 
-import org.lwjgl.opengl.GL20;
+public abstract class GLUniform {
 
-public class UniformInt extends Uniform {
+    private final String name;
+    private int location;
+    private final boolean isfound = false;
 
-    private int currentValue;
-    private boolean used = false;
-
-    public UniformInt(final String name) {
-        super(name);
+    protected GLUniform(final String name) {
+        this.name = name;
     }
 
-    public void loadInt(final int value) {
-        if (isFound() && (!this.used || this.currentValue != value)) {
-            GL20.glUniform1i(super.getLocation(), value);
-            this.used = true;
-            this.currentValue = value;
-        }
+    protected int getLocation() {
+        return this.location;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + this.name + " Location: " + this.location;
+    }
+    
+    public boolean isFound() {
+        return this.isfound;
     }
 
 }

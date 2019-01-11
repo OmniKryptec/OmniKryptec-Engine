@@ -14,24 +14,35 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.graphics.shader.base.uniform;
+package de.omnikryptec.libapi.opengl.shader;
 
+import org.joml.Vector2f;
 import org.lwjgl.opengl.GL20;
 
-public class UniformFloat extends Uniform {
+public class GLUniformVec2 extends GLUniform {
 
-    private float currentValue;
+    private float currentX;
+    private float currentY;
     private boolean used = false;
 
-    public UniformFloat(final String name) {
+    public GLUniformVec2(final String name) {
         super(name);
     }
 
-    public void loadFloat(final float value) {
-        if (isFound() && (!this.used || this.currentValue != value)) {
-            GL20.glUniform1f(super.getLocation(), value);
+    public void loadVec2(final Vector2f vector) {
+        loadVec2(vector.x, vector.y);
+    }
+
+    public void loadVec2(final float[] array) {
+        loadVec2(array[0], array[1]);
+    }
+
+    public void loadVec2(final float x, final float y) {
+        if (isFound() && (!this.used || x != this.currentX || y != this.currentY)) {
+            this.currentX = x;
+            this.currentY = y;
             this.used = true;
-            this.currentValue = value;
+            GL20.glUniform2f(super.getLocation(), x, y);
         }
     }
 

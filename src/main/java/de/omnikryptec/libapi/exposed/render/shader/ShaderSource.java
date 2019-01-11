@@ -14,25 +14,27 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.graphics.shader.base.uniform;
+package de.omnikryptec.libapi.exposed.render.shader;
 
-import org.lwjgl.opengl.GL20;
+import de.omnikryptec.graphics.shader.base.parser.ShaderParser;
+import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 
-public class UniformSampler extends Uniform {
-
-    private int currentValue;
-    private boolean used = false;
-
-    public UniformSampler(final String name) {
-        super(name);
+public class ShaderSource {
+    
+    public final ShaderType shaderType;
+    public final String source;
+    
+    public ShaderSource(final ShaderType type, final String src) {
+        this.shaderType = type;
+        this.source = src;
     }
-
-    public void loadTexUnit(final int texUnit) {
-        if (isFound() && (!this.used || this.currentValue != texUnit)) {
-            GL20.glUniform1i(super.getLocation(), texUnit);
-            this.used = true;
-            this.currentValue = texUnit;
-        }
+    
+    public ShaderType getType() {
+        return this.shaderType;
     }
-
+    
+    public String getSource() {
+        return this.source;
+    }
+    
 }

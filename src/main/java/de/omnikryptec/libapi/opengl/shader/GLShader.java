@@ -14,9 +14,10 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.libapi.opengl;
+package de.omnikryptec.libapi.opengl.shader;
 
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
@@ -25,23 +26,27 @@ import org.lwjgl.opengl.GL20;
 import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 import de.omnikryptec.libapi.exposed.AutoDelete;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
-import de.omnikryptec.libapi.exposed.render.Shader;
+import de.omnikryptec.libapi.exposed.render.shader.Shader;
+import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
+import de.omnikryptec.libapi.opengl.OpenGLUtil;
 
 public class GLShader extends AutoDelete implements Shader {
-
+    
     private final int programId;
     private final Map<ShaderType, Integer> attachments;
-
+    private final Map<String, GLUniform> uniforms;
+    
     public GLShader() {
         this.programId = GL20.glCreateProgram();
         this.attachments = new EnumMap<>(ShaderType.class);
+        this.uniforms = new HashMap<>();
     }
-
+    
     @Override
     public void bindShader() {
         OpenGLUtil.useProgram(this.programId);
     }
-
+    
     @Override
     protected void deleteRaw() {
         for (final Integer id : this.attachments.values()) {
@@ -50,10 +55,10 @@ public class GLShader extends AutoDelete implements Shader {
         }
         GL20.glDeleteProgram(this.programId);
     }
-
+    
     @Override
-    public void create(final ShaderAttachment... shaderAttachments) {
-        for (final ShaderAttachment a : shaderAttachments) {
+    public void create(final ShaderSource... shaderAttachments) {
+        for (final ShaderSource a : shaderAttachments) {
             final int shader = GL20.glCreateShader(OpenGLUtil.typeId(a.shaderType));
             GL20.glShaderSource(shader, a.source);
             GL20.glCompileShader(shader);
@@ -68,9 +73,46 @@ public class GLShader extends AutoDelete implements Shader {
                 GL20.glAttachShader(this.programId, shader);
             }
             this.attachments.put(a.shaderType, shader);
+            extractUniforms(a.source);
         }
         GL20.glLinkProgram(this.programId);
         GL20.glValidateProgram(this.programId);
     }
-
+    
+    @Override
+    public <T> T getUniform(String name) {
+        return (T) uniforms.get(name);
+    }
+    
+    private void extractUniforms(String src) {
+        String[] lines = src.split("[\n\r]+");
+        for (String l : lines) {
+            if (l.contains("uniform")) {
+                try {
+                    String un = l.substring(l.indexOf("uniform") + "uniform".length()).replace(";", "");
+                    String[] data = un.split("\\s+");
+                    String name = data[1].trim();
+                    String types = data[0].trim();
+                    GLUniform unif = createUniformObj(name, types);
+                    uniforms.put(name, unif);
+                } catch (Exception ex) {
+                    System.err.println("Couldn't handle uniform: " + l);
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
+    
+    private GLUniform createUniformObj(String name, String types) {
+        switch (types) {
+        case "mat4":
+            return new GLUniformMatrix(name);
+        case "sampler2D":
+        case "samplerCube":
+            return new GLUniformSampler(name);
+        default:
+            throw new IllegalArgumentException("Wrong uniform: " + types + " " + name);
+        }
+    }
+    
 }

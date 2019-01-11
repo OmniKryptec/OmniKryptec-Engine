@@ -19,7 +19,7 @@ package de.omnikryptec.util;
 import java.util.List;
 
 import de.omnikryptec.graphics.shader.base.parser.ShaderParser;
-import de.omnikryptec.graphics.shader.base.parser.ShaderSource;
+import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
 
 public class ARandomTest {
     

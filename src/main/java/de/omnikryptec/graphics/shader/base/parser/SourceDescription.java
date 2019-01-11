@@ -27,12 +27,14 @@ class SourceDescription {
     private final List<String> modules;
     private final StringBuilder header;
     private final StringBuilder source;
+    private final String context;
     
-    SourceDescription(final ShaderType type) {
+    SourceDescription(final ShaderType type, final String context) {
         this.type = type;
         this.modules = new ArrayList<>();
         this.header = new StringBuilder();
         this.source = new StringBuilder();
+        this.context = context;
     }
     
     ShaderType type() {
@@ -49,5 +51,9 @@ class SourceDescription {
     
     StringBuilder source() {
         return this.source;
+    }
+    
+    String context() {
+        return context;
     }
 }

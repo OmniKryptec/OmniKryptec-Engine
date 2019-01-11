@@ -14,19 +14,19 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.graphics.shader.base.uniform;
+package de.omnikryptec.libapi.opengl.shader;
 
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL20;
 
 import de.omnikryptec.util.data.Color;
 
-public class UniformVec4 extends Uniform {
+public class GLUniformVec4 extends GLUniform {
 
     private final float[] old = new float[4];
     private boolean used = false;
 
-    public UniformVec4(final String name) {
+    public GLUniformVec4(final String name) {
         super(name);
     }
 

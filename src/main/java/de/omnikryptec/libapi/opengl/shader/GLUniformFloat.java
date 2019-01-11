@@ -14,24 +14,24 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.graphics.shader.base.uniform;
+package de.omnikryptec.libapi.opengl.shader;
 
 import org.lwjgl.opengl.GL20;
 
-public class UniformBoolean extends Uniform {
+public class GLUniformFloat extends GLUniform {
 
-    private boolean currentBool;
+    private float currentValue;
     private boolean used = false;
 
-    public UniformBoolean(final String name) {
+    public GLUniformFloat(final String name) {
         super(name);
     }
 
-    public void loadBoolean(final boolean bool) {
-        if (isFound() && (!this.used || this.currentBool != bool)) {
-            GL20.glUniform1f(super.getLocation(), bool ? 1f : 0f);
+    public void loadFloat(final float value) {
+        if (isFound() && (!this.used || this.currentValue != value)) {
+            GL20.glUniform1f(super.getLocation(), value);
             this.used = true;
-            this.currentBool = bool;
+            this.currentValue = value;
         }
     }
 
