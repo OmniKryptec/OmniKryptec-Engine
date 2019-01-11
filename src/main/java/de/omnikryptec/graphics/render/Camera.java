@@ -2,7 +2,7 @@ package de.omnikryptec.graphics.render;
 
 import org.joml.Matrix4f;
 
-public class Camera {
+public class Camera implements IProjection{
     
     private Matrix4f projectionMatrix;
     
@@ -10,7 +10,8 @@ public class Camera {
         this.projectionMatrix = projection;
     }
     
-    public Matrix4f getProjectionMatrix() {
+    @Override
+    public Matrix4f getProjection() {
         return projectionMatrix;
     }
     
