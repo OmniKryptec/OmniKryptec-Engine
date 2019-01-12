@@ -84,16 +84,18 @@ public class GLShader extends AutoDelete implements Shader {
         return (T) uniforms.get(name);
     }
     
+    //TODO somewhere else?
     private void extractUniforms(String src) {
         String[] lines = src.split("[\n\r]+");
         for (String l : lines) {
             if (l.contains("uniform")) {
                 try {
-                    String un = l.substring(l.indexOf("uniform") + "uniform".length()).replace(";", "");
+                    String un = l.substring(l.indexOf("uniform") + "uniform".length()).replace(";", "").trim();
                     String[] data = un.split("\\s+");
                     String name = data[1].trim();
                     String types = data[0].trim();
                     GLUniform unif = createUniformObj(name, types);
+                    unif.storeUniformLocation(programId);
                     uniforms.put(name, unif);
                 } catch (Exception ex) {
                     System.err.println("Couldn't handle uniform: " + l);
@@ -110,6 +112,8 @@ public class GLShader extends AutoDelete implements Shader {
         case "sampler2D":
         case "samplerCube":
             return new GLUniformSampler(name);
+        case "vec4":
+            return new GLUniformVec4(name);
         default:
             throw new IllegalArgumentException("Wrong uniform: " + types + " " + name);
         }

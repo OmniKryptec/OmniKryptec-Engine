@@ -36,9 +36,9 @@ public class ARandomTest {
          */
         final ShaderParser parser = ShaderParser.create();
         parser.addTokenReplacer("spacko", "kekekekeke");
-        parser.parse("dd", "$define module kek$ $header$ w $header$ bonobo $spacko$");
-        parser.parse("kek", "$define shader VERTEX$ $header$ v $header$ mega  $module kek$");
-        final Table<String, ShaderType, ShaderSource> src = parser.createCurrentShaderTable();
+        parser.parse("$define module kek$ $header$ w $header$ bonobo $spacko$");
+        parser.parse("$define shader kekd VERTEX$ $header$ v $header$ mega  $module kek$");
+        final Table<String, ShaderType, ShaderSource> src = parser.getCurrentShaderTable();
         for (final Cell<String, ShaderType, ShaderSource> s : src.cellSet()) {
             System.out.println(s.getValue().source);
             System.out.println();

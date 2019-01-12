@@ -34,6 +34,13 @@ public class ShaderParser {
         Vertex, Fragment, Geometry, TessellationControl, TessellationEvaluation, Compute;
     }
     
+    private static final com.google.common.base.Supplier<Map<ShaderType, ShaderSource>> ENUM_MAP_FACTORY = new com.google.common.base.Supplier<Map<ShaderType, ShaderSource>>() {
+        @Override
+        public Map<ShaderType, ShaderSource> get() {
+            return new EnumMap<>(ShaderType.class);
+        }
+    };
+    
     public static final String PARSER_STATEMENT_INDICATOR = "$";
     
     public static final String DEFINITIONS_INDICATOR = "define ";
@@ -63,15 +70,15 @@ public class ShaderParser {
                 inheritProvider ? (HashMap<String, Supplier<String>>) zuper.provider.clone() : new HashMap<>());
     }
     
-    private final Deque<SourceDescription> definitions;
-    
     private final HashMap<String, SourceDescription> modules;
-    
     private final HashMap<String, Supplier<String>> provider;
     
-    private String currentContext;
+    private final Deque<SourceDescription> definitions;
     
+    private String currentContext;
     private boolean headerMode;
+    
+    private Table<String, ShaderType, ShaderSource> generatedCurrentShaderTable = null;
     
     private ShaderParser(HashMap<String, SourceDescription> modules, HashMap<String, Supplier<String>> provider) {
         this.definitions = new ArrayDeque<>();
@@ -83,12 +90,15 @@ public class ShaderParser {
         if (sources.length == 0) {
             throw new NullPointerException("invalid sources");
         }
+        this.generatedCurrentShaderTable = null;
+        
         final StringBuilder builder = new StringBuilder();
         for (int i = 0; i < sources.length; i++) {
             builder.append(sources[i]);
             builder.append('\n');
         }
         final String[] lines = builder.toString().split("[\n\r]+");
+        
         for (int k = 0; k < lines.length; k++) {
             int in = 0;
             int out = 0;
@@ -161,14 +171,11 @@ public class ShaderParser {
         this.provider.put(id, provider);
     }
     
-    private static final com.google.common.base.Supplier<Map<ShaderType, ShaderSource>> ENUM_MAP_FACTORY = new com.google.common.base.Supplier<Map<ShaderType, ShaderSource>>() {
-        @Override
-        public Map<ShaderType, ShaderSource> get() {
-            return new EnumMap<>(ShaderType.class);
+    //TODO how often do we have to recalc?
+    public Table<String, ShaderType, ShaderSource> getCurrentShaderTable() {
+        if (generatedCurrentShaderTable != null) {
+            return generatedCurrentShaderTable;
         }
-    };
-    
-    public Table<String, ShaderType, ShaderSource> createCurrentShaderTable() {
         final Table<String, ShaderType, ShaderSource> finished = Tables.newCustomTable(new HashMap<>(),
                 ENUM_MAP_FACTORY);
         for (final SourceDescription desc : this.definitions) {
@@ -178,6 +185,7 @@ public class ShaderParser {
                 finished.put(desc.context(), source.shaderType, source);
             }
         }
+        this.generatedCurrentShaderTable = finished;
         return finished;
     }
     
@@ -219,8 +227,8 @@ public class ShaderParser {
             this.headerMode = false;
             if (token.startsWith(SHADER_INDICATOR)) {
                 String[] array = token.replace(SHADER_INDICATOR, "").trim().split("\\s+");
-                final ShaderType type = type(array[0].trim());
-                String name = array[1].trim();
+                final ShaderType type = type(array[1].trim());
+                String name = array[0].trim();
                 this.definitions.push(new SourceDescription(type, name));
                 this.currentContext = name;
                 return "";
@@ -255,7 +263,7 @@ public class ShaderParser {
     }
     
     private ShaderType type(String s) {
-        s = s.toUpperCase().trim();
+        s = s.trim();
         switch (s) {
         case "FRAGMENT":
         case "GL_FRAGMENT_SHADER":

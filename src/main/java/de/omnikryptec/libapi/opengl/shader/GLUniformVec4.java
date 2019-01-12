@@ -16,28 +16,20 @@
 
 package de.omnikryptec.libapi.opengl.shader;
 
-import org.joml.Vector4f;
 import org.lwjgl.opengl.GL20;
 
-import de.omnikryptec.util.data.Color;
+import de.omnikryptec.libapi.exposed.render.shader.UniformVec4;
 
-public class GLUniformVec4 extends GLUniform {
-
+public class GLUniformVec4 extends GLUniform implements UniformVec4 {
+    
     private final float[] old = new float[4];
     private boolean used = false;
-
+    
     public GLUniformVec4(final String name) {
         super(name);
     }
-
-    public void loadVec4(final Vector4f vector) {
-        loadVec4(vector.x, vector.y, vector.z, vector.w);
-    }
-
-    public void loadVec4(final float[] array) {
-        loadVec4(array[0], array[1], array[2], array[3]);
-    }
-
+    
+    @Override
     public void loadVec4(final float x, final float y, final float z, final float w) {
         if (isFound() && (!this.used || x != this.old[0] || y != this.old[1] || z != this.old[2] || w != this.old[3])) {
             GL20.glUniform4f(super.getLocation(), x, y, z, w);
@@ -48,9 +40,4 @@ public class GLUniformVec4 extends GLUniform {
             this.used = true;
         }
     }
-
-    public void loadColor(final Color color) {
-        loadVec4(color.getR(), color.getG(), color.getB(), color.getA());
-    }
-
 }

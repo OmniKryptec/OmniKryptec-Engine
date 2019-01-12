@@ -16,20 +16,29 @@
 
 package de.omnikryptec.libapi.opengl.shader;
 
-public abstract class GLUniform {
+import org.lwjgl.opengl.GL20;
 
+public abstract class GLUniform {
+    
     private final String name;
     private int location;
     private final boolean isfound = false;
-
+    
     protected GLUniform(final String name) {
         this.name = name;
     }
-
+    
+    protected void storeUniformLocation(int programID) {
+        location = GL20.glGetUniformLocation(programID, name);
+        if (location == -1) {
+            System.err.println("No uniform variable called " + name + " found!");
+        }
+    }
+    
     protected int getLocation() {
         return this.location;
     }
-
+    
     @Override
     public String toString() {
         return "Name: " + this.name + " Location: " + this.location;
@@ -38,5 +47,5 @@ public abstract class GLUniform {
     public boolean isFound() {
         return this.isfound;
     }
-
+    
 }

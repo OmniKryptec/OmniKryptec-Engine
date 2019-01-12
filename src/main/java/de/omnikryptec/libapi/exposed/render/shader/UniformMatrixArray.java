@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.graphics.shader.base.uniform;
+package de.omnikryptec.libapi.exposed.render.shader;
 
 import org.joml.Matrix4f;
 
