@@ -67,7 +67,7 @@ public abstract class EngineLoader {
             final Settings<IntegerKey> apisettings) {
         // Initialize everything required
         LibAPIManager.init(libsettings);
-        LibAPIManager.active().setRenderer(renderapi, apisettings);
+        LibAPIManager.instance().setRenderer(renderapi, apisettings);
         // Audio, etc....
     }
 
@@ -93,7 +93,7 @@ public abstract class EngineLoader {
         // or let them (the natives) be loaded by Configuration.SHARED_LIBRARY and
         // LIBRARY_PATH <-- Seems to work, so better use it
         initialize(libSettings, loaderSettings.get(LoaderSetting.RENDER_API), rapiSettings);
-        this.window = LibAPIManager.active().getRenderAPI().createWindow(windowSettings);
+        this.window = LibAPIManager.instance().getRenderAPI().createWindow(windowSettings);
         this.gameLoop = loaderSettings.get(LoaderSetting.GAME_LOOP);
         this.gameController = new GameController();
         this.updateController = new UpdateController(this.gameController, this.window);

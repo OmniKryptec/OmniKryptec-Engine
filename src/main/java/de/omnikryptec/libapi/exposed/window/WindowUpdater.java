@@ -30,10 +30,10 @@ public class WindowUpdater extends AbstractUpdater {
 
     @Override
     protected void operation() {
-        final double time = LibAPIManager.active().getTime();
+        final double time = LibAPIManager.instance().getTime();
         this.window.swapBuffers();
-        this.swaptime = LibAPIManager.active().getTime() - time;
-        LibAPIManager.active().pollEvents();
+        this.swaptime = LibAPIManager.instance().getTime() - time;
+        LibAPIManager.instance().pollEvents();
     }
 
     public double getSwapTime() {

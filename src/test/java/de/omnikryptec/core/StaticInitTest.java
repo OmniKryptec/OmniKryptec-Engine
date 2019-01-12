@@ -29,7 +29,7 @@ public class StaticInitTest {
 
     public static void main(final String[] args) {
         EngineLoader.initialize(new Settings<>(), RenderAPI.OpenGL, new Settings<>());
-        final Window window = LibAPIManager.active().getRenderAPI().createWindow(new Settings<>());
+        final Window window = LibAPIManager.instance().getRenderAPI().createWindow(new Settings<>());
         window.setVisible(true);
         final WindowUpdater updater = new WindowUpdater(window);
         while (!window.isCloseRequested()) {

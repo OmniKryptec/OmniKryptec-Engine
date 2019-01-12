@@ -66,7 +66,7 @@ public class GLShader extends AutoDelete implements Shader {
                 System.err.println("Compilation error");
                 System.err.println("Shader: " + a.shaderType);
                 System.err.println("Error: " + GL20.glGetShaderInfoLog(shader));
-                if (LibAPIManager.active().debug()) {
+                if (LibAPIManager.instance().debug()) {
                     System.err.println("Src: \n" + a.source);
                 }
             } else {

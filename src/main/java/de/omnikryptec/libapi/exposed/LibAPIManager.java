@@ -164,7 +164,7 @@ public final class LibAPIManager {
         return debug;
     }
 
-    public static LibAPIManager active() {
+    public static LibAPIManager instance() {
         return instance;
     }
 

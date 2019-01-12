@@ -108,7 +108,7 @@ public class Key implements IKey {
         if (!isPressed()) {
             return false;
         }
-        final double currentTime = LibAPIManager.active().getTime();
+        final double currentTime = LibAPIManager.instance().getTime();
         final double pressedTime = currentTime - this.lastChange;
         if (pressedTime >= minTime && pressedTime <= maxTime) {
             this.lastChange = currentTime;

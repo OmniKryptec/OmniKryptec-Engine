@@ -41,7 +41,7 @@ public class GLTexture2D extends GLTexture {
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
             if (config.anisotropicValue() > 0) {
                 if (!GL.getCapabilities().GL_EXT_texture_filter_anisotropic) {
-                    if (LibAPIManager.active().debug()) {
+                    if (LibAPIManager.instance().debug()) {
                         System.err.println("GL_EXT_texture_filter_anisotropic is not supported");
                     }
                 } else {

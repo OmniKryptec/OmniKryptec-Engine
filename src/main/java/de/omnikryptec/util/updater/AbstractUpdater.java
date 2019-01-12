@@ -63,7 +63,7 @@ public class AbstractUpdater {
      *               nothing.
      */
     public void update(final int maxops) {
-        final double currentFrameTime = LibAPIManager.active().getTime();
+        final double currentFrameTime = LibAPIManager.instance().getTime();
         this.deltatime = (currentFrameTime - this.lasttime);
         this.deltaTimeSmoother.push(this.deltatime);
         this.frontruntime += this.deltatime;
@@ -106,7 +106,7 @@ public class AbstractUpdater {
     private void sync(final int ops) {
         final double target = this.lastsynced + (1.0 / ops);
         try {
-            while ((this.lastsynced = LibAPIManager.active().getTime()) < target) {
+            while ((this.lastsynced = LibAPIManager.instance().getTime()) < target) {
                 Thread.sleep(1);
             }
         } catch (final InterruptedException ex) {
@@ -176,12 +176,12 @@ public class AbstractUpdater {
      */
     public void resetDeltaTime() {
         this.deltatime = 0;
-        this.lasttime = LibAPIManager.active().getTime();
-        this.opstime = LibAPIManager.active().getTime();
+        this.lasttime = LibAPIManager.instance().getTime();
+        this.opstime = LibAPIManager.instance().getTime();
     }
 
     public Time asTime() {
-        return new Time(getOperationCount(), getOPS(), LibAPIManager.active().getTime(), getDeltaTime());
+        return new Time(getOperationCount(), getOPS(), LibAPIManager.instance().getTime(), getDeltaTime());
     }
 
 }

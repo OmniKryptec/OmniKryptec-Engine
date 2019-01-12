@@ -29,7 +29,7 @@ public interface RenderAPI {
     public static final Class<OpenGLRenderAPI> OpenGL = OpenGLRenderAPI.class;
     
     public static RenderAPI get() {
-        return LibAPIManager.active().getRenderAPI();
+        return LibAPIManager.instance().getRenderAPI();
     }
     
     public static enum Type {
