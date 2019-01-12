@@ -22,35 +22,35 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 
 public interface VertexBuffer {
-    
+
     /**
      * Binds this {@link VertexBuffer}.
-     * 
+     *
      * @see VertexArray#bindArray()
      */
     void bindBuffer();
-    
+
     /**
      * Unbinds this {@link VertexBuffer}
      */
     void unbindBuffer();
-    
+
     /**
      * Stores data in this {@link VertexBuffer}. This VertexBuffer will be
      * auto-bound and the supplied {@link FloatBuffer} will be flipped by this
      * method.
-     * 
+     *
      * @param data    the float-data to be stored
      * @param dynamic buffer usage
      * @param size    the size of the added data
      */
     void storeData(FloatBuffer data, boolean dynamic, int size);
-    
+
     /**
      * Stores data in this {@link VertexBuffer}. This method constructs and fills a
      * {@link FloatBuffer} with the supplied float[]. The data is then stored with
      * {@link #storeData(IntBuffer, boolean, int)}
-     * 
+     *
      * @param data    the float-data to be stored
      * @param dynamic buffer usage
      */
@@ -59,22 +59,22 @@ public interface VertexBuffer {
         buffer.put(data);
         storeData(buffer, dynamic, data.length);
     }
-    
+
     /**
      * Stores data in this {@link VertexBuffer}. This VertexBuffer will be
      * auto-bound and the supplied {@link IntBuffer} will be flipped by this method.
-     * 
+     *
      * @param data    the int-data to be stored
      * @param dynamic buffer usage
      * @param size    the size of the added data
      */
     void storeData(IntBuffer data, boolean dynamic, int size);
-    
+
     /**
      * Stores data in this {@link VertexBuffer}. This method constructs and fills an
      * {@link IntBuffer} with the supplied int[]. The data is then stored with
      * {@link #storeData(IntBuffer, boolean, int)}
-     * 
+     *
      * @param data    the int-data to be stored
      * @param dynamic buffer usage
      */
@@ -83,10 +83,10 @@ public interface VertexBuffer {
         buffer.put(data);
         storeData(buffer, dynamic, data.length);
     }
-    
+
     /**
      * The size of this buffer
-     * 
+     *
      * @return size
      */
     int size();

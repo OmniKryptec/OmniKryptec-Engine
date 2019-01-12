@@ -22,13 +22,13 @@ import java.util.List;
 import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 
 class SourceDescription {
-    
+
     private final ShaderType type;
     private final List<String> modules;
     private final StringBuilder header;
     private final StringBuilder source;
     private final String context;
-    
+
     SourceDescription(final ShaderType type, final String context) {
         this.type = type;
         this.modules = new ArrayList<>();
@@ -36,24 +36,24 @@ class SourceDescription {
         this.source = new StringBuilder();
         this.context = context;
     }
-    
+
     ShaderType type() {
         return this.type;
     }
-    
+
     List<String> modules() {
         return this.modules;
     }
-    
+
     StringBuilder header() {
         return this.header;
     }
-    
+
     StringBuilder source() {
         return this.source;
     }
-    
+
     String context() {
-        return context;
+        return this.context;
     }
 }

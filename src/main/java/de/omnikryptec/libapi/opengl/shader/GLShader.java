@@ -31,22 +31,22 @@ import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 
 public class GLShader extends AutoDelete implements Shader {
-    
+
     private final int programId;
     private final Map<ShaderType, Integer> attachments;
     private final Map<String, GLUniform> uniforms;
-    
+
     public GLShader() {
         this.programId = GL20.glCreateProgram();
         this.attachments = new EnumMap<>(ShaderType.class);
         this.uniforms = new HashMap<>();
     }
-    
+
     @Override
     public void bindShader() {
         OpenGLUtil.useProgram(this.programId);
     }
-    
+
     @Override
     protected void deleteRaw() {
         for (final Integer id : this.attachments.values()) {
@@ -55,7 +55,7 @@ public class GLShader extends AutoDelete implements Shader {
         }
         GL20.glDeleteProgram(this.programId);
     }
-    
+
     @Override
     public void create(final ShaderSource... shaderAttachments) {
         for (final ShaderSource a : shaderAttachments) {
@@ -78,34 +78,34 @@ public class GLShader extends AutoDelete implements Shader {
         GL20.glLinkProgram(this.programId);
         GL20.glValidateProgram(this.programId);
     }
-    
+
     @Override
-    public <T> T getUniform(String name) {
-        return (T) uniforms.get(name);
+    public <T> T getUniform(final String name) {
+        return (T) this.uniforms.get(name);
     }
-    
+
     //TODO somewhere else?
-    private void extractUniforms(String src) {
-        String[] lines = src.split("[\n\r]+");
-        for (String l : lines) {
+    private void extractUniforms(final String src) {
+        final String[] lines = src.split("[\n\r]+");
+        for (final String l : lines) {
             if (l.contains("uniform")) {
                 try {
-                    String un = l.substring(l.indexOf("uniform") + "uniform".length()).replace(";", "").trim();
-                    String[] data = un.split("\\s+");
-                    String name = data[1].trim();
-                    String types = data[0].trim();
-                    GLUniform unif = createUniformObj(name, types);
-                    unif.storeUniformLocation(programId);
-                    uniforms.put(name, unif);
-                } catch (Exception ex) {
+                    final String un = l.substring(l.indexOf("uniform") + "uniform".length()).replace(";", "").trim();
+                    final String[] data = un.split("\\s+");
+                    final String name = data[1].trim();
+                    final String types = data[0].trim();
+                    final GLUniform unif = createUniformObj(name, types);
+                    unif.storeUniformLocation(this.programId);
+                    this.uniforms.put(name, unif);
+                } catch (final Exception ex) {
                     System.err.println("Couldn't handle uniform: " + l);
                     ex.printStackTrace();
                 }
             }
         }
     }
-    
-    private GLUniform createUniformObj(String name, String types) {
+
+    private GLUniform createUniformObj(final String name, final String types) {
         switch (types) {
         case "mat4":
             return new GLUniformMatrix(name);
@@ -118,5 +118,5 @@ public class GLShader extends AutoDelete implements Shader {
             throw new IllegalArgumentException("Wrong uniform: " + types + " " + name);
         }
     }
-    
+
 }

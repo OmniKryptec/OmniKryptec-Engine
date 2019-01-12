@@ -20,15 +20,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ComponentType {
-
+    
     private static int index = 0;
     private static Map<Class<? extends Component>, ComponentType> componentTypes = new HashMap<>();
     private final int id;
-
+    
     private ComponentType() {
         this.id = index++;
     }
-
+    
     public static ComponentType of(final Class<? extends Component> clazz) {
         if (!componentTypes.containsKey(clazz)) {
             synchronized (componentTypes) {
@@ -37,24 +37,24 @@ public class ComponentType {
         }
         return componentTypes.get(clazz);
     }
-
+    
     public static ComponentType ofExisting(final Class<? extends Component> clazz) {
         return componentTypes.get(clazz);
     }
-
+    
     public static int getTypesSize() {
         return index;
     }
-
+    
     public int getId() {
         return this.id;
     }
-
+    
     @Override
     public int hashCode() {
         return this.id;
     }
-
+    
     @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
@@ -70,5 +70,5 @@ public class ComponentType {
         }
         return false;
     }
-
+    
 }

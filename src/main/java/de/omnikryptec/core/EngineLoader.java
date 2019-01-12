@@ -46,16 +46,16 @@ import de.omnikryptec.util.settings.Settings;
  * @author pcfreak9000
  */
 public abstract class EngineLoader {
-
+    
     private IGameLoop gameLoop;
     private Window window;
     private GameController gameController;
     private UpdateController updateController;
     private boolean started;
-
+    
     public EngineLoader() {
     }
-
+    
     /**
      * Initializes various parts of the {@link LibAPIManager}.
      *
@@ -70,7 +70,7 @@ public abstract class EngineLoader {
         LibAPIManager.instance().setRenderer(renderapi, apisettings);
         // Audio, etc....
     }
-
+    
     /**
      * Starts the engine. The start paramters can be set in
      * {@link #configure(Settings, Settings, Settings, Settings)}. <br>
@@ -115,7 +115,7 @@ public abstract class EngineLoader {
             }
         }
     }
-
+    
     /**
      * Shuts down the engine. Only if it has been started by {@link #start()}.<br>
      * First {@link #onShutdown()} gets called. A gameloop that might be running
@@ -133,33 +133,33 @@ public abstract class EngineLoader {
             LibAPIManager.shutdown();
         }
     }
-
+    
     public Window getWindow() {
         checkStarted();
         return this.window;
     }
-
+    
     public IGameLoop getEngineLoop() {
         checkStarted();
         return this.gameLoop;
     }
-
+    
     public GameController getGameController() {
         checkStarted();
         return this.gameController;
     }
-
+    
     public UpdateController getUpdateController() {
         checkStarted();
         return this.updateController;
     }
-
+    
     private void checkStarted() {
         if (!this.started) {
             throw new IllegalStateException("EngineLoader has not been started yet");
         }
     }
-
+    
     public void switchGameloop(final IGameLoop newloop) {
         Util.ensureNonNull(newloop);
         final boolean running = this.gameLoop.isRunning();
@@ -171,22 +171,22 @@ public abstract class EngineLoader {
             this.gameLoop.startLoop();
         }
     }
-
+    
     public boolean isStarted() {
         return this.started;
     }
-
+    
     protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
     }
-
+    
     protected abstract void onInitialized();
-
+    
     protected void onShutdown() {
     }
-
+    
     public enum LoaderSetting implements Defaultable {
-
+        
         /**
          * The rendering API to use by the engine. Only in non-static cases of
          * {@link EngineLoader}.<br>
@@ -221,7 +221,7 @@ public abstract class EngineLoader {
          * @see #START_ENGINE_LOOP_AFTER_INIT
          */
         GAME_LOOP(new DefaultGameLoop()),
-
+        
         /**
          * Shutdown the engine if the gameloop exits. Only if
          * {@link #START_GAME_LOOP_AFTER_INIT} is set to <code>true</code>. Only in
@@ -230,19 +230,19 @@ public abstract class EngineLoader {
          * The default value is <code>true</code>
          */
         SHUTDOWN_ON_LOOP_EXIT(true);
-
+        
         private final Object defaultSetting;
-
+        
         LoaderSetting(final Object def) {
             this.defaultSetting = def;
         }
-
+        
         @Override
         public <T> T getDefault() {
             return (T) this.defaultSetting;
         }
     }
-
+    
     /**
      * Will only be used in non-static cases of {@link EngineLoader}. Defines when
      * to show the {@link Window}.
@@ -265,5 +265,5 @@ public abstract class EngineLoader {
          */
         NEVER
     }
-
+    
 }

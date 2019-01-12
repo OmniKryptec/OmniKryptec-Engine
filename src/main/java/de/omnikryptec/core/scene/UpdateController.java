@@ -30,14 +30,14 @@ import de.omnikryptec.util.updater.AbstractUpdater;
  * @see EngineLoader#getUpdateController()
  */
 public class UpdateController {
-
+    
     private final GameController gameController;
     private final WindowUpdater windowUpdater;
     private final AbstractUpdater asyncUpdater;
-
+    
     private int syncUpdatesPerSecond = 144;
     private int asyncUpdatesPerSecond = 144;
-
+    
     /**
      * Creates a new {@link UpdateController}
      *
@@ -49,15 +49,15 @@ public class UpdateController {
         this.windowUpdater = new WindowUpdater(window);
         this.asyncUpdater = new AbstractUpdater();
     }
-
+    
     public WindowUpdater getWindowUpdater() {
         return this.windowUpdater;
     }
-
+    
     public AbstractUpdater getAsyncUpdater() {
         return this.asyncUpdater;
     }
-
+    
     /**
      * Updates the window and the sync {@link Updateable}s.
      *
@@ -67,7 +67,7 @@ public class UpdateController {
         this.windowUpdater.update(this.syncUpdatesPerSecond);
         this.gameController.updateSync(this.windowUpdater.asTime());
     }
-
+    
     /**
      * Updates the async {@link Updateable}s.
      *
@@ -77,21 +77,21 @@ public class UpdateController {
         this.asyncUpdater.update(this.asyncUpdatesPerSecond);
         this.gameController.updateAsync(this.asyncUpdater.asTime());
     }
-
+    
     public int getSyncUpdatesPerSecond() {
         return this.syncUpdatesPerSecond;
     }
-
+    
     public void setSyncUpdatesPerSecond(final int syncUpdatesPerSecond) {
         this.syncUpdatesPerSecond = syncUpdatesPerSecond;
     }
-
+    
     public int getAsyncUpdatesPerSecond() {
         return this.asyncUpdatesPerSecond;
     }
-
+    
     public void setAsyncUpdatesPerSecond(final int asyncUpdatesPerSecond) {
         this.asyncUpdatesPerSecond = asyncUpdatesPerSecond;
     }
-
+    
 }

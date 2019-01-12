@@ -19,56 +19,56 @@ package de.omnikryptec.libapi.exposed.render;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout.VertexBufferElement;
 
 public interface VertexArray {
-    
+
     /**
      * Binds this {@link VertexArray}. A possible {@link IndexBuffer} gets bound,
      * too.
-     * 
+     *
      * @see #setIndexBuffer(IndexBuffer)
      */
     void bindArray();
-    
+
     /**
      * Unbinds this array and associated parts
-     * 
+     *
      * @see #bindArray()
      */
     void unbindArray();
-    
+
     /**
      * Adds a {@link VertexBuffer} with a certain layout to this
      * {@link VertexArray}. This method should only be used once.
-     * 
+     *
      * @param buffer the vertexbuffer
      * @param layout the layout
      */
     void addVertexBuffer(VertexBuffer buffer, VertexBufferLayout layout);
-    
+
     /**
      * Adds a {@link VertexBuffer} with a certain configuration to this
      * {@link VertexArray}.
-     * 
+     *
      * @param buffer  the buffer
      * @param element the configuration
      */
     void addVertexBuffer(VertexBuffer buffer, VertexBufferElement element);
-    
+
     /**
      * Sets the {@link IndexBuffer} of this {@link VertexArray}.
-     * 
+     *
      * @param buffer the indexbuffer
      */
     void setIndexBuffer(IndexBuffer buffer);
-    
+
     /**
-     * 
+     *
      * @return true if an {@link IndexBuffer} has been set.
      * @see #setIndexBuffer(IndexBuffer)
      */
     boolean hasIndexBuffer();
-    
+
     /**
-     * 
+     *
      * @return the vertex count of this {@link VertexArray}
      */
     int vertexCount();

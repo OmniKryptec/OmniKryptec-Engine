@@ -17,19 +17,19 @@
 package de.omnikryptec.libapi.exposed.render.shader;
 
 public interface Shader {
-    
+
     /**
      * Binds this {@link Shader}
      */
     void bindShader();
-    
+
     /**
      * Supplies the individual shaders (e.g. vertex- and fragmentshader) to
      * initialize this {@link Shader} program.
-     * 
+     *
      * @param shaderAttachments the individual shaders
      */
     void create(ShaderSource... shaderAttachments);
-    
+
     <T> T getUniform(String name);
 }

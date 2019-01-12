@@ -19,14 +19,14 @@ package de.omnikryptec.libapi.opengl.shader;
 import org.lwjgl.opengl.GL20;
 
 public class GLUniformInt extends GLUniform {
-
+    
     private int currentValue;
     private boolean used = false;
-
+    
     public GLUniformInt(final String name) {
         super(name);
     }
-
+    
     public void loadInt(final int value) {
         if (isFound() && (!this.used || this.currentValue != value)) {
             GL20.glUniform1i(super.getLocation(), value);
@@ -34,5 +34,5 @@ public class GLUniformInt extends GLUniform {
             this.currentValue = value;
         }
     }
-
+    
 }

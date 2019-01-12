@@ -13,7 +13,7 @@ import de.omnikryptec.libapi.opengl.texture.GLTexture;
 
 public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
     
-    private static Deque<GLFrameBuffer> history = new ArrayDeque<>();
+    private static final Deque<GLFrameBuffer> history = new ArrayDeque<>();
     
     private int width;
     private int height;
@@ -26,50 +26,52 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
     private final int pointer;
     
     public GLFrameBuffer() {
-        pointer = GL30.glGenFramebuffers();
+        this.pointer = GL30.glGenFramebuffers();
     }
     
     @Override
     public void bindFrameBuffer() {
-        GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, pointer);
+        GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, this.pointer);
         history.push(this);
     }
     
     @Override
     public void unbindFrameBuffer() {
-        if (history.size() == 1) {
-            history.pop();
-            GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, 0);
-        } else if (history.size() > 1) {
-            history.pop();
-            GLFrameBuffer before = history.pop();
-            before.bindFrameBuffer();
+        if (history.peek() == this) {
+            if (history.size() == 1) {
+                history.pop();
+                GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, 0);
+            } else if (history.size() > 1) {
+                history.pop();
+                final GLFrameBuffer before = history.pop();
+                before.bindFrameBuffer();
+            }
         }
     }
     
     @Override
-    public Texture getTexture(int i) {
-        return textures[i];
+    public Texture getTexture(final int i) {
+        return this.textures[i];
     }
     
     @Override
     public Texture getDepthTexture() {
-        return depthTexture;
+        return this.depthTexture;
     }
     
     @Override
     protected void deleteRaw() {
-        if (depthTexture != null) {
-            depthTexture.delete();
+        if (this.depthTexture != null) {
+            this.depthTexture.delete();
         }
-        if (textures != null) {
-            for (FBTexture t : textures) {
+        if (this.textures != null) {
+            for (final FBTexture t : this.textures) {
                 if (t != null) {
                     t.delete();
                 }
             }
         }
-        GL30.glDeleteFramebuffers(pointer);
+        GL30.glDeleteFramebuffers(this.pointer);
     }
     
     private class FBTexture extends GLTexture {
@@ -80,12 +82,12 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
         
         @Override
         public int getWidth() {
-            return width;
+            return GLFrameBuffer.this.width;
         }
         
         @Override
         public int getHeight() {
-            return height;
+            return GLFrameBuffer.this.height;
         }
         
     }

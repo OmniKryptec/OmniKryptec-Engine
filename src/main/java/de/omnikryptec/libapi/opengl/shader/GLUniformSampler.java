@@ -20,15 +20,16 @@ import org.lwjgl.opengl.GL20;
 
 import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
 
-public class GLUniformSampler extends GLUniform implements UniformSampler{
-
+public class GLUniformSampler extends GLUniform implements UniformSampler {
+    
     private int currentValue;
     private boolean used = false;
-
+    
     public GLUniformSampler(final String name) {
         super(name);
     }
-
+    
+    @Override
     public void setSampler(final int texUnit) {
         if (isFound() && (!this.used || this.currentValue != texUnit)) {
             GL20.glUniform1i(super.getLocation(), texUnit);
@@ -36,5 +37,5 @@ public class GLUniformSampler extends GLUniform implements UniformSampler{
             this.currentValue = texUnit;
         }
     }
-
+    
 }
