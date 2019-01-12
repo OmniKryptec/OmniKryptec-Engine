@@ -39,8 +39,8 @@ public class Entity {
     }
     
     public Entity addComponent(final ComponentType type, final Component component) {
-        this.componentsArray.set(type.getId(), component);
-        this.components.set(type.getId());
+        this.componentsArray.set(type.id, component);
+        this.components.set(type.id);
         if (hasIECSManager()) {
             this.iecsManager.onEntityComponentsChanged(this);
         }
@@ -53,9 +53,9 @@ public class Entity {
     
     public Entity removeComponent(final ComponentType componentType, final Component component) {
         // Only remove if there exists a component of that type to remove
-        if (this.components.get(componentType.getId())) {
-            this.componentsArray.set(componentType.getId(), null);
-            this.components.clear(componentType.getId());
+        if (this.components.get(componentType.id)) {
+            this.componentsArray.set(componentType.id, null);
+            this.components.clear(componentType.id);
             if (hasIECSManager()) {
                 this.iecsManager.onEntityComponentsChanged(this);
             }
@@ -64,11 +64,11 @@ public class Entity {
     }
     
     public <C extends Component> C getComponent(final ComponentType componentType) {
-        return (C) this.componentsArray.get(componentType.getId());
+        return (C) this.componentsArray.get(componentType.id);
     }
     
     public boolean hasComponent(final ComponentType type) {
-        return this.components.get(type.getId());
+        return this.components.get(type.id);
     }
     
     public BitSet getComponents() {

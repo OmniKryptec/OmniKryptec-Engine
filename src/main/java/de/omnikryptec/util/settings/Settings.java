@@ -27,17 +27,17 @@ import de.codemakers.base.util.tough.ToughFunction;
 import de.omnikryptec.util.Util;
 
 public class Settings<K> implements Copyable {
-
+    
     final Map<K, Object> settings;
-
+    
     public Settings() {
         this(new ConcurrentHashMap<>());
     }
-
+    
     public Settings(final Map<K, Object> settings) {
         this.settings = settings;
     }
-
+    
     /**
      * Returns the value for the key
      *
@@ -55,7 +55,7 @@ public class Settings<K> implements Copyable {
         }
         return (T) object;
     }
-
+    
     /**
      * Returns the value for the key and casts it to the clazz
      *
@@ -74,7 +74,7 @@ public class Settings<K> implements Copyable {
         }
         return (T) object;
     }
-
+    
     /**
      * Returns the value for the key (or the default value if null)
      *
@@ -88,7 +88,7 @@ public class Settings<K> implements Copyable {
         final T t = get(key);
         return t == null ? defaultValue : t;
     }
-
+    
     /**
      * Returns the value for the key (or the default value if null) and casts it to
      * the clazz
@@ -104,7 +104,7 @@ public class Settings<K> implements Copyable {
         final T t = get(key);
         return t == null ? defaultValue : t;
     }
-
+    
     /**
      * Sets a value for a key
      *
@@ -121,7 +121,7 @@ public class Settings<K> implements Copyable {
         this.settings.put(key, value);
         return this;
     }
-
+    
     /**
      * Sets some values for some keys
      *
@@ -136,7 +136,7 @@ public class Settings<K> implements Copyable {
         }
         return this;
     }
-
+    
     /**
      * Alters an value in this {@link de.omnikryptec.util.settings.Settings}
      *
@@ -154,7 +154,7 @@ public class Settings<K> implements Copyable {
         set(key, result);
         return result;
     }
-
+    
     /**
      * Alters an value in this {@link de.omnikryptec.util.settings.Settings}
      *
@@ -173,7 +173,7 @@ public class Settings<K> implements Copyable {
         set(key, result);
         return result;
     }
-
+    
     /**
      * Removes a key and its value from this
      * {@link de.omnikryptec.util.settings.Settings}
@@ -187,7 +187,7 @@ public class Settings<K> implements Copyable {
         this.settings.remove(key);
         return this;
     }
-
+    
     /**
      * Removes some keys and their values from this
      * {@link de.omnikryptec.util.settings.Settings}
@@ -201,7 +201,7 @@ public class Settings<K> implements Copyable {
         keys.forEach(this::remove);
         return this;
     }
-
+    
     /**
      * Removes a key and its value from this
      * {@link de.omnikryptec.util.settings.Settings} if the current value for the
@@ -218,7 +218,7 @@ public class Settings<K> implements Copyable {
         this.settings.remove(key, value);
         return this;
     }
-
+    
     /**
      * Removes some keys and their values from this
      * {@link de.omnikryptec.util.settings.Settings} if the current value for they
@@ -233,7 +233,7 @@ public class Settings<K> implements Copyable {
         settings.forEach(this::remove);
         return this;
     }
-
+    
     /**
      * Returns <tt>true</tt> if this {@link de.omnikryptec.util.settings.Settings}
      * has a specific key
@@ -246,7 +246,7 @@ public class Settings<K> implements Copyable {
     public boolean hasKey(final K key) {
         return this.settings.containsKey(key);
     }
-
+    
     /**
      * Returns <tt>true</tt> if this {@link de.omnikryptec.util.settings.Settings}
      * has a specific value
@@ -259,7 +259,7 @@ public class Settings<K> implements Copyable {
     public boolean hasValue(final Object value) {
         return this.settings.containsValue(value);
     }
-
+    
     /**
      * Removes all {@link java.util.Map.Entry<K, java.lang.Object>}s of this
      * {@link de.omnikryptec.util.settings.Settings}
@@ -268,12 +268,12 @@ public class Settings<K> implements Copyable {
         this.settings.clear();
         return this.settings.isEmpty();
     }
-
+    
     @Override
     public Settings<K> copy() {
         return new Settings<K>().setAll(this.settings);
     }
-
+    
     @Override
     public void set(final Copyable copyable) {
         final Settings<K> settings = Require.clazz(copyable, Settings.class);
@@ -283,7 +283,7 @@ public class Settings<K> implements Copyable {
             this.settings.putAll(settings.settings);
         }
     }
-
+    
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -295,15 +295,15 @@ public class Settings<K> implements Copyable {
         final Settings<?> settings1 = (Settings<?>) o;
         return Objects.equals(this.settings, settings1.settings);
     }
-
+    
     @Override
     public int hashCode() {
         return Objects.hash(this.settings);
     }
-
+    
     @Override
     public String toString() {
         return "Settings{" + "settings=" + this.settings + '}';
     }
-
+    
 }

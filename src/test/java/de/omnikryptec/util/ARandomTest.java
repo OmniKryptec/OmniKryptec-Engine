@@ -16,33 +16,14 @@
 
 package de.omnikryptec.util;
 
-import com.google.common.collect.Table;
-import com.google.common.collect.Table.Cell;
-
-import de.omnikryptec.graphics.shader.base.parser.ShaderParser;
-import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
-import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
-
 public class ARandomTest {
-
+    
     public static void main(final String[] args) {
-        /*
-         * System.out.println(Math.rint(-1.5)); System.out.println(Mathf.ceil(-1.5f));
-         * int ops = 0; long time = System.nanoTime(); for (float f = -100.0f; f <=
-         * 100.0f; f += 0.0125f) { Mathf.rint(f); ops++; } long time2 =
-         * System.nanoTime(); System.out.println("Time per op: " + ((time2 - time) /
-         * ops) + "ns"); for (double f = -100.0; f <= 100.0; f += 0.0125) {
-         * if(Mathd.rint(f)!=Math.rint(f)) { System.out.println(f); } }
-         */
-        final ShaderParser parser = ShaderParser.create();
-        parser.addTokenReplacer("spacko", "kekekekeke");
-        parser.parse("$define module kek$ $header$ w $header$ bonobo $spacko$");
-        parser.parse("$define shader kekd VERTEX$ $header$ v $header$ mega  $module kek$");
-        final Table<String, ShaderType, ShaderSource> src = parser.getCurrentShaderTable();
-        for (final Cell<String, ShaderType, ShaderSource> s : src.cellSet()) {
-            System.out.println(s.getValue().source);
-            System.out.println();
-        }
+        Mapper<TestTest> mapper2 = new Mapper<>();
+        test(mapper2.of(TestTest.class));
     }
-
+    
+    public static void test(Mapper<TestTest>.Mapping mapping) {
+        System.out.println(mapping);
+    }
 }

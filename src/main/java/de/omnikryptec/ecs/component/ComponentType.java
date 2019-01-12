@@ -21,52 +21,40 @@ import java.util.Map;
 
 public class ComponentType {
     
-    private static int index = 0;
-    private static Map<Class<? extends Component>, ComponentType> componentTypes = new HashMap<>();
-    private final int id;
+    private static int next = 0;
+    private static Map<Class<? extends Component>, ComponentType> mappings = new HashMap<>();
+    
+    public static ComponentType of(Class<? extends Component> clazz) {
+        ComponentType mapper = mappings.get(clazz);
+        if (mapper == null) {
+            mapper = new ComponentType();
+            mappings.put(clazz, mapper);
+        }
+        return mapper;
+    }
+    
+    public final int id;
     
     private ComponentType() {
-        this.id = index++;
-    }
-    
-    public static ComponentType of(final Class<? extends Component> clazz) {
-        if (!componentTypes.containsKey(clazz)) {
-            synchronized (componentTypes) {
-                componentTypes.put(clazz, new ComponentType());
-            }
-        }
-        return componentTypes.get(clazz);
-    }
-    
-    public static ComponentType ofExisting(final Class<? extends Component> clazz) {
-        return componentTypes.get(clazz);
-    }
-    
-    public static int getTypesSize() {
-        return index;
-    }
-    
-    public int getId() {
-        return this.id;
+        this.id = next;
+        next++;
     }
     
     @Override
     public int hashCode() {
-        return this.id;
+        return id;
     }
     
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
+    public boolean equals(Object obj) {
+        if (obj == this) {
             return true;
         }
         if (obj == null) {
             return false;
         }
         if (obj instanceof ComponentType) {
-            if (this.id == ((ComponentType) obj).id) {
-                return true;
-            }
+            return ((ComponentType) obj).id == this.id;
         }
         return false;
     }

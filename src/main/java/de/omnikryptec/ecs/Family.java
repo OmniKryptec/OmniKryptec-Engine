@@ -42,7 +42,7 @@ public class Family {
     public static BitSet of(@Nonnull final ComponentType... types) {
         final BitSet bitset = new BitSet();
         for (final ComponentType type : types) {
-            bitset.set(type.getId());
+            bitset.set(type.id);
         }
         return bitset;
     }
