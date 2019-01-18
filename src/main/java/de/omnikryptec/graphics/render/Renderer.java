@@ -6,4 +6,5 @@ public interface Renderer {
     
     void render(List<?> l);
     
+    List<?> createRenderList();
 }
