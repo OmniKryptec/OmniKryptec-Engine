@@ -1,10 +1,11 @@
 package de.omnikryptec.graphics.render;
 
-import java.util.List;
+import de.omnikryptec.util.settings.Settings;
 
 public interface Renderer {
     
-    void render(List<?> l);
+    void render(IProjection projection, RenderList<?> objs, Settings<?> renderSettings);
     
-    List<?> createRenderList();
+    RenderList<?> createRenderList();
+    
 }
