@@ -5,7 +5,7 @@ import de.omnikryptec.core.scene.SceneBuilder;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
 import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
-import de.omnikryptec.resource.loadervpc.ResourceProcessor;
+import de.omnikryptec.resource.loadervpc.ResourceManager;
 import de.omnikryptec.resource.loadervpc.ShaderLoader;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
@@ -25,10 +25,8 @@ public class BigTest extends EngineLoader {
     @Override
     protected void onInitialized() {
         final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
-        ResourceProcessor proc = new ResourceProcessor();
-        proc.addDefaultLoader();
-        proc.addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
-        proc.instantLoad(false, new AdvancedFile("src/test/resources"));
+        getResManager().addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
+        getResManager().instantLoad(false, new AdvancedFile("src/test/resources"));
 
         builder.addGraphicsClearTest();
         builder.addGraphicsBasicImplTest();

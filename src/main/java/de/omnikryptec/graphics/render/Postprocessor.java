@@ -6,7 +6,7 @@ import de.omnikryptec.util.settings.Settings;
 public class Postprocessor {
 
     public void postprocess(FrameBuffer scene, Settings<?> renderSettings) {
-        //TODO
+        //TODO create
     }
     
 }

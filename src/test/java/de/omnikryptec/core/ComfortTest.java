@@ -22,7 +22,7 @@ import de.omnikryptec.graphics.shader.base.parser.ShaderParser;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
 import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
-import de.omnikryptec.resource.loadervpc.ResourceProcessor;
+import de.omnikryptec.resource.loadervpc.ResourceManager;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 

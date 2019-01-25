@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.util.ExecutorsUtil;
 
-public class ResourceProcessor {
+public class ResourceManager {
 
     private final Collection<LoadingProgressCallback> callbacks;
     private final Collection<ResourceLoader<?>> loadersThreadGroup;
@@ -35,11 +35,11 @@ public class ResourceProcessor {
     private final ResourceProvider resourceProvider;
     private final ResourceNameGenerator resourceNameGenerator;
 
-    public ResourceProcessor() {
+    public ResourceManager() {
         this(new DefaultResourceProvider(), ResourceNameGenerator.defaultNameGen());
     }
 
-    public ResourceProcessor(final ResourceProvider resProv, final ResourceNameGenerator nameGen) {
+    public ResourceManager(final ResourceProvider resProv, final ResourceNameGenerator nameGen) {
         this.resourceProvider = resProv;
         this.resourceNameGenerator = nameGen;
         this.callbacks = new ArrayList<>();
@@ -52,6 +52,11 @@ public class ResourceProcessor {
         addLoader(new TextureLoader());
         addLoader(new MeshLoader());
         addLoader(new ShaderLoader());
+    }
+
+    public void clearLoaders() {
+        loadersThreadGroup.clear();
+        loadersMainThread.clear();
     }
 
     public ResourceProvider getProvider() {
@@ -143,16 +148,16 @@ public class ResourceProcessor {
         }
 
         private void processStaged() {
-            Collections.sort(ResourceProcessor.this.staged);
-            final int[] localmaxs = new int[ResourceProcessor.this.staged.size()];
+            Collections.sort(ResourceManager.this.staged);
+            final int[] localmaxs = new int[ResourceManager.this.staged.size()];
             int size = 0;
-            for (int i = 0; i < ResourceProcessor.this.staged.size(); i++) {
-                localmaxs[i] = countFiles(ResourceProcessor.this.staged.get(i).getFile(), 0);
+            for (int i = 0; i < ResourceManager.this.staged.size(); i++) {
+                localmaxs[i] = countFiles(ResourceManager.this.staged.get(i).getFile(), 0);
                 size += localmaxs[i];
             }
-            notifyStart(size, ResourceProcessor.this.staged.size());
-            for (int i = 0; i < ResourceProcessor.this.staged.size(); i++) {
-                final AdvancedFile file = ResourceProcessor.this.staged.get(i).getFile();
+            notifyStart(size, ResourceManager.this.staged.size());
+            for (int i = 0; i < ResourceManager.this.staged.size(); i++) {
+                final AdvancedFile file = ResourceManager.this.staged.get(i).getFile();
                 notifyStage(file, i, localmaxs[i]);
                 processStagedIntern(file, file);
             }
@@ -203,34 +208,34 @@ public class ResourceProcessor {
 
         private void notifyStage(final AdvancedFile file, final int stagenumber, final int localmax) {
             this.localprocessed = 0;
-            for (final LoadingProgressCallback callback : ResourceProcessor.this.callbacks) {
+            for (final LoadingProgressCallback callback : ResourceManager.this.callbacks) {
                 callback.onStageChange(file, localmax, stagenumber);
             }
         }
 
         private void notifyProcessed(final AdvancedFile file) {
             this.localprocessed++;
-            for (final LoadingProgressCallback callback : ResourceProcessor.this.callbacks) {
+            for (final LoadingProgressCallback callback : ResourceManager.this.callbacks) {
                 callback.onProgressChange(file, this.localprocessed);
             }
         }
 
         private void notifyStart(final int size, final int maxstages) {
-            for (final LoadingProgressCallback callback : ResourceProcessor.this.callbacks) {
+            for (final LoadingProgressCallback callback : ResourceManager.this.callbacks) {
                 callback.onLoadingStart(size, maxstages);
             }
         }
 
         private void notifyDone() {
             ExecutorsUtil.shutdown(this.executorService, 1, TimeUnit.HOURS, false);
-            for (final LoadingProgressCallback callback : ResourceProcessor.this.callbacks) {
+            for (final LoadingProgressCallback callback : ResourceManager.this.callbacks) {
                 callback.onLoadingDone();
             }
         }
 
         private void load(final boolean useExecutor, final AdvancedFile file, final AdvancedFile superfile) {
             final Runnable r = () -> {
-                for (final ResourceLoader<?> loader : ResourceProcessor.this.loadersThreadGroup) {
+                for (final ResourceLoader<?> loader : ResourceManager.this.loadersThreadGroup) {
                     if (file.getName().matches(loader.getFileNameRegex())) {
                         Object res = null;
                         try {
@@ -247,7 +252,7 @@ public class ResourceProcessor {
             } else {
                 r.run();
             }
-            for (final ResourceLoader<?> loader : ResourceProcessor.this.loadersMainThread) {
+            for (final ResourceLoader<?> loader : ResourceManager.this.loadersMainThread) {
                 if (file.getName().matches(loader.getFileNameRegex())) {
                     Object res = null;
                     try {

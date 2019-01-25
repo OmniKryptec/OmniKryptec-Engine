@@ -27,12 +27,12 @@ public interface LoadingProgressCallback {
         @Override
         public void onStageChange(AdvancedFile superfile, int stageResMax, int stageNumber) {
             lrmax = stageResMax;
-            System.out.println("Now loading stage " + superfile + ", " + stageNumber + "/" + maxs);
+            System.out.println("S: " + superfile + ", " + stageNumber + "/" + maxs);
         }
 
         @Override
         public void onProgressChange(AdvancedFile file, int stageResProcessedCount) {
-            System.out.println("F: " + file + ", " + stageResProcessedCount + "/" + lrmax);
+            System.out.println(" F: " + file + ", " + stageResProcessedCount + "/" + lrmax);
         }
 
         @Override

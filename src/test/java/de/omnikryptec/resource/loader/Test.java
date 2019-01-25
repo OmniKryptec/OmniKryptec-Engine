@@ -21,12 +21,12 @@ import java.util.stream.Collectors;
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
 import de.omnikryptec.resource.loadervpc.ResourceLoader;
-import de.omnikryptec.resource.loadervpc.ResourceProcessor;
+import de.omnikryptec.resource.loadervpc.ResourceManager;
 
 public class Test {
     
     public static void main(final String[] args) {
-        final ResourceProcessor p = new ResourceProcessor();
+        final ResourceManager p = new ResourceManager();
         p.addLoader(new ResourceLoader<String>() {
             
             @Override

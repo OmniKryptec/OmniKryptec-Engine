@@ -31,7 +31,7 @@ public abstract class GLUniform {
     protected void storeUniformLocation(final int programID) {
         this.location = GL20.glGetUniformLocation(programID, this.name);
         if (this.location == -1) {
-            //TODO
+            //TODO better error
             System.err.println("No uniform variable called " + this.name + " found!");
         } else {
             this.isfound = true;

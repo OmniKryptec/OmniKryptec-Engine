@@ -187,6 +187,10 @@ public class ShaderParser {
         return finished;
     }
 
+    public boolean isAvailable(String name) {
+        return !getCurrentShaderTable().row(name).isEmpty();
+    }
+
     private String makeSource(final SourceDescription desc) {
         String rawSrc = desc.source().toString();
         if (rawSrc.contains(HEADER_REPLACE_MARKER)) {
