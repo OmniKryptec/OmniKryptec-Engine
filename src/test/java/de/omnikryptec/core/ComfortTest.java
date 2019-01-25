@@ -16,9 +16,13 @@
 
 package de.omnikryptec.core;
 
+import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.scene.SceneBuilder;
+import de.omnikryptec.graphics.shader.base.parser.ShaderParser;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
+import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
+import de.omnikryptec.resource.loadervpc.ResourceProcessor;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
@@ -34,14 +38,15 @@ public class ComfortTest extends EngineLoader {
         libsettings.set(LibSetting.DEBUG, true);
         windowSettings.set(WindowSetting.Name, "ComfortTest-Window");
     }
-    
+
     @Override
     protected void onInitialized() {
         final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
         //builder.addGraphicsClearTest();
         //final SceneBuilder builder = new SceneBuilder();
+
         builder.addGraphicsClearTest();
-        builder.addGraphicsBasicImplTest();
+        //builder.addGraphicsBasicImplTest();
 
         //getGameController().setLocalScene(builder.get());
     }

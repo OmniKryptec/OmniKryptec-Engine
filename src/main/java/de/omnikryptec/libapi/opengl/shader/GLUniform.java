@@ -22,7 +22,7 @@ public abstract class GLUniform {
 
     private final String name;
     private int location;
-    private final boolean isfound = false;
+    private boolean isfound = false;
 
     protected GLUniform(final String name) {
         this.name = name;
@@ -31,7 +31,10 @@ public abstract class GLUniform {
     protected void storeUniformLocation(final int programID) {
         this.location = GL20.glGetUniformLocation(programID, this.name);
         if (this.location == -1) {
+            //TODO
             System.err.println("No uniform variable called " + this.name + " found!");
+        } else {
+            this.isfound = true;
         }
     }
 
@@ -41,7 +44,7 @@ public abstract class GLUniform {
 
     @Override
     public String toString() {
-        return "Name: " + this.name + " Location: " + this.location;
+        return "Uniform, Name: " + this.name + " Location: " + this.location;
     }
 
     public boolean isFound() {

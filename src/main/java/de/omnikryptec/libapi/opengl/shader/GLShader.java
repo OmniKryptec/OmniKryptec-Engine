@@ -73,10 +73,12 @@ public class GLShader extends AutoDelete implements Shader {
                 GL20.glAttachShader(this.programId, shader);
             }
             this.attachments.put(a.shaderType, shader);
-            extractUniforms(a.source);
         }
         GL20.glLinkProgram(this.programId);
         GL20.glValidateProgram(this.programId);
+        for (final ShaderSource a : shaderAttachments) {
+            extractUniforms(a.source);
+        }
     }
 
     @Override

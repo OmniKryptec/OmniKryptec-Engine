@@ -2,7 +2,7 @@ package de.omnikryptec.graphics.render;
 
 import java.util.ArrayList;
 
-public class ArrayRenderList<T> implements RenderList<ArrayList<T>> {
+public class ArrayDisplayList<T> implements DisplayList {
     
     private ArrayList<T> arl = new ArrayList<>();
     
@@ -11,7 +11,6 @@ public class ArrayRenderList<T> implements RenderList<ArrayList<T>> {
         arl.add((T) o);
     }
     
-    @Override
     public ArrayList<T> get() {
         return arl;
     }

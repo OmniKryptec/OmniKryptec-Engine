@@ -185,13 +185,8 @@ public class SceneBuilder {
         array.addVertexBuffer(buffer, new VertexBufferLayout.VertexBufferElement(Type.FLOAT, 2, true));
         array.setIndexBuffer(indexBuffer);
 
-        final String vertex = "$define shader test VERTEX$ #version 330 core\nlayout(location = 0) in vec4 pos;\nvoid main() {\ngl_Position = pos;}";
-        //ShaderParser.instance().parse(vertex);
-        final String fragment = "$define shader test FRAGMENT$ #version 330 core\nout vec4 col;\nvoid main() {\ncol = vec4(1.0, 0.0, 1.0, 1.0);}";
-        //ShaderParser.instance().parse(fragment);
-        final Table<String, ShaderType, ShaderSource> data = ShaderParser.instance().getCurrentShaderTable();
         final Shader shader = RenderAPI.get().createShader();
-        shader.create(data.get("test", ShaderType.Vertex), data.get("test", ShaderType.Fragment));
+        shader.create("test");
         final UniformVec4 color = shader.getUniform("u_col");
 
         addUpdateable(new Updateable() {
@@ -199,7 +194,6 @@ public class SceneBuilder {
             public void update(final Time time) {
                 shader.bindShader();
                 color.loadColor(Color.randomRGB());
-                OpenGLUtil.flushErrors();
                 array.bindArray();
                 GL11.glDrawElements(GL11.GL_TRIANGLES, array.vertexCount(), GL11.GL_UNSIGNED_INT, 0);
                 array.unbindArray();

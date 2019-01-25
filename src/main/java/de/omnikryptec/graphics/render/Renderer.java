@@ -4,8 +4,16 @@ import de.omnikryptec.util.settings.Settings;
 
 public interface Renderer {
     
-    void render(IProjection projection, RenderList<?> objs, Settings<?> renderSettings);
+    default void preRender(Settings<?> renderSettings) {
+        
+    }
     
-    RenderList<?> createRenderList();
+    void render(IProjection projection, DisplayList objs, Settings<?> renderSettings);
+    
+    default void postRender(Settings<?> renderSettings) {
+        
+    }
+    
+    DisplayList createRenderList();
     
 }

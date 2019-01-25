@@ -1,8 +1,7 @@
 package de.omnikryptec.graphics.render;
 
-public interface RenderList<T> {
+public interface DisplayList {
     
     void addObject(Object o);
     
-    T get();
 }

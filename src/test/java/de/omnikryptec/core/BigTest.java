@@ -4,6 +4,7 @@ import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.scene.SceneBuilder;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
+import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
 import de.omnikryptec.resource.loadervpc.ResourceProcessor;
 import de.omnikryptec.resource.loadervpc.ShaderLoader;
 import de.omnikryptec.util.settings.IntegerKey;
@@ -18,20 +19,17 @@ public class BigTest extends EngineLoader {
     protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
         libsettings.set(LibSetting.DEBUG, true);
-        windowSettings.set(WindowSetting.Name, "ComfortTest-Window");
+        windowSettings.set(WindowSetting.Name, "BigTest-Window");
     }
 
     @Override
     protected void onInitialized() {
         final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
-        final ResourceProcessor proc = new ResourceProcessor();
-        proc.addLoader(new ShaderLoader());
-        proc.stage(new AdvancedFile("src/test/resources"));
-        proc.processStaged(false);
-        //Table<String, ShaderType, ShaderSource> table = ShaderParser.instance().getCurrentShaderTable();
-        //System.out.println(table.get("test", ShaderType.Fragment).source);
-        //builder.addGraphicsClearTest();
-        //final SceneBuilder builder = new SceneBuilder();
+        ResourceProcessor proc = new ResourceProcessor();
+        proc.addDefaultLoader();
+        proc.addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
+        proc.instantLoad(false, new AdvancedFile("src/test/resources"));
+
         builder.addGraphicsClearTest();
         builder.addGraphicsBasicImplTest();
 

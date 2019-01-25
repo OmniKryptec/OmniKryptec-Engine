@@ -16,12 +16,20 @@
 
 package de.omnikryptec.libapi.exposed.render.shader;
 
+import java.util.Map;
+
+import com.google.common.collect.Table;
+
+import de.omnikryptec.graphics.shader.base.parser.ShaderParser;
+import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
+
 public interface Shader {
 
     /**
      * Binds this {@link Shader}
      */
     void bindShader();
+
 
     /**
      * Supplies the individual shaders (e.g. vertex- and fragmentshader) to
@@ -32,4 +40,23 @@ public interface Shader {
     void create(ShaderSource... shaderAttachments);
 
     <T> T getUniform(String name);
+    
+
+    default void create(String name) {
+        create(name, ShaderParser.instance().getCurrentShaderTable());
+    }
+
+    default void create(String name, Table<String, ShaderType, ShaderSource> table) {
+        Map<ShaderType, ShaderSource> map = table.row(name);
+        if (map.size() == 0) {
+            throw new IllegalStateException("shader not found: " + name);
+        }
+        ShaderSource[] srcs = new ShaderSource[map.size()];
+        int index = 0;
+        for (ShaderSource s : map.values()) {
+            srcs[index] = s;
+            index++;
+        }
+        create(srcs);
+    }
 }
