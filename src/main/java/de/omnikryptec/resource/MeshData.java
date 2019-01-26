@@ -32,21 +32,30 @@ public class MeshData {
     }
     
     public static enum VertexAttribute {
-        Position, Normal, Tangent, Bitangent, TextureCoord, Index;
+        Position, TextureCoord, Normal, Tangent, Bitangent, Index;
     }
     
     private PrimitiveType primitiveType;
     
     private final Map<VertexAttribute, Object> vertexData = new EnumMap<>(VertexAttribute.class);
+    private final Map<VertexAttribute, Integer> vertexDataSize = new EnumMap<>(VertexAttribute.class);
     
+    /**
+     * Params layout:
+     * <ul>
+     * <li>Indices: VertexAttribute.Index, int[]</li>
+     * <li>Other: [VertexAttribute], per-vertex-count, float[]</li>
+     * </ul>
+     * 
+     * @param objects params
+     */
     public MeshData(final Object... objects) {
-        if (objects.length % 2 != 0) {
-            throw new IllegalArgumentException();
-        }
         VertexAttribute current = null;
         for (final Object o : objects) {
             if (o instanceof VertexAttribute) {
                 current = (VertexAttribute) o;
+            } else if (o instanceof Integer) {
+                this.vertexDataSize.put(current, (Integer) o);
             } else {
                 this.vertexData.put(current, o);
             }
@@ -59,6 +68,10 @@ public class MeshData {
     
     public <T> T getAttribute(final VertexAttribute attribute) {
         return (T) this.vertexData.get(attribute);
+    }
+    
+    public int getAttributeSize(VertexAttribute attribute) {
+        return vertexDataSize.get(attribute);
     }
     
     public PrimitiveType getPrimitiveType() {

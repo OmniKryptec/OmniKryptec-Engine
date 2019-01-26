@@ -30,6 +30,7 @@ import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.IndexBuffer;
+import de.omnikryptec.libapi.exposed.render.Mesh;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
@@ -41,6 +42,8 @@ import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec4;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.libapi.opengl.OpenGLUtil.BufferType;
+import de.omnikryptec.resource.MeshData;
+import de.omnikryptec.resource.MeshData.VertexAttribute;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.updater.Time;
 
@@ -175,36 +178,29 @@ public class SceneBuilder {
     }
     
     public void addGraphicsBasicImplTest() {
-        final VertexBuffer buffer = RenderAPI.get().createVertexBuffer();
+        MeshData data = new MeshData(VertexAttribute.Index, new int[] { 0, 1, 2, 2, 1, 3 }, VertexAttribute.Position, 2,
+                new float[] { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f });
         
-        buffer.storeData(new float[] { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f }, false);
-        //buffer.storeData((float[]) data.getAttribute(VertexAttribute.Position), false);
-        
-        final IndexBuffer indexBuffer = RenderAPI.get().createIndexBuffer();
-        indexBuffer.storeData(new int[] { 0, 1, 2, 2, 1, 3 }, false);
-        //indexBuffer.storeData((int[]) data.getAttribute(VertexAttribute.Index), false);
-        
-        final VertexArray array = RenderAPI.get().createVertexArray();
-        array.addVertexBuffer(buffer, new VertexBufferLayout.VertexBufferElement(Type.FLOAT, 2, true));
-        array.setIndexBuffer(indexBuffer);
-        
+        Mesh mesh = new Mesh(data);
+        OpenGLUtil.flushErrors();
         final Shader shader = RenderAPI.get().createShader();
         shader.create("test");
         final UniformVec4 color = shader.getUniform("u_col");
         
-        FrameBuffer fbo = RenderAPI.get().createFrameBuffer(100, 100, 0, new FBTarget(TextureFormat.RGBA8, 0),
-                new FBTarget(TextureFormat.DEPTH24));
-        
+        /*
+         * FrameBuffer fbo = RenderAPI.get().createFrameBuffer(100, 100, 0, new
+         * FBTarget(TextureFormat.RGBA8, 0), new FBTarget(TextureFormat.DEPTH24));
+         */
         addUpdateable(new Updateable() {
             @Override
             public void update(final Time time) {
-                fbo.bindFrameBuffer();
+                //fbo.bindFrameBuffer();
                 shader.bindShader();
                 color.loadColor(Color.randomRGB());
-                array.bindArray();
-                GL11.glDrawElements(GL11.GL_TRIANGLES, array.vertexCount(), GL11.GL_UNSIGNED_INT, 0);
-                array.unbindArray();
-                fbo.unbindFrameBuffer();
+                mesh.bindMesh();
+                GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.vertexCount(), GL11.GL_UNSIGNED_INT, 0);
+                mesh.unbindMesh();
+                //fbo.unbindFrameBuffer();
             }
         });
         

@@ -94,6 +94,7 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
         }
         bindArray();
         buffer.bindBuffer();
+        //pass the attribarrayindex as parameter in the future?
         GL20.glEnableVertexAttribArray(this.vaaIndex);
         GL20.glVertexAttribPointer(this.vaaIndex, element.getCount(), OpenGLUtil.typeId(element.getType()),
                 element.normalize(), 0, 0);

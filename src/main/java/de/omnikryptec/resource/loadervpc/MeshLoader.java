@@ -58,7 +58,7 @@ public class MeshLoader implements ResourceLoader<MeshFile> {
                     indices[j + k] = face.mIndices().get(k);
                 }
             }
-            meshFile[i] = new MeshData(VertexAttribute.Position, positions, VertexAttribute.Index, indices);
+            meshFile[i] = new MeshData(VertexAttribute.Position, 3, positions, VertexAttribute.Index, indices);
         }
         return new MeshFile(meshFile);
     }
