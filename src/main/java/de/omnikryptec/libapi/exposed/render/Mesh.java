@@ -18,6 +18,7 @@ public class Mesh {
             ibo.storeData(this.meshData.getAttribute(VertexAttribute.Index), false);
             this.vertexArray.setIndexBuffer(ibo);
         }
+        //TODO make attribute positions configurable
         for (final VertexAttribute va : VertexAttribute.values()) {
             if (va != VertexAttribute.Index && this.meshData.hasVertexAttribute(va)) {
                 final VertexBuffer vbo = RenderAPI.get().createVertexBuffer();
