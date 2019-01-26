@@ -19,41 +19,41 @@ package de.omnikryptec.util.data;
 import java.util.Objects;
 
 public class DynamicArray<E> {
-
+    
     private Object[] array;
-
+    
     public DynamicArray() {
         this(10);
     }
-
+    
     public DynamicArray(final int initialSize) {
         this.array = new Object[initialSize];
     }
-
+    
     public void set(final int index, final E e) {
         if (index >= this.array.length) {
             grow(index - this.array.length + 1);
         }
         this.array[index] = e;
     }
-
+    
     public E get(final int index) {
         if (index < 0 || index >= size()) {
             return null;
         }
         return (E) this.array[index];
     }
-
+    
     private void grow(final int amount) {
         final Object[] newArray = new Object[size() + amount];
         System.arraycopy(this.array, 0, newArray, 0, this.array.length);
         this.array = newArray;
     }
-
+    
     public int size() {
         return this.array.length;
     }
-
+    
     public void trim() {
         int index = this.array.length - 1;
         while (this.array[index] == null) {
@@ -65,7 +65,7 @@ public class DynamicArray<E> {
             this.array = newArray;
         }
     }
-
+    
     public boolean contains(final Object object) {
         for (final Object i : this.array) {
             if (Objects.equals(i, object)) {
@@ -74,7 +74,7 @@ public class DynamicArray<E> {
         }
         return false;
     }
-
+    
     public int indexOf(final Object object) {
         for (int i = 0; i < this.array.length; i++) {
             if (Objects.equals(this.array[i], object)) {
@@ -83,7 +83,7 @@ public class DynamicArray<E> {
         }
         return -1;
     }
-
+    
     @Override
     public boolean equals(final Object obj) {
         if (obj == null) {

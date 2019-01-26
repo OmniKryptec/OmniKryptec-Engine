@@ -24,13 +24,12 @@ import de.omnikryptec.graphics.shader.base.parser.ShaderParser;
 import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 
 public interface Shader {
-
+    
     /**
      * Binds this {@link Shader}
      */
     void bindShader();
-
-
+    
     /**
      * Supplies the individual shaders (e.g. vertex- and fragmentshader) to
      * initialize this {@link Shader} program.
@@ -38,22 +37,21 @@ public interface Shader {
      * @param shaderAttachments the individual shaders
      */
     void create(ShaderSource... shaderAttachments);
-
+    
     <T> T getUniform(String name);
     
-
-    default void create(String name) {
+    default void create(final String name) {
         create(name, ShaderParser.instance().getCurrentShaderTable());
     }
-
-    default void create(String name, Table<String, ShaderType, ShaderSource> table) {
-        Map<ShaderType, ShaderSource> map = table.row(name);
+    
+    default void create(final String name, final Table<String, ShaderType, ShaderSource> table) {
+        final Map<ShaderType, ShaderSource> map = table.row(name);
         if (map.size() == 0) {
             throw new IllegalStateException("shader not found: " + name);
         }
-        ShaderSource[] srcs = new ShaderSource[map.size()];
+        final ShaderSource[] srcs = new ShaderSource[map.size()];
         int index = 0;
-        for (ShaderSource s : map.values()) {
+        for (final ShaderSource s : map.values()) {
             srcs[index] = s;
             index++;
         }

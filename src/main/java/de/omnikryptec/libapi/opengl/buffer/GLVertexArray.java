@@ -30,37 +30,37 @@ import de.omnikryptec.libapi.exposed.render.VertexBufferLayout.VertexBufferEleme
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 
 public class GLVertexArray extends AutoDelete implements VertexArray {
-    
+
     private final int pointer;
     private int vaaIndex = 0;
-    
+
     private int vertexCount;
-    
+
     private boolean indexBuffer;
-    
+
     public GLVertexArray() {
         this.pointer = GL30.glGenVertexArrays();
     }
-    
+
     @Override
     public void bindArray() {
         OpenGLUtil.bindVertexArray(this.pointer, false);
     }
-    
+
     @Override
     public void unbindArray() {
         OpenGLUtil.bindVertexArray(0, true);
     }
-    
+
     @Override
     protected void deleteRaw() {
         GL30.glDeleteVertexArrays(this.pointer);
     }
-    
+
     public int arrayId() {
         return this.pointer;
     }
-    
+
     @Override
     public void addVertexBuffer(final VertexBuffer buffer, final VertexBufferLayout layout) {
         final List<VertexBufferElement> elements = layout.getElements();
@@ -86,7 +86,7 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
         }
         unbindArray();
     }
-    
+
     @Override
     public void addVertexBuffer(final VertexBuffer buffer, final VertexBufferElement element) {
         if (!hasIndexBuffer()) {
@@ -101,7 +101,7 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
         this.vaaIndex++;
         unbindArray();
     }
-    
+
     @Override
     public void setIndexBuffer(final IndexBuffer buffer) {
         this.vertexCount = buffer.size();
@@ -110,15 +110,15 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
         buffer.bindBuffer();
         unbindArray();
     }
-    
+
     @Override
     public int vertexCount() {
         return this.vertexCount;
     }
-    
+
     @Override
     public boolean hasIndexBuffer() {
         return this.indexBuffer;
     }
-    
+
 }

@@ -19,7 +19,7 @@ package de.omnikryptec.libapi.exposed.render;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout.VertexBufferElement;
 
 public interface VertexArray {
-    
+
     /**
      * Binds this {@link VertexArray}. A possible {@link IndexBuffer} gets bound,
      * too.
@@ -27,14 +27,14 @@ public interface VertexArray {
      * @see #setIndexBuffer(IndexBuffer)
      */
     void bindArray();
-    
+
     /**
      * Unbinds this array and associated parts
      *
      * @see #bindArray()
      */
     void unbindArray();
-    
+
     /**
      * Adds a {@link VertexBuffer} with a certain layout to this
      * {@link VertexArray}. This method should only be used once.
@@ -43,7 +43,7 @@ public interface VertexArray {
      * @param layout the layout
      */
     void addVertexBuffer(VertexBuffer buffer, VertexBufferLayout layout);
-    
+
     /**
      * Adds a {@link VertexBuffer} with a certain configuration to this
      * {@link VertexArray}.
@@ -52,24 +52,24 @@ public interface VertexArray {
      * @param element the configuration
      */
     void addVertexBuffer(VertexBuffer buffer, VertexBufferElement element);
-    
+
     /**
      * Sets the {@link IndexBuffer} of this {@link VertexArray}.
      *
      * @param buffer the indexbuffer
      */
     void setIndexBuffer(IndexBuffer buffer);
-    
+
     /**
      *
      * @return true if an {@link IndexBuffer} has been set.
      * @see #setIndexBuffer(IndexBuffer)
      */
     boolean hasIndexBuffer();
-    
+
     /**
      * The amount of vertices stored in this {@link VertexArray}.
-     * 
+     *
      * @return the vertex count of this {@link VertexArray}
      */
     int vertexCount();

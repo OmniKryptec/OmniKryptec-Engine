@@ -36,24 +36,24 @@ import de.omnikryptec.util.updater.Time;
  * @author pcfreak9000
  */
 public class ECSManager implements IECSManager {
-    
+
     private final EntityManager entityManager;
     private final SystemManager systemManager;
-    
+
     private final Collection<EntityListener> listeners;
-    
+
     private boolean updating = false;
     private Queue<ECSSystemTask> systemTasks;
     private Queue<ECSEntityTask> entityTasks;
-    
+
     public ECSManager() {
         this(false);
     }
-    
+
     public ECSManager(final boolean concurrent) {
         this(concurrent, new EntityManager(), new SystemManager());
     }
-    
+
     public ECSManager(final boolean concurrent, final EntityManager entityManager, final SystemManager systemManager) {
         if (concurrent) {
             this.systemTasks = new ConcurrentLinkedQueue<>();
@@ -66,7 +66,7 @@ public class ECSManager implements IECSManager {
         this.systemManager = systemManager;
         this.listeners = new ArrayList<>();
     }
-    
+
     @Override
     public void addEntity(final Entity entity) {
         if (this.updating) {
@@ -75,7 +75,7 @@ public class ECSManager implements IECSManager {
             addEntityInt(entity);
         }
     }
-    
+
     private void addEntityInt(final Entity e) {
         e.onIECSManagerAdded(this);
         this.entityManager.addEntity(e);
@@ -83,7 +83,7 @@ public class ECSManager implements IECSManager {
             l.entityAdded(e);
         }
     }
-    
+
     @Override
     public void removeEntity(final Entity entity) {
         if (this.updating) {
@@ -92,7 +92,7 @@ public class ECSManager implements IECSManager {
             remEntityInt(entity);
         }
     }
-    
+
     private void remEntityInt(final Entity e) {
         e.onIECSManagerRemoved(this);
         this.entityManager.removeEntity(e);
@@ -100,7 +100,7 @@ public class ECSManager implements IECSManager {
             l.entityRemoved(e);
         }
     }
-    
+
     @Override
     public void addSystem(final ComponentSystem system) {
         if (this.updating) {
@@ -109,7 +109,7 @@ public class ECSManager implements IECSManager {
             addSysInt(system);
         }
     }
-    
+
     private void addSysInt(final ComponentSystem system) {
         this.systemManager.addSystem(system);
         if (!system.getFamily().isEmpty()) {
@@ -117,7 +117,7 @@ public class ECSManager implements IECSManager {
         }
         system.addedToIECSManager(this);
     }
-    
+
     @Override
     public void removeSystem(final ComponentSystem system) {
         if (this.updating) {
@@ -126,7 +126,7 @@ public class ECSManager implements IECSManager {
             remSysInt(system);
         }
     }
-    
+
     private void remSysInt(final ComponentSystem system) {
         this.systemManager.removeSystem(system);
         if (!system.getFamily().isEmpty()) {
@@ -134,12 +134,12 @@ public class ECSManager implements IECSManager {
         }
         system.removedFromIECSManager(this);
     }
-    
+
     @Override
     public List<Entity> getEntitesFor(final BitSet f) {
         return this.entityManager.getEntitiesFor(f);
     }
-    
+
     @Override
     public void onEntityComponentsChanged(final Entity entity) {
         if (this.updating) {
@@ -148,7 +148,7 @@ public class ECSManager implements IECSManager {
             this.entityManager.updateEntityFamilyStatus(entity);
         }
     }
-    
+
     @Override
     public void update(final Time time) {
         this.updating = true;
@@ -161,7 +161,7 @@ public class ECSManager implements IECSManager {
         }
         this.updating = false;
     }
-    
+
     private void runTasks() {
         while (!this.systemTasks.isEmpty()) {
             final ECSSystemTask t = this.systemTasks.poll();
@@ -193,16 +193,16 @@ public class ECSManager implements IECSManager {
             }
         }
     }
-    
+
     public boolean isUpdating() {
         return this.updating;
     }
-    
+
     @Override
     public Collection<Entity> getAll() {
         return this.entityManager.getAll();
     }
-    
+
     @Override
     public void addEntityListener(final BitSet family, final EntityListener listener) {
         if (family != null) {
@@ -211,7 +211,7 @@ public class ECSManager implements IECSManager {
             this.listeners.add(listener);
         }
     }
-    
+
     @Override
     public void removeEntityListener(final BitSet family, final EntityListener listener) {
         if (family != null) {
@@ -220,27 +220,27 @@ public class ECSManager implements IECSManager {
             this.listeners.remove(listener);
         }
     }
-    
+
     private static enum ECSTaskType {
         REMOVE, ADD, ENTITY_TYPE_CHANGED;
     }
-    
+
     private static class ECSSystemTask {
-        
+
         ComponentSystem system;
         ECSTaskType type;
-        
+
         private ECSSystemTask(final ComponentSystem sys, final ECSTaskType t) {
             this.system = sys;
             this.type = t;
         }
     }
-    
+
     private static class ECSEntityTask {
-        
+
         Entity entity;
         ECSTaskType type;
-        
+
         private ECSEntityTask(final Entity e, final ECSTaskType t) {
             this.entity = e;
             this.type = t;

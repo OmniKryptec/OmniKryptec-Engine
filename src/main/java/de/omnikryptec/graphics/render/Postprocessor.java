@@ -4,9 +4,9 @@ import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.util.settings.Settings;
 
 public class Postprocessor {
-
-    public void postprocess(FrameBuffer scene, Settings<?> renderSettings) {
+    
+    public void postprocess(final FrameBuffer scene, final Settings<?> renderSettings) {
         //TODO create
     }
-    
+
 }

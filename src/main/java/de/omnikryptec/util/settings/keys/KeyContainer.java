@@ -33,7 +33,7 @@ import de.omnikryptec.util.Util;
  * and {@link de.omnikryptec.util.settings.keys.KeyGroup} class
  */
 public class KeyContainer {
-    
+
     /**
      * Default {@link de.omnikryptec.util.settings.keys.IKey} which can be returned
      * instead of null
@@ -43,20 +43,20 @@ public class KeyContainer {
         public String getName() {
             return null;
         }
-        
+
         @Override
         public boolean isPressed() {
             return false;
         }
-        
+
         @Override
         public boolean isLongPressed(final double minTime, final double maxTime) {
             return false;
         }
     };
-    
+
     final BiMap<String, IKey> keys = HashBiMap.create();
-    
+
     /**
      * Returns the {@link com.google.common.collect.BiMap<String,
      * de.omnikryptec.util.settings.keys.IKey>} of this
@@ -68,7 +68,7 @@ public class KeyContainer {
     BiMap<String, IKey> getIKeysBiMap() {
         return this.keys;
     }
-    
+
     /**
      * Returns all {@link de.omnikryptec.util.settings.keys.IKey}s of this
      * {@link de.omnikryptec.util.settings.keys.KeyContainer}
@@ -78,7 +78,7 @@ public class KeyContainer {
     public Set<IKey> getIKeys() {
         return this.keys.values();
     }
-    
+
     /**
      * Sets the {@link de.omnikryptec.util.settings.keys.IKey}s of this
      * {@link de.omnikryptec.util.settings.keys.KeyContainer}
@@ -94,7 +94,7 @@ public class KeyContainer {
         keys.forEach(this::addIKey);
         return this;
     }
-    
+
     /**
      * Adds a {@link de.omnikryptec.util.settings.keys.IKey} to this
      * {@link de.omnikryptec.util.settings.keys.KeyContainer}
@@ -109,7 +109,7 @@ public class KeyContainer {
         this.keys.put(key.getName(), key);
         return this;
     }
-    
+
     /**
      * Adds some {@link de.omnikryptec.util.settings.keys.IKey}s to this
      * {@link de.omnikryptec.util.settings.keys.KeyContainer}
@@ -122,7 +122,7 @@ public class KeyContainer {
     public KeyContainer addIKeys(final IKey... keys) {
         return addIKeys(Arrays.asList(keys));
     }
-    
+
     /**
      * Adds some {@link de.omnikryptec.util.settings.keys.IKey}s to this
      * {@link de.omnikryptec.util.settings.keys.KeyContainer}
@@ -137,7 +137,7 @@ public class KeyContainer {
         keys.forEach(this::addIKey);
         return this;
     }
-    
+
     /**
      * Removes a {@link de.omnikryptec.util.settings.keys.IKey} specified by its
      * name
@@ -152,7 +152,7 @@ public class KeyContainer {
         this.keys.remove(name);
         return this;
     }
-    
+
     /**
      * Removes a {@link de.omnikryptec.util.settings.keys.IKey}
      *
@@ -166,51 +166,51 @@ public class KeyContainer {
         this.keys.remove(key.getName());
         return this;
     }
-    
+
     // TODO Javadoc!
-    
+
     public KeyContainer addKey(final String name, final int keyCode) {
         return addIKey(new Key(name, keyCode));
     }
-    
+
     public KeyContainer addKey(final String name, final int keyCode, final boolean isKeyboardKey) {
         return addIKey(new Key(name, keyCode, isKeyboardKey));
     }
-    
+
     // TODO Javadoc!
-    
+
     public <T extends IKey> T getIKey(final String name) {
         return getIKey(name, null);
     }
-    
+
     public <T extends IKey> T getIKey(final String name, final T defaultValue) {
         final IKey key = this.keys.get(name);
         return key == null ? defaultValue : (T) key;
     }
-    
+
     public Key getKey(final String name) {
         return (Key) this.keys.get(name);
     }
-    
+
     public List<Key> getKeys() {
         return this.keys.values().stream().filter((key) -> key instanceof Key).map((key) -> (Key) key)
                 .collect(Collectors.toList());
     }
-    
+
     public List<Key> getKeys(final boolean isKeyboardKey) {
         return this.keys.values().stream().filter((key) -> key instanceof Key).map((key) -> (Key) key)
                 .filter((key) -> key.isKeyboardKey() == isKeyboardKey).collect(Collectors.toList());
     }
-    
+
     public KeyGroup getKeyGroup(final String name) {
         return (KeyGroup) this.keys.get(name);
     }
-    
+
     public List<KeyGroup> getKeyGroups() {
         return this.keys.values().stream().filter((key) -> key instanceof KeyGroup).map((key) -> (KeyGroup) key)
                 .collect(Collectors.toList());
     }
-    
+
     /**
      * Returns <tt>true</tt> if this
      * {@link de.omnikryptec.util.settings.keys.KeyContainer} is empty
@@ -221,7 +221,7 @@ public class KeyContainer {
     public boolean isEmpty() {
         return this.keys.isEmpty();
     }
-    
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -233,15 +233,15 @@ public class KeyContainer {
         final KeyContainer that = (KeyContainer) o;
         return Objects.equals(this.keys, that.keys);
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(this.keys);
     }
-    
+
     @Override
     public String toString() {
         return "KeyContainer{" + "keys=" + this.keys + '}';
     }
-    
+
 }

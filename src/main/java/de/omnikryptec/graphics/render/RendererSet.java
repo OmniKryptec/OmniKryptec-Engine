@@ -9,36 +9,36 @@ import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Settings;
 
 public class RendererSet {
-
-    private Set<Renderer> renderers;
-    private List<Renderer> renderersList;
-
+    
+    private final Set<Renderer> renderers;
+    private final List<Renderer> renderersList;
+    
     public RendererSet() {
-        renderers = new HashSet<>();
-        renderersList = new ArrayList<>();
+        this.renderers = new HashSet<>();
+        this.renderersList = new ArrayList<>();
     }
-
-    public void addRenderer(Renderer renderer) {
+    
+    public void addRenderer(final Renderer renderer) {
         Util.ensureNonNull(renderer);
-        if (renderers.add(renderer)) {
-            renderersList.add(renderer);
+        if (this.renderers.add(renderer)) {
+            this.renderersList.add(renderer);
         }
     }
-
-    public boolean supports(Renderer renderer) {
-        return renderers.contains(renderer);
+    
+    public boolean supports(final Renderer renderer) {
+        return this.renderers.contains(renderer);
     }
-
-    public void prepareRenderers(Settings<?> renderSettings) {
-        for (Renderer rend : renderersList) {
+    
+    public void prepareRenderers(final Settings<?> renderSettings) {
+        for (final Renderer rend : this.renderersList) {
             rend.preRender(renderSettings);
         }
     }
-
-    public void finishRenderers(Settings<?> renderSettings) {
-        for (Renderer rend : renderersList) {
+    
+    public void finishRenderers(final Settings<?> renderSettings) {
+        for (final Renderer rend : this.renderersList) {
             rend.postRender(renderSettings);
         }
     }
-
+    
 }

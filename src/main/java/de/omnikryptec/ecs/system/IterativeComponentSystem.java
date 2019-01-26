@@ -23,16 +23,16 @@ import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.util.updater.Time;
 
 public abstract class IterativeComponentSystem extends ComponentSystem implements IndividualUpdater {
-    
+
     protected IterativeComponentSystem(final BitSet required) {
         super(required);
     }
-    
+
     @Override
     public final void update(final IECSManager entityManager, final Time time) {
         for (final Entity e : this.entities) {
             updateIndividual(entityManager, e, time);
         }
     }
-    
+
 }

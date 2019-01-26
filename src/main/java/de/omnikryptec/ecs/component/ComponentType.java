@@ -20,11 +20,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ComponentType {
-    
+
     private static int next = 0;
     private static Map<Class<? extends Component>, ComponentType> mappings = new HashMap<>();
-    
-    public static ComponentType of(Class<? extends Component> clazz) {
+
+    public static ComponentType of(final Class<? extends Component> clazz) {
         ComponentType mapper = mappings.get(clazz);
         if (mapper == null) {
             mapper = new ComponentType();
@@ -32,21 +32,21 @@ public class ComponentType {
         }
         return mapper;
     }
-    
+
     public final int id;
-    
+
     private ComponentType() {
         this.id = next;
         next++;
     }
-    
+
     @Override
     public int hashCode() {
-        return id;
+        return this.id;
     }
-    
+
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == this) {
             return true;
         }
@@ -58,5 +58,5 @@ public class ComponentType {
         }
         return false;
     }
-    
+
 }

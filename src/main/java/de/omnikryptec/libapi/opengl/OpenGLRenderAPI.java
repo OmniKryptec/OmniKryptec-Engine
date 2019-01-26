@@ -37,49 +37,50 @@ import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
 public class OpenGLRenderAPI implements RenderAPI {
-    
+
     public static final IntegerKey MAJOR_VERSION = IntegerKey.next(1);
     public static final IntegerKey MINOR_VERSION = IntegerKey.next(0);
-    
+
     private final Settings<IntegerKey> apisettings;
-    
+
     public OpenGLRenderAPI(final Settings<IntegerKey> apisettings) {
         this.apisettings = apisettings;
     }
-    
+
     @Override
     public Window createWindow(final Settings<WindowSetting> windowsettings) {
         return new OpenGLWindow(windowsettings, this.apisettings);
     }
-    
+
     @Override
     public IndexBuffer createIndexBuffer() {
         return new GLIndexBuffer();
     }
-    
+
     @Override
     public VertexBuffer createVertexBuffer() {
         return new GLVertexBuffer();
     }
-    
+
     @Override
     public VertexArray createVertexArray() {
         return new GLVertexArray();
     }
-    
+
     @Override
     public Texture createTexture2D(final TextureData textureData, final TextureConfig textureConfig) {
         return new GLTexture2D(textureData, textureConfig);
     }
-    
+
     @Override
     public Shader createShader() {
         return new GLShader();
     }
-    
+
     @Override
-    public FrameBuffer createFrameBuffer(int width, int height, int multisample, FBTarget... targets) {
+    public FrameBuffer createFrameBuffer(final int width, final int height, final int multisample,
+            final FBTarget... targets) {
         return new GLFrameBuffer(width, height, multisample, targets);
     }
-    
+
 }
