@@ -27,12 +27,15 @@ import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.graphics.shader.base.parser.ShaderParser;
 import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
+import de.omnikryptec.libapi.exposed.render.FBTarget;
+import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.IndexBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
+import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec4;
@@ -49,23 +52,23 @@ import de.omnikryptec.util.updater.Time;
  * @see Scene#createBuilder()
  */
 public class SceneBuilder {
-
+    
     private class Config {
         private boolean async = false;
         private ExecuteTime time = ExecuteTime.Normal;
         private ExecuteMode mode = ExecuteMode.Default;
     }
-
+    
     private final Scene scene;
     private Config config;
-
+    
     /**
      * Creates a new {@link SceneBuilder} with a new, empty {@link Scene}
      */
     public SceneBuilder() {
         this(new Scene());
     }
-
+    
     /**
      * Creates a {@link SceneBuilder} with an existing {@link Scene}
      *
@@ -76,7 +79,7 @@ public class SceneBuilder {
         this.scene = scene;
         this.config = new Config();
     }
-
+    
     /**
      * The scene in its current state
      *
@@ -85,7 +88,7 @@ public class SceneBuilder {
     public Scene get() {
         return this.scene;
     }
-
+    
     /**
      * The next {@link Updateable} will be added to the async pipeline.
      *
@@ -95,7 +98,7 @@ public class SceneBuilder {
         this.config.async = true;
         return this;
     }
-
+    
     /**
      * Sets the {@link ExecuteTime} of the next {@link Updateable} added.
      *
@@ -107,7 +110,7 @@ public class SceneBuilder {
         this.config.time = time;
         return this;
     }
-
+    
     /**
      * Sets the {@link ExecuteMode} of the next {@link Updateable} added.
      *
@@ -119,7 +122,7 @@ public class SceneBuilder {
         this.config.mode = mode;
         return this;
     }
-
+    
     /**
      * Resets the config to its defaults: synchronized, {@link ExecuteTime#Normal}
      * and {@link ExecuteMode#Default}
@@ -130,7 +133,7 @@ public class SceneBuilder {
         this.config = new Config();
         return this;
     }
-
+    
     /**
      * adds an {@link Updateable} with the currently set configurations and resets
      * the config afterwards.
@@ -146,19 +149,19 @@ public class SceneBuilder {
         }
         resetConfig();
     }
-
+    
     public IECSManager addDefaultECSManager() {
         final IECSManager iecsm = IECSManager.createDefault();
         addUpdateable(iecsm);
         return iecsm;
     }
-
+    
     public EventBus addEventBus() {
         final EventBus ebus = new EventBus();
         addUpdateable(ebus);
         return ebus;
     }
-
+    
     public void addGraphicsClearTest() {
         addUpdateable(new Updateable() {
             @Override
@@ -170,35 +173,40 @@ public class SceneBuilder {
             }
         });
     }
-
+    
     public void addGraphicsBasicImplTest() {
         final VertexBuffer buffer = RenderAPI.get().createVertexBuffer();
-
+        
         buffer.storeData(new float[] { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f }, false);
         //buffer.storeData((float[]) data.getAttribute(VertexAttribute.Position), false);
-
+        
         final IndexBuffer indexBuffer = RenderAPI.get().createIndexBuffer();
         indexBuffer.storeData(new int[] { 0, 1, 2, 2, 1, 3 }, false);
         //indexBuffer.storeData((int[]) data.getAttribute(VertexAttribute.Index), false);
-
+        
         final VertexArray array = RenderAPI.get().createVertexArray();
         array.addVertexBuffer(buffer, new VertexBufferLayout.VertexBufferElement(Type.FLOAT, 2, true));
         array.setIndexBuffer(indexBuffer);
-
+        
         final Shader shader = RenderAPI.get().createShader();
         shader.create("test");
         final UniformVec4 color = shader.getUniform("u_col");
-
+        
+        FrameBuffer fbo = RenderAPI.get().createFrameBuffer(100, 100, 0, new FBTarget(TextureFormat.RGBA8, 0),
+                new FBTarget(TextureFormat.DEPTH24));
+        
         addUpdateable(new Updateable() {
             @Override
             public void update(final Time time) {
+                fbo.bindFrameBuffer();
                 shader.bindShader();
                 color.loadColor(Color.randomRGB());
                 array.bindArray();
                 GL11.glDrawElements(GL11.GL_TRIANGLES, array.vertexCount(), GL11.GL_UNSIGNED_INT, 0);
                 array.unbindArray();
+                fbo.unbindFrameBuffer();
             }
         });
-
+        
     }
 }

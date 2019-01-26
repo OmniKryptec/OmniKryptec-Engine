@@ -21,8 +21,8 @@ public interface FrameBuffer {
     void bindFrameBuffer();
     
     void unbindFrameBuffer();
-
+    
     Texture getTexture(int i);
     
-    Texture getDepthTexture();
+    boolean isRenderBuffer();
 }
