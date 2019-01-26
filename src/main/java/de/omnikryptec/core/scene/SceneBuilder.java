@@ -187,20 +187,20 @@ public class SceneBuilder {
         shader.create("test");
         final UniformVec4 color = shader.getUniform("u_col");
         
-        /*
-         * FrameBuffer fbo = RenderAPI.get().createFrameBuffer(100, 100, 0, new
-         * FBTarget(TextureFormat.RGBA8, 0), new FBTarget(TextureFormat.DEPTH24));
-         */
+        FrameBuffer fbo = RenderAPI.get().createFrameBuffer(200, 200, 0, new FBTarget(TextureFormat.RGBA8, 0),
+                new FBTarget(TextureFormat.DEPTH24));
+        
         addUpdateable(new Updateable() {
             @Override
             public void update(final Time time) {
-                //fbo.bindFrameBuffer();
+                fbo.bindFrameBuffer();
                 shader.bindShader();
                 color.loadColor(Color.randomRGB());
                 mesh.bindMesh();
                 GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.vertexCount(), GL11.GL_UNSIGNED_INT, 0);
                 mesh.unbindMesh();
-                //fbo.unbindFrameBuffer();
+                fbo.unbindFrameBuffer();
+                fbo.resolveToScreen();
             }
         });
         

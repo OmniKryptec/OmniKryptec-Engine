@@ -25,4 +25,8 @@ public interface FrameBuffer {
     Texture getTexture(int i);
     
     boolean isRenderBuffer();
+    
+    void resolveToScreen();
+    
+    void resolveToFrameBuffer(FrameBuffer target, int attachment, boolean resolveDepth);
 }

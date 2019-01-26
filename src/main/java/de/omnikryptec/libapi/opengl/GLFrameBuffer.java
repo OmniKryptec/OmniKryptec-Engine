@@ -157,4 +157,56 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
         
     }
     
+    @Override
+    public void resolveToScreen() {
+        GLFrameBuffer last = null;
+        if (!history.isEmpty()) {
+            last = history.peek();
+            last.unbindFrameBuffer();
+        }
+        GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, 0);
+        GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, pointer);
+        GL11.glDrawBuffer(GL11.GL_BACK);
+        //TODO use original viewport
+        GL30.glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, GL11.GL_COLOR_BUFFER_BIT, GL11.GL_NEAREST);
+        if (last != null) {
+            last.bindFrameBuffer();
+        } else {
+            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
+        }
+    }
+    
+    @Override
+    public void resolveToFrameBuffer(FrameBuffer target, int attachment, boolean resolveDepth) {
+        GLFrameBuffer gltarget = (GLFrameBuffer) target;
+        GLFrameBuffer last = null;
+        if (!history.isEmpty()) {
+            last = history.peek();
+            last.unbindFrameBuffer();
+        }
+        if (attachment >= 0) {
+            GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, gltarget.pointer);
+            GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, pointer);
+            GL11.glReadBuffer(GL30.GL_COLOR_ATTACHMENT0 + attachment);
+            GL30.glBlitFramebuffer(0, 0, width, height, 0, 0, gltarget.width, gltarget.height,
+                    GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT, GL11.GL_NEAREST);
+        }
+        if (resolveDepth) {
+            resolveDepth(gltarget);
+        }
+        if (last != null) {
+            last.bindFrameBuffer();
+        } else {
+            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
+        }
+    }
+    
+    private void resolveDepth(GLFrameBuffer target) {
+        GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, target.pointer);
+        GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, pointer);
+        GL11.glReadBuffer(GL30.GL_DEPTH_ATTACHMENT);
+        GL30.glBlitFramebuffer(0, 0, width, height, 0, 0, target.width, target.height, GL11.GL_DEPTH_BUFFER_BIT,
+                GL11.GL_NEAREST);
+        //GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0); //not needed, done above
+    }
 }
