@@ -89,7 +89,7 @@ public interface RenderAPI {
     
     void applyRenderState(RenderState renderState);
     
-    void render(Mesh mesh);
+    void render(Renderable renderable);
     
-    void renderInstanced(Mesh mesh, int count);
+    void renderInstanced(Renderable renderable, int count);
 }

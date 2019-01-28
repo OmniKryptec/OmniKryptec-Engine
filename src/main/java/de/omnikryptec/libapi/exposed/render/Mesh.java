@@ -6,7 +6,7 @@ import de.omnikryptec.resource.MeshData;
 import de.omnikryptec.resource.MeshData.PrimitiveType;
 import de.omnikryptec.resource.MeshData.VertexAttribute;
 
-public class Mesh {
+public class Mesh implements Renderable {
     
     private final VertexArray vertexArray;
     private final PrimitiveType primitive;
@@ -30,15 +30,15 @@ public class Mesh {
         }
     }
     
-    public void bindMesh() {
+    public void bindRenderable() {
         this.vertexArray.bindArray();
     }
     
-    public void unbindMesh() {
+    public void unbindRenderable() {
         this.vertexArray.unbindArray();
     }
     
-    public int vertexCount() {
+    public int elementCount() {
         return this.vertexArray.vertexCount();
     }
     
@@ -46,7 +46,7 @@ public class Mesh {
         return this.vertexArray.hasIndexBuffer();
     }
     
-    public PrimitiveType getPrimitive() {
+    public PrimitiveType primitive() {
         return primitive;
     }
     

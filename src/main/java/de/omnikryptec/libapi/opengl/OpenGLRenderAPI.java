@@ -25,6 +25,7 @@ import de.omnikryptec.libapi.exposed.render.IndexBuffer;
 import de.omnikryptec.libapi.exposed.render.Mesh;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderState;
+import de.omnikryptec.libapi.exposed.render.Renderable;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
@@ -106,26 +107,27 @@ public class OpenGLRenderAPI implements RenderAPI {
     }
     
     @Override
-    public void render(Mesh mesh) {
-        mesh.bindMesh();
-        int typeid = OpenGLUtil.typeId(mesh.getPrimitive());
+    public void render(Renderable mesh) {
+        mesh.bindRenderable();
+        int typeid = OpenGLUtil.typeId(mesh.primitive());
         if (mesh.hasIndexBuffer()) {
-            GL11.glDrawElements(typeid, mesh.vertexCount(), GL11.GL_UNSIGNED_INT, 0);
+            GL11.glDrawElements(typeid, mesh.elementCount(), GL11.GL_UNSIGNED_INT, 0);
         } else {
-            GL11.glDrawArrays(typeid, 0, mesh.vertexCount());
+            GL11.glDrawArrays(typeid, 0, mesh.elementCount());
         }
-        mesh.unbindMesh();
+        mesh.unbindRenderable();
     }
     
     @Override
-    public void renderInstanced(Mesh mesh, int count) {
-        mesh.bindMesh();
-        int typeid = OpenGLUtil.typeId(mesh.getPrimitive());
+    public void renderInstanced(Renderable mesh, int count) {
+        mesh.bindRenderable();
+        int typeid = OpenGLUtil.typeId(mesh.primitive());
         if (mesh.hasIndexBuffer()) {
-            GL31.glDrawElementsInstanced(typeid, mesh.vertexCount(), GL11.GL_UNSIGNED_INT, 0, count);
+            GL31.glDrawElementsInstanced(typeid, mesh.elementCount(), GL11.GL_UNSIGNED_INT, 0, count);
         } else {
-            GL31.glDrawArraysInstanced(typeid, 0, mesh.vertexCount(), count);
+            GL31.glDrawArraysInstanced(typeid, 0, mesh.elementCount(), count);
         }
+        mesh.unbindRenderable();
     }
     
 }
