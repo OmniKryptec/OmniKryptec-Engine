@@ -116,6 +116,7 @@ public class OpenGLUtil {
         case DEPTH_TEST:
             return GL11.GL_DEPTH_TEST;
         default:
+            //the other RenderConfigs dont have a corresponding ID
             throw new IllegalArgumentException(renderConfig + "");
         }
     }
