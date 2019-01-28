@@ -86,4 +86,10 @@ public interface RenderAPI {
     Shader createShader();
     
     FrameBuffer createFrameBuffer(int width, int height, int multisample, FBTarget... targets);
+    
+    void applyRenderState(RenderState renderState);
+    
+    void render(Mesh mesh);
+    
+    void renderInstanced(Mesh mesh, int count);
 }

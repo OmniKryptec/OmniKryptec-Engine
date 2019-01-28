@@ -30,6 +30,7 @@ import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.Mesh;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
+import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec4;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.libapi.opengl.OpenGLUtil.BufferType;
@@ -173,34 +174,39 @@ public class SceneBuilder {
                 VertexAttribute.Position, 2, new float[] { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f });
         
         final Mesh mesh = new Mesh(data);
-        OpenGLUtil.flushErrors();
         final Shader shader = RenderAPI.get().createShader();
         shader.create("test");
         final UniformVec4 color = shader.getUniform("u_col");
-        
+        final UniformFloat instanceCount = shader.getUniform("instancesMax");
         final FrameBuffer fbo = RenderAPI.get().createFrameBuffer(200, 200, 0, new FBTarget(TextureFormat.RGBA8, 0),
                 new FBTarget(TextureFormat.DEPTH24));
-        MasterRenderer r = new MasterRenderer();
+        
+        int instances = 2;
+        
         addUpdateable(new Updateable() {
             
             @Override
             public void preUpdate(final Time time) {
+                fbo.bindFrameBuffer();
             }
             
             @Override
             public void update(final Time time) {
                 shader.bindShader();
                 color.loadColor(Color.randomRGB());
-                mesh.bindMesh();
-                fbo.bindFrameBuffer();
-                GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.vertexCount(), GL11.GL_UNSIGNED_INT, 0);
-                fbo.unbindFrameBuffer();
-                mesh.unbindMesh();
+                instanceCount.loadFloat(instances);
+                RenderAPI.get().renderInstanced(mesh, instances);
             }
             
             @Override
             public void postUpdate(final Time time) {
+                fbo.unbindFrameBuffer();
                 fbo.resolveToScreen();
+            }
+            
+            @Override
+            public ExecuteMode defaultExecuteMode() {
+                return ExecuteMode.Embracing;
             }
         });
         

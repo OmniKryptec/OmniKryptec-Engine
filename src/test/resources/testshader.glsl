@@ -4,8 +4,19 @@ $define shader test VERTEX$
 
 layout(location = 0) in vec4 pos;
 
+uniform float instancesMax;
+
+out float v_perc;
+
 void main() {
-	gl_Position = pos;
+	vec4 realpos = pos;
+	realpos.x -= 0.5f;
+	
+	float perc = gl_InstanceID / instancesMax;
+	vec4 offset = vec4(perc, 0, 0, 0);
+	realpos /= instancesMax;
+	gl_Position = realpos + offset;
+	v_perc = perc;
 }
 
 
@@ -16,8 +27,12 @@ $define shader test FRAGMENT$
 
 uniform vec4 u_col;
 
+in float v_perc;
+
 out vec4 col;
 
 void main() {
-	col = u_col;
+	vec4 ocol = u_col;
+	ocol.r = v_perc;
+	col = ocol;
 }

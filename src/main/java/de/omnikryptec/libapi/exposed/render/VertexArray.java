@@ -72,5 +72,6 @@ public interface VertexArray {
      *
      * @return the vertex count of this {@link VertexArray}
      */
+    //TODO better name/javadoc
     int vertexCount();
 }

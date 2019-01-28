@@ -18,7 +18,9 @@ package de.omnikryptec.libapi.opengl.shader;
 
 import org.lwjgl.opengl.GL20;
 
-public class GLUniformFloat extends GLUniform {
+import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
+
+public class GLUniformFloat extends GLUniform implements UniformFloat{
 
     private float currentValue;
     private boolean used = false;
@@ -27,6 +29,7 @@ public class GLUniformFloat extends GLUniform {
         super(name);
     }
 
+    @Override
     public void loadFloat(final float value) {
         if (isFound() && (!this.used || this.currentValue != value)) {
             GL20.glUniform1f(super.getLocation(), value);

@@ -26,10 +26,6 @@ public class MasterRenderer {
         LibAPIManager.LIBAPI_EVENTBUS.register(this);
     }
     
-    private void createFBO() {
-        sceneFBO = RenderAPI.get().createFrameBuffer(RenderAPI.get().getWindow().getBufferWidth(), RenderAPI.get().getWindow().getBufferHeight(), 0, targets);
-    }
-    
     public void renderScene(final Time time, final RenderCollection scene, final Settings<?> renderSettings) {
         //filter objs in viewports
         for (final Viewport view : this.mainViewports) {

@@ -31,7 +31,7 @@ public class WindowEvent extends Event {
     public static class WindowResized extends WindowEvent {
         public final int width;
         public final int height;
-
+        //TODO add other widths/heights
         public WindowResized(final int width, final int height) {
             this.width = width;
             this.height = height;

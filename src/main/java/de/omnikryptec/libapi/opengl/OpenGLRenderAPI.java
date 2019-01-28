@@ -16,13 +16,20 @@
 
 package de.omnikryptec.libapi.opengl;
 
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL31;
+
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.IndexBuffer;
+import de.omnikryptec.libapi.exposed.render.Mesh;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
+import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
+import de.omnikryptec.libapi.exposed.render.RenderState.RenderConfig;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.window.Window;
 import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
@@ -87,6 +94,38 @@ public class OpenGLRenderAPI implements RenderAPI {
     public FrameBuffer createFrameBuffer(final int width, final int height, final int multisample,
             final FBTarget... targets) {
         return new GLFrameBuffer(width, height, multisample, targets);
+    }
+    
+    @Override
+    public void applyRenderState(RenderState renderState) {
+        for (RenderConfig config : RenderConfig.values()) {
+            OpenGLUtil.setEnabled(config, renderState.isEnable(config));
+        }
+        OpenGLUtil.setBlendMode(renderState.getBlendMode());
+        //TODO finish apply renderstate
+    }
+    
+    @Override
+    public void render(Mesh mesh) {
+        mesh.bindMesh();
+        int typeid = OpenGLUtil.typeId(mesh.getPrimitive());
+        if (mesh.hasIndexBuffer()) {
+            GL11.glDrawElements(typeid, mesh.vertexCount(), GL11.GL_UNSIGNED_INT, 0);
+        } else {
+            GL11.glDrawArrays(typeid, 0, mesh.vertexCount());
+        }
+        mesh.unbindMesh();
+    }
+    
+    @Override
+    public void renderInstanced(Mesh mesh, int count) {
+        mesh.bindMesh();
+        int typeid = OpenGLUtil.typeId(mesh.getPrimitive());
+        if (mesh.hasIndexBuffer()) {
+            GL31.glDrawElementsInstanced(typeid, mesh.vertexCount(), GL11.GL_UNSIGNED_INT, 0, count);
+        } else {
+            GL31.glDrawArraysInstanced(typeid, 0, mesh.vertexCount(), count);
+        }
     }
     
 }

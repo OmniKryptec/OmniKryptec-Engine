@@ -107,6 +107,7 @@ public class GLShader extends AutoDelete implements Shader {
         }
     }
     
+    //TODO better way of doing the uniforms?
     private GLUniform createUniformObj(final String name, final String types) {
         switch (types) {
         case "mat4":
@@ -116,6 +117,8 @@ public class GLShader extends AutoDelete implements Shader {
             return new GLUniformSampler(name);
         case "vec4":
             return new GLUniformVec4(name);
+        case "float":
+            return new GLUniformFloat(name);
         default:
             throw new IllegalArgumentException("Wrong uniform: " + types + " " + name);
         }
