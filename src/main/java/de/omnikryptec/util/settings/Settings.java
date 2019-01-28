@@ -289,7 +289,7 @@ public class Settings<K> implements Copyable {
         if (this == o) {
             return true;
         }
-        if (o == null || !getClass().isAssignableFrom(o.getClass())) {
+        if (o == null || !(o instanceof Settings)) {
             return false;
         }
         final Settings<?> settings1 = (Settings<?>) o;
