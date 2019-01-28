@@ -18,6 +18,10 @@ public class BigTest extends EngineLoader {
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
         libsettings.set(LibSetting.DEBUG, true);
         windowSettings.set(WindowSetting.Name, "BigTest-Window");
+        windowSettings.set(WindowSetting.LockAspectRatio, true);
+        //windowSettings.set(WindowSetting.Fullscreen, true);
+        //windowSettings.set(WindowSetting.Width, 10000);
+        //windowSettings.set(WindowSetting.Height, 2000);
     }
     
     @Override

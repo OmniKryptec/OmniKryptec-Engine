@@ -23,6 +23,7 @@ import de.omnikryptec.core.UpdateableContainer.ExecuteMode;
 import de.omnikryptec.core.UpdateableContainer.ExecuteTime;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.event.EventBus;
+import de.omnikryptec.graphics.render.MasterRenderer;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
@@ -45,23 +46,23 @@ import de.omnikryptec.util.updater.Time;
  * @see Scene#createBuilder()
  */
 public class SceneBuilder {
-
+    
     private class Config {
         private boolean async = false;
         private ExecuteTime time = ExecuteTime.Normal;
         private ExecuteMode mode = ExecuteMode.Default;
     }
-
+    
     private final Scene scene;
     private Config config;
-
+    
     /**
      * Creates a new {@link SceneBuilder} with a new, empty {@link Scene}
      */
     public SceneBuilder() {
         this(new Scene());
     }
-
+    
     /**
      * Creates a {@link SceneBuilder} with an existing {@link Scene}
      *
@@ -72,7 +73,7 @@ public class SceneBuilder {
         this.scene = scene;
         this.config = new Config();
     }
-
+    
     /**
      * The scene in its current state
      *
@@ -81,7 +82,7 @@ public class SceneBuilder {
     public Scene get() {
         return this.scene;
     }
-
+    
     /**
      * The next {@link Updateable} will be added to the async pipeline.
      *
@@ -91,7 +92,7 @@ public class SceneBuilder {
         this.config.async = true;
         return this;
     }
-
+    
     /**
      * Sets the {@link ExecuteTime} of the next {@link Updateable} added.
      *
@@ -103,7 +104,7 @@ public class SceneBuilder {
         this.config.time = time;
         return this;
     }
-
+    
     /**
      * Sets the {@link ExecuteMode} of the next {@link Updateable} added.
      *
@@ -115,7 +116,7 @@ public class SceneBuilder {
         this.config.mode = mode;
         return this;
     }
-
+    
     /**
      * Resets the config to its defaults: synchronized, {@link ExecuteTime#Normal}
      * and {@link ExecuteMode#Default}
@@ -126,7 +127,7 @@ public class SceneBuilder {
         this.config = new Config();
         return this;
     }
-
+    
     /**
      * adds an {@link Updateable} with the currently set configurations and resets
      * the config afterwards.
@@ -142,19 +143,19 @@ public class SceneBuilder {
         }
         resetConfig();
     }
-
+    
     public IECSManager addDefaultECSManager() {
         final IECSManager iecsm = IECSManager.createDefault();
         addUpdateable(iecsm);
         return iecsm;
     }
-
+    
     public EventBus addEventBus() {
         final EventBus ebus = new EventBus();
         addUpdateable(ebus);
         return ebus;
     }
-
+    
     public void addGraphicsClearTest() {
         addUpdateable(new Updateable() {
             @Override
@@ -166,43 +167,42 @@ public class SceneBuilder {
             }
         });
     }
-
+    
     public void addGraphicsBasicImplTest() {
         final MeshData data = new MeshData(VertexAttribute.Index, new int[] { 0, 1, 2, 2, 1, 3 },
                 VertexAttribute.Position, 2, new float[] { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f });
-
+        
         final Mesh mesh = new Mesh(data);
         OpenGLUtil.flushErrors();
         final Shader shader = RenderAPI.get().createShader();
         shader.create("test");
         final UniformVec4 color = shader.getUniform("u_col");
-
+        
         final FrameBuffer fbo = RenderAPI.get().createFrameBuffer(200, 200, 0, new FBTarget(TextureFormat.RGBA8, 0),
                 new FBTarget(TextureFormat.DEPTH24));
-
+        MasterRenderer r = new MasterRenderer();
         addUpdateable(new Updateable() {
-
+            
             @Override
             public void preUpdate(final Time time) {
-                fbo.bindFrameBuffer();
             }
-
+            
             @Override
             public void update(final Time time) {
-                fbo.bindFrameBuffer();
                 shader.bindShader();
                 color.loadColor(Color.randomRGB());
                 mesh.bindMesh();
+                fbo.bindFrameBuffer();
                 GL11.glDrawElements(GL11.GL_TRIANGLES, mesh.vertexCount(), GL11.GL_UNSIGNED_INT, 0);
+                fbo.unbindFrameBuffer();
                 mesh.unbindMesh();
             }
-
+            
             @Override
             public void postUpdate(final Time time) {
-                fbo.unbindFrameBuffer();
                 fbo.resolveToScreen();
             }
         });
-
+        
     }
 }

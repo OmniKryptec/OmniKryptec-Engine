@@ -27,15 +27,15 @@ import de.omnikryptec.util.settings.Settings;
 
 public interface RenderAPI {
     public static final Class<OpenGLRenderAPI> OpenGL = OpenGLRenderAPI.class;
-
+    
     public static RenderAPI get() {
         return LibAPIManager.instance().getRenderAPI();
     }
-
+    
     public static enum Type {
         FLOAT
     }
-
+    
     /**
      * Creates a {@link Window} with the specified settings, compatible and ready to
      * be drawn on by this {@link RenderAPI}
@@ -44,28 +44,30 @@ public interface RenderAPI {
      * @return a new window
      */
     Window createWindow(Settings<WindowSetting> windowsettings);
-
+    
+    Window getWindow();
+    
     /**
      * Creates a new {@link IndexBuffer}
      *
      * @return indexbuffer
      */
     IndexBuffer createIndexBuffer();
-
+    
     /**
      * Creates a new {@link VertexBuffer}
      *
      * @return vertexbuffer
      */
     VertexBuffer createVertexBuffer();
-
+    
     /**
      * Creates a new {@link VertexArray}
      *
      * @return vertexarray
      */
     VertexArray createVertexArray();
-
+    
     /**
      * Creates a new {@link Texture} that represents a 2-dimensional image
      *
@@ -74,7 +76,7 @@ public interface RenderAPI {
      * @return texture
      */
     Texture createTexture2D(TextureData textureData, TextureConfig textureConfig);
-
+    
     /**
      * Creates a new {@link Shader} program (e.g. bundle of vertex- and
      * fragmentshader)
@@ -82,6 +84,6 @@ public interface RenderAPI {
      * @return shaderprogram
      */
     Shader createShader();
-
+    
     FrameBuffer createFrameBuffer(int width, int height, int multisample, FBTarget... targets);
 }

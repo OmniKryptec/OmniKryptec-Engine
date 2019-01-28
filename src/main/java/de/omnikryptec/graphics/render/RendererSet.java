@@ -7,6 +7,7 @@ import java.util.Set;
 
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Settings;
+import de.omnikryptec.util.updater.Time;
 
 public class RendererSet {
     
@@ -29,15 +30,15 @@ public class RendererSet {
         return this.renderers.contains(renderer);
     }
     
-    public void prepareRenderers(final Settings<?> renderSettings) {
+    public void prepareRenderers(Time time, final Settings<?> renderSettings) {
         for (final Renderer rend : this.renderersList) {
-            rend.preRender(renderSettings);
+            rend.preRender(time, renderSettings);
         }
     }
     
-    public void finishRenderers(final Settings<?> renderSettings) {
+    public void finishRenderers(Time time, final Settings<?> renderSettings) {
         for (final Renderer rend : this.renderersList) {
-            rend.postRender(renderSettings);
+            rend.postRender(time, renderSettings);
         }
     }
     

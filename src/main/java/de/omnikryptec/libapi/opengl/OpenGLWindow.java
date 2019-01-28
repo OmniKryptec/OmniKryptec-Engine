@@ -18,8 +18,10 @@ package de.omnikryptec.libapi.opengl;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
 
 import de.omnikryptec.libapi.exposed.window.Window;
+import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
@@ -30,6 +32,7 @@ public class OpenGLWindow extends Window {
         GLFW.glfwMakeContextCurrent(getWindowID());
         GL.createCapabilities();
         setVSync(info.get(WindowSetting.VSync));
+        refreshViewport();
     }
     
     @Override
@@ -52,6 +55,12 @@ public class OpenGLWindow extends Window {
     @Override
     public void setVSync(final boolean vsync) {
         GLFW.glfwSwapInterval(vsync ? 1 : 0);
+    }
+    
+    @Override
+    public void refreshViewport() {
+        int[] vp = MathUtil.calculateViewport(aspectRatio, getBufferWidth(), getBufferHeight());
+        GL11.glViewport(vp[0], vp[1], vp[2], vp[3]);
     }
     
 }
