@@ -26,17 +26,17 @@ import de.omnikryptec.core.UpdateableContainer;
  *
  */
 public class Scene {
-
+    
     //Rendering and Mainthread stuff
     private final UpdateableContainer updtContainerSync;
     //Might happen on another Thread
     private final UpdateableContainer updtContainerAsync;
-
+    
     public Scene() {
         this.updtContainerSync = new UpdateableContainer();
         this.updtContainerAsync = new UpdateableContainer();
     }
-
+    
     /**
      * A simple method to add a synchronized {@link Updateable}. A more
      * sophisticated approach can be achieved with a {@link SceneBuilder}
@@ -48,7 +48,7 @@ public class Scene {
     public void addUpdateable(final Updateable updt) {
         this.addUpdateable(true, updt);
     }
-
+    
     /**
      * A simple method to add an {@link Updateable} to this scene. A more
      * sophisticated approach can be achieved with a {@link SceneBuilder}
@@ -64,15 +64,15 @@ public class Scene {
             getUpdateableContainerAsync().addUpdateable(updt);
         }
     }
-
+    
     public UpdateableContainer getUpdateableContainerSync() {
         return this.updtContainerSync;
     }
-
+    
     public UpdateableContainer getUpdateableContainerAsync() {
         return this.updtContainerAsync;
     }
-
+    
     /**
      * Creates a new {@link SceneBuilder} for this {@link Scene}.
      *
@@ -81,5 +81,5 @@ public class Scene {
     public SceneBuilder createBuilder() {
         return new SceneBuilder(this);
     }
-
+    
 }

@@ -23,10 +23,10 @@ import de.codemakers.base.util.tough.ToughConsumer;
 import de.codemakers.io.file.AdvancedFile;
 
 public interface ResourceLoader {
-
+    
     boolean load(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
             ResourceManager resourceManager) throws Exception;
-
+    
     default boolean load(final AdvancedFile advancedFile, final AdvancedFile superFile, final Properties properties,
             final ResourceManager resourceManager, final ToughConsumer<Throwable> failure) {
         try {
@@ -40,15 +40,15 @@ public interface ResourceLoader {
             return false;
         }
     }
-
+    
     default boolean loadWithoutException(final AdvancedFile advancedFile, final AdvancedFile superFile,
             final Properties properties, final ResourceManager resourceManager) {
         return load(advancedFile, superFile, properties, resourceManager, null);
     }
-
+    
     LoadingType accept(AdvancedFile advancedFile, AdvancedFile superFile, Properties properties,
             ResourceManager resourceManager) throws Exception;
-
+    
     default LoadingType accept(final AdvancedFile advancedFile, final AdvancedFile superFile,
             final Properties properties, final ResourceManager resourceManager,
             final ToughConsumer<Throwable> failure) {
@@ -63,12 +63,12 @@ public interface ResourceLoader {
             return LoadingType.NOT;
         }
     }
-
+    
     default LoadingType acceptWithoutException(final AdvancedFile advancedFile, final AdvancedFile superFile,
             final Properties properties, final ResourceManager resourceManager) {
         return accept(advancedFile, superFile, properties, resourceManager, null);
     }
-
+    
     default String generateName(final AdvancedFile advancedFile, final AdvancedFile superFile,
             final Properties properties, final ResourceManager resourceManager) throws Exception {
         String path = advancedFile.getPath();
@@ -85,7 +85,7 @@ public interface ResourceLoader {
         }
         return name;
     }
-
+    
     default String generateName(final AdvancedFile advancedFile, final AdvancedFile superFile,
             final Properties properties, final ResourceManager resourceManager,
             final ToughConsumer<Throwable> failure) {
@@ -100,10 +100,10 @@ public interface ResourceLoader {
             return null;
         }
     }
-
+    
     default String generateNameWithoutException(final AdvancedFile advancedFile, final AdvancedFile superFile,
             final Properties properties, final ResourceManager resourceManager) {
         return generateName(advancedFile, superFile, properties, resourceManager, null);
     }
-
+    
 }

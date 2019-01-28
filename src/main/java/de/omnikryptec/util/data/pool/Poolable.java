@@ -22,7 +22,7 @@ package de.omnikryptec.util.data.pool;
  * @author pcfreak9000
  */
 public interface Poolable {
-
+    
     /**
      * Resets this {@link Poolable} to be ready to be reused.
      */

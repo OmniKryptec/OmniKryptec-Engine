@@ -7,10 +7,10 @@ import de.omnikryptec.resource.MeshData.PrimitiveType;
 import de.omnikryptec.resource.MeshData.VertexAttribute;
 
 public class Mesh implements Renderable {
-    
+
     private final VertexArray vertexArray;
     private final PrimitiveType primitive;
-    
+
     public Mesh(final MeshData meshData) {
         this.vertexArray = RenderAPI.get().createVertexArray();
         this.primitive = meshData.getPrimitiveType();
@@ -29,25 +29,30 @@ public class Mesh implements Renderable {
             }
         }
     }
-    
+
+    @Override
     public void bindRenderable() {
         this.vertexArray.bindArray();
     }
-    
+
+    @Override
     public void unbindRenderable() {
         this.vertexArray.unbindArray();
     }
-    
+
+    @Override
     public int elementCount() {
         return this.vertexArray.vertexCount();
     }
-    
+
+    @Override
     public boolean hasIndexBuffer() {
         return this.vertexArray.hasIndexBuffer();
     }
-    
+
+    @Override
     public PrimitiveType primitive() {
-        return primitive;
+        return this.primitive;
     }
-    
+
 }

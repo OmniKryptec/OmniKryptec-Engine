@@ -6,7 +6,7 @@ import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.graphics.shader.base.parser.ShaderParser;
 
 public class ShaderLoader implements ResourceLoader<Void> {
-    
+
     @Override
     public Void load(final AdvancedFile file) throws Exception {
         final StringBuilder builder = new StringBuilder();
@@ -18,16 +18,16 @@ public class ShaderLoader implements ResourceLoader<Void> {
         ShaderParser.instance().parse(builder.toString());
         return null;
     }
-    
+
     @Override
     public String getFileNameRegex() {
         return ".*\\.glsl";
     }
-    
+
     @Override
     public boolean requiresMainThread() {
-        
+
         return false;
     }
-    
+
 }

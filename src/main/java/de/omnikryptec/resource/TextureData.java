@@ -26,7 +26,7 @@ import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
 
 public class TextureData {
-    
+
     public static TextureData decode(final InputStream inputstream) {
         int width = 0;
         int height = 0;
@@ -50,25 +50,25 @@ public class TextureData {
         }
         return null;
     }
-    
+
     private final int width;
     private final int height;
     private final ByteBuffer buffer;
-    
+
     public TextureData(final ByteBuffer buffer, final int width, final int height) {
         this.buffer = buffer;
         this.width = width;
         this.height = height;
     }
-    
+
     public int getWidth() {
         return this.width;
     }
-    
+
     public int getHeight() {
         return this.height;
     }
-    
+
     public ByteBuffer getBuffer() {
         return this.buffer;
     }

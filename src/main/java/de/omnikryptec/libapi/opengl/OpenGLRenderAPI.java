@@ -22,15 +22,13 @@ import org.lwjgl.opengl.GL31;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.IndexBuffer;
-import de.omnikryptec.libapi.exposed.render.Mesh;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderState;
+import de.omnikryptec.libapi.exposed.render.RenderState.RenderConfig;
 import de.omnikryptec.libapi.exposed.render.Renderable;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
-import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
-import de.omnikryptec.libapi.exposed.render.RenderState.RenderConfig;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.window.Window;
 import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
@@ -45,71 +43,71 @@ import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
 public class OpenGLRenderAPI implements RenderAPI {
-    
+
     public static final IntegerKey MAJOR_VERSION = IntegerKey.next(1);
     public static final IntegerKey MINOR_VERSION = IntegerKey.next(0);
-    
+
     private final Settings<IntegerKey> apisettings;
     private Window window;
-    
+
     public OpenGLRenderAPI(final Settings<IntegerKey> apisettings) {
         this.apisettings = apisettings;
     }
-    
+
     @Override
     public Window createWindow(final Settings<WindowSetting> windowsettings) {
-        return window = new OpenGLWindow(windowsettings, this.apisettings);
+        return this.window = new OpenGLWindow(windowsettings, this.apisettings);
     }
-    
+
     @Override
     public Window getWindow() {
-        return window;
+        return this.window;
     }
-    
+
     @Override
     public IndexBuffer createIndexBuffer() {
         return new GLIndexBuffer();
     }
-    
+
     @Override
     public VertexBuffer createVertexBuffer() {
         return new GLVertexBuffer();
     }
-    
+
     @Override
     public VertexArray createVertexArray() {
         return new GLVertexArray();
     }
-    
+
     @Override
     public Texture createTexture2D(final TextureData textureData, final TextureConfig textureConfig) {
         return new GLTexture2D(textureData, textureConfig);
     }
-    
+
     @Override
     public Shader createShader() {
         return new GLShader();
     }
-    
+
     @Override
     public FrameBuffer createFrameBuffer(final int width, final int height, final int multisample,
             final FBTarget... targets) {
         return new GLFrameBuffer(width, height, multisample, targets);
     }
-    
+
     @Override
-    public void applyRenderState(RenderState renderState) {
-        for (RenderConfig config : RenderConfig.values()) {
+    public void applyRenderState(final RenderState renderState) {
+        for (final RenderConfig config : RenderConfig.values()) {
             OpenGLUtil.setEnabled(config, renderState.isEnable(config));
         }
         OpenGLUtil.setBlendMode(renderState.getBlendMode());
         //TODO finish apply renderstate
     }
-    
+
     @Override
-    public void render(Renderable mesh) {
+    public void render(final Renderable mesh) {
         mesh.bindRenderable();
-        int typeid = OpenGLUtil.typeId(mesh.primitive());
+        final int typeid = OpenGLUtil.typeId(mesh.primitive());
         if (mesh.hasIndexBuffer()) {
             GL11.glDrawElements(typeid, mesh.elementCount(), GL11.GL_UNSIGNED_INT, 0);
         } else {
@@ -117,11 +115,11 @@ public class OpenGLRenderAPI implements RenderAPI {
         }
         mesh.unbindRenderable();
     }
-    
+
     @Override
-    public void renderInstanced(Renderable mesh, int count) {
+    public void renderInstanced(final Renderable mesh, final int count) {
         mesh.bindRenderable();
-        int typeid = OpenGLUtil.typeId(mesh.primitive());
+        final int typeid = OpenGLUtil.typeId(mesh.primitive());
         if (mesh.hasIndexBuffer()) {
             GL31.glDrawElementsInstanced(typeid, mesh.elementCount(), GL11.GL_UNSIGNED_INT, 0, count);
         } else {
@@ -129,5 +127,5 @@ public class OpenGLRenderAPI implements RenderAPI {
         }
         mesh.unbindRenderable();
     }
-    
+
 }

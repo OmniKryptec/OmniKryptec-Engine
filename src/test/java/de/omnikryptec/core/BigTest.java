@@ -12,7 +12,7 @@ public class BigTest extends EngineLoader {
     public static void main(final String[] args) {
         new BigTest().start();
     }
-    
+
     @Override
     protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
@@ -23,16 +23,16 @@ public class BigTest extends EngineLoader {
         //windowSettings.set(WindowSetting.Width, 10000);
         //windowSettings.set(WindowSetting.Height, 2000);
     }
-    
+
     @Override
     protected void onInitialized() {
         final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
         getResManager().addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
         getResManager().instantLoad(false, new AdvancedFile("src/test/resources"));
-        
+
         builder.addGraphicsClearTest();
         builder.addGraphicsBasicImplTest();
-        
+
         //getGameController().setLocalScene(builder.get());
     }
 }

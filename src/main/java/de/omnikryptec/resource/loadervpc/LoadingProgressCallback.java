@@ -19,40 +19,40 @@ package de.omnikryptec.resource.loadervpc;
 import de.codemakers.io.file.AdvancedFile;
 
 public interface LoadingProgressCallback {
-    
+
     public static LoadingProgressCallback DEBUG_CALLBACK = new LoadingProgressCallback() {
         private int maxs = 0;
         private int lrmax = 0;
-        
+
         @Override
         public void onStageChange(final AdvancedFile superfile, final int stageResMax, final int stageNumber) {
             lrmax = stageResMax;
             System.out.println("S: " + superfile + ", " + stageNumber + "/" + maxs);
         }
-        
+
         @Override
         public void onProgressChange(final AdvancedFile file, final int stageResProcessedCount) {
             System.out.println(" F: " + file + ", " + stageResProcessedCount + "/" + lrmax);
         }
-        
+
         @Override
         public void onLoadingStart(final int globalResMax, final int globalMaxStages) {
             maxs = globalMaxStages;
             System.out.println("Loading " + globalResMax + " resources in " + globalMaxStages + " stages");
         }
-        
+
         @Override
         public void onLoadingDone() {
             System.out.println("Finished loading");
         }
     };
-    
+
     void onLoadingStart(int globalResMax, int globalMaxStages);
-    
+
     void onStageChange(AdvancedFile superfile, int stageResMax, int stageNumber);
-    
+
     void onProgressChange(AdvancedFile file, int stageResProcessedCount);
-    
+
     void onLoadingDone();
-    
+
 }

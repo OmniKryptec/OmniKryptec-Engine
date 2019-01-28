@@ -20,52 +20,52 @@ import java.util.EnumMap;
 import java.util.Map;
 
 public class RenderState {
-    
+
     public static enum BlendMode {
         ADDITIVE, ALPHA, MULTIPLICATIVE;
     }
-    
+
     public static enum CullMode {
-        BACK, FRONT, OFF/*???*/;
+        BACK, FRONT, OFF/* ??? */;
     }
-    
+
     public static enum DepthMode {
         LESS, EQUAL, GREATER, ALWAYS, NEVER;
     }
-    
+
     public static enum RenderConfig {
         BLEND, DEPTH_TEST, CULL_FACES, /* MULTISAMPLE, */ WRITE_DEPTH, WRITE_COLOR;
     }
-    
+
     public static enum PolyMode {
         FILL, LINE, POINT;
     }
-    
+
     private BlendMode blendMode;
     private CullMode cullMode;
     private DepthMode depthMode;
     private PolyMode polyMode;
     private final Map<RenderConfig, Boolean> renderConfig = new EnumMap<>(RenderConfig.class);
-    
+
     public boolean isEnable(final RenderConfig opt) {
-        Boolean bool = renderConfig.get(opt);
+        final Boolean bool = this.renderConfig.get(opt);
         return bool != null ? bool : false;
     }
-    
+
     public BlendMode getBlendMode() {
         return this.blendMode;
     }
-    
+
     public CullMode getCullMode() {
         return this.cullMode;
     }
-    
+
     public DepthMode getDepthMode() {
         return this.depthMode;
     }
-    
+
     public PolyMode getPolyMode() {
         return this.polyMode;
     }
-    
+
 }

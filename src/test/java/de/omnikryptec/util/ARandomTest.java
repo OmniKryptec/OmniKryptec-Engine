@@ -17,12 +17,12 @@
 package de.omnikryptec.util;
 
 public class ARandomTest {
-
+    
     public static void main(final String[] args) {
         final Mapper<TestTest> mapper2 = new Mapper<>();
         test(mapper2.of(TestTest.class));
     }
-
+    
     public static void test(final Mapper<TestTest>.Mapping mapping) {
         System.out.println(mapping);
     }

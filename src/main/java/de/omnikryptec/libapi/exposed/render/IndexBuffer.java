@@ -21,19 +21,19 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 
 public interface IndexBuffer {
-    
+
     /**
      * Binds this {@link IndexBuffer}.
      *
      * @see VertexArray#bindArray()
      */
     void bindBuffer();
-    
+
     /**
      * Unbinds this {@link IndexBuffer}
      */
     void unbindBuffer();
-    
+
     /**
      * Stores indices in this {@link IndexBuffer}. This {@link IndexBuffer} will be
      * auto-bound and the supplied {@link IntBuffer} will be flipped by this method.
@@ -43,7 +43,7 @@ public interface IndexBuffer {
      * @param size    the size of the added data
      */
     void storeData(IntBuffer data, boolean dynamic, int size);
-    
+
     /**
      * Stores indices in this {@link IndexBuffer}. This method constructs and fills
      * an {@link IntBuffer} with the supplied int[]. The data is then stored with
@@ -57,12 +57,12 @@ public interface IndexBuffer {
         buffer.put(data);
         storeData(buffer, dynamic, data.length);
     }
-    
+
     /**
      * the size of this buffer
      *
      * @return size
      */
     int size();
-    
+
 }

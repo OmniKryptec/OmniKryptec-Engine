@@ -21,7 +21,7 @@ import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.util.updater.Time;
 
 public interface IndividualUpdater {
-
+    
     void updateIndividual(IECSManager manager, Entity entity, Time time);
-
+    
 }
