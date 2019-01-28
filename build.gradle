@@ -87,7 +87,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.reflections/reflections
     compile group: 'org.reflections', name: 'reflections', version: '0.9.11'
     compile 'com.google.guava:guava:27.0-jre'
-    implementation "com.github.Panzer1119:CJP-Base:$cjpbaseVersion"
+    //implementation "com.github.Panzer1119:CJP-Base:$cjpbaseVersion"
+    implementation "com.github.Panzer1119:CJP-Net:7ed4d838f0" //FIXME Fix this
     // CUSTOM LIBS BEGIN
     //compile name: 'JavaPlus'
     //compile name: 'MathPlus'
@@ -133,7 +134,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.reflections/reflections
     extraLibs group: 'org.reflections', name: 'reflections', version: '0.9.11'
     extraLibs 'com.google.guava:guava:27.0-jre'
-    extraLibs "com.github.Panzer1119:CJP-Base:$cjpbaseVersion"
+    //extraLibs "com.github.Panzer1119:CJP-Base:$cjpbaseVersion"
+    extraLibs "com.github.Panzer1119:CJP-Net:7ed4d838f0" //FIXME Fix this
     // CUSTOM LIBS BEGIN
     //extraLibs name: 'JavaPlus'
     //extraLibs name: 'MathPlus'
