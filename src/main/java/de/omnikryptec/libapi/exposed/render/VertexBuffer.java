@@ -21,6 +21,8 @@ import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 
+import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
+
 public interface VertexBuffer {
 
     /**
@@ -41,10 +43,10 @@ public interface VertexBuffer {
      * method.
      *
      * @param data    the float-data to be stored
-     * @param dynamic buffer usage
+     * @param usage buffer usage
      * @param size    the size of the added data
      */
-    void storeData(FloatBuffer data, boolean dynamic, int size);
+    void storeData(FloatBuffer data, BufferUsage usage, int size);
 
     /**
      * Stores data in this {@link VertexBuffer}. This method constructs and fills a
@@ -52,12 +54,12 @@ public interface VertexBuffer {
      * {@link #storeData(IntBuffer, boolean, int)}
      *
      * @param data    the float-data to be stored
-     * @param dynamic buffer usage
+     * @param usage buffer usage
      */
-    default void storeData(final float[] data, final boolean dynamic) {
+    default void storeData(final float[] data, final BufferUsage usage) {
         final FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
         buffer.put(data);
-        storeData(buffer, dynamic, data.length);
+        storeData(buffer, usage, data.length);
     }
 
     /**
@@ -65,10 +67,10 @@ public interface VertexBuffer {
      * auto-bound and the supplied {@link IntBuffer} will be flipped by this method.
      *
      * @param data    the int-data to be stored
-     * @param dynamic buffer usage
+     * @param usage buffer usage
      * @param size    the size of the added data
      */
-    void storeData(IntBuffer data, boolean dynamic, int size);
+    void storeData(IntBuffer data, BufferUsage usage, int size);
 
     /**
      * Stores data in this {@link VertexBuffer}. This method constructs and fills an
@@ -76,12 +78,12 @@ public interface VertexBuffer {
      * {@link #storeData(IntBuffer, boolean, int)}
      *
      * @param data    the int-data to be stored
-     * @param dynamic buffer usage
+     * @param usage buffer usage
      */
-    default void storeData(final int[] data, final boolean dynamic) {
+    default void storeData(final int[] data, final BufferUsage usage) {
         final IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
         buffer.put(data);
-        storeData(buffer, dynamic, data.length);
+        storeData(buffer, usage, data.length);
     }
 
     /**

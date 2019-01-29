@@ -38,7 +38,7 @@ public interface LoadingProgressCallback {
         @Override
         public void onLoadingStart(final int globalResMax, final int globalMaxStages) {
             maxs = globalMaxStages;
-            System.out.println("Loading " + globalResMax + " resources in " + globalMaxStages + " stages");
+            System.out.println("Loading " + globalResMax + " resources in " + globalMaxStages + " stage(s)");
         }
 
         @Override

@@ -41,6 +41,10 @@ public interface RenderAPI {
         Depth, Color;
     }
     
+    public static enum BufferUsage{
+        Static, Dynamic, Stream;
+    }
+    
     /**
      * Creates a {@link Window} with the specified settings, compatible and ready to
      * be drawn on by this {@link RenderAPI}

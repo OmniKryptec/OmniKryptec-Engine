@@ -20,6 +20,8 @@ import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 
+import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
+
 public interface IndexBuffer {
 
     /**
@@ -39,10 +41,10 @@ public interface IndexBuffer {
      * auto-bound and the supplied {@link IntBuffer} will be flipped by this method.
      *
      * @param data    the indices to be stored
-     * @param dynamic buffer usage
+     * @param usage buffer usage
      * @param size    the size of the added data
      */
-    void storeData(IntBuffer data, boolean dynamic, int size);
+    void storeData(IntBuffer data, BufferUsage usage, int size);
 
     /**
      * Stores indices in this {@link IndexBuffer}. This method constructs and fills
@@ -50,12 +52,12 @@ public interface IndexBuffer {
      * {@link #storeData(IntBuffer, boolean, int)}
      *
      * @param data    the indices to be stored
-     * @param dynamic buffer usage
+     * @param usage buffer usage
      */
-    default void storeData(final int[] data, final boolean dynamic) {
+    default void storeData(final int[] data, final BufferUsage usage) {
         final IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
         buffer.put(data);
-        storeData(buffer, dynamic, data.length);
+        storeData(buffer, usage, data.length);
     }
 
     /**

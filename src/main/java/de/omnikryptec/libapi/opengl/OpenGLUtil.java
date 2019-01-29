@@ -32,6 +32,7 @@ import org.lwjgl.opengl.GL46;
 
 import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
@@ -186,6 +187,20 @@ public class OpenGLUtil {
         }
     }
     
+
+    public static int typeId(BufferUsage bufferUsage) {
+        switch(bufferUsage) {
+        case Dynamic:
+            return GL15.GL_DYNAMIC_DRAW;
+        case Static:
+            return GL15.GL_STATIC_DRAW;
+        case Stream:
+            return GL15.GL_STREAM_DRAW;
+        default:
+            throw new IllegalArgumentException(bufferUsage + "");
+        }
+    }
+    
     public static void flushErrors() {
         int e = 0;
         while ((e = GL11.glGetError()) != GL11.GL_NO_ERROR) {
@@ -323,6 +338,7 @@ public class OpenGLUtil {
             GL11.glClear(mask);
         }
     }
+
     
     //    public static enum Feature {
     //        BLEND(GL11.GL_BLEND), DEPTH_TEST(GL11.GL_DEPTH_TEST), CULL_FACES(GL11.GL_CULL_FACE),
