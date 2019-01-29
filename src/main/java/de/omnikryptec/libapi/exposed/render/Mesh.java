@@ -3,13 +3,13 @@ package de.omnikryptec.libapi.exposed.render;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout.VertexBufferElement;
 import de.omnikryptec.resource.MeshData;
-import de.omnikryptec.resource.MeshData.PrimitiveType;
+import de.omnikryptec.resource.MeshData.Primitive;
 import de.omnikryptec.resource.MeshData.VertexAttribute;
 
 public class Mesh implements Renderable {
 
     private final VertexArray vertexArray;
-    private final PrimitiveType primitive;
+    private final Primitive primitive;
 
     public Mesh(final MeshData meshData) {
         this.vertexArray = RenderAPI.get().createVertexArray();
@@ -51,7 +51,7 @@ public class Mesh implements Renderable {
     }
 
     @Override
-    public PrimitiveType primitive() {
+    public Primitive primitive() {
         return this.primitive;
     }
 

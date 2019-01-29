@@ -28,20 +28,22 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
 import org.lwjgl.opengl.GL40;
 import org.lwjgl.opengl.GL43;
+import org.lwjgl.opengl.GL46;
 
 import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.CullMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.DepthMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.PolyMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.RenderConfig;
-import de.omnikryptec.resource.MeshData.PrimitiveType;
+import de.omnikryptec.resource.MeshData.Primitive;
 import de.omnikryptec.util.data.Color;
 
 public class OpenGLUtil {
-
+    
     public static int typeId(final Type t) {
         switch (t) {
         case FLOAT:
@@ -50,7 +52,7 @@ public class OpenGLUtil {
             throw new IllegalArgumentException(t + "");
         }
     }
-
+    
     public static int sizeof(final Type t) {
         switch (t) {
         case FLOAT:
@@ -59,7 +61,7 @@ public class OpenGLUtil {
             throw new IllegalArgumentException(t + "");
         }
     }
-
+    
     public static int typeId(final ShaderType shaderType) {
         switch (shaderType) {
         case Compute:
@@ -76,11 +78,11 @@ public class OpenGLUtil {
             return GL20.GL_VERTEX_SHADER;
         default:
             throw new IllegalArgumentException(shaderType + "");
-
+            
         }
     }
-
-    public static int typeId(final PrimitiveType primitiveType) {
+    
+    public static int typeId(final Primitive primitiveType) {
         if (primitiveType == null) {
             //Assuming triangles because mostly triangles are used
             return GL11.GL_TRIANGLES;
@@ -98,18 +100,26 @@ public class OpenGLUtil {
             throw new IllegalArgumentException(primitiveType + "");
         }
     }
-
+    
     public static int typeId(final TextureFormat texFormat) {
         switch (texFormat) {
         case RGBA8:
             return GL11.GL_RGBA8;
+        case RGBA16:
+            return GL11.GL_RGBA16;
+        case RGBA32:
+            return GL30.GL_RGBA32F;
+        case DEPTH16:
+            return GL14.GL_DEPTH_COMPONENT16;
         case DEPTH24:
             return GL14.GL_DEPTH_COMPONENT24;
+        case DEPTH32:
+            return GL14.GL_DEPTH_COMPONENT32;
         default:
             throw new IllegalArgumentException(texFormat + "");
         }
     }
-
+    
     public static int typeId(final RenderConfig renderConfig) {
         switch (renderConfig) {
         case BLEND:
@@ -123,7 +133,7 @@ public class OpenGLUtil {
             throw new IllegalArgumentException(renderConfig + "");
         }
     }
-
+    
     public static int typeId(final PolyMode polyMode) {
         switch (polyMode) {
         case FILL:
@@ -136,7 +146,7 @@ public class OpenGLUtil {
             throw new IllegalArgumentException(polyMode + "");
         }
     }
-
+    
     public static int typeId(final CullMode cullMode) {
         switch (cullMode) {
         case BACK:
@@ -147,9 +157,9 @@ public class OpenGLUtil {
             throw new IllegalArgumentException(cullMode + "");
         }
     }
-
+    
     public static int typeId(DepthMode depthMode) {
-        switch(depthMode) {
+        switch (depthMode) {
         case ALWAYS:
             return GL11.GL_ALWAYS;
         case EQUAL:
@@ -162,7 +172,18 @@ public class OpenGLUtil {
             return GL11.GL_NEVER;
         default:
             throw new IllegalArgumentException(depthMode + "");
-       }
+        }
+    }
+    
+    public static int typeId(SurfaceBuffer bufferType) {
+        switch (bufferType) {
+        case Color:
+            return GL11.GL_COLOR_BUFFER_BIT;
+        case Depth:
+            return GL11.GL_DEPTH_BUFFER_BIT;
+        default:
+            throw new IllegalArgumentException(bufferType + "");
+        }
     }
     
     public static void flushErrors() {
@@ -171,18 +192,18 @@ public class OpenGLUtil {
             System.err.println("OpenGL error: " + e);
         }
     }
-
+    
     private static int lastVertexArray = 0;
     private static final int[] lastBoundTextures = new int[32];
     private static int currentShader;
-
+    
     public static void bindVertexArray(final int vertexArray, final boolean override) {
         if (vertexArray != lastVertexArray || override) {
             GL30.glBindVertexArray(vertexArray);
             lastVertexArray = vertexArray;
         }
     }
-
+    
     public static void bindTexture(final int unit, final int target, final int id, final boolean override) {
         if (lastBoundTextures[unit] != id || override) {
             GL13.glActiveTexture(unit + GL13.GL_TEXTURE0);
@@ -190,20 +211,25 @@ public class OpenGLUtil {
             lastBoundTextures[unit] = id;
         }
     }
-
+    
     public static void useProgram(final int id) {
         if (currentShader != id) {
             GL20.glUseProgram(id);
             currentShader = id;
         }
     }
-
+    
     public static void bindBuffer(final int target, final int buffer/* , final boolean override */) {
         GL15.glBindBuffer(target, buffer);
     }
-
+    
     private static Map<RenderConfig, Boolean> featureCache = new EnumMap<>(RenderConfig.class);
-
+    private static Map<CACHE_ENUM, Object> cache = new EnumMap<>(CACHE_ENUM.class);
+    
+    private static enum CACHE_ENUM {
+        CULL_FACE_KEY, POLY_MODE_KEY, BLEND_MODE, DEPTH_FUNC, MULTISAMPLE;
+    }
+    
     public static void setEnabled(final RenderConfig feature, final boolean b) {
         final Boolean cached = featureCache.get(feature);
         if (cached == null || ((cached) != b)) {
@@ -222,9 +248,7 @@ public class OpenGLUtil {
             featureCache.put(feature, b);
         }
     }
-
-    private static Map<CACHE_ENUM, Object> cache = new EnumMap<>(CACHE_ENUM.class);
-
+    
     public static void setBlendMode(final BlendMode blendModeNew) {
         final BlendMode blendModeOld = (BlendMode) cache.get(CACHE_ENUM.BLEND_MODE);
         if (blendModeOld == null || blendModeOld != blendModeNew) {
@@ -244,7 +268,7 @@ public class OpenGLUtil {
             cache.put(CACHE_ENUM.BLEND_MODE, blendModeNew);
         }
     }
-
+    
     public static void setCullMode(final CullMode mode) {
         final Object o = cache.get(CACHE_ENUM.CULL_FACE_KEY);
         if (o == null || ((CullMode) o) != mode) {
@@ -252,7 +276,7 @@ public class OpenGLUtil {
             cache.put(CACHE_ENUM.CULL_FACE_KEY, mode);
         }
     }
-
+    
     public static void setPolyMode(final PolyMode mode) {
         final Object o = cache.get(CACHE_ENUM.POLY_MODE_KEY);
         if (o == null || ((PolyMode) o) != mode) {
@@ -260,7 +284,7 @@ public class OpenGLUtil {
             cache.put(CACHE_ENUM.POLY_MODE_KEY, mode);
         }
     }
-
+    
     public static void setDepthTestFunc(DepthMode depthMode) {
         final Object o = cache.get(CACHE_ENUM.DEPTH_FUNC);
         if (o == null || ((DepthMode) o) != depthMode) {
@@ -268,62 +292,48 @@ public class OpenGLUtil {
             cache.put(CACHE_ENUM.DEPTH_FUNC, depthMode);
         }
     }
-
-    //TODO redo below this
-
-    public static void setScissor(final int x, final int y, final int width, final int height) {
-        GL11.glScissor(x, y, width, height);
-    }
-
-    public static void setDepthMask(final boolean b) {
-        final Object o = cache.get(CACHE_ENUM.DEPTH_MASK_KEY);
+    
+    public static void setMultisample(boolean b) {
+        final Object o = cache.get(CACHE_ENUM.MULTISAMPLE);
         if (o == null || ((boolean) o) != b) {
-            GL11.glDepthMask(b);
-            cache.put(CACHE_ENUM.DEPTH_MASK_KEY, b);
+            if (b) {
+                GL11.glEnable(GL13.GL_MULTISAMPLE);
+            } else {
+                GL11.glDisable(GL13.GL_MULTISAMPLE);
+            }
+            cache.put(CACHE_ENUM.MULTISAMPLE, b);
         }
     }
-
+    
+    @Deprecated
     public static void setClearColor(final Color color) {
         setClearColor(color.getR(), color.getG(), color.getB(), color.getA());
     }
-
+    
     public static void setClearColor(final float r, final float g, final float b, final float a) {
         GL11.glClearColor(r, g, b, a);
     }
-
-    public static void clear(final BufferType... buffers) {
+    
+    public static void clear(final SurfaceBuffer... buffers) {
         int mask = 0;
-        for (final BufferType b : buffers) {
-            mask |= b.id;
+        for (final SurfaceBuffer b : buffers) {
+            mask |= typeId(b);
         }
-        GL11.glClear(mask);
-    }
-
-    public static enum BufferType {
-        COLOR(GL11.GL_COLOR_BUFFER_BIT), DEPTH(GL11.GL_DEPTH_BUFFER_BIT), @Deprecated
-        ACCUM(GL11.GL_ACCUM_BUFFER_BIT), STENCIL(GL11.GL_STENCIL_BUFFER_BIT);
-
-        public final int id;
-
-        private BufferType(final int id) {
-            this.id = id;
+        if (mask != 0) {
+            GL11.glClear(mask);
         }
     }
-
-    public static enum Feature {
-        BLEND(GL11.GL_BLEND), DEPTH_TEST(GL11.GL_DEPTH_TEST), CULL_FACES(GL11.GL_CULL_FACE),
-        MULTISAMPLE(GL13.GL_MULTISAMPLE), SCISSORTEST(GL11.GL_SCISSOR_TEST);
-
-        public final int id;
-
-        private Feature(final int id) {
-            this.id = id;
-        }
-
-    }
-
-    private static enum CACHE_ENUM {
-        DEPTH_MASK_KEY, CULL_FACE_KEY, POLY_MODE_KEY, BLEND_MODE, DEPTH_FUNC;
-    }
-
+    
+    //    public static enum Feature {
+    //        BLEND(GL11.GL_BLEND), DEPTH_TEST(GL11.GL_DEPTH_TEST), CULL_FACES(GL11.GL_CULL_FACE),
+    //        MULTISAMPLE(GL13.GL_MULTISAMPLE), SCISSORTEST(GL11.GL_SCISSOR_TEST);
+    //
+    //        public final int id;
+    //
+    //        private Feature(final int id) {
+    //            this.id = id;
+    //        }
+    //
+    //    }
+    
 }

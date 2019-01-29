@@ -44,7 +44,7 @@ public class BasicFunctionsTest {
             if (updater.getOperationCount() % 40 == 0) {
                 OpenGLUtil.setClearColor(Color.randomRGB());
             }
-            OpenGLUtil.clear(BufferType.COLOR);
+            OpenGLUtil.clear(SurfaceBuffer.COLOR);
         }
     }
     

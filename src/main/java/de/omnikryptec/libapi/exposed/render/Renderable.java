@@ -1,6 +1,6 @@
 package de.omnikryptec.libapi.exposed.render;
 
-import de.omnikryptec.resource.MeshData.PrimitiveType;
+import de.omnikryptec.resource.MeshData.Primitive;
 
 public interface Renderable {
     
@@ -8,7 +8,7 @@ public interface Renderable {
     
     void unbindRenderable();
     
-    PrimitiveType primitive();
+    Primitive primitive();
     
     int elementCount();
     

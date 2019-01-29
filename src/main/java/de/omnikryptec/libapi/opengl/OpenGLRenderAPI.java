@@ -132,4 +132,14 @@ public class OpenGLRenderAPI implements RenderAPI {
         mesh.unbindRenderable();
     }
     
+    @Override
+    public void clear(SurfaceBuffer... buffers) {
+        OpenGLUtil.clear(buffers);
+    }
+    
+    @Override
+    public void setClearColor(float r, float g, float b, float a) {
+        OpenGLUtil.setClearColor(r, g, b, a);
+    }
+    
 }
