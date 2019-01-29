@@ -38,7 +38,7 @@ public interface Shader {
      */
     void create(ShaderSource... shaderAttachments);
 
-    <T> T getUniform(String name);
+    <T extends Uniform> T getUniform(String name);
 
     default void create(final String name) {
         create(name, ShaderParser.instance().getCurrentShaderTable());

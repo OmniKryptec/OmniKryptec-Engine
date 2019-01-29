@@ -38,7 +38,7 @@ public class GLUniformVec2 extends GLUniform {
     }
     
     public void loadVec2(final float x, final float y) {
-        if (isFound() && (!this.used || x != this.currentX || y != this.currentY)) {
+        if (existsInCompilation() && (!this.used || x != this.currentX || y != this.currentY)) {
             this.currentX = x;
             this.currentY = y;
             this.used = true;

@@ -16,6 +16,7 @@
 
 package de.omnikryptec.core.scene;
 
+import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.Updateable;
 import de.omnikryptec.core.UpdateableContainer.ExecuteMode;
 import de.omnikryptec.core.UpdateableContainer.ExecuteTime;
@@ -27,11 +28,18 @@ import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.Mesh;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBuffer;
+import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
+import de.omnikryptec.libapi.exposed.render.RenderState.RenderConfig;
+import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
+import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec4;
+import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.resource.MeshData;
 import de.omnikryptec.resource.MeshData.VertexAttribute;
+import de.omnikryptec.resource.TextureConfig;
+import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.updater.Time;
 
@@ -165,7 +173,7 @@ public class SceneBuilder {
         });
     }
     
-    public void addGraphicsBasicImplTest() {
+    public void addGraphicsBasicImplTest(TextureData dat) {
         final MeshData data = new MeshData(VertexAttribute.Index, new int[] { 0, 1, 2, 2, 1, 3 },
                 VertexAttribute.Position, 2, new float[] { -1f, -1f, -1f, 1f, 1f, -1f, 1f, 1f });
         
@@ -174,9 +182,16 @@ public class SceneBuilder {
         shader.create("test");
         final UniformVec4 color = shader.getUniform("u_col");
         final UniformFloat instanceCount = shader.getUniform("instancesMax");
+        final UniformSampler sampler = shader.getUniform("sampler");
         final FrameBuffer fbo = RenderAPI.get().createFrameBuffer(200, 200, 0, new FBTarget(TextureFormat.RGBA8, 0),
                 new FBTarget(TextureFormat.DEPTH24));
+        Texture texture = RenderAPI.get().createTexture2D(dat, new TextureConfig());
         
+        shader.bindShader();
+        sampler.setSampler(0);
+        color.loadVec4(1,1,1,1);
+        OpenGLUtil.setEnabled(RenderConfig.BLEND, true);
+        OpenGLUtil.setBlendMode(BlendMode.ALPHA);
         final int instances = 2;
         
         addUpdateable(new Updateable() {
@@ -189,7 +204,8 @@ public class SceneBuilder {
             @Override
             public void update(final Time time) {
                 shader.bindShader();
-                color.loadColor(Color.randomRGB());
+                //color.loadColor(Color.randomRGB());
+                texture.bindTexture(0);
                 instanceCount.loadFloat(instances);
                 RenderAPI.get().renderInstanced(mesh, instances);
             }

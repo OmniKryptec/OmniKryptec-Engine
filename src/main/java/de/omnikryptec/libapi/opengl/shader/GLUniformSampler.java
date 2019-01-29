@@ -31,7 +31,7 @@ public class GLUniformSampler extends GLUniform implements UniformSampler {
     
     @Override
     public void setSampler(final int texUnit) {
-        if (isFound() && (!this.used || this.currentValue != texUnit)) {
+        if (existsInCompilation() && (!this.used || this.currentValue != texUnit)) {
             GL20.glUniform1i(super.getLocation(), texUnit);
             this.used = true;
             this.currentValue = texUnit;

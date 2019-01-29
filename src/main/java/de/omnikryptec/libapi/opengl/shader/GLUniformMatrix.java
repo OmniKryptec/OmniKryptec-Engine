@@ -34,7 +34,7 @@ public class GLUniformMatrix extends GLUniform implements UniformMatrix {
 
     @Override
     public void loadMatrix(final Matrix4fc matrix) {
-        if (isFound()) {
+        if (existsInCompilation()) {
             matrixBuffer.put(matrix.m00());
             matrixBuffer.put(matrix.m01());
             matrixBuffer.put(matrix.m02());

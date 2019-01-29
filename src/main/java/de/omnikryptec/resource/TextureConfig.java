@@ -30,9 +30,9 @@ public class TextureConfig {
     private float anisotropic;
     private boolean mipmap;
     
-    private WrappingMode wrappingMode;
-    private MagMinFilter minFilter;
-    private MagMinFilter magFilter;
+    private WrappingMode wrappingMode = WrappingMode.ClampToEdge;
+    private MagMinFilter minFilter = MagMinFilter.Linear;
+    private MagMinFilter magFilter = MagMinFilter.Linear;
     
     public float anisotropicValue() {
         return this.anisotropic;

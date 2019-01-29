@@ -42,7 +42,7 @@ public class GLUniformVec3 extends GLUniform {
     }
     
     public void loadVec3(final float x, final float y, final float z) {
-        if (isFound() && (!this.used || x != this.currentX || y != this.currentY || z != this.currentZ)) {
+        if (existsInCompilation() && (!this.used || x != this.currentX || y != this.currentY || z != this.currentZ)) {
             this.currentX = x;
             this.currentY = y;
             this.currentZ = z;

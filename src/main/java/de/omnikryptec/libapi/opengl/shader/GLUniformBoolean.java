@@ -28,7 +28,7 @@ public class GLUniformBoolean extends GLUniform {
     }
     
     public void loadBoolean(final boolean bool) {
-        if (isFound() && (!this.used || this.currentBool != bool)) {
+        if (existsInCompilation() && (!this.used || this.currentBool != bool)) {
             GL20.glUniform1f(super.getLocation(), bool ? 1f : 0f);
             this.used = true;
             this.currentBool = bool;

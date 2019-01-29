@@ -28,6 +28,7 @@ import de.omnikryptec.libapi.exposed.AutoDelete;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
+import de.omnikryptec.libapi.exposed.render.shader.Uniform;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 
 public class GLShader extends AutoDelete implements Shader {
@@ -82,7 +83,7 @@ public class GLShader extends AutoDelete implements Shader {
     }
 
     @Override
-    public <T> T getUniform(final String name) {
+    public <T extends Uniform> T getUniform(final String name) {
         return (T) this.uniforms.get(name);
     }
 

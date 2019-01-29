@@ -31,7 +31,7 @@ public class GLUniformFloat extends GLUniform implements UniformFloat {
     
     @Override
     public void loadFloat(final float value) {
-        if (isFound() && (!this.used || this.currentValue != value)) {
+        if (existsInCompilation() && (!this.used || this.currentValue != value)) {
             GL20.glUniform1f(super.getLocation(), value);
             this.used = true;
             this.currentValue = value;

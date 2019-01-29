@@ -28,7 +28,7 @@ public class GLUniformInt extends GLUniform {
     }
     
     public void loadInt(final int value) {
-        if (isFound() && (!this.used || this.currentValue != value)) {
+        if (existsInCompilation() && (!this.used || this.currentValue != value)) {
             GL20.glUniform1i(super.getLocation(), value);
             this.used = true;
             this.currentValue = value;
