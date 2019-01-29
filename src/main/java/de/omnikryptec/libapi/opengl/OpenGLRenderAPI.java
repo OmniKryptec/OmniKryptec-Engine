@@ -101,6 +101,9 @@ public class OpenGLRenderAPI implements RenderAPI {
             OpenGLUtil.setEnabled(config, renderState.isEnable(config));
         }
         OpenGLUtil.setBlendMode(renderState.getBlendMode());
+        OpenGLUtil.setPolyMode(renderState.getPolyMode());
+        OpenGLUtil.setCullMode(renderState.getCullMode());
+        OpenGLUtil.setDepthTestFunc(renderState.getDepthMode());
         //TODO finish apply renderstate
     }
 

@@ -33,6 +33,9 @@ import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
+import de.omnikryptec.libapi.exposed.render.RenderState.CullMode;
+import de.omnikryptec.libapi.exposed.render.RenderState.DepthMode;
+import de.omnikryptec.libapi.exposed.render.RenderState.PolyMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.RenderConfig;
 import de.omnikryptec.resource.MeshData.PrimitiveType;
 import de.omnikryptec.util.data.Color;
@@ -121,6 +124,35 @@ public class OpenGLUtil {
         }
     }
 
+    public static int typeId(final PolyMode polyMode) {
+        switch (polyMode) {
+        case FILL:
+            return GL11.GL_FILL;
+        case LINE:
+            return GL11.GL_LINE;
+        case POINT:
+            return GL11.GL_POINT;
+        default:
+            throw new IllegalArgumentException(polyMode + "");
+        }
+    }
+
+    public static int typeId(final CullMode cullMode) {
+        switch (cullMode) {
+        case BACK:
+            return GL11.GL_BACK;
+        case FRONT:
+            return GL11.GL_FRONT;
+        default:
+            throw new IllegalArgumentException(cullMode + "");
+        }
+    }
+
+    public static int typeId(DepthMode depthMode) {
+        //TODO depthmode typeid
+        return 0;
+    }
+    
     public static void flushErrors() {
         int e = 0;
         while ((e = GL11.glGetError()) != GL11.GL_NO_ERROR) {
@@ -201,15 +233,31 @@ public class OpenGLUtil {
         }
     }
 
-    //TODO redo below this
-
     public static void setCullMode(final CullMode mode) {
         final Object o = cache.get(CACHE_ENUM.CULL_FACE_KEY);
         if (o == null || ((CullMode) o) != mode) {
-            GL11.glCullFace(mode.id);
+            GL11.glCullFace(typeId(mode));
             cache.put(CACHE_ENUM.CULL_FACE_KEY, mode);
         }
     }
+
+    public static void setPolyMode(final PolyMode mode) {
+        final Object o = cache.get(CACHE_ENUM.POLY_MODE_KEY);
+        if (o == null || ((PolyMode) o) != mode) {
+            GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, typeId(mode));
+            cache.put(CACHE_ENUM.POLY_MODE_KEY, mode);
+        }
+    }
+
+    public static void setDepthTestFunc(DepthMode depthMode) {
+        final Object o = cache.get(CACHE_ENUM.DEPTH_FUNC);
+        if (o == null || ((DepthMode) o) != depthMode) {
+            GL11.glDepthFunc(typeId(depthMode));
+            cache.put(CACHE_ENUM.DEPTH_FUNC, depthMode);
+        }
+    }
+
+    //TODO redo below this
 
     public static void setScissor(final int x, final int y, final int width, final int height) {
         GL11.glScissor(x, y, width, height);
@@ -220,14 +268,6 @@ public class OpenGLUtil {
         if (o == null || ((boolean) o) != b) {
             GL11.glDepthMask(b);
             cache.put(CACHE_ENUM.DEPTH_MASK_KEY, b);
-        }
-    }
-
-    public static void setPolyMode(final PolyMode mode) {
-        final Object o = cache.get(CACHE_ENUM.POLY_MODE_KEY);
-        if (o == null || ((PolyMode) o) != mode) {
-            GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, mode.id);
-            cache.put(CACHE_ENUM.POLY_MODE_KEY, mode);
         }
     }
 
@@ -245,26 +285,6 @@ public class OpenGLUtil {
             mask |= b.id;
         }
         GL11.glClear(mask);
-    }
-
-    public static enum CullMode {
-        BACK(GL11.GL_BACK), FRONT(GL11.GL_FRONT);
-
-        public final int id;
-
-        private CullMode(final int id) {
-            this.id = id;
-        }
-    }
-
-    public static enum PolyMode {
-        FILL(GL11.GL_FILL), LINE(GL11.GL_LINE), POINT(GL11.GL_POINT);
-
-        public final int id;
-
-        private PolyMode(final int id) {
-            this.id = id;
-        }
     }
 
     public static enum BufferType {
@@ -291,7 +311,7 @@ public class OpenGLUtil {
     }
 
     private static enum CACHE_ENUM {
-        DEPTH_MASK_KEY, CULL_FACE_KEY, POLY_MODE_KEY, BLEND_MODE;
+        DEPTH_MASK_KEY, CULL_FACE_KEY, POLY_MODE_KEY, BLEND_MODE, DEPTH_FUNC;
     }
 
 }

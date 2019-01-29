@@ -26,7 +26,7 @@ public class RenderState {
     }
 
     public static enum CullMode {
-        BACK, FRONT, OFF/* ??? */;
+        BACK, FRONT;
     }
 
     public static enum DepthMode {
@@ -34,7 +34,7 @@ public class RenderState {
     }
 
     public static enum RenderConfig {
-        BLEND, DEPTH_TEST, CULL_FACES, /* MULTISAMPLE, */ WRITE_DEPTH, WRITE_COLOR;
+        BLEND, DEPTH_TEST, CULL_FACES, /*TODO MULTISAMPLE, */ WRITE_DEPTH, WRITE_COLOR;
     }
 
     public static enum PolyMode {
