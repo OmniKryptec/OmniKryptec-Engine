@@ -17,10 +17,10 @@
 package de.omnikryptec.core;
 
 import de.omnikryptec.core.loop.IGameLoop;
+import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBuffer;
 import de.omnikryptec.libapi.exposed.window.Window;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
-import de.omnikryptec.libapi.opengl.OpenGLUtil;
-import de.omnikryptec.libapi.opengl.OpenGLUtil.BufferType;
 import de.omnikryptec.util.data.Color;
 
 public class Testloop implements IGameLoop {
@@ -52,9 +52,9 @@ public class Testloop implements IGameLoop {
     public void renderAndSwap() {
         this.updater.update(0);
         if (this.updater.getOperationCount() % 40 == 0) {
-            OpenGLUtil.setClearColor(Color.randomRGB());
+            RenderAPI.get().setClearColor(Color.randomRGB());
         }
-        OpenGLUtil.clear(SurfaceBuffer.COLOR);
+        RenderAPI.get().clear(SurfaceBuffer.Color);
     }
     
     @Override
