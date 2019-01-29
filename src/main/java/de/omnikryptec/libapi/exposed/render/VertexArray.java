@@ -66,12 +66,4 @@ public interface VertexArray {
      * @see #setIndexBuffer(IndexBuffer)
      */
     boolean hasIndexBuffer();
-    
-    /**
-     * The amount of vertices stored in this {@link VertexArray}.
-     *
-     * @return the vertex count of this {@link VertexArray}
-     */
-    //TODO better name/javadoc
-    int vertexCount();
 }

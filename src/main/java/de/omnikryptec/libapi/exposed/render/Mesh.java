@@ -11,10 +11,12 @@ public class Mesh implements Renderable {
     
     private final VertexArray vertexArray;
     private final Primitive primitive;
+    private final int elementCount;
     
     public Mesh(final MeshData meshData) {
         this.vertexArray = RenderAPI.get().createVertexArray();
         this.primitive = meshData.getPrimitiveType();
+        this.elementCount = meshData.getElementCount();
         if (meshData.hasVertexAttribute(VertexAttribute.Index)) {
             final IndexBuffer ibo = RenderAPI.get().createIndexBuffer();
             ibo.storeData(meshData.getAttribute(VertexAttribute.Index), BufferUsage.Static);
@@ -43,7 +45,7 @@ public class Mesh implements Renderable {
     
     @Override
     public int elementCount() {
-        return this.vertexArray.vertexCount();
+        return elementCount;
     }
     
     @Override

@@ -34,8 +34,6 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
     private final int pointer;
     private int vaaIndex = 0;
     
-    private int vertexCount;
-    
     private boolean indexBuffer;
     
     public GLVertexArray() {
@@ -66,13 +64,8 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
         final List<VertexBufferElement> elements = layout.getElements();
         int stride = 0;
         int offset = 0;
-        int perVertexCount = 0;
         for (final VertexBufferElement element : elements) {
             stride += element.getCount() * OpenGLUtil.sizeof(element.getType());
-            perVertexCount += element.getCount();
-        }
-        if (!hasIndexBuffer()) {
-            this.vertexCount = buffer.size() / perVertexCount;
         }
         bindArray();
         buffer.bindBuffer();
@@ -89,9 +82,6 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
     
     @Override
     public void addVertexBuffer(final VertexBuffer buffer, final VertexBufferElement element) {
-        if (!hasIndexBuffer()) {
-            this.vertexCount = buffer.size() / element.getCount();
-        }
         bindArray();
         buffer.bindBuffer();
         //pass the attribarrayindex as parameter in the future?
@@ -104,16 +94,10 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
     
     @Override
     public void setIndexBuffer(final IndexBuffer buffer) {
-        this.vertexCount = buffer.size();
         this.indexBuffer = true;
         bindArray();
         buffer.bindBuffer();
         unbindArray();
-    }
-    
-    @Override
-    public int vertexCount() {
-        return this.vertexCount;
     }
     
     @Override

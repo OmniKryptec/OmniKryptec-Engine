@@ -28,7 +28,8 @@ public class BigTest extends EngineLoader {
     protected void onInitialized() {
         final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
         getResManager().addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
-        getResManager().instantLoad(false, new AdvancedFile("src/test/resources"));
+        getResManager().stage(new AdvancedFile("src/test/resources"));
+        getResManager().processStaged(false);
 
         builder.addGraphicsClearTest();
         builder.addGraphicsBasicImplTest();

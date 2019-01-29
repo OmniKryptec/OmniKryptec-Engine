@@ -16,6 +16,7 @@
 
 package de.omnikryptec.resource;
 
+import java.lang.reflect.Array;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -36,6 +37,7 @@ public class MeshData {
     }
     
     private Primitive primitiveType;
+    private int elementCount;
     
     private final Map<VertexAttribute, Object> vertexData = new EnumMap<>(VertexAttribute.class);
     private final Map<VertexAttribute, Integer> vertexDataSize = new EnumMap<>(VertexAttribute.class);
@@ -56,10 +58,29 @@ public class MeshData {
                 current = (VertexAttribute) o;
             } else if (o instanceof Integer) {
                 this.vertexDataSize.put(current, (Integer) o);
-            } else {
+            } else if (o.getClass().isArray()) {
                 this.vertexData.put(current, o);
+            } else {
+                throw new IllegalArgumentException(o.getClass() + "");
             }
         }
+        int len = -1;
+        for (VertexAttribute va : vertexData.keySet()) {
+            if (va == VertexAttribute.Index) {
+                len = Array.getLength(vertexData.get(va));
+                break;
+            } else {
+                int arraylength = Array.getLength(vertexData.get(va)) / vertexDataSize.get(va);
+                if (len != -1 && arraylength != len) {
+                    throw new IllegalStateException("Unexpected vertex atrribute size");
+                }
+                len = arraylength;
+            }
+        }
+        if (len == -1) {
+            throw new IllegalArgumentException("No vertex data");
+        }
+        this.elementCount = len;
     }
     
     public boolean hasVertexAttribute(final VertexAttribute attribute) {
@@ -76,5 +97,9 @@ public class MeshData {
     
     public Primitive getPrimitiveType() {
         return this.primitiveType;
+    }
+    
+    public int getElementCount() {
+        return elementCount;
     }
 }
