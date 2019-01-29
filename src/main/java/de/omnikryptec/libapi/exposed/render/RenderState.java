@@ -34,17 +34,17 @@ public class RenderState implements Cloneable {
     }
     
     public static enum RenderConfig {
-        BLEND, DEPTH_TEST, CULL_FACES, /* TODO MULTISAMPLE, */ WRITE_DEPTH, WRITE_COLOR;
+        BLEND, DEPTH_TEST, CULL_FACES, WRITE_DEPTH, WRITE_COLOR;
     }
     
     public static enum PolyMode {
         FILL, LINE, POINT;
     }
     
-    private BlendMode blendMode;
-    private CullMode cullMode;
-    private DepthMode depthMode;
-    private PolyMode polyMode;
+    private BlendMode blendMode = null;
+    private CullMode cullMode = null;
+    private DepthMode depthMode = null;
+    private PolyMode polyMode = null;
     private final Map<RenderConfig, Boolean> renderConfig = new EnumMap<>(RenderConfig.class);
     
     public boolean isEnable(final RenderConfig opt) {

@@ -1,5 +1,6 @@
 package de.omnikryptec.graphics.render;
 
+import org.joml.FrustumIntersection;
 import org.joml.Matrix4f;
 
 public class Camera implements IProjection {
@@ -13,6 +14,12 @@ public class Camera implements IProjection {
     @Override
     public Matrix4f getProjection() {
         return this.projectionMatrix;
+    }
+
+    @Override
+    public FrustumIntersection getFrustumTester() {
+        
+        return null;
     }
 
 }

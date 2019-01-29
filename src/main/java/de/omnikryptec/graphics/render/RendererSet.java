@@ -1,6 +1,7 @@
 package de.omnikryptec.graphics.render;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -40,6 +41,10 @@ public class RendererSet {
         for (final Renderer rend : this.renderersList) {
             rend.postRender(time, renderSettings);
         }
+    }
+    
+    public List<Renderer> getSupportedRenderer(){
+        return Collections.unmodifiableList(renderersList);
     }
 
 }

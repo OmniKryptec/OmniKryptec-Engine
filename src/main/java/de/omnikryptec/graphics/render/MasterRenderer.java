@@ -28,7 +28,7 @@ public class MasterRenderer {
     public void renderScene(final Time time, final RenderCollection scene, final Settings<?> renderSettings) {
         //filter objs in viewports
         for (final Viewport view : this.mainViewports) {
-            if (view.refill()) {
+            if (view.requiresRefill()) {
                 scene.fillViewport(view);
             }
         }

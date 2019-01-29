@@ -1,26 +1,31 @@
 package de.omnikryptec.graphics.render;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.joml.Vector3fc;
+
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.util.Util;
+import de.omnikryptec.util.data.Struct3f;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class Viewport {
-
-    private final Map<Renderer, DisplayList> renderables;
-    private final IProjection projection;
-
+    
     private final RendererSet rendererSet;
-
-    public Viewport(final IProjection projection, final RendererSet rendererSet) {
+    private final Map<Renderer, DisplayList> renderables;
+    
+    //TODO setter/initial value
+    private IProjection projection;
+    private Struct3f position;
+    
+    public Viewport(final RendererSet rendererSet) {
         this.renderables = new HashMap<>();
-        this.projection = Util.ensureNonNull(projection);
         this.rendererSet = Util.ensureNonNull(rendererSet);
     }
-
+    
     public void render(final Time time, final FrameBuffer target, final Settings<?> renderSettings) {
         if (target != null) {
             target.bindFrameBuffer();
@@ -33,9 +38,32 @@ public class Viewport {
             target.unbindFrameBuffer();
         }
     }
-
-    public void add(final Renderer renderer, final Object... objs) {
+    
+    public void add(final Renderer renderer, final Collection<? extends RenderedObject> objs) {
         Util.ensureNonNull(objs);
+        if (objs.isEmpty()) {
+            return;
+        }
+        DisplayList list = checkAndGetDisplayList(renderer);
+        for (RenderedObject r : objs) {
+            addUnchecked(list, r);
+        }
+    }
+    
+    public void add(final Renderer renderer, RenderedObject obj) {
+        Util.ensureNonNull(obj);
+        addUnchecked(checkAndGetDisplayList(renderer), obj);
+    }
+    
+    private void addUnchecked(DisplayList list, RenderedObject r) {
+        float radius = r.maxBoundRadius();
+        Vector3fc pos = r.position();
+        if (projection.getFrustumTester().testSphere(pos, radius)) {
+            list.addObject(r);
+        }
+    }
+    
+    private DisplayList checkAndGetDisplayList(Renderer renderer) {
         if (!this.rendererSet.supports(renderer)) {
             throw new IllegalArgumentException("renderer not supported");
         }
@@ -47,22 +75,28 @@ public class Viewport {
             list = Util.ensureNonNull(renderer.createRenderList());
             this.renderables.put(renderer, list);
         }
-        for (final Object o : objs) {
-            list.addObject(o);
-        }
+        return list;
     }
-
+    
     public IProjection getProjection() {
         return projection;
+    }
+    
+    public Struct3f getPosition() {
+        return position;
+    }
+    
+    public RendererSet getRendererSet() {
+        return rendererSet;
     }
     
     public void clear() {
         this.renderables.clear();
     }
     
-    //Might use later
-    public boolean refill() {
+    //Might use later TODO use flip() pattern?
+    public boolean requiresRefill() {
         return true;
     }
-
+    
 }

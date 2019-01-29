@@ -1,9 +1,8 @@
 package de.omnikryptec.graphics.render;
 
-public class RenderCollection {
+//TODO what about moving objects?
+public interface RenderCollection {
     
-    public void fillViewport(final Viewport viewport) {
-        
-    }
-    
+    void fillViewport(final Viewport viewport);
+    void add(Renderer renderer, RenderedObject robj);
 }

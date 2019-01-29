@@ -7,7 +7,7 @@ import de.omnikryptec.util.updater.Time;
 public class Postprocessor {
 
     public void postprocess(final Time time, final FrameBuffer scene, final Settings<?> renderSettings) {
-        //TODO create
+        //TODO create PP
     }
     
 }
