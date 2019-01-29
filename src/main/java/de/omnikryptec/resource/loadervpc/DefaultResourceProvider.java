@@ -56,4 +56,9 @@ public class DefaultResourceProvider implements ResourceProvider {
         this.resourceTable.clear();
     }
     
+    @Override
+    public boolean contains(Class<?> clazz, String name) {
+        return resourceTable.contains(clazz, name);
+    }
+    
 }
