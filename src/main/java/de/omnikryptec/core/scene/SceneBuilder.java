@@ -168,7 +168,7 @@ public class SceneBuilder {
 
     public void addGraphicsBasicImplTest() {
         final MeshData data = new MeshData(VertexAttribute.Index, new int[] { 0, 1, 2, 2, 1, 3 },
-                VertexAttribute.Position, 2, new float[] { -0.5f, -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f, 0.5f });
+                VertexAttribute.Position, 2, new float[] { -1f, -1f, -1f, 1f, 1f, -1f, 1f, 1f });
 
         final Mesh mesh = new Mesh(data);
         final Shader shader = RenderAPI.get().createShader();

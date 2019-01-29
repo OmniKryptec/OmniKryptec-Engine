@@ -19,53 +19,91 @@ package de.omnikryptec.libapi.exposed.render;
 import java.util.EnumMap;
 import java.util.Map;
 
-public class RenderState {
-
+public class RenderState implements Cloneable {
+    
     public static enum BlendMode {
         ADDITIVE, ALPHA, MULTIPLICATIVE;
     }
-
+    
     public static enum CullMode {
         BACK, FRONT;
     }
-
+    
     public static enum DepthMode {
         LESS, EQUAL, GREATER, ALWAYS, NEVER;
     }
-
+    
     public static enum RenderConfig {
-        BLEND, DEPTH_TEST, CULL_FACES, /*TODO MULTISAMPLE, */ WRITE_DEPTH, WRITE_COLOR;
+        BLEND, DEPTH_TEST, CULL_FACES, /* TODO MULTISAMPLE, */ WRITE_DEPTH, WRITE_COLOR;
     }
-
+    
     public static enum PolyMode {
         FILL, LINE, POINT;
     }
-
+    
     private BlendMode blendMode;
     private CullMode cullMode;
     private DepthMode depthMode;
     private PolyMode polyMode;
     private final Map<RenderConfig, Boolean> renderConfig = new EnumMap<>(RenderConfig.class);
-
+    
     public boolean isEnable(final RenderConfig opt) {
         final Boolean bool = this.renderConfig.get(opt);
         return bool != null ? bool : false;
     }
-
+    
     public BlendMode getBlendMode() {
         return this.blendMode;
     }
-
+    
     public CullMode getCullMode() {
         return this.cullMode;
     }
-
+    
     public DepthMode getDepthMode() {
         return this.depthMode;
     }
-
+    
     public PolyMode getPolyMode() {
         return this.polyMode;
     }
-
+    
+    public RenderState setBlendMode(BlendMode blendMode) {
+        this.blendMode = blendMode;
+        return this;
+    }
+    
+    public RenderState setCullMode(CullMode cullMode) {
+        this.cullMode = cullMode;
+        return this;
+    }
+    
+    public RenderState setDepthMode(DepthMode depthMode) {
+        this.depthMode = depthMode;
+        return this;
+    }
+    
+    public RenderState setPolyMode(PolyMode polyMode) {
+        this.polyMode = polyMode;
+        return this;
+    }
+    
+    public RenderState setRenderConfig(RenderConfig renderConfig, boolean enable) {
+        this.renderConfig.put(renderConfig, enable);
+        return this;
+    }
+    
+    @Override
+    public RenderState clone() {
+        RenderState clone = null;
+        try {
+            clone = (RenderState) super.clone();
+            clone.renderConfig.clear();
+            clone.renderConfig.putAll(renderConfig);
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return clone;
+    }
+    
 }

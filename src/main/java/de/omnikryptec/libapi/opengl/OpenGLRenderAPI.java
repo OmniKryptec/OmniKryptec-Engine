@@ -16,6 +16,8 @@
 
 package de.omnikryptec.libapi.opengl;
 
+import javax.annotation.Nonnull;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL31;
 
@@ -43,60 +45,60 @@ import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
 public class OpenGLRenderAPI implements RenderAPI {
-
+    
     public static final IntegerKey MAJOR_VERSION = IntegerKey.next(1);
     public static final IntegerKey MINOR_VERSION = IntegerKey.next(0);
-
+    
     private final Settings<IntegerKey> apisettings;
     private Window window;
-
+    
     public OpenGLRenderAPI(final Settings<IntegerKey> apisettings) {
         this.apisettings = apisettings;
     }
-
+    
     @Override
     public Window createWindow(final Settings<WindowSetting> windowsettings) {
         return this.window = new OpenGLWindow(windowsettings, this.apisettings);
     }
-
+    
     @Override
     public Window getWindow() {
         return this.window;
     }
-
+    
     @Override
     public IndexBuffer createIndexBuffer() {
         return new GLIndexBuffer();
     }
-
+    
     @Override
     public VertexBuffer createVertexBuffer() {
         return new GLVertexBuffer();
     }
-
+    
     @Override
     public VertexArray createVertexArray() {
         return new GLVertexArray();
     }
-
+    
     @Override
     public Texture createTexture2D(final TextureData textureData, final TextureConfig textureConfig) {
         return new GLTexture2D(textureData, textureConfig);
     }
-
+    
     @Override
     public Shader createShader() {
         return new GLShader();
     }
-
+    
     @Override
     public FrameBuffer createFrameBuffer(final int width, final int height, final int multisample,
             final FBTarget... targets) {
         return new GLFrameBuffer(width, height, multisample, targets);
     }
-
+    
     @Override
-    public void applyRenderState(final RenderState renderState) {
+    public void applyRenderState(@Nonnull final RenderState renderState) {
         for (final RenderConfig config : RenderConfig.values()) {
             OpenGLUtil.setEnabled(config, renderState.isEnable(config));
         }
@@ -104,11 +106,10 @@ public class OpenGLRenderAPI implements RenderAPI {
         OpenGLUtil.setPolyMode(renderState.getPolyMode());
         OpenGLUtil.setCullMode(renderState.getCullMode());
         OpenGLUtil.setDepthTestFunc(renderState.getDepthMode());
-        //TODO finish apply renderstate
     }
-
+    
     @Override
-    public void render(final Renderable mesh) {
+    public void render(@Nonnull final Renderable mesh) {
         mesh.bindRenderable();
         final int typeid = OpenGLUtil.typeId(mesh.primitive());
         if (mesh.hasIndexBuffer()) {
@@ -118,9 +119,9 @@ public class OpenGLRenderAPI implements RenderAPI {
         }
         mesh.unbindRenderable();
     }
-
+    
     @Override
-    public void renderInstanced(final Renderable mesh, final int count) {
+    public void renderInstanced(@Nonnull final Renderable mesh, final int count) {
         mesh.bindRenderable();
         final int typeid = OpenGLUtil.typeId(mesh.primitive());
         if (mesh.hasIndexBuffer()) {
@@ -130,5 +131,5 @@ public class OpenGLRenderAPI implements RenderAPI {
         }
         mesh.unbindRenderable();
     }
-
+    
 }

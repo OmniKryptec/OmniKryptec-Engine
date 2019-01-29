@@ -52,6 +52,10 @@ public class Viewport {
         }
     }
 
+    public IProjection getProjection() {
+        return projection;
+    }
+    
     public void clear() {
         this.renderables.clear();
     }

@@ -149,8 +149,20 @@ public class OpenGLUtil {
     }
 
     public static int typeId(DepthMode depthMode) {
-        //TODO depthmode typeid
-        return 0;
+        switch(depthMode) {
+        case ALWAYS:
+            return GL11.GL_ALWAYS;
+        case EQUAL:
+            return GL11.GL_EQUAL;
+        case GREATER:
+            return GL11.GL_GREATER;
+        case LESS:
+            return GL11.GL_LESS;
+        case NEVER:
+            return GL11.GL_NEVER;
+        default:
+            throw new IllegalArgumentException(depthMode + "");
+       }
     }
     
     public static void flushErrors() {

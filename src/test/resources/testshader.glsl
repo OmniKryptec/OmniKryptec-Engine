@@ -10,11 +10,13 @@ out float v_perc;
 
 void main() {
 	vec4 realpos = pos;
-	realpos.x -= 0.5f;
+	float ins = gl_InstanceID;
+	float perc = ins / instancesMax;
 	
-	float perc = gl_InstanceID / instancesMax;
 	vec4 offset = vec4(perc, 0, 0, 0);
-	realpos /= instancesMax;
+	realpos.x *= 1f / instancesMax;
+	realpos.y *= 1f / instancesMax;
+	
 	gl_Position = realpos + offset;
 	v_perc = perc;
 }
@@ -34,5 +36,6 @@ out vec4 col;
 void main() {
 	vec4 ocol = u_col;
 	ocol.r = v_perc;
+	ocol.g = v_perc;
 	col = ocol;
 }
