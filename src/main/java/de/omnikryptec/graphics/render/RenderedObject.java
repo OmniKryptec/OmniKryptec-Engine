@@ -1,9 +1,8 @@
 package de.omnikryptec.graphics.render;
 
-import org.joml.Vector3fc;
+import org.joml.FrustumIntersection;
 
 public interface RenderedObject {
     
-    float maxBoundRadius();
-    Vector3fc position();
+    boolean isVisible(FrustumIntersection frustum);
 }

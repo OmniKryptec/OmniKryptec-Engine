@@ -4,11 +4,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.joml.Vector3fc;
-
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Struct3f;
+import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
@@ -17,9 +16,11 @@ public class Viewport {
     private final RendererSet rendererSet;
     private final Map<Renderer, DisplayList> renderables;
     
-    //TODO setter/initial value
     private IProjection projection;
     private Struct3f position;
+    
+    private boolean visibilityOverride = false;
+    private boolean refill = true;
     
     public Viewport(final RendererSet rendererSet) {
         this.renderables = new HashMap<>();
@@ -27,6 +28,10 @@ public class Viewport {
     }
     
     public void render(final Time time, final FrameBuffer target, final Settings<?> renderSettings) {
+        if (projection == null) {
+            System.err.println("No projection set");
+            return;
+        }
         if (target != null) {
             target.bindFrameBuffer();
         }
@@ -50,16 +55,14 @@ public class Viewport {
         }
     }
     
-    public void add(final Renderer renderer, RenderedObject obj) {
-        Util.ensureNonNull(obj);
-        addUnchecked(checkAndGetDisplayList(renderer), obj);
+    public void add(final Renderer renderer, RenderedObject robj) {
+        Util.ensureNonNull(robj);
+        addUnchecked(checkAndGetDisplayList(renderer), robj);
     }
     
-    private void addUnchecked(DisplayList list, RenderedObject r) {
-        float radius = r.maxBoundRadius();
-        Vector3fc pos = r.position();
-        if (projection.getFrustumTester().testSphere(pos, radius)) {
-            list.addObject(r);
+    private void addUnchecked(DisplayList list, RenderedObject robj) {
+        if (visibilityOverride || robj.isVisible(projection.getFrustumTester())) {
+            list.addObject(robj);
         }
     }
     
@@ -78,6 +81,40 @@ public class Viewport {
         return list;
     }
     
+    public void reset() {
+        this.reset(projection, position);
+    }
+    
+    public void reset(IProjection projection, Struct3f position) {
+        boolean changed = false;
+        if (projection != null) {
+            this.projection = projection;
+            changed = true;
+        }
+        if (position != null && !MathUtil.equals(position, this.position)) {
+            this.position = position;
+            changed = true;
+        }
+        if (changed) {
+            this.refill = true;
+            this.renderables.clear();
+        }
+    }
+    
+    //Change to autoflip and clear if refill==true on adding new renderedobjs?
+    public void flip() {
+        this.refill = false;
+    }
+    
+    public void setVisibilityOverride(boolean b) {
+        this.visibilityOverride = b;
+    }
+    
+    //TODO moving objects?
+    public boolean requiresRefill() {
+        return refill;
+    }
+    
     public IProjection getProjection() {
         return projection;
     }
@@ -88,15 +125,6 @@ public class Viewport {
     
     public RendererSet getRendererSet() {
         return rendererSet;
-    }
-    
-    public void clear() {
-        this.renderables.clear();
-    }
-    
-    //Might use later TODO use flip() pattern?
-    public boolean requiresRefill() {
-        return true;
     }
     
 }

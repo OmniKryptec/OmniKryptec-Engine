@@ -12,6 +12,14 @@ import de.omnikryptec.util.updater.Time;
 
 public class RendererSet {
 
+    public static final RendererSet RENDERERS_3D;
+    public static final RendererSet RENDERERS_2D;
+    
+    static {
+        RENDERERS_3D = new RendererSet();
+        RENDERERS_2D = new RendererSet();
+    }
+    
     private final Set<Renderer> renderers;
     private final List<Renderer> renderersList;
 

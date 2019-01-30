@@ -19,11 +19,17 @@ public class SimpleRenderCollection implements RenderCollection {
         for (Renderer r : vpRenderer) {
             viewport.add(r, objects.get(r));
         }
+        viewport.flip();
     }
     
     @Override
     public void add(Renderer renderer, RenderedObject robj) {
         objects.put(renderer, robj);
+    }
+    
+    @Override
+    public void remove(Renderer renderer, RenderedObject robj) {
+        objects.remove(renderer, robj);
     }
     
 }

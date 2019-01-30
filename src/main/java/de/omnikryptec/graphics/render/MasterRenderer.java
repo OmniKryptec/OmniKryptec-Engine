@@ -5,26 +5,33 @@ import java.util.List;
 
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
+import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
+import de.omnikryptec.libapi.exposed.window.WindowEvent.WindowResized;
+import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class MasterRenderer {
-
+    
+    public static final IntegerKey MultisampleSetting = IntegerKey.next(0);
+    
     private final List<RendererSet> rendererSets;
     private final List<Viewport> mainViewports;
     private final List<Postprocessor> postprocessors;
-
+    
     private FrameBuffer sceneFBO;
-
+    
     public MasterRenderer() {
         this.rendererSets = new ArrayList<>();
         this.mainViewports = new ArrayList<>();
         this.postprocessors = new ArrayList<>();
         LibAPIManager.LIBAPI_EVENTBUS.register(this);
     }
-
+    
     public void renderScene(final Time time, final RenderCollection scene, final Settings<?> renderSettings) {
         //filter objs in viewports
         for (final Viewport view : this.mainViewports) {
@@ -51,22 +58,21 @@ public class MasterRenderer {
             ppro.postprocess(time, null, renderSettings);
         }
     }
-
+    
     public void addSceneViewport(final Viewport viewport) {
         this.mainViewports.add(viewport);
     }
-
+    
     public void addPostProcessor(final Postprocessor postprocessor) {
         this.postprocessors.add(postprocessor);
     }
-
+    
     public void addRendererSet(final RendererSet rendererSet) {
         this.rendererSets.add(rendererSet);
     }
-
+    
     @EventSubscription
     public void onWindowResized(final WindowEvent.WindowResized ev) {
-
     }
-
+    
 }
