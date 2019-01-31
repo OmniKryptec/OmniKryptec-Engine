@@ -30,6 +30,8 @@ import org.lwjgl.system.Configuration;
 import de.codemakers.base.util.tough.ToughRunnable;
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.util.Logger;
+import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
@@ -64,7 +66,15 @@ public final class LibAPIManager {
          *
          * @see org.joml.Math
          */
-        FASTMATH(true);
+        FASTMATH(true),
+        /**
+         * The minimum {@link Logger.LogType} that will be logged. <br>
+         * <br>
+         * The default value is the {@link Logger}'s default value.
+         * 
+         * @see de.omnikryptec.util.Logger
+         */
+        LOGGING_MIN(null);
         
         private final Object defaultSetting;
         
@@ -83,12 +93,9 @@ public final class LibAPIManager {
     private static final Collection<ToughRunnable> shutdownHooks = new ArrayList<>();
     private static LibAPIManager instance;
     
-    private static boolean debug = (boolean) LibSetting.DEBUG.getDefault();
-    private RenderAPI renderApi;
+    private static final Logger logger = Logger.getLogger(LibAPIManager.class);
     
-    //    static {
-    //        Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown(), "LibAPI-Shutdown-Hooks"));
-    //    }
+    private RenderAPI renderApi;
     
     private LibAPIManager() {
     }
@@ -106,7 +113,7 @@ public final class LibAPIManager {
         if (GLFW.glfwInit()) {
             GLFWErrorCallback.createThrow().set();
             instance = new LibAPIManager();
-            System.out.println("Initialized LibAPI");
+            logger.info("Initialized LibAPI");
         } else {
             instance = null;
             throw new RuntimeException("Error while initializing LibAPI");
@@ -121,10 +128,10 @@ public final class LibAPIManager {
      */
     private static void setConfiguration(@Nonnull final Settings<LibSetting> settings) {
         if (isInitialized()) {
-            // TODO Logger.WARNING(might not get set)
-            throw new IllegalStateException();
+            logger.warn("Some settings may not have any effect ebecause the LibAPI is initialized");
         }
-        debug = settings.get(LibSetting.DEBUG);
+        Logger.setMinLogType(settings.get(LibSetting.LOGGING_MIN));
+        final boolean debug = settings.get(LibSetting.DEBUG);
         final boolean fastmath = settings.get(LibSetting.FASTMATH);
         final boolean functionDebug = settings.get(LibSetting.DEBUG_FUNCTIONS);
         if (fastmath) {
@@ -141,13 +148,13 @@ public final class LibAPIManager {
                 try {
                     r.run();
                 } catch (final Exception e) {
-                    System.err.println("Exception in shutdown hook '" + r + "': " + e);
+                    logger.error("Exception in shutdown hook '" + r + "': " + e);
                     e.printStackTrace();
                 }
             }
             GLFW.glfwTerminate();
             instance = null;
-            System.out.println("Terminated LibAPI");
+            logger.info("Terminated LibAPI");
         }
     }
     
@@ -157,11 +164,6 @@ public final class LibAPIManager {
     
     public static boolean isInitialized() {
         return instance != null;
-    }
-    
-    //TODO move/create logger
-    public boolean debug() {
-        return debug;
     }
     
     public static LibAPIManager instance() {

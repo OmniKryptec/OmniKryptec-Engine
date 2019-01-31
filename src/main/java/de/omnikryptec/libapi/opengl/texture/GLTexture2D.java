@@ -28,9 +28,11 @@ import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureConfig.MagMinFilter;
 import de.omnikryptec.resource.TextureConfig.WrappingMode;
 import de.omnikryptec.resource.TextureData;
+import de.omnikryptec.util.Logger;
+import de.omnikryptec.util.Logger.LogType;
 
 public class GLTexture2D extends GLTexture {
-
+    
     private static void loadTexture(final TextureData texture, final TextureConfig config) {
         GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, texture.getWidth(), texture.getHeight(), 0, GL12.GL_BGRA,
@@ -41,9 +43,8 @@ public class GLTexture2D extends GLTexture {
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
             if (config.anisotropicValue() > 0) {
                 if (!GL.getCapabilities().GL_EXT_texture_filter_anisotropic) {
-                    if (LibAPIManager.instance().debug()) {
-                        System.err.println("GL_EXT_texture_filter_anisotropic is not supported");
-                    }
+                    Logger.log(GLTexture2D.class, LogType.Warning,
+                            "GL_EXT_texture_filter_anisotropic is not supported");
                 } else {
                     GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, 0);
                     GL11.glTexParameterf(GL11.GL_TEXTURE_2D, EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT,
@@ -57,7 +58,7 @@ public class GLTexture2D extends GLTexture {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, decodeWrap(config.wrappingMode()));
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, decodeWrap(config.wrappingMode()));
     }
-
+    
     private static int decodeMagMin(final MagMinFilter filter) {
         switch (filter) {
         case Linear:
@@ -68,7 +69,7 @@ public class GLTexture2D extends GLTexture {
             throw new IllegalArgumentException();
         }
     }
-
+    
     private static int decodeWrap(final WrappingMode mode) {
         switch (mode) {
         case ClampToEdge:
@@ -79,25 +80,25 @@ public class GLTexture2D extends GLTexture {
             throw new IllegalArgumentException();
         }
     }
-
+    
     //TODO maybe move the static methods in another class for broader use
-
+    
     private TextureData data;
-
+    
     public GLTexture2D(final TextureData texture, final TextureConfig config) {
         super(GL11.GL_TEXTURE_2D);
         bindTexture(0);
         loadTexture(texture, config);
     }
-
+    
     @Override
     public int getWidth() {
         return this.data.getWidth();
     }
-
+    
     @Override
     public int getHeight() {
         return this.data.getHeight();
     }
-
+    
 }
