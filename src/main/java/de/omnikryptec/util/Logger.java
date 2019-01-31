@@ -61,7 +61,7 @@ public class Logger {
                     final String[] array = clazz.getTypeName().split("\\.");
                     n = array[array.length - 1];
                 }
-                builder.append("[ " + n + " ]");
+                builder.append(" <" + n + ">");
             }
             builder.append(' ');
             LogType nextType = type;
