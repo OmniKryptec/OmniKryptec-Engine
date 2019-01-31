@@ -26,7 +26,7 @@ import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
 public class OpenGLWindow extends Window {
-
+    
     public OpenGLWindow(final Settings<WindowSetting> info, final Settings<IntegerKey> apisettings) {
         super(info, apisettings);
         GLFW.glfwMakeContextCurrent(getWindowID());
@@ -34,7 +34,7 @@ public class OpenGLWindow extends Window {
         setVSync(info.get(WindowSetting.VSync));
         refreshViewport();
     }
-
+    
     @Override
     protected void setAdditionalGlfwWindowHints(final Object... hints) {
         final Settings<IntegerKey> apisettings = (Settings<IntegerKey>) hints[0];
@@ -46,21 +46,21 @@ public class OpenGLWindow extends Window {
             GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
         }
     }
-
+    
     @Override
     protected void swap() {
         GLFW.glfwSwapBuffers(this.windowId);
     }
-
+    
     @Override
     public void setVSync(final boolean vsync) {
         GLFW.glfwSwapInterval(vsync ? 1 : 0);
     }
-
+    
     @Override
     public void refreshViewport() {
         final int[] vp = MathUtil.calculateViewport(this.aspectRatio, getBufferWidth(), getBufferHeight());
         GL11.glViewport(vp[0], vp[1], vp[2], vp[3]);
     }
-
+    
 }

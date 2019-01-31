@@ -17,21 +17,21 @@
 package de.omnikryptec.libapi.exposed.render;
 
 public interface FrameBuffer {
-    
+
     void bindFrameBuffer();
-    
+
     void unbindFrameBuffer();
-    
+
     Texture getTexture(int i);
-    
+
     void resolveToScreen();
-    
+
     void resolveToFrameBuffer(FrameBuffer target, int attachment, boolean resolveDepth);
-    
+
     int multisamples();
-    
+
     FBTarget[] targets();
-    
+
     boolean isRenderBuffer();
-    
+
 }

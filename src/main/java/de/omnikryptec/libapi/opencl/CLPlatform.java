@@ -25,16 +25,16 @@ import org.lwjgl.opencl.CL10;
 import org.lwjgl.opencl.CLCapabilities;
 
 public class CLPlatform {
-    
+
     private static HashMap<Integer, CLDevice> createdDevices = new HashMap<>();
-    
+
     private final CLCapabilities platformCaps;
     private PointerBuffer devices;
-    
+
     private final PointerBuffer ctxProps;
     private final long platform;
     private int devs = -1;
-    
+
     CLPlatform(final long id) {
         this.platform = id;
         this.platformCaps = CL.createPlatformCapabilities(id);
@@ -42,19 +42,19 @@ public class CLPlatform {
         this.ctxProps.put(0, CL10.CL_CONTEXT_PLATFORM).put(2, 0);
         this.ctxProps.put(1, id);
     }
-    
+
     public CLCapabilities getPlatCaps() {
         return this.platformCaps;
     }
-    
+
     public long getID() {
         return this.platform;
     }
-    
+
     public PointerBuffer getCTXProps() {
         return this.ctxProps;
     }
-    
+
     public CLPlatform createDeviceData(final int clDeviceFilter) {
         CL10.clGetDeviceIDs(this.platform, clDeviceFilter, null, OpenCL.tmpBuffer);
         this.devs = OpenCL.tmpBuffer.get(0);
@@ -62,21 +62,21 @@ public class CLPlatform {
         CL10.clGetDeviceIDs(this.platform, clDeviceFilter, this.devices, (IntBuffer) null);
         return this;
     }
-    
+
     public PointerBuffer getDevices() {
         return this.devices;
     }
-    
+
     public int getDevicesSize() {
         return this.devs;
     }
-    
+
     public CLDevice getDevice(final int deviceInd) {
         if (!createdDevices.containsKey(deviceInd)) {
             createdDevices.put(deviceInd, new CLDevice(this.devices.get(deviceInd), this));
         }
         return createdDevices.get(deviceInd);
-        
+
     }
-    
+
 }

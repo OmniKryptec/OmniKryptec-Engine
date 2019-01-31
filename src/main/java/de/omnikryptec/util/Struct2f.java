@@ -5,27 +5,25 @@ import java.util.Objects;
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
 
-import de.omnikryptec.util.data.Struct3f;
-
 public class Struct2f {
-    
+
     public final float x, y;
-    
-    public Struct2f(float x, float y) {
+
+    public Struct2f(final float x, final float y) {
         this.x = x;
         this.y = y;
     }
-    
-    public Struct2f(Vector2fc invec) {
+
+    public Struct2f(final Vector2fc invec) {
         this(invec.x(), invec.y());
     }
-    
+
     public Vector2f dynamic() {
-        return new Vector2f(x, y);
+        return new Vector2f(this.x, this.y);
     }
-    
+
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == null) {
             return false;
         }
@@ -33,14 +31,14 @@ public class Struct2f {
             return true;
         }
         if (obj instanceof Struct2f) {
-            Struct2f other = (Struct2f) obj;
-            return other.x == x && other.y == y;
+            final Struct2f other = (Struct2f) obj;
+            return other.x == this.x && other.y == this.y;
         }
         return false;
     }
-    
+
     @Override
     public int hashCode() {
-        return Objects.hash(x, y);
+        return Objects.hash(this.x, this.y);
     }
 }

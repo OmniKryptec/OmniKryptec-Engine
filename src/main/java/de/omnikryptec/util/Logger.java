@@ -6,38 +6,36 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.codemakers.base.logger.LogLevel;
-
 //TODO log msg format
 public class Logger {
-    
+
     public static enum LogType {
         Debug(-1, false, 2), Info(0, false, 3), Warning(1, true, 0), Error(2, true, 2);
-        
+
         private final int importance;
         private final boolean red;
         private final String dif;
-        
-        private LogType(int imp, boolean red, int dif) {
+
+        private LogType(final int imp, final boolean red, final int dif) {
             this.importance = imp;
             this.red = red;
-            StringBuilder builder = new StringBuilder();
+            final StringBuilder builder = new StringBuilder();
             for (int i = 0; i < dif; i++) {
                 builder.append(' ');
             }
             this.dif = builder.toString();
         }
     }
-    
+
     private static final Map<Class<?>, Logger> loggerCache = new HashMap<>();
-    
+
     private static PrintStream out = System.out;
     private static PrintStream err = System.err;
-    
+
     private static boolean classDebug = false;
     private static LogType minlevel = LogType.Info;
-    
-    public static Logger getLogger(Class<?> clazz) {
+
+    public static Logger getLogger(final Class<?> clazz) {
         if (clazz == null) {
             return null;
         }
@@ -48,11 +46,11 @@ public class Logger {
         }
         return logger;
     }
-    
-    public static void log(Class<?> clazz, LogType type, Object... msgs) {
+
+    public static void log(final Class<?> clazz, final LogType type, final Object... msgs) {
         if (type.importance >= minlevel.importance) {
-            LocalDateTime now = LocalDateTime.now();
-            StringBuilder builder = new StringBuilder();
+            final LocalDateTime now = LocalDateTime.now();
+            final StringBuilder builder = new StringBuilder();
             builder.append("[ " + type);
             builder.append(type.dif);
             builder.append(" ]");
@@ -60,14 +58,14 @@ public class Logger {
             if (clazz != null) {
                 String n = classDebug ? clazz.getName() : clazz.getSimpleName();
                 if (n.isEmpty()) {
-                    String[] array = clazz.getTypeName().split("\\.");
+                    final String[] array = clazz.getTypeName().split("\\.");
                     n = array[array.length - 1];
                 }
                 builder.append("[ " + n + " ]");
             }
             builder.append(' ');
             LogType nextType = type;
-            for (Object m : msgs) {
+            for (final Object m : msgs) {
                 if (m instanceof LogType) {
                     nextType = (LogType) m;
                 } else if (m != null && nextType.importance >= minlevel.importance) {
@@ -83,46 +81,46 @@ public class Logger {
             }
         }
     }
-    
-    public static void setClassDebug(boolean b) {
+
+    public static void setClassDebug(final boolean b) {
         classDebug = b;
     }
-    
-    public static void setMinLogType(LogType type) {
+
+    public static void setMinLogType(final LogType type) {
         minlevel = type == null ? LogType.Info : type;
     }
-    
+
     public static LogType getMinLogType() {
         return minlevel;
     }
-    
+
     public static boolean isClassDebug() {
         return classDebug;
     }
-    
-    private Class<?> clazz;
-    
-    private Logger(Class<?> clazz) {
+
+    private final Class<?> clazz;
+
+    private Logger(final Class<?> clazz) {
         this.clazz = clazz;
     }
-    
-    public void log(LogType type, Object... msgs) {
-        log(clazz, type, msgs);
+
+    public void log(final LogType type, final Object... msgs) {
+        log(this.clazz, type, msgs);
     }
-    
-    public void debug(Object... msgs) {
-        log(clazz, LogType.Debug, msgs);
+
+    public void debug(final Object... msgs) {
+        log(this.clazz, LogType.Debug, msgs);
     }
-    
-    public void info(Object... msgs) {
-        log(clazz, LogType.Info, msgs);
+
+    public void info(final Object... msgs) {
+        log(this.clazz, LogType.Info, msgs);
     }
-    
-    public void warn(Object... msgs) {
-        log(clazz, LogType.Warning, msgs);
+
+    public void warn(final Object... msgs) {
+        log(this.clazz, LogType.Warning, msgs);
     }
-    
-    public void error(Object... msgs) {
-        log(clazz, LogType.Error, msgs);
+
+    public void error(final Object... msgs) {
+        log(this.clazz, LogType.Error, msgs);
     }
 }

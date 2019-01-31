@@ -25,40 +25,40 @@ import de.omnikryptec.util.Util;
 import de.omnikryptec.util.updater.Time;
 
 public abstract class ComponentSystem {
-    
+
     protected List<Entity> entities;
     protected boolean enabled = true;
     private final BitSet family;
-    
+
     protected ComponentSystem(final BitSet required) {
         Util.ensureNonNull(required, "BitSet must not be null (but can be empty)");
         this.family = required;
     }
-    
+
     public BitSet getFamily() {
         return this.family;
     }
-    
+
     public boolean isEnabled() {
         return this.enabled;
     }
-    
+
     public void setEnabled(final boolean enabled) {
         this.enabled = enabled;
     }
-    
+
     public void addedToIECSManager(final IECSManager iecsManager) {
         this.entities = iecsManager.getEntitesFor(this.family);
     }
-    
+
     public void removedFromIECSManager(final IECSManager iecsManager) {
         this.entities = null;
     }
-    
+
     public int priority() {
         return 0;
     }
-    
+
     public abstract void update(IECSManager iecsManager, Time time);
-    
+
 }

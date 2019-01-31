@@ -6,30 +6,30 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
 public class SimpleRenderCollection implements RenderCollection {
-    
-    private ListMultimap<Renderer, RenderedObject> objects;
-    
+
+    private final ListMultimap<Renderer, RenderedObject> objects;
+
     public SimpleRenderCollection() {
         this.objects = ArrayListMultimap.create();
     }
-    
+
     @Override
-    public void fillViewport(Viewport viewport) {
-        List<Renderer> vpRenderer = viewport.getRendererSet().getSupportedRenderer();
-        for (Renderer r : vpRenderer) {
-            viewport.add(r, objects.get(r));
+    public void fillViewport(final Viewport viewport) {
+        final List<Renderer> vpRenderer = viewport.getRendererSet().getSupportedRenderer();
+        for (final Renderer r : vpRenderer) {
+            viewport.add(r, this.objects.get(r));
         }
         viewport.flip();
     }
-    
+
     @Override
-    public void add(Renderer renderer, RenderedObject robj) {
-        objects.put(renderer, robj);
+    public void add(final Renderer renderer, final RenderedObject robj) {
+        this.objects.put(renderer, robj);
     }
-    
+
     @Override
-    public void remove(Renderer renderer, RenderedObject robj) {
-        objects.remove(renderer, robj);
+    public void remove(final Renderer renderer, final RenderedObject robj) {
+        this.objects.remove(renderer, robj);
     }
-    
+
 }

@@ -19,13 +19,13 @@ package de.omnikryptec.core.loop;
 import de.omnikryptec.core.EngineLoader;
 
 public interface IGameLoop {
-    
+
     default void init(final EngineLoader loader) {
     }
-    
+
     void startLoop();
-    
+
     void stopLoop();
-    
+
     boolean isRunning();
 }

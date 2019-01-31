@@ -16,7 +16,6 @@
 
 package de.omnikryptec.core.scene;
 
-import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.Updateable;
 import de.omnikryptec.core.UpdateableContainer.ExecuteMode;
 import de.omnikryptec.core.UpdateableContainer.ExecuteTime;
@@ -51,23 +50,23 @@ import de.omnikryptec.util.updater.Time;
  * @see Scene#createBuilder()
  */
 public class SceneBuilder {
-    
+
     private class Config {
         private boolean async = false;
         private ExecuteTime time = ExecuteTime.Normal;
         private ExecuteMode mode = ExecuteMode.Default;
     }
-    
+
     private final Scene scene;
     private Config config;
-    
+
     /**
      * Creates a new {@link SceneBuilder} with a new, empty {@link Scene}
      */
     public SceneBuilder() {
         this(new Scene());
     }
-    
+
     /**
      * Creates a {@link SceneBuilder} with an existing {@link Scene}
      *
@@ -78,7 +77,7 @@ public class SceneBuilder {
         this.scene = scene;
         this.config = new Config();
     }
-    
+
     /**
      * The scene in its current state
      *
@@ -87,7 +86,7 @@ public class SceneBuilder {
     public Scene get() {
         return this.scene;
     }
-    
+
     /**
      * The next {@link Updateable} will be added to the async pipeline.
      *
@@ -97,7 +96,7 @@ public class SceneBuilder {
         this.config.async = true;
         return this;
     }
-    
+
     /**
      * Sets the {@link ExecuteTime} of the next {@link Updateable} added.
      *
@@ -109,7 +108,7 @@ public class SceneBuilder {
         this.config.time = time;
         return this;
     }
-    
+
     /**
      * Sets the {@link ExecuteMode} of the next {@link Updateable} added.
      *
@@ -121,7 +120,7 @@ public class SceneBuilder {
         this.config.mode = mode;
         return this;
     }
-    
+
     /**
      * Resets the config to its defaults: synchronized, {@link ExecuteTime#Normal}
      * and {@link ExecuteMode#Default}
@@ -132,7 +131,7 @@ public class SceneBuilder {
         this.config = new Config();
         return this;
     }
-    
+
     /**
      * adds an {@link Updateable} with the currently set configurations and resets
      * the config afterwards.
@@ -148,19 +147,19 @@ public class SceneBuilder {
         }
         resetConfig();
     }
-    
+
     public IECSManager addDefaultECSManager() {
         final IECSManager iecsm = IECSManager.createDefault();
         addUpdateable(iecsm);
         return iecsm;
     }
-    
+
     public EventBus addEventBus() {
         final EventBus ebus = new EventBus();
         addUpdateable(ebus);
         return ebus;
     }
-    
+
     public void addGraphicsClearTest() {
         addUpdateable(new Updateable() {
             @Override
@@ -172,11 +171,11 @@ public class SceneBuilder {
             }
         });
     }
-    
-    public void addGraphicsBasicImplTest(TextureData dat) {
+
+    public void addGraphicsBasicImplTest(final TextureData dat) {
         final MeshData data = new MeshData(VertexAttribute.Index, new int[] { 0, 1, 2, 2, 1, 3 },
                 VertexAttribute.Position, 2, new float[] { -1f, -1f, -1f, 1f, 1f, -1f, 1f, 1f });
-        
+
         final Mesh mesh = new Mesh(data);
         final Shader shader = RenderAPI.get().createShader();
         shader.create("test");
@@ -185,22 +184,22 @@ public class SceneBuilder {
         final UniformSampler sampler = shader.getUniform("sampler");
         final FrameBuffer fbo = RenderAPI.get().createFrameBuffer(200, 200, 0, new FBTarget(TextureFormat.RGBA8, 0),
                 new FBTarget(TextureFormat.DEPTH24));
-        Texture texture = RenderAPI.get().createTexture2D(dat, new TextureConfig());
-        
+        final Texture texture = RenderAPI.get().createTexture2D(dat, new TextureConfig());
+
         shader.bindShader();
         sampler.setSampler(0);
-        color.loadVec4(1,1,1,1);
+        color.loadVec4(1, 1, 1, 1);
         OpenGLUtil.setEnabled(RenderConfig.BLEND, true);
         OpenGLUtil.setBlendMode(BlendMode.ALPHA);
         final int instances = 2;
-        
+
         addUpdateable(new Updateable() {
-            
+
             @Override
             public void preUpdate(final Time time) {
                 fbo.bindFrameBuffer();
             }
-            
+
             @Override
             public void update(final Time time) {
                 shader.bindShader();
@@ -209,18 +208,18 @@ public class SceneBuilder {
                 instanceCount.loadFloat(instances);
                 RenderAPI.get().renderInstanced(mesh, instances);
             }
-            
+
             @Override
             public void postUpdate(final Time time) {
                 fbo.unbindFrameBuffer();
                 fbo.resolveToScreen();
             }
-            
+
             @Override
             public ExecuteMode defaultExecuteMode() {
                 return ExecuteMode.Embracing;
             }
         });
-        
+
     }
 }

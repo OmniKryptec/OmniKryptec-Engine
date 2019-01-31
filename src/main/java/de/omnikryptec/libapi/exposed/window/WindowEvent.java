@@ -19,50 +19,50 @@ package de.omnikryptec.libapi.exposed.window;
 import de.omnikryptec.event.Event;
 
 public class WindowEvent extends Event {
-    
+
     public final Window window;
-    
-    protected WindowEvent(Window window) {
+
+    protected WindowEvent(final Window window) {
         this.window = window;
     }
-    
+
     public static class WindowFocused extends WindowEvent {
         public final boolean focused;
-        
-        public WindowFocused(Window window, final boolean focused) {
+
+        public WindowFocused(final Window window, final boolean focused) {
             super(window);
             this.focused = focused;
         }
     }
-    
+
     public static class WindowResized extends WindowEvent {
         public final int width;
         public final int height;
-        
+
         //TODO add other widths/heights
-        public WindowResized(Window window, final int width, final int height) {
+        public WindowResized(final Window window, final int width, final int height) {
             super(window);
             this.width = width;
             this.height = height;
         }
     }
-    
+
     public static class WindowIconified extends WindowEvent {
         public final boolean iconified;
-        
-        public WindowIconified(Window window, final boolean iconified) {
+
+        public WindowIconified(final Window window, final boolean iconified) {
             super(window);
             this.iconified = iconified;
         }
     }
-    
+
     public static class WindowMaximized extends WindowEvent {
         public final boolean maximized;
-        
-        public WindowMaximized(Window window, final boolean maximized) {
+
+        public WindowMaximized(final Window window, final boolean maximized) {
             super(window);
             this.maximized = maximized;
         }
     }
-    
+
 }

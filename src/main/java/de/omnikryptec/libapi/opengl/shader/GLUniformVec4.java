@@ -21,17 +21,18 @@ import org.lwjgl.opengl.GL20;
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec4;
 
 public class GLUniformVec4 extends GLUniform implements UniformVec4 {
-
+    
     private final float[] old = new float[4];
     private boolean used = false;
-
+    
     public GLUniformVec4(final String name) {
         super(name);
     }
-
+    
     @Override
     public void loadVec4(final float x, final float y, final float z, final float w) {
-        if (existsInCompilation() && (!this.used || x != this.old[0] || y != this.old[1] || z != this.old[2] || w != this.old[3])) {
+        if (existsInCompilation()
+                && (!this.used || x != this.old[0] || y != this.old[1] || z != this.old[2] || w != this.old[3])) {
             GL20.glUniform4f(super.getLocation(), x, y, z, w);
             this.old[0] = x;
             this.old[1] = y;

@@ -23,10 +23,8 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-import de.codemakers.base.logger.LogLevel;
 import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 import de.omnikryptec.libapi.exposed.AutoDelete;
-import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
 import de.omnikryptec.libapi.exposed.render.shader.Uniform;
@@ -35,22 +33,22 @@ import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Logger.LogType;
 
 public class GLShader extends AutoDelete implements Shader {
-    
+
     private final int programId;
     private final Map<ShaderType, Integer> attachments;
     private final Map<String, GLUniform> uniforms;
-    
+
     public GLShader() {
         this.programId = GL20.glCreateProgram();
         this.attachments = new EnumMap<>(ShaderType.class);
         this.uniforms = new HashMap<>();
     }
-    
+
     @Override
     public void bindShader() {
         OpenGLUtil.useProgram(this.programId);
     }
-    
+
     @Override
     protected void deleteRaw() {
         for (final Integer id : this.attachments.values()) {
@@ -59,7 +57,7 @@ public class GLShader extends AutoDelete implements Shader {
         }
         GL20.glDeleteProgram(this.programId);
     }
-    
+
     @Override
     public void create(final ShaderSource... shaderAttachments) {
         for (final ShaderSource a : shaderAttachments) {
@@ -80,12 +78,12 @@ public class GLShader extends AutoDelete implements Shader {
             extractUniforms(a.source);
         }
     }
-    
+
     @Override
     public <T extends Uniform> T getUniform(final String name) {
         return (T) this.uniforms.get(name);
     }
-    
+
     //TODO somewhere else?
     private void extractUniforms(final String src) {
         final String[] lines = src.split("[\n\r]+");
@@ -106,7 +104,7 @@ public class GLShader extends AutoDelete implements Shader {
             }
         }
     }
-    
+
     //TODO better way of doing the uniforms?
     private GLUniform createUniformObj(final String name, final String types) {
         switch (types) {
@@ -123,5 +121,5 @@ public class GLShader extends AutoDelete implements Shader {
             throw new IllegalArgumentException("Wrong uniform: " + types + " " + name);
         }
     }
-    
+
 }

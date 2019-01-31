@@ -45,58 +45,58 @@ import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
 public class OpenGLRenderAPI implements RenderAPI {
-    
+
     public static final IntegerKey MAJOR_VERSION = IntegerKey.next(1);
     public static final IntegerKey MINOR_VERSION = IntegerKey.next(0);
-    
+
     private final Settings<IntegerKey> apisettings;
     private Window window;
-    
+
     public OpenGLRenderAPI(final Settings<IntegerKey> apisettings) {
         this.apisettings = apisettings;
     }
-    
+
     @Override
     public Window createWindow(final Settings<WindowSetting> windowsettings) {
         return this.window = new OpenGLWindow(windowsettings, this.apisettings);
     }
-    
+
     @Override
     public Window getWindow() {
         return this.window;
     }
-    
+
     @Override
     public IndexBuffer createIndexBuffer() {
         return new GLIndexBuffer();
     }
-    
+
     @Override
     public VertexBuffer createVertexBuffer() {
         return new GLVertexBuffer();
     }
-    
+
     @Override
     public VertexArray createVertexArray() {
         return new GLVertexArray();
     }
-    
+
     @Override
     public Texture createTexture2D(final TextureData textureData, final TextureConfig textureConfig) {
         return new GLTexture2D(textureData, textureConfig);
     }
-    
+
     @Override
     public Shader createShader() {
         return new GLShader();
     }
-    
+
     @Override
     public FrameBuffer createFrameBuffer(final int width, final int height, final int multisample,
             final FBTarget... targets) {
         return new GLFrameBuffer(width, height, multisample, targets);
     }
-    
+
     @Override
     public void applyRenderState(@Nonnull final RenderState renderState) {
         for (final RenderConfig config : RenderConfig.values()) {
@@ -115,7 +115,7 @@ public class OpenGLRenderAPI implements RenderAPI {
             OpenGLUtil.setDepthTestFunc(renderState.getDepthMode());
         }
     }
-    
+
     @Override
     public void render(@Nonnull final Renderable mesh) {
         mesh.bindRenderable();
@@ -127,7 +127,7 @@ public class OpenGLRenderAPI implements RenderAPI {
         }
         mesh.unbindRenderable();
     }
-    
+
     @Override
     public void renderInstanced(@Nonnull final Renderable mesh, final int count) {
         mesh.bindRenderable();
@@ -139,15 +139,15 @@ public class OpenGLRenderAPI implements RenderAPI {
         }
         mesh.unbindRenderable();
     }
-    
+
     @Override
-    public void clear(SurfaceBuffer... buffers) {
+    public void clear(final SurfaceBuffer... buffers) {
         OpenGLUtil.clear(buffers);
     }
-    
+
     @Override
-    public void setClearColor(float r, float g, float b, float a) {
+    public void setClearColor(final float r, final float g, final float b, final float a) {
         OpenGLUtil.setClearColor(r, g, b, a);
     }
-    
+
 }

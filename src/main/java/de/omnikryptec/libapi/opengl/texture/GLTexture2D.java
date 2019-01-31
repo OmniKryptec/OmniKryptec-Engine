@@ -23,7 +23,6 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL30;
 
-import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureConfig.MagMinFilter;
 import de.omnikryptec.resource.TextureConfig.WrappingMode;
@@ -32,7 +31,7 @@ import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Logger.LogType;
 
 public class GLTexture2D extends GLTexture {
-    
+
     private static void loadTexture(final TextureData texture, final TextureConfig config) {
         GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, texture.getWidth(), texture.getHeight(), 0, GL12.GL_BGRA,
@@ -58,7 +57,7 @@ public class GLTexture2D extends GLTexture {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, decodeWrap(config.wrappingMode()));
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, decodeWrap(config.wrappingMode()));
     }
-    
+
     private static int decodeMagMin(final MagMinFilter filter) {
         switch (filter) {
         case Linear:
@@ -69,7 +68,7 @@ public class GLTexture2D extends GLTexture {
             throw new IllegalArgumentException();
         }
     }
-    
+
     private static int decodeWrap(final WrappingMode mode) {
         switch (mode) {
         case ClampToEdge:
@@ -80,25 +79,25 @@ public class GLTexture2D extends GLTexture {
             throw new IllegalArgumentException();
         }
     }
-    
+
     //TODO maybe move the static methods in another class for broader use
-    
+
     private TextureData data;
-    
+
     public GLTexture2D(final TextureData texture, final TextureConfig config) {
         super(GL11.GL_TEXTURE_2D);
         bindTexture(0);
         loadTexture(texture, config);
     }
-    
+
     @Override
     public int getWidth() {
         return this.data.getWidth();
     }
-    
+
     @Override
     public int getHeight() {
         return this.data.getHeight();
     }
-    
+
 }

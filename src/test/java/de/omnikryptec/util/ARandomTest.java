@@ -30,50 +30,51 @@ import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class ARandomTest {
-    
+
     public static void main(final String[] args) {
-        Rend rend = new Rend();
+        final Rend rend = new Rend();
         RendererSet.RENDERERS_3D.addRenderer(rend);
-        SimpleRenderCollection coll = new SimpleRenderCollection();
+        final SimpleRenderCollection coll = new SimpleRenderCollection();
         for (int i = 0; i < 10_000; i++) {
             coll.add(rend, new Robj());
         }
-        long nanos = System.nanoTime();
-        Viewport vp = new Viewport(RendererSet.RENDERERS_3D);
+        final long nanos = System.nanoTime();
+        final Viewport vp = new Viewport(RendererSet.RENDERERS_3D);
         vp.setVisibilityOverride(true);
         for (int i = 0; i < 10_000; i++) {
-            
+
         }
-        long nanos2 = System.nanoTime();
+        final long nanos2 = System.nanoTime();
         System.out.println(((nanos2 - nanos) * 1e-9)); //0.04407
         final Mapper<TestTest> mapper2 = new Mapper<>();
         test(mapper2.of(TestTest.class));
     }
-    
+
     private static class Robj implements RenderedObject {
-        
+
         @Override
-        public boolean isVisible(FrustumIntersection frustum) {
-            
+        public boolean isVisible(final FrustumIntersection frustum) {
+
             return true;
         }
-        
+
     }
-    
+
     private static class Rend implements Renderer {
-        
+
         @Override
-        public void render(Time time, IProjection projection, DisplayList objs, Settings<?> renderSettings) {
+        public void render(final Time time, final IProjection projection, final DisplayList objs,
+                final Settings<?> renderSettings) {
         }
-        
+
         @Override
         public DisplayList createRenderList() {
-            
+
             return new ArrayDisplayList<>();
         }
-        
+
     }
-    
+
     public static void test(final Mapper<TestTest>.Mapping mapping) {
         System.out.println(mapping);
     }

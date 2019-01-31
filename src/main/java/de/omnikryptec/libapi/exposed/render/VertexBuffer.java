@@ -24,36 +24,36 @@ import org.lwjgl.BufferUtils;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
 
 public interface VertexBuffer {
-
+    
     /**
      * Binds this {@link VertexBuffer}.
      *
      * @see VertexArray#bindArray()
      */
     void bindBuffer();
-
+    
     /**
      * Unbinds this {@link VertexBuffer}
      */
     void unbindBuffer();
-
+    
     /**
      * Stores data in this {@link VertexBuffer}. This VertexBuffer will be
      * auto-bound and the supplied {@link FloatBuffer} will be flipped by this
      * method.
      *
-     * @param data    the float-data to be stored
+     * @param data  the float-data to be stored
      * @param usage buffer usage
-     * @param size    the size of the added data
+     * @param size  the size of the added data
      */
     void storeData(FloatBuffer data, BufferUsage usage, int size);
-
+    
     /**
      * Stores data in this {@link VertexBuffer}. This method constructs and fills a
      * {@link FloatBuffer} with the supplied float[]. The data is then stored with
      * {@link #storeData(IntBuffer, boolean, int)}
      *
-     * @param data    the float-data to be stored
+     * @param data  the float-data to be stored
      * @param usage buffer usage
      */
     default void storeData(final float[] data, final BufferUsage usage) {
@@ -61,23 +61,23 @@ public interface VertexBuffer {
         buffer.put(data);
         storeData(buffer, usage, data.length);
     }
-
+    
     /**
      * Stores data in this {@link VertexBuffer}. This VertexBuffer will be
      * auto-bound and the supplied {@link IntBuffer} will be flipped by this method.
      *
-     * @param data    the int-data to be stored
+     * @param data  the int-data to be stored
      * @param usage buffer usage
-     * @param size    the size of the added data
+     * @param size  the size of the added data
      */
     void storeData(IntBuffer data, BufferUsage usage, int size);
-
+    
     /**
      * Stores data in this {@link VertexBuffer}. This method constructs and fills an
      * {@link IntBuffer} with the supplied int[]. The data is then stored with
      * {@link #storeData(IntBuffer, boolean, int)}
      *
-     * @param data    the int-data to be stored
+     * @param data  the int-data to be stored
      * @param usage buffer usage
      */
     default void storeData(final int[] data, final BufferUsage usage) {
@@ -85,7 +85,7 @@ public interface VertexBuffer {
         buffer.put(data);
         storeData(buffer, usage, data.length);
     }
-
+    
     /**
      * The size of this buffer
      *

@@ -21,14 +21,14 @@ import org.lwjgl.opengl.GL20;
 import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
 
 public class GLUniformFloat extends GLUniform implements UniformFloat {
-    
+
     private float currentValue;
     private boolean used = false;
-    
+
     public GLUniformFloat(final String name) {
         super(name);
     }
-    
+
     @Override
     public void loadFloat(final float value) {
         if (existsInCompilation() && (!this.used || this.currentValue != value)) {
@@ -37,5 +37,5 @@ public class GLUniformFloat extends GLUniform implements UniformFloat {
             this.currentValue = value;
         }
     }
-    
+
 }

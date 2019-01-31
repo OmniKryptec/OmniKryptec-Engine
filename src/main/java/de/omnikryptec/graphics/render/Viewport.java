@@ -13,23 +13,23 @@ import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class Viewport {
-    
+
     private final RendererSet rendererSet;
     private final Map<Renderer, DisplayList> renderables;
-    
+
     private IProjection projection;
     private Struct3f position;
-    
+
     private boolean visibilityOverride = false;
     private boolean refill = true;
-    
+
     public Viewport(final RendererSet rendererSet) {
         this.renderables = new HashMap<>();
         this.rendererSet = Util.ensureNonNull(rendererSet);
     }
-    
+
     public void render(final Time time, final FrameBuffer target, final Settings<?> renderSettings) {
-        if (projection == null) {
+        if (this.projection == null) {
             System.err.println("No projection set");
             return;
         }
@@ -40,30 +40,30 @@ public class Viewport {
         }
         RenderUtil.unbindIfNonNull(target);
     }
-    
+
     public void add(final Renderer renderer, final Collection<? extends RenderedObject> objs) {
         Util.ensureNonNull(objs);
         if (objs.isEmpty()) {
             return;
         }
-        DisplayList list = checkAndGetDisplayList(renderer);
-        for (RenderedObject r : objs) {
+        final DisplayList list = checkAndGetDisplayList(renderer);
+        for (final RenderedObject r : objs) {
             addUnchecked(list, r);
         }
     }
-    
-    public void add(final Renderer renderer, RenderedObject robj) {
+
+    public void add(final Renderer renderer, final RenderedObject robj) {
         Util.ensureNonNull(robj);
         addUnchecked(checkAndGetDisplayList(renderer), robj);
     }
-    
-    private void addUnchecked(DisplayList list, RenderedObject robj) {
-        if (visibilityOverride || robj.isVisible(projection.getFrustumTester())) {
+
+    private void addUnchecked(final DisplayList list, final RenderedObject robj) {
+        if (this.visibilityOverride || robj.isVisible(this.projection.getFrustumTester())) {
             list.addObject(robj);
         }
     }
-    
-    private DisplayList checkAndGetDisplayList(Renderer renderer) {
+
+    private DisplayList checkAndGetDisplayList(final Renderer renderer) {
         if (!this.rendererSet.supports(renderer)) {
             throw new IllegalArgumentException("renderer not supported");
         }
@@ -77,12 +77,12 @@ public class Viewport {
         }
         return list;
     }
-    
+
     public void reset() {
-        this.reset(projection, position);
+        this.reset(this.projection, this.position);
     }
-    
-    public void reset(IProjection projection, Struct3f position) {
+
+    public void reset(final IProjection projection, final Struct3f position) {
         boolean changed = false;
         if (projection != null) {
             this.projection = projection;
@@ -97,31 +97,31 @@ public class Viewport {
             this.renderables.clear();
         }
     }
-    
+
     //Change to autoflip and clear if refill==true on adding new renderedobjs?
     public void flip() {
         this.refill = false;
     }
-    
-    public void setVisibilityOverride(boolean b) {
+
+    public void setVisibilityOverride(final boolean b) {
         this.visibilityOverride = b;
     }
-    
+
     //TODO moving objects?
     public boolean requiresRefill() {
-        return refill;
+        return this.refill;
     }
-    
+
     public IProjection getProjection() {
-        return projection;
+        return this.projection;
     }
-    
+
     public Struct3f getPosition() {
-        return position;
+        return this.position;
     }
-    
+
     public RendererSet getRendererSet() {
-        return rendererSet;
+        return this.rendererSet;
     }
-    
+
 }

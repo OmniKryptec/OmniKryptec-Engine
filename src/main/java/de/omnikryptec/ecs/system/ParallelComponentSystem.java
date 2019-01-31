@@ -26,30 +26,30 @@ import de.omnikryptec.util.ExecutorsUtil;
 import de.omnikryptec.util.updater.Time;
 
 public abstract class ParallelComponentSystem extends ComponentSystem implements IndividualUpdater {
-    
+
     private final ExecutorService executorService;
     private final int size;
     private final int activationSize;
-    
+
     public ParallelComponentSystem(final BitSet required, final int threads, final int activationSize) {
         super(required);
         this.size = threads;
         this.activationSize = activationSize;
         this.executorService = ExecutorsUtil.newFixedThreadPool(threads);
     }
-    
+
     protected final ExecutorService getExecutor() {
         return this.executorService;
     }
-    
+
     public int numThreads() {
         return this.size;
     }
-    
+
     public int getActivationSize() {
         return this.activationSize;
     }
-    
+
     @Override
     public final void update(final IECSManager entityManager, final Time time) {
         if (this.entities.size() > 0) {
@@ -62,7 +62,7 @@ public abstract class ParallelComponentSystem extends ComponentSystem implements
             }
         }
     }
-    
+
     public abstract void updateThreaded(IECSManager entityManager, List<Entity> entities, Time time);
-    
+
 }
