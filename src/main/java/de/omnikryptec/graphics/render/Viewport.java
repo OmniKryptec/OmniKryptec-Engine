@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
+import de.omnikryptec.libapi.exposed.render.RenderUtil;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Struct3f;
 import de.omnikryptec.util.math.MathUtil;
@@ -32,16 +33,12 @@ public class Viewport {
             System.err.println("No projection set");
             return;
         }
-        if (target != null) {
-            target.bindFrameBuffer();
-        }
+        RenderUtil.bindIfNonNull(target);
         for (final Renderer renderer : this.renderables.keySet()) {
             renderer.render(time, this.projection, renderer.supportsObjects() ? this.renderables.get(renderer) : null,
                     renderSettings);
         }
-        if (target != null) {
-            target.unbindFrameBuffer();
-        }
+        RenderUtil.unbindIfNonNull(target);
     }
     
     public void add(final Renderer renderer, final Collection<? extends RenderedObject> objs) {

@@ -26,9 +26,9 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
     private final int height;
     
     private final int multisample;
+    private final FBTarget[] targets;
     
     private FBTexture[] textures;
-    
     private int[] renderbuffers;
     
     private final int pointer;
@@ -38,15 +38,16 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
         this.width = width;
         this.height = height;
         this.multisample = multisample;
+        this.targets = targets;
         if (multisample == 0) {
             this.textures = new FBTexture[targets.length];
         } else {
             this.renderbuffers = new int[targets.length];
         }
-        init(targets);
+        init();
     }
     
-    private void init(final FBTarget... targets) {
+    private void init() {
         bindFrameBuffer();
         final IntBuffer drawBuffers = BufferUtils.createIntBuffer(targets.length);
         for (int i = 0; i < targets.length; i++) {
@@ -209,11 +210,16 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
         GL11.glReadBuffer(GL30.GL_DEPTH_ATTACHMENT);
         GL30.glBlitFramebuffer(0, 0, this.width, this.height, 0, 0, target.width, target.height,
                 GL11.GL_DEPTH_BUFFER_BIT, GL11.GL_NEAREST);
-        //GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0); //not needed, done above
+        //GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0); //not needed, done in resolveToFrameBuffer
     }
     
     @Override
-    public int targetCount() {
-        return isRenderBuffer() ? this.renderbuffers.length : this.textures.length;
+    public FBTarget[] targets() {
+        return targets;
+    }
+    
+    @Override
+    public int multisamples() {
+        return multisample;
     }
 }

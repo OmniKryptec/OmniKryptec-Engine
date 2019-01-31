@@ -16,6 +16,7 @@
 
 package de.omnikryptec.util.data;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class DynamicArray<E> {
@@ -105,5 +106,10 @@ public class DynamicArray<E> {
             return true;
         }
         return false;
+    }
+    
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(array);
     }
 }

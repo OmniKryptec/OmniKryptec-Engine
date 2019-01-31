@@ -24,12 +24,14 @@ public interface FrameBuffer {
     
     Texture getTexture(int i);
     
-    int targetCount();
-
-    boolean isRenderBuffer();
-    
     void resolveToScreen();
     
     void resolveToFrameBuffer(FrameBuffer target, int attachment, boolean resolveDepth);
-
+    
+    int multisamples();
+    
+    FBTarget[] targets();
+    
+    boolean isRenderBuffer();
+    
 }
