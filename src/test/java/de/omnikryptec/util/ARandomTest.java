@@ -16,6 +16,9 @@
 
 package de.omnikryptec.util;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.joml.FrustumIntersection;
 
 import de.omnikryptec.graphics.render.ArrayDisplayList;
@@ -26,55 +29,49 @@ import de.omnikryptec.graphics.render.Renderer;
 import de.omnikryptec.graphics.render.RendererSet;
 import de.omnikryptec.graphics.render.SimpleRenderCollection;
 import de.omnikryptec.graphics.render.Viewport;
+import de.omnikryptec.util.data.IterableCombiner;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class ARandomTest {
-
+    
     public static void main(final String[] args) {
-        final Rend rend = new Rend();
-        RendererSet.RENDERERS_3D.addRenderer(rend);
-        final SimpleRenderCollection coll = new SimpleRenderCollection();
-        for (int i = 0; i < 10_000; i++) {
-            coll.add(rend, new Robj());
+        List<String> kek1 = Arrays.asList("kjkjkjkjkjkjk".split("j"));
+        List<String> kek2 = Arrays.asList("kjkjkjkjkjkjk".split("j"));
+        
+        IterableCombiner<String> comb = new IterableCombiner<>(kek1, kek2);
+        for (String s : comb) {
+            System.out.println("! "+s);
         }
-        final long nanos = System.nanoTime();
-        final Viewport vp = new Viewport(RendererSet.RENDERERS_3D);
-        vp.setVisibilityOverride(true);
-        for (int i = 0; i < 10_000; i++) {
-
-        }
-        final long nanos2 = System.nanoTime();
-        System.out.println(((nanos2 - nanos) * 1e-9)); //0.04407
         final Mapper<TestTest> mapper2 = new Mapper<>();
         test(mapper2.of(TestTest.class));
     }
-
+    
     private static class Robj implements RenderedObject {
-
+        
         @Override
         public boolean isVisible(final FrustumIntersection frustum) {
-
+            
             return true;
         }
-
+        
     }
-
+    
     private static class Rend implements Renderer {
-
+        
         @Override
         public void render(final Time time, final IProjection projection, final DisplayList objs,
                 final Settings<?> renderSettings) {
         }
-
+        
         @Override
         public DisplayList createRenderList() {
-
+            
             return new ArrayDisplayList<>();
         }
-
+        
     }
-
+    
     public static void test(final Mapper<TestTest>.Mapping mapping) {
         System.out.println(mapping);
     }

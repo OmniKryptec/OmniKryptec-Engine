@@ -27,9 +27,6 @@ import org.joml.Vector3fc;
 import org.joml.Vector4dc;
 import org.joml.Vector4fc;
 
-import de.omnikryptec.util.Struct2f;
-import de.omnikryptec.util.data.Struct3f;
-
 public class MathUtil {
 
     /**

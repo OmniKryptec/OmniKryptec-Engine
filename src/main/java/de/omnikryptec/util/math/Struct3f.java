@@ -1,4 +1,4 @@
-package de.omnikryptec.util.data;
+package de.omnikryptec.util.math;
 
 import java.util.Objects;
 
