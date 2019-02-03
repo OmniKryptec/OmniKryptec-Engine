@@ -112,7 +112,7 @@ public class MathUtil {
         return s1 == s2 || (s1.x == s2.x && s1.y == s2.y);
     }
 
-    //Double vecs
+    //double vecs
 
     public static boolean equals(final Vector2dc v1, final Vector2dc v2) {
         return v1 == v2 || (v1 != null && v2 != null && v1.x() == v2.x() && v1.y() == v2.y());

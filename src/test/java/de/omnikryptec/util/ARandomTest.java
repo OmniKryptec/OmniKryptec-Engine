@@ -36,13 +36,19 @@ import de.omnikryptec.util.updater.Time;
 public class ARandomTest {
     
     public static void main(final String[] args) {
-        List<String> kek1 = Arrays.asList("kjkjkjkjkjkjk".split("j"));
-        List<String> kek2 = Arrays.asList("kjkjkjkjkjkjk".split("j"));
-        
-        IterableCombiner<String> comb = new IterableCombiner<>(kek1, kek2);
-        for (String s : comb) {
-            System.out.println("! "+s);
+        RendererSet s = RendererSet.RENDERERS_3D;
+        Rend rend = new Rend();
+        s.addRenderer(rend);
+        SimpleRenderCollection re = new SimpleRenderCollection();
+        for (int i = 0; i < 1000; i++) {
+            re.add(rend, new Robj());
         }
+        long nanos = System.nanoTime();
+        Viewport vp = new Viewport(s);
+        vp.setVisibilityOverride(true);
+        re.fillViewport(vp);
+        long nanos2 = System.nanoTime();
+        System.out.println(1 / ((nanos2 - nanos) * 1e-9));
         final Mapper<TestTest> mapper2 = new Mapper<>();
         test(mapper2.of(TestTest.class));
     }
