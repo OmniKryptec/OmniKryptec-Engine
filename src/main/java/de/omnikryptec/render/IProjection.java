@@ -1,4 +1,4 @@
-package de.omnikryptec.graphics.render;
+package de.omnikryptec.render;
 
 import org.joml.FrustumIntersection;
 import org.joml.Matrix4f;

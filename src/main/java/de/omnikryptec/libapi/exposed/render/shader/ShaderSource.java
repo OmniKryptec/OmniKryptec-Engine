@@ -16,7 +16,7 @@
 
 package de.omnikryptec.libapi.exposed.render.shader;
 
-import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
+import de.omnikryptec.resource.parser.shader.ShaderParser.ShaderType;
 
 public class ShaderSource {
     

@@ -14,12 +14,12 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.graphics.shader.base.parser;
+package de.omnikryptec.resource.parser.shader;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
+import de.omnikryptec.resource.parser.shader.ShaderParser.ShaderType;
 
 class SourceDescription {
     

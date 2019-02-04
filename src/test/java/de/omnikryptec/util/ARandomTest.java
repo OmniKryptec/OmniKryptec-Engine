@@ -21,14 +21,14 @@ import java.util.List;
 
 import org.joml.FrustumIntersection;
 
-import de.omnikryptec.graphics.render.ArrayDisplayList;
-import de.omnikryptec.graphics.render.DisplayList;
-import de.omnikryptec.graphics.render.IProjection;
-import de.omnikryptec.graphics.render.RenderedObject;
-import de.omnikryptec.graphics.render.Renderer;
-import de.omnikryptec.graphics.render.RendererSet;
-import de.omnikryptec.graphics.render.SimpleRenderCollection;
-import de.omnikryptec.graphics.render.Viewport;
+import de.omnikryptec.render.ArrayDisplayList;
+import de.omnikryptec.render.DisplayList;
+import de.omnikryptec.render.IProjection;
+import de.omnikryptec.render.RenderedObject;
+import de.omnikryptec.render.Renderer;
+import de.omnikryptec.render.RendererSet;
+import de.omnikryptec.render.SimpleRenderCollection;
+import de.omnikryptec.render.Viewport;
 import de.omnikryptec.util.data.IterableCombiner;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;

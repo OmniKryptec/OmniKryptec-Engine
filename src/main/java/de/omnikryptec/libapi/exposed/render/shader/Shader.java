@@ -20,8 +20,8 @@ import java.util.Map;
 
 import com.google.common.collect.Table;
 
-import de.omnikryptec.graphics.shader.base.parser.ShaderParser;
-import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
+import de.omnikryptec.resource.parser.shader.ShaderParser;
+import de.omnikryptec.resource.parser.shader.ShaderParser.ShaderType;
 
 public interface Shader {
     

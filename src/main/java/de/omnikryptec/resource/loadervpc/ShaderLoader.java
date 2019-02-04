@@ -3,7 +3,7 @@ package de.omnikryptec.resource.loadervpc;
 import java.util.Scanner;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.graphics.shader.base.parser.ShaderParser;
+import de.omnikryptec.resource.parser.shader.ShaderParser;
 
 public class ShaderLoader implements ResourceLoader<Void> {
     

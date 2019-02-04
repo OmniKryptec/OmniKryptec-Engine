@@ -1,4 +1,4 @@
-package de.omnikryptec.graphics.render;
+package de.omnikryptec.render;
 
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.graphics.shader.base.parser;
+package de.omnikryptec.resource.parser.shader;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

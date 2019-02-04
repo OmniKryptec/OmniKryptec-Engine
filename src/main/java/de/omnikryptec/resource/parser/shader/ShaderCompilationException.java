@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.graphics.shader.base.parser;
+package de.omnikryptec.resource.parser.shader;
 
 public class ShaderCompilationException extends RuntimeException {
 

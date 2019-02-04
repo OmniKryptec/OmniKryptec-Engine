@@ -1,4 +1,4 @@
-package de.omnikryptec.graphics.render;
+package de.omnikryptec.render;
 
 //TODO what about moving objects?
 public interface RenderCollection {

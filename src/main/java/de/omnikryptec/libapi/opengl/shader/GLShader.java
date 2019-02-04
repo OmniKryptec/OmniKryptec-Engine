@@ -23,12 +23,12 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 import de.omnikryptec.libapi.exposed.AutoDelete;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
 import de.omnikryptec.libapi.exposed.render.shader.Uniform;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
+import de.omnikryptec.resource.parser.shader.ShaderParser.ShaderType;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Logger.LogType;
 

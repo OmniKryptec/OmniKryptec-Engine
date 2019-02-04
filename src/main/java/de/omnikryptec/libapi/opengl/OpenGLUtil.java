@@ -29,7 +29,6 @@ import org.lwjgl.opengl.GL32;
 import org.lwjgl.opengl.GL40;
 import org.lwjgl.opengl.GL43;
 
-import de.omnikryptec.graphics.shader.base.parser.ShaderParser.ShaderType;
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBuffer;
@@ -40,6 +39,7 @@ import de.omnikryptec.libapi.exposed.render.RenderState.DepthMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.PolyMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.RenderConfig;
 import de.omnikryptec.resource.MeshData.Primitive;
+import de.omnikryptec.resource.parser.shader.ShaderParser.ShaderType;
 import de.omnikryptec.util.data.Color;
 
 public class OpenGLUtil {
