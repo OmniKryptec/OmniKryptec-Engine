@@ -17,7 +17,7 @@ public class RenderUtil {
     public static FrameBuffer cloneAndResize(final FrameBuffer frameBuffer, final int newWidth, final int newHeight) {
         return frameBuffer != null
                 ? RenderAPI.get().createFrameBuffer(newWidth, newHeight, frameBuffer.multisamples(),
-                        frameBuffer.targets())
+                        frameBuffer.targets().length)
                 : null;
     }
 
