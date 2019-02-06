@@ -217,7 +217,7 @@ public class SceneBuilder {
             
             @Override
             public ExecuteMode defaultExecuteMode() {
-                return ExecuteMode.Embracing;
+                return ExecuteMode.EmbracingUpdt;
             }
         });
         

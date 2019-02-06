@@ -28,12 +28,15 @@ import com.google.common.collect.Multimap;
 import de.omnikryptec.core.Updateable;
 import de.omnikryptec.util.updater.Time;
 
-public class EventBus implements Updateable {
-
+public class EventBus implements Updateable, IEventListener {
+    
     private final AtomicBoolean processing = new AtomicBoolean(false);
     private final Multimap<Class<? extends Event>, IEventListener> listeners;
     private final Queue<Event> eventQueue;
-
+    
+    /**
+     * A read-only version of this {@link EventBus}
+     */
     public final ReadableEventBus READ_ONLY = new ReadableEventBus() {
         
         @Override
@@ -61,11 +64,51 @@ public class EventBus implements Updateable {
         this.eventQueue = new ConcurrentLinkedQueue<>();
         this.listeners = ArrayListMultimap.create();
     }
-
+    
+    /**
+     * Registers an {@link IEventListener} to ALL events.<br>
+     * Useful when chaining together multiple {@link EventBus}.
+     * 
+     * <p>
+     * Note: {@link EventSubscription}s are ignored.
+     * </p>
+     * 
+     * @param listener the listener
+     */
+    public void register(final IEventListener listener) {
+        register(listener, Event.class);
+    }
+    
+    /**
+     * Registers an {@link IEventListener} to a certain type of event.
+     * <p>
+     * Note: {@link EventSubscription}s are ignored.
+     * </p>
+     * 
+     * @param listener  the listener
+     * @param eventtype the class of the event type
+     */
     public void register(final IEventListener listener, final Class<? extends Event> eventtype) {
         this.listeners.put(eventtype, listener);
     }
-
+    
+    /**
+     * Registers any {@link EventSubscription}s found in this object:
+     * <ul>
+     * <li>If the object is a class object, every static method of that class object
+     * that is subscribed to an event will be added to this {@link EventBus}. Any
+     * non-static method that is subscribed to an event in that class will throw an
+     * exception.</li>
+     * <li>If the object is an object every method that is subscribed to an event
+     * (including static ones) will be added to this {@link EventBus}.</li>
+     * </ul>
+     * <p>
+     * Note: If the object does not contain any subscriptions, an exception is
+     * thrown.
+     * </p>
+     * 
+     * @param object the object to search for subscriptions in
+     */
     public void register(Object object) {
         Method[] methods;
         if (object instanceof Class<?>) {
@@ -102,15 +145,15 @@ public class EventBus implements Updateable {
             throw new IllegalArgumentException("No EventSubscriptions found: " + object);
         }
     }
-
+    
     public void post(final Event event) {
         processEvent(event);
     }
-
+    
     public void enqueue(final Event event) {
         this.eventQueue.add(event);
     }
-
+    
     public void processQueuedEvents() {
         if (this.processing.get()) {
             throw new IllegalStateException("Already processing!");
@@ -121,11 +164,11 @@ public class EventBus implements Updateable {
         }
         this.processing.set(false);
     }
-
+    
     public boolean isProcessing() {
         return this.processing.get();
     }
-
+    
     private void processEvent(final Event event) {
         Class<?> someclazz = event.getClass();
         do {
@@ -137,9 +180,16 @@ public class EventBus implements Updateable {
             someclazz = someclazz.getSuperclass();
         } while (event.triggersSuperEventListeners() && someclazz != Object.class && someclazz != null);
     }
-
+    
+    //TODO change this to regular update?
     @Override
     public void postUpdate(final Time time) {
         processQueuedEvents();
+    }
+    
+    //TODO receive consumed events?
+    @Override
+    public void invoke(Event ev) {
+        post(ev);
     }
 }

@@ -31,7 +31,7 @@ public interface Updateable {
     }
     
     default ExecuteMode defaultExecuteMode() {
-        return ExecuteMode.OneByOne;
+        return ExecuteMode.OneByOneUpdt;
     }
 
 }
