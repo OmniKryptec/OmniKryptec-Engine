@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
  * @see RenderAPI#createFrameBuffer(int, int, int, int)
  */
 public interface FrameBuffer {
-    
+
     /**
      * Sets the {@link FBTarget} at a certain index of this {@link FrameBuffer}.<br>
      * <br>
@@ -41,7 +41,7 @@ public interface FrameBuffer {
      * @see #assignTargets(FBTarget...)
      */
     void assignTarget(int index, @Nonnull FBTarget target);
-    
+
     /**
      * Sets the targets of this {@link FrameBuffer}. All given targets will be set,
      * beginning on the FrameBuffers first target location.
@@ -52,7 +52,7 @@ public interface FrameBuffer {
     default void assignTargets(@Nonnull FBTarget... targets) {
         assignTargets(0, targets);
     }
-    
+
     /**
      * Sets the targets of this {@link FrameBuffer}. All given targets will be set.
      * 
@@ -63,7 +63,7 @@ public interface FrameBuffer {
     default void assignTargets(int startIndex, @Nonnull FBTarget... targets) {
         assignTargets(startIndex, 0, targets.length, targets);
     }
-    
+
     /**
      * Sets the targets of this {@link FrameBuffer}.
      * 
@@ -79,7 +79,7 @@ public interface FrameBuffer {
             assignTarget(i, targets[srcStart + i]);
         }
     }
-    
+
     /**
      * Binds this {@link FrameBuffer} to be operated upon.<br>
      * <br>
@@ -92,14 +92,14 @@ public interface FrameBuffer {
      * @see #unbindFrameBuffer()
      */
     void bindFrameBuffer();
-    
+
     /**
      * Unbinds this {@link FrameBuffer}.
      * 
      * @see #bindFrameBuffer()
      */
     void unbindFrameBuffer();
-    
+
     /**
      * Returns a {@link Texture} of this {@link FrameBuffer}.
      * 
@@ -109,22 +109,22 @@ public interface FrameBuffer {
      */
     @Nullable
     Texture getTexture(int targetIndex);
-    
+
     /**
      * Blits this {@link FrameBuffer} to the default FrameBuffer (the display).
      */
     void resolveToScreen();
-    
+
     /**
-     * Blits this {@link FrameBuffer} to another FrameBuffer.
+     * Blits the specified attachment of this {@link FrameBuffer} to another
+     * FrameBuffer.
      * 
      * @param target       the target FrameBuffer
-     * @param attachment   the index of the attachment to resolve. Negative values
-     *                     are ignored
+     * @param attachment   the index of the attachment to resolve
      * @param resolveDepth if the depthbuffer should be resolved, too
      */
-    void resolveToFrameBuffer(@Nonnull FrameBuffer target, int attachment, boolean resolveDepth);
-    
+    void resolveToFrameBuffer(@Nonnull FrameBuffer target, int attachment);
+
     /**
      * THe amount of samples this {@link FrameBuffer} does when rendering onto. 0 if
      * none.
@@ -132,7 +132,7 @@ public interface FrameBuffer {
      * @return multisampling value
      */
     int multisamples();
-    
+
     /**
      * A copy of the current set targets.
      * 
@@ -141,18 +141,20 @@ public interface FrameBuffer {
      */
     @Nonnull
     FBTarget[] targets();
-    
+
     /**
      * This {@link FrameBuffer} is a RenderBuffer if it has no textures.
      * 
      * @return is render buffer?
      */
     boolean isRenderBuffer();
-    
+
     /**
      * The maximum number of targets this {@link FrameBuffer} can handle
      * 
      * @return max number of targets
      */
     int size();
+
+    FrameBuffer resizedClone(int newWidth, int newHeight);
 }

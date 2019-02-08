@@ -14,11 +14,12 @@ public class RenderUtil {
         }
     }
 
-    public static FrameBuffer cloneAndResize(final FrameBuffer frameBuffer, final int newWidth, final int newHeight) {
-        return frameBuffer != null
-                ? RenderAPI.get().createFrameBuffer(newWidth, newHeight, frameBuffer.multisamples(),
-                        frameBuffer.targets().length)
-                : null;
+    public static FrameBuffer cloneAndResize(final FrameBuffer frameBuffer, final int newWidth, final int newHeight,
+            boolean blitContents) {
+        if (frameBuffer == null) {
+            return null;
+        }
+        return frameBuffer.resizedClone(newWidth, newHeight);
     }
 
 }
