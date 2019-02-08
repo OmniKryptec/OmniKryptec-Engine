@@ -20,12 +20,15 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.function.Supplier;
 
 import com.google.common.collect.Table;
 import com.google.common.collect.Tables;
 
+import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
 import de.omnikryptec.util.Logger;
 
@@ -44,14 +47,30 @@ public class ShaderParser {
     public static final String SHADER_INDICATOR = "shader ";
     public static final String MODULE_INDICATOR = "module ";
     public static final String HEADER_INDICATOR = "header";
+    public static final String HEADER_HERE = "header_here";
 
-    private static final String HEADER_REPLACE_MARKER = "%%%ndf84nbvkHRM%%%";
+    //private static final String HEADER_REPLACE_MARKER = "%%%ndf84nbvkHRM%%%";
 
     private static ShaderParser instance;
+
+    private static final AdvancedFile INTERN_MODULES = new AdvancedFile(
+            "src/main/java/de/omnikryptec/resource/glslmodules");
 
     public static ShaderParser instance() {
         if (instance == null) {
             instance = create();
+            List<AdvancedFile> files = INTERN_MODULES.listFiles(true);
+            for (AdvancedFile f : files) {
+                final StringBuilder builder = new StringBuilder();
+                try (Scanner scanner = new Scanner(f.createInputStream())) {
+                    while (scanner.hasNextLine()) {
+                        builder.append(scanner.nextLine() + "\n");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                instance.parse(builder.toString());
+            }
         }
         return instance;
     }
@@ -196,13 +215,15 @@ public class ShaderParser {
 
     private String makeSource(final SourceDescription desc) {
         String rawSrc = desc.source().toString();
-        if (rawSrc.contains(HEADER_REPLACE_MARKER)) {
-            rawSrc = rawSrc.replace(HEADER_REPLACE_MARKER, "\n" + desc.header().toString().trim() + "\n");
-        } else {
-            rawSrc = rawSrc.replace(HEADER_REPLACE_MARKER, "\n");
-            this.logger.warn("No headers found in context " + desc.context() + " in shader " + desc.type());
+        if (desc.header().toString().isEmpty()) {
+            return rawSrc.trim();
         }
-        return rawSrc.trim();
+        String[] again = rawSrc.split("\n", 100);
+        int i = 0;
+        while (!again[i].startsWith("#version")) {
+            i++;
+        }
+        return rawSrc.replace(again[i], again[i] + "\n" + desc.header().toString().trim()).trim();
     }
 
     private void reduce(final SourceDescription desc) {
@@ -259,7 +280,7 @@ public class ShaderParser {
                 return "";
             } else if (token.equals(HEADER_INDICATOR)) {
                 this.headerMode = !this.headerMode;
-                return this.headerMode && this.definitions.peek().type() != null ? HEADER_REPLACE_MARKER : "";
+                return "";
             } else if (this.provider.containsKey(token)) {
                 return this.provider.get(token).get();
             }
