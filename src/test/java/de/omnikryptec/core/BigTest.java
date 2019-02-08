@@ -6,6 +6,7 @@ import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
 import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
+import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
@@ -18,6 +19,7 @@ public class BigTest extends EngineLoader {
     protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
         libsettings.set(LibSetting.DEBUG, true);
+        libsettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "BigTest-Window");
         windowSettings.set(WindowSetting.LockAspectRatio, true);
         //windowSettings.set(WindowSetting.Fullscreen, true);

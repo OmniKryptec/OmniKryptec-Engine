@@ -50,7 +50,7 @@ public interface FrameBuffer {
      * @see #assignTarget(int, FBTarget)
      */
     default void assignTargets(@Nonnull FBTarget... targets) {
-        assignTargets(0, targets);
+        assignTargets(0, (FBTarget[]) targets);
     }
 
     /**

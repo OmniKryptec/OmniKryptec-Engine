@@ -185,7 +185,7 @@ public class OpenGLUtil {
             throw new IllegalArgumentException(bufferType + "");
         }
     }
-    
+
     public static int typeId(final BufferUsage bufferUsage) {
         switch (bufferUsage) {
         case Dynamic:
@@ -204,6 +204,7 @@ public class OpenGLUtil {
         while ((e = GL11.glGetError()) != GL11.GL_NO_ERROR) {
             System.err.println("OpenGL error: " + e);
         }
+        System.err.println("Flushed OpenGL-Errors");
     }
 
     private static int lastVertexArray = 0;
@@ -336,7 +337,7 @@ public class OpenGLUtil {
             GL11.glClear(mask);
         }
     }
-    
+
     //    public static enum Feature {
     //        BLEND(GL11.GL_BLEND), DEPTH_TEST(GL11.GL_DEPTH_TEST), CULL_FACES(GL11.GL_CULL_FACE),
     //        MULTISAMPLE(GL13.GL_MULTISAMPLE), SCISSORTEST(GL11.GL_SCISSOR_TEST);

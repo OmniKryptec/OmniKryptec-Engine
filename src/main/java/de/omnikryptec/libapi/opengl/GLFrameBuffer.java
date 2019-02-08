@@ -47,6 +47,14 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
     }
 
     public void assignTarget(int index, FBTarget target) {
+        final IntBuffer drawBuffers = BufferUtils.createIntBuffer(this.targets.length);
+        for (int i = 0; i < this.targets.length; i++) {
+            if (targets[i] != null && !this.targets[i].isDepthAttachment) {
+                drawBuffers.put(GL30.GL_COLOR_ATTACHMENT0 + this.targets[i].attachmentIndex);
+            }
+        }
+        drawBuffers.flip();
+        GL20.glDrawBuffers(drawBuffers);
         if (isRenderBuffer()) {
             final int colorBuffer = GL30.glGenRenderbuffers();
             GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, colorBuffer);
@@ -64,18 +72,12 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
+
             GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, attachment(target), GL11.GL_TEXTURE_2D,
                     texture.textureId(), 0);
             this.textures[index] = texture;
         }
-        final IntBuffer drawBuffers = BufferUtils.createIntBuffer(this.targets.length);
-        for (int i = 0; i < this.targets.length; i++) {
-            if (targets[i] != null && !this.targets[i].isDepthAttachment) {
-                drawBuffers.put(GL30.GL_COLOR_ATTACHMENT0 + this.targets[i].attachmentIndex);
-            }
-        }
-        drawBuffers.flip();
-        GL20.glDrawBuffers(drawBuffers);
+
     }
 
     private int attachment(final FBTarget target) {
@@ -193,7 +195,7 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
             GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, this.pointer);
             GL11.glReadBuffer(GL30.GL_COLOR_ATTACHMENT0 + attachment);
             GL30.glBlitFramebuffer(0, 0, this.width, this.height, 0, 0, gltarget.width, gltarget.height,
-                    GL11.GL_COLOR_BUFFER_BIT /* Should work w/o | GL11.GL_DEPTH_BUFFER_BIT */, GL11.GL_NEAREST);
+                    GL11.GL_COLOR_BUFFER_BIT /* Should work w/o? | GL11.GL_DEPTH_BUFFER_BIT */, GL11.GL_NEAREST);
         } else if (attachment == -1) {
             resolveDepth(gltarget);
         }
