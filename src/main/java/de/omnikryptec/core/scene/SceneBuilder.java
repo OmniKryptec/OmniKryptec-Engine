@@ -180,41 +180,37 @@ public class SceneBuilder {
         final Shader shader = RenderAPI.get().createShader();
         shader.create("test");
         final UniformVec4 color = shader.getUniform("u_col");
+        final UniformFloat instanceCount = shader.getUniform("instancesMax");
         final UniformSampler sampler = shader.getUniform("sampler");
         final FrameBuffer fbo = RenderAPI.get().createFrameBuffer(200, 200, 0, 2);
         fbo.bindFrameBuffer();
         fbo.assignTargets(new FBTarget(TextureFormat.RGBA8, 0), new FBTarget(TextureFormat.DEPTH24));
-        fbo.unbindFrameBuffer();
         final Texture texture = RenderAPI.get().createTexture2D(dat, new TextureConfig());
 
         shader.bindShader();
         sampler.setSampler(0);
         color.loadVec4(1, 1, 1, 1);
-        //OpenGLUtil.setEnabled(RenderConfig.BLEND, true);
-        //OpenGLUtil.setBlendMode(BlendMode.ALPHA);
+        OpenGLUtil.setEnabled(RenderConfig.BLEND, true);
+        OpenGLUtil.setBlendMode(BlendMode.ALPHA);
+        final int instances = 2;
 
         addUpdateable(new Updateable() {
 
             @Override
             public void preUpdate(final Time time) {
-                fbo.bindFrameBuffer();
             }
 
             @Override
             public void update(final Time time) {
                 shader.bindShader();
                 //color.loadColor(Color.randomRGB());
-                //texture.bindTexture(0);
-                RenderAPI.get().render(mesh);
-                RenderAPI.get().setClearColor(1, 1, 1, 1);
-                RenderAPI.get().clear(SurfaceBuffer.Color);
-                //RenderAPI.get().renderInstanced(mesh, instances);
-
+                texture.bindTexture(0);
+                instanceCount.loadFloat(instances);
+                RenderAPI.get().renderInstanced(mesh, instances);
             }
 
             @Override
             public void postUpdate(final Time time) {
-                fbo.unbindFrameBuffer();
                 fbo.resolveToScreen();
             }
 

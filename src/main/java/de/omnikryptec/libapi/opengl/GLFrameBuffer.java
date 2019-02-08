@@ -47,6 +47,7 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
     }
 
     public void assignTarget(int index, FBTarget target) {
+        targets[index] = target;
         final IntBuffer drawBuffers = BufferUtils.createIntBuffer(this.targets.length);
         for (int i = 0; i < this.targets.length; i++) {
             if (targets[i] != null && !this.targets[i].isDepthAttachment) {
