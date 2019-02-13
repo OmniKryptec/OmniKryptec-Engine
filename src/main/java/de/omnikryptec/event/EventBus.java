@@ -190,6 +190,6 @@ public class EventBus implements Updateable, IEventListener {
     //TODO receive consumed events?
     @Override
     public void invoke(Event ev) {
-        post(ev);
+        processEvent(ev);
     }
 }

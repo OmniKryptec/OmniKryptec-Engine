@@ -83,7 +83,7 @@ public class Color implements Cloneable {
         blue = Mathf.clamp(blue, 0.0f, 255.0f);
         return new Color(red / 255.0f, green / 255.0f, blue / 255.0f);
     }
-    
+    //TODO make array, @see FloatCollector
     private float r, g, b, a;
     
     public Color() {

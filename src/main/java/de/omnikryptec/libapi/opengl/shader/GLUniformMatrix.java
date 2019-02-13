@@ -51,7 +51,7 @@ public class GLUniformMatrix extends GLUniform implements UniformMatrix {
             matrixBuffer.put(matrix.m31());
             matrixBuffer.put(matrix.m32());
             matrixBuffer.put(matrix.m33());
-            // funktioniert nicht
+            // funktioniert nicht?
             // matrixBuffer = matrix.get(matrixBuffer);
             matrixBuffer.flip();
             GL20.glUniformMatrix4fv(super.getLocation(), false, matrixBuffer);

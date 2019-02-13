@@ -91,12 +91,12 @@ public class GLTexture2D extends GLTexture {
     }
 
     @Override
-    public int getWidth() {
+    public float getWidth() {
         return this.data.getWidth();
     }
 
     @Override
-    public int getHeight() {
+    public float getHeight() {
         return this.data.getHeight();
     }
 

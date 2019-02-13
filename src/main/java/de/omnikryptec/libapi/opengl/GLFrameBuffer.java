@@ -19,20 +19,20 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.opengl.texture.GLTexture;
 
 public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
-
+    
     private static final Deque<GLFrameBuffer> history = new ArrayDeque<>();
-
+    
     private final int width;
     private final int height;
-
+    
     private final int multisample;
     private final FBTarget[] targets;
-
+    
     private FBTexture[] textures;
     private int[] renderbuffers;
-
+    
     private final int pointer;
-
+    
     public GLFrameBuffer(final int width, final int height, final int multisample, int targets) {
         this.pointer = GL30.glGenFramebuffers();
         this.width = width;
@@ -45,7 +45,7 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
             this.renderbuffers = new int[targets];
         }
     }
-
+    
     public void assignTarget(int index, FBTarget target) {
         targets[index] = target;
         final IntBuffer drawBuffers = BufferUtils.createIntBuffer(this.targets.length);
@@ -73,21 +73,21 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
-
+            
             GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, attachment(target), GL11.GL_TEXTURE_2D,
                     texture.textureId(), 0);
             this.textures[index] = texture;
         }
-
+        
     }
-
+    
     private int attachment(final FBTarget target) {
         if (target.isDepthAttachment) {
             return GL30.GL_DEPTH_ATTACHMENT;
         }
         return GL30.GL_COLOR_ATTACHMENT0 + target.attachmentIndex;
     }
-
+    
     @Override
     public void bindFrameBuffer() {
         if (this != history.peek()) {
@@ -96,7 +96,7 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
             history.push(this);
         }
     }
-
+    
     @Override
     public void unbindFrameBuffer() {
         if (history.peek() == this) {
@@ -110,17 +110,17 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
             }
         }
     }
-
+    
     @Override
     public boolean isRenderBuffer() {
         return this.textures == null;
     }
-
+    
     @Override
     public Texture getTexture(final int i) {
         return this.textures[i];
     }
-
+    
     @Override
     protected void deleteRaw() {
         if (isRenderBuffer()) {
@@ -134,36 +134,36 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
         }
         GL30.glDeleteFramebuffers(this.pointer);
     }
-
+    
     private void deleteRenderBuffer(int index) {
         GL30.glDeleteRenderbuffers(renderbuffers[index]);
     }
-
+    
     private void deleteTexture(int index) {
         FBTexture t = this.textures[index];
         if (t != null) {
             t.delete();
         }
     }
-
+    
     private class FBTexture extends GLTexture {
-
+        
         private FBTexture() {
             super(GL11.GL_TEXTURE_2D);
         }
-
+        
         @Override
-        public int getWidth() {
+        public float getWidth() {
             return GLFrameBuffer.this.width;
         }
-
+        
         @Override
-        public int getHeight() {
+        public float getHeight() {
             return GLFrameBuffer.this.height;
         }
-
+        
     }
-
+    
     @Override
     public void resolveToScreen() {
         GLFrameBuffer last = null;
@@ -182,7 +182,7 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
             GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
         }
     }
-
+    
     @Override
     public void resolveToFrameBuffer(final FrameBuffer target, final int attachment) {
         final GLFrameBuffer gltarget = (GLFrameBuffer) target;
@@ -206,7 +206,7 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
             GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
         }
     }
-
+    
     private void resolveDepth(final GLFrameBuffer target) {
         GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, target.pointer);
         GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, this.pointer);
@@ -215,22 +215,22 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
                 GL11.GL_DEPTH_BUFFER_BIT, GL11.GL_NEAREST);
         //GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0); //not needed, done in resolveToFrameBuffer
     }
-
+    
     @Override
     public FBTarget[] targets() {
         return this.targets.clone();
     }
-
+    
     @Override
     public int multisamples() {
         return this.multisample;
     }
-
+    
     @Override
     public int size() {
         return this.targets.length;
     }
-
+    
     @Override
     public FrameBuffer resizedClone(int newWidth, int newHeight) {
         FrameBuffer fb = new GLFrameBuffer(newWidth, newHeight, multisample, targets.length);

@@ -30,13 +30,13 @@ public interface Texture {
      *
      * @return width
      */
-    int getWidth();
+    float getWidth();
     
     /**
      * The height, in texels, of this {@link Texture}
      *
      * @return
      */
-    int getHeight();
+    float getHeight();
     
 }
