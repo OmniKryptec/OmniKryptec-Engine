@@ -19,10 +19,10 @@ public interface Batch2D extends Batch {
     
     void draw(TextureRegion texture, Matrix3fc transform, boolean flipU, boolean flipV);
     
-    default void drawPolygon(Texture texture, float[] poly, int vertexcount) {
-        drawPolygon(texture, poly, 0, poly.length, vertexcount);
+    default void drawPolygon(Texture texture, float[] poly) {
+        drawPolygon(texture, poly, 0, poly.length);
     }
     
-    void drawPolygon(Texture texture, float[] poly, int start, int len, int vertexcount);
+    void drawPolygon(Texture texture, float[] poly, int start, int len);
     
 }

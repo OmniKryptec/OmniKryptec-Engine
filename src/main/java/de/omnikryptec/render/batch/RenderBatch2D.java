@@ -2,6 +2,8 @@ package de.omnikryptec.render.batch;
 
 import org.joml.Matrix3fc;
 import org.joml.Matrix4fc;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
@@ -14,7 +16,9 @@ import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
+import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
 import de.omnikryptec.resource.MeshData.Primitive;
+import de.omnikryptec.resource.parser.shader.ShaderParser;
 import de.omnikryptec.util.data.Color;
 
 public class RenderBatch2D implements Batch2D {
@@ -75,6 +79,13 @@ public class RenderBatch2D implements Batch2D {
         color = new Color();
         data = new FloatCollector(size);
         renderable = new MyRenderable();
+        shader = RenderAPI.get().createShader();
+        shader.create("engine_RenderBatch2D_shader");
+        transform = shader.getUniform("u_transform");
+        
+        UniformSampler sampler = shader.getUniform("texture");
+        shader.bindShader();
+        sampler.setSampler(0);
     }
     
     @Override
@@ -114,9 +125,7 @@ public class RenderBatch2D implements Batch2D {
     @Override
     public void flush() {
         currentTexture.bindTexture(0);
-        renderable.vb.bindBuffer();
         renderable.vb.storeData(data.flush(), BufferUsage.Stream, renderable.vb.size());
-        renderable.vb.unbindBuffer();
         RenderAPI.get().render(renderable);
     }
     
@@ -129,6 +138,7 @@ public class RenderBatch2D implements Batch2D {
     @Override
     public void draw(Texture texture, Matrix3fc transform, boolean flipU, boolean flipV) {
         flushIfRequired(texture, 4 * FLOATS_PER_VERTEX);
+        
     }
     
     @Override
@@ -137,8 +147,12 @@ public class RenderBatch2D implements Batch2D {
     }
     
     @Override
-    public void drawPolygon(Texture texture, float[] poly, int start, int len, int vertexcount) {
+    public void drawPolygon(Texture texture, float[] poly, int start, int len) {
+        if (len % FLOATS_PER_VERTEX != 0) {
+            throw new IllegalArgumentException("vertex size");
+        }
         flushIfRequired(texture, len);
+        data.put(poly, start, len);
     }
     
 }

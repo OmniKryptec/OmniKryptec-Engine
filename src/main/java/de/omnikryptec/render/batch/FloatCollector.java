@@ -42,11 +42,11 @@ public class FloatCollector {
     }
     
     public void put(float[] newfloats) {
-        put(newfloats, newfloats.length);
+        put(newfloats, 0, newfloats.length);
     }
     
-    public void put(float[] newfloats, int length) {
-        System.arraycopy(newfloats, 0, floats, position, length);
+    public void put(float[] newfloats, int srcPos, int length) {
+        System.arraycopy(newfloats, srcPos, floats, position, length);
         position += length;
     }
     
