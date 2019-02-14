@@ -15,7 +15,7 @@ import de.omnikryptec.util.updater.Time;
 public class Viewport {
 
     private final RendererSet rendererSet;
-    private final Map<Renderer, DisplayList> renderables;
+    private final Map<Renderer, Collection<RenderedObject>> renderables;
 
     private IProjection projection;
     private Struct3f position;
@@ -46,7 +46,7 @@ public class Viewport {
         if (objs.isEmpty()) {
             return;
         }
-        final DisplayList list = checkAndGetDisplayList(renderer);
+        final Collection<RenderedObject> list = checkAndGetDisplayList(renderer);
         for (final RenderedObject r : objs) {
             addUnchecked(list, r);
         }
@@ -57,20 +57,20 @@ public class Viewport {
         addUnchecked(checkAndGetDisplayList(renderer), robj);
     }
 
-    private void addUnchecked(final DisplayList list, final RenderedObject robj) {
+    private void addUnchecked(final Collection<RenderedObject> list, final RenderedObject robj) {
         if (this.visibilityOverride || robj.isVisible(this.projection.getFrustumTester())) {
-            list.addObject(robj);
+            list.add(robj);
         }
     }
 
-    private DisplayList checkAndGetDisplayList(final Renderer renderer) {
+    private Collection<RenderedObject> checkAndGetDisplayList(final Renderer renderer) {
         if (!this.rendererSet.supports(renderer)) {
             throw new IllegalArgumentException("renderer not supported");
         }
         if (!renderer.supportsObjects()) {
             throw new IllegalArgumentException("renderer is not an object renderer");
         }
-        DisplayList list = this.renderables.get(renderer);
+        Collection<RenderedObject> list = this.renderables.get(renderer);
         if (list == null) {
             list = Util.ensureNonNull(renderer.createRenderList());
             this.renderables.put(renderer, list);
