@@ -15,9 +15,17 @@ public interface Batch2D extends Batch {
      * height);
      */
     
-    void draw(Texture texture, Matrix3fc transform, boolean flipU, boolean flipV);
+    default void draw(Texture texture, Matrix3fc transform, boolean flipU, boolean flipV) {
+        draw(texture, transform, 1f, 1f, flipU, flipV);
+    }
     
-    void draw(TextureRegion texture, Matrix3fc transform, boolean flipU, boolean flipV);
+    void draw(Texture texture, Matrix3fc transform, float width, float height, boolean flipU, boolean flipV);
+    
+    default void draw(TextureRegion texture, Matrix3fc transform, boolean flipU, boolean flipV) {
+        draw(texture, transform, 1f, 1f, flipU, flipV);
+    }
+    
+    void draw(TextureRegion texture, Matrix3fc transform, float width, float height, boolean flipU, boolean flipV);
     
     default void drawPolygon(Texture texture, float[] poly) {
         drawPolygon(texture, poly, 0, poly.length);

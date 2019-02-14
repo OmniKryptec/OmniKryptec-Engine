@@ -64,12 +64,12 @@ public class RenderBatch2D implements Batch2D {
         
     }
     
-    private boolean rendering;
-    
     private FloatCollector data;
     private MyRenderable renderable;
     
-    private Texture currentTexture;
+    private boolean rendering;
+    private VertexManager vertexManager;
+    
     private Color color;
     
     private Shader shader;
@@ -97,7 +97,7 @@ public class RenderBatch2D implements Batch2D {
     @Override
     public void setGlobalTransform(Matrix4fc mat) {
         if (rendering) {
-            flush();
+            vertexManager.forceFlush();
         }
         transform.loadMatrix(mat);
     }
@@ -107,43 +107,45 @@ public class RenderBatch2D implements Batch2D {
         this.color.setFrom(color);
     }
     
-    private void flushIfRequired(Texture texture, int requiredSpace) {
-        if (requiredSpace > data.remaining()) {
-            flush();
-            if (requiredSpace > data.remaining()) {
-                throw new IndexOutOfBoundsException("Can't handle mesh, buffer too small");
-            }
-            return;
-        }
-        if (!texture.equals(currentTexture)) {
-            flush();
-            this.currentTexture = texture;
-            return;
-        }
-    }
+    //    private void flushIfRequired(Texture texture, int requiredSpace) {
+    //        if (requiredSpace > data.remaining()) {
+    //            vertexManager.flush();
+    //            if (requiredSpace > data.remaining()) {
+    //                throw new IndexOutOfBoundsException("Can't handle mesh, buffer too small");
+    //            }
+    //            
+    //        }else
+    //        if (!texture.equals(currentTexture)) {
+    //            vertexManager.flush();
+    //            this.currentTexture = texture;
+    //            return;
+    //        }
+    //    }
     
     @Override
     public void flush() {
-        currentTexture.bindTexture(0);
-        renderable.vb.storeData(data.flush(), BufferUsage.Stream, renderable.vb.size());
-        RenderAPI.get().render(renderable);
+        vertexManager.forceFlush();
+        //        currentTexture.bindTexture(0);
+        //        renderable.vb.storeData(data.flush(), BufferUsage.Stream, renderable.vb.size());
+        //        RenderAPI.get().render(renderable);
     }
     
     @Override
     public void end() {
-        flush();
+        vertexManager.forceFlush();
         rendering = false;
     }
     
     @Override
-    public void draw(Texture texture, Matrix3fc transform, boolean flipU, boolean flipV) {
-        flushIfRequired(texture, 4 * FLOATS_PER_VERTEX);
+    public void draw(Texture texture, Matrix3fc transform, float width, float height, boolean flipU, boolean flipV) {
+        vertexManager.prepareNext(texture, 6 * FLOATS_PER_VERTEX);
         
     }
     
     @Override
-    public void draw(TextureRegion texture, Matrix3fc transform, boolean flipU, boolean flipV) {
-        flushIfRequired(texture.getBaseTexture(), 4 * FLOATS_PER_VERTEX);
+    public void draw(TextureRegion texture, Matrix3fc transform, float width, float height, boolean flipU,
+            boolean flipV) {
+        vertexManager.prepareNext(texture.getBaseTexture(), 4 * FLOATS_PER_VERTEX);
     }
     
     @Override
@@ -151,7 +153,7 @@ public class RenderBatch2D implements Batch2D {
         if (len % FLOATS_PER_VERTEX != 0) {
             throw new IllegalArgumentException("vertex size");
         }
-        flushIfRequired(texture, len);
+        vertexManager.prepareNext(texture, len);
         data.put(poly, start, len);
     }
     
