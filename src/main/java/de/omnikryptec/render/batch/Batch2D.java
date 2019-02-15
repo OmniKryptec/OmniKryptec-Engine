@@ -1,10 +1,9 @@
 package de.omnikryptec.render.batch;
 
-import org.joml.Matrix3fc;
+import org.joml.Matrix3x2fc;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.TextureRegion;
-import de.omnikryptec.util.data.Color;
 
 public interface Batch2D extends Batch {
     /*
@@ -15,17 +14,17 @@ public interface Batch2D extends Batch {
      * height);
      */
     
-    default void draw(Texture texture, Matrix3fc transform, boolean flipU, boolean flipV) {
+    default void draw(Texture texture, Matrix3x2fc transform, boolean flipU, boolean flipV) {
         draw(texture, transform, 1f, 1f, flipU, flipV);
     }
     
-    void draw(Texture texture, Matrix3fc transform, float width, float height, boolean flipU, boolean flipV);
+    void draw(Texture texture, Matrix3x2fc transform, float width, float height, boolean flipU, boolean flipV);
     
-    default void draw(TextureRegion texture, Matrix3fc transform, boolean flipU, boolean flipV) {
+    default void draw(TextureRegion texture, Matrix3x2fc transform, boolean flipU, boolean flipV) {
         draw(texture, transform, 1f, 1f, flipU, flipV);
     }
     
-    void draw(TextureRegion texture, Matrix3fc transform, float width, float height, boolean flipU, boolean flipV);
+    void draw(TextureRegion texture, Matrix3x2fc transform, float width, float height, boolean flipU, boolean flipV);
     
     default void drawPolygon(Texture texture, float[] poly) {
         drawPolygon(texture, poly, 0, poly.length);

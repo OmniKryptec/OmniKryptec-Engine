@@ -17,6 +17,7 @@
 package de.omnikryptec.core.scene;
 
 import org.joml.Matrix3f;
+import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -206,21 +207,23 @@ public class SceneBuilder {
 
         addUpdateable(new Updateable() {
             private RenderBatch2D batch = new RenderBatch2D(250);
-            private Matrix3f t = new Matrix3f();
-            private Camera cam = new Camera(new Matrix4f().perspective(Mathf.PI/2, 4/3f, -10, 10));
+            private Matrix3x2f t = new Matrix3x2f();
+            private Camera cam = new Camera(new Matrix4f().ortho2D(0, 4, 0, 3));
             @Override
             public void preUpdate(final Time time) {
             }
 
             @Override
             public void update(final Time time) {
-                //batch.setProjection(cam);
+                batch.setProjection(cam);
                 //batch.setGlobalTransform(new Matrix4f().rotate(Mathf.PI/4, new Vector3f(1,0,0)));
                 batch.begin();
                 //batch.drawTest();
-                float s = Mathf.pingpong(time.currentf*0.05f, 3);
+                float s = Mathf.pingpong(time.currentf, 3);
                 t.identity();
-                t.scale(s, s, 1);
+                t.scale(3, 3);
+                t.rotateAbout(s, 0.5f, 0.5f);
+                //t.rotateAbout(s, 0.5f, 0.5f);
                 //t.rotate((Mathf.pingpong(time.currentf, Mathf.PI)-Mathf.PI/2), 0, 0, 1);
                 batch.draw(texture, t, 1, 1, false, false);
                 batch.end();
