@@ -26,7 +26,6 @@ import de.omnikryptec.libapi.exposed.render.IndexBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.libapi.exposed.render.RenderState.RenderConfig;
-import de.omnikryptec.libapi.exposed.render.Renderable;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
@@ -126,15 +125,13 @@ public class OpenGLRenderAPI implements RenderAPI {
     }
     
     @Override
-    public void renderInstanced(@Nonnull final Renderable mesh, final int count) {
-        mesh.bindRenderable();
-        final int typeid = OpenGLUtil.typeId(mesh.primitive());
-        if (mesh.hasIndexBuffer()) {
-            GL31.glDrawElementsInstanced(typeid, mesh.elementCount(), GL11.GL_UNSIGNED_INT, 0, count);
+    public void renderInstanced(Primitive primitive, int count, boolean hasIndexBuffer, final int instanceCount) {
+        final int typeid = OpenGLUtil.typeId(primitive);
+        if (hasIndexBuffer) {
+            GL31.glDrawElementsInstanced(typeid, count, GL11.GL_UNSIGNED_INT, 0, instanceCount);
         } else {
-            GL31.glDrawArraysInstanced(typeid, 0, mesh.elementCount(), count);
+            GL31.glDrawArraysInstanced(typeid, 0, count, instanceCount);
         }
-        mesh.unbindRenderable();
     }
     
     @Override

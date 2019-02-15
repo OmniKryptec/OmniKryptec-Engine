@@ -29,7 +29,7 @@ import de.omnikryptec.util.settings.Settings;
 
 public interface RenderAPI {
     public static final Class<OpenGLRenderAPI> OpenGL = OpenGLRenderAPI.class;
-
+    
     /**
      * The currently set {@link RenderAPI}.
      * <p>
@@ -42,19 +42,19 @@ public interface RenderAPI {
     public static RenderAPI get() {
         return LibAPIManager.instance().getRenderAPI();
     }
-
+    
     public static enum Type {
         FLOAT
     }
-
+    
     public static enum SurfaceBuffer {
         Depth, Color;
     }
-
+    
     public static enum BufferUsage {
         Static, Dynamic, Stream;
     }
-
+    
     /**
      * Creates a {@link Window} with the specified settings, compatible and ready to
      * be drawn on by this {@link RenderAPI}
@@ -63,35 +63,35 @@ public interface RenderAPI {
      * @return a new window
      */
     Window createWindow(Settings<WindowSetting> windowsettings);
-
+    
     /**
      * Returns the currently used {@link Window}
      * 
      * @return
      */
     Window getWindow();
-
+    
     /**
      * Creates a new {@link IndexBuffer}
      *
      * @return indexbuffer
      */
     IndexBuffer createIndexBuffer();
-
+    
     /**
      * Creates a new {@link VertexBuffer}
      *
      * @return vertexbuffer
      */
     VertexBuffer createVertexBuffer();
-
+    
     /**
      * Creates a new {@link VertexArray}
      *
      * @return vertexarray
      */
     VertexArray createVertexArray();
-
+    
     /**
      * Creates a new {@link Texture} that represents a 2-dimensional image
      *
@@ -100,7 +100,7 @@ public interface RenderAPI {
      * @return texture
      */
     Texture createTexture2D(TextureData textureData, TextureConfig textureConfig);
-
+    
     /**
      * Creates a new {@link Shader} program (e.g. bundle of vertex- and
      * fragmentshader)
@@ -108,7 +108,7 @@ public interface RenderAPI {
      * @return shaderprogram
      */
     Shader createShader();
-
+    
     /**
      * Creates a new {@link FrameBuffer} to be used with this {@link RenderAPI}.
      * 
@@ -121,24 +121,30 @@ public interface RenderAPI {
      * @see FrameBuffer#assignTarget(int, FBTarget)
      */
     FrameBuffer createFrameBuffer(int width, int height, int multisample, int targets);
-
+    
     void applyRenderState(RenderState renderState);
-
+    
     default void render(VertexArray vertexArray, Primitive primitive, int elementCount) {
         vertexArray.bindArray();
         render(primitive, elementCount, vertexArray.hasIndexBuffer());
         vertexArray.unbindArray();
     }
-
+    
     void render(Primitive primitive, int elementCount, boolean hasIndexBuffer);
-
-    void renderInstanced(Renderable renderable, int count);
-
+    
+    default void renderInstanced(VertexArray vertexArray, Primitive primitive, int elementCount, int instanceCount) {
+        vertexArray.bindArray();
+        renderInstanced(primitive, elementCount, vertexArray.hasIndexBuffer(), instanceCount);
+        vertexArray.unbindArray();
+    }
+    
+    void renderInstanced(Primitive primitive, int elementCount, boolean hasIndexBuffer, int instanceCount);
+    
     void clear(SurfaceBuffer... buffer);
-
+    
     default void setClearColor(final Color color) {
         setClearColor(color.getR(), color.getG(), color.getB(), color.getA());
     }
-
+    
     void setClearColor(float r, float g, float b, float a);
 }
