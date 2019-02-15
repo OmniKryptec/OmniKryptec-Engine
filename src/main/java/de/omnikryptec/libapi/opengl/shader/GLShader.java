@@ -81,7 +81,11 @@ public class GLShader extends AutoDelete implements Shader {
 
     @Override
     public <T extends Uniform> T getUniform(final String name) {
-        return (T) this.uniforms.get(name);
+        Uniform u = this.uniforms.get(name);
+        if (u == null) {
+            throw new IllegalArgumentException("No uniform with name " + name + " in this shader");
+        }
+        return (T) u;
     }
 
     //TODO somewhere else?

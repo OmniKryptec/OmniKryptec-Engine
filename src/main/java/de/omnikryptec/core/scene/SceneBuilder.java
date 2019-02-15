@@ -16,6 +16,11 @@
 
 package de.omnikryptec.core.scene;
 
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+
 import de.omnikryptec.core.Updateable;
 import de.omnikryptec.core.UpdateableContainer.ExecuteMode;
 import de.omnikryptec.core.UpdateableContainer.ExecuteTime;
@@ -35,11 +40,15 @@ import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
 import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec4;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
+import de.omnikryptec.render.Camera;
+import de.omnikryptec.render.batch.RenderBatch2D;
 import de.omnikryptec.resource.MeshData;
 import de.omnikryptec.resource.MeshData.VertexAttribute;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.data.Color;
+import de.omnikryptec.util.math.MathUtil;
+import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.updater.Time;
 
 /**
@@ -182,7 +191,8 @@ public class SceneBuilder {
         final UniformVec4 color = shader.getUniform("u_col");
         final UniformFloat instanceCount = shader.getUniform("instancesMax");
         final UniformSampler sampler = shader.getUniform("sampler");
-        final FrameBuffer fbo = RenderAPI.get().createFrameBuffer(200, 200, 0, 2);
+        final FrameBuffer fbo = RenderAPI.get().createFrameBuffer(2000, 2000, 0, 2);
+
         fbo.bindFrameBuffer();
         fbo.assignTargets(new FBTarget(TextureFormat.RGBA8, 0), new FBTarget(TextureFormat.DEPTH24));
         final Texture texture = RenderAPI.get().createTexture2D(dat, new TextureConfig());
@@ -190,23 +200,35 @@ public class SceneBuilder {
         shader.bindShader();
         sampler.setSampler(0);
         color.loadVec4(1, 1, 1, 1);
-        OpenGLUtil.setEnabled(RenderConfig.BLEND, true);
-        OpenGLUtil.setBlendMode(BlendMode.ALPHA);
-        final int instances = 2;
+        //OpenGLUtil.setEnabled(RenderConfig.BLEND, true);
+        //OpenGLUtil.setBlendMode(BlendMode.ALPHA);
+        //final int instances = 2;
 
         addUpdateable(new Updateable() {
-
+            private RenderBatch2D batch = new RenderBatch2D(250);
+            private Matrix3f t = new Matrix3f();
+            private Camera cam = new Camera(new Matrix4f().perspective(Mathf.PI/2, 4/3f, -10, 10));
             @Override
             public void preUpdate(final Time time) {
             }
 
             @Override
             public void update(final Time time) {
-                shader.bindShader();
+                //batch.setProjection(cam);
+                //batch.setGlobalTransform(new Matrix4f().rotate(Mathf.PI/4, new Vector3f(1,0,0)));
+                batch.begin();
+                //batch.drawTest();
+                float s = Mathf.pingpong(time.currentf*0.05f, 3);
+                t.identity();
+                t.scale(s, s, 1);
+                //t.rotate((Mathf.pingpong(time.currentf, Mathf.PI)-Mathf.PI/2), 0, 0, 1);
+                batch.draw(texture, t, 1, 1, false, false);
+                batch.end();
+                //shader.bindShader();
                 //color.loadColor(Color.randomRGB());
-                texture.bindTexture(0);
-                instanceCount.loadFloat(instances);
-                RenderAPI.get().renderInstanced(mesh, instances);
+                //texture.bindTexture(0);
+                //instanceCount.loadFloat(instances);
+                //RenderAPI.get().renderInstanced(mesh, instances);
             }
 
             @Override

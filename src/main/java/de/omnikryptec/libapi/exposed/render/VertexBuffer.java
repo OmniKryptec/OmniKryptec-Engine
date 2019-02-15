@@ -44,7 +44,7 @@ public interface VertexBuffer {
      *
      * @param data  the float-data to be stored
      * @param usage buffer usage
-     * @param size  the size of the added data
+     * @param size  the amount of added floats
      */
     void storeData(FloatBuffer data, BufferUsage usage, int size);
     

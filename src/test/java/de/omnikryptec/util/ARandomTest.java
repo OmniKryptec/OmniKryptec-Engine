@@ -16,13 +16,13 @@
 
 package de.omnikryptec.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import org.joml.FrustumIntersection;
 
-import de.omnikryptec.render.ArrayDisplayList;
-import de.omnikryptec.render.DisplayList;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.RenderedObject;
 import de.omnikryptec.render.Renderer;
@@ -66,15 +66,16 @@ public class ARandomTest {
     private static class Rend implements Renderer {
         
         @Override
-        public void render(final Time time, final IProjection projection, final DisplayList objs,
+        public void render(final Time time, final IProjection projection, final Collection<RenderedObject> objs,
                 final Settings<?> renderSettings) {
         }
-        
+
         @Override
-        public DisplayList createRenderList() {
-            
-            return new ArrayDisplayList<>();
+        public Collection<RenderedObject> createRenderList() {
+            return new ArrayList<>();
         }
+        
+       
         
     }
     

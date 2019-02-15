@@ -38,6 +38,7 @@ import de.omnikryptec.libapi.opengl.buffer.GLVertexArray;
 import de.omnikryptec.libapi.opengl.buffer.GLVertexBuffer;
 import de.omnikryptec.libapi.opengl.shader.GLShader;
 import de.omnikryptec.libapi.opengl.texture.GLTexture2D;
+import de.omnikryptec.resource.MeshData.Primitive;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.settings.IntegerKey;
@@ -115,15 +116,13 @@ public class OpenGLRenderAPI implements RenderAPI {
     }
     
     @Override
-    public void render(@Nonnull final Renderable mesh) {
-        mesh.bindRenderable();
-        final int typeid = OpenGLUtil.typeId(mesh.primitive());
-        if (mesh.hasIndexBuffer()) {
-            GL11.glDrawElements(typeid, mesh.elementCount(), GL11.GL_UNSIGNED_INT, 0);
+    public void render(Primitive primitive, int count, boolean hasIndexBuffer) {
+        final int typeid = OpenGLUtil.typeId(primitive);
+        if (hasIndexBuffer) {
+            GL11.glDrawElements(typeid, count, GL11.GL_UNSIGNED_INT, 0);
         } else {
-            GL11.glDrawArrays(typeid, 0, mesh.elementCount());
+            GL11.glDrawArrays(typeid, 0, count);
         }
-        mesh.unbindRenderable();
     }
     
     @Override

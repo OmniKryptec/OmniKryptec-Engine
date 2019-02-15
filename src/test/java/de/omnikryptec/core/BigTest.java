@@ -4,6 +4,7 @@ import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.scene.SceneBuilder;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
+import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
 import de.omnikryptec.util.Logger.LogType;
@@ -22,6 +23,9 @@ public class BigTest extends EngineLoader {
         libsettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "BigTest-Window");
         windowSettings.set(WindowSetting.LockAspectRatio, true);
+        windowSettings.set(WindowSetting.VSync, false);
+        windowSettings.set(WindowSetting.Multisample, 16);
+
         //windowSettings.set(WindowSetting.Fullscreen, true);
         //windowSettings.set(WindowSetting.Width, 10000);
         //windowSettings.set(WindowSetting.Height, 2000);
@@ -29,6 +33,7 @@ public class BigTest extends EngineLoader {
 
     @Override
     protected void onInitialized() {
+        OpenGLUtil.setMultisample(true);
         final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
         getResManager().addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
         getResManager().stage(new AdvancedFile("src/test/resources"));
