@@ -17,9 +17,10 @@
 package de.omnikryptec.util.data;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Objects;
 
-public class DynamicArray<E> {
+public class DynamicArray<E> implements Iterable<E> {
     
     private Object[] array;
     
@@ -107,9 +108,34 @@ public class DynamicArray<E> {
         }
         return false;
     }
-
+    
     @Override
     public int hashCode() {
         return Arrays.hashCode(this.array);
+    }
+    
+    @Override
+    public Iterator<E> iterator() {
+        return new Itr();
+    }
+    
+    public Object[] arrayAccess() {
+        return array;
+    }
+    
+    private class Itr implements Iterator<E> {
+        
+        private int index = 0;
+        
+        @Override
+        public boolean hasNext() {
+            return index < array.length;
+        }
+        
+        @Override
+        public E next() {
+            return (E) array[index++];
+        }
+        
     }
 }

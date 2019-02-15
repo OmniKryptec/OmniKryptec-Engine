@@ -221,7 +221,7 @@ public class SceneBuilder {
                 //batch.drawTest();
                 float s = Mathf.pingpong(time.currentf, 3);
                 t.identity();
-                t.scale(3, 3);
+                t.scale(s, s);
                 t.rotateAbout(s, 0.5f, 0.5f);
                 //t.rotateAbout(s, 0.5f, 0.5f);
                 //t.rotate((Mathf.pingpong(time.currentf, Mathf.PI)-Mathf.PI/2), 0, 0, 1);
