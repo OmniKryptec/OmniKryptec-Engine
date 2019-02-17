@@ -28,18 +28,18 @@ import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.util.ExecutorsUtil;
 
 public class ResourceManager {
-
+    
     private final Collection<LoadingProgressCallback> callbacks;
     private final Collection<ResourceLoader<?>> loadersThreadGroup;
     private final Collection<ResourceLoader<?>> loadersMainThread;
     private final List<ResourceLocation> staged;
     private final ResourceProvider resourceProvider;
     private final ResourceNameGenerator resourceNameGenerator;
-
+    
     public ResourceManager() {
         this(new DefaultResourceProvider(), ResourceNameGenerator.defaultNameGen());
     }
-
+    
     public ResourceManager(final ResourceProvider resProv, final ResourceNameGenerator nameGen) {
         this.resourceProvider = resProv;
         this.resourceNameGenerator = nameGen;
@@ -48,50 +48,50 @@ public class ResourceManager {
         this.loadersThreadGroup = new ArrayList<>();
         this.loadersMainThread = new ArrayList<>();
     }
-
+    
     public void addDefaultLoader() {
         addLoader(new TextureLoader());
         addLoader(new MeshLoader());
         addLoader(new ShaderLoader());
     }
-
+    
     public void clearLoaders() {
         this.loadersThreadGroup.clear();
         this.loadersMainThread.clear();
     }
-
+    
     public ResourceProvider getProvider() {
         return this.resourceProvider;
     }
-
+    
     public void addCallback(final LoadingProgressCallback callback) {
         this.callbacks.add(callback);
     }
-
+    
     public void stage(final AdvancedFile file) {
         stage(file, 0);
     }
-
+    
     public void stage(final AdvancedFile file, final int priority) {
         stage(new ResourceLocation(priority, file));
     }
-
+    
     public void stage(final ResourceLocation file) {
         this.staged.add(file);
     }
-
+    
     public void clearStaged() {
         this.staged.clear();
     }
-
+    
     public void processStaged(final boolean override) {
         new Processor(override).processStaged();
     }
-
+    
     public void instantLoad(final boolean override, final AdvancedFile file) {
         new Processor(override).loadSimple(file);
     }
-
+    
     private void addResource(final Object res, final AdvancedFile file, final AdvancedFile superfile,
             final boolean override) {
         if (res != null) {
@@ -99,7 +99,7 @@ public class ResourceManager {
             this.resourceProvider.add(res, name, override);
         }
     }
-
+    
     public void addLoader(final ResourceLoader<?> loader) {
         if (loader.requiresMainThread()) {
             this.loadersMainThread.add(loader);
@@ -107,31 +107,31 @@ public class ResourceManager {
             this.loadersThreadGroup.add(loader);
         }
     }
-
+    
     public static class ResourceLocation implements Comparable<ResourceLocation> {
-
+        
         private final int priority;
         private final AdvancedFile loc;
-
+        
         public ResourceLocation(final int priority, final AdvancedFile file) {
             this.priority = priority;
             this.loc = file;
         }
-
+        
         public int getPriority() {
             return this.priority;
         }
-
+        
         public AdvancedFile getFile() {
             return this.loc;
         }
-
+        
         @Override
         public int compareTo(final ResourceLocation o) {
             return this.priority - o.priority;
         }
     }
-
+    
     /*
      * Kind of messy, in here
      */
@@ -139,30 +139,30 @@ public class ResourceManager {
         private final boolean override;
         private ExecutorService executorService = null;
         private final ConcurrentLinkedQueue<ResTask> resourcesTmp;
-
+        
         private class ResTask {
-
+            
             private ResTask(final Object res, final AdvancedFile file, final AdvancedFile superfile) {
                 this.res = res;
                 this.file = file;
                 this.superfile = superfile;
             }
-
+            
             private final Object res;
             private final AdvancedFile file;
             private final AdvancedFile superfile;
         }
-
+        
         /* for #notifyProcessed() */
         private int localprocessed;
         /**/
-
+        
         private Processor(final boolean override) {
             this.override = override;
             this.executorService = ExecutorsUtil.newFixedThreadPool();
             this.resourcesTmp = new ConcurrentLinkedQueue<>();
         }
-
+        
         private void processStaged() {
             Collections.sort(ResourceManager.this.staged);
             final int[] localmaxs = new int[ResourceManager.this.staged.size()];
@@ -179,7 +179,7 @@ public class ResourceManager {
             }
             finish();
         }
-
+        
         private void processStagedIntern(final AdvancedFile file, final AdvancedFile superFile) {
             if (file.isDirectory()) {
                 for (final AdvancedFile subFile : file.listFiles()) {
@@ -189,7 +189,7 @@ public class ResourceManager {
                 load(true, file, superFile);
             }
         }
-
+        
         private void loadSimple(final AdvancedFile file) {
             final int size = countFiles(file, 0);
             notifyStart(size, 1);
@@ -197,7 +197,7 @@ public class ResourceManager {
             loadSimpleIntern(size > 1, file, file);
             finish();
         }
-
+        
         private void loadSimpleIntern(final boolean exec, final AdvancedFile file, final AdvancedFile superFile) {
             if (file.isDirectory()) {
                 for (final AdvancedFile subFile : file.listFiles()) {
@@ -207,7 +207,7 @@ public class ResourceManager {
                 load(exec, file, superFile);
             }
         }
-
+        
         private int countFiles(final AdvancedFile file, int old) {
             if (file.isDirectory()) {
                 final List<AdvancedFile> filesHere = file.listFiles();
@@ -219,27 +219,27 @@ public class ResourceManager {
             }
             return old;
         }
-
+        
         private void notifyStage(final AdvancedFile file, final int stagenumber, final int localmax) {
             this.localprocessed = 0;
             for (final LoadingProgressCallback callback : ResourceManager.this.callbacks) {
                 callback.onStageChange(file, localmax, stagenumber);
             }
         }
-
+        
         private void notifyProcessed(final AdvancedFile file) {
             this.localprocessed++;
             for (final LoadingProgressCallback callback : ResourceManager.this.callbacks) {
                 callback.onProgressChange(file, this.localprocessed);
             }
         }
-
+        
         private void notifyStart(final int size, final int maxstages) {
             for (final LoadingProgressCallback callback : ResourceManager.this.callbacks) {
                 callback.onLoadingStart(size, maxstages);
             }
         }
-
+        
         private void finish() {
             ExecutorsUtil.shutdown(this.executorService, 1, TimeUnit.HOURS, false);
             for (final ResTask rt : this.resourcesTmp) {
@@ -247,13 +247,13 @@ public class ResourceManager {
             }
             notifyDone();
         }
-
+        
         private void notifyDone() {
             for (final LoadingProgressCallback callback : ResourceManager.this.callbacks) {
                 callback.onLoadingDone();
             }
         }
-
+        
         private void load(final boolean useExecutor, final AdvancedFile file, final AdvancedFile superfile) {
             final Runnable r = () -> {
                 for (final ResourceLoader<?> loader : ResourceManager.this.loadersThreadGroup) {
@@ -287,5 +287,5 @@ public class ResourceManager {
             notifyProcessed(file);
         }
     }
-
+    
 }

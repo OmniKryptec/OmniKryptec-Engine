@@ -19,15 +19,15 @@ package de.omnikryptec.libapi.exposed.input;
 import de.omnikryptec.util.settings.KeySettings;
 
 public interface InputHandler {
-
+    
     InputHandler init();
-
+    
     InputHandler preUpdate(double currentTime, KeySettings keySettings);
-
+    
     InputHandler update(double currentTime, KeySettings keySettings);
-
+    
     InputHandler postUpdate(double currentTime, KeySettings keySettings);
-
+    
     InputHandler close();
-
+    
 }

@@ -13,20 +13,20 @@ import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class MasterRenderer {
-
+    
     public static final IntegerKey MultisampleSetting = IntegerKey.next(0);
-
+    
     private final List<RendererSet> rendererSets;
     private final List<Postprocessor> postprocessors;
-
+    
     private FrameBuffer sceneFBO;
-
+    
     public MasterRenderer() {
         this.rendererSets = new ArrayList<>();
         this.postprocessors = new ArrayList<>();
         LibAPIManager.LIBAPI_EVENTBUS.register(this);
     }
-
+    
     public void renderScene(final Time time, final RenderCollection scene, final List<Viewport> mainViewports,
             final Settings<?> renderSettings) {
         for (final Viewport view : mainViewports) {
@@ -51,17 +51,17 @@ public class MasterRenderer {
             }
         }
     }
-
+    
     public void addPostProcessor(final Postprocessor postprocessor) {
         this.postprocessors.add(postprocessor);
     }
-
+    
     public void addRendererSet(final RendererSet rendererSet) {
         this.rendererSets.add(rendererSet);
     }
-
+    
     @EventSubscription
     public void onWindowResized(final WindowEvent.WindowResized ev) {
     }
-
+    
 }

@@ -27,14 +27,14 @@ import de.omnikryptec.util.updater.Time;
  * @see EngineLoader#getGameController()
  */
 public class GameController {
-
+    
     private final Scene globalScene;
     private Scene localScene;
-
+    
     public GameController() {
         this.globalScene = new Scene();
     }
-
+    
     /**
      * A global, omni-present {@link Scene}
      *
@@ -43,7 +43,7 @@ public class GameController {
     public Scene getGlobalScene() {
         return this.globalScene;
     }
-
+    
     /**
      * THe currently set local {@link Scene}
      *
@@ -52,7 +52,7 @@ public class GameController {
     public Scene getLocalScene() {
         return this.localScene;
     }
-
+    
     /**
      * If a local {@link Scene} is set
      *
@@ -61,7 +61,7 @@ public class GameController {
     public boolean hasScene() {
         return this.localScene != null;
     }
-
+    
     /**
      * Sets the local {@link Scene}
      *
@@ -70,7 +70,7 @@ public class GameController {
     public void setLocalScene(final Scene scene) {
         this.localScene = scene;
     }
-
+    
     /**
      * Updates the sync parts of the global and local scene.<br>
      * First, the global scene gets pre-updated. If a local scene is set, it gets
@@ -88,7 +88,7 @@ public class GameController {
         getGlobalScene().getUpdateableContainerSync().update(time);
         getGlobalScene().getUpdateableContainerSync().postUpdate(time);
     }
-
+    
     /**
      * Updates the async parts of the global and local scene.<br>
      * First, the global scene gets pre-updated. If a local scene is set, it gets

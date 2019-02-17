@@ -21,85 +21,85 @@ import org.joml.Math;
 import de.omnikryptec.util.Interpolator;
 
 public strictfp class Mathf {
-    
+
     public static final float PI = (float) java.lang.Math.PI;
     public static final float E = (float) java.lang.Math.E;
-    
+
     /**
      * All float values above or equal to this value are integer numbers, all float
      * values below or equal to (-1) * this value are integer numbers.
      */
     private static final float TWO_POW_23 = 8388608.0f;
-    
+
     public static float clamp(final float in, final float min, final float max) {
         return in < min ? min : (in > max ? max : in);
     }
-    
+
     public static float clamp01(final float in) {
         return in < 0.0f ? 0.0f : (in > 1.0f ? 1.0f : in);
     }
-    
-    public static float interpolate(float a, float b, float ratio, Interpolator interpol) {
+
+    public static float interpolate(final float a, final float b, final float ratio, final Interpolator interpol) {
         return lerp(a, b, interpol.interpolate(ratio));
     }
-    
-    public static float lerp(float a, float b, float ratio) {
+
+    public static float lerp(final float a, final float b, final float ratio) {
         return a * (1 - ratio) + b * ratio;
     }
-    
-    public static float pingpong(float in, float length) {
+
+    public static float pingpong(float in, final float length) {
         in %= length * 2;
         if (in < length) {
             return in;
         } else {
-            return 2*length - in;
+            return 2 * length - in;
         }
     }
-    
+
     public static float sin(final float rad) {
         return (float) Math.sin(rad);
     }
-    
+
     public static float cos(final float rad) {
         return (float) Math.cos(rad);
     }
-    
+
     public static float tan(final float rad) {
         return (float) Math.tan(rad);
     }
-    
+
     public static float arcsin(final float x) {
         return (float) Math.asin(x);
     }
-    
+
     public static float arccos(final float x) {
         return (float) Math.acos(x);
     }
-    
+
     public static float arctan(final float x) {
         return (float) java.lang.Math.atan(x);
     }
-    
+
     public static float arctan2(final float y, final float x) {
         return (float) Math.atan2(y, x);
     }
-    
+
     public static float sqrt(final float value) {
         return (float) Math.sqrt(value);
     }
-    
+
     public static float abs(final float value) {
         return value < 0.0f ? 0.0f - value : value;
     }
-    
+
     public static float min(final float v0, final float v1) {
         return v0 < v1 ? v0 : v1;
     }
-    
+
     public static float max(final float v0, final float v1) {
         return v0 > v1 ? v0 : v1;
     }
-    
+
     public static float floor(final float value) {
         if (value != value) {
             // NaN
@@ -114,7 +114,7 @@ public strictfp class Mathf {
         }
         return intvalue;
     }
-    
+
     public static float ceil(final float value) {
         if (value != value) {
             // NaN
@@ -129,7 +129,7 @@ public strictfp class Mathf {
         }
         return intvalue;
     }
-    
+
     public static float rint(final float value) {
         if (value != value) {
             // NaN
@@ -142,13 +142,13 @@ public strictfp class Mathf {
         }
         return value;
     }
-    
+
     public static int round(final float value) {
         return (int) rint(value);
     }
-    
+
     public static long roundl(final float value) {
         return (long) rint(value);
     }
-    
+
 }

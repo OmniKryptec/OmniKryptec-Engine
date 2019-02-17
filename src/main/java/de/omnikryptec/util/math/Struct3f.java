@@ -6,23 +6,23 @@ import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
 public class Struct3f {
-
+    
     public final float x, y, z;
-
+    
     public Struct3f(final float x, final float y, final float z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
-
+    
     public Struct3f(final Vector3fc invec) {
         this(invec.x(), invec.y(), invec.z());
     }
-
+    
     public Vector3f dynamic() {
         return new Vector3f(this.x, this.y, this.z);
     }
-
+    
     @Override
     public boolean equals(final Object obj) {
         if (obj == null) {
@@ -37,7 +37,7 @@ public class Struct3f {
         }
         return false;
     }
-
+    
     @Override
     public int hashCode() {
         return Objects.hash(this.x, this.y, this.z);

@@ -20,63 +20,63 @@ import de.omnikryptec.core.Updateable;
 import de.omnikryptec.util.updater.Time;
 
 public class SmoothFloat implements Updateable {
-
+    
     private float agility;
     private float target;
     private float actual;
-
+    
     public SmoothFloat(final float initialValue, final float agility) {
         this.target = initialValue;
         this.actual = initialValue;
         this.agility = agility;
     }
-
+    
     @Override
     public void update(final Time time) {
         this.actual += (this.target - this.actual) * time.deltaf * this.agility;
     }
-
+    
     public void instantIncrease(final float increase) {
         this.actual += increase;
         this.target = this.actual;
     }
-
+    
     public float get() {
         return this.actual;
     }
-
+    
     public float getTarget() {
         return this.target;
     }
-
+    
     public void setTarget(final float target) {
         this.target = target;
     }
-
+    
     public void increaseTarget(final float deltaTarget) {
         this.target += deltaTarget;
     }
-
+    
     public void setValue(final float f) {
         this.actual = f;
     }
-
+    
     public float getAgility() {
         return this.agility;
     }
-
+    
     public void setAgility(final float a) {
         this.agility = a;
     }
-
+    
     public void setValueAndTarget(final float f) {
         setTarget(f);
         setValue(f);
     }
-
+    
     @Override
     public String toString() {
         return "Value: " + this.actual + " Target: " + this.target + " Agility: " + this.agility;
     }
-
+    
 }

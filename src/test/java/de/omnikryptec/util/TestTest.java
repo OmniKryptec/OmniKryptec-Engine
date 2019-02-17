@@ -19,10 +19,10 @@ package de.omnikryptec.util;
 import de.omnikryptec.util.math.Mathf;
 
 public class TestTest {
-
+    
     public static final void main(final String[] args) throws Exception {
-        for(int i=0; i<100; i++) {
-            System.out.println(Mathf.pingpong(i/2f, 5));
+        for (int i = 0; i < 100; i++) {
+            System.out.println(Mathf.pingpong(i / 2f, 5));
         }
         int count = 0;
         final long time = System.nanoTime();
@@ -34,5 +34,5 @@ public class TestTest {
         final long time2 = System.nanoTime();
         System.out.println((time2 - time) / count + "ns");
     }
-
+    
 }

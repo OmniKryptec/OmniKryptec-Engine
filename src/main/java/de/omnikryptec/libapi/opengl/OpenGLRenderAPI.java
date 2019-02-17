@@ -44,57 +44,57 @@ import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
 public class OpenGLRenderAPI implements RenderAPI {
-    
+
     public static final IntegerKey MAJOR_VERSION = IntegerKey.next(1);
     public static final IntegerKey MINOR_VERSION = IntegerKey.next(0);
-    
+
     private final Settings<IntegerKey> apisettings;
     private Window window;
-    
+
     public OpenGLRenderAPI(final Settings<IntegerKey> apisettings) {
         this.apisettings = apisettings;
     }
-    
+
     @Override
     public Window createWindow(final Settings<WindowSetting> windowsettings) {
         return this.window = new OpenGLWindow(windowsettings, this.apisettings);
     }
-    
+
     @Override
     public Window getWindow() {
         return this.window;
     }
-    
+
     @Override
     public IndexBuffer createIndexBuffer() {
         return new GLIndexBuffer();
     }
-    
+
     @Override
     public VertexBuffer createVertexBuffer() {
         return new GLVertexBuffer();
     }
-    
+
     @Override
     public VertexArray createVertexArray() {
         return new GLVertexArray();
     }
-    
+
     @Override
     public Texture createTexture2D(final TextureData textureData, final TextureConfig textureConfig) {
         return new GLTexture2D(textureData, textureConfig);
     }
-    
+
     @Override
     public Shader createShader() {
         return new GLShader();
     }
-    
+
     @Override
     public FrameBuffer createFrameBuffer(final int width, final int height, final int multisample, final int targets) {
         return new GLFrameBuffer(width, height, multisample, targets);
     }
-    
+
     @Override
     public void applyRenderState(@Nonnull final RenderState renderState) {
         for (final RenderConfig config : RenderConfig.values()) {
@@ -113,9 +113,9 @@ public class OpenGLRenderAPI implements RenderAPI {
             OpenGLUtil.setDepthTestFunc(renderState.getDepthMode());
         }
     }
-    
+
     @Override
-    public void render(Primitive primitive, int count, boolean hasIndexBuffer) {
+    public void render(final Primitive primitive, final int count, final boolean hasIndexBuffer) {
         final int typeid = OpenGLUtil.typeId(primitive);
         if (hasIndexBuffer) {
             GL11.glDrawElements(typeid, count, GL11.GL_UNSIGNED_INT, 0);
@@ -123,9 +123,10 @@ public class OpenGLRenderAPI implements RenderAPI {
             GL11.glDrawArrays(typeid, 0, count);
         }
     }
-    
+
     @Override
-    public void renderInstanced(Primitive primitive, int count, boolean hasIndexBuffer, final int instanceCount) {
+    public void renderInstanced(final Primitive primitive, final int count, final boolean hasIndexBuffer,
+            final int instanceCount) {
         final int typeid = OpenGLUtil.typeId(primitive);
         if (hasIndexBuffer) {
             GL31.glDrawElementsInstanced(typeid, count, GL11.GL_UNSIGNED_INT, 0, instanceCount);
@@ -133,15 +134,15 @@ public class OpenGLRenderAPI implements RenderAPI {
             GL31.glDrawArraysInstanced(typeid, 0, count, instanceCount);
         }
     }
-    
+
     @Override
     public void clear(final SurfaceBuffer... buffers) {
         OpenGLUtil.clear(buffers);
     }
-    
+
     @Override
     public void setClearColor(final float r, final float g, final float b, final float a) {
         OpenGLUtil.setClearColor(r, g, b, a);
     }
-    
+
 }

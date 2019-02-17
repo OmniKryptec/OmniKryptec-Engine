@@ -15,7 +15,7 @@ public class BigTest extends EngineLoader {
     public static void main(final String[] args) {
         new BigTest().start();
     }
-
+    
     @Override
     protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
@@ -25,12 +25,12 @@ public class BigTest extends EngineLoader {
         windowSettings.set(WindowSetting.LockAspectRatio, true);
         windowSettings.set(WindowSetting.VSync, false);
         windowSettings.set(WindowSetting.Multisample, 16);
-
+        
         //windowSettings.set(WindowSetting.Fullscreen, true);
         //windowSettings.set(WindowSetting.Width, 10000);
         //windowSettings.set(WindowSetting.Height, 2000);
     }
-
+    
     @Override
     protected void onInitialized() {
         OpenGLUtil.setMultisample(true);
@@ -40,7 +40,7 @@ public class BigTest extends EngineLoader {
         getResManager().processStaged(false);
         builder.addGraphicsClearTest();
         builder.addGraphicsBasicImplTest(getResProvider().get(TextureData.class, "jd.png"));
-
+        
         //getGameController().setLocalScene(builder.get());
     }
 }

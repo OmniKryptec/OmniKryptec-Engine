@@ -25,13 +25,13 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 
 public class GLIndexBuffer extends GLBuffer implements IndexBuffer {
-
+    
     private int size;
-
+    
     public GLIndexBuffer() {
         super(GL15.GL_ELEMENT_ARRAY_BUFFER);
     }
-
+    
     @Override
     public void storeData(final IntBuffer data, final BufferUsage usage, final int size) {
         this.size = size;
@@ -39,10 +39,10 @@ public class GLIndexBuffer extends GLBuffer implements IndexBuffer {
         bindBuffer();
         GL15.glBufferData(bufferType(), data, OpenGLUtil.typeId(usage));
     }
-
+    
     @Override
     public int size() {
         return this.size;
     }
-
+    
 }

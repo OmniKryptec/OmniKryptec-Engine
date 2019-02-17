@@ -8,11 +8,11 @@ import de.omnikryptec.resource.MeshData.Primitive;
 import de.omnikryptec.resource.MeshData.VertexAttribute;
 
 public class Mesh {
-
+    
     private final VertexArray vertexArray;
     private final Primitive primitive;
     private final int elementCount;
-
+    
     public Mesh(final MeshData meshData) {
         this.vertexArray = RenderAPI.get().createVertexArray();
         this.primitive = meshData.getPrimitiveType();
@@ -32,17 +32,17 @@ public class Mesh {
             }
         }
     }
-
+    
     public VertexArray getVertexArray() {
-        return vertexArray;
-    }
-    
-    public Primitive getPrimitive() {
-        return primitive;
-    }
-    
-    public int getElementCount() {
-        return elementCount;
+        return this.vertexArray;
     }
 
+    public Primitive getPrimitive() {
+        return this.primitive;
+    }
+
+    public int getElementCount() {
+        return this.elementCount;
+    }
+    
 }

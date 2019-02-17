@@ -17,9 +17,7 @@
 package de.omnikryptec.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import org.joml.FrustumIntersection;
 
@@ -29,56 +27,53 @@ import de.omnikryptec.render.Renderer;
 import de.omnikryptec.render.RendererSet;
 import de.omnikryptec.render.SimpleRenderCollection;
 import de.omnikryptec.render.Viewport;
-import de.omnikryptec.util.data.IterableCombiner;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class ARandomTest {
-    
+
     public static void main(final String[] args) {
-        RendererSet s = RendererSet.RENDERERS_3D;
-        Rend rend = new Rend();
+        final RendererSet s = RendererSet.RENDERERS_3D;
+        final Rend rend = new Rend();
         s.addRenderer(rend);
-        SimpleRenderCollection re = new SimpleRenderCollection();
+        final SimpleRenderCollection re = new SimpleRenderCollection();
         for (int i = 0; i < 1000; i++) {
             re.add(rend, new Robj());
         }
-        long nanos = System.nanoTime();
-        Viewport vp = new Viewport(s);
+        final long nanos = System.nanoTime();
+        final Viewport vp = new Viewport(s);
         vp.setVisibilityOverride(true);
         re.fillViewport(vp);
-        long nanos2 = System.nanoTime();
+        final long nanos2 = System.nanoTime();
         System.out.println(1 / ((nanos2 - nanos) * 1e-9));
         final Mapper<TestTest> mapper2 = new Mapper<>();
         test(mapper2.of(TestTest.class));
     }
-    
+
     private static class Robj implements RenderedObject {
-        
+
         @Override
         public boolean isVisible(final FrustumIntersection frustum) {
-            
+
             return true;
         }
-        
+
     }
-    
+
     private static class Rend implements Renderer {
-        
+
         @Override
         public void render(final Time time, final IProjection projection, final Collection<RenderedObject> objs,
                 final Settings<?> renderSettings) {
         }
-
+        
         @Override
         public Collection<RenderedObject> createRenderList() {
             return new ArrayList<>();
         }
         
-       
-        
     }
-    
+
     public static void test(final Mapper<TestTest>.Mapping mapping) {
         System.out.println(mapping);
     }

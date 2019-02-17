@@ -19,13 +19,13 @@ package de.omnikryptec.libapi.exposed.render.shader;
 import de.omnikryptec.resource.parser.shader.ShaderParser.ShaderType;
 
 public class ShaderSource {
-    
+
     public final ShaderType shaderType;
     public final String source;
-    
+
     public ShaderSource(final ShaderType type, final String src) {
         this.shaderType = type;
         this.source = src;
     }
-    
+
 }

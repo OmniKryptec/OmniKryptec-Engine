@@ -13,21 +13,21 @@ import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class Viewport {
-
+    
     private final RendererSet rendererSet;
     private final Map<Renderer, Collection<RenderedObject>> renderables;
-
+    
     private IProjection projection;
     private Struct3f position;
-
+    
     private boolean visibilityOverride = false;
     private boolean refill = true;
-
+    
     public Viewport(final RendererSet rendererSet) {
         this.renderables = new HashMap<>();
         this.rendererSet = Util.ensureNonNull(rendererSet);
     }
-
+    
     public void render(final Time time, final FrameBuffer target, final Settings<?> renderSettings) {
         if (this.projection == null) {
             System.err.println("No projection set");
@@ -40,7 +40,7 @@ public class Viewport {
         }
         RenderUtil.unbindIfNonNull(target);
     }
-
+    
     public void add(final Renderer renderer, final Collection<? extends RenderedObject> objs) {
         Util.ensureNonNull(objs);
         if (objs.isEmpty()) {
@@ -51,18 +51,18 @@ public class Viewport {
             addUnchecked(list, r);
         }
     }
-
+    
     public void add(final Renderer renderer, final RenderedObject robj) {
         Util.ensureNonNull(robj);
         addUnchecked(checkAndGetDisplayList(renderer), robj);
     }
-
+    
     private void addUnchecked(final Collection<RenderedObject> list, final RenderedObject robj) {
         if (this.visibilityOverride || robj.isVisible(this.projection.getFrustumTester())) {
             list.add(robj);
         }
     }
-
+    
     private Collection<RenderedObject> checkAndGetDisplayList(final Renderer renderer) {
         if (!this.rendererSet.supports(renderer)) {
             throw new IllegalArgumentException("renderer not supported");
@@ -77,11 +77,11 @@ public class Viewport {
         }
         return list;
     }
-
+    
     public void reset() {
         this.reset(this.projection, this.position);
     }
-
+    
     public void reset(final IProjection projection, final Struct3f position) {
         boolean changed = false;
         if (projection != null) {
@@ -97,31 +97,31 @@ public class Viewport {
             this.renderables.clear();
         }
     }
-
+    
     //Change to autoflip and clear if refill==true on adding new renderedobjs?
     public void flip() {
         this.refill = false;
     }
-
+    
     public void setVisibilityOverride(final boolean b) {
         this.visibilityOverride = b;
     }
-
+    
     //TODO moving objects?
     public boolean requiresRefill() {
         return this.refill;
     }
-
+    
     public IProjection getProjection() {
         return this.projection;
     }
-
+    
     public Struct3f getPosition() {
         return this.position;
     }
-
+    
     public RendererSet getRendererSet() {
         return this.rendererSet;
     }
-
+    
 }

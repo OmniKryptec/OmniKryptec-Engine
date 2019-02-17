@@ -29,69 +29,69 @@ import de.omnikryptec.core.Updateable;
 import de.omnikryptec.util.updater.Time;
 
 public class EventBus implements Updateable, IEventListener {
-    
+
     private final AtomicBoolean processing = new AtomicBoolean(false);
     private final Multimap<Class<? extends Event>, IEventListener> listeners;
     private final Queue<Event> eventQueue;
-    
+
     /**
      * A read-only version of this {@link EventBus}
      */
     public final ReadableEventBus READ_ONLY = new ReadableEventBus() {
-        
+
         @Override
         public void register(final Object object) {
             EventBus.this.register(object);
         }
-        
+
         @Override
         public void register(final IEventListener listener, final Class<? extends Event> eventtype) {
             EventBus.this.register(listener, eventtype);
         }
-        
+
         @Override
         public void post(final Event event) {
             EventBus.this.post(event);
         }
-        
+
         @Override
         public void enqueue(final Event event) {
             EventBus.this.enqueue(event);
         }
     };
-    
+
     public EventBus() {
         this.eventQueue = new ConcurrentLinkedQueue<>();
         this.listeners = ArrayListMultimap.create();
     }
-    
+
     /**
      * Registers an {@link IEventListener} to ALL events.<br>
      * Useful when chaining together multiple {@link EventBus}.
-     * 
+     *
      * <p>
      * Note: {@link EventSubscription}s are ignored.
      * </p>
-     * 
+     *
      * @param listener the listener
      */
     public void register(final IEventListener listener) {
         register(listener, Event.class);
     }
-    
+
     /**
      * Registers an {@link IEventListener} to a certain type of event.
      * <p>
      * Note: {@link EventSubscription}s are ignored.
      * </p>
-     * 
+     *
      * @param listener  the listener
      * @param eventtype the class of the event type
      */
     public void register(final IEventListener listener, final Class<? extends Event> eventtype) {
         this.listeners.put(eventtype, listener);
     }
-    
+
     /**
      * Registers any {@link EventSubscription}s found in this object:
      * <ul>
@@ -106,7 +106,7 @@ public class EventBus implements Updateable, IEventListener {
      * Note: If the object does not contain any subscriptions, an exception is
      * thrown.
      * </p>
-     * 
+     *
      * @param object the object to search for subscriptions in
      */
     public void register(Object object) {
@@ -145,15 +145,15 @@ public class EventBus implements Updateable, IEventListener {
             throw new IllegalArgumentException("No EventSubscriptions found: " + object);
         }
     }
-    
+
     public void post(final Event event) {
         processEvent(event);
     }
-    
+
     public void enqueue(final Event event) {
         this.eventQueue.add(event);
     }
-    
+
     public void processQueuedEvents() {
         if (this.processing.get()) {
             throw new IllegalStateException("Already processing!");
@@ -164,11 +164,11 @@ public class EventBus implements Updateable, IEventListener {
         }
         this.processing.set(false);
     }
-    
+
     public boolean isProcessing() {
         return this.processing.get();
     }
-    
+
     private void processEvent(final Event event) {
         Class<?> someclazz = event.getClass();
         do {
@@ -180,16 +180,16 @@ public class EventBus implements Updateable, IEventListener {
             someclazz = someclazz.getSuperclass();
         } while (event.triggersSuperEventListeners() && someclazz != Object.class && someclazz != null);
     }
-    
+
     //TODO change this to regular update?
     @Override
     public void postUpdate(final Time time) {
         processQueuedEvents();
     }
-    
+
     //TODO receive consumed events?
     @Override
-    public void invoke(Event ev) {
+    public void invoke(final Event ev) {
         processEvent(ev);
     }
 }

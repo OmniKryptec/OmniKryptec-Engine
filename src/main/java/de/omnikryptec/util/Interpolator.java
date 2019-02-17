@@ -2,7 +2,7 @@ package de.omnikryptec.util;
 
 public enum Interpolator {
     None, Linear, Cubic, Quintic;
-    
+
     public double interpolate(final double t) {
         switch (this) {
         case None:
@@ -17,7 +17,7 @@ public enum Interpolator {
             throw new IllegalStateException();
         }
     }
-    
+
     public float interpolate(final float t) {
         switch (this) {
         case None:

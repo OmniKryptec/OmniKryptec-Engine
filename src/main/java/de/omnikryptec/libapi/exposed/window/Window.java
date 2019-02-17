@@ -35,7 +35,7 @@ import de.omnikryptec.util.settings.Settings;
  *
  */
 public abstract class Window {
-
+    
     public static enum WindowSetting implements Defaultable {
         Width(800), Height(600), Fullscreen(false), Name("Display"), Resizeable(true), LockAspectRatio(false),
         Multisample(0),
@@ -45,27 +45,27 @@ public abstract class Window {
          * @see de.omnikryptec.core.scene.UpdateController#setAsyncUpdatesPerSecond(int)
          */
         VSync(true);
-
+        
         private final Object def;
-
+        
         private WindowSetting(final Object def) {
             this.def = def;
         }
-
+        
         @Override
         public <T> T getDefault() {
             return (T) this.def;
         }
-
+        
     }
-
+    
     protected double aspectRatio = -1;
     protected final long windowId;
     private boolean resized = false;
     private int width, height, fwidth, fheight;
     private boolean isfullscreen = false;
     private boolean active = false;
-
+    
     protected Window(final Settings<WindowSetting> info, final Object... hints) {
         Util.ensureNonNull(info, "Window settings must not be null!");
         this.width = info.get(WindowSetting.Width);
@@ -96,17 +96,17 @@ public abstract class Window {
         this.fwidth = framebufferWidth.get();
         this.fheight = framebufferHeight.get();
     }
-
+    
     protected abstract void setAdditionalGlfwWindowHints(Object... hints);
-
+    
     protected abstract void swap();
-
+    
     public abstract void setVSync(boolean vsync);
-
+    
     public long getWindowID() {
         return this.windowId;
     }
-
+    
     public void setVisible(final boolean b) {
         if (b) {
             GLFW.glfwShowWindow(this.windowId);
@@ -114,49 +114,49 @@ public abstract class Window {
             GLFW.glfwHideWindow(this.windowId);
         }
     }
-
+    
     public void dispose() {
         GLFW.glfwDestroyWindow(this.windowId);
     }
-
+    
     public void swapBuffers() {
         this.active = GLFW.glfwGetWindowAttrib(this.windowId, GLFW.GLFW_FOCUSED) == GLFW.GLFW_TRUE;
         this.resized = false;
         swap();
     }
-
+    
     public boolean shouldBeFullscreen() {
         return this.isfullscreen;
     }
-
+    
     public boolean wasResized() {
         return this.resized;
     }
-
+    
     public boolean isActive() {
         return this.active;
     }
-
+    
     public boolean isCloseRequested() {
         return GLFW.glfwWindowShouldClose(this.windowId);
     }
-
+    
     public int getWidth() {
         return this.width;
     }
-
+    
     public int getHeight() {
         return this.height;
     }
-
+    
     public int getBufferWidth() {
         return this.fwidth;
     }
-
+    
     public int getBufferHeight() {
         return this.fheight;
     }
-
+    
     private void registerCallbacks() {
         final EventBus windowBus = LibAPIManager.LIBAPI_EVENTBUS;
         GLFW.glfwSetFramebufferSizeCallback(this.windowId, (new GLFWFramebufferSizeCallback() {
@@ -173,7 +173,7 @@ public abstract class Window {
         GLFW.glfwSetWindowMaximizeCallback(this.windowId,
                 (window, maximized) -> windowBus.post(new WindowEvent.WindowMaximized(this, maximized)));
     }
-
+    
     protected void onResize(final int w, final int h) {
         this.width = w;
         this.height = h;
@@ -185,6 +185,6 @@ public abstract class Window {
         this.fheight = framebufferHeight.get();
         refreshViewport();
     }
-
+    
     public abstract void refreshViewport();
 }

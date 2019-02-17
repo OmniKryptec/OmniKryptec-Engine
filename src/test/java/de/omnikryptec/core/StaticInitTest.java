@@ -25,7 +25,7 @@ import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.Settings;
 
 public class StaticInitTest {
-
+    
     public static void main(final String[] args) {
         EngineLoader.initialize(new Settings<>(), RenderAPI.OpenGL, new Settings<>());
         final Window window = LibAPIManager.instance().getRenderAPI().createWindow(new Settings<>());
@@ -39,5 +39,5 @@ public class StaticInitTest {
             RenderAPI.get().clear(SurfaceBuffer.Color);
         }
     }
-
+    
 }

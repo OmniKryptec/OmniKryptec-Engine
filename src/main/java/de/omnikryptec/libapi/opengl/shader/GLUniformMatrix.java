@@ -25,13 +25,13 @@ import org.lwjgl.opengl.GL20;
 import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
 
 public class GLUniformMatrix extends GLUniform implements UniformMatrix {
-    
+
     private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
-    
+
     public GLUniformMatrix(final String name) {
         super(name);
     }
-    
+
     @Override
     public void loadMatrix(final Matrix4fc matrix) {
         if (existsInCompilation()) {
@@ -57,5 +57,5 @@ public class GLUniformMatrix extends GLUniform implements UniformMatrix {
             GL20.glUniformMatrix4fv(super.getLocation(), false, matrixBuffer);
         }
     }
-    
+
 }

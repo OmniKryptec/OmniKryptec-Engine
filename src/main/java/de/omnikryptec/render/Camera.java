@@ -7,51 +7,51 @@ import org.joml.Matrix4fc;
 import de.omnikryptec.util.math.Transform;
 
 public class Camera implements IProjection {
-    
+
     private final Matrix4f projectionMatrix;
-    
-    private Transform transform;
-    
-    private Matrix4f combined;
-    private FrustumIntersection frustumChecker;
+
+    private final Transform transform;
+
+    private final Matrix4f combined;
+    private final FrustumIntersection frustumChecker;
     private boolean valid;
-    
+
     public Camera(final Matrix4f projection) {
         this.projectionMatrix = projection;
         this.transform = new Transform();
         this.combined = new Matrix4f();
         this.frustumChecker = new FrustumIntersection();
         this.valid = true;
-        this.transform.addChangeNotifier((n) -> valid = false);
-        
+        this.transform.addChangeNotifier((n) -> this.valid = false);
+
     }
-    
+
     @Override
     public Matrix4fc getRawProjection() {
-        return projectionMatrix;
+        return this.projectionMatrix;
     }
-    
+
     @Override
     public Matrix4fc getProjection() {
         revalidate();
-        return combined;
+        return this.combined;
     }
-    
+
     @Override
     public FrustumIntersection getFrustumTester() {
         revalidate();
-        return frustumChecker;
+        return this.frustumChecker;
     }
-    
+
     public Transform getTransform() {
-        return transform;
+        return this.transform;
     }
-    
+
     private void revalidate() {
-        if (!valid) {
-            transform.worldspace().mul(this.projectionMatrix, combined);
-            frustumChecker.set(combined);
-            valid = true;
+        if (!this.valid) {
+            this.transform.worldspace().mul(this.projectionMatrix, this.combined);
+            this.frustumChecker.set(this.combined);
+            this.valid = true;
         }
     }
 }

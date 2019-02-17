@@ -3,49 +3,49 @@ package de.omnikryptec.util.data;
 import java.util.Iterator;
 
 public class IterableCombiner<T> implements Iterable<T> {
-    
-    private Iterable<T>[] iterables;
-    
-    public IterableCombiner(Iterable<T>... iterables) {
+
+    private final Iterable<T>[] iterables;
+
+    public IterableCombiner(final Iterable<T>... iterables) {
         this.iterables = iterables;
     }
-    
+
     @Override
     public Iterator<T> iterator() {
-        return new CombinedIterator<T>(iterables);
+        return new CombinedIterator<>(this.iterables);
     }
-    
+
     private static class CombinedIterator<E> implements Iterator<E> {
-        
-        private Iterator<E>[] iterators;
+
+        private final Iterator<E>[] iterators;
         private int itIndex = 0;
-        
-        private CombinedIterator(Iterable<E>[] iterables) {
+
+        private CombinedIterator(final Iterable<E>[] iterables) {
             this.iterators = new Iterator[iterables.length];
             for (int i = 0; i < iterables.length; i++) {
-                iterators[i] = iterables[i].iterator();
+                this.iterators[i] = iterables[i].iterator();
             }
         }
-        
+
         @Override
         public boolean hasNext() {
-            return iterators.length == 0 ? false
-                    : (itIndex == iterators.length - 1 ? iterators[itIndex].hasNext() : true);
+            return this.iterators.length == 0 ? false
+                    : (this.itIndex == this.iterators.length - 1 ? this.iterators[this.itIndex].hasNext() : true);
         }
-        
+
         @Override
         public E next() {
-            while (!iterators[itIndex].hasNext()) {
-                itIndex++;
+            while (!this.iterators[this.itIndex].hasNext()) {
+                this.itIndex++;
             }
-            return iterators[itIndex].next();
+            return this.iterators[this.itIndex].next();
         }
-        
+
         @Override
         public void remove() {
-            iterators[itIndex].remove();
+            this.iterators[this.itIndex].remove();
         }
-        
+
     }
-    
+
 }
