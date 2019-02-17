@@ -17,8 +17,6 @@ import de.omnikryptec.util.data.Color;
 
 public class RenderBatch2D implements Batch2D {
     
-    private static final int FLOATS_PER_VERTEX = 2 + 2 + 4;
-    
     private VertexManager vertexManager;
     
     private Color color;
@@ -121,7 +119,7 @@ public class RenderBatch2D implements Batch2D {
     private void draw(Texture texture, Matrix3x2fc transform, float width, float height, boolean flipU, boolean flipV,
             float u0, float v0, float u1, float v1) {
         checkRendering();
-        vertexManager.prepareNext(texture, 6 * FLOATS_PER_VERTEX);
+        vertexManager.prepareNext(texture, 6 * vertexManager.floatsPerVertex());
         Vector2f botleft = new Vector2f(0);
         Vector2f botright = new Vector2f(width, 0);
         Vector2f topleft = new Vector2f(0, height);
@@ -154,7 +152,7 @@ public class RenderBatch2D implements Batch2D {
     @Override
     public void drawPolygon(Texture texture, float[] poly, int start, int len) {
         checkRendering();
-        if (len % FLOATS_PER_VERTEX != 0) {
+        if (len % vertexManager.floatsPerVertex() != 0) {
             throw new IllegalArgumentException("vertex size");
         }
         vertexManager.prepareNext(texture, len);

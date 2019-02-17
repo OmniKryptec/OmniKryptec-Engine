@@ -34,7 +34,7 @@ public class StaticInitTest {
         while (!window.isCloseRequested()) {
             updater.update(0);
             if (updater.getOperationCount() % 40 == 0) {
-                RenderAPI.get().setClearColor(Color.randomRGB());
+                RenderAPI.get().setClearColor(new Color().randomizeRGB());
             }
             RenderAPI.get().clear(SurfaceBuffer.Color);
         }

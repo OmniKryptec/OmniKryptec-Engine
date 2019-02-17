@@ -14,4 +14,6 @@ public interface VertexManager {
     
     void forceFlush();
     
+    int floatsPerVertex();
+    
 }

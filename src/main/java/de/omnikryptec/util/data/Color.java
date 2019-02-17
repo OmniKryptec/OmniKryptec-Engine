@@ -40,18 +40,6 @@ public class Color implements Cloneable {
         return color1.clone().lerp(color2, ratio);
     }
     
-    public static Color randomRGBA() {
-        return randomRGB((float) Math.random());
-    }
-    
-    public static Color randomRGB(final float a) {
-        return new Color((float) Math.random(), (float) Math.random(), (float) Math.random(), a);
-    }
-    
-    public static Color randomRGB() {
-        return randomRGB(1);
-    }
-    
     public static Color ofTemperature(float colTemperature) {
         float red = 0;
         float green = 0;
@@ -83,6 +71,7 @@ public class Color implements Cloneable {
         blue = Mathf.clamp(blue, 0.0f, 255.0f);
         return new Color(red / 255.0f, green / 255.0f, blue / 255.0f);
     }
+    
     //TODO make array, @see FloatCollector
     private float r, g, b, a;
     
@@ -256,6 +245,18 @@ public class Color implements Cloneable {
         this.b = Math.min(1.0f, Math.max(0.0f, this.b));
         this.a = Math.min(1.0f, Math.max(0.0f, this.a));
         return this;
+    }
+    
+    public Color randomizeRGBA() {
+        return randomizeRGB((float) Math.random());
+    }
+    
+    public Color randomizeRGB(final float a) {
+        return set((float) Math.random(), (float) Math.random(), (float) Math.random(), a);
+    }
+    
+    public Color randomizeRGB() {
+        return randomizeRGB(1);
     }
     
     @Override

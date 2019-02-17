@@ -6,9 +6,9 @@ import org.joml.Matrix4fc;
 
 public interface IProjection {
     
-    Matrix4fc getProjection();
+    Matrix4fc getRawProjection();
     
-    Matrix4fc getTranslatedProjection();
+    Matrix4fc getProjection();
     
     FrustumIntersection getFrustumTester();
     

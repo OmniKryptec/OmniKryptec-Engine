@@ -7,6 +7,12 @@ import java.util.function.Consumer;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 
+/**
+ * A class to efficiently store 3D-transformations.
+ * 
+ * @author pcfreak9000
+ *
+ */
 public class Transform {
     
     private List<Consumer<Transform>> transformChanged = new ArrayList<>();
@@ -40,15 +46,64 @@ public class Transform {
         invalidate();
     }
     
+    /**
+     * Sets the local transform by reading from the supplied transformation.
+     * 
+     * @param in the absolute local transform
+     * @see #localspaceWrite()
+     * @see #localspaceWrite(Consumer)
+     */
     public void set(Matrix4fc in) {
         this.local.set(in);
         invalidate();
     }
     
-    public Matrix4fc readonly() {
+    //this is maybe not so nice
+    /**
+     * Modifies the local transform and then invalidates this {@link Transform}.
+     * 
+     * @param action an action modifying the local transformation
+     * @see #localspaceWrite()
+     * @see #localspace()
+     */
+    public void localspaceWrite(Consumer<Matrix4f> action) {
+        action.accept(local);
+        invalidate();
+    }
+    
+    /**
+     * Provides the local transformation to be modified.
+     * <p>
+     * Note: invalidates this {@link Transform} BEFORE you can make any changes, so
+     * listeners might use then-outdated values. If this is critical, use
+     * {@link #localspaceWrite(Consumer)} instead.
+     * </p>
+     * 
+     * @return the local transform
+     * @see #localspace()
+     */
+    public Matrix4f localspaceWrite() {
+        invalidate();
         return local;
     }
     
+    /**
+     * Read-only view of the local transform, in local space. If no parent is set,
+     * this equals the {@link #worldspace()}.
+     * 
+     * @return transform in local space
+     * @see #worldspace()
+     */
+    public Matrix4fc localspace() {
+        return local;
+    }
+    
+    /**
+     * Read-only view of the transform, in world space.
+     * 
+     * @return transform in worldspace
+     * @see #localspace()
+     */
     public Matrix4fc worldspace() {
         revalidate();
         return transform;

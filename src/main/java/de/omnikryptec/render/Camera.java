@@ -27,12 +27,12 @@ public class Camera implements IProjection {
     }
     
     @Override
-    public Matrix4fc getProjection() {
+    public Matrix4fc getRawProjection() {
         return projectionMatrix;
     }
     
     @Override
-    public Matrix4fc getTranslatedProjection() {
+    public Matrix4fc getProjection() {
         revalidate();
         return combined;
     }

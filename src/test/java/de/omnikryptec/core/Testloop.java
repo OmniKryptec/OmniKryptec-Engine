@@ -52,7 +52,7 @@ public class Testloop implements IGameLoop {
     public void renderAndSwap() {
         this.updater.update(0);
         if (this.updater.getOperationCount() % 40 == 0) {
-            RenderAPI.get().setClearColor(Color.randomRGB());
+            RenderAPI.get().setClearColor(new Color().randomizeRGB());
         }
         RenderAPI.get().clear(SurfaceBuffer.Color);
     }
