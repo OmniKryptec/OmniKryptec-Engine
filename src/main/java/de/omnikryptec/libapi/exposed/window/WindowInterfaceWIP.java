@@ -1,6 +1,6 @@
 package de.omnikryptec.libapi.exposed.window;
 
-//TODO replace Window-class
+//TODO replace Window-class with this
 public interface WindowInterfaceWIP {
 
     boolean isActive();

@@ -26,11 +26,11 @@ import de.omnikryptec.util.Util;
 import de.omnikryptec.util.updater.Time;
 
 public class UpdateableContainer implements Updateable {
-
-    public static enum ExecuteMode {//TODO prevent Default loops (default returns default)
+    
+    public static enum ExecuteMode {
         EmbracingUpdt, OneByOneUpdt, Default
     }
-
+    
     /**
      * This enum configures how the three methods of {@link Updateable} are actually
      * called. <br>
@@ -44,33 +44,33 @@ public class UpdateableContainer implements Updateable {
     public static enum ExecuteTime {
         OneAhead, Normal, OneBehind
     }
-
+    
     private final Multimap<ExecuteMode, Updateable> updateables;
     private final Map<Updateable, ExecuteTime> updtTimes;
-
+    
     public UpdateableContainer() {
         this.updateables = MultimapBuilder.enumKeys(ExecuteMode.class).arrayListValues().build();
         this.updtTimes = new HashMap<>();
     }
-
+    
     public void addUpdateable(final Updateable updt) {
-        addUpdateable(null, updt);
+        addUpdateable(ExecuteMode.Default, updt);
     }
-
+    
     public void addUpdateable(final ExecuteMode mode, final Updateable updt) {
         addUpdateable(mode, ExecuteTime.Normal, updt);
     }
-
+    
     public void addUpdateable(final ExecuteMode exmode, final ExecuteTime time, final Updateable updt) {
         Util.ensureNonNull(updt);
         Util.ensureNonNull(exmode);
         if (updt == this) {
             throw new IllegalArgumentException("argument == this");
         }
-        this.updateables.put(exmode == ExecuteMode.Default ? updt.defaultExecuteMode() : exmode, updt);
+        this.updateables.put(exmode == ExecuteMode.Default ? testForbiddenDefault(updt) : exmode, updt);
         this.updtTimes.put(updt, Util.ensureNonNull(time));
     }
-
+    
     public void removeUpdateable(final Updateable updt) {
         Util.ensureNonNull(updt);
         for (final ExecuteMode m : ExecuteMode.values()) {
@@ -78,7 +78,14 @@ public class UpdateableContainer implements Updateable {
         }
         this.updtTimes.remove(updt);
     }
-
+    
+    private ExecuteMode testForbiddenDefault(Updateable u) {
+        if (u.defaultExecuteMode() == ExecuteMode.Default) {
+            throw new IllegalStateException("Default execute mode can't be the default execute mode!");
+        }
+        return u.defaultExecuteMode();
+    }
+    
     private void preUpdateTimed(final Time time, final Updateable updt) {
         final ExecuteTime t = this.updtTimes.get(updt);
         switch (t) {
@@ -95,7 +102,7 @@ public class UpdateableContainer implements Updateable {
             throw new IllegalStateException(t + "");
         }
     }
-
+    
     private void updateTimed(final Time time, final Updateable updt) {
         final ExecuteTime t = this.updtTimes.get(updt);
         switch (t) {
@@ -112,7 +119,7 @@ public class UpdateableContainer implements Updateable {
             throw new IllegalStateException(t + "");
         }
     }
-
+    
     private void postUpdateTimed(final Time time, final Updateable updt) {
         final ExecuteTime t = this.updtTimes.get(updt);
         switch (t) {
@@ -129,14 +136,14 @@ public class UpdateableContainer implements Updateable {
             throw new IllegalStateException(t + "");
         }
     }
-
+    
     @Override
     public void preUpdate(final Time time) {
         for (final Updateable updt : this.updateables.get(ExecuteMode.EmbracingUpdt)) {
             preUpdateTimed(time, updt);
         }
     }
-
+    
     @Override
     public void update(final Time time) {
         for (final Updateable updt : this.updateables.get(ExecuteMode.OneByOneUpdt)) {
@@ -148,7 +155,7 @@ public class UpdateableContainer implements Updateable {
             updateTimed(time, updt);
         }
     }
-
+    
     @Override
     public void postUpdate(final Time time) {
         for (final Updateable updt : this.updateables.get(ExecuteMode.EmbracingUpdt)) {

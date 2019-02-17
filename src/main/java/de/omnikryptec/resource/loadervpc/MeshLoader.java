@@ -15,6 +15,8 @@ import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.resource.MeshData;
 import de.omnikryptec.resource.MeshData.VertexAttribute;
 import de.omnikryptec.resource.MeshFile;
+import de.omnikryptec.util.Logger;
+import de.omnikryptec.util.Logger.LogType;
 
 public class MeshLoader implements ResourceLoader<MeshFile> {
     
@@ -23,8 +25,8 @@ public class MeshLoader implements ResourceLoader<MeshFile> {
             | Assimp.aiProcess_SplitLargeMeshes | Assimp.aiProcess_Triangulate | Assimp.aiProcess_SortByPType;
     
     public MeshLoader() {
-        //TODO init native assimp lib in a different way
-        final String s = Assimp.aiGetErrorString();
+        //XXX Init the native library. breakes otherwise somehow. Test with newer versions of assimp? 
+        Assimp.aiGetVersionMajor();
     }
     
     @Override

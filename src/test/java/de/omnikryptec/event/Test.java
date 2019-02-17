@@ -19,7 +19,7 @@ package de.omnikryptec.event;
 public class Test {
     
     public static void main(final String[] args) {
-        final EventBus bus = new EventBus();
+        final EventBus bus = new EventBus(false);
         bus.register(new Test());
         bus.enqueue(new Event());
         bus.enqueue(new TestEvent());

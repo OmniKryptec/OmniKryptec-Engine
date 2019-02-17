@@ -87,7 +87,7 @@ public final class LibAPIManager {
         }
     }
     
-    public static final EventBus LIBAPI_EVENTBUS = new EventBus();
+    public static final EventBus LIBAPI_EVENTBUS = new EventBus(false);
     
     private static final Collection<ToughRunnable> shutdownHooks = new ArrayList<>();
     private static LibAPIManager instance;

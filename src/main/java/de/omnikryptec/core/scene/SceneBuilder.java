@@ -157,8 +157,8 @@ public class SceneBuilder {
         return iecsm;
     }
 
-    public EventBus addEventBus() {
-        final EventBus ebus = new EventBus();
+    public EventBus addEventBus(boolean concurrent) {
+        final EventBus ebus = new EventBus(concurrent);
         addUpdateable(ebus);
         return ebus;
     }

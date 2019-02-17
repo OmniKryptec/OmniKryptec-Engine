@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface EventSubscription {
     
-    // TODO subscription args
+    // TODO subscription args! priority!!!
     // float priority() default 0;
     // String eventBusName() default "";
     boolean receiveConsumed() default false;

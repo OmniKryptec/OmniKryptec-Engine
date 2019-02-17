@@ -29,7 +29,16 @@ public interface Updateable {
     
     default void postUpdate(final Time time) {
     }
-
+    
+    /**
+     * Returns the default {@link ExecuteMode} of this {@link Updateable}. The
+     * default is {@link ExecuteMode#OneByOneUpdt}.
+     * <p>
+     * Note: returning {@link ExecuteMode#Default} yields undefined results!
+     * </p>
+     * 
+     * @return the default execute mode
+     */
     default ExecuteMode defaultExecuteMode() {
         return ExecuteMode.OneByOneUpdt;
     }

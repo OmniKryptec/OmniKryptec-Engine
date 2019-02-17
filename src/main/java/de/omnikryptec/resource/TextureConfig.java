@@ -16,7 +16,7 @@
 
 package de.omnikryptec.resource;
 
-//TODO create a loader for this so the config can be loaded
+//TODO create a loader for this so the config can be loaded too
 public class TextureConfig {
     
     public static enum WrappingMode {
