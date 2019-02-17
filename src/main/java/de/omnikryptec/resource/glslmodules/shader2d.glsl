@@ -34,4 +34,5 @@ void main(void){
 	}else{
 		color =  v_color * texture(sampler, v_texcoords);
 	}
+	
 }

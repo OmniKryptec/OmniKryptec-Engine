@@ -13,7 +13,7 @@ public interface Batch {
     
     void setProjection(IProjection projection);
     
-    void setColor(Color color);
+    Color color();
     
     void flush();
     

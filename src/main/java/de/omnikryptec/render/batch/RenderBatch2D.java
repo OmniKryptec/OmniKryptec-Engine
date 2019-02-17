@@ -87,8 +87,8 @@ public class RenderBatch2D implements Batch2D {
     }
     
     @Override
-    public void setColor(Color color) {
-        this.color.setFrom(color);
+    public Color color() {
+        return color;
     }
     
     @Override
@@ -104,7 +104,8 @@ public class RenderBatch2D implements Batch2D {
     
     @Override
     public void draw(Texture texture, Matrix3x2fc transform, float width, float height, boolean flipU, boolean flipV) {
-        draw(texture, transform, width, height, flipU, flipV, 0, 0, 1, 1);
+        draw(texture, transform, width, height, flipU, flipV, texture == null ? -1 : 0, texture == null ? -1 : 0,
+                texture == null ? -1 : 1, texture == null ? -1 : 1);
     }
     
     @Override

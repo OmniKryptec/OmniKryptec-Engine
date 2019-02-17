@@ -226,6 +226,7 @@ public class SceneBuilder {
                 //t.rotateAbout(s, 0.5f, 0.5f);
                 //t.rotate((Mathf.pingpong(time.currentf, Mathf.PI)-Mathf.PI/2), 0, 0, 1);
                 batch.draw(texture, t, 1, 1, false, false);
+                batch.drawLine(0, 0, 3, 2, 0.1f);
                 batch.end();
                 //shader.bindShader();
                 //color.loadColor(Color.randomRGB());
