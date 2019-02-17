@@ -24,6 +24,7 @@ public class RenderBatch2D implements Batch2D {
     private IProjection projection;
     private boolean rendering;
 
+    //TODO move Shader and Projection stuff out of this class(?)
     private Shader shader;
     private UniformMatrix transform;
     private UniformMatrix viewProjection;
