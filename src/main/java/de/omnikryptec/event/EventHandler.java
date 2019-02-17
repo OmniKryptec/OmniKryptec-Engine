@@ -24,11 +24,13 @@ public class EventHandler implements IEventListener {
     private final Object handler;
     private final Method m;
     private final boolean receiveConsumed;
+    private final float prio;
     
-    public EventHandler(final Object handler, final Method m, final boolean receiveConsumed) {
+    public EventHandler(final Object handler, final Method m, final boolean receiveConsumed, float prio) {
         this.handler = handler;
         this.m = m;
         this.receiveConsumed = receiveConsumed;
+        this.prio = prio;
     }
     
     public Object getHandler() {
@@ -66,6 +68,11 @@ public class EventHandler implements IEventListener {
     @Override
     public boolean receiveConsumed() {
         return this.receiveConsumed;
+    }
+    
+    @Override
+    public float priority() {
+        return prio;
     }
     
 }

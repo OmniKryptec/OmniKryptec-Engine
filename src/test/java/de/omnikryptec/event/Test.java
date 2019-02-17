@@ -27,8 +27,15 @@ public class Test {
         bus.processQueuedEvents();
     }
     
-    @EventSubscription
+    @EventSubscription(priority = 10)
     public void test(final TestEvent e) {
+        System.out.println("FIRST!");
+        System.out.println(e);
+    }
+    
+    @EventSubscription
+    public void g(TestEvent e) {
+        System.out.println("SECOND?!");
         System.out.println(e);
     }
     

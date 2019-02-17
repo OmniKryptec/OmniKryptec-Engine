@@ -23,4 +23,8 @@ public interface IEventListener {
     default boolean receiveConsumed() {
         return false;
     }
+    
+    default float priority() {
+        return 0;
+    }
 }

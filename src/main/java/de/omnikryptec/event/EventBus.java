@@ -19,20 +19,30 @@ package de.omnikryptec.event;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayDeque;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-
+import com.google.common.collect.ListMultimap;
 import de.omnikryptec.core.Updateable;
 import de.omnikryptec.util.updater.Time;
 
 public class EventBus implements Updateable, IEventListener {
     
+    private static final Comparator<IEventListener> LISTENER_COMP = new Comparator<IEventListener>() {
+        
+        @Override
+        public int compare(IEventListener o1, IEventListener o2) {
+            
+            return (int) Math.signum(o2.priority() - o1.priority());
+        }
+    };
+    
     private final AtomicBoolean processing = new AtomicBoolean(false);
-    private final Multimap<Class<? extends Event>, IEventListener> listeners;
+    private final ListMultimap<Class<? extends Event>, IEventListener> listeners;
     private final Queue<Event> eventQueue;
     
     /**
@@ -92,7 +102,9 @@ public class EventBus implements Updateable, IEventListener {
      * @param eventtype the class of the event type
      */
     public void register(final IEventListener listener, final Class<? extends Event> eventtype) {
-        this.listeners.put(eventtype, listener);
+        List<IEventListener> list = listeners.get(eventtype);
+        list.add(listener);
+        list.sort(LISTENER_COMP);
     }
     
     /**
@@ -128,7 +140,7 @@ public class EventBus implements Updateable, IEventListener {
             final EventSubscription esub = m.getAnnotation(EventSubscription.class);
             if (esub != null) {
                 annotationFound = true;
-                final EventHandler handler = new EventHandler(object, m, esub.receiveConsumed());
+                final EventHandler handler = new EventHandler(object, m, esub.receiveConsumed(), esub.priority());
                 final Class<?>[] cls = m.getParameterTypes();
                 if (cls.length != 1) {
                     throw new IllegalArgumentException("Wrong amount of parameter types in event listener: " + object);
@@ -184,15 +196,24 @@ public class EventBus implements Updateable, IEventListener {
         } while (event.triggersSuperEventListeners() && someclazz != Object.class && someclazz != null);
     }
     
-    //TODO change this to regular update?
+    //TODO good as regular update?
     @Override
-    public void postUpdate(final Time time) {
+    public void update(final Time time) {
         processQueuedEvents();
     }
     
-    //TODO receive consumed events?
     @Override
     public void invoke(final Event ev) {
         processEvent(ev);
+    }
+    
+    @Override
+    public float priority() {
+        return Float.NEGATIVE_INFINITY;
+    }
+    
+    @Override
+    public boolean receiveConsumed() {
+        return true;
     }
 }
