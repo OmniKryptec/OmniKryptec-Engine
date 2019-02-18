@@ -1,7 +1,8 @@
-package de.omnikryptec.render;
+package de.omnikryptec.render.frame;
 
 import java.util.Collection;
 
+import de.omnikryptec.render.IProjection;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 

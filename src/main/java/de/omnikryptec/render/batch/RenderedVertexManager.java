@@ -54,7 +54,7 @@ public class RenderedVertexManager implements VertexManager {
 
     @Override
     public int floatsPerVertex() {
-        return 2 + 2 + 4;
+        return floatsPerVertex;
     }
 
 }

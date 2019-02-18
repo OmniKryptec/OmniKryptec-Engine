@@ -16,23 +16,23 @@
 
 package de.omnikryptec.util;
 
-import de.omnikryptec.util.math.Mathf;
+import de.omnikryptec.util.data.DynamicArray;
 
 public class TestTest {
     
     public static final void main(final String[] args) throws Exception {
-        for (int i = 0; i < 100; i++) {
-            System.out.println(Mathf.pingpong(i / 2f, 5));
+        DynamicArray<Object> array = new DynamicArray<>();
+        int i1=0;
+        for (int i = 0; i < 20; i++) {
+            if (Math.random() < 0.5) {
+                array.set(i, "1");
+                i1++;
+            }
         }
-        int count = 0;
-        final long time = System.nanoTime();
-        for (float f = 0; f < 100; f += 0.25f) {
-            Math.sqrt(f);
-            // Mathf.sqrtNewton(f, 0.01f);
-            count++;
-        }
-        final long time2 = System.nanoTime();
-        System.out.println((time2 - time) / count + "ns");
+        System.out.println(i1);
+        System.out.println(array);
+        array.trimNulls();
+        System.out.println(array);
     }
     
 }

@@ -211,7 +211,6 @@ public class SceneBuilder {
             public void update(final Time time) {
 
                 this.cam.getTransform().set(new Matrix4f().translate(Mathf.pingpong(time.currentf, 2), 0, 0));
-                this.batch.setProjection(this.cam);
                 //batch.setGlobalTransform(new Matrix4f().rotate(Mathf.PI/4, new Vector3f(1,0,0)));
                 this.batch.begin();
                 //batch.drawTest();

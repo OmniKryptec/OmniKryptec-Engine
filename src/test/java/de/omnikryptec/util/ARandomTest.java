@@ -22,11 +22,11 @@ import java.util.Collection;
 import org.joml.FrustumIntersection;
 
 import de.omnikryptec.render.IProjection;
-import de.omnikryptec.render.RenderedObject;
-import de.omnikryptec.render.Renderer;
-import de.omnikryptec.render.RendererSet;
-import de.omnikryptec.render.SimpleRenderCollection;
-import de.omnikryptec.render.Viewport;
+import de.omnikryptec.render.frame.RenderedObject;
+import de.omnikryptec.render.frame.Renderer;
+import de.omnikryptec.render.frame.RendererSet;
+import de.omnikryptec.render.frame.SimpleRenderCollection;
+import de.omnikryptec.render.frame.Viewport;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
