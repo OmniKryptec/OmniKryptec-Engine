@@ -13,12 +13,13 @@ import de.omnikryptec.util.data.Color;
 
 public class RenderBatch2D implements Batch2D {
 
-    private static final VertexBufferLayout DEFAULT_LAYOUT = new VertexBufferLayout();
+    private static final VertexBufferLayout MY_LAYOUT = new VertexBufferLayout();
     
     static {
-        DEFAULT_LAYOUT.push(Type.FLOAT, 2, false);
-        DEFAULT_LAYOUT.push(Type.FLOAT, 2, false);
-        DEFAULT_LAYOUT.push(Type.FLOAT, 4, false);
+        MY_LAYOUT.push(Type.FLOAT, 2, false);
+        MY_LAYOUT.push(Type.FLOAT, 2, false);
+        MY_LAYOUT.push(Type.FLOAT, 4, false);
+        MY_LAYOUT.lock();
     }
     
     private VertexManager vertexManager;
@@ -28,11 +29,11 @@ public class RenderBatch2D implements Batch2D {
 
 
     public RenderBatch2D(final int vertices) {
-        init(new RenderedVertexManager(vertices, DEFAULT_LAYOUT));
+        init(new RenderedVertexManager(vertices, MY_LAYOUT));
     }
 
     public RenderBatch2D(Function<VertexBufferLayout, VertexManager> vertexManagerFactory) {
-        init(vertexManagerFactory.apply(DEFAULT_LAYOUT));
+        init(vertexManagerFactory.apply(MY_LAYOUT));
     }
 
     private void init(final VertexManager vertexManager) {
@@ -92,7 +93,7 @@ public class RenderBatch2D implements Batch2D {
     private void draw(final Texture texture, final Matrix3x2fc transform, final float width, final float height,
             final boolean flipU, final boolean flipV, float u0, float v0, float u1, float v1) {
         checkRendering();
-        this.vertexManager.prepareNext(texture, 6 * this.vertexManager.floatsPerVertex());
+        this.vertexManager.prepareNext(texture, 6 * MY_LAYOUT.getCount());
         Vector2f botleft = new Vector2f(0);
         Vector2f botright = new Vector2f(width, 0);
         Vector2f topleft = new Vector2f(0, height);
@@ -129,7 +130,7 @@ public class RenderBatch2D implements Batch2D {
     @Override
     public void drawPolygon(final Texture texture, final float[] poly, final int start, final int len) {
         checkRendering();
-        if (len % this.vertexManager.floatsPerVertex() != 0) {
+        if (len % MY_LAYOUT.getCount() != 0) {
             throw new IllegalArgumentException("vertex size");
         }
         this.vertexManager.prepareNext(texture, len);

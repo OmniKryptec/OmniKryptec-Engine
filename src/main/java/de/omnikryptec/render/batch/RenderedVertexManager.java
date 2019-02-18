@@ -52,9 +52,4 @@ public class RenderedVertexManager implements VertexManager {
         RenderAPI.get().render(this.va, Primitive.Triangle, count / this.floatsPerVertex);
     }
 
-    @Override
-    public int floatsPerVertex() {
-        return floatsPerVertex;
-    }
-
 }

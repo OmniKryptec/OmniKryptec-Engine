@@ -71,9 +71,11 @@ public class VertexBufferLayout {
     }
     
     private final List<VertexBufferElement> elements;
+    private boolean locked;
     
     public VertexBufferLayout() {
         this.elements = new ArrayList<>();
+        this.locked = false;
     }
     
     /**
@@ -83,6 +85,9 @@ public class VertexBufferLayout {
      * @param normalize normalize the data?
      */
     public void push(final Type type, final int count, final boolean normalize) {
+        if (locked) {
+            throw new IllegalStateException("locked");
+        }
         this.elements.add(new VertexBufferElement(type, count, normalize));
     }
     
@@ -101,5 +106,10 @@ public class VertexBufferLayout {
     
     public List<VertexBufferElement> getElements() {
         return Collections.unmodifiableList(this.elements);
+    }
+    
+    //XXX nice?
+    public void lock() {
+        locked = true;
     }
 }
