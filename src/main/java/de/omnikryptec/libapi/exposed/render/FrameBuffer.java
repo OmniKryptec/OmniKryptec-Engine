@@ -112,9 +112,11 @@ public interface FrameBuffer {
     Texture getTexture(int targetIndex);
     
     /**
-     * Blits this {@link FrameBuffer} to the default FrameBuffer (the display).
+     * Blits the specified attachment of this {@link FrameBuffer} to the default FrameBuffer (the display).
+     * 
+     * @param i the index of the attachment to resolve
      */
-    void resolveToScreen();
+    void resolveToScreen(int i);
     
     /**
      * Blits the specified attachment of this {@link FrameBuffer} to another
@@ -158,4 +160,7 @@ public interface FrameBuffer {
     int size();
     
     FrameBuffer resizedClone(int newWidth, int newHeight);
+    
+    int getWidth();
+    int getHeight();
 }

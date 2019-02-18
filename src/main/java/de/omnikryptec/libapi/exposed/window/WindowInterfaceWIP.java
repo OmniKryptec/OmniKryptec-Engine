@@ -1,5 +1,7 @@
 package de.omnikryptec.libapi.exposed.window;
 
+import de.omnikryptec.libapi.exposed.render.FrameBuffer;
+
 //TODO replace Window-class with this
 public interface WindowInterfaceWIP {
 
@@ -9,13 +11,11 @@ public interface WindowInterfaceWIP {
 
     boolean isCloseRequested();
 
-    int getSurfaceWidth();
+    int getWindowWidth();
 
-    int getSurfaceHeight();
+    int getWindowHeight();
 
-    int getFrameWidth();
-
-    int getFrameHeight();
+    FrameBuffer getDefaultFrameBuffer();
 
     void setVSync(boolean vsync);
 

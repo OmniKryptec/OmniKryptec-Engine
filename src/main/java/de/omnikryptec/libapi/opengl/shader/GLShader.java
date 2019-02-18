@@ -122,7 +122,7 @@ public class GLShader extends AutoDelete implements Shader {
         case "float":
             return new GLUniformFloat(name);
         default:
-            throw new IllegalArgumentException("Wrong uniform: " + types + " " + name);
+            throw new IllegalArgumentException("Type not found: " + types + " " + name);
         }
     }
     

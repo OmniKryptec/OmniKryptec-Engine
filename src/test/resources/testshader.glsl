@@ -36,12 +36,13 @@ uniform sampler2D sampler;
 in float v_perc;
 in vec2 texc;
 
-out vec4 col;
+layout(location = 0) out vec4 col;
+layout(location = 1) out vec4 col1;
 
 void main() {
 	vec4 ocol = u_col * texture(sampler, texc);
 	//ocol.a = v_perc;
 	col = ocol;
-	
+	col1 = vec4(1,0,1,1);
 	//col = u_col;
 }
