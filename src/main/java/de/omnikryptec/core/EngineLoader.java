@@ -106,7 +106,7 @@ public abstract class EngineLoader {
             this.window.setVisible(true);
         }
         onInitialized();
-        if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.AFTERINIT) {
+        if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.AFTER_INIT) {
             this.window.setVisible(true);
         }
         if (this.gameLoop != null) {
@@ -207,42 +207,42 @@ public abstract class EngineLoader {
         
         /**
          * The rendering API to use by the engine. Only in non-static cases of
-         * {@link EngineLoader}.<br>
+         * {@link de.omnikryptec.core.EngineLoader}.<br>
          * <br>
-         * The default value is {@link RenderAPI#OpenGL}.
+         * The default value is {@link de.omnikryptec.libapi.exposed.render.RenderAPI#OpenGL}.
          */
         RENDER_API(RenderAPI.OpenGL),
         /**
          * When to show the window after it's creation. Only in non-static cases of
-         * {@link EngineLoader}. <br>
+         * {@link de.omnikryptec.core.EngineLoader}. <br>
          * <br>
-         * The default value is {@link WindowMakeVisible#IMMEDIATELY}.
+         * The default value is {@link de.omnikryptec.core.EngineLoader.WindowMakeVisible#IMMEDIATELY}.
          *
          * @see WindowMakeVisible
          */
         SHOW_WINDOW_AFTER_CREATION(WindowMakeVisible.IMMEDIATELY),
         /**
-         * The option that defines if the gameloop should be started after
-         * initialization. Only in non-static cases of {@link EngineLoader} and only for
-         * non-null {@link #GAME_LOOP}.<br>
+         * The option that defines if the {@link de.omnikryptec.core.loop.IGameLoop} should be started after
+         * initialization. Only in non-static cases of {@link de.omnikryptec.core.EngineLoader} and only for
+         * non-null {@link de.omnikryptec.core.EngineLoader.LoaderSetting#GAME_LOOP}.<br>
          * <br>
          * The default value is <code>true</code>
          */
         START_GAME_LOOP_AFTER_INIT(true),
         /**
          * The game-loop that might be started after initialization. Only in non-static
-         * cases of {@link EngineLoader}<br>
+         * cases of {@link de.omnikryptec.core.EngineLoader}<br>
          * <br>
-         * The default value is {@link DefaultEngineLoop}
+         * The default value is {@link de.omnikryptec.core.loop.DefaultGameLoop}
          *
-         * @see #START_ENGINE_LOOP_AFTER_INIT
+         * @see de.omnikryptec.core.EngineLoader.LoaderSetting#START_GAME_LOOP_AFTER_INIT
          */
         GAME_LOOP(new DefaultGameLoop()),
         
         /**
-         * Shutdown the engine if the gameloop exits. Only if
-         * {@link #START_GAME_LOOP_AFTER_INIT} is set to <code>true</code>. Only in
-         * non-static cases of {@link EngineLoader}<br>
+         * Shutdown the engine if the {@link de.omnikryptec.core.loop.IGameLoop} exits. Only if
+         * {@link de.omnikryptec.core.EngineLoader.LoaderSetting#START_GAME_LOOP_AFTER_INIT} is set to <code>true</code>. Only in
+         * non-static cases of {@link de.omnikryptec.core.EngineLoader}<br>
          * <br>
          * The default value is <code>true</code>
          */
@@ -250,8 +250,8 @@ public abstract class EngineLoader {
         
         private final Object defaultSetting;
         
-        LoaderSetting(final Object def) {
-            this.defaultSetting = def;
+        LoaderSetting(final Object defaultSetting) {
+            this.defaultSetting = defaultSetting;
         }
         
         @Override
@@ -261,25 +261,28 @@ public abstract class EngineLoader {
     }
     
     /**
-     * Will only be used in non-static cases of {@link EngineLoader}. Defines when
-     * to show the {@link Window}.
+     * Will only be used in non-static cases of {@link de.omnikryptec.core.EngineLoader}. Defines when
+     * to show the {@link de.omnikryptec.libapi.exposed.window.Window}.
      *
      * @author pcfreak9000
-     * @see Window#setVisible(boolean)
+     * @see de.omnikryptec.libapi.exposed.window.Window#setVisible(boolean)
      */
     public enum WindowMakeVisible {
+        
         /**
          * Show the window immediately after creation, and before
-         * {@link EngineLoader#onContextCreationFinish()}.
+         * {@link de.omnikryptec.core.EngineLoader#onContextCreationFinish()}.
          */
         IMMEDIATELY,
         /**
-         * Show the window after {@link EngineLoader#onContextCreationFinish()}.
+         * Show the window after {@link de.omnikryptec.core.EngineLoader#onContextCreationFinish()}.
          */
-        AFTERINIT,
+        AFTER_INIT,
         /**
          * Never show the window.
          */
-        NEVER}
+        NEVER
+        
+    }
     
 }
