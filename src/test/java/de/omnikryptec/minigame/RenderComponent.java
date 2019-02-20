@@ -11,4 +11,9 @@ public class RenderComponent implements Component{
         this.w = w;
         this.h = h;
     }
+    
+    public RenderComponent(float w, float h, Color color) {
+        this(w,h);
+        this.color = color;
+    }
 }

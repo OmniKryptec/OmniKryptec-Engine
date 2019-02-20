@@ -20,6 +20,7 @@ import java.util.BitSet;
 
 import javax.annotation.Nonnull;
 
+import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.ecs.component.ComponentType;
 
 /**
@@ -43,6 +44,14 @@ public class Family {
         final BitSet bitset = new BitSet();
         for (final ComponentType type : types) {
             bitset.set(type.id);
+        }
+        return bitset;
+    }
+    
+    public static BitSet of(@Nonnull final Class<Component>... classes) {
+        final BitSet bitset = new BitSet();
+        for (final Class<Component> type : classes) {
+            bitset.set(ComponentType.of(type).id);
         }
         return bitset;
     }

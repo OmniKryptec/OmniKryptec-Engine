@@ -18,42 +18,39 @@ import de.omnikryptec.util.updater.Time;
 public class InputSystem extends ComponentSystem {
     
     public InputSystem() {
-        super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(PlayerComp.class)));
-       // mgr.setLongButtonPressEnabled(true);
+        super(Family.of(ComponentType.of(MovementComp.class), ComponentType.of(PlayerComp.class)));
+        // mgr.setLongButtonPressEnabled(true);
         mgr.init();
     }
     
     private InputManager mgr = new InputManager(RenderAPI.get().getWindow().getWindowID());
     
-    private ComponentMapper<PositionComponent> posMapper = new ComponentMapper<>(PositionComponent.class);
+    private ComponentMapper<MovementComp> posMapper = new ComponentMapper<>(MovementComp.class);
     private ComponentMapper<PlayerComp> playMapper = new ComponentMapper<>(PlayerComp.class);
-
     
     @Override
     public void update(IECSManager iecsManager, Time time) {
         mgr.preUpdate(time);
         mgr.update(time);
         for (Entity e : entities) {
-            PositionComponent pos = posMapper.get(e);
+            MovementComp pos = posMapper.get(e);
             PlayerComp play = playMapper.get(e);
             float vy = 0;
             float vx = 0;
             if (mgr.isKeyboardKeyPressed(GLFW.GLFW_KEY_W)) {
-                vy += play.vy;
+                vy += play.maxYv;
             }
             if (mgr.isKeyboardKeyPressed(GLFW.GLFW_KEY_S)) {
-                vy -= play.vy;
+                vy -= play.maxYv;
             }
             if (mgr.isKeyboardKeyPressed(GLFW.GLFW_KEY_A)) {
-                vx -= play.vx;
+                vx -= play.maxXv;
             }
             if (mgr.isKeyboardKeyPressed(GLFW.GLFW_KEY_D)) {
-                vx += play.vx;
+                vx += play.maxXv;
             }
-            vx *= time.deltaf;
-            vy *= time.deltaf;
-            pos.x += vx;
-            pos.y += vy;
+            pos.dx = vx;
+            pos.dy = vy;
         }
         
         mgr.postUpdate(time);
