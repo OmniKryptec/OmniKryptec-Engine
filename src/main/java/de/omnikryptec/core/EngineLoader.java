@@ -16,8 +16,6 @@
 
 package de.omnikryptec.core;
 
-import javax.annotation.Nonnull;
-
 import de.omnikryptec.core.loop.DefaultGameLoop;
 import de.omnikryptec.core.loop.IGameLoop;
 import de.omnikryptec.core.scene.GameController;
@@ -34,54 +32,55 @@ import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
+import javax.annotation.Nonnull;
+
 /**
- * The application entry point of the Omnikryptec-Engine. Can be used static and
+ * The application entry point of the OmniKryptec-Engine. Can be used static and
  * non-static.<br>
  * <ul>
  * <li>In the non-static case, the engine will be started via
  * {@link de.omnikryptec.core.EngineLoader#start()}.</li>
  * <li>In the static case, this class only provides utility functions.</li>
  * </ul>
- * The use of this class is not a requirement to use the Engine; librarys and
+ * The use of this class is not a requirement to use the Engine; libraries and
  * parts of the Engine can be initialized/used independently.
  *
- * @author pcfreak9000
+ * @author pcfreak9000 &amp; Panzer1119
  */
 public abstract class EngineLoader {
-
-    /**
-     * Initializes various parts of the {@link LibAPIManager}.
-     *
-     * @param libsettings Settings configuring the {@link LibAPIManager}
-     * @param renderapi   the RenderAPI to use
-     * @param apisettings Settings of the RenderAPI (this is RenderAPI specific)
-     */
-    public static void initialize(final Settings<LibSetting> libsettings, final Class<? extends RenderAPI> renderapi,
-            final Settings<IntegerKey> apisettings) {
-        // Initialize everything required
-        LibAPIManager.init(libsettings);
-        LibAPIManager.instance().setRenderer(renderapi, apisettings);
-        // Audio, etc....
-    }
-
+    
     private IGameLoop gameLoop;
     private Window window;
     private GameController gameController;
     private UpdateController updateController;
     private ResourceManager resources;
     private boolean started;
-
+    
     public EngineLoader() {
     }
-
+    
     /**
-     * Starts the engine. The start paramters can be set in
-     * {@link #configure(Settings, Settings, Settings, Settings)}. <br>
-     * Then the engine gets {@link #initialize(Settings, Class, Settings)} and the
-     * {@link Window}, {@link IGameLoop}, {@link GameController} and
-     * {@link UpdateController} are created.<br>
-     * After or before making the window visible, {@link #onInitialized()} is
-     * called. If so configured, the gameloop will be started.
+     * Initializes various parts of the {@link de.omnikryptec.libapi.exposed.LibAPIManager}.
+     *
+     * @param libSettings Settings configuring the {@link de.omnikryptec.libapi.exposed.LibAPIManager}
+     * @param rendererApi the RenderAPI to use
+     * @param apiSettings Settings of the RenderAPI (this is RenderAPI specific)
+     */
+    public static void initialize(final Settings<LibSetting> libSettings, final Class<? extends RenderAPI> rendererApi, final Settings<IntegerKey> apiSettings) {
+        // Initialize everything required
+        LibAPIManager.init(libSettings);
+        LibAPIManager.instance().setRenderer(rendererApi, apiSettings);
+        //TODO Audio, etc....
+    }
+    
+    /**
+     * Starts the engine. The start parameters can be set in
+     * {@link de.omnikryptec.core.EngineLoader#configure(Settings, Settings, Settings, Settings)}. <br>
+     * Then the engine gets {@link de.omnikryptec.core.EngineLoader#initialize(Settings, Class, Settings)} and the
+     * {@link de.omnikryptec.libapi.exposed.window.Window}, {@link de.omnikryptec.core.loop.IGameLoop}, {@link de.omnikryptec.core.scene.GameController} and
+     * {@link de.omnikryptec.core.scene.UpdateController} are created.<br>
+     * After or before making the window visible, {@link de.omnikryptec.core.EngineLoader#onInitialized()} is
+     * called. If so configured, the {@link de.omnikryptec.core.loop.IGameLoop} will be started.
      */
     @Nonnull
     public void start() {
@@ -112,19 +111,19 @@ public abstract class EngineLoader {
         }
         if (this.gameLoop != null) {
             this.gameLoop.init(this);
-            if ((boolean) loaderSettings.get(LoaderSetting.START_GAME_LOOP_AFTER_INIT)) {
+            if (loaderSettings.get(LoaderSetting.START_GAME_LOOP_AFTER_INIT)) {
                 this.gameLoop.startLoop();
-                if ((boolean) loaderSettings.get(LoaderSetting.SHUTDOWN_ON_LOOP_EXIT)) {
+                if (loaderSettings.get(LoaderSetting.SHUTDOWN_ON_LOOP_EXIT)) {
                     shutdown();
                 }
             }
         }
     }
-
+    
     /**
-     * Shuts down the engine. Only if it has been started by {@link #start()}.<br>
-     * First {@link #onShutdown()} gets called. A gameloop that might be running
-     * gets stopped, the window gets disposed and the LibAPIManager gets shut down.
+     * Shuts down the engine. Only if it has been started by {@link de.omnikryptec.core.EngineLoader#start()}.<br>
+     * First {@link de.omnikryptec.core.EngineLoader#onShutdown()} gets called. A {@link de.omnikryptec.core.loop.IGameLoop} that might be running
+     * gets stopped, the window gets disposed and the {@link de.omnikryptec.libapi.exposed.LibAPIManager} gets shut down.
      */
     public void shutdown() {
         if (this.started) {
@@ -138,42 +137,42 @@ public abstract class EngineLoader {
             LibAPIManager.shutdown();
         }
     }
-
+    
     public Window getWindow() {
         checkStarted();
         return this.window;
     }
-
+    
     public IGameLoop getEngineLoop() {
         checkStarted();
         return this.gameLoop;
     }
-
+    
     public GameController getGameController() {
         checkStarted();
         return this.gameController;
     }
-
+    
     public UpdateController getUpdateController() {
         checkStarted();
         return this.updateController;
     }
-
+    
     public ResourceManager getResManager() {
         return this.resources;
     }
-
+    
     //Shortcut
     public ResourceProvider getResProvider() {
         return this.resources.getProvider();
     }
-
+    
     private void checkStarted() {
         if (!this.started) {
-            throw new IllegalStateException("EngineLoader has not been started yet");
+            throw new IllegalStateException(getClass().getSimpleName() + " has not been started yet");
         }
     }
-
+    
     public void switchGameloop(final IGameLoop newloop) {
         Util.ensureNonNull(newloop);
         final boolean running = this.gameLoop.isRunning();
@@ -185,34 +184,32 @@ public abstract class EngineLoader {
             this.gameLoop.startLoop();
         }
     }
-
+    
     public ResourceManager setResourceManager(final ResourceManager proc) {
         final ResourceManager old = this.resources;
         this.resources = proc;
         return old;
     }
-
+    
     public boolean isStarted() {
         return this.started;
     }
-
-    protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
+    
+    protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
     }
-
+    
     protected abstract void onInitialized();
-
+    
     protected void onShutdown() {
     }
-
+    
     public enum LoaderSetting implements Defaultable {
-
+        
         /**
          * The rendering API to use by the engine. Only in non-static cases of
          * {@link EngineLoader}.<br>
          * <br>
          * The default value is {@link RenderAPI#OpenGL}.
-         *
          */
         RENDER_API(RenderAPI.OpenGL),
         /**
@@ -241,7 +238,7 @@ public abstract class EngineLoader {
          * @see #START_ENGINE_LOOP_AFTER_INIT
          */
         GAME_LOOP(new DefaultGameLoop()),
-
+        
         /**
          * Shutdown the engine if the gameloop exits. Only if
          * {@link #START_GAME_LOOP_AFTER_INIT} is set to <code>true</code>. Only in
@@ -250,25 +247,25 @@ public abstract class EngineLoader {
          * The default value is <code>true</code>
          */
         SHUTDOWN_ON_LOOP_EXIT(true);
-
+        
         private final Object defaultSetting;
-
+        
         LoaderSetting(final Object def) {
             this.defaultSetting = def;
         }
-
+        
         @Override
         public <T> T getDefault() {
             return (T) this.defaultSetting;
         }
     }
-
+    
     /**
      * Will only be used in non-static cases of {@link EngineLoader}. Defines when
      * to show the {@link Window}.
      *
-     * @see Window#setVisible(boolean)
      * @author pcfreak9000
+     * @see Window#setVisible(boolean)
      */
     public enum WindowMakeVisible {
         /**
@@ -283,7 +280,6 @@ public abstract class EngineLoader {
         /**
          * Never show the window.
          */
-        NEVER
-    }
-
+        NEVER}
+    
 }
