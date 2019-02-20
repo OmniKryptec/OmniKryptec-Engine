@@ -1,6 +1,5 @@
 package de.omnikryptec.minigame;
 
-import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.scene.SceneBuilder;
 import de.omnikryptec.ecs.Entity;
@@ -11,13 +10,13 @@ import de.omnikryptec.event.IEventListener;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
-import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
 public class Minigame extends EngineLoader {
+    
     public static void main(final String[] args) {
         new Minigame().start();
     }
@@ -25,10 +24,9 @@ public class Minigame extends EngineLoader {
     public static final EventBus BUS = new EventBus(false);
     
     @Override
-    protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
-        libsettings.set(LibSetting.DEBUG, true);
-        libsettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
+    protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
+        libSettings.set(LibSetting.DEBUG, true);
+        libSettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "Minigame");
         windowSettings.set(WindowSetting.LockAspectRatio, true);
         windowSettings.set(WindowSetting.VSync, true);

@@ -1,19 +1,15 @@
 package de.omnikryptec.minigame;
 
-import java.util.BitSet;
-
-import org.lwjgl.glfw.GLFW;
-
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.ComponentSystem;
-import de.omnikryptec.ecs.system.IterativeComponentSystem;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.util.updater.Time;
+import org.lwjgl.glfw.GLFW;
 
 public class InputSystem extends ComponentSystem {
     

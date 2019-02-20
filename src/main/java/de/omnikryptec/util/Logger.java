@@ -1,3 +1,19 @@
+/*
+ *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package de.omnikryptec.util;
 
 import java.io.PrintStream;
@@ -9,14 +25,14 @@ import java.util.Map;
 //TODO log msg format
 public class Logger {
     
-    public static enum LogType {
+    public enum LogType {
         Debug(-1, false, 2), Info(0, false, 3), Warning(1, true, 0), Error(2, true, 2);
         
         private final int importance;
         private final boolean red;
         private final String dif;
         
-        private LogType(final int imp, final boolean red, final int dif) {
+        LogType(final int imp, final boolean red, final int dif) {
             this.importance = imp;
             this.red = red;
             final StringBuilder builder = new StringBuilder();
