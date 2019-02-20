@@ -16,21 +16,20 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
+import de.omnikryptec.core.Updateable;
+import de.omnikryptec.util.Util;
+import de.omnikryptec.util.settings.KeySettings;
+import de.omnikryptec.util.updater.Time;
 import org.joml.Vector2d;
 import org.joml.Vector2dc;
 import org.joml.Vector4d;
 import org.joml.Vector4dc;
 import org.lwjgl.glfw.GLFW;
 
-import de.omnikryptec.core.Updateable;
-import de.omnikryptec.util.Util;
-import de.omnikryptec.util.settings.KeySettings;
-import de.omnikryptec.util.updater.Time;
-
 public class InputManager implements Updateable {
     
     private final long window;
-    //private final AtomicReference<Double> currentTime = new AtomicReference<>(0.0);
+    //private final AtomicReference<Double> currentTime = new AtomicReference<>(0.0); //TODO Clean this
     // Keyboard part
     private final KeyboardHandler keyboardHandler;
     // Mouse part
@@ -76,10 +75,10 @@ public class InputManager implements Updateable {
     
     @Override
     public void preUpdate(final Time time) {
-        // final double currentTime = LibAPIManager.active().getTime(); //TOD Remove
-        //currentTime.set(LibAPIManager.active().getTime());
-        //final double currentTime_ = currentTime.get();
-        final KeySettings keySettings = null; // FIXME KeySettings missing!
+        // final double currentTime = LibAPIManager.active().getTime(); //TODO Clean this
+        //currentTime.set(LibAPIManager.active().getTime()); //TODO Clean this
+        //final double currentTime_ = currentTime.get(); //TODO Clean this
+        final KeySettings keySettings = null; //FIXME KeySettings missing!
         if (this.longButtonPressEnabled) {
             this.keyboardHandler.preUpdate(time.current, keySettings);
             this.mouseHandler.preUpdate(time.current, keySettings);
@@ -89,10 +88,10 @@ public class InputManager implements Updateable {
     
     @Override
     public void update(final Time time) {
-        // final double currentTime = LibAPIManager.active().getTime();
-        //final double currentTime_ = currentTime.get();
+        // final double currentTime = LibAPIManager.active().getTime(); //TODO Clean this
+        //final double currentTime_ = currentTime.get(); //TODO Clean this
         this.keyboardHandler.clearInputString();
-        final KeySettings keySettings = null; // FIXME KeySettings missing!
+        final KeySettings keySettings = null; //FIXME KeySettings missing!
         if (this.longButtonPressEnabled) {
             this.keyboardHandler.update(time.current, keySettings);
             this.mouseHandler.update(time.current, keySettings);
@@ -102,9 +101,9 @@ public class InputManager implements Updateable {
     
     @Override
     public void postUpdate(final Time time) {
-        // final double currentTime = LibAPIManager.active().getTime();
-        //final double currentTime_ = currentTime.get();
-        final KeySettings keySettings = null; // FIXME KeySettings missing!
+        // final double currentTime = LibAPIManager.active().getTime(); //TODO Clean this
+        //final double currentTime_ = currentTime.get(); //TODO Clean this
+        final KeySettings keySettings = null; //FIXME KeySettings missing!
         if (this.longButtonPressEnabled) {
             this.keyboardHandler.postUpdate(time.current, keySettings);
             this.mouseHandler.postUpdate(time.current, keySettings);
@@ -198,7 +197,7 @@ public class InputManager implements Updateable {
         this.mouseDelta.y = this.mousePositionDelta.y;
         this.mouseDelta.z = this.mouseScrollOffsetDelta.x;
         this.mouseDelta.w = this.mouseScrollOffsetDelta.y;
-        // TODO Maybe split this up, because this below was executed as the last part in the old update ("nextFrame") method
+        //TODO Maybe split this up, because this below was executed as the last part in the old update ("nextFrame") method
         this.mousePositionLastTime.x = mousePosition.x;
         this.mousePositionLastTime.y = mousePosition.y;
         this.mouseScrollOffsetLastTime.x = mouseScrollOffset.x;

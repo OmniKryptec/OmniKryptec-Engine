@@ -16,32 +16,28 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.lwjgl.glfw.GLFW;
-
 import de.codemakers.base.logger.Logger;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.settings.KeySettings;
+import org.lwjgl.glfw.GLFW;
+
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class JoystickHandler implements InputHandler {
     
     private static final List<JoystickHandler> joystickHandlers = new CopyOnWriteArrayList<>();
     
     static {
-        // Runtime.getRuntime().addShutdownHook(new Thread(() -> closeAll(),
-        // JoystickHandler.class.getName() + "-Shutdown-Thread"));
+        // Runtime.getRuntime().addShutdownHook(new Thread(() -> closeAll(), //TODO Clean this
+        // JoystickHandler.class.getName() + "-Shutdown-Thread")); //TODO Clean this
         LibAPIManager.registerResourceShutdownHooks(() -> closeAll());
     }
     
     private final int joystick;
+    // Temporary variables
     private FloatBuffer dataAxes = null;
     private ByteBuffer dataButtons = null;
     private ByteBuffer dataHats = null;
@@ -153,7 +149,7 @@ public class JoystickHandler implements InputHandler {
     
     @Override
     public synchronized InputHandler update(final double currentTime, final KeySettings keySettings) {
-        /*
+        /* //TODO Clean this
          * if (!isConnected()) { return this; }
          */
         synchronized (this.dataAxes) {

@@ -16,27 +16,26 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
-
+import de.omnikryptec.util.settings.KeySettings;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWKeyCallback;
 
-import de.omnikryptec.util.settings.KeySettings;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 
-//FIXME synchronized causes bad performance
+//FIXME synchronized causes bad performance // Who says that?
 public class KeyboardHandler implements InputHandler {
     
-    // private final InputState[] keys = new InputState[65536];
-    // private final byte[] keys = new byte[65536];
-    private final byte[] keys = new byte[GLFW.GLFW_KEY_LAST + 1]; // TODO Test if this includes every key
+    // private final InputState[] keys = new InputState[65536]; //TODO Clean this
+    // private final byte[] keys = new byte[65536]; //TODO Clean this
+    private final byte[] keys = new byte[GLFW.GLFW_KEY_LAST + 1]; //TODO Test if this includes every key
     private final KeyboardHandler ME = this;
     private final long window;
     private final GLFWKeyCallback keyCallback;
     private final AtomicReference<String> inputString = new AtomicReference<>("");
-    // Configurable
+    // Configurable variables
     private final boolean appendToString = false;
-    // Temp
+    // Temporary variables
     private byte[] keysLastTime = null;
     
     public KeyboardHandler(final long window) {
@@ -48,12 +47,11 @@ public class KeyboardHandler implements InputHandler {
                     return;
                 }
                 synchronized (KeyboardHandler.this.keys) {
-                    // final InputState inputState = InputState.ofState(action);
-                    // keys[key] = inputState;
-                    final byte actionB = (byte) action;
-                    KeyboardHandler.this.keys[key] = actionB;
-                    if (KeyboardHandler.this.appendToString
-                            && (actionB == KeySettings.KEY_PRESSED || actionB == KeySettings.KEY_REPEATED)) {
+                    // final InputState inputState = InputState.ofState(action); //TODO Clean this
+                    // keys[key] = inputState; //TODO Clean this
+                    final byte actionByte = (byte) action;
+                    KeyboardHandler.this.keys[key] = actionByte;
+                    if (KeyboardHandler.this.appendToString && (actionByte == KeySettings.KEY_PRESSED || actionByte == KeySettings.KEY_REPEATED)) {
                         final String keyString = GLFW.glfwGetKeyName(key, scancode); // FIXME Is this deprecated?
                         if (keyString != null) {
                             KeyboardHandler.this.inputString.updateAndGet((inputString_) -> inputString_ + keyString);
@@ -88,7 +86,7 @@ public class KeyboardHandler implements InputHandler {
     
     @Override
     public synchronized InputHandler postUpdate(final double currentTime, final KeySettings keySettings) {
-        //this.keysLastTime = null; // TOD Is this good for performance or not? // makes no sense
+        //this.keysLastTime = null; // Is this good for performance or not? // makes no sense
         return this;
     }
     
@@ -100,12 +98,12 @@ public class KeyboardHandler implements InputHandler {
         return this;
     }
     
-    /*
+    /* //TODO Clean this
      * public synchronized InputState getKeyState(int keyCode) { return
      * keys[keyCode]; }
      */
     
-    public byte getKeyState(final int keyCode) {
+    public synchronized byte getKeyState(final int keyCode) {
         return this.keys[keyCode];
     }
     

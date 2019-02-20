@@ -16,18 +16,13 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicBoolean;
-
+import de.omnikryptec.util.settings.KeySettings;
 import org.joml.Vector2d;
 import org.joml.Vector2dc;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWCursorEnterCallback;
-import org.lwjgl.glfw.GLFWCursorPosCallback;
-import org.lwjgl.glfw.GLFWMouseButtonCallback;
-import org.lwjgl.glfw.GLFWScrollCallback;
+import org.lwjgl.glfw.*;
 
-import de.omnikryptec.util.settings.KeySettings;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MouseHandler implements InputHandler {
     
@@ -41,7 +36,7 @@ public class MouseHandler implements InputHandler {
     private final GLFWScrollCallback scrollCallback;
     private final GLFWCursorEnterCallback cursorEnterCallback;
     private final AtomicBoolean insideWindow = new AtomicBoolean(false);
-    // Temp
+    // Temporary variables
     private byte[] buttonsLastTime = null;
     
     public MouseHandler(final long window) {
@@ -119,7 +114,7 @@ public class MouseHandler implements InputHandler {
     
     @Override
     public synchronized InputHandler postUpdate(final double currentTime, final KeySettings keySettings) {
-        //this.buttonsLastTime = null; // TOD Is this good for performance or not? //makes no sense
+        //this.buttonsLastTime = null; // Is this good for performance or not? // Makes no sense
         return this;
     }
     
