@@ -8,13 +8,15 @@ import de.omnikryptec.util.updater.Time;
 
 public interface Renderer {
 
-    default void preRender(final Time time, final Settings<?> renderSettings) {
+    void init(Settings<?> renderSettings);
+    
+    default void preRender(final Time time) {
 
     }
 
-    void render(Time time, IProjection projection, Collection<RenderedObject> objs, Settings<?> renderSettings);
+    void render(Time time, IProjection projection, Collection<RenderedObject> objs);
 
-    default void postRender(final Time time, final Settings<?> renderSettings) {
+    default void postRender(final Time time) {
 
     }
 

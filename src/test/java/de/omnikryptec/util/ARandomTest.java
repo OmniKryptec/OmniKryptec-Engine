@@ -62,14 +62,19 @@ public class ARandomTest {
 
     private static class Rend implements Renderer {
 
-        @Override
-        public void render(final Time time, final IProjection projection, final Collection<RenderedObject> objs,
-                final Settings<?> renderSettings) {
-        }
         
+  
         @Override
         public Collection<RenderedObject> createRenderList() {
             return new ArrayList<>();
+        }
+
+        @Override
+        public void init(Settings<?> renderSettings) {
+        }
+
+        @Override
+        public void render(Time time, IProjection projection, Collection<RenderedObject> objs) {
         }
         
     }

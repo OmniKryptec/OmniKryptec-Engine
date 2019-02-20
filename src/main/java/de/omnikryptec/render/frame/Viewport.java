@@ -29,15 +29,14 @@ public class Viewport {
         this.rendererSet = Util.ensureNonNull(rendererSet);
     }
     
-    public void render(final Time time, final FrameBuffer target, final Settings<?> renderSettings) {
+    public void render(final Time time, final FrameBuffer target) {
         if (this.projection == null) {
             System.err.println("No projection set");
             return;
         }
         RenderUtil.bindIfNonNull(target);
         for (final Renderer renderer : this.renderables.keySet()) {
-            renderer.render(time, this.projection, renderer.supportsObjects() ? this.renderables.get(renderer) : null,
-                    renderSettings);
+            renderer.render(time, this.projection, renderer.supportsObjects() ? this.renderables.get(renderer) : null);
         }
         RenderUtil.unbindIfNonNull(target);
     }

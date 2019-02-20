@@ -23,16 +23,18 @@ public class MasterRenderer {
     private final List<RendererSet> rendererSets;
     private final List<Postprocessor> postprocessors;
     
+    private Settings<?> renderSettings;
+    
     private FrameBuffer sceneFBO;
     
-    public MasterRenderer() {
+    public MasterRenderer(Settings<?> renderSettings) {
+        this.renderSettings = renderSettings;
         this.rendererSets = new ArrayList<>();
         this.postprocessors = new ArrayList<>();
         LibAPIManager.LIBAPI_EVENTBUS.register(this);
     }
     
-    public void renderScene(final Time time, final RenderCollection scene, final List<Viewport> mainViewports,
-            final Settings<?> renderSettings) {
+    public void renderScene(final Time time, final RenderCollection scene, final List<Viewport> mainViewports) {
         for (final Viewport view : mainViewports) {
             if (view.requiresRefill()) {
                 scene.fillViewport(view);
@@ -40,18 +42,18 @@ public class MasterRenderer {
         }
         RenderUtil.bindIfNonNull(this.sceneFBO);
         for (final RendererSet set : this.rendererSets) {
-            set.prepareRenderers(time, renderSettings);
+            set.prepareRenderers(time);
         }
         for (final Viewport view : mainViewports) {
-            view.render(time, null, renderSettings);
+            view.render(time, null);
         }
         for (final RendererSet set : this.rendererSets) {
-            set.finishRenderers(time, renderSettings);
+            set.finishRenderers(time);
         }
         RenderUtil.unbindIfNonNull(this.sceneFBO);
         if (this.sceneFBO != null) {
             for (final Postprocessor ppro : this.postprocessors) {
-                ppro.postprocess(time, this.sceneFBO, renderSettings);
+                ppro.postprocess(time, this.sceneFBO);
             }
         }
     }
@@ -62,6 +64,7 @@ public class MasterRenderer {
     
     public void addRendererSet(final RendererSet rendererSet) {
         this.rendererSets.add(rendererSet);
+        rendererSet.initRenderers(renderSettings);
     }
     
     @EventSubscription
