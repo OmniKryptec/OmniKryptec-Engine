@@ -44,7 +44,7 @@ public class Minigame extends EngineLoader {
     
     private Entity makePlayer() {
         Entity e = new Entity();
-        e.addComponent(new PositionComponent());
+        e.addComponent(new PositionComponent(0, 0));
         e.addComponent(new RenderComponent(10, 10));
         e.addComponent(new PlayerComponent(50, 50));
         return e;
