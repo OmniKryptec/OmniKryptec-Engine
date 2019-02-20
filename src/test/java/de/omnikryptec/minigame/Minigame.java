@@ -4,11 +4,10 @@ import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.scene.SceneBuilder;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
-import de.omnikryptec.event.Event;
 import de.omnikryptec.event.EventBus;
-import de.omnikryptec.event.IEventListener;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
+import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.data.Color;
@@ -17,11 +16,11 @@ import de.omnikryptec.util.settings.Settings;
 
 public class Minigame extends EngineLoader {
     
+    public static final EventBus BUS = new EventBus(false);
+    
     public static void main(final String[] args) {
         new Minigame().start();
     }
-    
-    public static final EventBus BUS = new EventBus(false);
     
     @Override
     protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
@@ -30,7 +29,8 @@ public class Minigame extends EngineLoader {
         windowSettings.set(WindowSetting.Name, "Minigame");
         windowSettings.set(WindowSetting.LockAspectRatio, true);
         windowSettings.set(WindowSetting.VSync, true);
-        
+        apiSettings.set(OpenGLRenderAPI.MINOR_VERSION, 3);
+        apiSettings.set(OpenGLRenderAPI.MAJOR_VERSION, 3);
     }
     
     @Override
@@ -52,7 +52,7 @@ public class Minigame extends EngineLoader {
         Entity e = new Entity();
         e.addComponent(new PositionComponent(0, 0));
         e.addComponent(new RenderComponent(10, 10));
-        e.addComponent(new PlayerComponent(50,50));
+        e.addComponent(new PlayerComponent(50, 50));
         e.addComponent(new MovementComponent(0, 0));
         e.addComponent(new HitBoxComponent(10, 10));
         return e;
