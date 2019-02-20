@@ -37,6 +37,7 @@ import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec4;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.batch.RenderBatch2D;
+import de.omnikryptec.render.batch.ShadedBatch2D;
 import de.omnikryptec.resource.MeshData;
 import de.omnikryptec.resource.MeshData.VertexAttribute;
 import de.omnikryptec.resource.TextureConfig;
@@ -200,7 +201,7 @@ public class SceneBuilder {
         final int instances = 2;
         
         addUpdateable(new Updateable() {
-            private final RenderBatch2D batch = new RenderBatch2D(250);
+            private final ShadedBatch2D batch = new ShadedBatch2D(250);
             private final Matrix3x2f t = new Matrix3x2f();
             private final Camera cam = new Camera(new Matrix4f().ortho2D(0, 4, 0, 3));
             
@@ -211,27 +212,28 @@ public class SceneBuilder {
             @Override
             public void update(final Time time) {
                 
-                //                this.cam.getTransform().set(new Matrix4f().translate(Mathf.pingpong(time.currentf, 2), 0, 0));
-                //                //batch.setGlobalTransform(new Matrix4f().rotate(Mathf.PI/4, new Vector3f(1,0,0)));
-                //                this.batch.begin();
-                //                //batch.drawTest();
-                //                final float s = Mathf.pingpong(time.currentf, Mathf.PI);
-                //                this.t.identity();
-                //                this.t.scale(s, s);
-                //                this.t.rotateAbout(s, 0.5f, 0.5f);
-                //                //t.rotateAbout(s, 0.5f, 0.5f);
-                //                //t.rotate((Mathf.pingpong(time.currentf, Mathf.PI)-Mathf.PI/2), 0, 0, 1);
-                //                this.batch.color().randomizeRGB();
-                //                this.batch.draw(texture, this.t, 1, 1, false, false);
-                //                this.batch.color().randomizeRGB();
-                //                this.batch.drawLine(0, 0, 3, 2, 0.1f);
-                //                this.batch.end();
-                shader.bindShader();
-                color.loadColor(new Color().randomizeRGB());
-                texture.bindTexture(0);
-                instanceCount.loadFloat(instances);
-                RenderAPI.get().renderInstanced(mesh.getVertexArray(), mesh.getPrimitive(), mesh.getElementCount(),
-                        instances);
+                this.cam.getTransform().set(new Matrix4f().translate(Mathf.pingpong(time.currentf, 2), 0, 0));
+                //batch.setGlobalTransform(new Matrix4f().rotate(Mathf.PI/4, new Vector3f(1,0,0)));
+                this.batch.setIProjection(cam);
+                this.batch.begin();
+                //batch.drawTest();
+                final float s = Mathf.pingpong(time.currentf, Mathf.PI);
+                this.t.identity();
+                this.t.scale(s, s);
+                this.t.rotateAbout(s, 0.5f, 0.5f);
+                //t.rotateAbout(s, 0.5f, 0.5f);
+                //t.rotate((Mathf.pingpong(time.currentf, Mathf.PI)-Mathf.PI/2), 0, 0, 1);
+                this.batch.color().randomizeRGB();
+                this.batch.draw(texture, this.t, 1, 1, false, false);
+                this.batch.color().randomizeRGB();
+                this.batch.drawLine(0, 0, 3, 2, 0.1f);
+                this.batch.end();
+                //                shader.bindShader();
+                //                color.loadColor(new Color().randomizeRGB());
+                //                texture.bindTexture(0);
+                //                instanceCount.loadFloat(instances);
+                //                RenderAPI.get().renderInstanced(mesh.getVertexArray(), mesh.getPrimitive(), mesh.getElementCount(),
+                //                        instances);
             }
             
             @Override

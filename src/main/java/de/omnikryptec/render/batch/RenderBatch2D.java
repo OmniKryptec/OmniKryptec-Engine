@@ -2,6 +2,8 @@ package de.omnikryptec.render.batch;
 
 import java.util.function.Function;
 
+import javax.annotation.OverridingMethodsMustInvokeSuper;
+
 import org.joml.Matrix3x2fc;
 import org.joml.Vector2f;
 
@@ -12,7 +14,7 @@ import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.util.data.Color;
 
 public class RenderBatch2D implements Batch2D {
-
+    
     private static final VertexBufferLayout MY_LAYOUT = new VertexBufferLayout();
     
     static {
@@ -23,63 +25,54 @@ public class RenderBatch2D implements Batch2D {
     }
     
     private VertexManager vertexManager;
-
+    
     private Color color;
     private boolean rendering;
-
-
+    
     public RenderBatch2D(final int vertices) {
         init(new RenderedVertexManager(vertices, MY_LAYOUT));
     }
-
+    
     public RenderBatch2D(Function<VertexBufferLayout, VertexManager> vertexManagerFactory) {
         init(vertexManagerFactory.apply(MY_LAYOUT));
     }
-
+    
     private void init(final VertexManager vertexManager) {
         this.vertexManager = vertexManager;
         this.color = new Color(1, 1, 1, 1);
-//        this.shader = RenderAPI.get().createShader();
-//        this.shader.create("engineRenderBatch2DShader");
-//        this.transform = this.shader.getUniform("u_transform");
-//        this.viewProjection = this.shader.getUniform("u_projview");
-//
-//        final UniformSampler sampler = this.shader.getUniform("sampler");
-//        this.shader.bindShader();
-//        this.transform.loadMatrix(new Matrix4f());
-//        setProjection(null);
-//        sampler.setSampler(0);
+        
     }
-
+    
+    @OverridingMethodsMustInvokeSuper
     @Override
     public void begin() {
         this.rendering = true;
     }
-
-
+    
     @Override
     public Color color() {
         return this.color;
     }
-
+    
     @Override
     public void flush() {
         this.vertexManager.forceFlush();
     }
-
+    
+    @OverridingMethodsMustInvokeSuper
     @Override
     public void end() {
         flush();
         this.rendering = false;
     }
-
+    
     @Override
     public void draw(final Texture texture, final Matrix3x2fc transform, final float width, final float height,
             final boolean flipU, final boolean flipV) {
         draw(texture, transform, width, height, flipU, flipV, texture == null ? -1 : 0, texture == null ? -1 : 0,
                 texture == null ? -1 : 1, texture == null ? -1 : 1);
     }
-
+    
     @Override
     public void draw(final TextureRegion texture, final Matrix3x2fc transform, final float width, final float height,
             final boolean flipU, final boolean flipV) {
@@ -89,7 +82,7 @@ public class RenderBatch2D implements Batch2D {
         final float v1 = texture == null ? -1 : texture.v1();
         draw(texture == null ? null : texture.getBaseTexture(), transform, width, height, flipU, flipV, u0, v0, u1, v1);
     }
-
+    
     private void draw(final Texture texture, final Matrix3x2fc transform, final float width, final float height,
             final boolean flipU, final boolean flipV, float u0, float v0, float u1, float v1) {
         checkRendering();
@@ -121,12 +114,12 @@ public class RenderBatch2D implements Batch2D {
         this.vertexManager.addVertex(topleftfs);
         this.vertexManager.addVertex(toprightfs);
         this.vertexManager.addVertex(botleftfs);
-
+        
         this.vertexManager.addVertex(toprightfs);
         this.vertexManager.addVertex(botrightfs);
         this.vertexManager.addVertex(botleftfs);
     }
-
+    
     @Override
     public void drawPolygon(final Texture texture, final float[] poly, final int start, final int len) {
         checkRendering();
@@ -136,17 +129,21 @@ public class RenderBatch2D implements Batch2D {
         this.vertexManager.prepareNext(texture, len);
         this.vertexManager.addVertex(poly, start, len);
     }
-
+    
     private void checkRendering() {
-        if (!this.rendering) {
+        if (!this.isRendering()) {
             throw new IllegalStateException("not rendering");
         }
     }
-
+    
+    public boolean isRendering() {
+        return this.rendering;
+    }
+    
     public void drawTest() {
         this.vertexManager.addVertex(0, 0, 1, 1, 1, 1, 0, 0);
         this.vertexManager.addVertex(1, 0, 1, 1, 1, 1, 1, 0);
         this.vertexManager.addVertex(1, 1, 1, 1, 1, 1, 1, 1);
     }
-
+    
 }
