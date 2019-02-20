@@ -52,9 +52,9 @@ public class Minigame extends EngineLoader {
         Entity e = new Entity();
         e.addComponent(new PositionComponent(0, 0));
         e.addComponent(new RenderComponent(10, 10));
-        e.addComponent(new PlayerComp(50,50));
-        e.addComponent(new MovementComp(0, 0));
-        e.addComponent(new HitBoxComp(10, 10));
+        e.addComponent(new PlayerComponent(50,50));
+        e.addComponent(new MovementComponent(0, 0));
+        e.addComponent(new HitBoxComponent(10, 10));
         return e;
     }
     
@@ -62,7 +62,7 @@ public class Minigame extends EngineLoader {
         Entity e = new Entity();
         e.addComponent(new PositionComponent(x, y));
         e.addComponent(new RenderComponent(15, 15, new Color(0, 1, 1)));
-        e.addComponent(new HitBoxComp(10, 10));
+        e.addComponent(new HitBoxComponent(10, 10));
         return e;
     }
     

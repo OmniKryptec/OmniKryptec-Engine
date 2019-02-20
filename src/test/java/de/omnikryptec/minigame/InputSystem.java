@@ -14,23 +14,23 @@ import org.lwjgl.glfw.GLFW;
 public class InputSystem extends ComponentSystem {
     
     public InputSystem() {
-        super(Family.of(ComponentType.of(MovementComp.class), ComponentType.of(PlayerComp.class)));
+        super(Family.of(ComponentType.of(MovementComponent.class), ComponentType.of(PlayerComponent.class)));
         // mgr.setLongButtonPressEnabled(true);
         mgr.init();
     }
     
     private InputManager mgr = new InputManager(RenderAPI.get().getWindow().getWindowID());
     
-    private ComponentMapper<MovementComp> posMapper = new ComponentMapper<>(MovementComp.class);
-    private ComponentMapper<PlayerComp> playMapper = new ComponentMapper<>(PlayerComp.class);
+    private ComponentMapper<MovementComponent> posMapper = new ComponentMapper<>(MovementComponent.class);
+    private ComponentMapper<PlayerComponent> playMapper = new ComponentMapper<>(PlayerComponent.class);
     
     @Override
     public void update(IECSManager iecsManager, Time time) {
         mgr.preUpdate(time);
         mgr.update(time);
         for (Entity e : entities) {
-            MovementComp pos = posMapper.get(e);
-            PlayerComp play = playMapper.get(e);
+            MovementComponent pos = posMapper.get(e);
+            PlayerComponent play = playMapper.get(e);
             float vy = 0;
             float vx = 0;
             if (mgr.isKeyboardKeyPressed(GLFW.GLFW_KEY_W)) {

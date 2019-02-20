@@ -13,17 +13,17 @@ import de.omnikryptec.util.updater.Time;
 public class MovementSystem extends IterativeComponentSystem {
     
     protected MovementSystem() {
-        super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(MovementComp.class)));
+        super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(MovementComponent.class)));
         
     }
     
     private ComponentMapper<PositionComponent> posMapper = new ComponentMapper<>(PositionComponent.class);
-    private ComponentMapper<MovementComp> movMapper = new ComponentMapper<>(MovementComp.class);
+    private ComponentMapper<MovementComponent> movMapper = new ComponentMapper<>(MovementComponent.class);
     
     @Override
     public void updateIndividual(IECSManager manager, Entity entity, Time time) {
         PositionComponent pos = posMapper.get(entity);
-        MovementComp mov = movMapper.get(entity);
+        MovementComponent mov = movMapper.get(entity);
         pos.x += mov.dx * time.deltaf;
         pos.y += mov.dy * time.deltaf;
     }
