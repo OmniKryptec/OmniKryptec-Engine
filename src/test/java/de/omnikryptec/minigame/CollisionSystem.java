@@ -26,7 +26,6 @@ public class CollisionSystem extends ComponentSystem {
     
     @Override
     public void update(IECSManager manager, Time time) {
-        System.out.println("g");
         for (int i = 0; i < entities.size(); i++) {
             Entity entity = entities.get(i);
             for (int j = i + 1; j < entities.size(); j++) {
@@ -38,6 +37,7 @@ public class CollisionSystem extends ComponentSystem {
                 boolean intersect = Intersectionf.testAabAab(pos1.x, pos1.y, 0, pos1.x + hit1.w, pos1.y + hit1.h, 0,
                         pos2.x, pos2.y, 0, pos2.x + hit2.w, pos2.y + hit2.h, 0);
                 if (intersect) {
+                    System.out.println("intersect");
                     Minigame.BUS.post(new CollisionEvent(entity, e));
                 }
             }

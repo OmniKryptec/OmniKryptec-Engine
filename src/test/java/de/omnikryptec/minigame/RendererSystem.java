@@ -50,7 +50,7 @@ public class RendererSystem extends ComponentSystem {
     
     @EventSubscription
     public void win(WindowEvent.WindowResized ev) {
-        batch.setViewProjection(new Matrix4f().ortho2D(-ev.width / 2, ev.width / 2, -ev.height / 2, ev.height / 2));
+        //batch.setViewProjection(new Matrix4f().ortho2D(-ev.width / 2, ev.width / 2, -ev.height / 2, ev.height / 2));
     }
     
 }
