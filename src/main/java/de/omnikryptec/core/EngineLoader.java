@@ -111,9 +111,9 @@ public abstract class EngineLoader {
         }
         if (this.gameLoop != null) {
             this.gameLoop.init(this);
-            if (loaderSettings.get(LoaderSetting.START_GAME_LOOP_AFTER_INIT)) {
+            if ((boolean) loaderSettings.get(LoaderSetting.START_GAME_LOOP_AFTER_INIT)) {
                 this.gameLoop.startLoop();
-                if (loaderSettings.get(LoaderSetting.SHUTDOWN_ON_LOOP_EXIT)) {
+                if ((boolean) loaderSettings.get(LoaderSetting.SHUTDOWN_ON_LOOP_EXIT)) {
                     shutdown();
                 }
             }

@@ -29,6 +29,8 @@ public class Minigame extends EngineLoader {
         windowSettings.set(WindowSetting.Name, "Minigame");
         windowSettings.set(WindowSetting.LockAspectRatio, true);
         windowSettings.set(WindowSetting.VSync, true);
+        windowSettings.set(WindowSetting.Width, 400);
+        windowSettings.set(WindowSetting.Height, 400);
         apiSettings.set(OpenGLRenderAPI.MINOR_VERSION, 3);
         apiSettings.set(OpenGLRenderAPI.MAJOR_VERSION, 3);
     }
@@ -62,7 +64,7 @@ public class Minigame extends EngineLoader {
         Entity e = new Entity();
         e.addComponent(new PositionComponent(x, y));
         e.addComponent(new RenderComponent(15, 15, new Color(0, 1, 1)));
-        e.addComponent(new HitBoxComponent(10, 10));
+        e.addComponent(new HitBoxComponent(15, 15));
         return e;
     }
     
