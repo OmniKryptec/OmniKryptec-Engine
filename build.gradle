@@ -27,7 +27,7 @@ targetCompatibility = 1.8
 project.ext.lwjglVersion = "3.2.0"
 project.ext.jomlVersion = "1.9.11"
 project.ext.cjpbaseVersion = "v1.8.0_172-alpha.45"
-project.ext.cjpnetCommit = "2df695c660"
+project.ext.cjpnetCommit = "b42dc1ee25" //21.02.2019 22:28
 
 switch (OperatingSystem.current()) {
     case OperatingSystem.WINDOWS:
