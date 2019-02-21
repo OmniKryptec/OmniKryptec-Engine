@@ -27,6 +27,7 @@ targetCompatibility = 1.8
 project.ext.lwjglVersion = "3.2.0"
 project.ext.jomlVersion = "1.9.11"
 project.ext.cjpbaseVersion = "v1.8.0_172-alpha.45"
+project.ext.cjpnetCommit = "2df695c660"
 
 switch (OperatingSystem.current()) {
     case OperatingSystem.WINDOWS:
@@ -88,7 +89,7 @@ dependencies {
     compile group: 'org.reflections', name: 'reflections', version: '0.9.11'
     compile 'com.google.guava:guava:27.0-jre'
     //implementation "com.github.Panzer1119:CJP-Base:$cjpbaseVersion"
-    implementation "com.github.Panzer1119:CJP-Net:7ed4d838f0" //FIXME Fix this
+    implementation "com.github.Panzer1119:CJP-Net:$cjpnetCommit" //TODO Fix this
     // CUSTOM LIBS BEGIN
     //compile name: 'JavaPlus'
     //compile name: 'MathPlus'
@@ -135,7 +136,7 @@ dependencies {
     extraLibs group: 'org.reflections', name: 'reflections', version: '0.9.11'
     extraLibs 'com.google.guava:guava:27.0-jre'
     //extraLibs "com.github.Panzer1119:CJP-Base:$cjpbaseVersion"
-    extraLibs "com.github.Panzer1119:CJP-Net:7ed4d838f0" //FIXME Fix this
+    extraLibs "com.github.Panzer1119:CJP-Net:$cjpnetCommit" //TODO Fix this
     // CUSTOM LIBS BEGIN
     //extraLibs name: 'JavaPlus'
     //extraLibs name: 'MathPlus'
