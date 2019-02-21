@@ -16,17 +16,6 @@
 
 package de.omnikryptec.libapi.exposed;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-
-import javax.annotation.Nonnull;
-
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.system.Configuration;
-
 import de.codemakers.base.util.tough.ToughRunnable;
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
@@ -34,66 +23,22 @@ import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.system.Configuration;
+
+import javax.annotation.Nonnull;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 public final class LibAPIManager {
     
-    public static enum LibSetting implements Defaultable {
-        /**
-         * Enables debug mode of the Omnikryptec-Engine and LWJGL. This might do
-         * expensive checks, performance-wise.<br>
-         * <br>
-         * The default value is <code>false</code>.
-         *
-         * @see org.lwjgl.system.Configuration#DEBUG
-         * @see org.lwjgl.system.Configuration#DEBUG_LOADER
-         */
-        DEBUG(false),
-        /**
-         * When enabled, lwjgl's capabilities classes will print an error message when
-         * they fail to retrieve a function pointer. <br>
-         * Requires {@link #DEBUG} to be enabled. <br>
-         * <br>
-         * The default value is <code>false</code>.
-         *
-         * @see org.lwjgl.system.Configuration#DEBUG_FUNCTIONS
-         */
-        DEBUG_FUNCTIONS(false),
-        /**
-         * Enables joml's fastmath. <br>
-         * <br>
-         * The default value is <code>true</code>.
-         *
-         * @see org.joml.Math
-         */
-        FASTMATH(true),
-        /**
-         * The minimum {@link Logger.LogType} that will be logged. <br>
-         * <br>
-         * The default value is the {@link Logger}'s default value.
-         *
-         * @see de.omnikryptec.util.Logger
-         */
-        LOGGING_MIN(null);
-        
-        private final Object defaultSetting;
-        
-        LibSetting(final Object def) {
-            this.defaultSetting = def;
-        }
-        
-        @Override
-        public <T> T getDefault() {
-            return (T) this.defaultSetting;
-        }
-    }
-    
     public static final EventBus LIBAPI_EVENTBUS = new EventBus(false);
-    
     private static final Collection<ToughRunnable> shutdownHooks = new ArrayList<>();
-    private static LibAPIManager instance;
-    
     private static final Logger logger = Logger.getLogger(LibAPIManager.class);
-    
+    private static LibAPIManager instance;
     private RenderAPI renderApi;
     
     private LibAPIManager() {
@@ -112,7 +57,7 @@ public final class LibAPIManager {
         if (GLFW.glfwInit()) {
             GLFWErrorCallback.createThrow().set();
             instance = new LibAPIManager();
-            logger.info("Initialized LibAPI");
+            logger.logInfo("Initialized LibAPI");
         } else {
             instance = null;
             throw new RuntimeException("Error while initializing LibAPI");
@@ -127,9 +72,9 @@ public final class LibAPIManager {
      */
     private static void setConfiguration(@Nonnull final Settings<LibSetting> settings) {
         if (isInitialized()) {
-            logger.warn("Some settings may not have any effect ebecause the LibAPI is initialized");
+            logger.logWarning("Some settings may not have any effect because the LibAPI is initialized");
         }
-        Logger.setMinLogType(settings.get(LibSetting.LOGGING_MIN));
+        Logger.setMinimumLogLevel(settings.get(LibSetting.LOGGING_MIN));
         final boolean debug = settings.get(LibSetting.DEBUG);
         final boolean fastmath = settings.get(LibSetting.FASTMATH);
         final boolean functionDebug = settings.get(LibSetting.DEBUG_FUNCTIONS);
@@ -147,13 +92,13 @@ public final class LibAPIManager {
                 try {
                     r.run();
                 } catch (final Exception e) {
-                    logger.error("Exception in shutdown hook '" + r + "': " + e);
+                    logger.logError("Exception in shutdown hook '" + r + "': " + e);
                     e.printStackTrace();
                 }
             }
             GLFW.glfwTerminate();
             instance = null;
-            logger.info("Terminated LibAPI");
+            logger.logInfo("Terminated LibAPI");
         }
     }
     
@@ -208,6 +153,56 @@ public final class LibAPIManager {
      */
     public double getTime() {
         return GLFW.glfwGetTime();
+    }
+    
+    public enum LibSetting implements Defaultable {
+        /**
+         * Enables debug mode of the Omnikryptec-Engine and LWJGL. This might do
+         * expensive checks, performance-wise.<br>
+         * <br>
+         * The default value is <code>false</code>.
+         *
+         * @see org.lwjgl.system.Configuration#DEBUG
+         * @see org.lwjgl.system.Configuration#DEBUG_LOADER
+         */
+        DEBUG(false),
+        /**
+         * When enabled, lwjgl's capabilities classes will print an error message when
+         * they fail to retrieve a function pointer. <br>
+         * Requires {@link #DEBUG} to be enabled. <br>
+         * <br>
+         * The default value is <code>false</code>.
+         *
+         * @see org.lwjgl.system.Configuration#DEBUG_FUNCTIONS
+         */
+        DEBUG_FUNCTIONS(false),
+        /**
+         * Enables joml's fastmath. <br>
+         * <br>
+         * The default value is <code>true</code>.
+         *
+         * @see org.joml.Math
+         */
+        FASTMATH(true),
+        /**
+         * The minimum {@link de.codemakers.base.logger.LogLevel} that will be logged. <br>
+         * <br>
+         * The default value is the {@link Logger}'s default value.
+         *
+         * @see de.omnikryptec.util.Logger
+         */
+        LOGGING_MIN(null);
+        
+        private final Object defaultSetting;
+        
+        LibSetting(final Object def) {
+            this.defaultSetting = def;
+        }
+        
+        @Override
+        public <T> T getDefault() {
+            return (T) this.defaultSetting;
+        }
     }
     
 }

@@ -16,38 +16,36 @@
 
 package de.omnikryptec.libapi.opengl.texture;
 
-import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
-import org.lwjgl.opengl.GL;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL14;
-import org.lwjgl.opengl.GL30;
-
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureConfig.MagMinFilter;
 import de.omnikryptec.resource.TextureConfig.WrappingMode;
 import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.Logger;
-import de.omnikryptec.util.Logger.LogType;
+import org.lwjgl.opengl.*;
 
 public class GLTexture2D extends GLTexture {
     
+    private TextureData data;
+    
+    public GLTexture2D(final TextureData texture, final TextureConfig config) {
+        super(GL11.GL_TEXTURE_2D);
+        bindTexture(0);
+        loadTexture(texture, config);
+    }
+    
     private static void loadTexture(final TextureData texture, final TextureConfig config) {
         GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, texture.getWidth(), texture.getHeight(), 0, GL12.GL_BGRA,
-                GL11.GL_UNSIGNED_BYTE, texture.getBuffer());
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, texture.getWidth(), texture.getHeight(), 0, GL12.GL_BGRA, GL11.GL_UNSIGNED_BYTE, texture.getBuffer());
         if (config.mipmap() || config.anisotropicValue() > 0) {
             GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
             if (config.anisotropicValue() > 0) {
                 if (!GL.getCapabilities().GL_EXT_texture_filter_anisotropic) {
-                    Logger.log(GLTexture2D.class, LogType.Warning,
-                            "GL_EXT_texture_filter_anisotropic is not supported");
+                    Logger.logWarning(GLTexture2D.class, "GL_EXT_texture_filter_anisotropic is not supported");
                 } else {
                     GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, 0);
-                    GL11.glTexParameterf(GL11.GL_TEXTURE_2D, EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT,
-                            config.anisotropicValue());
+                    GL11.glTexParameterf(GL11.GL_TEXTURE_2D, EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT, config.anisotropicValue());
                 }
             }
         } else {
@@ -58,36 +56,28 @@ public class GLTexture2D extends GLTexture {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, decodeWrap(config.wrappingMode()));
     }
     
+    //TODO maybe move the static methods in another class for broader use
+    
     private static int decodeMagMin(final MagMinFilter filter) {
         switch (filter) {
-        case Linear:
-            return GL11.GL_LINEAR;
-        case Nearest:
-            return GL11.GL_NEAREST;
-        default:
-            throw new IllegalArgumentException();
+            case Linear:
+                return GL11.GL_LINEAR;
+            case Nearest:
+                return GL11.GL_NEAREST;
+            default:
+                throw new IllegalArgumentException();
         }
     }
     
     private static int decodeWrap(final WrappingMode mode) {
         switch (mode) {
-        case ClampToEdge:
-            return GL12.GL_CLAMP_TO_EDGE;
-        case Repeat:
-            return GL11.GL_REPEAT;
-        default:
-            throw new IllegalArgumentException();
+            case ClampToEdge:
+                return GL12.GL_CLAMP_TO_EDGE;
+            case Repeat:
+                return GL11.GL_REPEAT;
+            default:
+                throw new IllegalArgumentException();
         }
-    }
-    
-    //TODO maybe move the static methods in another class for broader use
-    
-    private TextureData data;
-    
-    public GLTexture2D(final TextureData texture, final TextureConfig config) {
-        super(GL11.GL_TEXTURE_2D);
-        bindTexture(0);
-        loadTexture(texture, config);
     }
     
     @Override

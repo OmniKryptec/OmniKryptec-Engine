@@ -16,8 +16,6 @@
 
 package de.omnikryptec.util;
 
-import de.omnikryptec.util.Logger.LogType;
-
 public class LoggedException<T extends Exception> {
     
     private T exception;
@@ -33,12 +31,12 @@ public class LoggedException<T extends Exception> {
     }
     
     public void thrrow() throws T {
-        this.logger.log(LogType.Error, "An exception occured: ");
+        this.logger.logError("An Exception occurred: ");
         throw this.exception;
     }
     
     public void print() {
-        this.logger.log(LogType.Error, "An exception occured: ");
+        this.logger.logError("An Exception occurred: ");
         this.exception.printStackTrace();
     }
     

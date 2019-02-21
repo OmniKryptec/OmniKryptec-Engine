@@ -16,17 +16,15 @@
 
 package de.omnikryptec.libapi.opengl.shader;
 
-import org.lwjgl.opengl.GL20;
-
 import de.omnikryptec.libapi.exposed.render.shader.Uniform;
 import de.omnikryptec.util.Logger;
-import de.omnikryptec.util.Logger.LogType;
+import org.lwjgl.opengl.GL20;
 
 public abstract class GLUniform implements Uniform {
     
     private final String name;
     private int location;
-    private boolean isfound = false;
+    private boolean found = false;
     
     protected GLUniform(final String name) {
         this.name = name;
@@ -35,9 +33,9 @@ public abstract class GLUniform implements Uniform {
     protected void storeUniformLocation(final int programID) {
         this.location = GL20.glGetUniformLocation(programID, this.name);
         if (this.location == -1) {
-            Logger.log(this.getClass(), LogType.Warning, "No uniform variable called " + this.name + " found!");
+            Logger.logWarning(this.getClass(), "No uniform variable called " + this.name + " found!");
         } else {
-            this.isfound = true;
+            this.found = true;
         }
     }
     
@@ -52,7 +50,7 @@ public abstract class GLUniform implements Uniform {
     
     @Override
     public boolean existsInCompilation() {
-        return this.isfound;
+        return this.found;
     }
     
 }

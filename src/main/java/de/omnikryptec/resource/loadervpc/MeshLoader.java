@@ -1,28 +1,18 @@
 package de.omnikryptec.resource.loadervpc;
 
-import java.nio.ByteBuffer;
-
-import org.apache.commons.io.IOUtils;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.assimp.AIFace;
-import org.lwjgl.assimp.AIMaterial;
-import org.lwjgl.assimp.AIMesh;
-import org.lwjgl.assimp.AIScene;
-import org.lwjgl.assimp.AIVector3D;
-import org.lwjgl.assimp.Assimp;
-
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.resource.MeshData;
 import de.omnikryptec.resource.MeshData.VertexAttribute;
 import de.omnikryptec.resource.MeshFile;
-import de.omnikryptec.util.Logger;
-import de.omnikryptec.util.Logger.LogType;
+import org.apache.commons.io.IOUtils;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.assimp.*;
+
+import java.nio.ByteBuffer;
 
 public class MeshLoader implements ResourceLoader<MeshFile> {
     
-    private final int flags = Assimp.aiProcess_CalcTangentSpace | Assimp.aiProcess_JoinIdenticalVertices
-            | Assimp.aiProcess_RemoveRedundantMaterials | Assimp.aiProcess_OptimizeMeshes
-            | Assimp.aiProcess_SplitLargeMeshes | Assimp.aiProcess_Triangulate | Assimp.aiProcess_SortByPType;
+    private final int flags = Assimp.aiProcess_CalcTangentSpace | Assimp.aiProcess_JoinIdenticalVertices | Assimp.aiProcess_RemoveRedundantMaterials | Assimp.aiProcess_OptimizeMeshes | Assimp.aiProcess_SplitLargeMeshes | Assimp.aiProcess_Triangulate | Assimp.aiProcess_SortByPType;
     
     public MeshLoader() {
         //XXX Init the native library. breakes otherwise somehow. Test with newer versions of assimp? 

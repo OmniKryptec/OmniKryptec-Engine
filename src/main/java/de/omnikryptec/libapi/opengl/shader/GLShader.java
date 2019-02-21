@@ -16,13 +16,7 @@
 
 package de.omnikryptec.libapi.opengl.shader;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
-
+import de.codemakers.base.logger.LogLevel;
 import de.omnikryptec.libapi.exposed.AutoDelete;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
@@ -30,7 +24,12 @@ import de.omnikryptec.libapi.exposed.render.shader.Uniform;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.resource.parser.shader.ShaderParser.ShaderType;
 import de.omnikryptec.util.Logger;
-import de.omnikryptec.util.Logger.LogType;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
+
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GLShader extends AutoDelete implements Shader {
     
@@ -65,8 +64,7 @@ public class GLShader extends AutoDelete implements Shader {
             GL20.glShaderSource(shader, a.source);
             GL20.glCompileShader(shader);
             if (GL20.glGetShaderi(shader, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-                Logger.log(GLShader.class, LogType.Error, "Compilation error", "Shader: " + a.shaderType,
-                        "Error: " + GL20.glGetShaderInfoLog(shader), LogType.Debug, "Src: \n" + a.source);
+                Logger.logError(GLShader.class, "Compilation error", "Shader: " + a.shaderType, "Error: " + GL20.glGetShaderInfoLog(shader), LogLevel.DEBUG, "Src: \n" + a.source);
             } else {
                 GL20.glAttachShader(this.programId, shader);
             }
@@ -112,17 +110,17 @@ public class GLShader extends AutoDelete implements Shader {
     //TODO better way of doing the uniforms?
     private GLUniform createUniformObj(final String name, final String types) {
         switch (types) {
-        case "mat4":
-            return new GLUniformMatrix(name);
-        case "sampler2D":
-        case "samplerCube":
-            return new GLUniformSampler(name);
-        case "vec4":
-            return new GLUniformVec4(name);
-        case "float":
-            return new GLUniformFloat(name);
-        default:
-            throw new IllegalArgumentException("Type not found: " + types + " " + name);
+            case "mat4":
+                return new GLUniformMatrix(name);
+            case "sampler2D":
+            case "samplerCube":
+                return new GLUniformSampler(name);
+            case "vec4":
+                return new GLUniformVec4(name);
+            case "float":
+                return new GLUniformFloat(name);
+            default:
+                throw new IllegalArgumentException("Type not found: " + types + " " + name);
         }
     }
     
