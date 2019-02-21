@@ -1,5 +1,6 @@
 package de.omnikryptec.minigame;
 
+import de.codemakers.base.logger.LogLevel;
 import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.scene.SceneBuilder;
 import de.omnikryptec.ecs.Entity;
@@ -9,7 +10,6 @@ import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
 import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
-import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
@@ -25,7 +25,7 @@ public class Minigame extends EngineLoader {
     @Override
     protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
         libSettings.set(LibSetting.DEBUG, true);
-        libSettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
+        libSettings.set(LibSetting.LOGGING_MIN, LogLevel.DEBUG);
         windowSettings.set(WindowSetting.Name, "Minigame");
         windowSettings.set(WindowSetting.LockAspectRatio, true);
         windowSettings.set(WindowSetting.VSync, true);
