@@ -18,8 +18,6 @@ package de.omnikryptec.util.math;
 
 import org.joml.Math;
 
-import de.omnikryptec.util.Interpolator;
-
 public strictfp class Mathd {
 
     public static final double PI = java.lang.Math.PI;

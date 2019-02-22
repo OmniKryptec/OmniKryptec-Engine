@@ -18,7 +18,7 @@ package de.omnikryptec.util.data;
 
 import org.joml.Vector4f;
 
-import de.omnikryptec.util.Interpolator;
+import de.omnikryptec.util.math.Interpolator;
 import de.omnikryptec.util.math.Mathf;
 
 public class Color implements Cloneable {

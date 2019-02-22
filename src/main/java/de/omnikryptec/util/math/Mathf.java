@@ -18,8 +18,6 @@ package de.omnikryptec.util.math;
 
 import org.joml.Math;
 
-import de.omnikryptec.util.Interpolator;
-
 public strictfp class Mathf {
 
     public static final float PI = (float) java.lang.Math.PI;

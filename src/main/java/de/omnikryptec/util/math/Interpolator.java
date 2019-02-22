@@ -14,10 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.util;
-
-import de.omnikryptec.util.math.Mathd;
-import de.omnikryptec.util.math.Mathf;
+package de.omnikryptec.util.math;
 
 public enum Interpolator {
     None {
