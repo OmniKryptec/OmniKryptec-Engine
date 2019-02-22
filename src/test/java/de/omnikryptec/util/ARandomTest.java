@@ -33,6 +33,8 @@ import de.omnikryptec.util.updater.Time;
 public class ARandomTest {
 
     public static void main(final String[] args) {
+        de.codemakers.base.logger.Logger.log("kek");
+        System.out.println("(" + ARandomTest.class.getSimpleName() + ".java:" + 37 + ")");
         final RendererSet s = RendererSet.RENDERERS_3D;
         final Rend rend = new Rend();
         s.addRenderer(rend);

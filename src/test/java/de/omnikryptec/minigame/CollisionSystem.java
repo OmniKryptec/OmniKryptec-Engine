@@ -37,7 +37,6 @@ public class CollisionSystem extends ComponentSystem {
                 boolean intersect = Intersectionf.testAabAab(pos1.x, pos1.y, 0, pos1.x + hit1.w, pos1.y + hit1.h, 0,
                         pos2.x, pos2.y, 0, pos2.x + hit2.w, pos2.y + hit2.h, 0);
                 if (intersect) {
-                    System.out.println("intersect");
                     Minigame.BUS.post(new CollisionEvent(entity, e));
                 }
             }

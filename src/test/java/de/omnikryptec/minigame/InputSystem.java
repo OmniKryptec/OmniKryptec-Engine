@@ -9,6 +9,8 @@ import de.omnikryptec.ecs.system.ComponentSystem;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.util.updater.Time;
+
+import org.joml.Vector2dc;
 import org.lwjgl.glfw.GLFW;
 
 public class InputSystem extends ComponentSystem {
@@ -48,7 +50,11 @@ public class InputSystem extends ComponentSystem {
             pos.dx = vx;
             pos.dy = vy;
         }
-        
+        if(mgr.isMouseInsideWindow()&&mgr.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_1)) {
+            Vector2dc mp = mgr.getMousePosition();
+            System.out.println(mp);
+            //double spx = mp.x()/RenderAPI.get().getWindow().
+        }
         mgr.postUpdate(time);
     }
     
