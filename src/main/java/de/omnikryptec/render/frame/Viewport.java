@@ -110,7 +110,7 @@ public class Viewport {
         this.visibilityOverride = b;
     }
     
-    //TODO moving objects?
+    //TODx moving objects? deprecated
     public boolean requiresRefill() {
         return this.refill;
     }

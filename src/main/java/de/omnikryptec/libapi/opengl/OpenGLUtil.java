@@ -19,7 +19,10 @@ package de.omnikryptec.libapi.opengl;
 import java.util.EnumMap;
 import java.util.Map;
 
+import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL15;
@@ -38,8 +41,15 @@ import de.omnikryptec.libapi.exposed.render.RenderState.CullMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.DepthMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.PolyMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.RenderConfig;
+import de.omnikryptec.libapi.opengl.texture.GLTexture2D;
+import de.omnikryptec.resource.TextureConfig;
+import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.resource.MeshData.Primitive;
+import de.omnikryptec.resource.TextureConfig.MagMinFilter;
+import de.omnikryptec.resource.TextureConfig.WrappingMode;
 import de.omnikryptec.resource.parser.shader.ShaderParser.ShaderType;
+import de.omnikryptec.util.Logger;
+import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.data.Color;
 
 public class OpenGLUtil {
@@ -199,6 +209,28 @@ public class OpenGLUtil {
         }
     }
     
+    public static int decodeMagMin(final MagMinFilter filter) {
+        switch (filter) {
+        case Linear:
+            return GL11.GL_LINEAR;
+        case Nearest:
+            return GL11.GL_NEAREST;
+        default:
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public static int decodeWrap(final WrappingMode mode) {
+        switch (mode) {
+        case ClampToEdge:
+            return GL12.GL_CLAMP_TO_EDGE;
+        case Repeat:
+            return GL11.GL_REPEAT;
+        default:
+            throw new IllegalArgumentException();
+        }
+    }
+    
     public static void flushErrors() {
         int e = 0;
         while ((e = GL11.glGetError()) != GL11.GL_NO_ERROR) {
@@ -235,6 +267,37 @@ public class OpenGLUtil {
     
     public static void bindBuffer(final int target, final int buffer/* , final boolean override */) {
         GL15.glBindBuffer(target, buffer);
+    }
+    
+    public static void configureTexture(TextureConfig config) {
+        if (config.mipmap() || config.anisotropicValue() > 0) {
+            GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR_MIPMAP_LINEAR);
+            if (config.anisotropicValue() > 0) {
+                if (!GL.getCapabilities().GL_EXT_texture_filter_anisotropic) {
+                    Logger.log(GLTexture2D.class, LogType.Warning,
+                            "GL_EXT_texture_filter_anisotropic is not supported");
+                } else {
+                    GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL14.GL_TEXTURE_LOD_BIAS, 0);
+                    GL11.glTexParameterf(GL11.GL_TEXTURE_2D, EXTTextureFilterAnisotropic.GL_TEXTURE_MAX_ANISOTROPY_EXT,
+                            config.anisotropicValue());
+                }
+            }
+        } else {
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER,
+                    OpenGLUtil.decodeMagMin(config.magFilter()));
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER,
+                    OpenGLUtil.decodeMagMin(config.minFilter()));
+        }
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, OpenGLUtil.decodeWrap(config.wrappingMode()));
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, OpenGLUtil.decodeWrap(config.wrappingMode()));
+    }
+    
+    public static void loadTexture(final TextureData texture) {
+        GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, texture.getWidth(), texture.getHeight(), 0, GL12.GL_BGRA,
+                GL11.GL_UNSIGNED_BYTE, texture.getBuffer());
     }
     
     private static Map<RenderConfig, Boolean> featureCache = new EnumMap<>(RenderConfig.class);

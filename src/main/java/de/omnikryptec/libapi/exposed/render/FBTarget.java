@@ -23,7 +23,6 @@ public class FBTarget {
 
     public final TextureFormat format;
     public final int attachmentIndex;
-    //TODO make enum?:
     public final boolean isDepthAttachment;
 
     //TODO support for TextureData

@@ -77,7 +77,7 @@ public class EventBus implements Updateable, IEventListener {
         this.listeners = ArrayListMultimap.create();
     }
     
-    //TODO make this more explicit (addEventBusAsListener)?
+    //TODO make this more explicit (addEventBusAsListener)? / why?
     
     /**
      * Registers an {@link IEventListener} to ALL events.<br>
@@ -197,7 +197,6 @@ public class EventBus implements Updateable, IEventListener {
         } while (event.triggersSuperEventListeners() && someclazz != Object.class && someclazz != null);
     }
     
-    //TODO good as regular update?
     @Override
     public void update(final Time time) {
         processQueuedEvents();

@@ -88,7 +88,7 @@ public class GLShader extends AutoDelete implements Shader {
         return (T) u;
     }
     
-    //TODO somewhere else?
+    //TODx somewhere else? no, because this is probably shader dependant
     private void extractUniforms(final String src) {
         final String[] lines = src.split("[\n\r]+");
         for (final String l : lines) {
@@ -109,7 +109,7 @@ public class GLShader extends AutoDelete implements Shader {
         }
     }
     
-    //TODO better way of doing the uniforms?
+    //TODx better way of doing the uniforms? shader dependant so no
     private GLUniform createUniformObj(final String name, final String types) {
         switch (types) {
         case "mat4":

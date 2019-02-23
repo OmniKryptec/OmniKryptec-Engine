@@ -143,7 +143,7 @@ public class Transform {
             this.transform.identity();
             this.transform.set(this.local);
             if (this.parent != null) {
-                //TODO is this correct?
+                //TODO is this matrix multiplication correct?
                 this.transform.mul(this.parent.worldspace());
             }
         }

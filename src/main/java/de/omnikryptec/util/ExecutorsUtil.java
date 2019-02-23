@@ -26,11 +26,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ExecutorsUtil {
     
-    //TODO better available threads management etc
     public static final int AVAILABLE_PROCESSORS = Runtime.getRuntime().availableProcessors();
     private static final Queue<ExecutorService> allExecutors = new ConcurrentLinkedQueue<>();
     private static final AtomicBoolean lock = new AtomicBoolean(false);
     
+    public static final int getServiceInUseCount() {
+        return allExecutors.size();
+    }
+
     public static ExecutorService newFixedThreadPool() {
         return newFixedThreadPool(AVAILABLE_PROCESSORS);
     }
