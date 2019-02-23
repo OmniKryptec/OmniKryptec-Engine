@@ -32,6 +32,7 @@ public class Key implements IKey {
     private final String name;
     private int key;
     private boolean isKeyboardKey;
+    private boolean isPressed;
     private double lastChange = 0.0F;
     
     /**
@@ -82,14 +83,12 @@ public class Key implements IKey {
      */
     @Override
     public boolean isPressed() {
-        //FIXME Maybe never call the InputManager or something similiar, just add a variable to this object "isPressed" and let this be set by the {@link de.codemakers.util.settings.KeySettings#updateKeys} method
-        if (this.isKeyboardKey) {
-            // TODO Implement InputManager
-        } else {
-            // TODO Implement InputManager
-        }
-        //return isPressed;
-        throw new NotYetImplementedRuntimeException();
+        return isPressed;
+    }
+    
+    public Key setPressed(boolean isPressed) {
+        this.isPressed = isPressed;
+        return this;
     }
     
     /**
@@ -112,8 +111,8 @@ public class Key implements IKey {
         }
         final double currentTime = LibAPIManager.instance().getTime();
         final double pressedTime = currentTime - this.lastChange;
-        if (pressedTime >= minTime && pressedTime <= maxTime) {
-            this.lastChange = currentTime;
+        if ((pressedTime >= minTime || minTime < 0) && (pressedTime <= maxTime || maxTime < 0)) {
+            //this.lastChange = currentTime; //FIXME lastChange should just show the last time, when this key isPressed was updated. Why should this method reset this time?
             return true;
         }
         return false;
