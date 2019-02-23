@@ -44,6 +44,7 @@ public class EventBus implements Updateable, IEventListener {
     private final AtomicBoolean processing = new AtomicBoolean(false);
     private final ListMultimap<Class<? extends Event>, IEventListener> listeners;
     private final Queue<Event> eventQueue;
+    private boolean receiveConsumed = true;
     
     /**
      * A read-only version of this {@link EventBus}
@@ -214,6 +215,10 @@ public class EventBus implements Updateable, IEventListener {
     
     @Override
     public boolean receiveConsumed() {
-        return true;
+        return receiveConsumed;
+    }
+    
+    public void setReceiveConsumed(boolean b) {
+        this.receiveConsumed = b;
     }
 }
