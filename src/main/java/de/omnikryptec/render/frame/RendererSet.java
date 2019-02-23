@@ -6,10 +6,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import de.omnikryptec.render.Renderer;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
-
+@Deprecated
 public class RendererSet {
     
     public static final RendererSet RENDERERS_3D;

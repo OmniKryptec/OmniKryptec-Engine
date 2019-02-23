@@ -69,12 +69,15 @@ public class RenderBatch2D implements Batch2D {
     @Override
     public void draw(final Texture texture, final Matrix3x2fc transform, final float width, final float height,
             final boolean flipU, final boolean flipV) {
-        draw(texture, transform, width, height, flipU, flipV, texture == null ? -1 : 0, texture == null ? -1 : 0,
-                texture == null ? -1 : 1, texture == null ? -1 : 1);
+        if (texture instanceof TextureRegion) {
+            draw((TextureRegion) texture, transform, width, height, flipU, flipV);
+        } else {
+            draw(texture, transform, width, height, flipU, flipV, texture == null ? -1 : 0, texture == null ? -1 : 0,
+                    texture == null ? -1 : 1, texture == null ? -1 : 1);
+        }
     }
     
-    @Override
-    public void draw(final TextureRegion texture, final Matrix3x2fc transform, final float width, final float height,
+    private void draw(final TextureRegion texture, final Matrix3x2fc transform, final float width, final float height,
             final boolean flipU, final boolean flipV) {
         final float u0 = texture == null ? -1 : texture.u0();
         final float v0 = texture == null ? -1 : texture.v0();

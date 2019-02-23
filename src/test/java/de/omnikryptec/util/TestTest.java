@@ -16,23 +16,43 @@
 
 package de.omnikryptec.util;
 
+import java.util.Collection;
+
+import org.joml.FrustumIntersection;
+
+import de.omnikryptec.render.storage.RenderedObject;
+import de.omnikryptec.render.storage.RenderedObjectManager;
+import de.omnikryptec.render.storage.RenderedObjectType;
 import de.omnikryptec.util.data.DynamicArray;
 
 public class TestTest {
     
     public static final void main(final String[] args) throws Exception {
-        DynamicArray<Object> array = new DynamicArray<>();
-        int i1=0;
-        for (int i = 0; i < 20; i++) {
-            if (Math.random() < 0.5) {
-                array.set(i, "1");
-                i1++;
-            }
-        }
-        System.out.println(i1);
-        System.out.println(array);
-        array.trimNulls();
-        System.out.println(array);
+        //        DynamicArray<Object> array = new DynamicArray<>();
+        //        int i1=0;
+        //        for (int i = 0; i < 20; i++) {
+        //            if (Math.random() < 0.5) {
+        //                array.set(i, "1");
+        //                i1++;
+        //            }
+        //        }
+        //        System.out.println(i1);
+        //        System.out.println(array);
+        //        array.trimNulls();
+        //        System.out.println(array);
+        RenderedObjectManager mgr = new RenderedObjectManager();
+        mgr.add(RenderedObjectType.of(ABC.class), new ABC());
+        Collection<ABC> coll = mgr.getFor(RenderedObjectType.of(ABC.class));
+        System.out.println(coll);
     }
     
+    private static class ABC implements RenderedObject {
+        
+        @Override
+        public boolean isVisible(FrustumIntersection frustum) {
+            
+            return false;
+        }
+        
+    }
 }

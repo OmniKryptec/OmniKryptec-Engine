@@ -16,6 +16,7 @@ import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
+@Deprecated
 public class MasterRenderer {
     
     public static final IntegerKey MultisampleSetting = IntegerKey.next(0);

@@ -7,12 +7,15 @@ import java.util.Map;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderUtil;
 import de.omnikryptec.render.IProjection;
+import de.omnikryptec.render.Renderer;
+import de.omnikryptec.render.storage.RenderedObject;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.Struct3f;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
+@Deprecated
 public class Viewport {
     
     private final RendererSet rendererSet;

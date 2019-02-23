@@ -5,6 +5,9 @@ import java.util.List;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
+import de.omnikryptec.render.Renderer;
+import de.omnikryptec.render.storage.RenderedObject;
+@Deprecated
 public class SimpleRenderCollection implements RenderCollection {
     
     private final ListMultimap<Renderer, RenderedObject> objects;
