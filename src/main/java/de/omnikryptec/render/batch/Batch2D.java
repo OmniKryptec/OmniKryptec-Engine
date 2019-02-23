@@ -40,7 +40,7 @@ public interface Batch2D extends Batch {
         drawRect(transform, length, thickness);
     }
 
-    default void drawRect(final Matrix3x2fc transform, final float width, final float height, final float thickness) {
-
-    }
+//    default void drawRect(final Matrix3x2fc transform, final float width, final float height, final float thickness) {
+//     
+//    }
 }
