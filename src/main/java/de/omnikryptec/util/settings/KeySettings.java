@@ -73,12 +73,12 @@ public class KeySettings extends KeyContainer {
     }
     
     public static void updateKeys(final Collection<IKey> keys, final double currentTime, final int keyCode,
-            final boolean isKeyboardKey, final boolean isPressed) {
+            final boolean isKeyboardKey, final byte keyState) {
         for (final IKey key : keys) {
             if (key instanceof Key) {
                 final Key key_ = (Key) key;
                 if (key_.getKey() == keyCode && key_.isKeyboardKey() == isKeyboardKey) {
-                    key_.setPressed(isPressed);
+                    key_.setKeyState(keyState);
                     key_.setLastChange(currentTime);
                 }
             } else if (key instanceof KeyGroup) {
@@ -87,8 +87,8 @@ public class KeySettings extends KeyContainer {
         }
     }
     
-    public void updateKeys(final double currentTime, final int keyCode, final boolean isKeyboardKey, final boolean isPressed) {
-        updateKeys(getIKeys(), currentTime, keyCode, isKeyboardKey, isPressed);
+    public void updateKeys(final double currentTime, final int keyCode, final boolean isKeyboardKey, final byte keyState) {
+        updateKeys(getIKeys(), currentTime, keyCode, isKeyboardKey, keyState);
     }
     
     public boolean isPressed(final String name) {

@@ -32,7 +32,7 @@ public class Key implements IKey {
     private final String name;
     private int key;
     private boolean isKeyboardKey;
-    private boolean isPressed;
+    private byte keyState;
     private double lastUpdate = 0.0F;
     
     /**
@@ -83,11 +83,22 @@ public class Key implements IKey {
      */
     @Override
     public boolean isPressed() {
-        return isPressed;
+        return keyState == KeySettings.KEY_PRESSED || keyState == KeySettings.KEY_REPEATED; //TODO Check this, is Repeated == Pressed?
     }
     
+    /*
     public Key setPressed(boolean isPressed) {
         this.isPressed = isPressed;
+        return this;
+    }
+    */
+    
+    public byte getKeyState() {
+        return keyState;
+    }
+    
+    public Key setKeyState(byte keyState) {
+        this.keyState = keyState;
         return this;
     }
     

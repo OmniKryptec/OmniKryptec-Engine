@@ -28,7 +28,7 @@ public class KeyboardHandler implements InputHandler {
     
     // private final InputState[] keys = new InputState[65536]; //TODO Clean this
     // private final byte[] keys = new byte[65536]; //TODO Clean this
-    private final byte[] keys = new byte[GLFW.GLFW_KEY_LAST + 1]; //TODO Test if this includes every key
+    private final byte[] keys = new byte[GLFW.GLFW_KEY_LAST + 1]; //TODO Test if this includes every key //TODO Maybe this is no longer necessary, because the KeySettings Keys having their own isPressed state, BUT this is necessary, because maybe you want to save ALL key states, so this should stay
     private final KeyboardHandler ME = this;
     private final long window;
     private final GLFWKeyCallback keyCallback;
@@ -78,7 +78,7 @@ public class KeyboardHandler implements InputHandler {
     public synchronized InputHandler update(final double currentTime, final KeySettings keySettings) {
         for (int i = 0; i < this.keys.length; i++) {
             if (this.keysLastTime[i] != this.keys[i]) {
-                keySettings.updateKeys(currentTime, i, true);
+                keySettings.updateKeys(currentTime, i, true, this.keys[i]);
             }
         }
         return this;
