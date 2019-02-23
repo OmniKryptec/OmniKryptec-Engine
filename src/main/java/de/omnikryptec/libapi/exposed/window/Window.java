@@ -71,16 +71,16 @@ public abstract class Window {
         this.height = info.get(WindowSetting.Height);
         GLFW.glfwDefaultWindowHints();
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE,
-                info.get(WindowSetting.Resizeable) ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
+                (boolean) info.get(WindowSetting.Resizeable) ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
         setAdditionalGlfwWindowHints(hints);
-        if (info.get(WindowSetting.Fullscreen)) {
+        if ((boolean) info.get(WindowSetting.Fullscreen)) {
             //final GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
             //this.width = vidMode.width();
             //this.height = vidMode.height();
             this.isfullscreen = true;
         }
         this.windowId = GLFW.glfwCreateWindow(this.width, this.height, (String) info.get(WindowSetting.Name),
-                info.get(WindowSetting.Fullscreen) ? GLFW.glfwGetPrimaryMonitor() : 0, 0);
+                (boolean) info.get(WindowSetting.Fullscreen) ? GLFW.glfwGetPrimaryMonitor() : 0, 0);
         if (this.windowId == 0) {
             throw new RuntimeException("Failed to create window");
         }
