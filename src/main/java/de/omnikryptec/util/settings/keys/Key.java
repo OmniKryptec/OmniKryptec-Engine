@@ -82,11 +82,13 @@ public class Key implements IKey {
      */
     @Override
     public boolean isPressed() {
+        //FIXME Maybe never call the InputManager or something similiar, just add a variable to this object "isPressed" and let this be set by the {@link de.codemakers.util.settings.KeySettings#updateKeys} method
         if (this.isKeyboardKey) {
             // TODO Implement InputManager
         } else {
             // TODO Implement InputManager
         }
+        //return isPressed;
         throw new NotYetImplementedRuntimeException();
     }
     
@@ -103,7 +105,7 @@ public class Key implements IKey {
     @Override
     public boolean isLongPressed(final double minTime, final double maxTime) {
         if (true) {
-            throw new NotYetImplementedRuntimeException();
+            throw new NotYetImplementedRuntimeException(); //FIXME Remove this
         }
         if (!isPressed()) {
             return false;
@@ -111,7 +113,7 @@ public class Key implements IKey {
         final double currentTime = LibAPIManager.instance().getTime();
         final double pressedTime = currentTime - this.lastChange;
         if (pressedTime >= minTime && pressedTime <= maxTime) {
-            this.lastChange = currentTime; //FIXME lastChange should be updated externally too, from an InputManager
+            this.lastChange = currentTime;
             return true;
         }
         return false;
