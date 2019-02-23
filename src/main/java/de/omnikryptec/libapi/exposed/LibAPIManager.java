@@ -29,10 +29,12 @@ import org.lwjgl.system.Configuration;
 
 import de.codemakers.base.util.tough.ToughRunnable;
 import de.omnikryptec.event.EventBus;
+import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
+import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 
 public final class LibAPIManager {
@@ -95,6 +97,7 @@ public final class LibAPIManager {
     private static final Logger logger = Logger.getLogger(LibAPIManager.class);
     
     private RenderAPI renderApi;
+    private InputManager inputMgr;
     
     private LibAPIManager() {
     }
@@ -169,6 +172,7 @@ public final class LibAPIManager {
         return instance;
     }
     
+    //TODO let the renderapi directly create the window when the api is created?
     public void setRenderer(final Class<? extends RenderAPI> apiclazz, final Settings<IntegerKey> apisettings) {
         if (isRendererSet()) {
             throw new IllegalStateException("Renderer is already set!");
@@ -182,6 +186,13 @@ public final class LibAPIManager {
         } catch (final Exception ex) {
             ex.printStackTrace();
         }
+    }
+    
+    public void createInputManager(KeySettings keySettings) {
+        if(!isRendererSet()) {
+            throw new IllegalStateException("no window!");
+        }
+        this.inputMgr = new InputManager(getRenderAPI().getWindow().getWindowID(), keySettings);
     }
     
     public boolean isRendererSet() {
