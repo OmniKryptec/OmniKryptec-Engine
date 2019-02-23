@@ -35,6 +35,7 @@ import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
 import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec4;
+import de.omnikryptec.libapi.opengl.framebuffer.GLScreenBuffer;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.batch.RenderBatch2D;
 import de.omnikryptec.render.batch.ShadedBatch2D;
@@ -179,7 +180,7 @@ public class SceneBuilder {
     public void addGraphicsBasicImplTest(final TextureData dat) {
         final MeshData data = new MeshData(VertexAttribute.Index, new int[] { 0, 1, 2, 2, 1, 3 },
                 VertexAttribute.Position, 2, new float[] { -1f, -1f, -1f, 1f, 1f, -1f, 1f, 1f });
-        
+
         final Mesh mesh = new Mesh(data);
         final Shader shader = RenderAPI.get().createShader();
         shader.create("test");
@@ -199,7 +200,6 @@ public class SceneBuilder {
         //OpenGLUtil.setEnabled(RenderConfig.BLEND, true);
         //OpenGLUtil.setBlendMode(BlendMode.ALPHA);
         final int instances = 2;
-        
         addUpdateable(new Updateable() {
             private final ShadedBatch2D batch = new ShadedBatch2D(250);
             private final Matrix3x2f t = new Matrix3x2f();
@@ -238,7 +238,8 @@ public class SceneBuilder {
             
             @Override
             public void postUpdate(final Time time) {
-                fbo.resolveToScreen(1);
+                fbo.resolveToFrameBuffer(GLScreenBuffer.TMP, 1);
+                //fbo.resolveToScreen(1);
             }
             
             @Override

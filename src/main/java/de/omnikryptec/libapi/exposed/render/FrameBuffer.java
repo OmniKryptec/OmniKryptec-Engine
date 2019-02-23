@@ -112,13 +112,6 @@ public interface FrameBuffer {
     Texture getTexture(int targetIndex);
     
     /**
-     * Blits the specified attachment of this {@link FrameBuffer} to the default FrameBuffer (the display).
-     * 
-     * @param i the index of the attachment to resolve
-     */
-    void resolveToScreen(int i);
-    
-    /**
      * Blits the specified attachment of this {@link FrameBuffer} to another
      * FrameBuffer.
      *

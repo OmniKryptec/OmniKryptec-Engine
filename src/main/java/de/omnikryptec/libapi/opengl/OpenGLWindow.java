@@ -17,6 +17,7 @@
 package de.omnikryptec.libapi.opengl;
 
 import de.omnikryptec.libapi.exposed.window.Window;
+import de.omnikryptec.libapi.opengl.framebuffer.GLScreenBuffer;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
