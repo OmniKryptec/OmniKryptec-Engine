@@ -1,4 +1,4 @@
-package de.omnikryptec.libapi.opengl;
+package de.omnikryptec.libapi.opengl.framebuffer;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
@@ -16,11 +16,13 @@ import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.Texture;
+import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.libapi.opengl.texture.GLTexture;
 
 public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
     
-    private static final Deque<GLFrameBuffer> history = new ArrayDeque<>();
+    //GLScreenBuffer needs access, too
+    static final Deque<FrameBuffer> history = new ArrayDeque<>();
     
     private final int width;
     private final int height;
@@ -91,7 +93,7 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
     
     @Override
     public void bindFrameBuffer() {
-        if (this != history.peek()) {
+        if (history.peek() != this) {
             GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, this.pointer);
             GL11.glViewport(0, 0, this.width, this.height);
             history.push(this);
@@ -102,13 +104,9 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
     public void unbindFrameBuffer() {
         if (history.peek() == this) {
             history.pop();
-            if (history.size() == 0) {
-                GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, 0);
-                RenderAPI.get().getWindow().refreshViewport();
-            } else if (history.size() > 0) {
-                final GLFrameBuffer before = history.pop();
-                before.bindFrameBuffer();
-            }
+            history.pop().bindFrameBuffer();
+        } else {
+            throw new IllegalStateException("can not unbind if not top of framebuffer stack!");
         }
     }
     
@@ -166,59 +164,17 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
     }
     
     @Override
-    public void resolveToScreen(int i) {
-        GLFrameBuffer last = null;
-        if (!history.isEmpty()) {
-            last = history.peek();
-            last.unbindFrameBuffer();
-        }
-        GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, 0);
-        GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, this.pointer);
-        if (i >= 0) {
-            GL11.glReadBuffer(GL30.GL_COLOR_ATTACHMENT0 + i);
-            GL11.glDrawBuffer(GL11.GL_BACK);
-            GL30.glBlitFramebuffer(0, 0, this.width, this.height, 0, 0, RenderAPI.get().getWindow().getBufferWidth(),
-                    RenderAPI.get().getWindow().getBufferHeight(), GL11.GL_COLOR_BUFFER_BIT, GL11.GL_NEAREST);
-        } else if (i == -1) {
-            resolveDepth(RenderAPI.get().getWindow().getBufferWidth(), RenderAPI.get().getWindow().getBufferHeight());
-        }
-        if (last != null) {
-            last.bindFrameBuffer();
-        } else {
-            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-        }
-    }
-    
-    @Override
     public void resolveToFrameBuffer(final FrameBuffer target, final int attachment) {
-        final GLFrameBuffer gltarget = (GLFrameBuffer) target;
-        GLFrameBuffer last = null;
-        if (!history.isEmpty()) {
-            last = history.peek();
-            last.unbindFrameBuffer();
-        }
-        GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, gltarget.pointer);
+        target.bindFrameBuffer();
+        boolean depthAttach = attachment == FBTarget.DEPTH_ATTACHMENT_INDEX;
         GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, this.pointer);
-        if (attachment >= 0) {
-            GL11.glReadBuffer(GL30.GL_COLOR_ATTACHMENT0 + attachment);
-            GL30.glBlitFramebuffer(0, 0, this.width, this.height, 0, 0, gltarget.width, gltarget.height,
-                    GL11.GL_COLOR_BUFFER_BIT /* Should work w/o? | GL11.GL_DEPTH_BUFFER_BIT */, GL11.GL_NEAREST);
-        } else if (attachment == -1) {
-            resolveDepth(gltarget.width, gltarget.height);
+        GL11.glReadBuffer(depthAttach ? GL30.GL_DEPTH_ATTACHMENT : (GL30.GL_COLOR_ATTACHMENT0 + attachment));
+        if (target instanceof GLScreenBuffer) {
+            GL11.glDrawBuffer(GL11.GL_BACK);
         }
-        if (last != null) {
-            last.bindFrameBuffer();
-        } else {
-            GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0);
-        }
-    }
-    
-    private void resolveDepth(int targetwidth, int targetheight) {
-        
-        GL11.glReadBuffer(GL30.GL_DEPTH_ATTACHMENT);
-        GL30.glBlitFramebuffer(0, 0, this.width, this.height, 0, 0, targetwidth, targetheight, GL11.GL_DEPTH_BUFFER_BIT,
-                GL11.GL_NEAREST);
-        //GL30.glBindFramebuffer(GL30.GL_FRAMEBUFFER, 0); //not needed, done in resolveToFrameBuffer
+        GL30.glBlitFramebuffer(0, 0, this.width, this.height, 0, 0, target.getWidth(), target.getHeight(),
+                depthAttach ? GL11.GL_DEPTH_BUFFER_BIT : GL11.GL_COLOR_BUFFER_BIT, GL11.GL_NEAREST);
+        target.unbindFrameBuffer();
     }
     
     @Override
@@ -244,12 +200,12 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
     }
     
     @Override
-    public int getWidth() {      
+    public int getWidth() {
         return width;
     }
     
     @Override
-    public int getHeight() {       
+    public int getHeight() {
         return height;
     }
 }
