@@ -16,17 +16,16 @@
 
 package de.omnikryptec.libapi.exposed.window;
 
-import java.nio.IntBuffer;
-
-import org.lwjgl.BufferUtils;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
-
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
+
+import java.nio.IntBuffer;
 
 /**
  * Might not work with Vulkan -> rework.
@@ -36,7 +35,7 @@ import de.omnikryptec.util.settings.Settings;
  */
 public abstract class Window {
     
-    public static enum WindowSetting implements Defaultable {
+    public enum WindowSetting implements Defaultable {
         Width(800), Height(600), Fullscreen(false), Name("Display"), Resizeable(true), LockAspectRatio(false),
         Multisample(0),
         /**
@@ -48,7 +47,7 @@ public abstract class Window {
         
         private final Object def;
         
-        private WindowSetting(final Object def) {
+        WindowSetting(final Object def) {
             this.def = def;
         }
         
@@ -72,16 +71,16 @@ public abstract class Window {
         this.height = info.get(WindowSetting.Height);
         GLFW.glfwDefaultWindowHints();
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE,
-                (boolean) info.get(WindowSetting.Resizeable) ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
+                info.get(WindowSetting.Resizeable) ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
         setAdditionalGlfwWindowHints(hints);
-        if ((boolean) info.get(WindowSetting.Fullscreen)) {
+        if (info.get(WindowSetting.Fullscreen)) {
             //final GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
             //this.width = vidMode.width();
             //this.height = vidMode.height();
             this.isfullscreen = true;
         }
         this.windowId = GLFW.glfwCreateWindow(this.width, this.height, (String) info.get(WindowSetting.Name),
-                (boolean) info.get(WindowSetting.Fullscreen) ? GLFW.glfwGetPrimaryMonitor() : 0, 0);
+                info.get(WindowSetting.Fullscreen) ? GLFW.glfwGetPrimaryMonitor() : 0, 0);
         if (this.windowId == 0) {
             throw new RuntimeException("Failed to create window");
         }
@@ -158,7 +157,7 @@ public abstract class Window {
     }
     
     private void registerCallbacks() {
-        final EventBus windowBus = LibAPIManager.LIBAPI_EVENTBUS;
+        final EventBus windowBus = LibAPIManager.LIB_API_EVENT_BUS;
         GLFW.glfwSetFramebufferSizeCallback(this.windowId, (new GLFWFramebufferSizeCallback() {
             @Override
             public void invoke(final long window, final int width, final int height) {

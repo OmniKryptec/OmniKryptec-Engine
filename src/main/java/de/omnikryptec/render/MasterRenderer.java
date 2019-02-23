@@ -1,8 +1,5 @@
 package de.omnikryptec.render;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
@@ -15,6 +12,9 @@ import de.omnikryptec.render.postprocessing.Postprocessor;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Deprecated
 public class MasterRenderer {
@@ -32,7 +32,7 @@ public class MasterRenderer {
         this.renderSettings = renderSettings;
         this.rendererSets = new ArrayList<>();
         this.postprocessors = new ArrayList<>();
-        LibAPIManager.LIBAPI_EVENTBUS.register(this);
+        LibAPIManager.LIB_API_EVENT_BUS.register(this);
     }
     
     public void renderScene(final Time time, final RenderCollection scene, final List<Viewport> mainViewports) {

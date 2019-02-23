@@ -25,7 +25,7 @@ public class RendererSystem extends ComponentSystem {
     
     public RendererSystem() {
         super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(RenderComponent.class)));
-        LibAPIManager.LIBAPI_EVENTBUS.register(this);
+        LibAPIManager.LIB_API_EVENT_BUS.register(this);
         Window w = RenderAPI.get().getWindow();
         batch.setViewProjection(new Matrix4f().ortho2D(-w.getBufferWidth() / 2, w.getBufferWidth() / 2, -w.getBufferHeight() / 2, w.getBufferHeight() / 2));
     }

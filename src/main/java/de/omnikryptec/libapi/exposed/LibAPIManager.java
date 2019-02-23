@@ -16,17 +16,6 @@
 
 package de.omnikryptec.libapi.exposed;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-
-import javax.annotation.Nonnull;
-
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.system.Configuration;
-
 import de.codemakers.base.util.tough.ToughRunnable;
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.input.InputManager;
@@ -36,12 +25,152 @@ import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.system.Configuration;
+
+import javax.annotation.Nonnull;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 
 public final class LibAPIManager {
     
-    public static enum LibSetting implements Defaultable {
+    public static final EventBus LIB_API_EVENT_BUS = new EventBus(false);
+    private static final Collection<ToughRunnable> shutdownHooks = new ArrayList<>();
+    private static final Logger logger = Logger.getLogger(LibAPIManager.class);
+    private static LibAPIManager instance;
+    private RenderAPI renderApi;
+    private InputManager inputManager;
+    
+    private LibAPIManager() {
+    }
+    
+    @Deprecated
+    public static void init() {
+        init(new Settings<>());
+    }
+    
+    public static void init(@Nonnull Settings<LibSetting> settings) {
+        if (isInitialized()) {
+            throw new IllegalStateException("Already initialized");
+        }
+        setConfiguration(settings);
+        if (GLFW.glfwInit()) {
+            GLFWErrorCallback.createThrow().set();
+            instance = new LibAPIManager();
+            logger.info("Initialized LibAPI");
+        } else {
+            instance = null;
+            throw new RuntimeException("Error while initializing LibAPI");
+        }
+    }
+    
+    /**
+     * Uses the settings to set library options. This method is only effective if no
+     * library functions have been called yet.<br>
+     *
+     * @param settings the {@link Settings} to set the lib options from
+     */
+    private static void setConfiguration(@Nonnull Settings<LibSetting> settings) {
+        if (isInitialized()) {
+            logger.warn("Some settings may not have any effect because the LibAPI is initialized");
+        }
+        Logger.setMinLogType(settings.get(LibSetting.LOGGING_MIN));
+        final boolean debug = settings.get(LibSetting.DEBUG);
+        final boolean fastMath = settings.get(LibSetting.FAST_MATH);
+        final boolean functionDebug = settings.get(LibSetting.DEBUG_FUNCTIONS);
+        if (fastMath) {
+            System.setProperty("joml.fastmath", "true");
+        }
+        Configuration.DEBUG.set(debug);
+        Configuration.DEBUG_LOADER.set(debug);
+        Configuration.DEBUG_FUNCTIONS.set(debug && functionDebug);
+    }
+    
+    public static void shutdown() {
+        if (isInitialized()) {
+            for (ToughRunnable toughRunnable : shutdownHooks) {
+                toughRunnable.run((throwable) -> {
+                    logger.error(String.format("Exception in shutdown hook '%s': %s", toughRunnable, throwable));
+                    throwable.printStackTrace();
+                });
+            }
+            GLFW.glfwTerminate();
+            instance = null;
+            logger.info("Terminated LibAPI");
+        }
+    }
+    
+    public static void registerResourceShutdownHooks(ToughRunnable... toughRunnables) {
+        shutdownHooks.addAll(Arrays.asList(toughRunnables));
+    }
+    
+    public static boolean isInitialized() {
+        return instance != null;
+    }
+    
+    public static LibAPIManager instance() {
+        return instance;
+    }
+    
+    //TODO let the renderapi directly create the window when the api is created?
+    public void setRenderer(Class<? extends RenderAPI> clazz, Settings<IntegerKey> apiSettings) {
+        if (isRendererSet()) {
+            throw new IllegalStateException("Renderer is already set!");
+        }
+        try {
+            final Constructor<? extends RenderAPI> renderApiConstructor = clazz.getConstructor(apiSettings.getClass());
+            renderApiConstructor.setAccessible(true);
+            renderApi = renderApiConstructor.newInstance(apiSettings);
+        } catch (NoSuchMethodException ex) {
+            throw new IllegalArgumentException("Invalid RendererAPI: Missing constructor", ex);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void createInputManager(KeySettings keySettings) {
+        if (!isRendererSet()) {
+            throw new IllegalStateException("No window!");
+        }
+        inputManager = new InputManager(getRenderAPI().getWindow().getWindowID(), keySettings);
+    }
+    
+    public InputManager getInputManager() {
+        return inputManager;
+    }
+    
+    public boolean isRendererSet() {
+        return renderApi != null;
+    }
+    
+    public RenderAPI getRenderAPI() {
+        return renderApi;
+    }
+    
+    public void pollEvents() {
+        GLFW.glfwPollEvents();
+    }
+    
+    /**
+     * Returns the value of the GLFW timer. The timer measures time elapsed since
+     * GLFW was initialized.
+     * <p>
+     * The resolution of the timer is system dependent, but is usually on the order
+     * of a few micro- or nanoseconds. It uses the highest-resolution monotonictime
+     * source on each supported platform.
+     *
+     * @return the current value, in seconds, or zero if an error occurred
+     */
+    public double getTime() {
+        return GLFW.glfwGetTime();
+    }
+    
+    public enum LibSetting implements Defaultable {
         /**
-         * Enables debug mode of the Omnikryptec-Engine and LWJGL. This might do
+         * Enables debug mode of the OmniKryptec-Engine and LWJGL. This might do
          * expensive checks, performance-wise.<br>
          * <br>
          * The default value is <code>false</code>.
@@ -67,7 +196,7 @@ public final class LibAPIManager {
          *
          * @see org.joml.Math
          */
-        FASTMATH(true),
+        FAST_MATH(true),
         /**
          * The minimum {@link Logger.LogType} that will be logged. <br>
          * <br>
@@ -79,146 +208,14 @@ public final class LibAPIManager {
         
         private final Object defaultSetting;
         
-        LibSetting(final Object def) {
-            this.defaultSetting = def;
+        LibSetting(Object defaultSetting) {
+            this.defaultSetting = defaultSetting;
         }
         
         @Override
         public <T> T getDefault() {
             return (T) this.defaultSetting;
         }
-    }
-    
-    public static final EventBus LIBAPI_EVENTBUS = new EventBus(false);
-    
-    private static final Collection<ToughRunnable> shutdownHooks = new ArrayList<>();
-    private static LibAPIManager instance;
-    
-    private static final Logger logger = Logger.getLogger(LibAPIManager.class);
-    
-    private RenderAPI renderApi;
-    private InputManager inputMgr;
-    
-    private LibAPIManager() {
-    }
-    
-    @Deprecated
-    public static void init() {
-        init(new Settings<>());
-    }
-    
-    public static void init(@Nonnull final Settings<LibSetting> settings) {
-        if (isInitialized()) {
-            throw new IllegalStateException("Already initialized");
-        }
-        setConfiguration(settings);
-        if (GLFW.glfwInit()) {
-            GLFWErrorCallback.createThrow().set();
-            instance = new LibAPIManager();
-            logger.info("Initialized LibAPI");
-        } else {
-            instance = null;
-            throw new RuntimeException("Error while initializing LibAPI");
-        }
-    }
-    
-    /**
-     * Uses the settings to set library options. This method is only effective if no
-     * library functions have been called yet.<br>
-     *
-     * @param settings the {@link Settings} to set the lib options from
-     */
-    private static void setConfiguration(@Nonnull final Settings<LibSetting> settings) {
-        if (isInitialized()) {
-            logger.warn("Some settings may not have any effect ebecause the LibAPI is initialized");
-        }
-        Logger.setMinLogType(settings.get(LibSetting.LOGGING_MIN));
-        final boolean debug = settings.get(LibSetting.DEBUG);
-        final boolean fastmath = settings.get(LibSetting.FASTMATH);
-        final boolean functionDebug = settings.get(LibSetting.DEBUG_FUNCTIONS);
-        if (fastmath) {
-            System.setProperty("joml.fastmath", "true");
-        }
-        Configuration.DEBUG.set(debug);
-        Configuration.DEBUG_LOADER.set(debug);
-        Configuration.DEBUG_FUNCTIONS.set(debug && functionDebug);
-    }
-    
-    public static void shutdown() {
-        if (isInitialized()) {
-            for (final ToughRunnable r : shutdownHooks) {
-                try {
-                    r.run();
-                } catch (final Exception e) {
-                    logger.error("Exception in shutdown hook '" + r + "': " + e);
-                    e.printStackTrace();
-                }
-            }
-            GLFW.glfwTerminate();
-            instance = null;
-            logger.info("Terminated LibAPI");
-        }
-    }
-    
-    public static void registerResourceShutdownHooks(final ToughRunnable... runnables) {
-        shutdownHooks.addAll(Arrays.asList(runnables));
-    }
-    
-    public static boolean isInitialized() {
-        return instance != null;
-    }
-    
-    public static LibAPIManager instance() {
-        return instance;
-    }
-    
-    //TODO let the renderapi directly create the window when the api is created?
-    public void setRenderer(final Class<? extends RenderAPI> apiclazz, final Settings<IntegerKey> apisettings) {
-        if (isRendererSet()) {
-            throw new IllegalStateException("Renderer is already set!");
-        }
-        try {
-            final Constructor<? extends RenderAPI> rApiConstructor = apiclazz.getConstructor(apisettings.getClass());
-            rApiConstructor.setAccessible(true);
-            this.renderApi = rApiConstructor.newInstance(apisettings);
-        } catch (final NoSuchMethodException ex) {
-            throw new IllegalArgumentException("Invalid RendererAPI: Missing constructor", ex);
-        } catch (final Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-    
-    public void createInputManager(KeySettings keySettings) {
-        if(!isRendererSet()) {
-            throw new IllegalStateException("no window!");
-        }
-        this.inputMgr = new InputManager(getRenderAPI().getWindow().getWindowID(), keySettings);
-    }
-    
-    public boolean isRendererSet() {
-        return this.renderApi != null;
-    }
-    
-    public RenderAPI getRenderAPI() {
-        return this.renderApi;
-    }
-    
-    public void pollEvents() {
-        GLFW.glfwPollEvents();
-    }
-    
-    /**
-     * Returns the value of the GLFW timer. The timer measures time elapsed since
-     * GLFW was initialized.
-     * <p>
-     * The resolution of the timer is system dependent, but is usually on the order
-     * of a few micro- or nanoseconds. It uses the highest-resolution monotonictime
-     * source on each supported platform.
-     *
-     * @return the current value, in seconds, or zero if an error occurred
-     */
-    public double getTime() {
-        return GLFW.glfwGetTime();
     }
     
 }
