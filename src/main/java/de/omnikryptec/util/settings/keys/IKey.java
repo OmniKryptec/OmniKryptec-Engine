@@ -26,23 +26,19 @@ public interface IKey {
     String getName();
     
     /**
-     * Returns if this {@link de.omnikryptec.util.settings.keys.IKey} is being
-     * pressed
+     * Returns if this {@link de.omnikryptec.util.settings.keys.IKey} is being pressed
      *
-     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.IKey}
-     *         is pressed
+     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.IKey} is pressed
      */
     boolean isPressed();
     
     /**
-     * Returns if this {@link de.omnikryptec.util.settings.keys.IKey} is being
-     * pressed for a specified time
+     * Returns if this {@link de.omnikryptec.util.settings.keys.IKey} is being pressed for a specified time
      *
      * @param minTime Minimum pressing time
      * @param maxTime Maximum pressing time
      *
-     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.IKey}
-     *         is pressed for the specified time
+     * @return <tt>true</tt> if this {@link de.omnikryptec.util.settings.keys.IKey} is pressed for the specified time
      */
     boolean isLongPressed(double minTime, double maxTime);
     
