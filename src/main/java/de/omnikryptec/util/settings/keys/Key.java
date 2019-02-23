@@ -33,7 +33,7 @@ public class Key implements IKey {
     private int key;
     private boolean isKeyboardKey;
     private boolean isPressed;
-    private double lastChange = 0.0F;
+    private double lastUpdate = 0.0F;
     
     /**
      * Constructs a {@link de.omnikryptec.util.settings.keys.Key} (as a keyboard
@@ -110,9 +110,9 @@ public class Key implements IKey {
             return false;
         }
         final double currentTime = LibAPIManager.instance().getTime();
-        final double pressedTime = currentTime - this.lastChange;
+        final double pressedTime = currentTime - this.lastUpdate;
         if ((pressedTime >= minTime || minTime < 0) && (pressedTime <= maxTime || maxTime < 0)) {
-            //this.lastChange = currentTime; //FIXME lastChange should just show the last time, when this key isPressed was updated. Why should this method reset this time?
+            //this.lastChange = currentTime; //FIXME lastChange/lastUpdate should just show the last time, when this key isPressed was updated. Why should this method reset this time?
             return true;
         }
         return false;
@@ -163,24 +163,24 @@ public class Key implements IKey {
     }
     
     /**
-     * Returns the last change of this {@link de.omnikryptec.util.settings.keys.Key}
+     * Returns the last update of this {@link de.omnikryptec.util.settings.keys.Key}
      *
-     * @return Last change of this {@link de.omnikryptec.util.settings.keys.Key}
+     * @return Last update of this {@link de.omnikryptec.util.settings.keys.Key}
      */
-    public double getLastChange() { // FIXME Maybe use another System to determine long key presses
-        return this.lastChange;
+    public double getLastUpdate() { // FIXME Maybe use another System to determine long key presses
+        return lastUpdate;
     }
     
     /**
-     * Sets the last change of this {@link de.omnikryptec.util.settings.keys.Key}
+     * Sets the last update of this {@link de.omnikryptec.util.settings.keys.Key}
      *
-     * @param lastChange Last change of this
+     * @param lastUpdate Last update of this
      *                   {@link de.omnikryptec.util.settings.keys.Key}
      *
      * @return A reference to this {@link de.omnikryptec.util.settings.keys.Key}
      */
-    public Key setLastChange(final double lastChange) {
-        this.lastChange = lastChange;
+    public Key setLastUpdate(final double lastUpdate) {
+        this.lastUpdate = lastUpdate;
         return this;
     }
     
@@ -203,8 +203,7 @@ public class Key implements IKey {
     
     @Override
     public String toString() {
-        return "Key{" + "name='" + this.name + '\'' + ", key=" + this.key + ", isKeyboardKey=" + this.isKeyboardKey
-                + ", lastChange=" + this.lastChange + '}';
+        return "Key{" + "name='" + this.name + '\'' + ", key=" + this.key + ", isKeyboardKey=" + this.isKeyboardKey + ", isPressed=" + this.isPressed + ", lastUpdate=" + this.lastUpdate + '}';
     }
     
 }
