@@ -138,27 +138,15 @@ public class KeyGroup extends KeyContainer implements IKey {
         if (isEmpty()) {
             return false;
         }
-        boolean isLongPressed = this.allIKeysNeedsToBePressed;
-        // boolean firstPressed = false;
-        for (final IKey key : getKeys()) {
-            // final boolean isPressed_ = key.isPressed();
-            final boolean isLongPressed_ = key.isLongPressed(minTime, maxTime);
-            /*
-             * if (!isLongPressed_ && allIKeysNeedsToBePressed && !(firstPressed &&
-             * isPressed_)) { isLongPressed = false; break; } else if (isLongPressed_ &&
-             * allIKeysNeedsToBePressed) { firstPressed = true; } else if (isLongPressed_) {
-             * isLongPressed = true; break; } //FIXME Why do we need 'firstPressed'??? Until
-             * we know why, keep the snippet below...
-             */
-            if (isLongPressed_ && !this.allIKeysNeedsToBePressed) {
-                isLongPressed = true;
-                break;
-            } else if (!isLongPressed_ && !this.allIKeysNeedsToBePressed) {
-                isLongPressed = false;
-                break;
+        for (IKey ikey : getIKeys()) {
+            final boolean isLongPressed = ikey.isLongPressed(minTime, maxTime);
+            if (!isLongPressed && allIKeysNeedsToBePressed) {
+                return false;
+            } else if (isLongPressed && !allIKeysNeedsToBePressed) {
+                return true;
             }
         }
-        return isLongPressed;
+        return allIKeysNeedsToBePressed;
     }
     
     /**
