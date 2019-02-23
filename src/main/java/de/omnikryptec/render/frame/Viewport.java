@@ -38,7 +38,7 @@ public class Viewport {
         }
         RenderUtil.bindIfNonNull(target);
         for (final Renderer renderer : this.renderables.keySet()) {
-            renderer.render(time, this.projection, renderer.supportsObjects() ? this.renderables.get(renderer) : null);
+            //renderer.render(time, this.projection, renderer.supportsObjects() ? this.renderables.get(renderer) : null);
         }
         RenderUtil.unbindIfNonNull(target);
     }
@@ -69,12 +69,14 @@ public class Viewport {
         if (!this.rendererSet.supports(renderer)) {
             throw new IllegalArgumentException("renderer not supported");
         }
+        /*
         if (!renderer.supportsObjects()) {
             throw new IllegalArgumentException("renderer is not an object renderer");
         }
+        */
         Collection<RenderedObject> list = this.renderables.get(renderer);
         if (list == null) {
-            list = Util.ensureNonNull(renderer.createRenderList());
+            //list = Util.ensureNonNull(renderer.createRenderList());
             this.renderables.put(renderer, list);
         }
         return list;
