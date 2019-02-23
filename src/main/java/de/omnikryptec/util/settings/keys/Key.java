@@ -111,7 +111,7 @@ public class Key implements IKey {
         final double currentTime = LibAPIManager.instance().getTime();
         final double pressedTime = currentTime - this.lastChange;
         if (pressedTime >= minTime && pressedTime <= maxTime) {
-            this.lastChange = currentTime;
+            this.lastChange = currentTime; //FIXME lastChange should be updated externally too, from an InputManager
             return true;
         }
         return false;
