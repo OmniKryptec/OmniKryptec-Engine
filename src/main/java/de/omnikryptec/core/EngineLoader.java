@@ -39,7 +39,7 @@ import javax.annotation.Nonnull;
  * non-static.<br>
  * <ul>
  * <li>In the non-static case, the engine will be started via
- * {@link de.omnikryptec.core.EngineLoader#start()}.</li>
+ * {@code start()}.</li>
  * <li>In the static case, this class only provides utility functions.</li>
  * </ul>
  * The use of this class is not a requirement to use the Engine; libraries and
@@ -60,13 +60,17 @@ public abstract class EngineLoader {
     }
     
     /**
-     * Initializes various parts of the {@link de.omnikryptec.libapi.exposed.LibAPIManager}.
+     * Initializes various parts of the {@code LibAPIManager}.
      *
-     * @param libSettings Settings configuring the {@link de.omnikryptec.libapi.exposed.LibAPIManager}
-     * @param rendererApi the RenderAPI to use
-     * @param apiSettings Settings of the RenderAPI (this is RenderAPI specific)
+     * @param libSettings Settings configuring the {@code LibAPIManager}
+     * @param rendererApi the {@code RenderAPI} to use
+     * @param apiSettings Settings of the {@code RenderAPI} (this is
+     *                    {@code RenderAPI} specific)
+     * 
+     * @see de.omnikryptec.libapi.exposed.render.RenderAPI
      */
-    public static void initialize(final Settings<LibSetting> libSettings, final Class<? extends RenderAPI> rendererApi, final Settings<IntegerKey> apiSettings) {
+    public static void initialize(final Settings<LibSetting> libSettings, final Class<? extends RenderAPI> rendererApi,
+            final Settings<IntegerKey> apiSettings) {
         // Initialize everything required
         LibAPIManager.init(libSettings);
         LibAPIManager.instance().setRenderer(rendererApi, apiSettings);
@@ -74,13 +78,17 @@ public abstract class EngineLoader {
     }
     
     /**
-     * Starts the engine. The start parameters can be set in
-     * {@link de.omnikryptec.core.EngineLoader#configure(Settings, Settings, Settings, Settings)}. <br>
-     * Then the engine gets {@link de.omnikryptec.core.EngineLoader#initialize(Settings, Class, Settings)} and the
-     * {@link de.omnikryptec.libapi.exposed.window.Window}, {@link de.omnikryptec.core.loop.IGameLoop}, {@link de.omnikryptec.core.scene.GameController} and
-     * {@link de.omnikryptec.core.scene.UpdateController} are created.<br>
-     * After or before making the window visible, {@link de.omnikryptec.core.EngineLoader#onInitialized()} is
-     * called. If so configured, the {@link de.omnikryptec.core.loop.IGameLoop} will be started.
+     * Starts the engine. The start parameters can be set by overriding
+     * {@code configure}. <br>
+     * Then the engine gets initialized and the {@code Window}, {@code IGameLoop},
+     * {@code GameController} and {@code UpdateController} are created.<br>
+     * After or before making the window visible, {@code onInitialized()} is called.
+     * If so configured, the {@code IGameLoop} will be started.
+     * 
+     * @see de.omnikryptec.core.EngineLoader#initialize(Settings, Class, Settings)
+     * @see de.omnikryptec.core.loop.IGameLoop
+     * @see de.omnikryptec.core.scene.GameController
+     * @see de.omnikryptec.core.scene.UpdateController
      */
     @Nonnull
     public void start() {
@@ -98,6 +106,7 @@ public abstract class EngineLoader {
         this.resources = new ResourceManager();
         this.resources.addDefaultLoader();
         this.window = LibAPIManager.instance().getRenderAPI().createWindow(windowSettings);
+        //TODO create Inputmanager / Move to initialize when RenderAPI creates its window
         this.gameLoop = loaderSettings.get(LoaderSetting.GAME_LOOP);
         this.gameController = new GameController();
         this.updateController = new UpdateController(this.gameController, this.window);
@@ -121,9 +130,12 @@ public abstract class EngineLoader {
     }
     
     /**
-     * Shuts down the engine. Only if it has been started by {@link de.omnikryptec.core.EngineLoader#start()}.<br>
-     * First {@link de.omnikryptec.core.EngineLoader#onShutdown()} gets called. A {@link de.omnikryptec.core.loop.IGameLoop} that might be running
-     * gets stopped, the window gets disposed and the {@link de.omnikryptec.libapi.exposed.LibAPIManager} gets shut down.
+     * Shuts down the engine. Only if it has been started by
+     * {@code start()}.<br>
+     * First {@code onShutdown()} gets called. A
+     * {@code IGameLoop} that might be running gets
+     * stopped, the window gets disposed and the
+     * {@code LibAPIManager} gets shut down.
      */
     public void shutdown() {
         if (this.started) {
@@ -195,7 +207,8 @@ public abstract class EngineLoader {
         return this.started;
     }
     
-    protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
+    protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
     }
     
     protected abstract void onInitialized();
@@ -209,22 +222,25 @@ public abstract class EngineLoader {
          * The rendering API to use by the engine. Only in non-static cases of
          * {@link de.omnikryptec.core.EngineLoader}.<br>
          * <br>
-         * The default value is {@link de.omnikryptec.libapi.exposed.render.RenderAPI#OpenGL}.
+         * The default value is
+         * {@link de.omnikryptec.libapi.exposed.render.RenderAPI#OpenGL}.
          */
         RENDER_API(RenderAPI.OpenGL),
         /**
          * When to show the window after it's creation. Only in non-static cases of
          * {@link de.omnikryptec.core.EngineLoader}. <br>
          * <br>
-         * The default value is {@link de.omnikryptec.core.EngineLoader.WindowMakeVisible#IMMEDIATELY}.
+         * The default value is
+         * {@link de.omnikryptec.core.EngineLoader.WindowMakeVisible#IMMEDIATELY}.
          *
          * @see WindowMakeVisible
          */
         SHOW_WINDOW_AFTER_CREATION(WindowMakeVisible.IMMEDIATELY),
         /**
-         * The option that defines if the {@link de.omnikryptec.core.loop.IGameLoop} should be started after
-         * initialization. Only in non-static cases of {@link de.omnikryptec.core.EngineLoader} and only for
-         * non-null {@link de.omnikryptec.core.EngineLoader.LoaderSetting#GAME_LOOP}.<br>
+         * The option that defines if the {@link de.omnikryptec.core.loop.IGameLoop}
+         * should be started after initialization. Only in non-static cases of
+         * {@link de.omnikryptec.core.EngineLoader} and only for non-null
+         * {@link de.omnikryptec.core.EngineLoader.LoaderSetting#GAME_LOOP}.<br>
          * <br>
          * The default value is <code>true</code>
          */
@@ -240,9 +256,11 @@ public abstract class EngineLoader {
         GAME_LOOP(new DefaultGameLoop()),
         
         /**
-         * Shutdown the engine if the {@link de.omnikryptec.core.loop.IGameLoop} exits. Only if
-         * {@link de.omnikryptec.core.EngineLoader.LoaderSetting#START_GAME_LOOP_AFTER_INIT} is set to <code>true</code>. Only in
-         * non-static cases of {@link de.omnikryptec.core.EngineLoader}<br>
+         * Shutdown the engine if the {@link de.omnikryptec.core.loop.IGameLoop} exits.
+         * Only if
+         * {@link de.omnikryptec.core.EngineLoader.LoaderSetting#START_GAME_LOOP_AFTER_INIT}
+         * is set to <code>true</code>. Only in non-static cases of
+         * {@link de.omnikryptec.core.EngineLoader}<br>
          * <br>
          * The default value is <code>true</code>
          */
@@ -261,8 +279,9 @@ public abstract class EngineLoader {
     }
     
     /**
-     * Will only be used in non-static cases of {@link de.omnikryptec.core.EngineLoader}. Defines when
-     * to show the {@link de.omnikryptec.libapi.exposed.window.Window}.
+     * Will only be used in non-static cases of
+     * {@link de.omnikryptec.core.EngineLoader}. Defines when to show the
+     * {@link de.omnikryptec.libapi.exposed.window.Window}.
      *
      * @author pcfreak9000
      * @see de.omnikryptec.libapi.exposed.window.Window#setVisible(boolean)
@@ -275,7 +294,8 @@ public abstract class EngineLoader {
          */
         IMMEDIATELY,
         /**
-         * Show the window after {@link de.omnikryptec.core.EngineLoader#onContextCreationFinish()}.
+         * Show the window after
+         * {@link de.omnikryptec.core.EngineLoader#onContextCreationFinish()}.
          */
         AFTER_INIT,
         /**

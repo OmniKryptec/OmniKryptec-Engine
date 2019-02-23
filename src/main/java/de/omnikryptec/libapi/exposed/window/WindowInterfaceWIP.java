@@ -27,4 +27,6 @@ public interface WindowInterfaceWIP {
 
     void refreshViewport();
 
+    long getID();
+    
 }
