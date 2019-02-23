@@ -106,7 +106,7 @@ public class MouseHandler implements InputHandler {
     public synchronized InputHandler update(final double currentTime, final KeySettings keySettings) {
         for (int i = 0; i < this.buttons.length; i++) {
             if (this.buttonsLastTime[i] != this.buttons[i]) {
-                keySettings.updateKeys(currentTime, i, false);
+                keySettings.updateKeys(currentTime, i, false, this.buttons[i]);
             }
         }
         return this;
