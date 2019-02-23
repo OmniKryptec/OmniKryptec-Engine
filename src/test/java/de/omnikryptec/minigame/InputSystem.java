@@ -21,7 +21,7 @@ public class InputSystem extends ComponentSystem {
         mgr.init();
     }
     
-    private InputManager mgr = new InputManager(RenderAPI.get().getWindow().getWindowID());
+    private InputManager mgr = new InputManager(RenderAPI.get().getWindow().getWindowID(), null);
     
     private ComponentMapper<MovementComponent> posMapper = new ComponentMapper<>(MovementComponent.class);
     private ComponentMapper<PlayerComponent> playMapper = new ComponentMapper<>(PlayerComponent.class);

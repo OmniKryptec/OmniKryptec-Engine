@@ -20,6 +20,7 @@ import de.omnikryptec.core.scene.SceneBuilder;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
 import de.omnikryptec.util.settings.IntegerKey;
+import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 
 public class ComfortTest extends EngineLoader {
@@ -30,7 +31,7 @@ public class ComfortTest extends EngineLoader {
 
     @Override
     protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings, KeySettings keySettings) {
         libsettings.set(LibSetting.DEBUG, true);
         windowSettings.set(WindowSetting.Name, "ComfortTest-Window");
     }

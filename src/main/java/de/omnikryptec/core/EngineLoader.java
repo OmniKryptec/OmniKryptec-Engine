@@ -30,6 +30,7 @@ import de.omnikryptec.resource.loadervpc.ResourceProvider;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
+import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 
 import javax.annotation.Nonnull;
@@ -99,13 +100,15 @@ public abstract class EngineLoader {
         final Settings<LibSetting> libSettings = new Settings<>();
         final Settings<WindowSetting> windowSettings = new Settings<>();
         final Settings<IntegerKey> rapiSettings = new Settings<>();
-        configure(loaderSettings, libSettings, windowSettings, rapiSettings);
+        final KeySettings keySettings = new KeySettings();
+        configure(loaderSettings, libSettings, windowSettings, rapiSettings, keySettings);
         // or let them (the natives) be loaded by Configuration.SHARED_LIBRARY and
         // LIBRARY_PATH <-- Seems to work, so better use it
         initialize(libSettings, loaderSettings.get(LoaderSetting.RENDER_API), rapiSettings);
         this.resources = new ResourceManager();
         this.resources.addDefaultLoader();
         this.window = LibAPIManager.instance().getRenderAPI().createWindow(windowSettings);
+        LibAPIManager.instance().createInputManager(keySettings);
         //TODO create Inputmanager / Move to initialize when RenderAPI creates its window
         this.gameLoop = loaderSettings.get(LoaderSetting.GAME_LOOP);
         this.gameController = new GameController();
@@ -208,7 +211,7 @@ public abstract class EngineLoader {
     }
     
     protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings, KeySettings keySettings) {
     }
     
     protected abstract void onInitialized();

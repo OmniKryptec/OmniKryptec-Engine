@@ -12,6 +12,7 @@ import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.IntegerKey;
+import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 
 public class Minigame extends EngineLoader {
@@ -23,7 +24,9 @@ public class Minigame extends EngineLoader {
     }
     
     @Override
-    protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
+    protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
+            KeySettings keySettings) {
         libSettings.set(LibSetting.DEBUG, true);
         libSettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "Minigame");
