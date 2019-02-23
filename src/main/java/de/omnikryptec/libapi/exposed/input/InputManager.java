@@ -29,6 +29,7 @@ import org.lwjgl.glfw.GLFW;
 public class InputManager implements Updateable {
     
     private final long window;
+    private KeySettings keySettings;
     //private final AtomicReference<Double> currentTime = new AtomicReference<>(0.0); //TODO Clean this
     // Keyboard part
     private final KeyboardHandler keyboardHandler;
@@ -49,14 +50,19 @@ public class InputManager implements Updateable {
     private boolean longButtonPressEnabled = false;
     private CursorType cursorType = CursorType.DISABLED;
     
-    public InputManager(final long window) {
-        this(window, new KeyboardHandler(window), new MouseHandler(window));
+    public InputManager(final long window, KeySettings keySettings) {
+        this(window, keySettings, new KeyboardHandler(window), new MouseHandler(window));
     }
     
-    public InputManager(final long window, final KeyboardHandler keyboardHandler, final MouseHandler mouseHandler) {
+    public InputManager(final long window, KeySettings keySettings, final KeyboardHandler keyboardHandler, final MouseHandler mouseHandler) {
         this.window = window;
+        this.keySettings = keySettings;
         this.keyboardHandler = keyboardHandler;
         this.mouseHandler = mouseHandler;
+    }
+    
+    public KeySettings getKeySettings() {
+        return keySettings;
     }
     
     public KeyboardHandler getKeyboardHandler() {
@@ -78,7 +84,7 @@ public class InputManager implements Updateable {
         // final double currentTime = LibAPIManager.active().getTime(); //TODO Clean this
         //currentTime.set(LibAPIManager.active().getTime()); //TODO Clean this
         //final double currentTime_ = currentTime.get(); //TODO Clean this
-        final KeySettings keySettings = null; //FIXME KeySettings missing!
+        //final KeySettings keySettings = null; //FIXME KeySettings missing!
         if (this.longButtonPressEnabled) {
             this.keyboardHandler.preUpdate(time.current, keySettings);
             this.mouseHandler.preUpdate(time.current, keySettings);
@@ -91,7 +97,7 @@ public class InputManager implements Updateable {
         // final double currentTime = LibAPIManager.active().getTime(); //TODO Clean this
         //final double currentTime_ = currentTime.get(); //TODO Clean this
         this.keyboardHandler.clearInputString();
-        final KeySettings keySettings = null; //FIXME KeySettings missing!
+        //final KeySettings keySettings = null; //FIXME KeySettings missing!
         if (this.longButtonPressEnabled) {
             this.keyboardHandler.update(time.current, keySettings);
             this.mouseHandler.update(time.current, keySettings);
@@ -103,7 +109,7 @@ public class InputManager implements Updateable {
     public void postUpdate(final Time time) {
         // final double currentTime = LibAPIManager.active().getTime(); //TODO Clean this
         //final double currentTime_ = currentTime.get(); //TODO Clean this
-        final KeySettings keySettings = null; //FIXME KeySettings missing!
+        //final KeySettings keySettings = null; //FIXME KeySettings missing!
         if (this.longButtonPressEnabled) {
             this.keyboardHandler.postUpdate(time.current, keySettings);
             this.mouseHandler.postUpdate(time.current, keySettings);
