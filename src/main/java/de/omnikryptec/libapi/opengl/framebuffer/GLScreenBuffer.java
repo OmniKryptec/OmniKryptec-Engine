@@ -17,7 +17,8 @@ public class GLScreenBuffer implements FrameBuffer {
         
     private int width;
     private int height;
-    private int[] viewport;
+    //resolveToFrameBuffer needs access
+    int[] viewport;
     private double aspectRatio;
     
     public GLScreenBuffer(long window, double aspectRatio) {

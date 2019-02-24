@@ -19,7 +19,7 @@ import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.libapi.opengl.texture.GLTexture;
 
 public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
-    
+
     //GLScreenBuffer needs access, too
     static final Deque<FrameBuffer> history = new ArrayDeque<>();
     
@@ -168,10 +168,17 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
         boolean depthAttach = attachment == FBTarget.DEPTH_ATTACHMENT_INDEX;
         GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, this.pointer);
         GL11.glReadBuffer(depthAttach ? GL30.GL_DEPTH_ATTACHMENT : (GL30.GL_COLOR_ATTACHMENT0 + attachment));
+        int tx = 0;
+        int ty = 0;
+        int tw = target.getWidth();
+        int th = target.getHeight();
         if (target instanceof GLScreenBuffer) {
             GL11.glDrawBuffer(GL11.GL_BACK);
+            GLScreenBuffer s = (GLScreenBuffer) target;
+            tx = s.viewport[0];
+            ty = s.viewport[1];
         }
-        GL30.glBlitFramebuffer(0, 0, this.width, this.height, 0, 0, target.getWidth(), target.getHeight(),
+        GL30.glBlitFramebuffer(0, 0, this.width, this.height, tx, ty, tx + tw, ty + th,
                 depthAttach ? GL11.GL_DEPTH_BUFFER_BIT : GL11.GL_COLOR_BUFFER_BIT, GL11.GL_NEAREST);
         target.unbindFrameBuffer();
     }
