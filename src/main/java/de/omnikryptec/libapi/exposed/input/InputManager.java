@@ -23,11 +23,25 @@ import org.joml.Vector4dc;
 import org.lwjgl.glfw.GLFW;
 
 import de.omnikryptec.core.Updateable;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.updater.Time;
 
 public class InputManager implements Updateable {
+    
+    /**
+     * The currently set {@code InputManager}.
+     * <p>
+     * Note: this is the same as calling<br>
+     * {@code LibAPIManager.instance().getInputManager()}
+     * </p>
+     * 
+     * @return the current {@code InputManager}
+     */
+    public static InputManager get() {
+        return LibAPIManager.instance().getInputManager();
+    }
     
     private final long window;
     private KeySettings keySettings;
@@ -55,7 +69,8 @@ public class InputManager implements Updateable {
         this(window, keySettings, new KeyboardHandler(window), new MouseHandler(window));
     }
     
-    public InputManager(final long window, KeySettings keySettings, final KeyboardHandler keyboardHandler, final MouseHandler mouseHandler) {
+    public InputManager(final long window, KeySettings keySettings, final KeyboardHandler keyboardHandler,
+            final MouseHandler mouseHandler) {
         this.window = window;
         this.keySettings = keySettings;
         this.keyboardHandler = keyboardHandler;

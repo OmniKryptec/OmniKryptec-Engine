@@ -34,10 +34,10 @@ public interface RenderAPI {
      * The currently set {@link RenderAPI}.
      * <p>
      * Note: this is the same as calling<br>
-     * <code>LibAPIManager.instance().getRenderAPI()</code>
+     * {@code LibAPIManager.instance().getRenderAPI()}
      * </p>
      *
-     * @return the current RenderAPI
+     * @return the current {@code RenderAPI}
      */
     public static RenderAPI get() {
         return LibAPIManager.instance().getRenderAPI();
