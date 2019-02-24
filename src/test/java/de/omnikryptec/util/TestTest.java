@@ -23,7 +23,6 @@ import org.joml.FrustumIntersection;
 import de.omnikryptec.render.storage.RenderedObject;
 import de.omnikryptec.render.storage.RenderedObjectManager;
 import de.omnikryptec.render.storage.RenderedObjectType;
-import de.omnikryptec.util.data.DynamicArray;
 
 public class TestTest {
     

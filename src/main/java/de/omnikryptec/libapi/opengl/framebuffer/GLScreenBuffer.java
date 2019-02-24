@@ -1,29 +1,53 @@
 package de.omnikryptec.libapi.opengl.framebuffer;
 
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
-import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.util.UnsupportedOperationException;
+import de.omnikryptec.util.math.MathUtil;
 
 public class GLScreenBuffer implements FrameBuffer {
     private static final FBTarget[] EMPTY = new FBTarget[0];
     private static final int GL_ID = 0;
-    
-    public static final GLScreenBuffer TMP = new GLScreenBuffer();
-    
+        
     private int width;
     private int height;
     private int[] viewport;
+    private double aspectRatio;
+    
+    public GLScreenBuffer(long window, double aspectRatio) {
+        int[] wA = new int[1];
+        int[] hA = new int[1];
+        GLFW.glfwGetFramebufferSize(window, wA, hA);
+        this.width = wA[0];
+        this.height = hA[0];
+        this.aspectRatio = aspectRatio;
+        GLFW.glfwSetFramebufferSizeCallback(window, new GLFWFramebufferSizeCallback() {
+            
+            @Override
+            public void invoke(long window, int width, int height) {
+                GLScreenBuffer.this.width = width;
+                GLScreenBuffer.this.height = height;
+                setViewport();
+            }
+        });
+    }
+    
+    private void setViewport() {
+        viewport = MathUtil.calculateViewport(this.aspectRatio, width, height);
+        GL11.glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+    }
     
     @Override
     public void bindFrameBuffer() {
         if (GLFrameBuffer.history.peek() != this) {
             GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, GL_ID);
-            //TODO set viewport
-            RenderAPI.get().getWindow().refreshViewport();
+            setViewport();
             GLFrameBuffer.history.push(this);
         }
     }
@@ -46,15 +70,14 @@ public class GLScreenBuffer implements FrameBuffer {
         return EMPTY;
     }
     
-    //FIXME remove tmp things
     @Override
     public int getWidth() {
-        return RenderAPI.get().getWindow().getBufferWidth();
+        return viewport[2];
     }
     
     @Override
     public int getHeight() {
-        return RenderAPI.get().getWindow().getBufferHeight();
+        return viewport[3];
     }
     
     @Override

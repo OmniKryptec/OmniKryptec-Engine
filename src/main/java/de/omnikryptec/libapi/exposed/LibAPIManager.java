@@ -16,24 +16,27 @@
 
 package de.omnikryptec.libapi.exposed;
 
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
+import javax.annotation.Nonnull;
+
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.system.Configuration;
+
 import de.codemakers.base.util.tough.ToughRunnable;
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.system.Configuration;
-
-import javax.annotation.Nonnull;
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 
 public final class LibAPIManager {
     
@@ -115,15 +118,14 @@ public final class LibAPIManager {
         return instance;
     }
     
-    //TODO let the renderapi directly create the window when the api is created?
-    public void setRenderer(Class<? extends RenderAPI> clazz, Settings<IntegerKey> apiSettings) {
+    public void setRenderer(Class<? extends RenderAPI> clazz, Settings<WindowSetting> windowSettings, Settings<IntegerKey> apiSettings) {
         if (isRendererSet()) {
             throw new IllegalStateException("Renderer is already set!");
         }
         try {
-            final Constructor<? extends RenderAPI> renderApiConstructor = clazz.getConstructor(apiSettings.getClass());
+            final Constructor<? extends RenderAPI> renderApiConstructor = clazz.getConstructor(windowSettings.getClass(), apiSettings.getClass());
             renderApiConstructor.setAccessible(true);
-            renderApi = renderApiConstructor.newInstance(apiSettings);
+            renderApi = renderApiConstructor.newInstance(windowSettings, apiSettings);
         } catch (NoSuchMethodException ex) {
             throw new IllegalArgumentException("Invalid RendererAPI: Missing constructor", ex);
         } catch (Exception ex) {
@@ -135,7 +137,7 @@ public final class LibAPIManager {
         if (!isRendererSet()) {
             throw new IllegalStateException("No window!");
         }
-        inputManager = new InputManager(getRenderAPI().getWindow().getWindowID(), keySettings);
+        inputManager = new InputManager(getRenderAPI().getWindow().getID(), keySettings);
     }
     
     public InputManager getInputManager() {

@@ -35,9 +35,7 @@ import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
 import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec4;
-import de.omnikryptec.libapi.opengl.framebuffer.GLScreenBuffer;
 import de.omnikryptec.render.Camera;
-import de.omnikryptec.render.batch.RenderBatch2D;
 import de.omnikryptec.render.batch.ShadedBatch2D;
 import de.omnikryptec.resource.MeshData;
 import de.omnikryptec.resource.MeshData.VertexAttribute;
@@ -180,7 +178,7 @@ public class SceneBuilder {
     public void addGraphicsBasicImplTest(final TextureData dat) {
         final MeshData data = new MeshData(VertexAttribute.Index, new int[] { 0, 1, 2, 2, 1, 3 },
                 VertexAttribute.Position, 2, new float[] { -1f, -1f, -1f, 1f, 1f, -1f, 1f, 1f });
-
+        
         final Mesh mesh = new Mesh(data);
         final Shader shader = RenderAPI.get().createShader();
         shader.create("test");
@@ -238,7 +236,7 @@ public class SceneBuilder {
             
             @Override
             public void postUpdate(final Time time) {
-                fbo.resolveToFrameBuffer(GLScreenBuffer.TMP, 1);
+                fbo.resolveToFrameBuffer(RenderAPI.get().getWindow().getDefaultFrameBuffer(), 1);
                 //fbo.resolveToScreen(1);
             }
             

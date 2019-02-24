@@ -1,5 +1,8 @@
 package de.omnikryptec.minigame;
 
+import org.joml.Matrix3x2f;
+import org.joml.Matrix4f;
+
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
@@ -8,14 +11,12 @@ import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.ComponentSystem;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBuffer;
-import de.omnikryptec.libapi.exposed.window.Window;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
 import de.omnikryptec.render.batch.ShadedBatch2D;
 import de.omnikryptec.util.updater.Time;
-import org.joml.Matrix3x2f;
-import org.joml.Matrix4f;
 
 public class RendererSystem extends ComponentSystem {
     
@@ -26,8 +27,9 @@ public class RendererSystem extends ComponentSystem {
     public RendererSystem() {
         super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(RenderComponent.class)));
         LibAPIManager.LIB_API_EVENT_BUS.register(this);
-        Window w = RenderAPI.get().getWindow();
-        batch.setViewProjection(new Matrix4f().ortho2D(-w.getBufferWidth() / 2, w.getBufferWidth() / 2, -w.getBufferHeight() / 2, w.getBufferHeight() / 2));
+        FrameBuffer defaultBuffer = RenderAPI.get().getWindow().getDefaultFrameBuffer();
+        batch.setViewProjection(new Matrix4f().ortho2D(-defaultBuffer.getWidth() / 2, defaultBuffer.getWidth() / 2,
+                -defaultBuffer.getHeight() / 2, defaultBuffer.getHeight() / 2));
     }
     
     @Override

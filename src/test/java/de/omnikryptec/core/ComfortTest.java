@@ -18,7 +18,7 @@ package de.omnikryptec.core;
 
 import de.omnikryptec.core.scene.SceneBuilder;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
-import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
+import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;

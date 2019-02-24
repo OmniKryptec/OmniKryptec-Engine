@@ -16,12 +16,12 @@
 
 package de.omnikryptec.util.math;
 
-import org.joml.Matrix4f;
-import org.joml.Matrix4fc;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+
+import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
 
 /**
  * A class to efficiently store 3D-transformations.

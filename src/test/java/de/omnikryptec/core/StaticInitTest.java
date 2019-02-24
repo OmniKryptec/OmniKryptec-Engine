@@ -16,10 +16,9 @@
 
 package de.omnikryptec.core;
 
-import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBuffer;
-import de.omnikryptec.libapi.exposed.window.Window;
+import de.omnikryptec.libapi.exposed.window.WindowInterfaceWIP;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.Settings;
@@ -27,8 +26,8 @@ import de.omnikryptec.util.settings.Settings;
 public class StaticInitTest {
     
     public static void main(final String[] args) {
-        EngineLoader.initialize(new Settings<>(), RenderAPI.OpenGL, new Settings<>());
-        final Window window = LibAPIManager.instance().getRenderAPI().createWindow(new Settings<>());
+        EngineLoader.initialize(new Settings<>(), RenderAPI.OpenGL, new Settings<>(), new Settings<>());
+        final WindowInterfaceWIP window = RenderAPI.get().getWindow();
         window.setVisible(true);
         final WindowUpdater updater = new WindowUpdater(window);
         while (!window.isCloseRequested()) {

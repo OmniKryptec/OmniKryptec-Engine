@@ -14,7 +14,6 @@ import org.lwjgl.opengl.GL30;
 import de.omnikryptec.libapi.exposed.AutoDelete;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
-import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.libapi.opengl.texture.GLTexture;

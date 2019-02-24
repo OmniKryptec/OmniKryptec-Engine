@@ -1,5 +1,8 @@
 package de.omnikryptec.render;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
@@ -12,9 +15,6 @@ import de.omnikryptec.render.postprocessing.Postprocessor;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Deprecated
 public class MasterRenderer {

@@ -15,8 +15,6 @@ import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.resource.MeshData;
 import de.omnikryptec.resource.MeshData.VertexAttribute;
 import de.omnikryptec.resource.MeshFile;
-import de.omnikryptec.util.Logger;
-import de.omnikryptec.util.Logger.LogType;
 
 public class MeshLoader implements ResourceLoader<MeshFile> {
     

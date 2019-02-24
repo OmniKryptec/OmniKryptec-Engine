@@ -16,6 +16,8 @@
 
 package de.omnikryptec.core;
 
+import javax.annotation.Nonnull;
+
 import de.omnikryptec.core.loop.DefaultGameLoop;
 import de.omnikryptec.core.loop.IGameLoop;
 import de.omnikryptec.core.scene.GameController;
@@ -23,8 +25,8 @@ import de.omnikryptec.core.scene.UpdateController;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
-import de.omnikryptec.libapi.exposed.window.Window;
-import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
+import de.omnikryptec.libapi.exposed.window.WindowInterfaceWIP;
+import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.resource.loadervpc.ResourceManager;
 import de.omnikryptec.resource.loadervpc.ResourceProvider;
 import de.omnikryptec.util.Util;
@@ -32,8 +34,6 @@ import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
-
-import javax.annotation.Nonnull;
 
 /**
  * The application entry point of the OmniKryptec-Engine. Can be used static and
@@ -51,7 +51,7 @@ import javax.annotation.Nonnull;
 public abstract class EngineLoader {
     
     private IGameLoop gameLoop;
-    private Window window;
+    private WindowInterfaceWIP window;
     private GameController gameController;
     private UpdateController updateController;
     private ResourceManager resources;
@@ -71,10 +71,10 @@ public abstract class EngineLoader {
      * @see de.omnikryptec.libapi.exposed.render.RenderAPI
      */
     public static void initialize(final Settings<LibSetting> libSettings, final Class<? extends RenderAPI> rendererApi,
-            final Settings<IntegerKey> apiSettings) {
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
         // Initialize everything required
         LibAPIManager.init(libSettings);
-        LibAPIManager.instance().setRenderer(rendererApi, apiSettings);
+        LibAPIManager.instance().setRenderer(rendererApi, windowSettings, apiSettings);
         //TODO Audio, etc....
     }
     
@@ -104,10 +104,11 @@ public abstract class EngineLoader {
         configure(loaderSettings, libSettings, windowSettings, rapiSettings, keySettings);
         // or let them (the natives) be loaded by Configuration.SHARED_LIBRARY and
         // LIBRARY_PATH <-- Seems to work, so better use it
-        initialize(libSettings, loaderSettings.get(LoaderSetting.RENDER_API), rapiSettings);
+        initialize(libSettings, loaderSettings.get(LoaderSetting.RENDER_API), windowSettings, rapiSettings);
+        this.window = RenderAPI.get().getWindow();
         this.resources = new ResourceManager();
         this.resources.addDefaultLoader();
-        this.window = LibAPIManager.instance().getRenderAPI().createWindow(windowSettings);
+        //this.window = LibAPIManager.instance().getRenderAPI().createWindow(windowSettings);
         LibAPIManager.instance().createInputManager(keySettings);
         //TODO create Inputmanager / Move to initialize when RenderAPI creates its window
         this.gameLoop = loaderSettings.get(LoaderSetting.GAME_LOOP);
@@ -153,7 +154,7 @@ public abstract class EngineLoader {
         }
     }
     
-    public Window getWindow() {
+    public WindowInterfaceWIP getWindow() {
         checkStarted();
         return this.window;
     }

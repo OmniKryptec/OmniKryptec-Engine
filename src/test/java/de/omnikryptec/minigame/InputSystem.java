@@ -1,17 +1,17 @@
 package de.omnikryptec.minigame;
 
+import org.joml.Vector2dc;
+import org.lwjgl.glfw.GLFW;
+
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.ComponentSystem;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.input.InputManager;
-import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.util.updater.Time;
-
-import org.joml.Vector2dc;
-import org.lwjgl.glfw.GLFW;
 
 public class InputSystem extends ComponentSystem {
     
@@ -21,7 +21,7 @@ public class InputSystem extends ComponentSystem {
         mgr.init();
     }
     
-    private InputManager mgr = new InputManager(RenderAPI.get().getWindow().getWindowID(), null);
+    private InputManager mgr = LibAPIManager.instance().getInputManager();
     
     private ComponentMapper<MovementComponent> posMapper = new ComponentMapper<>(MovementComponent.class);
     private ComponentMapper<PlayerComponent> playMapper = new ComponentMapper<>(PlayerComponent.class);

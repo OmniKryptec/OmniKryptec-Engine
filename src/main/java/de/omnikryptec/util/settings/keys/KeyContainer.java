@@ -16,12 +16,17 @@
 
 package de.omnikryptec.util.settings.keys;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import de.omnikryptec.util.Util;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import de.omnikryptec.util.Util;
 
 /**
  * This class is just for a super class for {@link de.omnikryptec.util.settings.KeySettings} and {@link de.omnikryptec.util.settings.keys.KeyGroup}

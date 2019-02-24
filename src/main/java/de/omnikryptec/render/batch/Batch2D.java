@@ -4,7 +4,6 @@ import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fc;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.libapi.exposed.render.TextureRegion;
 import de.omnikryptec.util.math.Mathf;
 
 public interface Batch2D extends Batch {

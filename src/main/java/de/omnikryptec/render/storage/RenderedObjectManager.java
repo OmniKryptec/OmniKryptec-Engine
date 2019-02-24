@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
 import de.omnikryptec.util.data.DynamicArray;
 
 public class RenderedObjectManager implements IRenderedObjectManager {

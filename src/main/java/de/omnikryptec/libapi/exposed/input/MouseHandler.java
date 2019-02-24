@@ -16,13 +16,18 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
-import de.omnikryptec.util.settings.KeySettings;
-import org.joml.Vector2d;
-import org.joml.Vector2dc;
-import org.lwjgl.glfw.*;
-
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.joml.Vector2d;
+import org.joml.Vector2dc;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWCursorEnterCallback;
+import org.lwjgl.glfw.GLFWCursorPosCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
+import org.lwjgl.glfw.GLFWScrollCallback;
+
+import de.omnikryptec.util.settings.KeySettings;
 
 public class MouseHandler implements InputHandler {
     

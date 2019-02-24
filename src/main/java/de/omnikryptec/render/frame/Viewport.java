@@ -1,5 +1,9 @@
 package de.omnikryptec.render.frame;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderUtil;
 import de.omnikryptec.render.IProjection;
@@ -9,10 +13,6 @@ import de.omnikryptec.util.Util;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.Struct3f;
 import de.omnikryptec.util.updater.Time;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 @Deprecated
 public class Viewport {

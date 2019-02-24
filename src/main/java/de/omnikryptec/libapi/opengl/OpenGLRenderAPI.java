@@ -30,13 +30,12 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
-import de.omnikryptec.libapi.exposed.window.Window;
-import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
+import de.omnikryptec.libapi.exposed.window.WindowInterfaceWIP;
+import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.buffer.GLIndexBuffer;
 import de.omnikryptec.libapi.opengl.buffer.GLVertexArray;
 import de.omnikryptec.libapi.opengl.buffer.GLVertexBuffer;
 import de.omnikryptec.libapi.opengl.framebuffer.GLFrameBuffer;
-import de.omnikryptec.libapi.opengl.framebuffer.GLScreenBuffer;
 import de.omnikryptec.libapi.opengl.shader.GLShader;
 import de.omnikryptec.libapi.opengl.texture.GLTexture2D;
 import de.omnikryptec.resource.MeshData.Primitive;
@@ -51,22 +50,15 @@ public class OpenGLRenderAPI implements RenderAPI {
     public static final IntegerKey MINOR_VERSION = IntegerKey.next(0);
     
     private final Settings<IntegerKey> apisettings;
-    private Window window;
+    private WindowInterfaceWIP window;
     
-    public OpenGLRenderAPI(final Settings<IntegerKey> apisettings) {
+    public OpenGLRenderAPI(final Settings<WindowSetting> windowsettings, final Settings<IntegerKey> apisettings) {
         this.apisettings = apisettings;
+        this.window = new GLWindow(windowsettings, apisettings);
     }
     
     @Override
-    public Window createWindow(final Settings<WindowSetting> windowsettings) {
-        this.window = new OpenGLWindow(windowsettings, this.apisettings);
-        //TODO remove
-        GLScreenBuffer.TMP.bindFrameBuffer();
-        return this.window;
-    }
-    
-    @Override
-    public Window getWindow() {
+    public WindowInterfaceWIP getWindow() {
         return this.window;
     }
     

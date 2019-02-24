@@ -16,10 +16,10 @@
 
 package de.omnikryptec.util.math;
 
+import java.util.Objects;
+
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
-
-import java.util.Objects;
 
 public class Struct2f {
     

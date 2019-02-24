@@ -1,7 +1,5 @@
 package de.omnikryptec.minigame;
 
-import java.util.BitSet;
-
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;

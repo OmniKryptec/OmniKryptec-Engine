@@ -16,14 +16,16 @@
 
 package de.omnikryptec.util.settings;
 
+import java.util.Collection;
+
+import org.lwjgl.glfw.GLFW;
+
 import com.google.common.collect.ObjectArrays;
+
 import de.omnikryptec.util.settings.keys.IKey;
 import de.omnikryptec.util.settings.keys.Key;
 import de.omnikryptec.util.settings.keys.KeyContainer;
 import de.omnikryptec.util.settings.keys.KeyGroup;
-import org.lwjgl.glfw.GLFW;
-
-import java.util.Collection;
 
 public class KeySettings extends KeyContainer {
     

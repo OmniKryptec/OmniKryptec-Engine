@@ -6,7 +6,7 @@ import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
-import de.omnikryptec.libapi.exposed.window.Window.WindowSetting;
+import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.util.Logger.LogType;

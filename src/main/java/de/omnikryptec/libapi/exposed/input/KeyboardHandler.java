@@ -16,12 +16,13 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
-import de.omnikryptec.util.settings.KeySettings;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
+
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWKeyCallback;
 
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
+import de.omnikryptec.util.settings.KeySettings;
 
 //FIXME synchronized causes bad performance // Who says that?
 public class KeyboardHandler implements InputHandler {
