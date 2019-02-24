@@ -50,6 +50,12 @@ import de.omnikryptec.util.settings.Settings;
  */
 public abstract class EngineLoader {
     
+    private static EngineLoader instance = null;
+    
+    public static EngineLoader instance() {
+        return instance;
+    }
+    
     private IGameLoop gameLoop;
     private IWindow window;
     private GameController gameController;
@@ -58,6 +64,7 @@ public abstract class EngineLoader {
     private boolean started;
     
     public EngineLoader() {
+        instance = this;
     }
     
     /**

@@ -1,5 +1,6 @@
 package de.omnikryptec.minigame;
 
+import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.scene.SceneBuilder;
 import de.omnikryptec.ecs.Entity;
@@ -32,15 +33,17 @@ public class Minigame extends EngineLoader {
         windowSettings.set(WindowSetting.Name, "Minigame");
         windowSettings.set(WindowSetting.LockAspectRatio, true);
         windowSettings.set(WindowSetting.VSync, true);
-        windowSettings.set(WindowSetting.Width, 400);
-        windowSettings.set(WindowSetting.Height, 400);
+        windowSettings.set(WindowSetting.Width, 600);
+        windowSettings.set(WindowSetting.Height, 600);
         apiSettings.set(OpenGLRenderAPI.MINOR_VERSION, 3);
         apiSettings.set(OpenGLRenderAPI.MAJOR_VERSION, 3);
     }
     
     @Override
     protected void onInitialized() {
-        OpenGLUtil.setMultisample(true);
+        getResManager().stage(new AdvancedFile("src/test/resources"));
+        getResManager().processStaged(false);
+        //getResProvider().get(clazz, name)
         final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
         IECSManager mgr = builder.addDefaultECSManager();
         mgr.addSystem(new RendererSystem());

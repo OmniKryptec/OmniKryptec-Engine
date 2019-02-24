@@ -97,7 +97,7 @@ public class Color implements Cloneable {
     }
 
     public Color(final float[] array) {
-        setFrom(array);
+        set(array);
     }
 
     public Color(final Vector4f color) {
@@ -204,12 +204,12 @@ public class Color implements Cloneable {
         return set(v.x, v.y, v.z, v.w);
     }
 
-    public final Color setFrom(final Color c) {
+    public final Color set(final Color c) {
         set(c.r, c.g, c.b, c.a);
         return this;
     }
 
-    public final Color setFrom(final float[] array) {
+    public final Color set(final float[] array) {
         setR(array[0]);
         setG(array[1]);
         setB(array[2]);
@@ -218,7 +218,7 @@ public class Color implements Cloneable {
     }
 
     public final Color setFromAWT(final java.awt.Color color) {
-        setFrom(color.getRGBComponents(null));
+        set(color.getRGBComponents(null));
         return this;
     }
 

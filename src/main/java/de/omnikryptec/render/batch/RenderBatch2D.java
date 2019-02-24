@@ -87,8 +87,11 @@ public class RenderBatch2D implements Batch2D {
     }
     
     private void draw(final Texture texture, final Matrix3x2fc transform, final float width, final float height,
-            final boolean flipU, final boolean flipV, float u0, float v0, float u1, float v1) {
+            final boolean flipU, boolean flipV, float u0, float v0, float u1, float v1) {
         checkRendering();
+        if (texture != null) {
+            flipV = flipV != texture.requiresInvertedVifDrawn2D();
+        }
         this.vertexManager.prepareNext(texture, 6 * MY_LAYOUT.getCount());
         Vector2f botleft = new Vector2f(0);
         Vector2f botright = new Vector2f(width, 0);

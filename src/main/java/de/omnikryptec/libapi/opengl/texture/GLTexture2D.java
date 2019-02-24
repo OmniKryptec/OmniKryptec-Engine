@@ -23,7 +23,7 @@ import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
 
 public class GLTexture2D extends GLTexture {
-        
+    
     private TextureData data;
     
     public GLTexture2D(final TextureData texture, final TextureConfig config) {
@@ -41,6 +41,11 @@ public class GLTexture2D extends GLTexture {
     @Override
     public float getHeight() {
         return this.data.getHeight();
+    }
+    
+    @Override
+    public boolean requiresInvertedVifDrawn2D() {
+        return true;
     }
     
 }

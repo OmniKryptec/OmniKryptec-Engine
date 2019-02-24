@@ -75,4 +75,10 @@ public class TextureRegion implements Texture {
         return this.superTexture;
     }
 
+    @Override
+    public boolean requiresInvertedVifDrawn2D() {
+        //TODO test this
+        return this.superTexture.requiresInvertedVifDrawn2D();
+    }
+
 }

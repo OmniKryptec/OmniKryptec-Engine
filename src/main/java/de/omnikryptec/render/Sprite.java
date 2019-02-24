@@ -31,7 +31,7 @@ public class Sprite implements RenderedObject {
     
     public void draw(Batch2D batch) {
         if (color != null) {
-            batch.color().setFrom(color);
+            batch.color().set(color);
         }
         batch.draw(texture, transform, false, false);
     }
