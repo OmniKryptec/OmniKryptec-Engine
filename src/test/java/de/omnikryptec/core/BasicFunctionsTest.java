@@ -19,7 +19,7 @@ package de.omnikryptec.core;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBuffer;
-import de.omnikryptec.libapi.exposed.window.WindowInterfaceWIP;
+import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.Settings;
@@ -35,7 +35,7 @@ public class BasicFunctionsTest {
     public static void main(final String[] args) {
         LibAPIManager.init(new Settings<>());
         LibAPIManager.instance().setRenderer(RenderAPI.OpenGL, new Settings<>(), new Settings<>());
-        final WindowInterfaceWIP window = RenderAPI.get().getWindow();
+        final IWindow window = RenderAPI.get().getWindow();
         window.setVisible(true);
         final WindowUpdater updater = new WindowUpdater(window);
         while (!window.isCloseRequested()) {

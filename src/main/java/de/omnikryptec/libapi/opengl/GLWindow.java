@@ -7,14 +7,14 @@ import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
-import de.omnikryptec.libapi.exposed.window.WindowInterfaceWIP;
+import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.framebuffer.GLScreenBuffer;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
-public class GLWindow implements WindowInterfaceWIP {
+public class GLWindow implements IWindow {
     
     private final long windowId;
     private final GLScreenBuffer screenBuffer;

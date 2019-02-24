@@ -18,7 +18,7 @@ package de.omnikryptec.core.scene;
 
 import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.Updateable;
-import de.omnikryptec.libapi.exposed.window.WindowInterfaceWIP;
+import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
 import de.omnikryptec.util.updater.AbstractUpdater;
 
@@ -44,7 +44,7 @@ public class UpdateController {
      * @param gameController the {@link GameController} to be updated
      * @param window         the window context to render
      */
-    public UpdateController(final GameController gameController, final WindowInterfaceWIP window) {
+    public UpdateController(final GameController gameController, final IWindow window) {
         this.gameController = gameController;
         this.windowUpdater = new WindowUpdater(window);
         this.asyncUpdater = new AbstractUpdater();

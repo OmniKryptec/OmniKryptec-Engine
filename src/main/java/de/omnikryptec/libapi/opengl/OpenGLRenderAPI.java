@@ -30,7 +30,7 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
-import de.omnikryptec.libapi.exposed.window.WindowInterfaceWIP;
+import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.buffer.GLIndexBuffer;
 import de.omnikryptec.libapi.opengl.buffer.GLVertexArray;
@@ -49,16 +49,14 @@ public class OpenGLRenderAPI implements RenderAPI {
     public static final IntegerKey MAJOR_VERSION = IntegerKey.next(1);
     public static final IntegerKey MINOR_VERSION = IntegerKey.next(0);
     
-    private final Settings<IntegerKey> apisettings;
-    private WindowInterfaceWIP window;
+    private IWindow window;
     
     public OpenGLRenderAPI(final Settings<WindowSetting> windowsettings, final Settings<IntegerKey> apisettings) {
-        this.apisettings = apisettings;
         this.window = new GLWindow(windowsettings, apisettings);
     }
     
     @Override
-    public WindowInterfaceWIP getWindow() {
+    public IWindow getWindow() {
         return this.window;
     }
     

@@ -25,7 +25,7 @@ import de.omnikryptec.core.scene.UpdateController;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
-import de.omnikryptec.libapi.exposed.window.WindowInterfaceWIP;
+import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.resource.loadervpc.ResourceManager;
 import de.omnikryptec.resource.loadervpc.ResourceProvider;
@@ -51,7 +51,7 @@ import de.omnikryptec.util.settings.Settings;
 public abstract class EngineLoader {
     
     private IGameLoop gameLoop;
-    private WindowInterfaceWIP window;
+    private IWindow window;
     private GameController gameController;
     private UpdateController updateController;
     private ResourceManager resources;
@@ -62,19 +62,24 @@ public abstract class EngineLoader {
     
     /**
      * Initializes various parts of the {@code LibAPIManager}.
-     *
-     * @param libSettings Settings configuring the {@code LibAPIManager}
-     * @param rendererApi the {@code RenderAPI} to use
-     * @param apiSettings Settings of the {@code RenderAPI} (this is
-     *                    {@code RenderAPI} specific)
+     * 
+     * @param libSettings    Settings configuring the {@code LibAPIManager}
+     * @param rendererApi    the {@code RenderAPI} to use
+     * @param windowSettings the window settings
+     * @param apiSettings    the {@code RenderAPI} specific settings
+     * @param keySettings    the {@code KeySettings} or null
      * 
      * @see de.omnikryptec.libapi.exposed.render.RenderAPI
+     * @see de.omnikryptec.libapi.exposed.window.WindowSetting
+     * @see de.omnikryptec.libapi.exposed.LibAPIManager
      */
     public static void initialize(final Settings<LibSetting> libSettings, final Class<? extends RenderAPI> rendererApi,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
+            KeySettings keySettings) {
         // Initialize everything required
         LibAPIManager.init(libSettings);
         LibAPIManager.instance().setRenderer(rendererApi, windowSettings, apiSettings);
+        LibAPIManager.instance().createInputManager(keySettings);
         //TODO Audio, etc....
     }
     
@@ -104,13 +109,11 @@ public abstract class EngineLoader {
         configure(loaderSettings, libSettings, windowSettings, rapiSettings, keySettings);
         // or let them (the natives) be loaded by Configuration.SHARED_LIBRARY and
         // LIBRARY_PATH <-- Seems to work, so better use it
-        initialize(libSettings, loaderSettings.get(LoaderSetting.RENDER_API), windowSettings, rapiSettings);
+        initialize(libSettings, loaderSettings.get(LoaderSetting.RENDER_API), windowSettings, rapiSettings,
+                keySettings);
         this.window = RenderAPI.get().getWindow();
         this.resources = new ResourceManager();
         this.resources.addDefaultLoader();
-        //this.window = LibAPIManager.instance().getRenderAPI().createWindow(windowSettings);
-        LibAPIManager.instance().createInputManager(keySettings);
-        //TODO create Inputmanager / Move to initialize when RenderAPI creates its window
         this.gameLoop = loaderSettings.get(LoaderSetting.GAME_LOOP);
         this.gameController = new GameController();
         this.updateController = new UpdateController(this.gameController, this.window);
@@ -134,12 +137,10 @@ public abstract class EngineLoader {
     }
     
     /**
-     * Shuts down the engine. Only if it has been started by
-     * {@code start()}.<br>
-     * First {@code onShutdown()} gets called. A
-     * {@code IGameLoop} that might be running gets
-     * stopped, the window gets disposed and the
-     * {@code LibAPIManager} gets shut down.
+     * Shuts down the engine. Only if it has been started by {@code start()}.<br>
+     * First {@code onShutdown()} gets called. A {@code IGameLoop} that might be
+     * running gets stopped, the window gets disposed and the {@code LibAPIManager}
+     * gets shut down.
      */
     public void shutdown() {
         if (this.started) {
@@ -154,7 +155,7 @@ public abstract class EngineLoader {
         }
     }
     
-    public WindowInterfaceWIP getWindow() {
+    public IWindow getWindow() {
         checkStarted();
         return this.window;
     }
@@ -212,7 +213,8 @@ public abstract class EngineLoader {
     }
     
     protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings, KeySettings keySettings) {
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
+            KeySettings keySettings) {
     }
     
     protected abstract void onInitialized();

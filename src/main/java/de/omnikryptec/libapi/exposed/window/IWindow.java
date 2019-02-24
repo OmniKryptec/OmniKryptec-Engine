@@ -2,8 +2,7 @@ package de.omnikryptec.libapi.exposed.window;
 
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 
-//TODO replace Window-class with this
-public interface WindowInterfaceWIP {
+public interface IWindow {
     
     boolean isActive();
     
@@ -24,9 +23,7 @@ public interface WindowInterfaceWIP {
     void dispose();
     
     void swapBuffers();
-    
-    //void refreshViewport();
-    
+        
     long getID();
     
 }

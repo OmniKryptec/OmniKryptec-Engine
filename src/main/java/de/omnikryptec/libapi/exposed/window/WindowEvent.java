@@ -20,16 +20,16 @@ import de.omnikryptec.event.Event;
 
 public class WindowEvent extends Event {
     
-    public final WindowInterfaceWIP window;
+    public final IWindow window;
     
-    protected WindowEvent(final WindowInterfaceWIP window) {
+    protected WindowEvent(final IWindow window) {
         this.window = window;
     }
     
     public static class WindowFocused extends WindowEvent {
         public final boolean focused;
         
-        public WindowFocused(final WindowInterfaceWIP window, final boolean focused) {
+        public WindowFocused(final IWindow window, final boolean focused) {
             super(window);
             this.focused = focused;
         }
@@ -40,7 +40,7 @@ public class WindowEvent extends Event {
         public final int height;
         
         //TODO add other widths/heights
-        public WindowResized(final WindowInterfaceWIP window, final int width, final int height) {
+        public WindowResized(final IWindow window, final int width, final int height) {
             super(window);
             this.width = width;
             this.height = height;
@@ -50,7 +50,7 @@ public class WindowEvent extends Event {
     public static class WindowIconified extends WindowEvent {
         public final boolean iconified;
         
-        public WindowIconified(final WindowInterfaceWIP window, final boolean iconified) {
+        public WindowIconified(final IWindow window, final boolean iconified) {
             super(window);
             this.iconified = iconified;
         }
@@ -59,7 +59,7 @@ public class WindowEvent extends Event {
     public static class WindowMaximized extends WindowEvent {
         public final boolean maximized;
         
-        public WindowMaximized(final WindowInterfaceWIP window, final boolean maximized) {
+        public WindowMaximized(final IWindow window, final boolean maximized) {
             super(window);
             this.maximized = maximized;
         }

@@ -20,7 +20,7 @@ import java.awt.Window;
 
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
-import de.omnikryptec.libapi.exposed.window.WindowInterfaceWIP;
+import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
 import de.omnikryptec.resource.MeshData.Primitive;
 import de.omnikryptec.resource.TextureConfig;
@@ -60,7 +60,7 @@ public interface RenderAPI {
      *
      * @return
      */
-    WindowInterfaceWIP getWindow();
+    IWindow getWindow();
     
     /**
      * Creates a new {@link IndexBuffer}

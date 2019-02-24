@@ -21,10 +21,10 @@ import de.omnikryptec.util.updater.AbstractUpdater;
 
 public class WindowUpdater extends AbstractUpdater {
     
-    private final WindowInterfaceWIP window;
+    private final IWindow window;
     private double swaptime;
     
-    public WindowUpdater(final WindowInterfaceWIP window) {
+    public WindowUpdater(final IWindow window) {
         this.window = window;
     }
     
@@ -40,7 +40,7 @@ public class WindowUpdater extends AbstractUpdater {
         return this.swaptime;
     }
     
-    public WindowInterfaceWIP getWindow() {
+    public IWindow getWindow() {
         return this.window;
     }
     
