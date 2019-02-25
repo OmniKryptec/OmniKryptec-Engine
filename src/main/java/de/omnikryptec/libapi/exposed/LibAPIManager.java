@@ -138,6 +138,7 @@ public final class LibAPIManager {
             throw new IllegalStateException("No window!");
         }
         inputManager = new InputManager(getRenderAPI().getWindow().getID(), keySettings);
+        inputManager.init();
     }
     
     public InputManager getInputManager() {
