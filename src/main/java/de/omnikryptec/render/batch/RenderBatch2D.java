@@ -54,6 +54,7 @@ public class RenderBatch2D implements Batch2D {
         return this.color;
     }
     
+    @OverridingMethodsMustInvokeSuper
     @Override
     public void flush() {
         this.vertexManager.forceFlush();

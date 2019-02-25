@@ -34,6 +34,7 @@ public class GLWindow implements IWindow {
         final int mav = apiSettings.get(OpenGLRenderAPI.MAJOR_VERSION);
         final int miv = apiSettings.get(OpenGLRenderAPI.MINOR_VERSION);
         if (mav > 3 || (mav > 2 && miv > 1)) {
+            //FIXME there might be cases were macos doesn't like his
             GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, mav);
             GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, miv);
             GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
