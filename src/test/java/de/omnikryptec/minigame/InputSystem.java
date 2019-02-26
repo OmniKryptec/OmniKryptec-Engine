@@ -57,18 +57,21 @@ public class InputSystem extends ComponentSystem {
             }
             mov.dx = vx;
             mov.dy = vy;
-            if (mgr.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_1)) {
-                Vector2dc mp = mgr.getMousePosition();
-                Vector2f v = MathUtil.screenToWorldspace2D(
-                        MathUtil.relativeMousePosition(mp,
+            if (/*mgr.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_1)*/mgr.isMouseInsideWindow()) {
+                Vector2dc mouseRaw = mgr.getMousePosition();
+                PositionComponent pos = posMapper.get(e);
+                Vector2f movVec = new Vector2f(mov.dx, mov.dy);
+                Vector2f mouse = MathUtil.screenToWorldspace2D(
+                        MathUtil.relativeMousePosition(mouseRaw,
                                 RenderAPI.get().getWindow().getDefaultFrameBuffer().viewport(), new Vector2f()),
                         RendererSystem.CAMERA.getProjection().invert(new Matrix4f()), null);
+                mouse.sub(pos.x, pos.y);
                 //Vector2d v = new Vector2d(vec4.x, vec4.y);
-                v.normalize(500, v);
-                Vector2f p = new Vector2f(mov.dx, mov.dy);
-                v.add(p, v);
-                PositionComponent pos = posMapper.get(e);
-                Minigame.BUS.post(new ShootEvent(pos.x, pos.y, v));
+                mouse.normalize(500, mouse);
+                mouse.add(movVec, mouse);
+                Minigame.BUS.post(new ShootEvent(pos.x, pos.y, mouse));
+                Minigame.BUS.post(new ShootEvent(pos.x, pos.y, mouse.mul(-1)));
+
             }
         }
         

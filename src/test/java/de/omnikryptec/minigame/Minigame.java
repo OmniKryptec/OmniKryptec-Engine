@@ -57,6 +57,7 @@ public class Minigame extends EngineLoader {
         mgr.addSystem(new CollisionSystem());
         mgr.addSystem(new InputSystem());
         mgr.addSystem(new MovementSystem());
+        mgr.addSystem(new RangedSystem());
         mgr.addEntity(makePlayer());
         mgr.addEntity(makeThing(100, 100));
         mgr.addEntity(makeThing(10, -230));
@@ -86,6 +87,7 @@ public class Minigame extends EngineLoader {
         e.addComponent(new PositionComponent(x, y));
         e.addComponent(new RenderComponent(5, 5, new Color(1, 0, 0)));
         e.addComponent(new MovementComponent(dir.x, dir.y));
+        e.addComponent(new RangedComponent(200, x, y));
         return e;
     }
     
