@@ -18,14 +18,21 @@ package de.omnikryptec.util.math;
 
 import java.util.Random;
 
+import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
 import org.joml.Quaterniondc;
 import org.joml.Quaternionfc;
+import org.joml.Vector2d;
 import org.joml.Vector2dc;
+import org.joml.Vector2f;
 import org.joml.Vector2fc;
 import org.joml.Vector3dc;
 import org.joml.Vector3fc;
 import org.joml.Vector4dc;
+import org.joml.Vector4f;
 import org.joml.Vector4fc;
+
+import de.omnikryptec.libapi.exposed.render.RenderAPI;
 
 public class MathUtil {
     
@@ -35,7 +42,7 @@ public class MathUtil {
      * parameters. That means that either the final width or the final height might
      * be smaller than specified to maintain the given aspect ratio. <br>
      * Aspect ratios equal to or smaller than 0.0 are ignored and the viewport
-     * becomes {0,0,width,height}
+     * becomes <code>{0,0,width,height}</code>
      *
      * @param aspectRatio the aspect ratio
      * @param w           the maximum width
@@ -82,6 +89,72 @@ public class MathUtil {
     
     public static boolean isPowerOfTwo(final int n) {
         return (n & -n) == n;
+    }
+    
+    public static Vector2f relativeMousePosition(Vector2dc displayMousePosition, Vector2f target) {
+        if (target == null) {
+            target = new Vector2f();
+        }
+        int[] viewport = RenderAPI.get().getWindow().getDefaultFrameBuffer().viewport();
+        double x, y;
+        if (displayMousePosition.x() < viewport[0] || displayMousePosition.x() > viewport[2] + viewport[0]) {
+            x = -1;
+        } else {
+            x = displayMousePosition.x();
+            x -= viewport[0];
+            x /= viewport[2];
+        }
+        if (displayMousePosition.y() < viewport[1] || displayMousePosition.y() > viewport[3] + viewport[1]) {
+            y = -1;
+        } else {
+            y = displayMousePosition.y();
+            y -= viewport[1];
+            y /= viewport[3];
+            y = 1.0 - y;
+        }
+        target.set((float) x, (float) y);
+        return target;
+    }
+    
+    public static Vector2d relativeMousePosition(Vector2dc displayMousePosition, Vector2d target) {
+        if (target == null) {
+            target = new Vector2d();
+        }
+        int[] viewport = RenderAPI.get().getWindow().getDefaultFrameBuffer().viewport();
+        double x, y;
+        if (displayMousePosition.x() < viewport[0] || displayMousePosition.x() > viewport[2] + viewport[0]) {
+            x = -1;
+        } else {
+            x = displayMousePosition.x();
+            x -= viewport[0];
+            x /= viewport[2];
+        }
+        if (displayMousePosition.y() < viewport[1] || displayMousePosition.y() > viewport[3] + viewport[1]) {
+            y = -1;
+        } else {
+            y = displayMousePosition.y();
+            y -= viewport[1];
+            y /= viewport[3];
+            y = 1.0 - y;
+        }
+        target.set(x, y);
+        return target;
+    }
+    
+    public static Vector4f mouseToWorldspace2D(Vector2dc displayMousePosition, Matrix4fc inverseViewprojection,
+            Vector4f target) {
+        if (target == null) {
+            target = new Vector4f();
+        }
+        Vector2f rel = relativeMousePosition(displayMousePosition, new Vector2f());
+        if (rel.x == -1 || rel.y == -1) {
+            target.set(-1);
+        } else {
+            target.set(rel.mul(2).add(-1, -1), 0, 1);
+            inverseViewprojection.transform(target);
+            target.mul(1 / target.w, target);
+        }
+        return target;
     }
     
     //Float vecs

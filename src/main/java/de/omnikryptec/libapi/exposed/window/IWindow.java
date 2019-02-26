@@ -1,7 +1,5 @@
 package de.omnikryptec.libapi.exposed.window;
 
-import de.omnikryptec.libapi.exposed.render.FrameBuffer;
-
 public interface IWindow {
     
     boolean isActive();
@@ -14,7 +12,7 @@ public interface IWindow {
     
     int getWindowHeight();
     
-    FrameBuffer getDefaultFrameBuffer();
+    SurfaceBuffer getDefaultFrameBuffer();
     
     void setVSync(boolean vsync);
     

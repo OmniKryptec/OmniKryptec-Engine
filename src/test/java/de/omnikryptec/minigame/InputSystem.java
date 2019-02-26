@@ -1,6 +1,10 @@
 package de.omnikryptec.minigame;
 
+import org.joml.Matrix4f;
+import org.joml.Vector2d;
 import org.joml.Vector2dc;
+import org.joml.Vector4f;
+import org.joml.sampling.PoissonSampling;
 import org.lwjgl.glfw.GLFW;
 
 import de.omnikryptec.ecs.Entity;
@@ -11,27 +15,31 @@ import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.ComponentSystem;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.input.InputManager;
+import de.omnikryptec.libapi.exposed.render.RenderState;
+import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.updater.Time;
 
 public class InputSystem extends ComponentSystem {
     
     public InputSystem() {
-        super(Family.of(ComponentType.of(MovementComponent.class), ComponentType.of(PlayerComponent.class)));
+        super(Family.of(ComponentType.of(MovementComponent.class), ComponentType.of(PlayerComponent.class),
+                ComponentType.of(PositionComponent.class)));
         // mgr.setLongButtonPressEnabled(true);
         mgr.init();
     }
     
     private InputManager mgr = LibAPIManager.instance().getInputManager();
     
-    private ComponentMapper<MovementComponent> posMapper = new ComponentMapper<>(MovementComponent.class);
+    private ComponentMapper<MovementComponent> movMapper = new ComponentMapper<>(MovementComponent.class);
     private ComponentMapper<PlayerComponent> playMapper = new ComponentMapper<>(PlayerComponent.class);
+    private ComponentMapper<PositionComponent> posMapper = new ComponentMapper<>(PositionComponent.class);
     
     @Override
     public void update(IECSManager iecsManager, Time time) {
         mgr.preUpdate(time);
         mgr.update(time);
         for (Entity e : entities) {
-            MovementComponent pos = posMapper.get(e);
+            MovementComponent mov = movMapper.get(e);
             PlayerComponent play = playMapper.get(e);
             float vy = 0;
             float vx = 0;
@@ -47,14 +55,20 @@ public class InputSystem extends ComponentSystem {
             if (mgr.isKeyboardKeyPressed(GLFW.GLFW_KEY_D)) {
                 vx += play.maxXv;
             }
-            pos.dx = vx;
-            pos.dy = vy;
+            mov.dx = vx;
+            mov.dy = vy;
+            if (mgr.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_1)) {
+                Vector2dc mp = mgr.getMousePosition();
+                Vector4f vec4 = MathUtil.mouseToWorldspace2D(mp, RendererSystem.CAMERA.getProjection().invert(new Matrix4f()), null);
+                Vector2d v = new Vector2d(vec4.x, vec4.y);
+                v.normalize(500, v);
+                Vector2d p = new Vector2d(mov.dx, mov.dy);
+                v.add(p, v);
+                PositionComponent pos = posMapper.get(e);
+                Minigame.BUS.post(new ShootEvent(pos.x, pos.y, v));
+            }
         }
-        if(mgr.isMouseInsideWindow()&&mgr.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_1)) {
-            Vector2dc mp = mgr.getMousePosition();
-            System.out.println(mp);
-            //double spx = mp.x()/RenderAPI.get().getWindow().
-        }
+        
         mgr.postUpdate(time);
     }
     

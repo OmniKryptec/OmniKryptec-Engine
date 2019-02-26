@@ -1,11 +1,14 @@
 package de.omnikryptec.minigame;
 
+import org.joml.Vector2d;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.scene.SceneBuilder;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.event.EventBus;
+import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
@@ -38,14 +41,15 @@ public class Minigame extends EngineLoader {
         apiSettings.set(OpenGLRenderAPI.MINOR_VERSION, 3);
         apiSettings.set(OpenGLRenderAPI.MAJOR_VERSION, 3);
     }
-    
+    private IECSManager mgr;
     @Override
     protected void onInitialized() {
         getResManager().stage(new AdvancedFile("src/test/resources"));
         getResManager().processStaged(false);
         //getResProvider().get(clazz, name)
+        BUS.register(this);
         final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
-        IECSManager mgr = builder.addDefaultECSManager();
+        mgr = builder.addDefaultECSManager();
         mgr.addSystem(new RendererSystem());
         mgr.addSystem(new CollisionSystem());
         mgr.addSystem(new InputSystem());
@@ -72,6 +76,19 @@ public class Minigame extends EngineLoader {
         e.addComponent(new RenderComponent(15, 15, new Color(0, 1, 1)));
         e.addComponent(new HitBoxComponent(15, 15));
         return e;
+    }
+    
+    private Entity makeFlying(float x, float y, Vector2d dir) {
+        Entity e = new Entity();
+        e.addComponent(new PositionComponent(x, y));
+        e.addComponent(new RenderComponent(5, 5, new Color(1,0,0)));
+        e.addComponent(new MovementComponent((float) dir.x, (float)dir.y));
+        return e;
+    }
+    
+    @EventSubscription
+    public void shoot(ShootEvent ev) {
+        mgr.addEntity(makeFlying(ev.x, ev.y, ev.dir));
     }
     
 }

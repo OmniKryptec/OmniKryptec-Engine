@@ -1,5 +1,7 @@
 package de.omnikryptec.libapi.opengl.framebuffer;
 
+import java.util.Arrays;
+
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.opengl.GL11;
@@ -8,10 +10,11 @@ import org.lwjgl.opengl.GL30;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.Texture;
+import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.util.UnsupportedOperationException;
 import de.omnikryptec.util.math.MathUtil;
 
-public class GLScreenBuffer implements FrameBuffer {
+public class GLScreenBuffer implements SurfaceBuffer {
     private static final FBTarget[] EMPTY = new FBTarget[0];
     private static final int GL_ID = 0;
         
@@ -64,7 +67,11 @@ public class GLScreenBuffer implements FrameBuffer {
             throw new IllegalStateException("can not unbind if not top of framebuffer stack!");
         }
     }
-    
+
+    @Override
+    public int[] viewport() {
+        return Arrays.copyOf(viewport, viewport.length);
+    }
     @Override
     public FBTarget[] targets() {
         //is this correct? somehow create an FBTarget from the display?
@@ -115,5 +122,6 @@ public class GLScreenBuffer implements FrameBuffer {
     public void assignTarget(int index, FBTarget target) {
         throw new UnsupportedOperationException("");
     }
+
     
 }

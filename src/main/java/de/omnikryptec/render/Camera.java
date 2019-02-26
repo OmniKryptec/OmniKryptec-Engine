@@ -21,7 +21,7 @@ public class Camera implements IProjection {
         this.transform = new Transform();
         this.combined = new Matrix4f();
         this.frustumChecker = new FrustumIntersection();
-        this.valid = true;
+        this.valid = false;
         this.transform.addChangeNotifier((n) -> this.valid = false);
 
     }
@@ -49,7 +49,7 @@ public class Camera implements IProjection {
 
     private void revalidate() {
         if (!this.valid) {
-            this.transform.worldspace().mul(this.projectionMatrix, this.combined);
+            this.projectionMatrix.mul(this.transform.worldspace(), this.combined);//.mul(this.projectionMatrix, this.combined);
             this.frustumChecker.set(this.combined);
             this.valid = true;
         }
