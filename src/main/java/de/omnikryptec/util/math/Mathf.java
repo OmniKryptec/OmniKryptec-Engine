@@ -31,10 +31,13 @@ public strictfp class Mathf {
     
     public static float pow(float in, int e) {
         if (e == 0) {
-            return 1;
+            return in == 0 ? Float.NaN : 1;
         }
         if (e < 0) {
             return 1 / pow(in, -e);
+        }
+        if (in == 1 || in == 0) {
+            return in;
         }
         for (int i = 1; i < e; i++) {
             in *= in;
