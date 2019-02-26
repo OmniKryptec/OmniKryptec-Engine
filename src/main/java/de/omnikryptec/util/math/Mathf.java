@@ -39,8 +39,9 @@ public strictfp class Mathf {
         if (in == 1 || in == 0) {
             return in;
         }
+        float tmp = in;
         for (int i = 1; i < e; i++) {
-            in *= in;
+            in *= tmp;
         }
         return in;
     }

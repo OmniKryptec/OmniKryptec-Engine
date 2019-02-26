@@ -39,8 +39,9 @@ public strictfp class Mathd {
         if (in == 1 || in == 0) {
             return in;
         }
+        double tmp = in;
         for (int i = 1; i < e; i++) {
-            in *= in;
+            in *= tmp;
         }
         return in;
     }
