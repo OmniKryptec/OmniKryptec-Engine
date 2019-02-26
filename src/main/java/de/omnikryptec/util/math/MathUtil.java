@@ -18,7 +18,6 @@ package de.omnikryptec.util.math;
 
 import java.util.Random;
 
-import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Quaterniondc;
 import org.joml.Quaternionfc;
@@ -31,8 +30,6 @@ import org.joml.Vector3fc;
 import org.joml.Vector4dc;
 import org.joml.Vector4f;
 import org.joml.Vector4fc;
-
-import de.omnikryptec.libapi.exposed.render.RenderAPI;
 
 public class MathUtil {
     
@@ -91,11 +88,10 @@ public class MathUtil {
         return (n & -n) == n;
     }
     
-    public static Vector2f relativeMousePosition(Vector2dc displayMousePosition, Vector2f target) {
+    public static Vector2f relativeMousePosition(Vector2dc displayMousePosition, int[] viewport, Vector2f target) {
         if (target == null) {
             target = new Vector2f();
         }
-        int[] viewport = RenderAPI.get().getWindow().getDefaultFrameBuffer().viewport();
         double x, y;
         if (displayMousePosition.x() < viewport[0] || displayMousePosition.x() > viewport[2] + viewport[0]) {
             x = -1;
@@ -103,6 +99,7 @@ public class MathUtil {
             x = displayMousePosition.x();
             x -= viewport[0];
             x /= viewport[2];
+            x = 2 * x - 1;
         }
         if (displayMousePosition.y() < viewport[1] || displayMousePosition.y() > viewport[3] + viewport[1]) {
             y = -1;
@@ -111,16 +108,16 @@ public class MathUtil {
             y -= viewport[1];
             y /= viewport[3];
             y = 1.0 - y;
+            y = 2 * y - 1;
         }
         target.set((float) x, (float) y);
         return target;
     }
     
-    public static Vector2d relativeMousePosition(Vector2dc displayMousePosition, Vector2d target) {
+    public static Vector2d relativeMousePosition(Vector2dc displayMousePosition, int[] viewport, Vector2d target) {
         if (target == null) {
             target = new Vector2d();
         }
-        int[] viewport = RenderAPI.get().getWindow().getDefaultFrameBuffer().viewport();
         double x, y;
         if (displayMousePosition.x() < viewport[0] || displayMousePosition.x() > viewport[2] + viewport[0]) {
             x = -1;
@@ -128,6 +125,7 @@ public class MathUtil {
             x = displayMousePosition.x();
             x -= viewport[0];
             x /= viewport[2];
+            x = 2 * x - 1;
         }
         if (displayMousePosition.y() < viewport[1] || displayMousePosition.y() > viewport[3] + viewport[1]) {
             y = -1;
@@ -136,24 +134,30 @@ public class MathUtil {
             y -= viewport[1];
             y /= viewport[3];
             y = 1.0 - y;
+            y = 2 * y - 1;
         }
         target.set(x, y);
         return target;
     }
     
-    public static Vector4f mouseToWorldspace2D(Vector2dc displayMousePosition, Matrix4fc inverseViewprojection,
-            Vector4f target) {
+    public static Vector2f screenToWorldspace2D(Vector2fc relativeScreenPosition, Matrix4fc inverseViewProjection,
+            Vector2f target) {
+        if (target == null) {
+            target = new Vector2f();
+        }
+        Vector4f vec4 = screenToWorldspace(relativeScreenPosition, inverseViewProjection, 0, null);
+        target.set(vec4.x, vec4.y);
+        return target;
+    }
+    
+    public static Vector4f screenToWorldspace(Vector2fc relativeScreenPosition, Matrix4fc inverseViewprojection,
+            float depth, Vector4f target) {
         if (target == null) {
             target = new Vector4f();
         }
-        Vector2f rel = relativeMousePosition(displayMousePosition, new Vector2f());
-        if (rel.x == -1 || rel.y == -1) {
-            target.set(-1);
-        } else {
-            target.set(rel.mul(2).add(-1, -1), 0, 1);
-            inverseViewprojection.transform(target);
-            target.mul(1 / target.w, target);
-        }
+        target.set(relativeScreenPosition, depth, 1);
+        inverseViewprojection.transform(target);
+        target.mul(1 / target.w, target);
         return target;
     }
     

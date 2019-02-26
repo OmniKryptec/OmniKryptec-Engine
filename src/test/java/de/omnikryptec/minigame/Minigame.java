@@ -1,6 +1,7 @@
 package de.omnikryptec.minigame;
 
 import org.joml.Vector2d;
+import org.joml.Vector2f;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.EngineLoader;
@@ -41,7 +42,9 @@ public class Minigame extends EngineLoader {
         apiSettings.set(OpenGLRenderAPI.MINOR_VERSION, 3);
         apiSettings.set(OpenGLRenderAPI.MAJOR_VERSION, 3);
     }
+    
     private IECSManager mgr;
+    
     @Override
     protected void onInitialized() {
         getResManager().stage(new AdvancedFile("src/test/resources"));
@@ -78,11 +81,11 @@ public class Minigame extends EngineLoader {
         return e;
     }
     
-    private Entity makeFlying(float x, float y, Vector2d dir) {
+    private Entity makeFlying(float x, float y, Vector2f dir) {
         Entity e = new Entity();
         e.addComponent(new PositionComponent(x, y));
-        e.addComponent(new RenderComponent(5, 5, new Color(1,0,0)));
-        e.addComponent(new MovementComponent((float) dir.x, (float)dir.y));
+        e.addComponent(new RenderComponent(5, 5, new Color(1, 0, 0)));
+        e.addComponent(new MovementComponent(dir.x, dir.y));
         return e;
     }
     

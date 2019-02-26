@@ -48,9 +48,9 @@ public class Family {
         return bitset;
     }
     
-    public static BitSet of(@Nonnull final Class<Component>... classes) {
+    public static BitSet of(@Nonnull final Class<? extends Component>... classes) {
         final BitSet bitset = new BitSet();
-        for (final Class<Component> type : classes) {
+        for (final Class<? extends Component> type : classes) {
             bitset.set(ComponentType.of(type).id);
         }
         return bitset;

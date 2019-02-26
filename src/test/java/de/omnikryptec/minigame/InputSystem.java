@@ -3,6 +3,7 @@ package de.omnikryptec.minigame;
 import org.joml.Matrix4f;
 import org.joml.Vector2d;
 import org.joml.Vector2dc;
+import org.joml.Vector2f;
 import org.joml.Vector4f;
 import org.joml.sampling.PoissonSampling;
 import org.lwjgl.glfw.GLFW;
@@ -15,6 +16,7 @@ import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.ComponentSystem;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.input.InputManager;
+import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.updater.Time;
@@ -24,8 +26,6 @@ public class InputSystem extends ComponentSystem {
     public InputSystem() {
         super(Family.of(ComponentType.of(MovementComponent.class), ComponentType.of(PlayerComponent.class),
                 ComponentType.of(PositionComponent.class)));
-        // mgr.setLongButtonPressEnabled(true);
-        mgr.init();
     }
     
     private InputManager mgr = LibAPIManager.instance().getInputManager();
@@ -59,10 +59,13 @@ public class InputSystem extends ComponentSystem {
             mov.dy = vy;
             if (mgr.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_1)) {
                 Vector2dc mp = mgr.getMousePosition();
-                Vector4f vec4 = MathUtil.mouseToWorldspace2D(mp, RendererSystem.CAMERA.getProjection().invert(new Matrix4f()), null);
-                Vector2d v = new Vector2d(vec4.x, vec4.y);
+                Vector2f v = MathUtil.screenToWorldspace2D(
+                        MathUtil.relativeMousePosition(mp,
+                                RenderAPI.get().getWindow().getDefaultFrameBuffer().viewport(), new Vector2f()),
+                        RendererSystem.CAMERA.getProjection().invert(new Matrix4f()), null);
+                //Vector2d v = new Vector2d(vec4.x, vec4.y);
                 v.normalize(500, v);
-                Vector2d p = new Vector2d(mov.dx, mov.dy);
+                Vector2f p = new Vector2f(mov.dx, mov.dy);
                 v.add(p, v);
                 PositionComponent pos = posMapper.get(e);
                 Minigame.BUS.post(new ShootEvent(pos.x, pos.y, v));
