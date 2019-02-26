@@ -29,21 +29,8 @@ public strictfp class Mathd {
      */
     private static final double TWO_POW_52 = 4503599627370496.0d;
     
-    public static double pow(double in, int e) {
-        if (e == 0) {
-            return in == 0 ? Double.NaN : 1;
-        }
-        if (e < 0) {
-            return 1 / pow(in, -e);
-        }
-        if (in == 1 || in == 0) {
-            return in;
-        }
-        double tmp = in;
-        for (int i = 1; i < e; i++) {
-            in *= tmp;
-        }
-        return in;
+    public static double pow(double in, double e) {
+        return java.lang.Math.pow(in, e);
     }
     
     public static double square(double x) {

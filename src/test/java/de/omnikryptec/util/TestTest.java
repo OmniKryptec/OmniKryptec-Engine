@@ -23,6 +23,8 @@ import org.joml.FrustumIntersection;
 import de.omnikryptec.render.storage.RenderedObject;
 import de.omnikryptec.render.storage.RenderedObjectManager;
 import de.omnikryptec.render.storage.RenderedObjectType;
+import de.omnikryptec.util.math.Mathd;
+import de.omnikryptec.util.math.Mathf;
 
 public class TestTest {
     
@@ -39,10 +41,17 @@ public class TestTest {
         //        System.out.println(array);
         //        array.trimNulls();
         //        System.out.println(array);
-        RenderedObjectManager mgr = new RenderedObjectManager();
-        mgr.add(RenderedObjectType.of(ABC.class), new ABC());
-        Collection<ABC> coll = mgr.getFor(RenderedObjectType.of(ABC.class));
-        System.out.println(coll);
+//        RenderedObjectManager mgr = new RenderedObjectManager();
+//        mgr.add(RenderedObjectType.of(ABC.class), new ABC());
+//        Collection<ABC> coll = mgr.getFor(RenderedObjectType.of(ABC.class));
+//        System.out.println(coll);
+        float in = 1.5f;
+        long nanos = System.nanoTime();
+        for(int i=0; i<1000000; i++) {
+            Math.pow(in, 2);
+        }
+        long nanos2 = System.nanoTime();
+        System.out.println((nanos2-nanos)*1e-9+"s");
     }
     
     private static class ABC implements RenderedObject {
