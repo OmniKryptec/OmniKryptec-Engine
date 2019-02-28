@@ -36,7 +36,9 @@ public class BigTest extends EngineLoader {
         OpenGLUtil.setMultisample(true);
         final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
         //getResManager().addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
-        getResManager().stage(new AdvancedFile("src/test/resources"));
+        //getResManager().stage(new AdvancedFile("src/test/resources"));
+        getResManager().stage(new AdvancedFile("intern:/")); //TODO Gradle should handle "src/test/resources" internally as the root directory in the jar, "intern:" is the prefix for an intern path and the empty string afterwards should be the root directory, maybe an additional slash ("/") is needed, maybe the additional slash is causing problems...
+        //FIXME rename this to getResourceManager() -.- xD
         getResManager().processStaged(false);
         builder.addGraphicsClearTest();
         builder.addGraphicsBasicImplTest(getResProvider().get(TextureData.class, "jd.png"));
