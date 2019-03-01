@@ -16,21 +16,14 @@
 
 package de.omnikryptec.core.scene;
 
-import org.joml.Matrix3x2f;
-import org.joml.Matrix4f;
-
 import de.omnikryptec.core.Updateable;
 import de.omnikryptec.core.UpdateableContainer.ExecuteMode;
 import de.omnikryptec.core.UpdateableContainer.ExecuteTime;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.event.EventBus;
-import de.omnikryptec.libapi.exposed.render.FBTarget;
+import de.omnikryptec.libapi.exposed.render.*;
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
-import de.omnikryptec.libapi.exposed.render.FrameBuffer;
-import de.omnikryptec.libapi.exposed.render.Mesh;
-import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBuffer;
-import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
 import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
@@ -44,6 +37,8 @@ import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.updater.Time;
+import org.joml.Matrix3x2f;
+import org.joml.Matrix4f;
 
 /**
  * A class to simplify configuring and adding {@link Updateable}s to a
@@ -178,7 +173,7 @@ public class SceneBuilder {
     public void addGraphicsBasicImplTest(final TextureData dat) {
         final MeshData data = new MeshData(VertexAttribute.Index, new int[] { 0, 1, 2, 2, 1, 3 },
                 VertexAttribute.Position, 2, new float[] { -1f, -1f, -1f, 1f, 1f, -1f, 1f, 1f });
-        
+        //FIXME Debug code
         final Mesh mesh = new Mesh(data);
         final Shader shader = RenderAPI.get().createShader();
         shader.create("test");

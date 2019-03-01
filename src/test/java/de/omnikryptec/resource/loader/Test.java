@@ -16,12 +16,12 @@
 
 package de.omnikryptec.resource.loader;
 
-import java.util.stream.Collectors;
-
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
 import de.omnikryptec.resource.loadervpc.ResourceLoader;
 import de.omnikryptec.resource.loadervpc.ResourceManager;
+
+import java.util.stream.Collectors;
 
 public class Test {
     
@@ -67,8 +67,9 @@ public class Test {
             }
             
         });
-        p.stage(new AdvancedFile("src/main/java"));
-        p.stage(new AdvancedFile("src/test/java"));
+        //p.stage(new AdvancedFile("src/main/java"));
+        //p.stage(new AdvancedFile("src/test/java"));
+        p.stage(new AdvancedFile("intern:/"));
         p.processStaged(true);
         //System.out.println(p.getProvider().getAll(String.class).size());
         // System.out.println(p.getProvider().get(String.class,

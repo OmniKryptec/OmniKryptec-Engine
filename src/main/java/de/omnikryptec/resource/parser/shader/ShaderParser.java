@@ -16,30 +16,26 @@
 
 package de.omnikryptec.resource.parser.shader;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.function.Supplier;
-
 import com.google.common.collect.Table;
 import com.google.common.collect.Tables;
-
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
-import de.omnikryptec.util.Logger;
+
+import java.util.*;
+import java.util.function.Supplier;
 
 public class ShaderParser {
     
     public static enum ShaderType {
-        Vertex, Fragment, Geometry, TessellationControl, TessellationEvaluation, Compute;
+        Vertex,
+        Fragment,
+        Geometry,
+        TessellationControl,
+        TessellationEvaluation,
+        Compute;
     }
     
-    private static final com.google.common.base.Supplier<Map<ShaderType, ShaderSource>> ENUM_MAP_FACTORY = () -> new EnumMap<>(
-            ShaderType.class);
+    private static final com.google.common.base.Supplier<Map<ShaderType, ShaderSource>> ENUM_MAP_FACTORY = () -> new EnumMap<>(ShaderType.class);
     
     public static final String PARSER_STATEMENT_INDICATOR = "$";
     
@@ -53,8 +49,8 @@ public class ShaderParser {
     
     private static ShaderParser instance;
     
-    private static final AdvancedFile INTERN_MODULES = new AdvancedFile(
-            "src/main/java/de/omnikryptec/resource/glslmodules");
+    //private static final AdvancedFile INTERN_MODULES = new AdvancedFile("src/main/java/de/omnikryptec/resource/glslmodules"); //TODO Clean this
+    private static final AdvancedFile INTERN_MODULES = new AdvancedFile("intern:/de/omnikryptec/resources/glslmodules");
     
     public static ShaderParser instance() {
         if (instance == null) {
@@ -80,14 +76,9 @@ public class ShaderParser {
     }
     
     //TODO make more dynamic, e.g. changes in zuper are reflected in here but NOT vice-versa
-    public static ShaderParser create(final ShaderParser zuper, final boolean inheritModules,
-            final boolean inheritProvider) {
-        return new ShaderParser(
-                inheritModules ? (HashMap<String, SourceDescription>) zuper.modules.clone() : new HashMap<>(),
-                inheritProvider ? (HashMap<String, Supplier<String>>) zuper.provider.clone() : new HashMap<>());
+    public static ShaderParser create(final ShaderParser zuper, final boolean inheritModules, final boolean inheritProvider) {
+        return new ShaderParser(inheritModules ? (HashMap<String, SourceDescription>) zuper.modules.clone() : new HashMap<>(), inheritProvider ? (HashMap<String, Supplier<String>>) zuper.provider.clone() : new HashMap<>());
     }
-    
-    private final Logger logger = Logger.getLogger(getClass());
     
     private final HashMap<String, SourceDescription> modules;
     private final HashMap<String, Supplier<String>> provider;
@@ -99,8 +90,7 @@ public class ShaderParser {
     
     private Table<String, ShaderType, ShaderSource> generatedCurrentShaderTable = null;
     
-    private ShaderParser(final HashMap<String, SourceDescription> modules,
-            final HashMap<String, Supplier<String>> provider) {
+    private ShaderParser(final HashMap<String, SourceDescription> modules, final HashMap<String, Supplier<String>> provider) {
         this.definitions = new ArrayDeque<>();
         this.modules = modules;
         this.provider = provider;
@@ -129,8 +119,7 @@ public class ShaderParser {
                 if (word.startsWith(PARSER_STATEMENT_INDICATOR) && out != -1) {
                     in = i;
                     reading = true;
-                    if (word.length() == PARSER_STATEMENT_INDICATOR.length()
-                            || !word.endsWith(PARSER_STATEMENT_INDICATOR)) {
+                    if (word.length() == PARSER_STATEMENT_INDICATOR.length() || !word.endsWith(PARSER_STATEMENT_INDICATOR)) {
                         out = -1;
                         continue;
                     }
@@ -145,8 +134,7 @@ public class ShaderParser {
                     }
                     final String statementString = statement.toString().replace(PARSER_STATEMENT_INDICATOR, "").trim();
                     if (statementString.isEmpty()) {
-                        throw new ShaderCompilationException(this.currentContext,
-                                "Empty statement (line " + (k + 1) + ": " + lines[k] + ")");
+                        throw new ShaderCompilationException(this.currentContext, "Empty statement (line " + (k + 1) + ": " + lines[k] + ")");
                     } else {
                         final String repl = decodeToken(statementString, k + 1);
                         this.definitions.peek().source().append(repl);
@@ -154,8 +142,7 @@ public class ShaderParser {
                 } else if (!reading) {
                     final SourceDescription desc = this.definitions.peek();
                     if (desc == null) {
-                        throw new ShaderCompilationException(this.currentContext,
-                                "No shader/module context (line " + (k + 1) + ")");
+                        throw new ShaderCompilationException(this.currentContext, "No shader/module context (line " + (k + 1) + ")");
                     } else {
                         if (this.headerMode) {
                             desc.header().append(word).append(' ');
@@ -166,13 +153,11 @@ public class ShaderParser {
                 }
             }
             if (out < in) {
-                throw new ShaderCompilationException(this.currentContext,
-                        "Unclosed parser-statement (line " + (k + 1) + ": " + lines[k] + ")");
+                throw new ShaderCompilationException(this.currentContext, "Unclosed parser-statement (line " + (k + 1) + ": " + lines[k] + ")");
             }
             final SourceDescription desc = this.definitions.peek();
             if (desc == null) {
-                throw new ShaderCompilationException(this.currentContext,
-                        "No shader/module context (line " + (k + 1) + ")");
+                throw new ShaderCompilationException(this.currentContext, "No shader/module context (line " + (k + 1) + ")");
             } else {
                 if (this.headerMode) {
                     desc.header().append('\n');
@@ -196,8 +181,7 @@ public class ShaderParser {
         if (this.generatedCurrentShaderTable != null) {
             return this.generatedCurrentShaderTable;
         }
-        final Table<String, ShaderType, ShaderSource> finished = Tables.newCustomTable(new HashMap<>(),
-                ENUM_MAP_FACTORY);
+        final Table<String, ShaderType, ShaderSource> finished = Tables.newCustomTable(new HashMap<>(), ENUM_MAP_FACTORY);
         for (final SourceDescription desc : this.definitions) {
             if (desc.type() != null) {
                 reduce(desc);
@@ -267,14 +251,12 @@ public class ShaderParser {
             }
         } else {
             if (this.definitions.isEmpty()) {
-                throw new ShaderCompilationException(this.currentContext,
-                        "No shader/module context (line " + line + ")");
+                throw new ShaderCompilationException(this.currentContext, "No shader/module context (line " + line + ")");
             }
             if (token.startsWith(MODULE_INDICATOR)) {
                 token = token.replace(MODULE_INDICATOR, "").trim();
                 if (!this.modules.containsKey(token)) {
-                    throw new ShaderCompilationException(this.currentContext,
-                            "No such module: " + token + " (line " + line + ")");
+                    throw new ShaderCompilationException(this.currentContext, "No such module: " + token + " (line " + line + ")");
                 }
                 this.definitions.peek().modules().add(token);
                 return "";
@@ -291,26 +273,26 @@ public class ShaderParser {
     private ShaderType type(String s) {
         s = s.trim();
         switch (s) {
-        case "FRAGMENT":
-        case "GL_FRAGMENT_SHADER":
-            return ShaderType.Fragment;
-        case "VERTEX":
-        case "GL_VERTEX_SHADER":
-            return ShaderType.Vertex;
-        case "GEOMETRY":
-        case "GL_GEOMETRY_SHADER":
-            return ShaderType.Geometry;
-        case "TESS_CONTROL":
-        case "GL_TESS_CONTROL_SHADER":
-            return ShaderType.TessellationControl;
-        case "TESS_EVALUATION":
-        case "GL_TESS_EVALUATION_SHADER":
-            return ShaderType.TessellationEvaluation;
-        case "COMPUTE":
-        case "GL_COMPUTE_SHADER":
-            return ShaderType.Compute;
-        default:
-            throw new ShaderCompilationException(this.currentContext, "Illegal shadertype: " + s);
+            case "FRAGMENT":
+            case "GL_FRAGMENT_SHADER":
+                return ShaderType.Fragment;
+            case "VERTEX":
+            case "GL_VERTEX_SHADER":
+                return ShaderType.Vertex;
+            case "GEOMETRY":
+            case "GL_GEOMETRY_SHADER":
+                return ShaderType.Geometry;
+            case "TESS_CONTROL":
+            case "GL_TESS_CONTROL_SHADER":
+                return ShaderType.TessellationControl;
+            case "TESS_EVALUATION":
+            case "GL_TESS_EVALUATION_SHADER":
+                return ShaderType.TessellationEvaluation;
+            case "COMPUTE":
+            case "GL_COMPUTE_SHADER":
+                return ShaderType.Compute;
+            default:
+                throw new ShaderCompilationException(this.currentContext, "Illegal shadertype: " + s);
         }
     }
 }
