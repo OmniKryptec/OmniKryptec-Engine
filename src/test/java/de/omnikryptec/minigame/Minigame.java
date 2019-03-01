@@ -1,8 +1,5 @@
 package de.omnikryptec.minigame;
 
-import org.joml.Vector2d;
-import org.joml.Vector2f;
-
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.scene.SceneBuilder;
@@ -13,12 +10,12 @@ import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
-import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
+import org.joml.Vector2f;
 
 public class Minigame extends EngineLoader {
     
@@ -47,9 +44,10 @@ public class Minigame extends EngineLoader {
     
     @Override
     protected void onInitialized() {
-        getResManager().stage(new AdvancedFile("src/test/resources"));
+        //getResManager().stage(new AdvancedFile("src/test/resource"));
+        getResManager().stage(new AdvancedFile("intern:/resource"));
         getResManager().processStaged(false);
-        //getResProvider().get(clazz, name)
+        //getResourceProvider().get(clazz, name)
         BUS.register(this);
         final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
         mgr = builder.addDefaultECSManager();
