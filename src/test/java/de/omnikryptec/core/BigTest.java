@@ -1,5 +1,7 @@
 package de.omnikryptec.core;
 
+import de.codemakers.base.logger.LogLevel;
+import de.codemakers.base.logger.Logger;
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.scene.SceneBuilder;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
@@ -12,13 +14,17 @@ import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 
 public class BigTest extends EngineLoader {
+    
     public static void main(final String[] args) {
+        Logger.getDefaultAdvancedLeveledLogger().setMinimumLogLevel(LogLevel.FINEST);
+        Logger.getDefaultAdvancedLeveledLogger().createLogFormatBuilder().appendLogLevel().appendText(": ").appendObject().appendNewLine().appendThread().appendLocation().appendNewLine().finishWithoutException();
+        AdvancedFile.DEBUG = true;
+        AdvancedFile.DEBUG_TO_STRING = true;
         new BigTest().start();
     }
     
     @Override
-    protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings, KeySettings keySettings) {
+    protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings, KeySettings keySettings) {
         libsettings.set(LibSetting.DEBUG, true);
         libsettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "BigTest-Window");
@@ -36,13 +42,15 @@ public class BigTest extends EngineLoader {
         OpenGLUtil.setMultisample(true);
         final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
         //getResManager().addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
-        //getResManager().stage(new AdvancedFile("src/test/resources"));
-        getResManager().stage(new AdvancedFile("intern:/")); //TODO Gradle should handle "src/test/resources" internally as the root directory in the jar, "intern:" is the prefix for an intern path and the empty string afterwards should be the root directory, maybe an additional slash ("/") is needed, maybe the additional slash is causing problems...
+        //getResManager().stage(new AdvancedFile("src/test/resource"));
+        getResManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources")); //TODO Gradle should handle "src/test/resource" internally as the root directory in the jar, "intern:" is the prefix for an intern path and the empty string afterwards should be the root directory, maybe an additional slash ("/") is needed, maybe the additional slash is causing problems...
         //FIXME rename this to getResourceManager() -.- xD
         getResManager().processStaged(false);
+        //FIXME Alter ich wollte/will das Ressourcen loading machen
         builder.addGraphicsClearTest();
-        builder.addGraphicsBasicImplTest(getResProvider().get(TextureData.class, "jd.png"));
-        
+        Logger.logDebug("resProv:" + getResourceProvider());
+        builder.addGraphicsBasicImplTest(getResourceProvider().get(TextureData.class, "jd.png"));
         //getGameController().setLocalScene(builder.get());
     }
+    
 }
