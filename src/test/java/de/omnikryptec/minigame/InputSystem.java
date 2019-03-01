@@ -1,5 +1,7 @@
 package de.omnikryptec.minigame;
 
+import java.util.Random;
+
 import org.joml.Matrix4f;
 import org.joml.Vector2d;
 import org.joml.Vector2dc;
@@ -19,6 +21,7 @@ import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.util.math.MathUtil;
+import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.updater.Time;
 
 public class InputSystem extends ComponentSystem {
@@ -36,6 +39,8 @@ public class InputSystem extends ComponentSystem {
 
     private static final float PS = 100;
     private float missing = 0;
+
+    private Random random = new Random();
 
     @Override
     public void update(IECSManager iecsManager, Time time) {
@@ -60,30 +65,17 @@ public class InputSystem extends ComponentSystem {
             }
             mov.dx = vx;
             mov.dy = vy;
-            if (/* mgr.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_1) */mgr.isMouseInsideWindow()) {
+            if (mgr.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_1) && mgr.isMouseInsideWindow()) {
                 float am = time.deltaf * PS + missing;
                 int amount = (int) (am);
                 missing = am - amount;
-                Vector2dc mouseRaw = mgr.getMousePosition();
                 PositionComponent pos = posMapper.get(e);
-                Vector2f movVec = new Vector2f(mov.dx, mov.dy);
-                Vector2f mouseO = MathUtil.screenToWorldspace2D(
-                        MathUtil.relativeMousePosition(mouseRaw,
-                                RenderAPI.get().getWindow().getDefaultFrameBuffer().viewport(), new Vector2f()),
-                        RendererSystem.CAMERA.getProjection().invert(new Matrix4f()), null);
                 for (int i = 0; i < amount; i++) {
-                    if (MathUtil.isMouseInViewport(mouseRaw,
-                            RenderAPI.get().getWindow().getDefaultFrameBuffer().viewport())) {
-                        Vector2f mouse = new Vector2f(mouseO);
-                        mouse.sub(pos.x, pos.y);
-                        //Vector2d v = new Vector2d(vec4.x, vec4.y);
-                        mouse.normalize(400, mouse);
-                        mouse.add(movVec, mouse);
-                        Minigame.BUS.post(new ShootEvent(pos.x + play.shOffsetX, pos.y + play.shOffsetY, mouse, 200));
-                        Minigame.BUS.post(
-                                new ShootEvent(pos.x + play.shOffsetX, pos.y + play.shOffsetY, mouse.mul(-1), 200));
-                    }
+                    Vector2f mouse = MathUtil.randomDirection2D(random, 0, Mathf.PI * 2, new Vector2f());
+                    mouse.mul(400);
+                    Minigame.BUS.post(new ShootEvent(pos.x + play.shOffsetX, pos.y + play.shOffsetY, mouse, 200));
                 }
+
             }
         }
 

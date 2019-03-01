@@ -67,13 +67,11 @@ public class Minigame extends EngineLoader {
         mgr.addEntity(makePlayer());
         for (int i = -30; i < 30; i++) {
             for (int j = -30; j < 30; j++) {
-                if (random.nextFloat() < 0.1f) {
+                if (random.nextFloat() < 0.25f) {
                     mgr.addEntity(makeThing(i * 20, j * 20));
                 }
             }
         }
-        //mgr.addEntity(makeThing(10, -230));
-
     }
 
     private Entity makePlayer() {
@@ -91,6 +89,7 @@ public class Minigame extends EngineLoader {
         e.addComponent(new PositionComponent(x, y));
         e.addComponent(new RenderComponent(15, 15, new Color(0, 1, 1)));
         e.addComponent(new HitBoxComponent(15, 15));
+        e.addComponent(new MovementComponent(0, 0));
         e.userData = -10;
         return e;
     }
@@ -112,6 +111,8 @@ public class Minigame extends EngineLoader {
     }
 
     private ComponentMapper<PositionComponent> mapper = new ComponentMapper<>(PositionComponent.class);
+    private ComponentMapper<RenderComponent> rend = new ComponentMapper<>(RenderComponent.class);
+    private ComponentMapper<MovementComponent> mov = new ComponentMapper<>(MovementComponent.class);
     private Random random = new Random();
     private final float TMP = Mathf.sqrt(2) * 15 / 2f;
 
@@ -131,18 +132,24 @@ public class Minigame extends EngineLoader {
         }
         if (d != -1 && b != -1) {
             PositionComponent pos = mapper.get(ev.colliding[b]);
-            Integer[] possib = {0,1,2,3};
-            int[] weights = {4,10,2,1};
+            MovementComponent mov1 = mov.get(ev.colliding[b]);
+            MovementComponent mov2 = mov.get(ev.colliding[d]);
+            mov1.dx += mov2.dx / 15;
+            mov1.dy += mov2.dy / 15;
+            Integer[] possib = { 0, 1, 2, 3 };
+            int[] weights = { 4, 10, 2, 1 };
             Integer amount = MathUtil.getWeightedRandom(random, possib, weights);
             for (int i = 0; i < amount; i++) {
-                float rads = random.nextFloat() * Mathf.PI * 2;
-                Vector2f vec2 = new Vector2f(Mathf.cos(rads), Mathf.sin(rads));
+                Vector2f vec2 = MathUtil.randomDirection2D(random, 0, 2 * Mathf.PI, new Vector2f());
                 BUS.post(new ShootEvent(pos.x + 15 / 2f + vec2.x * TMP, pos.y + 15 / 2f + vec2.y * TMP, vec2.mul(200),
                         400));
             }
             mgr.removeEntity(ev.colliding[d]);
+            RenderComponent r = rend.get(ev.colliding[b]);
+            float f = 1 + 1f / 255;
+            r.color.setB(r.color.getB() / f);
+            r.color.clip();
         }
-
     }
 
 }

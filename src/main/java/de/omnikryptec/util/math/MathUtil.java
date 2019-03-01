@@ -80,6 +80,15 @@ public class MathUtil {
         return ts[0];
     }
 
+    public static Vector2f randomDirection2D(Random random, float begin, float end, Vector2f target) {
+        if (target == null) {
+            target = new Vector2f();
+        }
+        float rand = begin + (end - begin) * random.nextFloat();
+        target.set(Mathf.cos(rand), Mathf.sin(rand));
+        return target;
+    }
+
     public static int toPowerOfTwo(final int n) {
         return 1 << (32 - Integer.numberOfLeadingZeros(n - 1));
     }
