@@ -16,8 +16,6 @@
 
 package de.omnikryptec.core;
 
-import javax.annotation.Nonnull;
-
 import de.omnikryptec.core.loop.DefaultGameLoop;
 import de.omnikryptec.core.loop.IGameLoop;
 import de.omnikryptec.core.scene.GameController;
@@ -34,6 +32,8 @@ import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
+
+import javax.annotation.Nonnull;
 
 /**
  * The application entry point of the OmniKryptec-Engine. Can be used static and
@@ -69,20 +69,18 @@ public abstract class EngineLoader {
     
     /**
      * Initializes various parts of the {@code LibAPIManager}.
-     * 
-     * @param libSettings    Settings configuring the {@code LibAPIManager}
-     * @param rendererApi    the {@code RenderAPI} to use
+     *
+     * @param libSettings Settings configuring the {@code LibAPIManager}
+     * @param rendererApi the {@code RenderAPI} to use
      * @param windowSettings the window settings
-     * @param apiSettings    the {@code RenderAPI} specific settings
-     * @param keySettings    the {@code KeySettings} or null
-     * 
+     * @param apiSettings the {@code RenderAPI} specific settings
+     * @param keySettings the {@code KeySettings} or null
+     *
      * @see de.omnikryptec.libapi.exposed.render.RenderAPI
      * @see de.omnikryptec.libapi.exposed.window.WindowSetting
      * @see de.omnikryptec.libapi.exposed.LibAPIManager
      */
-    public static void initialize(final Settings<LibSetting> libSettings, final Class<? extends RenderAPI> rendererApi,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
-            KeySettings keySettings) {
+    public static void initialize(final Settings<LibSetting> libSettings, final Class<? extends RenderAPI> rendererApi, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings, KeySettings keySettings) {
         // Initialize everything required
         LibAPIManager.init(libSettings);
         LibAPIManager.instance().setRenderer(rendererApi, windowSettings, apiSettings);
@@ -97,8 +95,8 @@ public abstract class EngineLoader {
      * {@code GameController} and {@code UpdateController} are created.<br>
      * After or before making the window visible, {@code onInitialized()} is called.
      * If so configured, the {@code IGameLoop} will be started.
-     * 
-     * @see de.omnikryptec.core.EngineLoader#initialize(Settings, Class, Settings)
+     *
+     * @see de.omnikryptec.core.EngineLoader#initialize(Settings, Class, Settings, Settings, KeySettings)
      * @see de.omnikryptec.core.loop.IGameLoop
      * @see de.omnikryptec.core.scene.GameController
      * @see de.omnikryptec.core.scene.UpdateController
@@ -116,8 +114,7 @@ public abstract class EngineLoader {
         configure(loaderSettings, libSettings, windowSettings, rapiSettings, keySettings);
         // or let them (the natives) be loaded by Configuration.SHARED_LIBRARY and
         // LIBRARY_PATH <-- Seems to work, so better use it
-        initialize(libSettings, loaderSettings.get(LoaderSetting.RENDER_API), windowSettings, rapiSettings,
-                keySettings);
+        initialize(libSettings, loaderSettings.get(LoaderSetting.RENDER_API), windowSettings, rapiSettings, keySettings);
         this.window = RenderAPI.get().getWindow();
         this.resources = new ResourceManager();
         this.resources.addDefaultLoader();
@@ -187,7 +184,7 @@ public abstract class EngineLoader {
     }
     
     //Shortcut
-    public ResourceProvider getResProvider() {
+    public ResourceProvider getResourceProvider() {
         return this.resources.getProvider();
     }
     
@@ -219,9 +216,7 @@ public abstract class EngineLoader {
         return this.started;
     }
     
-    protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
-            KeySettings keySettings) {
+    protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings, KeySettings keySettings) {
     }
     
     protected abstract void onInitialized();

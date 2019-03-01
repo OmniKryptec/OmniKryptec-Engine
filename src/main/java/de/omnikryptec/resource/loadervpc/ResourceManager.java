@@ -16,6 +16,9 @@
 
 package de.omnikryptec.resource.loadervpc;
 
+import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.util.ExecutorsUtil;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -23,9 +26,6 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.util.ExecutorsUtil;
 
 public class ResourceManager {
     
@@ -92,8 +92,7 @@ public class ResourceManager {
         new Processor(override).loadSimple(file);
     }
     
-    private void addResource(final Object res, final AdvancedFile file, final AdvancedFile superfile,
-            final boolean override) {
+    private void addResource(final Object res, final AdvancedFile file, final AdvancedFile superfile, final boolean override) {
         if (res != null) {
             final String name = this.resourceNameGenerator.genName(res, file, superfile);
             this.resourceProvider.add(res, name, override);
@@ -254,7 +253,7 @@ public class ResourceManager {
             }
         }
         
-        private void load(final boolean useExecutor, final AdvancedFile file, final AdvancedFile superfile) {
+        private void load(final boolean useExecutor, final AdvancedFile file, final AdvancedFile superFile) {
             final Runnable r = () -> {
                 for (final ResourceLoader<?> loader : ResourceManager.this.loadersThreadGroup) {
                     if (file.getName().matches(loader.getFileNameRegex())) {
@@ -264,7 +263,7 @@ public class ResourceManager {
                         } catch (final Exception e) {
                             e.printStackTrace();
                         }
-                        this.resourcesTmp.add(new ResTask(res, file, superfile));
+                        this.resourcesTmp.add(new ResTask(res, file, superFile));
                     }
                 }
             };
@@ -281,7 +280,7 @@ public class ResourceManager {
                     } catch (final Exception e) {
                         e.printStackTrace();
                     }
-                    addResource(res, file, superfile, this.override);
+                    addResource(res, file, superFile, this.override);
                 }
             }
             notifyProcessed(file);
