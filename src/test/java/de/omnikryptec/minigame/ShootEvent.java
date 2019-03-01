@@ -9,11 +9,17 @@ public class ShootEvent extends Event {
     
     public Vector2f dir;
     public float x, y;
+    public float range;
     
-    public ShootEvent(float x, float y, Vector2f dir) {
+    private ShootEvent(float x, float y, Vector2f dir) {
         this.dir = dir;
         this.x = x;
         this.y = y;
+    }
+    
+    public ShootEvent(float x, float y, Vector2f dir, float range) {
+        this(x,y,dir);
+        this.range = range;
     }
     
 }
