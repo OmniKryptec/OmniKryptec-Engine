@@ -41,12 +41,11 @@ public class CollisionSystem extends ComponentSystem {
     }
     
     public static class CollisionEvent extends Event {
-        public Entity e1;
-        public Entity e2;
+        public final Entity[] colliding = new Entity[2];
         
         public CollisionEvent(Entity e1, Entity e2) {
-            this.e1 = e1;
-            this.e2 = e2;
+            colliding[0] = e1;
+            colliding[1] = e2;
         }
         
     }

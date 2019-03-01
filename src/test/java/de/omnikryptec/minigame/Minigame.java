@@ -1,30 +1,39 @@
 package de.omnikryptec.minigame;
 
+import java.util.Random;
+
+import org.joml.Vector2d;
+import org.joml.Vector2f;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.scene.SceneBuilder;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
+import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
+import de.omnikryptec.libapi.opengl.OpenGLUtil;
+import de.omnikryptec.minigame.CollisionSystem.CollisionEvent;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.data.Color;
+import de.omnikryptec.util.math.MathUtil;
+import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
-import org.joml.Vector2f;
 
 public class Minigame extends EngineLoader {
-    
+
     public static final EventBus BUS = new EventBus(false);
-    
+
     public static void main(final String[] args) {
         new Minigame().start();
     }
-    
+
     @Override
     protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
@@ -39,15 +48,14 @@ public class Minigame extends EngineLoader {
         apiSettings.set(OpenGLRenderAPI.MINOR_VERSION, 3);
         apiSettings.set(OpenGLRenderAPI.MAJOR_VERSION, 3);
     }
-    
+
     private IECSManager mgr;
-    
+
     @Override
     protected void onInitialized() {
-        //getResManager().stage(new AdvancedFile("src/test/resource"));
-        getResManager().stage(new AdvancedFile("intern:/resource"));
+        getResManager().stage(new AdvancedFile("src/test/resources"));
         getResManager().processStaged(false);
-        //getResourceProvider().get(clazz, name)
+        //getResProvider().get(clazz, name)
         BUS.register(this);
         final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
         mgr = builder.addDefaultECSManager();
@@ -57,41 +65,84 @@ public class Minigame extends EngineLoader {
         mgr.addSystem(new MovementSystem());
         mgr.addSystem(new RangedSystem());
         mgr.addEntity(makePlayer());
-        mgr.addEntity(makeThing(100, 100));
-        mgr.addEntity(makeThing(10, -230));
-        
+        for (int i = -30; i < 30; i++) {
+            for (int j = -30; j < 30; j++) {
+                if (random.nextFloat() < 0.1f) {
+                    mgr.addEntity(makeThing(i * 20, j * 20));
+                }
+            }
+        }
+        //mgr.addEntity(makeThing(10, -230));
+
     }
-    
+
     private Entity makePlayer() {
         Entity e = new Entity();
         e.addComponent(new PositionComponent(0, 0));
         e.addComponent(new RenderComponent(10, 10));
-        e.addComponent(new PlayerComponent(50, 50));
+        e.addComponent(new PlayerComponent(50, 50, 5, 5));
         e.addComponent(new MovementComponent(0, 0));
         e.addComponent(new HitBoxComponent(10, 10));
         return e;
     }
-    
+
     private Entity makeThing(float x, float y) {
         Entity e = new Entity();
         e.addComponent(new PositionComponent(x, y));
         e.addComponent(new RenderComponent(15, 15, new Color(0, 1, 1)));
         e.addComponent(new HitBoxComponent(15, 15));
+        e.userData = -10;
         return e;
     }
-    
-    private Entity makeFlying(float x, float y, Vector2f dir) {
+
+    private Entity makeFlying(float x, float y, Vector2f dir, float range) {
         Entity e = new Entity();
-        e.addComponent(new PositionComponent(x, y));
+        e.addComponent(new PositionComponent(x - 2.5f, y - 2.5f));
         e.addComponent(new RenderComponent(5, 5, new Color(1, 0, 0)));
         e.addComponent(new MovementComponent(dir.x, dir.y));
-        e.addComponent(new RangedComponent(200, x, y));
+        e.addComponent(new RangedComponent(range, x, y));
+        e.addComponent(new HitBoxComponent(5, 5));
+        e.userData = 10;
         return e;
     }
-    
+
     @EventSubscription
     public void shoot(ShootEvent ev) {
-        mgr.addEntity(makeFlying(ev.x, ev.y, ev.dir));
+        mgr.addEntity(makeFlying(ev.x, ev.y, ev.dir, ev.range));
     }
-    
+
+    private ComponentMapper<PositionComponent> mapper = new ComponentMapper<>(PositionComponent.class);
+    private Random random = new Random();
+    private final float TMP = Mathf.sqrt(2) * 15 / 2f;
+
+    @EventSubscription
+    public void collide(CollisionEvent ev) {
+        int d = -1;
+        int b = -1;
+        for (int i = 0; i < ev.colliding.length; i++) {
+            if (ev.colliding[i].userData != null && (Integer) ev.colliding[i].userData == 10) {
+                d = i;
+            }
+        }
+        for (int i = 0; i < ev.colliding.length; i++) {
+            if (ev.colliding[i].userData != null && (Integer) ev.colliding[i].userData == -10) {
+                b = i;
+            }
+        }
+        if (d != -1 && b != -1) {
+            PositionComponent pos = mapper.get(ev.colliding[b]);
+            Integer[] possib = {0,1,2,3};
+            int[] weights = {4,10,2,1};
+            Integer amount = MathUtil.getWeightedRandom(random, possib, weights);
+            for (int i = 0; i < amount; i++) {
+                float rads = random.nextFloat() * Mathf.PI * 2;
+                Vector2f vec2 = new Vector2f(Mathf.cos(rads), Mathf.sin(rads));
+                BUS.post(new ShootEvent(pos.x + 15 / 2f + vec2.x * TMP, pos.y + 15 / 2f + vec2.y * TMP, vec2.mul(200),
+                        400));
+            }
+            mgr.removeEntity(ev.colliding[d]);
+        }
+
+    }
+
 }
