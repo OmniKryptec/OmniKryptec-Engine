@@ -26,8 +26,8 @@ public class ShaderLoader implements ResourceLoader<Void> {
 
     @Override
     public boolean requiresMainThread() {
-
-        return false;
+        //TODO false would be better but needs fixes
+        return true;
     }
 
 }

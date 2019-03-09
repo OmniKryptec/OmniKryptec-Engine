@@ -65,7 +65,7 @@ public class GLShader extends AutoDelete implements Shader {
             GL20.glShaderSource(shader, a.source);
             GL20.glCompileShader(shader);
             if (GL20.glGetShaderi(shader, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-                Logger.log(GLShader.class, LogType.Error, "Compilation error", "Shader: " + a.shaderType,
+                Logger.log(GLShader.class, LogType.Error, "Compilation error", "Shader: " + a.context+ " ("+a.shaderType+")",
                         "Error: " + GL20.glGetShaderInfoLog(shader), LogType.Debug, "Src: \n" + a.source);
             } else {
                 GL20.glAttachShader(this.programId, shader);

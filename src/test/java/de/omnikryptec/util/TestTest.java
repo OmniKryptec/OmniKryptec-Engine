@@ -29,6 +29,7 @@ import de.omnikryptec.util.math.Mathf;
 public class TestTest {
     
     public static final void main(final String[] args) throws Exception {
+        System.out.println(TestTest.class.getResourceAsStream("de/omnikryptec/resources/block.obj"));
         //        DynamicArray<Object> array = new DynamicArray<>();
         //        int i1=0;
         //        for (int i = 0; i < 20; i++) {

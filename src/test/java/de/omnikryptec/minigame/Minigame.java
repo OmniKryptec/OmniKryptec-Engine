@@ -49,7 +49,7 @@ public class Minigame extends EngineLoader {
     @Override
     protected void onInitialized() {
         //getResManager().stage(new AdvancedFile("src/test/resource"));
-        getResManager().stage(new AdvancedFile("intern:/resource"));
+        getResManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources"));
         getResManager().processStaged(false);
         //getResourceProvider().get(clazz, name)
         BUS.register(this);
