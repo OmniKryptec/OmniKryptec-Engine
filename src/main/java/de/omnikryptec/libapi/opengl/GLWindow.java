@@ -138,4 +138,9 @@ public class GLWindow implements IWindow {
         return windowId;
     }
     
+    @Override
+    public void setTitle(String title) {
+        GLFW.glfwSetWindowTitle(windowId, title);
+    }
+    
 }

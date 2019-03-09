@@ -94,6 +94,7 @@ public final class LibAPIManager {
     
     public static void shutdown() {
         if (isInitialized()) {
+            logger.info("Running shutdown hooks...");
             for (ToughRunnable toughRunnable : shutdownHooks) {
                 toughRunnable.run((throwable) -> {
                     logger.error(String.format("Exception in shutdown hook '%s': %s", toughRunnable, throwable));
@@ -118,14 +119,17 @@ public final class LibAPIManager {
         return instance;
     }
     
-    public void setRenderer(Class<? extends RenderAPI> clazz, Settings<WindowSetting> windowSettings, Settings<IntegerKey> apiSettings) {
+    public void setRenderer(Class<? extends RenderAPI> clazz, Settings<WindowSetting> windowSettings,
+            Settings<IntegerKey> apiSettings) {
         if (isRendererSet()) {
             throw new IllegalStateException("Renderer is already set!");
         }
         try {
-            final Constructor<? extends RenderAPI> renderApiConstructor = clazz.getConstructor(windowSettings.getClass(), apiSettings.getClass());
+            final Constructor<? extends RenderAPI> renderApiConstructor = clazz
+                    .getConstructor(windowSettings.getClass(), apiSettings.getClass());
             renderApiConstructor.setAccessible(true);
             renderApi = renderApiConstructor.newInstance(windowSettings, apiSettings);
+            logger.info("Set the RenderAPI to " + clazz.getSimpleName());
         } catch (NoSuchMethodException ex) {
             throw new IllegalArgumentException("Invalid RendererAPI: Missing constructor", ex);
         } catch (Exception ex) {
@@ -139,6 +143,7 @@ public final class LibAPIManager {
         }
         inputManager = new InputManager(getRenderAPI().getWindow().getID(), keySettings);
         inputManager.init();
+        logger.info("Created an InputManager");
     }
     
     public InputManager getInputManager() {

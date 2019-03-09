@@ -2,6 +2,8 @@ package de.omnikryptec.libapi.exposed.window;
 
 public interface IWindow {
     
+    void setTitle(String title);
+    
     boolean isActive();
     
     boolean isFullscreen();
