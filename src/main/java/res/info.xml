@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<properties>
-  <property name="Alter" value="100"/>
-  <property name="name" value="Peter" pass="false"/>
-  <file name="j.\.png" regex="true">
-    <property name="Wert" value="-1"/>
-  </file>
-  <file name="jd.png" exclude="true"/>
-</properties>
