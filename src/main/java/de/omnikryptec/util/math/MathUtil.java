@@ -32,7 +32,7 @@ import org.joml.Vector4f;
 import org.joml.Vector4fc;
 
 public class MathUtil {
-
+    
     /**
      * Creates a viewport with a particular aspect ratio and the given width and
      * height. The viewport will be centered and of maximum size for the given
@@ -64,7 +64,7 @@ public class MathUtil {
         }
         return viewport;
     }
-
+    
     public static <T> T getWeightedRandom(final Random random, final T[] ts, final int[] weights) {
         int sum = 0;
         for (final int i : weights) {
@@ -79,7 +79,22 @@ public class MathUtil {
         }
         return ts[0];
     }
-
+    
+    public static int getWeightedRandom(final Random random, final int[] ts, final int[] weights) {
+        int sum = 0;
+        for (final int i : weights) {
+            sum += i;
+        }
+        int rand = random.nextInt(sum) + 1;
+        for (int i = 0; i < ts.length; i++) {
+            if (rand <= weights[i]) {
+                return ts[i];
+            }
+            rand -= weights[i];
+        }
+        return ts[0];
+    }
+    
     public static Vector2f randomDirection2D(Random random, float begin, float end, Vector2f target) {
         if (target == null) {
             target = new Vector2f();
@@ -88,15 +103,15 @@ public class MathUtil {
         target.set(Mathf.cos(rand), Mathf.sin(rand));
         return target;
     }
-
+    
     public static int toPowerOfTwo(final int n) {
         return 1 << (32 - Integer.numberOfLeadingZeros(n - 1));
     }
-
+    
     public static boolean isPowerOfTwo(final int n) {
         return (n & -n) == n;
     }
-
+    
     public static Vector2f relativeMousePosition(Vector2dc displayMousePosition, int[] viewport, Vector2f target) {
         if (target == null) {
             target = new Vector2f();
@@ -122,7 +137,7 @@ public class MathUtil {
         target.set((float) x, (float) y);
         return target;
     }
-
+    
     public static Vector2d relativeMousePosition(Vector2dc displayMousePosition, int[] viewport, Vector2d target) {
         if (target == null) {
             target = new Vector2d();
@@ -148,7 +163,7 @@ public class MathUtil {
         target.set(x, y);
         return target;
     }
-
+    
     public static Vector2f screenToWorldspace2D(Vector2fc relativeScreenPosition, Matrix4fc inverseViewProjection,
             Vector2f target) {
         if (target == null) {
@@ -158,7 +173,7 @@ public class MathUtil {
         target.set(vec4.x, vec4.y);
         return target;
     }
-
+    
     public static Vector4f screenToWorldspace(Vector2fc relativeScreenPosition, Matrix4fc inverseViewprojection,
             float depth, Vector4f target) {
         if (target == null) {
@@ -169,59 +184,59 @@ public class MathUtil {
         target.mul(1 / target.w, target);
         return target;
     }
-
+    
     public static boolean isMouseInViewport(Vector2dc displayMousePosition, int[] viewport) {
         boolean out = (displayMousePosition.x() < viewport[0] || displayMousePosition.x() > viewport[2] + viewport[0])
                 || (displayMousePosition.y() < viewport[1] || displayMousePosition.y() > viewport[3] + viewport[1]);
         return !out;
     }
-
+    
     //Float vecs
-
+    
     public static boolean equals(final Vector2fc v1, final Vector2fc v2) {
         return v1 == v2 || (v1 != null && v2 != null && v1.x() == v2.x() && v1.y() == v2.y());
     }
-
+    
     public static boolean equals(final Vector3fc v1, final Vector3fc v2) {
         return v1 == v2 || (v1 != null && v2 != null && v1.x() == v2.x() && v1.y() == v2.y() && v1.z() == v2.z());
     }
-
+    
     public static boolean equals(final Vector4fc v1, final Vector4fc v2) {
         return v1 == v2 || (v1 != null && v2 != null && v1.x() == v2.x() && v1.y() == v2.y() && v1.z() == v2.z()
                 && v1.w() == v2.w());
     }
-
+    
     public static boolean equals(final Quaternionfc q1, final Quaternionfc q2) {
         return q1 == q2 || (q1 != null && q2 != null && q1.x() == q2.x() && q1.y() == q2.y() && q1.z() == q2.z()
                 && q1.w() == q2.w());
     }
-
+    
     public static boolean equals(final Struct3f s1, final Struct3f s2) {
         return s1 == s2 || (s1.x == s2.x && s1.y == s2.y && s1.z == s2.z);
     }
-
+    
     public static boolean equals(final Struct2f s1, final Struct2f s2) {
         return s1 == s2 || (s1.x == s2.x && s1.y == s2.y);
     }
-
+    
     //double vecs
-
+    
     public static boolean equals(final Vector2dc v1, final Vector2dc v2) {
         return v1 == v2 || (v1 != null && v2 != null && v1.x() == v2.x() && v1.y() == v2.y());
     }
-
+    
     public static boolean equals(final Vector3dc v1, final Vector3dc v2) {
         return v1 == v2 || (v1 != null && v2 != null && v1.x() == v2.x() && v1.y() == v2.y() && v1.z() == v2.z());
     }
-
+    
     public static boolean equals(final Vector4dc v1, final Vector4dc v2) {
         return v1 == v2 || (v1 != null && v2 != null && v1.x() == v2.x() && v1.y() == v2.y() && v1.z() == v2.z()
                 && v1.w() == v2.w());
     }
-
+    
     public static boolean equals(final Quaterniondc q1, final Quaterniondc q2) {
         return q1 == q2 || (q1 != null && q2 != null && q1.x() == q2.x() && q1.y() == q2.y() && q1.z() == q2.z()
                 && q1.w() == q2.w());
     }
-
+    
 }

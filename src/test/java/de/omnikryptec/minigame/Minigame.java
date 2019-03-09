@@ -32,7 +32,9 @@ public class Minigame extends EngineLoader {
     }
     
     @Override
-    protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings, KeySettings keySettings) {
+    protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
+            KeySettings keySettings) {
         libSettings.set(LibSetting.DEBUG, true);
         libSettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "Minigame");
@@ -50,7 +52,7 @@ public class Minigame extends EngineLoader {
     protected void onInitialized() {
         //getResManager().stage(new AdvancedFile("src/test/resource"));
         getResManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources"));
-        getResManager().processStaged(false,true);
+        getResManager().processStaged(false, true);
         //getResourceProvider().get(clazz, name)
         BUS.register(this);
         final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
@@ -74,7 +76,7 @@ public class Minigame extends EngineLoader {
         Entity e = new Entity();
         e.addComponent(new PositionComponent(0, 0));
         e.addComponent(new RenderComponent(10, 10));
-        e.addComponent(new PlayerComponent(50, 50, 5, 5));
+        e.addComponent(new PlayerComponent(75, 75, 5, 5));
         e.addComponent(new MovementComponent(0, 0));
         e.addComponent(new HitBoxComponent(10, 10));
         return e;
@@ -86,7 +88,7 @@ public class Minigame extends EngineLoader {
         e.addComponent(new RenderComponent(15, 15, new Color(0, 1, 1)));
         e.addComponent(new HitBoxComponent(15, 15));
         e.addComponent(new MovementComponent(0, 0));
-        e.userData = -10;
+        e.flags = -10;
         return e;
     }
     
@@ -97,7 +99,7 @@ public class Minigame extends EngineLoader {
         e.addComponent(new MovementComponent(dir.x, dir.y));
         e.addComponent(new RangedComponent(range, x, y));
         e.addComponent(new HitBoxComponent(5, 5));
-        e.userData = 10;
+        e.flags = 10;
         return e;
     }
     
@@ -114,40 +116,29 @@ public class Minigame extends EngineLoader {
     
     @EventSubscription
     public void collide(CollisionEvent ev) {
-        int d = -1;
-        int b = -1;
-        for (int i = 0; i < ev.colliding.length; i++) {
-            if (ev.colliding[i].userData != null && (Integer) ev.colliding[i].userData == 10) {
-                d = i;
-            }
-        }
-        for (int i = 0; i < ev.colliding.length; i++) {
-            if (ev.colliding[i].userData != null && (Integer) ev.colliding[i].userData == -10) {
-                b = i;
-            }
-        }
-        if (d != -1 && b != -1) {
-            PositionComponent pos = mapper.get(ev.colliding[b]);
-            MovementComponent mov1 = mov.get(ev.colliding[b]);
-            MovementComponent mov2 = mov.get(ev.colliding[d]);
+        Entity d = ev.getEntity(10);
+        Entity b = ev.getEntity(-10);
+        if (d != null && b != null) {
+            PositionComponent pos = mapper.get(b);
+            MovementComponent mov1 = mov.get(b);
+            MovementComponent mov2 = mov.get(d);
             mov1.dx += mov2.dx / 15;
             mov1.dy += mov2.dy / 15;
-            Integer[] possib = { 0, 1, 2, 3 };
+            int[] possib = { 0, 1, 2, 3 };
             int[] weights = { 4, 10, 2, 1 };
-            Integer amount = MathUtil.getWeightedRandom(random, possib, weights);
+            int amount = MathUtil.getWeightedRandom(random, possib, weights);
             for (int i = 0; i < amount; i++) {
                 Vector2f vec2 = MathUtil.randomDirection2D(random, 0, 2 * Mathf.PI, new Vector2f());
                 BUS.post(new ShootEvent(pos.x + 15 / 2f + vec2.x * TMP, pos.y + 15 / 2f + vec2.y * TMP, vec2.mul(200),
                         400));
-
             }
-            mgr.removeEntity(ev.colliding[d]);
-            RenderComponent r = rend.get(ev.colliding[b]);
+            mgr.removeEntity(d);
+            RenderComponent r = rend.get(b);
             float f = 1 + 1f / 255;
             r.color.setB(r.color.getB() / f);
             r.color.clip();
         }
-
+        
     }
     
 }

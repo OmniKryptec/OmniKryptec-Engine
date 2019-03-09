@@ -24,7 +24,7 @@ import de.omnikryptec.util.data.DynamicArray;
 
 public class Entity {
     
-    public Object userData;
+    public int flags;
     
     protected IECSManager iecsManager;
     
@@ -34,10 +34,6 @@ public class Entity {
     public Entity() {
         this.componentsArray = new DynamicArray<>();
         this.components = new BitSet();
-    }
-    
-    public <T>T getUserData(){
-        return (T) userData;
     }
     
     public Entity addComponent(final Component component) {
