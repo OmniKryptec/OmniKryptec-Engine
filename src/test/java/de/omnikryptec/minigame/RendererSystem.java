@@ -37,7 +37,6 @@ public class RendererSystem extends ComponentSystem {
     public void update(IECSManager manager, Time time) {
         RenderAPI.get().clear(SurfaceBuffer.Color);
         batch.begin();
-        
         for (Entity entity : entities) {
             PositionComponent pos = posMapper.get(entity);
             RenderComponent rend = rendMapper.get(entity);

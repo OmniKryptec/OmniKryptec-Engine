@@ -14,12 +14,12 @@ import de.omnikryptec.util.updater.Time;
 public class CollisionSystem extends ComponentSystem {
     
     protected CollisionSystem() {
-        super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(HitBoxComponent.class)));
+        super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(CollisionComponent.class)));
         
     }
     
     private ComponentMapper<PositionComponent> posMapper = new ComponentMapper<>(PositionComponent.class);
-    private ComponentMapper<HitBoxComponent> hitMapper = new ComponentMapper<>(HitBoxComponent.class);
+    private ComponentMapper<CollisionComponent> hitMapper = new ComponentMapper<>(CollisionComponent.class);
     
     @Override
     public void update(IECSManager manager, Time time) {
@@ -27,8 +27,8 @@ public class CollisionSystem extends ComponentSystem {
             Entity entity = entities.get(i);
             for (int j = i + 1; j < entities.size(); j++) {
                 Entity e = entities.get(j);
-                HitBoxComponent hit1 = hitMapper.get(e);
-                HitBoxComponent hit2 = hitMapper.get(entity);
+                CollisionComponent hit1 = hitMapper.get(e);
+                CollisionComponent hit2 = hitMapper.get(entity);
                 PositionComponent pos1 = posMapper.get(e);
                 PositionComponent pos2 = posMapper.get(entity);
                 boolean intersect = Intersectionf.testAabAab(pos1.x, pos1.y, 0, pos1.x + hit1.w, pos1.y + hit1.h, 0,
@@ -40,23 +40,5 @@ public class CollisionSystem extends ComponentSystem {
         }
     }
     
-    public static class CollisionEvent extends Event {
-        public final Entity e1;
-        public final Entity e2;
-        
-        public CollisionEvent(Entity e1, Entity e2) {
-            this.e1 = e1;
-            this.e2 = e2;
-        }
-        
-        public boolean hasFlags(int flags) {
-            return e1.flags == flags || e2.flags == flags;
-        }
-        
-        public Entity getEntity(int flags) {
-            return e1.flags == flags ? e1 : (e2.flags == flags ? e2 : null);
-        }
-        
-    }
     
 }

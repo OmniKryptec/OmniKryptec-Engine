@@ -11,7 +11,7 @@ import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
-import de.omnikryptec.minigame.CollisionSystem.CollisionEvent;
+import de.omnikryptec.minigame.ShootEvent.Projectile;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.MathUtil;
@@ -50,19 +50,18 @@ public class Minigame extends EngineLoader {
     
     @Override
     protected void onInitialized() {
-        //getResManager().stage(new AdvancedFile("src/test/resource"));
         getResManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources"));
         getResManager().processStaged(false, true);
-        //getResourceProvider().get(clazz, name)
         BUS.register(this);
         final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
         mgr = builder.addDefaultECSManager();
         mgr.addSystem(new RendererSystem());
         mgr.addSystem(new CollisionSystem());
-        mgr.addSystem(new InputSystem());
+        mgr.addSystem(new PlayerSystem());
         mgr.addSystem(new MovementSystem());
         mgr.addSystem(new RangedSystem());
-        mgr.addEntity(makePlayer());
+        mgr.addEntity(makePlayer(0, 0));
+        
         for (int i = -30; i < 30; i++) {
             for (int j = -30; j < 30; j++) {
                 if (random.nextFloat() < 0.25f) {
@@ -70,15 +69,16 @@ public class Minigame extends EngineLoader {
                 }
             }
         }
+        
     }
     
-    private Entity makePlayer() {
+    private Entity makePlayer(float x, float y) {
         Entity e = new Entity();
-        e.addComponent(new PositionComponent(0, 0));
+        e.addComponent(new PositionComponent(x, y));
         e.addComponent(new RenderComponent(10, 10));
-        e.addComponent(new PlayerComponent(75, 75, 5, 5));
+        e.addComponent(new PlayerComponent(300, 300, 5, 5));
         e.addComponent(new MovementComponent(0, 0));
-        e.addComponent(new HitBoxComponent(10, 10));
+        e.addComponent(new CollisionComponent(10, 10));
         return e;
     }
     
@@ -86,59 +86,80 @@ public class Minigame extends EngineLoader {
         Entity e = new Entity();
         e.addComponent(new PositionComponent(x, y));
         e.addComponent(new RenderComponent(15, 15, new Color(0, 1, 1)));
-        e.addComponent(new HitBoxComponent(15, 15));
+        e.addComponent(new CollisionComponent(15, 15));
         e.addComponent(new MovementComponent(0, 0));
         e.flags = -10;
         return e;
     }
     
-    private Entity makeFlying(float x, float y, Vector2f dir, float range) {
+    private Entity makeFlying(float x, float y, Vector2f dir, float range, int f) {
         Entity e = new Entity();
         e.addComponent(new PositionComponent(x - 2.5f, y - 2.5f));
-        e.addComponent(new RenderComponent(5, 5, new Color(1, 0, 0)));
+        e.addComponent(new RenderComponent(5, 5, new Color(1, 0, f == 20 ? 1 : 0)));
         e.addComponent(new MovementComponent(dir.x, dir.y));
         e.addComponent(new RangedComponent(range, x, y));
-        e.addComponent(new HitBoxComponent(5, 5));
-        e.flags = 10;
+        e.addComponent(new CollisionComponent(5, 5));
+        
+        e.flags = f;
         return e;
     }
     
     @EventSubscription
     public void shoot(ShootEvent ev) {
-        mgr.addEntity(makeFlying(ev.x, ev.y, ev.dir, ev.range));
+        if (ev.projectile == Projectile.Normal) {
+            mgr.addEntity(makeFlying(ev.x, ev.y, ev.dir, ev.range, 10));
+        } else if (ev.projectile == Projectile.Bomb) {
+            mgr.addEntity(makeFlying(ev.x, ev.y, ev.dir, ev.range, 20));
+        }
+    }
+    
+    @EventSubscription
+    public void rangemax(RangeMaxedEvent ev) {
+        if (ev.entity.flags == 20) {
+            BUS.post(new BombExplodeEvent(ev.entity));
+        }
+    }
+    
+    @EventSubscription
+    public void bombExplode(BombExplodeEvent ev) {
+        for (int i = 0; i < 100; i++) {
+            Vector2f r = MathUtil.randomDirection2D(random, 0, 2 * Mathf.PI, new Vector2f()).mul(500);
+            BUS.post(new ShootEvent(mapper.get(ev.bomb).x, mapper.get(ev.bomb).y, r, 150, Projectile.Normal));
+        }
     }
     
     private ComponentMapper<PositionComponent> mapper = new ComponentMapper<>(PositionComponent.class);
     private ComponentMapper<RenderComponent> rend = new ComponentMapper<>(RenderComponent.class);
-    private ComponentMapper<MovementComponent> mov = new ComponentMapper<>(MovementComponent.class);
     private Random random = new Random();
-    private final float TMP = Mathf.sqrt(2) * 15 / 2f;
     
     @EventSubscription
     public void collide(CollisionEvent ev) {
+        Entity bomb = ev.getEntity(20);
+        Entity hit = ev.getEntity(-10);
         Entity d = ev.getEntity(10);
-        Entity b = ev.getEntity(-10);
-        if (d != null && b != null) {
-            PositionComponent pos = mapper.get(b);
-            MovementComponent mov1 = mov.get(b);
-            MovementComponent mov2 = mov.get(d);
-            mov1.dx += mov2.dx / 15;
-            mov1.dy += mov2.dy / 15;
-            int[] possib = { 0, 1, 2, 3 };
-            int[] weights = { 4, 10, 2, 1 };
-            int amount = MathUtil.getWeightedRandom(random, possib, weights);
-            for (int i = 0; i < amount; i++) {
-                Vector2f vec2 = MathUtil.randomDirection2D(random, 0, 2 * Mathf.PI, new Vector2f());
-                BUS.post(new ShootEvent(pos.x + 15 / 2f + vec2.x * TMP, pos.y + 15 / 2f + vec2.y * TMP, vec2.mul(200),
-                        400));
-            }
-            mgr.removeEntity(d);
-            RenderComponent r = rend.get(b);
-            float f = 1 + 1f / 255;
-            r.color.setB(r.color.getB() / f);
-            r.color.clip();
+        if (bomb != null && hit != null) {
+            mgr.removeEntity(bomb);
+            downOrRemove(hit);
+            BUS.post(new BombExplodeEvent(bomb));
         }
-        
+        if (d != null && hit != null) {
+            downOrRemove(hit);
+            mgr.removeEntity(d);
+        }
     }
     
+    private void downOrRemove(Entity hit) {
+        RenderComponent c = rend.get(hit);
+        
+        float f = 0.025f * random.nextFloat();
+        c.color.setR(c.color.getR() + f);
+        c.color.setG(c.color.getG() - f);
+        c.color.setB(c.color.getB() - f);
+        if (c.color.getR() >= 1) {
+            mgr.removeEntity(hit);
+        }
+        if (f >= 0.0247f) {
+            BUS.post(new BombExplodeEvent(hit));
+        }
+    }
 }

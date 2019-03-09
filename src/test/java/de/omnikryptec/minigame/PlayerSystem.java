@@ -1,13 +1,7 @@
 package de.omnikryptec.minigame;
 
-import java.util.Random;
-
 import org.joml.Matrix4f;
-import org.joml.Vector2d;
-import org.joml.Vector2dc;
 import org.joml.Vector2f;
-import org.joml.Vector4f;
-import org.joml.sampling.PoissonSampling;
 import org.lwjgl.glfw.GLFW;
 
 import de.omnikryptec.ecs.Entity;
@@ -19,36 +13,36 @@ import de.omnikryptec.ecs.system.ComponentSystem;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
-import de.omnikryptec.libapi.exposed.render.RenderState;
+import de.omnikryptec.minigame.ShootEvent.Projectile;
 import de.omnikryptec.util.math.MathUtil;
-import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.updater.Time;
 
-public class InputSystem extends ComponentSystem {
-
-    public InputSystem() {
+public class PlayerSystem extends ComponentSystem {
+    
+    public PlayerSystem() {
         super(Family.of(ComponentType.of(MovementComponent.class), ComponentType.of(PlayerComponent.class),
                 ComponentType.of(PositionComponent.class)));
     }
-
+    
     private InputManager mgr = LibAPIManager.instance().getInputManager();
-
+    
     private ComponentMapper<MovementComponent> movMapper = new ComponentMapper<>(MovementComponent.class);
     private ComponentMapper<PlayerComponent> playMapper = new ComponentMapper<>(PlayerComponent.class);
     private ComponentMapper<PositionComponent> posMapper = new ComponentMapper<>(PositionComponent.class);
-
-    private static final float PS = 100;
-    private float missing = 0;
-
-    private Random random = new Random();
-
+    
+    
+    private float again;
+        
     @Override
     public void update(IECSManager iecsManager, Time time) {
         mgr.preUpdate(time);
         mgr.update(time);
+        again += time.deltaf;
         for (Entity e : entities) {
             MovementComponent mov = movMapper.get(e);
             PlayerComponent play = playMapper.get(e);
+            PositionComponent plus = posMapper.get(e);
+            RendererSystem.CAMERA.getTransform().localspaceWrite().setTranslation(-plus.x, -plus.y, 0);
             float vy = 0;
             float vx = 0;
             if (mgr.isKeyboardKeyPressed(GLFW.GLFW_KEY_W)) {
@@ -63,23 +57,26 @@ public class InputSystem extends ComponentSystem {
             if (mgr.isKeyboardKeyPressed(GLFW.GLFW_KEY_D)) {
                 vx += play.maxXv;
             }
+            if (mgr.isKeyboardKeyPressed(GLFW.GLFW_KEY_LEFT_CONTROL)) {
+                vx /= 2;
+                vy /= 2;
+            }
             mov.dx = vx;
             mov.dy = vy;
-            if (mgr.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_1) && mgr.isMouseInsideWindow()) {
-                float am = time.deltaf * PS + missing;
-                int amount = (int) (am);
-                missing = am - amount;
-                PositionComponent pos = posMapper.get(e);
-                for (int i = 0; i < amount; i++) {
-                    Vector2f mouse = MathUtil.randomDirection2D(random, 0, Mathf.PI * 2, new Vector2f());
-                    mouse.mul(400);
-                    Minigame.BUS.post(new ShootEvent(pos.x + play.shOffsetX, pos.y + play.shOffsetY, mouse, 200));
-                }
-
+            if (mgr.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_1) && mgr.isMouseInsideWindow() && again > 0.05f) {
+                again = 0;
+                Vector2f dir = MathUtil.screenToWorldspace2D(
+                        MathUtil.relativeMousePosition(mgr.getMousePosition(),
+                                RenderAPI.get().getWindow().getDefaultFrameBuffer().viewport(), new Vector2f()),
+                        RendererSystem.CAMERA.getProjection().invert(new Matrix4f()), new Vector2f());
+                dir.add(-plus.x, -plus.y);
+                dir.normalize(200);
+                Minigame.BUS.post(
+                        new ShootEvent(plus.x + play.shOffsetX, plus.y + play.shOffsetY, dir, 1000, Projectile.Bomb));
             }
         }
-
+        
         mgr.postUpdate(time);
     }
-
+    
 }
