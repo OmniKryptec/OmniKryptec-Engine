@@ -84,15 +84,16 @@ public class ResourceManager {
         this.staged.clear();
     }
     
-    public void processStaged(final boolean override) {
-        new Processor(override).processStaged();
+    public void processStaged(final boolean override, final boolean flat) {
+        new Processor(override, flat).processStaged();
     }
     
-    public void instantLoad(final boolean override, final AdvancedFile file) {
-        new Processor(override).loadSimple(file);
+    public void instantLoad(final boolean override, final boolean flat, final AdvancedFile file) {
+        new Processor(override, flat).loadSimple(file);
     }
     
-    private void addResource(final Object res, final AdvancedFile file, final AdvancedFile superfile, final boolean override) {
+    private void addResource(final Object res, final AdvancedFile file, final AdvancedFile superfile,
+            final boolean override) {
         if (res != null) {
             final String name = this.resourceNameGenerator.genName(res, file, superfile);
             this.resourceProvider.add(res, name, override);
@@ -136,6 +137,7 @@ public class ResourceManager {
      */
     private class Processor {
         private final boolean override;
+        private final boolean flat;
         private ExecutorService executorService = null;
         private final ConcurrentLinkedQueue<ResTask> resourcesTmp;
         
@@ -156,8 +158,9 @@ public class ResourceManager {
         private int localprocessed;
         /**/
         
-        private Processor(final boolean override) {
+        private Processor(final boolean override, final boolean flat) {
             this.override = override;
+            this.flat = flat;
             this.executorService = ExecutorsUtil.newFixedThreadPool();
             this.resourcesTmp = new ConcurrentLinkedQueue<>();
         }
@@ -180,7 +183,7 @@ public class ResourceManager {
         }
         
         private void processStagedIntern(final AdvancedFile file, final AdvancedFile superFile) {
-            if (file.isDirectory()) {
+            if (file.isDirectory() && !flat) {
                 for (final AdvancedFile subFile : file.listFiles()) {
                     processStagedIntern(subFile, superFile);
                 }
@@ -198,7 +201,7 @@ public class ResourceManager {
         }
         
         private void loadSimpleIntern(final boolean exec, final AdvancedFile file, final AdvancedFile superFile) {
-            if (file.isDirectory()) {
+            if (file.isDirectory() && !flat) {
                 for (final AdvancedFile subFile : file.listFiles()) {
                     loadSimpleIntern(exec, subFile, superFile);
                 }
@@ -208,7 +211,7 @@ public class ResourceManager {
         }
         
         private int countFiles(final AdvancedFile file, int old) {
-            if (file.isDirectory()) {
+            if (file.isDirectory() && !flat) {
                 final List<AdvancedFile> filesHere = file.listFiles();
                 for (final AdvancedFile f : filesHere) {
                     old = countFiles(f, old);

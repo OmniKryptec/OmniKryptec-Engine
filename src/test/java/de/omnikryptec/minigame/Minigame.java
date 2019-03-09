@@ -50,7 +50,7 @@ public class Minigame extends EngineLoader {
     protected void onInitialized() {
         //getResManager().stage(new AdvancedFile("src/test/resource"));
         getResManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources"));
-        getResManager().processStaged(false);
+        getResManager().processStaged(false,true);
         //getResourceProvider().get(clazz, name)
         BUS.register(this);
         final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
