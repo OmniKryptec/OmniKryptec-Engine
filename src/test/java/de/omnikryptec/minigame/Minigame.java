@@ -42,8 +42,6 @@ public class Minigame extends EngineLoader {
         windowSettings.set(WindowSetting.VSync, true);
         windowSettings.set(WindowSetting.Width, 600);
         windowSettings.set(WindowSetting.Height, 600);
-        apiSettings.set(OpenGLRenderAPI.MINOR_VERSION, 3);
-        apiSettings.set(OpenGLRenderAPI.MAJOR_VERSION, 3);
     }
     
     private IECSManager mgr;
@@ -55,9 +53,9 @@ public class Minigame extends EngineLoader {
         BUS.register(this);
         final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
         mgr = builder.addDefaultECSManager();
-        mgr.addSystem(new RendererSystem());
         mgr.addSystem(new CollisionSystem());
         mgr.addSystem(new PlayerSystem());
+        mgr.addSystem(new RendererSystem());
         mgr.addSystem(new MovementSystem());
         mgr.addSystem(new RangedSystem());
         mgr.addEntity(makePlayer(0, 0));

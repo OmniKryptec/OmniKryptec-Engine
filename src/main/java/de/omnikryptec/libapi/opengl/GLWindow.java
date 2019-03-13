@@ -25,6 +25,10 @@ public class GLWindow implements IWindow {
     private boolean isFullscreen;
     private boolean isActive;
     
+    private static boolean isMac() {
+        return System.getProperty("os.name").toLowerCase().contains("mac");
+    }
+    
     public GLWindow(Settings<WindowSetting> windowSettings, Settings<IntegerKey> apiSettings) {
         Util.ensureNonNull(windowSettings, "Window settings must not be null!");
         this.windowWidth = windowSettings.get(WindowSetting.Width);
@@ -32,10 +36,17 @@ public class GLWindow implements IWindow {
         GLFW.glfwDefaultWindowHints();
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE,
                 (boolean) windowSettings.get(WindowSetting.Resizeable) ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
-        final int mav = apiSettings.get(OpenGLRenderAPI.MAJOR_VERSION);
-        final int miv = apiSettings.get(OpenGLRenderAPI.MINOR_VERSION);
+        int mav = apiSettings.get(OpenGLRenderAPI.MAJOR_VERSION);
+        int miv = apiSettings.get(OpenGLRenderAPI.MINOR_VERSION);
+        //TODO make OpenGL version and profile setting better, this is weird
+        if (isMac()) {
+            //MacOS requires at least OpenGL 3.3
+            mav = Math.max(mav, 3);
+            if (mav == 3) {
+                miv = Math.max(miv, 3);
+            }
+        }
         if (mav > 3 || (mav > 2 && miv > 1)) {
-            //FIXME there might be cases were macos doesn't like his
             GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, mav);
             GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, miv);
             GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
