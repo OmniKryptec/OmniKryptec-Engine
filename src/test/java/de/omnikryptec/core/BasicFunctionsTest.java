@@ -45,6 +45,7 @@ public class BasicFunctionsTest {
             }
             RenderAPI.get().clear(SurfaceBuffer.Color);
         }
+        LibAPIManager.shutdown();
     }
     
 }

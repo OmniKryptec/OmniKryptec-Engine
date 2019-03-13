@@ -37,6 +37,7 @@ public class StaticInitTest {
             }
             RenderAPI.get().clear(SurfaceBuffer.Color);
         }
+        EngineLoader.deinitialize();
     }
     
 }
