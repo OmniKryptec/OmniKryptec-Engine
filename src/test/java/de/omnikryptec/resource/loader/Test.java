@@ -70,7 +70,7 @@ public class Test {
         //p.stage(new AdvancedFile("src/main/java"));
         //p.stage(new AdvancedFile("src/test/java"));
         p.stage(new AdvancedFile("intern:/"));
-        p.processStaged(true);
+        p.processStaged(true, false);
         //System.out.println(p.getProvider().getAll(String.class).size());
         // System.out.println(p.getProvider().get(String.class,
         // "de:omnikryptec:core:Updateable.java"));
