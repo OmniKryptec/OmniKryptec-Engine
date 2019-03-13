@@ -8,6 +8,7 @@ import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
 import de.omnikryptec.libapi.exposed.window.IWindow;
+import de.omnikryptec.libapi.exposed.window.InputEvent;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.framebuffer.GLScreenBuffer;
@@ -88,6 +89,16 @@ public class GLWindow implements IWindow {
                 (window, iconified) -> windowBus.post(new WindowEvent.WindowIconified(this, iconified)));
         GLFW.glfwSetWindowMaximizeCallback(this.windowId,
                 (window, maximized) -> windowBus.post(new WindowEvent.WindowMaximized(this, maximized)));
+        GLFW.glfwSetKeyCallback(this.windowId, (window, key, scancode, action, mods) -> windowBus
+                .post(new InputEvent.KeyEvent(key, scancode, action, mods)));
+        GLFW.glfwSetMouseButtonCallback(this.windowId,
+                (window, button, action, mods) -> windowBus.post(new InputEvent.MouseButtonEvent(button, action, mods)));
+        GLFW.glfwSetCursorPosCallback(this.windowId,
+                (window, xpos, ypos) -> windowBus.post(new InputEvent.MousePositionEvent(xpos, ypos)));
+        GLFW.glfwSetScrollCallback(this.windowId,
+                (window, x, y) -> windowBus.post(new InputEvent.MouseScrollEvent(x, y)));
+        GLFW.glfwSetCursorEnterCallback(this.windowId,
+                (window, entered) -> windowBus.post(new InputEvent.CursorInWindowEvent(entered)));
     }
     
     @Override

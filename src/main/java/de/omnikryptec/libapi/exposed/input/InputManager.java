@@ -23,6 +23,7 @@ import org.joml.Vector4dc;
 import org.lwjgl.glfw.GLFW;
 
 import de.omnikryptec.core.Updateable;
+import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.KeySettings;
@@ -65,8 +66,8 @@ public class InputManager implements Updateable {
     private boolean longButtonPressEnabled = false;
     private CursorType cursorType = CursorType.DISABLED;
     
-    public InputManager(final long window, KeySettings keySettings) {
-        this(window, keySettings, new KeyboardHandler(window), new MouseHandler(window));
+    public InputManager(final long window, KeySettings keySettings, EventBus bus) {
+        this(window, keySettings, new KeyboardHandler(bus), new MouseHandler(bus));
     }
     
     public InputManager(final long window, KeySettings keySettings, final KeyboardHandler keyboardHandler,

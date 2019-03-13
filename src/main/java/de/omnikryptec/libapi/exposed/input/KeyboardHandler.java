@@ -22,6 +22,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWKeyCallback;
 
+import de.omnikryptec.event.EventBus;
+import de.omnikryptec.event.EventSubscription;
+import de.omnikryptec.libapi.exposed.window.InputEvent;
 import de.omnikryptec.util.settings.KeySettings;
 
 //FIXME synchronized causes bad performance // Who says that?
@@ -39,6 +42,16 @@ public class KeyboardHandler implements InputHandler {
     // Temporary variables
     private byte[] keysLastTime = null;
     
+    public KeyboardHandler(EventBus bus) {
+        this(0);
+        bus.register(this);
+    }
+    
+    @EventSubscription
+    public void onKeyEvent(InputEvent.KeyEvent ev) {
+        this.keys[ev.key] = (byte) ev.action;
+    }
+    
     public KeyboardHandler(final long window) {
         this.window = window;
         this.keyCallback = new GLFWKeyCallback() {
@@ -52,7 +65,8 @@ public class KeyboardHandler implements InputHandler {
                     // keys[key] = inputState; //TODO Clean this
                     final byte actionByte = (byte) action;
                     KeyboardHandler.this.keys[key] = actionByte;
-                    if (KeyboardHandler.this.appendToString && (actionByte == KeySettings.KEY_PRESSED || actionByte == KeySettings.KEY_REPEATED)) {
+                    if (KeyboardHandler.this.appendToString
+                            && (actionByte == KeySettings.KEY_PRESSED || actionByte == KeySettings.KEY_REPEATED)) {
                         final String keyString = GLFW.glfwGetKeyName(key, scancode); // FIXME Is this deprecated?
                         if (keyString != null) {
                             KeyboardHandler.this.inputString.updateAndGet((inputString_) -> inputString_ + keyString);
@@ -99,9 +113,9 @@ public class KeyboardHandler implements InputHandler {
         return this;
     }
     
-    /* //TODO Clean this
-     * public synchronized InputState getKeyState(int keyCode) { return
-     * keys[keyCode]; }
+    /*
+     * //TODO Clean this public synchronized InputState getKeyState(int keyCode) {
+     * return keys[keyCode]; }
      */
     
     public synchronized byte getKeyState(final int keyCode) {

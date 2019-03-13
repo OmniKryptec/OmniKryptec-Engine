@@ -141,8 +141,8 @@ public final class LibAPIManager {
         if (!isRendererSet()) {
             throw new IllegalStateException("No window!");
         }
-        inputManager = new InputManager(getRenderAPI().getWindow().getID(), keySettings);
-        inputManager.init();
+        inputManager = new InputManager(getRenderAPI().getWindow().getID(), keySettings, LIB_API_EVENT_BUS);
+        //inputManager.init();
         logger.info("Created an InputManager");
     }
     

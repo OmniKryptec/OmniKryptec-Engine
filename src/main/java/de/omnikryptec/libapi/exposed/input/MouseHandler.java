@@ -27,6 +27,9 @@ import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
 
+import de.omnikryptec.event.EventBus;
+import de.omnikryptec.event.EventSubscription;
+import de.omnikryptec.libapi.exposed.window.InputEvent;
 import de.omnikryptec.util.settings.KeySettings;
 
 public class MouseHandler implements InputHandler {
@@ -43,6 +46,33 @@ public class MouseHandler implements InputHandler {
     private final AtomicBoolean insideWindow = new AtomicBoolean(false);
     // Temporary variables
     private byte[] buttonsLastTime = null;
+    
+    public MouseHandler(EventBus bus) {
+        this(0);
+        bus.register(this);
+    }
+    
+    @EventSubscription
+    public void onButtonInput(InputEvent.MouseButtonEvent ev) {
+        this.buttons[ev.button] = (byte) ev.action;
+    }
+    
+    @EventSubscription
+    public void onPosChangeEvent(InputEvent.MousePositionEvent ev) {
+        this.position.x = ev.xPos;
+        this.position.y = ev.yPos;
+    }
+    
+    @EventSubscription
+    public void onScrollEvent(InputEvent.MouseScrollEvent ev) {
+        this.scrollOffset.x = ev.xChange;
+        this.scrollOffset.y = ev.yChange;
+    }
+    
+    @EventSubscription
+    public void onCursorEnterEvent(InputEvent.CursorInWindowEvent ev) {
+        this.insideWindow.set(ev.entered);
+    }
     
     public MouseHandler(final long window) {
         this.window = window;
