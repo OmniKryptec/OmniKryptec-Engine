@@ -4,6 +4,10 @@ import de.omnikryptec.event.Event;
 
 public class InputEvent extends Event {
     
+    public InputEvent() {
+        this.consumeable = true;
+    }
+    
     public static class KeyEvent extends InputEvent {
         public final int key;
         public final int scancode;
