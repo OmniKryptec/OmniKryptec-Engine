@@ -71,6 +71,7 @@ public class PlayerSystem extends ComponentSystem {
                         RendererSystem.CAMERA.getProjection().invert(new Matrix4f()), new Vector2f());
                 dir.add(-plus.x, -plus.y);
                 dir.normalize(200);
+                dir.add(mov.dx, mov.dy);
                 Minigame.BUS.post(
                         new ShootEvent(plus.x + play.shOffsetX, plus.y + play.shOffsetY, dir, 1000, Projectile.Bomb));
             }

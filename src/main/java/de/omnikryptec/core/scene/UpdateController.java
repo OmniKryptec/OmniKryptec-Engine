@@ -16,11 +16,14 @@
 
 package de.omnikryptec.core.scene;
 
+import java.util.function.UnaryOperator;
+
 import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.Updateable;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
 import de.omnikryptec.util.updater.AbstractUpdater;
+import de.omnikryptec.util.updater.Time;
 
 /**
  * A class managing the updates of a {@link GameController}.<br>
@@ -34,6 +37,9 @@ public class UpdateController {
     private final GameController gameController;
     private final WindowUpdater windowUpdater;
     private final AbstractUpdater asyncUpdater;
+    
+    private UnaryOperator<Time> syncTimeTransform = UnaryOperator.identity();
+    private UnaryOperator<Time> asyncTimeTransform = UnaryOperator.identity();
     
     private int syncUpdatesPerSecond = 144;
     private int asyncUpdatesPerSecond = 144;
@@ -65,7 +71,7 @@ public class UpdateController {
      */
     public void updateSync() {
         this.windowUpdater.update(this.syncUpdatesPerSecond);
-        this.gameController.updateSync(this.windowUpdater.asTime());
+        this.gameController.updateSync(syncTimeTransform.apply(this.windowUpdater.asTime()));
     }
     
     /**
@@ -75,7 +81,7 @@ public class UpdateController {
      */
     public void updateAsync() {
         this.asyncUpdater.update(this.asyncUpdatesPerSecond);
-        this.gameController.updateAsync(this.asyncUpdater.asTime());
+        this.gameController.updateAsync(asyncTimeTransform.apply(this.asyncUpdater.asTime()));
     }
     
     public int getSyncUpdatesPerSecond() {
@@ -92,6 +98,14 @@ public class UpdateController {
     
     public void setAsyncUpdatesPerSecond(final int asyncUpdatesPerSecond) {
         this.asyncUpdatesPerSecond = asyncUpdatesPerSecond;
+    }
+    
+    public void setSyncUpdateTimeTransform(UnaryOperator<Time> transform) {
+        this.syncTimeTransform = transform;
+    }
+    
+    public void setAsyncUpdateTimeTransform(UnaryOperator<Time> transform) {
+        this.asyncTimeTransform = transform;
     }
     
 }

@@ -52,6 +52,7 @@ public abstract class EngineLoader {
     
     private static EngineLoader instance = null;
     
+    @Deprecated
     public static EngineLoader instance() {
         return instance;
     }
@@ -209,6 +210,7 @@ public abstract class EngineLoader {
             this.gameLoop.stopLoop();
         }
         this.gameLoop = newloop;
+        this.gameLoop.init(this);
         if (running) {
             this.gameLoop.startLoop();
         }

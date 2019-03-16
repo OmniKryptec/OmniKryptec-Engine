@@ -77,9 +77,7 @@ public class EventBus implements Updateable, IEventListener {
         this.eventQueue = concurrent ? new ConcurrentLinkedQueue<>() : new ArrayDeque<>();
         this.listeners = ArrayListMultimap.create();
     }
-    
-    //TODO make this more explicit (addEventBusAsListener)? / why?
-    
+        
     /**
      * Registers an {@link IEventListener} to ALL events.<br>
      * Useful when chaining together multiple {@link EventBus}.
