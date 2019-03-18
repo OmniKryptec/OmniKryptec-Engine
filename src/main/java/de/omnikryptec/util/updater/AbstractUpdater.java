@@ -30,6 +30,8 @@ import de.omnikryptec.util.data.Smoother;
  */
 public class AbstractUpdater {
     
+    private double starttime;
+    
     private double opstime = 0;
     private double deltatime = 0;
     private double lasttime = 0;
@@ -46,10 +48,11 @@ public class AbstractUpdater {
     
     public AbstractUpdater() {
         this.deltaTimeSmoother = new Smoother();
+        this.starttime = LibAPIManager.instance().getTime();
     }
     
     /**
-     * Updates the window maintained by this object and the values accessable by the
+     * Updates this object and the values accessable by the
      * functions of this class (e.g. {@link #getDeltaTime()}.<br>
      * The update includes swapping the buffers and polling events.<br>
      * <br>
@@ -66,12 +69,11 @@ public class AbstractUpdater {
         final double currentFrameTime = LibAPIManager.instance().getTime();
         this.deltatime = (currentFrameTime - this.lasttime);
         this.deltaTimeSmoother.push(this.deltatime);
-        this.frontruntime += this.deltatime;
+        this.frontruntime = currentFrameTime - starttime;
         this.lasttime = currentFrameTime;
         if (maxops > 0) {
             sync(maxops);
         }
-        operation();
         this.operationcount++;
         if (this.ops) {
             this.ops1++;
@@ -88,14 +90,6 @@ public class AbstractUpdater {
                 this.ops1 = 0;
             }
         }
-    }
-    
-    /**
-     * Called in the {@link #update(int)} method.<br>
-     * This function does not have to be overriden. This class can be used to
-     * monitor the stats and sleep, if enabled.
-     */
-    protected void operation() {
     }
     
     /**

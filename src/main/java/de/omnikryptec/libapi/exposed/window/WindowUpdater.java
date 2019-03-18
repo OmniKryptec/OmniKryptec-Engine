@@ -29,7 +29,8 @@ public class WindowUpdater extends AbstractUpdater {
     }
     
     @Override
-    protected void operation() {
+    public void update(int maxops) {
+        super.update(maxops);
         final double time = LibAPIManager.instance().getTime();
         this.window.swapBuffers();
         this.swaptime = LibAPIManager.instance().getTime() - time;
