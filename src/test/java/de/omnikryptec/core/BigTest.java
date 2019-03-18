@@ -17,14 +17,17 @@ public class BigTest extends EngineLoader {
     
     public static void main(final String[] args) {
         Logger.getDefaultAdvancedLeveledLogger().setMinimumLogLevel(LogLevel.FINEST);
-        Logger.getDefaultAdvancedLeveledLogger().createLogFormatBuilder().appendLogLevel().appendText(": ").appendObject().appendNewLine().appendThread().appendLocation().appendNewLine().finishWithoutException();
+        Logger.getDefaultAdvancedLeveledLogger().createLogFormatBuilder().appendLogLevel().appendText(": ")
+                .appendObject().appendNewLine().appendThread().appendLocation().appendNewLine()
+                .finishWithoutException();
         AdvancedFile.DEBUG = true;
         AdvancedFile.DEBUG_TO_STRING = true;
         new BigTest().start();
     }
     
     @Override
-    protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings, KeySettings keySettings) {
+    protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
         libsettings.set(LibSetting.DEBUG, true);
         libsettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "BigTest-Window");
@@ -45,7 +48,7 @@ public class BigTest extends EngineLoader {
         //getResManager().stage(new AdvancedFile("src/test/resource"));
         getResManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources/")); //TODO Gradle should handle "src/test/resource" internally as the root directory in the jar, "intern:" is the prefix for an intern path and the empty string afterwards should be the root directory, maybe an additional slash ("/") is needed, maybe the additional slash is causing problems...
         //FIXME rename this to getResourceManager() -.- xD
-        getResManager().processStaged(false,false);
+        getResManager().processStaged(false, false);
         //FIXME Alter ich wollte/will das Ressourcen loading machen
         builder.addGraphicsClearTest();
         Logger.logDebug("resProv:" + getResourceProvider());

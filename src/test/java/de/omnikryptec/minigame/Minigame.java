@@ -34,8 +34,7 @@ public class Minigame extends EngineLoader {
     
     @Override
     protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
-            KeySettings keySettings) {
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
         libSettings.set(LibSetting.DEBUG, true);
         libSettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "Minigame");

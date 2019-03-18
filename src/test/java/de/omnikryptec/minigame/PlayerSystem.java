@@ -24,7 +24,7 @@ public class PlayerSystem extends ComponentSystem {
                 ComponentType.of(PositionComponent.class)));
     }
     
-    private InputManager mgr = LibAPIManager.instance().getInputManager();
+    private InputManager mgr = new InputManager(0, null, LibAPIManager.LIB_API_EVENT_BUS);
     
     private ComponentMapper<MovementComponent> movMapper = new ComponentMapper<>(MovementComponent.class);
     private ComponentMapper<PlayerComponent> playMapper = new ComponentMapper<>(PlayerComponent.class);

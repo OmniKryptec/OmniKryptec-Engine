@@ -45,7 +45,6 @@ public final class LibAPIManager {
     private static final Logger logger = Logger.getLogger(LibAPIManager.class);
     private static LibAPIManager instance;
     private RenderAPI renderApi;
-    private InputManager inputManager;
     
     private LibAPIManager() {
     }
@@ -136,20 +135,7 @@ public final class LibAPIManager {
             ex.printStackTrace();
         }
     }
-    
-    public void createInputManager(KeySettings keySettings) {
-        if (!isRendererSet()) {
-            throw new IllegalStateException("No window!");
-        }
-        inputManager = new InputManager(getRenderAPI().getWindow().getID(), keySettings, LIB_API_EVENT_BUS);
-        //inputManager.init();
-        logger.info("Created an InputManager");
-    }
-    
-    public InputManager getInputManager() {
-        return inputManager;
-    }
-    
+
     public boolean isRendererSet() {
         return renderApi != null;
     }

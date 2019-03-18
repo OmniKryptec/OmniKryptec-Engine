@@ -35,6 +35,8 @@ import de.omnikryptec.util.settings.Settings;
 
 import javax.annotation.Nonnull;
 
+import com.google.errorprone.annotations.ForOverride;
+
 /**
  * The application entry point of the OmniKryptec-Engine. Can be used static and
  * non-static.<br>
@@ -82,12 +84,10 @@ public abstract class EngineLoader {
      * @see de.omnikryptec.libapi.exposed.LibAPIManager
      */
     public static void initialize(final Settings<LibSetting> libSettings, final Class<? extends RenderAPI> rendererApi,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
-            KeySettings keySettings) {
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
         // Initialize everything required
         LibAPIManager.init(libSettings);
         LibAPIManager.instance().setRenderer(rendererApi, windowSettings, apiSettings);
-        LibAPIManager.instance().createInputManager(keySettings);
         //TODO Audio, etc....
     }
     
@@ -97,10 +97,10 @@ public abstract class EngineLoader {
     
     /**
      * Starts the engine. The start parameters can be set by overriding
-     * {@code configure}. <br>
+     * {@link #configure}. <br>
      * Then the engine gets initialized and the {@code Window}, {@code IGameLoop},
      * {@code GameController} and {@code UpdateController} are created.<br>
-     * After or before making the window visible, {@code onInitialized()} is called.
+     * After or before making the window visible, {@link #onInitialized} is called.
      * If so configured, the {@code IGameLoop} will be started.
      *
      * @see de.omnikryptec.core.EngineLoader#initialize(Settings, Class, Settings,
@@ -118,12 +118,10 @@ public abstract class EngineLoader {
         final Settings<LibSetting> libSettings = new Settings<>();
         final Settings<WindowSetting> windowSettings = new Settings<>();
         final Settings<IntegerKey> rapiSettings = new Settings<>();
-        final KeySettings keySettings = new KeySettings();
-        configure(loaderSettings, libSettings, windowSettings, rapiSettings, keySettings);
+        configure(loaderSettings, libSettings, windowSettings, rapiSettings);
         // or let them (the natives) be loaded by Configuration.SHARED_LIBRARY and
         // LIBRARY_PATH <-- Seems to work, so better use it
-        initialize(libSettings, loaderSettings.get(LoaderSetting.RENDER_API), windowSettings, rapiSettings,
-                keySettings);
+        initialize(libSettings, loaderSettings.get(LoaderSetting.RENDER_API), windowSettings, rapiSettings);
         this.window = RenderAPI.get().getWindow();
         this.resources = new ResourceManager();
         this.resources.addDefaultLoader();
@@ -151,7 +149,7 @@ public abstract class EngineLoader {
     
     /**
      * Shuts down the engine. Only if it has been started by {@code start()}.<br>
-     * First {@code onShutdown()} gets called. A {@code IGameLoop} that might be
+     * First {@link onShutdown} gets called. A {@code IGameLoop} that might be
      * running gets stopped, the window gets disposed and the {@code LibAPIManager}
      * gets shut down.
      */
@@ -226,13 +224,16 @@ public abstract class EngineLoader {
         return this.started;
     }
     
+    @ForOverride
     protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
-            KeySettings keySettings) {
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
     }
     
-    protected abstract void onInitialized();
+    @ForOverride
+    protected void onInitialized() {
+    }
     
+    @ForOverride
     protected void onShutdown() {
     }
     

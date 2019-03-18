@@ -26,7 +26,7 @@ import de.omnikryptec.util.settings.Settings;
 public class StaticInitTest {
     
     public static void main(final String[] args) {
-        EngineLoader.initialize(new Settings<>(), RenderAPI.OpenGL, new Settings<>(), new Settings<>(), null);
+        EngineLoader.initialize(new Settings<>(), RenderAPI.OpenGL, new Settings<>(), new Settings<>());
         final IWindow window = RenderAPI.get().getWindow();
         window.setVisible(true);
         final WindowUpdater updater = new WindowUpdater(window);

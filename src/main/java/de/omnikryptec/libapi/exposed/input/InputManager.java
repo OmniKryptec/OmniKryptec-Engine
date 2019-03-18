@@ -30,20 +30,7 @@ import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.updater.Time;
 
 public class InputManager implements Updateable {
-    
-    /**
-     * The currently set {@code InputManager}.
-     * <p>
-     * Note: this is the same as calling<br>
-     * {@code LibAPIManager.instance().getInputManager()}
-     * </p>
-     * 
-     * @return the current {@code InputManager}
-     */
-    public static InputManager get() {
-        return LibAPIManager.instance().getInputManager();
-    }
-    
+
     private final long window;
     private KeySettings keySettings;
     //private final AtomicReference<Double> currentTime = new AtomicReference<>(0.0); //TODO Clean this
