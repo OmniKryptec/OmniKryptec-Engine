@@ -17,6 +17,7 @@
 package de.omnikryptec.core.scene;
 
 import de.omnikryptec.core.update.IUpdateable;
+import de.omnikryptec.util.updater.Time;
 
 /**
  * A class merging sync and async {@link Updateable}s and so form a Scene.
@@ -25,7 +26,6 @@ import de.omnikryptec.core.update.IUpdateable;
  *
  */
 public class Scene {
-    
     
     //Rendering and Mainthread stuff
     private IUpdateable updateableSync;
@@ -56,4 +56,23 @@ public class Scene {
         return this.updateableAsync;
     }
     
+    public boolean hasUpdateableSync() {
+        return updateableSync != null;
+    }
+    
+    public boolean hasUpdateableAsync() {
+        return updateableAsync != null;
+    }
+    
+    public void updateSync(Time time) {
+        if (hasUpdateableSync()) {
+            this.updateableSync.update(time);
+        }
+    }
+    
+    public void updateAsync(Time time) {
+        if (hasUpdateableAsync()) {
+            this.updateableAsync.update(time);
+        }
+    }
 }

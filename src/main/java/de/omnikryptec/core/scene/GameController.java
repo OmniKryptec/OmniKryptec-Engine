@@ -79,9 +79,9 @@ public class GameController {
      * @param time the time data
      */
     public void updateSync(final Time time) {
-        getGlobalScene().getUpdateableSync().update(time);
+        getGlobalScene().updateSync(time);
         if (hasScene()) {
-            getLocalScene().getUpdateableSync().update(time);
+            getLocalScene().updateSync(time);
         }
     }
     
@@ -93,9 +93,9 @@ public class GameController {
      * @param time the time data
      */
     public void updateAsync(final Time time) {
-        getGlobalScene().getUpdateableAsync().update(time);
+        getGlobalScene().updateAsync(time);
         if (hasScene()) {
-            getLocalScene().getUpdateableAsync().update(time);
+            getLocalScene().updateAsync(time);
         }
     }
 }
