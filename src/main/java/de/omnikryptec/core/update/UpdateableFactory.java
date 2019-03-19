@@ -15,10 +15,7 @@ public class UpdateableFactory {
     public static AbstractUpdateable createScreenClearTest() {
         return new AbstractUpdateable(false) {
             @Override
-            public void update(final Time time, UpdatePass pass) {
-                if (pass != UpdatePass.PRE) {
-                    return;
-                }
+            public void update(final Time time) {
                 if (time.opCount % 40 == 0) {
                     RenderAPI.get().setClearColor(new Color().randomizeRGB());
                 }

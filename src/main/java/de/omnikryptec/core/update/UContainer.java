@@ -27,9 +27,9 @@ public class UContainer extends AbstractUpdateable {
     }
     
     @Override
-    public void update(Time time, UpdatePass pass) {
+    public void update(Time time) {
         for (AbstractUpdateable layer : layers) {
-            layer.update(time, pass);
+            layer.update(time);
         }
     }
     

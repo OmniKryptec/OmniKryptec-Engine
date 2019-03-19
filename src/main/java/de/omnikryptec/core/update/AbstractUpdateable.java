@@ -10,7 +10,7 @@ public abstract class AbstractUpdateable {
         this.passive = passive;
     }
     
-    public void update(Time time, UpdatePass pass) {
+    public void update(Time time) {
         
     }
     

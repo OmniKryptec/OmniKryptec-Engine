@@ -53,9 +53,9 @@ public class ULayer extends AbstractUpdateable implements ILayer {
     }
     
     @Override
-    public void update(Time time, UpdatePass pass) {
+    public void update(Time time) {
         for (AbstractUpdateable up : updateablesActive) {
-            up.update(time, pass);
+            up.update(time);
         }
     }
     
