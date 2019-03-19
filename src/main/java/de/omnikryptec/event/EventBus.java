@@ -73,11 +73,24 @@ public class EventBus implements Updateable, IEventListener {
         }
     };
     
+    public EventBus() {
+        this(false);
+    }
+    
     public EventBus(boolean concurrent) {
         this.eventQueue = concurrent ? new ConcurrentLinkedQueue<>() : new ArrayDeque<>();
         this.listeners = ArrayListMultimap.create();
     }
-        
+    
+    public void unregister(IEventListener listener) {
+        unregister(listener, Event.class);
+    }
+    
+    public void unregister(IEventListener listener, Class<? extends Event> eventtype) {
+        List<IEventListener> list = listeners.get(eventtype);
+        list.remove(listener);
+    }
+    
     /**
      * Registers an {@link IEventListener} to ALL events.<br>
      * Useful when chaining together multiple {@link EventBus}.
@@ -219,4 +232,5 @@ public class EventBus implements Updateable, IEventListener {
     public void setReceiveConsumed(boolean b) {
         this.receiveConsumed = b;
     }
+    
 }
