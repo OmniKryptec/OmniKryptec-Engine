@@ -1,6 +1,5 @@
 package de.omnikryptec.minigame;
 
-import org.joml.Vector2d;
 import org.joml.Vector2f;
 
 import de.omnikryptec.event.Event;

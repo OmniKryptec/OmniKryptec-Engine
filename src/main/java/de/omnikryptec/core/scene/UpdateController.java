@@ -19,7 +19,6 @@ package de.omnikryptec.core.scene;
 import java.util.function.UnaryOperator;
 
 import de.omnikryptec.core.EngineLoader;
-import de.omnikryptec.core.Updateable;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
 import de.omnikryptec.util.updater.AbstractUpdater;

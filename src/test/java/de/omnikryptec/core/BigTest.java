@@ -3,14 +3,13 @@ package de.omnikryptec.core;
 import de.codemakers.base.logger.LogLevel;
 import de.codemakers.base.logger.Logger;
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.core.scene.SceneBuilder;
+import de.omnikryptec.core.update.ULayer;
+import de.omnikryptec.core.update.UpdateableFactory;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
-import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.settings.IntegerKey;
-import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 
 public class BigTest extends EngineLoader {
@@ -43,16 +42,17 @@ public class BigTest extends EngineLoader {
     @Override
     protected void onInitialized() {
         OpenGLUtil.setMultisample(true);
-        final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
+        ULayer scene = new ULayer();
+        getGameController().getGlobalScene().setUpdateableSync(scene);
         //getResManager().addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
         //getResManager().stage(new AdvancedFile("src/test/resource"));
         getResManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources/")); //TODO Gradle should handle "src/test/resource" internally as the root directory in the jar, "intern:" is the prefix for an intern path and the empty string afterwards should be the root directory, maybe an additional slash ("/") is needed, maybe the additional slash is causing problems...
         //FIXME rename this to getResourceManager() -.- xD
         getResManager().processStaged(false, false);
         //FIXME Alter ich wollte/will das Ressourcen loading machen
-        builder.addGraphicsClearTest();
+        scene.addUpdateable(UpdateableFactory.createScreenClearTest());
         Logger.logDebug("resProv:" + getResourceProvider());
-        builder.addGraphicsBasicImplTest(getResourceProvider().get(TextureData.class, "jd.png"));
+        //builder.addGraphicsBasicImplTest(getResourceProvider().get(TextureData.class, "jd.png"));
         //getGameController().setLocalScene(builder.get());
     }
     

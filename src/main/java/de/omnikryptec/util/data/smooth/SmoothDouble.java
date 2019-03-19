@@ -16,10 +16,10 @@
 
 package de.omnikryptec.util.data.smooth;
 
-import de.omnikryptec.core.Updateable;
+import de.omnikryptec.core.update.IUpdateable;
 import de.omnikryptec.util.updater.Time;
 
-public class SmoothDouble implements Updateable {
+public class SmoothDouble implements IUpdateable {
     
     private double agility;
     private double target;
@@ -77,6 +77,12 @@ public class SmoothDouble implements Updateable {
     @Override
     public String toString() {
         return "Value: " + this.actual + " Target: " + this.target + " Agility: " + this.agility;
+    }
+
+    @Override
+    public boolean passive() {
+        
+        return false;
     }
     
 }

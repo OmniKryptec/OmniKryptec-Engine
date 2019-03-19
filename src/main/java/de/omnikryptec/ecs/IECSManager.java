@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import de.omnikryptec.core.Updateable;
+import de.omnikryptec.core.update.IUpdateable;
 import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.ecs.impl.ECSManager;
 import de.omnikryptec.ecs.system.ComponentSystem;
@@ -45,7 +45,7 @@ import de.omnikryptec.util.UnsupportedOperationException;
  * @author pcfreak9000
  */
 @ParametersAreNonnullByDefault
-public interface IECSManager extends Updateable {
+public interface IECSManager extends IUpdateable {
     
     /**
      * the default implementation of an {@link IECSManager}. This is the
@@ -147,5 +147,10 @@ public interface IECSManager extends Updateable {
      *                                       the implementation
      */
     void removeEntityListener(@Nullable BitSet family, EntityListener listener) throws UnsupportedOperationException;
+    
+    @Override
+    default boolean passive() {
+        return false;
+    }
     
 }

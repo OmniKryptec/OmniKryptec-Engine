@@ -1,28 +1,26 @@
 package de.omnikryptec.minigame;
 
+import java.util.Random;
+
+import org.joml.Vector2f;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.EngineLoader;
-import de.omnikryptec.core.scene.SceneBuilder;
+import de.omnikryptec.core.update.UpdateableFactory;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.event.EventSubscription;
-import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
-import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.IntegerKey;
-import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
-import org.joml.Vector2f;
-
-import java.util.Random;
 
 public class Minigame extends EngineLoader {
     
@@ -51,8 +49,8 @@ public class Minigame extends EngineLoader {
         getResManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources"));
         getResManager().processStaged(false, true);
         BUS.register(this);
-        final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
-        mgr = builder.addDefaultECSManager();
+        IECSManager mgr = UpdateableFactory.createDefaultIECSManager();
+        getGameController().getGlobalScene().setUpdateableSync(mgr);
         mgr.addSystem(new CollisionSystem());
         mgr.addSystem(new PlayerSystem());
         mgr.addSystem(new RendererSystem());

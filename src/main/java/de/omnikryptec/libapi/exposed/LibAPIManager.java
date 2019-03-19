@@ -29,13 +29,11 @@ import org.lwjgl.system.Configuration;
 
 import de.codemakers.base.util.tough.ToughRunnable;
 import de.omnikryptec.event.EventBus;
-import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
-import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 
 public final class LibAPIManager {

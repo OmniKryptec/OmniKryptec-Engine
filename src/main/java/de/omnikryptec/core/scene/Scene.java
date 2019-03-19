@@ -16,8 +16,7 @@
 
 package de.omnikryptec.core.scene;
 
-import de.omnikryptec.core.Updateable;
-import de.omnikryptec.core.UpdateableContainer;
+import de.omnikryptec.core.update.IUpdateable;
 
 /**
  * A class merging sync and async {@link Updateable}s and so form a Scene.
@@ -27,59 +26,34 @@ import de.omnikryptec.core.UpdateableContainer;
  */
 public class Scene {
     
+    
     //Rendering and Mainthread stuff
-    private final UpdateableContainer updtContainerSync;
+    private IUpdateable updateableSync;
     //Might happen on another Thread
-    private final UpdateableContainer updtContainerAsync;
-    
-    public Scene() {
-        this.updtContainerSync = new UpdateableContainer();
-        this.updtContainerAsync = new UpdateableContainer();
-    }
+    private IUpdateable updateableAsync;
     
     /**
-     * A simple method to add a synchronized {@link Updateable}. A more
+     * A simple method to add a synchronized {@link IUpdateable}. A more
      * sophisticated approach can be achieved with a {@link SceneBuilder}
      *
-     * @param updt the {@link Updateable}
+     * @param updt the {@link IUpdateable}
      *
      * @see #createBuilder()
      */
-    public void addUpdateable(final Updateable updt) {
-        this.addUpdateable(true, updt);
+    public void setUpdateableSync(final IUpdateable updt) {
+        this.updateableSync = updt;
     }
     
-    /**
-     * A simple method to add an {@link Updateable} to this scene. A more
-     * sophisticated approach can be achieved with a {@link SceneBuilder}
-     *
-     * @param sync if the {@link Updateable} should be synchronized or not
-     * @param updt the {@link Updateable}
-     * @see #createBuilder()
-     */
-    public void addUpdateable(final boolean sync, final Updateable updt) {
-        if (sync) {
-            getUpdateableContainerSync().addUpdateable(updt);
-        } else {
-            getUpdateableContainerAsync().addUpdateable(updt);
-        }
+    public void setUpdateableAsync(IUpdateable updt) {
+        this.updateableAsync = updt;
     }
     
-    public UpdateableContainer getUpdateableContainerSync() {
-        return this.updtContainerSync;
+    public IUpdateable getUpdateableSync() {
+        return this.updateableSync;
     }
     
-    public UpdateableContainer getUpdateableContainerAsync() {
-        return this.updtContainerAsync;
-    }
-    
-    /**
-     * Creates a new {@link SceneBuilder} for this {@link Scene}.
-     *
-     * @return the scene builder
-     */
-    public SceneBuilder createBuilder() {
-        return new SceneBuilder(this);
+    public IUpdateable getUpdateableAsync() {
+        return this.updateableAsync;
     }
     
 }

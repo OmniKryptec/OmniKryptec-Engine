@@ -16,15 +16,9 @@
 
 package de.omnikryptec.util;
 
-import java.util.Collection;
-
 import org.joml.FrustumIntersection;
 
 import de.omnikryptec.render.storage.RenderedObject;
-import de.omnikryptec.render.storage.RenderedObjectManager;
-import de.omnikryptec.render.storage.RenderedObjectType;
-import de.omnikryptec.util.math.Mathd;
-import de.omnikryptec.util.math.Mathf;
 
 public class TestTest {
     

@@ -1,5 +1,8 @@
 package de.omnikryptec.minigame;
 
+import org.joml.Matrix3x2f;
+import org.joml.Matrix4f;
+
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
@@ -14,8 +17,6 @@ import de.omnikryptec.libapi.exposed.window.WindowEvent;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.batch.ShadedBatch2D;
 import de.omnikryptec.util.updater.Time;
-import org.joml.Matrix3x2f;
-import org.joml.Matrix4f;
 
 public class RendererSystem extends ComponentSystem {
     

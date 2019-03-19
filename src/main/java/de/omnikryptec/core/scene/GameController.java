@@ -79,14 +79,10 @@ public class GameController {
      * @param time the time data
      */
     public void updateSync(final Time time) {
-        getGlobalScene().getUpdateableContainerSync().preUpdate(time);
+        getGlobalScene().getUpdateableSync().update(time);
         if (hasScene()) {
-            getLocalScene().getUpdateableContainerSync().preUpdate(time);
-            getLocalScene().getUpdateableContainerSync().update(time);
-            getLocalScene().getUpdateableContainerSync().postUpdate(time);
+            getLocalScene().getUpdateableSync().update(time);
         }
-        getGlobalScene().getUpdateableContainerSync().update(time);
-        getGlobalScene().getUpdateableContainerSync().postUpdate(time);
     }
     
     /**
@@ -97,13 +93,9 @@ public class GameController {
      * @param time the time data
      */
     public void updateAsync(final Time time) {
-        getGlobalScene().getUpdateableContainerAsync().preUpdate(time);
+        getGlobalScene().getUpdateableAsync().update(time);
         if (hasScene()) {
-            getLocalScene().getUpdateableContainerAsync().preUpdate(time);
-            getLocalScene().getUpdateableContainerAsync().update(time);
-            getLocalScene().getUpdateableContainerAsync().postUpdate(time);
+            getLocalScene().getUpdateableAsync().update(time);
         }
-        getGlobalScene().getUpdateableContainerAsync().update(time);
-        getGlobalScene().getUpdateableContainerAsync().postUpdate(time);
     }
 }

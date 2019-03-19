@@ -5,11 +5,10 @@ import org.lwjgl.opengl.GL;
 
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
-import de.omnikryptec.libapi.exposed.render.FrameBuffer;
-import de.omnikryptec.libapi.exposed.window.WindowEvent;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.InputEvent;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
+import de.omnikryptec.libapi.exposed.window.WindowEvent;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.framebuffer.GLScreenBuffer;
 import de.omnikryptec.util.Util;

@@ -16,11 +16,10 @@
 
 package de.omnikryptec.core;
 
-import de.omnikryptec.core.scene.SceneBuilder;
+import de.omnikryptec.core.update.UpdateableFactory;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.util.settings.IntegerKey;
-import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 
 public class ComfortTest extends EngineLoader {
@@ -38,14 +37,7 @@ public class ComfortTest extends EngineLoader {
     
     @Override
     protected void onInitialized() {
-        final SceneBuilder builder = getGameController().getGlobalScene().createBuilder();
-        //builder.addGraphicsClearTest();
-        //final SceneBuilder builder = new SceneBuilder();
-        
-        builder.addGraphicsClearTest();
-        //builder.addGraphicsBasicImplTest();
-        
-        //getGameController().setLocalScene(builder.get());
+        getGameController().getGlobalScene().setUpdateableSync(UpdateableFactory.createScreenClearTest());
     }
     
 }

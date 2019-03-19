@@ -8,7 +8,6 @@ import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.ComponentSystem;
-import de.omnikryptec.event.Event;
 import de.omnikryptec.util.updater.Time;
 
 public class CollisionSystem extends ComponentSystem {

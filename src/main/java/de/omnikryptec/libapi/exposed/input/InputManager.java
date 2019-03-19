@@ -24,7 +24,6 @@ import org.lwjgl.glfw.GLFW;
 
 import de.omnikryptec.core.Updateable;
 import de.omnikryptec.event.EventBus;
-import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.updater.Time;

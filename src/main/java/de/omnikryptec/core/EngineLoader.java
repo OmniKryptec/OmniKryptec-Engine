@@ -16,6 +16,10 @@
 
 package de.omnikryptec.core;
 
+import javax.annotation.Nonnull;
+
+import com.google.errorprone.annotations.ForOverride;
+
 import de.omnikryptec.core.loop.DefaultGameLoop;
 import de.omnikryptec.core.loop.IGameLoop;
 import de.omnikryptec.core.scene.GameController;
@@ -32,10 +36,6 @@ import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
-
-import javax.annotation.Nonnull;
-
-import com.google.errorprone.annotations.ForOverride;
 
 /**
  * The application entry point of the OmniKryptec-Engine. Can be used static and

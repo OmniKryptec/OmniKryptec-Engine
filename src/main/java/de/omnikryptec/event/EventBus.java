@@ -28,10 +28,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
-import de.omnikryptec.core.Updateable;
+import de.omnikryptec.core.update.IUpdateable;
 import de.omnikryptec.util.updater.Time;
 
-public class EventBus implements Updateable, IEventListener {
+public class EventBus implements IUpdateable, IEventListener {
     
     private static final Comparator<IEventListener> LISTENER_COMP = new Comparator<IEventListener>() {
         
@@ -231,6 +231,12 @@ public class EventBus implements Updateable, IEventListener {
     
     public void setReceiveConsumed(boolean b) {
         this.receiveConsumed = b;
+    }
+
+    @Override
+    public boolean passive() {
+        
+        return false;
     }
     
 }

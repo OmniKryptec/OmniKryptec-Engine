@@ -7,17 +7,16 @@ import de.omnikryptec.event.EventBus;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.updater.Time;
 
-public class ULayer extends AbstractUpdateable implements ILayer {
+public class ULayer implements IUpdateable, ILayer {
     
     private EventBus eventBus;
     
     private boolean isInitialized;
     
-    private Collection<AbstractUpdateable> updateablesActive;
-    private Collection<AbstractUpdateable> updateablesPassive;
+    private Collection<IUpdateable> updateablesActive;
+    private Collection<IUpdateable> updateablesPassive;
     
     public ULayer() {
-        super(false);
         this.eventBus = new EventBus();
         this.updateablesActive = new ArrayList<>();
         this.updateablesPassive = new ArrayList<>();
@@ -28,9 +27,9 @@ public class ULayer extends AbstractUpdateable implements ILayer {
         return eventBus;
     }
     
-    public void addUpdateable(AbstractUpdateable updateable) {
+    public void addUpdateable(IUpdateable updateable) {
         Util.ensureNonNull(updateable);
-        if (updateable.passive) {
+        if (updateable.passive()) {
             updateablesPassive.add(updateable);
         } else {
             updateablesActive.add(updateable);
@@ -40,9 +39,9 @@ public class ULayer extends AbstractUpdateable implements ILayer {
         }
     }
     
-    public void removeUodateable(AbstractUpdateable updateable) {
+    public void removeUodateable(IUpdateable updateable) {
         Util.ensureNonNull(updateable);
-        if (updateable.passive) {
+        if (updateable.passive()) {
             updateablesPassive.remove(updateable);
         } else {
             updateablesActive.remove(updateable);
@@ -54,7 +53,7 @@ public class ULayer extends AbstractUpdateable implements ILayer {
     
     @Override
     public void update(Time time) {
-        for (AbstractUpdateable up : updateablesActive) {
+        for (IUpdateable up : updateablesActive) {
             up.update(time);
         }
     }
@@ -64,10 +63,10 @@ public class ULayer extends AbstractUpdateable implements ILayer {
         if (layer != null && layer.getEventBus() != eventBus) {
             layer.getEventBus().register(eventBus);
         }
-        for (AbstractUpdateable up : updateablesActive) {
+        for (IUpdateable up : updateablesActive) {
             up.init(this);
         }
-        for (AbstractUpdateable up : updateablesPassive) {
+        for (IUpdateable up : updateablesPassive) {
             up.init(this);
         }
         isInitialized = true;
@@ -78,13 +77,19 @@ public class ULayer extends AbstractUpdateable implements ILayer {
         if (layer != null && layer.getEventBus() != eventBus) {
             layer.getEventBus().unregister(eventBus);
         }
-        for (AbstractUpdateable up : updateablesActive) {
+        for (IUpdateable up : updateablesActive) {
             up.deinit(this);
         }
-        for (AbstractUpdateable up : updateablesPassive) {
+        for (IUpdateable up : updateablesPassive) {
             up.deinit(this);
         }
         isInitialized = false;
+    }
+
+    @Override
+    public boolean passive() {
+        
+        return false;
     }
     
 }
