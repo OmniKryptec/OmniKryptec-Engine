@@ -19,6 +19,7 @@ package de.omnikryptec.core;
 import de.omnikryptec.core.UpdateableContainer.ExecuteMode;
 import de.omnikryptec.util.updater.Time;
 
+@Deprecated
 public interface Updateable {
     
     default void preUpdate(final Time time) {
