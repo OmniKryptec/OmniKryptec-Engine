@@ -16,24 +16,20 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
-
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWKeyCallback;
-
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.window.InputEvent;
 import de.omnikryptec.util.settings.KeySettings;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWKeyCallback;
+
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 
 //FIXME synchronized causes bad performance // Who says that?
 public class KeyboardHandler implements InputHandler {
     
-    // private final InputState[] keys = new InputState[65536]; //TODO Clean this
-    // private final byte[] keys = new byte[65536]; //TODO Clean this
     private final byte[] keys = new byte[GLFW.GLFW_KEY_LAST + 1]; //TODO Test if this includes every key //TODO Maybe this is no longer necessary, because the KeySettings Keys having their own isPressed state, BUT this is necessary, because maybe you want to save ALL key states, so this should stay
-    private final KeyboardHandler ME = this;
     private final long window;
     private final GLFWKeyCallback keyCallback;
     private final AtomicReference<String> inputString = new AtomicReference<>("");
@@ -57,16 +53,13 @@ public class KeyboardHandler implements InputHandler {
         this.keyCallback = new GLFWKeyCallback() {
             @Override
             public void invoke(final long window, final int key, final int scancode, final int action, final int mods) {
-                if (KeyboardHandler.this.ME.window != window) {
+                if (KeyboardHandler.this.window != window) {
                     return;
                 }
                 synchronized (KeyboardHandler.this.keys) {
-                    // final InputState inputState = InputState.ofState(action); //TODO Clean this
-                    // keys[key] = inputState; //TODO Clean this
                     final byte actionByte = (byte) action;
                     KeyboardHandler.this.keys[key] = actionByte;
-                    if (KeyboardHandler.this.appendToString
-                            && (actionByte == KeySettings.KEY_PRESSED || actionByte == KeySettings.KEY_REPEATED)) {
+                    if (KeyboardHandler.this.appendToString && (actionByte == KeySettings.KEY_PRESSED || actionByte == KeySettings.KEY_REPEATED)) {
                         final String keyString = GLFW.glfwGetKeyName(key, scancode); // FIXME Is this deprecated?
                         if (keyString != null) {
                             KeyboardHandler.this.inputString.updateAndGet((inputString_) -> inputString_ + keyString);
@@ -112,11 +105,6 @@ public class KeyboardHandler implements InputHandler {
         }
         return this;
     }
-    
-    /*
-     * //TODO Clean this public synchronized InputState getKeyState(int keyCode) {
-     * return keys[keyCode]; }
-     */
     
     public synchronized byte getKeyState(final int keyCode) {
         return this.keys[keyCode];
