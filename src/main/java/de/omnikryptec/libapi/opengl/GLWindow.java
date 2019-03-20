@@ -90,8 +90,8 @@ public class GLWindow implements IWindow {
                 (window, maximized) -> windowBus.post(new WindowEvent.WindowMaximized(this, maximized)));
         GLFW.glfwSetKeyCallback(this.windowId, (window, key, scancode, action, mods) -> windowBus
                 .post(new InputEvent.KeyEvent(key, scancode, action, mods)));
-        GLFW.glfwSetMouseButtonCallback(this.windowId,
-                (window, button, action, mods) -> windowBus.post(new InputEvent.MouseButtonEvent(button, action, mods)));
+        GLFW.glfwSetMouseButtonCallback(this.windowId, (window, button, action, mods) -> windowBus
+                .post(new InputEvent.MouseButtonEvent(button, action, mods)));
         GLFW.glfwSetCursorPosCallback(this.windowId,
                 (window, xpos, ypos) -> windowBus.post(new InputEvent.MousePositionEvent(xpos, ypos)));
         GLFW.glfwSetScrollCallback(this.windowId,
@@ -162,6 +162,19 @@ public class GLWindow implements IWindow {
     @Override
     public void setTitle(String title) {
         GLFW.glfwSetWindowTitle(windowId, title);
+    }
+    
+    @Override
+    public void setWindowSize(int width, int height) {
+        this.windowWidth = width;
+        this.windowHeight = height;
+        GLFW.glfwSetWindowSize(windowId, width, height);
+    }
+    
+    @Override
+    public void setFullscreen(boolean b) {
+        GLFW.glfwSetWindowMonitor(windowId, b ? GLFW.glfwGetPrimaryMonitor() : 0, 0, 0, windowWidth, windowHeight,
+                GLFW.GLFW_DONT_CARE);
     }
     
 }

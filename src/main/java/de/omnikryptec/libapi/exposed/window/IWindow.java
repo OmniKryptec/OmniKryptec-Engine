@@ -26,4 +26,7 @@ public interface IWindow {
         
     long getID();
     
+    void setWindowSize(int width, int height);
+    
+    void setFullscreen(boolean b);
 }
