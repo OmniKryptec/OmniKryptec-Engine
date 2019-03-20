@@ -5,9 +5,7 @@
     <option name="languageLevel" value="ES6" />
   </component>
   <component name="ProjectPlainTextFileTypeManager">
-    <file url="file://$PROJECT_DIR$/src/main/resources/de/omnikryptec/resource/glslmodules/glslutil.glsl" />
-    <file url="file://$PROJECT_DIR$/src/main/resources/de/omnikryptec/resource/glslmodules/shader2d.glsl" />
-    <file url="file://$PROJECT_DIR$/src/test/resources/de/omnikryptec/resource/glslmodules/testshader.glsl" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/de/omnikryptec/resources/glslmodules/glslutil.glsl" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
