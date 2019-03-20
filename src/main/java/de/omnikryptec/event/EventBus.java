@@ -20,7 +20,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayDeque;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -32,65 +34,84 @@ import de.omnikryptec.core.update.IUpdateable;
 import de.omnikryptec.util.updater.Time;
 
 public class EventBus implements IUpdateable, IEventListener {
-    
+
     private static final Comparator<IEventListener> LISTENER_COMP = new Comparator<IEventListener>() {
-        
+
         @Override
         public int compare(IEventListener o1, IEventListener o2) {
-            
+
             return (int) Math.signum(o2.priority() - o1.priority());
         }
     };
-    
+
+    private static class ObjMapping {
+        private final Class<? extends Event> eventType;
+        private final IEventListener handler;
+
+        private ObjMapping(IEventListener handler, Class<? extends Event> eventType) {
+            this.eventType = eventType;
+            this.handler = handler;
+        }
+    }
+
     private final AtomicBoolean processing = new AtomicBoolean(false);
     private final ListMultimap<Class<? extends Event>, IEventListener> listeners;
+    private final ListMultimap<Object, ObjMapping> objMappings;
     private final Queue<Event> eventQueue;
     private boolean receiveConsumed = true;
-    
+
     /**
      * A read-only version of this {@link EventBus}
      */
     public final ReadableEventBus READ_ONLY = new ReadableEventBus() {
-        
+
         @Override
         public void register(final Object object) {
             EventBus.this.register(object);
         }
-        
+
         @Override
         public void register(final IEventListener listener, final Class<? extends Event> eventtype) {
             EventBus.this.register(listener, eventtype);
         }
-        
+
         @Override
         public void post(final Event event) {
             EventBus.this.post(event);
         }
-        
+
         @Override
         public void enqueue(final Event event) {
             EventBus.this.enqueue(event);
         }
     };
-    
+
     public EventBus() {
         this(false);
     }
-    
+
     public EventBus(boolean concurrent) {
         this.eventQueue = concurrent ? new ConcurrentLinkedQueue<>() : new ArrayDeque<>();
         this.listeners = ArrayListMultimap.create();
+        this.objMappings = ArrayListMultimap.create();
     }
-    
+
     public void unregister(IEventListener listener) {
         unregister(listener, Event.class);
     }
-    
+
     public void unregister(IEventListener listener, Class<? extends Event> eventtype) {
         List<IEventListener> list = listeners.get(eventtype);
         list.remove(listener);
     }
-    
+
+    public void unregister(Object object) {
+        List<ObjMapping> list = objMappings.removeAll(object);
+        for (ObjMapping ma : list) {
+            unregister(ma.handler, ma.eventType);
+        }
+    }
+
     /**
      * Registers an {@link IEventListener} to ALL events.<br>
      * Useful when chaining together multiple {@link EventBus}.
@@ -104,7 +125,7 @@ public class EventBus implements IUpdateable, IEventListener {
     public void register(final IEventListener listener) {
         register(listener, Event.class);
     }
-    
+
     /**
      * Registers an {@link IEventListener} to a certain type of event.
      * <p>
@@ -119,7 +140,7 @@ public class EventBus implements IUpdateable, IEventListener {
         list.add(listener);
         list.sort(LISTENER_COMP);
     }
-    
+
     /**
      * Registers any {@link EventSubscription}s found in this object:
      * <ul>
@@ -162,7 +183,10 @@ public class EventBus implements IUpdateable, IEventListener {
                         if (this.listeners.containsKey(cls[0]) && this.listeners.containsEntry(cls[0], handler)) {
                             continue;
                         }
-                        register(handler, (Class<? extends Event>) cls[0]);
+                        Class<? extends Event> eventType = (Class<? extends Event>) cls[0];
+                        ObjMapping ma = new ObjMapping(handler, eventType);
+                        objMappings.put(object, ma);
+                        register(handler, eventType);
                     } else {
                         throw new IllegalArgumentException("Wrong type of parameter in event listener: " + object);
                     }
@@ -173,15 +197,15 @@ public class EventBus implements IUpdateable, IEventListener {
             throw new IllegalArgumentException("No EventSubscriptions found: " + object);
         }
     }
-    
+
     public void post(final Event event) {
         processEvent(event);
     }
-    
+
     public void enqueue(final Event event) {
         this.eventQueue.add(event);
     }
-    
+
     public void processQueuedEvents() {
         if (this.processing.get()) {
             throw new IllegalStateException("Already processing!");
@@ -192,11 +216,11 @@ public class EventBus implements IUpdateable, IEventListener {
         }
         this.processing.set(false);
     }
-    
+
     public boolean isProcessing() {
         return this.processing.get();
     }
-    
+
     private void processEvent(final Event event) {
         Class<?> someclazz = event.getClass();
         do {
@@ -208,35 +232,35 @@ public class EventBus implements IUpdateable, IEventListener {
             someclazz = someclazz.getSuperclass();
         } while (event.triggersSuperEventListeners() && someclazz != Object.class && someclazz != null);
     }
-    
+
     @Override
     public void update(final Time time) {
         processQueuedEvents();
     }
-    
+
     @Override
     public void invoke(final Event ev) {
         processEvent(ev);
     }
-    
+
     @Override
     public float priority() {
         return Float.NEGATIVE_INFINITY;
     }
-    
+
     @Override
     public boolean receiveConsumed() {
         return receiveConsumed;
     }
-    
+
     public void setReceiveConsumed(boolean b) {
         this.receiveConsumed = b;
     }
 
     @Override
     public boolean passive() {
-        
+
         return false;
     }
-    
+
 }
