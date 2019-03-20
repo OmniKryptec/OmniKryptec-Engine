@@ -50,7 +50,7 @@ public class BigTest extends EngineLoader {
         //FIXME rename this to getResourceManager() -.- xD
         getResManager().processStaged(false, false);
         //FIXME Alter ich wollte/will das Ressourcen loading machen
-        scene.addUpdateable(UpdateableFactory.createScreenClearTest());
+        scene.addUpdatable(UpdateableFactory.createScreenClearTest());
         Logger.logDebug("resProv:" + getResourceProvider());
         //builder.addGraphicsBasicImplTest(getResourceProvider().get(TextureData.class, "jd.png"));
         //getGameController().setLocalScene(builder.get());

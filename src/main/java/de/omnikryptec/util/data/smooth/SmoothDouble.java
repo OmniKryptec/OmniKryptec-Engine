@@ -16,10 +16,10 @@
 
 package de.omnikryptec.util.data.smooth;
 
-import de.omnikryptec.core.update.IUpdateable;
+import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.util.updater.Time;
 
-public class SmoothDouble implements IUpdateable {
+public class SmoothDouble implements IUpdatable {
     
     private double agility;
     private double target;

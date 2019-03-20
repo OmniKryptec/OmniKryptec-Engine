@@ -16,19 +16,18 @@
 
 package de.omnikryptec.ecs;
 
-import java.util.BitSet;
-import java.util.Collection;
-import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-
-import de.omnikryptec.core.update.IUpdateable;
+import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.ecs.impl.ECSManager;
 import de.omnikryptec.ecs.system.ComponentSystem;
 import de.omnikryptec.util.UnsupportedOperationException;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.BitSet;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * An interface describing a general Entity Component System (ECS) consisting of
@@ -45,7 +44,7 @@ import de.omnikryptec.util.UnsupportedOperationException;
  * @author pcfreak9000
  */
 @ParametersAreNonnullByDefault
-public interface IECSManager extends IUpdateable {
+public interface IECSManager extends IUpdatable {
     
     /**
      * the default implementation of an {@link IECSManager}. This is the

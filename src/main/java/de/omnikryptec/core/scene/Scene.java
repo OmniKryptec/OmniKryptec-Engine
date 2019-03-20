@@ -16,7 +16,7 @@
 
 package de.omnikryptec.core.scene;
 
-import de.omnikryptec.core.update.IUpdateable;
+import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.util.updater.Time;
 
 /**
@@ -28,31 +28,31 @@ import de.omnikryptec.util.updater.Time;
 public class Scene {
     
     //Rendering and Mainthread stuff
-    private IUpdateable updateableSync;
+    private IUpdatable updateableSync;
     //Might happen on another Thread
-    private IUpdateable updateableAsync;
+    private IUpdatable updateableAsync;
     
     /**
-     * A simple method to add a synchronized {@link IUpdateable}. A more
+     * A simple method to add a synchronized {@link IUpdatable}. A more
      * sophisticated approach can be achieved with a {@link SceneBuilder}
      *
-     * @param updt the {@link IUpdateable}
+     * @param updt the {@link IUpdatable}
      *
      * @see #createBuilder()
      */
-    public void setUpdateableSync(final IUpdateable updt) {
+    public void setUpdateableSync(final IUpdatable updt) {
         this.updateableSync = updt;
     }
     
-    public void setUpdateableAsync(IUpdateable updt) {
+    public void setUpdateableAsync(IUpdatable updt) {
         this.updateableAsync = updt;
     }
     
-    public IUpdateable getUpdateableSync() {
+    public IUpdatable getUpdateableSync() {
         return this.updateableSync;
     }
     
-    public IUpdateable getUpdateableAsync() {
+    public IUpdatable getUpdateableAsync() {
         return this.updateableAsync;
     }
     

@@ -1,16 +1,9 @@
 package de.omnikryptec.core.update;
 
-import org.joml.Matrix3x2f;
-import org.joml.Matrix4f;
-
 import de.omnikryptec.ecs.IECSManager;
-import de.omnikryptec.libapi.exposed.render.FBTarget;
+import de.omnikryptec.libapi.exposed.render.*;
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
-import de.omnikryptec.libapi.exposed.render.FrameBuffer;
-import de.omnikryptec.libapi.exposed.render.Mesh;
-import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBuffer;
-import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
 import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
@@ -24,6 +17,8 @@ import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.updater.Time;
+import org.joml.Matrix3x2f;
+import org.joml.Matrix4f;
 
 public class UpdateableFactory {
     
@@ -31,8 +26,8 @@ public class UpdateableFactory {
         return IECSManager.createDefault();
     }
     
-    public static IUpdateable createScreenClearTest() {
-        return new IUpdateable() {
+    public static IUpdatable createScreenClearTest() {
+        return new IUpdatable() {
             @Override
             public void update(final Time time) {
                 if (time.opCount % 40 == 0) {
@@ -48,7 +43,7 @@ public class UpdateableFactory {
         };
     }
     
-    public static IUpdateable createRenderTest(TextureData dat) {
+    public static IUpdatable createRenderTest(TextureData dat) {
         final MeshData data = new MeshData(VertexAttribute.Index, new int[] { 0, 1, 2, 2, 1, 3 },
                 VertexAttribute.Position, 2, new float[] { -1f, -1f, -1f, 1f, 1f, -1f, 1f, 1f });
         //FIXME Debug code
@@ -71,7 +66,7 @@ public class UpdateableFactory {
         //OpenGLUtil.setEnabled(RenderConfig.BLEND, true);
         //OpenGLUtil.setBlendMode(BlendMode.ALPHA);
         final int instances = 2;
-        return new IUpdateable() {
+        return new IUpdatable() {
             
             private final ShadedBatch2D batch = new ShadedBatch2D(250);
             private final Matrix3x2f t = new Matrix3x2f();
