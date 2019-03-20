@@ -26,6 +26,7 @@ import de.omnikryptec.util.updater.Time;
  *
  */
 public class Scene {
+    //TODO ProvidingLayer, init, deinit
     
     //Rendering and Mainthread stuff
     private IUpdatable updateableSync;
