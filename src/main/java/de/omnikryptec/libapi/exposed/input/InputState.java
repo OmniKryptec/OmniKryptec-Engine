@@ -21,7 +21,10 @@ import org.lwjgl.glfw.GLFW;
 @Deprecated
 public enum InputState {
     
-    NOTHING(-1), RELEASED(GLFW.GLFW_RELEASE), PRESSED(GLFW.GLFW_PRESS), REPEATED(GLFW.GLFW_REPEAT);
+    NOTHING(-1),
+    RELEASED(GLFW.GLFW_RELEASE),
+    PRESSED(GLFW.GLFW_PRESS),
+    REPEATED(GLFW.GLFW_REPEAT);
     
     private final int state;
     

@@ -20,14 +20,18 @@ import de.omnikryptec.util.settings.KeySettings;
 
 public interface InputHandler {
     
-    InputHandler init();
+    boolean init();
     
-    InputHandler preUpdate(double currentTime, KeySettings keySettings);
+    default boolean preUpdate(double currentTime, KeySettings keySettings) {
+        return true;
+    }
     
-    InputHandler update(double currentTime, KeySettings keySettings);
+    boolean update(double currentTime, KeySettings keySettings);
     
-    InputHandler postUpdate(double currentTime, KeySettings keySettings);
+    default boolean postUpdate(double currentTime, KeySettings keySettings) {
+        return true;
+    }
     
-    InputHandler close();
+    boolean close();
     
 }

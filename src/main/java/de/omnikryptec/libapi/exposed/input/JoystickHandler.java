@@ -40,20 +40,20 @@ public class JoystickHandler implements InputHandler {
     private ByteBuffer dataButtons = null;
     private ByteBuffer dataHats = null;
     
-    public JoystickHandler(final int joystick) {
+    public JoystickHandler(int joystick) {
         this.joystick = joystick;
         init();
     }
     
-    public static synchronized String getName(final int joystick) {
+    public static synchronized String getName(int joystick) {
         return GLFW.glfwGetJoystickName(joystick);
     }
     
-    public static synchronized String getGUID(final int joystick) {
+    public static synchronized String getGUID(int joystick) {
         return GLFW.glfwGetJoystickGUID(joystick);
     }
     
-    public static synchronized boolean isConnected(final int joystick) {
+    public static synchronized boolean isConnected(int joystick) {
         return getName(joystick) != null;
     }
     
@@ -76,56 +76,68 @@ public class JoystickHandler implements InputHandler {
         return joysticks;
     }
     
-    public static synchronized void preUpdateAll(final double currentTime, final KeySettings keySettings) {
+    public static synchronized boolean preUpdateAll(double currentTime, KeySettings keySettings) {
         if (joystickHandlers.isEmpty()) {
-            return;
+            return true;
         }
-        for (final JoystickHandler joystickHandler : joystickHandlers) {
+        boolean good = true;
+        for (JoystickHandler joystickHandler : joystickHandlers) {
             try {
                 joystickHandler.preUpdate(currentTime, keySettings);
-            } catch (final Exception ex) {
+            } catch (Exception ex) {
+                good = false;
                 Logger.handleError(ex);
             }
         }
+        return good;
     }
     
-    public static synchronized void updateAll(final double currentTime, final KeySettings keySettings) {
+    public static synchronized boolean updateAll(double currentTime, KeySettings keySettings) {
         if (joystickHandlers.isEmpty()) {
-            return;
+            return true;
         }
-        for (final JoystickHandler joystickHandler : joystickHandlers) {
+        boolean good = true;
+        for (JoystickHandler joystickHandler : joystickHandlers) {
             try {
                 joystickHandler.update(currentTime, keySettings);
-            } catch (final Exception ex) {
+            } catch (Exception ex) {
+                good = false;
                 Logger.handleError(ex);
             }
         }
+        return good;
     }
     
-    public static synchronized void postUpdateAll(final double currentTime, final KeySettings keySettings) {
+    public static synchronized boolean postUpdateAll(double currentTime, KeySettings keySettings) {
         if (joystickHandlers.isEmpty()) {
-            return;
+            return true;
         }
-        for (final JoystickHandler joystickHandler : joystickHandlers) {
+        boolean good = true;
+        for (JoystickHandler joystickHandler : joystickHandlers) {
             try {
                 joystickHandler.postUpdate(currentTime, keySettings);
-            } catch (final Exception ex) {
+            } catch (Exception ex) {
+                good = false;
                 Logger.handleError(ex);
             }
         }
+        return good;
     }
     
-    public static synchronized void closeAll() {
+    public static synchronized boolean closeAll() {
         if (joystickHandlers.isEmpty()) {
-            return;
+            return true;
         }
-        for (final JoystickHandler joystickHandler : joystickHandlers) {
+        boolean good = true;
+        for (JoystickHandler joystickHandler : joystickHandlers) {
             try {
                 joystickHandler.close();
-            } catch (final Exception ex) {
+            } catch (Exception ex) {
+                good = false;
                 Logger.handleError(ex);
             }
         }
+        return good;
     }
     
     public static List<JoystickHandler> getJoystickHandlers() {
@@ -133,41 +145,35 @@ public class JoystickHandler implements InputHandler {
     }
     
     @Override
-    public synchronized InputHandler init() {
+    public synchronized boolean init() {
         if (!joystickHandlers.contains(this)) {
             joystickHandlers.add(this);
         }
-        return this;
+        return joystickHandlers.contains(this);
     }
     
     @Override
-    public synchronized InputHandler preUpdate(final double currentTime, final KeySettings keySettings) {
-        return this;
-    }
-    
-    @Override
-    public synchronized InputHandler update(final double currentTime, final KeySettings keySettings) {
-        synchronized (this.dataAxes) {
-            this.dataAxes = GLFW.glfwGetJoystickAxes(this.joystick);
+    public synchronized boolean update(double currentTime, KeySettings keySettings) {
+        try {
+            synchronized (dataAxes) {
+                dataAxes = GLFW.glfwGetJoystickAxes(joystick);
+            }
+            synchronized (dataButtons) {
+                dataButtons = GLFW.glfwGetJoystickButtons(joystick);
+            }
+            synchronized (dataHats) {
+                dataHats = GLFW.glfwGetJoystickHats(joystick);
+            }
+            return true;
+        } catch (Exception ex) { //TODO Maybe not catch errors here?
+            Logger.handleError(ex);
+            return false;
         }
-        synchronized (this.dataButtons) {
-            this.dataButtons = GLFW.glfwGetJoystickButtons(this.joystick);
-        }
-        synchronized (this.dataHats) {
-            this.dataHats = GLFW.glfwGetJoystickHats(this.joystick);
-        }
-        return this;
     }
     
     @Override
-    public synchronized InputHandler postUpdate(final double currentTime, final KeySettings keySettings) {
-        return this;
-    }
-    
-    @Override
-    public synchronized InputHandler close() {
-        joystickHandlers.remove(this);
-        return this;
+    public synchronized boolean close() {
+        return joystickHandlers.remove(this);
     }
     
     public synchronized int getJoystick() {
@@ -199,7 +205,7 @@ public class JoystickHandler implements InputHandler {
     }
     
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }

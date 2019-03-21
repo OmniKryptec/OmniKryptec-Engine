@@ -20,15 +20,17 @@ import org.lwjgl.glfw.GLFW;
 
 public enum CursorType {
     
-    NORMAL(GLFW.GLFW_CURSOR_NORMAL), HIDDEN(GLFW.GLFW_CURSOR_HIDDEN), DISABLED(GLFW.GLFW_CURSOR_DISABLED);
+    NORMAL(GLFW.GLFW_CURSOR_NORMAL),
+    HIDDEN(GLFW.GLFW_CURSOR_HIDDEN),
+    DISABLED(GLFW.GLFW_CURSOR_DISABLED);
     
     private final int state;
     
-    CursorType(final int state) {
+    CursorType(int state) {
         this.state = state;
     }
     
-    public static CursorType ofState(final int state) {
+    public static CursorType ofState(int state) {
         for (final CursorType cursorType : values()) {
             if (cursorType.state == state) {
                 return cursorType;
@@ -38,7 +40,7 @@ public enum CursorType {
     }
     
     public int getState() {
-        return this.state;
+        return state;
     }
     
 }

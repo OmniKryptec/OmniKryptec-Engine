@@ -48,11 +48,12 @@ public class KeyboardHandler implements InputHandler {
         this.keys[ev.key] = (byte) ev.action;
     }
     
-    public KeyboardHandler(final long window) {
+    //@Deprecated //FIXME Whats with the Callback? Is it necessary?
+    public KeyboardHandler(long window) {
         this.window = window;
         this.keyCallback = new GLFWKeyCallback() {
             @Override
-            public void invoke(final long window, final int key, final int scancode, final int action, final int mods) {
+            public void invoke(long window, int key, int scancode, int action, int mods) {
                 if (KeyboardHandler.this.window != window) {
                     return;
                 }
@@ -71,62 +72,62 @@ public class KeyboardHandler implements InputHandler {
     }
     
     @Override
-    public synchronized InputHandler init() {
+    public synchronized boolean init() {
         GLFW.glfwSetKeyCallback(this.window, this.keyCallback);
-        return this;
+        return true;
     }
     
     @Override
-    public synchronized InputHandler preUpdate(final double currentTime, final KeySettings keySettings) {
+    public synchronized boolean preUpdate(double currentTime, KeySettings keySettings) {
         this.keysLastTime = Arrays.copyOf(this.keys, this.keys.length);
-        return this;
+        return true;
     }
     
     @Override
-    public synchronized InputHandler update(final double currentTime, final KeySettings keySettings) {
+    public synchronized boolean update(double currentTime, KeySettings keySettings) {
         for (int i = 0; i < this.keys.length; i++) {
             if (this.keysLastTime[i] != this.keys[i]) {
                 keySettings.updateKeys(currentTime, i, true, this.keys[i]);
             }
         }
-        return this;
+        return true;
     }
     
     @Override
-    public synchronized InputHandler postUpdate(final double currentTime, final KeySettings keySettings) {
+    public synchronized boolean postUpdate(double currentTime, KeySettings keySettings) {
         //this.keysLastTime = null; // Is this good for performance or not? // makes no sense
-        return this;
+        return true;
     }
     
     @Override
-    public synchronized InputHandler close() {
+    public synchronized boolean close() {
         if (this.keyCallback != null) {
             this.keyCallback.close();
         }
-        return this;
+        return true;
     }
     
-    public synchronized byte getKeyState(final int keyCode) {
+    public synchronized byte getKeyState(int keyCode) {
         return this.keys[keyCode];
     }
     
-    public synchronized boolean isKeyUnknown(final int keyCode) {
+    public synchronized boolean isKeyUnknown(int keyCode) {
         return this.keys[keyCode] == KeySettings.KEY_UNKNOWN;
     }
     
-    public synchronized boolean isKeyNothing(final int keyCode) {
+    public synchronized boolean isKeyNothing(int keyCode) {
         return this.keys[keyCode] == KeySettings.KEY_NOTHING;
     }
     
-    public synchronized boolean isKeyReleased(final int keyCode) {
+    public synchronized boolean isKeyReleased(int keyCode) {
         return this.keys[keyCode] == KeySettings.KEY_RELEASED;
     }
     
-    public synchronized boolean isKeyPressed(final int keyCode) {
+    public synchronized boolean isKeyPressed(int keyCode) {
         return this.keys[keyCode] == KeySettings.KEY_PRESSED;
     }
     
-    public synchronized boolean isKeyRepeated(final int keyCode) {
+    public synchronized boolean isKeyRepeated(int keyCode) {
         return this.keys[keyCode] == KeySettings.KEY_REPEATED;
     }
     
