@@ -1,9 +1,5 @@
 package de.omnikryptec.minigame;
 
-import java.util.Random;
-
-import org.joml.Vector2f;
-
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.update.UpdateableFactory;
@@ -21,6 +17,9 @@ import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
+import org.joml.Vector2f;
+
+import java.util.Random;
 
 public class Minigame extends EngineLoader {
     
@@ -31,8 +30,7 @@ public class Minigame extends EngineLoader {
     }
     
     @Override
-    protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
+    protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
         libSettings.set(LibSetting.DEBUG, true);
         libSettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "Minigame");
@@ -49,7 +47,7 @@ public class Minigame extends EngineLoader {
         getResManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources"));
         getResManager().processStaged(false, true);
         BUS.register(this);
-        IECSManager mgr = UpdateableFactory.createDefaultIECSManager();
+        mgr = UpdateableFactory.createDefaultIECSManager();
         getGameController().getGlobalScene().setUpdateableSync(mgr);
         mgr.addSystem(new CollisionSystem());
         mgr.addSystem(new PlayerSystem());
