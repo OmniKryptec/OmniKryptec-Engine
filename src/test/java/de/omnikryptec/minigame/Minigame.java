@@ -44,8 +44,8 @@ public class Minigame extends EngineLoader {
     
     @Override
     protected void onInitialized() {
-        getResManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources"));
-        getResManager().processStaged(false, true);
+        getResourceManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources"));
+        getResourceManager().processStaged(false, true);
         BUS.register(this);
         mgr = UpdateableFactory.createDefaultIECSManager();
         getGameController().getGlobalScene().setUpdateableSync(mgr);

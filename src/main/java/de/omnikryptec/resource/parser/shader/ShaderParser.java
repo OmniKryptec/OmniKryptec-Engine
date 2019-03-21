@@ -51,12 +51,9 @@ public class ShaderParser {
     public static final String MODULE_INDICATOR = "module ";
     public static final String HEADER_INDICATOR = "header";
     public static final String HEADER_HERE = "header_here";
-    
-    //private static final String HEADER_REPLACE_MARKER = "%%%ndf84nbvkHRM%%%";
-    
+        
     private static ShaderParser instance;
     
-    //private static final AdvancedFile INTERN_MODULES = new AdvancedFile("src/main/java/de/omnikryptec/resource/glslmodules"); //TODO Clean this
     private static final AdvancedFile INTERN_MODULES = new AdvancedFile(
             "intern:/de/omnikryptec/resources/glslmodules/");
     

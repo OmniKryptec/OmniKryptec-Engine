@@ -186,7 +186,7 @@ public abstract class EngineLoader {
         return this.updateController;
     }
     
-    public ResourceManager getResManager() {
+    public ResourceManager getResourceManager() {
         return this.resources;
     }
     

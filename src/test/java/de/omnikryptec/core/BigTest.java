@@ -46,10 +46,8 @@ public class BigTest extends EngineLoader {
         getGameController().getGlobalScene().setUpdateableSync(scene);
         //getResManager().addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
         //getResManager().stage(new AdvancedFile("src/test/resource"));
-        getResManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources/")); //TODO Gradle should handle "src/test/resource" internally as the root directory in the jar, "intern:" is the prefix for an intern path and the empty string afterwards should be the root directory, maybe an additional slash ("/") is needed, maybe the additional slash is causing problems...
-        //FIXME rename this to getResourceManager() -.- xD
-        getResManager().processStaged(false, false);
-        //FIXME Alter ich wollte/will das Ressourcen loading machen
+        getResourceManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources/"));
+        getResourceManager().processStaged(false, false);
         scene.addUpdatable(UpdateableFactory.createScreenClearTest());
         Logger.logDebug("resProv:" + getResourceProvider());
         //builder.addGraphicsBasicImplTest(getResourceProvider().get(TextureData.class, "jd.png"));
