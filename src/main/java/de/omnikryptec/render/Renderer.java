@@ -1,20 +1,20 @@
 package de.omnikryptec.render;
 
-import de.omnikryptec.render.storage.IRenderedObjectManager;
-import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public interface Renderer {
 
-    void init(Settings<?> renderSettings);
-    
-    default void preRender(final Time time) {
+    void init(MasterRenderer renderer);
+
+    default void preRender(final Time time, IProjection projection, MasterRenderer renderer) {
 
     }
 
-    void render(Time time, IProjection projection, IRenderedObjectManager objects);
+    void render(Time time, IProjection projection, MasterRenderer renderer);
 
-    default void postRender(final Time time) {
+    default void postRender(final Time time, IProjection projection, MasterRenderer renderer) {
 
     }
+
+    void deinit(MasterRenderer renderer);
 }

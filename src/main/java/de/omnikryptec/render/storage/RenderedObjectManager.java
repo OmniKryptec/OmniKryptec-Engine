@@ -5,46 +5,66 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
+import com.google.common.collect.Multimap;
+
 import de.omnikryptec.util.data.DynamicArray;
 
 public class RenderedObjectManager implements IRenderedObjectManager {
-    
+    private ListMultimap<RenderedObjectType, IRenderedObjectListener> listeners;
     private DynamicArray<List<RenderedObject>> objects;
-    
+
     public RenderedObjectManager() {
         objects = new DynamicArray<>();
+        listeners = ArrayListMultimap.create();
     }
-    
+
     @Override
     public <T extends RenderedObject> List<T> getFor(RenderedObjectType type) {
         return (List<T>) Collections.unmodifiableList(objects.get(type.id));
     }
-    
+
     @Override
     public void clear(RenderedObjectType type) {
         List<? extends RenderedObject> list = objects.get(type.id);
         if (list != null) {
             list.clear();
+            notifyRemove(type);
         }
     }
-    
-    @Override
-    public void clearAll() {
-        for (List<? extends RenderedObject> list : objects) {
-            list.clear();
-        }
-    }
-    
+
     @Override
     public void add(RenderedObjectType type, RenderedObject renderedObject) {
         getList(type).add(renderedObject);
+        notifyAdd(type);
     }
-    
+
     @Override
     public void addAll(RenderedObjectType type, Collection<RenderedObject> collection) {
         getList(type).addAll(collection);
+        notifyAdd(type);
     }
-    
+
+    @Override
+    public void remove(RenderedObjectType type, RenderedObject renderedObject) {
+        List<RenderedObject> list = objects.get(type.id);
+        if (list != null) {
+            list.remove(renderedObject);
+            notifyRemove(type);
+        }
+    }
+
+    @Override
+    public void addListener(RenderedObjectType type, IRenderedObjectListener listener) {
+        listeners.put(type, listener);
+    }
+
+    @Override
+    public void removeListener(RenderedObjectType type, IRenderedObjectListener listener) {
+        listeners.remove(type, listener);
+    }
+
     private List<RenderedObject> getList(RenderedObjectType type) {
         List<RenderedObject> list = objects.get(type.id);
         if (list == null) {
@@ -53,13 +73,18 @@ public class RenderedObjectManager implements IRenderedObjectManager {
         }
         return list;
     }
-    
-    @Override
-    public void remove(RenderedObjectType type, RenderedObject renderedObject) {
-        List<RenderedObject> list = objects.get(type.id);
-        if (list != null) {
-            list.remove(renderedObject);
+
+    private void notifyAdd(RenderedObjectType type) {
+        List<IRenderedObjectListener> list = listeners.get(type);
+        for (IRenderedObjectListener l : list) {
+            l.onAdd(this);
         }
     }
-    
+
+    private void notifyRemove(RenderedObjectType type) {
+        List<IRenderedObjectListener> list = listeners.get(type);
+        for (IRenderedObjectListener l : list) {
+            l.onRemove(this);
+        }
+    }
 }

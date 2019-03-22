@@ -52,5 +52,9 @@ public class Renderer2D implements Renderer {
             }
         }
     }
+
+    @Override
+    public void deinit() {
+    }
     
 }

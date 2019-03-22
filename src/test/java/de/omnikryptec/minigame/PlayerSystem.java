@@ -17,20 +17,20 @@ import org.joml.Vector2f;
 import org.lwjgl.glfw.GLFW;
 
 public class PlayerSystem extends ComponentSystem {
-    
+
     public PlayerSystem() {
-        super(Family.of(ComponentType.of(MovementComponent.class), ComponentType.of(PlayerComponent.class), ComponentType.of(PositionComponent.class)));
+        super(Family.of(ComponentType.of(MovementComponent.class), ComponentType.of(PlayerComponent.class),
+                ComponentType.of(PositionComponent.class)));
     }
-    
+
     private InputManager inputManager = new InputManager(0, null, LibAPIManager.LIB_API_EVENT_BUS);
-    
+
     private ComponentMapper<MovementComponent> movMapper = new ComponentMapper<>(MovementComponent.class);
     private ComponentMapper<PlayerComponent> playMapper = new ComponentMapper<>(PlayerComponent.class);
     private ComponentMapper<PositionComponent> posMapper = new ComponentMapper<>(PositionComponent.class);
-    
-    
+
     private float again;
-    
+
     @Override
     public void update(IECSManager iecsManager, Time time) { //FIXME Unfinished, InputManager Stuff
         inputManager.update(time);
@@ -62,17 +62,22 @@ public class PlayerSystem extends ComponentSystem {
             }
             mov.dx = vx;
             mov.dy = vy;
-            if (inputManager.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_1) && inputManager.isMouseInsideWindow() && again > 0.15f) {
+            if (inputManager.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_1) && inputManager.isMouseInsideWindow()
+                    && again > 0.15f) {
                 again = 0;
-                Vector2f dir = MathUtil.screenToWorldspace2D(MathUtil.relativeMousePosition(inputManager.getMousePosition(), RenderAPI.get().getWindow().getDefaultFrameBuffer().viewport(), new Vector2f()), RendererSystem.CAMERA.getProjection().invert(new Matrix4f()), new Vector2f());
+                Vector2f dir = MathUtil.screenToWorldspace2D(
+                        MathUtil.relativeMousePosition(inputManager.getMousePosition(),
+                                RenderAPI.get().getWindow().getDefaultFrameBuffer().viewport(), new Vector2f()),
+                        RendererSystem.CAMERA.getProjection().invert(new Matrix4f()), new Vector2f());
                 dir.add(-plus.x, -plus.y);
                 dir.normalize(200);
                 dir.add(mov.dx, mov.dy);
-                Minigame.BUS.post(new ShootEvent(plus.x + play.shOffsetX, plus.y + play.shOffsetY, dir, 1000, Projectile.Bomb));
+                Minigame.BUS.post(
+                        new ShootEvent(plus.x + play.shOffsetX, plus.y + play.shOffsetY, dir, 1000, Projectile.Bomb));
             }
         }
-        
+
         //mgr.postUpdate(time);
     }
-    
+
 }

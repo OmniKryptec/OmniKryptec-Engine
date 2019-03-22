@@ -39,8 +39,18 @@ public class WindowEvent extends Event {
         public final int width;
         public final int height;
         
-        //TODO add other widths/heights
         public WindowResized(final IWindow window, final int width, final int height) {
+            super(window);
+            this.width = width;
+            this.height = height;
+        }
+    }
+    
+    public static class ScreenBufferResized extends WindowEvent {
+        public final int width;
+        public final int height;
+        
+        public ScreenBufferResized(final IWindow window, final int width, final int height) {
             super(window);
             this.width = width;
             this.height = height;
