@@ -17,7 +17,7 @@ import de.omnikryptec.util.updater.Time;
 public class Renderer2D implements Renderer, IRenderedObjectListener {
     
     private static final Comparator<Sprite> DEFAULT_COMPARATOR = (s0,
-            s1) -> (int) Math.signum(s1.getLayer() - s0.getLayer());
+            s1) -> (int) Math.signum(s0.getLayer() - s1.getLayer());
     
     private Comparator<Sprite> spriteComparator = DEFAULT_COMPARATOR;
     private ShadedBatch2D batch = new ShadedBatch2D(1000);

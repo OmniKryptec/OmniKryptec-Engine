@@ -27,8 +27,8 @@ public class Time {
     public final float currentf;
     public final float deltaf;
     
-    public Time(final long opsCount, final long ops, final double current, final double delta) {
-        this.opCount = opsCount;
+    public Time(final long opCount, final long ops, final double current, final double delta) {
+        this.opCount = opCount;
         this.ops = ops;
         this.current = current;
         this.delta = delta;

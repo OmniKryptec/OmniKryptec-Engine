@@ -54,6 +54,7 @@ public class RendererSystem extends ComponentSystem implements EntityListener {
         sprite.setColor(rendMapper.get(entity).color);
         sprite.setWidth(rendMapper.get(entity).w);
         sprite.setHeight(rendMapper.get(entity).h);
+        sprite.setLayer(rendMapper.get(entity).layer);
         rendMapper.get(entity).backingSprite = sprite;
         renderer.getIRenderedObjectManager().add(Sprite.TYPE, sprite);
     }

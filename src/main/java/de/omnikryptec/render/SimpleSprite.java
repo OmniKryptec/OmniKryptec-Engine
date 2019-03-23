@@ -52,5 +52,7 @@ public class SimpleSprite extends Sprite {
     public void setColor(Color color) {
         this.color = color;
     }
+
+   
     
 }

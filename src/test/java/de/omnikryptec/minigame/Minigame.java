@@ -17,6 +17,8 @@ import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
+import de.omnikryptec.util.updater.Time;
+
 import org.joml.Vector2f;
 
 import java.util.Random;
@@ -47,6 +49,7 @@ public class Minigame extends EngineLoader {
     protected void onInitialized() {
         getResourceManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources"));
         getResourceManager().processStaged(false, true);
+        getUpdateController().setSyncUpdateTimeTransform((t) -> new Time(t.opCount, t.ops, t.current, t.delta / 10));
         BUS.register(this);
         mgr = UpdateableFactory.createDefaultIECSManager();
         getGameController().getGlobalScene().setUpdateableSync(mgr);
@@ -70,7 +73,7 @@ public class Minigame extends EngineLoader {
     private Entity makePlayer(float x, float y) {
         Entity e = new Entity();
         e.addComponent(new PositionComponent(x, y));
-        e.addComponent(new RenderComponent(10, 10));
+        e.addComponent(new RenderComponent(10, 10, new Color(1, 1, 0), 10));
         e.addComponent(new PlayerComponent(300, 300, 5, 5));
         e.addComponent(new MovementComponent(0, 0));
         e.addComponent(new CollisionComponent(10, 10));
@@ -80,7 +83,7 @@ public class Minigame extends EngineLoader {
     private Entity makeThing(float x, float y) {
         Entity e = new Entity();
         e.addComponent(new PositionComponent(x, y));
-        e.addComponent(new RenderComponent(15, 15, new Color(0, 1, 1)));
+        e.addComponent(new RenderComponent(15, 15, new Color(0, 1, 1), 8));
         e.addComponent(new CollisionComponent(15, 15));
         e.addComponent(new MovementComponent(0, 0));
         e.flags = -10;
@@ -90,7 +93,7 @@ public class Minigame extends EngineLoader {
     private Entity makeFlying(float x, float y, Vector2f dir, float range, int f) {
         Entity e = new Entity();
         e.addComponent(new PositionComponent(x - 2.5f, y - 2.5f));
-        e.addComponent(new RenderComponent(5, 5, new Color(1, 0, f == 20 ? 1 : 0)));
+        e.addComponent(new RenderComponent(5, 5, new Color(1, 0, f == 20 ? 1 : 0), 9));
         e.addComponent(new MovementComponent(dir.x, dir.y));
         e.addComponent(new RangedComponent(range, x, y));
         e.addComponent(new CollisionComponent(5, 5));

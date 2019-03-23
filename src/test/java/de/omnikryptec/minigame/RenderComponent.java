@@ -8,16 +8,18 @@ public class RenderComponent implements Component {
     
     public float w, h;
     public Color color;
+    public float layer;
     
     public RenderedObject backingSprite;
     
-    public RenderComponent(float w, float h) {
+    private RenderComponent(float w, float h) {
         this.w = w;
         this.h = h;
     }
     
-    public RenderComponent(float w, float h, Color color) {
+    public RenderComponent(float w, float h, Color color, float layer) {
         this(w, h);
         this.color = color;
+        this.layer = layer;
     }
 }

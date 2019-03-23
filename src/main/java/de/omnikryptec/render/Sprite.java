@@ -23,6 +23,10 @@ public abstract class Sprite implements RenderedObject {
         return layer;
     }
     
+    public void setLayer(float layer) {
+        this.layer = layer;
+    }
+    
     public abstract void draw(Batch2D batch);
     
 }
