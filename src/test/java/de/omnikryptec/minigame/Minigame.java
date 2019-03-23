@@ -2,6 +2,7 @@ package de.omnikryptec.minigame;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.EngineLoader;
+import de.omnikryptec.core.update.ULayer;
 import de.omnikryptec.core.update.UpdateableFactory;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
@@ -9,6 +10,7 @@ import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
+import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
 import de.omnikryptec.util.Logger.LogType;
@@ -26,6 +28,8 @@ import java.util.Random;
 public class Minigame extends EngineLoader {
     
     public static final EventBus BUS = new EventBus(false);
+    
+    public static InputManager INPUT;
     
     public static void main(final String[] args) {
         new Minigame().start();
@@ -49,10 +53,14 @@ public class Minigame extends EngineLoader {
     protected void onInitialized() {
         getResourceManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources"));
         getResourceManager().processStaged(false, true);
-        getUpdateController().setSyncUpdateTimeTransform((t) -> new Time(t.opCount, t.ops, t.current, t.delta / 10));
+        //getUpdateController().setSyncUpdateTimeTransform((t) -> new Time(t.opCount, t.ops, t.current, t.delta / 10));
         BUS.register(this);
         mgr = UpdateableFactory.createDefaultIECSManager();
-        getGameController().getGlobalScene().setUpdateableSync(mgr);
+        ULayer layer = new ULayer();
+        INPUT = new InputManager(0, null);
+        layer.addUpdatable(INPUT);
+        layer.addUpdatable(mgr);
+        getGameController().getGlobalScene().setUpdateableSync(layer);
         mgr.addSystem(new CollisionSystem());
         mgr.addSystem(new PlayerSystem());
         mgr.addSystem(new RendererSystem());

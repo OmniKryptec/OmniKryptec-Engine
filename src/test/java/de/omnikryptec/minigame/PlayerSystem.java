@@ -23,7 +23,7 @@ public class PlayerSystem extends ComponentSystem {
                 ComponentType.of(PositionComponent.class)));
     }
 
-    private InputManager inputManager = new InputManager(0, null, LibAPIManager.LIB_API_EVENT_BUS);
+    private InputManager inputManager = Minigame.INPUT;
 
     private ComponentMapper<MovementComponent> movMapper = new ComponentMapper<>(MovementComponent.class);
     private ComponentMapper<PlayerComponent> playMapper = new ComponentMapper<>(PlayerComponent.class);
@@ -33,9 +33,7 @@ public class PlayerSystem extends ComponentSystem {
 
     @Override
     public void update(IECSManager iecsManager, Time time) { //FIXME Unfinished, InputManager Stuff
-        inputManager.update(time);
-        //mgr.preUpdate(time);
-        //mgr.update(time);
+        //inputManager.update(time);
         again += time.deltaf;
         for (Entity e : entities) {
             MovementComponent mov = movMapper.get(e);
@@ -76,8 +74,6 @@ public class PlayerSystem extends ComponentSystem {
                         new ShootEvent(plus.pos.x + play.shOffsetX, plus.pos.y + play.shOffsetY, dir, 1000, Projectile.Bomb));
             }
         }
-
-        //mgr.postUpdate(time);
     }
 
 }
