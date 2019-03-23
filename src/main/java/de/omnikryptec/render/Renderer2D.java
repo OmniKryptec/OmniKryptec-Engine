@@ -23,24 +23,27 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
     private ShadedBatch2D batch = new ShadedBatch2D(1000);
     private List<Sprite> sprites = new ArrayList<>();
     
+    private boolean shouldSort = false;
+    
     @Override
     public void init(RendererContext context) {
         context.getIRenderedObjectManager().addListener(Sprite.TYPE, this);
         List<Sprite> list = context.getIRenderedObjectManager().getFor(Sprite.TYPE);
         //is addAll fast enough or is a raw forloop faster?
         this.sprites.addAll(list);
-        this.sprites.sort(spriteComparator);
+        this.shouldSort = true;
     }
     
     @Override
     public void onAdd(RenderedObject obj) {
         this.sprites.add((Sprite) obj);
-        this.sprites.sort(spriteComparator);
+        this.shouldSort = true;
     }
     
     @Override
     public void deinit(RendererContext context) {
         this.sprites.clear();
+        this.shouldSort = false;
         context.getIRenderedObjectManager().removeListener(Sprite.TYPE, this);
     }
     
@@ -51,6 +54,10 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
     
     @Override
     public void render(Time time, IProjection projection, RendererContext renderer) {
+        if (shouldSort) {
+            sprites.sort(spriteComparator);
+            shouldSort = false;
+        }
         batch.setIProjection(projection);
         batch.begin();
         for (Sprite sprite : sprites) {
