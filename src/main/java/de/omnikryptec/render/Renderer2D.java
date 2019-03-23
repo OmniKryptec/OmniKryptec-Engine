@@ -1,59 +1,62 @@
 package de.omnikryptec.render;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.batch.ShadedBatch2D;
+import de.omnikryptec.render.storage.IRenderedObjectListener;
 import de.omnikryptec.render.storage.IRenderedObjectManager;
+import de.omnikryptec.render.storage.RenderedObject;
 import de.omnikryptec.render.storage.RenderedObjectType;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
-public class Renderer2D implements Renderer {
+public class Renderer2D implements Renderer, IRenderedObjectListener {
     
-    private static final RenderedObjectType SPRITE_TYPE = RenderedObjectType.of(Sprite.class);
     private static final Comparator<Sprite> DEFAULT_COMPARATOR = (s0,
             s1) -> (int) Math.signum(s1.getLayer() - s0.getLayer());
     
     private Comparator<Sprite> spriteComparator = DEFAULT_COMPARATOR;
     private ShadedBatch2D batch = new ShadedBatch2D(1000);
-    private float reflectedStart;
-    private float reflectedEnd;
-    private FrameBuffer reflectiontexture;
+    private List<Sprite> sprites = new ArrayList<>();
+    
+    @Override
+    public void init(RendererContext context) {
+        context.getIRenderedObjectManager().addListener(Sprite.TYPE, this);
+        List<Sprite> list = context.getIRenderedObjectManager().getFor(Sprite.TYPE);
+        //is addAll fast enough or is a raw forloop faster?
+        this.sprites.addAll(list);
+        this.sprites.sort(spriteComparator);
+    }
+    
+    @Override
+    public void onAdd(RenderedObject obj) {
+        this.sprites.add((Sprite) obj);
+        this.sprites.sort(spriteComparator);
+    }
+    
+    @Override
+    public void deinit(RendererContext context) {
+        this.sprites.clear();
+        context.getIRenderedObjectManager().removeListener(Sprite.TYPE, this);
+    }
+    
+    @Override
+    public void onRemove(RenderedObject obj) {
+        this.sprites.remove(obj);
+    }
     
     @Override
     public void render(Time time, IProjection projection, RendererContext renderer) {
-        List<Sprite> sprites = renderer.getIRenderedObjectManager().getFor(SPRITE_TYPE);
-        sprites.sort(spriteComparator);
-        reflectiontexture.bindFrameBuffer();
+        batch.setIProjection(projection);
         batch.begin();
-        draw(reflectedStart, reflectedEnd, batch, sprites);
-        batch.end();
-        reflectiontexture.unbindFrameBuffer();
-        //reflection texture
-        reflectiontexture.getTexture(0).bindTexture(1);
-        //specular
-        reflectiontexture.getTexture(1).bindTexture(2);
-        batch.begin();
-        draw(Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, batch, sprites);
-        batch.end();
-    }
-    
-    private void draw(float layerStart, float layerEnd, Batch2D batch, List<Sprite> sprites) {
-        for (Sprite s : sprites) {
-            if (s.getLayer() >= layerStart && s.getLayer() <= layerEnd) {
-                s.draw(batch);
-            }
+        for (Sprite sprite : sprites) {
+            sprite.draw(batch);
         }
+        batch.end();
     }
     
-    @Override
-    public void init() {
-    }
-    
-    @Override
-    public void deinit() {
-    }
 }

@@ -2,8 +2,8 @@ package de.omnikryptec.render.storage;
 
 public interface IRenderedObjectListener {
 
-    void onAdd(IRenderedObjectManager mgr);
+    void onAdd(RenderedObject mgr);
 
-    void onRemove(IRenderedObjectManager mgr);
+    void onRemove(RenderedObject mgr);
 
 }

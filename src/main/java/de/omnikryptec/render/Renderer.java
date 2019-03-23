@@ -4,7 +4,7 @@ import de.omnikryptec.util.updater.Time;
 
 public interface Renderer {
     
-    void init();
+    void init(RendererContext context);
     
     default void preRender(final Time time, IProjection projection, RendererContext renderer) {
         
@@ -16,7 +16,7 @@ public interface Renderer {
         
     }
     
-    void deinit();
+    void deinit(RendererContext context);
     
     default int priority() {
         return 0;

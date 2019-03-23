@@ -6,9 +6,11 @@ import org.joml.Matrix3x2f;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.storage.RenderedObject;
+import de.omnikryptec.render.storage.RenderedObjectType;
 import de.omnikryptec.util.data.Color;
 
 public class Sprite implements RenderedObject {
+    public static final RenderedObjectType TYPE = RenderedObjectType.of(Sprite.class);
     
     private float layer;
     private float reflection;

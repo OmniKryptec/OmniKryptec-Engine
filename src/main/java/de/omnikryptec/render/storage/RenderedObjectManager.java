@@ -14,57 +14,42 @@ import de.omnikryptec.util.data.DynamicArray;
 public class RenderedObjectManager implements IRenderedObjectManager {
     private ListMultimap<RenderedObjectType, IRenderedObjectListener> listeners;
     private DynamicArray<List<RenderedObject>> objects;
-
+    
     public RenderedObjectManager() {
         objects = new DynamicArray<>();
         listeners = ArrayListMultimap.create();
     }
-
+    
     @Override
     public <T extends RenderedObject> List<T> getFor(RenderedObjectType type) {
-        return (List<T>) Collections.unmodifiableList(objects.get(type.id));
+        return (List<T>) Collections.unmodifiableList(getList(type));
     }
-
-    @Override
-    public void clear(RenderedObjectType type) {
-        List<? extends RenderedObject> list = objects.get(type.id);
-        if (list != null) {
-            list.clear();
-            notifyRemove(type);
-        }
-    }
-
+    
     @Override
     public void add(RenderedObjectType type, RenderedObject renderedObject) {
         getList(type).add(renderedObject);
-        notifyAdd(type);
+        notifyAdd(type, renderedObject);
     }
-
-    @Override
-    public void addAll(RenderedObjectType type, Collection<RenderedObject> collection) {
-        getList(type).addAll(collection);
-        notifyAdd(type);
-    }
-
+    
     @Override
     public void remove(RenderedObjectType type, RenderedObject renderedObject) {
         List<RenderedObject> list = objects.get(type.id);
         if (list != null) {
             list.remove(renderedObject);
-            notifyRemove(type);
+            notifyRemove(type, renderedObject);
         }
     }
-
+    
     @Override
     public void addListener(RenderedObjectType type, IRenderedObjectListener listener) {
         listeners.put(type, listener);
     }
-
+    
     @Override
     public void removeListener(RenderedObjectType type, IRenderedObjectListener listener) {
         listeners.remove(type, listener);
     }
-
+    
     private List<RenderedObject> getList(RenderedObjectType type) {
         List<RenderedObject> list = objects.get(type.id);
         if (list == null) {
@@ -73,18 +58,18 @@ public class RenderedObjectManager implements IRenderedObjectManager {
         }
         return list;
     }
-
-    private void notifyAdd(RenderedObjectType type) {
+    
+    private void notifyAdd(RenderedObjectType type, RenderedObject obj) {
         List<IRenderedObjectListener> list = listeners.get(type);
         for (IRenderedObjectListener l : list) {
-            l.onAdd(this);
+            l.onAdd(obj);
         }
     }
-
-    private void notifyRemove(RenderedObjectType type) {
+    
+    private void notifyRemove(RenderedObjectType type, RenderedObject obj) {
         List<IRenderedObjectListener> list = listeners.get(type);
         for (IRenderedObjectListener l : list) {
-            l.onRemove(this);
+            l.onRemove(obj);
         }
     }
 }

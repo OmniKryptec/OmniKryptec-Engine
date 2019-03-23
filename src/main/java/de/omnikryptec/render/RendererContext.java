@@ -1,18 +1,22 @@
 package de.omnikryptec.render;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.render.storage.IRenderedObjectManager;
 import de.omnikryptec.render.storage.RenderedObjectManager;
-import de.omnikryptec.render.storage.RendererManager;
 import de.omnikryptec.util.updater.Time;
 
 public class RendererContext implements IUpdatable {
+    private static final Comparator<Renderer> RENDERER_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority() - e1.priority();
     
-    private RendererManager rendererManager;
     private IProjection mainProjection;
     private IRenderedObjectManager objectManager;
     private RenderAPI renderApi;
+    private List<Renderer> renderers;
     
     public RendererContext() {
         this(new RenderedObjectManager());
@@ -20,7 +24,8 @@ public class RendererContext implements IUpdatable {
     
     public RendererContext(IRenderedObjectManager renderedObjManager) {
         this.objectManager = renderedObjManager;
-        this.rendererManager = new RendererManager();
+        this.renderers = new ArrayList<>();
+        this.renderApi = RenderAPI.get();
     }
     
     public RenderAPI getRenderAPI() {
@@ -39,15 +44,40 @@ public class RendererContext implements IUpdatable {
         this.mainProjection = projection;
     }
     
-    public RendererManager getRendererManager() {
-        return rendererManager;
+    public void addRenderer(Renderer renderer) {
+        renderers.add(renderer);
+        renderers.sort(RENDERER_PRIORITY_COMPARATOR);
+        renderer.init(this);
+    }
+    
+    public void removeRenderer(Renderer renderer) {
+        renderer.deinit(this);
+        renderers.remove(renderer);
+    }
+    
+    public void preRender(Time time, IProjection projection) {
+        for (Renderer r : renderers) {
+            r.preRender(time, projection, this);
+        }
+    }
+    
+    public void render(Time time, IProjection projection) {
+        for (Renderer r : renderers) {
+            r.render(time, projection, this);
+        }
+    }
+    
+    public void postRender(Time time, IProjection projection) {
+        for (Renderer r : renderers) {
+            r.postRender(time, projection, this);
+        }
     }
     
     @Override
     public void update(Time time) {
-        rendererManager.preRender(time, mainProjection, this);
-        rendererManager.render(time, mainProjection, this);
-        rendererManager.postRender(time, mainProjection, this);
+        preRender(time, mainProjection);
+        render(time, mainProjection);
+        postRender(time, mainProjection);
     }
     
     @Override
