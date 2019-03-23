@@ -36,4 +36,9 @@ public class Time {
         this.deltaf = (float) delta;
     }
     
+    @Override
+    public String toString() {
+        return "Time [current=" + current + " delta=" + delta + " opCount=" + opCount + " OPS=" + ops + "]";
+    }
+    
 }
