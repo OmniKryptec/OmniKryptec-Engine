@@ -1,6 +1,5 @@
 package de.omnikryptec.minigame;
 
-import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
 
 import de.omnikryptec.ecs.Entity;
@@ -10,17 +9,14 @@ import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.ComponentSystem;
-import de.omnikryptec.event.EventSubscription;
-import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBuffer;
-import de.omnikryptec.libapi.exposed.window.WindowEvent;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.Renderer2D;
 import de.omnikryptec.render.RendererContext;
+import de.omnikryptec.render.SimpleSprite;
 import de.omnikryptec.render.Sprite;
-import de.omnikryptec.render.batch.Batch2D;
-import de.omnikryptec.render.batch.ShadedBatch2D;
+import de.omnikryptec.render.storage.RenderedObject;
 import de.omnikryptec.util.updater.Time;
 
 public class RendererSystem extends ComponentSystem implements EntityListener {
@@ -53,20 +49,19 @@ public class RendererSystem extends ComponentSystem implements EntityListener {
     
     @Override
     public void entityAdded(Entity entity) {
-        Sprite sprite = new Sprite() {
-            @Override
-            public void draw(Batch2D batch) {
-                batch.color().set(1, 0, 1);
-                batch.drawLine(0, 0, 100, 100, 10);
-            }
-        };
-        sprite.getTransform().setTranslation(posMapper.get(entity).x, posMapper.get(entity).y);
+        SimpleSprite sprite = new SimpleSprite();
+        sprite.setPosition(posMapper.get(entity).pos);
+        sprite.setColor(rendMapper.get(entity).color);
+        sprite.setWidth(rendMapper.get(entity).w);
+        sprite.setHeight(rendMapper.get(entity).h);
+        rendMapper.get(entity).backingSprite = sprite;
         renderer.getIRenderedObjectManager().add(Sprite.TYPE, sprite);
     }
     
     @Override
     public void entityRemoved(Entity entity) {
-        
+        RenderedObject o = rendMapper.get(entity).backingSprite;
+        renderer.getIRenderedObjectManager().remove(Sprite.TYPE, o);
     }
     
     @Override

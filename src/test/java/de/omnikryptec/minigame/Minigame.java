@@ -30,7 +30,8 @@ public class Minigame extends EngineLoader {
     }
     
     @Override
-    protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
+    protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
         libSettings.set(LibSetting.DEBUG, true);
         libSettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "Minigame");
@@ -118,7 +119,7 @@ public class Minigame extends EngineLoader {
     public void bombExplode(BombExplodeEvent ev) {
         for (int i = 0; i < 100; i++) {
             Vector2f r = MathUtil.randomDirection2D(random, 0, 2 * Mathf.PI, new Vector2f()).mul(500);
-            BUS.post(new ShootEvent(mapper.get(ev.bomb).x, mapper.get(ev.bomb).y, r, 150, Projectile.Normal));
+            BUS.post(new ShootEvent(mapper.get(ev.bomb).pos.x, mapper.get(ev.bomb).pos.y, r, 150, Projectile.Normal));
         }
     }
     

@@ -22,7 +22,7 @@ public class RangedSystem extends IterativeComponentSystem {
     public void updateIndividual(IECSManager manager, Entity entity, Time time) {
         PositionComponent pos = posM.get(entity);
         RangedComponent w = mapper.get(entity);
-        if (Mathf.square(pos.x - w.startX) + Mathf.square(pos.y - w.startY) > Mathf.square(w.maxrange)) {
+        if (Mathf.square(pos.pos.x - w.startX) + Mathf.square(pos.pos.y - w.startY) > Mathf.square(w.maxrange)) {
             manager.removeEntity(entity);
             
             Minigame.BUS.post(new RangeMaxedEvent(entity));

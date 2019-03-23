@@ -74,6 +74,9 @@ public class EntityManager {
         if (this.entities.remove(entity)) {
             for (final BitSet filter : this.reverseFilteredEntities.get(entity)) {
                 this.filteredEntities.remove(filter, entity);
+                for (final EntityListener l : this.familyListeners.get(filter)) {
+                    l.entityRemoved(entity);
+                }
             }
             this.reverseFilteredEntities.removeAll(entity);
         }
