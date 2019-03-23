@@ -24,12 +24,8 @@ public class Renderer2D implements Renderer {
     private FrameBuffer reflectiontexture;
     
     @Override
-    public void init(Settings<?> renderSettings) {
-    }
-    
-    @Override
-    public void render(Time time, IProjection projection, IRenderedObjectManager objects) {
-        List<Sprite> sprites = objects.getFor(SPRITE_TYPE);
+    public void render(Time time, IProjection projection, RendererContext renderer) {
+        List<Sprite> sprites = renderer.getIRenderedObjectManager().getFor(SPRITE_TYPE);
         sprites.sort(spriteComparator);
         reflectiontexture.bindFrameBuffer();
         batch.begin();
@@ -52,9 +48,12 @@ public class Renderer2D implements Renderer {
             }
         }
     }
-
+    
+    @Override
+    public void init() {
+    }
+    
     @Override
     public void deinit() {
     }
-    
 }
