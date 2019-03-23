@@ -30,50 +30,52 @@ import java.util.concurrent.atomic.AtomicReference;
 public class KeyboardHandler implements InputHandler {
     
     private final byte[] keys = new byte[GLFW.GLFW_KEY_LAST + 1]; //TODO Test if this includes every key //TODO Maybe this is no longer necessary, because the KeySettings Keys having their own isPressed state, BUT this is necessary, because maybe you want to save ALL key states, so this should stay
-    private final long window;
-    private final GLFWKeyCallback keyCallback;
+//    private final long window;
+//    private final GLFWKeyCallback keyCallback;
     private final AtomicReference<String> inputString = new AtomicReference<>("");
     // Configurable variables
     private final boolean appendToString = false;
     // Temporary variables
     private byte[] keysLastTime = null;
     
-    public KeyboardHandler(EventBus bus) {
-        this(0);
-        bus.register(this);
-    }
     
     @EventSubscription
     public void onKeyEvent(InputEvent.KeyEvent ev) {
         this.keys[ev.key] = (byte) ev.action;
     }
     
-    //@Deprecated //FIXME Whats with the Callback? Is it necessary?
-    public KeyboardHandler(long window) {
-        this.window = window;
-        this.keyCallback = new GLFWKeyCallback() {
-            @Override
-            public void invoke(long window, int key, int scancode, int action, int mods) {
-                if (KeyboardHandler.this.window != window) {
-                    return;
-                }
-                synchronized (KeyboardHandler.this.keys) {
-                    final byte actionByte = (byte) action;
-                    KeyboardHandler.this.keys[key] = actionByte;
-                    if (KeyboardHandler.this.appendToString && (actionByte == KeySettings.KEY_PRESSED || actionByte == KeySettings.KEY_REPEATED)) {
-                        final String keyString = GLFW.glfwGetKeyName(key, scancode); // FIXME Is this deprecated?
-                        if (keyString != null) {
-                            KeyboardHandler.this.inputString.updateAndGet((inputString_) -> inputString_ + keyString);
-                        }
-                    }
-                }
-            }
-        };
-    }
+//    //@Deprecated //FIXME Whats with the Callback? Is it necessary?
+//    public KeyboardHandler(long window) {
+//        this.window = window;
+//        this.keyCallback = new GLFWKeyCallback() {
+//            @Override
+//            public void invoke(long window, int key, int scancode, int action, int mods) {
+//                if (KeyboardHandler.this.window != window) {
+//                    return;
+//                }
+//                synchronized (KeyboardHandler.this.keys) {
+//                    final byte actionByte = (byte) action;
+//                    KeyboardHandler.this.keys[key] = actionByte;
+//                    if (KeyboardHandler.this.appendToString && (actionByte == KeySettings.KEY_PRESSED || actionByte == KeySettings.KEY_REPEATED)) {
+//                        final String keyString = GLFW.glfwGetKeyName(key, scancode); // FIXME Is this deprecated?
+//                        if (keyString != null) {
+//                            KeyboardHandler.this.inputString.updateAndGet((inputString_) -> inputString_ + keyString);
+//                        }
+//                    }
+//                }
+//            }
+//        };
+//    }
     
     @Override
-    public synchronized boolean init() {
-        GLFW.glfwSetKeyCallback(this.window, this.keyCallback);
+    public synchronized boolean init(EventBus bus) {
+//        GLFW.glfwSetKeyCallback(this.window, this.keyCallback);
+        bus.register(this);
+        return true;
+    }
+    
+    public boolean deinit(EventBus bus) {
+        bus.unregister(this);
         return true;
     }
     
@@ -101,9 +103,9 @@ public class KeyboardHandler implements InputHandler {
     
     @Override
     public synchronized boolean close() {
-        if (this.keyCallback != null) {
-            this.keyCallback.close();
-        }
+//        if (this.keyCallback != null) {
+//            this.keyCallback.close();
+//        }
         return true;
     }
     
@@ -149,8 +151,8 @@ public class KeyboardHandler implements InputHandler {
         return this.keys.length;
     }
     
-    public long getWindow() {
-        return this.window;
-    }
+//    public long getWindow() {
+//        return this.window;
+//    }
     
 }

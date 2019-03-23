@@ -51,11 +51,12 @@ public class InputManager implements IUpdatable {
     private boolean longButtonPressEnabled = false;
     private CursorType cursorType = CursorType.DISABLED;
     
-    public InputManager(long window, KeySettings keySettings, EventBus bus) {
-        this(window, keySettings, new KeyboardHandler(bus), new MouseHandler(bus));
+    public InputManager(long window, KeySettings keySettings) {
+        this(window, keySettings, new KeyboardHandler(), new MouseHandler());
     }
     
-    protected InputManager(long window, KeySettings keySettings, KeyboardHandler keyboardHandler, MouseHandler mouseHandler) {
+    protected InputManager(long window, KeySettings keySettings, KeyboardHandler keyboardHandler,
+            MouseHandler mouseHandler) {
         this.window = window;
         this.keySettings = keySettings;
         this.keyboardHandler = keyboardHandler;
@@ -74,12 +75,23 @@ public class InputManager implements IUpdatable {
         return mouseHandler;
     }
     
-    protected boolean init() {
+    protected boolean init(EventBus bus) {
         boolean good = true;
-        if (!keyboardHandler.init()) {
+        if (!keyboardHandler.init(bus)) {
             good = false;
         }
-        if (!mouseHandler.init()) {
+        if (!mouseHandler.init(bus)) {
+            good = false;
+        }
+        return good;
+    }
+    
+    protected boolean deinit(EventBus bus) {
+        boolean good = true;
+        if (!keyboardHandler.deinit(bus)) {
+            good = false;
+        }
+        if (!mouseHandler.deinit(bus)) {
             good = false;
         }
         return good;
@@ -172,14 +184,12 @@ public class InputManager implements IUpdatable {
     
     @Override
     public void init(ILayer layer) {
-        init();
-        //TODO Is the layer needed?
+        init(layer.getEventBus());
     }
     
     @Override
     public void deinit(ILayer layer) {
-        close();
-        //TODO Is this making sense?
+        deinit(layer.getEventBus());
     }
     
     public boolean isLongButtonPressEnabled() {
@@ -187,7 +197,7 @@ public class InputManager implements IUpdatable {
     }
     
     public InputManager setLongButtonPressEnabled(boolean longButtonPressEnabled) {
-        longButtonPressEnabled = longButtonPressEnabled;
+        longButtonPressEnabled = longButtonPressEnabled; //FIXME fixme! variable assignment
         return this;
     }
     

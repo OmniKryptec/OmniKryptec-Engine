@@ -16,11 +16,12 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
+import de.omnikryptec.event.EventBus;
 import de.omnikryptec.util.settings.KeySettings;
 
 public interface InputHandler {
     
-    boolean init();
+    boolean init(EventBus bus);
     
     default boolean preUpdate(double currentTime, KeySettings keySettings) {
         return true;
@@ -31,6 +32,8 @@ public interface InputHandler {
     default boolean postUpdate(double currentTime, KeySettings keySettings) {
         return true;
     }
+    
+    boolean deinit(EventBus bus);
     
     boolean close();
     

@@ -17,6 +17,7 @@
 package de.omnikryptec.libapi.exposed.input;
 
 import de.codemakers.base.logger.Logger;
+import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.settings.KeySettings;
 import org.lwjgl.glfw.GLFW;
@@ -42,7 +43,7 @@ public class JoystickHandler implements InputHandler {
     
     public JoystickHandler(int joystick) {
         this.joystick = joystick;
-        init();
+        init(null);
     }
     
     public static synchronized String getName(int joystick) {
@@ -145,7 +146,7 @@ public class JoystickHandler implements InputHandler {
     }
     
     @Override
-    public synchronized boolean init() {
+    public synchronized boolean init(EventBus bus) {
         if (!joystickHandlers.contains(this)) {
             joystickHandlers.add(this);
         }
@@ -219,6 +220,12 @@ public class JoystickHandler implements InputHandler {
     @Override
     public int hashCode() {
         return Objects.hash(this.joystick);
+    }
+
+    @Override
+    public boolean deinit(EventBus bus) {
+        
+        return false;
     }
     
 }

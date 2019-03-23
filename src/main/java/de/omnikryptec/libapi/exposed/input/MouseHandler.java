@@ -32,20 +32,26 @@ public class MouseHandler implements InputHandler {
     private final byte[] buttons = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
     private final Vector2d position = new Vector2d(0.0, 0.0);
     private final Vector2d scrollOffset = new Vector2d(0.0, 0.0);
-    private final long window;
-    private final GLFWMouseButtonCallback mouseButtonCallback;
-    private final GLFWCursorPosCallback cursorPosCallback;
-    private final GLFWScrollCallback scrollCallback;
-    private final GLFWCursorEnterCallback cursorEnterCallback;
+//    private final long window;
+//    private final GLFWMouseButtonCallback mouseButtonCallback;
+//    private final GLFWCursorPosCallback cursorPosCallback;
+//    private final GLFWScrollCallback scrollCallback;
+//    private final GLFWCursorEnterCallback cursorEnterCallback;
     private final AtomicBoolean insideWindow = new AtomicBoolean(false);
     // Temporary variables
     private byte[] buttonsLastTime = null;
-    
-    public MouseHandler(EventBus bus) {
-        this(0);
+
+    @Override
+    public boolean init(EventBus bus) {
         bus.register(this);
+        return true;
     }
-    
+
+    @Override
+    public boolean deinit(EventBus bus) {
+        bus.unregister(this);
+        return true;
+    }
     @EventSubscription
     public void onButtonInput(InputEvent.MouseButtonEvent ev) {
         buttons[ev.button] = (byte) ev.action;
@@ -68,63 +74,63 @@ public class MouseHandler implements InputHandler {
         insideWindow.set(ev.entered);
     }
     
-    //@Deprecated //FIXME Whats with the Callbacks? Are they necessary?
-    public MouseHandler(long window) {
-        this.window = window;
-        this.mouseButtonCallback = new GLFWMouseButtonCallback() {
-            @Override
-            public void invoke(final long window, final int button, final int action, final int mods) {
-                if (MouseHandler.this.window != window) {
-                    return;
-                }
-                synchronized (MouseHandler.this.buttons) {
-                    MouseHandler.this.buttons[button] = (byte) action;
-                }
-            }
-        };
-        this.cursorPosCallback = new GLFWCursorPosCallback() {
-            @Override
-            public void invoke(final long window, final double xpos, final double ypos) {
-                if (MouseHandler.this.window != window) {
-                    return;
-                }
-                synchronized (MouseHandler.this.position) {
-                    MouseHandler.this.position.x = xpos;
-                    MouseHandler.this.position.y = ypos;
-                }
-            }
-        };
-        this.scrollCallback = new GLFWScrollCallback() {
-            @Override
-            public void invoke(final long window, final double xoffset, final double yoffset) {
-                if (MouseHandler.this.window != window) {
-                    return;
-                }
-                synchronized (MouseHandler.this.scrollOffset) {
-                    MouseHandler.this.scrollOffset.x = xoffset;
-                    MouseHandler.this.scrollOffset.y = yoffset;
-                }
-            }
-        };
-        this.cursorEnterCallback = new GLFWCursorEnterCallback() {
-            @Override
-            public void invoke(final long window, final boolean entered) {
-                if (MouseHandler.this.window != window) {
-                    return;
-                }
-                MouseHandler.this.insideWindow.set(entered);
-            }
-        };
-    }
+//    //@Deprecated //FIXME Whats with the Callbacks? Are they necessary?
+//    public MouseHandler(long window) {
+//        this.window = window;
+//        this.mouseButtonCallback = new GLFWMouseButtonCallback() {
+//            @Override
+//            public void invoke(final long window, final int button, final int action, final int mods) {
+//                if (MouseHandler.this.window != window) {
+//                    return;
+//                }
+//                synchronized (MouseHandler.this.buttons) {
+//                    MouseHandler.this.buttons[button] = (byte) action;
+//                }
+//            }
+//        };
+//        this.cursorPosCallback = new GLFWCursorPosCallback() {
+//            @Override
+//            public void invoke(final long window, final double xpos, final double ypos) {
+//                if (MouseHandler.this.window != window) {
+//                    return;
+//                }
+//                synchronized (MouseHandler.this.position) {
+//                    MouseHandler.this.position.x = xpos;
+//                    MouseHandler.this.position.y = ypos;
+//                }
+//            }
+//        };
+//        this.scrollCallback = new GLFWScrollCallback() {
+//            @Override
+//            public void invoke(final long window, final double xoffset, final double yoffset) {
+//                if (MouseHandler.this.window != window) {
+//                    return;
+//                }
+//                synchronized (MouseHandler.this.scrollOffset) {
+//                    MouseHandler.this.scrollOffset.x = xoffset;
+//                    MouseHandler.this.scrollOffset.y = yoffset;
+//                }
+//            }
+//        };
+//        this.cursorEnterCallback = new GLFWCursorEnterCallback() {
+//            @Override
+//            public void invoke(final long window, final boolean entered) {
+//                if (MouseHandler.this.window != window) {
+//                    return;
+//                }
+//                MouseHandler.this.insideWindow.set(entered);
+//            }
+//        };
+//    }
     
-    @Override
-    public synchronized boolean init() {
-        GLFW.glfwSetMouseButtonCallback(window, mouseButtonCallback);
-        GLFW.glfwSetCursorPosCallback(window, cursorPosCallback);
-        GLFW.glfwSetScrollCallback(window, scrollCallback);
-        GLFW.glfwSetCursorEnterCallback(window, cursorEnterCallback);
-        return true;
-    }
+//    @Override
+//    public synchronized boolean init() {
+//        GLFW.glfwSetMouseButtonCallback(window, mouseButtonCallback);
+//        GLFW.glfwSetCursorPosCallback(window, cursorPosCallback);
+//        GLFW.glfwSetScrollCallback(window, scrollCallback);
+//        GLFW.glfwSetCursorEnterCallback(window, cursorEnterCallback);
+//        return true;
+//    }
     
     @Override
     public synchronized boolean preUpdate(double currentTime, KeySettings keySettings) {
@@ -150,10 +156,10 @@ public class MouseHandler implements InputHandler {
     
     @Override
     public synchronized boolean close() {
-        mouseButtonCallback.close();
-        cursorPosCallback.close();
-        scrollCallback.close();
-        cursorEnterCallback.close();
+//        mouseButtonCallback.close();
+//        cursorPosCallback.close();
+//        scrollCallback.close();
+//        cursorEnterCallback.close();
         return true;
     }
     
@@ -197,8 +203,9 @@ public class MouseHandler implements InputHandler {
         return buttons.length;
     }
     
-    public long getWindow() {
-        return window;
-    }
+//    public long getWindow() {
+//        return window;
+//    }
+
     
 }
