@@ -17,6 +17,7 @@
 package de.omnikryptec.core.update;
 
 import de.omnikryptec.ecs.IECSManager;
+import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.*;
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBuffer;
@@ -32,6 +33,7 @@ import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathf;
+import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.updater.Time;
 import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
@@ -40,6 +42,14 @@ public class UpdateableFactory {
     
     public static IECSManager createDefaultIECSManager() {
         return IECSManager.createDefault();
+    }
+    
+    public static InputManager createInputManagerSimple() {
+        return createInputManager(null);
+    }
+    
+    public static InputManager createInputManager(KeySettings keySettings) {
+        return new InputManager(keySettings);
     }
     
     public static IUpdatable createScreenClearTest() {

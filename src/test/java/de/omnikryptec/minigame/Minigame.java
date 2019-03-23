@@ -38,7 +38,7 @@ public class Minigame extends EngineLoader {
     @Override
     protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
-        libSettings.set(LibSetting.DEBUG, true);
+        //libSettings.set(LibSetting.DEBUG, true);
         libSettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "Minigame");
         windowSettings.set(WindowSetting.LockAspectRatio, true);
@@ -57,7 +57,7 @@ public class Minigame extends EngineLoader {
         BUS.register(this);
         mgr = UpdateableFactory.createDefaultIECSManager();
         ULayer layer = new ULayer();
-        INPUT = new InputManager(0, null);
+        INPUT = UpdateableFactory.createInputManagerSimple();
         layer.addUpdatable(INPUT);
         layer.addUpdatable(mgr);
         getGameController().getGlobalScene().setUpdateableSync(layer);

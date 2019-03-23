@@ -30,7 +30,6 @@ import org.lwjgl.glfw.GLFW;
 
 public class InputManager implements IUpdatable {
     
-    private final long window;
     private KeySettings keySettings;
     // Keyboard part
     private final KeyboardHandler keyboardHandler;
@@ -51,13 +50,11 @@ public class InputManager implements IUpdatable {
     private boolean longButtonPressEnabled = false;
     private CursorType cursorType = CursorType.DISABLED;
     
-    public InputManager(long window, KeySettings keySettings) {
-        this(window, keySettings, new KeyboardHandler(), new MouseHandler());
+    public InputManager(KeySettings keySettings) {
+        this(keySettings, new KeyboardHandler(), new MouseHandler());
     }
     
-    protected InputManager(long window, KeySettings keySettings, KeyboardHandler keyboardHandler,
-            MouseHandler mouseHandler) {
-        this.window = window;
+    protected InputManager(KeySettings keySettings, KeyboardHandler keyboardHandler, MouseHandler mouseHandler) {
         this.keySettings = keySettings;
         this.keyboardHandler = keyboardHandler;
         this.mouseHandler = mouseHandler;
@@ -201,9 +198,9 @@ public class InputManager implements IUpdatable {
         return this;
     }
     
-    public long getWindow() {
-        return window;
-    }
+//    public long getWindow() {
+//        return window;
+//    }
     
     // Keyboard part
     
@@ -254,8 +251,9 @@ public class InputManager implements IUpdatable {
     }
     
     public InputManager setCursorType(CursorType cursorType) {
+        //FIXME move to different position
         Util.ensureNonNull(cursorType);
-        GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, cursorType.getState());
+        //GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, cursorType.getState());
         this.cursorType = cursorType;
         return this;
     }
