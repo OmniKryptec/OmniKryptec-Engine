@@ -19,7 +19,7 @@ import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.libapi.opengl.texture.GLTexture;
 
 public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
-
+    
     //GLScreenBuffer needs access, too
     static final Deque<FrameBuffer> history = new ArrayDeque<>();
     
@@ -201,7 +201,9 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
     @Override
     public FrameBuffer resizedClone(final int newWidth, final int newHeight) {
         final FrameBuffer fb = new GLFrameBuffer(newWidth, newHeight, this.multisample, this.targets.length);
+        fb.bindFrameBuffer();
         fb.assignTargets(this.targets);
+        fb.unbindFrameBuffer();
         return fb;
     }
     

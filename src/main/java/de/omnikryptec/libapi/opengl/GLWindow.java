@@ -16,19 +16,20 @@ import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
 public class GLWindow implements IWindow {
-
+    private final EventBus windowBus = LibAPIManager.LIB_API_EVENT_BUS;
+    
     private final long windowId;
     private final GLScreenBuffer screenBuffer;
-
+    
     private int windowWidth;
     private int windowHeight;
     private boolean isFullscreen;
     private boolean isActive;
-
+    
     private static boolean isMac() {
         return System.getProperty("os.name").toLowerCase().contains("mac");
     }
-
+    
     public GLWindow(Settings<WindowSetting> windowSettings, Settings<IntegerKey> apiSettings) {
         Util.ensureNonNull(windowSettings, "Window settings must not be null!");
         this.windowWidth = windowSettings.get(WindowSetting.Width);
@@ -75,12 +76,17 @@ public class GLWindow implements IWindow {
         GL.createCapabilities();
         setVSync(windowSettings.get(WindowSetting.VSync));
         screenBuffer = new GLScreenBuffer(windowId, aspectRatio);
-        LibAPIManager.LIB_API_EVENT_BUS.register(screenBuffer);
+        windowBus.register(screenBuffer);
         screenBuffer.bindFrameBuffer();
+        initSizes(windowWidth, windowHeight, screenBuffer.getWidth(), screenBuffer.getHeight());
     }
-
+    
+    private void initSizes(int w, int h, int fw, int fh) {
+//        windowBus.post(new WindowEvent.WindowResized(this, w, h));
+//        windowBus.post(new WindowEvent.ScreenBufferResized(this, fw, fh));
+    }
+    
     private void registerCallbacks() {
-        final EventBus windowBus = LibAPIManager.LIB_API_EVENT_BUS;
         GLFW.glfwSetWindowSizeCallback(this.windowId,
                 (window, width, height) -> windowBus.post(new WindowEvent.WindowResized(this, width, height)));
         GLFW.glfwSetFramebufferSizeCallback(windowId,
@@ -102,42 +108,42 @@ public class GLWindow implements IWindow {
         GLFW.glfwSetCursorEnterCallback(this.windowId,
                 (window, entered) -> windowBus.post(new InputEvent.CursorInWindowEvent(entered)));
     }
-
+    
     @Override
     public boolean isActive() {
         return isActive;
     }
-
+    
     @Override
     public boolean isFullscreen() {
         return isFullscreen;
     }
-
+    
     @Override
     public boolean isCloseRequested() {
         return GLFW.glfwWindowShouldClose(windowId);
     }
-
+    
     @Override
     public int getWindowWidth() {
         return windowWidth;
     }
-
+    
     @Override
     public int getWindowHeight() {
         return windowHeight;
     }
-
+    
     @Override
     public SurfaceBuffer getDefaultFrameBuffer() {
         return screenBuffer;
     }
-
+    
     @Override
     public void setVSync(boolean vsync) {
         GLFW.glfwSwapInterval(vsync ? 1 : 0);
     }
-
+    
     @Override
     public void setVisible(boolean visible) {
         if (visible) {
@@ -146,38 +152,38 @@ public class GLWindow implements IWindow {
             GLFW.glfwHideWindow(this.windowId);
         }
     }
-
+    
     @Override
     public void dispose() {
         GLFW.glfwDestroyWindow(windowId);
     }
-
+    
     @Override
     public void swapBuffers() {
         GLFW.glfwSwapBuffers(this.windowId);
     }
-
+    
     @Override
     public long getID() {
         return windowId;
     }
-
+    
     @Override
     public void setTitle(String title) {
         GLFW.glfwSetWindowTitle(windowId, title);
     }
-
+    
     @Override
     public void setWindowSize(int width, int height) {
         this.windowWidth = width;
         this.windowHeight = height;
         GLFW.glfwSetWindowSize(windowId, width, height);
     }
-
+    
     @Override
     public void setFullscreen(boolean b) {
         GLFW.glfwSetWindowMonitor(windowId, b ? GLFW.glfwGetPrimaryMonitor() : 0, 0, 0, windowWidth, windowHeight,
                 GLFW.GLFW_DONT_CARE);
     }
-
+    
 }

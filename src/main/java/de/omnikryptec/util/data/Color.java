@@ -41,6 +41,11 @@ public class Color implements Cloneable {
         return color1.clone().lerp(color2, ratio);
     }
 
+    /**
+     * 
+     * @param colTemperature TODO [0, 50000] 
+     * @return
+     */
     public static Color ofTemperature(float colTemperature) {
         float red = 0;
         float green = 0;

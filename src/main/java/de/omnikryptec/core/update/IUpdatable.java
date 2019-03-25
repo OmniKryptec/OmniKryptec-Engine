@@ -20,7 +20,9 @@ import de.omnikryptec.util.updater.Time;
 
 public interface IUpdatable {
     
-    boolean passive();
+    default boolean passive() {
+        return false;
+    }
     
     default void update(Time time) {
     }

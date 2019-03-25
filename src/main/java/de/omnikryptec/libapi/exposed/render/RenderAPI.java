@@ -47,7 +47,7 @@ public interface RenderAPI {
         FLOAT
     }
     
-    public static enum SurfaceBuffer {
+    public static enum SurfaceBufferType {
         Depth, Color;
     }
     
@@ -132,11 +132,13 @@ public interface RenderAPI {
     
     void renderInstanced(Primitive primitive, int elementCount, boolean hasIndexBuffer, int instanceCount);
     
-    void clear(SurfaceBuffer... buffer);
+    void clear(SurfaceBufferType... buffer);
     
     default void setClearColor(final Color color) {
         setClearColor(color.getR(), color.getG(), color.getB(), color.getA());
     }
     
     void setClearColor(float r, float g, float b, float a);
+    
+    void printAllErrors();
 }

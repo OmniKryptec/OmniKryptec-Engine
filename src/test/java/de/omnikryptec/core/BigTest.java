@@ -8,6 +8,7 @@ import de.omnikryptec.core.update.UpdateableFactory;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
+import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
@@ -44,14 +45,10 @@ public class BigTest extends EngineLoader {
         OpenGLUtil.setMultisample(true);
         ULayer scene = new ULayer();
         getGameController().getGlobalScene().setUpdateableSync(scene);
-        //getResManager().addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
-        //getResManager().stage(new AdvancedFile("src/test/resource"));
         getResourceManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources/"));
         getResourceManager().processStaged(false, false);
         scene.addUpdatable(UpdateableFactory.createScreenClearTest());
-        Logger.logDebug("resProv:" + getResourceProvider());
-        //builder.addGraphicsBasicImplTest(getResourceProvider().get(TextureData.class, "jd.png"));
-        //getGameController().setLocalScene(builder.get());
+        scene.addUpdatable(UpdateableFactory.createRenderTest(getResourceProvider().get(TextureData.class, "jd.png")));
     }
     
 }

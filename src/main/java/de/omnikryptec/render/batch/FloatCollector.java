@@ -52,7 +52,7 @@ public class FloatCollector {
     
     public FloatBuffer flush() {
         this.fbuffer.clear();
-        this.fbuffer.put(this.floats, 0, this.position + 1);
+        this.fbuffer.put(this.floats, 0, used());
         this.position = 0;
         return this.fbuffer;
     }
@@ -62,11 +62,11 @@ public class FloatCollector {
     }
     
     public int remaining() {
-        return this.floats.length - this.position;
+        return this.floats.length - used();
     }
     
     public int used() {
-        return this.position + 1;
+        return this.position;
     }
     
 }

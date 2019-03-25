@@ -18,7 +18,7 @@ package de.omnikryptec.libapi.exposed.render;
 
 import java.util.EnumMap;
 import java.util.Map;
-
+//FIXME is broken a bit? / remake because this is ugly to use?
 public class RenderState implements Cloneable {
     
     public static enum BlendMode {
@@ -34,7 +34,13 @@ public class RenderState implements Cloneable {
     }
     
     public static enum RenderConfig {
-        BLEND, DEPTH_TEST, CULL_FACES, WRITE_DEPTH, WRITE_COLOR;
+        BLEND(false), DEPTH_TEST(true), CULL_FACES(false), WRITE_DEPTH(true), WRITE_COLOR(true);
+        
+        private final boolean defaultState;
+        
+        private RenderConfig(boolean b) {
+            this.defaultState = b;
+        }
     }
     
     public static enum PolyMode {
@@ -49,7 +55,7 @@ public class RenderState implements Cloneable {
     
     public boolean isEnable(final RenderConfig opt) {
         final Boolean bool = this.renderConfig.get(opt);
-        return bool != null ? bool : false;
+        return bool != null ? bool : opt.defaultState;
     }
     
     public BlendMode getBlendMode() {

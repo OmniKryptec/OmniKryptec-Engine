@@ -2,17 +2,23 @@ package de.omnikryptec.render;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
+import de.omnikryptec.core.update.ILayer;
 import de.omnikryptec.core.update.IUpdatable;
+import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.libapi.exposed.window.WindowEvent;
 import de.omnikryptec.render.storage.IRenderedObjectManager;
 import de.omnikryptec.render.storage.RenderedObjectManager;
+import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class RendererContext implements IUpdatable {
     private static final Comparator<Renderer> RENDERER_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority() - e1.priority();
     
+    private Settings<Object> environmentSettings;
     private IProjection mainProjection;
     private IRenderedObjectManager objectManager;
     private RenderAPI renderApi;
@@ -22,7 +28,12 @@ public class RendererContext implements IUpdatable {
         this(new RenderedObjectManager());
     }
     
-    public RendererContext(IRenderedObjectManager renderedObjManager) {
+    public RendererContext(IRenderedObjectManager mgr) {
+        this(mgr, new Settings<>(new HashMap<>()));
+    }
+    
+    public RendererContext(IRenderedObjectManager renderedObjManager, Settings<Object> environmentSettings) {
+        this.environmentSettings = environmentSettings;
         this.objectManager = renderedObjManager;
         this.renderers = new ArrayList<>();
         this.renderApi = RenderAPI.get();
@@ -40,6 +51,10 @@ public class RendererContext implements IUpdatable {
         return mainProjection;
     }
     
+    public Settings<Object> getEnvironmentSettings() {
+        return environmentSettings;
+    }
+    
     public void setMainProjection(IProjection projection) {
         this.mainProjection = projection;
     }
@@ -48,6 +63,7 @@ public class RendererContext implements IUpdatable {
         renderers.add(renderer);
         renderers.sort(RENDERER_PRIORITY_COMPARATOR);
         renderer.init(this);
+        renderer.createAndResizeFBO(this, getRenderAPI().getWindow().getDefaultFrameBuffer());
     }
     
     public void removeRenderer(Renderer renderer) {
@@ -73,16 +89,28 @@ public class RendererContext implements IUpdatable {
         }
     }
     
+    @EventSubscription
+    public void event(WindowEvent.ScreenBufferResized ev) {
+        for (Renderer r : renderers) {
+            r.createAndResizeFBO(this, ev.window.getDefaultFrameBuffer());
+        }
+    }
+    
+    @Override
+    public void init(ILayer layer) {
+        layer.getEventBus().register(this);
+    }
+    
+    @Override
+    public void deinit(ILayer layer) {
+        layer.getEventBus().unregister(this);
+    }
+    
     @Override
     public void update(Time time) {
         preRender(time, mainProjection);
         render(time, mainProjection);
         postRender(time, mainProjection);
-    }
-    
-    @Override
-    public boolean passive() {
-        return false;
     }
     
 }

@@ -34,7 +34,7 @@ import org.lwjgl.opengl.GL43;
 
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBuffer;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.CullMode;
@@ -185,7 +185,7 @@ public class OpenGLUtil {
         }
     }
     
-    public static int typeId(final SurfaceBuffer bufferType) {
+    public static int typeId(final SurfaceBufferType bufferType) {
         switch (bufferType) {
         case Color:
             return GL11.GL_COLOR_BUFFER_BIT;
@@ -391,9 +391,9 @@ public class OpenGLUtil {
         GL11.glClearColor(r, g, b, a);
     }
     
-    public static void clear(final SurfaceBuffer... buffers) {
+    public static void clear(final SurfaceBufferType... buffers) {
         int mask = 0;
-        for (final SurfaceBuffer b : buffers) {
+        for (final SurfaceBufferType b : buffers) {
             mask |= typeId(b);
         }
         if (mask != 0) {
