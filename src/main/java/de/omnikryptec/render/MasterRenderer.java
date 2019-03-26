@@ -12,9 +12,7 @@ public class MasterRenderer implements IUpdatable {
     
     private RendererContext context;
     private Postprocessor postprocessor;
-    
-    private FrameBuffer scene;
-    private FrameBuffer sceneMultisampled;
+
     
     public MasterRenderer(RendererContext context, int multisamples, FBTarget... targets) {
         this.context = context;
