@@ -49,11 +49,13 @@ public class WindowEvent extends Event {
     public static class ScreenBufferResized extends WindowEvent {
         public final int width;
         public final int height;
+        public final SurfaceBuffer surface;
         
-        public ScreenBufferResized(final IWindow window, final int width, final int height) {
+        public ScreenBufferResized(final IWindow window, final int width, final int height, SurfaceBuffer surface) {
             super(window);
             this.width = width;
             this.height = height;
+            this.surface = surface;
         }
     }
     

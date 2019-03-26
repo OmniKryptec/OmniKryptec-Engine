@@ -46,12 +46,7 @@ public final class LibAPIManager {
     
     private LibAPIManager() {
     }
-    
-    @Deprecated
-    public static void init() {
-        init(new Settings<>());
-    }
-    
+
     public static void init(@Nonnull Settings<LibSetting> settings) {
         if (isInitialized()) {
             throw new IllegalStateException("Already initialized");
