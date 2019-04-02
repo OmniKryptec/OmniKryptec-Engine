@@ -26,7 +26,6 @@ import org.joml.Vector2d;
 import org.joml.Vector2dc;
 import org.joml.Vector4d;
 import org.joml.Vector4dc;
-import org.lwjgl.glfw.GLFW;
 
 public class InputManager implements IUpdatable {
     

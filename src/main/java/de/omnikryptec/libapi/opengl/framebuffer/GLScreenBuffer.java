@@ -3,7 +3,6 @@ package de.omnikryptec.libapi.opengl.framebuffer;
 import java.util.Arrays;
 
 import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 

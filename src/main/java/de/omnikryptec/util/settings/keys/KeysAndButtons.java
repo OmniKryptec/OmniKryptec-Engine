@@ -1,5 +1,6 @@
 package de.omnikryptec.util.settings.keys;
 //TODO Migrate or Rename
+//FIXME actually use this instead of GLFW at places
 public class KeysAndButtons {
     
     //Straight up stolen from GLFW

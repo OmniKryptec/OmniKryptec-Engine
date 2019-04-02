@@ -16,6 +16,7 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.RenderConfig;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
+import de.omnikryptec.render.RendererContext.EnvironmentKey;
 import de.omnikryptec.render.batch.ShadedBatch2D;
 import de.omnikryptec.render.storage.IRenderedObjectListener;
 import de.omnikryptec.render.storage.RenderedObject;
@@ -24,12 +25,12 @@ import de.omnikryptec.util.updater.Time;
 
 public class Renderer2D implements Renderer, IRenderedObjectListener {
     //FIXME fix light color
-    public static enum EnvironmentKeys implements Defaultable {
+    public static enum EnvironmentKeys2D implements Defaultable, EnvironmentKey {
         AmbientLight(new Color(0.3f, 0.3f, 0.3f));
         
         private final Object def;
         
-        private EnvironmentKeys(Object o) {
+        private EnvironmentKeys2D(Object o) {
             this.def = o;
         }
         
@@ -104,18 +105,18 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
         
         FrustumIntersection intersFilter = new FrustumIntersection(projection.getProjection());
         batch.setIProjection(projection);
-//        renderer.getRenderAPI().applyRenderState(LIGHT_STATE);
-//        renderer.getRenderAPI().setClearColor(renderer.getEnvironmentSettings().get(EnvironmentKeys.AmbientLight));
-//        renderer.getRenderAPI().clear(SurfaceBufferType.Color);
-//        List<Light2D> lightList = renderer.getIRenderedObjectManager().getFor(Light2D.TYPE);
-//        batch.begin();
-//        for (Light2D l : lightList) {
-//            if (l.isVisible(intersFilter)) {
-//                l.draw(batch);
-//            }
-//        }
-//        batch.end();
-//        lightBuffer.bindFrameBuffer();
+        //        renderer.getRenderAPI().applyRenderState(LIGHT_STATE);
+        //        renderer.getRenderAPI().setClearColor(renderer.getEnvironmentSettings().get(EnvironmentKeys.AmbientLight));
+        //        renderer.getRenderAPI().clear(SurfaceBufferType.Color);
+        //        List<Light2D> lightList = renderer.getIRenderedObjectManager().getFor(Light2D.TYPE);
+        //        batch.begin();
+        //        for (Light2D l : lightList) {
+        //            if (l.isVisible(intersFilter)) {
+        //                l.draw(batch);
+        //            }
+        //        }
+        //        batch.end();
+        //        lightBuffer.bindFrameBuffer();
         renderer.getRenderAPI().setClearColor(0, 0, 0, 1);
         renderer.getRenderAPI().clear(SurfaceBufferType.Color);
         //renderer.getRenderAPI().applyRenderState(SPRITE_STATE);
@@ -126,11 +127,11 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
             }
         }
         batch.end();
-//        lightBuffer.unbindFrameBuffer();
-//        renderer.getRenderAPI().applyRenderState(MULT_STATE);
-//        finalDraw.begin();
-//        finalDraw.draw(lightBuffer.getTexture(0), finalMatrix, false, false);
-//        finalDraw.end();
+        //        lightBuffer.unbindFrameBuffer();
+        //        renderer.getRenderAPI().applyRenderState(MULT_STATE);
+        //        finalDraw.begin();
+        //        finalDraw.draw(lightBuffer.getTexture(0), finalMatrix, false, false);
+        //        finalDraw.end();
     }
     
     @Override

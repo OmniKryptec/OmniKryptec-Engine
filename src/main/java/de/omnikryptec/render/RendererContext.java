@@ -9,19 +9,45 @@ import de.omnikryptec.core.update.ILayer;
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
+import de.omnikryptec.render.postprocessing.Postprocessor;
 import de.omnikryptec.render.storage.IRenderedObjectManager;
 import de.omnikryptec.render.storage.RenderedObjectManager;
+import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
+import de.omnikryptec.util.data.Color;
 
 public class RendererContext implements IUpdatable {
     private static final Comparator<Renderer> RENDERER_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority() - e1.priority();
     
-    private Settings<Object> environmentSettings;
+    public static interface EnvironmentKey {
+    }
+    
+    public static enum GlobalEnvironmentKeys implements Defaultable, EnvironmentKey {
+        ClearColor(new Color(0, 0, 0, 1));
+        
+        private final Object def;
+        
+        private GlobalEnvironmentKeys(Object def) {
+            this.def = def;
+        }
+        
+        @Override
+        public <T> T getDefault() {
+            return (T) def;
+        }
+    }
+    //TODO Split stuff in 2 classes? RenderingData and RenderingFunctions or something?
+    private Postprocessor postprocessor;
+    private SceneRenderBufferManager frameBuffers;
+    private RenderAPI renderApi;
+    
+    private Settings<EnvironmentKey> environmentSettings;
+    
     private IProjection mainProjection;
     private IRenderedObjectManager objectManager;
-    private RenderAPI renderApi;
     private List<Renderer> renderers;
     
     public RendererContext() {
@@ -32,11 +58,14 @@ public class RendererContext implements IUpdatable {
         this(mgr, new Settings<>(new HashMap<>()));
     }
     
-    public RendererContext(IRenderedObjectManager renderedObjManager, Settings<Object> environmentSettings) {
+    public RendererContext(IRenderedObjectManager renderedObjManager, Settings<EnvironmentKey> environmentSettings) {
         this.environmentSettings = environmentSettings;
         this.objectManager = renderedObjManager;
         this.renderers = new ArrayList<>();
         this.renderApi = RenderAPI.get();
+        //TODO take in as arguments or something?
+        this.frameBuffers = new SceneRenderBufferManager(this.renderApi, 0);
+        
     }
     
     public RenderAPI getRenderAPI() {
@@ -51,7 +80,7 @@ public class RendererContext implements IUpdatable {
         return mainProjection;
     }
     
-    public Settings<Object> getEnvironmentSettings() {
+    public Settings<EnvironmentKey> getEnvironmentSettings() {
         return environmentSettings;
     }
     
@@ -72,6 +101,8 @@ public class RendererContext implements IUpdatable {
     }
     
     public void preRender(Time time, IProjection projection) {
+        renderApi.setClearColor(getEnvironmentSettings().get(GlobalEnvironmentKeys.ClearColor));
+        renderApi.clear(SurfaceBufferType.Color, SurfaceBufferType.Depth);
         for (Renderer r : renderers) {
             r.preRender(time, projection, this);
         }
@@ -91,6 +122,7 @@ public class RendererContext implements IUpdatable {
     
     @EventSubscription
     public void event(WindowEvent.ScreenBufferResized ev) {
+        frameBuffers.resize(ev.width, ev.height);
         for (Renderer r : renderers) {
             r.createAndResizeFBO(this, ev.window.getDefaultFrameBuffer());
         }
@@ -108,9 +140,18 @@ public class RendererContext implements IUpdatable {
     
     @Override
     public void update(Time time) {
+        this.frameBuffers.beginRender();
         preRender(time, mainProjection);
         render(time, mainProjection);
         postRender(time, mainProjection);
+        this.frameBuffers.endRender();
+        if (this.postprocessor != null) {
+            this.postprocessor.postprocess(time, frameBuffers);
+        } else if (frameBuffers.is()) {
+            //TODO make better framebuffer resolve
+            frameBuffers.get(0).resolveToFrameBuffer(getRenderAPI().getWindow().getDefaultFrameBuffer(),
+                    frameBuffers.get(0).targets()[0].attachmentIndex);
+        }
     }
     
 }

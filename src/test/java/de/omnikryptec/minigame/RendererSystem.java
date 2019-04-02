@@ -11,13 +11,15 @@ import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.ComponentSystem;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.Light2D;
 import de.omnikryptec.render.Renderer2D;
-import de.omnikryptec.render.Renderer2D.EnvironmentKeys;
+import de.omnikryptec.render.Renderer2D.EnvironmentKeys2D;
 import de.omnikryptec.render.RendererContext;
 import de.omnikryptec.render.SimpleSprite;
 import de.omnikryptec.render.Sprite;
@@ -42,7 +44,7 @@ public class RendererSystem extends ComponentSystem implements EntityListener {
         this.renderer.init(new ProvidingLayer(LibAPIManager.LIB_API_EVENT_BUS));
         this.renderer.addRenderer(new Renderer2D());
         this.renderer.setMainProjection(CAMERA);
-
+        
     }
     
     @Override
@@ -77,22 +79,9 @@ public class RendererSystem extends ComponentSystem implements EntityListener {
     
     @Override
     public void update(IECSManager manager, Time time) {
-        this.renderer.getEnvironmentSettings().set(EnvironmentKeys.AmbientLight, Color.ofTemperature(Mathf.pingpong(time.currentf*1000, 8000)));
-
-        renderer.update(time);
-        //        batch.begin();
-        //        for (Entity entity : entities) {
-        //            PositionComponent pos = posMapper.get(entity);
-        //            RenderComponent rend = rendMapper.get(entity);
-        //            if (rend.color != null) {
-        //                batch.color().set(rend.color);
-        //            } else {
-        //                batch.color().setAll(1);
-        //            }
-        //            batch.drawRect(new Matrix3x2f().translate(pos.x, pos.y), rend.w, rend.h);
-        //            //batch.draw(texture, new Matrix3x2f().translate(pos.x, pos.y), rend.w,rend.h,false, false);
-        //        }
-        //        batch.end();
+        this.renderer.getEnvironmentSettings().set(EnvironmentKeys2D.AmbientLight,
+                Color.ofTemperature(Mathf.pingpong(time.currentf * 1000, 8000)));
+        this.renderer.update(time);
     }
     
 }
