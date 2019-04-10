@@ -13,6 +13,8 @@ import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
+import de.omnikryptec.resource.TextureData;
+import de.omnikryptec.resource.loadervpc.ResourceProvider;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.MathUtil;
@@ -30,6 +32,8 @@ public class Minigame extends EngineLoader {
     public static final EventBus BUS = new EventBus(false);
     
     public static InputManager INPUT;
+    
+    public static ResourceProvider RESPROVIDER;
     
     public static void main(final String[] args) {
         new Minigame().start();
@@ -51,8 +55,10 @@ public class Minigame extends EngineLoader {
     
     @Override
     protected void onInitialized() {
-        getResourceManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources"));
-        getResourceManager().processStaged(false, true);
+        getResourceManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources/"));
+        //FIXME flat bug maybe?
+        getResourceManager().processStaged(false, false);
+        RESPROVIDER = getResourceProvider();
         //getUpdateController().setSyncUpdateTimeTransform((t) -> new Time(t.opCount, t.ops, t.current, t.delta / 10));
         BUS.register(this);
         mgr = UpdateableFactory.createDefaultIECSManager();
@@ -67,7 +73,7 @@ public class Minigame extends EngineLoader {
         mgr.addSystem(new MovementSystem());
         mgr.addSystem(new RangedSystem());
         mgr.addEntity(makePlayer(0, 0));
-        
+        mgr.addEntity(makeBackground());
         for (int i = -30; i < 30; i++) {
             for (int j = -30; j < 30; j++) {
                 if (random.nextFloat() < 0.25f) {
@@ -76,6 +82,13 @@ public class Minigame extends EngineLoader {
             }
         }
         
+    }
+    
+    private Entity makeBackground() {
+        Entity e = new Entity();
+        e.addComponent(new PositionComponent(-1000, -1000));
+        e.addComponent(new RenderComponent(2000, 2000, new Color(1,1,1), -100));
+        return e;
     }
     
     private Entity makePlayer(float x, float y) {

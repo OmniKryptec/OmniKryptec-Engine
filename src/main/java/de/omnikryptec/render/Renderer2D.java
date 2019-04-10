@@ -26,7 +26,7 @@ import de.omnikryptec.util.updater.Time;
 public class Renderer2D implements Renderer, IRenderedObjectListener {
     //FIXME fix light color
     public static enum EnvironmentKeys2D implements Defaultable, EnvironmentKey {
-        AmbientLight(new Color(0.3f, 0.3f, 0.3f));
+        AmbientLight(new Color(1f, 1f, 1f));
         
         private final Object def;
         
@@ -65,7 +65,7 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
     private Matrix3x2f finalMatrix = new Matrix3x2f().translate(-1, -1).scale(2);
     private List<Sprite> sprites = new ArrayList<>();
     
-    private FrameBuffer lightBuffer;
+    private FrameBuffer spriteBuffer, renderBuffer;
     
     private boolean shouldSort = false;
     
@@ -102,24 +102,24 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
             sprites.sort(spriteComparator);
             shouldSort = false;
         }
-        
+        renderBuffer.bindFrameBuffer();
         FrustumIntersection intersFilter = new FrustumIntersection(projection.getProjection());
         batch.setIProjection(projection);
-        //        renderer.getRenderAPI().applyRenderState(LIGHT_STATE);
-        //        renderer.getRenderAPI().setClearColor(renderer.getEnvironmentSettings().get(EnvironmentKeys.AmbientLight));
-        //        renderer.getRenderAPI().clear(SurfaceBufferType.Color);
-        //        List<Light2D> lightList = renderer.getIRenderedObjectManager().getFor(Light2D.TYPE);
-        //        batch.begin();
-        //        for (Light2D l : lightList) {
-        //            if (l.isVisible(intersFilter)) {
-        //                l.draw(batch);
-        //            }
-        //        }
-        //        batch.end();
-        //        lightBuffer.bindFrameBuffer();
-        renderer.getRenderAPI().setClearColor(0, 0, 0, 1);
+        renderer.getRenderAPI().applyRenderState(LIGHT_STATE);
+        renderer.getRenderAPI().setClearColor(renderer.getEnvironmentSettings().get(EnvironmentKeys2D.AmbientLight));
         renderer.getRenderAPI().clear(SurfaceBufferType.Color);
-        //renderer.getRenderAPI().applyRenderState(SPRITE_STATE);
+        List<Light2D> lightList = renderer.getIRenderedObjectManager().getFor(Light2D.TYPE);
+        batch.begin();
+        for (Light2D l : lightList) {
+            if (l.isVisible(intersFilter)) {
+                l.draw(batch);
+            }
+        }
+        batch.end();
+        spriteBuffer.bindFrameBuffer();
+        renderer.getRenderAPI().setClearColor(0, 0, 0, 0);
+        renderer.getRenderAPI().clear(SurfaceBufferType.Color);
+        renderer.getRenderAPI().applyRenderState(SPRITE_STATE);
         batch.begin();
         for (Sprite sprite : sprites) {
             if (sprite.isVisible(intersFilter)) {
@@ -127,22 +127,36 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
             }
         }
         batch.end();
-        //        lightBuffer.unbindFrameBuffer();
-        //        renderer.getRenderAPI().applyRenderState(MULT_STATE);
-        //        finalDraw.begin();
-        //        finalDraw.draw(lightBuffer.getTexture(0), finalMatrix, false, false);
-        //        finalDraw.end();
+        spriteBuffer.unbindFrameBuffer();
+        renderer.getRenderAPI().applyRenderState(MULT_STATE);
+        finalDraw.begin();
+        finalDraw.draw(spriteBuffer.getTexture(0), finalMatrix, false, false);
+        finalDraw.end();
+        renderBuffer.unbindFrameBuffer();
+        renderer.getRenderAPI().applyRenderState(SPRITE_STATE);
+        finalDraw.begin();
+        finalDraw.draw(renderBuffer.getTexture(0), finalMatrix, false, false);
+        finalDraw.end();
     }
     
     @Override
     public void createAndResizeFBO(RendererContext context, SurfaceBuffer screen) {
-        if (lightBuffer == null) {
-            lightBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
-            lightBuffer.bindFrameBuffer();
-            lightBuffer.assignTarget(0, new FBTarget(TextureFormat.RGBA16, 0));
-            lightBuffer.unbindFrameBuffer();
+        if (spriteBuffer == null) {
+            spriteBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
+            spriteBuffer.bindFrameBuffer();
+            //TODO maybe auto bind for FBTarget assignments?
+            spriteBuffer.assignTarget(0, new FBTarget(TextureFormat.RGBA16, 0));
+            spriteBuffer.unbindFrameBuffer();
         } else {
-            lightBuffer = lightBuffer.resizedClone(screen.getWidth(), screen.getHeight());
+            spriteBuffer = spriteBuffer.resizedClone(screen.getWidth(), screen.getHeight());
+        }
+        if (renderBuffer == null) {
+            renderBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
+            renderBuffer.bindFrameBuffer();
+            renderBuffer.assignTarget(0, new FBTarget(TextureFormat.RGBA16, 0));
+            renderBuffer.unbindFrameBuffer();
+        } else {
+            renderBuffer = renderBuffer.resizedClone(screen.getWidth(), screen.getHeight());
         }
     }
 }

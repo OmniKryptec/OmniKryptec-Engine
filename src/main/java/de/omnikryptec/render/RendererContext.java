@@ -26,7 +26,7 @@ public class RendererContext implements IUpdatable {
     }
     
     public static enum GlobalEnvironmentKeys implements Defaultable, EnvironmentKey {
-        ClearColor(new Color(0, 0, 0, 1));
+        ClearColor(new Color(0, 0, 0, 0));
         
         private final Object def;
         

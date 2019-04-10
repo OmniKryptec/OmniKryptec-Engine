@@ -1,5 +1,6 @@
 package de.omnikryptec.minigame;
 
+import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
 
 import de.omnikryptec.core.update.ProvidingLayer;
@@ -15,6 +16,7 @@ import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
+import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.Light2D;
@@ -25,6 +27,8 @@ import de.omnikryptec.render.SimpleSprite;
 import de.omnikryptec.render.Sprite;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.storage.RenderedObject;
+import de.omnikryptec.resource.TextureConfig;
+import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.updater.Time;
@@ -47,10 +51,38 @@ public class RendererSystem extends ComponentSystem implements EntityListener {
         
     }
     
+    private class MyLight extends Light2D {
+        private Color color;
+        private float x, y;
+        
+        @Override
+        public void draw(Batch2D batch) {
+            batch.color().set(color);
+            batch.drawRect(new Matrix3x2f().translate(x, y), 300, 300);
+            //batch.draw(RenderAPI.get().createTexture2D((TextureData)Minigame.RESPROVIDER.get(TextureData.class, "light.png"), new TextureConfig()), new Matrix3x2f().translate(x, y), 1000, 1000, false, false);
+        }
+    };
+    
     @Override
     public void addedToIECSManager(IECSManager iecsManager) {
         super.addedToIECSManager(iecsManager);
         iecsManager.addEntityListener(getFamily(), this);
+        MyLight l1 = new MyLight();
+        l1.color = new Color(1, 0, 0);
+        l1.x = -120;
+        l1.y =  50;
+        MyLight l2 = new MyLight();
+        l2.color = new Color(0, 1, 0);
+        l2.x = 0;
+        l2.y = -70;
+        MyLight l3 = new MyLight();
+        l3.color = new Color(0, 0, 1);
+        l3.x = 120;
+        l3.y = 50;
+        this.renderer.getIRenderedObjectManager().add(Light2D.TYPE, l1);
+        this.renderer.getIRenderedObjectManager().add(Light2D.TYPE, l2);
+        this.renderer.getIRenderedObjectManager().add(Light2D.TYPE, l3);
+        //this.renderer.getEnvironmentSettings().set(EnvironmentKeys2D.AmbientLight, new Color(0.3f, 0.3f, 0.3f));
     }
     
     @Override
@@ -79,8 +111,8 @@ public class RendererSystem extends ComponentSystem implements EntityListener {
     
     @Override
     public void update(IECSManager manager, Time time) {
-        this.renderer.getEnvironmentSettings().set(EnvironmentKeys2D.AmbientLight,
-                Color.ofTemperature(Mathf.pingpong(time.currentf * 1000, 8000)));
+        //this.renderer.getEnvironmentSettings().set(EnvironmentKeys2D.AmbientLight,
+        //      Color.ofTemperature(Mathf.pingpong(time.currentf * 1000, 8000)));
         this.renderer.update(time);
     }
     
