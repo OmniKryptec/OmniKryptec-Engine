@@ -29,6 +29,8 @@ import org.lwjgl.opencl.CL21;
 import org.lwjgl.opencl.CL22;
 import org.lwjgl.system.MemoryStack;
 
+import de.omnikryptec.util.Util;
+
 public class OpenCL {
     
     private static final Class<?>[] constantsClasses = { CL10.class, CL12.class, CL20.class, CL21.class, CL22.class };
@@ -73,9 +75,16 @@ public class OpenCL {
     public static void create() {
         try {
             CL.create();
+            
         } catch (final Exception e) {
         }
         createPlatformData();
+    }
+    
+    public static void checked(int i) {
+        if (i != CL10.CL_SUCCESS) {
+            Util.stripStacktrace(new OpenCLException(searchConstants(i)), 1);
+        }
     }
     
     public static String searchConstants(final int i) {
@@ -91,6 +100,6 @@ public class OpenCL {
                 }
             }
         }
-        return "ERROR 404: Constant not found";
+        return "Constant with value '" + i + "' not found";
     }
 }

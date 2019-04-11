@@ -38,4 +38,17 @@ public class Util {
         return obj;
     }
     
+    public static void stripStacktrace(RuntimeException ex, int cut) {
+        final StackTraceElement[] nst = new StackTraceElement[ex.getStackTrace().length - cut];
+        System.arraycopy(ex.getStackTrace(), cut, nst, 0, ex.getStackTrace().length - cut);
+        ex.setStackTrace(nst);
+        throw ex;
+    }
+    
+    public static void stripStacktrace(Exception ex, int cut) throws Exception {
+        final StackTraceElement[] nst = new StackTraceElement[ex.getStackTrace().length - cut];
+        System.arraycopy(ex.getStackTrace(), cut, nst, 0, ex.getStackTrace().length - cut);
+        ex.setStackTrace(nst);
+        throw ex;
+    }
 }

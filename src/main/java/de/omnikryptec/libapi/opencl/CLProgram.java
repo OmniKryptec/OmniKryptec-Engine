@@ -31,9 +31,7 @@ public class CLProgram {
     
     public CLProgram(final CLContext context, final CharSequence source) {
         this.id = CL10.clCreateProgramWithSource(context.getID(), source, OpenCL.tmpBuffer);
-        if (OpenCL.tmpBuffer.get(0) != CL10.CL_SUCCESS) {
-            System.err.println("OpenCL Prog Err: " + OpenCL.searchConstants(OpenCL.tmpBuffer.get(0)));
-        }
+        OpenCL.checked(OpenCL.tmpBuffer.get(0));
     }
     
     public static void cleanup() {
@@ -49,7 +47,7 @@ public class CLProgram {
     public CLProgram build(final CLDevice device, final int errorsize) {
         final int error = CL10.clBuildProgram(this.id, device.getID(), "", null, 0);
         if (error != CL10.CL_SUCCESS) {
-            System.err.println("OpenCL Build Err: " + OpenCL.searchConstants(error));
+            System.err.println("==== Build error ====");
             final ByteBuffer buffer = BufferUtils.createByteBuffer(errorsize);
             CL10.clGetProgramBuildInfo(getID(), device.getID(), CL10.CL_PROGRAM_BUILD_LOG, buffer, null);
             final byte[] array = new byte[errorsize];
@@ -57,6 +55,7 @@ public class CLProgram {
                 array[i] = buffer.get(i);
             }
             System.err.println(new String(array));
+            OpenCL.checked(error);
         }
         return this;
     }

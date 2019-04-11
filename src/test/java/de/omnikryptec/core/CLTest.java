@@ -15,7 +15,7 @@ import de.omnikryptec.libapi.opencl.OpenCL;
 
 public class CLTest {
     
-    private static final String KERNEL = "kernel void sum(global const float* a, global const float* b, global float* result, int const size) {\r\n"
+    private static final String KERNEL = "__kernel void sum(__global const float *a, __global const float *b, __global float *result, int const size) {\r\n"
             + "    const int itemId = get_global_id(0); \r\n" + "    if(itemId < size) {\r\n"
             + "        result[itemId] = a[itemId] + b[itemId];\r\n" + "    }\r\n" + "} ";
     
@@ -29,25 +29,16 @@ public class CLTest {
         CLProgram program = new CLProgram(context, KERNEL).build(device, 1024);
         CLKernel kernel = new CLKernel(program, "sum");
         System.out.println("Created objects");
-        int size=100;
-        FloatBuffer aBuff = BufferUtils.createFloatBuffer(size);
-        System.out.println("Buffer a created");
-        float[] tempData = new float[size];
-        for(int i = 0; i < size; i++) {
-            tempData[i] = i;
+        int size = 1;
+        float[] aBuff = new float[size];
+        for (int i = 0; i < size; i++) {
+            aBuff[i] = i;
         }
-        aBuff.put(tempData);
-        aBuff.rewind();
-        System.out.println("Finished Buffer a");
         // Create float array from size-1 to 0. This means that the result should be size-1 for each element.
-        FloatBuffer bBuff = BufferUtils.createFloatBuffer(size);
-        System.out.println("Buffer b created");
-        for(int j = 0, i = size-1; j < size; j++, i--) {
-            tempData[j] = i;
+        float[] bBuff = new float[size];
+        for (int j = 0, i = size - 1; j < size; j++, i--) {
+            bBuff[j] = i;
         }
-        bBuff.put(tempData);
-        bBuff.rewind();
-        System.out.println("Finished Buffer b");
         FloatBuffer result = BufferUtils.createFloatBuffer(size);
         System.out.println("Buffer result created");
         kernel.setArg(0, aBuff);
@@ -56,8 +47,12 @@ public class CLTest {
         kernel.setArg(3, size);
         System.out.println("Args set");
         kernel.enqueue(queue, 1, size, 0);
+        System.out.println("Enqueued");
         queue.finish();
         System.out.println("Finished queue");
-        System.out.println(result);
+        for (int i = 0; i < size; i++) {
+            System.out.print(result.get(i)+" ");
+        }
+        System.out.println();
     }
 }

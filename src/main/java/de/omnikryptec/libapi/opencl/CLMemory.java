@@ -29,7 +29,8 @@ public class CLMemory {
     private final long id;
     
     public CLMemory(final CLContext context, final int memOptions, final FloatBuffer buffer) {
-        this.id = CL10.clCreateBuffer(context.getID(), memOptions, buffer, null);
+        this.id = CL10.clCreateBuffer(context.getID(), memOptions, buffer, OpenCL.tmpBuffer);
+        OpenCL.checked(OpenCL.tmpBuffer.get(0));
     }
     
     public static void cleanup() {
