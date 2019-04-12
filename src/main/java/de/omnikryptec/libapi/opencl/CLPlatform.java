@@ -19,6 +19,7 @@ package de.omnikryptec.libapi.opencl;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.opencl.CL;
 import org.lwjgl.opencl.CL10;
@@ -38,9 +39,13 @@ public class CLPlatform {
     CLPlatform(final long id) {
         this.platform = id;
         this.platformCaps = CL.createPlatformCapabilities(id);
-        this.ctxProps = OpenCL.memStack.mallocPointer(3);
+        this.ctxProps = BufferUtils.createPointerBuffer(3);
         this.ctxProps.put(0, CL10.CL_CONTEXT_PLATFORM).put(2, 0);
         this.ctxProps.put(1, id);
+    }
+    
+    public boolean canGLInterop() {
+        return platformCaps.cl_khr_gl_sharing || platformCaps.cl_APPLE_gl_sharing;
     }
     
     public CLCapabilities getPlatCaps() {
@@ -55,10 +60,11 @@ public class CLPlatform {
         return this.ctxProps;
     }
     
-    public CLPlatform createDeviceData(final int clDeviceFilter) {
+    public CLPlatform createDeviceData(DeviceType... deviceTypes) {
+        int clDeviceFilter = DeviceType.toInt(deviceTypes);
         CL10.clGetDeviceIDs(this.platform, clDeviceFilter, null, OpenCL.tmpBuffer);
         this.devs = OpenCL.tmpBuffer.get(0);
-        this.devices = OpenCL.memStack.mallocPointer(this.devs);
+        this.devices = BufferUtils.createPointerBuffer(devs);
         CL10.clGetDeviceIDs(this.platform, clDeviceFilter, this.devices, (IntBuffer) null);
         return this;
     }
@@ -73,10 +79,12 @@ public class CLPlatform {
     
     public CLDevice getDevice(final int deviceInd) {
         if (!createdDevices.containsKey(deviceInd)) {
+            if (deviceInd >= devices.capacity() || deviceInd < 0) {
+                throw new IndexOutOfBoundsException();
+            }
             createdDevices.put(deviceInd, new CLDevice(this.devices.get(deviceInd), this));
         }
         return createdDevices.get(deviceInd);
-        
     }
     
 }

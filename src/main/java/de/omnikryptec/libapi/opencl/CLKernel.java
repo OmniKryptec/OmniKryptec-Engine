@@ -20,6 +20,7 @@ import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.opencl.CL10;
 import org.lwjgl.system.MemoryUtil;
@@ -46,27 +47,15 @@ public class CLKernel {
     }
     
     public void enqueue(final CLCommandQueue queue, final int dim, final int worksize_gl, final int worksize_loc) {
-        PointerBuffer global = OpenCL.memStack.mallocPointer(1);
+        PointerBuffer global = BufferUtils.createPointerBuffer(1);
         global.put(0, worksize_gl);
         int i = CL10.clEnqueueNDRangeKernel(queue.getID(), getID(), dim, null, global, /* TODO worksize local */null,
                 null, null);
         OpenCL.checked(i);
     }
     
-    public CLKernel setArgp(int i, long p) {
-        int k = CL10.clSetKernelArg1p(getID(), i, p);
-        OpenCL.checked(k);
-        return this;
-    }
-    
-    public CLKernel setArg(final int i, final FloatBuffer buffer) {
-        int k = CL10.clSetKernelArg(getID(), i, buffer);
-        OpenCL.checked(k);
-        return this;
-    }
-    
-    public CLKernel setArg(final int i, final float[] floats) {
-        int k = CL10.clSetKernelArg(getID(), i, floats);
+    public CLKernel setArg(int i, CLMemory mem) {
+        int k = CL10.clSetKernelArg1p(getID(), i, mem.getID());
         OpenCL.checked(k);
         return this;
     }

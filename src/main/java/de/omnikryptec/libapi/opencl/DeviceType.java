@@ -52,4 +52,12 @@ public enum DeviceType {
     public static DeviceType toType(final int i) {
         return toTypes(i)[0];
     }
+    
+    public static int toInt(DeviceType... types) {
+        int k = 0;
+        for(DeviceType t : types) {
+            k |= t.CL_INT;
+        }
+        return k;
+    }
 }

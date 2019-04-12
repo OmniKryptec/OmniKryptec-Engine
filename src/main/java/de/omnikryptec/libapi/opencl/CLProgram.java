@@ -44,8 +44,8 @@ public class CLProgram {
         return this.id;
     }
     
-    public CLProgram build(final CLDevice device, final int errorsize) {
-        final int error = CL10.clBuildProgram(this.id, device.getID(), "", null, 0);
+    public CLProgram build(final CLDevice device, final int errorsize, CharSequence options) {
+        final int error = CL10.clBuildProgram(this.id, device.getID(), options, null, 0);
         if (error != CL10.CL_SUCCESS) {
             System.err.println("==== Build error ====");
             final ByteBuffer buffer = BufferUtils.createByteBuffer(errorsize);

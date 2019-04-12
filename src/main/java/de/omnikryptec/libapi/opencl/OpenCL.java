@@ -20,6 +20,9 @@ import java.lang.reflect.Field;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
+import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.opencl.CL;
 import org.lwjgl.opencl.CL10;
@@ -29,56 +32,92 @@ import org.lwjgl.opencl.CL21;
 import org.lwjgl.opencl.CL22;
 import org.lwjgl.system.MemoryStack;
 
+import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Util;
-
+//TODO better OpenCL integration into the engine
 public class OpenCL {
     
     private static final Class<?>[] constantsClasses = { CL10.class, CL12.class, CL20.class, CL21.class, CL22.class };
-    static MemoryStack memStack;
     static IntBuffer tmpBuffer;
-    private static HashMap<Integer, CLPlatform> createdPlatforms = new HashMap<>();
-    private static PointerBuffer platforms;
+    private static OpenCL instance;
+    
+    private HashMap<Integer, CLPlatform> createdPlatforms = new HashMap<>();
+    private PointerBuffer platforms;
     
     static {
-        memStack = MemoryStack.stackPush();
-        tmpBuffer = memStack.mallocInt(1);
+        tmpBuffer = BufferUtils.createIntBuffer(1);
     }
     
-    private static void createPlatformData() {
-        CL10.clGetPlatformIDs(null, tmpBuffer);
-        assert tmpBuffer.get(0) != 0;
-        platforms = memStack.mallocPointer(tmpBuffer.get(0));
-        CL10.clGetPlatformIDs(platforms, (IntBuffer) null);
-    }
-    
-    public static PointerBuffer getPlatforms() {
-        return platforms;
-    }
-    
-    public static CLPlatform getPlatform(final int platformInd) {
-        if (!createdPlatforms.containsKey(platformInd)) {
-            createdPlatforms.put(platformInd, new CLPlatform(platforms.get(platformInd)));
+    public static void create() {
+        if(isInitialized()) {
+            throw new IllegalStateException("Already initialized");
         }
-        return createdPlatforms.get(platformInd);
-        
+        try {
+            if (CL.getFunctionProvider() == null) {
+                CL.create();
+            }
+        } catch (final Exception e) {
+            throw new RuntimeException(e);
+        }
+        instance = new OpenCL();
+        Logger.getLogger(OpenCL.class).info("Created OpenCL context");
     }
     
-    public static void cleanup() {
+    public static OpenCL instance() {
+        if (!isInitialized()) {
+            throw new IllegalStateException("OpenCL is not initialized");
+        }
+        return instance;
+    }
+    
+    public static boolean isInitialized() {
+        return instance != null;
+    }
+    
+    public static void shutdown() {
         CLKernel.cleanup();
         CLProgram.cleanup();
         CLMemory.cleanup();
         CLCommandQueue.cleanup();
         CLContext.cleanup();
         CL.destroy();
+        instance = null;
     }
     
-    public static void create() {
-        try {
-            CL.create();
-            
-        } catch (final Exception e) {
-        }
+    private OpenCL() {
         createPlatformData();
+    }
+    
+    private void createPlatformData() {
+        CL10.clGetPlatformIDs(null, tmpBuffer);
+        assert tmpBuffer.get(0) != 0;
+        platforms = BufferUtils.createPointerBuffer(tmpBuffer.get(0));
+        CL10.clGetPlatformIDs(platforms, (IntBuffer) null);
+    }
+    
+    public PointerBuffer getPlatforms() {
+        return platforms;
+    }
+    
+    public int getPlatformCount() {
+        return platforms.capacity();
+    }
+    
+    public CLPlatform getNextGLInterOpPlatform() {
+        for (int i = 0; i < getPlatformCount(); i++) {
+            CLPlatform p = getPlatform(i);
+            if (p.canGLInterop()) {
+                return p;
+            }
+        }
+        throw new OpenCLException("No platform with GL inter-op found!");
+    }
+    
+    public CLPlatform getPlatform(final int platformInd) {
+        if (!createdPlatforms.containsKey(platformInd)) {
+            createdPlatforms.put(platformInd, new CLPlatform(platforms.get(platformInd)));
+        }
+        return createdPlatforms.get(platformInd);
     }
     
     public static void checked(int i) {
@@ -100,6 +139,6 @@ public class OpenCL {
                 }
             }
         }
-        return "Constant with value '" + i + "' not found";
+        throw new IllegalArgumentException("Constant with value '" + i + "' not found");
     }
 }

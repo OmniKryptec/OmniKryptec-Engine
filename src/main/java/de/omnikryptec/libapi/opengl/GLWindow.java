@@ -2,6 +2,8 @@ package de.omnikryptec.libapi.opengl;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.system.Configuration;
+import org.lwjgl.system.Platform;
 
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
@@ -25,11 +27,7 @@ public class GLWindow implements IWindow {
     private int windowHeight;
     private boolean isFullscreen;
     private boolean isActive;
-    
-    private static boolean isMac() {
-        return System.getProperty("os.name").toLowerCase().contains("mac");
-    }
-    
+
     public GLWindow(Settings<WindowSetting> windowSettings, Settings<IntegerKey> apiSettings) {
         Util.ensureNonNull(windowSettings, "Window settings must not be null!");
         this.windowWidth = windowSettings.get(WindowSetting.Width);
@@ -40,7 +38,7 @@ public class GLWindow implements IWindow {
         int mav = apiSettings.get(OpenGLRenderAPI.MAJOR_VERSION);
         int miv = apiSettings.get(OpenGLRenderAPI.MINOR_VERSION);
         //TODO make OpenGL version and profile setting better, this is weird
-        if (isMac()) {
+        if (Platform.get() == Platform.MACOSX) {
             //MacOS requires at least OpenGL 3.3
             mav = Math.max(mav, 3);
             if (mav == 3) {
@@ -52,6 +50,10 @@ public class GLWindow implements IWindow {
             GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, miv);
             GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
             GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_FORWARD_COMPAT, GLFW.GLFW_TRUE);
+        }
+        //TODO create libapimanager flag for debug
+        if (Configuration.DEBUG.get()) {
+            GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_DEBUG_CONTEXT, GLFW.GLFW_TRUE);
         }
         if ((boolean) windowSettings.get(WindowSetting.Fullscreen)) {
             //final GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
@@ -82,15 +84,15 @@ public class GLWindow implements IWindow {
     }
     
     private void initSizes(int w, int h, int fw, int fh) {
-//        windowBus.post(new WindowEvent.WindowResized(this, w, h));
-//        windowBus.post(new WindowEvent.ScreenBufferResized(this, fw, fh));
+        //        windowBus.post(new WindowEvent.WindowResized(this, w, h));
+        //        windowBus.post(new WindowEvent.ScreenBufferResized(this, fw, fh));
     }
     
     private void registerCallbacks() {
         GLFW.glfwSetWindowSizeCallback(this.windowId,
                 (window, width, height) -> windowBus.post(new WindowEvent.WindowResized(this, width, height)));
-        GLFW.glfwSetFramebufferSizeCallback(windowId,
-                (window, width, height) -> windowBus.post(new WindowEvent.ScreenBufferResized(this, width, height, this.screenBuffer)));
+        GLFW.glfwSetFramebufferSizeCallback(windowId, (window, width, height) -> windowBus
+                .post(new WindowEvent.ScreenBufferResized(this, width, height, this.screenBuffer)));
         GLFW.glfwSetWindowFocusCallback(this.windowId,
                 (window, focused) -> windowBus.post(new WindowEvent.WindowFocused(this, focused)));
         GLFW.glfwSetWindowIconifyCallback(this.windowId,
