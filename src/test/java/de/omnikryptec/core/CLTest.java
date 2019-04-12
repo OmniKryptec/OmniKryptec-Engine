@@ -5,6 +5,7 @@ import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opencl.CL10;
 
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.opencl.CLCommandQueue;
 import de.omnikryptec.libapi.opencl.CLContext;
 import de.omnikryptec.libapi.opencl.CLDevice;
@@ -14,6 +15,7 @@ import de.omnikryptec.libapi.opencl.CLPlatform;
 import de.omnikryptec.libapi.opencl.CLProgram;
 import de.omnikryptec.libapi.opencl.DeviceType;
 import de.omnikryptec.libapi.opencl.OpenCL;
+import de.omnikryptec.util.settings.Settings;
 
 public class CLTest {
     
@@ -25,8 +27,10 @@ public class CLTest {
     
     public static void main(String[] args) {
         //Create stuff
-        OpenCL.create();
-        CLPlatform platform = OpenCL.instance().getPlatform(0);
+        LibAPIManager.init(new Settings<>());
+        LibAPIManager.instance().initOpenCL();
+        OpenCL opc = LibAPIManager.instance().getOpenCL();
+        CLPlatform platform = opc.getPlatform(0);
         CLDevice device = platform.createDeviceData(DeviceType.GPU).getDevice(0);
         CLContext context = new CLContext(device);
         CLCommandQueue queue = new CLCommandQueue(context, device, CL10.CL_QUEUE_PROFILING_ENABLE);

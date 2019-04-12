@@ -23,14 +23,17 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
+import org.checkerframework.dataflow.qual.TerminatesExecution;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.opencl.CL;
 import org.lwjgl.system.Configuration;
 
 import de.codemakers.base.util.tough.ToughRunnable;
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
+import de.omnikryptec.libapi.opencl.OpenCL;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
@@ -42,24 +45,19 @@ public final class LibAPIManager {
     private static final Collection<ToughRunnable> shutdownHooks = new ArrayList<>();
     private static final Logger logger = Logger.getLogger(LibAPIManager.class);
     private static LibAPIManager instance;
-    private RenderAPI renderApi;
+    private GLFWAccessManager glfw;
+    private OpenCL opencl;
     
     private LibAPIManager() {
     }
-
+    
     public static void init(@Nonnull Settings<LibSetting> settings) {
         if (isInitialized()) {
-            throw new IllegalStateException("Already initialized");
+            throw new IllegalStateException("LibAPI is already initialized");
         }
         setConfiguration(settings);
-        if (GLFW.glfwInit()) {
-            GLFWErrorCallback.createThrow().set();
-            instance = new LibAPIManager();
-            logger.info("Initialized LibAPI");
-        } else {
-            instance = null;
-            throw new RuntimeException("Error while initializing LibAPI");
-        }
+        instance = new LibAPIManager();
+        logger.info("Initialized LibAPI");
     }
     
     /**
@@ -93,7 +91,8 @@ public final class LibAPIManager {
                     throwable.printStackTrace();
                 });
             }
-            GLFW.glfwTerminate();
+            instance.terminateGlfw();
+            instance.terminateOpenCL();
             instance = null;
             logger.info("Terminated LibAPI");
         }
@@ -111,48 +110,59 @@ public final class LibAPIManager {
         return instance;
     }
     
-    public void setRenderer(Class<? extends RenderAPI> clazz, Settings<WindowSetting> windowSettings,
-            Settings<IntegerKey> apiSettings) {
-        if (isRendererSet()) {
-            throw new IllegalStateException("Renderer is already set!");
+    public void initGlfw() {
+        if (isGLFWinitialized()) {
+            throw new IllegalStateException("GLFW is already initialized");
         }
+        if (GLFW.glfwInit()) {
+            GLFWErrorCallback.createThrow().set();
+            glfw = new GLFWAccessManager();
+        } else {
+            glfw = null;
+            throw new RuntimeException("Error while initializing GLFW");
+        }
+    }
+    
+    public void terminateGlfw() {
+        if (isGLFWinitialized()) {
+            GLFW.glfwTerminate();
+            glfw = null;
+        }
+    }
+    
+    public GLFWAccessManager getGLFW() {
+        return glfw;
+    }
+    
+    public boolean isGLFWinitialized() {
+        return glfw != null;
+    }
+    
+    public void initOpenCL() {
         try {
-            final Constructor<? extends RenderAPI> renderApiConstructor = clazz
-                    .getConstructor(windowSettings.getClass(), apiSettings.getClass());
-            renderApiConstructor.setAccessible(true);
-            renderApi = renderApiConstructor.newInstance(windowSettings, apiSettings);
-            logger.info("Set the RenderAPI to " + clazz.getSimpleName());
-        } catch (NoSuchMethodException ex) {
-            throw new IllegalArgumentException("Invalid RendererAPI: Missing constructor", ex);
+            if (CL.getFunctionProvider() == null) {
+                CL.create();
+            }
+            opencl = new OpenCL();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            opencl = null;
+            throw new RuntimeException(ex);
         }
     }
-
-    public boolean isRendererSet() {
-        return renderApi != null;
+    
+    public void terminateOpenCL() {
+        if (isOpenCLinitialized()) {
+            opencl.shutdown();
+            opencl = null;
+        }
     }
     
-    public RenderAPI getRenderAPI() {
-        return renderApi;
+    public boolean isOpenCLinitialized() {
+        return opencl != null;
     }
     
-    public void pollEvents() {
-        GLFW.glfwPollEvents();
-    }
-    
-    /**
-     * Returns the value of the GLFW timer. The timer measures time elapsed since
-     * GLFW was initialized.
-     * <p>
-     * The resolution of the timer is system dependent, but is usually on the order
-     * of a few micro- or nanoseconds. It uses the highest-resolution monotonictime
-     * source on each supported platform.
-     *
-     * @return the current value, in seconds, or zero if an error occurred
-     */
-    public double getTime() {
-        return GLFW.glfwGetTime();
+    public OpenCL getOpenCL() {
+        return opencl;
     }
     
     public enum LibSetting implements Defaultable {

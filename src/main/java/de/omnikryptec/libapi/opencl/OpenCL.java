@@ -32,14 +32,15 @@ import org.lwjgl.opencl.CL21;
 import org.lwjgl.opencl.CL22;
 import org.lwjgl.system.MemoryStack;
 
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Util;
-//TODO better OpenCL integration into the engine
+
 public class OpenCL {
     
     private static final Class<?>[] constantsClasses = { CL10.class, CL12.class, CL20.class, CL21.class, CL22.class };
+    private static boolean created;
     static IntBuffer tmpBuffer;
-    private static OpenCL instance;
     
     private HashMap<Integer, CLPlatform> createdPlatforms = new HashMap<>();
     private PointerBuffer platforms;
@@ -48,43 +49,29 @@ public class OpenCL {
         tmpBuffer = BufferUtils.createIntBuffer(1);
     }
     
-    public static void create() {
-        if(isInitialized()) {
-            throw new IllegalStateException("Already initialized");
-        }
-        try {
-            if (CL.getFunctionProvider() == null) {
-                CL.create();
-            }
-        } catch (final Exception e) {
-            throw new RuntimeException(e);
-        }
-        instance = new OpenCL();
-        Logger.getLogger(OpenCL.class).info("Created OpenCL context");
-    }
-    
-    public static OpenCL instance() {
-        if (!isInitialized()) {
-            throw new IllegalStateException("OpenCL is not initialized");
-        }
-        return instance;
-    }
-    
-    public static boolean isInitialized() {
-        return instance != null;
-    }
-    
-    public static void shutdown() {
+    /**
+     * engine-intern. Use {@link LibAPIManager} instead.
+     * 
+     * @see de.omnikryptec.libapi.exposed.LibAPIManager
+     */
+    public void shutdown() {
         CLKernel.cleanup();
         CLProgram.cleanup();
         CLMemory.cleanup();
         CLCommandQueue.cleanup();
         CLContext.cleanup();
         CL.destroy();
-        instance = null;
     }
     
-    private OpenCL() {
+    /**
+     * engine-intern. Use {@link LibAPIManager} instead.
+     * 
+     * @see de.omnikryptec.libapi.exposed.LibAPIManager
+     */
+    public OpenCL() {
+        if (created) {
+            throw new IllegalStateException("OpenCL is already created");
+        }
         createPlatformData();
     }
     

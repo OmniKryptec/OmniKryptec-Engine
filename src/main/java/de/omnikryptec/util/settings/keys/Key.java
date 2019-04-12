@@ -115,7 +115,7 @@ public class Key implements IKey {
         if (!isPressed()) {
             return false;
         }
-        final double currentTime = LibAPIManager.instance().getTime();
+        final double currentTime = LibAPIManager.instance().getGLFW().getTime();
         final double pressedTime = currentTime - this.lastUpdate;
         //this.lastChange = currentTime; //FIXME lastChange/lastUpdate should just show the last time, when this key isPressed was updated. Why should this method reset this time?
         return (pressedTime >= minTime || minTime < 0) && (pressedTime <= maxTime || maxTime < 0);

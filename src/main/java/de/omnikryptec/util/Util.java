@@ -16,6 +16,11 @@
 
 package de.omnikryptec.util;
 
+import java.util.Scanner;
+
+import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.resource.parser.shader.ShaderParser;
+
 public class Util {
     
     public static <T> T ensureNonNull(final T obj) {
@@ -50,5 +55,17 @@ public class Util {
         System.arraycopy(ex.getStackTrace(), cut, nst, 0, ex.getStackTrace().length - cut);
         ex.setStackTrace(nst);
         throw ex;
+    }
+    
+    public static String readTextFile(AdvancedFile file) {
+        final StringBuilder builder = new StringBuilder();
+        try (Scanner scanner = new Scanner(file.createInputStream())) {
+            while (scanner.hasNextLine()) {
+                builder.append(scanner.nextLine() + "\n");
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+        return builder.toString();
     }
 }

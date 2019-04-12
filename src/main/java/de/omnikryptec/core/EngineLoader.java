@@ -84,11 +84,18 @@ public abstract class EngineLoader {
      * @see de.omnikryptec.libapi.exposed.LibAPIManager
      */
     public static void initialize(final Settings<LibSetting> libSettings, final Class<? extends RenderAPI> rendererApi,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings, boolean opencl,
+            boolean audio) {
         // Initialize everything required
         LibAPIManager.init(libSettings);
-        LibAPIManager.instance().setRenderer(rendererApi, windowSettings, apiSettings);
-        //TODO Audio, etc....
+        LibAPIManager.instance().initGlfw();
+        LibAPIManager.instance().getGLFW().setRenderer(rendererApi, windowSettings, apiSettings);
+        if (opencl) {
+            LibAPIManager.instance().initOpenCL();
+        }
+        if (audio) {
+            //TODO audio
+        }
     }
     
     public static void deinitialize() {
@@ -121,7 +128,8 @@ public abstract class EngineLoader {
         configure(loaderSettings, libSettings, windowSettings, rapiSettings);
         // or let them (the natives) be loaded by Configuration.SHARED_LIBRARY and
         // LIBRARY_PATH <-- Seems to work, so better use it
-        initialize(libSettings, loaderSettings.get(LoaderSetting.RENDER_API), windowSettings, rapiSettings);
+        initialize(libSettings, loaderSettings.get(LoaderSetting.RENDER_API), windowSettings, rapiSettings,
+                loaderSettings.get(LoaderSetting.INIT_OPENCL), loaderSettings.get(LoaderSetting.INIT_OPENAL));
         this.window = RenderAPI.get().getWindow();
         this.resources = new ResourceManager();
         this.resources.addDefaultLoader();
@@ -285,7 +293,9 @@ public abstract class EngineLoader {
          * <br>
          * The default value is <code>true</code>
          */
-        SHUTDOWN_ON_LOOP_EXIT(true);
+        SHUTDOWN_ON_LOOP_EXIT(true),
+        
+        INIT_OPENCL(false), INIT_OPENAL(false);
         
         private final Object defaultSetting;
         

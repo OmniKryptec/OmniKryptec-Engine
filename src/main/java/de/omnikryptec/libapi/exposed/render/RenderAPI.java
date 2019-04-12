@@ -40,7 +40,7 @@ public interface RenderAPI {
      * @return the current {@code RenderAPI}
      */
     public static RenderAPI get() {
-        return LibAPIManager.instance().getRenderAPI();
+        return LibAPIManager.instance().getGLFW().getRenderAPI();
     }
     
     public static enum Type {

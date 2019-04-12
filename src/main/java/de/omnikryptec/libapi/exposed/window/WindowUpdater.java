@@ -31,10 +31,10 @@ public class WindowUpdater extends AbstractUpdater {
     @Override
     public void update(int maxops) {
         super.update(maxops);
-        final double time = LibAPIManager.instance().getTime();
+        final double time = LibAPIManager.instance().getGLFW().getTime();
         this.window.swapBuffers();
-        this.swaptime = LibAPIManager.instance().getTime() - time;
-        LibAPIManager.instance().pollEvents();
+        this.swaptime = LibAPIManager.instance().getGLFW().getTime() - time;
+        LibAPIManager.instance().getGLFW().pollEvents();
     }
     
     public double getSwapTime() {

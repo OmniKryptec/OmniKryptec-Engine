@@ -48,12 +48,12 @@ public class AbstractUpdater {
     
     public AbstractUpdater() {
         this.deltaTimeSmoother = new Smoother();
-        this.starttime = LibAPIManager.instance().getTime();
+        this.starttime = LibAPIManager.instance().getGLFW().getTime();
     }
     
     /**
-     * Updates this object and the values accessable by the
-     * functions of this class (e.g. {@link #getDeltaTime()}.<br>
+     * Updates this object and the values accessable by the functions of this class
+     * (e.g. {@link #getDeltaTime()}.<br>
      * The update includes swapping the buffers and polling events.<br>
      * <br>
      * This function can limit the rate of operations by setting this Thread to
@@ -66,7 +66,7 @@ public class AbstractUpdater {
      *               nothing.
      */
     public void update(final int maxops) {
-        final double currentFrameTime = LibAPIManager.instance().getTime();
+        final double currentFrameTime = LibAPIManager.instance().getGLFW().getTime();
         this.deltatime = (currentFrameTime - this.lasttime);
         this.deltaTimeSmoother.push(this.deltatime);
         this.frontruntime = currentFrameTime - starttime;
@@ -100,7 +100,7 @@ public class AbstractUpdater {
     private void sync(final int ops) {
         final double target = this.lastsynced + (1.0 / ops);
         try {
-            while ((this.lastsynced = LibAPIManager.instance().getTime()) < target) {
+            while ((this.lastsynced = LibAPIManager.instance().getGLFW().getTime()) < target) {
                 Thread.sleep(1);
             }
         } catch (final InterruptedException ex) {
@@ -170,12 +170,12 @@ public class AbstractUpdater {
      */
     public void resetDeltaTime() {
         this.deltatime = 0;
-        this.lasttime = LibAPIManager.instance().getTime();
-        this.opstime = LibAPIManager.instance().getTime();
+        this.lasttime = LibAPIManager.instance().getGLFW().getTime();
+        this.opstime = LibAPIManager.instance().getGLFW().getTime();
     }
     
     public Time asTime() {
-        return new Time(getOperationCount(), getOPS(), LibAPIManager.instance().getTime(), getDeltaTime());
+        return new Time(getOperationCount(), getOPS(), LibAPIManager.instance().getGLFW().getTime(), getDeltaTime());
     }
     
 }
