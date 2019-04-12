@@ -26,17 +26,32 @@ public class CLMemory {
     
     private static List<CLMemory> memorys = new ArrayList<>();
     
+    public static void cleanup() {
+        for (final CLMemory m : memorys) {
+            CL10.clReleaseMemObject(m.getID());
+        }
+    }
+    
     private final long id;
+    
+    public CLMemory(CLContext context, int memOpt, int size) {
+        this.id = CL10.clCreateBuffer(context.getID(), memOpt, size, OpenCL.tmpBuffer);
+        OpenCL.checked(OpenCL.tmpBuffer.get(0));
+    }
     
     public CLMemory(final CLContext context, final int memOptions, final FloatBuffer buffer) {
         this.id = CL10.clCreateBuffer(context.getID(), memOptions, buffer, OpenCL.tmpBuffer);
         OpenCL.checked(OpenCL.tmpBuffer.get(0));
     }
     
-    public static void cleanup() {
-        for (final CLMemory m : memorys) {
-            CL10.clReleaseMemObject(m.getID());
-        }
+    public void enqueueWriteBuffer(CLCommandQueue queue, FloatBuffer floats) {
+        int i = CL10.clEnqueueWriteBuffer(queue.getID(), getID(), false, 0, floats, null, null);
+        OpenCL.checked(i);
+    }
+    
+    public void enqueueReadBuffer(CLCommandQueue queue, FloatBuffer buffer) {
+        int i = CL10.clEnqueueReadBuffer(queue.getID(), getID(), false, 0, buffer, null, null);
+        OpenCL.checked(i);
     }
     
     public long getID() {

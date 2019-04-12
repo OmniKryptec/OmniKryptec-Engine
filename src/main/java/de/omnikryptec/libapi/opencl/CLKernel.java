@@ -53,6 +53,12 @@ public class CLKernel {
         OpenCL.checked(i);
     }
     
+    public CLKernel setArgp(int i, long p) {
+        int k = CL10.clSetKernelArg1p(getID(), i, p);
+        OpenCL.checked(k);
+        return this;
+    }
+    
     public CLKernel setArg(final int i, final FloatBuffer buffer) {
         int k = CL10.clSetKernelArg(getID(), i, buffer);
         OpenCL.checked(k);
