@@ -54,12 +54,14 @@ public class UpdateableFactory {
     
     public static IUpdatable createScreenClearTest() {
         return new IUpdatable() {
+            
+            private Color color;
             @Override
             public void update(final Time time) {
                 if (time.opCount % 40 == 0) {
-                    RenderAPI.get().setClearColor(new Color().randomizeRGB());
+                    color = new Color().randomizeRGB();
                 }
-                RenderAPI.get().clear(SurfaceBufferType.Color);
+                RenderAPI.get().getWindow().getDefaultFrameBuffer().clearColor(color);
             }
             
             @Override

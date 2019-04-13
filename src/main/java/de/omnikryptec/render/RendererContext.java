@@ -101,8 +101,9 @@ public class RendererContext implements IUpdatable {
     }
     
     public void preRender(Time time, IProjection projection) {
-        renderApi.setClearColor(getEnvironmentSettings().get(GlobalEnvironmentKeys.ClearColor));
-        renderApi.clear(SurfaceBufferType.Color, SurfaceBufferType.Depth);
+        //FIXME clear current framebuffer!
+//        renderApi.setClearColor(getEnvironmentSettings().get(GlobalEnvironmentKeys.ClearColor));
+//        renderApi.clear(SurfaceBufferType.Color, SurfaceBufferType.Depth);
         for (Renderer r : renderers) {
             r.preRender(time, projection, this);
         }

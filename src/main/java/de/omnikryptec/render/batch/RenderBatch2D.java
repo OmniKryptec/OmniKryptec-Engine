@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 
+import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fc;
 import org.joml.Vector2f;
 
@@ -28,6 +29,7 @@ public class RenderBatch2D implements Batch2D {
     
     private Color color;
     private boolean rendering;
+    private Matrix3x2f transformDefault;
     
     public RenderBatch2D(final int vertices) {
         init(new RenderedVertexManager(vertices, MY_LAYOUT));
@@ -40,7 +42,7 @@ public class RenderBatch2D implements Batch2D {
     private void init(final VertexManager vertexManager) {
         this.vertexManager = vertexManager;
         this.color = new Color(1, 1, 1, 1);
-        
+        this.transformDefault = new Matrix3x2f();
     }
     
     @OverridingMethodsMustInvokeSuper
@@ -87,11 +89,14 @@ public class RenderBatch2D implements Batch2D {
         draw(texture == null ? null : texture.getBaseTexture(), transform, width, height, flipU, flipV, u0, v0, u1, v1);
     }
     
-    private void draw(final Texture texture, final Matrix3x2fc transform, final float width, final float height,
+    private void draw(final Texture texture, Matrix3x2fc transform, final float width, final float height,
             final boolean flipU, boolean flipV, float u0, float v0, float u1, float v1) {
         checkRendering();
         if (texture != null) {
             flipV = flipV != texture.requiresInvertedVifDrawn2D();
+        }
+        if (transform == null) {
+            transform = transformDefault;
         }
         this.vertexManager.prepareNext(texture, 6 * MY_LAYOUT.getCount());
         Vector2f botleft = new Vector2f(0);

@@ -17,6 +17,7 @@ import org.lwjgl.opengl.GL42;
 import de.omnikryptec.libapi.exposed.AutoDelete;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
@@ -84,7 +85,6 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
                     texture.textureId(), 0);
             this.textures[index] = texture;
         }
-        
     }
     
     private int attachment(final FBTarget target) {
@@ -105,8 +105,8 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
     
     public void bindImageTexture(int imageUnit, int texIndex, int level, boolean layered, int layer, int access,
             TextureFormat format) {
-        GL42.glBindImageTexture(imageUnit, textures[texIndex].pointer, level, layered, layer,
-                GL15.GL_READ_WRITE, OpenGLUtil.typeId(format));
+        GL42.glBindImageTexture(imageUnit, textures[texIndex].pointer, level, layered, layer, GL15.GL_READ_WRITE,
+                OpenGLUtil.typeId(format));
         OpenGLUtil.flushErrors();
     }
     
@@ -226,5 +226,19 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
     @Override
     public int getHeight() {
         return height;
+    }
+    
+    //TODO history system. this looks ugly. include history in exposed maybe.
+    @Override
+    public void clear(float r, float g, float b, float a, SurfaceBufferType... types) {
+        boolean bound = history.peek() == this;
+        if (!bound) {
+            bindFrameBuffer();
+        }
+        OpenGLUtil.setClearColor(r, g, b, a);
+        OpenGLUtil.clear(types);
+        if (!bound) {
+            unbindFrameBuffer();
+        }
     }
 }

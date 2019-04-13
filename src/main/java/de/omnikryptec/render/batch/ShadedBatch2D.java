@@ -29,7 +29,7 @@ public class ShadedBatch2D extends RenderBatch2D {
         final UniformSampler sampler = this.shader.getUniform("sampler");
         this.shader.bindShader();
         this.transform.loadMatrix(new Matrix4f());
-        this.viewProjection.loadMatrix(new Matrix4f());
+        this.viewProjection.loadMatrix(new Matrix4f().ortho2D(0, 1, 0, 1));
         sampler.setSampler(0);
     }
     

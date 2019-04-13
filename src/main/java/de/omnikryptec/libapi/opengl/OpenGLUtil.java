@@ -423,11 +423,6 @@ public class OpenGLUtil {
         }
     }
     
-    @Deprecated
-    public static void setClearColor(final Color color) {
-        setClearColor(color.getR(), color.getG(), color.getB(), color.getA());
-    }
-    
     public static void setClearColor(final float r, final float g, final float b, final float a) {
         GL11.glClearColor(r, g, b, a);
     }

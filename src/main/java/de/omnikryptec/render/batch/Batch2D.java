@@ -5,7 +5,7 @@ import org.joml.Matrix3x2fc;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.util.math.Mathf;
-
+//transform==null use identity transform
 public interface Batch2D extends Batch {
 
     default void draw(final Texture texture, final Matrix3x2fc transform, final boolean flipU, final boolean flipV) {

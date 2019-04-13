@@ -19,6 +19,9 @@ package de.omnikryptec.libapi.exposed.render;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
+import de.omnikryptec.util.data.Color;
+
 /**
  * An interface representing a FrameBuffer.<br>
  * FrameBuffers are dynamic textures, e.g. used for postprocessing.
@@ -32,8 +35,9 @@ public interface FrameBuffer {
      * Sets the {@link FBTarget} at a certain index of this {@link FrameBuffer}.<br>
      * <br>
      * The texture previously located at <code>index</code> will not be destroyed,
-     * but might not be accessible through {@link #getTexture(int)} anymore.
-     *
+     * but might not be accessible through {@link #getTexture(int)} anymore.<br>
+     * Note: This function does not bind or unbind this FrameBuffer.<br>
+     * 
      * @param index  the index where to assign the new target
      * @param target the target
      * @see #assignTargets(int, int, int, FBTarget...)
@@ -82,6 +86,40 @@ public interface FrameBuffer {
     }
     
     /**
+     * The same as {@link #assignTarget(int, FBTarget)} except this functions binds
+     * and unbinds the framebuffer during this operation.
+     * 
+     */
+    default void assignTargetB(int index, @Nonnull FBTarget target) {
+        bindFrameBuffer();
+        assignTarget(index, target);
+        unbindFrameBuffer();
+    }
+    
+    /**
+     * The same as {@link #assignTargets(FBTarget...)} except this functions binds
+     * and unbinds the framebuffer during this operation.
+     * 
+     */
+    default void assignTargetsB(@Nonnull final FBTarget... targets) {
+        bindFrameBuffer();
+        assignTargets(0, targets);
+        unbindFrameBuffer();
+    }
+    
+    /**
+     * The same as {@link #assignTargets(int, int, int, FBTarget...)} except this
+     * functions binds and unbinds the framebuffer during this operation.
+     * 
+     */
+    default void assignTargetsB(final int startIndex, final int srcStart, final int srcLength,
+            @Nonnull final FBTarget... targets) {
+        bindFrameBuffer();
+        assignTargets(startIndex, srcStart, srcLength, targets);
+        bindFrameBuffer();
+    }
+    
+    /**
      * Binds this {@link FrameBuffer} to be operated upon.<br>
      * <br>
      * Possible operations are:<br>
@@ -121,6 +159,29 @@ public interface FrameBuffer {
      */
     void resolveToFrameBuffer(@Nonnull FrameBuffer target, int attachment);
     
+    //TODO clearing and setting clear color at the same time might be inefficient/redundant
+    default void clearDepth() {
+        clear(0, 0, 0, 0, SurfaceBufferType.Depth);
+    }
+    
+    default void clearColor() {
+        clearColor(0, 0, 0, 0);
+    }
+    
+    default void clearColor(Color color) {
+        clearColor(color.getA(), color.getG(), color.getB(), color.getA());
+    }
+    
+    default void clearColor(float r, float g, float b, float a) {
+        clear(r, g, b, a, SurfaceBufferType.Color);
+    }
+    
+    default void clear(Color color, SurfaceBufferType... types) {
+        clear(color.getA(), color.getG(), color.getB(), color.getA(), types);
+    }
+    
+    void clear(float r, float g, float b, float a, SurfaceBufferType... types);
+    
     /**
      * THe amount of samples this {@link FrameBuffer} does when rendering onto. 0 if
      * none.
@@ -155,5 +216,6 @@ public interface FrameBuffer {
     FrameBuffer resizedClone(int newWidth, int newHeight);
     
     int getWidth();
+    
     int getHeight();
 }

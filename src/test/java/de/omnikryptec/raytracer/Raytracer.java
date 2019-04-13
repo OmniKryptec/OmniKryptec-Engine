@@ -13,6 +13,7 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
+import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
@@ -44,9 +45,7 @@ public class Raytracer extends EngineLoader implements IUpdatable {
         getGameController().getGlobalScene().setUpdateableSync(this);
         renderApi = (OpenGLRenderAPI) RenderAPI.get();
         image = (GLFrameBuffer) renderApi.createFrameBuffer(80, 80, 0, 1);
-        image.bindFrameBuffer();
-        image.assignTarget(0, new FBTarget(TextureFormat.RGBA32, 0));
-        image.unbindFrameBuffer();
+        image.assignTargetB(0, new FBTarget(TextureFormat.RGBA32, 0));
         batch = new ShadedBatch2D(6);
         computeShader = (GLShader) renderApi.createShader();
         computeShader.create("raytracer");
@@ -54,12 +53,13 @@ public class Raytracer extends EngineLoader implements IUpdatable {
     
     private GLFrameBuffer image;
     private ShadedBatch2D batch;
-    
-    private final Matrix3x2f matrix = new Matrix3x2f().translate(-1, -1).scale(2);
-    
+        
     private OpenGLRenderAPI renderApi;
     
     private GLShader computeShader;
+    
+//    private UniformMatrix inverseCam;
+//    private UniformMatrix cam
     
     @Override
     public void update(Time time) {
@@ -68,10 +68,9 @@ public class Raytracer extends EngineLoader implements IUpdatable {
         computeShader.dispatchCompute(image.getWidth()/8, image.getHeight()/8, 1);
         
         
-        renderApi.setClearColor(new Color(0, 0, 0, 0));
-        renderApi.clear(SurfaceBufferType.Color);
+        renderApi.getWindow().getDefaultFrameBuffer().clearColor();
         batch.begin();
-        batch.draw(image.getTexture(0), matrix, false, false);
+        batch.draw(image.getTexture(0), null, false, false);
         batch.end();
     }
     

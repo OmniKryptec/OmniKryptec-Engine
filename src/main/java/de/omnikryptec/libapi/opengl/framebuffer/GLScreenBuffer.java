@@ -10,8 +10,10 @@ import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.Texture;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
+import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.util.UnsupportedOperationException;
 import de.omnikryptec.util.math.MathUtil;
 
@@ -66,7 +68,18 @@ public class GLScreenBuffer implements SurfaceBuffer {
             throw new IllegalStateException("can not unbind if not top of framebuffer stack!");
         }
     }
-
+    @Override
+    public void clear(float r, float g, float b, float a, SurfaceBufferType... types) {
+        boolean bound = GLFrameBuffer.history.peek() == this;
+        if (!bound) {
+            bindFrameBuffer();
+        }
+        OpenGLUtil.setClearColor(r, g, b, a);
+        OpenGLUtil.clear(types);
+        if (!bound) {
+            unbindFrameBuffer();
+        }
+    }
     @Override
     public int[] viewport() {
         return Arrays.copyOf(viewport, viewport.length);

@@ -30,12 +30,13 @@ public class StaticInitTest {
         final IWindow window = RenderAPI.get().getWindow();
         window.setVisible(true);
         final WindowUpdater updater = new WindowUpdater(window);
+        Color clearColor = new Color();
         while (!window.isCloseRequested()) {
             updater.update(0);
             if (updater.getOperationCount() % 40 == 0) {
-                RenderAPI.get().setClearColor(new Color().randomizeRGB());
+                clearColor = new Color().randomizeRGB();
             }
-            RenderAPI.get().clear(SurfaceBufferType.Color);
+            RenderAPI.get().getWindow().getDefaultFrameBuffer().clearColor(clearColor);
         }
         EngineLoader.deinitialize();
     }

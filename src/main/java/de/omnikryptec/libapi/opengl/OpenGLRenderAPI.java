@@ -131,16 +131,6 @@ public class OpenGLRenderAPI implements RenderAPI {
     }
     
     @Override
-    public void clear(final SurfaceBufferType... buffers) {
-        OpenGLUtil.clear(buffers);
-    }
-    
-    @Override
-    public void setClearColor(final float r, final float g, final float b, final float a) {
-        OpenGLUtil.setClearColor(r, g, b, a);
-    }
-    
-    @Override
     public void printAllErrors() {
         OpenGLUtil.flushErrors();
     }

@@ -39,6 +39,7 @@ public interface RenderAPI {
      *
      * @return the current {@code RenderAPI}
      */
+    //TODO don't use this better use it through renderercontext because this is ugly af?
     public static RenderAPI get() {
         return LibAPIManager.instance().getGLFW().getRenderAPI();
     }
@@ -131,14 +132,6 @@ public interface RenderAPI {
     }
     
     void renderInstanced(Primitive primitive, int elementCount, boolean hasIndexBuffer, int instanceCount);
-    
-    void clear(SurfaceBufferType... buffer);
-    
-    default void setClearColor(final Color color) {
-        setClearColor(color.getR(), color.getG(), color.getB(), color.getA());
-    }
-    
-    void setClearColor(float r, float g, float b, float a);
     
     void printAllErrors();
 }

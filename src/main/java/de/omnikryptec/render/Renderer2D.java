@@ -106,8 +106,7 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
         FrustumIntersection intersFilter = new FrustumIntersection(projection.getProjection());
         batch.setIProjection(projection);
         renderer.getRenderAPI().applyRenderState(LIGHT_STATE);
-        renderer.getRenderAPI().setClearColor(renderer.getEnvironmentSettings().get(EnvironmentKeys2D.AmbientLight));
-        renderer.getRenderAPI().clear(SurfaceBufferType.Color);
+        renderBuffer.clearColor(renderer.getEnvironmentSettings().get(EnvironmentKeys2D.AmbientLight));
         List<Light2D> lightList = renderer.getIRenderedObjectManager().getFor(Light2D.TYPE);
         batch.begin();
         for (Light2D l : lightList) {
@@ -116,9 +115,9 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
             }
         }
         batch.end();
+        //TODO clear spritebuffer depth?
         spriteBuffer.bindFrameBuffer();
-        renderer.getRenderAPI().setClearColor(0, 0, 0, 0);
-        renderer.getRenderAPI().clear(SurfaceBufferType.Color);
+        spriteBuffer.clearColor();
         renderer.getRenderAPI().applyRenderState(SPRITE_STATE);
         batch.begin();
         for (Sprite sprite : sprites) {
