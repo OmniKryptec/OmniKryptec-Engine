@@ -26,7 +26,7 @@ import de.codemakers.base.util.interfaces.Copyable;
 import de.codemakers.base.util.tough.ToughFunction;
 import de.omnikryptec.util.Util;
 
-public class Settings<K> implements Copyable {
+public class Settings<K> {
     
     final Map<K, Object> settings;
     
@@ -269,13 +269,11 @@ public class Settings<K> implements Copyable {
         return this.settings.isEmpty();
     }
     
-    @Override
     public Settings<K> copy() {
         return new Settings<K>().setAll(this.settings);
     }
     
-    @Override
-    public void set(final Copyable copyable) {
+    public void set(final Settings<K> copyable) {
         final Settings<K> settings = Require.clazz(copyable, Settings.class);
         if (settings != null) {
             Util.ensureNonNull(settings.settings);

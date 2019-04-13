@@ -24,8 +24,8 @@ import de.omnikryptec.libapi.opengl.OpenGLUtil;
 
 public abstract class GLTexture extends AutoDelete implements Texture {
 
-    private final int pointer;
-    private final int type;
+    public final int pointer;
+    public final int type;
 
     public GLTexture(final int type) {
         this.pointer = GL11.glGenTextures();

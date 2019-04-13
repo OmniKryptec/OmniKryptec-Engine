@@ -22,6 +22,7 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL43;
 
 import de.omnikryptec.libapi.exposed.AutoDelete;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
@@ -33,6 +34,8 @@ import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Logger.LogType;
 
 public class GLShader extends AutoDelete implements Shader {
+    
+    private static final Logger logger = Logger.getLogger(GLShader.class);
     
     private final int programId;
     private final Map<ShaderType, Integer> attachments;
@@ -65,7 +68,7 @@ public class GLShader extends AutoDelete implements Shader {
             GL20.glShaderSource(shader, a.source);
             GL20.glCompileShader(shader);
             if (GL20.glGetShaderi(shader, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-                Logger.log(GLShader.class, LogType.Error, "Compilation error", "Shader: " + a.context+ " ("+a.shaderType+")",
+                logger.log(LogType.Error, "Compilation error", "Shader: " + a.context + " (" + a.shaderType + ")",
                         "Error: " + GL20.glGetShaderInfoLog(shader), LogType.Debug, "Src: \n" + a.source);
             } else {
                 GL20.glAttachShader(this.programId, shader);
@@ -88,23 +91,22 @@ public class GLShader extends AutoDelete implements Shader {
         return (T) u;
     }
     
+    public void dispatchCompute(int xCount, int yCount, int zCount) {
+        GL43.glDispatchCompute(xCount, yCount, zCount);
+    }
+    
     //TODx somewhere else? no, because this is probably shader dependant
     private void extractUniforms(final String src) {
         final String[] lines = src.split("[\n\r]+");
         for (final String l : lines) {
             if (l.contains("uniform")) {
-                try {
-                    final String un = l.substring(l.indexOf("uniform") + "uniform".length()).replace(";", "").trim();
-                    final String[] data = un.split("\\s+");
-                    final String name = data[1].trim();
-                    final String types = data[0].trim();
-                    final GLUniform unif = createUniformObj(name, types);
-                    unif.storeUniformLocation(this.programId);
-                    this.uniforms.put(name, unif);
-                } catch (final Exception ex) {
-                    System.err.println("Couldn't handle uniform: " + l);
-                    ex.printStackTrace();
-                }
+                final String un = l.substring(l.indexOf("uniform") + "uniform".length()).replace(";", "").trim();
+                final String[] data = un.split("\\s+");
+                final String name = data[1].trim();
+                final String types = data[0].trim();
+                final GLUniform unif = createUniformObj(name, types);
+                unif.storeUniformLocation(this.programId);
+                this.uniforms.put(name, unif);
             }
         }
     }
@@ -121,8 +123,10 @@ public class GLShader extends AutoDelete implements Shader {
             return new GLUniformVec4(name);
         case "float":
             return new GLUniformFloat(name);
+        case "image2D":
+            return new GLUniformImage2D(name);
         default:
-            throw new IllegalArgumentException("Type not found: " + types + " " + name);
+            throw new IllegalArgumentException("Uniform type not found: " + types + " " + name);
         }
     }
     

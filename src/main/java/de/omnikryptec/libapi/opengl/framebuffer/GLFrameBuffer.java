@@ -8,13 +8,17 @@ import java.util.Deque;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
+import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL42;
 
 import de.omnikryptec.libapi.exposed.AutoDelete;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.Texture;
+import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.libapi.opengl.texture.GLTexture;
 
@@ -97,6 +101,13 @@ public class GLFrameBuffer extends AutoDelete implements FrameBuffer {
             GL11.glViewport(0, 0, this.width, this.height);
             history.push(this);
         }
+    }
+    
+    public void bindImageTexture(int imageUnit, int texIndex, int level, boolean layered, int layer, int access,
+            TextureFormat format) {
+        GL42.glBindImageTexture(imageUnit, textures[texIndex].pointer, level, layered, layer,
+                GL15.GL_READ_WRITE, OpenGLUtil.typeId(format));
+        OpenGLUtil.flushErrors();
     }
     
     @Override

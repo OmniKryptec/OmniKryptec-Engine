@@ -68,8 +68,16 @@ public class ResourceManager {
         this.callbacks.add(callback);
     }
     
+    public void stage(String file) {
+        this.stage(new AdvancedFile(file));
+    }
+    
     public void stage(final AdvancedFile file) {
         stage(file, 0);
+    }
+    
+    public void stage(String file, int prio) {
+        this.stage(new AdvancedFile(file), prio);
     }
     
     public void stage(final AdvancedFile file, final int priority) {
@@ -86,6 +94,10 @@ public class ResourceManager {
     
     public void processStaged(final boolean override, final boolean flat) {
         new Processor(override, flat).processStaged();
+    }
+    
+    public void instantLoad(final boolean override, final boolean flat, final String file) {
+        this.instantLoad(override, flat, new AdvancedFile(file));
     }
     
     public void instantLoad(final boolean override, final boolean flat, final AdvancedFile file) {

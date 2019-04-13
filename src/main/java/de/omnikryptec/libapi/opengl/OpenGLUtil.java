@@ -16,9 +16,15 @@
 
 package de.omnikryptec.libapi.opengl;
 
+import java.lang.reflect.Field;
 import java.util.EnumMap;
 import java.util.Map;
 
+import org.lwjgl.opencl.CL10;
+import org.lwjgl.opencl.CL12;
+import org.lwjgl.opencl.CL20;
+import org.lwjgl.opencl.CL21;
+import org.lwjgl.opencl.CL22;
 import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
@@ -27,10 +33,18 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL21;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL31;
 import org.lwjgl.opengl.GL32;
+import org.lwjgl.opengl.GL33;
 import org.lwjgl.opengl.GL40;
+import org.lwjgl.opengl.GL41;
+import org.lwjgl.opengl.GL42;
 import org.lwjgl.opengl.GL43;
+import org.lwjgl.opengl.GL44;
+import org.lwjgl.opengl.GL45;
+import org.lwjgl.opengl.GL46;
 
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
@@ -53,6 +67,8 @@ import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.data.Color;
 
 public class OpenGLUtil {
+    
+    private static final Logger logger = Logger.getLogger(OpenGLUtil.class);
     
     public static int typeId(final Type t) {
         switch (t) {
@@ -233,10 +249,35 @@ public class OpenGLUtil {
     
     public static void flushErrors() {
         int e = 0;
+        int found = 0;
         while ((e = GL11.glGetError()) != GL11.GL_NO_ERROR) {
-            System.err.println("OpenGL error: " + e);
+            logger.error("OpenGL error: " + searchConstants(e));//TODO only full name if debug mode
+            found++;
         }
-        System.err.println("Flushed OpenGL-Errors");
+        if (found != 0) {
+            throw new RuntimeException("Stopping due to " + found + " OpenGL error(s)");
+        }
+        //TODO if debug print no errors found
+    }
+    
+    private static final Class<?>[] constantsClasses = { GL11.class, GL12.class, GL13.class, GL14.class, GL15.class,
+            GL20.class, GL21.class, GL30.class, GL31.class, GL32.class, GL33.class, GL40.class, GL41.class, GL42.class,
+            GL43.class, GL44.class, GL45.class, GL46.class };
+    
+    private static String searchConstants(final int i) {
+        for (final Class<?> c : constantsClasses) {
+            final Field[] fields = c.getFields();
+            for (final Field f : fields) {
+                try {
+                    if (i == f.getInt(null)) {
+                        return f.getName();
+                    }
+                } catch (final IllegalArgumentException e) {
+                } catch (final IllegalAccessException e) {
+                }
+            }
+        }
+        throw new IllegalArgumentException("Constant with value '" + i + "' not found");
     }
     
     private static int lastVertexArray = 0;
