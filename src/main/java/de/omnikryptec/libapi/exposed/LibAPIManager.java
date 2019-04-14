@@ -16,14 +16,12 @@
 
 package de.omnikryptec.libapi.exposed;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
-import org.checkerframework.dataflow.qual.TerminatesExecution;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opencl.CL;
@@ -31,12 +29,9 @@ import org.lwjgl.system.Configuration;
 
 import de.codemakers.base.util.tough.ToughRunnable;
 import de.omnikryptec.event.EventBus;
-import de.omnikryptec.libapi.exposed.render.RenderAPI;
-import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opencl.OpenCL;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.settings.Defaultable;
-import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
 public final class LibAPIManager {
@@ -47,6 +42,7 @@ public final class LibAPIManager {
     private static LibAPIManager instance;
     private GLFWAccessManager glfw;
     private OpenCL opencl;
+    private static boolean debugFlag;
     
     private LibAPIManager() {
     }
@@ -74,11 +70,13 @@ public final class LibAPIManager {
         final boolean debug = settings.get(LibSetting.DEBUG);
         final boolean fastMath = settings.get(LibSetting.FAST_MATH);
         final boolean functionDebug = settings.get(LibSetting.DEBUG_FUNCTIONS);
+        final boolean libLoadDebug = settings.get(LibSetting.DEBUG_LIBRARY_LOADING);
         if (fastMath) {
             System.setProperty("joml.fastmath", "true");
         }
+        debugFlag = debug;
         Configuration.DEBUG.set(debug);
-        Configuration.DEBUG_LOADER.set(debug);
+        Configuration.DEBUG_LOADER.set(debug && libLoadDebug);
         Configuration.DEBUG_FUNCTIONS.set(debug && functionDebug);
     }
     
@@ -108,6 +106,14 @@ public final class LibAPIManager {
     
     public static LibAPIManager instance() {
         return instance;
+    }
+    
+    /**
+     * Always prefer {@link Logger#debug(Object...)} over this if possible.
+     * 
+     */
+    public static boolean debug() {
+        return debugFlag;
     }
     
     public void initGlfw() {
@@ -201,7 +207,8 @@ public final class LibAPIManager {
          *
          * @see de.omnikryptec.util.Logger
          */
-        LOGGING_MIN(null);
+        LOGGING_MIN(null), 
+        DEBUG_LIBRARY_LOADING(false);
         
         private final Object defaultSetting;
         

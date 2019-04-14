@@ -31,6 +31,7 @@ import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.window.IWindow;
+import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.buffer.GLIndexBuffer;
 import de.omnikryptec.libapi.opengl.buffer.GLVertexArray;
@@ -49,7 +50,7 @@ public class OpenGLRenderAPI implements RenderAPI {
     public static final IntegerKey MAJOR_VERSION = IntegerKey.next(1);
     public static final IntegerKey MINOR_VERSION = IntegerKey.next(0);
     
-    private IWindow window;
+    private GLWindow window;
     
     public OpenGLRenderAPI(final Settings<WindowSetting> windowsettings, final Settings<IntegerKey> apisettings) {
         this.window = new GLWindow(windowsettings, apisettings);
@@ -58,6 +59,11 @@ public class OpenGLRenderAPI implements RenderAPI {
     @Override
     public IWindow getWindow() {
         return this.window;
+    }
+    
+    @Override
+    public SurfaceBuffer getSurface() {
+        return this.window.getDefaultFrameBuffer();
     }
     
     @Override
@@ -111,7 +117,7 @@ public class OpenGLRenderAPI implements RenderAPI {
     
     @Override
     public void render(final Primitive primitive, final int count, final boolean hasIndexBuffer) {
-        final int typeid = OpenGLUtil.typeId(primitive);
+        final int typeid = OpenGLUtil.primitiveId(primitive);
         if (hasIndexBuffer) {
             GL11.glDrawElements(typeid, count, GL11.GL_UNSIGNED_INT, 0);
         } else {
@@ -122,7 +128,7 @@ public class OpenGLRenderAPI implements RenderAPI {
     @Override
     public void renderInstanced(final Primitive primitive, final int count, final boolean hasIndexBuffer,
             final int instanceCount) {
-        final int typeid = OpenGLUtil.typeId(primitive);
+        final int typeid = OpenGLUtil.primitiveId(primitive);
         if (hasIndexBuffer) {
             GL31.glDrawElementsInstanced(typeid, count, GL11.GL_UNSIGNED_INT, 0, instanceCount);
         } else {
@@ -131,7 +137,7 @@ public class OpenGLRenderAPI implements RenderAPI {
     }
     
     @Override
-    public void printAllErrors() {
+    public void printErrors() {
         OpenGLUtil.flushErrors();
     }
     

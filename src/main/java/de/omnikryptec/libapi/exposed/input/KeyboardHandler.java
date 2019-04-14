@@ -16,22 +16,20 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
+
+import org.lwjgl.glfw.GLFW;
+
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.window.InputEvent;
 import de.omnikryptec.util.settings.KeySettings;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWKeyCallback;
 
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
-
-//FIXME synchronized causes bad performance // Who says that?
+//FIXME synchronized causes bad performance // Who says that? // synchronized means the calling thread have to check if there is a lock on that function also the synchronized is unneccessary here
 public class KeyboardHandler implements InputHandler {
     
     private final byte[] keys = new byte[GLFW.GLFW_KEY_LAST + 1]; //TODO Test if this includes every key //TODO Maybe this is no longer necessary, because the KeySettings Keys having their own isPressed state, BUT this is necessary, because maybe you want to save ALL key states, so this should stay
-//    private final long window;
-//    private final GLFWKeyCallback keyCallback;
     private final AtomicReference<String> inputString = new AtomicReference<>("");
     // Configurable variables
     private final boolean appendToString = false;
@@ -44,32 +42,9 @@ public class KeyboardHandler implements InputHandler {
         this.keys[ev.key] = (byte) ev.action;
     }
     
-//    //@Deprecated //FIXME Whats with the Callback? Is it necessary?
-//    public KeyboardHandler(long window) {
-//        this.window = window;
-//        this.keyCallback = new GLFWKeyCallback() {
-//            @Override
-//            public void invoke(long window, int key, int scancode, int action, int mods) {
-//                if (KeyboardHandler.this.window != window) {
-//                    return;
-//                }
-//                synchronized (KeyboardHandler.this.keys) {
-//                    final byte actionByte = (byte) action;
-//                    KeyboardHandler.this.keys[key] = actionByte;
-//                    if (KeyboardHandler.this.appendToString && (actionByte == KeySettings.KEY_PRESSED || actionByte == KeySettings.KEY_REPEATED)) {
-//                        final String keyString = GLFW.glfwGetKeyName(key, scancode); // FIXME Is this deprecated?
-//                        if (keyString != null) {
-//                            KeyboardHandler.this.inputString.updateAndGet((inputString_) -> inputString_ + keyString);
-//                        }
-//                    }
-//                }
-//            }
-//        };
-//    }
     
     @Override
     public synchronized boolean init(EventBus bus) {
-//        GLFW.glfwSetKeyCallback(this.window, this.keyCallback);
         bus.register(this);
         return true;
     }
@@ -103,9 +78,7 @@ public class KeyboardHandler implements InputHandler {
     
     @Override
     public synchronized boolean close() {
-//        if (this.keyCallback != null) {
-//            this.keyCallback.close();
-//        }
+        //TODO is this function needed?
         return true;
     }
     
@@ -150,9 +123,5 @@ public class KeyboardHandler implements InputHandler {
     public int size() {
         return this.keys.length;
     }
-    
-//    public long getWindow() {
-//        return this.window;
-//    }
     
 }

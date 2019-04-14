@@ -18,10 +18,10 @@ package de.omnikryptec.libapi.opengl.buffer;
 
 import org.lwjgl.opengl.GL15;
 
-import de.omnikryptec.libapi.exposed.AutoDelete;
+import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 
-public abstract class GLBuffer extends AutoDelete {
+public abstract class GLBuffer implements Deletable {
 
     private final int pointer;
     private final int type;
@@ -29,10 +29,11 @@ public abstract class GLBuffer extends AutoDelete {
     public GLBuffer(final int type) {
         this.type = type;
         this.pointer = GL15.glGenBuffers();
+        register();
     }
 
     @Override
-    protected void deleteRaw() {
+    public void deleteRaw() {
         GL15.glDeleteBuffers(this.pointer);
     }
 

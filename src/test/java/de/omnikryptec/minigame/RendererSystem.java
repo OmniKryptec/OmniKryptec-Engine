@@ -12,25 +12,15 @@ import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.ComponentSystem;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
-import de.omnikryptec.libapi.exposed.render.FBTarget;
-import de.omnikryptec.libapi.exposed.render.RenderAPI;
-import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
-import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.Light2D;
 import de.omnikryptec.render.Renderer2D;
-import de.omnikryptec.render.Renderer2D.EnvironmentKeys2D;
 import de.omnikryptec.render.RendererContext;
 import de.omnikryptec.render.SimpleSprite;
 import de.omnikryptec.render.Sprite;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.storage.RenderedObject;
-import de.omnikryptec.resource.TextureConfig;
-import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.data.Color;
-import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.updater.Time;
 
 public class RendererSystem extends ComponentSystem implements EntityListener {

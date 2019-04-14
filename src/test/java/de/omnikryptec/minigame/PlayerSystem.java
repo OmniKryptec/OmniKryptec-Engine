@@ -1,20 +1,20 @@
 package de.omnikryptec.minigame;
 
+import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.lwjgl.glfw.GLFW;
+
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.ComponentSystem;
-import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.updater.Time;
-import org.joml.Matrix4f;
-import org.joml.Vector2f;
-import org.lwjgl.glfw.GLFW;
 
 public class PlayerSystem extends ComponentSystem {
 
@@ -65,7 +65,7 @@ public class PlayerSystem extends ComponentSystem {
                 again = 0;
                 Vector2f dir = MathUtil.screenToWorldspace2D(
                         MathUtil.relativeMousePosition(inputManager.getMousePosition(),
-                                RenderAPI.get().getWindow().getDefaultFrameBuffer().viewport(), new Vector2f()),
+                                RenderAPI.get().getSurface().viewport(), new Vector2f()),
                         RendererSystem.CAMERA.getProjection().invert(new Matrix4f()), new Vector2f());
                 dir.add(-plus.pos.x, -plus.pos.y);
                 dir.normalize(200);

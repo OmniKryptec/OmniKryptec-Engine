@@ -3,6 +3,7 @@ package de.omnikryptec.libapi.exposed;
 import java.lang.reflect.Constructor;
 
 import org.lwjgl.glfw.GLFW;
+
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.util.Logger;

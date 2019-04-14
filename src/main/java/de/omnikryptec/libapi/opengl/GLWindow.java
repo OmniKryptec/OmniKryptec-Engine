@@ -2,14 +2,12 @@ package de.omnikryptec.libapi.opengl;
 
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.system.Configuration;
 import org.lwjgl.system.Platform;
 
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.InputEvent;
-import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.framebuffer.GLScreenBuffer;
@@ -51,8 +49,7 @@ public class GLWindow implements IWindow {
             GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
             GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_FORWARD_COMPAT, GLFW.GLFW_TRUE);
         }
-        //TODO create libapimanager flag for debug
-        if (Configuration.DEBUG.get()) {
+        if (LibAPIManager.debug()) {
             GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_DEBUG_CONTEXT, GLFW.GLFW_TRUE);
         }
         if ((boolean) windowSettings.get(WindowSetting.Fullscreen)) {
@@ -79,13 +76,6 @@ public class GLWindow implements IWindow {
         setVSync(windowSettings.get(WindowSetting.VSync));
         screenBuffer = new GLScreenBuffer(windowId, aspectRatio);
         windowBus.register(screenBuffer);
-        screenBuffer.bindFrameBuffer();
-        initSizes(windowWidth, windowHeight, screenBuffer.getWidth(), screenBuffer.getHeight());
-    }
-    
-    private void initSizes(int w, int h, int fw, int fh) {
-        //        windowBus.post(new WindowEvent.WindowResized(this, w, h));
-        //        windowBus.post(new WindowEvent.ScreenBufferResized(this, fw, fh));
     }
     
     private void registerCallbacks() {
@@ -136,8 +126,7 @@ public class GLWindow implements IWindow {
         return windowHeight;
     }
     
-    @Override
-    public SurfaceBuffer getDefaultFrameBuffer() {
+    public GLScreenBuffer getDefaultFrameBuffer() {
         return screenBuffer;
     }
     

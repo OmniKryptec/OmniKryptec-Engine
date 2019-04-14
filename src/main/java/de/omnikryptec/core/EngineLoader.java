@@ -132,7 +132,7 @@ public abstract class EngineLoader {
                 loaderSettings.get(LoaderSetting.INIT_OPENCL), loaderSettings.get(LoaderSetting.INIT_OPENAL));
         this.window = RenderAPI.get().getWindow();
         this.resources = new ResourceManager();
-        this.resources.addDefaultLoader();
+        this.resources.addDefaultLoaders();
         this.gameLoop = loaderSettings.get(LoaderSetting.GAME_LOOP);
         this.gameController = new GameController();
         this.updateController = new UpdateController(this.gameController, this.window);

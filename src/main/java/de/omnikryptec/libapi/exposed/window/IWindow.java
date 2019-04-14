@@ -13,8 +13,6 @@ public interface IWindow {
     int getWindowWidth();
     
     int getWindowHeight();
-    //TODO move to RenderAPI?
-    SurfaceBuffer getDefaultFrameBuffer();
     
     void setVSync(boolean vsync);
     
@@ -22,6 +20,7 @@ public interface IWindow {
     
     void dispose();
     
+    //TODO does this belong here or in the ScreenBuffer?
     void swapBuffers();
         
     long getID();

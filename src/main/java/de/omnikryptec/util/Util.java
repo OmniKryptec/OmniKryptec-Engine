@@ -19,7 +19,6 @@ package de.omnikryptec.util;
 import java.util.Scanner;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.resource.parser.shader.ShaderParser;
 
 public class Util {
     

@@ -21,7 +21,7 @@ import java.util.List;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-import de.omnikryptec.libapi.exposed.AutoDelete;
+import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.exposed.render.IndexBuffer;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
@@ -29,7 +29,7 @@ import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout.VertexBufferElement;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 
-public class GLVertexArray extends AutoDelete implements VertexArray {
+public class GLVertexArray implements VertexArray, Deletable {
     
     private final int pointer;
     private int vaaIndex = 0;
@@ -38,6 +38,7 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
     
     public GLVertexArray() {
         this.pointer = GL30.glGenVertexArrays();
+        register();
     }
     
     @Override
@@ -51,7 +52,7 @@ public class GLVertexArray extends AutoDelete implements VertexArray {
     }
     
     @Override
-    protected void deleteRaw() {
+    public void deleteRaw() {
         GL30.glDeleteVertexArrays(this.pointer);
     }
     

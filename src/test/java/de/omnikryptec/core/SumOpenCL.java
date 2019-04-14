@@ -24,7 +24,6 @@ import org.lwjgl.opencl.CL;
 import org.lwjgl.opencl.CL10;
 import org.lwjgl.opencl.CLCapabilities;
 import org.lwjgl.opencl.CLContextCallback;
-import org.lwjgl.opencl.CLProgramCallback;
 import org.lwjgl.system.MemoryStack;
 
 public final class SumOpenCL {

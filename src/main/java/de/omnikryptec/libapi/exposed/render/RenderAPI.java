@@ -21,11 +21,11 @@ import java.awt.Window;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.window.IWindow;
+import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
 import de.omnikryptec.resource.MeshData.Primitive;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
-import de.omnikryptec.util.data.Color;
 
 public interface RenderAPI {
     public static final Class<OpenGLRenderAPI> OpenGL = OpenGLRenderAPI.class;
@@ -114,6 +114,13 @@ public interface RenderAPI {
      */
     FrameBuffer createFrameBuffer(int width, int height, int multisample, int targets);
     
+    /**
+     * The main framebuffer that will shown on the users device. Also known as the
+     * default framebuffer.
+     * 
+     */
+    SurfaceBuffer getSurface();
+    
     void applyRenderState(RenderState renderState);
     
     default void render(final VertexArray vertexArray, final Primitive primitive, final int elementCount) {
@@ -133,5 +140,5 @@ public interface RenderAPI {
     
     void renderInstanced(Primitive primitive, int elementCount, boolean hasIndexBuffer, int instanceCount);
     
-    void printAllErrors();
+    void printErrors();
 }

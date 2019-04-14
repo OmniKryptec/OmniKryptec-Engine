@@ -80,7 +80,7 @@ public class ShaderParser {
         return create(null, false, false);
     }
     
-    //TODO make more dynamic, e.g. changes in zuper are reflected in here but NOT vice-versa
+    //TODx make more dynamic, e.g. changes in zuper are reflected in here but NOT vice-versa
     public static ShaderParser create(final ShaderParser zuper, final boolean inheritModules,
             final boolean inheritProvider) {
         return new ShaderParser(

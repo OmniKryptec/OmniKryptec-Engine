@@ -20,11 +20,6 @@ import java.lang.reflect.Field;
 import java.util.EnumMap;
 import java.util.Map;
 
-import org.lwjgl.opencl.CL10;
-import org.lwjgl.opencl.CL12;
-import org.lwjgl.opencl.CL20;
-import org.lwjgl.opencl.CL21;
-import org.lwjgl.opencl.CL22;
 import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
@@ -46,6 +41,8 @@ import org.lwjgl.opengl.GL44;
 import org.lwjgl.opengl.GL45;
 import org.lwjgl.opengl.GL46;
 
+import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
@@ -64,7 +61,6 @@ import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.resource.parser.shader.ShaderParser.ShaderType;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Logger.LogType;
-import de.omnikryptec.util.data.Color;
 
 public class OpenGLUtil {
     
@@ -88,7 +84,7 @@ public class OpenGLUtil {
         }
     }
     
-    public static int typeId(final ShaderType shaderType) {
+    public static int shaderTypeId(final ShaderType shaderType) {
         switch (shaderType) {
         case Compute:
             return GL43.GL_COMPUTE_SHADER;
@@ -108,7 +104,7 @@ public class OpenGLUtil {
         }
     }
     
-    public static int typeId(final Primitive primitiveType) {
+    public static int primitiveId(final Primitive primitiveType) {
         if (primitiveType == null) {
             //Assuming triangles because mostly triangles are used
             return GL11.GL_TRIANGLES;
@@ -127,7 +123,7 @@ public class OpenGLUtil {
         }
     }
     
-    public static int typeId(final TextureFormat texFormat) {
+    public static int textureFormatId(final TextureFormat texFormat) {
         switch (texFormat) {
         case RGBA8:
             return GL11.GL_RGBA8;
@@ -146,7 +142,7 @@ public class OpenGLUtil {
         }
     }
     
-    public static int typeId(final RenderConfig renderConfig) {
+    public static int renderConfigId(final RenderConfig renderConfig) {
         switch (renderConfig) {
         case BLEND:
             return GL11.GL_BLEND;
@@ -160,7 +156,7 @@ public class OpenGLUtil {
         }
     }
     
-    public static int typeId(final PolyMode polyMode) {
+    public static int polyModeId(final PolyMode polyMode) {
         switch (polyMode) {
         case FILL:
             return GL11.GL_FILL;
@@ -173,7 +169,7 @@ public class OpenGLUtil {
         }
     }
     
-    public static int typeId(final CullMode cullMode) {
+    public static int cullModeId(final CullMode cullMode) {
         switch (cullMode) {
         case BACK:
             return GL11.GL_BACK;
@@ -184,7 +180,7 @@ public class OpenGLUtil {
         }
     }
     
-    public static int typeId(final DepthMode depthMode) {
+    public static int depthModeId(final DepthMode depthMode) {
         switch (depthMode) {
         case ALWAYS:
             return GL11.GL_ALWAYS;
@@ -201,7 +197,7 @@ public class OpenGLUtil {
         }
     }
     
-    public static int typeId(final SurfaceBufferType bufferType) {
+    public static int surfaceBufferTypeId(final SurfaceBufferType bufferType) {
         switch (bufferType) {
         case Color:
             return GL11.GL_COLOR_BUFFER_BIT;
@@ -212,7 +208,7 @@ public class OpenGLUtil {
         }
     }
     
-    public static int typeId(final BufferUsage bufferUsage) {
+    public static int bufferUsageId(final BufferUsage bufferUsage) {
         switch (bufferUsage) {
         case Dynamic:
             return GL15.GL_DYNAMIC_DRAW;
@@ -251,13 +247,15 @@ public class OpenGLUtil {
         int e = 0;
         int found = 0;
         while ((e = GL11.glGetError()) != GL11.GL_NO_ERROR) {
-            logger.error("OpenGL error: " + searchConstants(e));//TODO only full name if debug mode
+            logger.error("OpenGL error: " + (LibAPIManager.debug() ? searchConstants(e) : e));
             found++;
         }
         if (found != 0) {
             throw new RuntimeException("Stopping due to " + found + " OpenGL error(s)");
         }
-        //TODO if debug print no errors found
+        if (found == 0) {
+            logger.debug("No OpenGL errors found!");
+        }
     }
     
     private static final Class<?>[] constantsClasses = { GL11.class, GL12.class, GL13.class, GL14.class, GL15.class,
@@ -356,7 +354,7 @@ public class OpenGLUtil {
             } else if (feature == RenderConfig.WRITE_DEPTH) {
                 GL11.glDepthMask(b);
             } else {
-                final int typeId = typeId(feature);
+                final int typeId = renderConfigId(feature);
                 if (b) {
                     GL11.glEnable(typeId);
                 } else {
@@ -390,7 +388,7 @@ public class OpenGLUtil {
     public static void setCullMode(final CullMode mode) {
         final Object o = cache.get(CACHE_ENUM.CULL_FACE_KEY);
         if (o == null || ((CullMode) o) != mode) {
-            GL11.glCullFace(typeId(mode));
+            GL11.glCullFace(cullModeId(mode));
             cache.put(CACHE_ENUM.CULL_FACE_KEY, mode);
         }
     }
@@ -398,7 +396,7 @@ public class OpenGLUtil {
     public static void setPolyMode(final PolyMode mode) {
         final Object o = cache.get(CACHE_ENUM.POLY_MODE_KEY);
         if (o == null || ((PolyMode) o) != mode) {
-            GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, typeId(mode));
+            GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, polyModeId(mode));
             cache.put(CACHE_ENUM.POLY_MODE_KEY, mode);
         }
     }
@@ -406,7 +404,7 @@ public class OpenGLUtil {
     public static void setDepthTestFunc(final DepthMode depthMode) {
         final Object o = cache.get(CACHE_ENUM.DEPTH_FUNC);
         if (o == null || ((DepthMode) o) != depthMode) {
-            GL11.glDepthFunc(typeId(depthMode));
+            GL11.glDepthFunc(depthModeId(depthMode));
             cache.put(CACHE_ENUM.DEPTH_FUNC, depthMode);
         }
     }
@@ -430,23 +428,25 @@ public class OpenGLUtil {
     public static void clear(final SurfaceBufferType... buffers) {
         int mask = 0;
         for (final SurfaceBufferType b : buffers) {
-            mask |= typeId(b);
+            mask |= surfaceBufferTypeId(b);
         }
         if (mask != 0) {
             GL11.glClear(mask);
         }
     }
+
+    public static int indexToAttachment(int attachment) {
+        if(attachment == FBTarget.DEPTH_ATTACHMENT_INDEX) {
+            return GL30.GL_DEPTH_ATTACHMENT;
+        }
+        return GL30.GL_COLOR_ATTACHMENT0 + attachment;
+    }
     
-    //    public static enum Feature {
-    //        BLEND(GL11.GL_BLEND), DEPTH_TEST(GL11.GL_DEPTH_TEST), CULL_FACES(GL11.GL_CULL_FACE),
-    //        MULTISAMPLE(GL13.GL_MULTISAMPLE), SCISSORTEST(GL11.GL_SCISSOR_TEST);
-    //
-    //        public final int id;
-    //
-    //        private Feature(final int id) {
-    //            this.id = id;
-    //        }
-    //
-    //    }
+    public static int indexToBufferBit(int attachment) {
+        if(attachment == FBTarget.DEPTH_ATTACHMENT_INDEX) {
+            return GL11.GL_DEPTH_BUFFER_BIT;
+        }
+        return GL11.GL_COLOR_BUFFER_BIT;
+    }
     
 }

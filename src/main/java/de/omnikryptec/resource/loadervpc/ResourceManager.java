@@ -49,7 +49,7 @@ public class ResourceManager {
         this.loadersMainThread = new ArrayList<>();
     }
     
-    public void addDefaultLoader() {
+    public void addDefaultLoaders() {
         addLoader(new TextureLoader());
         addLoader(new MeshLoader());
         addLoader(new ShaderLoader());

@@ -18,11 +18,11 @@ package de.omnikryptec.libapi.opengl.texture;
 
 import org.lwjgl.opengl.GL11;
 
-import de.omnikryptec.libapi.exposed.AutoDelete;
+import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 
-public abstract class GLTexture extends AutoDelete implements Texture {
+public abstract class GLTexture implements Texture, Deletable {
 
     public final int pointer;
     public final int type;
@@ -30,6 +30,7 @@ public abstract class GLTexture extends AutoDelete implements Texture {
     public GLTexture(final int type) {
         this.pointer = GL11.glGenTextures();
         this.type = type;
+        register();
     }
 
     public int textureId() {
@@ -46,7 +47,7 @@ public abstract class GLTexture extends AutoDelete implements Texture {
     }
 
     @Override
-    protected void deleteRaw() {
+    public void deleteRaw() {
         GL11.glDeleteTextures(this.pointer);
     }
 

@@ -3,7 +3,6 @@ package de.omnikryptec.render;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
-import de.omnikryptec.libapi.exposed.render.RenderState.RenderConfig;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 //TODO this class seems ugly
 public class SceneRenderBufferManager {
@@ -25,8 +24,8 @@ public class SceneRenderBufferManager {
         } else if (hasTargets) {
             //TODO enable multisampling but better!
             OpenGLUtil.setMultisample(true);
-            int width = api.getWindow().getDefaultFrameBuffer().getWidth();
-            int height = api.getWindow().getDefaultFrameBuffer().getHeight();
+            int width = api.getSurface().getWidth();
+            int height = api.getSurface().getHeight();
             multisampledScene = api.createFrameBuffer(width, height, multisamples, targets.length);
             multisampledScene.bindFrameBuffer();
             multisampledScene.assignTargets(targets);

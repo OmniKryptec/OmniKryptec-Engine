@@ -37,7 +37,7 @@ public class GLIndexBuffer extends GLBuffer implements IndexBuffer {
         this.size = size;
         data.flip();
         bindBuffer();
-        GL15.glBufferData(bufferType(), data, OpenGLUtil.typeId(usage));
+        GL15.glBufferData(bufferType(), data, OpenGLUtil.bufferUsageId(usage));
     }
     
     @Override

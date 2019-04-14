@@ -1,26 +1,16 @@
 package de.omnikryptec.raytracer;
 
-import org.joml.Matrix3x2f;
-
-import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.core.ComfortTest;
 import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.update.IUpdatable;
-import de.omnikryptec.core.update.UpdateableFactory;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
-import de.omnikryptec.libapi.exposed.render.FrameBuffer;
-import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
-import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
-import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
+import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
 import de.omnikryptec.libapi.opengl.framebuffer.GLFrameBuffer;
 import de.omnikryptec.libapi.opengl.shader.GLShader;
 import de.omnikryptec.render.batch.ShadedBatch2D;
-import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
@@ -68,7 +58,7 @@ public class Raytracer extends EngineLoader implements IUpdatable {
         computeShader.dispatchCompute(image.getWidth()/8, image.getHeight()/8, 1);
         
         
-        renderApi.getWindow().getDefaultFrameBuffer().clearColor();
+        renderApi.getSurface().clearColor();
         batch.begin();
         batch.draw(image.getTexture(0), null, false, false);
         batch.end();

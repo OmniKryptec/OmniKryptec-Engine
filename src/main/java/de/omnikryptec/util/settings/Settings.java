@@ -22,7 +22,6 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import de.codemakers.base.util.Require;
-import de.codemakers.base.util.interfaces.Copyable;
 import de.codemakers.base.util.tough.ToughFunction;
 import de.omnikryptec.util.Util;
 

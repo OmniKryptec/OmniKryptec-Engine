@@ -24,7 +24,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL43;
 
-import de.omnikryptec.libapi.exposed.AutoDelete;
+import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
 import de.omnikryptec.libapi.exposed.render.shader.Uniform;
@@ -33,7 +33,7 @@ import de.omnikryptec.resource.parser.shader.ShaderParser.ShaderType;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Logger.LogType;
 
-public class GLShader extends AutoDelete implements Shader {
+public class GLShader implements Shader, Deletable {
     
     private static final Logger logger = Logger.getLogger(GLShader.class);
     
@@ -45,6 +45,7 @@ public class GLShader extends AutoDelete implements Shader {
         this.programId = GL20.glCreateProgram();
         this.attachments = new EnumMap<>(ShaderType.class);
         this.uniforms = new HashMap<>();
+        register();
     }
     
     @Override
@@ -53,7 +54,7 @@ public class GLShader extends AutoDelete implements Shader {
     }
     
     @Override
-    protected void deleteRaw() {
+    public void deleteRaw() {
         for (final Integer id : this.attachments.values()) {
             GL20.glDetachShader(this.programId, id);
             GL20.glDeleteShader(id);
@@ -64,7 +65,7 @@ public class GLShader extends AutoDelete implements Shader {
     @Override
     public void create(final ShaderSource... shaderAttachments) {
         for (final ShaderSource a : shaderAttachments) {
-            final int shader = GL20.glCreateShader(OpenGLUtil.typeId(a.shaderType));
+            final int shader = GL20.glCreateShader(OpenGLUtil.shaderTypeId(a.shaderType));
             GL20.glShaderSource(shader, a.source);
             GL20.glCompileShader(shader);
             if (GL20.glGetShaderi(shader, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {

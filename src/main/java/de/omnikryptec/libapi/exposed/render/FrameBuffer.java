@@ -158,6 +158,10 @@ public interface FrameBuffer {
      * @param resolveDepth if the depthbuffer should be resolved, too
      */
     void resolveToFrameBuffer(@Nonnull FrameBuffer target, int attachment);
+    //TODO nice? also do B-version?
+    default void resolveToFrameBuffer(@Nonnull FrameBuffer target, FBTarget attachment) {
+        resolveToFrameBuffer(target, attachment.attachmentIndex);
+    }
     
     //TODO clearing and setting clear color at the same time might be inefficient/redundant
     default void clearDepth() {

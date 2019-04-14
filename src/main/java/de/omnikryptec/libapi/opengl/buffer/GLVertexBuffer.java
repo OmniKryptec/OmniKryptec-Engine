@@ -38,7 +38,7 @@ public class GLVertexBuffer extends GLBuffer implements VertexBuffer {
         this.size = size;
         data.flip();
         bindBuffer();
-        GL15.glBufferData(bufferType(), data, OpenGLUtil.typeId(dynamic));
+        GL15.glBufferData(bufferType(), data, OpenGLUtil.bufferUsageId(dynamic));
     }
     
     @Override
@@ -46,7 +46,7 @@ public class GLVertexBuffer extends GLBuffer implements VertexBuffer {
         this.size = size;
         data.flip();
         bindBuffer();
-        GL15.glBufferData(bufferType(), data, OpenGLUtil.typeId(dynamic));
+        GL15.glBufferData(bufferType(), data, OpenGLUtil.bufferUsageId(dynamic));
     }
     
     @Override

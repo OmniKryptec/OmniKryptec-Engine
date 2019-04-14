@@ -17,7 +17,6 @@
 package de.omnikryptec.core;
 
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
 import de.omnikryptec.util.data.Color;
@@ -34,9 +33,9 @@ public class StaticInitTest {
         while (!window.isCloseRequested()) {
             updater.update(0);
             if (updater.getOperationCount() % 40 == 0) {
-                clearColor = new Color().randomizeRGB();
+                clearColor.randomizeRGB();
             }
-            RenderAPI.get().getWindow().getDefaultFrameBuffer().clearColor(clearColor);
+            RenderAPI.get().getSurface().clearColor(clearColor);
         }
         EngineLoader.deinitialize();
     }

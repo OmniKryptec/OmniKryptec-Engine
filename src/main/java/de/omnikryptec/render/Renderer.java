@@ -17,7 +17,7 @@ public interface Renderer {
         
     }
     
-    default void createAndResizeFBO(RendererContext context, SurfaceBuffer screen) {
+    default void createOrResizeFBO(RendererContext context, SurfaceBuffer screen) {
         
     }
     

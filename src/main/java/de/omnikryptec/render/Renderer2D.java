@@ -1,18 +1,15 @@
 package de.omnikryptec.render;
 
-import de.omnikryptec.util.data.Color;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 import org.joml.FrustumIntersection;
-import org.joml.Matrix3x2f;
+
 import de.omnikryptec.libapi.exposed.render.FBTarget;
+import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderState;
-import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.RenderConfig;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
@@ -20,25 +17,12 @@ import de.omnikryptec.render.RendererContext.EnvironmentKey;
 import de.omnikryptec.render.batch.ShadedBatch2D;
 import de.omnikryptec.render.storage.IRenderedObjectListener;
 import de.omnikryptec.render.storage.RenderedObject;
+import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.updater.Time;
 
 public class Renderer2D implements Renderer, IRenderedObjectListener {
-    //FIXME fix light color
-    public static enum EnvironmentKeys2D implements Defaultable, EnvironmentKey {
-        AmbientLight(new Color(1f, 1f, 1f));
-        
-        private final Object def;
-        
-        private EnvironmentKeys2D(Object o) {
-            this.def = o;
-        }
-        
-        @Override
-        public <T> T getDefault() {
-            return (T) def;
-        }
-    }
+    //is the light color ok or does this need fixes?
     
     private static final Comparator<Sprite> DEFAULT_COMPARATOR = (s0,
             s1) -> (int) Math.signum(s0.getLayer() - s1.getLayer());
@@ -60,9 +44,7 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
     
     private Comparator<Sprite> spriteComparator = DEFAULT_COMPARATOR;
     private ShadedBatch2D batch = new ShadedBatch2D(1000);
-    //TODO finalMatrix is weird, improve renderbatch?
     private ShadedBatch2D finalDraw = new ShadedBatch2D(6);
-    private Matrix3x2f finalMatrix = new Matrix3x2f().translate(-1, -1).scale(2);
     private List<Sprite> sprites = new ArrayList<>();
     
     private FrameBuffer spriteBuffer, renderBuffer;
@@ -129,33 +111,43 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
         spriteBuffer.unbindFrameBuffer();
         renderer.getRenderAPI().applyRenderState(MULT_STATE);
         finalDraw.begin();
-        finalDraw.draw(spriteBuffer.getTexture(0), finalMatrix, false, false);
+        finalDraw.draw(spriteBuffer.getTexture(0), null, false, false);
         finalDraw.end();
         renderBuffer.unbindFrameBuffer();
         renderer.getRenderAPI().applyRenderState(SPRITE_STATE);
         finalDraw.begin();
-        finalDraw.draw(renderBuffer.getTexture(0), finalMatrix, false, false);
+        finalDraw.draw(renderBuffer.getTexture(0), null, false, false);
         finalDraw.end();
     }
     
     @Override
-    public void createAndResizeFBO(RendererContext context, SurfaceBuffer screen) {
+    public void createOrResizeFBO(RendererContext context, SurfaceBuffer screen) {
         if (spriteBuffer == null) {
             spriteBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
-            spriteBuffer.bindFrameBuffer();
-            //TODO maybe auto bind for FBTarget assignments?
-            spriteBuffer.assignTarget(0, new FBTarget(TextureFormat.RGBA16, 0));
-            spriteBuffer.unbindFrameBuffer();
+            spriteBuffer.assignTargetB(0, new FBTarget(TextureFormat.RGBA16, 0));
         } else {
             spriteBuffer = spriteBuffer.resizedClone(screen.getWidth(), screen.getHeight());
         }
         if (renderBuffer == null) {
             renderBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
-            renderBuffer.bindFrameBuffer();
-            renderBuffer.assignTarget(0, new FBTarget(TextureFormat.RGBA16, 0));
-            renderBuffer.unbindFrameBuffer();
+            renderBuffer.assignTargetB(0, new FBTarget(TextureFormat.RGBA16, 0));
         } else {
             renderBuffer = renderBuffer.resizedClone(screen.getWidth(), screen.getHeight());
+        }
+    }
+    
+    public static enum EnvironmentKeys2D implements Defaultable, EnvironmentKey {
+        AmbientLight(new Color(1f, 1f, 1f));
+        
+        private final Object def;
+        
+        private EnvironmentKeys2D(Object o) {
+            this.def = o;
+        }
+        
+        @Override
+        public <T> T getDefault() {
+            return (T) def;
         }
     }
 }

@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public class FBTarget {
     
-    //TODO texture format?
+    //TODO texture format? move
     public static enum TextureFormat {
         RGBA8(4), RGBA16(4), RGBA32(4), DEPTH16(1), DEPTH24(1), DEPTH32(1);
         

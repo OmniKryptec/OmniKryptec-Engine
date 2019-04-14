@@ -16,27 +16,24 @@
 
 package de.omnikryptec.core.update;
 
+import org.joml.Matrix3x2f;
+import org.joml.Matrix4f;
+
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.libapi.exposed.input.InputManager;
-import de.omnikryptec.libapi.exposed.render.*;
+import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
-import de.omnikryptec.libapi.exposed.render.shader.Shader;
-import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
-import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
-import de.omnikryptec.libapi.exposed.render.shader.UniformVec4;
+import de.omnikryptec.libapi.exposed.render.FrameBuffer;
+import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.batch.ShadedBatch2D;
-import de.omnikryptec.resource.MeshData;
-import de.omnikryptec.resource.MeshData.VertexAttribute;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.updater.Time;
-import org.joml.Matrix3x2f;
-import org.joml.Matrix4f;
 
 public class UpdateableFactory {
     
@@ -55,13 +52,13 @@ public class UpdateableFactory {
     public static IUpdatable createScreenClearTest() {
         return new IUpdatable() {
             
-            private Color color;
+            private Color color = new Color();
             @Override
             public void update(final Time time) {
                 if (time.opCount % 40 == 0) {
-                    color = new Color().randomizeRGB();
+                    color.randomizeRGB();
                 }
-                RenderAPI.get().getWindow().getDefaultFrameBuffer().clearColor(color);
+                RenderAPI.get().getSurface().clearColor(color);
             }
             
             @Override
@@ -101,7 +98,7 @@ public class UpdateableFactory {
                 this.batch.color().randomizeRGB();
                 this.batch.drawLine(0, 0, 3, 2, 0.1f);
                 this.batch.end();
-                fbo.resolveToFrameBuffer(RenderAPI.get().getWindow().getDefaultFrameBuffer(), 1);
+                fbo.resolveToFrameBuffer(RenderAPI.get().getSurface(), 1);
             }
             
         };

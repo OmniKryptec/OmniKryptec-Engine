@@ -16,14 +16,12 @@
 
 package de.omnikryptec.libapi.opencl;
 
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.opencl.CL10;
-import org.lwjgl.system.MemoryUtil;
 
 public class CLKernel {
     

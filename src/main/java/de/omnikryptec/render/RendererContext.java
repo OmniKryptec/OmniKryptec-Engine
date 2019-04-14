@@ -9,15 +9,14 @@ import de.omnikryptec.core.update.ILayer;
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
 import de.omnikryptec.render.postprocessing.Postprocessor;
 import de.omnikryptec.render.storage.IRenderedObjectManager;
 import de.omnikryptec.render.storage.RenderedObjectManager;
+import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
-import de.omnikryptec.util.data.Color;
 
 public class RendererContext implements IUpdatable {
     private static final Comparator<Renderer> RENDERER_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority() - e1.priority();
@@ -92,7 +91,7 @@ public class RendererContext implements IUpdatable {
         renderers.add(renderer);
         renderers.sort(RENDERER_PRIORITY_COMPARATOR);
         renderer.init(this);
-        renderer.createAndResizeFBO(this, getRenderAPI().getWindow().getDefaultFrameBuffer());
+        renderer.createOrResizeFBO(this, getRenderAPI().getSurface());
     }
     
     public void removeRenderer(Renderer renderer) {
@@ -125,7 +124,7 @@ public class RendererContext implements IUpdatable {
     public void event(WindowEvent.ScreenBufferResized ev) {
         frameBuffers.resize(ev.width, ev.height);
         for (Renderer r : renderers) {
-            r.createAndResizeFBO(this, ev.window.getDefaultFrameBuffer());
+            r.createOrResizeFBO(this, ev.surface);
         }
     }
     
@@ -150,7 +149,7 @@ public class RendererContext implements IUpdatable {
             this.postprocessor.postprocess(time, frameBuffers);
         } else if (frameBuffers.is()) {
             //TODO make better framebuffer resolve
-            frameBuffers.get(0).resolveToFrameBuffer(getRenderAPI().getWindow().getDefaultFrameBuffer(),
+            frameBuffers.get(0).resolveToFrameBuffer(getRenderAPI().getSurface(),
                     frameBuffers.get(0).targets()[0].attachmentIndex);
         }
     }
