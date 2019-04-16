@@ -9,6 +9,7 @@ import de.omnikryptec.core.update.ILayer;
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
 import de.omnikryptec.render.postprocessing.Postprocessor;
 import de.omnikryptec.render.storage.IRenderedObjectManager;
@@ -38,6 +39,7 @@ public class RendererContext implements IUpdatable {
             return (T) def;
         }
     }
+    
     //TODO Split stuff in 2 classes? RenderingData and RenderingFunctions or something?
     private Postprocessor postprocessor;
     private SceneRenderBufferManager frameBuffers;
@@ -100,9 +102,8 @@ public class RendererContext implements IUpdatable {
     }
     
     public void preRender(Time time, IProjection projection) {
-        //FIXME clear current framebuffer!
-//        renderApi.setClearColor(getEnvironmentSettings().get(GlobalEnvironmentKeys.ClearColor));
-//        renderApi.clear(SurfaceBufferType.Color, SurfaceBufferType.Depth);
+        renderApi.getCurrentFrameBuffer().clear(getEnvironmentSettings().get(GlobalEnvironmentKeys.ClearColor),
+                SurfaceBufferType.Color, SurfaceBufferType.Depth);
         for (Renderer r : renderers) {
             r.preRender(time, projection, this);
         }
@@ -148,9 +149,7 @@ public class RendererContext implements IUpdatable {
         if (this.postprocessor != null) {
             this.postprocessor.postprocess(time, frameBuffers);
         } else if (frameBuffers.is()) {
-            //TODO make better framebuffer resolve
-            frameBuffers.get(0).resolveToFrameBuffer(getRenderAPI().getSurface(),
-                    frameBuffers.get(0).targets()[0].attachmentIndex);
+            frameBuffers.get(0).resolveToFrameBuffer(getRenderAPI().getSurface(), frameBuffers.get(0).targets()[0]);
         }
     }
     

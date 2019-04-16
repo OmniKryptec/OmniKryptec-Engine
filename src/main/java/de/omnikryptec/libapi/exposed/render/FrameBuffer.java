@@ -189,16 +189,6 @@ public abstract class FrameBuffer {
     public void resolveToFrameBuffer(@Nonnull FrameBuffer target, FBTarget attachment) {
         resolveToFrameBuffer(target, attachment.attachmentIndex);
     }
-
-    public void resolveToFrameBufferB(@Nonnull FrameBuffer target, int attachment) {
-        bindAsTmp();
-        resolveToFrameBuffer(target, attachment);
-        unbindAsTmp();
-    }
-    
-    public void resolveToFrameBufferB(@Nonnull FrameBuffer target, FBTarget attachment) {
-        resolveToFrameBufferB(target, attachment.attachmentIndex);
-    }
     
     //TODO clearing and setting clear color at the same time might be inefficient/redundant
     public void clearDepth() {

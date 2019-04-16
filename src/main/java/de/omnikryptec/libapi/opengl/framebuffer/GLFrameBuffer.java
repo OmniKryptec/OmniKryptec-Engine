@@ -154,6 +154,7 @@ public class GLFrameBuffer extends FrameBuffer implements Deletable {
     
     @Override
     public void resolveToFrameBuffer(final FrameBuffer target, final int attachment) {
+        target.bindAsTmp();
         GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, this.pointer);
         GL11.glReadBuffer(OpenGLUtil.indexToAttachment(attachment));
         int tx = 0;
@@ -168,6 +169,7 @@ public class GLFrameBuffer extends FrameBuffer implements Deletable {
         }
         GL30.glBlitFramebuffer(0, 0, this.width, this.height, tx, ty, tx + tw, ty + th,
                 OpenGLUtil.indexToBufferBit(attachment), GL11.GL_NEAREST);
+        target.unbindAsTmp();
     }
     
     @Override
