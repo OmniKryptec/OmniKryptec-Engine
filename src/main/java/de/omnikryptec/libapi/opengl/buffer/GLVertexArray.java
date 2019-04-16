@@ -38,7 +38,7 @@ public class GLVertexArray implements VertexArray, Deletable {
     
     public GLVertexArray() {
         this.pointer = GL30.glGenVertexArrays();
-        register();
+        registerThisAsAutodeletable();
     }
     
     @Override

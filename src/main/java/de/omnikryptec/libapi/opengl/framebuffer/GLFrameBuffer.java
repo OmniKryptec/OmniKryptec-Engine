@@ -2,8 +2,6 @@ package de.omnikryptec.libapi.opengl.framebuffer;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.util.ArrayDeque;
-import java.util.Deque;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -17,15 +15,13 @@ import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
+import de.omnikryptec.libapi.exposed.render.FrameBufferStack;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.libapi.opengl.texture.GLTexture;
 
-public class GLFrameBuffer implements FrameBuffer, Deletable {
-    
-    //GLScreenBuffer needs access, too
-    static final Deque<FrameBuffer> history = new ArrayDeque<>();
+public class GLFrameBuffer extends FrameBuffer implements Deletable {
     
     private final int width;
     private final int height;
@@ -38,7 +34,9 @@ public class GLFrameBuffer implements FrameBuffer, Deletable {
     
     private final int pointer;
     
-    public GLFrameBuffer(final int width, final int height, final int multisample, final int targets) {
+    public GLFrameBuffer(final int width, final int height, final int multisample, final int targets,
+            FrameBufferStack stack) {
+        super(stack);
         this.pointer = GL30.glGenFramebuffers();
         this.width = width;
         this.height = height;
@@ -49,7 +47,7 @@ public class GLFrameBuffer implements FrameBuffer, Deletable {
         } else {
             this.renderbuffers = new int[targets];
         }
-        register();
+        registerThisAsAutodeletable();
     }
     
     @Override
@@ -68,32 +66,30 @@ public class GLFrameBuffer implements FrameBuffer, Deletable {
             GL30.glBindRenderbuffer(GL30.GL_RENDERBUFFER, colorBuffer);
             GL30.glRenderbufferStorageMultisample(GL30.GL_RENDERBUFFER, this.multisample,
                     OpenGLUtil.textureFormatId(target.format), this.width, this.height);
-            GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, OpenGLUtil.indexToAttachment(target.attachmentIndex), GL30.GL_RENDERBUFFER, colorBuffer);
+            GL30.glFramebufferRenderbuffer(GL30.GL_FRAMEBUFFER, OpenGLUtil.indexToAttachment(target.attachmentIndex),
+                    GL30.GL_RENDERBUFFER, colorBuffer);
             this.renderbuffers[index] = colorBuffer;
         } else {
             final FBTexture texture = new FBTexture();
             texture.bindTexture(0);
-            GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, OpenGLUtil.textureFormatId(target.format), this.width, this.height, 0,
-                    target.isDepthAttachment ? GL11.GL_DEPTH_COMPONENT : GL11.GL_RGBA,
+            GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, OpenGLUtil.textureFormatId(target.format), this.width, this.height,
+                    0, target.isDepthAttachment ? GL11.GL_DEPTH_COMPONENT : GL11.GL_RGBA,
                     target.isDepthAttachment ? GL11.GL_FLOAT : GL11.GL_UNSIGNED_BYTE, (ByteBuffer) null);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
             
-            GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, OpenGLUtil.indexToAttachment(target.attachmentIndex), GL11.GL_TEXTURE_2D,
-                    texture.textureId(), 0);
+            GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, OpenGLUtil.indexToAttachment(target.attachmentIndex),
+                    GL11.GL_TEXTURE_2D, texture.textureId(), 0);
             this.textures[index] = texture;
         }
     }
     
     @Override
-    public void bindFrameBuffer() {
-        if (history.peek() != this) {
-            GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, this.pointer);
-            GL11.glViewport(0, 0, this.width, this.height);
-            history.push(this);
-        }
+    protected void bindRaw() {
+        GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, this.pointer);
+        GL11.glViewport(0, 0, this.width, this.height);
     }
     
     public void bindImageTexture(int imageUnit, int texIndex, int level, boolean layered, int layer, int access,
@@ -101,16 +97,6 @@ public class GLFrameBuffer implements FrameBuffer, Deletable {
         GL42.glBindImageTexture(imageUnit, textures[texIndex].pointer, level, layered, layer, GL15.GL_READ_WRITE,
                 OpenGLUtil.textureFormatId(format));
         OpenGLUtil.flushErrors();
-    }
-    
-    @Override
-    public void unbindFrameBuffer() {
-        if (history.peek() == this) {
-            history.pop();
-            history.pop().bindFrameBuffer();
-        } else {
-            throw new IllegalStateException("can not unbind if not top of framebuffer stack!");
-        }
     }
     
     @Override
@@ -168,7 +154,6 @@ public class GLFrameBuffer implements FrameBuffer, Deletable {
     
     @Override
     public void resolveToFrameBuffer(final FrameBuffer target, final int attachment) {
-        target.bindFrameBuffer();
         GL30.glBindFramebuffer(GL30.GL_READ_FRAMEBUFFER, this.pointer);
         GL11.glReadBuffer(OpenGLUtil.indexToAttachment(attachment));
         int tx = 0;
@@ -182,8 +167,7 @@ public class GLFrameBuffer implements FrameBuffer, Deletable {
             ty = s.viewport[1];
         }
         GL30.glBlitFramebuffer(0, 0, this.width, this.height, tx, ty, tx + tw, ty + th,
-               OpenGLUtil.indexToBufferBit(attachment), GL11.GL_NEAREST);
-        target.unbindFrameBuffer();
+                OpenGLUtil.indexToBufferBit(attachment), GL11.GL_NEAREST);
     }
     
     @Override
@@ -197,13 +181,14 @@ public class GLFrameBuffer implements FrameBuffer, Deletable {
     }
     
     @Override
-    public int size() {
+    public int targetCount() {
         return this.targets.length;
     }
     
     @Override
     public FrameBuffer resizedClone(final int newWidth, final int newHeight) {
-        final FrameBuffer fb = new GLFrameBuffer(newWidth, newHeight, this.multisample, this.targets.length);
+        final FrameBuffer fb = new GLFrameBuffer(newWidth, newHeight, this.multisample, this.targets.length,
+                this.stack);
         fb.assignTargetsB(this.targets);
         return fb;
     }
@@ -218,17 +203,11 @@ public class GLFrameBuffer implements FrameBuffer, Deletable {
         return height;
     }
     
-    //TODO history system. this looks ugly. include history in exposed maybe.
     @Override
     public void clear(float r, float g, float b, float a, SurfaceBufferType... types) {
-        boolean bound = history.peek() == this;
-        if (!bound) {
-            bindFrameBuffer();
-        }
+        bindAsTmp();
         OpenGLUtil.setClearColor(r, g, b, a);
         OpenGLUtil.clear(types);
-        if (!bound) {
-            unbindFrameBuffer();
-        }
+        unbindAsTmp();
     }
 }

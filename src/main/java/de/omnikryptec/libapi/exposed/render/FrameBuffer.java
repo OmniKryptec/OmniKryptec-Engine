@@ -1,19 +1,3 @@
-/*
- *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
-
 package de.omnikryptec.libapi.exposed.render;
 
 import javax.annotation.Nonnull;
@@ -23,13 +7,76 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.util.data.Color;
 
 /**
- * An interface representing a FrameBuffer.<br>
+ * An abstract class representing a FrameBuffer.<br>
  * FrameBuffers are dynamic textures, e.g. used for postprocessing.
  *
  * @author pcfreak9000
  * @see RenderAPI#createFrameBuffer(int, int, int, int)
  */
-public interface FrameBuffer {
+public abstract class FrameBuffer {
+    
+    protected final FrameBufferStack stack;
+    
+    public FrameBuffer(FrameBufferStack stack) {
+        this.stack = stack;
+    }
+    
+    private boolean isNull() {
+        return stack == null;
+    }
+    
+    /**
+     * Binds this {@link FrameBuffer} to be operated upon.<br>
+     * <br>
+     * Possible operations are:<br>
+     * <ul>
+     * <li>Rendering to this FrameBuffer</li>
+     * <li>Assigning targets to this FrameBuffer</li>
+     * </ul>
+     *
+     * @see #unbindFrameBuffer()
+     */
+    public final void bindFrameBuffer() {
+        if (isNull()) {
+            bindRaw();
+        } else {
+            stack.bind(this);
+        }
+    }
+    
+    /**
+     * Unbinds this {@link FrameBuffer}.
+     *
+     * @see #bindFrameBuffer()
+     */
+    public final void unbindFrameBuffer() {
+        if (isNull()) {
+            unbindRaw();
+        } else {
+            stack.unbind(this);
+        }
+    }
+    
+    public void bindAsTmp() {
+        if (isNull()) {
+            bindRaw();
+        } else {
+            stack.bindTmp(this);
+        }
+    }
+    
+    public void unbindAsTmp() {
+        if (isNull()) {
+            unbindRaw();
+        } else {
+            stack.unbindTmp();
+        }
+    }
+    
+    protected abstract void bindRaw();
+    
+    protected void unbindRaw() {
+    }
     
     /**
      * Sets the {@link FBTarget} at a certain index of this {@link FrameBuffer}.<br>
@@ -44,7 +91,7 @@ public interface FrameBuffer {
      * @see #assignTargets(int, FBTarget...)
      * @see #assignTargets(FBTarget...)
      */
-    void assignTarget(int index, @Nonnull FBTarget target);
+    public abstract void assignTarget(int index, @Nonnull FBTarget target);
     
     /**
      * Sets the targets of this {@link FrameBuffer}. All given targets will be set,
@@ -53,7 +100,7 @@ public interface FrameBuffer {
      * @param targets the targets to assign
      * @see #assignTarget(int, FBTarget)
      */
-    default void assignTargets(@Nonnull final FBTarget... targets) {
+    public void assignTargets(@Nonnull final FBTarget... targets) {
         assignTargets(0, targets);
     }
     
@@ -64,7 +111,7 @@ public interface FrameBuffer {
      * @param targets    the targets
      * @see #assignTarget(int, FBTarget)
      */
-    default void assignTargets(final int startIndex, @Nonnull final FBTarget... targets) {
+    public void assignTargets(final int startIndex, @Nonnull final FBTarget... targets) {
         assignTargets(startIndex, 0, targets.length, targets);
     }
     
@@ -78,7 +125,7 @@ public interface FrameBuffer {
      * @see #assignTarget(int, FBTarget)
      *
      */
-    default void assignTargets(final int startIndex, final int srcStart, final int srcLength,
+    public void assignTargets(final int startIndex, final int srcStart, final int srcLength,
             @Nonnull final FBTarget... targets) {
         for (int i = startIndex; i < startIndex + srcLength; i++) {
             assignTarget(i, targets[srcStart + i]);
@@ -90,10 +137,10 @@ public interface FrameBuffer {
      * and unbinds the framebuffer during this operation.
      * 
      */
-    default void assignTargetB(int index, @Nonnull FBTarget target) {
-        bindFrameBuffer();
+    public void assignTargetB(int index, @Nonnull FBTarget target) {
+        bindAsTmp();
         assignTarget(index, target);
-        unbindFrameBuffer();
+        unbindAsTmp();
     }
     
     /**
@@ -101,10 +148,10 @@ public interface FrameBuffer {
      * and unbinds the framebuffer during this operation.
      * 
      */
-    default void assignTargetsB(@Nonnull final FBTarget... targets) {
-        bindFrameBuffer();
+    public void assignTargetsB(@Nonnull final FBTarget... targets) {
+        bindAsTmp();
         assignTargets(0, targets);
-        unbindFrameBuffer();
+        unbindAsTmp();
     }
     
     /**
@@ -112,32 +159,12 @@ public interface FrameBuffer {
      * functions binds and unbinds the framebuffer during this operation.
      * 
      */
-    default void assignTargetsB(final int startIndex, final int srcStart, final int srcLength,
+    public void assignTargetsB(final int startIndex, final int srcStart, final int srcLength,
             @Nonnull final FBTarget... targets) {
-        bindFrameBuffer();
+        bindAsTmp();
         assignTargets(startIndex, srcStart, srcLength, targets);
-        bindFrameBuffer();
+        unbindAsTmp();
     }
-    
-    /**
-     * Binds this {@link FrameBuffer} to be operated upon.<br>
-     * <br>
-     * Possible operations are:<br>
-     * <ul>
-     * <li>Rendering to this FrameBuffer</li>
-     * <li>Assigning targets to this FrameBuffer</li>
-     * </ul>
-     *
-     * @see #unbindFrameBuffer()
-     */
-    void bindFrameBuffer();
-    
-    /**
-     * Unbinds this {@link FrameBuffer}.
-     *
-     * @see #bindFrameBuffer()
-     */
-    void unbindFrameBuffer();
     
     /**
      * Returns a {@link Texture} of this {@link FrameBuffer}.
@@ -147,7 +174,7 @@ public interface FrameBuffer {
      * @see #assignTarget(int, FBTarget)
      */
     @Nullable
-    Texture getTexture(int targetIndex);
+    public abstract Texture getTexture(int targetIndex);
     
     /**
      * Blits the specified attachment of this {@link FrameBuffer} to another
@@ -157,34 +184,44 @@ public interface FrameBuffer {
      * @param attachment   the index of the attachment to resolve
      * @param resolveDepth if the depthbuffer should be resolved, too
      */
-    void resolveToFrameBuffer(@Nonnull FrameBuffer target, int attachment);
-    //TODO nice? also do B-version?
-    default void resolveToFrameBuffer(@Nonnull FrameBuffer target, FBTarget attachment) {
+    public abstract void resolveToFrameBuffer(@Nonnull FrameBuffer target, int attachment);
+    
+    public void resolveToFrameBuffer(@Nonnull FrameBuffer target, FBTarget attachment) {
         resolveToFrameBuffer(target, attachment.attachmentIndex);
+    }
+
+    public void resolveToFrameBufferB(@Nonnull FrameBuffer target, int attachment) {
+        bindAsTmp();
+        resolveToFrameBuffer(target, attachment);
+        unbindAsTmp();
+    }
+    
+    public void resolveToFrameBufferB(@Nonnull FrameBuffer target, FBTarget attachment) {
+        resolveToFrameBufferB(target, attachment.attachmentIndex);
     }
     
     //TODO clearing and setting clear color at the same time might be inefficient/redundant
-    default void clearDepth() {
+    public void clearDepth() {
         clear(0, 0, 0, 0, SurfaceBufferType.Depth);
     }
     
-    default void clearColor() {
+    public void clearColor() {
         clearColor(0, 0, 0, 0);
     }
     
-    default void clearColor(Color color) {
+    public void clearColor(Color color) {
         clearColor(color.getA(), color.getG(), color.getB(), color.getA());
     }
     
-    default void clearColor(float r, float g, float b, float a) {
+    public void clearColor(float r, float g, float b, float a) {
         clear(r, g, b, a, SurfaceBufferType.Color);
     }
     
-    default void clear(Color color, SurfaceBufferType... types) {
+    public void clear(Color color, SurfaceBufferType... types) {
         clear(color.getA(), color.getG(), color.getB(), color.getA(), types);
     }
     
-    void clear(float r, float g, float b, float a, SurfaceBufferType... types);
+    public abstract void clear(float r, float g, float b, float a, SurfaceBufferType... types);
     
     /**
      * THe amount of samples this {@link FrameBuffer} does when rendering onto. 0 if
@@ -192,7 +229,7 @@ public interface FrameBuffer {
      *
      * @return multisampling value
      */
-    int multisamples();
+    public abstract int multisamples();
     
     /**
      * A copy of the current set targets.
@@ -201,25 +238,25 @@ public interface FrameBuffer {
      * @see #assignTarget(int, FBTarget)
      */
     @Nonnull
-    FBTarget[] targets();
+    public abstract FBTarget[] targets();
     
     /**
      * This {@link FrameBuffer} is a RenderBuffer if it has no textures.
      *
      * @return is render buffer?
      */
-    boolean isRenderBuffer();
+    public abstract boolean isRenderBuffer();
     
     /**
      * The maximum number of targets this {@link FrameBuffer} can handle
      *
      * @return max number of targets
      */
-    int size();
+    public abstract int targetCount();
     
-    FrameBuffer resizedClone(int newWidth, int newHeight);
+    public abstract FrameBuffer resizedClone(int newWidth, int newHeight);
     
-    int getWidth();
+    public abstract int getWidth();
     
-    int getHeight();
+    public abstract int getHeight();
 }

@@ -30,7 +30,7 @@ public abstract class GLTexture implements Texture, Deletable {
     public GLTexture(final int type) {
         this.pointer = GL11.glGenTextures();
         this.type = type;
-        register();
+        registerThisAsAutodeletable();
     }
 
     public int textureId() {

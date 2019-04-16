@@ -6,6 +6,7 @@ import org.lwjgl.system.Platform;
 
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.libapi.exposed.render.FrameBufferStack;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.InputEvent;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
@@ -26,7 +27,7 @@ public class GLWindow implements IWindow {
     private boolean isFullscreen;
     private boolean isActive;
 
-    public GLWindow(Settings<WindowSetting> windowSettings, Settings<IntegerKey> apiSettings) {
+    public GLWindow(Settings<WindowSetting> windowSettings, Settings<IntegerKey> apiSettings, FrameBufferStack fbStack) {
         Util.ensureNonNull(windowSettings, "Window settings must not be null!");
         this.windowWidth = windowSettings.get(WindowSetting.Width);
         this.windowHeight = windowSettings.get(WindowSetting.Height);
@@ -74,7 +75,7 @@ public class GLWindow implements IWindow {
         GLFW.glfwMakeContextCurrent(windowId);
         GL.createCapabilities();
         setVSync(windowSettings.get(WindowSetting.VSync));
-        screenBuffer = new GLScreenBuffer(windowId, aspectRatio);
+        screenBuffer = new GLScreenBuffer(windowId, aspectRatio, fbStack);
         windowBus.register(screenBuffer);
     }
     

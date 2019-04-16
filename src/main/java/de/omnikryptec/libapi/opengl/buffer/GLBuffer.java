@@ -29,7 +29,7 @@ public abstract class GLBuffer implements Deletable {
     public GLBuffer(final int type) {
         this.type = type;
         this.pointer = GL15.glGenBuffers();
-        register();
+        registerThisAsAutodeletable();
     }
 
     @Override

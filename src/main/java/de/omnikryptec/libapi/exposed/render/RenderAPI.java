@@ -114,6 +114,8 @@ public interface RenderAPI {
      */
     FrameBuffer createFrameBuffer(int width, int height, int multisample, int targets);
     
+    FrameBuffer getCurrentFrameBuffer();
+    
     /**
      * The main framebuffer that will shown on the users device. Also known as the
      * default framebuffer.

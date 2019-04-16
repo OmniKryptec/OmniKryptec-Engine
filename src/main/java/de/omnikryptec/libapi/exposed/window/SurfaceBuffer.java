@@ -1,9 +1,13 @@
 package de.omnikryptec.libapi.exposed.window;
 
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
+import de.omnikryptec.libapi.exposed.render.FrameBufferStack;
 
-public interface SurfaceBuffer extends FrameBuffer{
+public abstract class SurfaceBuffer extends FrameBuffer{
     
-    int[] viewport();
-    //double aspectRatio();
+    public SurfaceBuffer(FrameBufferStack stack) {
+        super(stack);        
+    }
+
+    public abstract int[] viewport();
 }

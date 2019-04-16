@@ -6,8 +6,8 @@ public interface Deletable {
         deleteRaw();
         AutoDeletionManager.unregister(this);
     }
-    //TODO rename
-    default void register() {
+
+    default void registerThisAsAutodeletable() {
         AutoDeletionManager.register(this);
     }
     

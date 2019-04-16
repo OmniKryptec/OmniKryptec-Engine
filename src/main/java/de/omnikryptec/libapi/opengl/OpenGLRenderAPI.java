@@ -22,6 +22,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL31;
 
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
+import de.omnikryptec.libapi.exposed.render.FrameBufferStack;
 import de.omnikryptec.libapi.exposed.render.IndexBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderState;
@@ -51,9 +52,11 @@ public class OpenGLRenderAPI implements RenderAPI {
     public static final IntegerKey MINOR_VERSION = IntegerKey.next(0);
     
     private GLWindow window;
+    private FrameBufferStack frameBufferStack;
     
     public OpenGLRenderAPI(final Settings<WindowSetting> windowsettings, final Settings<IntegerKey> apisettings) {
-        this.window = new GLWindow(windowsettings, apisettings);
+        this.frameBufferStack = new FrameBufferStack();
+        this.window = new GLWindow(windowsettings, apisettings, frameBufferStack);
     }
     
     @Override
@@ -93,7 +96,12 @@ public class OpenGLRenderAPI implements RenderAPI {
     
     @Override
     public FrameBuffer createFrameBuffer(final int width, final int height, final int multisample, final int targets) {
-        return new GLFrameBuffer(width, height, multisample, targets);
+        return new GLFrameBuffer(width, height, multisample, targets, frameBufferStack);
+    }
+    
+    @Override
+    public FrameBuffer getCurrentFrameBuffer() {
+        return frameBufferStack.getCurrent();
     }
     
     @Override

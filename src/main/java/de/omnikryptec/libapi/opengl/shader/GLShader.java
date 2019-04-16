@@ -45,7 +45,7 @@ public class GLShader implements Shader, Deletable {
         this.programId = GL20.glCreateProgram();
         this.attachments = new EnumMap<>(ShaderType.class);
         this.uniforms = new HashMap<>();
-        register();
+        registerThisAsAutodeletable();
     }
     
     @Override
