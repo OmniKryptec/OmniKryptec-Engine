@@ -16,16 +16,17 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
-import de.omnikryptec.event.EventBus;
-import de.omnikryptec.event.EventSubscription;
-import de.omnikryptec.libapi.exposed.window.InputEvent;
-import de.omnikryptec.util.settings.KeySettings;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.joml.Vector2d;
 import org.joml.Vector2dc;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicBoolean;
+import de.omnikryptec.event.EventBus;
+import de.omnikryptec.event.EventSubscription;
+import de.omnikryptec.libapi.exposed.window.InputEvent;
+import de.omnikryptec.util.settings.KeySettings;
 
 public class MouseHandler implements InputHandler {
     

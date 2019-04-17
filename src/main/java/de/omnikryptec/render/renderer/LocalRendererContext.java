@@ -22,7 +22,7 @@ public class LocalRendererContext {
     private static final Comparator<Renderer> RENDERER_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority() - e1.priority();
     
     private RendererContext context;
-    
+    //TODO postprocessing
     private Postprocessor postprocessor;
     private SceneRenderBufferManager frameBuffers;
     
@@ -34,12 +34,17 @@ public class LocalRendererContext {
     
     private int prio;
     
-    LocalRendererContext(RendererContext context) {
+    LocalRendererContext(RendererContext context, Settings<EnvironmentKey> environmentSettings, int multisamples,
+            FBTarget... targets) {
         this.context = context;
         this.renderers = new ArrayList<>();
-        //TODO constructor env,pp,fb
-        this.frameBuffers = new SceneRenderBufferManager(getRenderAPI(), 0, new FBTarget(TextureFormat.RGBA16, 0));
-        this.environmentSettings = new Settings<>();
+        if (targets == null || targets.length == 0) {
+            this.frameBuffers = new SceneRenderBufferManager(getRenderAPI(), multisamples,
+                    new FBTarget(TextureFormat.RGBA16, 0));
+        } else {
+            this.frameBuffers = new SceneRenderBufferManager(getRenderAPI(), multisamples, targets);
+        }
+        this.environmentSettings = environmentSettings == null ? new Settings<>() : environmentSettings;
     }
     
     public void setPriority(int i) {

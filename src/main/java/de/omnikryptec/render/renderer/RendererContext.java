@@ -8,12 +8,15 @@ import de.omnikryptec.core.update.ILayer;
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
 import de.omnikryptec.render.batch.ShadedBatch2D;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.Defaultable;
+import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class RendererContext implements IUpdatable {
@@ -38,6 +41,7 @@ public class RendererContext implements IUpdatable {
     
     private static final Comparator<LocalRendererContext> LOCAL_CONTEXT_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority()
             - e1.priority();
+    private static final RenderState DEFAULT_SCREENWRITER_STATE = RenderState.of();
     
     private RenderAPI renderApi;
     private ShadedBatch2D batch;
@@ -54,7 +58,11 @@ public class RendererContext implements IUpdatable {
     }
     
     public LocalRendererContext createLocal() {
-        LocalRendererContext context = new LocalRendererContext(this);
+        return createLocal(null, 0);
+    }
+    
+    public LocalRendererContext createLocal(Settings<EnvironmentKey> environmentSettings, int multisamples, FBTarget ...targets) {
+        LocalRendererContext context = new LocalRendererContext(this, environmentSettings, multisamples, targets);
         subContexts.add(context);
         notifyPriorityChanged();
         return context;
@@ -84,7 +92,7 @@ public class RendererContext implements IUpdatable {
             screen[i] = subContexts.get(i).renderCycle(time);
         }
         renderApi.getCurrentFrameBuffer().clearAll();
-        //TODO renderstate for the screen batch
+        renderApi.applyRenderState(DEFAULT_SCREENWRITER_STATE);
         batch.begin();
         for (Texture t : screen) {
             batch.draw(t, null, false, false);

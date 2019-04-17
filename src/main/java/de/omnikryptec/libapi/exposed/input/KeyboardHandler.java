@@ -16,16 +16,17 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
+
+import org.lwjgl.glfw.GLFW;
+
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.window.InputEvent;
 import de.omnikryptec.util.settings.KeySettings;
-import org.lwjgl.glfw.GLFW;
 
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
-
-//FIXME synchronized causes bad performance // Who says that? // synchronized means the calling thread have to check if there is a lock on that function also the synchronized is unneccessary here
+//TODO monitor if synchronized causes bad performance in this class or if it is negliable 
 public class KeyboardHandler implements InputHandler {
     
     private final byte[] keys = new byte[GLFW.GLFW_KEY_LAST + 1]; //TODO Test if this includes every key //TODO Maybe this is no longer necessary, because the KeySettings Keys having their own isPressed state, BUT this is necessary, because maybe you want to save ALL key states, so this should stay

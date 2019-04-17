@@ -39,7 +39,7 @@ public interface RenderAPI {
      *
      * @return the current {@code RenderAPI}
      */
-    //TODO don't use this better use it through renderercontext because this is ugly af?
+    //TODx don't use this better use it through renderercontext because this is ugly af?
     @Deprecated
     public static RenderAPI get() {
         return LibAPIManager.instance().getGLFW().getRenderAPI();

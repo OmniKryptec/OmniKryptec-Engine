@@ -108,7 +108,7 @@ public class VertexBufferLayout {
         return Collections.unmodifiableList(this.elements);
     }
     
-    //XXX nice?
+    //XXx nice?
     public void lock() {
         locked = true;
     }
