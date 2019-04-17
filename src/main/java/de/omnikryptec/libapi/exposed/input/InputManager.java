@@ -16,17 +16,16 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
-import org.joml.Vector2d;
-import org.joml.Vector2dc;
-import org.joml.Vector4d;
-import org.joml.Vector4dc;
-
 import de.omnikryptec.core.update.ILayer;
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.updater.Time;
+import org.joml.Vector2d;
+import org.joml.Vector2dc;
+import org.joml.Vector4d;
+import org.joml.Vector4dc;
 
 public class InputManager implements IUpdatable {
     
@@ -95,10 +94,6 @@ public class InputManager implements IUpdatable {
     }
     
     protected boolean preUpdateIntern(Time time) {
-        // final double currentTime = LibAPIManager.active().getTime(); //TODO Clean this
-        //currentTime.set(LibAPIManager.active().getTime()); //TODO Clean this
-        //final double currentTime_ = currentTime.get(); //TODO Clean this
-        //final KeySettings keySettings = null; //FIXME KeySettings missing!
         boolean good = true;
         if (longButtonPressEnabled) {
             if (!keyboardHandler.preUpdate(time.current, keySettings)) {
@@ -115,10 +110,7 @@ public class InputManager implements IUpdatable {
     }
     
     protected boolean updateIntern(Time time) {
-        // final double currentTime = LibAPIManager.active().getTime(); //TODO Clean this
-        //final double currentTime_ = currentTime.get(); //TODO Clean this
         keyboardHandler.clearInputString();
-        //final KeySettings keySettings = null; //FIXME KeySettings missing!
         boolean good = true;
         if (longButtonPressEnabled) {
             if (!keyboardHandler.update(time.current, keySettings)) {
@@ -135,9 +127,6 @@ public class InputManager implements IUpdatable {
     }
     
     protected boolean postUpdateIntern(Time time) {
-        // final double currentTime = LibAPIManager.active().getTime(); //TODO Clean this
-        //final double currentTime_ = currentTime.get(); //TODO Clean this
-        //final KeySettings keySettings = null; //FIXME KeySettings missing!
         boolean good = true;
         if (longButtonPressEnabled) {
             if (!keyboardHandler.postUpdate(time.current, keySettings)) {
@@ -194,13 +183,9 @@ public class InputManager implements IUpdatable {
     }
     
     public InputManager setLongButtonPressEnabled(boolean longButtonPressEnabled) {
-        longButtonPressEnabled = longButtonPressEnabled; //FIXME fixme! variable assignment
+        this.longButtonPressEnabled = longButtonPressEnabled;
         return this;
     }
-    
-//    public long getWindow() {
-//        return window;
-//    }
     
     // Keyboard part
     
@@ -251,7 +236,7 @@ public class InputManager implements IUpdatable {
     }
     
     public InputManager setCursorType(CursorType cursorType) {
-        //FIXME move to different position
+        //FIXME move to different position, why?
         Util.ensureNonNull(cursorType);
         //GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, cursorType.getState());
         this.cursorType = cursorType;
@@ -269,7 +254,7 @@ public class InputManager implements IUpdatable {
         mouseDelta.y = mousePositionDelta.y;
         mouseDelta.z = mouseScrollOffsetDelta.x;
         mouseDelta.w = mouseScrollOffsetDelta.y;
-        //FIXME Maybe split this up, because this below was executed as the last part in the old update ("nextFrame") method
+        //FIXME Maybe split this up, because this below was executed as the last part in the old update ("nextFrame") method, needs discussion?
         mousePositionLastTime.x = mousePosition.x;
         mousePositionLastTime.y = mousePosition.y;
         mouseScrollOffsetLastTime.x = mouseScrollOffset.x;
