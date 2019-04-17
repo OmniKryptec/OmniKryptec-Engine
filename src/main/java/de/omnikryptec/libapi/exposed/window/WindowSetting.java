@@ -4,7 +4,6 @@ import de.omnikryptec.util.settings.Defaultable;
 
 public enum WindowSetting implements Defaultable{
     Width(800), Height(600), Fullscreen(false), Name("Display"), Resizeable(true), LockAspectRatio(false),
-    Multisample(0),
     /**
      * @see WindowInterfaceWIP#setVSync(boolean)
      * @see de.omnikryptec.core.scene.UpdateController#setSyncUpdatesPerSecond(int)

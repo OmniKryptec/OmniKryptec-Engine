@@ -33,7 +33,6 @@ public class BigTest extends EngineLoader {
         windowSettings.set(WindowSetting.Name, "BigTest-Window");
         windowSettings.set(WindowSetting.LockAspectRatio, true);
         windowSettings.set(WindowSetting.VSync, false);
-        windowSettings.set(WindowSetting.Multisample, 16);
         
         //windowSettings.set(WindowSetting.Fullscreen, true);
         //windowSettings.set(WindowSetting.Width, 10000);

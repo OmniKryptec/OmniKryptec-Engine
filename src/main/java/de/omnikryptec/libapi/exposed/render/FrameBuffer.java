@@ -211,6 +211,10 @@ public abstract class FrameBuffer {
         clear(color.getA(), color.getG(), color.getB(), color.getA(), types);
     }
     
+    public void clearAll() {
+        clear(0, 0, 0, 0, SurfaceBufferType.Color, SurfaceBufferType.Depth);
+    }
+    
     public abstract void clear(float r, float g, float b, float a, SurfaceBufferType... types);
     
     /**

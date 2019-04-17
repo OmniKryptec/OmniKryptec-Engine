@@ -15,11 +15,13 @@ import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.Light2D;
 import de.omnikryptec.render.Renderer2D;
-import de.omnikryptec.render.RendererContext;
 import de.omnikryptec.render.SimpleSprite;
 import de.omnikryptec.render.Sprite;
 import de.omnikryptec.render.batch.Batch2D;
+import de.omnikryptec.render.rendererFrame.LocalRendererContext;
+import de.omnikryptec.render.rendererFrame.RendererContext;
 import de.omnikryptec.render.storage.RenderedObject;
+import de.omnikryptec.render.storage.RenderedObjectManager;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.updater.Time;
 
@@ -30,12 +32,15 @@ public class RendererSystem extends ComponentSystem implements EntityListener {
     private ComponentMapper<PositionComponent> posMapper = new ComponentMapper<>(PositionComponent.class);
     private ComponentMapper<RenderComponent> rendMapper = new ComponentMapper<>(RenderComponent.class);
     
-    private RendererContext renderer;
+    private RendererContext context;
+    private LocalRendererContext renderer;
     
     public RendererSystem() {
         super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(RenderComponent.class)));
-        this.renderer = new RendererContext();
-        this.renderer.init(new ProvidingLayer(LibAPIManager.LIB_API_EVENT_BUS));
+        this.context = new RendererContext();
+        this.context.init(new ProvidingLayer(LibAPIManager.LIB_API_EVENT_BUS));
+        this.renderer = this.context.createLocal();
+        this.renderer.setIRenderedObjectManager(new RenderedObjectManager());
         this.renderer.addRenderer(new Renderer2D());
         this.renderer.setMainProjection(CAMERA);
         
@@ -60,7 +65,7 @@ public class RendererSystem extends ComponentSystem implements EntityListener {
         MyLight l1 = new MyLight();
         l1.color = new Color(1, 0, 0);
         l1.x = -120;
-        l1.y =  50;
+        l1.y = 50;
         MyLight l2 = new MyLight();
         l2.color = new Color(0, 1, 0);
         l2.x = 0;
@@ -103,7 +108,7 @@ public class RendererSystem extends ComponentSystem implements EntityListener {
     public void update(IECSManager manager, Time time) {
         //this.renderer.getEnvironmentSettings().set(EnvironmentKeys2D.AmbientLight,
         //      Color.ofTemperature(Mathf.pingpong(time.currentf * 1000, 8000)));
-        this.renderer.update(time);
+        this.context.update(time);
     }
     
 }

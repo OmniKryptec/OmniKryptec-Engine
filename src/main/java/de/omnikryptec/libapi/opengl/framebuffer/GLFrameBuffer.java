@@ -23,6 +23,22 @@ import de.omnikryptec.libapi.opengl.texture.GLTexture;
 
 public class GLFrameBuffer extends FrameBuffer implements Deletable {
     
+    private static int multisampler = 0;
+    
+    private static void enableMultisamplingIfFirst() {
+        if (multisampler == 0) {
+            OpenGLUtil.setMultisample(true);
+        }
+        multisampler++;
+    }
+    
+    private static void disableMultisamplingIfLast() {
+        multisampler--;
+        if (multisampler == 0) {
+            OpenGLUtil.setMultisample(false);
+        }
+    }
+    
     private final int width;
     private final int height;
     
@@ -45,6 +61,7 @@ public class GLFrameBuffer extends FrameBuffer implements Deletable {
         if (multisample == 0) {
             this.textures = new FBTexture[targets];
         } else {
+            enableMultisamplingIfFirst();
             this.renderbuffers = new int[targets];
         }
         registerThisAsAutodeletable();
@@ -121,6 +138,9 @@ public class GLFrameBuffer extends FrameBuffer implements Deletable {
             }
         }
         GL30.glDeleteFramebuffers(this.pointer);
+        if (multisample > 0) {
+            disableMultisamplingIfLast();
+        }
     }
     
     private void deleteRenderBuffer(final int index) {

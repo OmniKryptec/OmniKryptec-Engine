@@ -13,8 +13,10 @@ import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.RenderConfig;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
-import de.omnikryptec.render.RendererContext.EnvironmentKey;
 import de.omnikryptec.render.batch.ShadedBatch2D;
+import de.omnikryptec.render.rendererFrame.LocalRendererContext;
+import de.omnikryptec.render.rendererFrame.Renderer;
+import de.omnikryptec.render.rendererFrame.RendererContext.EnvironmentKey;
 import de.omnikryptec.render.storage.IRenderedObjectListener;
 import de.omnikryptec.render.storage.RenderedObject;
 import de.omnikryptec.util.data.Color;
@@ -52,7 +54,7 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
     private boolean shouldSort = false;
     
     @Override
-    public void init(RendererContext context) {
+    public void init(LocalRendererContext context) {
         context.getIRenderedObjectManager().addListener(Sprite.TYPE, this);
         List<Sprite> list = context.getIRenderedObjectManager().getFor(Sprite.TYPE);
         //is addAll fast enough or is a raw forloop faster?
@@ -67,7 +69,7 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
     }
     
     @Override
-    public void deinit(RendererContext context) {
+    public void deinit(LocalRendererContext context) {
         this.sprites.clear();
         this.shouldSort = false;
         context.getIRenderedObjectManager().removeListener(Sprite.TYPE, this);
@@ -79,7 +81,7 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
     }
     
     @Override
-    public void render(Time time, IProjection projection, RendererContext renderer) {
+    public void render(Time time, IProjection projection, LocalRendererContext renderer) {
         if (shouldSort) {
             sprites.sort(spriteComparator);
             shouldSort = false;
@@ -121,7 +123,7 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
     }
     
     @Override
-    public void createOrResizeFBO(RendererContext context, SurfaceBuffer screen) {
+    public void createOrResizeFBO(LocalRendererContext context, SurfaceBuffer screen) {
         if (spriteBuffer == null) {
             spriteBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
             spriteBuffer.assignTargetB(0, new FBTarget(TextureFormat.RGBA16, 0));
