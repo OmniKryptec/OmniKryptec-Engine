@@ -18,7 +18,7 @@ package de.omnikryptec.util;
 
 import org.joml.FrustumIntersection;
 
-import de.omnikryptec.render.storage.RenderedObject;
+import de.omnikryptec.render.objects.RenderedObject;
 
 public class TestTest {
     

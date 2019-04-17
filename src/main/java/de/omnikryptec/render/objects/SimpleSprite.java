@@ -1,4 +1,4 @@
-package de.omnikryptec.render;
+package de.omnikryptec.render.objects;
 
 import org.joml.Matrix3x2f;
 import org.joml.Vector2f;

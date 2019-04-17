@@ -1,4 +1,4 @@
-package de.omnikryptec.render.storage;
+package de.omnikryptec.render.objects;
 
 import org.joml.FrustumIntersection;
 

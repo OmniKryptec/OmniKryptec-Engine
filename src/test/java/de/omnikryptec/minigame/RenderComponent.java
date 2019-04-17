@@ -1,7 +1,7 @@
 package de.omnikryptec.minigame;
 
 import de.omnikryptec.ecs.component.Component;
-import de.omnikryptec.render.storage.RenderedObject;
+import de.omnikryptec.render.objects.RenderedObject;
 import de.omnikryptec.util.data.Color;
 
 public class RenderComponent implements Component {

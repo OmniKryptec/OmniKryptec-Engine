@@ -1,4 +1,4 @@
-package de.omnikryptec.render;
+package de.omnikryptec.render.renderer;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,12 +13,13 @@ import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.RenderConfig;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
+import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.batch.ShadedBatch2D;
-import de.omnikryptec.render.rendererFrame.LocalRendererContext;
-import de.omnikryptec.render.rendererFrame.Renderer;
-import de.omnikryptec.render.rendererFrame.RendererContext.EnvironmentKey;
-import de.omnikryptec.render.storage.IRenderedObjectListener;
-import de.omnikryptec.render.storage.RenderedObject;
+import de.omnikryptec.render.objects.IRenderedObjectListener;
+import de.omnikryptec.render.objects.Light2D;
+import de.omnikryptec.render.objects.RenderedObject;
+import de.omnikryptec.render.objects.Sprite;
+import de.omnikryptec.render.renderer.RendererContext.EnvironmentKey;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.updater.Time;

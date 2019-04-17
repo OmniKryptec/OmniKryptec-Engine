@@ -1,4 +1,4 @@
-package de.omnikryptec.render.rendererFrame;
+package de.omnikryptec.render.renderer;
 
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;

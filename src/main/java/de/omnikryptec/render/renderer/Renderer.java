@@ -1,4 +1,4 @@
-package de.omnikryptec.render.rendererFrame;
+package de.omnikryptec.render.renderer;
 
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.render.IProjection;

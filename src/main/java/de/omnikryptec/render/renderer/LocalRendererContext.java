@@ -1,4 +1,4 @@
-package de.omnikryptec.render.rendererFrame;
+package de.omnikryptec.render.renderer;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -11,10 +11,10 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
 import de.omnikryptec.render.IProjection;
+import de.omnikryptec.render.objects.IRenderedObjectManager;
 import de.omnikryptec.render.postprocessing.Postprocessor;
-import de.omnikryptec.render.rendererFrame.RendererContext.EnvironmentKey;
-import de.omnikryptec.render.rendererFrame.RendererContext.GlobalEnvironmentKeys;
-import de.omnikryptec.render.storage.IRenderedObjectManager;
+import de.omnikryptec.render.renderer.RendererContext.EnvironmentKey;
+import de.omnikryptec.render.renderer.RendererContext.GlobalEnvironmentKeys;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
