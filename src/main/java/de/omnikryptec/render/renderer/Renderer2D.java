@@ -29,7 +29,7 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
     
     private static final Comparator<Sprite> DEFAULT_COMPARATOR = (s0,
             s1) -> (int) Math.signum(s0.getLayer() - s1.getLayer());
-    
+    //TODO cull faces and what about depth testing?
     private static final RenderState SPRITE_STATE = RenderState.of(BlendMode.ALPHA);
     private static final RenderState LIGHT_STATE = RenderState.of(BlendMode.ADDITIVE);
     private static final RenderState MULT_STATE = RenderState.of(BlendMode.MULTIPLICATIVE);

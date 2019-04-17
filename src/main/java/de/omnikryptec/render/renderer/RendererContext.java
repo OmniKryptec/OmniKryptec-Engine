@@ -80,8 +80,6 @@ public class RendererContext implements IUpdatable {
     @Override
     public void update(Time time) {
         Texture[] screen = new Texture[subContexts.size()];
-        int width = renderApi.getSurface().getWidth();
-        int height = renderApi.getSurface().getHeight();
         for (int i = 0; i < subContexts.size(); i++) {
             screen[i] = subContexts.get(i).renderCycle(time);
         }
@@ -89,7 +87,7 @@ public class RendererContext implements IUpdatable {
         //TODO renderstate for the screen batch
         batch.begin();
         for (Texture t : screen) {
-            batch.draw(t, null, width, height, false, false);
+            batch.draw(t, null, false, false);
         }
         batch.end();
     }
