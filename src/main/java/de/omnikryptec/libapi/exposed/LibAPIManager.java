@@ -73,6 +73,7 @@ public final class LibAPIManager {
         final boolean libLoadDebug = settings.get(LibSetting.DEBUG_LIBRARY_LOADING);
         if (fastMath) {
             System.setProperty("joml.fastmath", "true");
+            logger.debug("Using joml.fastmath");
         }
         debugFlag = debug;
         Configuration.DEBUG.set(debug);
@@ -123,6 +124,7 @@ public final class LibAPIManager {
         if (GLFW.glfwInit()) {
             GLFWErrorCallback.createThrow().set();
             glfw = new GLFWAccessManager();
+            logger.info("Initialized GLFW");
         } else {
             glfw = null;
             throw new RuntimeException("Error while initializing GLFW");
@@ -133,6 +135,7 @@ public final class LibAPIManager {
         if (isGLFWinitialized()) {
             GLFW.glfwTerminate();
             glfw = null;
+            logger.info("Terminated GLFW");
         }
     }
     
@@ -150,6 +153,7 @@ public final class LibAPIManager {
                 CL.create();
             }
             opencl = new OpenCL();
+            logger.info("Initialized OpenCL");
         } catch (Exception ex) {
             opencl = null;
             throw new RuntimeException(ex);
@@ -160,6 +164,7 @@ public final class LibAPIManager {
         if (isOpenCLinitialized()) {
             opencl.shutdown();
             opencl = null;
+            logger.info("Terminated OpenCL");
         }
     }
     
@@ -207,8 +212,7 @@ public final class LibAPIManager {
          *
          * @see de.omnikryptec.util.Logger
          */
-        LOGGING_MIN(null), 
-        DEBUG_LIBRARY_LOADING(false);
+        LOGGING_MIN(null), DEBUG_LIBRARY_LOADING(false);
         
         private final Object defaultSetting;
         

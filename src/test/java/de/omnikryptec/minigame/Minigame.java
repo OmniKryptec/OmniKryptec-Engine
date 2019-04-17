@@ -71,7 +71,7 @@ public class Minigame extends EngineLoader {
         mgr.addSystem(new MovementSystem());
         mgr.addSystem(new RangedSystem());
         mgr.addEntity(makePlayer(0, 0));
-        mgr.addEntity(makeBackground());
+        //mgr.addEntity(makeBackground());
         for (int i = -30; i < 30; i++) {
             for (int j = -30; j < 30; j++) {
                 if (random.nextFloat() < 0.25f) {
