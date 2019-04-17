@@ -16,17 +16,16 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.joml.Vector2d;
-import org.joml.Vector2dc;
-import org.lwjgl.glfw.GLFW;
-
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.window.InputEvent;
 import de.omnikryptec.util.settings.KeySettings;
+import org.joml.Vector2d;
+import org.joml.Vector2dc;
+import org.lwjgl.glfw.GLFW;
+
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MouseHandler implements InputHandler {
     
@@ -36,18 +35,19 @@ public class MouseHandler implements InputHandler {
     private final AtomicBoolean insideWindow = new AtomicBoolean(false);
     // Temporary variables
     private byte[] buttonsLastTime = null;
-
+    
     @Override
     public boolean init(EventBus bus) {
         bus.register(this);
         return true;
     }
-
+    
     @Override
     public boolean deinit(EventBus bus) {
         bus.unregister(this);
         return true;
     }
+    
     @EventSubscription
     public void onButtonInput(InputEvent.MouseButtonEvent ev) {
         buttons[ev.button] = (byte) ev.action;
@@ -94,7 +94,6 @@ public class MouseHandler implements InputHandler {
     
     @Override
     public synchronized boolean close() {
-        //TODO is this mfunction needed?
         return true;
     }
     
@@ -137,6 +136,6 @@ public class MouseHandler implements InputHandler {
     public int size() {
         return buttons.length;
     }
-
+    
     
 }

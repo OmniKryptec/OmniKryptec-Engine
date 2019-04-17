@@ -16,15 +16,14 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
-import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
-
-import org.lwjgl.glfw.GLFW;
-
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.window.InputEvent;
 import de.omnikryptec.util.settings.KeySettings;
+import org.lwjgl.glfw.GLFW;
+
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicReference;
 
 //FIXME synchronized causes bad performance // Who says that? // synchronized means the calling thread have to check if there is a lock on that function also the synchronized is unneccessary here
 public class KeyboardHandler implements InputHandler {
@@ -78,7 +77,6 @@ public class KeyboardHandler implements InputHandler {
     
     @Override
     public synchronized boolean close() {
-        //TODO is this function needed?
         return true;
     }
     
