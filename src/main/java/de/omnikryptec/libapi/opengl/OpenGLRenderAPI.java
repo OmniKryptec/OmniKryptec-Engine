@@ -26,7 +26,6 @@ import de.omnikryptec.libapi.exposed.render.FrameBufferStack;
 import de.omnikryptec.libapi.exposed.render.IndexBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderState;
-import de.omnikryptec.libapi.exposed.render.RenderState.RenderConfig;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
@@ -106,21 +105,11 @@ public class OpenGLRenderAPI implements RenderAPI {
     
     @Override
     public void applyRenderState(@Nonnull final RenderState renderState) {
-        for (final RenderConfig config : RenderConfig.values()) {
-            OpenGLUtil.setEnabled(config, renderState.isEnable(config));
-        }
-        if (null != renderState.getBlendMode()) {
-            OpenGLUtil.setBlendMode(renderState.getBlendMode());
-        }
-        if (null != renderState.getPolyMode()) {
-            OpenGLUtil.setPolyMode(renderState.getPolyMode());
-        }
-        if (null != renderState.getCullMode()) {
-            OpenGLUtil.setCullMode(renderState.getCullMode());
-        }
-        if (null != renderState.getDepthMode()) {
-            OpenGLUtil.setDepthTestFunc(renderState.getDepthMode());
-        }
+        OpenGLUtil.setWriteColor(renderState.isWriteColor());
+        OpenGLUtil.setWriteDepth(renderState.isWriteDepth());
+        OpenGLUtil.setBlendMode(renderState.getBlendMode());
+        OpenGLUtil.setCullMode(renderState.getCullMode());
+        OpenGLUtil.setDepthTestFunc(renderState.getDepthMode());
     }
     
     @Override
@@ -147,6 +136,11 @@ public class OpenGLRenderAPI implements RenderAPI {
     @Override
     public void printErrors() {
         OpenGLUtil.flushErrors();
+    }
+    
+    @Override
+    public void setPolyMode(PolyMode polyMode) {
+        OpenGLUtil.setPolyMode(polyMode);
     }
     
 }

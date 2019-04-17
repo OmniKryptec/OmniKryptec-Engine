@@ -58,7 +58,7 @@ public class UpdateableFactory {
                 if (time.opCount % 40 == 0) {
                     color.randomizeRGB();
                 }
-                RenderAPI.get().getSurface().clearColor(color);
+                RenderAPI.get().getCurrentFrameBuffer().clearColor(color);
             }
             
             @Override

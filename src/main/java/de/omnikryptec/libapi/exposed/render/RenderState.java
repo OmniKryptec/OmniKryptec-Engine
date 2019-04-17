@@ -16,46 +16,68 @@
 
 package de.omnikryptec.libapi.exposed.render;
 
-import java.util.EnumMap;
-import java.util.Map;
-//FIXME is broken a bit? / remake because this is ugly to use?
 public class RenderState implements Cloneable {
     
+    public static RenderState of(Object... objects) {
+        RenderState state = new RenderState();
+        if (objects.length > 5) {
+            throw new IllegalArgumentException("Illegal amount of arguments");
+        }
+        int bools = 0;
+        for (Object o : objects) {
+            if (o == null) {
+                throw new NullPointerException("array entry == null");
+            }
+            if (o instanceof BlendMode) {
+                state.setBlendMode((BlendMode) o);
+            } else if (o instanceof CullMode) {
+                state.setCullMode((CullMode) o);
+            } else if (o instanceof DepthMode) {
+                state.setDepthMode((DepthMode) o);
+            } else if (o instanceof Boolean) {
+                bools++;
+                if (bools == 1) {
+                    state.setWriteColor((Boolean) o);
+                } else if (bools == 2) {
+                    state.setWriteDepth((Boolean) o);
+                } else {
+                    throw new IllegalArgumentException("too many booleans");
+                }
+            } else {
+                throw new IllegalArgumentException("Invalid argument type");
+            }
+        }
+        return state;
+    }
+    
     public static enum BlendMode {
-        ADDITIVE, ALPHA, MULTIPLICATIVE;
+        ADDITIVE, ALPHA, MULTIPLICATIVE, OFF;
     }
     
     public static enum CullMode {
-        BACK, FRONT;
+        BACK, FRONT, OFF;
     }
     
     public static enum DepthMode {
-        LESS, EQUAL, GREATER, ALWAYS, NEVER;
+        LESS, EQUAL, GREATER, ALWAYS, NEVER, OFF;
     }
     
-    public static enum RenderConfig {
-        BLEND(false), DEPTH_TEST(true), CULL_FACES(false), WRITE_DEPTH(true), WRITE_COLOR(true);
-        
-        private final boolean defaultState;
-        
-        private RenderConfig(boolean b) {
-            this.defaultState = b;
-        }
-    }
-    
-    public static enum PolyMode {
-        FILL, LINE, POINT;
-    }
-    
+    //TODO allow null values so that thing stays as it is?
     private BlendMode blendMode = null;
     private CullMode cullMode = null;
     private DepthMode depthMode = null;
-    private PolyMode polyMode = null;
-    private final Map<RenderConfig, Boolean> renderConfig = new EnumMap<>(RenderConfig.class);
+    private boolean writeColor, writeDepth;
     
-    public boolean isEnable(final RenderConfig opt) {
-        final Boolean bool = this.renderConfig.get(opt);
-        return bool != null ? bool : opt.defaultState;
+    public RenderState() {
+        setDefault();
+    }
+    
+    public void setDefault() {
+        blendMode = BlendMode.OFF;
+        cullMode = CullMode.OFF;
+        depthMode = DepthMode.OFF;
+        writeColor = true;
+        writeDepth = true;
     }
     
     public BlendMode getBlendMode() {
@@ -68,10 +90,6 @@ public class RenderState implements Cloneable {
     
     public DepthMode getDepthMode() {
         return this.depthMode;
-    }
-    
-    public PolyMode getPolyMode() {
-        return this.polyMode;
     }
     
     public RenderState setBlendMode(final BlendMode blendMode) {
@@ -89,14 +107,20 @@ public class RenderState implements Cloneable {
         return this;
     }
     
-    public RenderState setPolyMode(final PolyMode polyMode) {
-        this.polyMode = polyMode;
-        return this;
+    public boolean isWriteColor() {
+        return writeColor;
     }
     
-    public RenderState setRenderConfig(final RenderConfig renderConfig, final boolean enable) {
-        this.renderConfig.put(renderConfig, enable);
-        return this;
+    public void setWriteColor(boolean writeColor) {
+        this.writeColor = writeColor;
+    }
+    
+    public boolean isWriteDepth() {
+        return writeDepth;
+    }
+    
+    public void setWriteDepth(boolean writeDepth) {
+        this.writeDepth = writeDepth;
     }
     
     @Override
@@ -104,8 +128,6 @@ public class RenderState implements Cloneable {
         RenderState clone = null;
         try {
             clone = (RenderState) super.clone();
-            clone.renderConfig.clear();
-            clone.renderConfig.putAll(this.renderConfig);
         } catch (final CloneNotSupportedException e) {
             e.printStackTrace();
         }

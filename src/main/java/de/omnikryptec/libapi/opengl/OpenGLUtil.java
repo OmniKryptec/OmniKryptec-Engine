@@ -45,13 +45,12 @@ import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.PolyMode;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.CullMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.DepthMode;
-import de.omnikryptec.libapi.exposed.render.RenderState.PolyMode;
-import de.omnikryptec.libapi.exposed.render.RenderState.RenderConfig;
 import de.omnikryptec.libapi.opengl.texture.GLTexture2D;
 import de.omnikryptec.resource.MeshData.Primitive;
 import de.omnikryptec.resource.TextureConfig;
@@ -139,20 +138,6 @@ public class OpenGLUtil {
             return GL14.GL_DEPTH_COMPONENT32;
         default:
             throw new IllegalArgumentException(texFormat + "");
-        }
-    }
-    
-    public static int renderConfigId(final RenderConfig renderConfig) {
-        switch (renderConfig) {
-        case BLEND:
-            return GL11.GL_BLEND;
-        case CULL_FACES:
-            return GL11.GL_CULL_FACE;
-        case DEPTH_TEST:
-            return GL11.GL_DEPTH_TEST;
-        default:
-            //the other RenderConfigs dont have a corresponding ID
-            throw new IllegalArgumentException(renderConfig + "");
         }
     }
     
@@ -339,56 +324,65 @@ public class OpenGLUtil {
                 GL11.GL_UNSIGNED_BYTE, texture.getBuffer());
     }
     
-    private static Map<RenderConfig, Boolean> featureCache = new EnumMap<>(RenderConfig.class);
     private static Map<CACHE_ENUM, Object> cache = new EnumMap<>(CACHE_ENUM.class);
+    private static boolean oldColor, oldDepth;
     
     private static enum CACHE_ENUM {
         CULL_FACE_KEY, POLY_MODE_KEY, BLEND_MODE, DEPTH_FUNC, MULTISAMPLE;
     }
     
-    public static void setEnabled(final RenderConfig feature, final boolean b) {
-        final Boolean cached = featureCache.get(feature);
-        if (cached == null || ((cached) != b)) {
-            if (feature == RenderConfig.WRITE_COLOR) {
-                GL11.glColorMask(b, b, b, b);
-            } else if (feature == RenderConfig.WRITE_DEPTH) {
-                GL11.glDepthMask(b);
-            } else {
-                final int typeId = renderConfigId(feature);
-                if (b) {
-                    GL11.glEnable(typeId);
-                } else {
-                    GL11.glDisable(typeId);
-                }
-            }
-            featureCache.put(feature, b);
+    public static void setWriteColor(boolean color) {
+        if (color != oldColor) {
+            oldColor = color;
+            GL11.glColorMask(color, color, color, color);
+        }
+    }
+    
+    public static void setWriteDepth(boolean depth) {
+        if (depth != oldDepth) {
+            oldDepth = depth;
+            GL11.glDepthMask(depth);
         }
     }
     
     public static void setBlendMode(final BlendMode blendModeNew) {
         final BlendMode blendModeOld = (BlendMode) cache.get(CACHE_ENUM.BLEND_MODE);
         if (blendModeOld == null || blendModeOld != blendModeNew) {
-            switch (blendModeNew) {
-            case ADDITIVE:
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-                break;
-            case ALPHA:
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                break;
-            case MULTIPLICATIVE:
-                GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_ZERO);
-                break;
-            default:
-                throw new IllegalArgumentException("Illegal blend mode");
+            if (blendModeNew == BlendMode.OFF) {
+                GL11.glDisable(GL11.GL_BLEND);
+            } else {
+                if (blendModeOld == null || blendModeOld == BlendMode.OFF) {
+                    GL11.glEnable(GL11.GL_BLEND);
+                }
+                switch (blendModeNew) {
+                case ADDITIVE:
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+                    break;
+                case ALPHA:
+                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                    break;
+                case MULTIPLICATIVE:
+                    GL11.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_ZERO);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Illegal blend mode");
+                }
             }
             cache.put(CACHE_ENUM.BLEND_MODE, blendModeNew);
         }
     }
     
     public static void setCullMode(final CullMode mode) {
-        final Object o = cache.get(CACHE_ENUM.CULL_FACE_KEY);
-        if (o == null || ((CullMode) o) != mode) {
-            GL11.glCullFace(cullModeId(mode));
+        final CullMode o = (CullMode) cache.get(CACHE_ENUM.CULL_FACE_KEY);
+        if (o == null || (o) != mode) {
+            if (mode == CullMode.OFF) {
+                GL11.glDisable(GL11.GL_CULL_FACE);
+            } else {
+                if (o == null || o == CullMode.OFF) {
+                    GL11.glEnable(GL11.GL_CULL_FACE);
+                }
+                GL11.glCullFace(cullModeId(mode));
+            }
             cache.put(CACHE_ENUM.CULL_FACE_KEY, mode);
         }
     }
@@ -402,9 +396,16 @@ public class OpenGLUtil {
     }
     
     public static void setDepthTestFunc(final DepthMode depthMode) {
-        final Object o = cache.get(CACHE_ENUM.DEPTH_FUNC);
-        if (o == null || ((DepthMode) o) != depthMode) {
-            GL11.glDepthFunc(depthModeId(depthMode));
+        final DepthMode o = (DepthMode) cache.get(CACHE_ENUM.DEPTH_FUNC);
+        if (o == null || o != depthMode) {
+            if (depthMode == DepthMode.OFF) {
+                GL11.glDisable(GL11.GL_DEPTH_TEST);
+            } else {
+                if (o == null || o == DepthMode.OFF) {
+                    GL11.glEnable(GL11.GL_DEPTH_TEST);
+                }
+                GL11.glDepthFunc(depthModeId(depthMode));
+            }
             cache.put(CACHE_ENUM.DEPTH_FUNC, depthMode);
         }
     }
@@ -434,16 +435,16 @@ public class OpenGLUtil {
             GL11.glClear(mask);
         }
     }
-
+    
     public static int indexToAttachment(int attachment) {
-        if(attachment == FBTarget.DEPTH_ATTACHMENT_INDEX) {
+        if (attachment == FBTarget.DEPTH_ATTACHMENT_INDEX) {
             return GL30.GL_DEPTH_ATTACHMENT;
         }
         return GL30.GL_COLOR_ATTACHMENT0 + attachment;
     }
     
     public static int indexToBufferBit(int attachment) {
-        if(attachment == FBTarget.DEPTH_ATTACHMENT_INDEX) {
+        if (attachment == FBTarget.DEPTH_ATTACHMENT_INDEX) {
             return GL11.GL_DEPTH_BUFFER_BIT;
         }
         return GL11.GL_COLOR_BUFFER_BIT;

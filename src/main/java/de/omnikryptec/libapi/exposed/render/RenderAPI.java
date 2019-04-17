@@ -57,6 +57,10 @@ public interface RenderAPI {
         Static, Dynamic, Stream;
     }
     
+    public static enum PolyMode {
+        FILL, LINE, POINT;
+    }
+    
     /**
      * Returns the currently used {@link Window}
      *
@@ -144,4 +148,6 @@ public interface RenderAPI {
     void renderInstanced(Primitive primitive, int elementCount, boolean hasIndexBuffer, int instanceCount);
     
     void printErrors();
+    
+    void setPolyMode(PolyMode polyMode);
 }

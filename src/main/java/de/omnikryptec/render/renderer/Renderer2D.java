@@ -11,7 +11,7 @@ import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
-import de.omnikryptec.libapi.exposed.render.RenderState.RenderConfig;
+import de.omnikryptec.libapi.exposed.render.RenderState.DepthMode;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.batch.ShadedBatch2D;
@@ -30,20 +30,9 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
     private static final Comparator<Sprite> DEFAULT_COMPARATOR = (s0,
             s1) -> (int) Math.signum(s0.getLayer() - s1.getLayer());
     
-    private static final RenderState SPRITE_STATE = new RenderState();
-    private static final RenderState LIGHT_STATE = new RenderState();
-    private static final RenderState MULT_STATE = new RenderState();
-    
-    static {
-        SPRITE_STATE.setRenderConfig(RenderConfig.BLEND, true);
-        SPRITE_STATE.setBlendMode(BlendMode.ALPHA);
-        LIGHT_STATE.setRenderConfig(RenderConfig.BLEND, true);
-        LIGHT_STATE.setBlendMode(BlendMode.ADDITIVE);
-        LIGHT_STATE.setRenderConfig(RenderConfig.DEPTH_TEST, false);
-        MULT_STATE.setRenderConfig(RenderConfig.BLEND, true);
-        MULT_STATE.setBlendMode(BlendMode.MULTIPLICATIVE);
-        MULT_STATE.setRenderConfig(RenderConfig.DEPTH_TEST, false);
-    }
+    private static final RenderState SPRITE_STATE = RenderState.of(BlendMode.ALPHA);
+    private static final RenderState LIGHT_STATE = RenderState.of(BlendMode.ADDITIVE);
+    private static final RenderState MULT_STATE = RenderState.of(BlendMode.MULTIPLICATIVE);
     
     private Comparator<Sprite> spriteComparator = DEFAULT_COMPARATOR;
     private ShadedBatch2D batch = new ShadedBatch2D(1000);
