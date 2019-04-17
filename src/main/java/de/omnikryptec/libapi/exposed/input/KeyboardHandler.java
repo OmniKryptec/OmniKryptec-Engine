@@ -43,7 +43,7 @@ public class KeyboardHandler implements InputHandler {
     
     
     @Override
-    public synchronized boolean init(EventBus bus) {
+    public boolean init(EventBus bus) {
         bus.register(this);
         return true;
     }
@@ -54,65 +54,85 @@ public class KeyboardHandler implements InputHandler {
     }
     
     @Override
-    public synchronized boolean preUpdate(double currentTime, KeySettings keySettings) {
-        this.keysLastTime = Arrays.copyOf(this.keys, this.keys.length);
+    public boolean preUpdate(double currentTime, KeySettings keySettings) {
+        synchronized (keys) {
+            keysLastTime = Arrays.copyOf(keys, keys.length);
+        }
         return true;
     }
     
     @Override
-    public synchronized boolean update(double currentTime, KeySettings keySettings) {
-        for (int i = 0; i < this.keys.length; i++) {
-            if (this.keysLastTime[i] != this.keys[i]) {
-                keySettings.updateKeys(currentTime, i, true, this.keys[i]);
+    public boolean update(double currentTime, KeySettings keySettings) {
+        synchronized (keys) {
+            for (int i = 0; i < keys.length; i++) {
+                if (keysLastTime[i] != keys[i]) {
+                    keySettings.updateKeys(currentTime, i, true, keys[i]);
+                }
             }
         }
         return true;
     }
     
     @Override
-    public synchronized boolean postUpdate(double currentTime, KeySettings keySettings) {
+    public boolean postUpdate(double currentTime, KeySettings keySettings) {
         //this.keysLastTime = null; // Is this good for performance or not? // makes no sense
         return true;
     }
     
     @Override
-    public synchronized boolean close() {
+    public boolean close() {
         return true;
     }
     
-    public synchronized byte getKeyState(int keyCode) {
-        return this.keys[keyCode];
+    public byte getKeyState(int keyCode) {
+        synchronized (keys) {
+            return keys[keyCode];
+        }
     }
     
-    public synchronized boolean isKeyUnknown(int keyCode) {
-        return this.keys[keyCode] == KeySettings.KEY_UNKNOWN;
+    public boolean isKeyUnknown(int keyCode) {
+        synchronized (keys) {
+            return keys[keyCode] == KeySettings.KEY_UNKNOWN;
+        }
     }
     
-    public synchronized boolean isKeyNothing(int keyCode) {
-        return this.keys[keyCode] == KeySettings.KEY_NOTHING;
+    public boolean isKeyNothing(int keyCode) {
+        synchronized (keys) {
+            return keys[keyCode] == KeySettings.KEY_NOTHING;
+        }
     }
     
-    public synchronized boolean isKeyReleased(int keyCode) {
-        return this.keys[keyCode] == KeySettings.KEY_RELEASED;
+    public boolean isKeyReleased(int keyCode) {
+        synchronized (keys) {
+            return keys[keyCode] == KeySettings.KEY_RELEASED;
+        }
     }
     
-    public synchronized boolean isKeyPressed(int keyCode) {
-        return this.keys[keyCode] == KeySettings.KEY_PRESSED;
+    public boolean isKeyPressed(int keyCode) {
+        synchronized (keys) {
+            return keys[keyCode] == KeySettings.KEY_PRESSED;
+        }
     }
     
-    public synchronized boolean isKeyRepeated(int keyCode) {
-        return this.keys[keyCode] == KeySettings.KEY_REPEATED;
+    public boolean isKeyRepeated(int keyCode) {
+        synchronized (keys) {
+            return keys[keyCode] == KeySettings.KEY_REPEATED;
+        }
     }
     
-    public synchronized String getInputString() {
-        return this.inputString.get();
+    public String getInputString() {
+        synchronized (inputString) {
+            return inputString.get();
+        }
     }
     
-    public synchronized void clearInputString() {
-        this.inputString.set("");
+    public void clearInputString() {
+        synchronized (inputString) {
+            inputString.set("");
+        }
     }
     
-    public synchronized String consumeInputString() {
+    public String consumeInputString() {
         final String temp = getInputString();
         clearInputString();
         return temp;
