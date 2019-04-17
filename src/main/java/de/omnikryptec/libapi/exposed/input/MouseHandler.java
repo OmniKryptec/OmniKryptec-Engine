@@ -71,65 +71,81 @@ public class MouseHandler implements InputHandler {
     }
     
     @Override
-    public synchronized boolean preUpdate(double currentTime, KeySettings keySettings) {
-        buttonsLastTime = Arrays.copyOf(buttons, buttons.length);
+    public boolean preUpdate(double currentTime, KeySettings keySettings) {
+        synchronized (buttons) {
+            buttonsLastTime = Arrays.copyOf(buttons, buttons.length);
+        }
         return true;
     }
     
     @Override
-    public synchronized boolean update(double currentTime, KeySettings keySettings) {
-        for (int i = 0; i < buttons.length; i++) {
-            if (buttonsLastTime[i] != buttons[i]) {
-                keySettings.updateKeys(currentTime, i, false, buttons[i]);
+    public boolean update(double currentTime, KeySettings keySettings) {
+        synchronized (buttons) {
+            for (int i = 0; i < buttons.length; i++) {
+                if (buttonsLastTime[i] != buttons[i]) {
+                    keySettings.updateKeys(currentTime, i, false, buttons[i]);
+                }
             }
         }
         return true;
     }
     
     @Override
-    public synchronized boolean postUpdate(double currentTime, KeySettings keySettings) {
+    public boolean postUpdate(double currentTime, KeySettings keySettings) {
         //buttonsLastTime = null; // Is this good for performance or not? // Makes no sense
         return true;
     }
     
     @Override
-    public synchronized boolean close() {
+    public boolean close() {
         return true;
     }
     
-    public synchronized byte getButtonState(int buttonCode) {
-        return buttons[buttonCode];
+    public byte getButtonState(int buttonCode) {
+        synchronized (buttons) {
+            return buttons[buttonCode];
+        }
     }
     
-    public synchronized boolean isButtonUnknown(int buttonCode) {
-        return buttons[buttonCode] == KeySettings.KEY_UNKNOWN;
+    public boolean isButtonUnknown(int buttonCode) {
+        synchronized (buttons) {
+            return buttons[buttonCode] == KeySettings.KEY_UNKNOWN;
+        }
     }
     
-    public synchronized boolean isButtonNothing(int buttonCode) {
-        return buttons[buttonCode] == KeySettings.KEY_NOTHING;
+    public boolean isButtonNothing(int buttonCode) {
+        synchronized (buttons) {
+            return buttons[buttonCode] == KeySettings.KEY_NOTHING;
+        }
     }
     
-    public synchronized boolean isButtonReleased(int buttonCode) {
-        return buttons[buttonCode] == KeySettings.KEY_RELEASED;
+    public boolean isButtonReleased(int buttonCode) {
+        synchronized (buttons) {
+            return buttons[buttonCode] == KeySettings.KEY_RELEASED;
+        }
     }
     
-    public synchronized boolean isButtonPressed(int buttonCode) {
-        return buttons[buttonCode] == KeySettings.KEY_PRESSED;
+    public boolean isButtonPressed(int buttonCode) {
+        synchronized (buttons) {
+            return buttons[buttonCode] == KeySettings.KEY_PRESSED;
+        }
     }
     
-    public synchronized boolean isButtonRepeated(int buttonCode) {
-        return buttons[buttonCode] == KeySettings.KEY_REPEATED;
+    public boolean isButtonRepeated(int buttonCode) {
+        synchronized (buttons) {
+            return buttons[buttonCode] == KeySettings.KEY_REPEATED;
+        }
     }
     
-    public synchronized Vector2dc getPosition() {
+    public Vector2dc getPosition() {
         return position;
     }
     
-    public synchronized Vector2dc getScrollOffset() {
+    public Vector2dc getScrollOffset() {
         return scrollOffset;
     }
     
-    public synchronized boolean isInsideWindow() {
+    public boolean isInsideWindow() {
         return insideWindow.get();
     }
     
