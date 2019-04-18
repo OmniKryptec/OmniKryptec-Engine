@@ -30,6 +30,7 @@ import org.lwjgl.system.Configuration;
 import de.codemakers.base.util.tough.ToughRunnable;
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.opencl.OpenCL;
+import de.omnikryptec.util.ExecutorsUtil;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
@@ -90,6 +91,7 @@ public final class LibAPIManager {
                     throwable.printStackTrace();
                 });
             }
+            ExecutorsUtil.shutdownNowAll();
             instance.terminateGlfw();
             instance.terminateOpenCL();
             instance = null;

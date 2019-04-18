@@ -30,10 +30,12 @@ public class ExecutorsUtil {
     private static final Queue<ExecutorService> allExecutors = new ConcurrentLinkedQueue<>();
     private static final AtomicBoolean lock = new AtomicBoolean(false);
     
+    private static final Logger logger = Logger.getLogger(ExecutorsUtil.class);
+    
     public static final int getServiceInUseCount() {
         return allExecutors.size();
     }
-
+    
     public static ExecutorService newFixedThreadPool() {
         return newFixedThreadPool(AVAILABLE_PROCESSORS);
     }
@@ -71,7 +73,7 @@ public class ExecutorsUtil {
     public static void shutdown(final ExecutorService executorService, final long time, final TimeUnit unit,
             final boolean now) {
         if (lock.get()) {
-            throw new IllegalStateException("Already shutdowning all");
+            throw new IllegalStateException("Already shutting down all");
         }
         shutdownIntern(executorService, time, unit, now);
     }
@@ -92,10 +94,15 @@ public class ExecutorsUtil {
     }
     
     public static void shutdownNowAll() {
+        if (allExecutors.isEmpty()) {
+            logger.info("There are no running executors");
+            return;
+        }
         if (lock.get()) {
-            throw new IllegalStateException("Already shutdowning");
+            throw new IllegalStateException("Already shutting down all");
         }
         lock.set(true);
+        logger.info("Shutting down all executors...");
         try {
             while (!allExecutors.isEmpty()) {
                 shutdownIntern(allExecutors.peek(), 1, TimeUnit.MILLISECONDS, true);

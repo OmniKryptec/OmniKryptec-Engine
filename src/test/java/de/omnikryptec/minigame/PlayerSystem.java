@@ -32,8 +32,7 @@ public class PlayerSystem extends ComponentSystem {
     private float again;
 
     @Override
-    public void update(IECSManager iecsManager, Time time) { //FIXME Unfinished, InputManager Stuff
-        //inputManager.update(time);
+    public void update(IECSManager iecsManager, Time time) {
         again += time.deltaf;
         for (Entity e : entities) {
             MovementComponent mov = movMapper.get(e);

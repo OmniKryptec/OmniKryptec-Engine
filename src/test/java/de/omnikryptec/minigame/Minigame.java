@@ -54,8 +54,7 @@ public class Minigame extends EngineLoader {
     @Override
     protected void onInitialized() {
         getResourceManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources/"));
-        //FIXME flat bug maybe?
-        getResourceManager().processStaged(false, false);
+        getResourceManager().processStaged(false, true);
         RESPROVIDER = getResourceProvider();
         //getUpdateController().setSyncUpdateTimeTransform((t) -> new Time(t.opCount, t.ops, t.current, t.delta / 10));
         BUS.register(this);
