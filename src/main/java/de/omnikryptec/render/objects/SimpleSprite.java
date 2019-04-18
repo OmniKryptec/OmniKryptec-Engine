@@ -3,22 +3,24 @@ package de.omnikryptec.render.objects;
 import org.joml.Matrix3x2f;
 import org.joml.Vector2f;
 
+import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.util.data.Color;
 
 public class SimpleSprite extends Sprite {
-    
+    //TODO transform
     private Vector2f position;
-    private float width, height;
+    private float width=1, height=1;
     
     private Color color;
+    private Texture texture;
     
     @Override
     public void draw(Batch2D batch) {
         if (color != null) {
             batch.color().set(color);
         }
-        batch.drawRect(new Matrix3x2f().setTranslation(position), width, height);
+        batch.draw(texture, new Matrix3x2f().setTranslation(position), width, height, false, false);
     }
     
     public Vector2f getPosition() {
@@ -52,7 +54,13 @@ public class SimpleSprite extends Sprite {
     public void setColor(Color color) {
         this.color = color;
     }
-
-   
+    
+    public void setTexture(Texture tex) {
+        this.texture = tex;
+    }
+    
+    public Texture getTexture() {
+        return texture;
+    }
     
 }

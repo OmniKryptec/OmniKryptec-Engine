@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.joml.Matrix4f;
+
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
+import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.objects.IRenderedObjectManager;
+import de.omnikryptec.render.objects.RenderedObjectManager;
 import de.omnikryptec.render.postprocessing.Postprocessor;
 import de.omnikryptec.render.renderer.RendererContext.EnvironmentKey;
 import de.omnikryptec.render.renderer.RendererContext.GlobalEnvironmentKeys;
@@ -45,6 +49,8 @@ public class LocalRendererContext {
             this.frameBuffers = new SceneRenderBufferManager(getRenderAPI(), multisamples, targets);
         }
         this.environmentSettings = environmentSettings == null ? new Settings<>() : environmentSettings;
+        this.objectManager = new RenderedObjectManager();
+        this.mainProjection = new Camera(new Matrix4f().ortho2D(0, 1, 0, 1));
     }
     
     public void setPriority(int i) {

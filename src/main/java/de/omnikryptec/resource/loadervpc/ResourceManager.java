@@ -195,7 +195,7 @@ public class ResourceManager {
         }
         
         private void processStagedIntern(final AdvancedFile file, final AdvancedFile superFile) {
-            if ((file.isDirectory() && !flat) || file.equals(superFile)) {
+            if (file.isDirectory() && (!flat || file.equals(superFile))) {
                 for (final AdvancedFile subFile : file.listFiles()) {
                     processStagedIntern(subFile, superFile);
                 }
@@ -213,7 +213,7 @@ public class ResourceManager {
         }
         
         private void loadSimpleIntern(final boolean exec, final AdvancedFile file, final AdvancedFile superFile) {
-            if ((file.isDirectory() && !flat) || file.equals(superFile)) {
+            if (file.isDirectory() && (!flat || file.equals(superFile))) {
                 for (final AdvancedFile subFile : file.listFiles()) {
                     loadSimpleIntern(exec, subFile, superFile);
                 }

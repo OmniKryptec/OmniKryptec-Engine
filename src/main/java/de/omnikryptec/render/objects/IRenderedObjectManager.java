@@ -14,12 +14,20 @@ public interface IRenderedObjectManager {
         }
     }
     
+    default void add(RenderedObject renderedObject) {
+        add(renderedObject.type(), renderedObject);
+    }
+    
     void add(RenderedObjectType type, RenderedObject renderedObject);
     
     default void addAll(RenderedObjectType type, Collection<RenderedObject> collection) {
         for (RenderedObject obj : collection) {
             add(type, obj);
         }
+    }
+    
+    default void remove(RenderedObject renderedObject) {
+        remove(renderedObject.type(), renderedObject);
     }
     
     void remove(RenderedObjectType type, RenderedObject renderedObject);

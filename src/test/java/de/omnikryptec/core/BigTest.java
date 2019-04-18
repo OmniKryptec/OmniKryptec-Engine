@@ -44,7 +44,7 @@ public class BigTest extends EngineLoader {
         OpenGLUtil.setMultisample(true);
         ULayer scene = new ULayer();
         getGameController().getGlobalScene().setUpdateableSync(scene);
-        getResourceManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources/"));
+        getResourceManager().stage("intern:/de/omnikryptec/resources/");
         getResourceManager().processStaged(false, false);
         scene.addUpdatable(UpdateableFactory.createScreenClearTest());
         scene.addUpdatable(UpdateableFactory.createRenderTest(getResourceProvider().get(TextureData.class, "jd.png")));

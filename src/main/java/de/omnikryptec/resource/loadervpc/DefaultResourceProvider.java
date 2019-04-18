@@ -60,5 +60,10 @@ public class DefaultResourceProvider implements ResourceProvider {
     public boolean contains(final Class<?> clazz, final String name) {
         return this.resourceTable.contains(clazz, name);
     }
+
+    @Override
+    public void remove(Class<?> clazz, String name) {
+        this.resourceTable.remove(clazz, name);
+    }
     
 }

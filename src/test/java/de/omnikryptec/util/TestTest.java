@@ -19,6 +19,7 @@ package de.omnikryptec.util;
 import org.joml.FrustumIntersection;
 
 import de.omnikryptec.render.objects.RenderedObject;
+import de.omnikryptec.render.objects.RenderedObjectType;
 
 public class TestTest {
     
@@ -55,6 +56,12 @@ public class TestTest {
         public boolean isVisible(FrustumIntersection frustum) {
             
             return false;
+        }
+
+        @Override
+        public RenderedObjectType type() {
+            
+            return null;
         }
         
     }

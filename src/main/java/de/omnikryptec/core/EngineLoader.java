@@ -179,7 +179,7 @@ public abstract class EngineLoader {
         return this.window;
     }
     
-    public IGameLoop getEngineLoop() {
+    public IGameLoop getGameLoop() {
         checkStarted();
         return this.gameLoop;
     }

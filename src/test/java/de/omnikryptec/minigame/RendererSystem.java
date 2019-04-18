@@ -21,6 +21,7 @@ import de.omnikryptec.render.objects.SimpleSprite;
 import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.render.renderer.LocalRendererContext;
 import de.omnikryptec.render.renderer.Renderer2D;
+import de.omnikryptec.render.renderer.Renderer2D.EnvironmentKeys2D;
 import de.omnikryptec.render.renderer.RendererContext;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.updater.Time;
@@ -54,7 +55,6 @@ public class RendererSystem extends ComponentSystem implements EntityListener {
         public void draw(Batch2D batch) {
             batch.color().set(color);
             batch.drawRect(new Matrix3x2f().translate(x, y), 300, 300);
-            //batch.draw(RenderAPI.get().createTexture2D((TextureData)Minigame.RESPROVIDER.get(TextureData.class, "light.png"), new TextureConfig()), new Matrix3x2f().translate(x, y), 1000, 1000, false, false);
         }
     };
     
@@ -77,7 +77,7 @@ public class RendererSystem extends ComponentSystem implements EntityListener {
         this.renderer.getIRenderedObjectManager().add(Light2D.TYPE, l1);
         this.renderer.getIRenderedObjectManager().add(Light2D.TYPE, l2);
         this.renderer.getIRenderedObjectManager().add(Light2D.TYPE, l3);
-        //this.renderer.getEnvironmentSettings().set(EnvironmentKeys2D.AmbientLight, new Color(0.3f, 0.3f, 0.3f));
+        this.renderer.getEnvironmentSettings().set(EnvironmentKeys2D.AmbientLight, new Color(0.3f, 0.3f, 0.3f));
     }
     
     @Override
@@ -94,6 +94,7 @@ public class RendererSystem extends ComponentSystem implements EntityListener {
         sprite.setWidth(rendMapper.get(entity).w);
         sprite.setHeight(rendMapper.get(entity).h);
         sprite.setLayer(rendMapper.get(entity).layer);
+        sprite.setTexture(rendMapper.get(entity).texture);
         rendMapper.get(entity).backingSprite = sprite;
         renderer.getIRenderedObjectManager().add(Sprite.TYPE, sprite);
     }

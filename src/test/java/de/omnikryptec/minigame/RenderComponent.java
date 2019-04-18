@@ -1,6 +1,7 @@
 package de.omnikryptec.minigame;
 
 import de.omnikryptec.ecs.component.Component;
+import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.objects.RenderedObject;
 import de.omnikryptec.util.data.Color;
 
@@ -11,6 +12,8 @@ public class RenderComponent implements Component {
     public float layer;
     
     public RenderedObject backingSprite;
+    
+    public Texture texture;
     
     private RenderComponent(float w, float h) {
         this.w = w;

@@ -24,4 +24,8 @@ public abstract class Sprite implements RenderedObject {
     
     public abstract void draw(Batch2D batch);
     
+    @Override
+    public RenderedObjectType type() {
+        return TYPE;        
+    }
 }

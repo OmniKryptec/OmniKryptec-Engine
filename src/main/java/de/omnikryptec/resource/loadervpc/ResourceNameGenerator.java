@@ -23,7 +23,7 @@ public interface ResourceNameGenerator {
     public static ResourceNameGenerator defaultNameGen() {
         return (resource, file, superfile) -> {
             String path = file.getPath().replace("\\", "/");
-            if (superfile.isDirectory() /* && !superFile.isIntern() */) {
+            if (superfile.isDirectory()) {
                 path = path.replace(superfile.getPath().replace("\\", "/"), "");
             }
             String s = path.replace(AdvancedFile.PATH_SEPARATOR, ":");
@@ -32,6 +32,9 @@ public interface ResourceNameGenerator {
             }
             if (s.endsWith(":")) {
                 s = s.substring(0, s.length() - 1);
+            }
+            if (file.equals(superfile)) {
+                return s.substring(s.lastIndexOf(":") + 1);
             }
             return s;
         };

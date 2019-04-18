@@ -25,6 +25,7 @@ public class Test {
         bus.enqueue(new TestEvent());
         bus.enqueue(new TestEvent.TestEvent2());
         bus.processQueuedEvents();
+        bus.post(new TestEvent());
     }
     
     @EventSubscription(priority = 10)

@@ -29,4 +29,6 @@ public interface ResourceProvider {
     void clear();
     
     boolean contains(Class<?> clazz, String name);
+    
+    void remove(Class<?> clazz, String name);
 }
