@@ -28,6 +28,7 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.batch.ShadedBatch2D;
+import de.omnikryptec.render.renderer.RendererContext;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.data.Color;
@@ -47,6 +48,10 @@ public class UpdateableFactory {
     
     public static InputManager createInputManager(KeySettings keySettings) {
         return new InputManager(keySettings);
+    }
+    
+    public static RendererContext createRendererContext() {
+        return new RendererContext();
     }
     
     public static IUpdatable createScreenClearTest() {

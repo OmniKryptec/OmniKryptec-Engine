@@ -3,28 +3,90 @@ package de.omnikryptec.resource.loadervpc;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
-//TODO improve this and the purpose of this class
+
 public class TextureHelper {
     
-    private Map<String, Texture> textures = new HashMap<>();
+    public static final TextureData MISSING_TEXTURE_DATA;
+    private static final TextureConfig MISSING_TEXTURE_CONFIG;
+    static {
+        TextureData data;
+        try {
+            data = TextureData.decode(new AdvancedFile("intern:/de/omnikryptec/resources/loader/missing_texture.png")
+                    .createInputStream());
+        } catch (Exception ex) {
+            data = null;
+            throw new RuntimeException(ex);
+        }
+        MISSING_TEXTURE_DATA = data;
+        MISSING_TEXTURE_CONFIG = new TextureConfig();
+    }
+    
+    private Map<String, Texture> textures;
+    private Map<String, TextureConfig> configs;
+    
+    private TextureConfig defaultConfig;
+    private final Texture missingTexture;
+    
     private ResourceProvider resProvider;
-    private RenderAPI api = LibAPIManager.instance().getGLFW().getRenderAPI();
+    private RenderAPI api;
     
     public TextureHelper(ResourceProvider prov) {
         this.resProvider = prov;
+        this.api = LibAPIManager.instance().getGLFW().getRenderAPI();
+        this.defaultConfig = new TextureConfig();
+        textures = new HashMap<>();
+        configs = new HashMap<>();
+        this.missingTexture = api.createTexture2D(MISSING_TEXTURE_DATA, MISSING_TEXTURE_CONFIG);
     }
     
-    public void add(String name, TextureConfig config) {
-        textures.put(name, api.createTexture2D(resProvider.get(TextureData.class, name), config));
+    public Texture get(String name, TextureConfig config) {
+        Texture t = textures.get(name);
+        if (t == null) {
+            TextureData data = resProvider.get(TextureData.class, name);
+            if (data == null) {
+                return missingTexture;
+            }
+            t = api.createTexture2D(data, config == null ? new TextureConfig() : config);
+            textures.put(name, t);
+        }
+        return t;
+    }
+    
+    public Texture get(String name, String configName) {
+        Texture t = textures.get(name);
+        if (t != null) {
+            return t;
+        }
+        TextureConfig config = configs.get(configName);
+        if (config == null) {
+            config = defaultConfig;
+        }
+        return get(name, config);
     }
     
     public Texture get(String name) {
-        return textures.get(name);
+        return get(name, defaultConfig);
     }
     
+    public void setTextureConfig(String name, TextureConfig config) {
+        configs.put(name, config);
+    }
+    
+    public void setDefaultTextureConfig(TextureConfig config) {
+        this.defaultConfig = config;
+    }
+    
+    public void clearConfigs() {
+        configs.clear();
+    }
+    
+    public void clearTextures() {
+        textures.clear();
+    }
 }
