@@ -78,6 +78,10 @@ public class TextureHelper {
         configs.put(name, config);
     }
     
+    public void setTexture(String name, Texture tex) {
+        textures.put(name, tex);
+    }
+    
     public void setDefaultTextureConfig(TextureConfig config) {
         this.defaultConfig = config;
     }

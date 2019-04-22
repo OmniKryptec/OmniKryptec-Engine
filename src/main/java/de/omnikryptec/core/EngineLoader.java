@@ -31,6 +31,7 @@ import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.resource.loadervpc.ResourceManager;
 import de.omnikryptec.resource.loadervpc.ResourceProvider;
+import de.omnikryptec.resource.loadervpc.TextureHelper;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
@@ -64,6 +65,7 @@ public abstract class EngineLoader {
     private GameController gameController;
     private UpdateController updateController;
     private ResourceManager resources;
+    private TextureHelper textures;
     private boolean started;
     
     public EngineLoader() {
@@ -133,6 +135,7 @@ public abstract class EngineLoader {
         this.window = RenderAPI.get().getWindow();
         this.resources = new ResourceManager();
         this.resources.addDefaultLoaders();
+        this.textures = new TextureHelper(getResourceProvider());
         this.gameLoop = loaderSettings.get(LoaderSetting.GAME_LOOP);
         this.gameController = new GameController();
         this.updateController = new UpdateController(this.gameController, this.window);
@@ -201,6 +204,10 @@ public abstract class EngineLoader {
     //Shortcut
     public ResourceProvider getResourceProvider() {
         return this.resources.getProvider();
+    }
+    
+    public TextureHelper getTextures() {
+        return textures;
     }
     
     private void checkStarted() {

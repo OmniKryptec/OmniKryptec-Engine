@@ -37,11 +37,10 @@ public class RendererDemo extends EngineLoader{
         
         //Load the texture and use the TextureHelper to make stuff easier
         getResourceManager().instantLoad(false, true, "intern:/de/omnikryptec/resources/jd.png");
-        TextureHelper textures = new TextureHelper(getResourceProvider());
         
         //Create a sprite and set some of its properties
         SimpleSprite sprite = new SimpleSprite();
-        sprite.setTexture(textures.get("jd.png"));
+        sprite.setTexture(getTextures().get("jd.png"));
         sprite.setPosition(new Vector2f());
         
         //add the sprite to the (default) robject manager
