@@ -4,7 +4,7 @@ import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
-import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
+import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
@@ -35,7 +35,7 @@ public class Raytracer extends EngineLoader implements IUpdatable {
         getGameController().getGlobalScene().setUpdateableSync(this);
         renderApi = (OpenGLRenderAPI) RenderAPI.get();
         image = (GLFrameBuffer) renderApi.createFrameBuffer(80, 80, 0, 1);
-        image.assignTargetB(0, new FBTarget(TextureFormat.RGBA32, 0));
+        image.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA32, 0));
         batch = new ShadedBatch2D(6);
         computeShader = (GLShader) renderApi.createShader();
         computeShader.create("raytracer");
@@ -54,7 +54,7 @@ public class Raytracer extends EngineLoader implements IUpdatable {
     @Override
     public void update(Time time) {
         computeShader.bindShader();
-        image.bindImageTexture(0, 0, 0, false, 0, 0, TextureFormat.RGBA32);
+        image.bindImageTexture(0, 0, 0, false, 0, 0, FBAttachmentFormat.RGBA32);
         computeShader.dispatchCompute(image.getWidth()/8, image.getHeight()/8, 1);
         
         

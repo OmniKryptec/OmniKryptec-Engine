@@ -7,10 +7,12 @@ import java.util.List;
 import org.joml.FrustumIntersection;
 
 import de.omnikryptec.libapi.exposed.render.FBTarget;
-import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
+import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
+import de.omnikryptec.libapi.exposed.render.RenderState.CullMode;
+import de.omnikryptec.libapi.exposed.render.RenderState.DepthMode;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.batch.ShadedBatch2D;
@@ -22,13 +24,12 @@ import de.omnikryptec.render.renderer.RendererContext.EnvironmentKey;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.updater.Time;
-
+//TODO reflections
 public class Renderer2D implements Renderer, IRenderedObjectListener {
-    //is the light color ok or does this need fixes?
     
     private static final Comparator<Sprite> DEFAULT_COMPARATOR = (s0,
             s1) -> (int) Math.signum(s0.getLayer() - s1.getLayer());
-    //TODO cull faces and what about depth testing?
+    
     private static final RenderState SPRITE_STATE = RenderState.of(BlendMode.ALPHA);
     private static final RenderState LIGHT_STATE = RenderState.of(BlendMode.ADDITIVE);
     private static final RenderState MULT_STATE = RenderState.of(BlendMode.MULTIPLICATIVE);
@@ -88,7 +89,6 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
             }
         }
         batch.end();
-        //TODO clear spritebuffer depth?
         spriteBuffer.bindFrameBuffer();
         spriteBuffer.clearColor();
         renderer.getRenderAPI().applyRenderState(SPRITE_STATE);
@@ -115,13 +115,13 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
     public void createOrResizeFBO(LocalRendererContext context, SurfaceBuffer screen) {
         if (spriteBuffer == null) {
             spriteBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
-            spriteBuffer.assignTargetB(0, new FBTarget(TextureFormat.RGBA16, 0));
+            spriteBuffer.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
         } else {
             spriteBuffer = spriteBuffer.resizedClone(screen.getWidth(), screen.getHeight());
         }
         if (renderBuffer == null) {
             renderBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
-            renderBuffer.assignTargetB(0, new FBTarget(TextureFormat.RGBA16, 0));
+            renderBuffer.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
         } else {
             renderBuffer = renderBuffer.resizedClone(screen.getWidth(), screen.getHeight());
         }

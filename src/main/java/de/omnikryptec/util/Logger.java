@@ -21,8 +21,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
-//TODO abstract Logger?
-//TODO log msg format
+//TODO abstract Logger?, log-msg format
 public class Logger {
     
     public enum LogType {

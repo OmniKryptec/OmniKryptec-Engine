@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL42;
 
 import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
-import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
+import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.FrameBufferStack;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
@@ -110,7 +110,7 @@ public class GLFrameBuffer extends FrameBuffer implements Deletable {
     }
     
     public void bindImageTexture(int imageUnit, int texIndex, int level, boolean layered, int layer, int access,
-            TextureFormat format) {
+            FBAttachmentFormat format) {
         GL42.glBindImageTexture(imageUnit, textures[texIndex].pointer, level, layered, layer, GL15.GL_READ_WRITE,
                 OpenGLUtil.textureFormatId(format));
         OpenGLUtil.flushErrors();

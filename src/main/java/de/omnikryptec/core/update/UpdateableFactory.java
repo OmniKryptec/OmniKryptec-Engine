@@ -22,7 +22,7 @@ import org.joml.Matrix4f;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
-import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
+import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.Texture;
@@ -78,8 +78,8 @@ public class UpdateableFactory {
         final FrameBuffer fbo = RenderAPI.get().createFrameBuffer(2000, 2000, 0, 3);
         
         fbo.bindFrameBuffer();
-        fbo.assignTargets(new FBTarget(TextureFormat.RGBA8, 0), new FBTarget(TextureFormat.DEPTH24),
-                new FBTarget(TextureFormat.RGBA8, 1));
+        fbo.assignTargets(new FBTarget(FBAttachmentFormat.RGBA8, 0), new FBTarget(FBAttachmentFormat.DEPTH24),
+                new FBTarget(FBAttachmentFormat.RGBA8, 1));
         final Texture texture = RenderAPI.get().createTexture2D(dat, new TextureConfig());
         
         return new IUpdatable() {

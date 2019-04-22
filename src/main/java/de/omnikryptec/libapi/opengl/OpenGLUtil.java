@@ -43,7 +43,7 @@ import org.lwjgl.opengl.GL46;
 
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
-import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
+import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.PolyMode;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
@@ -122,7 +122,7 @@ public class OpenGLUtil {
         }
     }
     
-    public static int textureFormatId(final TextureFormat texFormat) {
+    public static int textureFormatId(final FBAttachmentFormat texFormat) {
         switch (texFormat) {
         case RGBA8:
             return GL11.GL_RGBA8;
@@ -395,7 +395,10 @@ public class OpenGLUtil {
         }
     }
     
-    public static void setDepthTestFunc(final DepthMode depthMode) {
+    public static void setDepthTestFunc(DepthMode depthMode) {
+        if (depthMode == DepthMode.DEFAULT) {
+            depthMode = DepthMode.LESS;
+        }
         final DepthMode o = (DepthMode) cache.get(CACHE_ENUM.DEPTH_FUNC);
         if (o == null || o != depthMode) {
             if (depthMode == DepthMode.OFF) {

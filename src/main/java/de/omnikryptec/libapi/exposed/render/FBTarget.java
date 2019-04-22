@@ -10,25 +10,22 @@ import java.util.Objects;
  */
 public class FBTarget {
     
-    //TODO texture format? move
-    public static enum TextureFormat {
+    public static enum FBAttachmentFormat {
         RGBA8(4), RGBA16(4), RGBA32(4), DEPTH16(1), DEPTH24(1), DEPTH32(1);
         
         public final int componentCount;
         
-        private TextureFormat(final int comps) {
+        private FBAttachmentFormat(final int comps) {
             this.componentCount = comps;
         }
     }
     
     public static final int DEPTH_ATTACHMENT_INDEX = -1;
     
-    public final TextureFormat format;
+    public final FBAttachmentFormat format;
     public final int attachmentIndex;
     public final boolean isDepthAttachment;
-    
-    //TODO support for TextureData
-    
+        
     /**
      * Creates a new {@link FBTarget}<br>
      * <br>
@@ -36,7 +33,7 @@ public class FBTarget {
      *
      * @param format the format of the depth attachment
      */
-    public FBTarget(final TextureFormat format) {
+    public FBTarget(final FBAttachmentFormat format) {
         this(format, DEPTH_ATTACHMENT_INDEX);
     }
     
@@ -46,7 +43,7 @@ public class FBTarget {
      * @param format     the format of the attachment
      * @param attachment the index of the attachment
      */
-    public FBTarget(final TextureFormat format, final int attachment) {
+    public FBTarget(final FBAttachmentFormat format, final int attachment) {
         this.format = format;
         this.attachmentIndex = attachment;
         this.isDepthAttachment = this.attachmentIndex == DEPTH_ATTACHMENT_INDEX;

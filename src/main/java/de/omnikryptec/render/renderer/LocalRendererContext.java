@@ -7,7 +7,7 @@ import java.util.List;
 import org.joml.Matrix4f;
 
 import de.omnikryptec.libapi.exposed.render.FBTarget;
-import de.omnikryptec.libapi.exposed.render.FBTarget.TextureFormat;
+import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.libapi.exposed.render.Texture;
@@ -44,7 +44,7 @@ public class LocalRendererContext {
         this.renderers = new ArrayList<>();
         if (targets == null || targets.length == 0) {
             this.frameBuffers = new SceneRenderBufferManager(getRenderAPI(), multisamples,
-                    new FBTarget(TextureFormat.RGBA16, 0));
+                    new FBTarget(FBAttachmentFormat.RGBA16, 0));
         } else {
             this.frameBuffers = new SceneRenderBufferManager(getRenderAPI(), multisamples, targets);
         }

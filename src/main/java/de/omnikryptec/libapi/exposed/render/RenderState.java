@@ -59,7 +59,7 @@ public class RenderState implements Cloneable {
     }
     
     public static enum DepthMode {
-        LESS, EQUAL, GREATER, ALWAYS, NEVER, OFF;
+        LESS, EQUAL, GREATER, ALWAYS, NEVER, OFF, DEFAULT;
     }
     
     //TODO allow null values so that thing stays as it is?

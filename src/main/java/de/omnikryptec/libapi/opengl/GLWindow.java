@@ -36,7 +36,6 @@ public class GLWindow implements IWindow {
                 (boolean) windowSettings.get(WindowSetting.Resizeable) ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
         int mav = apiSettings.get(OpenGLRenderAPI.MAJOR_VERSION);
         int miv = apiSettings.get(OpenGLRenderAPI.MINOR_VERSION);
-        //TODO make OpenGL version and profile setting better, this is weird
         if (Platform.get() == Platform.MACOSX) {
             //MacOS requires at least OpenGL 3.3
             mav = Math.max(mav, 3);
