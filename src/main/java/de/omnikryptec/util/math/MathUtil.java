@@ -32,7 +32,6 @@ import org.joml.Vector4f;
 import org.joml.Vector4fc;
 
 public class MathUtil {
-
     
     /**
      * Creates a viewport with a particular aspect ratio and the given width and
@@ -118,23 +117,18 @@ public class MathUtil {
             target = new Vector2f();
         }
         double x, y;
-        if (displayMousePosition.x() < viewport[0] || displayMousePosition.x() > viewport[2] + viewport[0]) {
-            x = -1;
-        } else {
-            x = displayMousePosition.x();
-            x -= viewport[0];
-            x /= viewport[2];
-            x = 2 * x - 1;
-        }
-        if (displayMousePosition.y() < viewport[1] || displayMousePosition.y() > viewport[3] + viewport[1]) {
-            y = -1;
-        } else {
-            y = displayMousePosition.y();
-            y -= viewport[1];
-            y /= viewport[3];
-            y = 1.0 - y;
-            y = 2 * y - 1;
-        }
+        
+        x = displayMousePosition.x();
+        x -= viewport[0];
+        x /= viewport[2];
+        x = 2 * x - 1;
+        
+        y = displayMousePosition.y();
+        y -= viewport[1];
+        y /= viewport[3];
+        y = 1.0 - y;
+        y = 2 * y - 1;
+        
         target.set((float) x, (float) y);
         return target;
     }
@@ -144,23 +138,18 @@ public class MathUtil {
             target = new Vector2d();
         }
         double x, y;
-        if (displayMousePosition.x() < viewport[0] || displayMousePosition.x() > viewport[2] + viewport[0]) {
-            x = -1;
-        } else {
-            x = displayMousePosition.x();
-            x -= viewport[0];
-            x /= viewport[2];
-            x = 2 * x - 1;
-        }
-        if (displayMousePosition.y() < viewport[1] || displayMousePosition.y() > viewport[3] + viewport[1]) {
-            y = -1;
-        } else {
-            y = displayMousePosition.y();
-            y -= viewport[1];
-            y /= viewport[3];
-            y = 1.0 - y;
-            y = 2 * y - 1;
-        }
+        
+        x = displayMousePosition.x();
+        x -= viewport[0];
+        x /= viewport[2];
+        x = 2 * x - 1;
+        
+        y = displayMousePosition.y();
+        y -= viewport[1];
+        y /= viewport[3];
+        y = 1.0 - y;
+        y = 2 * y - 1;
+        
         target.set(x, y);
         return target;
     }

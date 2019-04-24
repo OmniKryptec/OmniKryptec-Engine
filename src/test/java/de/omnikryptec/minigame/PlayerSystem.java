@@ -59,7 +59,7 @@ public class PlayerSystem extends ComponentSystem {
             }
             mov.dx = vx;
             mov.dy = vy;
-            if (inputManager.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_1) && inputManager.isMouseInsideWindow()
+            if (inputManager.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_1) && inputManager.isMouseInsideViewport()
                     && again > 0.15f) {
                 again = 0;
                 Vector2f dir = MathUtil.screenToWorldspace2D(

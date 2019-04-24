@@ -228,6 +228,10 @@ public class InputManager implements IUpdatable {
         return mouseHandler.getScrollOffset();
     }
     
+    public boolean isMouseInsideViewport() {
+        return mouseHandler.isInsideViewport();
+    }
+    
     public boolean isMouseInsideWindow() {
         return mouseHandler.isInsideWindow();
     }

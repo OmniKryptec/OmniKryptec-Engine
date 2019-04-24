@@ -25,11 +25,14 @@ import org.lwjgl.glfw.GLFW;
 
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.event.EventSubscription;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.window.InputEvent;
+import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.util.settings.KeySettings;
 
 public class MouseHandler implements InputHandler {
-    
+    //TODO pcfreak - better viewport accesss?
+    private final SurfaceBuffer surface = LibAPIManager.instance().getGLFW().getRenderAPI().getSurface();
     private final byte[] buttons = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
     private final Vector2d position = new Vector2d(0.0, 0.0);
     private final Vector2d scrollOffset = new Vector2d(0.0, 0.0);
@@ -150,9 +153,12 @@ public class MouseHandler implements InputHandler {
         return insideWindow.get();
     }
     
+    public boolean isInsideViewport() {
+        return isInsideWindow() && surface.isInViewport(position);
+    }
+    
     public int size() {
         return buttons.length;
     }
-    
     
 }
