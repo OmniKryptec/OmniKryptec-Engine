@@ -3,6 +3,7 @@ package de.omnikryptec.libapi.exposed.render;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.util.data.Color;
 
@@ -13,12 +14,13 @@ import de.omnikryptec.util.data.Color;
  * @author pcfreak9000
  * @see RenderAPI#createFrameBuffer(int, int, int, int)
  */
-public abstract class FrameBuffer {
+public abstract class FrameBuffer implements Deletable {
     
     protected final FrameBufferStack stack;
     
     public FrameBuffer(FrameBufferStack stack) {
         this.stack = stack;
+        registerThisAsAutodeletable();
     }
     
     private boolean isNull() {

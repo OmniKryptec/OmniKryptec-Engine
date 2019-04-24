@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.joml.AxisAngle4f;
 import org.joml.FrustumIntersection;
+import org.joml.Matrix4f;
 
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderState;
+import de.omnikryptec.libapi.exposed.render.RenderUtil;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.CullMode;
 import de.omnikryptec.libapi.exposed.render.RenderState.DepthMode;
@@ -22,9 +25,11 @@ import de.omnikryptec.render.objects.RenderedObject;
 import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.render.renderer.RendererContext.EnvironmentKey;
 import de.omnikryptec.util.data.Color;
+import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.updater.Time;
-//TODO reflections
+
+
 public class Renderer2D implements Renderer, IRenderedObjectListener {
     
     private static final Comparator<Sprite> DEFAULT_COMPARATOR = (s0,
@@ -40,11 +45,11 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
     private List<Sprite> sprites = new ArrayList<>();
     
     private FrameBuffer spriteBuffer, renderBuffer;
-    
     private boolean shouldSort = false;
     
     @Override
-    public void init(LocalRendererContext context) {
+    public void init(LocalRendererContext context, FrameBuffer target) {
+        createFBOs(context, target);
         context.getIRenderedObjectManager().addListener(Sprite.TYPE, this);
         List<Sprite> list = context.getIRenderedObjectManager().getFor(Sprite.TYPE);
         //is addAll fast enough or is a raw forloop faster?
@@ -63,6 +68,9 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
         this.sprites.clear();
         this.shouldSort = false;
         context.getIRenderedObjectManager().removeListener(Sprite.TYPE, this);
+        //delete FBOs
+        renderBuffer.deleteAndUnregister();
+        spriteBuffer.deleteAndUnregister();
     }
     
     @Override
@@ -79,52 +87,37 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
         renderBuffer.bindFrameBuffer();
         FrustumIntersection intersFilter = new FrustumIntersection(projection.getProjection());
         batch.setIProjection(projection);
+        //render lights
         renderer.getRenderAPI().applyRenderState(LIGHT_STATE);
         renderBuffer.clearColor(renderer.getEnvironmentSettings().get(EnvironmentKeys2D.AmbientLight));
-        List<Light2D> lightList = renderer.getIRenderedObjectManager().getFor(Light2D.TYPE);
-        batch.begin();
-        for (Light2D l : lightList) {
-            if (l.isVisible(intersFilter)) {
-                l.draw(batch);
-            }
-        }
-        batch.end();
+        RendererUtil.render2d(batch, renderer.getIRenderedObjectManager(), Light2D.TYPE, intersFilter);
+        //render scene
         spriteBuffer.bindFrameBuffer();
         spriteBuffer.clearColor();
         renderer.getRenderAPI().applyRenderState(SPRITE_STATE);
-        batch.begin();
-        for (Sprite sprite : sprites) {
-            if (sprite.isVisible(intersFilter)) {
-                sprite.draw(batch);
-            }
-        }
-        batch.end();
+        RendererUtil.render2d(batch, sprites, intersFilter);
         spriteBuffer.unbindFrameBuffer();
+        //combine lights with the scene
         renderer.getRenderAPI().applyRenderState(MULT_STATE);
-        finalDraw.begin();
-        finalDraw.draw(spriteBuffer.getTexture(0), null, false, false);
-        finalDraw.end();
+        RendererUtil.renderBufferDirect(spriteBuffer, 0, finalDraw);
         renderBuffer.unbindFrameBuffer();
+        //final draw
         renderer.getRenderAPI().applyRenderState(SPRITE_STATE);
-        finalDraw.begin();
-        finalDraw.draw(renderBuffer.getTexture(0), null, false, false);
-        finalDraw.end();
+        RendererUtil.renderBufferDirect(renderBuffer, 0, finalDraw);
     }
     
     @Override
-    public void createOrResizeFBO(LocalRendererContext context, SurfaceBuffer screen) {
-        if (spriteBuffer == null) {
-            spriteBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
-            spriteBuffer.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
-        } else {
-            spriteBuffer = spriteBuffer.resizedClone(screen.getWidth(), screen.getHeight());
-        }
-        if (renderBuffer == null) {
-            renderBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
-            renderBuffer.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
-        } else {
-            renderBuffer = renderBuffer.resizedClone(screen.getWidth(), screen.getHeight());
-        }
+    public void resizeFBOs(LocalRendererContext context, SurfaceBuffer screen) {
+        spriteBuffer = spriteBuffer.resizedClone(screen.getWidth(), screen.getHeight());
+        renderBuffer = renderBuffer.resizedClone(screen.getWidth(), screen.getHeight());
+    }
+    
+    private void createFBOs(LocalRendererContext context, FrameBuffer screen) {
+        spriteBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
+        spriteBuffer.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
+        
+        renderBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
+        renderBuffer.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
     }
     
     public static enum EnvironmentKeys2D implements Defaultable, EnvironmentKey {

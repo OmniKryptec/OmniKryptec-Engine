@@ -1,25 +1,23 @@
 package de.omnikryptec.render.renderer;
 
+import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.util.updater.Time;
 
 public interface Renderer {
     
-    void init(LocalRendererContext context);
+    void init(LocalRendererContext context, FrameBuffer target);
     
-    default void preRender(final Time time, IProjection projection, LocalRendererContext context) {
-        
+    default void preRender(final Time time, IProjection projection, LocalRendererContext context) { 
     }
     
     void render(Time time, IProjection projection, LocalRendererContext context);
     
     default void postRender(final Time time, IProjection projection, LocalRendererContext context) {
-        
     }
     
-    default void createOrResizeFBO(LocalRendererContext context, SurfaceBuffer screen) {
-        
+    default void resizeFBOs(LocalRendererContext context, SurfaceBuffer screen) {
     }
     
     void deinit(LocalRendererContext context);

@@ -1,6 +1,7 @@
 package de.omnikryptec.render.renderer;
 
 import java.util.ArrayList;
+
 import java.util.Comparator;
 import java.util.List;
 
@@ -22,6 +23,8 @@ import de.omnikryptec.render.renderer.RendererContext.GlobalEnvironmentKeys;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
+//TODO make Renderers or even LocalRendererContexts "global transformable"
+//TODO also improve target information for renderers (null => surface, FrameBuffer => take its width and height and stay like that?)
 public class LocalRendererContext {
     private static final Comparator<Renderer> RENDERER_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority() - e1.priority();
     
@@ -85,8 +88,7 @@ public class LocalRendererContext {
     public void addRenderer(Renderer renderer) {
         renderers.add(renderer);
         renderers.sort(RENDERER_PRIORITY_COMPARATOR);
-        renderer.init(this);
-        renderer.createOrResizeFBO(this, context.getRenderAPI().getSurface());
+        renderer.init(this, context.getRenderAPI().getSurface());
     }
     
     public void removeRenderer(Renderer renderer) {
@@ -135,7 +137,7 @@ public class LocalRendererContext {
     void screenBufferResizedEventDelegate(WindowEvent.ScreenBufferResized ev) {
         frameBuffers.resize(ev.width, ev.height);
         for (Renderer r : renderers) {
-            r.createOrResizeFBO(this, ev.surface);
+            r.resizeFBOs(this, ev.surface);
         }
     }
 }

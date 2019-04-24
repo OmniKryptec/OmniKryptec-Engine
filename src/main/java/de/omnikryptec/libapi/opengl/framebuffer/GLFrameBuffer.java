@@ -21,7 +21,7 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.libapi.opengl.texture.GLTexture;
 
-public class GLFrameBuffer extends FrameBuffer implements Deletable {
+public class GLFrameBuffer extends FrameBuffer {
     
     private static int multisampler = 0;
     
@@ -64,7 +64,6 @@ public class GLFrameBuffer extends FrameBuffer implements Deletable {
             enableMultisamplingIfFirst();
             this.renderbuffers = new int[targets];
         }
-        registerThisAsAutodeletable();
     }
     
     @Override

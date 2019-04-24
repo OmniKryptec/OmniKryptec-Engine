@@ -120,5 +120,10 @@ public class GLScreenBuffer extends SurfaceBuffer {
     public void assignTarget(int index, FBTarget target) {
         throw new UnsupportedOperationException("");
     }
+
+    @Override
+    public void deleteRaw() {
+        throw new UnsupportedOperationException("");
+    }
     
 }
