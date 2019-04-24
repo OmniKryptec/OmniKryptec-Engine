@@ -92,7 +92,7 @@ public class RenderBatch2D implements Batch2D {
         draw(texture == null ? null : texture.getBaseTexture(), transform, width, height, flipU, flipV, u0, v0, u1, v1);
     }
     
-    protected void draw(final Texture texture, Matrix3x2fc transform, final float width, final float height,
+    private void draw(final Texture texture, Matrix3x2fc transform, final float width, final float height,
             final boolean flipU, boolean flipV, float u0, float v0, float u1, float v1) {
         checkRendering();
         if (texture != null) {
