@@ -82,7 +82,7 @@ public class Transform {
      * @see #localspaceWrite()
      * @see #localspace()
      */
-    public void localspaceWrite(final Consumer<Matrix4f> action) {
+    public void localspaceWrite(final Consumer<Matrix4fc> action) {
         action.accept(this.local);
         invalidate();
     }

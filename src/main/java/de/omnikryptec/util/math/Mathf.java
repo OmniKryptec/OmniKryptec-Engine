@@ -17,8 +17,15 @@
 package de.omnikryptec.util.math;
 
 import org.joml.Math;
+import org.joml.Matrix3x2f;
+import org.joml.Matrix3x2fc;
+import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
 
 public strictfp class Mathf {
+    
+    public static final Matrix3x2fc IDENTITY3x2f = new Matrix3x2f();
+    public static final Matrix4fc IDENTITY4f = new Matrix4f();
     
     public static final float PI = (float) java.lang.Math.PI;
     public static final float E = (float) java.lang.Math.E;
@@ -30,7 +37,7 @@ public strictfp class Mathf {
     private static final float TWO_POW_23 = 8388608.0f;
     
     public static float pow(float in, float e) {
-        return (float)java.lang.Math.pow(in, e);
+        return (float) java.lang.Math.pow(in, e);
     }
     
     public static float square(float x) {

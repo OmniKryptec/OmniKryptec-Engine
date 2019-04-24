@@ -13,16 +13,21 @@ public class ShadedBatch2D extends RenderBatch2D {
     
     public static final String SHADER_NAME = "engineRenderBatch2DShader";
     
-    private Shader shader;
+    protected Shader shader;
     private UniformMatrix viewProjection;
     private UniformMatrix transform;
     
     private IProjection projection;
     
     public ShadedBatch2D(int vertices) {
+        this(vertices, SHADER_NAME);
+        
+    }
+    
+    protected ShadedBatch2D(int vertices, String shadername) {
         super(vertices);
         this.shader = RenderAPI.get().createShader();
-        this.shader.create(SHADER_NAME);
+        this.shader.create(shadername);
         this.transform = this.shader.getUniform("u_transform");
         this.viewProjection = this.shader.getUniform("u_projview");
         

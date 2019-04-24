@@ -39,7 +39,10 @@ public class RenderBatch2D implements Batch2D {
         init(vertexManagerFactory.apply(MY_LAYOUT));
     }
     
-    private void init(final VertexManager vertexManager) {
+    protected RenderBatch2D() {
+    }
+    
+    protected void init(final VertexManager vertexManager) {
         this.vertexManager = vertexManager;
         this.color = new Color(1, 1, 1, 1);
         this.transformDefault = new Matrix3x2f();
@@ -89,7 +92,7 @@ public class RenderBatch2D implements Batch2D {
         draw(texture == null ? null : texture.getBaseTexture(), transform, width, height, flipU, flipV, u0, v0, u1, v1);
     }
     
-    private void draw(final Texture texture, Matrix3x2fc transform, final float width, final float height,
+    protected void draw(final Texture texture, Matrix3x2fc transform, final float width, final float height,
             final boolean flipU, boolean flipV, float u0, float v0, float u1, float v1) {
         checkRendering();
         if (texture != null) {

@@ -17,8 +17,15 @@
 package de.omnikryptec.util.math;
 
 import org.joml.Math;
+import org.joml.Matrix3x2d;
+import org.joml.Matrix3x2dc;
+import org.joml.Matrix4d;
+import org.joml.Matrix4dc;
 
 public strictfp class Mathd {
+    
+    public static final Matrix3x2dc IDENTITY3x2d = new Matrix3x2d();
+    public static final Matrix4dc IDENTITY4d = new Matrix4d();
     
     public static final double PI = java.lang.Math.PI;
     public static final double E = java.lang.Math.E;

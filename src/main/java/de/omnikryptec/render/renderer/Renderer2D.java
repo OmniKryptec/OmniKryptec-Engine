@@ -4,18 +4,12 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import org.joml.AxisAngle4f;
 import org.joml.FrustumIntersection;
-import org.joml.Matrix4f;
-
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderState;
-import de.omnikryptec.libapi.exposed.render.RenderUtil;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
-import de.omnikryptec.libapi.exposed.render.RenderState.CullMode;
-import de.omnikryptec.libapi.exposed.render.RenderState.DepthMode;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.batch.ShadedBatch2D;
@@ -25,10 +19,8 @@ import de.omnikryptec.render.objects.RenderedObject;
 import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.render.renderer.RendererContext.EnvironmentKey;
 import de.omnikryptec.util.data.Color;
-import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.updater.Time;
-
 
 public class Renderer2D implements Renderer, IRenderedObjectListener {
     
@@ -46,6 +38,10 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
     
     private FrameBuffer spriteBuffer, renderBuffer;
     private boolean shouldSort = false;
+    
+    public void setSpriteComparator(Comparator<Sprite> comparator) {
+        this.spriteComparator = comparator == null ? DEFAULT_COMPARATOR : comparator;
+    }
     
     @Override
     public void init(LocalRendererContext context, FrameBuffer target) {
