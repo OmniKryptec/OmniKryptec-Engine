@@ -1,9 +1,10 @@
 $define shader engineRenderBatch2DShader VERTEX$
 #version 330 core
 
-layout(location = 0) in vec2 i_pos;
-layout(location = 1) in vec2 i_texcoords;
-layout(location = 2) in vec4 i_color;
+layout(location = 1) in vec2 i_pos;
+layout(location = 2) in vec2 i_texcoords;
+layout(location = 0) in vec4 i_color;
+
 
 out vec4 v_color;
 out vec2 v_texcoords;

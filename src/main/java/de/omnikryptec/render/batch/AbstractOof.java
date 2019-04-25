@@ -8,12 +8,10 @@ import org.joml.Vector2f;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.TextureRegion;
+import de.omnikryptec.render.batch.ModuleBatchingManager.QuadSide;
 
-public abstract class AbstractBatch2D {
-    
-    public static enum QuadSide {
-        TopLeft, TopRight, BotLeft, BotRight;
-    }
+public abstract class AbstractOof {
+
     
     private VertexManager vertexManager;
     private int perVertexCount = 4;

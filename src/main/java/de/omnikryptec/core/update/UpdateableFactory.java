@@ -20,6 +20,7 @@ import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
 
 import de.omnikryptec.ecs.IECSManager;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
@@ -28,6 +29,7 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.batch.ShadedBatch2D;
+import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.renderer.RendererContext;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
@@ -58,6 +60,7 @@ public class UpdateableFactory {
         return new IUpdatable() {
             
             private Color color = new Color();
+            
             @Override
             public void update(final Time time) {
                 if (time.opCount % 40 == 0) {
@@ -83,23 +86,25 @@ public class UpdateableFactory {
         final Texture texture = RenderAPI.get().createTexture2D(dat, new TextureConfig());
         
         return new IUpdatable() {
-            
-            private final ShadedBatch2D batch = new ShadedBatch2D(250);
+            private final SimpleBatch2D batch = new SimpleBatch2D(250);
+            //private final ShadedBatch2D batch = new ShadedBatch2D(250);
             private final Matrix3x2f t = new Matrix3x2f();
             private final Camera cam = new Camera(new Matrix4f().ortho2D(0, 4, 0, 3));
             
             @Override
             public void update(final Time time) {
-                this.cam.getTransform().set(new Matrix4f().translate(Mathf.pingpong(time.currentf, 2), 0, 0));
-                this.batch.setIProjection(cam);
+                //this.cam.getTransform().set(new Matrix4f().translate(Mathf.pingpong(time.currentf, 2), 0, 0));
+                //this.batch.setIProjection(cam);
                 this.batch.begin();
                 final float s = Mathf.pingpong(time.currentf, Mathf.PI);
                 this.t.identity();
                 this.t.scale(s, s);
                 this.t.rotateAbout(s, 0.5f, 0.5f);
-                
                 this.batch.color().randomizeRGB();
-                this.batch.draw(texture, this.t, 1, 1, false, false);
+                for(int i=0; i<1000; i++) {
+                    
+                    this.batch.draw(texture, null, 1, 1, false, false);
+                }
                 this.batch.color().randomizeRGB();
                 this.batch.drawLine(0, 0, 3, 2, 0.1f);
                 this.batch.end();

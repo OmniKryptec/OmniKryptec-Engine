@@ -11,26 +11,24 @@ import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.resource.MeshData.Primitive;
 
 public class RenderedVertexManager implements VertexManager {
-
-    private final FloatCollector data;
-    private final int floatsPerVertex;
+    
+    private final int vertexCount;
+    
+    private FloatCollector data;
+    private int floatsPerVertex;
     private Texture currentTexture;
-    private final VertexArray va;
-    private final VertexBuffer vb;
-
-    public RenderedVertexManager(final int vertexCount, final VertexBufferLayout layout) {
-        this.floatsPerVertex = layout.getCount();
-        this.data = new FloatCollector(vertexCount * this.floatsPerVertex);
-        this.vb = RenderAPI.get().createVertexBuffer();
-        this.va = RenderAPI.get().createVertexArray();
-        this.va.addVertexBuffer(this.vb, layout);
+    private VertexArray va;
+    private VertexBuffer vb;
+    
+    public RenderedVertexManager(final int vertexCount) {
+        this.vertexCount = vertexCount;
     }
-
+    
     @Override
     public void addData(final float[] floats, final int offset, final int length) {
         this.data.put(floats, offset, length);
     }
-
+    
     @Override
     public void prepareNext(final Texture baseTexture, final int requiredFloats) {
         if (requiredFloats > this.data.size()) {
@@ -41,7 +39,7 @@ public class RenderedVertexManager implements VertexManager {
             forceFlush();
         }
     }
-
+    
     @Override
     public void forceFlush() {
         if (this.currentTexture != null) {
@@ -51,5 +49,15 @@ public class RenderedVertexManager implements VertexManager {
         this.vb.storeData(this.data.flush(), BufferUsage.Stream, count);
         RenderAPI.get().render(this.va, Primitive.Triangle, count / this.floatsPerVertex);
     }
-
+    
+    @Override
+    public void init(ModuleBatchingManager mgr) {
+        VertexBufferLayout layout = mgr.createLayout();
+        this.floatsPerVertex = layout.getCount();
+        this.data = new FloatCollector(vertexCount * this.floatsPerVertex);
+        this.vb = RenderAPI.get().createVertexBuffer();
+        this.va = RenderAPI.get().createVertexArray();
+        this.va.addVertexBuffer(this.vb, layout);
+    }
+    
 }

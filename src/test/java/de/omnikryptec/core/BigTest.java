@@ -46,7 +46,7 @@ public class BigTest extends EngineLoader {
         getGameController().getGlobalScene().setUpdateableSync(scene);
         getResourceManager().stage("intern:/de/omnikryptec/resources/");
         getResourceManager().processStaged(false, false);
-        scene.addUpdatable(UpdateableFactory.createScreenClearTest());
+        //scene.addUpdatable(UpdateableFactory.createScreenClearTest());
         scene.addUpdatable(UpdateableFactory.createRenderTest(getResourceProvider().get(TextureData.class, "jd.png")));
     }
     

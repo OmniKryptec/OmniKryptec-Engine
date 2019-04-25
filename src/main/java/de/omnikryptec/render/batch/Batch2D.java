@@ -7,7 +7,7 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.util.math.Mathf;
 
 //if transform==null use identity transform
-public interface Batch2D extends Batch {
+public interface Batch2D {
     
     default void draw(final Texture texture, final Matrix3x2fc transform, final boolean flipU, final boolean flipV) {
         draw(texture, transform, 1f, 1f, flipU, flipV);
@@ -15,11 +15,11 @@ public interface Batch2D extends Batch {
     
     void draw(Texture texture, Matrix3x2fc transform, float width, float height, boolean flipU, boolean flipV);
     
-    default void drawPolygon(final Texture texture, final float[] poly) {
-        drawPolygon(texture, poly, 0, poly.length);
-    }
-    
-    void drawPolygon(Texture texture, float[] poly, int start, int len);
+//    default void drawPolygon(final Texture texture, final float[] poly) {
+//        drawPolygon(texture, poly, 0, poly.length);
+//    }
+//    
+//    void drawPolygon(Texture texture, float[] poly, int start, int len);
     
     default void drawRect(final Matrix3x2fc transform, final float width, final float height) {
         draw((Texture) null, transform, width, height, false, false);

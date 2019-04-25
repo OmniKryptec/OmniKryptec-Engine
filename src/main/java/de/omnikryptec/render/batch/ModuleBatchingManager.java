@@ -1,20 +1,26 @@
 package de.omnikryptec.render.batch;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.render.batch.AbstractBatch2D.QuadSide;
+import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 
-public class FindANameLaterClass {
+import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
+
+public class ModuleBatchingManager {
+    
+    public static enum QuadSide {
+        TopLeft, TopRight, BotLeft, BotRight;
+    }
     
     private static final QuadSide[] ARRANGED = { QuadSide.TopLeft, QuadSide.TopRight, QuadSide.BotLeft,
             QuadSide.TopRight, QuadSide.BotRight, QuadSide.BotLeft };
     private static final QuadSide[] SIDES = QuadSide.values();
-        
+    
     private Module[] modules;
     private float[] global;
     private float[][] local = new float[SIDES.length][];
     private int totalFloatsPerVertex;
     
-    public FindANameLaterClass(Module... modules) {
+    public ModuleBatchingManager(Module... modules) {
         this.modules = modules;
         int sideCount = 0;
         int globalCount = 0;
@@ -30,6 +36,25 @@ public class FindANameLaterClass {
         for (int i = 0; i < local.length; i++) {
             local[i] = new float[sideCount];
         }
+    }
+    
+    public VertexBufferLayout createLayout() {
+        VertexBufferLayout layout = new VertexBufferLayout();
+        for (Module m : modules) {
+            if (m.sideIndependant()) {
+                layout.push(Type.FLOAT, m.size(), false);
+            }
+        }
+        for (Module m : modules) {
+            if (!m.sideIndependant()) {
+                layout.push(Type.FLOAT, m.size(), false);
+            }
+        }
+        return layout;
+    }
+    
+    public Module[] getModules() {
+        return modules.clone();
     }
     
     public void issueVertices(Texture baseTexture, VertexManager manager) {

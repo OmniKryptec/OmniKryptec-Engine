@@ -33,7 +33,7 @@ public class RenderBatch2D implements Batch2D {
     private Matrix3x2f transformDefault;
     
     public RenderBatch2D(final int vertices) {
-        init(new RenderedVertexManager(vertices, MY_LAYOUT));
+        init(new RenderedVertexManager(vertices));
     }
     
     public RenderBatch2D(Function<VertexBufferLayout, VertexManager> vertexManagerFactory) {
