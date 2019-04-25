@@ -27,7 +27,7 @@ public class RenderedVertexManager implements VertexManager {
     }
 
     @Override
-    public void addVertex(final float[] floats, final int offset, final int length) {
+    public void addData(final float[] floats, final int offset, final int length) {
         this.data.put(floats, offset, length);
     }
 

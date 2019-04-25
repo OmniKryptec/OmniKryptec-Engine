@@ -4,11 +4,11 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 
 public interface VertexManager {
 
-    default void addVertex(final float... fs) {
-        this.addVertex(fs, 0, fs.length);
+    default void addData(final float... fs) {
+        this.addData(fs, 0, fs.length);
     }
 
-    void addVertex(float[] floats, int offset, int length);
+    void addData(float[] floats, int offset, int length);
 
     void prepareNext(Texture baseTexture, int requiredFloats);
 

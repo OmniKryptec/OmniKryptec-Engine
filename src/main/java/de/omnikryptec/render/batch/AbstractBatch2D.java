@@ -1,79 +1,47 @@
 package de.omnikryptec.render.batch;
 
-import java.util.function.Function;
-
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fc;
 import org.joml.Vector2f;
 
-import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.TextureRegion;
-import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
-import de.omnikryptec.util.data.Color;
 
-public class RenderBatch2D implements Batch2D {
+public abstract class AbstractBatch2D {
     
-    private static final VertexBufferLayout MY_LAYOUT = new VertexBufferLayout();
-    
-    static {
-        MY_LAYOUT.push(Type.FLOAT, 2, false);
-        MY_LAYOUT.push(Type.FLOAT, 2, false);
-        MY_LAYOUT.push(Type.FLOAT, 4, false);
-        MY_LAYOUT.lock();
+    public static enum QuadSide {
+        TopLeft, TopRight, BotLeft, BotRight;
     }
     
     private VertexManager vertexManager;
-    private int perVertexCount = MY_LAYOUT.getCount();
+    private int perVertexCount = 4;
     
-    private Color color;
     private boolean rendering;
     private Matrix3x2f transformDefault;
     
-    public RenderBatch2D(final int vertices) {
-        init(new RenderedVertexManager(vertices, MY_LAYOUT));
-    }
-    
-    public RenderBatch2D(Function<VertexBufferLayout, VertexManager> vertexManagerFactory) {
-        init(vertexManagerFactory.apply(MY_LAYOUT));
-    }
-    
-    protected RenderBatch2D() {
-    }
-    
     protected void init(final VertexManager vertexManager) {
         this.vertexManager = vertexManager;
-        this.color = new Color(1, 1, 1, 1);
         this.transformDefault = null;
     }
     
     @OverridingMethodsMustInvokeSuper
-    @Override
     public void begin() {
         this.rendering = true;
     }
     
-    @Override
-    public Color color() {
-        return this.color;
-    }
-    
     @OverridingMethodsMustInvokeSuper
-    @Override
     public void flush() {
         this.vertexManager.forceFlush();
     }
     
     @OverridingMethodsMustInvokeSuper
-    @Override
     public void end() {
         flush();
         this.rendering = false;
     }
     
-    @Override
     public void draw(final Texture texture, final Matrix3x2fc transform, final float width, final float height,
             final boolean flipU, final boolean flipV) {
         if (texture instanceof TextureRegion) {
@@ -120,29 +88,49 @@ public class RenderBatch2D implements Batch2D {
             botright = transform.transformPosition(botright);
             topleft = transform.transformPosition(topleft);
             topright = transform.transformPosition(topright);
-        } 
+        }
         createVertices(botleft, botright, topleft, topright, u0, v0, u1, v1);
     }
     
-    private void createVertices(Vector2f botleft, Vector2f botright, Vector2f topleft, Vector2f topright, float u0, float v0, float u1, float v1) {
-        final float[] botleftfs = { botleft.x, botleft.y, u0, v0, this.color.getR(), this.color.getG(),
-                this.color.getB(), this.color.getA() };
-        final float[] botrightfs = { botright.x, botright.y, u1, v0, this.color.getR(), this.color.getG(),
-                this.color.getB(), this.color.getA() };
-        final float[] topleftfs = { topleft.x, topleft.y, u0, v1, this.color.getR(), this.color.getG(),
-                this.color.getB(), this.color.getA() };
-        final float[] toprightfs = { topright.x, topright.y, u1, v1, this.color.getR(), this.color.getG(),
-                this.color.getB(), this.color.getA() };
-        this.vertexManager.addData(topleftfs);
-        this.vertexManager.addData(toprightfs);
-        this.vertexManager.addData(botleftfs);
+    private void createVertices(Vector2f botleft, Vector2f botright, Vector2f topleft, Vector2f topright, float u0,
+            float v0, float u1, float v1) {
+        final float[] botleftfs = { botleft.x, botleft.y, u0, v0 };
+        float[] botleftd = getSpecificVertexData(QuadSide.BotLeft);
+        final float[] botrightfs = { botright.x, botright.y, u1, v0 };
+        float[] botrightd = getSpecificVertexData(QuadSide.BotRight);
+        final float[] topleftfs = { topleft.x, topleft.y, u0, v1 };
+        float[] topleftd = getSpecificVertexData(QuadSide.TopLeft);
+        final float[] toprightfs = { topright.x, topright.y, u1, v1 };
+        float[] toprightd = getSpecificVertexData(QuadSide.TopRight);
+        float[] quadData = getSpecificQuadData();
         
-        this.vertexManager.addData(toprightfs);
-        this.vertexManager.addData(botrightfs);
-        this.vertexManager.addData(botleftfs);
+        addDatas(topleftfs, quadData, topleftd);
+        addDatas(toprightfs, quadData, toprightd);
+        addDatas(botleftfs, quadData, botleftd);
+        
+        addDatas(toprightfs, quadData, toprightd);
+        addDatas(botrightfs, quadData, botrightd);
+        addDatas(botleftfs, quadData, botleftd);
     }
     
-    @Override
+    private void addDatas(float[] positionStuff, float[] quadstuff, float[] sidestuff) {
+        this.vertexManager.addData(positionStuff);
+        if (quadstuff != null) {
+            this.vertexManager.addData(quadstuff);
+        }
+        if (sidestuff != null) {
+            this.vertexManager.addData(sidestuff);
+        }
+    }
+    
+    protected float[] getSpecificQuadData() {
+        return null;
+    }
+    
+    protected float[] getSpecificVertexData(QuadSide side) {
+        return null;
+    }
+    
     public void drawPolygon(final Texture texture, final float[] poly, final int start, final int len) {
         checkRendering();
         if (len % perVertexCount != 0) {
@@ -160,12 +148,6 @@ public class RenderBatch2D implements Batch2D {
     
     public boolean isRendering() {
         return this.rendering;
-    }
-    
-    public void drawTest() {
-        this.vertexManager.addData(0, 0, 1, 1, 1, 1, 0, 0);
-        this.vertexManager.addData(1, 0, 1, 1, 1, 1, 1, 0);
-        this.vertexManager.addData(1, 1, 1, 1, 1, 1, 1, 1);
     }
     
 }
