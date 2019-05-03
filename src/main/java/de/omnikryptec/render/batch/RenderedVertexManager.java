@@ -8,6 +8,7 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
+import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.resource.MeshData.Primitive;
 
 public class RenderedVertexManager implements VertexManager {
@@ -19,9 +20,11 @@ public class RenderedVertexManager implements VertexManager {
     private Texture currentTexture;
     private VertexArray va;
     private VertexBuffer vb;
+    private ShaderSlot shader;
     
-    public RenderedVertexManager(final int vertexCount) {
+    public RenderedVertexManager(final int vertexCount, ShaderSlot shader) {
         this.vertexCount = vertexCount;
+        this.shader = shader;
     }
     
     @Override
@@ -47,6 +50,7 @@ public class RenderedVertexManager implements VertexManager {
         }
         final int count = this.data.used();
         this.vb.storeData(this.data.flush(), BufferUsage.Stream, count);
+        shader.bindShaderRenderReady();
         RenderAPI.get().render(this.va, Primitive.Triangle, count / this.floatsPerVertex);
     }
     

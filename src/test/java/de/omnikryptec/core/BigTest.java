@@ -41,7 +41,6 @@ public class BigTest extends EngineLoader {
     
     @Override
     protected void onInitialized() {
-        OpenGLUtil.setMultisample(true);
         ULayer scene = new ULayer();
         getGameController().getGlobalScene().setUpdateableSync(scene);
         getResourceManager().stage("intern:/de/omnikryptec/resources/");

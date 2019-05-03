@@ -18,8 +18,14 @@ public abstract class AbstractBatch {
     
     protected abstract ModuleBatchingManager createManager();
     
-    protected final void issuesVertices(Texture baseTexture) {
+    protected final void issueVertices(Texture baseTexture) {
+        checkRendering();
         mgr.issueVertices(baseTexture, vertexManager);
+    }
+    
+    protected final void issuePreComputed(Texture baseTexture, float[] floats, int start, int length) {
+        checkRendering();
+        mgr.issuePreComputed(baseTexture, vertexManager, floats, start, length);
     }
     
     @OverridingMethodsMustInvokeSuper
@@ -35,10 +41,11 @@ public abstract class AbstractBatch {
     
     @OverridingMethodsMustInvokeSuper
     public void flush() {
+        checkRendering();
         vertexManager.forceFlush();
     }
     
-    protected final void checkRendering() {
+    private final void checkRendering() {
         if (!this.isRendering()) {
             throw new IllegalStateException("not rendering");
         }

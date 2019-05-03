@@ -7,6 +7,7 @@ import org.joml.Vector3fc;
 import org.joml.Vector4fc;
 import org.lwjgl.BufferUtils;
 
+//TODO test this and a raw floatbuffer -> make interface?
 public class FloatCollector {
     
     private final float[] floats;

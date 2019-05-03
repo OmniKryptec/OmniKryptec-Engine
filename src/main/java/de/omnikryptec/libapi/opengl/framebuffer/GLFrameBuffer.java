@@ -95,9 +95,10 @@ public class GLFrameBuffer extends FrameBuffer {
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
-            
+            OpenGLUtil.flushErrors();
             GL30.glFramebufferTexture2D(GL30.GL_FRAMEBUFFER, OpenGLUtil.indexToAttachment(target.attachmentIndex),
                     GL11.GL_TEXTURE_2D, texture.textureId(), 0);
+            OpenGLUtil.flushErrors();
             this.textures[index] = texture;
         }
     }

@@ -7,9 +7,9 @@ import de.omnikryptec.util.data.Color;
 
 public class SimpleBatch2D extends AbstractBatch implements Batch2D {
     
-    private PositionModule posModule = new PositionModule();
-    private UVModule uvModule = new UVModule();
-    private ColorModule colorModule = new ColorModule();
+    private PositionModule posModule;
+    private UVModule uvModule;
+    private ColorModule colorModule;
     
     public SimpleBatch2D(int vertices) {
         this(new RenderedVertexManager(vertices));
@@ -21,6 +21,9 @@ public class SimpleBatch2D extends AbstractBatch implements Batch2D {
     
     @Override
     protected ModuleBatchingManager createManager() {
+        posModule = new PositionModule();
+        uvModule = new UVModule();
+        colorModule = new ColorModule();
         return new ModuleBatchingManager(colorModule, posModule, uvModule);
     }
     
@@ -45,17 +48,21 @@ public class SimpleBatch2D extends AbstractBatch implements Batch2D {
     
     private void draw(final Texture texture, Matrix3x2fc transform, final float width, final float height,
             final boolean flipU, boolean flipV, float u0, float v0, float u1, float v1) {
-        checkRendering();
         if (texture != null) {
             flipV = flipV != texture.requiresInvertedVifDrawn2D();
         }
         posModule.setTransform(transform, width, height);
         uvModule.set(u0, v0, u1, v1, flipV, flipU);
-        issuesVertices(texture);
+        issueVertices(texture);
     }
     
     public Color color() {
         return colorModule.color();
+    }
+    
+    @Override
+    public void drawPolygon(Texture texture, float[] poly, int start, int len) {
+        issuePreComputed(texture, poly, start, len);
     }
     
 }

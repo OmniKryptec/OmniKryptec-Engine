@@ -22,6 +22,13 @@ public class PositionModule implements Module {
     private Vector2f topleft = new Vector2f();
     private Vector2f topright = new Vector2f();
     
+    public void setTransform(float x, float y, float width, float height) {
+        botleft.set(x, y);
+        botright.set(width + x, y);
+        topleft.set(x, height + y);
+        topright.set(width + x, height + y);
+    }
+    
     public void setTransform(Matrix3x2fc transform, float width, float height) {
         botleft.set(0);
         botright.set(width, 0);

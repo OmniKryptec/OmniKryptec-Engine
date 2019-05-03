@@ -15,11 +15,11 @@ public interface Batch2D {
     
     void draw(Texture texture, Matrix3x2fc transform, float width, float height, boolean flipU, boolean flipV);
     
-//    default void drawPolygon(final Texture texture, final float[] poly) {
-//        drawPolygon(texture, poly, 0, poly.length);
-//    }
-//    
-//    void drawPolygon(Texture texture, float[] poly, int start, int len);
+    default void drawPolygon(final Texture texture, final float[] poly) {
+        drawPolygon(texture, poly, 0, poly.length);
+    }
+    
+    void drawPolygon(Texture texture, float[] poly, int start, int len);
     
     default void drawRect(final Matrix3x2fc transform, final float width, final float height) {
         draw((Texture) null, transform, width, height, false, false);

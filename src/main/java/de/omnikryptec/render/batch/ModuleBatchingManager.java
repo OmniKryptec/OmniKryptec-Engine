@@ -78,4 +78,12 @@ public class ModuleBatchingManager {
         }
     }
     
+    public void issuePreComputed(Texture baseTexture, VertexManager manager, float[] floats, int start, int length) {
+        if (length % totalFloatsPerVertex != 0) {
+            throw new IllegalArgumentException();
+        }
+        manager.prepareNext(baseTexture, length);
+        manager.addData(floats, start, length);
+    }
+    
 }
