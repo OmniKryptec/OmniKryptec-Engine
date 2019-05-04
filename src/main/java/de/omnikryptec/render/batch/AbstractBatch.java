@@ -46,6 +46,10 @@ public abstract class AbstractBatch {
         vertexManager.forceFlush();
     }
     
+    public void drawPolygon(Texture texture, float[] poly, int start, int len) {
+        issuePreComputed(texture, poly, start, len);
+    }
+    
     private final void checkRendering() {
         if (!this.isRendering()) {
             throw new IllegalStateException("not rendering");

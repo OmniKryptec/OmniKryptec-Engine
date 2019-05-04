@@ -42,4 +42,8 @@ public interface Texture {
     default boolean requiresInvertedVifDrawn2D() {
         return false;
     }
+    
+    default Texture getBaseTexture() {
+        return this;
+    }
 }

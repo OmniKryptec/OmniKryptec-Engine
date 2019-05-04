@@ -1,5 +1,7 @@
 package de.omnikryptec.render.batch;
 
+import de.omnikryptec.libapi.exposed.render.Texture;
+import de.omnikryptec.libapi.exposed.render.TextureRegion;
 import de.omnikryptec.render.batch.ModuleBatchingManager.QuadSide;
 
 public class UVModule implements Module {
@@ -15,6 +17,37 @@ public class UVModule implements Module {
     }
     
     private float u0, v0, u1, v1;
+    
+    public void set(Texture t, boolean flipU, boolean flipV) {
+        if (t == null) {
+            u0 = -1;
+            v0 = -1;
+            u1 = -1;
+            v1 = -1;
+        } else {
+            flipV = flipV != t.requiresInvertedVifDrawn2D();
+            if (t instanceof TextureRegion) {
+                TextureRegion r = (TextureRegion) t;
+                u0 = r.u0();
+                v0 = r.v0();
+                u1 = r.u1();
+                v1 = r.v1();
+            } else {
+                u0 = 0;
+                v0 = 0;
+                u1 = 1;
+                v1 = 1;
+            }
+            if (flipU) {
+                u0 = 1 - u0;
+                u1 = 1 - u1;
+            }
+            if (flipV) {
+                v0 = 1 - v0;
+                v1 = 1 - v1;
+            }
+        }
+    }
     
     public void set(float u0, float v0, float u1, float v1, boolean flipV, boolean flipU) {
         if (flipU && u0 != -1) {

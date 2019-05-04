@@ -33,10 +33,11 @@ public class RenderedVertexManager implements VertexManager {
     }
     
     @Override
-    public void prepareNext(final Texture baseTexture, final int requiredFloats) {
+    public void prepareNext(final Texture texture, final int requiredFloats) {
         if (requiredFloats > this.data.size()) {
             throw new IndexOutOfBoundsException("Can't handle mesh, buffer too small");
         }
+        Texture baseTexture = texture == null ? null : texture.getBaseTexture();
         if (requiredFloats > this.data.remaining() || !Objects.equals(baseTexture, this.currentTexture)) {
             this.currentTexture = baseTexture;
             forceFlush();
@@ -66,7 +67,7 @@ public class RenderedVertexManager implements VertexManager {
     public ShaderSlot getShaderSlot() {
         return shader;
     }
-
+    
     @Override
     public void begin() {
         shader.bindShaderRenderReady();
