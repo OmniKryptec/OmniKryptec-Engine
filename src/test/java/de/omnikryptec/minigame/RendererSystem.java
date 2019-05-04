@@ -23,6 +23,7 @@ import de.omnikryptec.render.renderer.LocalRendererContext;
 import de.omnikryptec.render.renderer.Renderer2D;
 import de.omnikryptec.render.renderer.Renderer2D.EnvironmentKeys2D;
 import de.omnikryptec.render.renderer.RendererContext;
+import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.updater.Time;
 
@@ -108,8 +109,10 @@ public class RendererSystem extends ComponentSystem implements EntityListener {
     @Override
     public void update(IECSManager manager, Time time) {
         //this.renderer.getEnvironmentSettings().set(EnvironmentKeys2D.AmbientLight,
-        //      Color.ofTemperature(Mathf.pingpong(time.currentf * 1000, 8000)));   
+        //      Color.ofTemperature(Mathf.pingpong(time.currentf * 1000, 8000)));
+        Profiler.begin("RendererSystem");
         this.context.update(time);
+        Profiler.end();
     }
     
 }

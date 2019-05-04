@@ -164,4 +164,13 @@ public strictfp class Mathd {
         return (int) rint(value);
     }
     
+    public static double roundM(double value) {
+        return java.lang.Math.round(value);
+    }
+    
+    public static double round(double value, int d) {
+        long mult = (long) pow(10, d);
+        return roundM(value * mult) / mult;
+    }
+    
 }

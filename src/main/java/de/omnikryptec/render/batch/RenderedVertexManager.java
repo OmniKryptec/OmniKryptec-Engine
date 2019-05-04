@@ -9,6 +9,7 @@ import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.resource.MeshData.Primitive;
+import de.omnikryptec.util.Profiler;
 
 public class RenderedVertexManager implements VertexManager {
     

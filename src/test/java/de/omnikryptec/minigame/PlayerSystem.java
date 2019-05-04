@@ -13,26 +13,28 @@ import de.omnikryptec.ecs.system.ComponentSystem;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
+import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.updater.Time;
 
 public class PlayerSystem extends ComponentSystem {
-
+    
     public PlayerSystem() {
         super(Family.of(ComponentType.of(MovementComponent.class), ComponentType.of(PlayerComponent.class),
                 ComponentType.of(PositionComponent.class)));
     }
-
+    
     private InputManager inputManager = Minigame.INPUT;
-
+    
     private ComponentMapper<MovementComponent> movMapper = new ComponentMapper<>(MovementComponent.class);
     private ComponentMapper<PlayerComponent> playMapper = new ComponentMapper<>(PlayerComponent.class);
     private ComponentMapper<PositionComponent> posMapper = new ComponentMapper<>(PositionComponent.class);
-
+    
     private float again;
-
+    
     @Override
     public void update(IECSManager iecsManager, Time time) {
+        Profiler.begin("PlayerSystem");
         again += time.deltaf;
         for (Entity e : entities) {
             MovementComponent mov = movMapper.get(e);
@@ -69,10 +71,11 @@ public class PlayerSystem extends ComponentSystem {
                 dir.add(-plus.pos.x, -plus.pos.y);
                 dir.normalize(200);
                 dir.add(mov.dx, mov.dy);
-                Minigame.BUS.post(
-                        new ShootEvent(plus.pos.x + play.shOffsetX, plus.pos.y + play.shOffsetY, dir, 1000, Projectile.Bomb));
+                Minigame.BUS.post(new ShootEvent(plus.pos.x + play.shOffsetX, plus.pos.y + play.shOffsetY, dir, 1000,
+                        Projectile.Bomb));
             }
         }
+        Profiler.end();
     }
-
+    
 }

@@ -75,4 +75,8 @@ public class CountingMap<T> implements Iterable<T> {
         return this.map.keySet().iterator();
     }
     
+    public void clear() {
+        this.map.clear();
+    }
+    
 }

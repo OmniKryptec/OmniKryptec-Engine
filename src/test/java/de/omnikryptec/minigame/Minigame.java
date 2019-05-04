@@ -19,6 +19,7 @@ import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
 import de.omnikryptec.resource.loadervpc.ResourceProvider;
 import de.omnikryptec.util.Logger.LogType;
+import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.Mathf;
@@ -79,6 +80,11 @@ public class Minigame extends EngineLoader {
             }
         }
         
+    }
+    
+    @Override
+    protected void onShutdown() {
+        System.out.println(Profiler.currentInfo());
     }
     
     private Entity makeBackground() {
