@@ -3,6 +3,7 @@ package de.omnikryptec.render.batch;
 import javax.annotation.Nullable;
 
 import org.joml.Matrix3x2fc;
+
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.module.ColorModule;
 import de.omnikryptec.render.batch.module.ModuleBatchingManager;
@@ -10,20 +11,21 @@ import de.omnikryptec.render.batch.module.PositionModule;
 import de.omnikryptec.render.batch.module.UVModule;
 import de.omnikryptec.util.data.Color;
 
-public class SimpleBatch2D extends AbstractBatch implements Batch2D {
+public class ReflectedBatch2D extends AbstractBatch implements Batch2D {
     
     private PositionModule posModule;
     private UVModule uvModule;
     private ColorModule colorModule;
+    private ColorModule reflectionMod;
     
-    private SimpleShaderSlot shaderSlot;
+    private ReflectedShaderSlot shaderSlot;
     
-    public SimpleBatch2D(int vertices) {
-        this(new RenderedVertexManager(vertices, new SimpleShaderSlot()));
-        this.shaderSlot = ((SimpleShaderSlot) ((RenderedVertexManager) vertexManager).getShaderSlot());
+    public ReflectedBatch2D(int vertices) {
+        this(new RenderedVertexManager(vertices, new ReflectedShaderSlot()));
+        this.shaderSlot = ((ReflectedShaderSlot) ((RenderedVertexManager) vertexManager).getShaderSlot());
     }
     
-    public SimpleBatch2D(VertexManager vertexManager) {
+    public ReflectedBatch2D(VertexManager vertexManager) {
         super(vertexManager);
     }
     
@@ -32,7 +34,8 @@ public class SimpleBatch2D extends AbstractBatch implements Batch2D {
         posModule = new PositionModule();
         uvModule = new UVModule();
         colorModule = new ColorModule();
-        return new ModuleBatchingManager(colorModule, posModule, uvModule);
+        reflectionMod = new ColorModule();
+        return new ModuleBatchingManager(colorModule, reflectionMod, posModule, uvModule);
     }
     
     public void draw(final Texture texture, final Matrix3x2fc transform, final float width, final float height,
@@ -46,8 +49,12 @@ public class SimpleBatch2D extends AbstractBatch implements Batch2D {
         return colorModule.color();
     }
     
+    public Color reflectionStrength() {
+        return reflectionMod.color();
+    }
+    
     @Nullable
-    public SimpleShaderSlot getShaderSlot() {
+    public ReflectedShaderSlot getShaderSlot() {
         return shaderSlot;
     }
 }

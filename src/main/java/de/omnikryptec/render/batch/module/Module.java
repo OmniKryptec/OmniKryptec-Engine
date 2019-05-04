@@ -1,6 +1,6 @@
-package de.omnikryptec.render.batch;
+package de.omnikryptec.render.batch.module;
 
-import de.omnikryptec.render.batch.ModuleBatchingManager.QuadSide;
+import de.omnikryptec.render.batch.module.ModuleBatchingManager.QuadSide;
 
 public interface Module {
     

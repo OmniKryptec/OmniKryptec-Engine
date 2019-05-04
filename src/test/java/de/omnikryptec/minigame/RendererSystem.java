@@ -42,7 +42,6 @@ public class RendererSystem extends ComponentSystem implements EntityListener {
         this.context = new RendererContext();
         this.context.init(new ProvidingLayer(LibAPIManager.LIB_API_EVENT_BUS));
         this.renderer = this.context.createLocal();
-        this.renderer.setIRenderedObjectManager(new RenderedObjectManager());
         this.renderer.addRenderer(new Renderer2D());
         this.renderer.setMainProjection(CAMERA);
         

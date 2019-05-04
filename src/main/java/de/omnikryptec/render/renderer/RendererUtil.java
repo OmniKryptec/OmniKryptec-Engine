@@ -25,7 +25,7 @@ public class RendererUtil {
         render2d(batch, sprites, filter);
     }
     
-    public static void render2d(Batch2D batch, Collection<Sprite> sprites, FrustumIntersection filter) {
+    public static void render2d(Batch2D batch, Collection<? extends Sprite> sprites, FrustumIntersection filter) {
         batch.begin();
         for (Sprite s : sprites) {
             if (s.isVisible(filter)) {

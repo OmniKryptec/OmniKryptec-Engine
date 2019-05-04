@@ -3,6 +3,7 @@ package de.omnikryptec.render.batch;
 import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
+import de.omnikryptec.render.batch.module.ModuleBatchingManager;
 
 public abstract class AbstractBatch {
     
@@ -18,14 +19,14 @@ public abstract class AbstractBatch {
     
     protected abstract ModuleBatchingManager createManager();
     
-    protected final void issueVertices(Texture baseTexture) {
+    protected final void issueVertices(Texture texture) {
         checkRendering();
-        modBatchManager.issueVertices(baseTexture, vertexManager);
+        modBatchManager.issueVertices(texture, vertexManager);
     }
     
-    protected final void issuePreComputed(Texture baseTexture, float[] floats, int start, int length) {
+    protected final void issuePreComputed(Texture texture, float[] floats, int start, int length) {
         checkRendering();
-        modBatchManager.issuePreComputed(baseTexture, vertexManager, floats, start, length);
+        modBatchManager.issuePreComputed(texture, vertexManager, floats, start, length);
     }
     
     @OverridingMethodsMustInvokeSuper

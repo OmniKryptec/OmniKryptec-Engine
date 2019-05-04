@@ -32,6 +32,9 @@ import de.omnikryptec.util.math.Mathf;
  */
 public class Color implements Cloneable {
     
+    public static final Color ZERO = new Color(0, 0, 0, 0);
+    public static final Color ONE = new Color(1, 1, 1, 1);
+    
     private static final double TEMPERATURE_RED_EXP_CONST = 329.698727446;
     private static final double TEMPERATURE_RED_EXP = -0.1332047592;
     private static final double TEMPERATURE_GREEN_LN_CONST = 99.4708025861;

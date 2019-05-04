@@ -10,16 +10,14 @@ import de.omnikryptec.util.data.Color;
 public class SimpleSprite extends Sprite {
     //TODO transform
     private Vector2f position;
-    private float width=1, height=1;
+    private float width = 1, height = 1;
     
     private Color color;
     private Texture texture;
     
     @Override
     public void draw(Batch2D batch) {
-        if (color != null) {
-            batch.color().set(color);
-        }
+        batch.color().set(color == null ? Color.ONE : color);
         batch.draw(texture, new Matrix3x2f().setTranslation(position), width, height, false, false);
     }
     

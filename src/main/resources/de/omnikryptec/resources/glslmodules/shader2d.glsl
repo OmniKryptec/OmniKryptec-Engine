@@ -50,6 +50,7 @@ layout(location = 1) in vec4 i_reflective;
 out vec4 v_color;
 out vec2 v_texcoords;
 out vec4 v_reflectiveness;
+out vec2 v_screenPos;
 
 uniform mat4 u_transform;
 uniform mat4 u_projview;
@@ -59,7 +60,7 @@ void main(void){
 	v_texcoords = i_texcoords;
 	v_reflectiveness = i_reflective;
 	vec4 pos = u_projview * u_transform * vec4(i_pos,0,1);
-	
+	v_screenPos = (pos.xy+1)*0.5;
 	gl_Position = pos;
 }
 
@@ -69,7 +70,7 @@ $define shader engineRenderBatch2DShaderRef FRAGMENT$
 in vec4 v_color;
 in vec2 v_texcoords;
 in vec4 v_reflectiveness;
-in vec2 v_screenpos;
+in vec2 v_screenPos;
 
 out vec4 color;
 
@@ -83,6 +84,7 @@ void main(void){
 	}else{
 		color =  v_color * texture(sampler, v_texcoords);
 	}
-	vec4 refl = texture(reflected, gl_FragCoord.xy);
-	color = (1 - v_reflectiveness) * color + v_reflectiveness * refl;
+	vec4 refl = texture(reflected, v_screenPos);
+	//TODO
+	color.rgb = (1 - v_reflectiveness.rgb) * color.rgb + v_reflectiveness.rgb * refl.rgb;
 }

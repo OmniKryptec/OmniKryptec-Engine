@@ -32,6 +32,7 @@ import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.renderer.RendererContext;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
+import de.omnikryptec.resource.loadervpc.TextureHelper;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.KeySettings;
@@ -75,14 +76,15 @@ public class UpdateableFactory {
         };
     }
     
-    public static IUpdatable createRenderTest(TextureData dat) {
+    public static IUpdatable createRenderTest(TextureHelper help) {
         
         final FrameBuffer fbo = RenderAPI.get().createFrameBuffer(2000, 2000, 0, 3);
         
         fbo.bindFrameBuffer();
         fbo.assignTargets(new FBTarget(FBAttachmentFormat.RGBA8, 0), new FBTarget(FBAttachmentFormat.DEPTH24),
                 new FBTarget(FBAttachmentFormat.RGBA8, 1));
-        final Texture texture = RenderAPI.get().createTexture2D(dat, new TextureConfig());
+        final Texture texture = help.get("jd.png");
+        Texture t2 = help.get("gurke");
         
         return new IUpdatable() {
             private final SimpleBatch2D batch = new SimpleBatch2D(250);
@@ -99,10 +101,8 @@ public class UpdateableFactory {
                 this.t.scale(s, s);
                 this.t.rotateAbout(s, 0.5f, 0.5f);
                 this.batch.color().randomizeRGB();
-                for (int i = 0; i < 100; i++) {
-                    
-                    this.batch.draw(texture, null, 1, 1, false, false);
-                }
+                batch.draw(t2, null, false, false);
+                batch.draw(texture, t, false, false);
                 this.batch.color().randomizeRGB();
                 this.batch.drawLine(0, 0, 3, 2, 0.1f);
                 this.batch.end();

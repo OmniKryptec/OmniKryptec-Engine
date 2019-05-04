@@ -1,6 +1,7 @@
 package de.omnikryptec.render.batch;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
+import de.omnikryptec.render.batch.module.ModuleBatchingManager;
 
 public interface VertexManager {
 

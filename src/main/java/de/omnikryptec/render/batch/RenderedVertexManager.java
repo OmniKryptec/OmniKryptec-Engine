@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
+import de.omnikryptec.render.batch.module.ModuleBatchingManager;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
@@ -39,13 +40,17 @@ public class RenderedVertexManager implements VertexManager {
         }
         Texture baseTexture = texture == null ? null : texture.getBaseTexture();
         if (requiredFloats > this.data.remaining() || !Objects.equals(baseTexture, this.currentTexture)) {
-            this.currentTexture = baseTexture;
+            //flush BEFORE setting new texture
             forceFlush();
+            this.currentTexture = baseTexture;
         }
     }
     
     @Override
     public void forceFlush() {
+        if (this.data.used() == 0) {
+            return;
+        }
         if (this.currentTexture != null) {
             this.currentTexture.bindTexture(0);
         }

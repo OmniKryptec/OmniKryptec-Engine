@@ -43,6 +43,7 @@ public class Profiler {
         s.sum += -time;
     }
     
+    //TODO insert specific data (vertex count, flush count, etc)
     public static void end() {
         long time = System.nanoTime();
         String id = h.pop();
@@ -55,6 +56,9 @@ public class Profiler {
     }
     
     public static String currentInfo() {
+        if (map.isEmpty()) {
+            return "";
+        }
         StringBuilder b = new StringBuilder();
         for (String id : map.keySet()) {
             Struct s = map.get(id);

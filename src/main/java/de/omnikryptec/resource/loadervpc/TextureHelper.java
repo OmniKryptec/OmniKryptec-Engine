@@ -9,6 +9,7 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
+import de.omnikryptec.util.Logger;
 
 public class TextureHelper {
     
@@ -26,6 +27,8 @@ public class TextureHelper {
         MISSING_TEXTURE_DATA = data;
         MISSING_TEXTURE_CONFIG = new TextureConfig();
     }
+    
+    private static final Logger LOGGER = Logger.getLogger(TextureHelper.class);
     
     private Map<String, Texture> textures;
     private Map<String, TextureConfig> configs;
@@ -50,6 +53,7 @@ public class TextureHelper {
         if (t == null) {
             TextureData data = resProvider.get(TextureData.class, name);
             if (data == null) {
+                LOGGER.warn("Could not find the texture \"" + name + "\", using a placeholder texture now");
                 return missingTexture;
             }
             t = api.createTexture2D(data, config == null ? new TextureConfig() : config);

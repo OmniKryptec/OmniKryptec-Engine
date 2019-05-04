@@ -1,8 +1,8 @@
-package de.omnikryptec.render.batch;
+package de.omnikryptec.render.batch.module;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.TextureRegion;
-import de.omnikryptec.render.batch.ModuleBatchingManager.QuadSide;
+import de.omnikryptec.render.batch.module.ModuleBatchingManager.QuadSide;
 
 public class UVModule implements Module {
     

@@ -1,9 +1,9 @@
-package de.omnikryptec.render.batch;
+package de.omnikryptec.render.batch.module;
 
 import org.joml.Matrix3x2fc;
 import org.joml.Vector2f;
 
-import de.omnikryptec.render.batch.ModuleBatchingManager.QuadSide;
+import de.omnikryptec.render.batch.module.ModuleBatchingManager.QuadSide;
 
 public class PositionModule implements Module {
     
