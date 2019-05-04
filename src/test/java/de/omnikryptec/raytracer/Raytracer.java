@@ -10,7 +10,7 @@ import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
 import de.omnikryptec.libapi.opengl.framebuffer.GLFrameBuffer;
 import de.omnikryptec.libapi.opengl.shader.GLShader;
-import de.omnikryptec.render.batch.ShadedBatch2D;
+import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
@@ -36,13 +36,13 @@ public class Raytracer extends EngineLoader implements IUpdatable {
         renderApi = (OpenGLRenderAPI) RenderAPI.get();
         image = (GLFrameBuffer) renderApi.createFrameBuffer(80, 80, 0, 1);
         image.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA32, 0));
-        batch = new ShadedBatch2D(6);
+        batch = new SimpleBatch2D(6);
         computeShader = (GLShader) renderApi.createShader();
         computeShader.create("raytracer");
     }
     
     private GLFrameBuffer image;
-    private ShadedBatch2D batch;
+    private SimpleBatch2D batch;
         
     private OpenGLRenderAPI renderApi;
     

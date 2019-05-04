@@ -28,7 +28,6 @@ import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.Camera;
-import de.omnikryptec.render.batch.ShadedBatch2D;
 import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.renderer.RendererContext;
 import de.omnikryptec.resource.TextureConfig;
@@ -87,7 +86,6 @@ public class UpdateableFactory {
         
         return new IUpdatable() {
             private final SimpleBatch2D batch = new SimpleBatch2D(250);
-            //private final ShadedBatch2D batch = new ShadedBatch2D(250);
             private final Matrix3x2f t = new Matrix3x2f();
             private final Camera cam = new Camera(new Matrix4f().ortho2D(0, 4, 0, 3));
             
@@ -101,7 +99,7 @@ public class UpdateableFactory {
                 this.t.scale(s, s);
                 this.t.rotateAbout(s, 0.5f, 0.5f);
                 this.batch.color().randomizeRGB();
-                for(int i=0; i<1000; i++) {
+                for (int i = 0; i < 100; i++) {
                     
                     this.batch.draw(texture, null, 1, 1, false, false);
                 }

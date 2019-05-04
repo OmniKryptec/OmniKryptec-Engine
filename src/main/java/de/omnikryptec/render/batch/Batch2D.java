@@ -4,10 +4,17 @@ import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fc;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
+import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathf;
 
 //if transform==null use identity transform
 public interface Batch2D {
+    
+    void begin();
+    
+    Color color();
+    
+    void end();
     
     default void draw(final Texture texture, final Matrix3x2fc transform, final boolean flipU, final boolean flipV) {
         draw(texture, transform, 1f, 1f, flipU, flipV);

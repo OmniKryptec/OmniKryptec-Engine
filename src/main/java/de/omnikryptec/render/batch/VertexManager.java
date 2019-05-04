@@ -16,5 +16,6 @@ public interface VertexManager {
 
     void forceFlush();
 
+    void begin();
 
 }

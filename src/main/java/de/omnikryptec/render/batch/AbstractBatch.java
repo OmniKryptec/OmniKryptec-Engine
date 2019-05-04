@@ -6,31 +6,32 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 
 public abstract class AbstractBatch {
     
-    private final ModuleBatchingManager mgr;
-    private final VertexManager vertexManager;
+    protected final ModuleBatchingManager modBatchManager;
+    protected final VertexManager vertexManager;
     private boolean rendering;
     
     public AbstractBatch(VertexManager vertexManager) {
         this.vertexManager = vertexManager;
-        this.mgr = createManager();
-        this.vertexManager.init(mgr);
+        this.modBatchManager = createManager();
+        this.vertexManager.init(modBatchManager);
     }
     
     protected abstract ModuleBatchingManager createManager();
     
     protected final void issueVertices(Texture baseTexture) {
         checkRendering();
-        mgr.issueVertices(baseTexture, vertexManager);
+        modBatchManager.issueVertices(baseTexture, vertexManager);
     }
     
     protected final void issuePreComputed(Texture baseTexture, float[] floats, int start, int length) {
         checkRendering();
-        mgr.issuePreComputed(baseTexture, vertexManager, floats, start, length);
+        modBatchManager.issuePreComputed(baseTexture, vertexManager, floats, start, length);
     }
     
     @OverridingMethodsMustInvokeSuper
     public void begin() {
         this.rendering = true;
+        vertexManager.begin();
     }
     
     @OverridingMethodsMustInvokeSuper

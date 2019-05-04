@@ -11,10 +11,9 @@ import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderState;
-import de.omnikryptec.libapi.exposed.render.RenderState.CullMode;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
-import de.omnikryptec.render.batch.ShadedBatch2D;
+import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
@@ -45,12 +44,12 @@ public class RendererContext implements IUpdatable {
     private static final RenderState DEFAULT_SCREENWRITER_STATE = RenderState.of();
     
     private RenderAPI renderApi;
-    private ShadedBatch2D batch;
+    private SimpleBatch2D batch;
     private List<LocalRendererContext> subContexts;
     
     public RendererContext() {
         this.renderApi = LibAPIManager.instance().getGLFW().getRenderAPI();
-        this.batch = new ShadedBatch2D(12);
+        this.batch = new SimpleBatch2D(12);
         this.subContexts = new ArrayList<>();
     }
     
@@ -62,7 +61,8 @@ public class RendererContext implements IUpdatable {
         return createLocal(null, 0);
     }
     
-    public LocalRendererContext createLocal(Settings<EnvironmentKey> environmentSettings, int multisamples, FBTarget ...targets) {
+    public LocalRendererContext createLocal(Settings<EnvironmentKey> environmentSettings, int multisamples,
+            FBTarget... targets) {
         LocalRendererContext context = new LocalRendererContext(this, environmentSettings, multisamples, targets);
         subContexts.add(context);
         notifyPriorityChanged();

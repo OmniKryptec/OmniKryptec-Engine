@@ -108,7 +108,7 @@ public class RendererSystem extends ComponentSystem implements EntityListener {
     @Override
     public void update(IECSManager manager, Time time) {
         //this.renderer.getEnvironmentSettings().set(EnvironmentKeys2D.AmbientLight,
-        //      Color.ofTemperature(Mathf.pingpong(time.currentf * 1000, 8000)));
+        //      Color.ofTemperature(Mathf.pingpong(time.currentf * 1000, 8000)));   
         this.context.update(time);
     }
     

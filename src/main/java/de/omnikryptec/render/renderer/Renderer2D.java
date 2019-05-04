@@ -12,7 +12,7 @@ import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.render.IProjection;
-import de.omnikryptec.render.batch.ShadedBatch2D;
+import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.objects.IRenderedObjectListener;
 import de.omnikryptec.render.objects.Light2D;
 import de.omnikryptec.render.objects.RenderedObject;
@@ -32,8 +32,8 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
     private static final RenderState MULT_STATE = RenderState.of(BlendMode.MULTIPLICATIVE);
     
     private Comparator<Sprite> spriteComparator = DEFAULT_COMPARATOR;
-    private ShadedBatch2D batch = new ShadedBatch2D(1000);
-    private ShadedBatch2D finalDraw = new ShadedBatch2D(6);
+    private SimpleBatch2D batch = new SimpleBatch2D(1000);
+    private SimpleBatch2D finalDraw = new SimpleBatch2D(6);
     private List<Sprite> sprites = new ArrayList<>();
     
     private FrameBuffer spriteBuffer, renderBuffer;
@@ -82,7 +82,7 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
         }
         renderBuffer.bindFrameBuffer();
         FrustumIntersection intersFilter = new FrustumIntersection(projection.getProjection());
-        batch.setIProjection(projection);
+        batch.getShaderSlot().setProjection(projection);
         //render lights
         renderer.getRenderAPI().applyRenderState(LIGHT_STATE);
         renderBuffer.clearColor(renderer.getEnvironmentSettings().get(EnvironmentKeys2D.AmbientLight));
