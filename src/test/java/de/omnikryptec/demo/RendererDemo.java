@@ -41,7 +41,6 @@ public class RendererDemo extends EngineLoader{
         //Create a sprite and set some of its properties
         SimpleSprite sprite = new SimpleSprite();
         sprite.setTexture(getTextures().get("jd.png"));
-        sprite.setPosition(new Vector2f());
         
         //add the sprite to the (default) robject manager
         localRenderer.getIRenderedObjectManager().add(Sprite.TYPE, sprite);

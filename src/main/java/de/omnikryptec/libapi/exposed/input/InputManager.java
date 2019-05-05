@@ -167,6 +167,7 @@ public class InputManager implements IUpdatable {
         preUpdateIntern(time);
         updateIntern(time);
         postUpdateIntern(time);
+        updateMouseDeltas(getMousePosition(), getMouseScrollOffset());
     }
     
     @Override
@@ -250,20 +251,20 @@ public class InputManager implements IUpdatable {
     
     // Mouse delta part
     
-    private void updateMouseDeltas(Vector2d mousePosition, Vector2d mouseScrollOffset) {
-        mousePositionDelta.x = (mousePosition.x - mousePositionLastTime.x);
-        mousePositionDelta.y = (mousePosition.y - mousePositionLastTime.y);
-        mouseScrollOffsetDelta.x = (mouseScrollOffset.x - mouseScrollOffsetLastTime.x);
-        mouseScrollOffsetDelta.y = (mouseScrollOffset.y - mouseScrollOffsetLastTime.y);
+    private void updateMouseDeltas(Vector2dc mousePosition, Vector2dc mouseScrollOffset) {
+        mousePositionDelta.x = (mousePosition.x() - mousePositionLastTime.x);
+        mousePositionDelta.y = (mousePosition.y() - mousePositionLastTime.y);
+        mouseScrollOffsetDelta.x = (mouseScrollOffset.x() - mouseScrollOffsetLastTime.x);
+        mouseScrollOffsetDelta.y = (mouseScrollOffset.y() - mouseScrollOffsetLastTime.y);
         mouseDelta.x = mousePositionDelta.x;
         mouseDelta.y = mousePositionDelta.y;
         mouseDelta.z = mouseScrollOffsetDelta.x;
         mouseDelta.w = mouseScrollOffsetDelta.y;
         //FIXME Maybe split this up, because this below was executed as the last part in the old update ("nextFrame") method, needs discussion?
-        mousePositionLastTime.x = mousePosition.x;
-        mousePositionLastTime.y = mousePosition.y;
-        mouseScrollOffsetLastTime.x = mouseScrollOffset.x;
-        mouseScrollOffsetLastTime.y = mouseScrollOffset.y;
+        mousePositionLastTime.x = mousePosition.x();
+        mousePositionLastTime.y = mousePosition.y();
+        mouseScrollOffsetLastTime.x = mouseScrollOffset.x();
+        mouseScrollOffsetLastTime.y = mouseScrollOffset.y();
     }
     
     public Vector2dc getMousePositionDelta() {

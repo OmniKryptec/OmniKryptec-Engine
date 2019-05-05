@@ -16,43 +16,27 @@
 
 package de.omnikryptec.libapi.opengl.shader;
 
-import org.joml.Vector3f;
 import org.lwjgl.opengl.GL20;
 
-import de.omnikryptec.util.data.Color;
+import de.omnikryptec.libapi.exposed.render.shader.UniformVec3;
 
-public class GLUniformVec3 extends GLUniform {
-    private float currentX;
-    private float currentY;
-    private float currentZ;
+public class GLUniformVec3 extends GLUniform implements UniformVec3 {
+    private final float[] old = new float[3];
     private boolean used = false;
     
     public GLUniformVec3(final String name) {
         super(name);
     }
     
-    public void loadVec3(final Vector3f vector) {
-        if (vector != null) {
-            loadVec3(vector.x, vector.y, vector.z);
-        }
-    }
-    
-    public void loadVec3(final float[] array) {
-        loadVec3(array[0], array[1], array[2]);
-    }
-    
+    @Override
     public void loadVec3(final float x, final float y, final float z) {
-        if (existsInCompilation() && (!this.used || x != this.currentX || y != this.currentY || z != this.currentZ)) {
-            this.currentX = x;
-            this.currentY = y;
-            this.currentZ = z;
-            this.used = true;
+        if (existsInCompilation() && (!this.used || x != this.old[0] || y != this.old[1] || z != this.old[2])) {
             GL20.glUniform3f(super.getLocation(), x, y, z);
+            this.old[0] = x;
+            this.old[1] = y;
+            this.old[2] = z;
+            this.used = true;
         }
-    }
-    
-    public void loadColor(final Color color) {
-        loadVec3(color.getR(), color.getG(), color.getB());
     }
     
 }

@@ -84,7 +84,8 @@ void main(void){
 	}else{
 		color =  v_color * texture(sampler, v_texcoords);
 	}
-	vec4 refl = texture(reflected, v_screenPos);
+	vec3 refl = texture(reflected, v_screenPos).rgb;
+	
 	//TODO
 	color.rgb = (1 - v_reflectiveness.rgb) * color.rgb + v_reflectiveness.rgb * refl.rgb;
 }

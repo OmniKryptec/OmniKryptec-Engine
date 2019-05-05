@@ -35,7 +35,7 @@ public abstract class GLUniform implements Uniform {
     protected void storeUniformLocation(final int programID) {
         this.location = GL20.glGetUniformLocation(programID, this.name);
         if (this.location == -1) {
-            Logger.log(this.getClass(), LogType.Warning, "No uniform variable called " + this.name + " found!");
+            Logger.log(this.getClass(), LogType.Warning, "No uniform variable called " + this.name + " is being used!");
         } else {
             this.isfound = true;
         }

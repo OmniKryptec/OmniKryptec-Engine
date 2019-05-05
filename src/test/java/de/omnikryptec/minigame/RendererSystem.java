@@ -89,7 +89,7 @@ public class RendererSystem extends ComponentSystem implements EntityListener {
     @Override
     public void entityAdded(Entity entity) {
         SimpleSprite sprite = new SimpleSprite();
-        sprite.setPosition(posMapper.get(entity).pos);
+        sprite.getTransform().set(posMapper.get(entity).pos);
         sprite.setColor(rendMapper.get(entity).color);
         sprite.setWidth(rendMapper.get(entity).w);
         sprite.setHeight(rendMapper.get(entity).h);

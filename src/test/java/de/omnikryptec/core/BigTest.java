@@ -8,6 +8,7 @@ import org.joml.Vector2f;
 import de.codemakers.base.logger.LogLevel;
 import de.codemakers.base.logger.Logger;
 import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.core.update.ULayer;
 import de.omnikryptec.core.update.UpdateableFactory;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
@@ -24,8 +25,10 @@ import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.data.Color;
+import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
+import de.omnikryptec.util.updater.Time;
 
 public class BigTest extends EngineLoader {
     
@@ -68,16 +71,45 @@ public class BigTest extends EngineLoader {
         ReflectiveSprite s = new ReflectiveSprite();
         //s.setColor(new Color(1, 0, 0));
         s.setReflectionType(Reflection2DType.Cast);
-        s.setPosition(new Vector2f(0.5f));
+        s.getTransform().rotate(Mathf.PI/4);
+        s.getTransform().setTranslation(0.5f, 0.5f);
+        scene.addUpdatable(new IUpdatable() {
+            private float f;
+            private int fac = 1;
+            
+            @Override
+            public void update(Time time) {
+                s.getTransform().translate(0.5f * s.getWidth(), 0.5f * s.getHeight());
+                s.getTransform().rotate(time.deltaf * fac);
+                f+= time.deltaf*fac;
+                if (f > Mathf.PI/4 || f < -Mathf.PI/4) {
+                    fac *= -1;
+                }
+                s.getTransform().translate(-0.5f * s.getWidth(), -0.5f * s.getHeight());
+            }
+        });
+        //s.setPosition(new Vector2f(0.5f));
         s.setWidth(0.25f);
         s.setHeight(0.25f);
         s.setLayer(1);
         s.setTexture(getTextures().get("jd.png"));
+        s.setOffset(-0.2f);
         ReflectiveSprite back = new ReflectiveSprite();
-        back.setTexture(getTextures().get("jxcvxcvxcvxcvn.png"));
-        back.setPosition(new Vector2f());
+        back.setTexture(getTextures().get("jn.png"));
+        back.setHeight(0.4f);
         back.setReflectionType(Reflection2DType.Receive);
-        back.reflectiveness().set(0.5f, 0.5f, 0.5f);
+        back.reflectiveness().set(1,1,1);
+        ReflectiveSprite back2 = new ReflectiveSprite();
+        back2.setHeight(0.6f);
+        back2.getTransform().translate(0, 0.4f);
+        back2.setReflectionType(Reflection2DType.Disable);
+        scene.addUpdatable(new IUpdatable() {
+            @Override
+            public void update(Time time) {   
+                back2.setColor(Color.ofTemperature(Mathf.pingpong(time.currentf, 20000)));
+            }
+        });
+        c.getIRenderedObjectManager().add(back2);
         c.getIRenderedObjectManager().add(back);
         c.getIRenderedObjectManager().add(s);
     }

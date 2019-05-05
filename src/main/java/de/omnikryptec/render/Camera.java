@@ -49,7 +49,8 @@ public class Camera implements IProjection {
 
     private void revalidate() {
         if (!this.valid) {
-            this.projectionMatrix.mul(this.transform.worldspace(), this.combined);//.mul(this.projectionMatrix, this.combined);
+            //this.transform.worldspace().mul(this.projectionMatrix, this.combined);
+            this.projectionMatrix.mul(this.transform.worldspace(), this.combined);
             this.frustumChecker.set(this.combined);
             this.valid = true;
         }
