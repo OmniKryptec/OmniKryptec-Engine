@@ -16,6 +16,7 @@ layout (local_size_x = 8, local_size_y = 8) in;
 struct box {
   vec3 min;
   vec3 max;
+  vec3 col;
 };
 
 #define MAX_SCENE_BOUNDS 500.0
@@ -23,13 +24,14 @@ struct box {
 
 const box boxes[] = {
   /* The ground */
-  {vec3(-5.0, -0.1, -5.0), vec3(5.0, 0.0, 5.0)},
+  {vec3(-5.0, -0.1, -5.0), vec3(5.0, 0.0, 5.0), vec3(1,0,1)},
   /* Box in the middle */
-  {vec3(-0.5, 0.0, -0.5), vec3(0.5, 1.0, 0.5)}
+  {vec3(-0.5, 0.0, -0.5), vec3(0.5, 1.0, 0.5), vec3(0,1,0)}
 };
 
 struct hitinfo {
   vec2 lambda;
+  vec3 col;
   int bi;
 };
 
@@ -51,6 +53,7 @@ bool intersectBoxes(vec3 origin, vec3 dir, out hitinfo info) {
     if (lambda.x > 0.0 && lambda.x < lambda.y && lambda.x < smallest) {
       info.lambda = lambda;
       info.bi = i;
+	  info.col = boxes[i].col;
       smallest = lambda.x;
       found = true;
     }
@@ -61,10 +64,9 @@ bool intersectBoxes(vec3 origin, vec3 dir, out hitinfo info) {
 vec4 trace(vec3 origin, vec3 dir) {
   hitinfo i;
   if (intersectBoxes(origin, dir, i)) {
-    vec4 gray = vec4(i.bi / 10.0 + 0.8);
-    return vec4(gray.rgb, 1.0);
+    return vec4(i.col, 1.0);
   }
-  return vec4(0.0, 0.0, 0.0, 1.0);
+  return vec4(0,0,0, 1.0);
 }
 
 void main(void) {
