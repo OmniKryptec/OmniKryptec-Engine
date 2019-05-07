@@ -20,43 +20,43 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.joml.Matrix4f;
-import org.joml.Matrix4fc;
-import org.joml.Vector3f;
-import org.joml.Vector3fc;
+import org.joml.Matrix3x2f;
+import org.joml.Matrix3x2fc;
+import org.joml.Vector2f;
+import org.joml.Vector2fc;
 
 /**
- * A class to efficiently store 3D-transformations.
+ * A class to efficiently store 2D-transformations.
  *
  * @author pcfreak9000
  *
  */
-public class Transform {
+public class Transform2D {
     
-    private final List<Consumer<Transform>> transformChanged = new ArrayList<>();
+    private final List<Consumer<Transform2D>> transformChanged = new ArrayList<>();
     
-    private Transform parent;
-    private final List<Transform> children = new ArrayList<>();
+    private Transform2D parent;
+    private final List<Transform2D> children = new ArrayList<>();
     
-    private final Matrix4f transform;
+    private final Matrix3x2f transform;
     
-    private final Vector3f positionHelper;
+    private final Vector2f positionHelper;
     
-    private final Matrix4f local;
+    private final Matrix3x2f local;
     private boolean changed;
     
-    public Transform() {
+    public Transform2D() {
         this(null);
     }
     
-    public Transform(final Transform parent) {
-        this.transform = new Matrix4f();
-        this.local = new Matrix4f();
-        this.positionHelper = new Vector3f();
+    public Transform2D(final Transform2D parent) {
+        this.transform = new Matrix3x2f();
+        this.local = new Matrix3x2f();
+        this.positionHelper = new Vector2f();
         this.setParent(parent);
     }
     
-    public void setParent(final Transform lParent) {
+    public void setParent(final Transform2D lParent) {
         if (lParent != null) {
             lParent.children.add(this);
             this.parent = lParent;
@@ -74,20 +74,20 @@ public class Transform {
      * @see #localspaceWrite()
      * @see #localspaceWrite(Consumer)
      */
-    public void set(final Matrix4fc in) {
+    public void set(final Matrix3x2fc in) {
         this.local.set(in);
         invalidate();
     }
     
     //this is maybe not so nice
     /**
-     * Modifies the local transform and then invalidates this {@link Transform}.
+     * Modifies the local transform and then invalidates this {@link Transform2D}.
      *
      * @param action an action modifying the local transformation
      * @see #localspaceWrite()
      * @see #localspace()
      */
-    public void localspaceWrite(final Consumer<Matrix4fc> action) {
+    public void localspaceWrite(final Consumer<Matrix3x2fc> action) {
         action.accept(this.local);
         invalidate();
     }
@@ -95,15 +95,15 @@ public class Transform {
     /**
      * Provides the local transformation to be modified.
      * <p>
-     * Note: invalidates this {@link Transform} BEFORE you can make any changes, so
-     * listeners might use then-outdated values. If this is critical, use
+     * Note: invalidates this {@link Transform2D} BEFORE you can make any changes,
+     * so listeners might use then-outdated values. If this is critical, use
      * {@link #localspaceWrite(Consumer)} instead.
      * </p>
      *
      * @return the local transform
      * @see #localspace()
      */
-    public Matrix4f localspaceWrite() {
+    public Matrix3x2f localspaceWrite() {
         invalidate();
         return this.local;
     }
@@ -115,7 +115,7 @@ public class Transform {
      * @return transform in local space
      * @see #worldspace()
      */
-    public Matrix4fc localspace() {
+    public Matrix3x2fc localspace() {
         return this.local;
     }
     
@@ -125,21 +125,21 @@ public class Transform {
      * @return transform in worldspace
      * @see #localspace()
      */
-    public Matrix4fc worldspace() {
+    public Matrix3x2fc worldspace() {
         revalidate();
         return this.transform;
     }
     
-    public Vector3fc worldspacePosition() {
+    public Vector2fc worldspacePosition() {
         revalidate();
         return positionHelper;
     }
     
-    public void addChangeNotifier(final Consumer<Transform> notified) {
+    public void addChangeNotifier(final Consumer<Transform2D> notified) {
         this.transformChanged.add(notified);
     }
     
-    public void removeChangeNotifier(final Consumer<Transform> notified) {
+    public void removeChangeNotifier(final Consumer<Transform2D> notified) {
         this.transformChanged.remove(notified);
     }
     
@@ -162,10 +162,10 @@ public class Transform {
     
     private void invalidate() {
         this.changed = true;
-        for (final Consumer<Transform> c : this.transformChanged) {
+        for (final Consumer<Transform2D> c : this.transformChanged) {
             c.accept(this);
         }
-        for (final Transform c : this.children) {
+        for (final Transform2D c : this.children) {
             c.invalidate();
         }
     }
