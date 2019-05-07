@@ -125,11 +125,11 @@ public class ReflectedRenderer2D implements Renderer, IRenderedObjectListener {
         spriteBuffer.unbindFrameBuffer();
         //combine lights with the scene
         renderer.getRenderAPI().applyRenderState(Renderer2D.MULT_STATE);
-        RendererUtil.renderBufferDirect(spriteBuffer, 0, finalDraw);
+        spriteBuffer.renderDirect(0, finalDraw);
         renderBuffer.unbindFrameBuffer();
         //final draw
         renderer.getRenderAPI().applyRenderState(Renderer2D.SPRITE_STATE);
-        RendererUtil.renderBufferDirect(renderBuffer, 0, finalDraw);
+        renderBuffer.renderDirect(0, finalDraw);
     }
     
     @Override

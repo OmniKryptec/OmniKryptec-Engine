@@ -25,8 +25,7 @@ import de.omnikryptec.util.updater.Time;
 
 public class Renderer2D implements Renderer, IRenderedObjectListener {
     
-    static final Comparator<Sprite> DEFAULT_COMPARATOR = (s0,
-            s1) -> (int) Math.signum(s0.getLayer() - s1.getLayer());
+    static final Comparator<Sprite> DEFAULT_COMPARATOR = (s0, s1) -> (int) Math.signum(s0.getLayer() - s1.getLayer());
     
     static final RenderState SPRITE_STATE = RenderState.of(BlendMode.ALPHA);
     static final RenderState LIGHT_STATE = RenderState.of(BlendMode.ADDITIVE);
@@ -96,13 +95,13 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
         spriteBuffer.unbindFrameBuffer();
         //combine lights with the scene
         renderer.getRenderAPI().applyRenderState(MULT_STATE);
-        RendererUtil.renderBufferDirect(spriteBuffer, 0, finalDraw);
+        spriteBuffer.renderDirect(0, finalDraw);
         renderBuffer.unbindFrameBuffer();
         //final draw
         renderer.getRenderAPI().applyRenderState(SPRITE_STATE);
-        RendererUtil.renderBufferDirect(renderBuffer, 0, finalDraw);
+        renderBuffer.renderDirect(0, finalDraw);
     }
-
+    
     @Override
     public void resizeFBOs(LocalRendererContext context, SurfaceBuffer screen) {
         spriteBuffer = spriteBuffer.resizedClone(screen.getWidth(), screen.getHeight());

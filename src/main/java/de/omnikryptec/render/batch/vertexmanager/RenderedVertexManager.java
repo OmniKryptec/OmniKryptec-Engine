@@ -1,9 +1,10 @@
-package de.omnikryptec.render.batch;
+package de.omnikryptec.render.batch.vertexmanager;
 
 import java.util.Objects;
 
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
+import de.omnikryptec.render.batch.ShaderSlot;
 import de.omnikryptec.render.batch.module.ModuleBatchingManager;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexArray;

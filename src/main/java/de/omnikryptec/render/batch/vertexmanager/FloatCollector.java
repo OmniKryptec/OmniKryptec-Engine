@@ -1,4 +1,4 @@
-package de.omnikryptec.render.batch;
+package de.omnikryptec.render.batch.vertexmanager;
 
 import java.nio.FloatBuffer;
 
@@ -56,6 +56,10 @@ public class FloatCollector {
         this.fbuffer.put(this.floats, 0, used());
         this.position = 0;
         return this.fbuffer;
+    }
+    
+    public float[] rawArray() {
+        return floats;
     }
     
     public int size() {

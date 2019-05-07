@@ -8,6 +8,8 @@ import de.omnikryptec.render.batch.module.ColorModule;
 import de.omnikryptec.render.batch.module.ModuleBatchingManager;
 import de.omnikryptec.render.batch.module.PositionModule;
 import de.omnikryptec.render.batch.module.UVModule;
+import de.omnikryptec.render.batch.vertexmanager.RenderedVertexManager;
+import de.omnikryptec.render.batch.vertexmanager.VertexManager;
 import de.omnikryptec.util.data.Color;
 
 public class SimpleBatch2D extends AbstractBatch implements Batch2D {
