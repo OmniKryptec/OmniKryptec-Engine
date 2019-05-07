@@ -153,7 +153,7 @@ public class Raytracer extends EngineLoader implements IUpdatable {
         computeShader.dispatchCompute(MathUtil.toPowerOfTwo(image.getWidth() / 8),
                 MathUtil.toPowerOfTwo(image.getHeight() / 8), 1);
         
-        RendererUtil.renderBufferDirect(image, 0, batch);
+        image.renderDirect(0, batch);
     }
     
 }
