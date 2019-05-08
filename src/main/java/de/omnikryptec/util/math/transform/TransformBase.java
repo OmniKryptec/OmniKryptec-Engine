@@ -1,63 +1,44 @@
-/*
- *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
-
-package de.omnikryptec.util.math;
+package de.omnikryptec.util.math.transform;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.joml.Matrix4f;
-import org.joml.Matrix4fc;
-import org.joml.Vector3f;
-import org.joml.Vector3fc;
-
-/**
- * A class to efficiently store 3D-transformations.
- *
- * @author pcfreak9000
- *
- */
-@Deprecated
-public class Transform {
+public abstract class TransformBase<V, M, WV extends V, WM extends M> {
+    private final List<Consumer<TransformBase<V, M, WV, WM>>> transformChanged = new ArrayList<>();
     
-    private final List<Consumer<Transform>> transformChanged = new ArrayList<>();
+    private TransformBase<V, M, WV, WM> parent;
+    private final List<TransformBase<V, M, WV, WM>> children = new ArrayList<>();
     
-    private Transform parent;
-    private final List<Transform> children = new ArrayList<>();
+    private final WM transform;
     
-    private final Matrix4f transform;
+    private final WV positionHelper;
     
-    private final Vector3f positionHelper;
-    
-    private final Matrix4f local;
+    private final WM local;
     private boolean changed;
     
-    public Transform() {
+    protected abstract WM createM();
+    
+    protected abstract WV createV();
+    
+    protected abstract void set(WM set, M in);
+    
+    protected abstract void mul(WM leftM, M rightM);
+    
+    protected abstract void getPosition(M from, WV target);
+    
+    public TransformBase() {
         this(null);
     }
     
-    public Transform(final Transform parent) {
-        this.transform = new Matrix4f();
-        this.local = new Matrix4f();
-        this.positionHelper = new Vector3f();
+    public TransformBase(final TransformBase<V, M, WV, WM> parent) {
+        this.transform = createM();
+        this.local = createM();
+        this.positionHelper = createV();
         this.setParent(parent);
     }
     
-    public void setParent(final Transform lParent) {
+    public void setParent(final TransformBase<V, M, WV, WM> lParent) {
         if (lParent != null) {
             lParent.children.add(this);
             this.parent = lParent;
@@ -75,8 +56,8 @@ public class Transform {
      * @see #localspaceWrite()
      * @see #localspaceWrite(Consumer)
      */
-    public void set(final Matrix4fc in) {
-        this.local.set(in);
+    public void set(final M in) {
+        set(local, in);
         invalidate();
     }
     
@@ -88,7 +69,7 @@ public class Transform {
      * @see #localspaceWrite()
      * @see #localspace()
      */
-    public void localspaceWrite(final Consumer<Matrix4fc> action) {
+    public void localspaceWrite(final Consumer<M> action) {
         action.accept(this.local);
         invalidate();
     }
@@ -104,7 +85,7 @@ public class Transform {
      * @return the local transform
      * @see #localspace()
      */
-    public Matrix4f localspaceWrite() {
+    public WM localspaceWrite() {
         invalidate();
         return this.local;
     }
@@ -116,7 +97,7 @@ public class Transform {
      * @return transform in local space
      * @see #worldspace()
      */
-    public Matrix4fc localspace() {
+    public M localspace() {
         return this.local;
     }
     
@@ -126,21 +107,21 @@ public class Transform {
      * @return transform in worldspace
      * @see #localspace()
      */
-    public Matrix4fc worldspace() {
+    public M worldspace() {
         revalidate();
         return this.transform;
     }
     
-    public Vector3fc worldspacePosition() {
+    public V worldspacePosition() {
         revalidate();
         return positionHelper;
     }
     
-    public void addChangeNotifier(final Consumer<Transform> notified) {
+    public void addChangeNotifier(final Consumer<TransformBase<V, M, WV, WM>> notified) {
         this.transformChanged.add(notified);
     }
     
-    public void removeChangeNotifier(final Consumer<Transform> notified) {
+    public void removeChangeNotifier(final Consumer<TransformBase<V, M, WV, WM>> notified) {
         this.transformChanged.remove(notified);
     }
     
@@ -148,25 +129,28 @@ public class Transform {
         return this.changed || (this.parent != null && this.parent.changed());
     }
     
+    public TransformBase<V, M, WV, WM> getParent() {
+        return parent;
+    }
+    
     private void revalidate() {
         if (changed()) {
             this.changed = false;
-            this.transform.identity();
-            this.transform.set(this.local);
+            set(transform, local);
             if (this.parent != null) {
                 //TODx is this matrix multiplication correct? -> should be, the parent (the right matrix) transformation is and should be applied first 
-                this.transform.mul(this.parent.worldspace());
+                mul(transform, parent.worldspace());
             }
-            this.transform.transformPosition(positionHelper.set(0), positionHelper);
+            getPosition(transform, positionHelper);
         }
     }
     
     private void invalidate() {
         this.changed = true;
-        for (final Consumer<Transform> c : this.transformChanged) {
+        for (final Consumer<TransformBase<V, M, WV, WM>> c : this.transformChanged) {
             c.accept(this);
         }
-        for (final Transform c : this.children) {
+        for (final TransformBase<V, M, WV, WM> c : this.children) {
             c.invalidate();
         }
     }
