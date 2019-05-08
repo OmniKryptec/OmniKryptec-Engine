@@ -4,13 +4,13 @@ import org.joml.FrustumIntersection;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 
-import de.omnikryptec.util.math.Transform;
+import de.omnikryptec.util.math.transform.Transform3Df;
 
 public class Camera implements IProjection {
 
     private final Matrix4f projectionMatrix;
 
-    private final Transform transform;
+    private final Transform3Df transform;
 
     private final Matrix4f combined;
     private final FrustumIntersection frustumChecker;
@@ -18,7 +18,7 @@ public class Camera implements IProjection {
 
     public Camera(final Matrix4f projection) {
         this.projectionMatrix = projection;
-        this.transform = new Transform();
+        this.transform = new Transform3Df();
         this.combined = new Matrix4f();
         this.frustumChecker = new FrustumIntersection();
         this.valid = false;
@@ -43,7 +43,7 @@ public class Camera implements IProjection {
         return this.frustumChecker;
     }
 
-    public Transform getTransform() {
+    public Transform3Df getTransform() {
         return this.transform;
     }
 

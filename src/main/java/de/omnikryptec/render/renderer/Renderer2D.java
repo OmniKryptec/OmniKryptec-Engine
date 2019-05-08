@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.joml.FrustumIntersection;
+
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
@@ -18,7 +19,6 @@ import de.omnikryptec.render.objects.Light2D;
 import de.omnikryptec.render.objects.RenderedObject;
 import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.render.renderer.RendererContext.EnvironmentKey;
-import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.updater.Time;

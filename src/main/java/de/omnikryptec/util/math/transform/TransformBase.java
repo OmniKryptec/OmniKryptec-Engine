@@ -27,15 +27,10 @@ public abstract class TransformBase<V, M, WV extends V, WM extends M> {
     
     protected abstract void getPosition(M from, WV target);
     
-    public TransformBase() {
-        this(null);
-    }
-    
-    public TransformBase(final TransformBase<V, M, WV, WM> parent) {
+    protected TransformBase() {
         this.transform = createM();
         this.local = createM();
         this.positionHelper = createV();
-        this.setParent(parent);
     }
     
     public void setParent(final TransformBase<V, M, WV, WM> lParent) {

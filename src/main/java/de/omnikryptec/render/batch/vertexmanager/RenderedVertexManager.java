@@ -4,14 +4,13 @@ import java.util.Objects;
 
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
-import de.omnikryptec.render.batch.ShaderSlot;
-import de.omnikryptec.render.batch.module.ModuleBatchingManager;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
+import de.omnikryptec.render.batch.ShaderSlot;
+import de.omnikryptec.render.batch.module.ModuleBatchingManager;
 import de.omnikryptec.resource.MeshData.Primitive;
-import de.omnikryptec.util.Profiler;
 
 public class RenderedVertexManager implements VertexManager {
     

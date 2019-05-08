@@ -1,7 +1,6 @@
 package de.omnikryptec.render.renderer;
 
 import java.util.ArrayList;
-
 import java.util.Comparator;
 import java.util.List;
 

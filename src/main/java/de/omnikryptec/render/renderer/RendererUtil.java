@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.joml.FrustumIntersection;
 
-import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.objects.IRenderedObjectManager;
 import de.omnikryptec.render.objects.RenderedObjectType;

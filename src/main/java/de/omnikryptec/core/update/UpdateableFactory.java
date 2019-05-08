@@ -20,7 +20,6 @@ import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
 
 import de.omnikryptec.ecs.IECSManager;
-import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
@@ -30,8 +29,6 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.renderer.RendererContext;
-import de.omnikryptec.resource.TextureConfig;
-import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.resource.loadervpc.TextureHelper;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathf;

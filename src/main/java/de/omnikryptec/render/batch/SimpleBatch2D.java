@@ -3,6 +3,7 @@ package de.omnikryptec.render.batch;
 import javax.annotation.Nullable;
 
 import org.joml.Matrix3x2fc;
+
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.module.ColorModule;
 import de.omnikryptec.render.batch.module.ModuleBatchingManager;

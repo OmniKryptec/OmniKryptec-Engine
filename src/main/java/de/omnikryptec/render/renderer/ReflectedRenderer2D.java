@@ -7,10 +7,9 @@ import java.util.List;
 import org.joml.FrustumIntersection;
 
 import de.omnikryptec.libapi.exposed.render.FBTarget;
-import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
+import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
-import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.batch.ReflectedBatch2D;
 import de.omnikryptec.render.batch.SimpleBatch2D;

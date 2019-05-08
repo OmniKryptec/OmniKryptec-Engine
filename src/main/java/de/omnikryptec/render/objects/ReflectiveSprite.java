@@ -1,12 +1,10 @@
 package de.omnikryptec.render.objects;
 
 import org.joml.Matrix3x2f;
-import org.joml.Matrix3x2fc;
 import org.joml.Vector2f;
 
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.util.data.Color;
-import de.omnikryptec.util.math.Mathf;
 
 public class ReflectiveSprite extends SimpleSprite {
     public static final RenderedObjectType TYPE = RenderedObjectType.of(ReflectiveSprite.class);

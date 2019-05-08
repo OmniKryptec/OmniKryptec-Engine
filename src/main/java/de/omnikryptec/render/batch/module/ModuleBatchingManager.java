@@ -1,11 +1,8 @@
 package de.omnikryptec.render.batch.module;
 
-import org.checkerframework.checker.units.qual.m;
-
+import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
-
-import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.render.batch.vertexmanager.VertexManager;
 
 public class ModuleBatchingManager {
