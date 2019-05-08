@@ -4,22 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public abstract class TransformBase<V, M, WV extends V, WM extends M> {
-    private final List<Consumer<TransformBase<V, M, WV, WM>>> transformChanged = new ArrayList<>();
+public abstract class TransformBase<V, M, WV extends V, WM extends M, T extends TransformBase<V, M, WV, WM, T>> {
     
-    private TransformBase<V, M, WV, WM> parent;
-    private final List<TransformBase<V, M, WV, WM>> children = new ArrayList<>();
+    private Consumer<T> transformChanged;
     
-    private final WM transform;
+    private TransformBase<V, M, WV, WM, T> parent;
+    private final List<TransformBase<V, M, WV, WM, T>> children = new ArrayList<>();
     
-    private final WV positionHelper;
+    private final WM transformMatrixWriteable;
     
-    private final WM local;
+    private final WV positionHelperVectorWriteable;
+    
+    private final WM localMatrixWriteable;
     private boolean changed;
     
-    protected abstract WM createM();
+    protected abstract WM createWM();
     
-    protected abstract WV createV();
+    protected abstract WV createWV();
     
     protected abstract void set(WM set, M in);
     
@@ -27,13 +28,15 @@ public abstract class TransformBase<V, M, WV extends V, WM extends M> {
     
     protected abstract void getPosition(M from, WV target);
     
+    protected abstract T thiz();
+    
     protected TransformBase() {
-        this.transform = createM();
-        this.local = createM();
-        this.positionHelper = createV();
+        this.transformMatrixWriteable = createWM();
+        this.localMatrixWriteable = createWM();
+        this.positionHelperVectorWriteable = createWV();
     }
     
-    public void setParent(final TransformBase<V, M, WV, WM> lParent) {
+    public void setParent(final TransformBase<V, M, WV, WM, T> lParent) {
         if (lParent != null) {
             lParent.children.add(this);
             this.parent = lParent;
@@ -52,7 +55,7 @@ public abstract class TransformBase<V, M, WV extends V, WM extends M> {
      * @see #localspaceWrite(Consumer)
      */
     public void set(final M in) {
-        set(local, in);
+        set(localMatrixWriteable, in);
         invalidate();
     }
     
@@ -65,7 +68,7 @@ public abstract class TransformBase<V, M, WV extends V, WM extends M> {
      * @see #localspace()
      */
     public void localspaceWrite(final Consumer<M> action) {
-        action.accept(this.local);
+        action.accept(this.localMatrixWriteable);
         invalidate();
     }
     
@@ -82,7 +85,7 @@ public abstract class TransformBase<V, M, WV extends V, WM extends M> {
      */
     public WM localspaceWrite() {
         invalidate();
-        return this.local;
+        return this.localMatrixWriteable;
     }
     
     /**
@@ -93,7 +96,7 @@ public abstract class TransformBase<V, M, WV extends V, WM extends M> {
      * @see #worldspace()
      */
     public M localspace() {
-        return this.local;
+        return this.localMatrixWriteable;
     }
     
     /**
@@ -104,48 +107,46 @@ public abstract class TransformBase<V, M, WV extends V, WM extends M> {
      */
     public M worldspace() {
         revalidate();
-        return this.transform;
+        return this.transformMatrixWriteable;
     }
     
     public V worldspacePosition() {
         revalidate();
-        return positionHelper;
+        return positionHelperVectorWriteable;
     }
     
-    public void addChangeNotifier(final Consumer<TransformBase<V, M, WV, WM>> notified) {
-        this.transformChanged.add(notified);
+    public void setChangeNotifier(final Consumer<T> notified) {
+        this.transformChanged = notified;
     }
     
-    public void removeChangeNotifier(final Consumer<TransformBase<V, M, WV, WM>> notified) {
-        this.transformChanged.remove(notified);
+    public Consumer<T> getChangeNotifier(final Consumer<T> notified) {
+        return transformChanged;
     }
     
     private boolean changed() {
         return this.changed || (this.parent != null && this.parent.changed());
     }
     
-    public TransformBase<V, M, WV, WM> getParent() {
+    public TransformBase<V, M, WV, WM, T> getParent() {
         return parent;
     }
     
     private void revalidate() {
         if (changed()) {
             this.changed = false;
-            set(transform, local);
+            set(transformMatrixWriteable, localMatrixWriteable);
             if (this.parent != null) {
                 //TODx is this matrix multiplication correct? -> should be, the parent (the right matrix) transformation is and should be applied first 
-                mul(transform, parent.worldspace());
+                mul(transformMatrixWriteable, parent.worldspace());
             }
-            getPosition(transform, positionHelper);
+            getPosition(transformMatrixWriteable, positionHelperVectorWriteable);
         }
     }
     
     private void invalidate() {
         this.changed = true;
-        for (final Consumer<TransformBase<V, M, WV, WM>> c : this.transformChanged) {
-            c.accept(this);
-        }
-        for (final TransformBase<V, M, WV, WM> c : this.children) {
+        transformChanged.accept(thiz());
+        for (final TransformBase<V, M, WV, WM, T> c : this.children) {
             c.invalidate();
         }
     }

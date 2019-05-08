@@ -43,6 +43,6 @@ public class RendererDemo extends EngineLoader{
         sprite.setTexture(getTextures().get("jd.png"));
         
         //add the sprite to the (default) robject manager
-        localRenderer.getIRenderedObjectManager().add(Sprite.TYPE, sprite);
+        localRenderer.getIRenderedObjectManager().add(sprite);
     }
 }
