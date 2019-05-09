@@ -1,29 +1,19 @@
 package de.omnikryptec.core;
 
-import java.awt.image.renderable.RenderContext;
-import java.util.Objects;
-
-import org.joml.Vector2f;
-
 import de.codemakers.base.logger.LogLevel;
 import de.codemakers.base.logger.Logger;
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.core.update.ULayer;
-import de.omnikryptec.core.update.UpdateableFactory;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
-import de.omnikryptec.libapi.opengl.OpenGLUtil;
-import de.omnikryptec.render.batch.ReflectedShaderSlot;
 import de.omnikryptec.render.objects.ReflectiveSprite;
-import de.omnikryptec.render.objects.RenderedObjectManager;
 import de.omnikryptec.render.objects.ReflectiveSprite.Reflection2DType;
 import de.omnikryptec.render.renderer.LocalRendererContext;
 import de.omnikryptec.render.renderer.ReflectedRenderer2D;
 import de.omnikryptec.render.renderer.RendererContext;
-import de.omnikryptec.resource.TextureData;
-import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.Logger.LogType;
+import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.IntegerKey;
@@ -34,17 +24,14 @@ public class BigTest extends EngineLoader {
     
     public static void main(final String[] args) {
         Logger.getDefaultAdvancedLeveledLogger().setMinimumLogLevel(LogLevel.FINEST);
-        Logger.getDefaultAdvancedLeveledLogger().createLogFormatBuilder().appendLogLevel().appendText(": ")
-                .appendObject().appendNewLine().appendThread().appendLocation().appendNewLine()
-                .finishWithoutException();
+        Logger.getDefaultAdvancedLeveledLogger().createLogFormatBuilder().appendLogLevel().appendText(": ").appendObject().appendNewLine().appendThread().appendSource().appendNewLine().finishWithoutException();
         AdvancedFile.DEBUG = true;
         AdvancedFile.DEBUG_TO_STRING = true;
         new BigTest().start();
     }
     
     @Override
-    protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
+    protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
         libsettings.set(LibSetting.DEBUG, true);
         libsettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "BigTest-Window");
@@ -71,7 +58,7 @@ public class BigTest extends EngineLoader {
         ReflectiveSprite s = new ReflectiveSprite();
         //s.setColor(new Color(1, 0, 0));
         s.setReflectionType(Reflection2DType.Cast);
-        s.getTransform().rotate(Mathf.PI/4);
+        s.getTransform().rotate(Mathf.PI / 4);
         s.getTransform().setTranslation(0.5f, 0.5f);
         scene.addUpdatable(new IUpdatable() {
             private float f;
@@ -81,8 +68,8 @@ public class BigTest extends EngineLoader {
             public void update(Time time) {
                 s.getTransform().translate(0.5f * s.getWidth(), 0.5f * s.getHeight());
                 s.getTransform().rotate(time.deltaf * fac);
-                f+= time.deltaf*fac;
-                if (f > Mathf.PI/4 || f < -Mathf.PI/4) {
+                f += time.deltaf * fac;
+                if (f > Mathf.PI / 4 || f < -Mathf.PI / 4) {
                     fac *= -1;
                 }
                 s.getTransform().translate(-0.5f * s.getWidth(), -0.5f * s.getHeight());
@@ -98,14 +85,14 @@ public class BigTest extends EngineLoader {
         back.setTexture(getTextures().get("jn.png"));
         back.setHeight(0.4f);
         back.setReflectionType(Reflection2DType.Receive);
-        back.reflectiveness().set(1,1,1);
+        back.reflectiveness().set(1, 1, 1);
         ReflectiveSprite back2 = new ReflectiveSprite();
         back2.setHeight(0.6f);
         back2.getTransform().translate(0, 0.4f);
         back2.setReflectionType(Reflection2DType.Disable);
         scene.addUpdatable(new IUpdatable() {
             @Override
-            public void update(Time time) {   
+            public void update(Time time) {
                 back2.setColor(Color.ofTemperature(Mathf.pingpong(time.currentf, 20000)));
             }
         });
