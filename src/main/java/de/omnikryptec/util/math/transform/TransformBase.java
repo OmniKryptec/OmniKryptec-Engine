@@ -110,7 +110,7 @@ public abstract class TransformBase<V, M, WV extends V, WM extends M, T extends 
         return this.transformMatrixWriteable;
     }
     
-    public V worldspacePosition() {
+    public V wPosition() {
         revalidate();
         return positionHelperVectorWriteable;
     }
@@ -131,7 +131,7 @@ public abstract class TransformBase<V, M, WV extends V, WM extends M, T extends 
         return parent;
     }
     
-    private void revalidate() {
+    public void revalidate() {
         if (changed()) {
             this.changed = false;
             set(transformMatrixWriteable, localMatrixWriteable);
@@ -145,7 +145,9 @@ public abstract class TransformBase<V, M, WV extends V, WM extends M, T extends 
     
     private void invalidate() {
         this.changed = true;
-        transformChanged.accept(thiz());
+        if (transformChanged != null) {
+            transformChanged.accept(thiz());
+        }
         for (final TransformBase<V, M, WV, WM, T> c : this.children) {
             c.invalidate();
         }

@@ -1,16 +1,15 @@
 package de.omnikryptec.minigame;
 
-import org.joml.Matrix3x2f;
-import org.joml.Vector2f;
-
 import de.omnikryptec.ecs.component.Component;
+import de.omnikryptec.util.math.transform.Transform2Df;
 
 public class PositionComponent implements Component {
     
-    public final Matrix3x2f pos;
+    public final Transform2Df transform;
     
     public PositionComponent(float x, float y) {
-        this.pos = new Matrix3x2f().setTranslation(x, y);
+        this.transform = new Transform2Df();
+        this.transform.localspaceWrite().setTranslation(x, y);
     }
     
 }

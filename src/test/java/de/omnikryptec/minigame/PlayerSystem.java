@@ -40,7 +40,8 @@ public class PlayerSystem extends ComponentSystem {
             MovementComponent mov = movMapper.get(e);
             PlayerComponent play = playMapper.get(e);
             PositionComponent plus = posMapper.get(e);
-            RendererSystem.CAMERA.getTransform().localspaceWrite().setTranslation(-plus.pos.x, -plus.pos.y, 0);
+            RendererSystem.CAMERA.getTransform().localspaceWrite().setTranslation(
+                    -plus.transform.wPosition().x(), -plus.transform.wPosition().y(), 0);
             float vy = 0;
             float vx = 0;
             if (inputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_W)) {
@@ -68,11 +69,11 @@ public class PlayerSystem extends ComponentSystem {
                         MathUtil.relativeMousePosition(inputManager.getMousePosition(),
                                 RenderAPI.get().getSurface().viewport(), new Vector2f()),
                         RendererSystem.CAMERA.getProjection().invert(new Matrix4f()), new Vector2f());
-                dir.add(-plus.pos.x, -plus.pos.y);
+                dir.add(-plus.transform.wPosition().x(), -plus.transform.wPosition().y());
                 dir.normalize(200);
                 dir.add(mov.dx, mov.dy);
-                Minigame.BUS.post(new ShootEvent(plus.pos.x + play.shOffsetX, plus.pos.y + play.shOffsetY, dir, 1000,
-                        Projectile.Bomb));
+                Minigame.BUS.post(new ShootEvent(plus.transform.wPosition().x() + play.shOffsetX,
+                        plus.transform.wPosition().y() + play.shOffsetY, dir, 1000, Projectile.Bomb));
             }
         }
         Profiler.end();

@@ -22,8 +22,14 @@ public class MovementSystem extends IterativeComponentSystem {
     public void updateIndividual(IECSManager manager, Entity entity, Time time) {
         PositionComponent pos = posMapper.get(entity);
         MovementComponent mov = movMapper.get(entity);
-        pos.pos.x += mov.dx * time.deltaf;
-        pos.pos.y += mov.dy * time.deltaf;
+        pos.transform.localspaceWrite().translate(mov.dx * time.deltaf, mov.dy * time.deltaf);
+        pos.transform.revalidate();
+    }
+    
+    @Override
+    public int priority() {
+        
+        return -10;
     }
     
 }

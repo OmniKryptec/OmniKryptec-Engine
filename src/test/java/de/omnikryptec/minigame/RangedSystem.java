@@ -23,7 +23,7 @@ public class RangedSystem extends IterativeComponentSystem {
         PositionComponent pos = posM.get(entity);
         RangedComponent w = mapper.get(entity);
         
-        if (Mathf.square(pos.pos.x - w.startX) + Mathf.square(pos.pos.y - w.startY) > Mathf.square(w.maxrange)) {
+        if (Mathf.square(pos.transform.wPosition().x() - w.startX) + Mathf.square(pos.transform.wPosition().y() - w.startY) > Mathf.square(w.maxrange)) {
             manager.removeEntity(entity);
             
             Minigame.BUS.post(new RangeMaxedEvent(entity));

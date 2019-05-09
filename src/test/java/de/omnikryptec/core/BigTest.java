@@ -58,21 +58,21 @@ public class BigTest extends EngineLoader {
         ReflectiveSprite s = new ReflectiveSprite();
         //s.setColor(new Color(1, 0, 0));
         s.setReflectionType(Reflection2DType.Cast);
-        s.getTransform().rotate(Mathf.PI / 4);
-        s.getTransform().setTranslation(0.5f, 0.5f);
+        s.getTransform().localspaceWrite().rotate(Mathf.PI / 4);
+        s.getTransform().localspaceWrite().setTranslation(0.5f, 0.5f);
         scene.addUpdatable(new IUpdatable() {
             private float f;
             private int fac = 1;
             
             @Override
             public void update(Time time) {
-                s.getTransform().translate(0.5f * s.getWidth(), 0.5f * s.getHeight());
-                s.getTransform().rotate(time.deltaf * fac);
+                s.getTransform().localspaceWrite().translate(0.5f * s.getWidth(), 0.5f * s.getHeight());
+                s.getTransform().localspaceWrite().rotate(time.deltaf * fac);
                 f += time.deltaf * fac;
                 if (f > Mathf.PI / 4 || f < -Mathf.PI / 4) {
                     fac *= -1;
                 }
-                s.getTransform().translate(-0.5f * s.getWidth(), -0.5f * s.getHeight());
+                s.getTransform().localspaceWrite().translate(-0.5f * s.getWidth(), -0.5f * s.getHeight());
             }
         });
         //s.setPosition(new Vector2f(0.5f));
@@ -88,7 +88,7 @@ public class BigTest extends EngineLoader {
         back.reflectiveness().set(1, 1, 1);
         ReflectiveSprite back2 = new ReflectiveSprite();
         back2.setHeight(0.6f);
-        back2.getTransform().translate(0, 0.4f);
+        back2.getTransform().localspaceWrite().translate(0, 0.4f);
         back2.setReflectionType(Reflection2DType.Disable);
         scene.addUpdatable(new IUpdatable() {
             @Override

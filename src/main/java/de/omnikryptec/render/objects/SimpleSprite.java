@@ -5,10 +5,11 @@ import org.joml.Matrix3x2f;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.util.data.Color;
+import de.omnikryptec.util.math.transform.Transform2Df;
 
 public class SimpleSprite extends Sprite {
     //TODO transform
-    private Matrix3x2f transform = new Matrix3x2f();
+    private Transform2Df transform = new Transform2Df();
     private float width = 1, height = 1;
     
     private Color color;
@@ -17,14 +18,14 @@ public class SimpleSprite extends Sprite {
     @Override
     public void draw(Batch2D batch) {
         batch.color().set(color == null ? Color.ONE : color);
-        batch.draw(texture, transform, width, height, false, false);
+        batch.draw(texture, transform.worldspace(), width, height, false, false);
     }
     
-    public Matrix3x2f getTransform() {
+    public Transform2Df getTransform() {
         return transform;
     }
     
-    public void setTransform(Matrix3x2f mat) {
+    public void setTransform(Transform2Df mat) {
         this.transform = mat;
     }
     

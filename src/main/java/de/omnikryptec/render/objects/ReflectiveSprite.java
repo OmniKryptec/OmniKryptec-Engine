@@ -21,15 +21,15 @@ public class ReflectiveSprite extends SimpleSprite {
     
     private Color reflectiveness = new Color();
     private Reflection2DType refl;
-    private float offset=0;
+    private float offset = 0;
     
     public void drawReflection(Batch2D batch) {
         if (refl == Reflection2DType.Cast) {
             batch.color().set(getColor() == null ? Color.ONE : getColor());
-            Matrix3x2f mat = new Matrix3x2f(getTransform());
+            Matrix3x2f mat = new Matrix3x2f(getTransform().worldspace());
             mat.setTranslation(0, 0);
             mat.mulLocal(REFLECTION_MATRIX, mat);
-            Vector2f v = getTransform().transformPosition(0, 0, new Vector2f());
+            Vector2f v = getTransform().worldspace().transformPosition(0, 0, new Vector2f());
             v.add(0, offset);
             mat.setTranslation(v);
             batch.draw(getTexture(), mat, getWidth(), getHeight(), false, false);

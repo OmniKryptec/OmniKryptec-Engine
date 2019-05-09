@@ -146,7 +146,7 @@ public class Minigame extends EngineLoader {
     public void bombExplode(BombExplodeEvent ev) {
         for (int i = 0; i < 100; i++) {
             Vector2f r = MathUtil.randomDirection2D(random, 0, 2 * Mathf.PI, new Vector2f()).mul(500);
-            BUS.post(new ShootEvent(mapper.get(ev.bomb).pos.x, mapper.get(ev.bomb).pos.y, r, 150, Projectile.Normal));
+            BUS.post(new ShootEvent(mapper.get(ev.bomb).transform.wPosition().x(), mapper.get(ev.bomb).transform.wPosition().y(), r, 150, Projectile.Normal));
         }
     }
     

@@ -32,8 +32,11 @@ public class CollisionSystem extends ComponentSystem {
                 CollisionComponent hit2 = hitMapper.get(entity);
                 PositionComponent pos1 = posMapper.get(e);
                 PositionComponent pos2 = posMapper.get(entity);
-                boolean intersect = Intersectionf.testAabAab(pos1.pos.x, pos1.pos.y, 0, pos1.pos.x + hit1.w,
-                        pos1.pos.y + hit1.h, 0, pos2.pos.x, pos2.pos.y, 0, pos2.pos.x + hit2.w, pos2.pos.y + hit2.h, 0);
+                boolean intersect = Intersectionf.testAabAab(pos1.transform.wPosition().x(),
+                        pos1.transform.wPosition().y(), 0, pos1.transform.wPosition().x() + hit1.w,
+                        pos1.transform.wPosition().y() + hit1.h, 0, pos2.transform.wPosition().x(),
+                        pos2.transform.wPosition().y(), 0, pos2.transform.wPosition().x() + hit2.w,
+                        pos2.transform.wPosition().y() + hit2.h, 0);
                 if (intersect) {
                     Minigame.BUS.post(new CollisionEvent(entity, e));
                 }

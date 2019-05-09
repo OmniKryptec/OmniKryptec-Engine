@@ -87,5 +87,5 @@ void main(void){
 	vec3 refl = texture(reflected, v_screenPos).rgb;
 	
 	//TODO
-	color.rgb = (1 - v_reflectiveness.rgb) * color.rgb + v_reflectiveness.rgb * refl.rgb;
+	color.rgb = color.rgb + v_reflectiveness.rgb * refl.rgb;
 }
