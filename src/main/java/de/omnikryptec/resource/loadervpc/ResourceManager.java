@@ -195,7 +195,7 @@ public class ResourceManager {
         }
         
         private void processStagedIntern(final AdvancedFile file, final AdvancedFile superFile) {
-            if (file.isDirectory() && (!flat || file.equals(superFile))) {
+            if (canList(file) && (!flat || file.equals(superFile))) {
                 for (final AdvancedFile subFile : file.listFiles()) {
                     processStagedIntern(subFile, superFile);
                 }
@@ -213,7 +213,7 @@ public class ResourceManager {
         }
         
         private void loadSimpleIntern(final boolean exec, final AdvancedFile file, final AdvancedFile superFile) {
-            if (file.isDirectory() && (!flat || file.equals(superFile))) {
+            if (canList(file) && (!flat || file.equals(superFile))) {
                 for (final AdvancedFile subFile : file.listFiles()) {
                     loadSimpleIntern(exec, subFile, superFile);
                 }
@@ -223,10 +223,11 @@ public class ResourceManager {
         }
         
         private int countFiles(final AdvancedFile file, int old) {
-            if ((file.isDirectory())) {
+            System.out.println(file.toString());
+            if ((canList(file))) {
                 final List<AdvancedFile> filesHere = file.listFiles();
                 for (final AdvancedFile f : filesHere) {
-                    if (f.isDirectory() && flat) {
+                    if (canList(f) && flat) {
                         continue;
                     }
                     old = countFiles(f, old);
@@ -235,6 +236,10 @@ public class ResourceManager {
                 old++;
             }
             return old;
+        }
+        
+        private boolean canList(AdvancedFile f) {
+            return f.isDirectory() || f.isFileProvided();
         }
         
         private void notifyStage(final AdvancedFile file, final int stagenumber, final int localmax) {

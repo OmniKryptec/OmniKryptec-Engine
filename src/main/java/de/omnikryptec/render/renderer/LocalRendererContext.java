@@ -63,7 +63,7 @@ public class LocalRendererContext {
     public int priority() {
         return prio;
     }
-    
+    //using this while having renderers added breaks things, so use this only after initialization
     public void setIRenderedObjectManager(IRenderedObjectManager mgr) {
         this.objectManager = mgr;
     }

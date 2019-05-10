@@ -1,16 +1,15 @@
 package de.omnikryptec.render.objects;
 
-import org.joml.Matrix3x2f;
-
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.transform.Transform2Df;
 
 public class SimpleSprite extends Sprite {
-    //TODO transform
+    
     private Transform2Df transform = new Transform2Df();
-    private float width = 1, height = 1;
+    private float width = 1;
+    private float height = 1;
     
     private Color color;
     private Texture texture;
