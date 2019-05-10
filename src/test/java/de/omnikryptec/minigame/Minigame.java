@@ -1,9 +1,5 @@
 package de.omnikryptec.minigame;
 
-import java.util.Random;
-
-import org.joml.Vector2f;
-
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.update.ULayer;
@@ -25,6 +21,9 @@ import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
+import org.joml.Vector2f;
+
+import java.util.Random;
 
 public class Minigame extends EngineLoader {
     
@@ -33,14 +32,17 @@ public class Minigame extends EngineLoader {
     public static InputManager INPUT;
     
     public static ResourceProvider RESPROVIDER;
+    private IECSManager mgr;
+    private ComponentMapper<PositionComponent> mapper = new ComponentMapper<>(PositionComponent.class);
+    private ComponentMapper<RenderComponent> rend = new ComponentMapper<>(RenderComponent.class);
+    private Random random = new Random();
     
     public static void main(final String[] args) {
         new Minigame().start();
     }
     
     @Override
-    protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
+    protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
         //libSettings.set(LibSetting.DEBUG, true);
         libSettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "Minigame");
@@ -49,8 +51,6 @@ public class Minigame extends EngineLoader {
         windowSettings.set(WindowSetting.Width, 600);
         windowSettings.set(WindowSetting.Height, 600);
     }
-    
-    private IECSManager mgr;
     
     @Override
     protected void onInitialized() {
@@ -90,7 +90,7 @@ public class Minigame extends EngineLoader {
     private Entity makeBackground() {
         Entity e = new Entity();
         e.addComponent(new PositionComponent(-1000, -1000));
-        e.addComponent(new RenderComponent(2000, 2000, new Color(1,1,1), -100));
+        e.addComponent(new RenderComponent(2000, 2000, new Color(1, 1, 1), -100));
         return e;
     }
     
@@ -149,10 +149,6 @@ public class Minigame extends EngineLoader {
             BUS.post(new ShootEvent(mapper.get(ev.bomb).transform.wPosition().x(), mapper.get(ev.bomb).transform.wPosition().y(), r, 150, Projectile.Normal));
         }
     }
-    
-    private ComponentMapper<PositionComponent> mapper = new ComponentMapper<>(PositionComponent.class);
-    private ComponentMapper<RenderComponent> rend = new ComponentMapper<>(RenderComponent.class);
-    private Random random = new Random();
     
     @EventSubscription
     public void collide(CollisionEvent ev) {
