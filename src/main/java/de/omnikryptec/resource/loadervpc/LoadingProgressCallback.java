@@ -42,7 +42,7 @@ public interface LoadingProgressCallback {
         @Override
         public void onLoadingStart(final int globalResMax, final int globalMaxStages) {
             maxs = globalMaxStages;
-            logger.info("Loading " + globalResMax + " resources in " + globalMaxStages + " stage(s)");
+            logger.info("Loading " + globalResMax + " resource(s) in " + globalMaxStages + " stage(s)");
         }
 
         @Override
