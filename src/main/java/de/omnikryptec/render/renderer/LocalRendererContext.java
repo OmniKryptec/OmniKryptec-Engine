@@ -39,6 +39,7 @@ public class LocalRendererContext {
     private Settings<EnvironmentKey> environmentSettings;
     
     private int prio;
+    private boolean enabled;
     
     LocalRendererContext(RendererContext context, Settings<EnvironmentKey> environmentSettings, int multisamples,
             FBTarget... targets) {
@@ -53,6 +54,7 @@ public class LocalRendererContext {
         this.environmentSettings = environmentSettings == null ? new Settings<>() : environmentSettings;
         this.objectManager = new RenderedObjectManager();
         this.mainProjection = new Camera(new Matrix4f().ortho2D(0, 1, 0, 1));
+        this.enabled = true;
     }
     
     public void setPriority(int i) {
@@ -63,6 +65,15 @@ public class LocalRendererContext {
     public int priority() {
         return prio;
     }
+    
+    public boolean isEnabled() {
+        return enabled;
+    }
+    
+    public void setEnabled(boolean b) {
+        this.enabled = b;
+    }
+    
     //using this while having renderers added breaks things, so use this only after initialization
     public void setIRenderedObjectManager(IRenderedObjectManager mgr) {
         this.objectManager = mgr;

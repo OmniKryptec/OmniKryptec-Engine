@@ -90,13 +90,17 @@ public class RendererContext implements IUpdatable {
     public void update(Time time) {
         Texture[] screen = new Texture[subContexts.size()];
         for (int i = 0; i < subContexts.size(); i++) {
-            screen[i] = subContexts.get(i).renderCycle(time);
+            if (subContexts.get(i).isEnabled()) {
+                screen[i] = subContexts.get(i).renderCycle(time);
+            }
         }
         renderApi.getCurrentFrameBuffer().clearAll();
         renderApi.applyRenderState(DEFAULT_SCREENWRITER_STATE);
         batch.begin();
-        for (Texture t : screen) {
-            batch.draw(t, null, false, false);
+        for (int i = 0; i < screen.length; i++) {
+            if (screen[i] != null) {
+                batch.draw(screen[i], null, false, false);
+            }
         }
         batch.end();
     }
