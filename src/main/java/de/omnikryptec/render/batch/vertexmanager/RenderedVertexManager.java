@@ -68,11 +68,7 @@ public class RenderedVertexManager implements VertexManager {
         this.va = RenderAPI.get().createVertexArray();
         this.va.addVertexBuffer(this.vb, layout);
     }
-    
-    public AbstractShaderSlot getShaderSlot() {
-        return shader;
-    }
-    
+
     @Override
     public void begin() {
         shader.bindShaderRenderReady();
