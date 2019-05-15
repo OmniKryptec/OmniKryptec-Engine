@@ -55,7 +55,6 @@ public class Raytracer extends EngineLoader implements IUpdatable {
         renderApi = (OpenGLRenderAPI) RenderAPI.get();
         image = (GLFrameBuffer) renderApi.createFrameBuffer(1024, 768, 0, 1);
         image.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA32, 0));
-        batch = new SimpleBatch2D(6);
         computeShader = (GLShader) renderApi.createShader();
         computeShader.create("raytracer");
         initUniforms();
@@ -64,9 +63,7 @@ public class Raytracer extends EngineLoader implements IUpdatable {
         //camera.getTransform().localspaceWrite().setLookAt(3, 2, 7, 0, 0.5f, 0, 0, 1, 0);
     }
     
-    private GLFrameBuffer image;
-    private SimpleBatch2D batch;
-    
+    private GLFrameBuffer image;    
     private OpenGLRenderAPI renderApi;
     
     private GLShader computeShader;
@@ -153,7 +150,7 @@ public class Raytracer extends EngineLoader implements IUpdatable {
         computeShader.dispatchCompute(MathUtil.toPowerOfTwo(image.getWidth() / 8),
                 MathUtil.toPowerOfTwo(image.getHeight() / 8), 1);
         
-        image.renderDirect(0, batch);
+        image.renderDirect(0);
     }
     
 }

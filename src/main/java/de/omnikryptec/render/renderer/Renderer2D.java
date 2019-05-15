@@ -13,6 +13,7 @@ import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.render.IProjection;
+import de.omnikryptec.render.batch.AbstractProjectedShaderSlot;
 import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.objects.IRenderedObjectListener;
 import de.omnikryptec.render.objects.Light2D;
@@ -32,12 +33,25 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
     static final RenderState MULT_STATE = RenderState.of(BlendMode.MULTIPLICATIVE);
     
     private Comparator<Sprite> spriteComparator = DEFAULT_COMPARATOR;
-    private SimpleBatch2D batch = new SimpleBatch2D(1000);
-    private SimpleBatch2D finalDraw = new SimpleBatch2D(6);
     private List<Sprite> sprites = new ArrayList<>();
     
-    private FrameBuffer spriteBuffer, renderBuffer;
+    private SimpleBatch2D batch;
+    private FrameBuffer spriteBuffer;
+    private FrameBuffer renderBuffer;
+    
     private boolean shouldSort = false;
+    
+    public Renderer2D() {
+        this(1000);
+    }
+    
+    public Renderer2D(int vertices) {
+        this.batch = new SimpleBatch2D(vertices);
+    }
+    
+    public Renderer2D(int vertices, AbstractProjectedShaderSlot shaderslot) {
+        this.batch = new SimpleBatch2D(vertices, shaderslot);
+    }
     
     public void setSpriteComparator(Comparator<Sprite> comparator) {
         this.spriteComparator = comparator == null ? DEFAULT_COMPARATOR : comparator;
@@ -95,11 +109,11 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
         spriteBuffer.unbindFrameBuffer();
         //combine lights with the scene
         renderer.getRenderAPI().applyRenderState(MULT_STATE);
-        spriteBuffer.renderDirect(0, finalDraw);
+        spriteBuffer.renderDirect(0);
         renderBuffer.unbindFrameBuffer();
         //final draw
         renderer.getRenderAPI().applyRenderState(SPRITE_STATE);
-        renderBuffer.renderDirect(0, finalDraw);
+        renderBuffer.renderDirect(0);
     }
     
     @Override

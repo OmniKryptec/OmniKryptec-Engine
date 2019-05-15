@@ -8,7 +8,7 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
-import de.omnikryptec.render.batch.ShaderSlot;
+import de.omnikryptec.render.batch.AbstractShaderSlot;
 import de.omnikryptec.render.batch.module.ModuleBatchingManager;
 import de.omnikryptec.resource.MeshData.Primitive;
 
@@ -21,9 +21,9 @@ public class RenderedVertexManager implements VertexManager {
     private Texture currentTexture;
     private VertexArray va;
     private VertexBuffer vb;
-    private ShaderSlot shader;
+    private AbstractShaderSlot shader;
     
-    public RenderedVertexManager(final int vertexCount, ShaderSlot shader) {
+    public RenderedVertexManager(final int vertexCount, AbstractShaderSlot shader) {
         this.vertexCount = vertexCount;
         this.shader = shader;
     }
@@ -69,7 +69,7 @@ public class RenderedVertexManager implements VertexManager {
         this.va.addVertexBuffer(this.vb, layout);
     }
     
-    public ShaderSlot getShaderSlot() {
+    public AbstractShaderSlot getShaderSlot() {
         return shader;
     }
     

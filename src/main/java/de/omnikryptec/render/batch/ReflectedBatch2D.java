@@ -15,16 +15,24 @@ import de.omnikryptec.util.data.Color;
 
 public class ReflectedBatch2D extends AbstractBatch implements Batch2D {
     
+    public static AbstractReflectedShaderSlot createDefaultShaderSlot() {
+        return new ReflectedShaderSlot();
+    }
+    
     private PositionModule posModule;
     private UVModule uvModule;
     private ColorModule colorModule;
     private ColorModule reflectionMod;
     
-    private ReflectedShaderSlot shaderSlot;
+    private AbstractReflectedShaderSlot shaderSlot;
     
     public ReflectedBatch2D(int vertices) {
-        this(new RenderedVertexManager(vertices, new ReflectedShaderSlot()));
-        this.shaderSlot = ((ReflectedShaderSlot) ((RenderedVertexManager) vertexManager).getShaderSlot());
+        this(vertices, createDefaultShaderSlot());
+    }
+    
+    public ReflectedBatch2D(int vertices, AbstractReflectedShaderSlot shaderslot) {
+        this(new RenderedVertexManager(vertices, shaderslot));
+        this.shaderSlot = shaderslot;
     }
     
     public ReflectedBatch2D(VertexManager vertexManager) {
@@ -56,7 +64,7 @@ public class ReflectedBatch2D extends AbstractBatch implements Batch2D {
     }
     
     @Nullable
-    public ReflectedShaderSlot getShaderSlot() {
+    public AbstractReflectedShaderSlot getShaderSlot() {
         return shaderSlot;
     }
 }

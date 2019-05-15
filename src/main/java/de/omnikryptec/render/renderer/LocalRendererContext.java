@@ -14,6 +14,7 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.IProjection;
+import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.objects.IRenderedObjectManager;
 import de.omnikryptec.render.objects.RenderedObjectManager;
 import de.omnikryptec.render.postprocessing.Postprocessor;
@@ -22,9 +23,10 @@ import de.omnikryptec.render.renderer.RendererContext.GlobalEnvironmentKeys;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
-//TODO make Renderers or even LocalRendererContexts "global transformable"
+//TODO make Renderers or even LocalRendererContexts "global transformable"?
 //TODO also improve target information for renderers (null => surface, FrameBuffer => take its width and height and stay like that?)
 public class LocalRendererContext {
+    
     private static final Comparator<Renderer> RENDERER_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority() - e1.priority();
     
     private RendererContext context;

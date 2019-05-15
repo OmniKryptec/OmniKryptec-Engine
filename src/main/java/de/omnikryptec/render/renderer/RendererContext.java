@@ -43,13 +43,12 @@ public class RendererContext implements IUpdatable {
             - e1.priority();
     private static final RenderState DEFAULT_SCREENWRITER_STATE = RenderState.of();
     
+    
     private RenderAPI renderApi;
-    private SimpleBatch2D batch;
     private List<LocalRendererContext> subContexts;
     
     public RendererContext() {
         this.renderApi = LibAPIManager.instance().getGLFW().getRenderAPI();
-        this.batch = new SimpleBatch2D(12);
         this.subContexts = new ArrayList<>();
     }
     
@@ -96,13 +95,7 @@ public class RendererContext implements IUpdatable {
         }
         renderApi.getCurrentFrameBuffer().clearAll();
         renderApi.applyRenderState(DEFAULT_SCREENWRITER_STATE);
-        batch.begin();
-        for (int i = 0; i < screen.length; i++) {
-            if (screen[i] != null) {
-                batch.draw(screen[i], null, false, false);
-            }
-        }
-        batch.end();
+        RendererUtil.renderDirect(screen);
     }
     
     void notifyPriorityChanged() {

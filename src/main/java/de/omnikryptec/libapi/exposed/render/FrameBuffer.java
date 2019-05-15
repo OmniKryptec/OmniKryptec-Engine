@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.render.batch.Batch2D;
+import de.omnikryptec.render.renderer.RendererUtil;
 import de.omnikryptec.util.data.Color;
 
 /**
@@ -201,12 +202,10 @@ public abstract class FrameBuffer implements Deletable {
      * </p>
      * 
      * @param targetIndex the texture index
-     * @param batch the Batch2D to draw the texture
+     * @param batch       the Batch2D to draw the texture
      */
-    public void renderDirect(int targetIndex, Batch2D batch) {
-        batch.begin();
-        batch.draw(this.getTexture(targetIndex), null, false, false);
-        batch.end();
+    public void renderDirect(int targetIndex) {
+        RendererUtil.renderDirect(getTexture(targetIndex));
     }
     
     //TODO clearing and setting clear color at the same time might be inefficient/redundant

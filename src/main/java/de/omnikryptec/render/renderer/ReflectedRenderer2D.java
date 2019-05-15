@@ -11,6 +11,8 @@ import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.render.IProjection;
+import de.omnikryptec.render.batch.AbstractProjectedShaderSlot;
+import de.omnikryptec.render.batch.AbstractReflectedShaderSlot;
 import de.omnikryptec.render.batch.ReflectedBatch2D;
 import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.objects.IRenderedObjectListener;
@@ -24,15 +26,33 @@ import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.updater.Time;
 
 public class ReflectedRenderer2D implements Renderer, IRenderedObjectListener {
+    
     private Comparator<Sprite> spriteComparator = Renderer2D.DEFAULT_COMPARATOR;
-    private SimpleBatch2D batch = new SimpleBatch2D(1000);
-    private ReflectedBatch2D reflBatch = new ReflectedBatch2D(1000);
-    private SimpleBatch2D finalDraw = new SimpleBatch2D(6);
     private List<ReflectiveSprite> sprites = new ArrayList<>();
     private List<ReflectiveSprite> reflectors = new ArrayList<>();
     
-    private FrameBuffer spriteBuffer, renderBuffer, reflectionBuffer;
+    private SimpleBatch2D reflectionBatch;
+    private ReflectedBatch2D mainBatch;
+    private FrameBuffer spriteBuffer;
+    private FrameBuffer renderBuffer;
+    private FrameBuffer reflectionBuffer;
+    
     private boolean shouldSort = false;
+    
+    public ReflectedRenderer2D() {
+        this(1000);
+    }
+    
+    public ReflectedRenderer2D(int vertices) {
+        this.reflectionBatch = new SimpleBatch2D(vertices);
+        this.mainBatch = new ReflectedBatch2D(vertices);
+    }
+    
+    public ReflectedRenderer2D(int vertices, AbstractReflectedShaderSlot mainShaderSlot,
+            AbstractProjectedShaderSlot reflectionShaderSlot) {
+        this.reflectionBatch = new SimpleBatch2D(vertices, reflectionShaderSlot);
+        this.mainBatch = new ReflectedBatch2D(vertices, mainShaderSlot);
+    }
     
     public void setSpriteComparator(Comparator<Sprite> comparator) {
         this.spriteComparator = comparator == null ? Renderer2D.DEFAULT_COMPARATOR : comparator;
@@ -90,45 +110,45 @@ public class ReflectedRenderer2D implements Renderer, IRenderedObjectListener {
         
         renderBuffer.bindFrameBuffer();
         FrustumIntersection intersFilter = new FrustumIntersection(projection.getProjection());
-        batch.getShaderSlot().setProjection(projection);
+        reflectionBatch.getShaderSlot().setProjection(projection);
         //render lights
         renderer.getRenderAPI().applyRenderState(Renderer2D.LIGHT_STATE);
         renderBuffer.clearColor(renderer.getEnvironmentSettings().get(EnvironmentKeys2D.AmbientLight));
-        RendererUtil.render2d(batch, renderer.getIRenderedObjectManager(), Light2D.TYPE, intersFilter);
+        RendererUtil.render2d(reflectionBatch, renderer.getIRenderedObjectManager(), Light2D.TYPE, intersFilter);
         //render reflection
         renderer.getRenderAPI().applyRenderState(Renderer2D.SPRITE_STATE);
         reflectionBuffer.bindFrameBuffer();
         reflectionBuffer.clearColor();
-        batch.begin();
+        reflectionBatch.begin();
         for (ReflectiveSprite s : reflectors) {
             if (s.isVisible(intersFilter)) {
-                s.drawReflection(batch);
+                s.drawReflection(reflectionBatch);
             }
         }
-        batch.end();
+        reflectionBatch.end();
         reflectionBuffer.unbindFrameBuffer();
         //render scene
         spriteBuffer.bindFrameBuffer();
         spriteBuffer.clearColor();
-        reflBatch.getShaderSlot().setProjection(projection);
-        reflBatch.getShaderSlot().setReflection(reflectionBuffer.getTexture(0));
-        reflBatch.begin();
+        mainBatch.getShaderSlot().setProjection(projection);
+        mainBatch.getShaderSlot().setReflection(reflectionBuffer.getTexture(0));
+        mainBatch.begin();
         for (ReflectiveSprite s : sprites) {
             if (s.isVisible(intersFilter)) {
-                reflBatch.reflectionStrength()
+                mainBatch.reflectionStrength()
                         .set(s.getReflectionType() != Reflection2DType.Receive ? Color.ZERO : s.reflectiveness());
-                s.draw(reflBatch);
+                s.draw(mainBatch);
             }
         }
-        reflBatch.end();
+        mainBatch.end();
         spriteBuffer.unbindFrameBuffer();
         //combine lights with the scene
         renderer.getRenderAPI().applyRenderState(Renderer2D.MULT_STATE);
-        spriteBuffer.renderDirect(0, finalDraw);
+        spriteBuffer.renderDirect(0);
         renderBuffer.unbindFrameBuffer();
         //final draw
         renderer.getRenderAPI().applyRenderState(Renderer2D.SPRITE_STATE);
-        renderBuffer.renderDirect(0, finalDraw);
+        renderBuffer.renderDirect(0);
     }
     
     @Override

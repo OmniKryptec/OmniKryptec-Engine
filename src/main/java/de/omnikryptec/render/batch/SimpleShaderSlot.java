@@ -7,7 +7,7 @@ import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
 import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
 import de.omnikryptec.render.IProjection;
 
-public class SimpleShaderSlot extends ShaderSlot {
+public class SimpleShaderSlot extends AbstractProjectedShaderSlot {
     
     private UniformMatrix viewProjection;
     private UniformMatrix transform;
@@ -32,7 +32,7 @@ public class SimpleShaderSlot extends ShaderSlot {
             viewProjection.loadMatrix(projection.getProjection());
         }
     }
-    
+    @Override
     public void setProjection(IProjection projection) {
         this.projection = projection;
     }

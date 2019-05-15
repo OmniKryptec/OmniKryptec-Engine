@@ -8,7 +8,7 @@ import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
 import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
 import de.omnikryptec.render.IProjection;
 
-public class ReflectedShaderSlot extends ShaderSlot {
+public class ReflectedShaderSlot extends AbstractReflectedShaderSlot {
     
     private UniformMatrix viewProjection;
     private UniformMatrix transform;
@@ -43,6 +43,7 @@ public class ReflectedShaderSlot extends ShaderSlot {
         this.reflectionTexture = t;
     }
     
+    @Override
     public void setProjection(IProjection projection) {
         this.projection = projection;
     }
