@@ -7,6 +7,7 @@ import java.util.Objects;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.batch.module.ModuleBatchingManager;
+import de.omnikryptec.render.renderer.RendererUtil;
 
 public class UnorderedCachedvertexManager implements VertexManager {
     private final int vertexCount;
@@ -58,9 +59,11 @@ public class UnorderedCachedvertexManager implements VertexManager {
     }
     
     public void draw(Batch2D batch) {
-        for (Texture t : cache.keySet()) {
-            batch.drawPolygon(t, cache.get(t));
-        }
+        RendererUtil.drawUnorderedCache(batch, cache);
+    }
+    
+    public Map<Texture, float[]> getCache(){
+        return cache;
     }
     
     public void clear() {

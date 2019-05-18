@@ -2,6 +2,7 @@ package de.omnikryptec.render.renderer;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.joml.FrustumIntersection;
 
@@ -24,6 +25,12 @@ public class RendererUtil {
             }
         }
         directBatch.end();
+    }
+    
+    public static void drawUnorderedCache(Batch2D batch, Map<Texture, float[]> cache) {
+        for (Texture t : cache.keySet()) {
+            batch.drawPolygon(t, cache.get(t));
+        }
     }
     
     //TODO not so nice maybe:

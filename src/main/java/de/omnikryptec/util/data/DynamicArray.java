@@ -25,7 +25,7 @@ public class DynamicArray<E> implements Iterable<E> {
     private Object[] array;
     
     public DynamicArray() {
-        this(10);
+        this(0);
     }
     
     public DynamicArray(final int initialSize) {
