@@ -41,7 +41,7 @@ public class DynamicArray<E> implements Iterable<E> {
     
     public E get(final int index) {
         if (index < 0 || index >= size()) {
-            throw new IndexOutOfBoundsException("" + index);
+            return null;//throw new IndexOutOfBoundsException("" + index);
         }
         return (E) this.array[index];
     }
