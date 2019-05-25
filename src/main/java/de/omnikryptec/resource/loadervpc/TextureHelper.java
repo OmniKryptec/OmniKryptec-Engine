@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.Texture;
@@ -96,5 +97,14 @@ public class TextureHelper {
     
     public void clearTextures() {
         textures.clear();
+    }
+    
+    public void clearAndDeleteTextures() {
+        for (Texture t : textures.values()) {
+            if (t instanceof Deletable) {
+                ((Deletable) t).deleteAndUnregister();
+            }
+        }
+        clearTextures();
     }
 }
