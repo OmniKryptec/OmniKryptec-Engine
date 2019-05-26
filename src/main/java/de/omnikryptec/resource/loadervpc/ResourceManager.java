@@ -223,7 +223,6 @@ public class ResourceManager {
         }
         
         private int countFiles(final AdvancedFile file, int old) {
-            System.out.println(file.toString());
             if ((canList(file))) {
                 final List<AdvancedFile> filesHere = file.listFiles();
                 for (final AdvancedFile f : filesHere) {
