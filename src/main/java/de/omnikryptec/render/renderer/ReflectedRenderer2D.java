@@ -151,13 +151,15 @@ public class ReflectedRenderer2D implements Renderer, IRenderedObjectListener {
         renderBuffer.renderDirect(0);
     }
     
+    public void forceSort() {
+        this.shouldSort = true;
+    }
+    
     @Override
     public void resizeFBOs(LocalRendererContext context, SurfaceBuffer screen) {
-        
         spriteBuffer = spriteBuffer.resizedClone(screen.getWidth(), screen.getHeight());
         renderBuffer = renderBuffer.resizedClone(screen.getWidth(), screen.getHeight());
         reflectionBuffer = reflectionBuffer.resizedClone(screen.getWidth() / 2, screen.getHeight() / 2);
-        
     }
     
     private void createFBOs(LocalRendererContext context, FrameBuffer screen) {
