@@ -36,7 +36,8 @@ public class RenderedVertexManager implements VertexManager {
     @Override
     public void prepareNext(final Texture texture, final int requiredFloats) {
         if (requiredFloats > this.data.size()) {
-            throw new IndexOutOfBoundsException("Can't handle mesh, buffer too small");
+            throw new IndexOutOfBoundsException(
+                    requiredFloats + " floats required, but buffer size is only " + this.data.size());
         }
         Texture baseTexture = texture == null ? null : texture.getBaseTexture();
         if (requiredFloats > this.data.remaining() || !Objects.equals(baseTexture, this.currentTexture)) {
@@ -68,7 +69,7 @@ public class RenderedVertexManager implements VertexManager {
         this.va = RenderAPI.get().createVertexArray();
         this.va.addVertexBuffer(this.vb, layout);
     }
-
+    
     @Override
     public void begin() {
         shader.bindShaderRenderReady();
