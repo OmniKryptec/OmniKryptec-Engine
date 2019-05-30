@@ -48,7 +48,7 @@ public class EventHandler implements IEventListener {
         }
         if (obj instanceof EventHandler) {
             final EventHandler sec = (EventHandler) obj;
-            if (sec.m.equals(this.m)) {
+            if (sec.m.equals(this.m) && sec.handler.equals(this.handler)) {
                 return true;
             }
         }
