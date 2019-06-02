@@ -38,7 +38,7 @@ public class MouseHandler implements InputHandler {
     private final Vector2d scrollOffset = new Vector2d(0.0, 0.0);
     private final AtomicBoolean insideWindow = new AtomicBoolean(false);
     // Temporary variables
-    private byte[] buttonsLastTime = null;
+    private byte[] buttonsLastTime = new byte[buttons.length];
     
     @Override
     public boolean init(EventBus bus) {

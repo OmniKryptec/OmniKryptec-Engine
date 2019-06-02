@@ -34,14 +34,12 @@ public class KeyboardHandler implements InputHandler {
     // Configurable variables
     private final boolean appendToString = false;
     // Temporary variables
-    private byte[] keysLastTime = null;
-    
+    private byte[] keysLastTime = new byte[keys.length];
     
     @EventSubscription
     public void onKeyEvent(InputEvent.KeyEvent ev) {
         this.keys[ev.key] = (byte) ev.action;
     }
-    
     
     @Override
     public boolean init(EventBus bus) {

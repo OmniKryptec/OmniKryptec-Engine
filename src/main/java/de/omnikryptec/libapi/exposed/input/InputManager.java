@@ -164,10 +164,13 @@ public class InputManager implements IUpdatable {
     
     @Override
     public void update(Time time) {
-        preUpdateIntern(time);
-        updateIntern(time);
         postUpdateIntern(time);
+        
+        updateIntern(time);
+
         updateMouseDeltas(getMousePosition(), getMouseScrollOffset());
+        preUpdateIntern(time);
+
     }
     
     @Override
