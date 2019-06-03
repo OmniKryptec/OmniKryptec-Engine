@@ -54,9 +54,11 @@ public class KeyboardHandler implements InputHandler {
     
     @Override
     public boolean preUpdate(double currentTime, KeySettings keySettings) {
+        /*
         synchronized (keys) {
             keysLastTime = Arrays.copyOf(keys, keys.length);
         }
+        */
         return true;
     }
     
@@ -66,6 +68,7 @@ public class KeyboardHandler implements InputHandler {
             for (int i = 0; i < keys.length; i++) {
                 if (keysLastTime[i] != keys[i]) {
                     keySettings.updateKeys(currentTime, i, true, keys[i]);
+                    keysLastTime[i] = keys[i];
                 }
             }
         }
