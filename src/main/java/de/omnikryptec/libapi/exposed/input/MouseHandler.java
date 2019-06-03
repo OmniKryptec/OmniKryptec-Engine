@@ -16,24 +16,22 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.joml.Vector2d;
 import org.joml.Vector2dc;
-import org.lwjgl.glfw.GLFW;
-
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.window.InputEvent;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.util.settings.KeySettings;
+import de.omnikryptec.util.settings.keys.KeysAndButtons;
 
 public class MouseHandler implements InputHandler {
     //TODO pcfreak - better viewport accesss?
     private final SurfaceBuffer surface = LibAPIManager.instance().getGLFW().getRenderAPI().getSurface();
-    private final byte[] buttons = new byte[GLFW.GLFW_MOUSE_BUTTON_LAST];
+    private final byte[] buttons = new byte[KeysAndButtons.MOUSE_BUTTON_AMOUNT];
     private final Vector2d position = new Vector2d(0.0, 0.0);
     private final Vector2d scrollOffset = new Vector2d(0.0, 0.0);
     private final AtomicBoolean insideWindow = new AtomicBoolean(false);

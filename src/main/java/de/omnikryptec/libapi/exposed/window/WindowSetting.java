@@ -1,15 +1,16 @@
 package de.omnikryptec.libapi.exposed.window;
 
 import de.omnikryptec.util.settings.Defaultable;
+import de.omnikryptec.libapi.exposed.input.CursorType;
 
-public enum WindowSetting implements Defaultable{
+public enum WindowSetting implements Defaultable {
     Width(800), Height(600), Fullscreen(false), Name("Display"), Resizeable(true), LockAspectRatio(false),
     /**
      * @see WindowInterfaceWIP#setVSync(boolean)
      * @see de.omnikryptec.core.scene.UpdateController#setSyncUpdatesPerSecond(int)
      * @see de.omnikryptec.core.scene.UpdateController#setAsyncUpdatesPerSecond(int)
      */
-    VSync(true);
+    VSync(true), CursorState(CursorType.NORMAL);
     
     private final Object def;
     

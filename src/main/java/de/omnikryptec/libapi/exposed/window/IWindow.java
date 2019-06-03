@@ -1,5 +1,7 @@
 package de.omnikryptec.libapi.exposed.window;
 
+import de.omnikryptec.libapi.exposed.input.CursorType;
+
 public interface IWindow {
     
     void setTitle(String title);
@@ -27,4 +29,6 @@ public interface IWindow {
     void setWindowSize(int width, int height);
     
     void setFullscreen(boolean b);
+    
+    void setCursorState(CursorType state);
 }

@@ -155,7 +155,7 @@ public class KeysAndButtons {
 
     /** If this bit is set one or more Super keys were held down. */
     public static final int OKE_MOD_SUPER = 0x8;
-
+    //TODO set the inputmode so this works:
     /** If this bit is set the Caps Lock key is enabled and the {@link #OKE_LOCK_KEY_MODS LOCK_KEY_MODS} input mode is set. */
     public static final int OKE_MOD_CAPS_LOCK = 0x10;
 
@@ -176,4 +176,6 @@ public class KeysAndButtons {
         OKE_MOUSE_BUTTON_LEFT   = OKE_MOUSE_BUTTON_1,
         OKE_MOUSE_BUTTON_RIGHT  = OKE_MOUSE_BUTTON_2,
         OKE_MOUSE_BUTTON_MIDDLE = OKE_MOUSE_BUTTON_3;
+    
+    public static final int MOUSE_BUTTON_AMOUNT = 8;
 }

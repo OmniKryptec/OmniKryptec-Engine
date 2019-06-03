@@ -6,6 +6,7 @@ import org.lwjgl.system.Platform;
 
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.libapi.exposed.input.CursorType;
 import de.omnikryptec.libapi.exposed.render.FrameBufferStack;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.InputEvent;
@@ -26,8 +27,9 @@ public class GLWindow implements IWindow {
     private int windowHeight;
     private boolean isFullscreen;
     private boolean isActive;
-
-    public GLWindow(Settings<WindowSetting> windowSettings, Settings<IntegerKey> apiSettings, FrameBufferStack fbStack) {
+    
+    public GLWindow(Settings<WindowSetting> windowSettings, Settings<IntegerKey> apiSettings,
+            FrameBufferStack fbStack) {
         Util.ensureNonNull(windowSettings, "Window settings must not be null!");
         this.windowWidth = windowSettings.get(WindowSetting.Width);
         this.windowHeight = windowSettings.get(WindowSetting.Height);
@@ -70,6 +72,7 @@ public class GLWindow implements IWindow {
             GLFW.glfwSetWindowAspectRatio(this.windowId, this.windowWidth, this.windowHeight);
             aspectRatio = this.windowWidth / (double) this.windowHeight;
         }
+        setCursorState(windowSettings.get(WindowSetting.CursorState));
         registerCallbacks();
         GLFW.glfwMakeContextCurrent(windowId);
         GL.createCapabilities();
@@ -175,6 +178,12 @@ public class GLWindow implements IWindow {
     public void setFullscreen(boolean b) {
         GLFW.glfwSetWindowMonitor(windowId, b ? GLFW.glfwGetPrimaryMonitor() : 0, 0, 0, windowWidth, windowHeight,
                 GLFW.GLFW_DONT_CARE);
+    }
+    
+    @Override
+    public void setCursorState(CursorType state) {
+        Util.ensureNonNull(state);
+        GLFW.glfwSetInputMode(windowId, GLFW.GLFW_CURSOR, state.getState());
     }
     
 }

@@ -48,7 +48,6 @@ public class InputManager implements IUpdatable {
      */
     private final Vector4d mouseDelta = new Vector4d(0.0, 0.0, 0.0, 0.0);
     private boolean longButtonPressEnabled = false;
-    private CursorType cursorType = CursorType.DISABLED;
     
     public InputManager(KeySettings keySettings) {
         this(keySettings, new KeyboardHandler(), new MouseHandler());
@@ -238,18 +237,6 @@ public class InputManager implements IUpdatable {
     
     public boolean isMouseInsideWindow() {
         return mouseHandler.isInsideWindow();
-    }
-    
-    public CursorType getCursorType() {
-        return cursorType;
-    }
-    
-    public InputManager setCursorType(CursorType cursorType) {
-        //FIXME move to different position, why?
-        Util.ensureNonNull(cursorType);
-        //GLFW.glfwSetInputMode(window, GLFW.GLFW_CURSOR, cursorType.getState());
-        this.cursorType = cursorType;
-        return this;
     }
     
     // Mouse delta part
