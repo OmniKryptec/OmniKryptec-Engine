@@ -167,8 +167,8 @@ public class InputManager implements IUpdatable {
         postUpdateIntern(time);
         
         updateIntern(time);
-
         updateMouseDeltas(getMousePosition(), getMouseScrollOffset());
+        
         preUpdateIntern(time);
 
     }

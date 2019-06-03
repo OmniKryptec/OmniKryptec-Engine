@@ -76,9 +76,11 @@ public class MouseHandler implements InputHandler {
     
     @Override
     public boolean preUpdate(double currentTime, KeySettings keySettings) {
+        /*
         synchronized (buttons) {
             buttonsLastTime = Arrays.copyOf(buttons, buttons.length);
         }
+        */
         return true;
     }
     
@@ -88,6 +90,7 @@ public class MouseHandler implements InputHandler {
             for (int i = 0; i < buttons.length; i++) {
                 if (buttonsLastTime[i] != buttons[i]) {
                     keySettings.updateKeys(currentTime, i, false, buttons[i]);
+                    buttonsLastTime[i] = buttons[i];
                 }
             }
         }
