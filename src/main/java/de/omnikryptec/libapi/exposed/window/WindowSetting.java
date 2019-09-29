@@ -1,7 +1,7 @@
 package de.omnikryptec.libapi.exposed.window;
 
-import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.libapi.exposed.input.CursorType;
+import de.omnikryptec.util.settings.Defaultable;
 
 public enum WindowSetting implements Defaultable {
     Width(800), Height(600), Fullscreen(false), Name("Display"), Resizeable(true), LockAspectRatio(false),

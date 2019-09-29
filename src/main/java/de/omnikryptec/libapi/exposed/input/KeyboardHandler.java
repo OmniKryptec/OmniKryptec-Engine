@@ -16,7 +16,6 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.lwjgl.glfw.GLFW;

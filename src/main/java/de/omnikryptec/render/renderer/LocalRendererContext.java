@@ -14,7 +14,6 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.IProjection;
-import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.objects.IRenderedObjectManager;
 import de.omnikryptec.render.objects.RenderedObjectManager;
 import de.omnikryptec.render.postprocessing.Postprocessor;

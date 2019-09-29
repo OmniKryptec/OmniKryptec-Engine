@@ -2,12 +2,8 @@ package de.omnikryptec.raytracer;
 
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
-import org.joml.Vector2d;
-import org.joml.Vector2dc;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
-import org.lwjgl.glfw.GLFW;
 
 import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.update.ILayer;
@@ -24,11 +20,7 @@ import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
 import de.omnikryptec.libapi.opengl.framebuffer.GLFrameBuffer;
 import de.omnikryptec.libapi.opengl.shader.GLShader;
 import de.omnikryptec.render.Camera;
-import de.omnikryptec.render.IProjection;
-import de.omnikryptec.render.batch.SimpleBatch2D;
-import de.omnikryptec.render.renderer.RendererUtil;
 import de.omnikryptec.util.math.MathUtil;
-import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.settings.keys.KeysAndButtons;

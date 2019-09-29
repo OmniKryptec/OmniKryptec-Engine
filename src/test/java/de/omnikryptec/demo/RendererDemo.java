@@ -1,17 +1,12 @@
 package de.omnikryptec.demo;
 
-import org.joml.Vector2f;
-
 import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.render.objects.SimpleSprite;
-import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.render.renderer.LocalRendererContext;
 import de.omnikryptec.render.renderer.Renderer2D;
 import de.omnikryptec.render.renderer.RendererContext;
-import de.omnikryptec.resource.TextureConfig;
-import de.omnikryptec.resource.loadervpc.TextureHelper;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 

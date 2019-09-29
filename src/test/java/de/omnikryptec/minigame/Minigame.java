@@ -1,5 +1,9 @@
 package de.omnikryptec.minigame;
 
+import java.util.Random;
+
+import org.joml.Vector2f;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.EngineLoader;
 import de.omnikryptec.core.update.ULayer;
@@ -21,9 +25,6 @@ import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
-import org.joml.Vector2f;
-
-import java.util.Random;
 
 public class Minigame extends EngineLoader {
     

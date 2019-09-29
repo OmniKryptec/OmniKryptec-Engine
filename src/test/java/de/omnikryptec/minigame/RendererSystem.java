@@ -16,7 +16,6 @@ import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.objects.Light2D;
 import de.omnikryptec.render.objects.RenderedObject;
-import de.omnikryptec.render.objects.RenderedObjectManager;
 import de.omnikryptec.render.objects.SimpleSprite;
 import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.render.renderer.LocalRendererContext;

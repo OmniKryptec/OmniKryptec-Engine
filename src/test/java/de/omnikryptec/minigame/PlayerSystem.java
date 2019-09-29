@@ -2,7 +2,6 @@ package de.omnikryptec.minigame;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
-import org.lwjgl.glfw.GLFW;
 
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.Family;
@@ -15,6 +14,7 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
 import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.math.MathUtil;
+import de.omnikryptec.util.settings.keys.KeysAndButtons;
 import de.omnikryptec.util.updater.Time;
 
 public class PlayerSystem extends ComponentSystem {
@@ -44,25 +44,25 @@ public class PlayerSystem extends ComponentSystem {
                     -plus.transform.wPosition().x(), -plus.transform.wPosition().y(), 0);
             float vy = 0;
             float vx = 0;
-            if (inputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_W)) {
+            if (inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_W)) {
                 vy += play.maxYv;
             }
-            if (inputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_S)) {
+            if (inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_S)) {
                 vy -= play.maxYv;
             }
-            if (inputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_A)) {
+            if (inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_A)) {
                 vx -= play.maxXv;
             }
-            if (inputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_D)) {
+            if (inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_D)) {
                 vx += play.maxXv;
             }
-            if (inputManager.isKeyboardKeyPressed(GLFW.GLFW_KEY_LEFT_CONTROL)) {
+            if (inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_LEFT_CONTROL)) {
                 vx /= 2;
                 vy /= 2;
             }
             mov.dx = vx;
             mov.dy = vy;
-            if (inputManager.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_1) && inputManager.isMouseInsideViewport()
+            if (inputManager.isMouseButtonPressed(KeysAndButtons.OKE_MOUSE_BUTTON_1) && inputManager.isMouseInsideViewport()
                     && again > 0.15f) {
                 again = 0;
                 Vector2f dir = MathUtil.screenToWorldspace2D(
