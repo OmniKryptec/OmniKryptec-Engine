@@ -56,11 +56,13 @@ public abstract class EngineLoader {
     
     private static EngineLoader instance = null;
     
-    @Deprecated
     public static EngineLoader instance() {
+        if (instance == null) {
+            throw new IllegalStateException("EngineLoader has not been created yet");
+        }
         return instance;
     }
-        
+    
     private IGameLoop gameLoop;
     private IWindow window;
     private GameController gameController;
@@ -70,6 +72,9 @@ public abstract class EngineLoader {
     private boolean started;
     
     public EngineLoader() {
+        if (instance != null) {
+            throw new IllegalStateException("An EngineLoader has been created already");
+        }
         instance = this;
     }
     

@@ -51,6 +51,7 @@ public class Minigame extends EngineLoader {
         windowSettings.set(WindowSetting.VSync, true);
         windowSettings.set(WindowSetting.Width, 600);
         windowSettings.set(WindowSetting.Height, 600);
+        Profiler.setEnabled(true);
     }
     
     @Override

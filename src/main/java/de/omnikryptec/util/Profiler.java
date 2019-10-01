@@ -3,6 +3,7 @@ package de.omnikryptec.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.data.FixedStack;
 import de.omnikryptec.util.math.Mathd;
 
@@ -21,6 +22,15 @@ public class Profiler {
     
     private static final Map<String, Struct> map = new HashMap<>();
     private static final FixedStack<String> h = new FixedStack<>(20);
+    private static boolean enabled = false;
+    
+    public static void setEnabled(boolean b) {
+        enabled = b;
+    }
+    
+    public static boolean isEnabled() {
+        return enabled;
+    }
     
     public static void clear() {
         map.clear();
@@ -28,6 +38,9 @@ public class Profiler {
     }
     
     private static Struct get(String id) {
+        if(!isEnabled()) {
+            return null;
+        }
         Struct s = map.get(id);
         if (s == null) {
             s = new Struct();
@@ -37,6 +50,9 @@ public class Profiler {
     }
     
     public static void begin(String id) {
+        if(!isEnabled()) {
+            return;
+        }
         Struct s = get(id);
         if (s.open) {
             throw new IllegalStateException("never ended profiling with ID " + id);
@@ -51,6 +67,9 @@ public class Profiler {
     
     //TODO insert specific data (vertex count, flush count, etc)
     public static void end() {
+        if(!isEnabled()) {
+            return;
+        }
         long time = System.nanoTime();
         String id = h.pop();
         Struct s = get(id);

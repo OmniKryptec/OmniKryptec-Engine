@@ -18,10 +18,10 @@ package de.omnikryptec.ecs;
 
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
-import de.omnikryptec.ecs.system.GroupParallelComponentSystem;
+import de.omnikryptec.ecs.system.IterativeComponentSystem;
 import de.omnikryptec.util.updater.Time;
 
-public class DoSomethingSystem extends GroupParallelComponentSystem {
+public class DoSomethingSystem extends IterativeComponentSystem {
     
     protected DoSomethingSystem() {
         super(Family.of(ComponentType.of(SomeDataComponent.class)));
