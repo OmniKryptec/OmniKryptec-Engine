@@ -27,12 +27,12 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.ecs.impl.ECSManager;
-import de.omnikryptec.ecs.system.ComponentSystem;
+import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.util.UnsupportedOperationException;
 
 /**
  * An interface describing a general Entity Component System (ECS) consisting of
- * {@link Entity}s, {@link ComponentSystem}s, {@link Component}s, and atleast
+ * {@link Entity}s, {@link AbstractComponentSystem}s, {@link Component}s, and atleast
  * one Manager, an {@link IECSManager}.<br>
  * <br>
  * In an ECS, Entities usually are only containers of Components. Components
@@ -74,18 +74,18 @@ public interface IECSManager extends IUpdatable {
     void removeEntity(Entity entity);
     
     /**
-     * Adds a {@link ComponentSystem} to this {@link IECSManager}.
+     * Adds a {@link AbstractComponentSystem} to this {@link IECSManager}.
      *
      * @param system the system to add
      */
-    void addSystem(ComponentSystem system);
+    void addSystem(AbstractComponentSystem system);
     
     /**
-     * Removes a {@link ComponentSystem} from this {@link IECSManager}.
+     * Removes a {@link AbstractComponentSystem} from this {@link IECSManager}.
      *
      * @param system the system to remove
      */
-    void removeSystem(ComponentSystem system);
+    void removeSystem(AbstractComponentSystem system);
     
     /**
      * Gets all the entities matching a certain {@link Family}.

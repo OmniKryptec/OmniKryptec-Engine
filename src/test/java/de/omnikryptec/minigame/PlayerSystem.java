@@ -8,7 +8,7 @@ import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
-import de.omnikryptec.ecs.system.ComponentSystem;
+import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
@@ -17,7 +17,7 @@ import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.settings.keys.KeysAndButtons;
 import de.omnikryptec.util.updater.Time;
 
-public class PlayerSystem extends ComponentSystem {
+public class PlayerSystem extends AbstractComponentSystem {
     
     public PlayerSystem() {
         super(Family.of(ComponentType.of(MovementComponent.class), ComponentType.of(PlayerComponent.class),

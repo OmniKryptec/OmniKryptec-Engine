@@ -28,6 +28,7 @@ import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.util.ExecutorsUtil;
 import de.omnikryptec.util.updater.Time;
 
+@Deprecated
 public abstract class IndividualParallelComponentSystem extends ParallelComponentSystem {
     
     public IndividualParallelComponentSystem(final BitSet required) {

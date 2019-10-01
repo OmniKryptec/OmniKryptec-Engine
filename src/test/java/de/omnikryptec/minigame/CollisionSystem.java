@@ -7,11 +7,11 @@ import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
-import de.omnikryptec.ecs.system.ComponentSystem;
+import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.updater.Time;
 
-public class CollisionSystem extends ComponentSystem {
+public class CollisionSystem extends AbstractComponentSystem {
     
     protected CollisionSystem() {
         super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(CollisionComponent.class)));

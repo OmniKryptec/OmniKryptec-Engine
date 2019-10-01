@@ -24,6 +24,7 @@ import de.omnikryptec.core.loop.DefaultGameLoop;
 import de.omnikryptec.core.loop.IGameLoop;
 import de.omnikryptec.core.scene.GameController;
 import de.omnikryptec.core.scene.UpdateController;
+import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
@@ -59,7 +60,7 @@ public abstract class EngineLoader {
     public static EngineLoader instance() {
         return instance;
     }
-    
+        
     private IGameLoop gameLoop;
     private IWindow window;
     private GameController gameController;
@@ -148,7 +149,7 @@ public abstract class EngineLoader {
             this.window.setVisible(true);
         }
         if (this.gameLoop != null) {
-            this.gameLoop.init(this);
+            this.gameLoop.setUpdateController(getUpdateController());
             if ((boolean) loaderSettings.get(LoaderSetting.START_GAME_LOOP_AFTER_INIT)) {
                 this.gameLoop.startLoop();
                 if ((boolean) loaderSettings.get(LoaderSetting.SHUTDOWN_ON_LOOP_EXIT)) {
@@ -223,7 +224,7 @@ public abstract class EngineLoader {
             this.gameLoop.stopLoop();
         }
         this.gameLoop = newloop;
-        this.gameLoop.init(this);
+        this.gameLoop.setUpdateController(getUpdateController());
         if (running) {
             this.gameLoop.startLoop();
         }

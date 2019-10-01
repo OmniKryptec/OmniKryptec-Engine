@@ -31,6 +31,7 @@ import de.omnikryptec.util.ExecutorsUtil;
 import de.omnikryptec.util.math.Mathd;
 import de.omnikryptec.util.updater.Time;
 
+@Deprecated
 public abstract class GroupParallelComponentSystem extends ParallelComponentSystem {
     
     public GroupParallelComponentSystem(final BitSet required) {

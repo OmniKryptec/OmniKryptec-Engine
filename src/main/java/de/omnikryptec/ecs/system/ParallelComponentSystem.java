@@ -25,7 +25,8 @@ import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.util.ExecutorsUtil;
 import de.omnikryptec.util.updater.Time;
 
-public abstract class ParallelComponentSystem extends ComponentSystem implements IndividualUpdater {
+@Deprecated
+public abstract class ParallelComponentSystem extends AbstractComponentSystem implements IndividualUpdater {
     
     private final ExecutorService executorService;
     private final int size;

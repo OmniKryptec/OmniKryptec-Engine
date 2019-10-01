@@ -37,7 +37,7 @@ import de.omnikryptec.util.settings.Settings;
 
 public final class LibAPIManager {
     
-    public static final EventBus LIB_API_EVENT_BUS = new EventBus(false);
+    public static final EventBus ENGINE_EVENTBUS = new EventBus(false);
     private static final Collection<ToughRunnable> shutdownHooks = new ArrayList<>();
     private static final Logger logger = Logger.getLogger(LibAPIManager.class);
     private static LibAPIManager instance;

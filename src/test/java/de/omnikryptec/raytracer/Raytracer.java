@@ -6,7 +6,6 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import de.omnikryptec.core.EngineLoader;
-import de.omnikryptec.core.update.ILayer;
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.input.InputManager;
@@ -65,12 +64,6 @@ public class Raytracer extends EngineLoader implements IUpdatable {
     private UniformVec3 eye, ray00, ray01, ray10, ray11;
     
     private InputManager mgr;
-    
-    @Override
-    public void init(ILayer layer) {
-        mgr.init(layer);
-        
-    }
     
     private void initUniforms() {
         eye = computeShader.getUniform("eye");

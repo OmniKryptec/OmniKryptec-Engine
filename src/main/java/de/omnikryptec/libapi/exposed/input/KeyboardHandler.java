@@ -22,6 +22,7 @@ import org.lwjgl.glfw.GLFW;
 
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.event.EventSubscription;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.window.InputEvent;
 import de.omnikryptec.util.settings.KeySettings;
 
@@ -35,19 +36,21 @@ public class KeyboardHandler implements InputHandler {
     // Temporary variables
     private byte[] keysLastTime = new byte[keys.length];
     
+    public KeyboardHandler() {
+        LibAPIManager.ENGINE_EVENTBUS.register(this);
+    }
+    
     @EventSubscription
     public void onKeyEvent(InputEvent.KeyEvent ev) {
         this.keys[ev.key] = (byte) ev.action;
     }
     
     @Override
-    public boolean init(EventBus bus) {
-        bus.register(this);
+    public boolean init() {
         return true;
     }
     
-    public boolean deinit(EventBus bus) {
-        bus.unregister(this);
+    public boolean deinit() {
         return true;
     }
     

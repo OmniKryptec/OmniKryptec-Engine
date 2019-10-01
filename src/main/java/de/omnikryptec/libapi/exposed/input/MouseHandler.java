@@ -39,15 +39,17 @@ public class MouseHandler implements InputHandler {
     // Temporary variables
     private byte[] buttonsLastTime = new byte[buttons.length];
     
+    public MouseHandler() {
+        LibAPIManager.ENGINE_EVENTBUS.register(this);
+    }
+    
     @Override
-    public boolean init(EventBus bus) {
-        bus.register(this);
+    public boolean init() {
         return true;
     }
     
     @Override
-    public boolean deinit(EventBus bus) {
-        bus.unregister(this);
+    public boolean deinit() {
         return true;
     }
     

@@ -3,15 +3,13 @@ package de.omnikryptec.minigame;
 import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
 
-import de.omnikryptec.core.update.ProvidingLayer;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityListener;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
-import de.omnikryptec.ecs.system.ComponentSystem;
-import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.objects.Light2D;
@@ -26,7 +24,7 @@ import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.updater.Time;
 
-public class RendererSystem extends ComponentSystem implements EntityListener {
+public class RendererSystem extends AbstractComponentSystem implements EntityListener {
     
     public static Camera CAMERA = new Camera(new Matrix4f().ortho2D(-400, 400, -400, 400));
     
@@ -39,7 +37,6 @@ public class RendererSystem extends ComponentSystem implements EntityListener {
     public RendererSystem() {
         super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(RenderComponent.class)));
         this.context = new RendererContext();
-        this.context.init(new ProvidingLayer(LibAPIManager.LIB_API_EVENT_BUS));
         this.renderer = this.context.createLocal();
         this.renderer.addRenderer(new Renderer2D());
         this.renderer.setMainProjection(CAMERA);

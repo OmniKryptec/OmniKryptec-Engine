@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import de.omnikryptec.core.update.ILayer;
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
@@ -49,6 +48,7 @@ public class RendererContext implements IUpdatable {
     public RendererContext() {
         this.renderApi = LibAPIManager.instance().getGLFW().getRenderAPI();
         this.subContexts = new ArrayList<>();
+        LibAPIManager.ENGINE_EVENTBUS.register(this);
     }
     
     public RenderAPI getRenderAPI() {
@@ -72,16 +72,6 @@ public class RendererContext implements IUpdatable {
         for (LocalRendererContext c : subContexts) {
             c.screenBufferResizedEventDelegate(ev);
         }
-    }
-    
-    @Override
-    public void init(ILayer layer) {
-        layer.getEventBus().register(this);
-    }
-    
-    @Override
-    public void deinit(ILayer layer) {
-        layer.getEventBus().unregister(this);
     }
     
     @Override

@@ -24,13 +24,13 @@ import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.updater.Time;
 
-public abstract class ComponentSystem {
+public abstract class AbstractComponentSystem {
     
     protected List<Entity> entities;
     protected boolean enabled = true;
     private final BitSet family;
     
-    protected ComponentSystem(final BitSet required) {
+    protected AbstractComponentSystem(final BitSet required) {
         Util.ensureNonNull(required, "BitSet must not be null (but can be empty)");
         this.family = required;
     }

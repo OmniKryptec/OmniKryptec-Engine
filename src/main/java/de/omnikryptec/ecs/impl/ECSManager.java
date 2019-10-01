@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityListener;
 import de.omnikryptec.ecs.IECSManager;
-import de.omnikryptec.ecs.system.ComponentSystem;
+import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.util.updater.Time;
 
 /**
@@ -102,7 +102,7 @@ public class ECSManager implements IECSManager {
     }
     
     @Override
-    public void addSystem(final ComponentSystem system) {
+    public void addSystem(final AbstractComponentSystem system) {
         if (this.updating) {
             this.systemTasks.add(new ECSSystemTask(system, ECSTaskType.ADD));
         } else {
@@ -110,7 +110,7 @@ public class ECSManager implements IECSManager {
         }
     }
     
-    private void addSysInt(final ComponentSystem system) {
+    private void addSysInt(final AbstractComponentSystem system) {
         this.systemManager.addSystem(system);
         if (!system.getFamily().isEmpty()) {
             this.entityManager.addFilter(system.getFamily());
@@ -119,7 +119,7 @@ public class ECSManager implements IECSManager {
     }
     
     @Override
-    public void removeSystem(final ComponentSystem system) {
+    public void removeSystem(final AbstractComponentSystem system) {
         if (this.updating) {
             this.systemTasks.add(new ECSSystemTask(system, ECSTaskType.REMOVE));
         } else {
@@ -127,7 +127,7 @@ public class ECSManager implements IECSManager {
         }
     }
     
-    private void remSysInt(final ComponentSystem system) {
+    private void remSysInt(final AbstractComponentSystem system) {
         this.systemManager.removeSystem(system);
         if (!system.getFamily().isEmpty()) {
             this.entityManager.removeFilter(system.getFamily());
@@ -152,8 +152,8 @@ public class ECSManager implements IECSManager {
     @Override
     public void update(final Time time) {
         this.updating = true;
-        final Collection<ComponentSystem> systems = this.systemManager.getAll();
-        for (final ComponentSystem system : systems) {
+        final Collection<AbstractComponentSystem> systems = this.systemManager.getAll();
+        for (final AbstractComponentSystem system : systems) {
             if (system.isEnabled()) {
                 system.update(this, time);
                 runTasks();
@@ -227,10 +227,10 @@ public class ECSManager implements IECSManager {
     
     private static class ECSSystemTask {
         
-        ComponentSystem system;
+        AbstractComponentSystem system;
         ECSTaskType type;
         
-        private ECSSystemTask(final ComponentSystem sys, final ECSTaskType t) {
+        private ECSSystemTask(final AbstractComponentSystem sys, final ECSTaskType t) {
             this.system = sys;
             this.type = t;
         }

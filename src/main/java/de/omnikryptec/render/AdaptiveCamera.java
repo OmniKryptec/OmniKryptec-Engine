@@ -20,7 +20,7 @@ public class AdaptiveCamera extends Camera {
         this.delegate = delegate;
         RenderAPI rapi = LibAPIManager.instance().getGLFW().getRenderAPI();
         setProjection(delegate.createMatrix(rapi.getSurface().getWidth(), rapi.getSurface().getHeight()));
-        LibAPIManager.LIB_API_EVENT_BUS.register(this);
+        LibAPIManager.ENGINE_EVENTBUS.register(this);
     }
     
     @EventSubscription

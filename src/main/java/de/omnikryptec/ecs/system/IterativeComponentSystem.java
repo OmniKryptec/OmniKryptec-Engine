@@ -22,7 +22,7 @@ import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.util.updater.Time;
 
-public abstract class IterativeComponentSystem extends ComponentSystem implements IndividualUpdater {
+public abstract class IterativeComponentSystem extends AbstractComponentSystem implements IndividualUpdater {
     
     protected IterativeComponentSystem(final BitSet required) {
         super(required);

@@ -18,10 +18,10 @@ package de.omnikryptec.ecs;
 
 import java.util.BitSet;
 
-import de.omnikryptec.ecs.system.ComponentSystem;
+import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.util.updater.Time;
 
-public class AnotherSystem extends ComponentSystem {
+public class AnotherSystem extends AbstractComponentSystem {
     
     protected AnotherSystem() {
         super(new BitSet());

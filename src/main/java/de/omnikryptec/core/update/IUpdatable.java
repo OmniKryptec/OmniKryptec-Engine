@@ -26,11 +26,4 @@ public interface IUpdatable {
     
     default void update(Time time) {
     }
-    
-    default void init(ILayer layer) {
-    }
-    
-    default void deinit(ILayer layer) {
-    }
-    
 }

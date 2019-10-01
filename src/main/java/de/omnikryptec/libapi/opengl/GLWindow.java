@@ -18,7 +18,7 @@ import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
 public class GLWindow implements IWindow {
-    private final EventBus windowBus = LibAPIManager.LIB_API_EVENT_BUS;
+    private final EventBus windowBus = LibAPIManager.ENGINE_EVENTBUS;
     
     private final long windowId;
     private final GLScreenBuffer screenBuffer;

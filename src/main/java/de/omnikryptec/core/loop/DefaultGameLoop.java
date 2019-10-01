@@ -36,8 +36,8 @@ public class DefaultGameLoop implements IGameLoop {
     private UpdateController updateController;
     
     @Override
-    public void init(final EngineLoader loader) {
-        this.updateController = loader.getUpdateController();
+    public void setUpdateController(final UpdateController loader) {
+        this.updateController = loader;
     }
     
     @Override

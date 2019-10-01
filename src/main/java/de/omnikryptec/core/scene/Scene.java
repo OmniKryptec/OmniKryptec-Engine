@@ -16,9 +16,7 @@
 
 package de.omnikryptec.core.scene;
 
-import de.omnikryptec.core.update.ILayer;
 import de.omnikryptec.core.update.IUpdatable;
-import de.omnikryptec.core.update.ProvidingLayer;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.updater.Time;
 
@@ -30,29 +28,17 @@ import de.omnikryptec.util.updater.Time;
  */
 public class Scene {
 
-    private ILayer providingLayer;
     //Rendering and Mainthread stuff
     private IUpdatable updateableSync;
     //Might happen on another Thread
     private IUpdatable updateableAsync;
+
     
     public Scene() {
-        this(new ProvidingLayer(LibAPIManager.LIB_API_EVENT_BUS));
+        
     }
     
-    public Scene(ILayer providingLayer) {
-        setProvidingLayer(providingLayer);
-    }
-    
-    public void setProvidingLayer(ILayer layer) {
-        if (this.providingLayer != null) {
-            deinit(providingLayer);
-        }
-        this.providingLayer = layer;
-        if (this.providingLayer != null) {
-            init(providingLayer);
-        }
-    }
+
     
     /**
      * A simple method to add a synchronized {@link IUpdatable}. A more
@@ -63,23 +49,11 @@ public class Scene {
      * @see #createBuilder()
      */
     public void setUpdateableSync(final IUpdatable updt) {
-        if (hasUpdateableSync()) {
-            this.updateableSync.deinit(providingLayer);
-        }
         this.updateableSync = updt;
-        if (hasUpdateableSync()) {
-            this.updateableSync.init(providingLayer);
-        }
     }
     
     public void setUpdateableAsync(IUpdatable updt) {
-        if (hasUpdateableAsync()) {
-            this.updateableAsync.deinit(providingLayer);
-        }
         this.updateableAsync = updt;
-        if (hasUpdateableAsync()) {
-            this.updateableAsync.init(providingLayer);
-        }
     }
     
     public IUpdatable getUpdateableSync() {
@@ -109,22 +83,5 @@ public class Scene {
             this.updateableAsync.update(time);
         }
     }
-    
-    private void init(ILayer layer) {
-        if (hasUpdateableSync()) {
-            this.updateableSync.init(layer);
-        }
-        if (hasUpdateableAsync()) {
-            this.updateableAsync.init(layer);
-        }
-    }
-    
-    private void deinit(ILayer layer) {
-        if (hasUpdateableSync()) {
-            this.updateableSync.deinit(layer);
-        }
-        if (hasUpdateableAsync()) {
-            this.updateableAsync.deinit(layer);
-        }
-    }
+
 }

@@ -21,7 +21,6 @@ import org.joml.Vector2dc;
 import org.joml.Vector4d;
 import org.joml.Vector4dc;
 
-import de.omnikryptec.core.update.ILayer;
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.util.settings.KeySettings;
@@ -69,29 +68,7 @@ public class InputManager implements IUpdatable {
     public MouseHandler getMouseHandler() {
         return mouseHandler;
     }
-    
-    protected boolean init(EventBus bus) {
-        boolean good = true;
-        if (!keyboardHandler.init(bus)) {
-            good = false;
-        }
-        if (!mouseHandler.init(bus)) {
-            good = false;
-        }
-        return good;
-    }
-    
-    protected boolean deinit(EventBus bus) {
-        boolean good = true;
-        if (!keyboardHandler.deinit(bus)) {
-            good = false;
-        }
-        if (!mouseHandler.deinit(bus)) {
-            good = false;
-        }
-        return good;
-    }
-    
+
     protected boolean preUpdateIntern(Time time) {
         boolean good = true;
         if (longButtonPressEnabled) {
@@ -170,17 +147,7 @@ public class InputManager implements IUpdatable {
         preUpdateIntern(time);
 
     }
-    
-    @Override
-    public void init(ILayer layer) {
-        init(layer.getEventBus());
-    }
-    
-    @Override
-    public void deinit(ILayer layer) {
-        deinit(layer.getEventBus());
-    }
-    
+
     public boolean isLongButtonPressEnabled() {
         return longButtonPressEnabled;
     }

@@ -48,7 +48,7 @@ public class JoystickHandler implements InputHandler {
     
     public JoystickHandler(int joystick) {
         this.joystick = joystick;
-        init(null);
+        init();
     }
     
     public static synchronized String getName(int joystick) {
@@ -151,7 +151,7 @@ public class JoystickHandler implements InputHandler {
     }
     
     @Override
-    public synchronized boolean init(EventBus bus) {
+    public synchronized boolean init() {
         if (!joystickHandlers.contains(this)) {
             joystickHandlers.add(this);
         }
@@ -228,7 +228,7 @@ public class JoystickHandler implements InputHandler {
     }
 
     @Override
-    public boolean deinit(EventBus bus) {
+    public boolean deinit() {
         
         return false;
     }
