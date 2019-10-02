@@ -132,11 +132,6 @@ public class InputManager implements IUpdatable {
     }
     
     @Override
-    public boolean passive() {
-        return false;
-    }
-    
-    @Override
     public void update(Time time) {
         postUpdateIntern(time);
         

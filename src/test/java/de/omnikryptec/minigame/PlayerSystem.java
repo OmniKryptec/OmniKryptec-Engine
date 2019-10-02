@@ -3,6 +3,7 @@ package de.omnikryptec.minigame;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 
+import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
@@ -24,7 +25,7 @@ public class PlayerSystem extends AbstractComponentSystem {
                 ComponentType.of(PositionComponent.class)));
     }
     
-    private InputManager inputManager = Minigame.INPUT;
+    private InputManager inputManager = Omnikryptec.getInput();
     
     private ComponentMapper<MovementComponent> movMapper = new ComponentMapper<>(MovementComponent.class);
     private ComponentMapper<PlayerComponent> playMapper = new ComponentMapper<>(PlayerComponent.class);
@@ -72,7 +73,7 @@ public class PlayerSystem extends AbstractComponentSystem {
                 dir.add(-plus.transform.wPosition().x(), -plus.transform.wPosition().y());
                 dir.normalize(200);
                 dir.add(mov.dx, mov.dy);
-                Minigame.BUS.post(new ShootEvent(plus.transform.wPosition().x() + play.shOffsetX,
+                Omnikryptec.getEventBus().post(new ShootEvent(plus.transform.wPosition().x() + play.shOffsetX,
                         plus.transform.wPosition().y() + play.shOffsetY, dir, 1000, Projectile.Bomb));
             }
         }

@@ -29,7 +29,7 @@ public class DefaultGameLoop implements IGameLoop {
     private Game game;
     
     @Override
-    public void setUpdateController(final Game game) {
+    public void setGame(final Game game) {
         this.game = game;
     }
     
@@ -58,6 +58,7 @@ public class DefaultGameLoop implements IGameLoop {
         try {
             this.game.getWindowUpdater().resetDeltaTime();
             while (!shouldStop()) {
+                //TODO that number is hardcoded, maybe move the whole updater?
                 this.game.getWindowUpdater().update(144);
                 Time time = this.game.getWindowUpdater().asTime();
                 game.updateGame(time);

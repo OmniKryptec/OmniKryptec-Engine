@@ -78,11 +78,5 @@ public class SmoothFloat implements IUpdatable {
     public String toString() {
         return "Value: " + this.actual + " Target: " + this.target + " Agility: " + this.agility;
     }
-
-    @Override
-    public boolean passive() {
-        
-        return false;
-    }
     
 }

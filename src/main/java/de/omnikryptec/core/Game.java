@@ -65,10 +65,14 @@ public class Game {
     public WindowUpdater getWindowUpdater() {
         return windowUpdater;
     }
+
+    public void setDefaultRenderingEnabled(boolean b) {
+        this.enableRenderContext = b;
+    }
     
-//    public void addScene(SceneNew scene) {
-//        this.scenes.add(scene);
-//    }
+    public boolean getDefaultRenderingEnabled() {
+        return this.enableRenderContext;
+    }
     
     public void removeScene(Scene scene) {
         this.scenes.remove(scene);

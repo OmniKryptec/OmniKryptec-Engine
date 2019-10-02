@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
@@ -16,7 +17,7 @@ import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
-public class RendererContext {
+public class RendererContext implements IUpdatable {
     
     public static interface EnvironmentKey {
     }
@@ -39,7 +40,6 @@ public class RendererContext {
     private static final Comparator<LocalRendererContext> LOCAL_CONTEXT_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority()
             - e1.priority();
     private static final RenderState DEFAULT_SCREENWRITER_STATE = RenderState.of();
-    
     
     private RenderAPI renderApi;
     private List<LocalRendererContext> subContexts;
@@ -83,6 +83,12 @@ public class RendererContext {
         renderApi.getCurrentFrameBuffer().clearAll();
         renderApi.applyRenderState(DEFAULT_SCREENWRITER_STATE);
         RendererUtil.renderDirect(screen);
+    }
+    
+    @Deprecated
+    @Override
+    public void update(Time time) {
+        renderComplete(time);
     }
     
     void notifyPriorityChanged() {

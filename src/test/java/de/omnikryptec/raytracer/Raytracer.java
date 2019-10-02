@@ -45,7 +45,7 @@ public class Raytracer extends Omnikryptec implements Renderer {
     
     @Override
     protected void onInitialized() {
-        getResourceManager().instantLoad(false, false, "intern:/de/pcfreak9000/raytracer/");
+        getResourceManager().load(false, false, "intern:/de/pcfreak9000/raytracer/");
         mgr = getGame().getInput();
         Scene s = getGame().createNewScene();
         s.getRendering().addRenderer(this);

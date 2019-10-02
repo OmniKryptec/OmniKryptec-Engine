@@ -49,6 +49,7 @@ public class UpdateableFactory {
         return new InputManager(keySettings);
     }
     
+    @Deprecated
     public static RendererContext createRendererContext() {
         return new RendererContext();
     }
@@ -65,11 +66,6 @@ public class UpdateableFactory {
                     color.randomizeRGB();
                 }
                 LibAPIManager.instance().getGLFW().getRenderAPI().getCurrentFrameBuffer().clearColor(color);
-            }
-            
-            @Override
-            public boolean passive() {
-                return false;
             }
         };
     }

@@ -16,7 +16,7 @@ public class Scene {
     Scene(LocalRendererContext context, Game game, int prio) {
         this.renderer = context;
         this.game = game;
-        this.priority = prio;
+        setPriority(prio);
     }
     
     public void updateScene(Time time) {
@@ -44,6 +44,7 @@ public class Scene {
     public void setPriority(int i) {
         this.priority = i;
         game.notifyPriorityChange();
+        this.renderer.setPriority(priority);
     }
     
     public int priority() {

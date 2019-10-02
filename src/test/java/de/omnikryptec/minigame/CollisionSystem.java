@@ -2,6 +2,7 @@ package de.omnikryptec.minigame;
 
 import org.joml.Intersectionf;
 
+import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
@@ -38,7 +39,7 @@ public class CollisionSystem extends AbstractComponentSystem {
                         pos2.transform.wPosition().y(), 0, pos2.transform.wPosition().x() + hit2.w,
                         pos2.transform.wPosition().y() + hit2.h, 0);
                 if (intersect) {
-                    Minigame.BUS.post(new CollisionEvent(entity, e));
+                    Omnikryptec.getEventBus().post(new CollisionEvent(entity, e));
                 }
             }
         }

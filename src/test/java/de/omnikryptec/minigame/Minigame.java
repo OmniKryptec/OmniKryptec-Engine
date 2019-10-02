@@ -7,18 +7,14 @@ import org.joml.Vector2f;
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.core.Scene;
-import de.omnikryptec.core.update.ULayer;
 import de.omnikryptec.core.update.UpdateableFactory;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
-import de.omnikryptec.event.EventBus;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
-import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
-import de.omnikryptec.resource.loadervpc.ResourceProvider;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.data.Color;
@@ -29,12 +25,7 @@ import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 
 public class Minigame extends Omnikryptec {
-    
-    public static final EventBus BUS = new EventBus(false);
-    
-    public static InputManager INPUT;
-    
-    public static ResourceProvider RESPROVIDER;
+            
     private IECSManager mgr;
     private ComponentMapper<PositionComponent> mapper = new ComponentMapper<>(PositionComponent.class);
     private ComponentMapper<RenderComponent> rend = new ComponentMapper<>(RenderComponent.class);
@@ -59,18 +50,11 @@ public class Minigame extends Omnikryptec {
     
     @Override
     protected void onInitialized() {
-        getResourceManager().stage(new AdvancedFile("intern:/de/omnikryptec/resources/"));
-        getResourceManager().processStaged(false, true);
-        RESPROVIDER = getResourceProvider();
-        //getUpdateController().setSyncUpdateTimeTransform((t) -> new Time(t.opCount, t.ops, t.current, t.delta / 10));
-        BUS.register(this);
+        getResourceManager().load(false, true, new AdvancedFile("intern:/de/omnikryptec/resources/"));
+        getEventBus().register(this);
         mgr = UpdateableFactory.createDefaultIECSManager();
-        ULayer layer = new ULayer();
-        INPUT = UpdateableFactory.createInputManagerSimple();
-        layer.addUpdatable(INPUT);
-        layer.addUpdatable(mgr);
         Scene sn = getGame().createNewScene();
-        sn.setGameLogic(layer);
+        sn.setGameLogic(mgr);
         mgr.addSystem(new CollisionSystem());
         mgr.addSystem(new PlayerSystem());
         mgr.addSystem(new RendererSystem(sn.getRendering()));
@@ -144,7 +128,7 @@ public class Minigame extends Omnikryptec {
     @EventSubscription
     public void rangemax(RangeMaxedEvent ev) {
         if (ev.entity.flags == 20) {
-            BUS.post(new BombExplodeEvent(ev.entity));
+            getEventBus().post(new BombExplodeEvent(ev.entity));
         }
     }
     
@@ -152,7 +136,7 @@ public class Minigame extends Omnikryptec {
     public void bombExplode(BombExplodeEvent ev) {
         for (int i = 0; i < 100; i++) {
             Vector2f r = MathUtil.randomDirection2D(random, 0, 2 * Mathf.PI, new Vector2f()).mul(500);
-            BUS.post(new ShootEvent(mapper.get(ev.bomb).transform.wPosition().x(),
+            getEventBus().post(new ShootEvent(mapper.get(ev.bomb).transform.wPosition().x(),
                     mapper.get(ev.bomb).transform.wPosition().y(), r, 150, Projectile.Normal));
         }
     }
@@ -165,7 +149,7 @@ public class Minigame extends Omnikryptec {
         if (bomb != null && hit != null) {
             mgr.removeEntity(bomb);
             downOrRemove(hit);
-            BUS.post(new BombExplodeEvent(bomb));
+            getEventBus().post(new BombExplodeEvent(bomb));
         }
         if (d != null && hit != null) {
             downOrRemove(hit);
@@ -184,7 +168,7 @@ public class Minigame extends Omnikryptec {
             mgr.removeEntity(hit);
         }
         if (f >= 0.0247f) {
-            BUS.post(new BombExplodeEvent(hit));
+            getEventBus().post(new BombExplodeEvent(hit));
         }
     }
     

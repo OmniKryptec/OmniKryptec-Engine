@@ -79,10 +79,4 @@ public class SmoothDouble implements IUpdatable {
         return "Value: " + this.actual + " Target: " + this.target + " Agility: " + this.agility;
     }
 
-    @Override
-    public boolean passive() {
-        
-        return false;
-    }
-    
 }

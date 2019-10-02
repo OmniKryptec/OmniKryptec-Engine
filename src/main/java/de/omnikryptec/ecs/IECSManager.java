@@ -148,9 +148,4 @@ public interface IECSManager extends IUpdatable {
      */
     void removeEntityListener(@Nullable BitSet family, EntityListener listener) throws UnsupportedOperationException;
     
-    @Override
-    default boolean passive() {
-        return false;
-    }
-    
 }

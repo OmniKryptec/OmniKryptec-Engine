@@ -20,8 +20,10 @@ import javax.annotation.Nonnull;
 
 import com.google.errorprone.annotations.ForOverride;
 
+import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
+import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
@@ -58,12 +60,34 @@ public abstract class Omnikryptec {
         return instance;
     }
     
+    public static EventBus getEventBus() {
+        return instance().getGame().getEventBus();
+    }
+    
+    public static InputManager getInput() {
+        return instance().getGame().getInput();
+    }
+    
+    public static Game getGameS() {
+        return instance().getGame();
+    }
+    
+    public static TextureHelper getTexturesS() {
+        return instance().getTextures();
+    }
+    
+    public static ResourceManager getResourceManagerS() {
+        return instance().getResourceManager();
+    }
+    
+    public static ResourceProvider getResourceProviderS() {
+        return instance().getResourceProvider();
+    }
+    
     private IWindow window;    
     
     private IGameLoop gameLoop;
     private Game game;
-    //private GameController gameController;
-    //private UpdateController updateController;
     
     private ResourceManager resources;
     private TextureHelper textures;
@@ -153,7 +177,7 @@ public abstract class Omnikryptec {
             this.window.setVisible(true);
         }
         if (this.gameLoop != null) {
-            this.gameLoop.setUpdateController(getGame());
+            this.gameLoop.setGame(getGame());
             if ((boolean) loaderSettings.get(LoaderSetting.START_GAME_LOOP_AFTER_INIT)) {
                 this.gameLoop.startLoop();
                 if ((boolean) loaderSettings.get(LoaderSetting.SHUTDOWN_ON_LOOP_EXIT)) {
@@ -170,7 +194,7 @@ public abstract class Omnikryptec {
             this.gameLoop.stopLoop();
         }
         this.gameLoop = newloop;
-        this.gameLoop.setUpdateController(getGame());
+        this.gameLoop.setGame(getGame());
         if (running) {
             this.gameLoop.startLoop();
         }

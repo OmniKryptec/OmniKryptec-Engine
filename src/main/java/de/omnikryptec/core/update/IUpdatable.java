@@ -18,12 +18,9 @@ package de.omnikryptec.core.update;
 
 import de.omnikryptec.util.updater.Time;
 
+@FunctionalInterface
 public interface IUpdatable {
     
-    default boolean passive() {
-        return false;
-    }
+    void update(Time time);
     
-    default void update(Time time) {
-    }
 }

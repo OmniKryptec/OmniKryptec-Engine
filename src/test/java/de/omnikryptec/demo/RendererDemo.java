@@ -29,7 +29,7 @@ public class RendererDemo extends Omnikryptec{
         scene.getRendering().addRenderer(new Renderer2D());
         
         //Load the texture and use the TextureHelper to make stuff easier
-        getResourceManager().instantLoad(false, true, "intern:/de/omnikryptec/resources/jd.png");
+        getResourceManager().load(false, true, "intern:/de/omnikryptec/resources/jd.png");
         
         //Create a sprite and set some of its properties
         SimpleSprite sprite = new SimpleSprite();

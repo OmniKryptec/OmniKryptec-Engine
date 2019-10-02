@@ -32,11 +32,6 @@ public class UContainer implements IUpdatable {
     }
     
     @Override
-    public boolean passive() {
-        return false;
-    }
-    
-    @Override
     public void update(Time time) {
         for (IUpdatable layer : layers) {
             layer.update(time);

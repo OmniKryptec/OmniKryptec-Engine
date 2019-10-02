@@ -96,11 +96,11 @@ public class ResourceManager {
         new Processor(override, flat).processStaged();
     }
     
-    public void instantLoad(final boolean override, final boolean flat, final String file) {
-        this.instantLoad(override, flat, new AdvancedFile(file));
+    public void load(final boolean override, final boolean flat, final String file) {
+        this.load(override, flat, new AdvancedFile(file));
     }
     
-    public void instantLoad(final boolean override, final boolean flat, final AdvancedFile file) {
+    public void load(final boolean override, final boolean flat, final AdvancedFile file) {
         new Processor(override, flat).loadSimple(file);
     }
     

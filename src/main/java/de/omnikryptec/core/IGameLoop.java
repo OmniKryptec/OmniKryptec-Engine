@@ -18,7 +18,7 @@ package de.omnikryptec.core;
 
 public interface IGameLoop {
     
-    void setUpdateController(final Game game);
+    void setGame(final Game game);
     
     void startLoop();
     

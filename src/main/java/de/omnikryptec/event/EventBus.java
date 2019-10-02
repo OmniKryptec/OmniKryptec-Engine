@@ -259,10 +259,4 @@ public class EventBus implements IUpdatable, IEventListener {
         this.receiveConsumed = b;
     }
     
-    @Override
-    public boolean passive() {
-        
-        return false;
-    }
-    
 }

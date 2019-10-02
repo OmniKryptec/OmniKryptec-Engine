@@ -23,36 +23,22 @@ import de.omnikryptec.util.Util;
 import de.omnikryptec.util.updater.Time;
 
 public class ULayer implements IUpdatable {
-            
+    
     private Collection<IUpdatable> updatablesActive;
-    private Collection<IUpdatable> updatablesPassive;
     
     public ULayer() {
         this.updatablesActive = new ArrayList<>();
-        this.updatablesPassive = new ArrayList<>();
     }
     
     public void addUpdatable(IUpdatable updatable) {
         Util.ensureNonNull(updatable);
-        if (updatable.passive()) {
-            updatablesPassive.add(updatable);
-        } else {
-            updatablesActive.add(updatable);
-        }
+        updatablesActive.add(updatable);
+        
     }
     
     public void removeUpdatable(IUpdatable updatable) {
         Util.ensureNonNull(updatable);
-        if (updatable.passive()) {
-            updatablesPassive.remove(updatable);
-        } else {
-            updatablesActive.remove(updatable);
-        }
-    }
-    
-    @Override
-    public boolean passive() {
-        return false;
+        updatablesActive.remove(updatable);
     }
     
     @Override

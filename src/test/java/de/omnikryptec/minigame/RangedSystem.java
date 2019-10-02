@@ -1,5 +1,6 @@
 package de.omnikryptec.minigame;
 
+import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
@@ -26,7 +27,7 @@ public class RangedSystem extends IterativeComponentSystem {
         if (Mathf.square(pos.transform.wPosition().x() - w.startX) + Mathf.square(pos.transform.wPosition().y() - w.startY) > Mathf.square(w.maxrange)) {
             manager.removeEntity(entity);
             
-            Minigame.BUS.post(new RangeMaxedEvent(entity));
+            Omnikryptec.getEventBus().post(new RangeMaxedEvent(entity));
         }
     }
     
