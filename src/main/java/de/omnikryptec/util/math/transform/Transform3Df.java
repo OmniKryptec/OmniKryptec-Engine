@@ -29,7 +29,7 @@ public class Transform3Df extends TransformBase<Vector3fc, Matrix4fc, Vector3f, 
     
     @Override
     protected void getPosition(Matrix4fc from, Vector3f target) {
-        //TODO correct? see Test2D
+        //untested; this was like it is in Transform2Df
         target.set(from.m30(), from.m31(), from.m32());
     }
 

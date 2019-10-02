@@ -120,7 +120,7 @@ public class Color implements Cloneable {
         return new Color(red / 255.0f, green / 255.0f, blue / 255.0f);
     }
     
-    //TODO make array, @see FloatCollector
+    //Maybe make array for the FloatCollecor? But shouldn't be that impactfull
     private float r, g, b, a;
     
     /**

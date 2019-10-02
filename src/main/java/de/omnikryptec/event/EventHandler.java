@@ -58,7 +58,7 @@ public class EventHandler implements IEventListener {
     @Override
     public void invoke(final Event ev) {
         try {
-            // TODO make this faster (ASM/bytecode manipulation) because this is slow af
+            //make this faster (ASM/bytecode manipulation)?
             this.m.invoke(this.handler, ev);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             e.printStackTrace();

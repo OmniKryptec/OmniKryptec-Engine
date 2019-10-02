@@ -207,7 +207,7 @@ public abstract class FrameBuffer implements Deletable {
         RendererUtil.renderDirect(getTexture(targetIndex));
     }
     
-    //TODO clearing and setting clear color at the same time might be inefficient/redundant
+    //clearing and setting clear color at the same time might be inefficient/redundant. Don't spam the clear functions?
     public void clearDepth() {
         clear(0, 0, 0, 0, SurfaceBufferType.Depth);
     }

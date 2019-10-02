@@ -159,21 +159,23 @@ public class JoystickHandler implements InputHandler {
     
     @Override
     public synchronized boolean update(double currentTime, KeySettings keySettings) {
-        try {
-            synchronized (dataAxes) {
-                dataAxes = GLFW.glfwGetJoystickAxes(joystick);
-            }
-            synchronized (dataButtons) {
-                dataButtons = GLFW.glfwGetJoystickButtons(joystick);
-            }
-            synchronized (dataHats) {
-                dataHats = GLFW.glfwGetJoystickHats(joystick);
-            }
-            return true;
-        } catch (Exception ex) { //TODO Maybe not catch errors here?
-            Logger.handleError(ex);
-            return false;
+        //        try {
+        synchronized (dataAxes) {
+            dataAxes = GLFW.glfwGetJoystickAxes(joystick);
         }
+        synchronized (dataButtons) {
+            dataButtons = GLFW.glfwGetJoystickButtons(joystick);
+        }
+        synchronized (dataHats) {
+            dataHats = GLFW.glfwGetJoystickHats(joystick);
+        }
+        return true;
+        //Let it fail if it wants to
+        
+        //        } catch (Exception ex) { //TODx Maybe not catch errors here?
+        //            Logger.handleError(ex);
+        //            return false;
+        //        }
     }
     
     @Override
@@ -225,7 +227,7 @@ public class JoystickHandler implements InputHandler {
     public int hashCode() {
         return Objects.hash(this.joystick);
     }
-
+    
     @Override
     public boolean deinit() {
         

@@ -24,11 +24,12 @@ import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.window.InputEvent;
 import de.omnikryptec.util.settings.KeySettings;
+import de.omnikryptec.util.settings.keys.KeysAndButtons;
 
-//TODO monitor if synchronized causes bad performance in this class or if it is negliable 
+//monitor if synchronized causes bad performance in this class or if it is negliable 
 public class KeyboardHandler implements InputHandler {
     
-    private final byte[] keys = new byte[GLFW.GLFW_KEY_LAST + 1]; //TODO Test if this includes every key //TODO Maybe this is no longer necessary, because the KeySettings Keys having their own isPressed state, BUT this is necessary, because maybe you want to save ALL key states, so this should stay
+    private final byte[] keys = new byte[KeysAndButtons.OKE_KEY_LAST + 1]; //TODO Find out if this includes every key
     private final AtomicReference<String> inputString = new AtomicReference<>("");
     // Configurable variables
     private final boolean appendToString = false;
@@ -55,11 +56,6 @@ public class KeyboardHandler implements InputHandler {
     
     @Override
     public boolean preUpdate(double currentTime, KeySettings keySettings) {
-        /*
-        synchronized (keys) {
-            keysLastTime = Arrays.copyOf(keys, keys.length);
-        }
-        */
         return true;
     }
     
@@ -78,7 +74,6 @@ public class KeyboardHandler implements InputHandler {
     
     @Override
     public boolean postUpdate(double currentTime, KeySettings keySettings) {
-        //this.keysLastTime = null; // Is this good for performance or not? // makes no sense
         return true;
     }
     

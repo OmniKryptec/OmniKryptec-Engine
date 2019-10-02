@@ -26,30 +26,31 @@ import de.omnikryptec.util.settings.keys.IKey;
 import de.omnikryptec.util.settings.keys.Key;
 import de.omnikryptec.util.settings.keys.KeyContainer;
 import de.omnikryptec.util.settings.keys.KeyGroup;
+import de.omnikryptec.util.settings.keys.KeysAndButtons;
 
 public class KeySettings extends KeyContainer {
     
-    public static final byte KEY_UNKNOWN = Byte.MIN_VALUE;
-    public static final byte KEY_NOTHING = -1;
-    public static final byte KEY_RELEASED = GLFW.GLFW_RELEASE;
-    public static final byte KEY_PRESSED = GLFW.GLFW_PRESS;
-    public static final byte KEY_REPEATED = GLFW.GLFW_REPEAT;
+    public static final byte KEY_UNKNOWN = KeysAndButtons.OKE_KEY_UNKNOWN;
+    public static final byte KEY_NOTHING = KeysAndButtons.OKE_KEY_NOTHING;
+    public static final byte KEY_RELEASED = KeysAndButtons.OKE_RELEASE;
+    public static final byte KEY_PRESSED = KeysAndButtons.OKE_PRESS;
+    public static final byte KEY_REPEATED = KeysAndButtons.OKE_REPEAT;
     
-    public static final Key STANDARD_MOUSE_BUTTON_LEFT = new Key("mouseButtonLeft", GLFW.GLFW_MOUSE_BUTTON_LEFT, false);
-    public static final Key STANDARD_MOUSE_BUTTON_RIGHT = new Key("mouseButtonRight", GLFW.GLFW_MOUSE_BUTTON_RIGHT, false);
-    public static final Key STANDARD_MOUSE_BUTTON_MIDDLE = new Key("mouseButtonMiddle", GLFW.GLFW_MOUSE_BUTTON_MIDDLE, false);
-    public static final Key STANDARD_KEY_MOVE_FORWARD = new Key("moveForward", GLFW.GLFW_KEY_W);
-    public static final Key STANDARD_KEY_MOVE_BACKWARD = new Key("moveBackward", GLFW.GLFW_KEY_S);
-    public static final Key STANDARD_KEY_MOVE_RIGHT = new Key("moveRight", GLFW.GLFW_KEY_D);
-    public static final Key STANDARD_KEY_MOVE_LEFT = new Key("moveLeft", GLFW.GLFW_KEY_A);
-    public static final Key STANDARD_KEY_MOVE_UP = new Key("moveUp", GLFW.GLFW_KEY_SPACE);
-    public static final Key STANDARD_KEY_MOVE_DOWN = new Key("moveDown", GLFW.GLFW_KEY_LEFT_SHIFT);
-    public static final Key STANDARD_KEY_TURN_YAW_RIGHT = new Key("turnYawRight", GLFW.GLFW_KEY_RIGHT);
-    public static final Key STANDARD_KEY_TURN_YAW_LEFT = new Key("turnYawLeft", GLFW.GLFW_KEY_LEFT);
-    public static final Key STANDARD_KEY_TURN_PITCH_UP = new Key("turnPitchUp", GLFW.GLFW_KEY_UP);
-    public static final Key STANDARD_KEY_TURN_PITCH_DOWN = new Key("turnPitchDown", GLFW.GLFW_KEY_DOWN);
-    public static final Key STANDARD_KEY_TURN_ROLL_RIGHT = new Key("turnRollRight", GLFW.GLFW_KEY_E);
-    public static final Key STANDARD_KEY_TURN_ROLL_LEFT = new Key("turnRollLeft", GLFW.GLFW_KEY_Q);
+    public static final Key STANDARD_MOUSE_BUTTON_LEFT = new Key("mouseButtonLeft", KeysAndButtons.OKE_MOUSE_BUTTON_LEFT, false);
+    public static final Key STANDARD_MOUSE_BUTTON_RIGHT = new Key("mouseButtonRight", KeysAndButtons.OKE_MOUSE_BUTTON_RIGHT, false);
+    public static final Key STANDARD_MOUSE_BUTTON_MIDDLE = new Key("mouseButtonMiddle", KeysAndButtons.OKE_MOUSE_BUTTON_MIDDLE, false);
+    public static final Key STANDARD_KEY_MOVE_FORWARD = new Key("moveForward", KeysAndButtons.OKE_KEY_W);
+    public static final Key STANDARD_KEY_MOVE_BACKWARD = new Key("moveBackward", KeysAndButtons.OKE_KEY_S);
+    public static final Key STANDARD_KEY_MOVE_RIGHT = new Key("moveRight", KeysAndButtons.OKE_KEY_D);
+    public static final Key STANDARD_KEY_MOVE_LEFT = new Key("moveLeft", KeysAndButtons.OKE_KEY_A);
+    public static final Key STANDARD_KEY_MOVE_UP = new Key("moveUp", KeysAndButtons.OKE_KEY_SPACE);
+    public static final Key STANDARD_KEY_MOVE_DOWN = new Key("moveDown", KeysAndButtons.OKE_KEY_LEFT_SHIFT);
+    public static final Key STANDARD_KEY_TURN_YAW_RIGHT = new Key("turnYawRight", KeysAndButtons.OKE_KEY_RIGHT);
+    public static final Key STANDARD_KEY_TURN_YAW_LEFT = new Key("turnYawLeft", KeysAndButtons.OKE_KEY_LEFT);
+    public static final Key STANDARD_KEY_TURN_PITCH_UP = new Key("turnPitchUp", KeysAndButtons.OKE_KEY_UP);
+    public static final Key STANDARD_KEY_TURN_PITCH_DOWN = new Key("turnPitchDown", KeysAndButtons.OKE_KEY_DOWN);
+    public static final Key STANDARD_KEY_TURN_ROLL_RIGHT = new Key("turnRollRight", KeysAndButtons.OKE_KEY_E);
+    public static final Key STANDARD_KEY_TURN_ROLL_LEFT = new Key("turnRollLeft", KeysAndButtons.OKE_KEY_Q);
     
     public static final Key[] STANDARD_MOUSE_BUTTONS = new Key[] {STANDARD_MOUSE_BUTTON_LEFT, STANDARD_MOUSE_BUTTON_RIGHT, STANDARD_MOUSE_BUTTON_MIDDLE};
     public static final Key[] STANDARD_KEYBOARD_KEYS = new Key[] {STANDARD_KEY_MOVE_FORWARD, STANDARD_KEY_MOVE_BACKWARD, STANDARD_KEY_MOVE_RIGHT, STANDARD_KEY_MOVE_LEFT, STANDARD_KEY_MOVE_UP, STANDARD_KEY_MOVE_DOWN, STANDARD_KEY_TURN_YAW_RIGHT, STANDARD_KEY_TURN_YAW_LEFT, STANDARD_KEY_TURN_PITCH_UP, STANDARD_KEY_TURN_PITCH_DOWN, STANDARD_KEY_TURN_ROLL_RIGHT, STANDARD_KEY_TURN_ROLL_LEFT};

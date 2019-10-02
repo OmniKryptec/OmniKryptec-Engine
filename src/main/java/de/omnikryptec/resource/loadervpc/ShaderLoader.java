@@ -19,7 +19,7 @@ public class ShaderLoader implements ResourceLoader<Void> {
     
     @Override
     public boolean requiresMainThread() {
-        //TODO false would be better but needs fixes
+        //TODO false would be better but needs fixes (stuff is breaking because it's not concurrent in the ShaderParser)
         return true;
     }
     

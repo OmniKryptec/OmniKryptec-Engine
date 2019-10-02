@@ -39,7 +39,7 @@ public class Key implements IKey {
      * Constructs a {@link de.omnikryptec.util.settings.keys.Key} (as a keyboard key)
      *
      * @param name Name of the {@link de.omnikryptec.util.settings.keys.Key} (e.g. "Arrow Up")
-     * @param key KeyCode (e.g. {@link org.lwjgl.glfw.GLFW#GLFW_KEY_A})
+     * @param key KeyCode (e.g. {@link de.omnikryptec.util.settings.keys.KeysAndButtons#OKE_KEY_A})
      */
     public Key(String name, int key) {
         this(name, key, true);
@@ -49,7 +49,7 @@ public class Key implements IKey {
      * Constructs a {@link de.omnikryptec.util.settings.keys.Key}
      *
      * @param name Name of the {@link de.omnikryptec.util.settings.keys.Key} (e.g. "Arrow Up")
-     * @param key KeyCode (e.g. {@link org.lwjgl.glfw.GLFW#GLFW_KEY_A})
+     * @param key KeyCode (e.g. {@link de.omnikryptec.util.settings.keys.KeysAndButtons#OKE_KEY_A})
      * @param isKeyboardKey <tt>true</tt> if the {@link de.omnikryptec.util.settings.keys.Key} is a keyboard key
      */
     public Key(String name, int key, boolean isKeyboardKey) {
@@ -133,7 +133,7 @@ public class Key implements IKey {
     /**
      * Sets the KeyCode
      *
-     * @param key KeyCode (e.g. {@link org.lwjgl.glfw.GLFW#GLFW_KEY_A})
+     * @param key KeyCode (e.g. {@link de.omnikryptec.util.settings.keys.KeysAndButtons#OKE_KEY_A})
      *
      * @return A reference to this {@link de.omnikryptec.util.settings.keys.Key}
      */

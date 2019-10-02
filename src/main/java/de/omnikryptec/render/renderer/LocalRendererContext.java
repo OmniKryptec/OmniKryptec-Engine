@@ -22,14 +22,14 @@ import de.omnikryptec.render.renderer.RendererContext.GlobalEnvironmentKeys;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
-//TODO make Renderers or even LocalRendererContexts "global transformable"?
+//TODx make Renderers or even LocalRendererContexts "global transformable"? Maybe not? LRCs are transformable by using the IProjection
 //TODO also improve target information for renderers (null => surface, FrameBuffer => take its width and height and stay like that?)
 public class LocalRendererContext {
     
     private static final Comparator<Renderer> RENDERER_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority() - e1.priority();
     
     private RendererContext context;
-    //TODO postprocessing
+
     private Postprocessor postprocessor;
     private SceneRenderBufferManager frameBuffers;
     

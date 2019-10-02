@@ -29,7 +29,7 @@ public class Transform2Df extends TransformBase<Vector2fc, Matrix3x2fc, Vector2f
     
     @Override
     protected void getPosition(Matrix3x2fc from, Vector2f target) {
-        //TODO correct? (old is making the vec 0 and then mulling it with the mat)
+        //untested; was different: old is making the vec 0 and then mulling it with the mat)
         target.set(from.m20(), from.m21());
     }
     

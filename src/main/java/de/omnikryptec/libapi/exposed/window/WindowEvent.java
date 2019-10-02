@@ -50,7 +50,7 @@ public class WindowEvent extends Event {
         public final int width;
         public final int height;
         public final SurfaceBuffer surface;
-        //TODO is this really a WindowEvent?
+        //TODx is this really a WindowEvent? Perhaps, yes.
         public ScreenBufferResized(final IWindow window, final int width, final int height, SurfaceBuffer surface) {
             super(window);
             this.width = width;
