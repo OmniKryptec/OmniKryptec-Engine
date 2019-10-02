@@ -71,7 +71,17 @@ public class Logger {
             builder.append(" ]");
             builder.append("[ " + now.format(DateTimeFormatter.ofPattern("HH:mm:ss.SSS")) + " ]");
             if (clazz != null) {
-                String n = classDebug ? clazz.getName() : clazz.getSimpleName();
+                String n = "logger has failed";
+                if(classDebug) {
+                    StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+                    int index = 1;
+                    while(stacktrace[index].toString().contains(Logger.class.getName())) {
+                        index++;
+                    }
+                    n = " " + stacktrace[index] + " ";
+                }else{
+                    n = clazz.getSimpleName();
+                }
                 if (n.isEmpty()) {
                     final String[] array = clazz.getTypeName().split("\\.");
                     n = array[array.length - 1];

@@ -200,6 +200,11 @@ public final class LibAPIManager {
          */
         DEBUG_FUNCTIONS(false),
         /**
+         * When enabled, the current stacktrace element will be printed by the Logger
+         * instead of just the simple class name.
+         */
+        DEBUG_CLASSES(false),
+        /**
          * Enables joml's fastmath. <br>
          * <br>
          * The default value is <code>true</code>.
