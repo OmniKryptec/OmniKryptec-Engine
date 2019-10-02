@@ -16,6 +16,7 @@
 
 package de.omnikryptec.core;
 
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
@@ -26,7 +27,7 @@ public class StaticInitTest {
     
     public static void main(final String[] args) {
         Omnikryptec.initialize(new Settings<>(), RenderAPI.OpenGL, new Settings<>(), new Settings<>(), false, false);
-        final IWindow window = RenderAPI.get().getWindow();
+        final IWindow window = LibAPIManager.instance().getGLFW().getRenderAPI().getWindow();
         window.setVisible(true);
         final WindowUpdater updater = new WindowUpdater(window);
         Color clearColor = new Color();
@@ -35,7 +36,7 @@ public class StaticInitTest {
             if (updater.getOperationCount() % 40 == 0) {
                 clearColor.randomizeRGB();
             }
-            RenderAPI.get().getSurface().clearColor(clearColor);
+            LibAPIManager.instance().getGLFW().getRenderAPI().getSurface().clearColor(clearColor);
         }
         Omnikryptec.deinitialize();
     }

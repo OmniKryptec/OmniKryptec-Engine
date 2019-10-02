@@ -6,7 +6,7 @@ import org.joml.Vector2f;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.Omnikryptec;
-import de.omnikryptec.core.scene.SceneNew;
+import de.omnikryptec.core.Scene;
 import de.omnikryptec.core.update.ULayer;
 import de.omnikryptec.core.update.UpdateableFactory;
 import de.omnikryptec.ecs.Entity;
@@ -69,12 +69,11 @@ public class Minigame extends Omnikryptec {
         INPUT = UpdateableFactory.createInputManagerSimple();
         layer.addUpdatable(INPUT);
         layer.addUpdatable(mgr);
-        SceneNew sn = getGame().createNewScene();
+        Scene sn = getGame().createNewScene();
         sn.setGameLogic(layer);
-        getGame().addScene(sn);
         mgr.addSystem(new CollisionSystem());
         mgr.addSystem(new PlayerSystem());
-        mgr.addSystem(new RendererSystem(sn.getRenderer()));
+        mgr.addSystem(new RendererSystem(sn.getRendering()));
         mgr.addSystem(new MovementSystem());
         mgr.addSystem(new RangedSystem());
         mgr.addEntity(makePlayer(0, 0));

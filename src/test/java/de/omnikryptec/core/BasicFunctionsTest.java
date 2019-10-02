@@ -34,7 +34,7 @@ public class BasicFunctionsTest {
     public static void main(final String[] args) {
         LibAPIManager.init(new Settings<>());
         LibAPIManager.instance().getGLFW().setRenderer(RenderAPI.OpenGL, new Settings<>(), new Settings<>());
-        final IWindow window = RenderAPI.get().getWindow();
+        final IWindow window = LibAPIManager.instance().getGLFW().getRenderAPI().getWindow();
         window.setVisible(true);
         final WindowUpdater updater = new WindowUpdater(window);
         Color clearColor = new Color();
@@ -43,7 +43,7 @@ public class BasicFunctionsTest {
             if (updater.getOperationCount() % 40 == 0) {
                 clearColor.randomizeRGB();
             }
-            RenderAPI.get().getSurface().clearColor(clearColor);
+            LibAPIManager.instance().getGLFW().getRenderAPI().getSurface().clearColor(clearColor);
         }
         LibAPIManager.shutdown();
     }

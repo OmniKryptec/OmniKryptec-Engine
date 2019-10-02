@@ -18,7 +18,6 @@ package de.omnikryptec.libapi.exposed.render;
 
 import java.awt.Window;
 
-import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
@@ -30,20 +29,20 @@ import de.omnikryptec.resource.TextureData;
 public interface RenderAPI {
     public static final Class<OpenGLRenderAPI> OpenGL = OpenGLRenderAPI.class;
     
-    /**
-     * The currently set {@link RenderAPI}.
-     * <p>
-     * Note: this is the same as calling<br>
-     * {@code LibAPIManager.instance().getRenderAPI()}
-     * </p>
-     *
-     * @return the current {@code RenderAPI}
-     */
-    //TODx don't use this better use it through renderercontext because this is ugly af?
-    @Deprecated
-    public static RenderAPI get() {
-        return LibAPIManager.instance().getGLFW().getRenderAPI();
-    }
+//    /**
+//     * The currently set {@link RenderAPI}.
+//     * <p>
+//     * Note: this is the same as calling<br>
+//     * {@code LibAPIManager.instance().getRenderAPI()}
+//     * </p>
+//     *
+//     * @return the current {@code RenderAPI}
+//     */
+//    //TODx don't use this better use it through renderercontext because this is ugly af?
+//    @Deprecated
+//    public static RenderAPI get() {
+//        return LibAPIManager.instance().getGLFW().getRenderAPI();
+//    }
     
     public static enum Type {
         FLOAT

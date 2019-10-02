@@ -1,6 +1,7 @@
-package de.omnikryptec.core.scene;
+package de.omnikryptec.core;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import de.omnikryptec.event.EventBus;
@@ -11,8 +12,9 @@ import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.updater.Time;
 
 public class Game {
+    private static final Comparator<Scene> SCENE_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority() - e1.priority();
     
-    private List<SceneNew> scenes;
+    private List<Scene> scenes;
     
     private InputManager input;
     
@@ -22,6 +24,8 @@ public class Game {
     
     private WindowUpdater windowUpdater;
     
+    private boolean enableRenderContext = true;
+    
     public Game(KeySettings keySettings) {
         this.scenes = new ArrayList<>();
         this.input = new InputManager(keySettings);
@@ -30,8 +34,11 @@ public class Game {
         this.eventBus = new EventBus(false);
     }
     
-    public SceneNew createNewScene() {
-        return new SceneNew(rendererContext.createLocal());
+    public Scene createNewScene() {
+        Scene newScene = new Scene(rendererContext.createLocal(), this, 0);
+        scenes.add(newScene);
+        notifyPriorityChange();
+        return newScene;
     }
     
     //*******************************************
@@ -48,7 +55,9 @@ public class Game {
     }
     
     public void renderGame(Time time) {
-        rendererContext.renderComplete(time);
+        if (enableRenderContext) {
+            rendererContext.renderComplete(time);
+        }
     }
     
     //*******************************************
@@ -57,11 +66,11 @@ public class Game {
         return windowUpdater;
     }
     
-    public void addScene(SceneNew scene) {
-        this.scenes.add(scene);
-    }
+//    public void addScene(SceneNew scene) {
+//        this.scenes.add(scene);
+//    }
     
-    public void removeScene(SceneNew scene) {
+    public void removeScene(Scene scene) {
         this.scenes.remove(scene);
     }
     
@@ -75,6 +84,10 @@ public class Game {
     
     public EventBus getEventBus() {
         return eventBus;
+    }
+    
+    void notifyPriorityChange() {
+        scenes.sort(SCENE_PRIORITY_COMPARATOR);
     }
     
 }

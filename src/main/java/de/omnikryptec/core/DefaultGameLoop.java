@@ -14,11 +14,10 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.core.loop;
+package de.omnikryptec.core;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import de.omnikryptec.core.scene.Game;
 import de.omnikryptec.util.updater.Time;
 
 public class DefaultGameLoop implements IGameLoop {

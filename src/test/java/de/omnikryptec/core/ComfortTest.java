@@ -16,7 +16,6 @@
 
 package de.omnikryptec.core;
 
-import de.omnikryptec.core.scene.SceneNew;
 import de.omnikryptec.core.update.UpdateableFactory;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
@@ -39,8 +38,7 @@ public class ComfortTest extends Omnikryptec {
     
     @Override
     protected void onInitialized() {
-        SceneNew scene = getGame().createNewScene();
-        getGame().addScene(scene);
+        Scene scene = getGame().createNewScene();
         scene.setGameLogic(UpdateableFactory.createScreenClearTest());
     }
     

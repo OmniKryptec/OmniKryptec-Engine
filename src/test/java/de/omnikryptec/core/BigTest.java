@@ -3,7 +3,6 @@ package de.omnikryptec.core;
 import de.codemakers.base.logger.LogLevel;
 import de.codemakers.base.logger.Logger;
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.core.scene.SceneNew;
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.core.update.ULayer;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
@@ -46,15 +45,14 @@ public class BigTest extends Omnikryptec {
     
     @Override
     protected void onInitialized() {
-        SceneNew actual = getGame().createNewScene();
+        Scene actual = getGame().createNewScene();
         ULayer scene = new ULayer();
         actual.setGameLogic(scene);
-        getGame().addScene(actual);
         getResourceManager().stage("intern:/de/omnikryptec/resources/");
         getResourceManager().processStaged(false, false);
         //scene.addUpdatable(UpdateableFactory.createScreenClearTest());
         //scene.addUpdatable(UpdateableFactory.createRenderTest(getTextures()));
-        LocalRendererContext c = actual.getRenderer();
+        LocalRendererContext c = actual.getRendering();
         c.addRenderer(new ReflectedRenderer2D());
         ReflectiveSprite s = new ReflectiveSprite();
         //s.setColor(new Color(1, 0, 0));

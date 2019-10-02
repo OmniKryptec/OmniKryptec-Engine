@@ -20,11 +20,11 @@ import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
 
 import de.omnikryptec.ecs.IECSManager;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
-import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.batch.SimpleBatch2D;
@@ -53,6 +53,7 @@ public class UpdateableFactory {
         return new RendererContext();
     }
     
+    @Deprecated
     public static IUpdatable createScreenClearTest() {
         return new IUpdatable() {
             
@@ -63,7 +64,7 @@ public class UpdateableFactory {
                 if (time.opCount % 40 == 0) {
                     color.randomizeRGB();
                 }
-                RenderAPI.get().getCurrentFrameBuffer().clearColor(color);
+                LibAPIManager.instance().getGLFW().getRenderAPI().getCurrentFrameBuffer().clearColor(color);
             }
             
             @Override
@@ -73,9 +74,10 @@ public class UpdateableFactory {
         };
     }
     
+    @Deprecated
     public static IUpdatable createRenderTest(TextureHelper help) {
         
-        final FrameBuffer fbo = RenderAPI.get().createFrameBuffer(2000, 2000, 0, 3);
+        final FrameBuffer fbo = LibAPIManager.instance().getGLFW().getRenderAPI().createFrameBuffer(2000, 2000, 0, 3);
         
         fbo.bindFrameBuffer();
         fbo.assignTargets(new FBTarget(FBAttachmentFormat.RGBA8, 0), new FBTarget(FBAttachmentFormat.DEPTH24),
@@ -103,7 +105,7 @@ public class UpdateableFactory {
                 this.batch.color().randomizeRGB();
                 this.batch.drawLine(0, 0, 3, 2, 0.1f);
                 this.batch.end();
-                fbo.resolveToFrameBuffer(RenderAPI.get().getSurface(), 1);
+                fbo.resolveToFrameBuffer(LibAPIManager.instance().getGLFW().getRenderAPI().getSurface(), 1);
             }
             
         };

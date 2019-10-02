@@ -1,7 +1,7 @@
 package de.omnikryptec.demo;
 
 import de.omnikryptec.core.Omnikryptec;
-import de.omnikryptec.core.scene.SceneNew;
+import de.omnikryptec.core.Scene;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.render.objects.SimpleSprite;
@@ -25,8 +25,8 @@ public class RendererDemo extends Omnikryptec{
     @Override
     protected void onInitialized() {
         //Create the rendering environment
-        SceneNew scene = getGame().createNewScene();
-        scene.getRenderer().addRenderer(new Renderer2D());
+        Scene scene = getGame().createNewScene();
+        scene.getRendering().addRenderer(new Renderer2D());
         
         //Load the texture and use the TextureHelper to make stuff easier
         getResourceManager().instantLoad(false, true, "intern:/de/omnikryptec/resources/jd.png");
@@ -36,6 +36,6 @@ public class RendererDemo extends Omnikryptec{
         sprite.setTexture(getTextures().get("jd.png"));
         
         //add the sprite to the (default) robject manager
-        scene.getRenderer().getIRenderedObjectManager().add(sprite);
+        scene.getRendering().getIRenderedObjectManager().add(sprite);
     }
 }

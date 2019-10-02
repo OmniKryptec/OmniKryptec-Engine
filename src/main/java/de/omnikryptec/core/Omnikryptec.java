@@ -20,9 +20,6 @@ import javax.annotation.Nonnull;
 
 import com.google.errorprone.annotations.ForOverride;
 
-import de.omnikryptec.core.loop.DefaultGameLoop;
-import de.omnikryptec.core.loop.IGameLoop;
-import de.omnikryptec.core.scene.Game;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
@@ -122,7 +119,7 @@ public abstract class Omnikryptec {
      *
      * @see de.omnikryptec.core.Omnikryptec#initialize(Settings, Class, Settings,
      *      Settings, KeySettings)
-     * @see de.omnikryptec.core.loop.IGameLoop
+     * @see de.omnikryptec.core.IGameLoop
      * @see de.omnikryptec.core.scene.GameController
      * @see de.omnikryptec.core.scene.UpdateController
      */

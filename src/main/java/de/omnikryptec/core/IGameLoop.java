@@ -14,9 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.core.loop;
-
-import de.omnikryptec.core.scene.Game;
+package de.omnikryptec.core;
 
 public interface IGameLoop {
     

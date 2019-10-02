@@ -9,8 +9,8 @@ import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.input.InputManager;
-import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
 import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.math.MathUtil;
@@ -67,7 +67,7 @@ public class PlayerSystem extends AbstractComponentSystem {
                 again = 0;
                 Vector2f dir = MathUtil.screenToWorldspace2D(
                         MathUtil.relativeMousePosition(inputManager.getMousePosition(),
-                                RenderAPI.get().getSurface().viewport(), new Vector2f()),
+                                LibAPIManager.instance().getGLFW().getRenderAPI().getSurface().viewport(), new Vector2f()),
                         RendererSystem.CAMERA.getProjection().invert(new Matrix4f()), new Vector2f());
                 dir.add(-plus.transform.wPosition().x(), -plus.transform.wPosition().y());
                 dir.normalize(200);

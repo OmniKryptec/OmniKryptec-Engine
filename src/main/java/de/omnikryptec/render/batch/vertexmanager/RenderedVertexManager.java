@@ -2,7 +2,7 @@ package de.omnikryptec.render.batch.vertexmanager;
 
 import java.util.Objects;
 
-import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
@@ -57,7 +57,8 @@ public class RenderedVertexManager implements VertexManager {
         }
         final int count = this.data.used();
         this.vb.storeData(this.data.flush(), BufferUsage.Stream, count);
-        RenderAPI.get().render(this.va, Primitive.Triangle, count / this.floatsPerVertex);
+        LibAPIManager.instance().getGLFW().getRenderAPI().render(this.va, Primitive.Triangle,
+                count / this.floatsPerVertex);
     }
     
     @Override
@@ -65,8 +66,8 @@ public class RenderedVertexManager implements VertexManager {
         VertexBufferLayout layout = mgr.createLayout();
         this.floatsPerVertex = layout.getCount();
         this.data = new FloatCollector(vertexCount * this.floatsPerVertex);
-        this.vb = RenderAPI.get().createVertexBuffer();
-        this.va = RenderAPI.get().createVertexArray();
+        this.vb = LibAPIManager.instance().getGLFW().getRenderAPI().createVertexBuffer();
+        this.va = LibAPIManager.instance().getGLFW().getRenderAPI().createVertexArray();
         this.va.addVertexBuffer(this.vb, layout);
     }
     

@@ -6,13 +6,13 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import de.omnikryptec.core.Omnikryptec;
-import de.omnikryptec.core.scene.SceneNew;
+import de.omnikryptec.core.Scene;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
-import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec3;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
@@ -47,10 +47,9 @@ public class Raytracer extends Omnikryptec implements Renderer {
     protected void onInitialized() {
         getResourceManager().instantLoad(false, false, "intern:/de/pcfreak9000/raytracer/");
         mgr = getGame().getInput();
-        SceneNew s = getGame().createNewScene();
-        s.getRenderer().addRenderer(this);
-        getGame().addScene(s);
-        renderApi = (OpenGLRenderAPI) RenderAPI.get();
+        Scene s = getGame().createNewScene();
+        s.getRendering().addRenderer(this);
+        renderApi = (OpenGLRenderAPI) LibAPIManager.instance().getGLFW().getRenderAPI();
         image = (GLFrameBuffer) renderApi.createFrameBuffer(1024, 768, 0, 1);
         image.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA32, 0));
         computeShader = (GLShader) renderApi.createShader();

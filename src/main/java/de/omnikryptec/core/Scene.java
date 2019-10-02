@@ -1,17 +1,22 @@
-package de.omnikryptec.core.scene;
+package de.omnikryptec.core;
 
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.render.renderer.LocalRendererContext;
 import de.omnikryptec.util.updater.Time;
 
-public class SceneNew {
+public class Scene {
     
     private IUpdatable gameLogic;
     
     private LocalRendererContext renderer;
+    private Game game;
     
-    public SceneNew(LocalRendererContext context) {
+    private int priority;
+    
+    Scene(LocalRendererContext context, Game game, int prio) {
         this.renderer = context;
+        this.game = game;
+        this.priority = prio;
     }
     
     public void updateScene(Time time) {
@@ -32,8 +37,17 @@ public class SceneNew {
         return gameLogic;
     }
     
-    public LocalRendererContext getRenderer() {
+    public LocalRendererContext getRendering() {
         return renderer;
+    }
+    
+    public void setPriority(int i) {
+        this.priority = i;
+        game.notifyPriorityChange();
+    }
+    
+    public int priority() {
+        return priority;
     }
     
 }
