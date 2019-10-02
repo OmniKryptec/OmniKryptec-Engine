@@ -24,9 +24,9 @@ import org.joml.Matrix4fc;
 
 public strictfp class Mathf {
     
-//    public static final Matrix3x2f TMP3x2f = new Matrix3x2f();
-//    public static final Matrix4f TMP4f = new Matrix4f();
-
+    //    public static final Matrix3x2f TMP3x2f = new Matrix3x2f();
+    //    public static final Matrix4f TMP4f = new Matrix4f();
+    
     public static final Matrix3x2fc IDENTITY3x2f = new Matrix3x2f();
     public static final Matrix4fc IDENTITY4f = new Matrix4f();
     
@@ -165,6 +165,10 @@ public strictfp class Mathf {
     
     public static long roundl(final float value) {
         return (long) rint(value);
+    }
+    
+    public static float toRadians(float i) {
+        return (float) Math.toRadians(i);
     }
     
 }
