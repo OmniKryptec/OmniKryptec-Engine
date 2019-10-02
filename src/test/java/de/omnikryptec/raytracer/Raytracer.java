@@ -5,12 +5,13 @@ import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-import de.omnikryptec.core.EngineLoader;
-import de.omnikryptec.core.update.IUpdatable;
+import de.omnikryptec.core.Omnikryptec;
+import de.omnikryptec.core.scene.SceneNew;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
+import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec3;
@@ -19,13 +20,17 @@ import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
 import de.omnikryptec.libapi.opengl.framebuffer.GLFrameBuffer;
 import de.omnikryptec.libapi.opengl.shader.GLShader;
 import de.omnikryptec.render.Camera;
+import de.omnikryptec.render.IProjection;
+import de.omnikryptec.render.renderer.LocalRendererContext;
+import de.omnikryptec.render.renderer.Renderer;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.settings.IntegerKey;
+import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.settings.keys.KeysAndButtons;
 import de.omnikryptec.util.updater.Time;
 
-public class Raytracer extends EngineLoader implements IUpdatable {
+public class Raytracer extends Omnikryptec implements Renderer {
     
     public static void main(final String[] args) {
         new Raytracer().start();
@@ -33,7 +38,7 @@ public class Raytracer extends EngineLoader implements IUpdatable {
     
     @Override
     protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisetting) {
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisetting, KeySettings keys) {
         libsettings.set(LibSetting.DEBUG, false);
         windowSettings.set(WindowSetting.Name, "Raytracer");
     }
@@ -41,8 +46,10 @@ public class Raytracer extends EngineLoader implements IUpdatable {
     @Override
     protected void onInitialized() {
         getResourceManager().instantLoad(false, false, "intern:/de/pcfreak9000/raytracer/");
-        mgr = new InputManager(null);
-        getGameController().getGlobalScene().setUpdateableSync(this);
+        mgr = getGame().getInput();
+        SceneNew s = getGame().createNewScene();
+        s.getRenderer().addRenderer(this);
+        getGame().addScene(s);
         renderApi = (OpenGLRenderAPI) RenderAPI.get();
         image = (GLFrameBuffer) renderApi.createFrameBuffer(1024, 768, 0, 1);
         image.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA32, 0));
@@ -94,7 +101,6 @@ public class Raytracer extends EngineLoader implements IUpdatable {
     }
     
     private void camInput(Camera cam, float dt) {
-        float old = dt;
         if (mgr.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_LEFT_CONTROL)) {
             dt *= 3;
         }
@@ -125,7 +131,11 @@ public class Raytracer extends EngineLoader implements IUpdatable {
     }
     
     @Override
-    public void update(Time time) {
+    public void init(LocalRendererContext context, FrameBuffer target) {
+    }
+
+    @Override
+    public void render(Time time, IProjection projection, LocalRendererContext context) {
         mgr.update(time);
         camInput(camera, time.deltaf);
         computeShader.bindShader();
@@ -136,6 +146,10 @@ public class Raytracer extends EngineLoader implements IUpdatable {
                 MathUtil.toPowerOfTwo(image.getHeight() / 8), 1);
         
         image.renderDirect(0);
+    }
+
+    @Override
+    public void deinit(LocalRendererContext context) {
     }
     
 }

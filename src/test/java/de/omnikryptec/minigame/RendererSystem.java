@@ -19,8 +19,6 @@ import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.render.renderer.LocalRendererContext;
 import de.omnikryptec.render.renderer.Renderer2D;
 import de.omnikryptec.render.renderer.Renderer2D.EnvironmentKeys2D;
-import de.omnikryptec.render.renderer.RendererContext;
-import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.updater.Time;
 
@@ -31,13 +29,11 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
     private ComponentMapper<PositionComponent> posMapper = new ComponentMapper<>(PositionComponent.class);
     private ComponentMapper<RenderComponent> rendMapper = new ComponentMapper<>(RenderComponent.class);
     
-    private RendererContext context;
     private LocalRendererContext renderer;
     
-    public RendererSystem() {
+    public RendererSystem(LocalRendererContext renderer) {
         super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(RenderComponent.class)));
-        this.context = new RendererContext();
-        this.renderer = this.context.createLocal();
+        this.renderer = renderer;
         this.renderer.addRenderer(new Renderer2D());
         this.renderer.setMainProjection(CAMERA);
         
@@ -103,11 +99,6 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
     
     @Override
     public void update(IECSManager manager, Time time) {
-        //this.renderer.getEnvironmentSettings().set(EnvironmentKeys2D.AmbientLight,
-        //      Color.ofTemperature(Mathf.pingpong(time.currentf * 1000, 8000)));
-        Profiler.begin("RendererSystem");
-        this.context.update(time);
-        Profiler.end();
     }
     
 }

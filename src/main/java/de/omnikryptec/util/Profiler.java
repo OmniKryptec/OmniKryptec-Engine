@@ -3,7 +3,6 @@ package de.omnikryptec.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.data.FixedStack;
 import de.omnikryptec.util.math.Mathd;
 

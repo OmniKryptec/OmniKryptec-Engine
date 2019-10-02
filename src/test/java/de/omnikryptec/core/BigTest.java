@@ -3,6 +3,7 @@ package de.omnikryptec.core;
 import de.codemakers.base.logger.LogLevel;
 import de.codemakers.base.logger.Logger;
 import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.core.scene.SceneNew;
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.core.update.ULayer;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
@@ -11,16 +12,16 @@ import de.omnikryptec.render.objects.ReflectiveSprite;
 import de.omnikryptec.render.objects.ReflectiveSprite.Reflection2DType;
 import de.omnikryptec.render.renderer.LocalRendererContext;
 import de.omnikryptec.render.renderer.ReflectedRenderer2D;
-import de.omnikryptec.render.renderer.RendererContext;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.IntegerKey;
+import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
-public class BigTest extends EngineLoader {
+public class BigTest extends Omnikryptec {
     
     public static void main(final String[] args) {
         Logger.getDefaultAdvancedLeveledLogger().setMinimumLogLevel(LogLevel.FINEST);
@@ -31,7 +32,7 @@ public class BigTest extends EngineLoader {
     }
     
     @Override
-    protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings) {
+    protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings, KeySettings keys) {
         libsettings.set(LibSetting.DEBUG, true);
         libsettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "BigTest-Window");
@@ -45,15 +46,15 @@ public class BigTest extends EngineLoader {
     
     @Override
     protected void onInitialized() {
+        SceneNew actual = getGame().createNewScene();
         ULayer scene = new ULayer();
-        getGameController().getGlobalScene().setUpdateableSync(scene);
+        actual.setGameLogic(scene);
+        getGame().addScene(actual);
         getResourceManager().stage("intern:/de/omnikryptec/resources/");
         getResourceManager().processStaged(false, false);
         //scene.addUpdatable(UpdateableFactory.createScreenClearTest());
         //scene.addUpdatable(UpdateableFactory.createRenderTest(getTextures()));
-        RendererContext context = new RendererContext();
-        scene.addUpdatable(context);
-        LocalRendererContext c = context.createLocal();
+        LocalRendererContext c = actual.getRenderer();
         c.addRenderer(new ReflectedRenderer2D());
         ReflectiveSprite s = new ReflectiveSprite();
         //s.setColor(new Color(1, 0, 0));

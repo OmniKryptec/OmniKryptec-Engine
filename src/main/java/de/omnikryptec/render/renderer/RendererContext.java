@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
@@ -17,7 +16,7 @@ import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
-public class RendererContext implements IUpdatable {
+public class RendererContext {
     
     public static interface EnvironmentKey {
     }
@@ -74,8 +73,7 @@ public class RendererContext implements IUpdatable {
         }
     }
     
-    @Override
-    public void update(Time time) {
+    public void renderComplete(Time time) {
         Texture[] screen = new Texture[subContexts.size()];
         for (int i = 0; i < subContexts.size(); i++) {
             if (subContexts.get(i).isEnabled()) {

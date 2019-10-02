@@ -21,7 +21,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.joml.Vector2d;
 import org.joml.Vector2dc;
 
-import de.omnikryptec.event.EventBus;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.window.InputEvent;

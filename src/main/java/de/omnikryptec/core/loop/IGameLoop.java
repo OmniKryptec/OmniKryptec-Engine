@@ -16,12 +16,11 @@
 
 package de.omnikryptec.core.loop;
 
-import de.omnikryptec.core.EngineLoader;
-import de.omnikryptec.core.scene.UpdateController;
+import de.omnikryptec.core.scene.Game;
 
 public interface IGameLoop {
     
-    void setUpdateController(final UpdateController updateController);
+    void setUpdateController(final Game game);
     
     void startLoop();
     

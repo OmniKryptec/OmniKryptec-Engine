@@ -18,26 +18,20 @@ package de.omnikryptec.core.loop;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import de.omnikryptec.core.EngineLoader;
-import de.omnikryptec.core.scene.UpdateController;
+import de.omnikryptec.core.scene.Game;
+import de.omnikryptec.util.updater.Time;
 
 public class DefaultGameLoop implements IGameLoop {
-    
-    private final Runnable asyncTasks = () -> {
-        DefaultGameLoop.this.updateController.getAsyncUpdater().resetDeltaTime();
-        while (DefaultGameLoop.this.running.get()) {
-            DefaultGameLoop.this.updateController.updateAsync();
-        }
-    };
+   
     
     private final AtomicBoolean running = new AtomicBoolean(false);
     private boolean shouldStop = false;
     
-    private UpdateController updateController;
+    private Game game;
     
     @Override
-    public void setUpdateController(final UpdateController loader) {
-        this.updateController = loader;
+    public void setUpdateController(final Game game) {
+        this.game = game;
     }
     
     @Override
@@ -46,8 +40,8 @@ public class DefaultGameLoop implements IGameLoop {
     }
     
     public boolean shouldStop() {
-        return this.shouldStop || (this.updateController == null ? false
-                : this.updateController.getWindowUpdater().getWindow().isCloseRequested());
+        return this.shouldStop || (this.game == null ? false
+                : this.game.getWindowUpdater().getWindow().isCloseRequested());
     }
     
     @Override
@@ -62,11 +56,13 @@ public class DefaultGameLoop implements IGameLoop {
         }
         this.shouldStop = false;
         this.running.set(true);
-        new Thread(this.asyncTasks).start();
         try {
-            this.updateController.getWindowUpdater().resetDeltaTime();
+            this.game.getWindowUpdater().resetDeltaTime();
             while (!shouldStop()) {
-                this.updateController.updateSync();
+                this.game.getWindowUpdater().update(144);
+                Time time = this.game.getWindowUpdater().asTime();
+                game.updateGame(time);
+                game.renderGame(time);
             }
         } finally {
             this.running.set(false);

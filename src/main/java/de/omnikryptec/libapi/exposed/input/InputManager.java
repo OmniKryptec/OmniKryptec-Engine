@@ -22,7 +22,6 @@ import org.joml.Vector4d;
 import org.joml.Vector4dc;
 
 import de.omnikryptec.core.update.IUpdatable;
-import de.omnikryptec.event.EventBus;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.updater.Time;
 

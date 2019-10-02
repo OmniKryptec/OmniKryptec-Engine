@@ -20,7 +20,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.lwjgl.glfw.GLFW;
 
-import de.omnikryptec.event.EventBus;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.window.InputEvent;

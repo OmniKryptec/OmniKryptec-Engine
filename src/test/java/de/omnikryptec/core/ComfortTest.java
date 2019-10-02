@@ -16,13 +16,15 @@
 
 package de.omnikryptec.core;
 
+import de.omnikryptec.core.scene.SceneNew;
 import de.omnikryptec.core.update.UpdateableFactory;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.util.settings.IntegerKey;
+import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 
-public class ComfortTest extends EngineLoader {
+public class ComfortTest extends Omnikryptec {
     
     public static void main(final String[] args) {
         new ComfortTest().start();
@@ -30,14 +32,16 @@ public class ComfortTest extends EngineLoader {
     
     @Override
     protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisetting) {
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisetting, KeySettings keys) {
         libsettings.set(LibSetting.DEBUG, true);
         windowSettings.set(WindowSetting.Name, "ComfortTest-Window");
     }
     
     @Override
     protected void onInitialized() {
-        getGameController().getGlobalScene().setUpdateableSync(UpdateableFactory.createScreenClearTest());
+        SceneNew scene = getGame().createNewScene();
+        getGame().addScene(scene);
+        scene.setGameLogic(UpdateableFactory.createScreenClearTest());
     }
     
 }

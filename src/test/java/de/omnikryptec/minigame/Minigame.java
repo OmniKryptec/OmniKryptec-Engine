@@ -5,7 +5,8 @@ import java.util.Random;
 import org.joml.Vector2f;
 
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.core.EngineLoader;
+import de.omnikryptec.core.Omnikryptec;
+import de.omnikryptec.core.scene.SceneNew;
 import de.omnikryptec.core.update.ULayer;
 import de.omnikryptec.core.update.UpdateableFactory;
 import de.omnikryptec.ecs.Entity;
@@ -24,9 +25,10 @@ import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.IntegerKey;
+import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 
-public class Minigame extends EngineLoader {
+public class Minigame extends Omnikryptec {
     
     public static final EventBus BUS = new EventBus(false);
     
@@ -43,7 +45,8 @@ public class Minigame extends EngineLoader {
     }
     
     @Override
-    protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
+    protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings, KeySettings keys) {
         //libSettings.set(LibSetting.DEBUG, true);
         libSettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "Minigame");
@@ -66,10 +69,12 @@ public class Minigame extends EngineLoader {
         INPUT = UpdateableFactory.createInputManagerSimple();
         layer.addUpdatable(INPUT);
         layer.addUpdatable(mgr);
-        getGameController().getGlobalScene().setUpdateableSync(layer);
+        SceneNew sn = getGame().createNewScene();
+        sn.setGameLogic(layer);
+        getGame().addScene(sn);
         mgr.addSystem(new CollisionSystem());
         mgr.addSystem(new PlayerSystem());
-        mgr.addSystem(new RendererSystem());
+        mgr.addSystem(new RendererSystem(sn.getRenderer()));
         mgr.addSystem(new MovementSystem());
         mgr.addSystem(new RangedSystem());
         mgr.addEntity(makePlayer(0, 0));
@@ -148,7 +153,8 @@ public class Minigame extends EngineLoader {
     public void bombExplode(BombExplodeEvent ev) {
         for (int i = 0; i < 100; i++) {
             Vector2f r = MathUtil.randomDirection2D(random, 0, 2 * Mathf.PI, new Vector2f()).mul(500);
-            BUS.post(new ShootEvent(mapper.get(ev.bomb).transform.wPosition().x(), mapper.get(ev.bomb).transform.wPosition().y(), r, 150, Projectile.Normal));
+            BUS.post(new ShootEvent(mapper.get(ev.bomb).transform.wPosition().x(),
+                    mapper.get(ev.bomb).transform.wPosition().y(), r, 150, Projectile.Normal));
         }
     }
     

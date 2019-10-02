@@ -28,7 +28,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.lwjgl.glfw.GLFW;
 
 import de.codemakers.base.logger.Logger;
-import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.settings.KeySettings;
 

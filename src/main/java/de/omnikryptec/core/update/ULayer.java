@@ -19,7 +19,6 @@ package de.omnikryptec.core.update;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import de.omnikryptec.event.EventBus;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.updater.Time;
 

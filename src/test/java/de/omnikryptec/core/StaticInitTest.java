@@ -25,7 +25,7 @@ import de.omnikryptec.util.settings.Settings;
 public class StaticInitTest {
     
     public static void main(final String[] args) {
-        EngineLoader.initialize(new Settings<>(), RenderAPI.OpenGL, new Settings<>(), new Settings<>(), false, false);
+        Omnikryptec.initialize(new Settings<>(), RenderAPI.OpenGL, new Settings<>(), new Settings<>(), false, false);
         final IWindow window = RenderAPI.get().getWindow();
         window.setVisible(true);
         final WindowUpdater updater = new WindowUpdater(window);
@@ -37,7 +37,7 @@ public class StaticInitTest {
             }
             RenderAPI.get().getSurface().clearColor(clearColor);
         }
-        EngineLoader.deinitialize();
+        Omnikryptec.deinitialize();
     }
     
 }

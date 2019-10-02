@@ -22,9 +22,7 @@ import com.google.errorprone.annotations.ForOverride;
 
 import de.omnikryptec.core.loop.DefaultGameLoop;
 import de.omnikryptec.core.loop.IGameLoop;
-import de.omnikryptec.core.scene.GameController;
-import de.omnikryptec.core.scene.UpdateController;
-import de.omnikryptec.event.EventBus;
+import de.omnikryptec.core.scene.Game;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
@@ -52,28 +50,32 @@ import de.omnikryptec.util.settings.Settings;
  *
  * @author pcfreak9000 &amp; Panzer1119
  */
-public abstract class EngineLoader {
+public abstract class Omnikryptec {
     
-    private static EngineLoader instance = null;
+    private static Omnikryptec instance = null;
     
-    public static EngineLoader instance() {
+    public static Omnikryptec instance() {
         if (instance == null) {
-            throw new IllegalStateException("EngineLoader has not been created yet");
+            throw new IllegalStateException("An Omnikryptec instance has not been created yet");
         }
         return instance;
     }
     
+    private IWindow window;    
+    
     private IGameLoop gameLoop;
-    private IWindow window;
-    private GameController gameController;
-    private UpdateController updateController;
+    private Game game;
+    //private GameController gameController;
+    //private UpdateController updateController;
+    
     private ResourceManager resources;
     private TextureHelper textures;
+    
     private boolean started;
     
-    public EngineLoader() {
+    public Omnikryptec() {
         if (instance != null) {
-            throw new IllegalStateException("An EngineLoader has been created already");
+            throw new IllegalStateException("An Omnikryptec instance has been created already");
         }
         instance = this;
     }
@@ -118,7 +120,7 @@ public abstract class EngineLoader {
      * After or before making the window visible, {@link #onInitialized} is called.
      * If so configured, the {@code IGameLoop} will be started.
      *
-     * @see de.omnikryptec.core.EngineLoader#initialize(Settings, Class, Settings,
+     * @see de.omnikryptec.core.Omnikryptec#initialize(Settings, Class, Settings,
      *      Settings, KeySettings)
      * @see de.omnikryptec.core.loop.IGameLoop
      * @see de.omnikryptec.core.scene.GameController
@@ -133,18 +135,18 @@ public abstract class EngineLoader {
         final Settings<LibSetting> libSettings = new Settings<>();
         final Settings<WindowSetting> windowSettings = new Settings<>();
         final Settings<IntegerKey> rapiSettings = new Settings<>();
-        configure(loaderSettings, libSettings, windowSettings, rapiSettings);
+        final KeySettings keySettings = new KeySettings();
+        configure(loaderSettings, libSettings, windowSettings, rapiSettings, keySettings);
         // or let them (the natives) be loaded by Configuration.SHARED_LIBRARY and
         // LIBRARY_PATH <-- Seems to work, so better use it
         initialize(libSettings, loaderSettings.get(LoaderSetting.RENDER_API), windowSettings, rapiSettings,
                 loaderSettings.get(LoaderSetting.INIT_OPENCL), loaderSettings.get(LoaderSetting.INIT_OPENAL));
-        this.window = RenderAPI.get().getWindow();
+        this.window = LibAPIManager.instance().getGLFW().getRenderAPI().getWindow();
         this.resources = new ResourceManager();
         this.resources.addDefaultLoaders();
         this.textures = new TextureHelper(getResourceProvider());
         this.gameLoop = loaderSettings.get(LoaderSetting.GAME_LOOP);
-        this.gameController = new GameController();
-        this.updateController = new UpdateController(this.gameController, this.window);
+        this.game = new Game(keySettings);
         this.started = true;
         if (loaderSettings.get(LoaderSetting.SHOW_WINDOW_AFTER_CREATION) == WindowMakeVisible.IMMEDIATELY) {
             this.window.setVisible(true);
@@ -154,13 +156,26 @@ public abstract class EngineLoader {
             this.window.setVisible(true);
         }
         if (this.gameLoop != null) {
-            this.gameLoop.setUpdateController(getUpdateController());
+            this.gameLoop.setUpdateController(getGame());
             if ((boolean) loaderSettings.get(LoaderSetting.START_GAME_LOOP_AFTER_INIT)) {
                 this.gameLoop.startLoop();
                 if ((boolean) loaderSettings.get(LoaderSetting.SHUTDOWN_ON_LOOP_EXIT)) {
                     shutdown();
                 }
             }
+        }
+    }
+    
+    public void switchGameloop(final IGameLoop newloop) {
+        Util.ensureNonNull(newloop);
+        final boolean running = this.gameLoop.isRunning();
+        if (running) {
+            this.gameLoop.stopLoop();
+        }
+        this.gameLoop = newloop;
+        this.gameLoop.setUpdateController(getGame());
+        if (running) {
+            this.gameLoop.startLoop();
         }
     }
     
@@ -193,14 +208,9 @@ public abstract class EngineLoader {
         return this.gameLoop;
     }
     
-    public GameController getGameController() {
+    public Game getGame() {
         checkStarted();
-        return this.gameController;
-    }
-    
-    public UpdateController getUpdateController() {
-        checkStarted();
-        return this.updateController;
+        return game;
     }
     
     public ResourceManager getResourceManager() {
@@ -215,26 +225,7 @@ public abstract class EngineLoader {
     public TextureHelper getTextures() {
         return textures;
     }
-    
-    private void checkStarted() {
-        if (!this.started) {
-            throw new IllegalStateException(getClass().getSimpleName() + " has not been started yet");
-        }
-    }
-    
-    public void switchGameloop(final IGameLoop newloop) {
-        Util.ensureNonNull(newloop);
-        final boolean running = this.gameLoop.isRunning();
-        if (running) {
-            this.gameLoop.stopLoop();
-        }
-        this.gameLoop = newloop;
-        this.gameLoop.setUpdateController(getUpdateController());
-        if (running) {
-            this.gameLoop.startLoop();
-        }
-    }
-    
+
     public ResourceManager setResourceManager(final ResourceManager proc) {
         final ResourceManager old = this.resources;
         this.resources = proc;
@@ -245,9 +236,15 @@ public abstract class EngineLoader {
         return this.started;
     }
     
+    private void checkStarted() {
+        if (!this.started) {
+            throw new IllegalStateException(getClass().getSimpleName() + " has not been started yet");
+        }
+    }
+    
     @ForOverride
     protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings) {
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings, KeySettings keys) {
     }
     
     @ForOverride
@@ -324,7 +321,7 @@ public abstract class EngineLoader {
     
     /**
      * Will only be used in non-static cases of
-     * {@link de.omnikryptec.core.EngineLoader}. Defines when to show the
+     * {@link de.omnikryptec.core.Omnikryptec}. Defines when to show the
      * {@link de.omnikryptec.libapi.exposed.window.Window}.
      *
      * @author pcfreak9000
