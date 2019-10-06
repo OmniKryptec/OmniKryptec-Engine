@@ -25,12 +25,12 @@ import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.renderer.LocalRendererContext;
 import de.omnikryptec.render.renderer.Renderer;
 import de.omnikryptec.util.math.MathUtil;
+import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.settings.keys.KeysAndButtons;
 import de.omnikryptec.util.updater.Time;
-import de.omnikryptec.util.math.Mathf;
 
 public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     

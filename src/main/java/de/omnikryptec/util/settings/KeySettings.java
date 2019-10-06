@@ -18,8 +18,6 @@ package de.omnikryptec.util.settings;
 
 import java.util.Collection;
 
-import org.lwjgl.glfw.GLFW;
-
 import com.google.common.collect.ObjectArrays;
 
 import de.omnikryptec.util.settings.keys.IKey;
