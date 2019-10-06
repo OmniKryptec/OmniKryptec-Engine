@@ -1,5 +1,7 @@
 package de.omnikryptec.libapi.exposed.window;
 
+import java.util.Arrays;
+
 import org.joml.Vector2dc;
 
 import de.omnikryptec.libapi.exposed.AutoDeletionManager;
@@ -13,14 +15,23 @@ public abstract class SurfaceBuffer extends FrameBuffer {
         AutoDeletionManager.unregister(this);
     }
     
-    public abstract int[] viewport();
+    /**
+     * The result of this method call should be considered read-only. (You could mess with it though!)
+     * @return viewport
+     */
+    public abstract int[] getViewportUnsafe();
+    
+    public int[] getViewport() {
+        int[] vp = getViewportUnsafe();
+        return Arrays.copyOf(vp, vp.length);
+    }
     
     public boolean isInViewport(Vector2dc vec) {
         return isInViewport(vec.x(), vec.y());
     }
     
     public boolean isInViewport(double x, double y) {
-        int[] viewport = viewport();
+        int[] viewport = getViewportUnsafe();
         return x > viewport[0] && x < viewport[2] + viewport[0] && y > viewport[1] && y < viewport[3] + viewport[1];
     }
 }

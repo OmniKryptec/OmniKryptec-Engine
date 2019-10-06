@@ -1,6 +1,5 @@
 package de.omnikryptec.minigame;
 
-import org.joml.Matrix4f;
 import org.joml.Vector2f;
 
 import de.omnikryptec.core.Omnikryptec;
@@ -10,11 +9,9 @@ import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
-import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
 import de.omnikryptec.util.Profiler;
-import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.settings.keys.KeysAndButtons;
 import de.omnikryptec.util.updater.Time;
 
@@ -42,7 +39,7 @@ public class PlayerSystem extends AbstractComponentSystem {
             PlayerComponent play = playMapper.get(e);
             PositionComponent plus = posMapper.get(e);
             RendererSystem.CAMERA.getTransform().localspaceWrite().setTranslation(
-                    -plus.transform.wPosition().x(), -plus.transform.wPosition().y(), 0);
+                    -plus.transform.worldspacePos().x(), -plus.transform.worldspacePos().y(), 0);
             float vy = 0;
             float vx = 0;
             if (inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_W)) {
@@ -66,15 +63,12 @@ public class PlayerSystem extends AbstractComponentSystem {
             if (inputManager.isMouseButtonPressed(KeysAndButtons.OKE_MOUSE_BUTTON_1) && inputManager.isMouseInsideViewport()
                     && again > 0.15f) {
                 again = 0;
-                Vector2f dir = MathUtil.screenToWorldspace2D(
-                        MathUtil.relativeMousePosition(inputManager.getMousePosition(),
-                                LibAPIManager.instance().getGLFW().getRenderAPI().getSurface().viewport(), new Vector2f()),
-                        RendererSystem.CAMERA.getProjection().invert(new Matrix4f()), new Vector2f());
-                dir.add(-plus.transform.wPosition().x(), -plus.transform.wPosition().y());
+                Vector2f dir = inputManager.getMousePositionInWorld2D(RendererSystem.CAMERA, null);
+                dir.add(-plus.transform.worldspacePos().x(), -plus.transform.worldspacePos().y());
                 dir.normalize(200);
                 dir.add(mov.dx, mov.dy);
-                Omnikryptec.getEventBus().post(new ShootEvent(plus.transform.wPosition().x() + play.shOffsetX,
-                        plus.transform.wPosition().y() + play.shOffsetY, dir, 1000, Projectile.Bomb));
+                Omnikryptec.getEventBus().post(new ShootEvent(plus.transform.worldspacePos().x() + play.shOffsetX,
+                        plus.transform.worldspacePos().y() + play.shOffsetY, dir, 1000, Projectile.Bomb));
             }
         }
         Profiler.end();

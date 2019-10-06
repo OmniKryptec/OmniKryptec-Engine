@@ -16,12 +16,14 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
+import org.joml.Matrix4fc;
 import org.joml.Vector2d;
 import org.joml.Vector2dc;
-import org.joml.Vector4d;
-import org.joml.Vector4dc;
-
+import org.joml.Vector2f;
 import de.omnikryptec.core.update.IUpdatable;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.render.Camera;
+import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.updater.Time;
 
@@ -37,13 +39,7 @@ public class InputManager implements IUpdatable {
     private final Vector2d mouseScrollOffsetLastTime = new Vector2d(0.0, 0.0);
     private final Vector2d mousePositionDelta = new Vector2d(0.0, 0.0);
     private final Vector2d mouseScrollOffsetDelta = new Vector2d(0.0, 0.0);
-    /**
-     * x = Mouse Pos X Delta <br>
-     * y = Mouse Pos Y Delta <br>
-     * z = Mouse Scroll X Delta <br>
-     * w = Mouse Scroll Y Delta
-     */
-    private final Vector4d mouseDelta = new Vector4d(0.0, 0.0, 0.0, 0.0);
+    
     private boolean longButtonPressEnabled = false;
     
     public InputManager(KeySettings keySettings) {
@@ -67,7 +63,7 @@ public class InputManager implements IUpdatable {
     public MouseHandler getMouseHandler() {
         return mouseHandler;
     }
-
+    
     protected boolean preUpdateIntern(Time time) {
         boolean good = true;
         if (longButtonPressEnabled) {
@@ -139,9 +135,9 @@ public class InputManager implements IUpdatable {
         updateMouseDeltas(getMousePosition(), getMouseScrollOffset());
         
         preUpdateIntern(time);
-
+        
     }
-
+    
     public boolean isLongButtonPressEnabled() {
         return longButtonPressEnabled;
     }
@@ -183,6 +179,21 @@ public class InputManager implements IUpdatable {
         return mouseHandler.isButtonPressed(buttonCode); // || mouseHandler.isButtonRepeated(buttonCode); //TODO Can a mouse buttons state be "REPEATED"?
     }
     
+    public Vector2f getMousePositionRelative(Vector2f target) {
+        return MathUtil.relativeMousePosition(getMousePosition(),
+                LibAPIManager.instance().getGLFW().getRenderAPI().getSurface().getViewportUnsafe(), target);
+    }
+    
+    public Vector2f getMousePositionInWorld2D(Camera camera, Vector2f target) {
+        return getMousePositionInWorld2D(camera.getProjectionInverse(), target);
+    }
+    
+    public Vector2f getMousePositionInWorld2D(Matrix4fc inverseViewProjection, Vector2f target) {
+        target = getMousePositionRelative(target);
+        MathUtil.screenToWorldspace2D(target, inverseViewProjection, target);
+        return target;
+    }
+    
     public Vector2dc getMousePosition() {
         return mouseHandler.getPosition();
     }
@@ -192,7 +203,8 @@ public class InputManager implements IUpdatable {
     }
     
     public boolean isMouseInsideViewport() {
-        return mouseHandler.isInsideViewport();
+        return isMouseInsideWindow() && LibAPIManager.instance().getGLFW().getRenderAPI().getSurface()
+                .isInViewport(mouseHandler.getPosition());
     }
     
     public boolean isMouseInsideWindow() {
@@ -206,10 +218,6 @@ public class InputManager implements IUpdatable {
         mousePositionDelta.y = (mousePosition.y() - mousePositionLastTime.y);
         mouseScrollOffsetDelta.x = (mouseScrollOffset.x() - mouseScrollOffsetLastTime.x);
         mouseScrollOffsetDelta.y = (mouseScrollOffset.y() - mouseScrollOffsetLastTime.y);
-        mouseDelta.x = mousePositionDelta.x;
-        mouseDelta.y = mousePositionDelta.y;
-        mouseDelta.z = mouseScrollOffsetDelta.x;
-        mouseDelta.w = mouseScrollOffsetDelta.y;
         //FIXME Maybe split this up, because this below was executed as the last part in the old update ("nextFrame") method, needs discussion?
         mousePositionLastTime.x = mousePosition.x();
         mousePositionLastTime.y = mousePosition.y();
@@ -223,10 +231,6 @@ public class InputManager implements IUpdatable {
     
     public Vector2dc getMouseScrollOffsetDelta() {
         return mouseScrollOffsetDelta;
-    }
-    
-    public Vector4dc getMouseDelta() {
-        return mouseDelta;
     }
     
 }

@@ -110,7 +110,7 @@ public abstract class TransformBase<V, M, WV extends V, WM extends M, T extends 
         return this.transformMatrixWriteable;
     }
     
-    public V wPosition() {
+    public V worldspacePos() {
         revalidate();
         return positionHelperVectorWriteable;
     }

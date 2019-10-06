@@ -136,8 +136,8 @@ public class Minigame extends Omnikryptec {
     public void bombExplode(BombExplodeEvent ev) {
         for (int i = 0; i < 100; i++) {
             Vector2f r = MathUtil.randomDirection2D(random, 0, 2 * Mathf.PI, new Vector2f()).mul(500);
-            getEventBus().post(new ShootEvent(mapper.get(ev.bomb).transform.wPosition().x(),
-                    mapper.get(ev.bomb).transform.wPosition().y(), r, 150, Projectile.Normal));
+            getEventBus().post(new ShootEvent(mapper.get(ev.bomb).transform.worldspacePos().x(),
+                    mapper.get(ev.bomb).transform.worldspacePos().y(), r, 150, Projectile.Normal));
         }
     }
     

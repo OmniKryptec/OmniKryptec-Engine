@@ -24,7 +24,7 @@ public class RangedSystem extends IterativeComponentSystem {
         PositionComponent pos = posM.get(entity);
         RangedComponent w = mapper.get(entity);
         
-        if (Mathf.square(pos.transform.wPosition().x() - w.startX) + Mathf.square(pos.transform.wPosition().y() - w.startY) > Mathf.square(w.maxrange)) {
+        if (Mathf.square(pos.transform.worldspacePos().x() - w.startX) + Mathf.square(pos.transform.worldspacePos().y() - w.startY) > Mathf.square(w.maxrange)) {
             manager.removeEntity(entity);
             
             Omnikryptec.getEventBus().post(new RangeMaxedEvent(entity));

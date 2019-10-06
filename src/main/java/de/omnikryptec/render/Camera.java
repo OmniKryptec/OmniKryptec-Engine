@@ -8,6 +8,8 @@ import de.omnikryptec.util.math.transform.Transform3Df;
 
 public class Camera implements IProjection {
     
+    private Matrix4f inverseCombined;
+    
     private Matrix4f projectionMatrix;
     
     private Transform3Df transform;
@@ -19,6 +21,7 @@ public class Camera implements IProjection {
     public Camera(final Matrix4f projection) {
         this.projectionMatrix = projection;
         this.combined = new Matrix4f();
+        this.inverseCombined = new Matrix4f();
         this.frustumChecker = new FrustumIntersection();
         this.valid = false;
         setTransform(new Transform3Df());
@@ -60,7 +63,12 @@ public class Camera implements IProjection {
             //this.transform.worldspace().mul(this.projectionMatrix, this.combined);
             this.projectionMatrix.mul(this.transform.worldspace(), this.combined);
             this.frustumChecker.set(this.combined);
+            this.inverseCombined = combined.invert(inverseCombined);
             this.valid = true;
         }
+    }
+    
+    public Matrix4fc getProjectionInverse() {
+        return inverseCombined;
     }
 }

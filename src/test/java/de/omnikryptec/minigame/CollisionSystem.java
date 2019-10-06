@@ -33,11 +33,11 @@ public class CollisionSystem extends AbstractComponentSystem {
                 CollisionComponent hit2 = hitMapper.get(entity);
                 PositionComponent pos1 = posMapper.get(e);
                 PositionComponent pos2 = posMapper.get(entity);
-                boolean intersect = Intersectionf.testAabAab(pos1.transform.wPosition().x(),
-                        pos1.transform.wPosition().y(), 0, pos1.transform.wPosition().x() + hit1.w,
-                        pos1.transform.wPosition().y() + hit1.h, 0, pos2.transform.wPosition().x(),
-                        pos2.transform.wPosition().y(), 0, pos2.transform.wPosition().x() + hit2.w,
-                        pos2.transform.wPosition().y() + hit2.h, 0);
+                boolean intersect = Intersectionf.testAabAab(pos1.transform.worldspacePos().x(),
+                        pos1.transform.worldspacePos().y(), 0, pos1.transform.worldspacePos().x() + hit1.w,
+                        pos1.transform.worldspacePos().y() + hit1.h, 0, pos2.transform.worldspacePos().x(),
+                        pos2.transform.worldspacePos().y(), 0, pos2.transform.worldspacePos().x() + hit2.w,
+                        pos2.transform.worldspacePos().y() + hit2.h, 0);
                 if (intersect) {
                     Omnikryptec.getEventBus().post(new CollisionEvent(entity, e));
                 }

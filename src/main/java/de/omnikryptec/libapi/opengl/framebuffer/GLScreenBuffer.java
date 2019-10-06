@@ -66,8 +66,8 @@ public class GLScreenBuffer extends SurfaceBuffer {
     }
     
     @Override
-    public int[] viewport() {
-        return Arrays.copyOf(viewport, viewport.length);
+    public int[] getViewportUnsafe() {
+        return viewport;
     }
     
     @Override

@@ -29,8 +29,7 @@ import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.keys.KeysAndButtons;
 
 public class MouseHandler implements InputHandler {
-    //TODO pcfreak - better viewport accesss?
-    private final SurfaceBuffer surface = LibAPIManager.instance().getGLFW().getRenderAPI().getSurface();
+
     private final byte[] buttons = new byte[KeysAndButtons.MOUSE_BUTTON_AMOUNT];
     private final Vector2d position = new Vector2d(0.0, 0.0);
     private final Vector2d scrollOffset = new Vector2d(0.0, 0.0);
@@ -155,11 +154,7 @@ public class MouseHandler implements InputHandler {
     public boolean isInsideWindow() {
         return insideWindow.get();
     }
-    
-    public boolean isInsideViewport() {
-        return isInsideWindow() && surface.isInViewport(position);
-    }
-    
+  
     public int size() {
         return buttons.length;
     }
