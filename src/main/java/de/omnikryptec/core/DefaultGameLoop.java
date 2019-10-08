@@ -61,6 +61,7 @@ public class DefaultGameLoop implements IGameLoop {
                 //TODO that number is hardcoded, maybe move the whole updater?
                 this.game.getWindowUpdater().update(144);
                 Time time = this.game.getWindowUpdater().asTime();
+                game.prepareGame(time);
                 game.updateGame(time);
                 game.renderGame(time);
             }

@@ -30,6 +30,11 @@ import de.omnikryptec.util.updater.Time;
 
 public class InputManager implements IUpdatable {
     
+    public static void setCursorState(CursorType cursorType) {
+        //FIXME looks oof
+        LibAPIManager.instance().getGLFW().getRenderAPI().getWindow().setCursorState(cursorType);
+    }
+    
     private KeySettings keySettings;
     // Keyboard part
     private final KeyboardHandler keyboardHandler;

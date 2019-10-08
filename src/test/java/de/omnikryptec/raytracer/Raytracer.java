@@ -10,6 +10,7 @@ import de.omnikryptec.core.Scene;
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
+import de.omnikryptec.libapi.exposed.input.CursorType;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
@@ -43,6 +44,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisetting, KeySettings keys) {
         libsettings.set(LibSetting.DEBUG, false);
         windowSettings.set(WindowSetting.Name, "Raytracer");
+        windowSettings.set(WindowSetting.CursorState, CursorType.DISABLED);
     }
     
     @Override
@@ -51,7 +53,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         Scene s = getGame().createNewScene();
         s.getRendering().addRenderer(this);
         s.setGameLogic(this);
-        camera = new AdaptiveCamera((w, h) -> new Matrix4f().perspective(Mathf.toRadians(60), w / (float) h, 1, 2));
+        camera = new AdaptiveCamera((w, h) -> new Matrix4f().perspective(Mathf.toRadians(80), w / (float) h, 1, 2));
         s.getRendering().setMainProjection(camera);
         initShader();
     }
@@ -75,24 +77,28 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         time = computeShader.getUniform("time");
     }
     
-    private void loadRays(IProjection projection) {
-        Matrix4fc inv = projection.getRawProjection().invert(new Matrix4f());
-        Matrix4f worldspace = inv.mul(projection.getProjection(), new Matrix4f());
-        Vector4f pos = worldspace.transform(new Vector4f(0, 0, 0, 1));
+    private void loadRays(Camera cam) {
+        Matrix4f inv = cam.getRawProjection().invert(new Matrix4f());
+        Matrix4f wInv = cam.getTransform().worldspace().invert(new Matrix4f());
+        Vector4f pos = wInv.transform(new Vector4f(0, 0, 0, 1));
         eye.loadVec3(pos.x, pos.y, pos.z);
-        prepareRay(-1, -1, inv, ray00, pos);
-        prepareRay(-1, 1, inv, ray01, pos);
-        prepareRay(1, -1, inv, ray10, pos);
-        prepareRay(1, 1, inv, ray11, pos);
+        prepareRay(-1, -1, inv, wInv, ray00, pos);
+        prepareRay(-1, 1, inv, wInv, ray01, pos);
+        prepareRay(1, -1, inv, wInv, ray10, pos);
+        prepareRay(1, 1, inv, wInv, ray11, pos);
     }
     
-    private void prepareRay(float x, float y, Matrix4fc proj, UniformVec3 u, Vector4f pos) {
+    private void prepareRay(float x, float y, Matrix4fc proj, Matrix4fc stuff, UniformVec3 u, Vector4f pos) {
         Vector4f v = new Vector4f(x, y, 0, 1);
         proj.transform(v);
         v.mul(1 / v.w);
+        v.w = 0;
+        stuff.transform(v);
         v.normalize();
         u.loadVec3(new Vector3f(v.x, v.y, v.z));
     }
+    
+    float x, y, z, ry, rx;
     
     private void camInput(Camera cam, float dt) {
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_LEFT_CONTROL)) {
@@ -100,24 +106,39 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         }
         float vx = 0, vy = 0, vz = 0;
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_W)) {
-            vz = -1;
-        } else if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_S)) {
             vz = 1;
+        } else if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_S)) {
+            vz = -1;
         }
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_A)) {
-            vx = -1;
-        } else if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_D)) {
             vx = 1;
+        } else if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_D)) {
+            vx = -1;
         }
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_SPACE)) {
-            vy = 1;
-        } else if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_LEFT_SHIFT)) {
             vy = -1;
+        } else if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_LEFT_SHIFT)) {
+            vy = 1;
         }
+        float ry = 0, rx = 0;
+        ry = (float) getInput().getMousePositionDelta().x() * 0.1f;
+        rx = (float) getInput().getMousePositionDelta().y() * 0.1f;
+        ry *= dt;
+        rx *= dt;
         vx *= dt;
         vy *= dt;
         vz *= dt;
-        cam.getTransform().localspaceWrite().translate(vx, vy, vz);
+        this.ry += ry;
+        this.rx += rx;
+        cam.getTransform().localspaceWrite().rotation(this.rx, 1, 0, 0);
+        cam.getTransform().localspaceWrite().rotate(this.ry, 0, 1, 0);
+        Vector4f t = new Vector4f(vx, vy, vz, 0);
+        cam.getTransform().worldspace().invert(new Matrix4f()).transform(t);
+        x += t.x;
+        y += t.y;
+        z += t.z;
+        
+        cam.getTransform().localspaceWrite().translate(x, y, z);
     }
     
     @Override
@@ -140,7 +161,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     public void render(Time time, IProjection projection, LocalRendererContext context) {
         computeShader.bindShader();
         this.time.loadFloat(time.currentf);
-        loadRays(projection);
+        loadRays(camera);
         image.bindImageTexture(0, 0, 0, false, 0, 0, FBAttachmentFormat.RGBA32);
         computeShader.dispatchCompute(MathUtil.toPowerOfTwo(image.getWidth() / 8),
                 MathUtil.toPowerOfTwo(image.getHeight() / 8), 1);
