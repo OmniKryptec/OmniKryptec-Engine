@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface EventSubscription {
     
-    float priority() default 0;
+    int priority() default 0;
     
     boolean receiveConsumed() default false;
 }

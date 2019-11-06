@@ -24,7 +24,7 @@ public interface IEventListener {
         return false;
     }
     
-    default float priority() {
+    default int priority() {
         return 0;
     }
 }

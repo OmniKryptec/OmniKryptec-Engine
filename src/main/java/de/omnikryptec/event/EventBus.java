@@ -37,8 +37,7 @@ public class EventBus implements IUpdatable, IEventListener {
         
         @Override
         public int compare(IEventListener o1, IEventListener o2) {
-            
-            return (int) Math.signum(o2.priority() - o1.priority());
+            return o2.priority() - o1.priority();
         }
     };
     
@@ -246,8 +245,8 @@ public class EventBus implements IUpdatable, IEventListener {
     }
     
     @Override
-    public float priority() {
-        return Float.NEGATIVE_INFINITY;
+    public int priority() {
+        return Integer.MIN_VALUE + 10;
     }
     
     @Override
