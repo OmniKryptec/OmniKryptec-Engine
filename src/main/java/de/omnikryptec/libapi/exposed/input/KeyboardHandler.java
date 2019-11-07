@@ -20,7 +20,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
-import de.omnikryptec.libapi.exposed.window.InputEvent;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.keys.KeysAndButtons;
 

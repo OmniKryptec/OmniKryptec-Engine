@@ -1,4 +1,4 @@
-package de.omnikryptec.libapi.exposed.window;
+package de.omnikryptec.libapi.exposed.input;
 
 import de.omnikryptec.event.Event;
 

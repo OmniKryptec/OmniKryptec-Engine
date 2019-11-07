@@ -23,7 +23,6 @@ import org.joml.Vector2dc;
 
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
-import de.omnikryptec.libapi.exposed.window.InputEvent;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.keys.KeysAndButtons;
 

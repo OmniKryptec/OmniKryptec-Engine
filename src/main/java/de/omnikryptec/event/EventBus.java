@@ -19,6 +19,7 @@ package de.omnikryptec.event;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Queue;
@@ -29,6 +30,8 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
 import de.omnikryptec.core.update.IUpdatable;
+import de.omnikryptec.util.Logger;
+import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.updater.Time;
 
 public class EventBus implements IUpdatable, IEventListener {
@@ -56,6 +59,7 @@ public class EventBus implements IUpdatable, IEventListener {
     private final ListMultimap<Object, ObjMapping> objMappings;
     private final Queue<Event> eventQueue;
     private boolean receiveConsumed = true;
+    private int priority = Integer.MIN_VALUE + 10;
     
     /**
      * A read-only version of this {@link EventBus}
@@ -135,7 +139,7 @@ public class EventBus implements IUpdatable, IEventListener {
     public void register(final IEventListener listener, final Class<? extends Event> eventtype) {
         List<IEventListener> list = listeners.get(eventtype);
         list.add(listener);
-        list.sort(LISTENER_COMP);
+        list.sort(LISTENER_COMP);//might change, see processEvent for more comments
     }
     
     /**
@@ -191,7 +195,7 @@ public class EventBus implements IUpdatable, IEventListener {
             }
         }
         if (!annotationFound) {
-            throw new IllegalArgumentException("No EventSubscriptions found: " + object);
+            Logger.log(getClass(), LogType.Debug, "No EventSubscriptions were found: " + object);
         }
     }
     
@@ -220,18 +224,27 @@ public class EventBus implements IUpdatable, IEventListener {
     
     private void processEvent(final Event event) {
         Class<?> someclazz = event.getClass();
+        List<IEventListener> listenerList = new ArrayList<>();
         do {
             Class<? extends Event> eventClass = (Class<? extends Event>) someclazz;
             if (this.listeners.containsKey(eventClass)) {
                 List<IEventListener> localList = this.listeners.get(eventClass);
-                for (final IEventListener listener : localList) {
-                    if (!event.isConsumeable() || !event.isConsumed() || listener.receiveConsumed()) {
-                        listener.invoke(event);
-                    }
-                }
+                listenerList.addAll(localList);
+                //the commented code is buggy because priorities get messd up TODO: maybe change stuff so listenerlist gets pre-compiled? event.triggerssuper... will become obsolete though
+                //                for (final IEventListener listener : localList) {
+                //                    if (!event.isConsumeable() || !event.isConsumed() || listener.receiveConsumed()) {
+                //                        listener.invoke(event);
+                //                    }
+                //                }
             }
             someclazz = someclazz.getSuperclass();
         } while (event.triggersSuperEventListeners() && someclazz != Object.class && someclazz != null);
+        listenerList.sort(LISTENER_COMP);
+        for (IEventListener l : listenerList) {
+            if (!event.isConsumeable() || !event.isConsumed() || l.receiveConsumed()) {
+                l.invoke(event);
+            }
+        }
     }
     
     @Override
@@ -244,9 +257,13 @@ public class EventBus implements IUpdatable, IEventListener {
         processEvent(ev);
     }
     
+    public void setPriority(int i) {
+        this.priority = i;
+    }
+    
     @Override
     public int priority() {
-        return Integer.MIN_VALUE + 10;
+        return priority;
     }
     
     @Override
