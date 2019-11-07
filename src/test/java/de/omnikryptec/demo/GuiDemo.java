@@ -57,7 +57,7 @@ public class GuiDemo extends Omnikryptec {
             batch.drawRect(new Matrix3x2f(), a, a);
         }
         
-        @EventSubscription(priority = 2000)
+        @EventSubscription()
         public void cursor(InputEvent.CursorInWindowEvent ev) {
             b = ev.entered;
             ev.consume();
