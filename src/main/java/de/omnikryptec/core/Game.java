@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import de.omnikryptec.event.EventBus;
+import de.omnikryptec.gui.GuiManager;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
 import de.omnikryptec.render.renderer.RendererContext;
@@ -39,6 +40,11 @@ public class Game {
         scenes.add(newScene);
         notifyPriorityChange();
         return newScene;
+    }
+    
+    @Deprecated //TODO better use one GuiManager for one instance of Game?
+    public GuiManager createNewGuiManager() {
+        return new GuiManager(rendererContext.createLocal());
     }
     
     //*******************************************
