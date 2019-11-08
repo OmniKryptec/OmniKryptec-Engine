@@ -217,7 +217,7 @@ public abstract class FrameBuffer implements Deletable {
     }
     
     public void clearColor(Color color) {
-        clearColor(color.getA(), color.getG(), color.getB(), color.getA());
+        clearColor(color.getR(), color.getG(), color.getB(), color.getA());
     }
     
     public void clearColor(float r, float g, float b, float a) {
@@ -225,7 +225,7 @@ public abstract class FrameBuffer implements Deletable {
     }
     
     public void clear(Color color, SurfaceBufferType... types) {
-        clear(color.getA(), color.getG(), color.getB(), color.getA(), types);
+        clear(color.getR(), color.getG(), color.getB(), color.getA(), types);
     }
     
     public void clearAll() {

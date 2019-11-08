@@ -2,19 +2,26 @@ package de.omnikryptec.minigame;
 
 import java.util.Random;
 
+import org.joml.Matrix3x2f;
 import org.joml.Vector2f;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.core.Scene;
 import de.omnikryptec.core.update.UpdateableFactory;
+import de.omnikryptec.demo.GuiDemo.TestComponent;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.event.EventSubscription;
+import de.omnikryptec.gui.GuiComponent;
+import de.omnikryptec.gui.GuiConstraints;
+import de.omnikryptec.gui.GuiManager;
+import de.omnikryptec.gui.TilingLayout;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
+import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.data.Color;
@@ -34,7 +41,32 @@ public class Minigame extends Omnikryptec {
     public static void main(final String[] args) {
         new Minigame().start();
     }
-    
+    public static class TestComponent extends GuiComponent {
+        
+        private float g, b;
+        
+        private float x, y, w, h;
+        
+        public TestComponent(float g, float b) {
+            this.g = g;
+            this.b = b;
+        }
+        
+        @Override
+        protected void renderComponent(Batch2D batch) {
+            batch.color().set(1, g, b);
+            batch.drawRect(new Matrix3x2f().setTranslation(x, y), w, h);
+        }
+        
+        @Override
+        protected void calculateActualPosition(GuiConstraints constraints) {
+            x = constraints.getX() + constraints.getMaxWidth() * 0.1f;
+            y = constraints.getY() + constraints.getMaxHeight() * 0.1f;
+            w = constraints.getMaxWidth() * 0.8f;
+            h = constraints.getMaxHeight() * 0.8f;
+        }
+        
+    }
     @Override
     protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings, KeySettings keys) {
@@ -54,6 +86,7 @@ public class Minigame extends Omnikryptec {
         getEventBus().register(this);
         mgr = UpdateableFactory.createDefaultIECSManager();
         Scene sn = getGame().createNewScene();
+        GuiManager gmgr = getGame().createNewGuiManager();
         sn.setGameLogic(mgr);
         mgr.addSystem(new CollisionSystem());
         mgr.addSystem(new PlayerSystem());
@@ -69,7 +102,23 @@ public class Minigame extends Omnikryptec {
                 }
             }
         }
-        
+//        GuiComponent parent = new GuiComponent();
+//        parent.setLayout(new TilingLayout(2, 2));
+//        
+//        GuiComponent innerParent = new GuiComponent();
+//        innerParent.setLayout(new TilingLayout(2, 2));
+//        
+//        innerParent.addComponent(new TestComponent(0, 0));
+//        innerParent.addComponent(new TestComponent(1, 0));
+//        innerParent.addComponent(new TestComponent(0, 1));
+//        innerParent.addComponent(new TestComponent(1, 1));
+//        
+//        parent.addComponent(new TestComponent(0, 0));
+//        parent.addComponent(new TestComponent(1, 0));
+//        parent.addComponent(innerParent);
+//        parent.addComponent(new TestComponent(1, 1));
+//        
+//        gmgr.setGui(parent);
     }
     
     @Override
