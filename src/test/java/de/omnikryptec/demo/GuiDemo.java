@@ -6,6 +6,7 @@ import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.gui.GuiComponent;
 import de.omnikryptec.gui.GuiManager;
+import de.omnikryptec.gui.TilingLayout;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.input.InputEvent;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
@@ -37,30 +38,41 @@ public class GuiDemo extends Omnikryptec {
         SimpleSprite sprite = new SimpleSprite();
         sprite.setTexture(getTextures().get("jd.png"));
         
-        TestComponent tc = new TestComponent(1);
-        tc.addComponent(new TestComponent(0.1f));
+        GuiComponent parent = new GuiComponent();
+        parent.setLayout(new TilingLayout(2, 2));
         
-        gmgr.setGui(tc);
+        GuiComponent innerParent = new GuiComponent();
+        innerParent.setLayout(new TilingLayout(2, 2));
+        
+        innerParent.addComponent(new TestComponent(0.1f,0.1f));
+        innerParent.addComponent(new TestComponent(1,0.1f));
+        innerParent.addComponent(new TestComponent(0.1f,1));
+        innerParent.addComponent(new TestComponent(1,0.9f));
+        
+        parent.addComponent(new TestComponent(0,0));
+        parent.addComponent(new TestComponent(1,0));
+        parent.addComponent(innerParent);
+        parent.addComponent(new TestComponent(1,1));
+
+
+        gmgr.setGui(parent);
     }
     
     public static class TestComponent extends GuiComponent {
-        private boolean b = false;
-        private float a;
         
-        public TestComponent(float a) {
-            this.a = a;
+        private float g,b;
+        
+        public TestComponent(float g, float b) {
+            this.g = g;
+            this.b = b;
         }
         
         @Override
         protected void renderComponent(Batch2D batch) {
-            batch.color().set(1, b ? 1 : 0, 0);
-            batch.drawRect(new Matrix3x2f(), a, a);
+            batch.color().set(1, g, b);
+            batch.drawRect(new Matrix3x2f().setTranslation(getConstraints().getX(), getConstraints().getY()),
+                    getConstraints().getMaxWidth(), getConstraints().getMaxHeight());
         }
         
-        @EventSubscription()
-        public void cursor(InputEvent.CursorInWindowEvent ev) {
-            b = ev.entered;
-            ev.consume();
-        }
     }
 }
