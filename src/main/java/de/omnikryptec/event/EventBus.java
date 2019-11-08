@@ -36,6 +36,9 @@ import de.omnikryptec.util.updater.Time;
 
 public class EventBus implements IUpdatable, IEventListener {
     
+    private static final int DEFAULT_EVENTBUS_PRIORITY = Integer.MIN_VALUE + 100;
+    private static final boolean DEFAULT_EVENTBUS_CONCURRENT = false;
+    
     private static final Comparator<IEventListener> LISTENER_COMP = new Comparator<IEventListener>() {
         
         @Override
@@ -59,7 +62,7 @@ public class EventBus implements IUpdatable, IEventListener {
     private final ListMultimap<Object, ObjMapping> objMappings;
     private final Queue<Event> eventQueue;
     private boolean receiveConsumed = true;
-    private int priority = Integer.MIN_VALUE + 10;
+    private int priority;
     
     /**
      * A read-only version of this {@link EventBus}
@@ -88,13 +91,22 @@ public class EventBus implements IUpdatable, IEventListener {
     };
     
     public EventBus() {
-        this(false);
+        this(DEFAULT_EVENTBUS_CONCURRENT, DEFAULT_EVENTBUS_PRIORITY);
     }
     
     public EventBus(boolean concurrent) {
+        this(concurrent, DEFAULT_EVENTBUS_PRIORITY);
+    }
+    
+    public EventBus(int prio) {
+        this(DEFAULT_EVENTBUS_CONCURRENT, prio);
+    }
+    
+    public EventBus(boolean concurrent, int prio) {
         this.eventQueue = concurrent ? new ConcurrentLinkedQueue<>() : new ArrayDeque<>();
         this.listeners = ArrayListMultimap.create();
         this.objMappings = ArrayListMultimap.create();
+        this.priority = prio;
     }
     
     public void unregister(IEventListener listener) {
@@ -255,10 +267,6 @@ public class EventBus implements IUpdatable, IEventListener {
     @Override
     public void invoke(final Event ev) {
         processEvent(ev);
-    }
-    
-    public void setPriority(int i) {
-        this.priority = i;
     }
     
     @Override

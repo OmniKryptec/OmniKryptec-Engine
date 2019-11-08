@@ -23,8 +23,7 @@ public class GuiComponent {
         this.layout = null;
         this.constraints = DEFAULT_CONSTRAINTS;
         this.children = new ArrayList<>();
-        this.events = new EventBus();
-        this.events.setPriority(2000);
+        this.events = new EventBus(2000);
         events.setReceiveConsumed(false);
         events.register(this);
     }
@@ -49,8 +48,8 @@ public class GuiComponent {
     public void revalidateLayout() {
         if (this.layout != null) {
             layout.doLayout(this, children);
-        }else {
-            for(GuiComponent gc : children) {
+        } else {
+            for (GuiComponent gc : children) {
                 gc.setConstraints(this.constraints);
             }
         }
