@@ -86,7 +86,6 @@ public class Minigame extends Omnikryptec {
         getEventBus().register(this);
         mgr = UpdateableFactory.createDefaultIECSManager();
         Scene sn = getGame().createNewScene();
-        GuiManager gmgr = getGame().createNewGuiManager();
         sn.setGameLogic(mgr);
         mgr.addSystem(new CollisionSystem());
         mgr.addSystem(new PlayerSystem());
@@ -102,23 +101,6 @@ public class Minigame extends Omnikryptec {
                 }
             }
         }
-//        GuiComponent parent = new GuiComponent();
-//        parent.setLayout(new TilingLayout(2, 2));
-//        
-//        GuiComponent innerParent = new GuiComponent();
-//        innerParent.setLayout(new TilingLayout(2, 2));
-//        
-//        innerParent.addComponent(new TestComponent(0, 0));
-//        innerParent.addComponent(new TestComponent(1, 0));
-//        innerParent.addComponent(new TestComponent(0, 1));
-//        innerParent.addComponent(new TestComponent(1, 1));
-//        
-//        parent.addComponent(new TestComponent(0, 0));
-//        parent.addComponent(new TestComponent(1, 0));
-//        parent.addComponent(innerParent);
-//        parent.addComponent(new TestComponent(1, 1));
-//        
-//        gmgr.setGui(parent);
     }
     
     @Override

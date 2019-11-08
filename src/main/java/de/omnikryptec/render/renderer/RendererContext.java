@@ -11,6 +11,7 @@ import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.libapi.exposed.render.Texture;
+import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.Defaultable;
@@ -39,7 +40,7 @@ public class RendererContext implements IUpdatable {
     
     private static final Comparator<LocalRendererContext> LOCAL_CONTEXT_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority()
             - e1.priority();
-    private static final RenderState DEFAULT_SCREENWRITER_STATE = RenderState.of();
+    private static final RenderState DEFAULT_SCREENWRITER_STATE = RenderState.of(BlendMode.ALPHA);
     
     private RenderAPI renderApi;
     private List<LocalRendererContext> subContexts;
