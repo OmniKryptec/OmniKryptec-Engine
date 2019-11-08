@@ -5,6 +5,7 @@ import org.joml.Matrix3x2f;
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.gui.GuiComponent;
+import de.omnikryptec.gui.GuiConstraints;
 import de.omnikryptec.gui.GuiManager;
 import de.omnikryptec.gui.TilingLayout;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
@@ -44,23 +45,24 @@ public class GuiDemo extends Omnikryptec {
         GuiComponent innerParent = new GuiComponent();
         innerParent.setLayout(new TilingLayout(2, 2));
         
-        innerParent.addComponent(new TestComponent(0.1f,0.1f));
-        innerParent.addComponent(new TestComponent(1,0.1f));
-        innerParent.addComponent(new TestComponent(0.1f,1));
-        innerParent.addComponent(new TestComponent(1,0.9f));
+        innerParent.addComponent(new TestComponent(0, 0));
+        innerParent.addComponent(new TestComponent(1, 0));
+        innerParent.addComponent(new TestComponent(0, 1));
+        innerParent.addComponent(new TestComponent(1, 1));
         
-        parent.addComponent(new TestComponent(0,0));
-        parent.addComponent(new TestComponent(1,0));
+        parent.addComponent(new TestComponent(0, 0));
+        parent.addComponent(new TestComponent(1, 0));
         parent.addComponent(innerParent);
-        parent.addComponent(new TestComponent(1,1));
-
-
+        parent.addComponent(new TestComponent(1, 1));
+        
         gmgr.setGui(parent);
     }
     
     public static class TestComponent extends GuiComponent {
         
-        private float g,b;
+        private float g, b;
+        
+        private float x, y, w, h;
         
         public TestComponent(float g, float b) {
             this.g = g;
@@ -70,8 +72,15 @@ public class GuiDemo extends Omnikryptec {
         @Override
         protected void renderComponent(Batch2D batch) {
             batch.color().set(1, g, b);
-            batch.drawRect(new Matrix3x2f().setTranslation(getConstraints().getX(), getConstraints().getY()),
-                    getConstraints().getMaxWidth(), getConstraints().getMaxHeight());
+            batch.drawRect(new Matrix3x2f().setTranslation(x, y), w, h);
+        }
+        
+        @Override
+        protected void calculateActualPosition(GuiConstraints constraints) {
+            x = constraints.getX() + constraints.getMaxWidth() * 0.1f;
+            y = constraints.getY() + constraints.getMaxHeight() * 0.1f;
+            w = constraints.getMaxWidth() * 0.8f;
+            h = constraints.getMaxHeight() * 0.8f;
         }
         
     }
