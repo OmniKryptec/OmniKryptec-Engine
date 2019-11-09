@@ -55,7 +55,11 @@ public class GuiDemo extends Omnikryptec {
         parent.addComponent(innerParent);
         parent.addComponent(new TestComponent(1, 1));
         
-        gmgr.setGui(parent);
+        GuiComponent comp = new GuiComponent();
+        comp.addComponent(parent);
+        //comp.addComponent(new TestComponent(0.5f, 0.5f));
+        
+        gmgr.setGui(comp);
     }
     
     public static class TestComponent extends GuiComponent {

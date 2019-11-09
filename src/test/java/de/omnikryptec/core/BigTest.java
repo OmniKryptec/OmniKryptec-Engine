@@ -23,10 +23,10 @@ import de.omnikryptec.util.updater.Time;
 public class BigTest extends Omnikryptec {
     
     public static void main(final String[] args) {
-        Logger.getDefaultAdvancedLeveledLogger().setMinimumLogLevel(LogLevel.FINEST);
-        Logger.getDefaultAdvancedLeveledLogger().createLogFormatBuilder().appendLogLevel().appendText(": ").appendObject().appendNewLine().appendThread().appendSource().appendNewLine().finishWithoutException();
-        AdvancedFile.DEBUG = true;
-        AdvancedFile.DEBUG_TO_STRING = true;
+        //Logger.getDefaultAdvancedLeveledLogger().setMinimumLogLevel(LogLevel.FINEST);
+        //Logger.getDefaultAdvancedLeveledLogger().createLogFormatBuilder().appendLogLevel().appendText(": ").appendObject().appendNewLine().appendThread().appendSource().appendNewLine().finishWithoutException();
+        //AdvancedFile.DEBUG = true;
+        //AdvancedFile.DEBUG_TO_STRING = true;
         new BigTest().start();
     }
     

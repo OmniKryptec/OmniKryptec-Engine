@@ -33,6 +33,7 @@ public class BasicFunctionsTest {
     
     public static void main(final String[] args) {
         LibAPIManager.init(new Settings<>());
+        LibAPIManager.instance().initGlfw();
         LibAPIManager.instance().getGLFW().setRenderer(RenderAPI.OpenGL, new Settings<>(), new Settings<>());
         final IWindow window = LibAPIManager.instance().getGLFW().getRenderAPI().getWindow();
         window.setVisible(true);

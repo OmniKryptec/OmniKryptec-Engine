@@ -6,6 +6,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opencl.CL10;
 
 import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.opencl.CLCommandQueue;
 import de.omnikryptec.libapi.opencl.CLContext;
 import de.omnikryptec.libapi.opencl.CLDevice;
@@ -27,7 +28,10 @@ public class CLTest {
     
     public static void main(String[] args) {
         //Create stuff
-        LibAPIManager.init(new Settings<>());
+        Settings<LibSetting> s = new Settings<>();
+        s.set(LibSetting.DEBUG, true);
+        s.set(LibSetting.DEBUG_LIBRARY_LOADING, true);
+        LibAPIManager.init(s);
         LibAPIManager.instance().initOpenCL();
         OpenCL opc = LibAPIManager.instance().getOpenCL();
         CLPlatform platform = opc.getPlatform(0);
