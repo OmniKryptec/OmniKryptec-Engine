@@ -23,118 +23,119 @@ import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.keys.KeysAndButtons;
 
-//monitor if synchronized causes bad performance in this class or if it is negliable 
+//monitor if synchronized causes bad performance in this class or if it is negliable
 public class KeyboardHandler implements InputHandler {
-    
+
     private final byte[] keys = new byte[KeysAndButtons.OKE_KEY_LAST + 1]; //TODO Find out if this includes every key
     private final AtomicReference<String> inputString = new AtomicReference<>("");
     // Configurable variables
     private final boolean appendToString = false;
     // Temporary variables
-    private byte[] keysLastTime = new byte[keys.length];
-    
+    private final byte[] keysLastTime = new byte[this.keys.length];
+
     public KeyboardHandler() {
         LibAPIManager.ENGINE_EVENTBUS.register(this);
     }
-    
+
     @EventSubscription
-    public void onKeyEvent(InputEvent.KeyEvent ev) {
+    public void onKeyEvent(final InputEvent.KeyEvent ev) {
         this.keys[ev.key] = (byte) ev.action;
     }
-    
+
     @Override
     public boolean init() {
         return true;
     }
-    
+
+    @Override
     public boolean deinit() {
         return true;
     }
-    
+
     @Override
-    public boolean preUpdate(double currentTime, KeySettings keySettings) {
+    public boolean preUpdate(final double currentTime, final KeySettings keySettings) {
         return true;
     }
-    
+
     @Override
-    public boolean update(double currentTime, KeySettings keySettings) {
-        synchronized (keys) {
-            for (int i = 0; i < keys.length; i++) {
-                if (keysLastTime[i] != keys[i]) {
-                    keySettings.updateKeys(currentTime, i, true, keys[i]);
-                    keysLastTime[i] = keys[i];
+    public boolean update(final double currentTime, final KeySettings keySettings) {
+        synchronized (this.keys) {
+            for (int i = 0; i < this.keys.length; i++) {
+                if (this.keysLastTime[i] != this.keys[i]) {
+                    keySettings.updateKeys(currentTime, i, true, this.keys[i]);
+                    this.keysLastTime[i] = this.keys[i];
                 }
             }
         }
         return true;
     }
-    
+
     @Override
-    public boolean postUpdate(double currentTime, KeySettings keySettings) {
+    public boolean postUpdate(final double currentTime, final KeySettings keySettings) {
         return true;
     }
-    
+
     @Override
     public boolean close() {
         return true;
     }
-    
-    public byte getKeyState(int keyCode) {
-        synchronized (keys) {
-            return keys[keyCode];
+
+    public byte getKeyState(final int keyCode) {
+        synchronized (this.keys) {
+            return this.keys[keyCode];
         }
     }
-    
-    public boolean isKeyUnknown(int keyCode) {
-        synchronized (keys) {
-            return keys[keyCode] == KeySettings.KEY_UNKNOWN;
+
+    public boolean isKeyUnknown(final int keyCode) {
+        synchronized (this.keys) {
+            return this.keys[keyCode] == KeySettings.KEY_UNKNOWN;
         }
     }
-    
-    public boolean isKeyNothing(int keyCode) {
-        synchronized (keys) {
-            return keys[keyCode] == KeySettings.KEY_NOTHING;
+
+    public boolean isKeyNothing(final int keyCode) {
+        synchronized (this.keys) {
+            return this.keys[keyCode] == KeySettings.KEY_NOTHING;
         }
     }
-    
-    public boolean isKeyReleased(int keyCode) {
-        synchronized (keys) {
-            return keys[keyCode] == KeySettings.KEY_RELEASED;
+
+    public boolean isKeyReleased(final int keyCode) {
+        synchronized (this.keys) {
+            return this.keys[keyCode] == KeySettings.KEY_RELEASED;
         }
     }
-    
-    public boolean isKeyPressed(int keyCode) {
-        synchronized (keys) {
-            return keys[keyCode] == KeySettings.KEY_PRESSED;
+
+    public boolean isKeyPressed(final int keyCode) {
+        synchronized (this.keys) {
+            return this.keys[keyCode] == KeySettings.KEY_PRESSED;
         }
     }
-    
-    public boolean isKeyRepeated(int keyCode) {
-        synchronized (keys) {
-            return keys[keyCode] == KeySettings.KEY_REPEATED;
+
+    public boolean isKeyRepeated(final int keyCode) {
+        synchronized (this.keys) {
+            return this.keys[keyCode] == KeySettings.KEY_REPEATED;
         }
     }
-    
+
     public String getInputString() {
-        synchronized (inputString) {
-            return inputString.get();
+        synchronized (this.inputString) {
+            return this.inputString.get();
         }
     }
-    
+
     public void clearInputString() {
-        synchronized (inputString) {
-            inputString.set("");
+        synchronized (this.inputString) {
+            this.inputString.set("");
         }
     }
-    
+
     public String consumeInputString() {
         final String temp = getInputString();
         clearInputString();
         return temp;
     }
-    
+
     public int size() {
         return this.keys.length;
     }
-    
+
 }

@@ -5,50 +5,50 @@ import de.omnikryptec.render.renderer.LocalRendererContext;
 import de.omnikryptec.util.updater.Time;
 
 public class Scene {
-    
+
     private IUpdatable gameLogic;
-    
-    private LocalRendererContext renderer;
-    private Game game;
-    
+
+    private final LocalRendererContext renderer;
+    private final Game game;
+
     private int priority;
-    
-    Scene(LocalRendererContext context, Game game, int prio) {
+
+    Scene(final LocalRendererContext context, final Game game, final int prio) {
         this.renderer = context;
         this.game = game;
         setPriority(prio);
     }
-    
-    public void updateScene(Time time) {
+
+    public void updateScene(final Time time) {
         if (hasGameLogic()) {
-            gameLogic.update(time);
+            this.gameLogic.update(time);
         }
     }
-    
+
     public boolean hasGameLogic() {
-        return gameLogic != null;
+        return this.gameLogic != null;
     }
-    
-    public void setGameLogic(IUpdatable updatable) {
+
+    public void setGameLogic(final IUpdatable updatable) {
         this.gameLogic = updatable;
     }
-    
+
     public IUpdatable getGameLogic() {
-        return gameLogic;
+        return this.gameLogic;
     }
-    
+
     public LocalRendererContext getRendering() {
-        return renderer;
+        return this.renderer;
     }
-    
-    public void setPriority(int i) {
+
+    public void setPriority(final int i) {
         this.priority = i;
-        game.notifyPriorityChange();
-        this.renderer.setPriority(priority);
+        this.game.notifyPriorityChange();
+        this.renderer.setPriority(this.priority);
     }
-    
+
     public int priority() {
-        return priority;
+        return this.priority;
     }
-    
+
 }

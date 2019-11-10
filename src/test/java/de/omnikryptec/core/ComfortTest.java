@@ -24,22 +24,23 @@ import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 
 public class ComfortTest extends Omnikryptec {
-    
+
     public static void main(final String[] args) {
         new ComfortTest().start();
     }
-    
+
     @Override
     protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisetting, KeySettings keys) {
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisetting,
+            final KeySettings keys) {
         libsettings.set(LibSetting.DEBUG, true);
         windowSettings.set(WindowSetting.Name, "ComfortTest-Window");
     }
-    
+
     @Override
     protected void onInitialized() {
-        Scene scene = getGame().createNewScene();
+        final Scene scene = getGame().createNewScene();
         scene.setGameLogic(UpdateableFactory.createScreenClearTest());
     }
-    
+
 }

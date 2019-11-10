@@ -6,25 +6,25 @@ import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.render.batch.vertexmanager.VertexManager;
 
 public class ModuleBatchingManager {
-    
+
     public static enum QuadSide {
         TopLeft, TopRight, BotLeft, BotRight;
     }
-    
+
     private static final QuadSide[] ARRANGED = { QuadSide.TopLeft, QuadSide.TopRight, QuadSide.BotLeft,
             QuadSide.TopRight, QuadSide.BotRight, QuadSide.BotLeft };
     private static final QuadSide[] SIDES = QuadSide.values();
-    
-    private Module[] modules;
-    private float[] global;
-    private float[][] local = new float[SIDES.length][];
-    private int totalFloatsPerVertex;
-    
-    public ModuleBatchingManager(Module... modules) {
+
+    private final Module[] modules;
+    private final float[] global;
+    private final float[][] local = new float[SIDES.length][];
+    private final int totalFloatsPerVertex;
+
+    public ModuleBatchingManager(final Module... modules) {
         this.modules = modules;
         int sideCount = 0;
         int globalCount = 0;
-        for (Module m : modules) {
+        for (final Module m : modules) {
             if (m.sideIndependant()) {
                 globalCount += m.size();
             } else {
@@ -32,62 +32,63 @@ public class ModuleBatchingManager {
             }
         }
         this.totalFloatsPerVertex = globalCount + sideCount;
-        global = new float[globalCount];
-        for (int i = 0; i < local.length; i++) {
-            local[i] = new float[sideCount];
+        this.global = new float[globalCount];
+        for (int i = 0; i < this.local.length; i++) {
+            this.local[i] = new float[sideCount];
         }
     }
-    
+
     public VertexBufferLayout createLayout() {
-        VertexBufferLayout layout = new VertexBufferLayout();
-        for (Module m : modules) {
+        final VertexBufferLayout layout = new VertexBufferLayout();
+        for (final Module m : this.modules) {
             if (m.sideIndependant()) {
                 layout.push(Type.FLOAT, m.size(), false);
             }
         }
-        for (Module m : modules) {
+        for (final Module m : this.modules) {
             if (!m.sideIndependant()) {
                 layout.push(Type.FLOAT, m.size(), false);
             }
         }
         return layout;
     }
-    
+
     public Module[] getModules() {
-        return modules.clone();
+        return this.modules.clone();
     }
-    
+
     public int floatsPerVertex() {
-        return totalFloatsPerVertex;
+        return this.totalFloatsPerVertex;
     }
-    
-    public void issueVertices(Texture texture, VertexManager manager) {
-        manager.prepareNext(texture, totalFloatsPerVertex * ARRANGED.length);
+
+    public void issueVertices(final Texture texture, final VertexManager manager) {
+        manager.prepareNext(texture, this.totalFloatsPerVertex * ARRANGED.length);
         int globalindex = 0;
         int localindex = 0;
-        for (Module m : modules) {
+        for (final Module m : this.modules) {
             if (m.sideIndependant()) {
-                m.visit(global, null, globalindex);
+                m.visit(this.global, null, globalindex);
                 globalindex += m.size();
             } else {
                 for (int i = 0; i < SIDES.length; i++) {
-                    m.visit(local[i], SIDES[i], localindex);
+                    m.visit(this.local[i], SIDES[i], localindex);
                 }
                 localindex += m.size();
             }
         }
-        for (QuadSide q : ARRANGED) {
-            manager.addData(global);
-            manager.addData(local[q.ordinal()]);
+        for (final QuadSide q : ARRANGED) {
+            manager.addData(this.global);
+            manager.addData(this.local[q.ordinal()]);
         }
     }
-    
-    public void issuePreComputed(Texture texture, VertexManager manager, float[] floats, int start, int length) {
-        if (length % totalFloatsPerVertex != 0) {
+
+    public void issuePreComputed(final Texture texture, final VertexManager manager, final float[] floats,
+            final int start, final int length) {
+        if (length % this.totalFloatsPerVertex != 0) {
             throw new IllegalArgumentException();
         }
         manager.prepareNext(texture, length);
         manager.addData(floats, start, length);
     }
-    
+
 }

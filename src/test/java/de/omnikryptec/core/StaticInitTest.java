@@ -24,13 +24,13 @@ import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.Settings;
 
 public class StaticInitTest {
-    
+
     public static void main(final String[] args) {
         Omnikryptec.initialize(new Settings<>(), RenderAPI.OpenGL, new Settings<>(), new Settings<>(), false, false);
         final IWindow window = LibAPIManager.instance().getGLFW().getRenderAPI().getWindow();
         window.setVisible(true);
         final WindowUpdater updater = new WindowUpdater(window);
-        Color clearColor = new Color();
+        final Color clearColor = new Color();
         while (!window.isCloseRequested()) {
             updater.update(0);
             if (updater.getOperationCount() % 40 == 0) {
@@ -40,5 +40,5 @@ public class StaticInitTest {
         }
         Omnikryptec.deinitialize();
     }
-    
+
 }

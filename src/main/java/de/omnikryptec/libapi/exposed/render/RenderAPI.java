@@ -28,66 +28,66 @@ import de.omnikryptec.resource.TextureData;
 
 public interface RenderAPI {
     public static final Class<OpenGLRenderAPI> OpenGL = OpenGLRenderAPI.class;
-    
-//    /**
-//     * The currently set {@link RenderAPI}.
-//     * <p>
-//     * Note: this is the same as calling<br>
-//     * {@code LibAPIManager.instance().getRenderAPI()}
-//     * </p>
-//     *
-//     * @return the current {@code RenderAPI}
-//     */
-//    //TODx don't use this better use it through renderercontext because this is ugly af?
-//    @Deprecated
-//    public static RenderAPI get() {
-//        return LibAPIManager.instance().getGLFW().getRenderAPI();
-//    }
-    
+
+    //    /**
+    //     * The currently set {@link RenderAPI}.
+    //     * <p>
+    //     * Note: this is the same as calling<br>
+    //     * {@code LibAPIManager.instance().getRenderAPI()}
+    //     * </p>
+    //     *
+    //     * @return the current {@code RenderAPI}
+    //     */
+    //    //TODx don't use this better use it through renderercontext because this is ugly af?
+    //    @Deprecated
+    //    public static RenderAPI get() {
+    //        return LibAPIManager.instance().getGLFW().getRenderAPI();
+    //    }
+
     public static enum Type {
         FLOAT
     }
-    
+
     public static enum SurfaceBufferType {
         Depth, Color;
     }
-    
+
     public static enum BufferUsage {
         Static, Dynamic, Stream;
     }
-    
+
     public static enum PolyMode {
         FILL, LINE, POINT;
     }
-    
+
     /**
      * Returns the currently used {@link Window}
      *
      * @return
      */
     IWindow getWindow();
-    
+
     /**
      * Creates a new {@link IndexBuffer}
      *
      * @return indexbuffer
      */
     IndexBuffer createIndexBuffer();
-    
+
     /**
      * Creates a new {@link VertexBuffer}
      *
      * @return vertexbuffer
      */
     VertexBuffer createVertexBuffer();
-    
+
     /**
      * Creates a new {@link VertexArray}
      *
      * @return vertexarray
      */
     VertexArray createVertexArray();
-    
+
     /**
      * Creates a new {@link Texture} that represents a 2-dimensional image
      *
@@ -96,7 +96,7 @@ public interface RenderAPI {
      * @return texture
      */
     Texture createTexture2D(TextureData textureData, TextureConfig textureConfig);
-    
+
     /**
      * Creates a new {@link Shader} program (e.g. bundle of vertex- and
      * fragmentshader)
@@ -104,7 +104,7 @@ public interface RenderAPI {
      * @return shaderprogram
      */
     Shader createShader();
-    
+
     /**
      * Creates a new {@link FrameBuffer} to be used with this {@link RenderAPI}.
      *
@@ -117,36 +117,36 @@ public interface RenderAPI {
      * @see FrameBuffer#assignTarget(int, FBTarget)
      */
     FrameBuffer createFrameBuffer(int width, int height, int multisample, int targets);
-    
+
     FrameBuffer getCurrentFrameBuffer();
-    
+
     /**
      * The main framebuffer that will shown on the users device. Also known as the
      * default framebuffer.
-     * 
+     *
      */
     SurfaceBuffer getSurface();
-    
+
     void applyRenderState(RenderState renderState);
-    
+
     default void render(final VertexArray vertexArray, final Primitive primitive, final int elementCount) {
         vertexArray.bindArray();
         render(primitive, elementCount, vertexArray.hasIndexBuffer());
         vertexArray.unbindArray();
     }
-    
+
     void render(Primitive primitive, int elementCount, boolean hasIndexBuffer);
-    
+
     default void renderInstanced(final VertexArray vertexArray, final Primitive primitive, final int elementCount,
             final int instanceCount) {
         vertexArray.bindArray();
         renderInstanced(primitive, elementCount, vertexArray.hasIndexBuffer(), instanceCount);
         vertexArray.unbindArray();
     }
-    
+
     void renderInstanced(Primitive primitive, int elementCount, boolean hasIndexBuffer, int instanceCount);
-    
+
     void printErrors();
-    
+
     void setPolyMode(PolyMode polyMode);
 }

@@ -17,12 +17,12 @@
 package de.omnikryptec.core;
 
 public interface IGameLoop {
-    
+
     void setGame(final Game game);
-    
+
     void startLoop();
-    
+
     void stopLoop();
-    
+
     boolean isRunning();
 }

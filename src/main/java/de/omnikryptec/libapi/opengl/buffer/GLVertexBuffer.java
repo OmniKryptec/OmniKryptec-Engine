@@ -26,13 +26,13 @@ import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 
 public class GLVertexBuffer extends GLBuffer implements VertexBuffer {
-    
+
     private int size;
-    
+
     public GLVertexBuffer() {
         super(GL15.GL_ARRAY_BUFFER);
     }
-    
+
     @Override
     public void storeData(final FloatBuffer data, final BufferUsage dynamic, final int size) {
         this.size = size;
@@ -40,7 +40,7 @@ public class GLVertexBuffer extends GLBuffer implements VertexBuffer {
         bindBuffer();
         GL15.glBufferData(bufferType(), data, OpenGLUtil.bufferUsageId(dynamic));
     }
-    
+
     @Override
     public void storeData(final IntBuffer data, final BufferUsage dynamic, final int size) {
         this.size = size;
@@ -48,10 +48,10 @@ public class GLVertexBuffer extends GLBuffer implements VertexBuffer {
         bindBuffer();
         GL15.glBufferData(bufferType(), data, OpenGLUtil.bufferUsageId(dynamic));
     }
-    
+
     @Override
     public int size() {
         return this.size;
     }
-    
+
 }

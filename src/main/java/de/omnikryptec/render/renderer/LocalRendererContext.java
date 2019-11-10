@@ -25,25 +25,25 @@ import de.omnikryptec.util.updater.Time;
 //TODx make Renderers or even LocalRendererContexts "global transformable"? Maybe not? LRCs are transformable by using the IProjection
 //TODO also improve target information for renderers (null => surface, FrameBuffer => take its width and height and stay like that?)
 public class LocalRendererContext {
-    
+
     private static final Comparator<Renderer> RENDERER_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority() - e1.priority();
-    
-    private RendererContext context;
+
+    private final RendererContext context;
 
     private Postprocessor postprocessor;
     private SceneRenderBufferManager frameBuffers;
-    
+
     private IProjection mainProjection;
     private IRenderedObjectManager objectManager;
-    private List<Renderer> renderers;
-    
-    private Settings<EnvironmentKey> environmentSettings;
-    
+    private final List<Renderer> renderers;
+
+    private final Settings<EnvironmentKey> environmentSettings;
+
     private int prio;
     private boolean enabled;
-    
-    LocalRendererContext(RendererContext context, Settings<EnvironmentKey> environmentSettings, int multisamples,
-            FBTarget... targets) {
+
+    LocalRendererContext(final RendererContext context, final Settings<EnvironmentKey> environmentSettings,
+            final int multisamples, final FBTarget... targets) {
         this.context = context;
         this.renderers = new ArrayList<>();
         if (targets == null || targets.length == 0) {
@@ -57,97 +57,97 @@ public class LocalRendererContext {
         this.mainProjection = new Camera(new Matrix4f().ortho2D(0, 1, 0, 1));
         this.enabled = true;
     }
-    
-    public void setPriority(int i) {
+
+    public void setPriority(final int i) {
         this.prio = i;
         this.context.notifyPriorityChanged();
     }
-    
+
     public int priority() {
-        return prio;
+        return this.prio;
     }
-    
+
     public boolean isEnabled() {
-        return enabled;
+        return this.enabled;
     }
-    
-    public void setEnabled(boolean b) {
+
+    public void setEnabled(final boolean b) {
         this.enabled = b;
     }
-    
+
     //using this while having renderers added breaks things, so use this only after initialization
-    public void setIRenderedObjectManager(IRenderedObjectManager mgr) {
+    public void setIRenderedObjectManager(final IRenderedObjectManager mgr) {
         this.objectManager = mgr;
     }
-    
+
     public IRenderedObjectManager getIRenderedObjectManager() {
-        return objectManager;
+        return this.objectManager;
     }
-    
+
     public IProjection getMainProjection() {
-        return mainProjection;
+        return this.mainProjection;
     }
-    
+
     public Settings<EnvironmentKey> getEnvironmentSettings() {
-        return environmentSettings;
+        return this.environmentSettings;
     }
-    
-    public void setMainProjection(IProjection projection) {
+
+    public void setMainProjection(final IProjection projection) {
         this.mainProjection = projection;
     }
-    
-    public void addRenderer(Renderer renderer) {
-        renderers.add(renderer);
-        renderers.sort(RENDERER_PRIORITY_COMPARATOR);
-        renderer.init(this, context.getRenderAPI().getSurface());
+
+    public void addRenderer(final Renderer renderer) {
+        this.renderers.add(renderer);
+        this.renderers.sort(RENDERER_PRIORITY_COMPARATOR);
+        renderer.init(this, this.context.getRenderAPI().getSurface());
     }
-    
-    public void removeRenderer(Renderer renderer) {
+
+    public void removeRenderer(final Renderer renderer) {
         renderer.deinit(this);
-        renderers.remove(renderer);
+        this.renderers.remove(renderer);
     }
-    
+
     public RenderAPI getRenderAPI() {
-        return context.getRenderAPI();
+        return this.context.getRenderAPI();
     }
-    
-    public void preRender(Time time, IProjection projection) {
-        context.getRenderAPI().getCurrentFrameBuffer().clear(
+
+    public void preRender(final Time time, final IProjection projection) {
+        this.context.getRenderAPI().getCurrentFrameBuffer().clear(
                 getEnvironmentSettings().get(GlobalEnvironmentKeys.ClearColor), SurfaceBufferType.Color,
                 SurfaceBufferType.Depth);
-        for (Renderer r : renderers) {
+        for (final Renderer r : this.renderers) {
             r.preRender(time, projection, this);
         }
     }
-    
-    public void render(Time time, IProjection projection) {
-        for (Renderer r : renderers) {
+
+    public void render(final Time time, final IProjection projection) {
+        for (final Renderer r : this.renderers) {
             r.render(time, projection, this);
         }
     }
-    
-    public void postRender(Time time, IProjection projection) {
-        for (Renderer r : renderers) {
+
+    public void postRender(final Time time, final IProjection projection) {
+        for (final Renderer r : this.renderers) {
             r.postRender(time, projection, this);
         }
     }
-    
-    public Texture renderCycle(Time time) {
+
+    public Texture renderCycle(final Time time) {
         this.frameBuffers.beginRender();
-        preRender(time, mainProjection);
-        render(time, mainProjection);
-        postRender(time, mainProjection);
+        preRender(time, this.mainProjection);
+        render(time, this.mainProjection);
+        postRender(time, this.mainProjection);
         this.frameBuffers.endRender();
         if (this.postprocessor != null) {
-            return this.postprocessor.postprocess(time, frameBuffers);
+            return this.postprocessor.postprocess(time, this.frameBuffers);
         } else {
-            return frameBuffers.get(0).getTexture(0);
+            return this.frameBuffers.get(0).getTexture(0);
         }
     }
-    
-    void screenBufferResizedEventDelegate(WindowEvent.ScreenBufferResized ev) {
-        frameBuffers.resize(ev.width, ev.height);
-        for (Renderer r : renderers) {
+
+    void screenBufferResizedEventDelegate(final WindowEvent.ScreenBufferResized ev) {
+        this.frameBuffers.resize(ev.width, ev.height);
+        for (final Renderer r : this.renderers) {
             r.resizeFBOs(this, ev.surface);
         }
     }

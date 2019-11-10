@@ -22,7 +22,7 @@ import de.omnikryptec.render.objects.RenderedObject;
 import de.omnikryptec.render.objects.RenderedObjectType;
 
 public class TestTest {
-    
+
     public static final void main(final String[] args) throws Exception {
         System.out.println(TestTest.class.getResourceAsStream("de/omnikryptec/resources/block.obj"));
         //        DynamicArray<Object> array = new DynamicArray<>();
@@ -37,32 +37,32 @@ public class TestTest {
         //        System.out.println(array);
         //        array.trimNulls();
         //        System.out.println(array);
-//        RenderedObjectManager mgr = new RenderedObjectManager();
-//        mgr.add(RenderedObjectType.of(ABC.class), new ABC());
-//        Collection<ABC> coll = mgr.getFor(RenderedObjectType.of(ABC.class));
-//        System.out.println(coll);
-        float in = 1.5f;
-        long nanos = System.nanoTime();
-        for(int i=0; i<1000000; i++) {
+        //        RenderedObjectManager mgr = new RenderedObjectManager();
+        //        mgr.add(RenderedObjectType.of(ABC.class), new ABC());
+        //        Collection<ABC> coll = mgr.getFor(RenderedObjectType.of(ABC.class));
+        //        System.out.println(coll);
+        final float in = 1.5f;
+        final long nanos = System.nanoTime();
+        for (int i = 0; i < 1000000; i++) {
             Math.pow(in, 2);
         }
-        long nanos2 = System.nanoTime();
-        System.out.println((nanos2-nanos)*1e-9+"s");
+        final long nanos2 = System.nanoTime();
+        System.out.println((nanos2 - nanos) * 1e-9 + "s");
     }
-    
+
     private static class ABC implements RenderedObject {
-        
+
         @Override
-        public boolean isVisible(FrustumIntersection frustum) {
-            
+        public boolean isVisible(final FrustumIntersection frustum) {
+
             return false;
         }
 
         @Override
         public RenderedObjectType type() {
-            
+
             return null;
         }
-        
+
     }
 }

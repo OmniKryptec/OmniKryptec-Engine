@@ -19,40 +19,40 @@ import de.omnikryptec.libapi.opencl.OpenCL;
 import de.omnikryptec.util.settings.Settings;
 
 public class CLTest {
-    
+
     private static final String KERNEL = "__kernel void sum(__global const float *a, __global const float *b, __global float *result, int const size) {\r\n"
             + "    const int itemId = get_global_id(0); \r\n" + "    if(itemId < size) {\r\n"
             + "        result[itemId] = a[itemId] + b[itemId];\r\n" + "    }\r\n" + "} ";
-    
+
     private static final int size = 10;
-    
-    public static void main(String[] args) {
+
+    public static void main(final String[] args) {
         //Create stuff
-        Settings<LibSetting> s = new Settings<>();
+        final Settings<LibSetting> s = new Settings<>();
         s.set(LibSetting.DEBUG, true);
         s.set(LibSetting.DEBUG_LIBRARY_LOADING, true);
         LibAPIManager.init(s);
         LibAPIManager.instance().initOpenCL();
-        OpenCL opc = LibAPIManager.instance().getOpenCL();
-        CLPlatform platform = opc.getPlatform(0);
-        CLDevice device = platform.createDeviceData(DeviceType.GPU).getDevice(0);
-        CLContext context = new CLContext(device);
-        CLCommandQueue queue = new CLCommandQueue(context, device, CL10.CL_QUEUE_PROFILING_ENABLE);
-        CLProgram program = new CLProgram(context, KERNEL).build(device, 1024, "");
-        CLKernel kernel = new CLKernel(program, "sum");
-        FloatBuffer aBuff = BufferUtils.createFloatBuffer(size);
-        FloatBuffer bBuff = BufferUtils.createFloatBuffer(size);
-        CLMemory aMem = new CLMemory(context, CL10.CL_MEM_READ_ONLY | CL10.CL_MEM_COPY_HOST_PTR, aBuff);
-        CLMemory bMem = new CLMemory(context, CL10.CL_MEM_READ_ONLY | CL10.CL_MEM_COPY_HOST_PTR, bBuff);
-        CLMemory resultMem = new CLMemory(context, CL10.CL_MEM_WRITE_ONLY, 4 * size);
+        final OpenCL opc = LibAPIManager.instance().getOpenCL();
+        final CLPlatform platform = opc.getPlatform(0);
+        final CLDevice device = platform.createDeviceData(DeviceType.GPU).getDevice(0);
+        final CLContext context = new CLContext(device);
+        final CLCommandQueue queue = new CLCommandQueue(context, device, CL10.CL_QUEUE_PROFILING_ENABLE);
+        final CLProgram program = new CLProgram(context, KERNEL).build(device, 1024, "");
+        final CLKernel kernel = new CLKernel(program, "sum");
+        final FloatBuffer aBuff = BufferUtils.createFloatBuffer(size);
+        final FloatBuffer bBuff = BufferUtils.createFloatBuffer(size);
+        final CLMemory aMem = new CLMemory(context, CL10.CL_MEM_READ_ONLY | CL10.CL_MEM_COPY_HOST_PTR, aBuff);
+        final CLMemory bMem = new CLMemory(context, CL10.CL_MEM_READ_ONLY | CL10.CL_MEM_COPY_HOST_PTR, bBuff);
+        final CLMemory resultMem = new CLMemory(context, CL10.CL_MEM_WRITE_ONLY, 4 * size);
         //Fill read buffers
-        float[] aArray = new float[size];
+        final float[] aArray = new float[size];
         for (int i = 0; i < size; i++) {
             aArray[i] = i;
         }
         aBuff.put(aArray);
         aBuff.rewind();
-        float[] bArray = new float[size];
+        final float[] bArray = new float[size];
         for (int j = 0, i = size - 1; j < size; j++, i--) {
             bArray[j] = i;
         }
@@ -69,7 +69,7 @@ public class CLTest {
         kernel.setArg(2, resultMem);
         kernel.enqueue(queue, 1, size, 0);
         //cope with result
-        FloatBuffer result = BufferUtils.createFloatBuffer(size);
+        final FloatBuffer result = BufferUtils.createFloatBuffer(size);
         resultMem.enqueueReadBuffer(queue, result);
         queue.finish();
         for (int i = 0; i < size; i++) {

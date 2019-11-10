@@ -50,57 +50,57 @@ import de.omnikryptec.util.settings.Settings;
  * @author pcfreak9000 &amp; Panzer1119
  */
 public abstract class Omnikryptec {
-    
+
     private static Omnikryptec instance = null;
-    
+
     public static Omnikryptec instance() {
         if (instance == null) {
             throw new IllegalStateException("An Omnikryptec instance has not been created yet");
         }
         return instance;
     }
-    
+
     public static EventBus getEventBus() {
         return instance().getGame().getEventBus();
     }
-    
+
     public static InputManager getInput() {
         return instance().getGame().getInput();
     }
-    
+
     public static Game getGameS() {
         return instance().getGame();
     }
-    
+
     public static TextureHelper getTexturesS() {
         return instance().getTextures();
     }
-    
+
     public static ResourceManager getResourceManagerS() {
         return instance().getResourceManager();
     }
-    
+
     public static ResourceProvider getResourceProviderS() {
         return instance().getResourceProvider();
     }
-    
-    private IWindow window;    
-    
+
+    private IWindow window;
+
     private IGameLoop gameLoop;
     private Game game;
-    
+
     private ResourceManager resources;
     private TextureHelper textures;
-    
+
     private boolean started;
-    
+
     public Omnikryptec() {
         if (instance != null) {
             throw new IllegalStateException("An Omnikryptec instance has been created already");
         }
         instance = this;
     }
-    
+
     /**
      * Initializes various parts of the {@code LibAPIManager}.
      *
@@ -115,8 +115,8 @@ public abstract class Omnikryptec {
      * @see de.omnikryptec.libapi.exposed.LibAPIManager
      */
     public static void initialize(final Settings<LibSetting> libSettings, final Class<? extends RenderAPI> rendererApi,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings, boolean opencl,
-            boolean audio) {
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings, final boolean opencl,
+            final boolean audio) {
         // Initialize everything required
         LibAPIManager.init(libSettings);
         LibAPIManager.instance().initGlfw();
@@ -128,11 +128,11 @@ public abstract class Omnikryptec {
             //TODO audio
         }
     }
-    
+
     public static void deinitialize() {
         LibAPIManager.shutdown();
     }
-    
+
     /**
      * Starts the engine. The start parameters can be set by overriding
      * {@link #configure}. <br>
@@ -186,7 +186,7 @@ public abstract class Omnikryptec {
             }
         }
     }
-    
+
     public void switchGameloop(final IGameLoop newloop) {
         Util.ensureNonNull(newloop);
         final boolean running = this.gameLoop.isRunning();
@@ -199,7 +199,7 @@ public abstract class Omnikryptec {
             this.gameLoop.startLoop();
         }
     }
-    
+
     /**
      * Shuts down the engine. Only if it has been started by {@code start()}.<br>
      * First {@link onShutdown} gets called. A {@code IGameLoop} that might be
@@ -218,33 +218,33 @@ public abstract class Omnikryptec {
             deinitialize();
         }
     }
-    
+
     public IWindow getWindow() {
         checkStarted();
         return this.window;
     }
-    
+
     public IGameLoop getGameLoop() {
         checkStarted();
         return this.gameLoop;
     }
-    
+
     public Game getGame() {
         checkStarted();
-        return game;
+        return this.game;
     }
-    
+
     public ResourceManager getResourceManager() {
         return this.resources;
     }
-    
+
     //Shortcut
     public ResourceProvider getResourceProvider() {
         return this.resources.getProvider();
     }
-    
+
     public TextureHelper getTextures() {
-        return textures;
+        return this.textures;
     }
 
     public ResourceManager setResourceManager(final ResourceManager proc) {
@@ -252,32 +252,33 @@ public abstract class Omnikryptec {
         this.resources = proc;
         return old;
     }
-    
+
     public boolean isStarted() {
         return this.started;
     }
-    
+
     private void checkStarted() {
         if (!this.started) {
             throw new IllegalStateException(getClass().getSimpleName() + " has not been started yet");
         }
     }
-    
+
     @ForOverride
     protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings, KeySettings keys) {
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
+            final KeySettings keys) {
     }
-    
+
     @ForOverride
     protected void onInitialized() {
     }
-    
+
     @ForOverride
     protected void onShutdown() {
     }
-    
+
     public enum LoaderSetting implements Defaultable {
-        
+
         /**
          * The rendering API to use by the engine. Only in non-static cases of
          * {@link de.omnikryptec.core.EngineLoader}.<br>
@@ -314,7 +315,7 @@ public abstract class Omnikryptec {
          * @see de.omnikryptec.core.EngineLoader.LoaderSetting#START_GAME_LOOP_AFTER_INIT
          */
         GAME_LOOP(new DefaultGameLoop()),
-        
+
         /**
          * Shutdown the engine if the {@link de.omnikryptec.core.loop.IGameLoop} exits.
          * Only if
@@ -325,21 +326,21 @@ public abstract class Omnikryptec {
          * The default value is <code>true</code>
          */
         SHUTDOWN_ON_LOOP_EXIT(true),
-        
+
         INIT_OPENCL(false), INIT_OPENAL(false);
-        
+
         private final Object defaultSetting;
-        
+
         LoaderSetting(final Object defaultSetting) {
             this.defaultSetting = defaultSetting;
         }
-        
+
         @Override
         public <T> T getDefault() {
             return (T) this.defaultSetting;
         }
     }
-    
+
     /**
      * Will only be used in non-static cases of
      * {@link de.omnikryptec.core.Omnikryptec}. Defines when to show the
@@ -349,7 +350,7 @@ public abstract class Omnikryptec {
      * @see de.omnikryptec.libapi.exposed.window.Window#setVisible(boolean)
      */
     public enum WindowMakeVisible {
-        
+
         /**
          * Show the window immediately after creation, and before
          * {@link de.omnikryptec.core.EngineLoader#onContextCreationFinish()}.
@@ -364,7 +365,7 @@ public abstract class Omnikryptec {
          * Never show the window.
          */
         NEVER
-        
+
     }
-    
+
 }

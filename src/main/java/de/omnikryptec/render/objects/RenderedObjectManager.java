@@ -10,63 +10,63 @@ import com.google.common.collect.ListMultimap;
 import de.omnikryptec.util.data.DynamicArray;
 
 public class RenderedObjectManager implements IRenderedObjectManager {
-    private ListMultimap<RenderedObjectType, IRenderedObjectListener> listeners;
-    private DynamicArray<List<RenderedObject>> objects;
-    
+    private final ListMultimap<RenderedObjectType, IRenderedObjectListener> listeners;
+    private final DynamicArray<List<RenderedObject>> objects;
+
     public RenderedObjectManager() {
-        objects = new DynamicArray<>();
-        listeners = ArrayListMultimap.create();
+        this.objects = new DynamicArray<>();
+        this.listeners = ArrayListMultimap.create();
     }
-    
+
     @Override
-    public <T extends RenderedObject> List<T> getFor(RenderedObjectType type) {
+    public <T extends RenderedObject> List<T> getFor(final RenderedObjectType type) {
         return (List<T>) Collections.unmodifiableList(getList(type));
     }
-    
+
     @Override
-    public void add(RenderedObjectType type, RenderedObject renderedObject) {
+    public void add(final RenderedObjectType type, final RenderedObject renderedObject) {
         getList(type).add(renderedObject);
         notifyAdd(type, renderedObject);
     }
-    
+
     @Override
-    public void remove(RenderedObjectType type, RenderedObject renderedObject) {
-        List<RenderedObject> list = objects.get(type.id);
+    public void remove(final RenderedObjectType type, final RenderedObject renderedObject) {
+        final List<RenderedObject> list = this.objects.get(type.id);
         if (list != null) {
             list.remove(renderedObject);
             notifyRemove(type, renderedObject);
         }
     }
-    
+
     @Override
-    public void addListener(RenderedObjectType type, IRenderedObjectListener listener) {
-        listeners.put(type, listener);
+    public void addListener(final RenderedObjectType type, final IRenderedObjectListener listener) {
+        this.listeners.put(type, listener);
     }
-    
+
     @Override
-    public void removeListener(RenderedObjectType type, IRenderedObjectListener listener) {
-        listeners.remove(type, listener);
+    public void removeListener(final RenderedObjectType type, final IRenderedObjectListener listener) {
+        this.listeners.remove(type, listener);
     }
-    
-    private List<RenderedObject> getList(RenderedObjectType type) {
-        List<RenderedObject> list = objects.get(type.id);
+
+    private List<RenderedObject> getList(final RenderedObjectType type) {
+        List<RenderedObject> list = this.objects.get(type.id);
         if (list == null) {
             list = new ArrayList<>();
-            objects.set(type.id, list);
+            this.objects.set(type.id, list);
         }
         return list;
     }
-    
-    private void notifyAdd(RenderedObjectType type, RenderedObject obj) {
-        List<IRenderedObjectListener> list = listeners.get(type);
-        for (IRenderedObjectListener l : list) {
+
+    private void notifyAdd(final RenderedObjectType type, final RenderedObject obj) {
+        final List<IRenderedObjectListener> list = this.listeners.get(type);
+        for (final IRenderedObjectListener l : list) {
             l.onAdd(obj);
         }
     }
-    
-    private void notifyRemove(RenderedObjectType type, RenderedObject obj) {
-        List<IRenderedObjectListener> list = listeners.get(type);
-        for (IRenderedObjectListener l : list) {
+
+    private void notifyRemove(final RenderedObjectType type, final RenderedObject obj) {
+        final List<IRenderedObjectListener> list = this.listeners.get(type);
+        for (final IRenderedObjectListener l : list) {
             l.onRemove(obj);
         }
     }

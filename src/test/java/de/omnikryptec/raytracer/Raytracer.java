@@ -34,62 +34,65 @@ import de.omnikryptec.util.settings.keys.KeysAndButtons;
 import de.omnikryptec.util.updater.Time;
 
 public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
-    
+
     public static void main(final String[] args) {
         new Raytracer().start();
     }
-    
+
     @Override
     protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
-            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisetting, KeySettings keys) {
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisetting,
+            final KeySettings keys) {
         libsettings.set(LibSetting.DEBUG, false);
         windowSettings.set(WindowSetting.Name, "Raytracer");
         windowSettings.set(WindowSetting.CursorState, CursorType.DISABLED);
     }
-    
+
     @Override
     protected void onInitialized() {
         getResourceManager().load(false, false, "intern:/de/pcfreak9000/raytracer/");
-        Scene s = getGame().createNewScene();
+        final Scene s = getGame().createNewScene();
         s.getRendering().addRenderer(this);
         s.setGameLogic(this);
-        camera = new AdaptiveCamera((w, h) -> new Matrix4f().perspective(Mathf.toRadians(80), w / (float) h, 1, 2));
-        s.getRendering().setMainProjection(camera);
+        this.camera = new AdaptiveCamera(
+                (w, h) -> new Matrix4f().perspective(Mathf.toRadians(80), w / (float) h, 1, 2));
+        s.getRendering().setMainProjection(this.camera);
         initShader();
     }
-    
+
     private GLFrameBuffer image;
-    
+
     private GLShader computeShader;
-    
+
     private Camera camera;
     private UniformFloat time;
     private UniformVec3 eye, ray00, ray01, ray10, ray11;
-    
+
     private void initShader() {
-        computeShader = (GLShader) LibAPIManager.instance().getGLFW().getRenderAPI().createShader();
-        computeShader.create("raytracer");
-        eye = computeShader.getUniform("eye");
-        ray00 = computeShader.getUniform("ray00");
-        ray01 = computeShader.getUniform("ray01");
-        ray10 = computeShader.getUniform("ray10");
-        ray11 = computeShader.getUniform("ray11");
-        time = computeShader.getUniform("time");
+        this.computeShader = (GLShader) LibAPIManager.instance().getGLFW().getRenderAPI().createShader();
+        this.computeShader.create("raytracer");
+        this.eye = this.computeShader.getUniform("eye");
+        this.ray00 = this.computeShader.getUniform("ray00");
+        this.ray01 = this.computeShader.getUniform("ray01");
+        this.ray10 = this.computeShader.getUniform("ray10");
+        this.ray11 = this.computeShader.getUniform("ray11");
+        this.time = this.computeShader.getUniform("time");
     }
-    
-    private void loadRays(Camera cam) {
-        Matrix4f inv = cam.getRawProjection().invert(new Matrix4f());
-        Matrix4f wInv = cam.getTransform().worldspace().invert(new Matrix4f());
-        Vector4f pos = wInv.transform(new Vector4f(0, 0, 0, 1));
-        eye.loadVec3(pos.x, pos.y, pos.z);
-        prepareRay(-1, -1, inv, wInv, ray00, pos);
-        prepareRay(-1, 1, inv, wInv, ray01, pos);
-        prepareRay(1, -1, inv, wInv, ray10, pos);
-        prepareRay(1, 1, inv, wInv, ray11, pos);
+
+    private void loadRays(final Camera cam) {
+        final Matrix4f inv = cam.getRawProjection().invert(new Matrix4f());
+        final Matrix4f wInv = cam.getTransform().worldspace().invert(new Matrix4f());
+        final Vector4f pos = wInv.transform(new Vector4f(0, 0, 0, 1));
+        this.eye.loadVec3(pos.x, pos.y, pos.z);
+        prepareRay(-1, -1, inv, wInv, this.ray00, pos);
+        prepareRay(-1, 1, inv, wInv, this.ray01, pos);
+        prepareRay(1, -1, inv, wInv, this.ray10, pos);
+        prepareRay(1, 1, inv, wInv, this.ray11, pos);
     }
-    
-    private void prepareRay(float x, float y, Matrix4fc proj, Matrix4fc stuff, UniformVec3 u, Vector4f pos) {
-        Vector4f v = new Vector4f(x, y, 0, 1);
+
+    private void prepareRay(final float x, final float y, final Matrix4fc proj, final Matrix4fc stuff,
+            final UniformVec3 u, final Vector4f pos) {
+        final Vector4f v = new Vector4f(x, y, 0, 1);
         proj.transform(v);
         v.mul(1 / v.w);
         v.w = 0;
@@ -97,10 +100,10 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         v.normalize();
         u.loadVec3(new Vector3f(v.x, v.y, v.z));
     }
-    
+
     float x, y, z, ry, rx;
-    
-    private void camInput(Camera cam, float dt) {
+
+    private void camInput(final Camera cam, float dt) {
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_LEFT_CONTROL)) {
             dt *= 3;
         }
@@ -132,44 +135,45 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         this.rx += rx;
         cam.getTransform().localspaceWrite().rotation(this.rx, 1, 0, 0);
         cam.getTransform().localspaceWrite().rotate(this.ry, 0, 1, 0);
-        Vector4f t = new Vector4f(vx, vy, vz, 0);
+        final Vector4f t = new Vector4f(vx, vy, vz, 0);
         cam.getTransform().worldspace().invert(new Matrix4f()).transform(t);
-        x += t.x;
-        y += t.y;
-        z += t.z;
-        
-        cam.getTransform().localspaceWrite().translate(x, y, z);
+        this.x += t.x;
+        this.y += t.y;
+        this.z += t.z;
+
+        cam.getTransform().localspaceWrite().translate(this.x, this.y, this.z);
     }
-    
+
     @Override
-    public void update(Time time) {
-        camInput(camera, time.deltaf);
+    public void update(final Time time) {
+        camInput(this.camera, time.deltaf);
     }
-    
+
     @Override
-    public void init(LocalRendererContext context, FrameBuffer target) {
-        image = (GLFrameBuffer) context.getRenderAPI().createFrameBuffer(target.getWidth(), target.getHeight(), 0, 1);
-        image.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA32, 0));
+    public void init(final LocalRendererContext context, final FrameBuffer target) {
+        this.image = (GLFrameBuffer) context.getRenderAPI().createFrameBuffer(target.getWidth(), target.getHeight(), 0,
+                1);
+        this.image.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA32, 0));
     }
-    
+
     @Override
-    public void resizeFBOs(LocalRendererContext context, SurfaceBuffer screen) {
-        image = (GLFrameBuffer) image.resizedClone(screen.getWidth(), screen.getHeight());
+    public void resizeFBOs(final LocalRendererContext context, final SurfaceBuffer screen) {
+        this.image = (GLFrameBuffer) this.image.resizedClone(screen.getWidth(), screen.getHeight());
     }
-    
+
     @Override
-    public void render(Time time, IProjection projection, LocalRendererContext context) {
-        computeShader.bindShader();
+    public void render(final Time time, final IProjection projection, final LocalRendererContext context) {
+        this.computeShader.bindShader();
         this.time.loadFloat(time.currentf);
-        loadRays(camera);
-        image.bindImageTexture(0, 0, 0, false, 0, 0, FBAttachmentFormat.RGBA32);
-        computeShader.dispatchCompute(MathUtil.toPowerOfTwo(image.getWidth() / 8),
-                MathUtil.toPowerOfTwo(image.getHeight() / 8), 1);
-        image.renderDirect(0);
+        loadRays(this.camera);
+        this.image.bindImageTexture(0, 0, 0, false, 0, 0, FBAttachmentFormat.RGBA32);
+        this.computeShader.dispatchCompute(MathUtil.toPowerOfTwo(this.image.getWidth() / 8),
+                MathUtil.toPowerOfTwo(this.image.getHeight() / 8), 1);
+        this.image.renderDirect(0);
     }
-    
+
     @Override
-    public void deinit(LocalRendererContext context) {
+    public void deinit(final LocalRendererContext context) {
     }
-    
+
 }

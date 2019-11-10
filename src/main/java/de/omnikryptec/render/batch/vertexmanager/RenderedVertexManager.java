@@ -13,40 +13,40 @@ import de.omnikryptec.render.batch.module.ModuleBatchingManager;
 import de.omnikryptec.resource.MeshData.Primitive;
 
 public class RenderedVertexManager implements VertexManager {
-    
+
     private final int vertexCount;
-    
+
     private FloatCollector data;
     private int floatsPerVertex;
     private Texture currentTexture;
     private VertexArray va;
     private VertexBuffer vb;
-    private AbstractShaderSlot shader;
-    
-    public RenderedVertexManager(final int vertexCount, AbstractShaderSlot shader) {
+    private final AbstractShaderSlot shader;
+
+    public RenderedVertexManager(final int vertexCount, final AbstractShaderSlot shader) {
         this.vertexCount = vertexCount;
         this.shader = shader;
     }
-    
+
     @Override
     public void addData(final float[] floats, final int offset, final int length) {
         this.data.put(floats, offset, length);
     }
-    
+
     @Override
     public void prepareNext(final Texture texture, final int requiredFloats) {
         if (requiredFloats > this.data.size()) {
             throw new IndexOutOfBoundsException(
                     requiredFloats + " floats required, but buffer size is only " + this.data.size());
         }
-        Texture baseTexture = texture == null ? null : texture.getBaseTexture();
+        final Texture baseTexture = texture == null ? null : texture.getBaseTexture();
         if (requiredFloats > this.data.remaining() || !Objects.equals(baseTexture, this.currentTexture)) {
             //flush BEFORE setting new texture
             forceFlush();
             this.currentTexture = baseTexture;
         }
     }
-    
+
     @Override
     public void forceFlush() {
         if (this.data.used() == 0) {
@@ -60,19 +60,19 @@ public class RenderedVertexManager implements VertexManager {
         LibAPIManager.instance().getGLFW().getRenderAPI().render(this.va, Primitive.Triangle,
                 count / this.floatsPerVertex);
     }
-    
+
     @Override
-    public void init(ModuleBatchingManager mgr) {
-        VertexBufferLayout layout = mgr.createLayout();
+    public void init(final ModuleBatchingManager mgr) {
+        final VertexBufferLayout layout = mgr.createLayout();
         this.floatsPerVertex = layout.getCount();
-        this.data = new FloatCollector(vertexCount * this.floatsPerVertex);
+        this.data = new FloatCollector(this.vertexCount * this.floatsPerVertex);
         this.vb = LibAPIManager.instance().getGLFW().getRenderAPI().createVertexBuffer();
         this.va = LibAPIManager.instance().getGLFW().getRenderAPI().createVertexArray();
         this.va.addVertexBuffer(this.vb, layout);
     }
-    
+
     @Override
     public void begin() {
-        shader.bindShaderRenderReady();
+        this.shader.bindShaderRenderReady();
     }
 }

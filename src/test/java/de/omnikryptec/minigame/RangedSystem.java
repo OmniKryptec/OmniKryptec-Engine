@@ -10,25 +10,26 @@ import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.updater.Time;
 
 public class RangedSystem extends IterativeComponentSystem {
-    
+
     protected RangedSystem() {
         super(Family.of(RangedComponent.class, PositionComponent.class));
-        
+
     }
-    
-    private ComponentMapper<RangedComponent> mapper = new ComponentMapper<>(RangedComponent.class);
-    private ComponentMapper<PositionComponent> posM = new ComponentMapper<>(PositionComponent.class);
-    
+
+    private final ComponentMapper<RangedComponent> mapper = new ComponentMapper<>(RangedComponent.class);
+    private final ComponentMapper<PositionComponent> posM = new ComponentMapper<>(PositionComponent.class);
+
     @Override
-    public void updateIndividual(IECSManager manager, Entity entity, Time time) {
-        PositionComponent pos = posM.get(entity);
-        RangedComponent w = mapper.get(entity);
-        
-        if (Mathf.square(pos.transform.worldspacePos().x() - w.startX) + Mathf.square(pos.transform.worldspacePos().y() - w.startY) > Mathf.square(w.maxrange)) {
+    public void updateIndividual(final IECSManager manager, final Entity entity, final Time time) {
+        final PositionComponent pos = this.posM.get(entity);
+        final RangedComponent w = this.mapper.get(entity);
+
+        if (Mathf.square(pos.transform.worldspacePos().x() - w.startX)
+                + Mathf.square(pos.transform.worldspacePos().y() - w.startY) > Mathf.square(w.maxrange)) {
             manager.removeEntity(entity);
-            
+
             Omnikryptec.getEventBus().post(new RangeMaxedEvent(entity));
         }
     }
-    
+
 }

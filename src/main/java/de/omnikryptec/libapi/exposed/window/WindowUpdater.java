@@ -20,29 +20,29 @@ import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.updater.AbstractUpdater;
 
 public class WindowUpdater extends AbstractUpdater {
-    
+
     private final IWindow window;
     private double swaptime;
-    
+
     public WindowUpdater(final IWindow window) {
         this.window = window;
     }
-    
+
     @Override
-    public void update(int maxops) {
+    public void update(final int maxops) {
         super.update(maxops);
         final double time = LibAPIManager.instance().getGLFW().getTime();
         this.window.swapBuffers();
         this.swaptime = LibAPIManager.instance().getGLFW().getTime() - time;
         LibAPIManager.instance().getGLFW().pollEvents();
     }
-    
+
     public double getSwapTime() {
         return this.swaptime;
     }
-    
+
     public IWindow getWindow() {
         return this.window;
     }
-    
+
 }

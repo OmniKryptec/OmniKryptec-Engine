@@ -33,128 +33,127 @@ public class MouseHandler implements InputHandler {
     private final Vector2d scrollOffset = new Vector2d(0.0, 0.0);
     private final AtomicBoolean insideWindow = new AtomicBoolean(false);
     // Temporary variables
-    private byte[] buttonsLastTime = new byte[buttons.length];
-    
+    private final byte[] buttonsLastTime = new byte[this.buttons.length];
+
     public MouseHandler() {
         LibAPIManager.ENGINE_EVENTBUS.register(this);
     }
-    
+
     @Override
     public boolean init() {
         return true;
     }
-    
+
     @Override
     public boolean deinit() {
         return true;
     }
-    
+
     @EventSubscription
-    public void onButtonInput(InputEvent.MouseButtonEvent ev) {
-        buttons[ev.button] = (byte) ev.action;
+    public void onButtonInput(final InputEvent.MouseButtonEvent ev) {
+        this.buttons[ev.button] = (byte) ev.action;
     }
-    
+
     @EventSubscription
-    public void onPosChangeEvent(InputEvent.MousePositionEvent ev) {
-        position.x = ev.xPos;
-        position.y = ev.yPos;
+    public void onPosChangeEvent(final InputEvent.MousePositionEvent ev) {
+        this.position.x = ev.xPos;
+        this.position.y = ev.yPos;
     }
-    
+
     @EventSubscription
-    public void onScrollEvent(InputEvent.MouseScrollEvent ev) {
-        scrollOffset.x = ev.xChange;
-        scrollOffset.y = ev.yChange;
+    public void onScrollEvent(final InputEvent.MouseScrollEvent ev) {
+        this.scrollOffset.x = ev.xChange;
+        this.scrollOffset.y = ev.yChange;
     }
-    
+
     @EventSubscription
-    public void onCursorEnterEvent(InputEvent.CursorInWindowEvent ev) {
-        insideWindow.set(ev.entered);
+    public void onCursorEnterEvent(final InputEvent.CursorInWindowEvent ev) {
+        this.insideWindow.set(ev.entered);
     }
-    
+
     @Override
-    public boolean preUpdate(double currentTime, KeySettings keySettings) {
+    public boolean preUpdate(final double currentTime, final KeySettings keySettings) {
         /*
-        synchronized (buttons) {
-            buttonsLastTime = Arrays.copyOf(buttons, buttons.length);
-        }
-        */
+         * synchronized (buttons) { buttonsLastTime = Arrays.copyOf(buttons,
+         * buttons.length); }
+         */
         return true;
     }
-    
+
     @Override
-    public boolean update(double currentTime, KeySettings keySettings) {
-        synchronized (buttons) {
-            for (int i = 0; i < buttons.length; i++) {
-                if (buttonsLastTime[i] != buttons[i]) {
-                    keySettings.updateKeys(currentTime, i, false, buttons[i]);
-                    buttonsLastTime[i] = buttons[i];
+    public boolean update(final double currentTime, final KeySettings keySettings) {
+        synchronized (this.buttons) {
+            for (int i = 0; i < this.buttons.length; i++) {
+                if (this.buttonsLastTime[i] != this.buttons[i]) {
+                    keySettings.updateKeys(currentTime, i, false, this.buttons[i]);
+                    this.buttonsLastTime[i] = this.buttons[i];
                 }
             }
         }
         return true;
     }
-    
+
     @Override
-    public boolean postUpdate(double currentTime, KeySettings keySettings) {
+    public boolean postUpdate(final double currentTime, final KeySettings keySettings) {
         //buttonsLastTime = null; // Is this good for performance or not? // Makes no sense
         return true;
     }
-    
+
     @Override
     public boolean close() {
         return true;
     }
-    
-    public byte getButtonState(int buttonCode) {
-        synchronized (buttons) {
-            return buttons[buttonCode];
+
+    public byte getButtonState(final int buttonCode) {
+        synchronized (this.buttons) {
+            return this.buttons[buttonCode];
         }
     }
-    
-    public boolean isButtonUnknown(int buttonCode) {
-        synchronized (buttons) {
-            return buttons[buttonCode] == KeySettings.KEY_UNKNOWN;
+
+    public boolean isButtonUnknown(final int buttonCode) {
+        synchronized (this.buttons) {
+            return this.buttons[buttonCode] == KeySettings.KEY_UNKNOWN;
         }
     }
-    
-    public boolean isButtonNothing(int buttonCode) {
-        synchronized (buttons) {
-            return buttons[buttonCode] == KeySettings.KEY_NOTHING;
+
+    public boolean isButtonNothing(final int buttonCode) {
+        synchronized (this.buttons) {
+            return this.buttons[buttonCode] == KeySettings.KEY_NOTHING;
         }
     }
-    
-    public boolean isButtonReleased(int buttonCode) {
-        synchronized (buttons) {
-            return buttons[buttonCode] == KeySettings.KEY_RELEASED;
+
+    public boolean isButtonReleased(final int buttonCode) {
+        synchronized (this.buttons) {
+            return this.buttons[buttonCode] == KeySettings.KEY_RELEASED;
         }
     }
-    
-    public boolean isButtonPressed(int buttonCode) {
-        synchronized (buttons) {
-            return buttons[buttonCode] == KeySettings.KEY_PRESSED;
+
+    public boolean isButtonPressed(final int buttonCode) {
+        synchronized (this.buttons) {
+            return this.buttons[buttonCode] == KeySettings.KEY_PRESSED;
         }
     }
-    
-    public boolean isButtonRepeated(int buttonCode) {
-        synchronized (buttons) {
-            return buttons[buttonCode] == KeySettings.KEY_REPEATED;
+
+    public boolean isButtonRepeated(final int buttonCode) {
+        synchronized (this.buttons) {
+            return this.buttons[buttonCode] == KeySettings.KEY_REPEATED;
         }
     }
-    
+
     public Vector2dc getPosition() {
-        return position;
+        return this.position;
     }
-    
+
     public Vector2dc getScrollOffset() {
-        return scrollOffset;
+        return this.scrollOffset;
     }
-    
+
     public boolean isInsideWindow() {
-        return insideWindow.get();
+        return this.insideWindow.get();
     }
-  
+
     public int size() {
-        return buttons.length;
+        return this.buttons.length;
     }
-    
+
 }

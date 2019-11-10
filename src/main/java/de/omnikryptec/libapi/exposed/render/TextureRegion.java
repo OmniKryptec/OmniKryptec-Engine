@@ -68,6 +68,7 @@ public class TextureRegion implements Texture {
         return this.superTexture;
     }
 
+    @Override
     public Texture getBaseTexture() {
         if (this.superTexture instanceof TextureRegion) {
             return ((TextureRegion) this.superTexture).getBaseTexture();

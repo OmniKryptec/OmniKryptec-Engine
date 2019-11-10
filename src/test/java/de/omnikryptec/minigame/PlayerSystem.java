@@ -16,54 +16,54 @@ import de.omnikryptec.util.settings.keys.KeysAndButtons;
 import de.omnikryptec.util.updater.Time;
 
 public class PlayerSystem extends AbstractComponentSystem {
-    
+
     public PlayerSystem() {
         super(Family.of(ComponentType.of(MovementComponent.class), ComponentType.of(PlayerComponent.class),
                 ComponentType.of(PositionComponent.class)));
     }
-    
-    private InputManager inputManager = Omnikryptec.getInput();
-    
-    private ComponentMapper<MovementComponent> movMapper = new ComponentMapper<>(MovementComponent.class);
-    private ComponentMapper<PlayerComponent> playMapper = new ComponentMapper<>(PlayerComponent.class);
-    private ComponentMapper<PositionComponent> posMapper = new ComponentMapper<>(PositionComponent.class);
-    
+
+    private final InputManager inputManager = Omnikryptec.getInput();
+
+    private final ComponentMapper<MovementComponent> movMapper = new ComponentMapper<>(MovementComponent.class);
+    private final ComponentMapper<PlayerComponent> playMapper = new ComponentMapper<>(PlayerComponent.class);
+    private final ComponentMapper<PositionComponent> posMapper = new ComponentMapper<>(PositionComponent.class);
+
     private float again;
-    
+
     @Override
-    public void update(IECSManager iecsManager, Time time) {
+    public void update(final IECSManager iecsManager, final Time time) {
         Profiler.begin("PlayerSystem");
-        again += time.deltaf;
-        for (Entity e : entities) {
-            MovementComponent mov = movMapper.get(e);
-            PlayerComponent play = playMapper.get(e);
-            PositionComponent plus = posMapper.get(e);
-            RendererSystem.CAMERA.getTransform().localspaceWrite().setTranslation(
-                    -plus.transform.worldspacePos().x(), -plus.transform.worldspacePos().y(), 0);
+        this.again += time.deltaf;
+        for (final Entity e : this.entities) {
+            final MovementComponent mov = this.movMapper.get(e);
+            final PlayerComponent play = this.playMapper.get(e);
+            final PositionComponent plus = this.posMapper.get(e);
+            RendererSystem.CAMERA.getTransform().localspaceWrite().setTranslation(-plus.transform.worldspacePos().x(),
+                    -plus.transform.worldspacePos().y(), 0);
             float vy = 0;
             float vx = 0;
-            if (inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_W)) {
+            if (this.inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_W)) {
                 vy += play.maxYv;
             }
-            if (inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_S)) {
+            if (this.inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_S)) {
                 vy -= play.maxYv;
             }
-            if (inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_A)) {
+            if (this.inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_A)) {
                 vx -= play.maxXv;
             }
-            if (inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_D)) {
+            if (this.inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_D)) {
                 vx += play.maxXv;
             }
-            if (inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_LEFT_CONTROL)) {
+            if (this.inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_LEFT_CONTROL)) {
                 vx /= 2;
                 vy /= 2;
             }
             mov.dx = vx;
             mov.dy = vy;
-            if (inputManager.isMouseButtonPressed(KeysAndButtons.OKE_MOUSE_BUTTON_1) && inputManager.isMouseInsideViewport()
-                    && again > 0.15f) {
-                again = 0;
-                Vector2f dir = inputManager.getMousePositionInWorld2D(RendererSystem.CAMERA, null);
+            if (this.inputManager.isMouseButtonPressed(KeysAndButtons.OKE_MOUSE_BUTTON_1)
+                    && this.inputManager.isMouseInsideViewport() && this.again > 0.15f) {
+                this.again = 0;
+                final Vector2f dir = this.inputManager.getMousePositionInWorld2D(RendererSystem.CAMERA, null);
                 dir.add(-plus.transform.worldspacePos().x(), -plus.transform.worldspacePos().y());
                 dir.normalize(200);
                 dir.add(mov.dx, mov.dy);
@@ -73,5 +73,5 @@ public class PlayerSystem extends AbstractComponentSystem {
         }
         Profiler.end();
     }
-    
+
 }

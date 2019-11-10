@@ -8,24 +8,24 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
 
 public class AdaptiveCamera extends Camera {
-    
+
     public static interface ProjectionCreationDelegate {
         Matrix4f createMatrix(int width, int height);
     }
-    
-    private ProjectionCreationDelegate delegate;
-    
-    public AdaptiveCamera(ProjectionCreationDelegate delegate) {
+
+    private final ProjectionCreationDelegate delegate;
+
+    public AdaptiveCamera(final ProjectionCreationDelegate delegate) {
         super(null);
         this.delegate = delegate;
-        RenderAPI rapi = LibAPIManager.instance().getGLFW().getRenderAPI();
+        final RenderAPI rapi = LibAPIManager.instance().getGLFW().getRenderAPI();
         setProjection(delegate.createMatrix(rapi.getSurface().getWidth(), rapi.getSurface().getHeight()));
         LibAPIManager.ENGINE_EVENTBUS.register(this);
     }
-    
+
     @EventSubscription
-    public void onChange(WindowEvent.ScreenBufferResized ev) {
-        setProjection(delegate.createMatrix(ev.width, ev.height));
+    public void onChange(final WindowEvent.ScreenBufferResized ev) {
+        setProjection(this.delegate.createMatrix(ev.width, ev.height));
     }
-    
+
 }

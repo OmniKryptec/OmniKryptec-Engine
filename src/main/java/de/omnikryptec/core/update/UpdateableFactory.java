@@ -36,56 +36,56 @@ import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.updater.Time;
 
 public class UpdateableFactory {
-    
+
     public static IECSManager createDefaultIECSManager() {
         return IECSManager.createDefault();
     }
-    
+
     public static InputManager createInputManagerSimple() {
         return createInputManager(null);
     }
-    
-    public static InputManager createInputManager(KeySettings keySettings) {
+
+    public static InputManager createInputManager(final KeySettings keySettings) {
         return new InputManager(keySettings);
     }
-    
+
     @Deprecated
     public static RendererContext createRendererContext() {
         return new RendererContext();
     }
-    
+
     @Deprecated
     public static IUpdatable createScreenClearTest() {
         return new IUpdatable() {
-            
-            private Color color = new Color();
-            
+
+            private final Color color = new Color();
+
             @Override
             public void update(final Time time) {
                 if (time.opCount % 40 == 0) {
-                    color.randomizeRGB();
+                    this.color.randomizeRGB();
                 }
-                LibAPIManager.instance().getGLFW().getRenderAPI().getCurrentFrameBuffer().clearColor(color);
+                LibAPIManager.instance().getGLFW().getRenderAPI().getCurrentFrameBuffer().clearColor(this.color);
             }
         };
     }
-    
+
     @Deprecated
-    public static IUpdatable createRenderTest(TextureHelper help) {
-        
+    public static IUpdatable createRenderTest(final TextureHelper help) {
+
         final FrameBuffer fbo = LibAPIManager.instance().getGLFW().getRenderAPI().createFrameBuffer(2000, 2000, 0, 3);
-        
+
         fbo.bindFrameBuffer();
         fbo.assignTargets(new FBTarget(FBAttachmentFormat.RGBA8, 0), new FBTarget(FBAttachmentFormat.DEPTH24),
                 new FBTarget(FBAttachmentFormat.RGBA8, 1));
         final Texture texture = help.get("jd.png");
-        Texture t2 = help.get("gurke");
-        
+        final Texture t2 = help.get("gurke");
+
         return new IUpdatable() {
             private final SimpleBatch2D batch = new SimpleBatch2D(250);
             private final Matrix3x2f t = new Matrix3x2f();
             private final Camera cam = new Camera(new Matrix4f().ortho2D(0, 4, 0, 3));
-            
+
             @Override
             public void update(final Time time) {
                 //this.cam.getTransform().set(new Matrix4f().translate(Mathf.pingpong(time.currentf, 2), 0, 0));
@@ -96,15 +96,15 @@ public class UpdateableFactory {
                 this.t.scale(s, s);
                 this.t.rotateAbout(s, 0.5f, 0.5f);
                 this.batch.color().randomizeRGB();
-                batch.draw(t2, null, false, false);
-                batch.draw(texture, t, false, false);
+                this.batch.draw(t2, null, false, false);
+                this.batch.draw(texture, this.t, false, false);
                 this.batch.color().randomizeRGB();
                 this.batch.drawLine(0, 0, 3, 2, 0.1f);
                 this.batch.end();
                 fbo.resolveToFrameBuffer(LibAPIManager.instance().getGLFW().getRenderAPI().getSurface(), 1);
             }
-            
+
         };
     }
-    
+
 }

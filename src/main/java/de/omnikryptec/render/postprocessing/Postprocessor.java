@@ -6,9 +6,9 @@ import de.omnikryptec.util.updater.Time;
 
 public class Postprocessor {
 
-    public Texture postprocess(final Time time, SceneRenderBufferManager scene) {
+    public Texture postprocess(final Time time, final SceneRenderBufferManager scene) {
         //TODO create postprocessing
         return null;
     }
-    
+
 }

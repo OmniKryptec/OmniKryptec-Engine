@@ -45,7 +45,8 @@ public class IterableCombiner<T> implements Iterable<T> {
 
         @Override
         public boolean hasNext() {
-            return this.iterators.length != 0 && (this.itIndex != this.iterators.length - 1 || this.iterators[this.itIndex].hasNext());
+            return this.iterators.length != 0
+                    && (this.itIndex != this.iterators.length - 1 || this.iterators[this.itIndex].hasNext());
         }
 
         @Override

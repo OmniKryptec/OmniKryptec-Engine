@@ -3,30 +3,30 @@ package de.omnikryptec.gui;
 import java.util.List;
 
 public class TilingLayout implements GuiLayout {
-    
-    private int columns;//Spalten
-    private int rows;//Zeilen
-    
-    public TilingLayout(int rows, int columns) {
+
+    private final int columns;//Spalten
+    private final int rows;//Zeilen
+
+    public TilingLayout(final int rows, final int columns) {
         this.rows = rows;
         this.columns = columns;
     }
-    
+
     @Override
-    public void doLayout(GuiComponent parent, List<GuiComponent> children) {
-        if (children.size() > rows * columns) {
+    public void doLayout(final GuiComponent parent, final List<GuiComponent> children) {
+        if (children.size() > this.rows * this.columns) {
             throw new IllegalStateException("not enough space");
         }
-        float width = parent.getConstraints().getMaxWidth() / columns;
-        float height = parent.getConstraints().getMaxWidth() / rows;
+        final float width = parent.getConstraints().getMaxWidth() / this.columns;
+        final float height = parent.getConstraints().getMaxWidth() / this.rows;
         for (int i = 0; i < children.size(); i++) {
-            int xIndex = i % columns;
-            int yIndex = i / rows;
-            float x = xIndex * width + parent.getConstraints().getX();
-            float y = yIndex * height + parent.getConstraints().getY();
-            GuiConstraints childsConstraints = new GuiConstraints(x, y, width, height);
+            final int xIndex = i % this.columns;
+            final int yIndex = i / this.rows;
+            final float x = xIndex * width + parent.getConstraints().getX();
+            final float y = yIndex * height + parent.getConstraints().getY();
+            final GuiConstraints childsConstraints = new GuiConstraints(x, y, width, height);
             children.get(i).setConstraints(childsConstraints);
         }
     }
-    
+
 }

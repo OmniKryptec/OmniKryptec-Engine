@@ -23,29 +23,29 @@ import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
 
 public class GLTexture2D extends GLTexture {
-    
+
     private TextureData data;
-    
+
     public GLTexture2D(final TextureData texture, final TextureConfig config) {
         super(GL11.GL_TEXTURE_2D);
         bindTexture(0);
         OpenGLUtil.loadTexture(texture);
         OpenGLUtil.configureTexture(config);
     }
-    
+
     @Override
     public float getWidth() {
         return this.data.getWidth();
     }
-    
+
     @Override
     public float getHeight() {
         return this.data.getHeight();
     }
-    
+
     @Override
     public boolean requiresInvertedVifDrawn2D() {
         return true;
     }
-    
+
 }

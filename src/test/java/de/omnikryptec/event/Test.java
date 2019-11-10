@@ -17,7 +17,7 @@
 package de.omnikryptec.event;
 
 public class Test {
-    
+
     public static void main(final String[] args) {
         final EventBus bus = new EventBus(false);
         bus.register(new Test());
@@ -27,23 +27,23 @@ public class Test {
         bus.processQueuedEvents();
         bus.post(new TestEvent());
     }
-    
+
     @EventSubscription(priority = 10)
     public void test(final TestEvent e) {
         System.out.println("FIRST!");
         System.out.println(e);
     }
-    
+
     @EventSubscription
-    public void g(TestEvent e) {
+    public void g(final TestEvent e) {
         System.out.println("SECOND?!");
         System.out.println(e);
     }
-    
+
     public static class TestEvent extends Event {
         public static class TestEvent2 extends TestEvent {
-            
+
         }
     }
-    
+
 }

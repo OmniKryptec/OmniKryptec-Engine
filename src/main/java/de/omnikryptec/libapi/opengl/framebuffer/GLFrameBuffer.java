@@ -21,36 +21,36 @@ import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.libapi.opengl.texture.GLTexture;
 
 public class GLFrameBuffer extends FrameBuffer {
-    
+
     private static int multisampler = 0;
-    
+
     private static void enableMultisamplingIfFirst() {
         if (multisampler == 0) {
             OpenGLUtil.setMultisample(true);
         }
         multisampler++;
     }
-    
+
     private static void disableMultisamplingIfLast() {
         multisampler--;
         if (multisampler == 0) {
             OpenGLUtil.setMultisample(false);
         }
     }
-    
+
     private final int width;
     private final int height;
-    
+
     private final int multisample;
     private final FBTarget[] targets;
-    
+
     private FBTexture[] textures;
     private int[] renderbuffers;
-    
+
     private final int pointer;
-    
+
     public GLFrameBuffer(final int width, final int height, final int multisample, final int targets,
-            FrameBufferStack stack) {
+            final FrameBufferStack stack) {
         super(stack);
         this.pointer = GL30.glGenFramebuffers();
         this.width = width;
@@ -64,7 +64,7 @@ public class GLFrameBuffer extends FrameBuffer {
             this.renderbuffers = new int[targets];
         }
     }
-    
+
     @Override
     public void assignTarget(final int index, final FBTarget target) {
         this.targets[index] = target;
@@ -99,30 +99,30 @@ public class GLFrameBuffer extends FrameBuffer {
             this.textures[index] = texture;
         }
     }
-    
+
     @Override
     protected void bindRaw() {
         GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, this.pointer);
         GL11.glViewport(0, 0, this.width, this.height);
     }
-    
-    public void bindImageTexture(int imageUnit, int texIndex, int level, boolean layered, int layer, int access,
-            FBAttachmentFormat format) {
-        GL42.glBindImageTexture(imageUnit, textures[texIndex].pointer, level, layered, layer, GL15.GL_READ_WRITE,
+
+    public void bindImageTexture(final int imageUnit, final int texIndex, final int level, final boolean layered,
+            final int layer, final int access, final FBAttachmentFormat format) {
+        GL42.glBindImageTexture(imageUnit, this.textures[texIndex].pointer, level, layered, layer, GL15.GL_READ_WRITE,
                 OpenGLUtil.textureFormatId(format));
         OpenGLUtil.flushErrors();
     }
-    
+
     @Override
     public boolean isRenderBuffer() {
         return this.textures == null;
     }
-    
+
     @Override
     public Texture getTexture(final int i) {
         return this.textures[i];
     }
-    
+
     @Override
     public void deleteRaw() {
         if (isRenderBuffer()) {
@@ -135,40 +135,40 @@ public class GLFrameBuffer extends FrameBuffer {
             }
         }
         GL30.glDeleteFramebuffers(this.pointer);
-        if (multisample > 0) {
+        if (this.multisample > 0) {
             disableMultisamplingIfLast();
         }
     }
-    
+
     private void deleteRenderBuffer(final int index) {
         GL30.glDeleteRenderbuffers(this.renderbuffers[index]);
     }
-    
+
     private void deleteTexture(final int index) {
         final FBTexture t = this.textures[index];
         if (t != null) {
             t.deleteAndUnregister();
         }
     }
-    
+
     private class FBTexture extends GLTexture {
-        
+
         private FBTexture() {
             super(GL11.GL_TEXTURE_2D);
         }
-        
+
         @Override
         public float getWidth() {
             return GLFrameBuffer.this.width;
         }
-        
+
         @Override
         public float getHeight() {
             return GLFrameBuffer.this.height;
         }
-        
+
     }
-    
+
     @Override
     public void resolveToFrameBuffer(final FrameBuffer target, final int attachment) {
         target.bindAsTmp();
@@ -176,11 +176,11 @@ public class GLFrameBuffer extends FrameBuffer {
         GL11.glReadBuffer(OpenGLUtil.indexToAttachment(attachment));
         int tx = 0;
         int ty = 0;
-        int tw = target.getWidth();
-        int th = target.getHeight();
+        final int tw = target.getWidth();
+        final int th = target.getHeight();
         if (target instanceof GLScreenBuffer) {
             GL11.glDrawBuffer(GL11.GL_BACK);
-            GLScreenBuffer s = (GLScreenBuffer) target;
+            final GLScreenBuffer s = (GLScreenBuffer) target;
             tx = s.viewport[0];
             ty = s.viewport[1];
         }
@@ -188,22 +188,22 @@ public class GLFrameBuffer extends FrameBuffer {
                 OpenGLUtil.indexToBufferBit(attachment), GL11.GL_NEAREST);
         target.unbindAsTmp();
     }
-    
+
     @Override
     public FBTarget[] targets() {
         return this.targets.clone();
     }
-    
+
     @Override
     public int multisamples() {
         return this.multisample;
     }
-    
+
     @Override
     public int targetCount() {
         return this.targets.length;
     }
-    
+
     @Override
     public FrameBuffer resizedClone(final int newWidth, final int newHeight) {
         final FrameBuffer fb = new GLFrameBuffer(newWidth, newHeight, this.multisample, this.targets.length,
@@ -211,19 +211,19 @@ public class GLFrameBuffer extends FrameBuffer {
         fb.assignTargetsB(this.targets);
         return fb;
     }
-    
+
     @Override
     public int getWidth() {
-        return width;
+        return this.width;
     }
-    
+
     @Override
     public int getHeight() {
-        return height;
+        return this.height;
     }
-    
+
     @Override
-    public void clear(float r, float g, float b, float a, SurfaceBufferType... types) {
+    public void clear(final float r, final float g, final float b, final float a, final SurfaceBufferType... types) {
         bindAsTmp();
         OpenGLUtil.setClearColor(r, g, b, a);
         OpenGLUtil.clear(types);

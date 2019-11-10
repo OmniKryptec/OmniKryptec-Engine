@@ -36,27 +36,27 @@ import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Logger.LogType;
 
 public class ShaderParser {
-    
+
     public static enum ShaderType {
         Vertex, Fragment, Geometry, TessellationControl, TessellationEvaluation, Compute;
     }
-    
+
     private static final com.google.common.base.Supplier<Map<ShaderType, ShaderSource>> ENUM_MAP_FACTORY = () -> new EnumMap<>(
             ShaderType.class);
-    
+
     public static final String PARSER_STATEMENT_INDICATOR = "$";
-    
+
     public static final String DEFINITIONS_INDICATOR = "define ";
     public static final String SHADER_INDICATOR = "shader ";
     public static final String MODULE_INDICATOR = "module ";
     public static final String HEADER_INDICATOR = "header";
     public static final String HEADER_HERE = "header_here";
-        
+
     private static ShaderParser instance;
-    
+
     private static final AdvancedFile INTERN_MODULES = new AdvancedFile(
             "intern:/de/omnikryptec/resources/glslmodules/");
-    
+
     public static ShaderParser instance() {
         if (instance == null) {
             instance = create();
@@ -75,11 +75,11 @@ public class ShaderParser {
         }
         return instance;
     }
-    
+
     public static ShaderParser create() {
         return create(null, false, false);
     }
-    
+
     //TODx make more dynamic, e.g. changes in zuper are reflected in here but NOT vice-versa
     public static ShaderParser create(final ShaderParser zuper, final boolean inheritModules,
             final boolean inheritProvider) {
@@ -87,18 +87,18 @@ public class ShaderParser {
                 inheritModules ? (HashMap<String, SourceDescription>) zuper.modules.clone() : new HashMap<>(),
                 inheritProvider ? (HashMap<String, Supplier<String>>) zuper.provider.clone() : new HashMap<>());
     }
-    
+
     private final HashMap<String, SourceDescription> modules;
     private final HashMap<String, Supplier<String>> provider;
-    
+
     private final Deque<SourceDescription> definitions;
     private final Set<SourceDescription> definitionsSet;
-    
+
     private String currentContext;
     private boolean headerMode;
-    
+
     private Table<String, ShaderType, ShaderSource> generatedCurrentShaderTable = null;
-    
+
     private ShaderParser(final HashMap<String, SourceDescription> modules,
             final HashMap<String, Supplier<String>> provider) {
         this.definitions = new ArrayDeque<>();
@@ -106,20 +106,20 @@ public class ShaderParser {
         this.modules = modules;
         this.provider = provider;
     }
-    
+
     public void parse(final String... sources) {
         if (sources.length == 0) {
             throw new NullPointerException("invalid sources");
         }
         this.generatedCurrentShaderTable = null;
-        
+
         final StringBuilder builder = new StringBuilder();
         for (int i = 0; i < sources.length; i++) {
             builder.append(sources[i]);
             builder.append('\n');
         }
         final String[] lines = builder.toString().split("[\n\r]+");
-        
+
         for (int k = 0; k < lines.length; k++) {
             int in = 0;
             int out = 0;
@@ -183,15 +183,15 @@ public class ShaderParser {
             }
         }
     }
-    
+
     public void addTokenReplacer(final String id, final String provided) {
         addTokenReplacer(id, () -> provided);
     }
-    
+
     public void addTokenReplacer(final String id, final Supplier<String> provider) {
         this.provider.put(id, provider);
     }
-    
+
     //TODx how often do we have to recalc?
     public Table<String, ShaderType, ShaderSource> getCurrentShaderTable() {
         if (this.generatedCurrentShaderTable != null) {
@@ -209,11 +209,11 @@ public class ShaderParser {
         this.generatedCurrentShaderTable = finished;
         return finished;
     }
-    
+
     public boolean isAvailable(final String name) {
         return !getCurrentShaderTable().row(name).isEmpty();
     }
-    
+
     private String makeSource(final SourceDescription desc) {
         final String rawSrc = desc.source().toString();
         if (desc.header().toString().isEmpty()) {
@@ -226,7 +226,7 @@ public class ShaderParser {
         }
         return rawSrc.replace(again[i], again[i] + "\n" + desc.header().toString().trim()).trim();
     }
-    
+
     private void reduce(final SourceDescription desc) {
         while (!desc.modules().isEmpty()) {
             final SourceDescription another = this.modules.get(desc.modules().remove(0));
@@ -244,18 +244,18 @@ public class ShaderParser {
             desc.source().append(another.source());
         }
     }
-    
-    private void addNewSourceDescription(SourceDescription desc) {
-        if (definitionsSet.contains(desc)) {
+
+    private void addNewSourceDescription(final SourceDescription desc) {
+        if (this.definitionsSet.contains(desc)) {
             Logger.log(getClass(), LogType.Debug, "Overriding shader source: " + desc.context() + " ("
-                    + (desc.type() == null ? "MODULE" : desc.type())+")");
-            definitionsSet.remove(desc);
-            definitions.remove(desc);
+                    + (desc.type() == null ? "MODULE" : desc.type()) + ")");
+            this.definitionsSet.remove(desc);
+            this.definitions.remove(desc);
         }
-        definitions.push(desc);
-        definitionsSet.add(desc);
+        this.definitions.push(desc);
+        this.definitionsSet.add(desc);
     }
-    
+
     private String decodeToken(String token, final int line) {
         if (token.startsWith(DEFINITIONS_INDICATOR)) {
             token = token.replace(DEFINITIONS_INDICATOR, "");
@@ -299,7 +299,7 @@ public class ShaderParser {
         }
         throw new ShaderCompilationException(this.currentContext, "Illegal token: " + token + " (line " + line + ")");
     }
-    
+
     private ShaderType type(String s) {
         s = s.trim();
         switch (s) {

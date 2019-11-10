@@ -13,7 +13,7 @@ public class GuiBatch implements Batch2D {
 
     @Override
     public Color color() {
-        
+
         return null;
     }
 
@@ -21,16 +21,17 @@ public class GuiBatch implements Batch2D {
     public void end() {
     }
 
-    public void drawString(String s) {
-        
-    }
-    
-    @Override
-    public void draw(Texture texture, Matrix3x2fc transform, float width, float height, boolean flipU, boolean flipV) {
+    public void drawString(final String s) {
+
     }
 
     @Override
-    public void drawPolygon(Texture texture, float[] poly, int start, int len) {
+    public void draw(final Texture texture, final Matrix3x2fc transform, final float width, final float height,
+            final boolean flipU, final boolean flipV) {
     }
-    
+
+    @Override
+    public void drawPolygon(final Texture texture, final float[] poly, final int start, final int len) {
+    }
+
 }

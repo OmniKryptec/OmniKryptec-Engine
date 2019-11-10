@@ -30,7 +30,7 @@ import de.omnikryptec.ecs.component.ComponentType;
  * @see IECSManager
  */
 public class Family {
-    
+
     /**
      * Creates a new BitSet with all indices set to true if a corresponding
      * {@link ComponentType} is required.
@@ -47,7 +47,7 @@ public class Family {
         }
         return bitset;
     }
-    
+
     public static BitSet of(@Nonnull final Class<? extends Component>... classes) {
         final BitSet bitset = new BitSet();
         for (final Class<? extends Component> type : classes) {
@@ -55,7 +55,7 @@ public class Family {
         }
         return bitset;
     }
-    
+
     /**
      * Checks if all bits that are set to true in the second argument, are also true
      * in the first argument. If a bit in the second argument is zero, it will be
@@ -77,5 +77,5 @@ public class Family {
         }
         return true;
     }
-    
+
 }

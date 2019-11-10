@@ -6,7 +6,7 @@ import java.util.Map;
 public class RenderedObjectType {
     private static int next = 0;
     private static Map<Class<? extends RenderedObject>, RenderedObjectType> mappings = new HashMap<>();
-    
+
     public static RenderedObjectType of(final Class<? extends RenderedObject> clazz) {
         RenderedObjectType mapper = mappings.get(clazz);
         if (mapper == null) {
@@ -15,19 +15,19 @@ public class RenderedObjectType {
         }
         return mapper;
     }
-    
+
     public final int id;
-    
+
     private RenderedObjectType() {
         this.id = next;
         next++;
     }
-    
+
     @Override
     public int hashCode() {
         return this.id;
     }
-    
+
     @Override
     public boolean equals(final Object obj) {
         if (obj == this) {

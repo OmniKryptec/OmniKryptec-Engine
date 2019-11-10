@@ -1,8 +1,5 @@
 package de.omnikryptec.core;
 
-import de.codemakers.base.logger.LogLevel;
-import de.codemakers.base.logger.Logger;
-import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.core.update.ULayer;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
@@ -21,7 +18,7 @@ import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class BigTest extends Omnikryptec {
-    
+
     public static void main(final String[] args) {
         //Logger.getDefaultAdvancedLeveledLogger().setMinimumLogLevel(LogLevel.FINEST);
         //Logger.getDefaultAdvancedLeveledLogger().createLogFormatBuilder().appendLogLevel().appendText(": ").appendObject().appendNewLine().appendThread().appendSource().appendNewLine().finishWithoutException();
@@ -29,32 +26,34 @@ public class BigTest extends Omnikryptec {
         //AdvancedFile.DEBUG_TO_STRING = true;
         new BigTest().start();
     }
-    
+
     @Override
-    protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings, final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings, KeySettings keys) {
+    protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
+            final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings,
+            final KeySettings keys) {
         libsettings.set(LibSetting.DEBUG, true);
         libsettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "BigTest-Window");
         windowSettings.set(WindowSetting.LockAspectRatio, true);
         windowSettings.set(WindowSetting.VSync, false);
-        
+
         //windowSettings.set(WindowSetting.Fullscreen, true);
         //windowSettings.set(WindowSetting.Width, 10000);
         //windowSettings.set(WindowSetting.Height, 2000);
     }
-    
+
     @Override
     protected void onInitialized() {
-        Scene actual = getGame().createNewScene();
-        ULayer scene = new ULayer();
+        final Scene actual = getGame().createNewScene();
+        final ULayer scene = new ULayer();
         actual.setGameLogic(scene);
         getResourceManager().stage("intern:/de/omnikryptec/resources/");
         getResourceManager().processStaged(false, false);
         //scene.addUpdatable(UpdateableFactory.createScreenClearTest());
         //scene.addUpdatable(UpdateableFactory.createRenderTest(getTextures()));
-        LocalRendererContext c = actual.getRendering();
+        final LocalRendererContext c = actual.getRendering();
         c.addRenderer(new ReflectedRenderer2D());
-        ReflectiveSprite s = new ReflectiveSprite();
+        final ReflectiveSprite s = new ReflectiveSprite();
         //s.setColor(new Color(1, 0, 0));
         s.setReflectionType(Reflection2DType.Cast);
         s.getTransform().localspaceWrite().rotate(Mathf.PI / 4);
@@ -62,14 +61,14 @@ public class BigTest extends Omnikryptec {
         scene.addUpdatable(new IUpdatable() {
             private float f;
             private int fac = 1;
-            
+
             @Override
-            public void update(Time time) {
+            public void update(final Time time) {
                 s.getTransform().localspaceWrite().translate(0.5f * s.getWidth(), 0.5f * s.getHeight());
-                s.getTransform().localspaceWrite().rotate(time.deltaf * fac);
-                f += time.deltaf * fac;
-                if (f > Mathf.PI / 4 || f < -Mathf.PI / 4) {
-                    fac *= -1;
+                s.getTransform().localspaceWrite().rotate(time.deltaf * this.fac);
+                this.f += time.deltaf * this.fac;
+                if (this.f > Mathf.PI / 4 || this.f < -Mathf.PI / 4) {
+                    this.fac *= -1;
                 }
                 s.getTransform().localspaceWrite().translate(-0.5f * s.getWidth(), -0.5f * s.getHeight());
             }
@@ -80,26 +79,21 @@ public class BigTest extends Omnikryptec {
         s.setLayer(1);
         s.setTexture(getTextures().get("jd.png"));
         s.setOffset(-0.2f);
-        ReflectiveSprite back = new ReflectiveSprite();
+        final ReflectiveSprite back = new ReflectiveSprite();
         back.setTexture(getTextures().get("jn.png"));
         back.setHeight(0.4f);
         back.setReflectionType(Reflection2DType.Receive);
         back.reflectiveness().set(1, 1, 1);
-        ReflectiveSprite back2 = new ReflectiveSprite();
+        final ReflectiveSprite back2 = new ReflectiveSprite();
         back2.setHeight(0.6f);
         back2.getTransform().localspaceWrite().translate(0, 0.4f);
         back2.setReflectionType(Reflection2DType.Disable);
-        scene.addUpdatable(new IUpdatable() {
-            @Override
-            public void update(Time time) {
-                back2.setColor(Color.ofTemperature(Mathf.pingpong(time.currentf, 20000)));
-            }
-        });
+        scene.addUpdatable(time -> back2.setColor(Color.ofTemperature(Mathf.pingpong(time.currentf, 20000))));
         c.getIRenderedObjectManager().add(back2);
         c.getIRenderedObjectManager().add(back);
         c.getIRenderedObjectManager().add(s);
     }
-    
+
     @Override
     protected void onShutdown() {
         System.out.println(Profiler.currentInfo());

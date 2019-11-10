@@ -14,41 +14,42 @@ import de.omnikryptec.render.objects.RenderedObjectType;
 import de.omnikryptec.render.objects.Sprite;
 
 public class RendererUtil {
-    
+
     private static final Batch2D directBatch = new SimpleBatch2D(18);
-    
-    public static void renderDirect(Texture... ts) {
+
+    public static void renderDirect(final Texture... ts) {
         directBatch.begin();
-        for (Texture t : ts) {
+        for (final Texture t : ts) {
             if (t != null) {
                 directBatch.draw(t, null, false, false);
             }
         }
         directBatch.end();
     }
-    
-    public static void drawUnorderedCache(Batch2D batch, Map<Texture, float[]> cache) {
-        for (Texture t : cache.keySet()) {
+
+    public static void drawUnorderedCache(final Batch2D batch, final Map<Texture, float[]> cache) {
+        for (final Texture t : cache.keySet()) {
             batch.drawPolygon(t, cache.get(t));
         }
     }
-    
+
     //TODO not so nice maybe:
-    
-    public static void render2d(Batch2D batch, IRenderedObjectManager manager, RenderedObjectType type,
-            FrustumIntersection filter) {
-        List<Sprite> sprites = manager.getFor(type);
+
+    public static void render2d(final Batch2D batch, final IRenderedObjectManager manager,
+            final RenderedObjectType type, final FrustumIntersection filter) {
+        final List<Sprite> sprites = manager.getFor(type);
         render2d(batch, sprites, filter);
     }
-    
-    public static void render2d(Batch2D batch, Collection<? extends Sprite> sprites, FrustumIntersection filter) {
+
+    public static void render2d(final Batch2D batch, final Collection<? extends Sprite> sprites,
+            final FrustumIntersection filter) {
         batch.begin();
-        for (Sprite s : sprites) {
+        for (final Sprite s : sprites) {
             if (s.isVisible(filter)) {
                 s.draw(batch);
             }
         }
         batch.end();
     }
-    
+
 }

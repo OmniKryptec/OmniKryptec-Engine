@@ -30,7 +30,7 @@ import de.omnikryptec.util.settings.Settings;
  *
  */
 public class BasicFunctionsTest {
-    
+
     public static void main(final String[] args) {
         LibAPIManager.init(new Settings<>());
         LibAPIManager.instance().initGlfw();
@@ -38,7 +38,7 @@ public class BasicFunctionsTest {
         final IWindow window = LibAPIManager.instance().getGLFW().getRenderAPI().getWindow();
         window.setVisible(true);
         final WindowUpdater updater = new WindowUpdater(window);
-        Color clearColor = new Color();
+        final Color clearColor = new Color();
         while (!window.isCloseRequested()) {
             updater.update(0);
             if (updater.getOperationCount() % 40 == 0) {
@@ -48,5 +48,5 @@ public class BasicFunctionsTest {
         }
         LibAPIManager.shutdown();
     }
-    
+
 }

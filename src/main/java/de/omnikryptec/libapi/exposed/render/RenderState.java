@@ -17,14 +17,14 @@
 package de.omnikryptec.libapi.exposed.render;
 
 public class RenderState implements Cloneable {
-    
-    public static RenderState of(Object... objects) {
-        RenderState state = new RenderState();
+
+    public static RenderState of(final Object... objects) {
+        final RenderState state = new RenderState();
         if (objects.length > 5) {
             throw new IllegalArgumentException("Illegal amount of arguments");
         }
         int bools = 0;
-        for (Object o : objects) {
+        for (final Object o : objects) {
             if (o == null) {
                 throw new NullPointerException("array entry == null");
             }
@@ -49,80 +49,80 @@ public class RenderState implements Cloneable {
         }
         return state;
     }
-    
+
     public static enum BlendMode {
         ADDITIVE, ALPHA, MULTIPLICATIVE, OFF;
     }
-    
+
     public static enum CullMode {
         BACK, FRONT, OFF;
     }
-    
+
     public static enum DepthMode {
         LESS, EQUAL, GREATER, ALWAYS, NEVER, OFF, DEFAULT;
     }
-    
+
     //TODO allow null values so that thing stays as it is?
     private BlendMode blendMode = null;
     private CullMode cullMode = null;
     private DepthMode depthMode = null;
     private boolean writeColor, writeDepth;
-    
+
     public RenderState() {
         setDefault();
     }
-    
+
     public void setDefault() {
-        blendMode = BlendMode.OFF;
-        cullMode = CullMode.OFF;
-        depthMode = DepthMode.OFF;
-        writeColor = true;
-        writeDepth = true;
+        this.blendMode = BlendMode.OFF;
+        this.cullMode = CullMode.OFF;
+        this.depthMode = DepthMode.OFF;
+        this.writeColor = true;
+        this.writeDepth = true;
     }
-    
+
     public BlendMode getBlendMode() {
         return this.blendMode;
     }
-    
+
     public CullMode getCullMode() {
         return this.cullMode;
     }
-    
+
     public DepthMode getDepthMode() {
         return this.depthMode;
     }
-    
+
     public RenderState setBlendMode(final BlendMode blendMode) {
         this.blendMode = blendMode;
         return this;
     }
-    
+
     public RenderState setCullMode(final CullMode cullMode) {
         this.cullMode = cullMode;
         return this;
     }
-    
+
     public RenderState setDepthMode(final DepthMode depthMode) {
         this.depthMode = depthMode;
         return this;
     }
-    
+
     public boolean isWriteColor() {
-        return writeColor;
+        return this.writeColor;
     }
-    
-    public void setWriteColor(boolean writeColor) {
+
+    public void setWriteColor(final boolean writeColor) {
         this.writeColor = writeColor;
     }
-    
+
     public boolean isWriteDepth() {
-        return writeDepth;
+        return this.writeDepth;
     }
-    
-    public void setWriteDepth(boolean writeDepth) {
+
+    public void setWriteDepth(final boolean writeDepth) {
         this.writeDepth = writeDepth;
     }
-    
+
     @Override
     public RenderState clone() {
         RenderState clone = null;
@@ -133,5 +133,5 @@ public class RenderState implements Cloneable {
         }
         return clone;
     }
-    
+
 }

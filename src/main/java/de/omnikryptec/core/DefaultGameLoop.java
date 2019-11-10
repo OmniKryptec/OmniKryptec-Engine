@@ -21,33 +21,32 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import de.omnikryptec.util.updater.Time;
 
 public class DefaultGameLoop implements IGameLoop {
-   
-    
+
     private final AtomicBoolean running = new AtomicBoolean(false);
     private boolean shouldStop = false;
-    
+
     private Game game;
-    
+
     @Override
     public void setGame(final Game game) {
         this.game = game;
     }
-    
+
     @Override
     public void stopLoop() {
         this.shouldStop = true;
     }
-    
+
     public boolean shouldStop() {
-        return this.shouldStop || (this.game == null ? false
-                : this.game.getWindowUpdater().getWindow().isCloseRequested());
+        return this.shouldStop
+                || (this.game == null ? false : this.game.getWindowUpdater().getWindow().isCloseRequested());
     }
-    
+
     @Override
     public boolean isRunning() {
         return this.running.get();
     }
-    
+
     @Override
     public void startLoop() {
         if (this.running.get()) {
@@ -60,14 +59,14 @@ public class DefaultGameLoop implements IGameLoop {
             while (!shouldStop()) {
                 //TODO that number is hardcoded, maybe move the whole updater?
                 this.game.getWindowUpdater().update(144);
-                Time time = this.game.getWindowUpdater().asTime();
-                game.prepareGame(time);
-                game.updateGame(time);
-                game.renderGame(time);
+                final Time time = this.game.getWindowUpdater().asTime();
+                this.game.prepareGame(time);
+                this.game.updateGame(time);
+                this.game.renderGame(time);
             }
         } finally {
             this.running.set(false);
         }
     }
-    
+
 }

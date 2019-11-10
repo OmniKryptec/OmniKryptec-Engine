@@ -19,17 +19,17 @@ import de.omnikryptec.util.settings.Settings;
 
 public class GLWindow implements IWindow {
     private final EventBus windowBus = LibAPIManager.ENGINE_EVENTBUS;
-    
+
     private final long windowId;
     private final GLScreenBuffer screenBuffer;
-    
+
     private int windowWidth;
     private int windowHeight;
     private boolean isFullscreen;
     private boolean isActive;
-    
-    public GLWindow(Settings<WindowSetting> windowSettings, Settings<IntegerKey> apiSettings,
-            FrameBufferStack fbStack) {
+
+    public GLWindow(final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
+            final FrameBufferStack fbStack) {
         Util.ensureNonNull(windowSettings, "Window settings must not be null!");
         this.windowWidth = windowSettings.get(WindowSetting.Width);
         this.windowHeight = windowSettings.get(WindowSetting.Height);
@@ -74,116 +74,116 @@ public class GLWindow implements IWindow {
         }
         setCursorState(windowSettings.get(WindowSetting.CursorState));
         registerCallbacks();
-        GLFW.glfwMakeContextCurrent(windowId);
+        GLFW.glfwMakeContextCurrent(this.windowId);
         GL.createCapabilities();
         setVSync(windowSettings.get(WindowSetting.VSync));
-        screenBuffer = new GLScreenBuffer(windowId, aspectRatio, fbStack);
-        windowBus.register(screenBuffer);
+        this.screenBuffer = new GLScreenBuffer(this.windowId, aspectRatio, fbStack);
+        this.windowBus.register(this.screenBuffer);
     }
-    
+
     private void registerCallbacks() {
         GLFW.glfwSetWindowSizeCallback(this.windowId,
-                (window, width, height) -> windowBus.post(new WindowEvent.WindowResized(this, width, height)));
-        GLFW.glfwSetFramebufferSizeCallback(windowId, (window, width, height) -> windowBus
+                (window, width, height) -> this.windowBus.post(new WindowEvent.WindowResized(this, width, height)));
+        GLFW.glfwSetFramebufferSizeCallback(this.windowId, (window, width, height) -> this.windowBus
                 .post(new WindowEvent.ScreenBufferResized(this, width, height, this.screenBuffer)));
         GLFW.glfwSetWindowFocusCallback(this.windowId,
-                (window, focused) -> windowBus.post(new WindowEvent.WindowFocused(this, focused)));
+                (window, focused) -> this.windowBus.post(new WindowEvent.WindowFocused(this, focused)));
         GLFW.glfwSetWindowIconifyCallback(this.windowId,
-                (window, iconified) -> windowBus.post(new WindowEvent.WindowIconified(this, iconified)));
+                (window, iconified) -> this.windowBus.post(new WindowEvent.WindowIconified(this, iconified)));
         GLFW.glfwSetWindowMaximizeCallback(this.windowId,
-                (window, maximized) -> windowBus.post(new WindowEvent.WindowMaximized(this, maximized)));
-        GLFW.glfwSetKeyCallback(this.windowId, (window, key, scancode, action, mods) -> windowBus
+                (window, maximized) -> this.windowBus.post(new WindowEvent.WindowMaximized(this, maximized)));
+        GLFW.glfwSetKeyCallback(this.windowId, (window, key, scancode, action, mods) -> this.windowBus
                 .post(new InputEvent.KeyEvent(key, scancode, action, mods)));
-        GLFW.glfwSetMouseButtonCallback(this.windowId, (window, button, action, mods) -> windowBus
+        GLFW.glfwSetMouseButtonCallback(this.windowId, (window, button, action, mods) -> this.windowBus
                 .post(new InputEvent.MouseButtonEvent(button, action, mods)));
         GLFW.glfwSetCursorPosCallback(this.windowId,
-                (window, xpos, ypos) -> windowBus.post(new InputEvent.MousePositionEvent(xpos, ypos)));
+                (window, xpos, ypos) -> this.windowBus.post(new InputEvent.MousePositionEvent(xpos, ypos)));
         GLFW.glfwSetScrollCallback(this.windowId,
-                (window, x, y) -> windowBus.post(new InputEvent.MouseScrollEvent(x, y)));
+                (window, x, y) -> this.windowBus.post(new InputEvent.MouseScrollEvent(x, y)));
         GLFW.glfwSetCursorEnterCallback(this.windowId,
-                (window, entered) -> windowBus.post(new InputEvent.CursorInWindowEvent(entered)));
+                (window, entered) -> this.windowBus.post(new InputEvent.CursorInWindowEvent(entered)));
     }
-    
+
     @Override
     public boolean isActive() {
-        return isActive;
+        return this.isActive;
     }
-    
+
     @Override
     public boolean isFullscreen() {
-        return isFullscreen;
+        return this.isFullscreen;
     }
-    
+
     @Override
     public boolean isCloseRequested() {
-        return GLFW.glfwWindowShouldClose(windowId);
+        return GLFW.glfwWindowShouldClose(this.windowId);
     }
-    
+
     @Override
     public int getWindowWidth() {
-        return windowWidth;
+        return this.windowWidth;
     }
-    
+
     @Override
     public int getWindowHeight() {
-        return windowHeight;
+        return this.windowHeight;
     }
-    
+
     public GLScreenBuffer getDefaultFrameBuffer() {
-        return screenBuffer;
+        return this.screenBuffer;
     }
-    
+
     @Override
-    public void setVSync(boolean vsync) {
+    public void setVSync(final boolean vsync) {
         GLFW.glfwSwapInterval(vsync ? 1 : 0);
     }
-    
+
     @Override
-    public void setVisible(boolean visible) {
+    public void setVisible(final boolean visible) {
         if (visible) {
             GLFW.glfwShowWindow(this.windowId);
         } else {
             GLFW.glfwHideWindow(this.windowId);
         }
     }
-    
+
     @Override
     public void dispose() {
-        GLFW.glfwDestroyWindow(windowId);
+        GLFW.glfwDestroyWindow(this.windowId);
     }
-    
+
     @Override
     public void swapBuffers() {
         GLFW.glfwSwapBuffers(this.windowId);
     }
-    
+
     @Override
     public long getID() {
-        return windowId;
+        return this.windowId;
     }
-    
+
     @Override
-    public void setTitle(String title) {
-        GLFW.glfwSetWindowTitle(windowId, title);
+    public void setTitle(final String title) {
+        GLFW.glfwSetWindowTitle(this.windowId, title);
     }
-    
+
     @Override
-    public void setWindowSize(int width, int height) {
+    public void setWindowSize(final int width, final int height) {
         this.windowWidth = width;
         this.windowHeight = height;
-        GLFW.glfwSetWindowSize(windowId, width, height);
+        GLFW.glfwSetWindowSize(this.windowId, width, height);
     }
-    
+
     @Override
-    public void setFullscreen(boolean b) {
-        GLFW.glfwSetWindowMonitor(windowId, b ? GLFW.glfwGetPrimaryMonitor() : 0, 0, 0, windowWidth, windowHeight,
-                GLFW.GLFW_DONT_CARE);
+    public void setFullscreen(final boolean b) {
+        GLFW.glfwSetWindowMonitor(this.windowId, b ? GLFW.glfwGetPrimaryMonitor() : 0, 0, 0, this.windowWidth,
+                this.windowHeight, GLFW.GLFW_DONT_CARE);
     }
-    
+
     @Override
-    public void setCursorState(CursorType state) {
+    public void setCursorState(final CursorType state) {
         Util.ensureNonNull(state);
-        GLFW.glfwSetInputMode(windowId, GLFW.GLFW_CURSOR, state.getState());
+        GLFW.glfwSetInputMode(this.windowId, GLFW.GLFW_CURSOR, state.getState());
     }
-    
+
 }

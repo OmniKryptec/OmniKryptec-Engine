@@ -6,59 +6,59 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
 
 //TODO this class seems ugly: use FXAA (thats PP) instead of "classical" AA?
 public class SceneRenderBufferManager {
-    
+
     private FrameBuffer multisampledScene;
     private FrameBuffer[] scene;
-    
-    private FBTarget[] targets;
-    
-    private boolean multisampled;
-    
-    public SceneRenderBufferManager(RenderAPI api, int multisamples, FBTarget... targets) {
+
+    private final FBTarget[] targets;
+
+    private final boolean multisampled;
+
+    public SceneRenderBufferManager(final RenderAPI api, final int multisamples, final FBTarget... targets) {
         this.targets = targets;
         this.multisampled = multisamples > 0;
-        
+
         if (targets.length == 0) {
             throw new IllegalArgumentException("requires at least one FBTarget");
         } else {
-            int width = api.getSurface().getWidth();
-            int height = api.getSurface().getHeight();
-            multisampledScene = api.createFrameBuffer(width, height, multisamples, targets.length);
-            multisampledScene.assignTargetsB(targets);
-            if (targets.length > 1 || multisampled) {
-                scene = new FrameBuffer[targets.length];
-                for (int i = 0; i < scene.length; i++) {
-                    scene[i] = api.createFrameBuffer(width, height, 0, 1);
-                    scene[i].assignTargetB(0, targets[i]);
+            final int width = api.getSurface().getWidth();
+            final int height = api.getSurface().getHeight();
+            this.multisampledScene = api.createFrameBuffer(width, height, multisamples, targets.length);
+            this.multisampledScene.assignTargetsB(targets);
+            if (targets.length > 1 || this.multisampled) {
+                this.scene = new FrameBuffer[targets.length];
+                for (int i = 0; i < this.scene.length; i++) {
+                    this.scene[i] = api.createFrameBuffer(width, height, 0, 1);
+                    this.scene[i].assignTargetB(0, targets[i]);
                 }
             }
         }
     }
-    
-    public FrameBuffer get(int index) {
-        return scene == null ? multisampledScene : scene[index];
+
+    public FrameBuffer get(final int index) {
+        return this.scene == null ? this.multisampledScene : this.scene[index];
     }
-    
+
     public void beginRender() {
-        multisampledScene.bindFrameBuffer();
+        this.multisampledScene.bindFrameBuffer();
     }
-    
+
     public void endRender() {
-        multisampledScene.unbindFrameBuffer();
-        if (scene != null) {
-            for (int i = 0; i < scene.length; i++) {
-                multisampledScene.resolveToFrameBuffer(scene[i], targets[i].attachmentIndex);
+        this.multisampledScene.unbindFrameBuffer();
+        if (this.scene != null) {
+            for (int i = 0; i < this.scene.length; i++) {
+                this.multisampledScene.resolveToFrameBuffer(this.scene[i], this.targets[i].attachmentIndex);
             }
         }
     }
-    
-    public void resize(int width, int height) {
-        multisampledScene = multisampledScene.resizedClone(width, height);
-        if (scene != null) {
-            for (int i = 0; i < scene.length; i++) {
-                scene[i] = scene[i].resizedClone(width, height);
+
+    public void resize(final int width, final int height) {
+        this.multisampledScene = this.multisampledScene.resizedClone(width, height);
+        if (this.scene != null) {
+            for (int i = 0; i < this.scene.length; i++) {
+                this.scene[i] = this.scene[i].resizedClone(width, height);
             }
         }
     }
-    
+
 }

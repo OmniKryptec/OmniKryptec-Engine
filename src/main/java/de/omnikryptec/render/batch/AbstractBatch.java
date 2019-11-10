@@ -7,58 +7,59 @@ import de.omnikryptec.render.batch.module.ModuleBatchingManager;
 import de.omnikryptec.render.batch.vertexmanager.VertexManager;
 
 public abstract class AbstractBatch {
-    
+
     protected final ModuleBatchingManager modBatchManager;
     protected final VertexManager vertexManager;
     private boolean rendering;
-    
-    public AbstractBatch(VertexManager vertexManager) {
+
+    public AbstractBatch(final VertexManager vertexManager) {
         this.vertexManager = vertexManager;
         this.modBatchManager = createManager();
-        this.vertexManager.init(modBatchManager);
+        this.vertexManager.init(this.modBatchManager);
     }
-    
+
     protected abstract ModuleBatchingManager createManager();
-    
-    protected final void issueVertices(Texture texture) {
+
+    protected final void issueVertices(final Texture texture) {
         checkRendering();
-        modBatchManager.issueVertices(texture, vertexManager);
+        this.modBatchManager.issueVertices(texture, this.vertexManager);
     }
-    
-    protected final void issuePreComputed(Texture texture, float[] floats, int start, int length) {
+
+    protected final void issuePreComputed(final Texture texture, final float[] floats, final int start,
+            final int length) {
         checkRendering();
-        modBatchManager.issuePreComputed(texture, vertexManager, floats, start, length);
+        this.modBatchManager.issuePreComputed(texture, this.vertexManager, floats, start, length);
     }
-    
+
     @OverridingMethodsMustInvokeSuper
     public void begin() {
         this.rendering = true;
-        vertexManager.begin();
+        this.vertexManager.begin();
     }
-    
+
     @OverridingMethodsMustInvokeSuper
     public void end() {
         flush();
         this.rendering = false;
     }
-    
+
     @OverridingMethodsMustInvokeSuper
     public void flush() {
         checkRendering();
-        vertexManager.forceFlush();
+        this.vertexManager.forceFlush();
     }
-    
-    public void drawPolygon(Texture texture, float[] poly, int start, int len) {
+
+    public void drawPolygon(final Texture texture, final float[] poly, final int start, final int len) {
         issuePreComputed(texture, poly, start, len);
     }
-    
+
     private final void checkRendering() {
         if (!this.isRendering()) {
             throw new IllegalStateException("not rendering");
         }
     }
-    
+
     public final boolean isRendering() {
-        return rendering;
+        return this.rendering;
     }
 }

@@ -11,15 +11,15 @@ import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
 public class GLFWAccessManager {
-    
+
     private RenderAPI renderApi;
     private final Logger logger = Logger.getLogger(getClass());
-    
+
     GLFWAccessManager() {
     }
-    
-    public void setRenderer(Class<? extends RenderAPI> clazz, Settings<WindowSetting> windowSettings,
-            Settings<IntegerKey> apiSettings) {
+
+    public void setRenderer(final Class<? extends RenderAPI> clazz, final Settings<WindowSetting> windowSettings,
+            final Settings<IntegerKey> apiSettings) {
         if (isRendererSet()) {
             throw new IllegalStateException("Renderer is already set!");
         }
@@ -27,27 +27,27 @@ public class GLFWAccessManager {
             final Constructor<? extends RenderAPI> renderApiConstructor = clazz
                     .getConstructor(windowSettings.getClass(), apiSettings.getClass());
             renderApiConstructor.setAccessible(true);
-            renderApi = renderApiConstructor.newInstance(windowSettings, apiSettings);
-            logger.info("Set the RenderAPI to " + clazz.getSimpleName());
-        } catch (NoSuchMethodException ex) {
+            this.renderApi = renderApiConstructor.newInstance(windowSettings, apiSettings);
+            this.logger.info("Set the RenderAPI to " + clazz.getSimpleName());
+        } catch (final NoSuchMethodException ex) {
             throw new IllegalArgumentException("Invalid RendererAPI: Missing constructor", ex);
-        } catch (Exception ex) {
+        } catch (final Exception ex) {
             ex.printStackTrace();
         }
     }
-    
+
     public boolean isRendererSet() {
-        return renderApi != null;
+        return this.renderApi != null;
     }
-    
+
     public RenderAPI getRenderAPI() {
-        return renderApi;
+        return this.renderApi;
     }
-    
+
     public void pollEvents() {
         GLFW.glfwPollEvents();
     }
-    
+
     /**
      * Returns the value of the GLFW timer. The timer measures time elapsed since
      * GLFW was initialized.

@@ -29,28 +29,28 @@ import de.omnikryptec.util.data.Smoother;
  * @author pcfreak9000
  */
 public class AbstractUpdater {
-    
-    private double starttime;
-    
+
+    private final double starttime;
+
     private double opstime = 0;
     private double deltatime = 0;
     private double lasttime = 0;
     private double frontruntime = 0;
-    
+
     private long operationcount = 0;
-    
+
     private long ops1 = 0, ops2 = 0;
     private boolean ops = true;
-    
+
     private double lastsynced;
-    
+
     private final Smoother deltaTimeSmoother;
-    
+
     public AbstractUpdater() {
         this.deltaTimeSmoother = new Smoother();
         this.starttime = LibAPIManager.instance().getGLFW().getTime();
     }
-    
+
     /**
      * Updates this object and the values accessable by the functions of this class
      * (e.g. {@link #getDeltaTime()}.<br>
@@ -69,7 +69,7 @@ public class AbstractUpdater {
         final double currentFrameTime = LibAPIManager.instance().getGLFW().getTime();
         this.deltatime = (currentFrameTime - this.lasttime);
         this.deltaTimeSmoother.push(this.deltatime);
-        this.frontruntime = currentFrameTime - starttime;
+        this.frontruntime = currentFrameTime - this.starttime;
         this.lasttime = currentFrameTime;
         if (maxops > 0) {
             sync(maxops);
@@ -91,7 +91,7 @@ public class AbstractUpdater {
             }
         }
     }
-    
+
     /**
      * See {@link #update(int)}.
      *
@@ -106,7 +106,7 @@ public class AbstractUpdater {
         } catch (final InterruptedException ex) {
         }
     }
-    
+
     /**
      * An instance of {@link Smoother} that can be used to retrieve a delta time
      * smoothed over multiple operations, in seconds.
@@ -119,7 +119,7 @@ public class AbstractUpdater {
     public final Smoother getDeltaTimeSmoother() {
         return this.deltaTimeSmoother;
     }
-    
+
     /**
      * the amount of calls to the {@link #update(int)} function since the creation
      * of this object.
@@ -129,7 +129,7 @@ public class AbstractUpdater {
     public long getOperationCount() {
         return this.operationcount;
     }
-    
+
     // /**
     // * the amount of time the maintained window was in the foreground. For a
     // * complete time since glfw initialization, see {@link GLFWManager#getTime()}.
@@ -140,7 +140,7 @@ public class AbstractUpdater {
     // public double getFrontRunningTime() {
     // return frontruntime;
     // }
-    
+
     /**
      * the counted operations per second. Counted means that the calls to
      * {@link #update(int)} will be counted each second, so the value of this
@@ -151,7 +151,7 @@ public class AbstractUpdater {
     public long getOPS() {
         return this.ops ? this.ops2 : this.ops1;
     }
-    
+
     /**
      * the measured delta time. That is the elapsed time between the last and the
      * last but one call to {@link #update(int)}, in seconds. For a smoothed value
@@ -164,7 +164,7 @@ public class AbstractUpdater {
     public double getDeltaTime() {
         return this.deltatime;
     }
-    
+
     /**
      * Sets the deltatime to zero.
      */
@@ -173,9 +173,9 @@ public class AbstractUpdater {
         this.lasttime = LibAPIManager.instance().getGLFW().getTime();
         this.opstime = LibAPIManager.instance().getGLFW().getTime();
     }
-    
+
     public Time asTime() {
         return new Time(getOperationCount(), getOPS(), LibAPIManager.instance().getGLFW().getTime(), getDeltaTime());
     }
-    
+
 }

@@ -29,13 +29,13 @@ import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.updater.Time;
 
 public class InputManager implements IUpdatable {
-    
-    public static void setCursorState(CursorType cursorType) {
+
+    public static void setCursorState(final CursorType cursorType) {
         //FIXME looks oof
         LibAPIManager.instance().getGLFW().getRenderAPI().getWindow().setCursorState(cursorType);
     }
-    
-    private KeySettings keySettings;
+
+    private final KeySettings keySettings;
     // Keyboard part
     private final KeyboardHandler keyboardHandler;
     // Mouse part
@@ -45,86 +45,87 @@ public class InputManager implements IUpdatable {
     private final Vector2d mouseScrollOffsetLastTime = new Vector2d(0.0, 0.0);
     private final Vector2d mousePositionDelta = new Vector2d(0.0, 0.0);
     private final Vector2d mouseScrollOffsetDelta = new Vector2d(0.0, 0.0);
-    
+
     private boolean longButtonPressEnabled = false;
-    
-    public InputManager(KeySettings keySettings) {
+
+    public InputManager(final KeySettings keySettings) {
         this(keySettings, new KeyboardHandler(), new MouseHandler());
     }
-    
-    protected InputManager(KeySettings keySettings, KeyboardHandler keyboardHandler, MouseHandler mouseHandler) {
+
+    protected InputManager(final KeySettings keySettings, final KeyboardHandler keyboardHandler,
+            final MouseHandler mouseHandler) {
         this.keySettings = keySettings;
         this.keyboardHandler = keyboardHandler;
         this.mouseHandler = mouseHandler;
     }
-    
+
     public KeySettings getKeySettings() {
-        return keySettings;
+        return this.keySettings;
     }
-    
+
     public KeyboardHandler getKeyboardHandler() {
-        return keyboardHandler;
+        return this.keyboardHandler;
     }
-    
+
     public MouseHandler getMouseHandler() {
-        return mouseHandler;
+        return this.mouseHandler;
     }
-    
-    protected boolean preUpdateIntern(Time time) {
+
+    protected boolean preUpdateIntern(final Time time) {
         boolean good = true;
-        if (longButtonPressEnabled) {
-            if (!keyboardHandler.preUpdate(time.current, keySettings)) {
+        if (this.longButtonPressEnabled) {
+            if (!this.keyboardHandler.preUpdate(time.current, this.keySettings)) {
                 good = false;
             }
-            if (!mouseHandler.preUpdate(time.current, keySettings)) {
+            if (!this.mouseHandler.preUpdate(time.current, this.keySettings)) {
                 good = false;
             }
         }
-        if (!JoystickHandler.preUpdateAll(time.current, keySettings)) {
+        if (!JoystickHandler.preUpdateAll(time.current, this.keySettings)) {
             good = false;
         }
         return good;
     }
-    
-    protected boolean updateIntern(Time time) {
-        keyboardHandler.clearInputString();
+
+    protected boolean updateIntern(final Time time) {
+        this.keyboardHandler.clearInputString();
         boolean good = true;
-        if (longButtonPressEnabled) {
-            if (!keyboardHandler.update(time.current, keySettings)) {
+        if (this.longButtonPressEnabled) {
+            if (!this.keyboardHandler.update(time.current, this.keySettings)) {
                 good = false;
             }
-            if (!mouseHandler.update(time.current, keySettings)) {
+            if (!this.mouseHandler.update(time.current, this.keySettings)) {
                 good = false;
             }
         }
-        if (!JoystickHandler.updateAll(time.current, keySettings)) {
+        if (!JoystickHandler.updateAll(time.current, this.keySettings)) {
             good = false;
         }
         return good;
     }
-    
-    protected boolean postUpdateIntern(Time time) {
+
+    protected boolean postUpdateIntern(final Time time) {
         boolean good = true;
-        if (longButtonPressEnabled) {
-            if (!keyboardHandler.postUpdate(time.current, keySettings)) {
+        if (this.longButtonPressEnabled) {
+            if (!this.keyboardHandler.postUpdate(time.current, this.keySettings)) {
                 good = false;
             }
-            if (!mouseHandler.postUpdate(time.current, keySettings)) {
+            if (!this.mouseHandler.postUpdate(time.current, this.keySettings)) {
                 good = false;
             }
         }
-        if (!JoystickHandler.postUpdateAll(time.current, keySettings)) {
+        if (!JoystickHandler.postUpdateAll(time.current, this.keySettings)) {
             good = false;
         }
         return good;
     }
-    
+
     public boolean close() {
         boolean good = true;
-        if (!keyboardHandler.close()) {
+        if (!this.keyboardHandler.close()) {
             good = false;
         }
-        if (!mouseHandler.close()) {
+        if (!this.mouseHandler.close()) {
             good = false;
         }
         if (!JoystickHandler.closeAll()) {
@@ -132,111 +133,111 @@ public class InputManager implements IUpdatable {
         }
         return good;
     }
-    
+
     @Override
-    public void update(Time time) {
+    public void update(final Time time) {
         postUpdateIntern(time);
-        
+
         updateIntern(time);
         updateMouseDeltas(getMousePosition(), getMouseScrollOffset());
-        
+
         preUpdateIntern(time);
-        
+
     }
-    
+
     public boolean isLongButtonPressEnabled() {
-        return longButtonPressEnabled;
+        return this.longButtonPressEnabled;
     }
-    
-    public InputManager setLongButtonPressEnabled(boolean longButtonPressEnabled) {
+
+    public InputManager setLongButtonPressEnabled(final boolean longButtonPressEnabled) {
         this.longButtonPressEnabled = longButtonPressEnabled;
         return this;
     }
-    
+
     // Keyboard part
-    
-    public byte getKeyboardKeyState(int keyCode) {
-        if (keyCode < 0 || keyCode >= keyboardHandler.size()) {
+
+    public byte getKeyboardKeyState(final int keyCode) {
+        if (keyCode < 0 || keyCode >= this.keyboardHandler.size()) {
             return KeySettings.KEY_UNKNOWN;
         }
-        return keyboardHandler.getKeyState(keyCode);
+        return this.keyboardHandler.getKeyState(keyCode);
     }
-    
-    public boolean isKeyboardKeyPressed(int keyCode) {
-        if (keyCode < 0 || keyCode >= keyboardHandler.size()) {
+
+    public boolean isKeyboardKeyPressed(final int keyCode) {
+        if (keyCode < 0 || keyCode >= this.keyboardHandler.size()) {
             return false;
         }
-        return keyboardHandler.isKeyPressed(keyCode) || keyboardHandler.isKeyRepeated(keyCode);
+        return this.keyboardHandler.isKeyPressed(keyCode) || this.keyboardHandler.isKeyRepeated(keyCode);
     }
-    
+
     // Mouse part
-    
-    public byte getMouseButtonState(int buttonCode) {
-        if (buttonCode < 0 || buttonCode >= mouseHandler.size()) {
+
+    public byte getMouseButtonState(final int buttonCode) {
+        if (buttonCode < 0 || buttonCode >= this.mouseHandler.size()) {
             return KeySettings.KEY_UNKNOWN;
         }
-        return mouseHandler.getButtonState(buttonCode);
+        return this.mouseHandler.getButtonState(buttonCode);
     }
-    
-    public boolean isMouseButtonPressed(int buttonCode) {
-        if (buttonCode < 0 || buttonCode >= mouseHandler.size()) {
+
+    public boolean isMouseButtonPressed(final int buttonCode) {
+        if (buttonCode < 0 || buttonCode >= this.mouseHandler.size()) {
             return false;
         }
-        return mouseHandler.isButtonPressed(buttonCode); // || mouseHandler.isButtonRepeated(buttonCode); //TODO Can a mouse buttons state be "REPEATED"?
+        return this.mouseHandler.isButtonPressed(buttonCode); // || mouseHandler.isButtonRepeated(buttonCode); //TODO Can a mouse buttons state be "REPEATED"?
     }
-    
-    public Vector2f getMousePositionRelative(Vector2f target) {
+
+    public Vector2f getMousePositionRelative(final Vector2f target) {
         return MathUtil.relativeMousePosition(getMousePosition(),
                 LibAPIManager.instance().getGLFW().getRenderAPI().getSurface().getViewportUnsafe(), target);
     }
-    
-    public Vector2f getMousePositionInWorld2D(Camera camera, Vector2f target) {
+
+    public Vector2f getMousePositionInWorld2D(final Camera camera, final Vector2f target) {
         return getMousePositionInWorld2D(camera.getProjectionInverse(), target);
     }
-    
-    public Vector2f getMousePositionInWorld2D(Matrix4fc inverseViewProjection, Vector2f target) {
+
+    public Vector2f getMousePositionInWorld2D(final Matrix4fc inverseViewProjection, Vector2f target) {
         target = getMousePositionRelative(target);
         MathUtil.screenToWorldspace2D(target, inverseViewProjection, target);
         return target;
     }
-    
+
     public Vector2dc getMousePosition() {
-        return mouseHandler.getPosition();
+        return this.mouseHandler.getPosition();
     }
-    
+
     public Vector2dc getMouseScrollOffset() {
-        return mouseHandler.getScrollOffset();
+        return this.mouseHandler.getScrollOffset();
     }
-    
+
     public boolean isMouseInsideViewport() {
         return isMouseInsideWindow() && LibAPIManager.instance().getGLFW().getRenderAPI().getSurface()
-                .isInViewport(mouseHandler.getPosition());
+                .isInViewport(this.mouseHandler.getPosition());
     }
-    
+
     public boolean isMouseInsideWindow() {
-        return mouseHandler.isInsideWindow();
+        return this.mouseHandler.isInsideWindow();
     }
-    
+
     // Mouse delta part
-    
-    private void updateMouseDeltas(Vector2dc mousePosition, Vector2dc mouseScrollOffset) {
-        mousePositionDelta.x = (mousePosition.x() - mousePositionLastTime.x);
-        mousePositionDelta.y = (mousePosition.y() - mousePositionLastTime.y);
-        mouseScrollOffsetDelta.x = (mouseScrollOffset.x() - mouseScrollOffsetLastTime.x);
-        mouseScrollOffsetDelta.y = (mouseScrollOffset.y() - mouseScrollOffsetLastTime.y);
+
+    private void updateMouseDeltas(final Vector2dc mousePosition, final Vector2dc mouseScrollOffset) {
+        this.mousePositionDelta.x = (mousePosition.x() - this.mousePositionLastTime.x);
+        this.mousePositionDelta.y = (mousePosition.y() - this.mousePositionLastTime.y);
+        this.mouseScrollOffsetDelta.x = (mouseScrollOffset.x() - this.mouseScrollOffsetLastTime.x);
+        this.mouseScrollOffsetDelta.y = (mouseScrollOffset.y() - this.mouseScrollOffsetLastTime.y);
         //FIXME Maybe split this up, because this below was executed as the last part in the old update ("nextFrame") method, needs discussion?
-        mousePositionLastTime.x = mousePosition.x();
-        mousePositionLastTime.y = mousePosition.y();
-        mouseScrollOffsetLastTime.x = mouseScrollOffset.x();
-        mouseScrollOffsetLastTime.y = mouseScrollOffset.y();
+        this.mousePositionLastTime.x = mousePosition.x();
+        this.mousePositionLastTime.y = mousePosition.y();
+        this.mouseScrollOffsetLastTime.x = mouseScrollOffset.x();
+        this.mouseScrollOffsetLastTime.y = mouseScrollOffset.y();
     }
-    
+
     public Vector2dc getMousePositionDelta() {
-        return mousePositionDelta;
+        return this.mousePositionDelta;
     }
-    
+
     public Vector2dc getMouseScrollOffsetDelta() {
-        return mouseScrollOffsetDelta;
+        return this.mouseScrollOffsetDelta;
     }
-    
+
 }

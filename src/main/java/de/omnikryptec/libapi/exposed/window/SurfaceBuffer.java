@@ -9,29 +9,31 @@ import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.FrameBufferStack;
 
 public abstract class SurfaceBuffer extends FrameBuffer {
-    
-    public SurfaceBuffer(FrameBufferStack stack) {
+
+    public SurfaceBuffer(final FrameBufferStack stack) {
         super(stack);
         AutoDeletionManager.unregister(this);
     }
-    
+
     /**
-     * The result of this method call should be considered read-only. (You could mess with it though!)
+     * The result of this method call should be considered read-only. (You could
+     * mess with it though!)
+     *
      * @return viewport
      */
     public abstract int[] getViewportUnsafe();
-    
+
     public int[] getViewport() {
-        int[] vp = getViewportUnsafe();
+        final int[] vp = getViewportUnsafe();
         return Arrays.copyOf(vp, vp.length);
     }
-    
-    public boolean isInViewport(Vector2dc vec) {
+
+    public boolean isInViewport(final Vector2dc vec) {
         return isInViewport(vec.x(), vec.y());
     }
-    
-    public boolean isInViewport(double x, double y) {
-        int[] viewport = getViewportUnsafe();
+
+    public boolean isInViewport(final double x, final double y) {
+        final int[] viewport = getViewportUnsafe();
         return x > viewport[0] && x < viewport[2] + viewport[0] && y > viewport[1] && y < viewport[3] + viewport[1];
     }
 }

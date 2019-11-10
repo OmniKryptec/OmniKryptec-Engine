@@ -9,33 +9,33 @@ import de.omnikryptec.render.renderer.Renderer;
 import de.omnikryptec.util.updater.Time;
 
 public class GuiRenderer implements Renderer {
-    
+
     private GuiComponent componentRoot;
-    private Batch2D batch;
-    
+    private final Batch2D batch;
+
     public GuiRenderer() {
         this.batch = new SimpleBatch2D(1000);
     }
-    
-    protected void setGui(GuiComponent componentRoot) {
+
+    protected void setGui(final GuiComponent componentRoot) {
         this.componentRoot = componentRoot;
     }
-    
+
     @Override
-    public void init(LocalRendererContext context, FrameBuffer target) {
+    public void init(final LocalRendererContext context, final FrameBuffer target) {
     }
-    
+
     @Override
-    public void render(Time time, IProjection projection, LocalRendererContext context) {
-        if (componentRoot != null) {
-            batch.begin();
-            componentRoot.render(batch);
-            batch.end();
+    public void render(final Time time, final IProjection projection, final LocalRendererContext context) {
+        if (this.componentRoot != null) {
+            this.batch.begin();
+            this.componentRoot.render(this.batch);
+            this.batch.end();
         }
     }
-    
+
     @Override
-    public void deinit(LocalRendererContext context) {
+    public void deinit(final LocalRendererContext context) {
     }
-    
+
 }

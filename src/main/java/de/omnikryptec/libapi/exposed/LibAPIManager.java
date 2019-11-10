@@ -36,7 +36,7 @@ import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
 
 public final class LibAPIManager {
-    
+
     public static final EventBus ENGINE_EVENTBUS = new EventBus(false);
     private static final Collection<ToughRunnable> shutdownHooks = new ArrayList<>();
     private static final Logger logger = Logger.getLogger(LibAPIManager.class);
@@ -44,11 +44,11 @@ public final class LibAPIManager {
     private GLFWAccessManager glfw;
     private OpenCL opencl;
     private static boolean debugFlag;
-    
+
     private LibAPIManager() {
     }
-    
-    public static void init(@Nonnull Settings<LibSetting> settings) {
+
+    public static void init(@Nonnull final Settings<LibSetting> settings) {
         if (isInitialized()) {
             throw new IllegalStateException("LibAPI is already initialized");
         }
@@ -56,14 +56,14 @@ public final class LibAPIManager {
         instance = new LibAPIManager();
         logger.info("Initialized LibAPI");
     }
-    
+
     /**
      * Uses the settings to set library options. This method is only effective if no
      * library functions have been called yet.<br>
      *
      * @param settings the {@link Settings} to set the lib options from
      */
-    private static void setConfiguration(@Nonnull Settings<LibSetting> settings) {
+    private static void setConfiguration(@Nonnull final Settings<LibSetting> settings) {
         if (isInitialized()) {
             logger.warn("Some settings may not have any effect because the LibAPI is initialized");
         }
@@ -81,11 +81,11 @@ public final class LibAPIManager {
         Configuration.DEBUG_LOADER.set(debug && libLoadDebug);
         Configuration.DEBUG_FUNCTIONS.set(debug && functionDebug);
     }
-    
+
     public static void shutdown() {
         if (isInitialized()) {
             logger.info("Running shutdown hooks...");
-            for (ToughRunnable toughRunnable : shutdownHooks) {
+            for (final ToughRunnable toughRunnable : shutdownHooks) {
                 toughRunnable.run((throwable) -> {
                     logger.error(String.format("Exception in shutdown hook '%s': %s", toughRunnable, throwable));
                     throwable.printStackTrace();
@@ -98,86 +98,86 @@ public final class LibAPIManager {
             logger.info("Terminated LibAPI");
         }
     }
-    
-    public static void registerResourceShutdownHooks(ToughRunnable... toughRunnables) {
+
+    public static void registerResourceShutdownHooks(final ToughRunnable... toughRunnables) {
         shutdownHooks.addAll(Arrays.asList(toughRunnables));
     }
-    
+
     public static boolean isInitialized() {
         return instance != null;
     }
-    
+
     public static LibAPIManager instance() {
         return instance;
     }
-    
+
     /**
      * Always prefer {@link Logger#debug(Object...)} over this if possible.
-     * 
+     *
      */
     public static boolean debug() {
         return debugFlag;
     }
-    
+
     public void initGlfw() {
         if (isGLFWinitialized()) {
             throw new IllegalStateException("GLFW is already initialized");
         }
         if (GLFW.glfwInit()) {
             GLFWErrorCallback.createThrow().set();
-            glfw = new GLFWAccessManager();
+            this.glfw = new GLFWAccessManager();
             logger.info("Initialized GLFW");
         } else {
-            glfw = null;
+            this.glfw = null;
             throw new RuntimeException("Error while initializing GLFW");
         }
     }
-    
+
     public void terminateGlfw() {
         if (isGLFWinitialized()) {
             GLFW.glfwTerminate();
-            glfw = null;
+            this.glfw = null;
             logger.info("Terminated GLFW");
         }
     }
-    
+
     public GLFWAccessManager getGLFW() {
-        return glfw;
+        return this.glfw;
     }
-    
+
     public boolean isGLFWinitialized() {
-        return glfw != null;
+        return this.glfw != null;
     }
-    
+
     public void initOpenCL() {
         try {
             if (CL.getFunctionProvider() == null) {
                 CL.create();
             }
-            opencl = new OpenCL();
+            this.opencl = new OpenCL();
             logger.info("Initialized OpenCL");
-        } catch (Exception ex) {
-            opencl = null;
+        } catch (final Exception ex) {
+            this.opencl = null;
             throw new RuntimeException(ex);
         }
     }
-    
+
     public void terminateOpenCL() {
         if (isOpenCLinitialized()) {
-            opencl.shutdown();
-            opencl = null;
+            this.opencl.shutdown();
+            this.opencl = null;
             logger.info("Terminated OpenCL");
         }
     }
-    
+
     public boolean isOpenCLinitialized() {
-        return opencl != null;
+        return this.opencl != null;
     }
-    
+
     public OpenCL getOpenCL() {
-        return opencl;
+        return this.opencl;
     }
-    
+
     public enum LibSetting implements Defaultable {
         /**
          * Enables debug mode of the OmniKryptec-Engine and LWJGL. This might do
@@ -220,17 +220,17 @@ public final class LibAPIManager {
          * @see de.omnikryptec.util.Logger
          */
         LOGGING_MIN(null), DEBUG_LIBRARY_LOADING(false);
-        
+
         private final Object defaultSetting;
-        
-        LibSetting(Object defaultSetting) {
+
+        LibSetting(final Object defaultSetting) {
             this.defaultSetting = defaultSetting;
         }
-        
+
         @Override
         public <T> T getDefault() {
             return (T) this.defaultSetting;
         }
     }
-    
+
 }
