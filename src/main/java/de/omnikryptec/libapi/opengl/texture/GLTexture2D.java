@@ -28,6 +28,7 @@ public class GLTexture2D extends GLTexture {
 
     public GLTexture2D(final TextureData texture, final TextureConfig config) {
         super(GL11.GL_TEXTURE_2D);
+        this.data = texture;
         bindTexture(0);
         OpenGLUtil.loadTexture(texture);
         OpenGLUtil.configureTexture(config);

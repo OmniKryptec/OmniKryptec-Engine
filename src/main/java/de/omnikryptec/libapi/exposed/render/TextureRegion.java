@@ -1,5 +1,5 @@
 package de.omnikryptec.libapi.exposed.render;
-
+//TODO TextureRegion of a TextureRegion is probably broken :c
 public class TextureRegion implements Texture {
 
     private final Texture superTexture;
@@ -12,8 +12,6 @@ public class TextureRegion implements Texture {
         float height = superTexture.getHeight();
         if (superTexture instanceof TextureRegion) {
             final TextureRegion tmp = (TextureRegion) superTexture;
-            width *= (Math.abs(u1 - u0));
-            height *= (Math.abs(v1 - v0));
             final float tmpf1 = -tmp.u0() + tmp.v0();
             final float tmpf2 = -tmp.u1() + tmp.v1();
             u0 *= tmpf1;
@@ -29,6 +27,8 @@ public class TextureRegion implements Texture {
         this.uvs[1] = v0;
         this.uvs[2] = u1;
         this.uvs[3] = v1;
+        width *= (Math.abs(u1 - u0));
+        height *= (Math.abs(v1 - v0));
         this.width = width;
         this.height = height;
     }
