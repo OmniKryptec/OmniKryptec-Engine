@@ -19,6 +19,8 @@ import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
 import de.omnikryptec.render.batch.Batch2D;
+import de.omnikryptec.resource.Font;
+import de.omnikryptec.resource.FontFile;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.data.Color;
@@ -80,9 +82,12 @@ public class Minigame extends Omnikryptec {
         Profiler.setEnabled(true);
     }
 
+    public static Font font;
     @Override
     protected void onInitialized() {
         getResourceManager().load(false, true, new AdvancedFile("intern:/de/omnikryptec/resources/"));
+        FontFile fontfile = getResourceProvider().get(FontFile.class, "text.fnt");
+        font = new Font(fontfile, getTextures().get("text1.png"));
         getEventBus().register(this);
         this.mgr = UpdateableFactory.createDefaultIECSManager();
         final Scene sn = getGame().createNewScene();

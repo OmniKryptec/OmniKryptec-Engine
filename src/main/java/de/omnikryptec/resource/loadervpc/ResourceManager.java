@@ -53,6 +53,7 @@ public class ResourceManager {
         addLoader(new TextureLoader());
         addLoader(new MeshLoader());
         addLoader(new ShaderLoader());
+        addLoader(new FontLoader());
     }
 
     public void clearLoaders() {

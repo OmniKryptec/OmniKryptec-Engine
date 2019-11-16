@@ -15,6 +15,7 @@ import de.omnikryptec.render.objects.Sprite;
 
 public class RendererUtil {
 
+    //TODO make sure there is only one "directBatch"
     private static final Batch2D directBatch = new SimpleBatch2D(18);
 
     public static void renderDirect(final Texture... ts) {
@@ -32,8 +33,6 @@ public class RendererUtil {
             batch.drawPolygon(t, cache.get(t));
         }
     }
-
-    //TODO not so nice maybe:
 
     public static void render2d(final Batch2D batch, final IRenderedObjectManager manager,
             final RenderedObjectType type, final FrustumIntersection filter) {

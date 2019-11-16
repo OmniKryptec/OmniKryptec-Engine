@@ -1,5 +1,5 @@
 package de.omnikryptec.libapi.exposed.render;
-//TODO TextureRegion of a TextureRegion is probably broken :c
+//TODO fix TextureRegion of a TextureRegion, fix requiresInvertedVIFdrawn
 public class TextureRegion implements Texture {
 
     private final Texture superTexture;
@@ -78,7 +78,6 @@ public class TextureRegion implements Texture {
 
     @Override
     public boolean requiresInvertedVifDrawn2D() {
-        //TODO test this
         return this.superTexture.requiresInvertedVifDrawn2D();
     }
 

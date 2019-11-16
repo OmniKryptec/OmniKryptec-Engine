@@ -23,7 +23,7 @@ public class MeshLoader implements ResourceLoader<MeshFile> {
             | Assimp.aiProcess_SplitLargeMeshes | Assimp.aiProcess_Triangulate | Assimp.aiProcess_SortByPType;
 
     public MeshLoader() {
-        //Init the native library. breakes otherwise somehow. TODO Test with newer versions of assimp?
+        //Init the native library. breakes otherwise somehow. FIXME Test with newer versions of assimp?
         Assimp.aiGetVersionMajor();
     }
 

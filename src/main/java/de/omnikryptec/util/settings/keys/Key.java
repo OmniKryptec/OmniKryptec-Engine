@@ -135,7 +135,7 @@ public class Key implements IKey {
     @Override
     public boolean isLongPressed(final double minTime, final double maxTime) {
         if (true) {
-            throw new NotYetImplementedRuntimeException(); //FIXME Remove this
+            throw new NotYetImplementedRuntimeException();
         }
         if (!isPressed()) {
             return false;
@@ -196,7 +196,7 @@ public class Key implements IKey {
      *
      * @return Last update of this {@link de.omnikryptec.util.settings.keys.Key}
      */
-    public double getLastUpdate() { // FIXME Maybe use another System to determine long key presses
+    public double getLastUpdate() { // TODO Maybe use another System to determine long key presses
         return this.lastUpdate;
     }
 

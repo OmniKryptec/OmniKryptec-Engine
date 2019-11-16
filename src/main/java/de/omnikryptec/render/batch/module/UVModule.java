@@ -39,12 +39,14 @@ public class UVModule implements Module {
                 this.v1 = 1;
             }
             if (flipU) {
-                this.u0 = 1 - this.u0;
-                this.u1 = 1 - this.u1;
+                float tmp = this.u0;
+                this.u0 = this.u1;
+                this.u1 = tmp;
             }
             if (flipV) {
-                this.v0 = 1 - this.v0;
-                this.v1 = 1 - this.v1;
+                float tmp = this.v0;
+                this.v0 = this.v1;
+                this.v1 = tmp;
             }
         }
     }

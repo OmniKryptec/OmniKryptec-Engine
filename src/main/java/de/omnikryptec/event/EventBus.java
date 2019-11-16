@@ -236,12 +236,7 @@ public class EventBus implements IUpdatable, IEventListener {
             if (this.listeners.containsKey(eventClass)) {
                 final List<IEventListener> localList = this.listeners.get(eventClass);
                 listenerList.addAll(localList);
-                //the commented code is buggy because priorities get messd up TODO: maybe change stuff so listenerlist gets pre-compiled? event.triggerssuper... will become obsolete though
-                //                for (final IEventListener listener : localList) {
-                //                    if (!event.isConsumeable() || !event.isConsumed() || listener.receiveConsumed()) {
-                //                        listener.invoke(event);
-                //                    }
-                //                }
+                //TODO: maybe change stuff so listenerlist gets pre-compiled? event.triggerssuper... will become obsolete though
             }
             someclazz = someclazz.getSuperclass();
         } while (event.triggersSuperEventListeners() && someclazz != Object.class && someclazz != null);

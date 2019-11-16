@@ -4,7 +4,7 @@ import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 
-//TODO this class seems ugly: use FXAA (thats PP) instead of "classical" AA?
+//TODO this class seems ugly and does it even work? use FXAA (thats PP) instead of "classical" AA?
 public class SceneRenderBufferManager {
 
     private FrameBuffer multisampledScene;

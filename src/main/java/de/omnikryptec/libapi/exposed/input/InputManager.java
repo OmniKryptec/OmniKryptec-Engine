@@ -225,7 +225,7 @@ public class InputManager implements IUpdatable {
         this.mousePositionDelta.y = (mousePosition.y() - this.mousePositionLastTime.y);
         this.mouseScrollOffsetDelta.x = (mouseScrollOffset.x() - this.mouseScrollOffsetLastTime.x);
         this.mouseScrollOffsetDelta.y = (mouseScrollOffset.y() - this.mouseScrollOffsetLastTime.y);
-        //FIXME Maybe split this up, because this below was executed as the last part in the old update ("nextFrame") method, needs discussion?
+        //TODO Maybe split this up, because this below was executed as the last part in the old update ("nextFrame") method, needs discussion?
         this.mousePositionLastTime.x = mousePosition.x();
         this.mousePositionLastTime.y = mousePosition.y();
         this.mouseScrollOffsetLastTime.x = mouseScrollOffset.x();

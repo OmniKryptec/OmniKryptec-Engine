@@ -2,15 +2,15 @@ package de.omnikryptec.resource;
 
 public class FontCharacter {
     private int id;
-    private double xTextureCoord;
-    private double yTextureCoord;
-    private double xMaxTextureCoord;
-    private double yMaxTextureCoord;
-    private double xOffset;
-    private double yOffset;
-    private double sizeX;
-    private double sizeY;
-    private double xAdvance;
+    private float xTextureCoord;
+    private float yTextureCoord;
+    private float xMaxTextureCoord;
+    private float yMaxTextureCoord;
+    private float xOffset;
+    private float yOffset;
+    private float sizeX;
+    private float sizeY;
+    private float xAdvance;
     
     /**
      * @param id            - the ASCII value of the character.
@@ -29,8 +29,8 @@ public class FontCharacter {
      * @param xAdvance      - how far in pixels the cursor should advance after
      *                      adding this character.
      */
-    protected FontCharacter(int id, double xTextureCoord, double yTextureCoord, double xTexSize, double yTexSize,
-            double xOffset, double yOffset, double sizeX, double sizeY, double xAdvance) {
+    protected FontCharacter(int id, float xTextureCoord, float yTextureCoord, float xTexSize, float yTexSize,
+            float xOffset, float yOffset, float sizeX, float sizeY, float xAdvance) {
         this.id = id;
         this.xTextureCoord = xTextureCoord;
         this.yTextureCoord = yTextureCoord;
@@ -43,43 +43,48 @@ public class FontCharacter {
         this.xAdvance = xAdvance;
     }
     
-    protected int getId() {
+    @Override
+    public int hashCode() {
+        return this.id;
+    }
+    
+    protected int getAscii() {
         return id;
     }
     
-    protected double getxTextureCoord() {
+    public float getTextureCoordX() {
         return xTextureCoord;
     }
     
-    protected double getyTextureCoord() {
+    public float getTextureCoordY() {
         return yTextureCoord;
     }
     
-    protected double getXMaxTextureCoord() {
+    public float getTextureCoordMaxX() {
         return xMaxTextureCoord;
     }
     
-    protected double getYMaxTextureCoord() {
+    public float getTextureCoordMaxY() {
         return yMaxTextureCoord;
     }
     
-    protected double getxOffset() {
+    public float getOffsetX() {
         return xOffset;
     }
     
-    protected double getyOffset() {
+    public float getOffsetY() {
         return yOffset;
     }
     
-    protected double getSizeX() {
+    public float getSizeX() {
         return sizeX;
     }
     
-    protected double getSizeY() {
+    public float getSizeY() {
         return sizeY;
     }
     
-    protected double getxAdvance() {
+    public float getCursorAdvanceX() {
         return xAdvance;
     }
     

@@ -57,7 +57,7 @@ public class DefaultGameLoop implements IGameLoop {
         try {
             this.game.getWindowUpdater().resetDeltaTime();
             while (!shouldStop()) {
-                //TODO that number is hardcoded, maybe move the whole updater?
+                //FIXME that number is hardcoded, maybe move the whole updater?
                 this.game.getWindowUpdater().update(144);
                 final Time time = this.game.getWindowUpdater().asTime();
                 this.game.prepareGame(time);
