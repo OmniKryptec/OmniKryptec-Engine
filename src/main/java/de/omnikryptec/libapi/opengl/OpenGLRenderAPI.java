@@ -47,8 +47,8 @@ import de.omnikryptec.util.settings.Settings;
 
 public class OpenGLRenderAPI implements RenderAPI {
 
-    public static final IntegerKey MAJOR_VERSION = IntegerKey.next(1);
-    public static final IntegerKey MINOR_VERSION = IntegerKey.next(0);
+    public static final IntegerKey MAJOR_VERSION = IntegerKey.next(3);
+    public static final IntegerKey MINOR_VERSION = IntegerKey.next(3);
 
     private final GLWindow window;
     private final FrameBufferStack frameBufferStack;
