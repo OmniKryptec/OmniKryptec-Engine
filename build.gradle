@@ -24,8 +24,8 @@ apply plugin: 'java'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-project.ext.lwjglVersion = "3.2.0"
-project.ext.jomlVersion = "1.9.11"
+project.ext.lwjglVersion = "3.2.3"
+project.ext.jomlVersion = "1.9.19"
 project.ext.cjpbaseVersion = "v1.8.0_172-alpha.45"
 project.ext.cjpnetCommit = "dfe31b3ba4" //09.05.2019 20:45
 
@@ -160,5 +160,6 @@ jar {
         include '**/*.cfg'
         include '**/*.obj'
         include '**/*.dae'
+        include '**/*.fnt'
     }
 }
