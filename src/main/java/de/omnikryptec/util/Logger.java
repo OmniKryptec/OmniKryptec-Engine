@@ -22,16 +22,15 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
-//TODO abstract Logger?, log-msg format
 public class Logger {
-
+    
     public enum LogType {
         Debug(-1, false, 2), Info(0, false, 3), Warning(1, true, 0), Error(2, true, 2);
-
+        
         private final int importance;
         private final boolean red;
         private final String dif;
-
+        
         LogType(final int imp, final boolean red, final int dif) {
             this.importance = imp;
             this.red = red;
@@ -42,15 +41,15 @@ public class Logger {
             this.dif = builder.toString();
         }
     }
-
+    
     private static final Map<Class<?>, Logger> loggerCache = new HashMap<>();
-
+    
     private static PrintStream out = System.out;
     private static PrintStream err = System.err;
-
+    
     private static boolean classDebug = false;
     private static LogType minlevel = LogType.Info;
-
+    
     public static Logger getLogger(final Class<?> clazz) {
         if (clazz == null) {
             return null;
@@ -62,7 +61,7 @@ public class Logger {
         }
         return logger;
     }
-
+    
     public static void log(final Class<?> clazz, final LogType type, final Object... msgs) {
         if (type.importance >= minlevel.importance) {
             final LocalDateTime now = LocalDateTime.now();
@@ -107,45 +106,45 @@ public class Logger {
             }
         }
     }
-
+    
     public static void setClassDebug(final boolean b) {
         classDebug = b;
     }
-
+    
     public static void setMinLogType(final LogType type) {
         minlevel = type == null ? LogType.Info : type;
     }
-
+    
     public static LogType getMinLogType() {
         return minlevel;
     }
-
+    
     public static boolean isClassDebug() {
         return classDebug;
     }
-
+    
     private final Class<?> clazz;
-
+    
     private Logger(final Class<?> clazz) {
         this.clazz = clazz;
     }
-
+    
     public void log(final LogType type, final Object... msgs) {
         log(this.clazz, type, msgs);
     }
-
+    
     public void debug(final Object... msgs) {
         log(this.clazz, LogType.Debug, msgs);
     }
-
+    
     public void info(final Object... msgs) {
         log(this.clazz, LogType.Info, msgs);
     }
-
+    
     public void warn(final Object... msgs) {
         log(this.clazz, LogType.Warning, msgs);
     }
-
+    
     public void error(final Object... msgs) {
         log(this.clazz, LogType.Error, msgs);
     }

@@ -22,11 +22,6 @@ public class MeshLoader implements ResourceLoader<MeshFile> {
             | Assimp.aiProcess_RemoveRedundantMaterials | Assimp.aiProcess_OptimizeMeshes
             | Assimp.aiProcess_SplitLargeMeshes | Assimp.aiProcess_Triangulate | Assimp.aiProcess_SortByPType;
 
-    public MeshLoader() {
-        //Init the native library. breakes otherwise somehow. FIXME Test with newer versions of assimp?
-        Assimp.aiGetVersionMajor();
-    }
-
     @Override
     public MeshFile load(final AdvancedFile file) throws Exception {
         final byte[] bytes = IOUtils.toByteArray(file.createInputStream());

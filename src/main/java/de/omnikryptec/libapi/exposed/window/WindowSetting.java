@@ -10,7 +10,7 @@ public enum WindowSetting implements Defaultable {
      * @see de.omnikryptec.core.scene.UpdateController#setSyncUpdatesPerSecond(int)
      * @see de.omnikryptec.core.scene.UpdateController#setAsyncUpdatesPerSecond(int)
      */
-    VSync(true), CursorState(CursorType.NORMAL);
+    VSync(true), CursorState(CursorType.NORMAL), Decorated(true);
 
     private final Object def;
 

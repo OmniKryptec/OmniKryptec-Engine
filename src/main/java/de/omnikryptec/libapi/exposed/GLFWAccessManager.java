@@ -4,20 +4,22 @@ import java.lang.reflect.Constructor;
 
 import org.lwjgl.glfw.GLFW;
 
+import de.omnikryptec.libapi.exposed.input.CursorType;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.util.Logger;
+import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
 public class GLFWAccessManager {
-
+    
     private RenderAPI renderApi;
     private final Logger logger = Logger.getLogger(getClass());
-
+    
     GLFWAccessManager() {
     }
-
+    
     public void setRenderer(final Class<? extends RenderAPI> clazz, final Settings<WindowSetting> windowSettings,
             final Settings<IntegerKey> apiSettings) {
         if (isRendererSet()) {
@@ -29,25 +31,26 @@ public class GLFWAccessManager {
             renderApiConstructor.setAccessible(true);
             this.renderApi = renderApiConstructor.newInstance(windowSettings, apiSettings);
             this.logger.info("Set the RenderAPI to " + clazz.getSimpleName());
+            setCursorState(windowSettings.get(WindowSetting.CursorState));
         } catch (final NoSuchMethodException ex) {
             throw new IllegalArgumentException("Invalid RendererAPI: Missing constructor", ex);
         } catch (final Exception ex) {
             ex.printStackTrace();
         }
     }
-
+    
     public boolean isRendererSet() {
         return this.renderApi != null;
     }
-
+    
     public RenderAPI getRenderAPI() {
         return this.renderApi;
     }
-
+    
     public void pollEvents() {
         GLFW.glfwPollEvents();
     }
-
+    
     /**
      * Returns the value of the GLFW timer. The timer measures time elapsed since
      * GLFW was initialized.
@@ -60,5 +63,10 @@ public class GLFWAccessManager {
      */
     public double getTime() {
         return GLFW.glfwGetTime();
+    }
+    
+    public void setCursorState(final CursorType state) {
+        Util.ensureNonNull(state);
+        GLFW.glfwSetInputMode(this.getRenderAPI().getWindow().getID(), GLFW.GLFW_CURSOR, state.getState());
     }
 }

@@ -18,7 +18,6 @@ import de.omnikryptec.gui.GuiComponent;
 import de.omnikryptec.gui.GuiConstraints;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.input.InputEvent;
-import de.omnikryptec.libapi.exposed.window.WindowEvent;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
 import de.omnikryptec.render.batch.Batch2D;

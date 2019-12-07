@@ -18,7 +18,7 @@ public class FontLoader implements ResourceLoader<FontFile> {
     
     @Override
     public boolean requiresMainThread() {
-        //for testing true
+        //true because only one FontParser instance. I do not expect so many fonts that this would become a problem.
         return true;
     }
     

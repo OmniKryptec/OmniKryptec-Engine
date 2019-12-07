@@ -8,6 +8,7 @@ import de.omnikryptec.render.objects.ReflectiveSprite;
 import de.omnikryptec.render.objects.ReflectiveSprite.Reflection2DType;
 import de.omnikryptec.render.renderer.LocalRendererContext;
 import de.omnikryptec.render.renderer.ReflectedRenderer2D;
+import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.data.Color;
@@ -48,6 +49,7 @@ public class BigTest extends Omnikryptec {
         final ULayer scene = new ULayer();
         actual.setGameLogic(scene);
         getResourceManager().stage("intern:/de/omnikryptec/resources/");
+        getResourceManager().addCallback(LoadingProgressCallback.DEBUG_CALLBACK);
         getResourceManager().processStaged(false, false);
         //scene.addUpdatable(UpdateableFactory.createScreenClearTest());
         //scene.addUpdatable(UpdateableFactory.createRenderTest(getTextures()));
