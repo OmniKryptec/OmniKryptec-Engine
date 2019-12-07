@@ -125,7 +125,7 @@ public abstract class Omnikryptec {
             LibAPIManager.instance().initOpenCL();
         }
         if (audio) {
-            //TODO initialize audio
+            //XXX initialize audio
         }
     }
 

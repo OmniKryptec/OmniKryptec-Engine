@@ -4,7 +4,7 @@ import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 
-//TODO this class seems ugly and does it even work?
+//TODO pcfreak9000 this class seems ugly and does it even work?
 public class SceneRenderBufferManager {
 
     private FrameBuffer multisampledScene;

@@ -22,7 +22,7 @@ import de.omnikryptec.render.renderer.RendererContext.GlobalEnvironmentKeys;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
-//TODO also improve target information for renderers (null => surface, FrameBuffer => take its width and height and stay like that?)
+//TODO pcfreak9000 also improve target information for renderers (null => surface, FrameBuffer => take its width and height and stay like that?) <- what do i mean with that?
 public class LocalRendererContext {
 
     private static final Comparator<Renderer> RENDERER_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority() - e1.priority();

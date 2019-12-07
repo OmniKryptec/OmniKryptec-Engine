@@ -59,7 +59,7 @@ public class KeysAndButtons {
 
     /** If this bit is set one or more Super keys were held down. */
     public static final int OKE_MOD_SUPER = 0x8;
-    //TODO set the inputmode so this works:
+    //TODO WHO? set the inputmode so this works: <- what do i mean?
     /**
      * If this bit is set the Caps Lock key is enabled and the
      * {@link #OKE_LOCK_KEY_MODS LOCK_KEY_MODS} input mode is set.

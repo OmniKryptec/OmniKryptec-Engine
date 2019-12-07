@@ -23,7 +23,7 @@ public class Mesh {
             ibo.storeData(meshData.getAttribute(VertexAttribute.Index), BufferUsage.Static);
             this.vertexArray.setIndexBuffer(ibo);
         }
-        //TODO make attribute positions configurable
+        //TODO pcfreak9000 make attribute positions configurable
         for (final VertexAttribute va : VertexAttribute.values()) {
             if (va != VertexAttribute.Index && meshData.hasVertexAttribute(va)) {
                 final VertexBuffer vbo = LibAPIManager.instance().getGLFW().getRenderAPI().createVertexBuffer();

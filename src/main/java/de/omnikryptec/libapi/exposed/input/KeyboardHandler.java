@@ -26,7 +26,7 @@ import de.omnikryptec.util.settings.keys.KeysAndButtons;
 //monitor if synchronized causes bad performance in this class or if it is negliable
 public class KeyboardHandler implements InputHandler {
 
-    private final byte[] keys = new byte[KeysAndButtons.OKE_KEY_LAST + 1]; //TODO Find out if this includes every key
+    private final byte[] keys = new byte[KeysAndButtons.OKE_KEY_LAST + 1]; //TODO Panzer1119 Find out if this includes every key
     private final AtomicReference<String> inputString = new AtomicReference<>("");
     // Configurable variables
     private final boolean appendToString = false;

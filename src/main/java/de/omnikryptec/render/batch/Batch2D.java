@@ -51,7 +51,7 @@ public interface Batch2D {
     default void drawLine(final Matrix3x2fc transform, final float length, final float thickness) {
         drawRect(transform, length, thickness);
     }
-    //TODO allow rotation but the whole text gets rotated instead of only the current character
+    //TODO pcfreak9000 allow rotation but the whole text gets rotated instead of only the current character
     default void drawStringSimple(String string, Font font, float size, float x, float y) {
         char[] chars = string.toCharArray();
         Matrix3x2f trans = new Matrix3x2f();

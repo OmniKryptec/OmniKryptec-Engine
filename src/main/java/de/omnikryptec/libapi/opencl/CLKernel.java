@@ -48,7 +48,7 @@ public class CLKernel {
         final PointerBuffer global = BufferUtils.createPointerBuffer(1);
         global.put(0, worksize_gl);
         final int i = CL10.clEnqueueNDRangeKernel(queue.getID(), getID(), dim, null, global,
-                /* TODO worksize local */null, null, null);
+                /* TODO pcfreak9000 worksize local */null, null, null);
         OpenCL.checked(i);
     }
 

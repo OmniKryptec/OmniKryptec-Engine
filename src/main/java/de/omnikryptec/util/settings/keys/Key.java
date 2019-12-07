@@ -86,7 +86,7 @@ public class Key implements IKey {
      */
     @Override
     public boolean isPressed() {
-        return this.keyState == KeySettings.KEY_PRESSED || this.keyState == KeySettings.KEY_REPEATED; //TODO Check this, is Repeated == Pressed?
+        return this.keyState == KeySettings.KEY_PRESSED || this.keyState == KeySettings.KEY_REPEATED; //TODO Panzer1119 Check this, is Repeated == Pressed?
     }
 
     /**
@@ -142,7 +142,7 @@ public class Key implements IKey {
         }
         final double currentTime = LibAPIManager.instance().getGLFW().getTime();
         final double pressedTime = currentTime - this.lastUpdate;
-        //this.lastChange = currentTime; //FIXME lastChange/lastUpdate should just show the last time, when this key isPressed was updated. Why should this method reset this time?
+        //this.lastChange = currentTime; //FIXME Panzer1119 lastChange/lastUpdate should just show the last time, when this key isPressed was updated. Why should this method reset this time?
         return (pressedTime >= minTime || minTime < 0) && (pressedTime <= maxTime || maxTime < 0);
     }
 
@@ -196,7 +196,7 @@ public class Key implements IKey {
      *
      * @return Last update of this {@link de.omnikryptec.util.settings.keys.Key}
      */
-    public double getLastUpdate() { // TODO Maybe use another System to determine long key presses
+    public double getLastUpdate() { // TODO Panzer1119 Maybe use another System to determine long key presses
         return this.lastUpdate;
     }
 

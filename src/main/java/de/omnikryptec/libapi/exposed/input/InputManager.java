@@ -178,7 +178,7 @@ public class InputManager implements IUpdatable {
         if (buttonCode < 0 || buttonCode >= this.mouseHandler.size()) {
             return false;
         }
-        return this.mouseHandler.isButtonPressed(buttonCode); // || mouseHandler.isButtonRepeated(buttonCode); //TODO Can a mouse buttons state be "REPEATED"?
+        return this.mouseHandler.isButtonPressed(buttonCode); // || mouseHandler.isButtonRepeated(buttonCode); //TODO Panzer1119 Can a mouse buttons state be "REPEATED"?
     }
     
     public Vector2f getMousePositionRelative(final Vector2f target) {
@@ -220,7 +220,7 @@ public class InputManager implements IUpdatable {
         this.mousePositionDelta.y = (mousePosition.y() - this.mousePositionLastTime.y);
         this.mouseScrollOffsetDelta.x = (mouseScrollOffset.x() - this.mouseScrollOffsetLastTime.x);
         this.mouseScrollOffsetDelta.y = (mouseScrollOffset.y() - this.mouseScrollOffsetLastTime.y);
-        //TODO Maybe split this up, because this below was executed as the last part in the old update ("nextFrame") method, needs discussion?
+        //TODO Panzer1119 Maybe split this up, because this below was executed as the last part in the old update ("nextFrame") method, needs discussion?
         this.mousePositionLastTime.x = mousePosition.x();
         this.mousePositionLastTime.y = mousePosition.y();
         this.mouseScrollOffsetLastTime.x = mouseScrollOffset.x();

@@ -1,5 +1,5 @@
 package de.omnikryptec.libapi.exposed.render;
-//TODO fix TextureRegion of a TextureRegion, fix requiresInvertedVIFdrawn
+//TODO pcfreak9000 fix TextureRegion of a TextureRegion, fix requiresInvertedVIFdrawn
 public class TextureRegion implements Texture {
 
     private final Texture superTexture;

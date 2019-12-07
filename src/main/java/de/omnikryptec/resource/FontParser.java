@@ -20,7 +20,7 @@ public class FontParser {
     private static final int INDEX_PAD_BOTTOM = 2;
     private static final int INDEX_PAD_RIGHT = 3;
     
-    //FIXME fix/improve stuff with padding
+    //FIXME pcfreak9000 fix/improve stuff with padding
     private static final int DESIRED_PADDING = 5;
     private static final Logger LOGGER = Logger.getLogger(FontParser.class);
     
