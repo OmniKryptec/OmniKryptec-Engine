@@ -51,7 +51,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     @Override
     protected void onInitialized() {
         getResourceManager().load(false, false, "intern:/de/pcfreak9000/raytracer/");
-        final Scene s = getGame().createNewScene();
+        final Scene s = getGame().createNewScene(true);
         s.getRendering().addRenderer(this);
         s.setGameLogic(this);
         this.camera = new AdaptiveCamera(

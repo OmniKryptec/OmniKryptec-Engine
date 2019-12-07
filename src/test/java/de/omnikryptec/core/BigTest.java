@@ -44,7 +44,7 @@ public class BigTest extends Omnikryptec {
 
     @Override
     protected void onInitialized() {
-        final Scene actual = getGame().createNewScene();
+        final Scene actual = getGame().createNewScene(true);
         final ULayer scene = new ULayer();
         actual.setGameLogic(scene);
         getResourceManager().stage("intern:/de/omnikryptec/resources/");

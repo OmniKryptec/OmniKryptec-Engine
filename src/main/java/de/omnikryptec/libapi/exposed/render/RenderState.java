@@ -17,7 +17,7 @@
 package de.omnikryptec.libapi.exposed.render;
 
 public class RenderState implements Cloneable {
-
+    
     public static RenderState of(final Object... objects) {
         final RenderState state = new RenderState();
         if (objects.length > 5) {
@@ -49,29 +49,28 @@ public class RenderState implements Cloneable {
         }
         return state;
     }
-
+    
     public static enum BlendMode {
         ADDITIVE, ALPHA, MULTIPLICATIVE, OFF;
     }
-
+    
     public static enum CullMode {
         BACK, FRONT, OFF;
     }
-
+    
     public static enum DepthMode {
         LESS, EQUAL, GREATER, ALWAYS, NEVER, OFF, DEFAULT;
     }
-
-    //TODO allow null values so that thing stays as it is?
+    
     private BlendMode blendMode = null;
     private CullMode cullMode = null;
     private DepthMode depthMode = null;
     private boolean writeColor, writeDepth;
-
+    
     public RenderState() {
         setDefault();
     }
-
+    
     public void setDefault() {
         this.blendMode = BlendMode.OFF;
         this.cullMode = CullMode.OFF;
@@ -79,50 +78,50 @@ public class RenderState implements Cloneable {
         this.writeColor = true;
         this.writeDepth = true;
     }
-
+    
     public BlendMode getBlendMode() {
         return this.blendMode;
     }
-
+    
     public CullMode getCullMode() {
         return this.cullMode;
     }
-
+    
     public DepthMode getDepthMode() {
         return this.depthMode;
     }
-
+    
     public RenderState setBlendMode(final BlendMode blendMode) {
         this.blendMode = blendMode;
         return this;
     }
-
+    
     public RenderState setCullMode(final CullMode cullMode) {
         this.cullMode = cullMode;
         return this;
     }
-
+    
     public RenderState setDepthMode(final DepthMode depthMode) {
         this.depthMode = depthMode;
         return this;
     }
-
+    
     public boolean isWriteColor() {
         return this.writeColor;
     }
-
+    
     public void setWriteColor(final boolean writeColor) {
         this.writeColor = writeColor;
     }
-
+    
     public boolean isWriteDepth() {
         return this.writeDepth;
     }
-
+    
     public void setWriteDepth(final boolean writeDepth) {
         this.writeDepth = writeDepth;
     }
-
+    
     @Override
     public RenderState clone() {
         RenderState clone = null;
@@ -133,5 +132,5 @@ public class RenderState implements Cloneable {
         }
         return clone;
     }
-
+    
 }

@@ -62,7 +62,7 @@ public class LocalRendererContext {
         this.context.notifyPriorityChanged();
     }
 
-    public int priority() {
+    public int getPriority() {
         return this.prio;
     }
 
@@ -110,6 +110,10 @@ public class LocalRendererContext {
         return this.context.getRenderAPI();
     }
 
+    RendererContext getContext() {
+        return context;
+    }
+    
     public void preRender(final Time time, final IProjection projection) {
         this.context.getRenderAPI().getCurrentFrameBuffer().clear(
                 getEnvironmentSettings().get(GlobalEnvironmentKeys.ClearColor), SurfaceBufferType.Color,

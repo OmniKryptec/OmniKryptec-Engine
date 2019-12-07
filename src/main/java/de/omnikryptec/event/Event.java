@@ -19,7 +19,6 @@ package de.omnikryptec.event;
 public class Event {
 
     // event type specific variables
-    protected boolean triggerSuperEventListeners = true;
     protected boolean consumeable = false;
 
     // Instance variables
@@ -27,10 +26,6 @@ public class Event {
 
     public boolean isConsumeable() {
         return this.consumeable;
-    }
-
-    public boolean triggersSuperEventListeners() {
-        return this.triggerSuperEventListeners;
     }
 
     public void consume() {

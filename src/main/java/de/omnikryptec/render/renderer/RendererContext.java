@@ -19,81 +19,94 @@ import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class RendererContext implements IUpdatable {
-
+    
     public static interface EnvironmentKey {
     }
-
+    
     public static enum GlobalEnvironmentKeys implements Defaultable, EnvironmentKey {
         ClearColor(new Color(0, 0, 0, 0));
-
+        
         private final Object def;
-
+        
         private GlobalEnvironmentKeys(final Object def) {
             this.def = def;
         }
-
+        
         @Override
         public <T> T getDefault() {
             return (T) this.def;
         }
     }
-
-    private static final Comparator<LocalRendererContext> LOCAL_CONTEXT_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority()
-            - e1.priority();
+    
+    private static final Comparator<LocalRendererContext> LOCAL_CONTEXT_PRIORITY_COMPARATOR = (e1,
+            e2) -> e2.getPriority() - e1.getPriority();
     private static final RenderState DEFAULT_SCREENWRITER_STATE = RenderState.of(BlendMode.ALPHA);
-
+    
     private final RenderAPI renderApi;
     private final List<LocalRendererContext> subContexts;
-
+    private final List<LocalRendererContext> subContextsActive;
+    
     public RendererContext() {
         this.renderApi = LibAPIManager.instance().getGLFW().getRenderAPI();
         this.subContexts = new ArrayList<>();
+        this.subContextsActive = new ArrayList<>();
         LibAPIManager.ENGINE_EVENTBUS.register(this);
     }
-
+    
     public RenderAPI getRenderAPI() {
         return this.renderApi;
     }
-
+    
     public LocalRendererContext createLocal() {
         return createLocal(null, 0);
     }
-
+    
     public LocalRendererContext createLocal(final Settings<EnvironmentKey> environmentSettings, final int multisamples,
             final FBTarget... targets) {
         final LocalRendererContext context = new LocalRendererContext(this, environmentSettings, multisamples, targets);
         this.subContexts.add(context);
-        notifyPriorityChanged();
         return context;
     }
-
+    
+    public void addLocal(LocalRendererContext lrc) {
+        if (lrc.getContext() != this) {
+            throw new IllegalArgumentException("LocalRendererContext does not belong to this context");
+        }
+        this.subContextsActive.add(lrc);
+        notifyPriorityChanged();
+    }
+    
+    public void removeLocal(LocalRendererContext lrc) {
+        this.subContextsActive.remove(lrc);
+    }
+    
     @EventSubscription
     public void event(final WindowEvent.ScreenBufferResized ev) {
         for (final LocalRendererContext c : this.subContexts) {
             c.screenBufferResizedEventDelegate(ev);
         }
     }
-
+    
     public void renderComplete(final Time time) {
-        final Texture[] screen = new Texture[this.subContexts.size()];
-        for (int i = 0; i < this.subContexts.size(); i++) {
-            if (this.subContexts.get(i).isEnabled()) {
-                screen[i] = this.subContexts.get(i).renderCycle(time);
+        final Texture[] screen = new Texture[this.subContextsActive.size()];
+        for (int i = 0; i < this.subContextsActive.size(); i++) {
+            if (this.subContextsActive.get(i).isEnabled()) {
+                screen[this.subContextsActive.size() - i - 1] = this.subContextsActive.get(i).renderCycle(time);
             }
         }
         this.renderApi.getCurrentFrameBuffer().clearAll();
         this.renderApi.applyRenderState(DEFAULT_SCREENWRITER_STATE);
         RendererUtil.renderDirect(screen);
     }
-
+    
     @Deprecated
     @Override
     public void update(final Time time) {
         renderComplete(time);
     }
-
+    
     void notifyPriorityChanged() {
-        this.subContexts.sort(LOCAL_CONTEXT_PRIORITY_COMPARATOR);
+        this.subContextsActive.sort(LOCAL_CONTEXT_PRIORITY_COMPARATOR);
     }
-
+    
 }

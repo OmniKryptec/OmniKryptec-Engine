@@ -40,7 +40,7 @@ public class BasicFunctionsTest {
         final WindowUpdater updater = new WindowUpdater(window);
         final Color clearColor = new Color();
         while (!window.isCloseRequested()) {
-            updater.update(0);
+            updater.update();
             if (updater.getOperationCount() % 40 == 0) {
                 clearColor.randomizeRGB();
             }

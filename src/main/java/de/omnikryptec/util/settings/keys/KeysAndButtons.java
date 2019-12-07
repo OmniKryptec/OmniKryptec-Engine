@@ -1,6 +1,5 @@
 package de.omnikryptec.util.settings.keys;
 
-//TODO Migrate or Rename
 public class KeysAndButtons {
 
     public static final byte OKE_KEY_NOTHING = Byte.MIN_VALUE;

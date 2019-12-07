@@ -15,7 +15,6 @@ import de.omnikryptec.render.objects.Sprite;
 
 public class RendererUtil {
 
-    //TODO make sure there is only one "directBatch"
     private static final Batch2D directBatch = new SimpleBatch2D(18);
 
     public static void renderDirect(final Texture... ts) {

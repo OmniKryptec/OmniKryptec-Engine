@@ -39,7 +39,7 @@ public class ComfortTest extends Omnikryptec {
 
     @Override
     protected void onInitialized() {
-        final Scene scene = getGame().createNewScene();
+        final Scene scene = getGame().createNewScene(true);
         scene.setGameLogic(UpdateableFactory.createScreenClearTest());
     }
 

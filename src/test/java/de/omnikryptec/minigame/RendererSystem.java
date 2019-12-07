@@ -81,13 +81,13 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
     @Override
     public void entityAdded(final Entity entity) {
         final SimpleSprite sprite = new SimpleSprite() {
-            public void draw(Batch2D batch) {
-                super.draw(batch);
-                batch.drawLine(getTransform().worldspacePos().x(), getTransform().worldspacePos().y(),
-                        getTransform().worldspacePos().x() + 100, getTransform().worldspacePos().y(), 2);
-                batch.drawStringSimple("OOOF", Minigame.font, 40, getTransform().worldspacePos().x(),
-                        getTransform().worldspacePos().y());
-            };
+//            public void draw(Batch2D batch) {
+//                super.draw(batch);
+//                batch.drawLine(getTransform().worldspacePos().x(), getTransform().worldspacePos().y(),
+//                        getTransform().worldspacePos().x() + 100, getTransform().worldspacePos().y(), 2);
+//                batch.drawStringSimple("OOOF", Minigame.font, 40, getTransform().worldspacePos().x(),
+//                        getTransform().worldspacePos().y());
+//            };
         };
         sprite.setTransform(this.posMapper.get(entity).transform);
         sprite.setColor(this.rendMapper.get(entity).color);

@@ -30,7 +30,7 @@ public class GuiDemo extends Omnikryptec {
 
     @Override
     protected void onInitialized() {
-        final GuiManager gmgr = getGame().createNewGuiManager();
+        final GuiManager gmgr = getGame().getGuiManager();
 
         //Load the texture and use the TextureHelper to make stuff easier
         getResourceManager().load(false, true, "intern:/de/omnikryptec/resources/jd.png");

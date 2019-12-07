@@ -8,6 +8,7 @@ import de.omnikryptec.event.EventBus;
 import de.omnikryptec.gui.GuiManager;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
+import de.omnikryptec.render.renderer.LocalRendererContext;
 import de.omnikryptec.render.renderer.RendererContext;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.updater.Time;
@@ -21,6 +22,8 @@ public class Game {
     
     private final RendererContext rendererContext;
     
+    private final GuiManager guiManager;
+    
     private EventBus eventBus;
     
     private final WindowUpdater windowUpdater;
@@ -31,25 +34,25 @@ public class Game {
         this.scenes = new ArrayList<>();
         this.input = new InputManager(keySettings);
         this.rendererContext = new RendererContext();
+        LocalRendererContext lrcGui = rendererContext.createLocal();
+        lrcGui.setPriority(100);
+        rendererContext.addLocal(lrcGui);
+        this.guiManager = new GuiManager(lrcGui);
         this.windowUpdater = new WindowUpdater(this.rendererContext.getRenderAPI().getWindow());
         this.eventBus = new EventBus(false);
     }
     
-    //FIXME mirror added/removed scenes in the rendercontextmanager stuff so scenes that are not added do NOT get rendered
-    
-    public Scene createNewScene() {
-        final Scene newScene = new Scene(this.rendererContext.createLocal(), this, 0);
-        this.scenes.add(newScene);
-        notifyPriorityChange();
+    public Scene createNewScene(boolean add) {
+        final Scene newScene = new Scene(this.rendererContext.createLocal(null, 0), this, 0);
+        if (add) {
+            addScene(newScene);
+        }
         return newScene;
     }
     
-    @Deprecated //TODO better use one GuiManager for one instance of Game?
-    public GuiManager createNewGuiManager() {
-        return new GuiManager(this.rendererContext.createLocal());
+    public GuiManager getGuiManager() {
+        return guiManager;
     }
-    
-    //*******************************************
     
     public void prepareGame(final Time time) {
         this.input.update(time);
@@ -68,8 +71,6 @@ public class Game {
         }
     }
     
-    //*******************************************
-    
     public WindowUpdater getWindowUpdater() {
         return this.windowUpdater;
     }
@@ -82,7 +83,14 @@ public class Game {
         return this.enableRenderContext;
     }
     
+    public void addScene(Scene scene) {
+        this.scenes.add(scene);
+        this.rendererContext.addLocal(scene.getRendering());
+        notifyPriorityChange();
+    }
+    
     public void removeScene(final Scene scene) {
+        this.rendererContext.removeLocal(scene.getRendering());
         this.scenes.remove(scene);
     }
     

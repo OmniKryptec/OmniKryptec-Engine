@@ -38,14 +38,7 @@ public class GLWindow implements IWindow {
                 (boolean) windowSettings.get(WindowSetting.Resizeable) ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
         int mav = apiSettings.get(OpenGLRenderAPI.MAJOR_VERSION);
         int miv = apiSettings.get(OpenGLRenderAPI.MINOR_VERSION);
-        if (Platform.get() == Platform.MACOSX) {
-            //MacOS requires at least OpenGL 3.3
-            mav = Math.max(mav, 3);
-            if (mav == 3) {
-                miv = Math.max(miv, 3);
-            }
-        }
-        if (mav > 3 || (mav > 2 && miv > 1)) {
+        if (mav > 3 || (mav == 3 && miv > 3)) {
             GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, mav);
             GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, miv);
             GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
@@ -54,10 +47,10 @@ public class GLWindow implements IWindow {
         if (LibAPIManager.debug()) {
             GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_DEBUG_CONTEXT, GLFW.GLFW_TRUE);
         }
+        GLFW.glfwWindowHint(GLFW.GLFW_DOUBLEBUFFER, GLFW.GLFW_TRUE);
+        //Does this even work:
+        GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, 4);
         if ((boolean) windowSettings.get(WindowSetting.Fullscreen)) {
-            //final GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
-            //this.width = vidMode.width();
-            //this.height = vidMode.height();
             this.isFullscreen = true;
         }
         this.windowId = GLFW.glfwCreateWindow(this.windowWidth, this.windowHeight,
