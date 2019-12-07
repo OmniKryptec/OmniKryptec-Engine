@@ -35,9 +35,24 @@ public class FontFile {
     public FontCharacter getCharacter(char c) {
         return metaData.get(c);
     }
-
+    
     public float getBase() {
         return base;
     }
     
+    public float getWidth(String s, float size) {
+        char[] chars = s.toCharArray();
+        float w = 0;
+        for (char c : chars) {
+            if (c == ' ') {
+                w += getSpaceWidth();
+            }
+            FontCharacter character = getCharacter(c);
+            if (character != null) {
+                w += character.getOffsetX();
+                w += character.getCursorAdvanceX();
+            }
+        }
+        return size * w;
+    }
 }

@@ -26,8 +26,8 @@ public class Font {
     public TextureRegion getCharacterTexture(FontCharacter c) {
         TextureRegion r = cache.get(c);
         if (r == null) {
-            r = new TextureRegion(getFontTexture(), c.getTextureCoordX(),
-                    c.getTextureCoordY(), c.getTextureCoordMaxX(), c.getTextureCoordMaxY());
+            r = new TextureRegion(getFontTexture(), c.getTextureCoordX(), c.getTextureCoordY(), c.getTextureCoordMaxX(),
+                    c.getTextureCoordMaxY());
             cache.put(c, r);
         }
         return r;
