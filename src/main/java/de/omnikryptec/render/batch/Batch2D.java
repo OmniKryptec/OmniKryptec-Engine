@@ -51,20 +51,25 @@ public interface Batch2D {
     default void drawLine(final Matrix3x2fc transform, final float length, final float thickness) {
         drawRect(transform, length, thickness);
     }
-    //TODO pcfreak9000 allow rotation but the whole text gets rotated instead of only the current character
-    default void drawStringSimple(String string, Font font, float size, float x, float y) {
+    
+    default void drawStringSimple(String string, Font font, float size, float x, float y, float rad) {
         char[] chars = string.toCharArray();
-        Matrix3x2f trans = new Matrix3x2f();
+        //Doing everything in one Matrix and translating it after each char does not work because the floating point error gets too big
+        Matrix3x2f baseTranslation = new Matrix3x2f().translation(x, y).rotate(rad);
+        Matrix3x2f translation = new Matrix3x2f();
+        float xOffset = 0;
+        float xVal = 0, yVal = 0;
         for (char c : chars) {
             if (c == ' ') {
-                x += font.getFontFile().getSpaceWidth() * size;
+                xOffset += font.getFontFile().getSpaceWidth() * size;
             }
             FontCharacter character = font.getFontFile().getCharacter(c);
             if (character != null) {
-                draw(font.getCharacterTexture(character), trans.setTranslation(x + character.getOffsetX() * size,
-                        y + (font.getFontFile().getBase() - character.getSizeY() - character.getOffsetY()) * size),
+                xVal = character.getOffsetX() * size + xOffset;
+                yVal = (font.getFontFile().getBase() - character.getSizeY() - character.getOffsetY()) * size;
+                draw(font.getCharacterTexture(character), translation.set(baseTranslation).translate(xVal, yVal),
                         character.getSizeX() * size, character.getSizeY() * size);
-                x += character.getCursorAdvanceX() * size;
+                xOffset += character.getCursorAdvanceX() * size;
             }
         }
     }
