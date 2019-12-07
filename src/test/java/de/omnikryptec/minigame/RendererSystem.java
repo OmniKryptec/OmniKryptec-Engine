@@ -3,6 +3,7 @@ package de.omnikryptec.minigame;
 import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
 
+import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityListener;
 import de.omnikryptec.ecs.Family;
@@ -10,6 +11,7 @@ import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.objects.Light2D;
@@ -87,7 +89,7 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
                 batch.drawLine(getTransform().worldspacePos().x(), getTransform().worldspacePos().y(),
                         getTransform().worldspacePos().x() + 100, getTransform().worldspacePos().y(), 2);
                 batch.drawStringSimple("OOOF", Minigame.font, 40, getTransform().worldspacePos().x(),
-                        getTransform().worldspacePos().y(), Mathf.PI/8);
+                        getTransform().worldspacePos().y(), (float)LibAPIManager.instance().getGLFW().getTime());
             };
         };
         sprite.setTransform(this.posMapper.get(entity).transform);
