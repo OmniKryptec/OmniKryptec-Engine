@@ -2,6 +2,7 @@ package de.omnikryptec.minigame;
 
 import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
@@ -13,11 +14,14 @@ import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.render.Camera;
+import de.omnikryptec.render.batch.AdvancedBatch2D;
 import de.omnikryptec.render.batch.Batch2D;
+import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.Light2D;
 import de.omnikryptec.render.objects.RenderedObject;
 import de.omnikryptec.render.objects.SimpleSprite;
 import de.omnikryptec.render.objects.Sprite;
+import de.omnikryptec.render.renderer.AdvancedRenderer2D;
 import de.omnikryptec.render.renderer.LocalRendererContext;
 import de.omnikryptec.render.renderer.Renderer2D;
 import de.omnikryptec.render.renderer.Renderer2D.EnvironmentKeys2D;
@@ -37,7 +41,7 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
     public RendererSystem(final LocalRendererContext renderer) {
         super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(RenderComponent.class)));
         this.renderer = renderer;
-        this.renderer.addRenderer(new Renderer2D());
+        this.renderer.addRenderer(new AdvancedRenderer2D());
         this.renderer.setMainProjection(CAMERA);
         
     }
@@ -83,12 +87,14 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
     
     @Override
     public void entityAdded(final Entity entity) {
-        final SimpleSprite sprite = new SimpleSprite() {
+        final AdvancedSprite sprite = new AdvancedSprite() {
             public void draw(Batch2D batch) {
                 super.draw(batch);
                 batch.drawLine(getTransform().worldspacePos().x(), getTransform().worldspacePos().y(),
                         getTransform().worldspacePos().x() + 100, getTransform().worldspacePos().y(), 2);
-                batch.drawStringSimple("OOOF", Minigame.font, 40, getTransform().worldspacePos().x(),
+                AdvancedBatch2D adv = (AdvancedBatch2D)batch;
+                adv.getShaderSlot().setSignedDistanceData(new Vector2f(0.5f,0.6f));
+                batch.drawStringSimple("OOOF", Minigame.font, 80, getTransform().worldspacePos().x(),
                         getTransform().worldspacePos().y(), (float)LibAPIManager.instance().getGLFW().getTime());
             };
         };
@@ -99,13 +105,13 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
         sprite.setLayer(this.rendMapper.get(entity).layer);
         sprite.setTexture(this.rendMapper.get(entity).texture);
         this.rendMapper.get(entity).backingSprite = sprite;
-        this.renderer.getIRenderedObjectManager().add(Sprite.TYPE, sprite);
+        this.renderer.getIRenderedObjectManager().add(AdvancedSprite.TYPE, sprite);
     }
     
     @Override
     public void entityRemoved(final Entity entity) {
         final RenderedObject o = this.rendMapper.get(entity).backingSprite;
-        this.renderer.getIRenderedObjectManager().remove(Sprite.TYPE, o);
+        this.renderer.getIRenderedObjectManager().remove(AdvancedSprite.TYPE, o);
     }
     
     @Override

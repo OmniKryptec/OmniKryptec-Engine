@@ -77,6 +77,8 @@ out vec4 color;
 uniform sampler2D sampler;
 uniform sampler2D reflected;
 
+uniform vec2 signedDistanceData;
+
 void main(void){
 	
 	if(v_texcoords.x == -1){
@@ -85,6 +87,11 @@ void main(void){
 		color =  v_color * texture(sampler, v_texcoords);
 	}
 	vec3 refl = texture(reflected, v_screenPos).rgb;
+	
+	float dist = 1.0 - color.a;
+	float alpha = 1.0 - smoothstep(signedDistanceData.x, signedDistanceData.y, dist);
+	
+	color.a = alpha;
 	
 	//TODO
 	color.rgb = color.rgb + v_reflectiveness.rgb * refl.rgb;

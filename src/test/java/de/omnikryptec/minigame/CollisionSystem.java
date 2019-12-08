@@ -15,7 +15,7 @@ import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.util.ExecutorsUtil;
-import de.omnikryptec.util.Profiler;
+import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.updater.Time;
 
 public class CollisionSystem extends AbstractComponentSystem {

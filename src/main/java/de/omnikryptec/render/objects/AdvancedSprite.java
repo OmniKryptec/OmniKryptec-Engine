@@ -6,8 +6,8 @@ import org.joml.Vector2f;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.util.data.Color;
 
-public class ReflectiveSprite extends SimpleSprite {
-    public static final RenderedObjectType TYPE = RenderedObjectType.of(ReflectiveSprite.class);
+public class AdvancedSprite extends SimpleSprite {
+    public static final RenderedObjectType TYPE = RenderedObjectType.of(AdvancedSprite.class);
 
     private static final Matrix3x2f REFLECTION_MATRIX = new Matrix3x2f();
 

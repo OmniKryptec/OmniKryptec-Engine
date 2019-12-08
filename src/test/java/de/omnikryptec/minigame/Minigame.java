@@ -24,10 +24,10 @@ import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.resource.Font;
 import de.omnikryptec.resource.FontFile;
 import de.omnikryptec.util.Logger.LogType;
-import de.omnikryptec.util.Profiler;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.Mathf;
+import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
@@ -97,8 +97,8 @@ public class Minigame extends Omnikryptec {
     @Override
     protected void onInitialized() {
         getResourceManager().load(false, true, new AdvancedFile("intern:/de/omnikryptec/resources/"));
-        FontFile fontfile = getResourceProvider().get(FontFile.class, "text.fnt");
-        font = new Font(fontfile, getTextures().get("text1.png"));
+        FontFile fontfile = getResourceProvider().get(FontFile.class, "candara.fnt");
+        font = new Font(fontfile, getTextures().get("candara.png"));
         getEventBus().register(this);
         this.mgr = UpdateableFactory.createDefaultIECSManager();
         final Scene sn = getGame().createNewScene(true);

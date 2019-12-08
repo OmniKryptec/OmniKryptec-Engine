@@ -1,11 +1,12 @@
-package de.omnikryptec.util;
+package de.omnikryptec.util.profiling;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.FixedStack;
 import de.omnikryptec.util.math.Mathd;
-
+//TODO profile the current status of stuff? print FPS information?
 public class Profiler {
     
     private static class Struct {
@@ -18,9 +19,9 @@ public class Profiler {
         long beginTimeTmp;
     }
     
-    private static final Map<String, Struct> map = new HashMap<>();
-    private static final FixedStack<String> h = new FixedStack<>(20);
-    private static final Map<String, IProfiler> additional = new HashMap<>();
+    private static final Map<Object, Struct> map = new HashMap<>();
+    private static final FixedStack<Object> h = new FixedStack<>(20);
+    private static final Map<Object, IProfiler> additional = new HashMap<>();
     private static boolean enabled = false;
     
     public static void setEnabled(final boolean b) {
@@ -36,13 +37,13 @@ public class Profiler {
         h.clear();
     }
     
-    public static void addIProfiler(String id, IProfiler profiler) {
+    public static void addIProfiler(Object id, IProfiler profiler) {
         Util.ensureNonNull(id);
         Util.ensureNonNull(profiler);
         additional.put(id, profiler);
     }
     
-    private static Struct get(final String id) {
+    private static Struct get(final Object id) {
         if (!isEnabled()) {
             return null;
         }
@@ -54,7 +55,7 @@ public class Profiler {
         return s;
     }
     
-    public static void begin(final String id) {
+    public static void begin(final Object id) {
         if (!isEnabled()) {
             return;
         }
@@ -75,7 +76,7 @@ public class Profiler {
             return;
         }
         final long time = System.nanoTime();
-        final String id = h.pop();
+        final Object id = h.pop();
         final Struct s = get(id);
         if (!s.open) {
             throw new IllegalStateException("never started profiling with ID " + id);
@@ -95,20 +96,20 @@ public class Profiler {
             return "";
         }
         final StringBuilder b = new StringBuilder();
-        for (final String id : map.keySet()) {
+        for (final Object id : map.keySet()) {
             final Struct s = map.get(id);
             if (s.open) {
                 throw new IllegalStateException("the profiling with ID " + id + " is still open");
             }
             b.append("-------------------\n");
             b.append("ID: " + id).append('\n');
-            b.append("Count: " + s.count).append('\n');
-            b.append("Average time: " + Mathd.round((s.sum / (double) s.count) * 1e-6, 3) + "ms").append('\n');
-            b.append("Complete time spend: " + Mathd.round(s.sum * 1e-9, 5) + "s").append('\n');
-            b.append("Min time: " + Mathd.round((s.min) * 1e-6, 3) + "ms").append('\n');
-            b.append("Max time: " + Mathd.round((s.max) * 1e-6, 3) + "ms").append('\n');
+            b.append("Call-count: " + s.count).append('\n');
+            b.append("Time avg: " + Mathd.round((s.sum / (double) s.count) * 1e-6, 3) + "ms").append('\n');
+            b.append("Time sum: " + Mathd.round(s.sum * 1e-9, 5) + "s").append('\n');
+            b.append("Time min: " + Mathd.round((s.min) * 1e-6, 3) + "ms").append('\n');
+            b.append("Time max: " + Mathd.round((s.max) * 1e-6, 3) + "ms").append('\n');
             if (additional.get(id) != null) {
-                additional.get(id).writeData(b);
+                additional.get(id).writeData(b, s.count);
             }
         }
         b.append("-------------------");

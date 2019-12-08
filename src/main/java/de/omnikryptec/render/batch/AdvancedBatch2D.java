@@ -13,10 +13,10 @@ import de.omnikryptec.render.batch.vertexmanager.RenderedVertexManager;
 import de.omnikryptec.render.batch.vertexmanager.VertexManager;
 import de.omnikryptec.util.data.Color;
 
-public class ReflectedBatch2D extends AbstractBatch implements Batch2D {
+public class AdvancedBatch2D extends AbstractBatch implements Batch2D {
 
-    public static AbstractReflectedShaderSlot createDefaultShaderSlot() {
-        return new ReflectedShaderSlot();
+    public static AbstractAdvancedShaderSlot createDefaultShaderSlot() {
+        return new AdvancedShaderSlot();
     }
 
     private PositionModule posModule;
@@ -24,18 +24,18 @@ public class ReflectedBatch2D extends AbstractBatch implements Batch2D {
     private ColorModule colorModule;
     private ColorModule reflectionMod;
 
-    private AbstractReflectedShaderSlot shaderSlot;
+    private AbstractAdvancedShaderSlot shaderSlot;
 
-    public ReflectedBatch2D(final int vertices) {
+    public AdvancedBatch2D(final int vertices) {
         this(vertices, createDefaultShaderSlot());
     }
 
-    public ReflectedBatch2D(final int vertices, final AbstractReflectedShaderSlot shaderslot) {
+    public AdvancedBatch2D(final int vertices, final AbstractAdvancedShaderSlot shaderslot) {
         this(new RenderedVertexManager(vertices, shaderslot));
         this.shaderSlot = shaderslot;
     }
 
-    public ReflectedBatch2D(final VertexManager vertexManager) {
+    public AdvancedBatch2D(final VertexManager vertexManager) {
         super(vertexManager);
     }
 
@@ -66,7 +66,7 @@ public class ReflectedBatch2D extends AbstractBatch implements Batch2D {
     }
 
     @Nullable
-    public AbstractReflectedShaderSlot getShaderSlot() {
+    public AbstractAdvancedShaderSlot getShaderSlot() {
         return this.shaderSlot;
     }
 }

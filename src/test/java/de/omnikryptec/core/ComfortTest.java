@@ -23,6 +23,7 @@ import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 
+@Deprecated
 public class ComfortTest extends Omnikryptec {
 
     public static void main(final String[] args) {

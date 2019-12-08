@@ -16,27 +16,20 @@
 
 package de.omnikryptec.libapi.opengl.shader;
 
-import org.joml.Vector2f;
 import org.lwjgl.opengl.GL20;
 
-public class GLUniformVec2 extends GLUniform {
+import de.omnikryptec.libapi.exposed.render.shader.UniformVec2;
 
+public class GLUniformVec2 extends GLUniform implements UniformVec2 {
+    
     private float currentX;
     private float currentY;
     private boolean used = false;
-
+    
     public GLUniformVec2(final String name) {
         super(name);
     }
-
-    public void loadVec2(final Vector2f vector) {
-        loadVec2(vector.x, vector.y);
-    }
-
-    public void loadVec2(final float[] array) {
-        loadVec2(array[0], array[1]);
-    }
-
+    
     public void loadVec2(final float x, final float y) {
         if (existsInCompilation() && (!this.used || x != this.currentX || y != this.currentY)) {
             this.currentX = x;
@@ -45,5 +38,5 @@ public class GLUniformVec2 extends GLUniform {
             GL20.glUniform2f(super.getLocation(), x, y);
         }
     }
-
+    
 }

@@ -11,7 +11,7 @@ import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
-import de.omnikryptec.util.Profiler;
+import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.settings.keys.KeysAndButtons;
 import de.omnikryptec.util.updater.Time;
 

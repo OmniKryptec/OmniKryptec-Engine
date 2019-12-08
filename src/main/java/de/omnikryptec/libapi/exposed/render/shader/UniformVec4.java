@@ -1,6 +1,6 @@
 package de.omnikryptec.libapi.exposed.render.shader;
 
-import org.joml.Vector4f;
+import org.joml.Vector4fc;
 
 import de.omnikryptec.util.data.Color;
 
@@ -8,8 +8,8 @@ public interface UniformVec4 extends Uniform {
 
     void loadVec4(float x, float y, float z, float w);
 
-    default void loadVec4(final Vector4f vector) {
-        loadVec4(vector.x, vector.y, vector.z, vector.w);
+    default void loadVec4(final Vector4fc vector) {
+        loadVec4(vector.x(), vector.y(), vector.z(), vector.w());
     }
 
     default void loadVec4(final float[] array) {
