@@ -36,7 +36,7 @@ public class GLWindow implements IWindow {
                 (boolean) windowSettings.get(WindowSetting.Resizeable) ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
         int mav = apiSettings.get(OpenGLRenderAPI.MAJOR_VERSION);
         int miv = apiSettings.get(OpenGLRenderAPI.MINOR_VERSION);
-        if (mav > 3 || (mav == 3 && miv > 3)) {
+        if (mav > 3 || (mav == 3 && miv >= 3)) {
             GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, mav);
             GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, miv);
             GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
