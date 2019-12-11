@@ -45,6 +45,7 @@ public class AdvancedRenderer2D implements Renderer, IRenderedObjectListener {
     private FrameBuffer reflectionBuffer;
     
     private boolean shouldSort = false;
+    private boolean enableReflections = true;
     
     public AdvancedRenderer2D() {
         this(1000);
@@ -65,6 +66,10 @@ public class AdvancedRenderer2D implements Renderer, IRenderedObjectListener {
     
     private void initStuff() {
         Profiler.addIProfiler(toString(), profiler);
+    }
+    
+    public void setEnableReflections(boolean b) {
+        this.enableReflections = b;
     }
     
     public void setSpriteComparator(final Comparator<Sprite> comparator) {
@@ -134,19 +139,21 @@ public class AdvancedRenderer2D implements Renderer, IRenderedObjectListener {
         RendererUtil.render2d(this.reflectionBatch, renderer.getIRenderedObjectManager(), Light2D.TYPE, intersFilter);
         //render reflection
         renderer.getRenderAPI().applyRenderState(Renderer2D.SPRITE_STATE);
-        this.reflectionBuffer.bindFrameBuffer();
-        this.reflectionBuffer.clearColor();
-        if (reflectors.size() > 0) {
-            this.reflectionBatch.begin();
-            for (final AdvancedSprite s : this.reflectors) {
-                if (s.isVisible(intersFilter)) {
-                    s.drawReflection(this.reflectionBatch);
-                    reflV++;
+        if (enableReflections) {
+            this.reflectionBuffer.bindFrameBuffer();
+            this.reflectionBuffer.clearColor();
+            if (reflectors.size() > 0) {
+                this.reflectionBatch.begin();
+                for (final AdvancedSprite s : this.reflectors) {
+                    if (s.isVisible(intersFilter)) {
+                        s.drawReflection(this.reflectionBatch);
+                        reflV++;
+                    }
                 }
+                this.reflectionBatch.end();
             }
-            this.reflectionBatch.end();
+            this.reflectionBuffer.unbindFrameBuffer();
         }
-        this.reflectionBuffer.unbindFrameBuffer();
         //render scene
         this.spriteBuffer.bindFrameBuffer();
         this.spriteBuffer.clearColor();
@@ -156,7 +163,8 @@ public class AdvancedRenderer2D implements Renderer, IRenderedObjectListener {
         for (final AdvancedSprite s : this.sprites) {
             if (s.isVisible(intersFilter)) {
                 this.mainBatch.reflectionStrength()
-                        .set(s.getReflectionType() != Reflection2DType.Receive ? Color.ZERO : s.reflectiveness());
+                        .set(enableReflections && s.getReflectionType() != Reflection2DType.Receive ? Color.ZERO
+                                : s.reflectiveness());
                 s.draw(this.mainBatch);
                 spritesV++;
             }
@@ -201,7 +209,7 @@ public class AdvancedRenderer2D implements Renderer, IRenderedObjectListener {
         return AdvancedRenderer2D.class.getSimpleName() + "-" + countIndex;
     }
     
-    private IProfiler profiler = new IProfiler() {
+    private final IProfiler profiler = new IProfiler() {
         private long sorted = 0;
         private ProfileHelper sprites = new ProfileHelper();
         private ProfileHelper reflectors = new ProfileHelper();
@@ -213,8 +221,10 @@ public class AdvancedRenderer2D implements Renderer, IRenderedObjectListener {
             builder.append("Layers sorted: " + Mathd.round(sorted * 100 / (double) count, 2) + "%").append('\n');
             sprites.append("Sprites", count, 1, builder);
             spritesV.append("Sprites (visible): ", count, 1, builder);
-            reflectors.append("Reflectors: ", count, 1, builder);
-            reflectorsV.append("Reflectors (visible)", count, 1, builder);
+            if (enableReflections) {
+                reflectors.append("Reflectors: ", count, 1, builder);
+                reflectorsV.append("Reflectors (visible)", count, 1, builder);
+            }
         }
         
         @Override
@@ -222,9 +232,11 @@ public class AdvancedRenderer2D implements Renderer, IRenderedObjectListener {
             if ((boolean) objects[0]) {
                 sorted++;
             }
-            reflectors.push((int) objects[1]);
             sprites.push((int) objects[2]);
-            reflectorsV.push((long) objects[3]);
+            if (enableReflections) {
+                reflectors.push((int) objects[1]);
+                reflectorsV.push((long) objects[3]);
+            }
             spritesV.push((long) objects[4]);
         }
     };

@@ -14,9 +14,9 @@ import de.omnikryptec.render.objects.RenderedObjectType;
 import de.omnikryptec.render.objects.Sprite;
 
 public class RendererUtil {
-
+    
     private static final Batch2D directBatch = new SimpleBatch2D(18);
-
+    
     public static void renderDirect(final Texture... ts) {
         directBatch.begin();
         for (final Texture t : ts) {
@@ -26,28 +26,31 @@ public class RendererUtil {
         }
         directBatch.end();
     }
-
+    
     public static void drawUnorderedCache(final Batch2D batch, final Map<Texture, float[]> cache) {
         for (final Texture t : cache.keySet()) {
             batch.drawPolygon(t, cache.get(t));
         }
     }
-
+    
     public static void render2d(final Batch2D batch, final IRenderedObjectManager manager,
             final RenderedObjectType type, final FrustumIntersection filter) {
         final List<Sprite> sprites = manager.getFor(type);
         render2d(batch, sprites, filter);
     }
-
-    public static void render2d(final Batch2D batch, final Collection<? extends Sprite> sprites,
+    
+    public static int render2d(final Batch2D batch, final Collection<? extends Sprite> sprites,
             final FrustumIntersection filter) {
+        int c = 0;
         batch.begin();
         for (final Sprite s : sprites) {
             if (s.isVisible(filter)) {
                 s.draw(batch);
+                c++;
             }
         }
         batch.end();
+        return c;
     }
-
+    
 }

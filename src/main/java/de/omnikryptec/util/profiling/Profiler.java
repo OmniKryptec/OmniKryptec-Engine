@@ -6,6 +6,7 @@ import java.util.Map;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.FixedStack;
 import de.omnikryptec.util.math.Mathd;
+
 //TODO profile the current status of stuff? print FPS information?
 public class Profiler {
     
@@ -105,9 +106,9 @@ public class Profiler {
             b.append("ID: " + id).append('\n');
             b.append("Call-count: " + s.count).append('\n');
             b.append("Time avg: " + Mathd.round((s.sum / (double) s.count) * 1e-6, 3) + "ms").append('\n');
-            b.append("Time sum: " + Mathd.round(s.sum * 1e-9, 5) + "s").append('\n');
             b.append("Time min: " + Mathd.round((s.min) * 1e-6, 3) + "ms").append('\n');
             b.append("Time max: " + Mathd.round((s.max) * 1e-6, 3) + "ms").append('\n');
+            b.append("Time sum: " + Mathd.round(s.sum * 1e-9, 5) + "s").append('\n');
             if (additional.get(id) != null) {
                 additional.get(id).writeData(b, s.count);
             }

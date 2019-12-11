@@ -9,7 +9,7 @@ public class RenderComponent implements Component {
 
     public float w, h;
     public Color color;
-    public float layer;
+    public int layer;
 
     public RenderedObject backingSprite;
 
@@ -20,7 +20,7 @@ public class RenderComponent implements Component {
         this.h = h;
     }
 
-    public RenderComponent(final float w, final float h, final Color color, final float layer) {
+    public RenderComponent(final float w, final float h, final Color color, final int layer) {
         this(w, h);
         this.color = color;
         this.layer = layer;
