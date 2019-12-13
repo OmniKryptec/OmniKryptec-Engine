@@ -86,11 +86,12 @@ uniform vec4 borderColor;
 
 void main(void){
 	float dCol = v_color.a;
+	
 	if(v_texcoords.x == -1){
 		color = v_color;
 	}else{
 		color =  v_color * texture(sampler, v_texcoords);
-		dCol = v_color.a * texture(sampler, v_texcoords+offset).a;
+		dCol = v_color.a * texture(sampler, v_texcoords + borderOffset).a;
 	}
 	vec3 refl = texture(reflected, v_screenPos).rgb;
 	
@@ -103,8 +104,8 @@ void main(void){
 	float overallAlpha = alpha + (1.0 - alpha) * outlineAlpha;
 
 	color.a = alpha;	
-	color = mix(borderColor, color, alpha/overallAlpha);
-	
+    color = mix(borderColor, color, alpha/overallAlpha);
+    
 	//TODO
 	color.rgb = color.rgb + v_reflectiveness.rgb * refl.rgb;
 }

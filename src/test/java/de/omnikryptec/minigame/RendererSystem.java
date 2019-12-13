@@ -1,5 +1,7 @@
 package de.omnikryptec.minigame;
 
+import java.util.Random;
+
 import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -88,14 +90,23 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
     @Override
     public void entityAdded(final Entity entity) {
         final AdvancedSprite sprite = new AdvancedSprite() {
+            private long i = 0;
+            
             public void draw(Batch2D batch) {
                 super.draw(batch);
-                batch.drawLine(getTransform().worldspacePos().x(), getTransform().worldspacePos().y(),
-                        getTransform().worldspacePos().x() + 100, getTransform().worldspacePos().y(), 2);
-                AdvancedBatch2D adv = (AdvancedBatch2D)batch;
-                adv.getShaderSlot().setSignedDistanceData(new Vector2f(0.5f,0.6f));
+                i++;
+                AdvancedBatch2D adv = (AdvancedBatch2D) batch;
+                adv.flush();
+                adv.getShaderSlot().setSignedDistanceData(new Vector2f(0.5f, 0.6f));
+                if (i % 400 == 0) {
+                    this.getColor().randomizeRGB();
+                    adv.getShaderSlot().setBorderColor(new Color().randomizeRGB());
+                }
+                adv.getShaderSlot().setSDBorderData(new Vector2f(0.6f, 0.8f));
+                adv.flush();
                 batch.drawStringSimple("OOOF", Minigame.font, 80, getTransform().worldspacePos().x(),
-                        getTransform().worldspacePos().y(), (float)LibAPIManager.instance().getGLFW().getTime());
+                        getTransform().worldspacePos().y(), (float) LibAPIManager.instance().getGLFW().getTime());
+                                adv.flush();
             };
         };
         sprite.setTransform(this.posMapper.get(entity).transform);

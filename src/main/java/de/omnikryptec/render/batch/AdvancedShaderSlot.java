@@ -46,6 +46,8 @@ public class AdvancedShaderSlot extends AbstractAdvancedShaderSlot {
         sampler.setSampler(0);
         refl.setSampler(1);
         signedDistanceData.loadVec2(0, 1);
+        sdBorderData.loadVec2(0, 1);
+        offset.loadVec2(0, 0);
     }
     
     @Override
@@ -108,6 +110,6 @@ public class AdvancedShaderSlot extends AbstractAdvancedShaderSlot {
     @Override
     public void setBorderOffset(Vector2fc vec) {
         this.shader.bindShader();
-        this.setBorderOffset(vec);
+        this.offset.loadVec2(vec);
     }
 }
