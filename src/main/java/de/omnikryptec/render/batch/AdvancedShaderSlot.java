@@ -8,7 +8,9 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
 import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec2;
+import de.omnikryptec.libapi.exposed.render.shader.UniformVec4;
 import de.omnikryptec.render.IProjection;
+import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.math.transform.Transform3Df;
 
@@ -18,6 +20,9 @@ public class AdvancedShaderSlot extends AbstractAdvancedShaderSlot {
     private final UniformMatrix transformUniform;
     
     private final UniformVec2 signedDistanceData;
+    private final UniformVec2 sdBorderData;
+    private final UniformVec2 offset;
+    private final UniformVec4 borderColor;
     
     private IProjection projection;
     private Transform3Df transform;
@@ -29,6 +34,9 @@ public class AdvancedShaderSlot extends AbstractAdvancedShaderSlot {
         this.transformUniform = this.shader.getUniform("u_transform");
         this.viewProjectionUniform = this.shader.getUniform("u_projview");
         this.signedDistanceData = this.shader.getUniform("signedDistanceData");
+        this.sdBorderData = this.shader.getUniform("borderData");
+        this.offset = this.shader.getUniform("borderOffset");
+        this.borderColor = this.shader.getUniform("borderColor");
         
         final UniformSampler sampler = this.shader.getUniform("sampler");
         final UniformSampler refl = this.shader.getUniform("reflected");
@@ -83,5 +91,23 @@ public class AdvancedShaderSlot extends AbstractAdvancedShaderSlot {
     public void setSignedDistanceData(Vector2fc vec) {
         this.shader.bindShader();
         this.signedDistanceData.loadVec2(vec);
+    }
+    
+    @Override
+    public void setSDBorderData(Vector2fc vec) {
+        this.shader.bindShader();
+        this.sdBorderData.loadVec2(vec);
+    }
+    
+    @Override
+    public void setBorderColor(Color color) {
+        this.shader.bindShader();
+        this.borderColor.loadColor(color);
+    }
+    
+    @Override
+    public void setBorderOffset(Vector2fc vec) {
+        this.shader.bindShader();
+        this.setBorderOffset(vec);
     }
 }
