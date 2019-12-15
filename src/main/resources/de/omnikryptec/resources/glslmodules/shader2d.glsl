@@ -92,7 +92,7 @@ void main(void){
 	}else{
 		color =  v_color * texture(sampler, v_texcoords);
 		dCol = v_color.a * texture(sampler, v_texcoords + borderOffset).a;
-	}
+    }
 	vec3 refl = texture(reflected, v_screenPos).rgb;
 	
 	float dist = 1.0 - color.a;

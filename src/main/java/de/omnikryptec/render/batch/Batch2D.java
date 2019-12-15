@@ -55,7 +55,10 @@ public interface Batch2D {
     default void drawStringSimple(String string, Font font, float size, float x, float y, float rad) {
         char[] chars = string.toCharArray();
         //Doing everything in one Matrix and translating it after each char does not work because the floating point error gets too big
-        Matrix3x2f baseTranslation = new Matrix3x2f().translation(x, y).rotate(rad);
+        Matrix3x2f baseTranslation = new Matrix3x2f().translation(x, y);
+        if (rad != 0) {
+            baseTranslation = baseTranslation.rotate(rad);
+        }
         Matrix3x2f translation = new Matrix3x2f();
         float xOffset = 0;
         float xVal = 0, yVal = 0;

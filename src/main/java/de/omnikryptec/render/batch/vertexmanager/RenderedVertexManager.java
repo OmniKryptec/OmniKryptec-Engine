@@ -56,7 +56,7 @@ public class RenderedVertexManager implements VertexManager {
             this.currentTexture.bindTexture(0);
         }
         final int count = this.data.used();
-        this.vb.storeData(this.data.flush(), BufferUsage.Stream, count);
+        this.vb.storeData(this.data.flush(), BufferUsage.Dynamic, count);
         LibAPIManager.instance().getGLFW().getRenderAPI().render(this.va, Primitive.Triangle,
                 count / this.floatsPerVertex);
     }
