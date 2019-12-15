@@ -69,6 +69,8 @@ public class OpenGLUtil {
         switch (t) {
         case FLOAT:
             return GL11.GL_FLOAT;
+        case INT:
+            return GL11.GL_INT;
         default:
             throw new IllegalArgumentException(t + "");
         }
@@ -77,6 +79,8 @@ public class OpenGLUtil {
     public static int sizeof(final Type t) {
         switch (t) {
         case FLOAT:
+            return 4;
+        case INT: 
             return 4;
         default:
             throw new IllegalArgumentException(t + "");

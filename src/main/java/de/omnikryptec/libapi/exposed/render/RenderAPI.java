@@ -45,7 +45,7 @@ public interface RenderAPI {
     //    }
 
     public static enum Type {
-        FLOAT
+        FLOAT, INT
     }
 
     public static enum SurfaceBufferType {

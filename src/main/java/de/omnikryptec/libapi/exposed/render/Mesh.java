@@ -27,7 +27,9 @@ public class Mesh {
         for (final VertexAttribute va : VertexAttribute.values()) {
             if (va != VertexAttribute.Index && meshData.hasVertexAttribute(va)) {
                 final VertexBuffer vbo = LibAPIManager.instance().getGLFW().getRenderAPI().createVertexBuffer();
-                vbo.storeData((float[]) meshData.getAttribute(va), BufferUsage.Static);
+                float[] array = (float[])meshData.getAttribute(va);
+                vbo.setDescription(BufferUsage.Static, Type.FLOAT, array.length);
+                vbo.updateData(array);
                 this.vertexArray.addVertexBuffer(vbo,
                         new VertexBufferElement(Type.FLOAT, meshData.getAttributeSize(va), false));
             }
