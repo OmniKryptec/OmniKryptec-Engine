@@ -28,18 +28,11 @@ project.ext.lwjglVersion = "3.2.3"
 project.ext.jomlVersion = "1.9.19"
 project.ext.cjpbaseVersion = "v1.8.0_172-alpha.45"
 project.ext.cjpnetCommit = "dfe31b3ba4" //09.05.2019 20:45
+project.ext.lwjglNativesWindows = "natives-windows"
+project.ext.lwjglNativesLinux = "natives-linux"
+project.ext.lwjglNativesMacOs = "natives-macos"
 
-switch (OperatingSystem.current()) {
-    case OperatingSystem.WINDOWS:
-        project.ext.lwjglNatives = "natives-windows"
-        break
-    case OperatingSystem.LINUX:
-        project.ext.lwjglNatives = "natives-linux"
-        break
-    case OperatingSystem.MAC_OS:
-        project.ext.lwjglNatives = "natives-macos"
-        break
-}
+project.ext.lwjglNatives = [lwjglNativesLinux, lwjglNativesWindows, lwjglNativesMacOs]
 
 repositories {
     mavenCentral()
@@ -63,12 +56,14 @@ dependencies {
     compile "org.lwjgl:lwjgl-opengl:$lwjglVersion"
     compile "org.lwjgl:lwjgl-opengles:$lwjglVersion"
     compile "org.lwjgl:lwjgl-vulkan:$lwjglVersion"
-    compile "org.lwjgl:lwjgl:$lwjglVersion:$lwjglNatives"
-    compile "org.lwjgl:lwjgl-assimp:$lwjglVersion:$lwjglNatives"
-    compile "org.lwjgl:lwjgl-glfw:$lwjglVersion:$lwjglNatives"
-    compile "org.lwjgl:lwjgl-openal:$lwjglVersion:$lwjglNatives"
-    compile "org.lwjgl:lwjgl-opengl:$lwjglVersion:$lwjglNatives"
-    compile "org.lwjgl:lwjgl-opengles:$lwjglVersion:$lwjglNatives"
+    for(String n : lwjglNatives){
+    	compile "org.lwjgl:lwjgl:$lwjglVersion:$n"
+   		compile "org.lwjgl:lwjgl-assimp:$lwjglVersion:$n"
+    	compile "org.lwjgl:lwjgl-glfw:$lwjglVersion:$n"
+    	compile "org.lwjgl:lwjgl-openal:$lwjglVersion:$n"
+    	compile "org.lwjgl:lwjgl-opengl:$lwjglVersion:$n"
+    	compile "org.lwjgl:lwjgl-opengles:$lwjglVersion:$n"
+    }
     compile "org.joml:joml:${jomlVersion}"
     //jacksons version previously: 2.9.0.pr3
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
