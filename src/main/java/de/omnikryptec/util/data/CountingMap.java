@@ -23,36 +23,36 @@ import java.util.Set;
 
 //Surprisingly faster than a guava Multiset
 public class CountingMap<T> implements Iterable<T> {
-
+    
     private final Map<T, Long> map = new HashMap<>();
     private boolean retainZeros = false;
-
+    
     public CountingMap() {
         this(false);
     }
-
+    
     public CountingMap(final boolean retainZeros) {
         this.retainZeros = retainZeros;
     }
-
+    
     public long get(final T t) {
         return this.map.containsKey(t) ? this.map.get(t) : 0;
     }
-
+    
     public long increment(final T t) {
         return increment(t, 1);
     }
-
+    
     public long increment(final T t, final long amount) {
         long l;
         this.map.put(t, l = get(t) + amount);
         return l;
     }
-
+    
     public long decrement(final T t) {
         return decrement(t, 1);
     }
-
+    
     public long decrement(final T t, final long amount) {
         long l;
         this.map.put(t, l = get(t) - amount);
@@ -61,22 +61,22 @@ public class CountingMap<T> implements Iterable<T> {
         }
         return l;
     }
-
+    
     public long remove(final T t) {
         return this.map.remove(t);
     }
-
+    
     public Set<T> keySet() {
         return this.map.keySet();
     }
-
+    
     @Override
     public Iterator<T> iterator() {
         return this.map.keySet().iterator();
     }
-
+    
     public void clear() {
         this.map.clear();
     }
-
+    
 }

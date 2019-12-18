@@ -6,7 +6,7 @@ import java.util.Deque;
 public class FrameBufferStack {
     private final Deque<FrameBuffer> frameBufferStack = new ArrayDeque<>();
     private FrameBuffer tmp;
-
+    
     void bind(final FrameBuffer fb) {
         final FrameBuffer peek = this.frameBufferStack.peek();
         if (peek != fb) {
@@ -17,7 +17,7 @@ public class FrameBufferStack {
             fb.bindRaw();
         }
     }
-
+    
     void unbind(final FrameBuffer fb) {
         if (this.frameBufferStack.size() > 1) {
             if (this.frameBufferStack.peek() == fb) {
@@ -26,7 +26,7 @@ public class FrameBufferStack {
             }
         }
     }
-
+    
     void bindTmp(final FrameBuffer fb) {
         if (this.tmp != null) {
             throw new IllegalStateException("tmp already in use");
@@ -36,14 +36,14 @@ public class FrameBufferStack {
             bind(this.tmp);
         }
     }
-
+    
     void unbindTmp() {
         if (this.tmp != null) {
             unbind(this.tmp);
             this.tmp = null;
         }
     }
-
+    
     public FrameBuffer getCurrent() {
         return this.frameBufferStack.peek();
     }

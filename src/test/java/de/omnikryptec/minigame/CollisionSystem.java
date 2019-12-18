@@ -19,17 +19,17 @@ import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.updater.Time;
 
 public class CollisionSystem extends AbstractComponentSystem {
-    
+
     protected CollisionSystem() {
         super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(CollisionComponent.class)));
-        
+
     }
-    
+
     private final ComponentMapper<PositionComponent> posMapper = new ComponentMapper<>(PositionComponent.class);
     private final ComponentMapper<CollisionComponent> hitMapper = new ComponentMapper<>(CollisionComponent.class);
-    
+
     private final ExecutorService service = ExecutorsUtil.newFixedThreadPool();
-    
+
     @Override
     public void update(final IECSManager manager, final Time time) {
         Profiler.begin("CollisionSystem");
@@ -63,5 +63,5 @@ public class CollisionSystem extends AbstractComponentSystem {
         }
         Profiler.end();
     }
-    
+
 }

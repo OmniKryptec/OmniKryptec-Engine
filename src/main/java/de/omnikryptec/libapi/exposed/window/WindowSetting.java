@@ -11,13 +11,13 @@ public enum WindowSetting implements Defaultable {
      * @see de.omnikryptec.core.scene.UpdateController#setAsyncUpdatesPerSecond(int)
      */
     VSync(true), CursorState(CursorType.NORMAL), Decorated(true);
-
+    
     private final Object def;
-
+    
     WindowSetting(final Object def) {
         this.def = def;
     }
-
+    
     @Override
     public <T> T getDefault() {
         return (T) this.def;

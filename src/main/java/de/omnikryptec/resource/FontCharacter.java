@@ -1,17 +1,17 @@
 package de.omnikryptec.resource;
 
 public class FontCharacter {
-    private int id;
-    private float xTextureCoord;
-    private float yTextureCoord;
-    private float xMaxTextureCoord;
-    private float yMaxTextureCoord;
-    private float xOffset;
-    private float yOffset;
-    private float sizeX;
-    private float sizeY;
-    private float xAdvance;
-    
+    private final int id;
+    private final float xTextureCoord;
+    private final float yTextureCoord;
+    private final float xMaxTextureCoord;
+    private final float yMaxTextureCoord;
+    private final float xOffset;
+    private final float yOffset;
+    private final float sizeX;
+    private final float sizeY;
+    private final float xAdvance;
+
     /**
      * @param id            - the ASCII value of the character.
      * @param xTextureCoord - the x texture coordinate for the top left corner of
@@ -42,50 +42,50 @@ public class FontCharacter {
         this.yMaxTextureCoord = yTexSize + yTextureCoord;
         this.xAdvance = xAdvance;
     }
-    
+
     @Override
     public int hashCode() {
         return this.id;
     }
-    
+
     protected int getAscii() {
-        return id;
+        return this.id;
     }
-    
+
     public float getTextureCoordX() {
-        return xTextureCoord;
+        return this.xTextureCoord;
     }
-    
+
     public float getTextureCoordY() {
-        return yTextureCoord;
+        return this.yTextureCoord;
     }
-    
+
     public float getTextureCoordMaxX() {
-        return xMaxTextureCoord;
+        return this.xMaxTextureCoord;
     }
-    
+
     public float getTextureCoordMaxY() {
-        return yMaxTextureCoord;
+        return this.yMaxTextureCoord;
     }
-    
+
     public float getOffsetX() {
-        return xOffset;
+        return this.xOffset;
     }
-    
+
     public float getOffsetY() {
-        return yOffset;
+        return this.yOffset;
     }
-    
+
     public float getSizeX() {
-        return sizeX;
+        return this.sizeX;
     }
-    
+
     public float getSizeY() {
-        return sizeY;
+        return this.sizeY;
     }
-    
+
     public float getCursorAdvanceX() {
-        return xAdvance;
+        return this.xAdvance;
     }
-    
+
 }

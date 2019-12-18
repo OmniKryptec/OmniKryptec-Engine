@@ -20,43 +20,43 @@ import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.util.Logger;
 
 public interface LoadingProgressCallback {
-
+    
     public static LoadingProgressCallback DEBUG_CALLBACK = new LoadingProgressCallback() {
-
+        
         private final Logger logger = Logger.getLogger(this.getClass());
-
+        
         private int maxs = 0;
         private int lrmax = 0;
-
+        
         @Override
         public void onStageChange(final AdvancedFile superfile, final int stageResMax, final int stageNumber) {
             this.lrmax = stageResMax;
             this.logger.info("S: " + superfile + ", " + stageNumber + "/" + this.maxs);
         }
-
+        
         @Override
         public void onProgressChange(final AdvancedFile file, final int stageResProcessedCount) {
             this.logger.info(" F: " + file + ", " + stageResProcessedCount + "/" + this.lrmax);
         }
-
+        
         @Override
         public void onLoadingStart(final int globalResMax, final int globalMaxStages) {
             this.maxs = globalMaxStages;
             this.logger.info("Loading " + globalResMax + " resource(s) in " + globalMaxStages + " stage(s)");
         }
-
+        
         @Override
         public void onLoadingDone() {
             this.logger.info("Finished loading");
         }
     };
-
+    
     void onLoadingStart(int globalResMax, int globalMaxStages);
-
+    
     void onStageChange(AdvancedFile superfile, int stageResMax, int stageNumber);
-
+    
     void onProgressChange(AdvancedFile file, int stageResProcessedCount);
-
+    
     void onLoadingDone();
-
+    
 }

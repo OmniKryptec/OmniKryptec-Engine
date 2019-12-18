@@ -13,13 +13,13 @@ import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
 public class GLFWAccessManager {
-    
+
     private RenderAPI renderApi;
     private final Logger logger = Logger.getLogger(getClass());
-    
+
     GLFWAccessManager() {
     }
-    
+
     public void setRenderer(final Class<? extends RenderAPI> clazz, final Settings<WindowSetting> windowSettings,
             final Settings<IntegerKey> apiSettings) {
         if (isRendererSet()) {
@@ -38,19 +38,19 @@ public class GLFWAccessManager {
             ex.printStackTrace();
         }
     }
-    
+
     public boolean isRendererSet() {
         return this.renderApi != null;
     }
-    
+
     public RenderAPI getRenderAPI() {
         return this.renderApi;
     }
-    
+
     public void pollEvents() {
         GLFW.glfwPollEvents();
     }
-    
+
     /**
      * Returns the value of the GLFW timer. The timer measures time elapsed since
      * GLFW was initialized.
@@ -64,7 +64,7 @@ public class GLFWAccessManager {
     public double getTime() {
         return GLFW.glfwGetTime();
     }
-    
+
     public void setCursorState(final CursorType state) {
         Util.ensureNonNull(state);
         GLFW.glfwSetInputMode(this.getRenderAPI().getWindow().getID(), GLFW.GLFW_CURSOR, state.getState());

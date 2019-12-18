@@ -34,7 +34,7 @@ import de.omnikryptec.util.Util;
  * {@link de.omnikryptec.util.settings.keys.KeyGroup}
  */
 public class KeyContainer {
-
+    
     /**
      * Default {@link de.omnikryptec.util.settings.keys.IKey} which can be returned
      * instead of null
@@ -44,29 +44,29 @@ public class KeyContainer {
         public String getName() {
             return null;
         }
-
+        
         @Override
         public boolean isPressed() {
             return false;
         }
-
+        
         @Override
         public boolean isLongPressed(final double minTime, final double maxTime) {
             return false;
         }
     };
-
+    
     protected final BiMap<String, IKey> ikeys = HashBiMap.create();
-
+    
     public KeyContainer() {
     }
-
+    
     public KeyContainer(final Collection<IKey> ikeys) {
         if (ikeys != null) {
             addIKeys(ikeys);
         }
     }
-
+    
     /**
      * Returns the {@link com.google.common.collect.BiMap<String,
      * de.omnikryptec.util.settings.keys.IKey>} of this
@@ -78,7 +78,7 @@ public class KeyContainer {
     protected BiMap<String, IKey> getIKeysBiMap() {
         return this.ikeys;
     }
-
+    
     /**
      * Returns all {@link de.omnikryptec.util.settings.keys.IKey}s of this
      * {@link de.omnikryptec.util.settings.keys.KeyContainer}
@@ -88,7 +88,7 @@ public class KeyContainer {
     public Set<IKey> getIKeys() {
         return this.ikeys.values();
     }
-
+    
     /**
      * Sets the {@link de.omnikryptec.util.settings.keys.IKey}s of this
      * {@link de.omnikryptec.util.settings.keys.KeyContainer}
@@ -104,7 +104,7 @@ public class KeyContainer {
         addIKeys(ikeys);
         return this;
     }
-
+    
     /**
      * Adds a {@link de.omnikryptec.util.settings.keys.IKey} to this
      * {@link de.omnikryptec.util.settings.keys.KeyContainer}
@@ -119,7 +119,7 @@ public class KeyContainer {
         this.ikeys.put(ikey.getName(), ikey);
         return this;
     }
-
+    
     /**
      * Adds some {@link de.omnikryptec.util.settings.keys.IKey}s to this
      * {@link de.omnikryptec.util.settings.keys.KeyContainer}
@@ -132,7 +132,7 @@ public class KeyContainer {
     public KeyContainer addIKeys(final IKey... ikeys) {
         return addIKeys(Arrays.asList(ikeys));
     }
-
+    
     /**
      * Adds some {@link de.omnikryptec.util.settings.keys.IKey}s to this
      * {@link de.omnikryptec.util.settings.keys.KeyContainer}
@@ -147,7 +147,7 @@ public class KeyContainer {
         ikeys.forEach(this::addIKey);
         return this;
     }
-
+    
     /**
      * Removes a {@link de.omnikryptec.util.settings.keys.IKey} specified by its
      * name
@@ -163,7 +163,7 @@ public class KeyContainer {
         this.ikeys.remove(name);
         return this;
     }
-
+    
     /**
      * Removes a {@link de.omnikryptec.util.settings.keys.IKey}
      *
@@ -177,7 +177,7 @@ public class KeyContainer {
         this.ikeys.remove(key.getName());
         return this;
     }
-
+    
     /**
      * Creates and adds a {@link de.omnikryptec.util.settings.keys.Key}
      *
@@ -191,7 +191,7 @@ public class KeyContainer {
     public KeyContainer addKey(final String name, final int keyCode) {
         return addIKey(new Key(name, keyCode));
     }
-
+    
     /**
      * Creates and adds a {@link de.omnikryptec.util.settings.keys.Key}
      *
@@ -209,41 +209,41 @@ public class KeyContainer {
     public KeyContainer addKey(final String name, final int keyCode, final boolean isKeyboardKey) {
         return addIKey(new Key(name, keyCode, isKeyboardKey));
     }
-
+    
     //TODO Panzer1119 Create javadoc
-
+    
     public <T extends IKey> T getIKey(final String name) {
         return getIKey(name, null);
     }
-
+    
     public <T extends IKey> T getIKey(final String name, final T defaultValue) {
         final IKey key = this.ikeys.get(name);
         return key == null ? defaultValue : (T) key;
     }
-
+    
     public Key getKey(final String name) {
         return (Key) this.ikeys.get(name);
     }
-
+    
     public List<Key> getKeys() {
         return this.ikeys.values().stream().filter((key) -> key instanceof Key).map((key) -> (Key) key)
                 .collect(Collectors.toList());
     }
-
+    
     public List<Key> getKeys(final boolean isKeyboardKey) {
         return this.ikeys.values().stream().filter((key) -> key instanceof Key).map((key) -> (Key) key)
                 .filter((key) -> key.isKeyboardKey() == isKeyboardKey).collect(Collectors.toList());
     }
-
+    
     public KeyGroup getKeyGroup(final String name) {
         return (KeyGroup) this.ikeys.get(name);
     }
-
+    
     public List<KeyGroup> getKeyGroups() {
         return this.ikeys.values().stream().filter((key) -> key instanceof KeyGroup).map((key) -> (KeyGroup) key)
                 .collect(Collectors.toList());
     }
-
+    
     /**
      * Returns <tt>true</tt> if this
      * {@link de.omnikryptec.util.settings.keys.KeyContainer} is empty
@@ -254,7 +254,7 @@ public class KeyContainer {
     public boolean isEmpty() {
         return this.ikeys.isEmpty();
     }
-
+    
     /**
      * Returns <tt>true</tt> if this
      * {@link de.omnikryptec.util.settings.keys.KeyContainer} is not empty
@@ -265,7 +265,7 @@ public class KeyContainer {
     public boolean isNotEmpty() {
         return !this.ikeys.isEmpty();
     }
-
+    
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -277,15 +277,15 @@ public class KeyContainer {
         final KeyContainer that = (KeyContainer) o;
         return Objects.equals(this.ikeys, that.ikeys);
     }
-
+    
     @Override
     public int hashCode() {
         return Objects.hash(this.ikeys);
     }
-
+    
     @Override
     public String toString() {
         return "KeyContainer{" + "ikeys=" + this.ikeys + '}';
     }
-
+    
 }

@@ -33,33 +33,33 @@ import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 
 public class Minigame extends Omnikryptec {
-    
+
     private IECSManager mgr;
     private final ComponentMapper<PositionComponent> mapper = new ComponentMapper<>(PositionComponent.class);
     private final ComponentMapper<RenderComponent> rend = new ComponentMapper<>(RenderComponent.class);
     private final Random random = new Random();
-    
+
     public static void main(final String[] args) {
         new Minigame().start();
     }
-    
+
     public static class TestComponent extends GuiComponent {
-        
+
         private final float g, b;
-        
+
         private float x, y, w, h;
-        
+
         public TestComponent(final float g, final float b) {
             this.g = g;
             this.b = b;
         }
-        
+
         @Override
         protected void renderComponent(final Batch2D batch) {
             batch.color().set(1, this.g, this.b, 0.4f);
             batch.drawRect(new Matrix3x2f().setTranslation(this.x, this.y), this.w, this.h);
         }
-        
+
         @Override
         protected void calculateActualPosition(final GuiConstraints constraints) {
             this.x = constraints.getX() + constraints.getMaxWidth() * 0.1f;
@@ -67,17 +67,17 @@ public class Minigame extends Omnikryptec {
             this.w = constraints.getMaxWidth() * 0.8f;
             this.h = constraints.getMaxHeight() * 0.8f;
         }
-        
+
         @EventSubscription
         public void event(InputEvent.MouseButtonEvent ev) {
             Vector2dc v = getInput().getMousePosition();
-            if(v.x()<300) {
+            if (v.x() < 300) {
                 ev.consume();
             }
         }
-        
+
     }
-    
+
     @Override
     protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
@@ -91,9 +91,9 @@ public class Minigame extends Omnikryptec {
         windowSettings.set(WindowSetting.Height, 600);
         Profiler.setEnabled(true);
     }
-    
+
     public static Font font;
-    
+
     @Override
     protected void onInitialized() {
         getResourceManager().load(false, true, new AdvancedFile("intern:/de/omnikryptec/resources/"));
@@ -119,19 +119,19 @@ public class Minigame extends Omnikryptec {
         }
         getGame().getGuiManager().setGui(new TestComponent(0, 0));
     }
-    
+
     @Override
     protected void onShutdown() {
         System.out.println(Profiler.currentInfo());
     }
-    
+
     private Entity makeBackground() {
         final Entity e = new Entity();
         e.addComponent(new PositionComponent(-1000, -1000));
         e.addComponent(new RenderComponent(2000, 2000, new Color(1, 1, 1), -100));
         return e;
     }
-    
+
     private Entity makePlayer(final float x, final float y) {
         final Entity e = new Entity();
         e.addComponent(new PositionComponent(x, y));
@@ -141,7 +141,7 @@ public class Minigame extends Omnikryptec {
         e.addComponent(new CollisionComponent(10, 10));
         return e;
     }
-    
+
     private Entity makeThing(final float x, final float y) {
         final Entity e = new Entity();
         e.addComponent(new PositionComponent(x, y));
@@ -151,7 +151,7 @@ public class Minigame extends Omnikryptec {
         e.flags = -10;
         return e;
     }
-    
+
     private Entity makeFlying(final float x, final float y, final Vector2f dir, final float range, final int f) {
         final Entity e = new Entity();
         e.addComponent(new PositionComponent(x - 2.5f, y - 2.5f));
@@ -159,11 +159,11 @@ public class Minigame extends Omnikryptec {
         e.addComponent(new MovementComponent(dir.x, dir.y));
         e.addComponent(new RangedComponent(range, x, y));
         e.addComponent(new CollisionComponent(5, 5));
-        
+
         e.flags = f;
         return e;
     }
-    
+
     @EventSubscription
     public void shoot(final ShootEvent ev) {
         if (ev.projectile == Projectile.Normal) {
@@ -172,14 +172,14 @@ public class Minigame extends Omnikryptec {
             this.mgr.addEntity(makeFlying(ev.x, ev.y, ev.dir, ev.range, 20));
         }
     }
-    
+
     @EventSubscription
     public void rangemax(final RangeMaxedEvent ev) {
         if (ev.entity.flags == 20) {
             getEventBus().post(new BombExplodeEvent(ev.entity));
         }
     }
-    
+
     @EventSubscription
     public void bombExplode(final BombExplodeEvent ev) {
         for (int i = 0; i < 100; i++) {
@@ -188,7 +188,7 @@ public class Minigame extends Omnikryptec {
                     this.mapper.get(ev.bomb).transform.worldspacePos().y(), r, 150, Projectile.Normal));
         }
     }
-    
+
     @EventSubscription
     public void collide(final CollisionEvent ev) {
         final Entity bomb = ev.getEntity(20);
@@ -204,10 +204,10 @@ public class Minigame extends Omnikryptec {
             this.mgr.removeEntity(d);
         }
     }
-    
+
     private void downOrRemove(final Entity hit) {
         final RenderComponent c = this.rend.get(hit);
-        
+
         final float f = 0.025f * this.random.nextFloat();
         c.color.setR(c.color.getR() + f);
         c.color.setG(c.color.getG() - f);
@@ -219,5 +219,5 @@ public class Minigame extends Omnikryptec {
             getEventBus().post(new BombExplodeEvent(hit));
         }
     }
-    
+
 }

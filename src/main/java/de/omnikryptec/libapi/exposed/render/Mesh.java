@@ -9,11 +9,11 @@ import de.omnikryptec.resource.MeshData.Primitive;
 import de.omnikryptec.resource.MeshData.VertexAttribute;
 
 public class Mesh {
-
+    
     private final VertexArray vertexArray;
     private final Primitive primitive;
     private final int elementCount;
-
+    
     public Mesh(final MeshData meshData) {
         this.vertexArray = LibAPIManager.instance().getGLFW().getRenderAPI().createVertexArray();
         this.primitive = meshData.getPrimitiveType();
@@ -27,7 +27,7 @@ public class Mesh {
         for (final VertexAttribute va : VertexAttribute.values()) {
             if (va != VertexAttribute.Index && meshData.hasVertexAttribute(va)) {
                 final VertexBuffer vbo = LibAPIManager.instance().getGLFW().getRenderAPI().createVertexBuffer();
-                float[] array = (float[])meshData.getAttribute(va);
+                float[] array = (float[]) meshData.getAttribute(va);
                 vbo.setDescription(BufferUsage.Static, Type.FLOAT, array.length);
                 vbo.updateData(array);
                 this.vertexArray.addVertexBuffer(vbo,
@@ -35,17 +35,17 @@ public class Mesh {
             }
         }
     }
-
+    
     public VertexArray getVertexArray() {
         return this.vertexArray;
     }
-
+    
     public Primitive getPrimitive() {
         return this.primitive;
     }
-
+    
     public int getElementCount() {
         return this.elementCount;
     }
-
+    
 }

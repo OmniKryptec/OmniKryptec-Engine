@@ -25,11 +25,11 @@ import de.omnikryptec.util.settings.Settings;
 
 @Deprecated
 public class ComfortTest extends Omnikryptec {
-
+    
     public static void main(final String[] args) {
         new ComfortTest().start();
     }
-
+    
     @Override
     protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisetting,
@@ -37,11 +37,11 @@ public class ComfortTest extends Omnikryptec {
         libsettings.set(LibSetting.DEBUG, true);
         windowSettings.set(WindowSetting.Name, "ComfortTest-Window");
     }
-
+    
     @Override
     protected void onInitialized() {
         final Scene scene = getGame().createNewScene(true);
         scene.setGameLogic(UpdateableFactory.createScreenClearTest());
     }
-
+    
 }

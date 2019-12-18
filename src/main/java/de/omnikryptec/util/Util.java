@@ -21,15 +21,15 @@ import java.util.Scanner;
 import de.codemakers.io.file.AdvancedFile;
 
 public class Util {
-
+    
     public static <T> T ensureNonNull(final T obj) {
         return ensureNonNull(obj, null, 2);
     }
-
+    
     public static <T> T ensureNonNull(final T obj, final String message) {
         return ensureNonNull(obj, message, 2);
     }
-
+    
     private static <T> T ensureNonNull(final T obj, final String message, final int cut) {
         if (obj == null) {
             final NullPointerException exc = message == null ? new NullPointerException()
@@ -41,21 +41,21 @@ public class Util {
         }
         return obj;
     }
-
+    
     public static void stripStacktrace(final RuntimeException ex, final int cut) {
         final StackTraceElement[] nst = new StackTraceElement[ex.getStackTrace().length - cut];
         System.arraycopy(ex.getStackTrace(), cut, nst, 0, ex.getStackTrace().length - cut);
         ex.setStackTrace(nst);
         throw ex;
     }
-
+    
     public static void stripStacktrace(final Exception ex, final int cut) throws Exception {
         final StackTraceElement[] nst = new StackTraceElement[ex.getStackTrace().length - cut];
         System.arraycopy(ex.getStackTrace(), cut, nst, 0, ex.getStackTrace().length - cut);
         ex.setStackTrace(nst);
         throw ex;
     }
-
+    
     public static String readTextFile(final AdvancedFile file) {
         final StringBuilder builder = new StringBuilder();
         try (Scanner scanner = new Scanner(file.createInputStream())) {

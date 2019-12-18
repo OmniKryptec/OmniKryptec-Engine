@@ -24,23 +24,23 @@ import de.omnikryptec.util.updater.Time;
 
 //TODO pcfreak9000 also improve target information for renderers (null => surface, FrameBuffer => take its width and height and stay like that?) <- what do i mean with that?
 public class LocalRendererContext {
-
+    
     private static final Comparator<Renderer> RENDERER_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority() - e1.priority();
-
+    
     private final RendererContext context;
-
+    
     private Postprocessor postprocessor;
     private SceneRenderBufferManager frameBuffers;
-
+    
     private IProjection mainProjection;
     private IRenderedObjectManager objectManager;
     private final List<Renderer> renderers;
-
+    
     private final Settings<EnvironmentKey> environmentSettings;
-
+    
     private int prio;
     private boolean enabled;
-
+    
     LocalRendererContext(final RendererContext context, final Settings<EnvironmentKey> environmentSettings,
             final int multisamples, final FBTarget... targets) {
         this.context = context;
@@ -56,64 +56,64 @@ public class LocalRendererContext {
         this.mainProjection = new Camera(new Matrix4f().ortho2D(0, 1, 0, 1));
         this.enabled = true;
     }
-
+    
     public void setPriority(final int i) {
         this.prio = i;
         this.context.notifyPriorityChanged();
     }
-
+    
     public int getPriority() {
         return this.prio;
     }
-
+    
     public boolean isEnabled() {
         return this.enabled;
     }
-
+    
     public void setEnabled(final boolean b) {
         this.enabled = b;
     }
-
+    
     //using this while having renderers added breaks things, so use this only after initialization
     public void setIRenderedObjectManager(final IRenderedObjectManager mgr) {
         this.objectManager = mgr;
     }
-
+    
     public IRenderedObjectManager getIRenderedObjectManager() {
         return this.objectManager;
     }
-
+    
     public IProjection getMainProjection() {
         return this.mainProjection;
     }
-
+    
     public Settings<EnvironmentKey> getEnvironmentSettings() {
         return this.environmentSettings;
     }
-
+    
     public void setMainProjection(final IProjection projection) {
         this.mainProjection = projection;
     }
-
+    
     public void addRenderer(final Renderer renderer) {
         this.renderers.add(renderer);
         this.renderers.sort(RENDERER_PRIORITY_COMPARATOR);
         renderer.init(this, this.context.getRenderAPI().getSurface());
     }
-
+    
     public void removeRenderer(final Renderer renderer) {
         renderer.deinit(this);
         this.renderers.remove(renderer);
     }
-
+    
     public RenderAPI getRenderAPI() {
         return this.context.getRenderAPI();
     }
-
-    RendererContext getContext() {
-        return context;
-    }
     
+    RendererContext getContext() {
+        return this.context;
+    }
+
     public void preRender(final Time time, final IProjection projection) {
         this.context.getRenderAPI().getCurrentFrameBuffer().clear(
                 getEnvironmentSettings().get(GlobalEnvironmentKeys.ClearColor), SurfaceBufferType.Color,
@@ -122,19 +122,19 @@ public class LocalRendererContext {
             r.preRender(time, projection, this);
         }
     }
-
+    
     public void render(final Time time, final IProjection projection) {
         for (final Renderer r : this.renderers) {
             r.render(time, projection, this);
         }
     }
-
+    
     public void postRender(final Time time, final IProjection projection) {
         for (final Renderer r : this.renderers) {
             r.postRender(time, projection, this);
         }
     }
-
+    
     public Texture renderCycle(final Time time) {
         this.frameBuffers.beginRender();
         preRender(time, this.mainProjection);
@@ -147,7 +147,7 @@ public class LocalRendererContext {
             return this.frameBuffers.get(0).getTexture(0);
         }
     }
-
+    
     void screenBufferResizedEventDelegate(final WindowEvent.ScreenBufferResized ev) {
         this.frameBuffers.resize(ev.width, ev.height);
         for (final Renderer r : this.renderers) {

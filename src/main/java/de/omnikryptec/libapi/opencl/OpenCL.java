@@ -33,18 +33,18 @@ import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.Util;
 
 public class OpenCL {
-
+    
     private static final Class<?>[] constantsClasses = { CL10.class, CL12.class, CL20.class, CL21.class, CL22.class };
     private static boolean created;
     static IntBuffer tmpBuffer;
-
+    
     private final HashMap<Integer, CLPlatform> createdPlatforms = new HashMap<>();
     private PointerBuffer platforms;
-
+    
     static {
         tmpBuffer = BufferUtils.createIntBuffer(1);
     }
-
+    
     /**
      * engine-intern. Use {@link LibAPIManager} instead.
      *
@@ -58,7 +58,7 @@ public class OpenCL {
         CLContext.cleanup();
         CL.destroy();
     }
-
+    
     /**
      * engine-intern. Use {@link LibAPIManager} instead.
      *
@@ -70,22 +70,22 @@ public class OpenCL {
         }
         createPlatformData();
     }
-
+    
     private void createPlatformData() {
         CL10.clGetPlatformIDs(null, tmpBuffer);
         assert tmpBuffer.get(0) != 0;
         this.platforms = BufferUtils.createPointerBuffer(tmpBuffer.get(0));
         CL10.clGetPlatformIDs(this.platforms, (IntBuffer) null);
     }
-
+    
     public PointerBuffer getPlatforms() {
         return this.platforms;
     }
-
+    
     public int getPlatformCount() {
         return this.platforms.capacity();
     }
-
+    
     public CLPlatform getNextGLInterOpPlatform() {
         for (int i = 0; i < getPlatformCount(); i++) {
             final CLPlatform p = getPlatform(i);
@@ -95,20 +95,20 @@ public class OpenCL {
         }
         throw new OpenCLException("No platform with GL inter-op found!");
     }
-
+    
     public CLPlatform getPlatform(final int platformInd) {
         if (!this.createdPlatforms.containsKey(platformInd)) {
             this.createdPlatforms.put(platformInd, new CLPlatform(this.platforms.get(platformInd)));
         }
         return this.createdPlatforms.get(platformInd);
     }
-
+    
     public static void checked(final int i) {
         if (i != CL10.CL_SUCCESS) {
             Util.stripStacktrace(new OpenCLException(searchConstants(i)), 1);
         }
     }
-
+    
     public static String searchConstants(final int i) {
         for (final Class<?> c : constantsClasses) {
             final Field[] fields = c.getFields();

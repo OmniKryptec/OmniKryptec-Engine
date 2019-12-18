@@ -1,12 +1,8 @@
 package de.omnikryptec.minigame;
 
-import java.util.Random;
-
 import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
-import org.joml.Vector2f;
 
-import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityListener;
 import de.omnikryptec.ecs.Family;
@@ -14,51 +10,45 @@ import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
-import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.render.Camera;
-import de.omnikryptec.render.batch.AdvancedBatch2D;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.Light2D;
 import de.omnikryptec.render.objects.RenderedObject;
-import de.omnikryptec.render.objects.SimpleSprite;
-import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.render.renderer.AdvancedRenderer2D;
 import de.omnikryptec.render.renderer.LocalRendererContext;
-import de.omnikryptec.render.renderer.Renderer2D;
 import de.omnikryptec.render.renderer.Renderer2D.EnvironmentKeys2D;
 import de.omnikryptec.util.data.Color;
-import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.updater.Time;
 
 public class RendererSystem extends AbstractComponentSystem implements EntityListener {
-    
+
     public static Camera CAMERA = new Camera(new Matrix4f().ortho2D(-600, 600, -600, 600));
-    
+
     private final ComponentMapper<PositionComponent> posMapper = new ComponentMapper<>(PositionComponent.class);
     private final ComponentMapper<RenderComponent> rendMapper = new ComponentMapper<>(RenderComponent.class);
-    
+
     private final LocalRendererContext renderer;
-    
+
     public RendererSystem(final LocalRendererContext renderer) {
         super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(RenderComponent.class)));
         this.renderer = renderer;
         this.renderer.addRenderer(new AdvancedRenderer2D());
         this.renderer.setMainProjection(CAMERA);
-        
+
     }
-    
+
     private class MyLight extends Light2D {
         private Color color;
         private float x, y;
-        
+
         @Override
         public void draw(final Batch2D batch) {
             batch.color().set(this.color);
             batch.drawRect(new Matrix3x2f().translate(this.x, this.y), 300, 300);
         }
     };
-    
+
     @Override
     public void addedToIECSManager(final IECSManager iecsManager) {
         super.addedToIECSManager(iecsManager);
@@ -80,34 +70,32 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
         //        this.renderer.getIRenderedObjectManager().add(Light2D.TYPE, l3);
         this.renderer.getEnvironmentSettings().set(EnvironmentKeys2D.AmbientLight, new Color());//new Color(0.3f, 0.3f, 0.3f));
     }
-    
+
     @Override
     public void removedFromIECSManager(final IECSManager iecsManager) {
         super.removedFromIECSManager(iecsManager);
         iecsManager.removeEntityListener(getFamily(), this);
     }
-    
+
     @Override
     public void entityAdded(final Entity entity) {
         final AdvancedSprite sprite = new AdvancedSprite() {
-            private long i = 0;
-            
-            public void draw(Batch2D batch) {
-                super.draw(batch);
-                i++;
-                AdvancedBatch2D adv = (AdvancedBatch2D) batch;
-                adv.flush();
-                adv.getShaderSlot().setSignedDistanceData(new Vector2f(0.5f, 0.6f));
-                if (i % 400 == 0) {
-                    this.getColor().randomizeRGB();
-                    adv.getShaderSlot().setBorderColor(new Color().randomizeRGB());
-                }
-                adv.getShaderSlot().setSDBorderData(new Vector2f(0.6f, 0.8f));
-                adv.flush();
-                batch.drawStringSimple("OOOF", Minigame.font, 80, getTransform().worldspacePos().x(),
-                        getTransform().worldspacePos().y(), (float) LibAPIManager.instance().getGLFW().getTime());
-                                adv.flush();
-            };
+            //            private long i = 0;
+            //            private Color borderColor = new Color();
+            //            public void draw(Batch2D batch) {
+            //                super.draw(batch);
+            //                i++;
+            //                AdvancedBatch2D adv = (AdvancedBatch2D) batch;
+            //                adv.signedDistanceFieldData().set(0.5f, 0.6f);
+            //                if (i % 400 == 0) {
+            //                    this.getColor().randomizeRGB();
+            //                    borderColor.randomizeRGB();
+            //                }
+            //                adv.borderColor().set(borderColor);
+            //                adv.borderSDFData().set(0.6f, 0.7f);
+            //                batch.drawStringSimple("OOOF", Minigame.font, 80, getTransform().worldspacePos().x(),
+            //                        getTransform().worldspacePos().y(), (float) LibAPIManager.instance().getGLFW().getTime());
+            //            };
         };
         sprite.setTransform(this.posMapper.get(entity).transform);
         sprite.setColor(this.rendMapper.get(entity).color);
@@ -118,15 +106,15 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
         this.rendMapper.get(entity).backingSprite = sprite;
         this.renderer.getIRenderedObjectManager().add(AdvancedSprite.TYPE, sprite);
     }
-    
+
     @Override
     public void entityRemoved(final Entity entity) {
         final RenderedObject o = this.rendMapper.get(entity).backingSprite;
         this.renderer.getIRenderedObjectManager().remove(AdvancedSprite.TYPE, o);
     }
-    
+
     @Override
     public void update(final IECSManager manager, final Time time) {
     }
-    
+
 }

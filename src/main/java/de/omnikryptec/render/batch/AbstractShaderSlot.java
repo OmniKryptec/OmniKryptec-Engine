@@ -16,4 +16,7 @@ public abstract class AbstractShaderSlot {
         this.shader.bindShader();
         onBound();
     }
+
+    public void setNextUsesTexture(boolean b) {
+    }
 }

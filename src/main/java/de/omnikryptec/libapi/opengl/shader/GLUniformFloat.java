@@ -18,9 +18,10 @@ package de.omnikryptec.libapi.opengl.shader;
 
 import org.lwjgl.opengl.GL20;
 
+import de.omnikryptec.libapi.exposed.render.shader.UniformBool;
 import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
 
-public class GLUniformFloat extends GLUniform implements UniformFloat {
+public class GLUniformFloat extends GLUniform implements UniformFloat, UniformBool {
 
     private float currentValue;
     private boolean used = false;
@@ -36,6 +37,11 @@ public class GLUniformFloat extends GLUniform implements UniformFloat {
             this.used = true;
             this.currentValue = value;
         }
+    }
+
+    @Override
+    public void loadBoolean(boolean b) {
+        loadFloat(b ? 1.0f : 0.0f);
     }
 
 }

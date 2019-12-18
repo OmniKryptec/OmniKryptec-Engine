@@ -6,18 +6,18 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
 
 //TODO pcfreak9000 this class seems ugly and does it even work?
 public class SceneRenderBufferManager {
-
+    
     private FrameBuffer multisampledScene;
     private FrameBuffer[] scene;
-
+    
     private final FBTarget[] targets;
-
+    
     private final boolean multisampled;
-
+    
     public SceneRenderBufferManager(final RenderAPI api, final int multisamples, final FBTarget... targets) {
         this.targets = targets;
         this.multisampled = multisamples > 0;
-
+        
         if (targets.length == 0) {
             throw new IllegalArgumentException("requires at least one FBTarget");
         } else {
@@ -34,15 +34,15 @@ public class SceneRenderBufferManager {
             }
         }
     }
-
+    
     public FrameBuffer get(final int index) {
         return this.scene == null ? this.multisampledScene : this.scene[index];
     }
-
+    
     public void beginRender() {
         this.multisampledScene.bindFrameBuffer();
     }
-
+    
     public void endRender() {
         this.multisampledScene.unbindFrameBuffer();
         if (this.scene != null) {
@@ -51,7 +51,7 @@ public class SceneRenderBufferManager {
             }
         }
     }
-
+    
     public void resize(final int width, final int height) {
         this.multisampledScene = this.multisampledScene.resizedClone(width, height);
         if (this.scene != null) {
@@ -60,5 +60,5 @@ public class SceneRenderBufferManager {
             }
         }
     }
-
+    
 }

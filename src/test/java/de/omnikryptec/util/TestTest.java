@@ -22,7 +22,7 @@ import de.omnikryptec.render.objects.RenderedObject;
 import de.omnikryptec.render.objects.RenderedObjectType;
 
 public class TestTest {
-
+    
     public static final void main(final String[] args) throws Exception {
         System.out.println(TestTest.class.getResourceAsStream("de/omnikryptec/resources/block.obj"));
         //        DynamicArray<Object> array = new DynamicArray<>();
@@ -49,20 +49,20 @@ public class TestTest {
         final long nanos2 = System.nanoTime();
         System.out.println((nanos2 - nanos) * 1e-9 + "s");
     }
-
+    
     private static class ABC implements RenderedObject {
-
+        
         @Override
         public boolean isVisible(final FrustumIntersection frustum) {
-
+            
             return false;
         }
-
+        
         @Override
         public RenderedObjectType type() {
-
+            
             return null;
         }
-
+        
     }
 }

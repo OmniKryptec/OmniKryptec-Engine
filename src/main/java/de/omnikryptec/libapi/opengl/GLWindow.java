@@ -17,15 +17,15 @@ import de.omnikryptec.util.settings.Settings;
 
 public class GLWindow implements IWindow {
     private final EventBus windowBus = LibAPIManager.ENGINE_EVENTBUS;
-    
+
     private final long windowId;
     private final GLScreenBuffer screenBuffer;
-    
+
     private int windowWidth;
     private int windowHeight;
     private boolean isFullscreen;
     private boolean isActive;
-    
+
     public GLWindow(final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
             final FrameBufferStack fbStack) {
         Util.ensureNonNull(windowSettings, "Window settings must not be null!");
@@ -73,7 +73,7 @@ public class GLWindow implements IWindow {
         this.screenBuffer = new GLScreenBuffer(this.windowId, aspectRatio, fbStack);
         this.windowBus.register(this.screenBuffer);
     }
-    
+
     private void registerCallbacks() {
         GLFW.glfwSetWindowSizeCallback(this.windowId,
                 (window, width, height) -> this.windowBus.post(new WindowEvent.WindowResized(this, width, height)));
@@ -96,41 +96,41 @@ public class GLWindow implements IWindow {
         GLFW.glfwSetCursorEnterCallback(this.windowId,
                 (window, entered) -> this.windowBus.post(new InputEvent.CursorInWindowEvent(entered)));
     }
-    
+
     @Override
     public boolean isActive() {
         return this.isActive;
     }
-    
+
     @Override
     public boolean isFullscreen() {
         return this.isFullscreen;
     }
-    
+
     @Override
     public boolean isCloseRequested() {
         return GLFW.glfwWindowShouldClose(this.windowId);
     }
-    
+
     @Override
     public int getWindowWidth() {
         return this.windowWidth;
     }
-    
+
     @Override
     public int getWindowHeight() {
         return this.windowHeight;
     }
-    
+
     public GLScreenBuffer getDefaultFrameBuffer() {
         return this.screenBuffer;
     }
-    
+
     @Override
     public void setVSync(final boolean vsync) {
         GLFW.glfwSwapInterval(vsync ? 1 : 0);
     }
-    
+
     @Override
     public void setVisible(final boolean visible) {
         if (visible) {
@@ -139,38 +139,38 @@ public class GLWindow implements IWindow {
             GLFW.glfwHideWindow(this.windowId);
         }
     }
-    
+
     @Override
     public void dispose() {
         GLFW.glfwDestroyWindow(this.windowId);
     }
-    
+
     @Override
     public void swapBuffers() {
         GLFW.glfwSwapBuffers(this.windowId);
     }
-    
+
     @Override
     public long getID() {
         return this.windowId;
     }
-    
+
     @Override
     public void setTitle(final String title) {
         GLFW.glfwSetWindowTitle(this.windowId, title);
     }
-    
+
     @Override
     public void setWindowSize(final int width, final int height) {
         this.windowWidth = width;
         this.windowHeight = height;
         GLFW.glfwSetWindowSize(this.windowId, width, height);
     }
-    
+
     @Override
     public void setFullscreen(final boolean b) {
         GLFW.glfwSetWindowMonitor(this.windowId, b ? GLFW.glfwGetPrimaryMonitor() : 0, 0, 0, this.windowWidth,
                 this.windowHeight, GLFW.GLFW_DONT_CARE);
     }
-    
+
 }

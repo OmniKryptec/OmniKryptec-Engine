@@ -20,22 +20,22 @@ import de.omnikryptec.util.data.DynamicArray;
 import de.omnikryptec.util.updater.Time;
 
 public class UContainer implements IUpdatable {
-
+    
     private final DynamicArray<IUpdatable> layers;
-
+    
     public UContainer() {
         this.layers = new DynamicArray<>();
     }
-
+    
     public void setUpdatable(final int index, final IUpdatable layer) {
         this.layers.set(index, layer);
     }
-
+    
     @Override
     public void update(final Time time) {
         for (final IUpdatable layer : this.layers) {
             layer.update(time);
         }
     }
-
+    
 }

@@ -23,19 +23,19 @@ import org.lwjgl.BufferUtils;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
 
 public interface IndexBuffer {
-
+    
     /**
      * Binds this {@link IndexBuffer}.
      *
      * @see VertexArray#bindArray()
      */
     void bindBuffer();
-
+    
     /**
      * Unbinds this {@link IndexBuffer}
      */
     void unbindBuffer();
-
+    
     /**
      * Stores indices in this {@link IndexBuffer}. This {@link IndexBuffer} will be
      * auto-bound and the supplied {@link IntBuffer} will be flipped by this method.
@@ -45,7 +45,7 @@ public interface IndexBuffer {
      * @param size  the size of the added data
      */
     void storeData(IntBuffer data, BufferUsage usage, int size);
-
+    
     /**
      * Stores indices in this {@link IndexBuffer}. This method constructs and fills
      * an {@link IntBuffer} with the supplied int[]. The data is then stored with
@@ -59,12 +59,12 @@ public interface IndexBuffer {
         buffer.put(data);
         storeData(buffer, usage, data.length);
     }
-
+    
     /**
      * the size of this buffer
      *
      * @return size
      */
     int size();
-
+    
 }

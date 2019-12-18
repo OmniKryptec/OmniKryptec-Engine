@@ -34,11 +34,11 @@ import de.omnikryptec.util.settings.keys.KeysAndButtons;
 import de.omnikryptec.util.updater.Time;
 
 public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
-
+    
     public static void main(final String[] args) {
         new Raytracer().start();
     }
-
+    
     @Override
     protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisetting,
@@ -47,7 +47,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         windowSettings.set(WindowSetting.Name, "Raytracer");
         windowSettings.set(WindowSetting.CursorState, CursorType.DISABLED);
     }
-
+    
     @Override
     protected void onInitialized() {
         getResourceManager().load(false, false, "intern:/de/pcfreak9000/raytracer/");
@@ -59,15 +59,15 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         s.getRendering().setMainProjection(this.camera);
         initShader();
     }
-
+    
     private GLFrameBuffer image;
-
+    
     private GLShader computeShader;
-
+    
     private Camera camera;
     private UniformFloat time;
     private UniformVec3 eye, ray00, ray01, ray10, ray11;
-
+    
     private void initShader() {
         this.computeShader = (GLShader) LibAPIManager.instance().getGLFW().getRenderAPI().createShader();
         this.computeShader.create("raytracer");
@@ -78,7 +78,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         this.ray11 = this.computeShader.getUniform("ray11");
         this.time = this.computeShader.getUniform("time");
     }
-
+    
     private void loadRays(final Camera cam) {
         final Matrix4f inv = cam.getRawProjection().invert(new Matrix4f());
         final Matrix4f wInv = cam.getTransform().worldspace().invert(new Matrix4f());
@@ -89,7 +89,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         prepareRay(1, -1, inv, wInv, this.ray10, pos);
         prepareRay(1, 1, inv, wInv, this.ray11, pos);
     }
-
+    
     private void prepareRay(final float x, final float y, final Matrix4fc proj, final Matrix4fc stuff,
             final UniformVec3 u, final Vector4f pos) {
         final Vector4f v = new Vector4f(x, y, 0, 1);
@@ -100,9 +100,9 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         v.normalize();
         u.loadVec3(new Vector3f(v.x, v.y, v.z));
     }
-
+    
     float x, y, z, ry, rx;
-
+    
     private void camInput(final Camera cam, float dt) {
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_LEFT_CONTROL)) {
             dt *= 3;
@@ -140,27 +140,27 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         this.x += t.x;
         this.y += t.y;
         this.z += t.z;
-
+        
         cam.getTransform().localspaceWrite().translate(this.x, this.y, this.z);
     }
-
+    
     @Override
     public void update(final Time time) {
         camInput(this.camera, time.deltaf);
     }
-
+    
     @Override
     public void init(final LocalRendererContext context, final FrameBuffer target) {
         this.image = (GLFrameBuffer) context.getRenderAPI().createFrameBuffer(target.getWidth(), target.getHeight(), 0,
                 1);
         this.image.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA32, 0));
     }
-
+    
     @Override
     public void resizeFBOs(final LocalRendererContext context, final SurfaceBuffer screen) {
         this.image = (GLFrameBuffer) this.image.resizedClone(screen.getWidth(), screen.getHeight());
     }
-
+    
     @Override
     public void render(final Time time, final IProjection projection, final LocalRendererContext context) {
         this.computeShader.bindShader();
@@ -171,9 +171,9 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
                 MathUtil.toPowerOfTwo(this.image.getHeight() / 8), 1);
         this.image.renderDirect(0);
     }
-
+    
     @Override
     public void deinit(final LocalRendererContext context) {
     }
-
+    
 }

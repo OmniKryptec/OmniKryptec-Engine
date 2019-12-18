@@ -23,32 +23,32 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 
 public abstract class GLTexture implements Texture, Deletable {
-
+    
     public final int pointer;
     public final int type;
-
+    
     public GLTexture(final int type) {
         this.pointer = GL11.glGenTextures();
         this.type = type;
         registerThisAsAutodeletable();
     }
-
+    
     public int textureId() {
         return this.pointer;
     }
-
+    
     public int textureType() {
         return this.type;
     }
-
+    
     @Override
     public void bindTexture(final int unit) {
         OpenGLUtil.bindTexture(unit, this.type, this.pointer, false);
     }
-
+    
     @Override
     public void deleteRaw() {
         GL11.glDeleteTextures(this.pointer);
     }
-
+    
 }

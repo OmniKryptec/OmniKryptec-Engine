@@ -20,27 +20,27 @@ import org.lwjgl.opencl.CL;
 import org.lwjgl.opencl.CLCapabilities;
 
 public class CLDevice {
-
+    
     private final CLCapabilities deviceCaps;
     private final CLPlatform parent;
     private final long device;
-
+    
     CLDevice(final long id, final CLPlatform parent) {
         this.device = id;
         this.parent = parent;
         this.deviceCaps = CL.createDeviceCapabilities(id, parent.getPlatCaps());
     }
-
+    
     public CLCapabilities getDeviceCaps() {
         return this.deviceCaps;
     }
-
+    
     public long getID() {
         return this.device;
     }
-
+    
     public CLPlatform getParent() {
         return this.parent;
     }
-
+    
 }

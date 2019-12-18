@@ -25,41 +25,41 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 
 public interface VertexBuffer {
-    
+
     /**
      * Binds this {@link VertexBuffer}.
      *
      * @see VertexArray#bindArray()
      */
     void bindBuffer();
-    
+
     /**
      * Unbinds this {@link VertexBuffer}
      */
     void unbindBuffer();
-    
+
     /**
      * Stores data in this {@link VertexBuffer}. This VertexBuffer will be
      * auto-bound and the supplied {@link FloatBuffer} will be flipped by this
      * method.
-     * 
+     *
      * @param data the float-data to be stored
      */
     void updateData(FloatBuffer data);
-    
+
     /**
      * Stores data in this {@link VertexBuffer}. This VertexBuffer will be
      * auto-bound and the supplied {@link IntBuffer} will be flipped by this method.
-     * 
+     *
      * @param data the int-data to be stored
      */
     void updateData(IntBuffer data);
-    
+
     /**
      * Stores data in this {@link VertexBuffer}. This method constructs and fills a
      * {@link FloatBuffer} with the supplied float[]. The data is then stored with
      * {@link #updateData(FloatBuffer)}
-     * 
+     *
      * @param data the float-data to be stored
      */
     default void updateData(float[] data) {
@@ -67,12 +67,12 @@ public interface VertexBuffer {
         buffer.put(data);
         updateData(buffer);
     }
-    
+
     /**
      * Stores data in this {@link VertexBuffer}. This method constructs and fills an
      * {@link IntBuffer} with the supplied int[]. The data is then stored with
      * {@link #updateData(IntBuffer}
-     * 
+     *
      * @param data the int-data to be stored
      */
     default void updateData(int[] data) {
@@ -80,18 +80,18 @@ public interface VertexBuffer {
         buffer.put(data);
         updateData(buffer);
     }
-    
+
     /**
      * Initializes this {@link VertexBuffer}.
-     * 
+     *
      * @param usage use case
      * @param type  the type of what is going to be stored in this
      *              {@link VertexBuffer}. Using a wrong type can in general result
      *              in unexpected behaviour.
-     * @param size the amount of max entries
+     * @param size  the amount of max entries
      */
     void setDescription(BufferUsage usage, Type type, int size);
-    
+
     /**
      * The size of this buffer in amount of entries (not in bytes)
      *

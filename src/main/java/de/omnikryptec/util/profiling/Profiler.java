@@ -9,41 +9,41 @@ import de.omnikryptec.util.math.Mathd;
 
 //TODO profile the current status of stuff? print FPS information?
 public class Profiler {
-    
+
     private static class Struct {
         long sum;
         long count;
         long max = Long.MIN_VALUE;
         long min = Long.MAX_VALUE;
         boolean open;
-        
+
         long beginTimeTmp;
     }
-    
+
     private static final Map<Object, Struct> map = new HashMap<>();
     private static final FixedStack<Object> h = new FixedStack<>(20);
     private static final Map<Object, IProfiler> additional = new HashMap<>();
     private static boolean enabled = false;
-    
+
     public static void setEnabled(final boolean b) {
         enabled = b;
     }
-    
+
     public static boolean isEnabled() {
         return enabled;
     }
-    
+
     public static void clear() {
         map.clear();
         h.clear();
     }
-    
+
     public static void addIProfiler(Object id, IProfiler profiler) {
         Util.ensureNonNull(id);
         Util.ensureNonNull(profiler);
         additional.put(id, profiler);
     }
-    
+
     private static Struct get(final Object id) {
         if (!isEnabled()) {
             return null;
@@ -55,7 +55,7 @@ public class Profiler {
         }
         return s;
     }
-    
+
     public static void begin(final Object id) {
         if (!isEnabled()) {
             return;
@@ -71,7 +71,7 @@ public class Profiler {
         s.sum += -time;
         s.beginTimeTmp = time;
     }
-    
+
     public static void end(Object... objects) {
         if (!isEnabled()) {
             return;
@@ -91,7 +91,7 @@ public class Profiler {
             additional.get(id).dealWith(dif, objects);
         }
     }
-    
+
     public static String currentInfo() {
         if (map.isEmpty()) {
             return "";
@@ -116,5 +116,5 @@ public class Profiler {
         b.append("-------------------");
         return b.toString();
     }
-    
+
 }

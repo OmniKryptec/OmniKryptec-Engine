@@ -11,22 +11,22 @@ import de.omnikryptec.render.renderer.RendererUtil;
 
 public class UnorderedCachedvertexManager implements VertexManager {
     private final int vertexCount;
-
+    
     private FloatCollector data;
     private Texture currentTexture;
-
+    
     private final Map<Texture, float[]> cache;
-
+    
     public UnorderedCachedvertexManager(final int vertexCount) {
         this.vertexCount = vertexCount;
         this.cache = new HashMap<>();
     }
-
+    
     @Override
     public void addData(final float[] floats, final int offset, final int length) {
         this.data.put(floats, offset, length);
     }
-
+    
     @Override
     public void prepareNext(final Texture texture, final int requiredFloats) {
         if (requiredFloats > this.data.size()) {
@@ -39,7 +39,7 @@ public class UnorderedCachedvertexManager implements VertexManager {
             this.currentTexture = baseTexture;
         }
     }
-
+    
     @Override
     public void forceFlush() {
         if (this.data.used() == 0) {
@@ -57,24 +57,24 @@ public class UnorderedCachedvertexManager implements VertexManager {
         System.arraycopy(newfloats, 0, newarray, oldlen, count);
         this.cache.put(this.currentTexture, newarray);
     }
-
+    
     public void draw(final Batch2D batch) {
         RendererUtil.drawUnorderedCache(batch, this.cache);
     }
-
+    
     public Map<Texture, float[]> getCache() {
         return this.cache;
     }
-
+    
     public void clear() {
         this.cache.clear();
     }
-
+    
     @Override
     public void init(final ModuleBatchingManager mgr) {
         this.data = new FloatCollector(this.vertexCount * mgr.floatsPerVertex());
     }
-
+    
     @Override
     public void begin() {
     }
