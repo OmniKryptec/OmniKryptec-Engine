@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2020 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,20 +16,15 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
-import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.lwjgl.glfw.GLFW;
-
 import de.codemakers.base.logger.Logger;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.settings.KeySettings;
+import org.lwjgl.glfw.GLFW;
+
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class JoystickHandler implements InputHandler {
     

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2020 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 package de.omnikryptec.util.settings.keys;
 
-import java.util.Objects;
-
 import de.codemakers.base.exceptions.NotYetImplementedRuntimeException;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.settings.KeySettings;
+
+import java.util.Objects;
 
 public class Key implements IKey {
     

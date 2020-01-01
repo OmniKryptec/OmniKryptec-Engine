@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2020 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,12 +16,11 @@
 
 package de.omnikryptec.ecs;
 
-import java.util.BitSet;
-
-import javax.annotation.Nonnull;
-
 import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.ecs.component.ComponentType;
+
+import javax.annotation.Nonnull;
+import java.util.BitSet;
 
 /**
  * A utility class to help with families/filters in Entity Component Systems.

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2020 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@
 
 package de.omnikryptec.util.math;
 
-import java.util.Objects;
-
 import org.joml.Vector2f;
 import org.joml.Vector2fc;
+
+import java.util.Objects;
 
 public class Struct2f {
     

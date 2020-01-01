@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2020 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,8 +16,6 @@
 
 package de.omnikryptec.libapi.exposed.render;
 
-import java.awt.Window;
-
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
@@ -25,6 +23,8 @@ import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
 import de.omnikryptec.resource.MeshData.Primitive;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
+
+import java.awt.*;
 
 public interface RenderAPI {
     public static final Class<OpenGLRenderAPI> OpenGL = OpenGLRenderAPI.class;

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2020 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,13 +16,12 @@
 
 package de.omnikryptec.libapi.opengl.shader;
 
-import java.nio.FloatBuffer;
-
+import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
 import org.joml.Matrix4fc;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 
-import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
+import java.nio.FloatBuffer;
 
 public class GLUniformMatrix extends GLUniform implements UniformMatrix {
     

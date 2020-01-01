@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2020 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,9 +16,8 @@
 
 package de.omnikryptec.libapi.opengl.shader;
 
-import org.lwjgl.opengl.GL20;
-
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec4;
+import org.lwjgl.opengl.GL20;
 
 public class GLUniformVec4 extends GLUniform implements UniformVec4 {
     
