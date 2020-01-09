@@ -54,8 +54,12 @@ public class FloatCollector {
     public FloatBuffer flush() {
         this.fbuffer.clear();
         this.fbuffer.put(this.floats, 0, used());
-        this.position = 0;
+        clearArray();
         return this.fbuffer;
+    }
+    
+    public void clearArray() {
+        this.position = 0;
     }
     
     public float[] rawArray() {

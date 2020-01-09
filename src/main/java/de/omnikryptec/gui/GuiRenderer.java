@@ -2,6 +2,7 @@ package de.omnikryptec.gui;
 
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.render.IProjection;
+import de.omnikryptec.render.batch.AdvancedBatch2D;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.renderer.LocalRendererContext;
@@ -11,10 +12,10 @@ import de.omnikryptec.util.updater.Time;
 public class GuiRenderer implements Renderer {
     
     private GuiComponent componentRoot;
-    private final Batch2D batch;
+    private final AdvancedBatch2D batch;
     
     public GuiRenderer() {
-        this.batch = new SimpleBatch2D(1000);
+        this.batch = new AdvancedBatch2D(1000);
     }
     
     protected void setGui(final GuiComponent componentRoot) {

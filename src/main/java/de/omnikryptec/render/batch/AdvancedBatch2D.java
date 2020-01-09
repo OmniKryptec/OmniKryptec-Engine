@@ -17,11 +17,11 @@ import de.omnikryptec.render.batch.vertexmanager.VertexManager;
 import de.omnikryptec.util.data.Color;
 
 public class AdvancedBatch2D extends AbstractBatch implements Batch2D {
-
-    public static AbstractAdvancedShaderSlot createDefaultShaderSlot() {
+    
+    public static AbstractProjectedShaderSlot createDefaultShaderSlot() {
         return new AdvancedShaderSlot();
     }
-
+    
     private PositionModule posModule;
     private UVModule uvModule;
     private ColorModule colorModule;
@@ -29,22 +29,22 @@ public class AdvancedBatch2D extends AbstractBatch implements Batch2D {
     private ColorModule borderColor;
     private SDFModule sdfData;
     private SDFOModule bsdfOffset;
-
-    private AbstractAdvancedShaderSlot shaderSlot;
-
+    
+    private AbstractProjectedShaderSlot shaderSlot;
+    
     public AdvancedBatch2D(final int vertices) {
         this(vertices, createDefaultShaderSlot());
     }
-
-    public AdvancedBatch2D(final int vertices, final AbstractAdvancedShaderSlot shaderslot) {
+    
+    public AdvancedBatch2D(final int vertices, final AbstractProjectedShaderSlot shaderslot) {
         this(new RenderedVertexManager(vertices, shaderslot));
         this.shaderSlot = shaderslot;
     }
-
+    
     public AdvancedBatch2D(final VertexManager vertexManager) {
         super(vertexManager);
     }
-
+    
     @Override
     protected ModuleBatchingManager createManager() {
         this.posModule = new PositionModule();
@@ -57,7 +57,7 @@ public class AdvancedBatch2D extends AbstractBatch implements Batch2D {
         return new ModuleBatchingManager(this.colorModule, this.reflectionMod, this.borderColor, this.sdfData,
                 this.bsdfOffset, this.posModule, this.uvModule);
     }
-
+    
     @Override
     public void draw(final Texture texture, final Matrix3x2fc transform, final float width, final float height,
             final boolean flipU, final boolean flipV) {
@@ -65,34 +65,34 @@ public class AdvancedBatch2D extends AbstractBatch implements Batch2D {
         this.uvModule.set(texture, flipU, flipV);
         issueVertices(texture);
     }
-
+    
     @Override
     public Color color() {
         return this.colorModule.color();
     }
-
+    
     public Color reflectionStrength() {
         return this.reflectionMod.color();
     }
-
+    
     public Color borderColor() {
         return this.borderColor.color();
     }
-
+    
     public Vector2f borderSDFData() {
         return this.sdfData.bsdfData();
     }
-
+    
     public Vector2f borderOffset() {
         return this.bsdfOffset.bsdfOffset();
     }
-
+    
     public Vector2f signedDistanceFieldData() {
         return this.sdfData.sdfData();
     }
-
+    
     @Nullable
-    public AbstractAdvancedShaderSlot getShaderSlot() {
+    public AbstractProjectedShaderSlot getShaderSlot() {
         return this.shaderSlot;
     }
 }

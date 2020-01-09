@@ -58,6 +58,7 @@ public class OrderedCachedVertexManager implements VertexManager {
         p.texture = this.currentTexture;
         p.poly = newarray;
         this.cache.add(p);
+        data.clearArray();
     }
     
     public void draw(final Batch2D batch) {
