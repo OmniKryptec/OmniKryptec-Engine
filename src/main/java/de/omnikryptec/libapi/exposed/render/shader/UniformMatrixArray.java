@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2020 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,9 +16,8 @@
 
 package de.omnikryptec.libapi.exposed.render.shader;
 
-import org.joml.Matrix4f;
-
 import de.omnikryptec.libapi.opengl.shader.GLUniformMatrix;
+import org.joml.Matrix4f;
 
 /**
  * UniformMatrixArray

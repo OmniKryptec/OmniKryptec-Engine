@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2020 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,19 +16,7 @@
 
 package de.omnikryptec.libapi.opengl;
 
-import javax.annotation.Nonnull;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL31;
-
-import de.omnikryptec.libapi.exposed.render.FrameBuffer;
-import de.omnikryptec.libapi.exposed.render.FrameBufferStack;
-import de.omnikryptec.libapi.exposed.render.IndexBuffer;
-import de.omnikryptec.libapi.exposed.render.RenderAPI;
-import de.omnikryptec.libapi.exposed.render.RenderState;
-import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.libapi.exposed.render.VertexArray;
-import de.omnikryptec.libapi.exposed.render.VertexBuffer;
+import de.omnikryptec.libapi.exposed.render.*;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
@@ -44,6 +32,10 @@ import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL31;
+
+import javax.annotation.Nonnull;
 
 public class OpenGLRenderAPI implements RenderAPI {
     

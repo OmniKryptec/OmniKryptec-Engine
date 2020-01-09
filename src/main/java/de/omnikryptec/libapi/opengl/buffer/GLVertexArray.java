@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2020 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,11 +16,6 @@
 
 package de.omnikryptec.libapi.opengl.buffer;
 
-import java.util.List;
-
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
-
 import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.exposed.render.IndexBuffer;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
@@ -28,6 +23,10 @@ import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout.VertexBufferElement;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
+
+import java.util.List;
 
 public class GLVertexArray implements VertexArray, Deletable {
     

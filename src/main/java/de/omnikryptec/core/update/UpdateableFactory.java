@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2020 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,9 +16,6 @@
 
 package de.omnikryptec.core.update;
 
-import org.joml.Matrix3x2f;
-import org.joml.Matrix4f;
-
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.input.InputManager;
@@ -34,6 +31,8 @@ import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.updater.Time;
+import org.joml.Matrix3x2f;
+import org.joml.Matrix4f;
 
 public class UpdateableFactory {
     

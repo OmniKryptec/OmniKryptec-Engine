@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 - 2019 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *    Copyright 2017 - 2020 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
 
 package de.omnikryptec.libapi.exposed.render;
 
+import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 
 public class VertexBufferLayout {
     
