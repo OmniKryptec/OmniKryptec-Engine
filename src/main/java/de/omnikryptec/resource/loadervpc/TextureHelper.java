@@ -16,6 +16,9 @@
 
 package de.omnikryptec.resource.loadervpc;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
@@ -24,9 +27,6 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.Logger;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class TextureHelper {
     

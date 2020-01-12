@@ -16,13 +16,6 @@
 
 package de.omnikryptec.event;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
-import de.omnikryptec.core.update.IUpdatable;
-import de.omnikryptec.util.Logger;
-import de.omnikryptec.util.Logger.LogType;
-import de.omnikryptec.util.updater.Time;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayDeque;
@@ -31,6 +24,14 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
+
+import de.omnikryptec.core.update.IUpdatable;
+import de.omnikryptec.util.Logger;
+import de.omnikryptec.util.Logger.LogType;
+import de.omnikryptec.util.updater.Time;
 
 public class EventBus implements IUpdatable, IEventListener {
 

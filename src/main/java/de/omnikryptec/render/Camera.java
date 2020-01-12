@@ -16,10 +16,11 @@
 
 package de.omnikryptec.render;
 
-import de.omnikryptec.util.math.transform.Transform3Df;
 import org.joml.FrustumIntersection;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
+
+import de.omnikryptec.util.math.transform.Transform3Df;
 
 public class Camera implements IProjection {
     

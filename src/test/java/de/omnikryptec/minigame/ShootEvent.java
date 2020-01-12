@@ -16,8 +16,9 @@
 
 package de.omnikryptec.minigame;
 
-import de.omnikryptec.event.Event;
 import org.joml.Vector2f;
+
+import de.omnikryptec.event.Event;
 
 public class ShootEvent extends Event {
     

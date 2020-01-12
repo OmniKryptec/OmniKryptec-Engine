@@ -16,6 +16,9 @@
 
 package de.omnikryptec.minigame;
 
+import org.joml.Matrix3x2f;
+import org.joml.Matrix4f;
+
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityListener;
 import de.omnikryptec.ecs.Family;
@@ -33,8 +36,6 @@ import de.omnikryptec.render.renderer.LocalRendererContext;
 import de.omnikryptec.render.renderer.Renderer2D.EnvironmentKeys2D;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.updater.Time;
-import org.joml.Matrix3x2f;
-import org.joml.Matrix4f;
 
 public class RendererSystem extends AbstractComponentSystem implements EntityListener {
 

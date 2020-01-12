@@ -16,9 +16,9 @@
 
 package de.omnikryptec.core;
 
-import de.omnikryptec.util.updater.Time;
-
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import de.omnikryptec.util.updater.Time;
 
 public class DefaultGameLoop implements IGameLoop {
 

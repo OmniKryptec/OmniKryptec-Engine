@@ -16,12 +16,12 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.keys.KeysAndButtons;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 //monitor if synchronized causes bad performance in this class or if it is negliable
 public class KeyboardHandler implements InputHandler {

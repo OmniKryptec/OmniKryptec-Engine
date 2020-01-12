@@ -16,10 +16,11 @@
 
 package de.omnikryptec.libapi.opengl.texture;
 
+import org.lwjgl.opengl.GL11;
+
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
-import org.lwjgl.opengl.GL11;
 
 public class GLTexture2D extends GLTexture {
     

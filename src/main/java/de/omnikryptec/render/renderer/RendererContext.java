@@ -16,6 +16,10 @@
 
 package de.omnikryptec.render.renderer;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
@@ -29,10 +33,6 @@ import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 public class RendererContext implements IUpdatable {
 

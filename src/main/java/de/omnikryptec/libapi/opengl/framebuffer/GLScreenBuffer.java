@@ -16,6 +16,10 @@
 
 package de.omnikryptec.libapi.opengl.framebuffer;
 
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
+
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
@@ -27,9 +31,6 @@ import de.omnikryptec.libapi.exposed.window.WindowEvent;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.util.UnsupportedOperationException;
 import de.omnikryptec.util.math.MathUtil;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
 
 public class GLScreenBuffer extends SurfaceBuffer {
     private static final FBTarget[] EMPTY = new FBTarget[0];

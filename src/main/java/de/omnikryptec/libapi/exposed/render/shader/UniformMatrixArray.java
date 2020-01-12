@@ -16,8 +16,9 @@
 
 package de.omnikryptec.libapi.exposed.render.shader;
 
-import de.omnikryptec.libapi.opengl.shader.GLUniformMatrix;
 import org.joml.Matrix4f;
+
+import de.omnikryptec.libapi.opengl.shader.GLUniformMatrix;
 
 /**
  * UniformMatrixArray

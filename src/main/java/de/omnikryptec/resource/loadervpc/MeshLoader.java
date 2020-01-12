@@ -16,15 +16,21 @@
 
 package de.omnikryptec.resource.loadervpc;
 
+import java.nio.ByteBuffer;
+
+import org.apache.commons.io.IOUtils;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.assimp.AIFace;
+import org.lwjgl.assimp.AIMaterial;
+import org.lwjgl.assimp.AIMesh;
+import org.lwjgl.assimp.AIScene;
+import org.lwjgl.assimp.AIVector3D;
+import org.lwjgl.assimp.Assimp;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.resource.MeshData;
 import de.omnikryptec.resource.MeshData.VertexAttribute;
 import de.omnikryptec.resource.MeshFile;
-import org.apache.commons.io.IOUtils;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.assimp.*;
-
-import java.nio.ByteBuffer;
 
 public class MeshLoader implements ResourceLoader<MeshFile> {
     

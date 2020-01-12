@@ -16,6 +16,10 @@
 
 package de.omnikryptec.libapi.exposed;
 
+import java.lang.reflect.Constructor;
+
+import org.lwjgl.glfw.GLFW;
+
 import de.omnikryptec.libapi.exposed.input.CursorType;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
@@ -23,9 +27,6 @@ import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
-import org.lwjgl.glfw.GLFW;
-
-import java.lang.reflect.Constructor;
 
 public class GLFWAccessManager {
 

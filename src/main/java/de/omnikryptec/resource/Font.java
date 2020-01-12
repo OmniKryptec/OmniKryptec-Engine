@@ -16,11 +16,11 @@
 
 package de.omnikryptec.resource;
 
-import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.libapi.exposed.render.TextureRegion;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import de.omnikryptec.libapi.exposed.render.Texture;
+import de.omnikryptec.libapi.exposed.render.TextureRegion;
 
 public class Font {
 

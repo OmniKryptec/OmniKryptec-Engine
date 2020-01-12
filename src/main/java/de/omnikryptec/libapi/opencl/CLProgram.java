@@ -16,12 +16,12 @@
 
 package de.omnikryptec.libapi.opencl;
 
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opencl.CL10;
-
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opencl.CL10;
 
 public class CLProgram {
     

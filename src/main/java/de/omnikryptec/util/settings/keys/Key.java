@@ -16,11 +16,11 @@
 
 package de.omnikryptec.util.settings.keys;
 
+import java.util.Objects;
+
 import de.codemakers.base.exceptions.NotYetImplementedRuntimeException;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.settings.KeySettings;
-
-import java.util.Objects;
 
 public class Key implements IKey {
     

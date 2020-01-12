@@ -16,6 +16,12 @@
 
 package de.omnikryptec.render.renderer;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+import org.joml.Matrix4f;
+
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
@@ -31,11 +37,6 @@ import de.omnikryptec.render.renderer.RendererContext.EnvironmentKey;
 import de.omnikryptec.render.renderer.RendererContext.GlobalEnvironmentKeys;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
-import org.joml.Matrix4f;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 //TODO pcfreak9000 also improve target information for renderers (null => surface, FrameBuffer => take its width and height and stay like that?) <- what do i mean with that?
 public class LocalRendererContext {

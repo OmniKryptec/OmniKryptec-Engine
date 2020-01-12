@@ -16,12 +16,12 @@
 
 package de.omnikryptec.render.batch.vertexmanager;
 
+import java.nio.FloatBuffer;
+
 import org.joml.Vector2fc;
 import org.joml.Vector3fc;
 import org.joml.Vector4fc;
 import org.lwjgl.BufferUtils;
-
-import java.nio.FloatBuffer;
 
 //Is this efficient?
 public class FloatCollector {

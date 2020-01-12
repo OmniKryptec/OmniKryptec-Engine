@@ -16,9 +16,10 @@
 
 package de.omnikryptec.util.data;
 
+import org.joml.Vector4f;
+
 import de.omnikryptec.util.math.Interpolator;
 import de.omnikryptec.util.math.Mathf;
-import org.joml.Vector4f;
 
 /**
  * A utility class representing a color consisting of the red, green, blue and

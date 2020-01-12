@@ -16,10 +16,11 @@
 
 package de.omnikryptec.libapi.opengl.shader;
 
+import org.lwjgl.opengl.GL20;
+
 import de.omnikryptec.libapi.exposed.render.shader.Uniform;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Logger.LogType;
-import org.lwjgl.opengl.GL20;
 
 public abstract class GLUniform implements Uniform {
     

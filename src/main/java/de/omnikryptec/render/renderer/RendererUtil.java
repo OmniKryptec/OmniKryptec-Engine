@@ -16,17 +16,18 @@
 
 package de.omnikryptec.render.renderer;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import org.joml.FrustumIntersection;
+
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.objects.IRenderedObjectManager;
 import de.omnikryptec.render.objects.RenderedObjectType;
 import de.omnikryptec.render.objects.Sprite;
-import org.joml.FrustumIntersection;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 public class RendererUtil {
 

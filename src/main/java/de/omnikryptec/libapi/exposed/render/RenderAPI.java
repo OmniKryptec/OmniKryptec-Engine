@@ -16,6 +16,8 @@
 
 package de.omnikryptec.libapi.exposed.render;
 
+import java.awt.Window;
+
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
@@ -23,8 +25,6 @@ import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
 import de.omnikryptec.resource.MeshData.Primitive;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
-
-import java.awt.*;
 
 public interface RenderAPI {
     public static final Class<OpenGLRenderAPI> OpenGL = OpenGLRenderAPI.class;

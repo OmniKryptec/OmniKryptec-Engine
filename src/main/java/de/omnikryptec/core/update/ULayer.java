@@ -16,11 +16,11 @@
 
 package de.omnikryptec.core.update;
 
-import de.omnikryptec.util.Util;
-import de.omnikryptec.util.updater.Time;
-
 import java.util.ArrayList;
 import java.util.Collection;
+
+import de.omnikryptec.util.Util;
+import de.omnikryptec.util.updater.Time;
 
 public class ULayer implements IUpdatable {
     

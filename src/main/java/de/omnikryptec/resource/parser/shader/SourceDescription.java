@@ -16,11 +16,11 @@
 
 package de.omnikryptec.resource.parser.shader;
 
-import de.omnikryptec.resource.parser.shader.ShaderParser.ShaderType;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import de.omnikryptec.resource.parser.shader.ShaderParser.ShaderType;
 
 class SourceDescription {
     

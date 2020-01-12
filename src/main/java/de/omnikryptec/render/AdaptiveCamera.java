@@ -16,11 +16,12 @@
 
 package de.omnikryptec.render;
 
+import org.joml.Matrix4f;
+
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
-import org.joml.Matrix4f;
 
 public class AdaptiveCamera extends Camera {
     

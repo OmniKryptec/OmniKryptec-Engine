@@ -16,13 +16,13 @@
 
 package de.omnikryptec.render.batch.vertexmanager;
 
-import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.render.batch.Batch2D;
-import de.omnikryptec.render.batch.module.ModuleBatchingManager;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import de.omnikryptec.libapi.exposed.render.Texture;
+import de.omnikryptec.render.batch.Batch2D;
+import de.omnikryptec.render.batch.module.ModuleBatchingManager;
 
 public class OrderedCachedVertexManager implements VertexManager {
     

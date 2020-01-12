@@ -16,12 +16,13 @@
 
 package de.omnikryptec.libapi.opengl.shader;
 
-import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
+import java.nio.FloatBuffer;
+
 import org.joml.Matrix4fc;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 
-import java.nio.FloatBuffer;
+import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
 
 public class GLUniformMatrix extends GLUniform implements UniformMatrix {
     

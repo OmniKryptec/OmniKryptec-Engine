@@ -16,10 +16,11 @@
 
 package de.omnikryptec.libapi.exposed.render;
 
-import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
+import java.nio.IntBuffer;
+
 import org.lwjgl.BufferUtils;
 
-import java.nio.IntBuffer;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
 
 public interface IndexBuffer {
     

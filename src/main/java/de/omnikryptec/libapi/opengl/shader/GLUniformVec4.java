@@ -16,8 +16,9 @@
 
 package de.omnikryptec.libapi.opengl.shader;
 
-import de.omnikryptec.libapi.exposed.render.shader.UniformVec4;
 import org.lwjgl.opengl.GL20;
+
+import de.omnikryptec.libapi.exposed.render.shader.UniformVec4;
 
 public class GLUniformVec4 extends GLUniform implements UniformVec4 {
     

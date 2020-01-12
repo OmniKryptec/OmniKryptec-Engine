@@ -16,11 +16,11 @@
 
 package de.omnikryptec.ecs.system;
 
+import java.util.BitSet;
+
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.util.updater.Time;
-
-import java.util.BitSet;
 
 public abstract class IterativeComponentSystem extends AbstractComponentSystem implements IndividualUpdater {
     

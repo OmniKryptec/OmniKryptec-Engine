@@ -16,16 +16,17 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
+import org.joml.Matrix4fc;
+import org.joml.Vector2d;
+import org.joml.Vector2dc;
+import org.joml.Vector2f;
+
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.updater.Time;
-import org.joml.Matrix4fc;
-import org.joml.Vector2d;
-import org.joml.Vector2dc;
-import org.joml.Vector2f;
 
 public class InputManager implements IUpdatable {
 

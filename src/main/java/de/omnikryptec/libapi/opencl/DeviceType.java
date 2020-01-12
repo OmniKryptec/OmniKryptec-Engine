@@ -16,10 +16,10 @@
 
 package de.omnikryptec.libapi.opencl;
 
-import org.lwjgl.opencl.CL10;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.lwjgl.opencl.CL10;
 
 public enum DeviceType {
     CPU(CL10.CL_DEVICE_TYPE_CPU), GPU(CL10.CL_DEVICE_TYPE_GPU), DEFAULT(CL10.CL_DEVICE_TYPE_DEFAULT),

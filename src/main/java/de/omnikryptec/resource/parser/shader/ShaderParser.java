@@ -16,15 +16,24 @@
 
 package de.omnikryptec.resource.parser.shader;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.function.Supplier;
+
 import com.google.common.collect.Table;
 import com.google.common.collect.Tables;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Logger.LogType;
-
-import java.util.*;
-import java.util.function.Supplier;
 
 public class ShaderParser {
     

@@ -16,13 +16,14 @@
 
 package de.omnikryptec.render.objects;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
-import de.omnikryptec.util.data.DynamicArray;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
+
+import de.omnikryptec.util.data.DynamicArray;
 
 public class RenderedObjectManager implements IRenderedObjectManager {
     private final ListMultimap<RenderedObjectType, IRenderedObjectListener> listeners;

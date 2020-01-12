@@ -16,10 +16,10 @@
 
 package de.omnikryptec.util.updater;
 
+import javax.annotation.Nonnull;
+
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.data.Smoother;
-
-import javax.annotation.Nonnull;
 
 /**
  * A wrapper class that is responsible to run an {@link #operation()} in a

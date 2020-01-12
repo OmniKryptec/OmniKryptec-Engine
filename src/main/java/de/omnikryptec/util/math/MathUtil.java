@@ -16,9 +16,20 @@
 
 package de.omnikryptec.util.math;
 
-import org.joml.*;
-
 import java.util.Random;
+
+import org.joml.Matrix4fc;
+import org.joml.Quaterniondc;
+import org.joml.Quaternionfc;
+import org.joml.Vector2d;
+import org.joml.Vector2dc;
+import org.joml.Vector2f;
+import org.joml.Vector2fc;
+import org.joml.Vector3dc;
+import org.joml.Vector3fc;
+import org.joml.Vector4dc;
+import org.joml.Vector4f;
+import org.joml.Vector4fc;
 
 public class MathUtil {
 

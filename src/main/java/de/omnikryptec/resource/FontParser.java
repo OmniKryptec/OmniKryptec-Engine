@@ -16,14 +16,14 @@
 
 package de.omnikryptec.resource;
 
-import de.omnikryptec.util.Logger;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+
+import de.omnikryptec.util.Logger;
 
 //Most parsing code is downloaded from ThinMatrix
 public class FontParser {

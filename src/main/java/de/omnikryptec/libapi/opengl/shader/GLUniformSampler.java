@@ -16,8 +16,9 @@
 
 package de.omnikryptec.libapi.opengl.shader;
 
-import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
 import org.lwjgl.opengl.GL20;
+
+import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
 
 public class GLUniformSampler extends GLUniform implements UniformSampler {
     

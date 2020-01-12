@@ -16,6 +16,8 @@
 
 package de.omnikryptec.demo;
 
+import org.joml.Matrix3x2f;
+
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.gui.GuiComponent;
 import de.omnikryptec.gui.GuiConstraints;
@@ -28,7 +30,6 @@ import de.omnikryptec.render.objects.SimpleSprite;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
-import org.joml.Matrix3x2f;
 
 public class GuiDemo extends Omnikryptec {
     

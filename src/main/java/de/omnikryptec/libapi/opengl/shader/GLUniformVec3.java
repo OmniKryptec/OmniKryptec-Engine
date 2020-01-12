@@ -16,8 +16,9 @@
 
 package de.omnikryptec.libapi.opengl.shader;
 
-import de.omnikryptec.libapi.exposed.render.shader.UniformVec3;
 import org.lwjgl.opengl.GL20;
+
+import de.omnikryptec.libapi.exposed.render.shader.UniformVec3;
 
 public class GLUniformVec3 extends GLUniform implements UniformVec3 {
     private final float[] old = new float[3];

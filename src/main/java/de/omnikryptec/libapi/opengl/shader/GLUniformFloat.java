@@ -16,9 +16,10 @@
 
 package de.omnikryptec.libapi.opengl.shader;
 
+import org.lwjgl.opengl.GL20;
+
 import de.omnikryptec.libapi.exposed.render.shader.UniformBool;
 import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
-import org.lwjgl.opengl.GL20;
 
 public class GLUniformFloat extends GLUniform implements UniformFloat, UniformBool {
 

@@ -16,14 +16,23 @@
 
 package de.omnikryptec.core;
 
-import de.omnikryptec.libapi.exposed.LibAPIManager;
-import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
-import de.omnikryptec.libapi.opencl.*;
-import de.omnikryptec.util.settings.Settings;
+import java.nio.FloatBuffer;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opencl.CL10;
 
-import java.nio.FloatBuffer;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
+import de.omnikryptec.libapi.opencl.CLCommandQueue;
+import de.omnikryptec.libapi.opencl.CLContext;
+import de.omnikryptec.libapi.opencl.CLDevice;
+import de.omnikryptec.libapi.opencl.CLKernel;
+import de.omnikryptec.libapi.opencl.CLMemory;
+import de.omnikryptec.libapi.opencl.CLPlatform;
+import de.omnikryptec.libapi.opencl.CLProgram;
+import de.omnikryptec.libapi.opencl.DeviceType;
+import de.omnikryptec.libapi.opencl.OpenCL;
+import de.omnikryptec.util.settings.Settings;
 
 public class CLTest {
     

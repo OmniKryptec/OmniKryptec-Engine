@@ -16,6 +16,13 @@
 
 package de.omnikryptec.minigame;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+
+import org.joml.Intersectionf;
+
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.Family;
@@ -26,12 +33,6 @@ import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.util.ExecutorsUtil;
 import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.updater.Time;
-import org.joml.Intersectionf;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
 
 public class CollisionSystem extends AbstractComponentSystem {
 

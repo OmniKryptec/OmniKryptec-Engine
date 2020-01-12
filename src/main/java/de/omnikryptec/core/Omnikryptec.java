@@ -16,7 +16,10 @@
 
 package de.omnikryptec.core;
 
+import javax.annotation.Nonnull;
+
 import com.google.errorprone.annotations.ForOverride;
+
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
@@ -32,8 +35,6 @@ import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
-
-import javax.annotation.Nonnull;
 
 /**
  * The application entry point of the OmniKryptec-Engine. Can be used static and

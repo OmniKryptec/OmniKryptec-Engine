@@ -16,18 +16,19 @@
 
 package de.omnikryptec.ecs;
 
+import java.util.BitSet;
+import java.util.Collection;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.ecs.impl.ECSManager;
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.util.UnsupportedOperationException;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.BitSet;
-import java.util.Collection;
-import java.util.List;
 
 /**
  * An interface describing a general Entity Component System (ECS) consisting of

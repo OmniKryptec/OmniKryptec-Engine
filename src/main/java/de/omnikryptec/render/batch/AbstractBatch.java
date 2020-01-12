@@ -16,11 +16,11 @@
 
 package de.omnikryptec.render.batch;
 
+import javax.annotation.OverridingMethodsMustInvokeSuper;
+
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.module.ModuleBatchingManager;
 import de.omnikryptec.render.batch.vertexmanager.VertexManager;
-
-import javax.annotation.OverridingMethodsMustInvokeSuper;
 
 public abstract class AbstractBatch {
     

@@ -16,11 +16,12 @@
 
 package de.omnikryptec.libapi.exposed.render.shader;
 
+import java.util.Map;
+
 import com.google.common.collect.Table;
+
 import de.omnikryptec.resource.parser.shader.ShaderParser;
 import de.omnikryptec.resource.parser.shader.ShaderParser.ShaderType;
-
-import java.util.Map;
 
 public interface Shader {
     

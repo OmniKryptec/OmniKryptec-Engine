@@ -16,14 +16,15 @@
 
 package de.omnikryptec.libapi.exposed.input;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.joml.Vector2d;
+import org.joml.Vector2dc;
+
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.keys.KeysAndButtons;
-import org.joml.Vector2d;
-import org.joml.Vector2dc;
-
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MouseHandler implements InputHandler {
     

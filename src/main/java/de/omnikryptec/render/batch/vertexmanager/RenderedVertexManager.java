@@ -16,6 +16,11 @@
 
 package de.omnikryptec.render.batch.vertexmanager;
 
+import java.nio.FloatBuffer;
+import java.util.Objects;
+
+import org.lwjgl.BufferUtils;
+
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
@@ -26,10 +31,6 @@ import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.render.batch.AbstractShaderSlot;
 import de.omnikryptec.render.batch.module.ModuleBatchingManager;
 import de.omnikryptec.resource.MeshData.Primitive;
-import org.lwjgl.BufferUtils;
-
-import java.nio.FloatBuffer;
-import java.util.Objects;
 
 public class RenderedVertexManager implements VertexManager {
 

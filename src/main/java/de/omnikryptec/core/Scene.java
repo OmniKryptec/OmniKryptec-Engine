@@ -16,8 +16,11 @@
 
 package de.omnikryptec.core;
 
+import java.util.function.UnaryOperator;
+
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.render.renderer.LocalRendererContext;
+import de.omnikryptec.util.Util;
 import de.omnikryptec.util.updater.Time;
 
 public class Scene {
@@ -26,6 +29,8 @@ public class Scene {
     
     private final LocalRendererContext renderer;
     private final Game game;
+    
+    private UnaryOperator<Time> timeTransform = UnaryOperator.identity();
     
     private int priority;
     
@@ -37,7 +42,7 @@ public class Scene {
     
     public void updateScene(final Time time) {
         if (hasGameLogic()) {
-            this.gameLogic.update(time);
+            this.gameLogic.update(timeTransform.apply(time));
         }
     }
     
@@ -51,6 +56,10 @@ public class Scene {
     
     public IUpdatable getGameLogic() {
         return this.gameLogic;
+    }
+    
+    public void setTimeTransform(UnaryOperator<Time> transform) {
+        timeTransform = Util.ensureNonNull(transform);
     }
     
     public LocalRendererContext getRendering() {

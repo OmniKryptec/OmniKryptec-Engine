@@ -16,8 +16,9 @@
 
 package de.omnikryptec.render.objects;
 
-import de.omnikryptec.render.batch.Batch2D;
 import org.joml.FrustumIntersection;
+
+import de.omnikryptec.render.batch.Batch2D;
 
 public abstract class Sprite implements RenderedObject {
     public static final RenderedObjectType TYPE = RenderedObjectType.of(Sprite.class);

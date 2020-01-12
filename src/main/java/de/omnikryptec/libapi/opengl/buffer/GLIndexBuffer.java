@@ -16,12 +16,13 @@
 
 package de.omnikryptec.libapi.opengl.buffer;
 
+import java.nio.IntBuffer;
+
+import org.lwjgl.opengl.GL15;
+
 import de.omnikryptec.libapi.exposed.render.IndexBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
-import org.lwjgl.opengl.GL15;
-
-import java.nio.IntBuffer;
 
 public class GLIndexBuffer extends GLBuffer implements IndexBuffer {
     

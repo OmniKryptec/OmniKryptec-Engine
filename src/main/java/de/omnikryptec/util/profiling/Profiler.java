@@ -16,12 +16,12 @@
 
 package de.omnikryptec.util.profiling;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.FixedStack;
 import de.omnikryptec.util.math.Mathd;
-
-import java.util.HashMap;
-import java.util.Map;
 
 //TODO profile the current status of stuff? print FPS information?
 public class Profiler {

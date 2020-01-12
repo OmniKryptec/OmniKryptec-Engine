@@ -16,11 +16,12 @@
 
 package de.omnikryptec.resource.loadervpc;
 
+import java.util.Collection;
+
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
-import de.omnikryptec.util.Util;
 
-import java.util.Collection;
+import de.omnikryptec.util.Util;
 
 public class DefaultResourceProvider implements ResourceProvider {
     

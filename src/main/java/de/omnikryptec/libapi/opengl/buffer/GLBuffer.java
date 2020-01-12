@@ -16,9 +16,10 @@
 
 package de.omnikryptec.libapi.opengl.buffer;
 
+import org.lwjgl.opengl.GL15;
+
 import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
-import org.lwjgl.opengl.GL15;
 
 public abstract class GLBuffer implements Deletable {
     

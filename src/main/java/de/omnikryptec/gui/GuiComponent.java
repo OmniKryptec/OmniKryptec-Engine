@@ -16,12 +16,12 @@
 
 package de.omnikryptec.gui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.util.Util;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GuiComponent {
     

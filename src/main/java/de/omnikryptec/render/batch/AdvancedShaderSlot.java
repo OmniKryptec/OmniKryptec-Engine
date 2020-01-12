@@ -16,17 +16,15 @@
 
 package de.omnikryptec.render.batch;
 
-import de.omnikryptec.libapi.exposed.render.Texture;
+import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
+
 import de.omnikryptec.libapi.exposed.render.shader.UniformBool;
 import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
 import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
 import de.omnikryptec.render.IProjection;
-import de.omnikryptec.util.Logger;
-import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.math.transform.Transform3Df;
-import org.joml.Matrix4f;
-import org.joml.Matrix4fc;
 
 public class AdvancedShaderSlot extends AbstractProjectedShaderSlot {
     

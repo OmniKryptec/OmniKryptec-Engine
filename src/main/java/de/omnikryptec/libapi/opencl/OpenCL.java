@@ -16,15 +16,21 @@
 
 package de.omnikryptec.libapi.opencl;
 
-import de.omnikryptec.libapi.exposed.LibAPIManager;
-import de.omnikryptec.util.Util;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.PointerBuffer;
-import org.lwjgl.opencl.*;
-
 import java.lang.reflect.Field;
 import java.nio.IntBuffer;
 import java.util.HashMap;
+
+import org.lwjgl.BufferUtils;
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.opencl.CL;
+import org.lwjgl.opencl.CL10;
+import org.lwjgl.opencl.CL12;
+import org.lwjgl.opencl.CL20;
+import org.lwjgl.opencl.CL21;
+import org.lwjgl.opencl.CL22;
+
+import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.util.Util;
 
 public class OpenCL {
     

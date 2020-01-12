@@ -16,11 +16,11 @@
 
 package de.omnikryptec.libapi.opencl;
 
-import org.lwjgl.opencl.CL10;
-
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.lwjgl.opencl.CL10;
 
 public class CLMemory {
     

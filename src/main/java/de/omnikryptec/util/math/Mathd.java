@@ -17,7 +17,10 @@
 package de.omnikryptec.util.math;
 
 import org.joml.Math;
-import org.joml.*;
+import org.joml.Matrix3x2d;
+import org.joml.Matrix3x2dc;
+import org.joml.Matrix4d;
+import org.joml.Matrix4dc;
 
 public strictfp class Mathd {
     

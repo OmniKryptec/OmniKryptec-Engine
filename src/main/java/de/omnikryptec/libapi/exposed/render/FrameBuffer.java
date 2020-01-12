@@ -16,13 +16,13 @@
 
 package de.omnikryptec.libapi.exposed.render;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.render.renderer.RendererUtil;
 import de.omnikryptec.util.data.Color;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 /**
  * An abstract class representing a FrameBuffer.<br>

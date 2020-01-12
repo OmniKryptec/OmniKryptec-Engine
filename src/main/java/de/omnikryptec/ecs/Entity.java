@@ -16,11 +16,11 @@
 
 package de.omnikryptec.ecs;
 
+import java.util.BitSet;
+
 import de.omnikryptec.ecs.component.Component;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.util.data.DynamicArray;
-
-import java.util.BitSet;
 
 public class Entity {
     

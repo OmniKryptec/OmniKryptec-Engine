@@ -16,9 +16,9 @@
 
 package de.omnikryptec.util;
 
-import de.codemakers.io.file.AdvancedFile;
-
 import java.util.Scanner;
+
+import de.codemakers.io.file.AdvancedFile;
 
 public class Util {
     

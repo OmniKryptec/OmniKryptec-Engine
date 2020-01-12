@@ -16,10 +16,11 @@
 
 package de.omnikryptec.libapi.opengl.texture;
 
+import org.lwjgl.opengl.GL11;
+
 import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
-import org.lwjgl.opengl.GL11;
 
 public abstract class GLTexture implements Texture, Deletable {
     

@@ -16,6 +16,12 @@
 
 package de.omnikryptec.minigame;
 
+import java.util.Random;
+
+import org.joml.Matrix3x2f;
+import org.joml.Vector2dc;
+import org.joml.Vector2f;
+
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.core.Scene;
@@ -41,11 +47,6 @@ import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
-import org.joml.Matrix3x2f;
-import org.joml.Vector2dc;
-import org.joml.Vector2f;
-
-import java.util.Random;
 
 public class Minigame extends Omnikryptec {
 
@@ -117,6 +118,7 @@ public class Minigame extends Omnikryptec {
         getEventBus().register(this);
         this.mgr = UpdateableFactory.createDefaultIECSManager();
         final Scene sn = getGame().createNewScene(true);
+        //sn.setTimeTransform(t -> new Time(t.opCount, t.ops, t.current, t.delta*3));
         sn.setGameLogic(this.mgr);
         this.mgr.addSystem(new CollisionSystem());
         this.mgr.addSystem(new PlayerSystem());

@@ -16,6 +16,8 @@
 
 package de.omnikryptec.minigame;
 
+import org.joml.Vector2f;
+
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.Family;
@@ -28,7 +30,6 @@ import de.omnikryptec.minigame.ShootEvent.Projectile;
 import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.settings.keys.KeysAndButtons;
 import de.omnikryptec.util.updater.Time;
-import org.joml.Vector2f;
 
 public class PlayerSystem extends AbstractComponentSystem {
     

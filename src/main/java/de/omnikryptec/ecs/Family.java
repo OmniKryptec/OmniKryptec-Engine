@@ -16,11 +16,12 @@
 
 package de.omnikryptec.ecs;
 
-import de.omnikryptec.ecs.component.Component;
-import de.omnikryptec.ecs.component.ComponentType;
+import java.util.BitSet;
 
 import javax.annotation.Nonnull;
-import java.util.BitSet;
+
+import de.omnikryptec.ecs.component.Component;
+import de.omnikryptec.ecs.component.ComponentType;
 
 /**
  * A utility class to help with families/filters in Entity Component Systems.

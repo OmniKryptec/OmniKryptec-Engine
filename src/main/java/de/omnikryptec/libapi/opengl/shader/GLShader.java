@@ -16,6 +16,14 @@
 
 package de.omnikryptec.libapi.opengl.shader;
 
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL43;
+
 import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
@@ -24,13 +32,6 @@ import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.resource.parser.shader.ShaderParser.ShaderType;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Logger.LogType;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL43;
-
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
 
 public class GLShader implements Shader, Deletable {
     

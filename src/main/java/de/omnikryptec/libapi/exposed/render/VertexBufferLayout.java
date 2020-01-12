@@ -16,11 +16,11 @@
 
 package de.omnikryptec.libapi.exposed.render;
 
-import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 
 public class VertexBufferLayout {
     

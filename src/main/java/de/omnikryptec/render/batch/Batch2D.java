@@ -16,13 +16,14 @@
 
 package de.omnikryptec.render.batch;
 
+import org.joml.Matrix3x2f;
+import org.joml.Matrix3x2fc;
+
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.resource.Font;
 import de.omnikryptec.resource.FontCharacter;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathf;
-import org.joml.Matrix3x2f;
-import org.joml.Matrix3x2fc;
 
 //if transform==null use identity transform
 public interface Batch2D {

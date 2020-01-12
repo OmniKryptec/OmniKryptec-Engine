@@ -16,8 +16,9 @@
 
 package de.omnikryptec.render.batch.module;
 
-import de.omnikryptec.render.batch.module.ModuleBatchingManager.QuadSide;
 import org.joml.Vector2f;
+
+import de.omnikryptec.render.batch.module.ModuleBatchingManager.QuadSide;
 
 public class SDFModule implements Module {
 

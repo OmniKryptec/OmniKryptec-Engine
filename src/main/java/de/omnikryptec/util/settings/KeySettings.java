@@ -16,10 +16,15 @@
 
 package de.omnikryptec.util.settings;
 
-import com.google.common.collect.ObjectArrays;
-import de.omnikryptec.util.settings.keys.*;
-
 import java.util.Collection;
+
+import com.google.common.collect.ObjectArrays;
+
+import de.omnikryptec.util.settings.keys.IKey;
+import de.omnikryptec.util.settings.keys.Key;
+import de.omnikryptec.util.settings.keys.KeyContainer;
+import de.omnikryptec.util.settings.keys.KeyGroup;
+import de.omnikryptec.util.settings.keys.KeysAndButtons;
 
 public class KeySettings extends KeyContainer {
     

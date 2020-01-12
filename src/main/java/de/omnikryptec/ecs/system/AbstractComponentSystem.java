@@ -16,13 +16,13 @@
 
 package de.omnikryptec.ecs.system;
 
+import java.util.BitSet;
+import java.util.List;
+
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.updater.Time;
-
-import java.util.BitSet;
-import java.util.List;
 
 public abstract class AbstractComponentSystem {
     

@@ -16,10 +16,10 @@
 
 package de.omnikryptec.ecs;
 
+import java.util.BitSet;
+
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.util.updater.Time;
-
-import java.util.BitSet;
 
 public class SomeOtherSystem extends AbstractComponentSystem {
     

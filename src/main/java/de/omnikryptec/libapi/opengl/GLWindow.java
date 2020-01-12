@@ -16,6 +16,9 @@
 
 package de.omnikryptec.libapi.opengl;
 
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.opengl.GL;
+
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.input.InputEvent;
@@ -27,8 +30,6 @@ import de.omnikryptec.libapi.opengl.framebuffer.GLScreenBuffer;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.opengl.GL;
 
 public class GLWindow implements IWindow {
     private final EventBus windowBus = LibAPIManager.ENGINE_EVENTBUS;

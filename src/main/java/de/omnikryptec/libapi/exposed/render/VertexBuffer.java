@@ -16,12 +16,13 @@
 
 package de.omnikryptec.libapi.exposed.render;
 
-import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
-import org.lwjgl.BufferUtils;
-
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+
+import org.lwjgl.BufferUtils;
+
+import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 
 public interface VertexBuffer {
 

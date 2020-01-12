@@ -16,8 +16,9 @@
 
 package de.omnikryptec.libapi.exposed.render.shader;
 
-import de.omnikryptec.util.data.Color;
 import org.joml.Vector4fc;
+
+import de.omnikryptec.util.data.Color;
 
 public interface UniformVec4 extends Uniform {
     

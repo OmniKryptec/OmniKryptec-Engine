@@ -16,12 +16,13 @@
 
 package de.omnikryptec.libapi.exposed.window;
 
+import java.util.Arrays;
+
+import org.joml.Vector2dc;
+
 import de.omnikryptec.libapi.exposed.AutoDeletionManager;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.FrameBufferStack;
-import org.joml.Vector2dc;
-
-import java.util.Arrays;
 
 public abstract class SurfaceBuffer extends FrameBuffer {
     
