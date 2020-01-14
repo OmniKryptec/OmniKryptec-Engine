@@ -29,6 +29,7 @@ import org.lwjgl.system.Configuration;
 
 import de.codemakers.base.util.tough.ToughRunnable;
 import de.omnikryptec.event.EventBus;
+import de.omnikryptec.libapi.openal.OpenAL;
 import de.omnikryptec.libapi.opencl.OpenCL;
 import de.omnikryptec.util.ExecutorsUtil;
 import de.omnikryptec.util.Logger;
@@ -43,6 +44,7 @@ public final class LibAPIManager {
     private static LibAPIManager instance;
     private GLFWAccessManager glfw;
     private OpenCL opencl;
+    private OpenAL openal;
     private static boolean debugFlag;
     
     private LibAPIManager() {
@@ -94,6 +96,7 @@ public final class LibAPIManager {
             ExecutorsUtil.shutdownNowAll();
             instance.terminateGlfw();
             instance.terminateOpenCL();
+            instance.terminateOpenAL();
             instance = null;
             logger.info("Terminated LibAPI");
         }
@@ -176,6 +179,32 @@ public final class LibAPIManager {
     
     public OpenCL getOpenCL() {
         return this.opencl;
+    }
+    
+    public void initOpenAL() {
+        try {
+            this.openal = new OpenAL();
+            logger.info("Initialized OpenAL");
+        } catch (Exception ex) {
+            this.openal = null;
+            throw new RuntimeException(ex);
+        }
+    }
+    
+    public void terminateOpenAL() {
+        if (isOpenALinitialized()) {
+            this.openal.shutdown();
+            this.openal = null;
+            logger.info("Terminated OpenAL");
+        }
+    }
+    
+    public boolean isOpenALinitialized() {
+        return this.openal != null;
+    }
+    
+    public OpenAL getOpenAL() {
+        return openal;
     }
     
     public enum LibSetting implements Defaultable {

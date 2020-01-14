@@ -66,7 +66,7 @@ public class OpenCL {
      */
     public OpenCL() {
         if (created) {
-            throw new IllegalStateException("OpenCL is already created");
+            throw new IllegalStateException("OpenCL has already been created");
         }
         createPlatformData();
     }
