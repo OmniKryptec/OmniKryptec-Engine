@@ -19,6 +19,7 @@ package de.omnikryptec.event;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Queue;
@@ -142,13 +143,7 @@ public class EventBus implements IUpdatable, IEventListener {
      * @param eventtype the class of the event type
      */
     public void register(final IEventListener listener, final Class<? extends Event> eventtype) {
-        Class<?> someclazz = eventtype;
-        do {
-            Class<? extends Event> casted = (Class<? extends Event>) someclazz;
-            this.listeners.get(casted).add(listener);
-            this.listeners.get(casted).sort(LISTENER_COMP);
-            someclazz = someclazz.getSuperclass();
-        } while (someclazz != Object.class && someclazz != null);//FIXME pcfreak9000 this does not work, this must be in the processEvent method
+        this.listeners.get(eventtype).add(listener);
     }
     
     /**
@@ -232,7 +227,15 @@ public class EventBus implements IUpdatable, IEventListener {
     }
     
     private void processEvent(final Event event) {
-        for (final IEventListener l : this.listeners.get(event.getClass())) {
+        Class<?> someclazz = event.getClass();
+        List<IEventListener> filteredListeners = new ArrayList<>();
+        do {
+            Class<? extends Event> casted = (Class<? extends Event>) someclazz;
+            filteredListeners.addAll(listeners.get(casted));
+            someclazz = someclazz.getSuperclass();
+        } while (someclazz != Object.class && someclazz != null);
+        filteredListeners.sort(LISTENER_COMP);
+        for (final IEventListener l : filteredListeners) {
             if (!event.isConsumeable() || !event.isConsumed() || l.receiveConsumed()) {
                 l.invoke(event);
             }

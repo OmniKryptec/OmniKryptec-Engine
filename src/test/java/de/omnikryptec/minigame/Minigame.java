@@ -47,6 +47,7 @@ import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
+import de.omnikryptec.util.settings.keys.KeysAndButtons;
 
 public class Minigame extends Omnikryptec {
     
@@ -91,7 +92,7 @@ public class Minigame extends Omnikryptec {
         @EventSubscription
         public void event(InputEvent.MouseButtonEvent ev) {
             Vector2dc v = getInput().getMousePosition();
-            if (v.x() < 300) {
+            if (v.x() < 300 && ev.action != KeysAndButtons.OKE_RELEASE) {
                 ev.consume();
             }
         }
