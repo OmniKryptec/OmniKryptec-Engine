@@ -25,7 +25,7 @@ import de.omnikryptec.gui.GuiManager;
 import de.omnikryptec.gui.TilingLayout;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
-import de.omnikryptec.render.batch.Batch2D;
+import de.omnikryptec.render.batch.BorderedBatch2D;
 import de.omnikryptec.render.objects.SimpleSprite;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
@@ -89,7 +89,7 @@ public class GuiDemo extends Omnikryptec {
         }
         
         @Override
-        protected void renderComponent(final Batch2D batch) {
+        protected void renderComponent(final BorderedBatch2D batch) {
             batch.color().set(1, this.g, this.b);
             batch.drawRect(new Matrix3x2f().setTranslation(this.x, this.y), this.w, this.h);
         }

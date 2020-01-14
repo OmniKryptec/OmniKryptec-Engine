@@ -53,7 +53,7 @@ public class SDFModule implements Module {
 
     public void setDefault() {
         this.sdData.set(0, 1);
-        this.bsdData.set(0, 1);
+        this.bsdData.set(0, 0.0001f);
     }
 
 }

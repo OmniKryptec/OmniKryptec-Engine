@@ -32,7 +32,7 @@ import de.omnikryptec.render.batch.vertexmanager.RenderedVertexManager;
 import de.omnikryptec.render.batch.vertexmanager.VertexManager;
 import de.omnikryptec.util.data.Color;
 
-public class AdvancedBatch2D extends AbstractBatch implements Batch2D {
+public class AdvancedBatch2D extends AbstractBatch implements BorderedBatch2D {
     
     public static AbstractProjectedShaderSlot createDefaultShaderSlot() {
         return new AdvancedShaderSlot();
@@ -110,5 +110,11 @@ public class AdvancedBatch2D extends AbstractBatch implements Batch2D {
     @Nullable
     public AbstractProjectedShaderSlot getShaderSlot() {
         return this.shaderSlot;
+    }
+
+    @Override
+    public void setDefaultSdfData() {
+        sdfData.setDefault();
+        bsdfOffset.setDefault();
     }
 }

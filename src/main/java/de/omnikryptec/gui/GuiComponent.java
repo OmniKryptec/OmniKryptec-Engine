@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.omnikryptec.event.EventBus;
-import de.omnikryptec.render.batch.Batch2D;
+import de.omnikryptec.render.batch.BorderedBatch2D;
 import de.omnikryptec.util.Util;
 
 public class GuiComponent {
@@ -81,7 +81,7 @@ public class GuiComponent {
         return this.constraints;
     }
     
-    public void render(final Batch2D batch) {
+    public void render(final BorderedBatch2D batch) {
         renderComponent(batch);
         for (final GuiComponent gc : this.children) {
             gc.render(batch);
@@ -92,7 +92,7 @@ public class GuiComponent {
         return this.events;
     }
     
-    protected void renderComponent(final Batch2D batch) {
+    protected void renderComponent(final BorderedBatch2D batch) {
         
     }
     

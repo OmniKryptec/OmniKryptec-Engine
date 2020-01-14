@@ -19,6 +19,7 @@ package de.omnikryptec.gui;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.batch.AdvancedBatch2D;
+import de.omnikryptec.render.batch.BorderedBatch2D;
 import de.omnikryptec.render.renderer.LocalRendererContext;
 import de.omnikryptec.render.renderer.Renderer;
 import de.omnikryptec.util.updater.Time;
@@ -43,6 +44,7 @@ public class GuiRenderer implements Renderer {
     @Override
     public void render(final Time time, final IProjection projection, final LocalRendererContext context) {
         if (this.componentRoot != null) {
+            batch.getShaderSlot().setProjection(projection);
             this.batch.begin();
             this.componentRoot.render(this.batch);
             this.batch.end();

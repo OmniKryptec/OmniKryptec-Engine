@@ -36,7 +36,7 @@ import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.input.InputEvent;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
-import de.omnikryptec.render.batch.Batch2D;
+import de.omnikryptec.render.batch.BorderedBatch2D;
 import de.omnikryptec.resource.Font;
 import de.omnikryptec.resource.FontFile;
 import de.omnikryptec.util.Logger.LogType;
@@ -71,9 +71,13 @@ public class Minigame extends Omnikryptec {
         }
 
         @Override
-        protected void renderComponent(final Batch2D batch) {
+        protected void renderComponent(final BorderedBatch2D batch) {
             batch.color().set(1, this.g, this.b, 0.4f);
             batch.drawRect(new Matrix3x2f().setTranslation(this.x, this.y), this.w, this.h);
+            batch.color().setAll(1);
+            batch.signedDistanceFieldData().set(0.57f, 0.6f);
+            batch.drawStringSimple("Test", font, 0.1f, x, y, 0);
+            batch.setDefaultSdfData();
         }
 
         @Override
@@ -101,9 +105,9 @@ public class Minigame extends Omnikryptec {
         //libSettings.set(LibSetting.DEBUG, true);
         libSettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "Minigame");
-        windowSettings.set(WindowSetting.LockAspectRatio, true);
+        //windowSettings.set(WindowSetting.LockAspectRatio, true);
         windowSettings.set(WindowSetting.VSync, true);
-        windowSettings.set(WindowSetting.Width, 600);
+        windowSettings.set(WindowSetting.Width, 800);
         windowSettings.set(WindowSetting.Height, 600);
         Profiler.setEnabled(true);
     }
