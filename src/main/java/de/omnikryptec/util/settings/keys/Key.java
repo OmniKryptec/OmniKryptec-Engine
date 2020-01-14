@@ -114,7 +114,7 @@ public class Key implements IKey {
      *                 {@link de.omnikryptec.util.settings.KeySettings#KEY_REPEATED}
      *                 or
      *                 {@link de.omnikryptec.util.settings.KeySettings#KEY_RELEASED}
-     *
+     *                
      * @return A reference to this {@link de.omnikryptec.util.settings.keys.Key}
      */
     public Key setKeyState(final byte keyState) {
@@ -160,7 +160,7 @@ public class Key implements IKey {
      *
      * @param key KeyCode (e.g.
      *            {@link de.omnikryptec.util.settings.keys.KeysAndButtons#OKE_KEY_A})
-     *
+     *           
      * @return A reference to this {@link de.omnikryptec.util.settings.keys.Key}
      */
     public Key setKey(final int key) {
@@ -205,7 +205,7 @@ public class Key implements IKey {
      *
      * @param lastUpdate Last update of this
      *                   {@link de.omnikryptec.util.settings.keys.Key}
-     *
+     *                  
      * @return A reference to this {@link de.omnikryptec.util.settings.keys.Key}
      */
     public Key setLastUpdate(final double lastUpdate) {

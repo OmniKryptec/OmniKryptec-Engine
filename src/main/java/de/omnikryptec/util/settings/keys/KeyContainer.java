@@ -184,7 +184,7 @@ public class KeyContainer {
      * @param name    Name of the new {@link de.omnikryptec.util.settings.keys.Key}
      * @param keyCode KeyCode of the new
      *                {@link de.omnikryptec.util.settings.keys.Key}
-     *
+     *               
      * @return A reference to this
      *         {@link de.omnikryptec.util.settings.keys.KeyContainer}
      */
@@ -202,7 +202,7 @@ public class KeyContainer {
      * @param isKeyboardKey sets if the new
      *                      {@link de.omnikryptec.util.settings.keys.Key} should be
      *                      a keyboard key
-     *
+     *                     
      * @return A reference to this
      *         {@link de.omnikryptec.util.settings.keys.KeyContainer}
      */

@@ -33,26 +33,26 @@ import de.omnikryptec.render.batch.module.ModuleBatchingManager;
 import de.omnikryptec.resource.MeshData.Primitive;
 
 public class RenderedVertexManager implements VertexManager {
-
+    
     private final int vertexCount;
-
+    
     private FloatBuffer buffer;
     private int floatsPerVertex;
     private Texture currentTexture;
     private VertexArray va;
     private VertexBuffer vb;
     private final AbstractShaderSlot shader;
-
+    
     public RenderedVertexManager(final int vertexCount, final AbstractShaderSlot shader) {
         this.vertexCount = vertexCount;
         this.shader = shader;
     }
-
+    
     @Override
     public void addData(final float[] floats, final int offset, final int length) {
         this.buffer.put(floats, offset, length);
     }
-
+    
     @Override
     public void prepareNext(final Texture texture, final int requiredFloats) {
         if (requiredFloats > this.buffer.capacity()) {
@@ -66,9 +66,9 @@ public class RenderedVertexManager implements VertexManager {
             this.currentTexture = baseTexture;
             this.shader.setNextUsesTexture(this.currentTexture != null);
         }
-
+        
     }
-
+    
     @Override
     public void forceFlush() {
         final int count = this.buffer.position();
@@ -83,7 +83,7 @@ public class RenderedVertexManager implements VertexManager {
         LibAPIManager.instance().getGLFW().getRenderAPI().render(this.va, Primitive.Triangle,
                 count / this.floatsPerVertex);
     }
-
+    
     @Override
     public void init(final ModuleBatchingManager mgr) {
         final VertexBufferLayout layout = mgr.createLayout();
@@ -94,7 +94,7 @@ public class RenderedVertexManager implements VertexManager {
         this.va = LibAPIManager.instance().getGLFW().getRenderAPI().createVertexArray();
         this.va.addVertexBuffer(this.vb, layout);
     }
-
+    
     @Override
     public void begin() {
         this.shader.bindShaderRenderReady();

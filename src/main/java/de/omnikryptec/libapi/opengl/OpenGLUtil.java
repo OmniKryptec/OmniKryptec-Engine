@@ -62,9 +62,9 @@ import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Logger.LogType;
 
 public class OpenGLUtil {
-
+    
     private static final Logger logger = Logger.getLogger(OpenGLUtil.class);
-
+    
     public static int typeId(final Type t) {
         switch (t) {
         case FLOAT:
@@ -75,7 +75,7 @@ public class OpenGLUtil {
             throw new IllegalArgumentException(t + "");
         }
     }
-
+    
     public static int sizeof(final Type t) {
         switch (t) {
         case FLOAT:
@@ -86,7 +86,7 @@ public class OpenGLUtil {
             throw new IllegalArgumentException(t + "");
         }
     }
-
+    
     public static int shaderTypeId(final ShaderType shaderType) {
         switch (shaderType) {
         case Compute:
@@ -103,10 +103,10 @@ public class OpenGLUtil {
             return GL20.GL_VERTEX_SHADER;
         default:
             throw new IllegalArgumentException(shaderType + "");
-
+        
         }
     }
-
+    
     public static int primitiveId(final Primitive primitiveType) {
         if (primitiveType == null) {
             //Assuming triangles because mostly triangles are used
@@ -125,7 +125,7 @@ public class OpenGLUtil {
             throw new IllegalArgumentException(primitiveType + "");
         }
     }
-
+    
     public static int textureFormatId(final FBAttachmentFormat texFormat) {
         switch (texFormat) {
         case RGBA8:
@@ -144,7 +144,7 @@ public class OpenGLUtil {
             throw new IllegalArgumentException(texFormat + "");
         }
     }
-
+    
     public static int polyModeId(final PolyMode polyMode) {
         switch (polyMode) {
         case FILL:
@@ -157,7 +157,7 @@ public class OpenGLUtil {
             throw new IllegalArgumentException(polyMode + "");
         }
     }
-
+    
     public static int cullModeId(final CullMode cullMode) {
         switch (cullMode) {
         case BACK:
@@ -168,7 +168,7 @@ public class OpenGLUtil {
             throw new IllegalArgumentException(cullMode + "");
         }
     }
-
+    
     public static int depthModeId(final DepthMode depthMode) {
         switch (depthMode) {
         case ALWAYS:
@@ -185,7 +185,7 @@ public class OpenGLUtil {
             throw new IllegalArgumentException(depthMode + "");
         }
     }
-
+    
     public static int surfaceBufferTypeId(final SurfaceBufferType bufferType) {
         switch (bufferType) {
         case Color:
@@ -196,7 +196,7 @@ public class OpenGLUtil {
             throw new IllegalArgumentException(bufferType + "");
         }
     }
-
+    
     public static int bufferUsageId(final BufferUsage bufferUsage) {
         switch (bufferUsage) {
         case Dynamic:
@@ -209,7 +209,7 @@ public class OpenGLUtil {
             throw new IllegalArgumentException(bufferUsage + "");
         }
     }
-
+    
     public static int decodeMagMin(final MagMinFilter filter) {
         switch (filter) {
         case Linear:
@@ -220,7 +220,7 @@ public class OpenGLUtil {
             throw new IllegalArgumentException();
         }
     }
-
+    
     public static int decodeWrap(final WrappingMode mode) {
         switch (mode) {
         case ClampToEdge:
@@ -231,7 +231,7 @@ public class OpenGLUtil {
             throw new IllegalArgumentException();
         }
     }
-
+    
     public static void flushErrors() {
         int e = 0;
         int found = 0;
@@ -246,11 +246,11 @@ public class OpenGLUtil {
             logger.debug("No OpenGL errors found!");
         }
     }
-
+    
     private static final Class<?>[] constantsClasses = { GL11.class, GL12.class, GL13.class, GL14.class, GL15.class,
             GL20.class, GL21.class, GL30.class, GL31.class, GL32.class, GL33.class, GL40.class, GL41.class, GL42.class,
             GL43.class, GL44.class, GL45.class, GL46.class };
-
+    
     private static String searchConstants(final int i) {
         for (final Class<?> c : constantsClasses) {
             final Field[] fields = c.getFields();
@@ -266,18 +266,18 @@ public class OpenGLUtil {
         }
         throw new IllegalArgumentException("Constant with value '" + i + "' not found");
     }
-
+    
     private static int lastVertexArray = 0;
     private static final int[] lastBoundTextures = new int[32];
     private static int currentShader;
-
+    
     public static void bindVertexArray(final int vertexArray, final boolean override) {
         if (vertexArray != lastVertexArray || override) {
             GL30.glBindVertexArray(vertexArray);
             lastVertexArray = vertexArray;
         }
     }
-
+    
     public static void bindTexture(final int unit, final int target, final int id, final boolean override) {
         if (lastBoundTextures[unit] != id || override) {
             GL13.glActiveTexture(unit + GL13.GL_TEXTURE0);
@@ -285,18 +285,18 @@ public class OpenGLUtil {
             lastBoundTextures[unit] = id;
         }
     }
-
+    
     public static void useProgram(final int id) {
         if (currentShader != id) {
             GL20.glUseProgram(id);
             currentShader = id;
         }
     }
-
+    
     public static void bindBuffer(final int target, final int buffer/* , final boolean override */) {
         GL15.glBindBuffer(target, buffer);
     }
-
+    
     public static void configureTexture(final TextureConfig config) {
         if (config.mipmap() || config.anisotropicValue() > 0) {
             GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);
@@ -321,34 +321,34 @@ public class OpenGLUtil {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, OpenGLUtil.decodeWrap(config.wrappingMode()));
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, OpenGLUtil.decodeWrap(config.wrappingMode()));
     }
-
+    
     public static void loadTexture(final TextureData texture) {
         GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, texture.getWidth(), texture.getHeight(), 0, GL12.GL_BGRA,
                 GL11.GL_UNSIGNED_BYTE, texture.getBuffer());
     }
-
+    
     private static Map<CACHE_ENUM, Object> cache = new EnumMap<>(CACHE_ENUM.class);
     private static boolean oldColor, oldDepth;
-
+    
     private static enum CACHE_ENUM {
         CULL_FACE_KEY, POLY_MODE_KEY, BLEND_MODE, DEPTH_FUNC, MULTISAMPLE;
     }
-
+    
     public static void setWriteColor(final boolean color) {
         if (color != oldColor) {
             oldColor = color;
             GL11.glColorMask(color, color, color, color);
         }
     }
-
+    
     public static void setWriteDepth(final boolean depth) {
         if (depth != oldDepth) {
             oldDepth = depth;
             GL11.glDepthMask(depth);
         }
     }
-
+    
     public static void setBlendMode(final BlendMode blendModeNew) {
         if (blendModeNew == null) {
             return;
@@ -378,7 +378,7 @@ public class OpenGLUtil {
             cache.put(CACHE_ENUM.BLEND_MODE, blendModeNew);
         }
     }
-
+    
     public static void setCullMode(final CullMode mode) {
         if (mode == null) {
             return;
@@ -396,7 +396,7 @@ public class OpenGLUtil {
             cache.put(CACHE_ENUM.CULL_FACE_KEY, mode);
         }
     }
-
+    
     public static void setPolyMode(final PolyMode mode) {
         final Object o = cache.get(CACHE_ENUM.POLY_MODE_KEY);
         if (o == null || ((PolyMode) o) != mode) {
@@ -404,7 +404,7 @@ public class OpenGLUtil {
             cache.put(CACHE_ENUM.POLY_MODE_KEY, mode);
         }
     }
-
+    
     public static void setDepthTestFunc(DepthMode depthMode) {
         if (depthMode == null) {
             return;
@@ -425,7 +425,7 @@ public class OpenGLUtil {
             cache.put(CACHE_ENUM.DEPTH_FUNC, depthMode);
         }
     }
-
+    
     public static void setMultisample(final boolean b) {
         final Object o = cache.get(CACHE_ENUM.MULTISAMPLE);
         if (o == null || ((boolean) o) != b) {
@@ -437,11 +437,11 @@ public class OpenGLUtil {
             cache.put(CACHE_ENUM.MULTISAMPLE, b);
         }
     }
-
+    
     public static void setClearColor(final float r, final float g, final float b, final float a) {
         GL11.glClearColor(r, g, b, a);
     }
-
+    
     public static void clear(final SurfaceBufferType... buffers) {
         int mask = 0;
         for (final SurfaceBufferType b : buffers) {
@@ -451,19 +451,19 @@ public class OpenGLUtil {
             GL11.glClear(mask);
         }
     }
-
+    
     public static int indexToAttachment(final int attachment) {
         if (attachment == FBTarget.DEPTH_ATTACHMENT_INDEX) {
             return GL30.GL_DEPTH_ATTACHMENT;
         }
         return GL30.GL_COLOR_ATTACHMENT0 + attachment;
     }
-
+    
     public static int indexToBufferBit(final int attachment) {
         if (attachment == FBTarget.DEPTH_ATTACHMENT_INDEX) {
             return GL11.GL_DEPTH_BUFFER_BIT;
         }
         return GL11.GL_COLOR_BUFFER_BIT;
     }
-
+    
 }

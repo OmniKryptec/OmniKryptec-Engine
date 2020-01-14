@@ -19,6 +19,7 @@ package de.omnikryptec.gui;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.input.InputEvent;
+import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.renderer.LocalRendererContext;
 
 public class GuiManager {
@@ -56,16 +57,15 @@ public class GuiManager {
         recalculateConstraints();
     }
     
+    public void setGuiProjection(IProjection proj) {
+        this.rendererContext.setMainProjection(proj);
+    }
+    
     private void recalculateConstraints() {
         if (this.componentRoot != null) {
             this.componentRoot.setConstraints(new GuiConstraints(0, 0, 1, 1));
         }
     }
-    
-    //    @EventSubscription
-    //    public void windowEvent(WindowEvent.ScreenBufferResized ev) {
-    //        recalculateConstraints();
-    //    }
     
     @EventSubscription(priority = 2000, receiveConsumed = false)
     public void event(final InputEvent event) {

@@ -21,32 +21,32 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import de.omnikryptec.util.updater.Time;
 
 public class DefaultGameLoop implements IGameLoop {
-
+    
     private final AtomicBoolean running = new AtomicBoolean(false);
     private boolean shouldStop = false;
-
+    
     private Game game;
-
+    
     @Override
     public void setGame(final Game game) {
         this.game = game;
     }
-
+    
     @Override
     public void stopLoop() {
         this.shouldStop = true;
     }
-
+    
     public boolean shouldStop() {
         return this.shouldStop
                 || (this.game == null ? false : this.game.getWindowUpdater().getWindow().isCloseRequested());
     }
-
+    
     @Override
     public boolean isRunning() {
         return this.running.get();
     }
-
+    
     @Override
     public void startLoop() {
         if (this.running.get()) {
@@ -67,5 +67,5 @@ public class DefaultGameLoop implements IGameLoop {
             this.running.set(false);
         }
     }
-
+    
 }

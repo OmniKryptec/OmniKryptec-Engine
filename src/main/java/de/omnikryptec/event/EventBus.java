@@ -34,90 +34,90 @@ import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.updater.Time;
 
 public class EventBus implements IUpdatable, IEventListener {
-
+    
     private static final int DEFAULT_EVENTBUS_PRIORITY = Integer.MIN_VALUE + 100;
     private static final boolean DEFAULT_EVENTBUS_CONCURRENT = false;
-
+    
     private static final Comparator<IEventListener> LISTENER_COMP = (o1, o2) -> o2.priority() - o1.priority();
-
+    
     private static class ObjMapping {
         private final Class<? extends Event> eventType;
         private final IEventListener handler;
-
+        
         private ObjMapping(final IEventListener handler, final Class<? extends Event> eventType) {
             this.eventType = eventType;
             this.handler = handler;
         }
     }
-
+    
     private final AtomicBoolean processing = new AtomicBoolean(false);
     private final ListMultimap<Class<? extends Event>, IEventListener> listeners;
     private final ListMultimap<Object, ObjMapping> objMappings;
     private final Queue<Event> eventQueue;
     private boolean receiveConsumed = true;
     private final int priority;
-
+    
     /**
      * A read-only version of this {@link EventBus}
      */
     public final ReadableEventBus READ_ONLY = new ReadableEventBus() {
-
+        
         @Override
         public void register(final Object object) {
             EventBus.this.register(object);
         }
-
+        
         @Override
         public void register(final IEventListener listener, final Class<? extends Event> eventtype) {
             EventBus.this.register(listener, eventtype);
         }
-
+        
         @Override
         public void post(final Event event) {
             EventBus.this.post(event);
         }
-
+        
         @Override
         public void enqueue(final Event event) {
             EventBus.this.enqueue(event);
         }
     };
-
+    
     public EventBus() {
         this(DEFAULT_EVENTBUS_CONCURRENT, DEFAULT_EVENTBUS_PRIORITY);
     }
-
+    
     public EventBus(final boolean concurrent) {
         this(concurrent, DEFAULT_EVENTBUS_PRIORITY);
     }
-
+    
     public EventBus(final int prio) {
         this(DEFAULT_EVENTBUS_CONCURRENT, prio);
     }
-
+    
     public EventBus(final boolean concurrent, final int prio) {
         this.eventQueue = concurrent ? new ConcurrentLinkedQueue<>() : new ArrayDeque<>();
         this.listeners = ArrayListMultimap.create();
         this.objMappings = ArrayListMultimap.create();
         this.priority = prio;
     }
-
+    
     public void unregister(final IEventListener listener) {
         unregister(listener, Event.class);
     }
-
+    
     public void unregister(final IEventListener listener, final Class<? extends Event> eventtype) {
         final List<IEventListener> list = this.listeners.get(eventtype);
         list.remove(listener);
     }
-
+    
     public void unregister(final Object object) {
         final List<ObjMapping> list = this.objMappings.removeAll(object);
         for (final ObjMapping ma : list) {
             unregister(ma.handler, ma.eventType);
         }
     }
-
+    
     /**
      * Registers an {@link IEventListener} to ALL events.<br>
      * Useful when chaining together multiple {@link EventBus}.
@@ -131,7 +131,7 @@ public class EventBus implements IUpdatable, IEventListener {
     public void register(final IEventListener listener) {
         register(listener, Event.class);
     }
-
+    
     /**
      * Registers an {@link IEventListener} to a certain type of event.
      * <p>
@@ -148,9 +148,9 @@ public class EventBus implements IUpdatable, IEventListener {
             this.listeners.get(casted).add(listener);
             this.listeners.get(casted).sort(LISTENER_COMP);
             someclazz = someclazz.getSuperclass();
-        } while (someclazz != Object.class && someclazz != null);
+        } while (someclazz != Object.class && someclazz != null);//FIXME pcfreak9000 this does not work, this must be in the processEvent method
     }
-
+    
     /**
      * Registers any {@link EventSubscription}s found in this object:
      * <ul>
@@ -207,15 +207,15 @@ public class EventBus implements IUpdatable, IEventListener {
             Logger.log(getClass(), LogType.Debug, "No EventSubscriptions were found: " + object);
         }
     }
-
+    
     public void post(final Event event) {
         processEvent(event);
     }
-
+    
     public void enqueue(final Event event) {
         this.eventQueue.add(event);
     }
-
+    
     public void processQueuedEvents() {
         if (this.processing.get()) {
             throw new IllegalStateException("Already processing!");
@@ -226,11 +226,11 @@ public class EventBus implements IUpdatable, IEventListener {
         }
         this.processing.set(false);
     }
-
+    
     public boolean isProcessing() {
         return this.processing.get();
     }
-
+    
     private void processEvent(final Event event) {
         for (final IEventListener l : this.listeners.get(event.getClass())) {
             if (!event.isConsumeable() || !event.isConsumed() || l.receiveConsumed()) {
@@ -238,29 +238,29 @@ public class EventBus implements IUpdatable, IEventListener {
             }
         }
     }
-
+    
     @Override
     public void update(final Time time) {
         processQueuedEvents();
     }
-
+    
     @Override
     public void invoke(final Event ev) {
         processEvent(ev);
     }
-
+    
     @Override
     public int priority() {
         return this.priority;
     }
-
+    
     @Override
     public boolean receiveConsumed() {
         return this.receiveConsumed;
     }
-
+    
     public void setReceiveConsumed(final boolean b) {
         this.receiveConsumed = b;
     }
-
+    
 }

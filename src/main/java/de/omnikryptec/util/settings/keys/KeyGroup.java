@@ -175,7 +175,7 @@ public class KeyGroup extends KeyContainer implements IKey {
      *                                 in this
      *                                 {@link de.omnikryptec.util.settings.keys.KeyGroup}
      *                                 needs to be pressed at the same time
-     *
+     *                                
      * @return A reference to this
      *         {@link de.omnikryptec.util.settings.keys.KeyGroup}
      */

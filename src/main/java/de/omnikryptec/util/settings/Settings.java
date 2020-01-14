@@ -179,7 +179,7 @@ public class Settings<K> {
      *
      * @param key {@link K} Key of the {@link java.util.Map.Entry<K,
      *            java.lang.Object>} to get removed
-     *
+     *           
      * @return A reference to this {@link de.omnikryptec.util.settings.Settings}
      */
     public Settings<K> remove(final K key) {
@@ -210,7 +210,7 @@ public class Settings<K> {
      *              java.lang.Object>} to get removed
      * @param value Value to match if a {@link java.util.Map.Entry<K,
      *              java.lang.Object>} should get removed
-     *
+     *             
      * @return A reference to this {@link de.omnikryptec.util.settings.Settings}
      */
     public Settings<K> remove(final K key, final Object value) {

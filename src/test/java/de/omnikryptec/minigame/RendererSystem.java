@@ -28,7 +28,6 @@ import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.render.AdaptiveCamera;
 import de.omnikryptec.render.Camera;
-import de.omnikryptec.render.batch.AdvancedBatch2D;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.Light2D;
@@ -46,7 +45,7 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
     
     private static Matrix4f get(int w, int h) {
         Matrix4f m = new Matrix4f();
-        int[] vp = MathUtil.calculateViewport(w/(double)h, 800, 600);
+        int[] vp = MathUtil.calculateViewport(w / (double) h, 800, 600);
         m.setOrtho2D(-vp[2], vp[2], -vp[3], vp[3]);
         return m;
     }

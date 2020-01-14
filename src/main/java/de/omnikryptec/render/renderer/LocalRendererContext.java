@@ -129,7 +129,7 @@ public class LocalRendererContext {
     RendererContext getContext() {
         return this.context;
     }
-
+    
     public void preRender(final Time time, final IProjection projection) {
         this.context.getRenderAPI().getCurrentFrameBuffer().clear(
                 getEnvironmentSettings().get(GlobalEnvironmentKeys.ClearColor), SurfaceBufferType.Color,

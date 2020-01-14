@@ -61,6 +61,7 @@ public class EventHandler implements IEventListener {
             //make this faster (ASM/bytecode manipulation)?
             this.m.invoke(this.handler, ev);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            System.err.println("Exception in handler " + handler + ", for the event " + ev + ": ");
             e.printStackTrace();
         }
     }

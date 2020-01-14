@@ -111,7 +111,7 @@ public class AdvancedBatch2D extends AbstractBatch implements BorderedBatch2D {
     public AbstractProjectedShaderSlot getShaderSlot() {
         return this.shaderSlot;
     }
-
+    
     @Override
     public void setDefaultSdfData() {
         sdfData.setDefault();

@@ -4,7 +4,7 @@ import org.joml.Vector2f;
 
 import de.omnikryptec.util.data.Color;
 
-public interface BorderedBatch2D extends Batch2D{
+public interface BorderedBatch2D extends Batch2D {
     Color borderColor();
     
     Vector2f borderSDFData();

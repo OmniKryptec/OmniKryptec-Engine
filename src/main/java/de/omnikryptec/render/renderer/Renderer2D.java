@@ -46,46 +46,46 @@ import de.omnikryptec.util.updater.Time;
 
 public class Renderer2D implements Renderer, IRenderedObjectListener {
     private static int rc = 0;
-
+    
     private final int countIndex = rc++;
-
+    
     static final Comparator<Sprite> DEFAULT_COMPARATOR = (s0, s1) -> s0.getLayer() - s1.getLayer();
-
+    
     static final RenderState SPRITE_STATE = RenderState.of(BlendMode.ALPHA);
     static final RenderState LIGHT_STATE = RenderState.of(BlendMode.ADDITIVE);
     static final RenderState MULT_STATE = RenderState.of(BlendMode.MULTIPLICATIVE);
-
+    
     private Comparator<Sprite> spriteComparator = DEFAULT_COMPARATOR;
     private final List<Sprite> sprites = new ArrayList<>();
-
+    
     private final SimpleBatch2D batch;
     private FrameBuffer spriteBuffer;
     private FrameBuffer renderBuffer;
-
+    
     private boolean shouldSort = false;
-
+    
     public Renderer2D() {
         this(1000);
     }
-
+    
     public Renderer2D(final int vertices) {
         this.batch = new SimpleBatch2D(vertices);
         initStuff();
     }
-
+    
     public Renderer2D(final int vertices, final AbstractProjectedShaderSlot shaderslot) {
         this.batch = new SimpleBatch2D(vertices, shaderslot);
         initStuff();
     }
-
+    
     private void initStuff() {
         Profiler.addIProfiler(toString(), this.profiler);
     }
-
+    
     public void setSpriteComparator(final Comparator<Sprite> comparator) {
         this.spriteComparator = comparator == null ? DEFAULT_COMPARATOR : comparator;
     }
-
+    
     @Override
     public void init(final LocalRendererContext context, final FrameBuffer target) {
         createFBOs(context, target);
@@ -95,13 +95,13 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
         this.sprites.addAll(list);
         this.shouldSort = true;
     }
-
+    
     @Override
     public void onAdd(final RenderedObject obj) {
         this.sprites.add((Sprite) obj);
         this.shouldSort = true;
     }
-
+    
     @Override
     public void deinit(final LocalRendererContext context) {
         this.sprites.clear();
@@ -111,12 +111,12 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
         this.renderBuffer.deleteAndUnregister();
         this.spriteBuffer.deleteAndUnregister();
     }
-
+    
     @Override
     public void onRemove(final RenderedObject obj) {
         this.sprites.remove(obj);
     }
-
+    
     @Override
     public void render(final Time time, final IProjection projection, final LocalRendererContext renderer) {
         Profiler.begin(toString());
@@ -148,38 +148,38 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
         this.renderBuffer.renderDirect(0);
         Profiler.end(sorted, this.sprites.size(), vs);
     }
-
+    
     @Override
     public void resizeFBOs(final LocalRendererContext context, final SurfaceBuffer screen) {
         this.spriteBuffer = this.spriteBuffer.resizedClone(screen.getWidth(), screen.getHeight());
         this.renderBuffer = this.renderBuffer.resizedClone(screen.getWidth(), screen.getHeight());
     }
-
+    
     private void createFBOs(final LocalRendererContext context, final FrameBuffer screen) {
         this.spriteBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
         this.spriteBuffer.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
-
+        
         this.renderBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
         this.renderBuffer.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
     }
-
+    
     @Override
     public String toString() {
         return Renderer2D.class.getSimpleName() + "-" + this.countIndex;
     }
-
+    
     private final IProfiler profiler = new IProfiler() {
         private long sorted = 0;
         private final ProfileHelper sprites = new ProfileHelper();
         private final ProfileHelper spritesV = new ProfileHelper();
-
+        
         @Override
         public void writeData(StringBuilder builder, long count) {
             builder.append("Layers sorted: " + Mathd.round(this.sorted * 100 / (double) count, 2) + "%").append('\n');
             this.sprites.append("Sprites", count, 1, builder);
             this.spritesV.append("Sprites (visible): ", count, 1, builder);
         }
-
+        
         @Override
         public void dealWith(long nanoSecondsPassed, Object... objects) {
             if ((boolean) objects[0]) {
@@ -189,16 +189,16 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
             this.spritesV.push((int) objects[2]);
         }
     };
-
+    
     public static enum EnvironmentKeys2D implements Defaultable, EnvironmentKey {
         AmbientLight(new Color(1f, 1f, 1f));
-
+        
         private final Object def;
-
+        
         private EnvironmentKeys2D(final Object o) {
             this.def = o;
         }
-
+        
         @Override
         public <T> T getDefault() {
             return (T) this.def;
