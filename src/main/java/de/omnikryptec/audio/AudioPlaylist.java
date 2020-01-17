@@ -22,6 +22,8 @@ import java.util.Arrays;
 import javax.swing.Timer;
 
 import de.codemakers.base.logger.LogLevel;
+import de.omnikryptec.libapi.openal.AudioEffectState;
+import de.omnikryptec.libapi.openal.AudioSource;
 
 /**
  * AudioPlaylist
@@ -46,7 +48,7 @@ public class AudioPlaylist {
     private boolean isPlaying = false;
     private boolean loop = false;
     
-    // TODO Vielleicht das Playlist extenden lassen, und dann ist PlayList eine
+    // TODO Panzer1119 Vielleicht das Playlist extenden lassen, und dann ist PlayList eine
     // lustige PlayList, die alle funktionen generisch eingebaut hat wie shuffle
     // oder einfach abspielen mit naechster und so
     public AudioPlaylist(ISound... sounds) {

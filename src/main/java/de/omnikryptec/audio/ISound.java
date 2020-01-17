@@ -16,6 +16,8 @@
 
 package de.omnikryptec.audio;
 
+import de.omnikryptec.libapi.openal.AudioSource;
+
 /**
  * Sound interface
  *

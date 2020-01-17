@@ -59,6 +59,8 @@ import org.lwjgl.openal.ALCCapabilities;
 import de.codemakers.base.logger.LogLevel;
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.libapi.openal.AudioUtil;
+import de.omnikryptec.libapi.openal.DistanceModel;
 
 /**
  * Main audio manager class
@@ -347,10 +349,6 @@ public class AudioManager {
      * Cleans up every Sound and destroys the OpenAL AudioSystem
      */
     private static final void cleanup() {
-        for (AudioSource source : AudioSource.audioSources) {
-            source.delete();
-        }
-        AudioSource.audioSources.clear();
         for (Sound sound : sounds) {
             sound.delete(null);
         }
@@ -400,68 +398,9 @@ public class AudioManager {
         if (distanceModel == null) {
             return;
         }
-        AL10.alDistanceModel(distanceModel.getDistanceModel());
+        AL10.alDistanceModel(distanceModel.getDistanceModelId());
         AudioManager.distanceModel = distanceModel;
     }
-    
-    /**
-     * Distance model which calculates the roll off of the volume
-     */
-    public static enum DistanceModel {
-        EXPONENT(AL11.AL_EXPONENT_DISTANCE, false), EXPONENT_CLAMPED(AL11.AL_EXPONENT_DISTANCE_CLAMPED, true),
-        INVERSE(AL10.AL_INVERSE_DISTANCE, false), INVERSE_CLAMPED(AL10.AL_INVERSE_DISTANCE_CLAMPED, true),
-        LINEAR(AL11.AL_LINEAR_DISTANCE, false), LINEAR_CLAMPED(AL11.AL_LINEAR_DISTANCE_CLAMPED, true);
-        
-        private final int distanceModel;
-        private final boolean clamped;
-        
-        /**
-         * Creates the DistanceModel
-         *
-         * @param distanceModel Integer OpenAL DistanceModel
-         * @param clamped       Boolean <tt>true</tt> if it is clamped
-         */
-        DistanceModel(int distanceModel, boolean clamped) {
-            this.distanceModel = distanceModel;
-            this.clamped = clamped;
-        }
-        
-        /**
-         * Returns the OpenAL-Equivalent for the DistanceModel
-         *
-         * @return Integer OpenAL Distancemodel
-         */
-        public final int getDistanceModel() {
-            return distanceModel;
-        }
-        
-        /**
-         * Returns if the DistanceModel is a clamped one
-         *
-         * @return <tt>true</tt> if it is clamped
-         */
-        public final boolean isClamped() {
-            return clamped;
-        }
-        
-        public final float getFade(float fadeTime, float fadeTimeComplete, float volumeStart, float volumeTarget) {
-            float newVolume = 0;
-            switch (this) {
-            case EXPONENT:
-            case EXPONENT_CLAMPED:
-            case INVERSE:
-            case INVERSE_CLAMPED:
-                newVolume = (1.0F / (fadeTime + (1 / volumeStart))) + volumeTarget
-                        - (1.0F / (fadeTimeComplete + (1.0F / volumeStart)));
-                break;
-            case LINEAR:
-            case LINEAR_CLAMPED:
-                newVolume = fadeTime * ((volumeTarget - volumeStart) / fadeTimeComplete) + volumeStart;
-                break;
-            
-            }
-            return Math.max(newVolume, 0.0F);
-        }
-    }
+   
     
 }

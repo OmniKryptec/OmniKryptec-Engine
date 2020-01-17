@@ -30,6 +30,8 @@ import org.lwjgl.openal.AL10;
 
 import de.codemakers.base.logger.LogLevel;
 import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.libapi.openal.AudioSource;
+import de.omnikryptec.libapi.openal.AudioUtil;
 
 /**
  * Streamed sound

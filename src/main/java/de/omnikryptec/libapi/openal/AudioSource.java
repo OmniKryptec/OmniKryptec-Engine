@@ -14,21 +14,25 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.audio;
+package de.omnikryptec.libapi.openal;
 
 import java.util.ArrayList;
 
 import org.joml.Vector3f;
 import org.lwjgl.openal.AL10;
 
+import de.omnikryptec.audio.AudioManager;
+import de.omnikryptec.audio.ISound;
+import de.omnikryptec.libapi.exposed.Deletable;
+
 /**
  * Source which plays the sounds
  *
  * @author Panzer1119
  */
-public class AudioSource {
+public class AudioSource implements Deletable {
     
-    protected static final ArrayList<AudioSource> audioSources = new ArrayList<>();
+    //protected static final ArrayList<AudioSource> audioSources = new ArrayList<>();
     
     private final int sourceID;
     private float pitch = 1.0F;
@@ -47,10 +51,11 @@ public class AudioSource {
      */
     public AudioSource() {
         sourceID = AL10.alGenSources();
+        registerThisAsAutodeletable();
         setVolume(1.0F);
         setPitch(1.0F);
         setPosition(0, 0, 0);
-        audioSources.add(this);
+        //audioSources.add(this);
     }
     
     /**
@@ -539,6 +544,11 @@ public class AudioSource {
     
     protected final int getSourceID() {
         return sourceID;
+    }
+    
+    @Override
+    public void deleteRaw() {
+        AL10.alDeleteSources(this.sourceID);
     }
     
 }

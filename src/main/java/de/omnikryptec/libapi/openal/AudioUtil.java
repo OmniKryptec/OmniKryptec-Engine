@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.audio;
+package de.omnikryptec.libapi.openal;
 
 import org.lwjgl.openal.AL10;
 
