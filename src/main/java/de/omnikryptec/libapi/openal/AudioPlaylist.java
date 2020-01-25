@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.audio;
+package de.omnikryptec.libapi.openal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,8 +22,7 @@ import java.util.Arrays;
 import javax.swing.Timer;
 
 import de.codemakers.base.logger.LogLevel;
-import de.omnikryptec.libapi.openal.AudioEffectState;
-import de.omnikryptec.libapi.openal.AudioSource;
+import de.omnikryptec.util.Logger;
 
 /**
  * AudioPlaylist
@@ -31,6 +30,8 @@ import de.omnikryptec.libapi.openal.AudioSource;
  * @author Panzer1119
  */
 public class AudioPlaylist {
+    
+    private static final Logger LOGGER = Logger.getLogger(AudioPlaylist.class);
     
     private static final Timer timer = new Timer(10, (e) -> {
         updateAll();
@@ -98,8 +99,8 @@ public class AudioPlaylist {
         if (sound == null) {
             stop();
         }
-        Logger.log("Playing: " + sound);
-        playStarted = Util.getCurrentTime();
+        LOGGER.info("Playing: " + sound);
+        playStarted = System.currentTimeMillis();
         getWaitingAudioSource().stop();
         getWaitingAudioSource().setVolume(1.0F);
         getWaitingAudioSource().setEffectState(AudioEffectState.FADE_IN);
@@ -171,9 +172,7 @@ public class AudioPlaylist {
         for (int i = 0; i < shuffleTimes; i++) {
             sounds.sort((sound_1, sound_2) -> (int) (Math.random() * 3 - 1.5));
         }
-        if (Logger.isDebugMode()) {
-            Logger.log("Shuffled AudioPlaylist " + shuffleTimes + " times", LogLevel.FINER);
-        }
+        LOGGER.debug("Shuffled AudioPlaylist " + shuffleTimes + " times");
         return this;
     }
     
@@ -215,8 +214,8 @@ public class AudioPlaylist {
         if (!isPlaying) {
             return this;
         }
-        final double deltaTime = (Util.getCurrentTime() - playStarted) / 1000.0;
-        Logger.log("Length: " + getPlayingAudioSource().getSound().getLength());
+        final double deltaTime = (System.currentTimeMillis() - playStarted) / 1000.0;
+        LOGGER.debug("Length: " + getPlayingAudioSource().getSound().getLength());
         if (deltaTime >= getPlayingAudioSource().getSound().getLength() - fadingStart) {
             startFading();
         }
@@ -229,7 +228,6 @@ public class AudioPlaylist {
         for (AudioPlaylist playlist : playlists) {
             playlist.update();
         }
-        ;
     }
     
     public static final void cleanUp() {

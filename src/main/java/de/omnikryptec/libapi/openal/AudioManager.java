@@ -32,7 +32,7 @@
 * specific language governing permissions and limitations
 * under the License.
  */
-package de.omnikryptec.audio;
+package de.omnikryptec.libapi.openal;
 
 import static org.lwjgl.openal.EXTEfx.ALC_MAX_AUXILIARY_SENDS;
 
@@ -59,8 +59,6 @@ import org.lwjgl.openal.ALCCapabilities;
 import de.codemakers.base.logger.LogLevel;
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
-import de.omnikryptec.libapi.openal.AudioUtil;
-import de.omnikryptec.libapi.openal.DistanceModel;
 
 /**
  * Main audio manager class
@@ -69,7 +67,6 @@ import de.omnikryptec.libapi.openal.DistanceModel;
  */
 public class AudioManager {
     
-    private static final ArrayList<Sound> sounds = new ArrayList<>();
     private static DistanceModel distanceModel = null;
     private static boolean isInitialized = false;
     private static Component<?> blockingAudioListenerComponent = null;
@@ -240,26 +237,26 @@ public class AudioManager {
         }
     }
     
-    /**
-     * Loads a sound from an InputStream to the static Soundbuffer
-     *
-     * @param name        String Name of the Sound
-     * @param inputStream InputStream Stream where should be read from
-     * @return Integer BufferID where the sound was saved
-     */
-    @Deprecated
-    public static final int loadSoundOLD(String name, InputStream inputStream) {
-        deleteSound(name);
-        final int bufferID = AL10.alGenBuffers();
-        // final WaveData waveData = WaveData.create(inputStream);
-        // AL10.alBufferData(bufferID, waveData.format, waveData.data,
-        // waveData.samplerate);
-        // waveData.dispose();
-        final Sound sound = new Sound(name, bufferID);
-        sounds.add(sound);
-        return bufferID;
-    }
-    
+//    /**
+//     * Loads a sound from an InputStream to the static Soundbuffer
+//     *
+//     * @param name        String Name of the Sound
+//     * @param inputStream InputStream Stream where should be read from
+//     * @return Integer BufferID where the sound was saved
+//     */
+//    @Deprecated
+//    public static final int loadSoundOLD(String name, InputStream inputStream) {
+//        deleteSound(name);
+//        final int bufferID = AL10.alGenBuffers();
+//        // final WaveData waveData = WaveData.create(inputStream);
+//        // AL10.alBufferData(bufferID, waveData.format, waveData.data,
+//        // waveData.samplerate);
+//        // waveData.dispose();
+//        final Sound sound = new Sound(name, bufferID);
+//        sounds.add(sound);
+//        return bufferID;
+//    }
+//    
     /**
      * Returns a Sound for the given name
      *
@@ -302,44 +299,7 @@ public class AudioManager {
         }
         return null;
     }
-    
-    /**
-     * Deletes a Sound given by the name
-     *
-     * @param name String Name of the Sound to be deleted
-     * @return <tt>true</tt> if the Sound was found and deleted
-     */
-    public static final boolean deleteSound(String name) {
-        final Sound sound = getSound(name);
-        if (sound != null) {
-            boolean deleted = sound.delete(null);
-            if (deleted) {
-                sounds.remove(sound);
-            }
-            return deleted;
-        } else {
-            return false;
-        }
-    }
-    
-    /**
-     * Deletes a Sound given by the bufferID
-     *
-     * @param bufferID Integer BufferID
-     * @return <tt>true</tt> if the Sound was found and deleted
-     */
-    public static final boolean deleteSound(int bufferID) {
-        final Sound sound = getSound(bufferID);
-        if (sound != null) {
-            boolean deleted = sound.delete(null);
-            if (deleted) {
-                sounds.remove(sound);
-            }
-            return deleted;
-        } else {
-            return false;
-        }
-    }
+
     
     static {
         LibAPIManager.registerResourceShutdownHooks(() -> cleanup());
@@ -349,10 +309,6 @@ public class AudioManager {
      * Cleans up every Sound and destroys the OpenAL AudioSystem
      */
     private static final void cleanup() {
-        for (Sound sound : sounds) {
-            sound.delete(null);
-        }
-        sounds.clear();
         ALC10.alcMakeContextCurrent(0);
         ALC10.alcDestroyContext(context);
         ALC10.alcCloseDevice(defaultDevice);

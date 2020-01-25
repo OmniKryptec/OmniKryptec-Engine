@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import org.joml.Vector3f;
 import org.lwjgl.openal.AL10;
 
-import de.omnikryptec.audio.AudioManager;
-import de.omnikryptec.audio.ISound;
 import de.omnikryptec.libapi.exposed.Deletable;
 
 /**
@@ -191,9 +189,6 @@ public class AudioSource implements Deletable {
     public final AudioSource delete() {
         stop();
         AL10.alDeleteSources(sourceID);
-        if (sound != null) {
-            sound.delete(this);
-        }
         return this;
     }
     

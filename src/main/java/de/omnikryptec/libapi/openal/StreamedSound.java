@@ -14,8 +14,9 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.audio;
+package de.omnikryptec.libapi.openal;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.Instant;
@@ -28,21 +29,21 @@ import javax.sound.sampled.AudioSystem;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL10;
 
-import de.codemakers.base.logger.LogLevel;
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.libapi.openal.AudioSource;
-import de.omnikryptec.libapi.openal.AudioUtil;
+import de.omnikryptec.libapi.exposed.Deletable;
+import de.omnikryptec.util.Logger;
 
 /**
  * Streamed sound
  *
  * @author Panzer1119
  */
-public class StreamedSound implements ISound {
+public class StreamedSound implements ISound, Deletable {
+    
+    private static final Logger LOGGER = Logger.getLogger(StreamedSound.class);
     
     public static final int STANDARD_BUFFER_COUNT = 3;
     public static final int STANDARD_BUFFER_LENGTH = 1000;
-    protected static final ArrayList<StreamedSound> streamedSounds = new ArrayList<>();
     
     private final ArrayList<Integer> buffersCreated = new ArrayList<>();
     private final String name;
@@ -87,7 +88,7 @@ public class StreamedSound implements ISound {
         this.bufferTime = bufferTime;
         this.pcm = BufferUtils.createByteBuffer((int) (audioFormat.getSampleRate() * 4 * (this.bufferTime / 1000)));
         this.format = getOpenALFormat();
-        streamedSounds.add(this);
+        registerThisAsAutodeletable();
     }
     
     private final void initBuffers() {
@@ -199,8 +200,8 @@ public class StreamedSound implements ISound {
             if (refilled) {
                 AL10.alBufferData(bufferRemovedID, format, pcm, (int) audioFormat.getSampleRate());
                 AL10.alSourceQueueBuffers(source.getSourceID(), bufferRemovedID);
-            } else if (Logger.isDebugMode()) {
-                Logger.log("Buffer could not be refilled!", LogLevel.WARNING);
+            } else {
+                LOGGER.warn("Buffer could not be refilled!");
             }
         }
         if (!source.isPlaying()) {
@@ -219,10 +220,8 @@ public class StreamedSound implements ISound {
             pcm.flip();
             return read >= 0;
         } catch (Exception ex) {
-            if (Logger.isDebugMode()) {
-                Logger.logErr("Error while refilling buffer: " + ex, ex);
-            }
-            return false;
+            LOGGER.warn("Error while refilling buffer", ex);
+            return false,
         }
     }
     
@@ -266,20 +265,17 @@ public class StreamedSound implements ISound {
             final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream);
             return new StreamedSound(name, source, audioInputStream, bufferCount, bufferTime);
         } catch (Exception ex) {
-            if (Logger.isDebugMode()) {
-                Logger.logErr("Error while creating StreamedSound of InputStream: " + ex, ex);
-            }
+            LOGGER.error("Error while creating StreamedSound of InputStream", ex);
             return null;
         }
     }
     
     @Override
-    public boolean delete(AudioSource source) {
+    public void deleteRaw() {
         try {
             audioInputStream.close();
-            return true;
-        } catch (Exception ex) {
-            return false;
+        } catch (IOException e) {
+            LOGGER.warn("Could not deleted StreamedSound", e);
         }
     }
     

@@ -14,19 +14,18 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.audio;
+package de.omnikryptec.libapi.openal;
 
 import org.lwjgl.openal.AL10;
 
-import de.omnikryptec.libapi.openal.AudioSource;
-import de.omnikryptec.libapi.openal.AudioUtil;
+import de.omnikryptec.libapi.exposed.Deletable;
 
 /**
  * Cached sound
  *
  * @author Panzer1119
  */
-public class Sound implements ISound {
+public class Sound implements ISound, Deletable {
     
     private final String name;
     private final int bufferID;
@@ -50,6 +49,7 @@ public class Sound implements ISound {
         this.bits = AL10.alGetBufferi(bufferID, AL10.AL_BITS);
         this.frequency = AL10.alGetBufferi(bufferID, AL10.AL_FREQUENCY);
         calculateLength();
+        registerThisAsAutodeletable();
     }
     
     private final float calculateLength() {
@@ -104,22 +104,6 @@ public class Sound implements ISound {
         return this;
     }
     
-    @Override
-    public final boolean delete(AudioSource source) {
-        if (bufferID == -1) {
-            return false;
-        }
-        try {
-            AL10.alDeleteBuffers(bufferID);
-            return true;
-        } catch (Exception ex) {
-            if (Logger.isDebugMode()) {
-                Logger.logErr("Error while deleting existing " + toString() + ": " + ex, ex);
-            }
-            return false;
-        }
-    }
-    
     /**
      * Loads this Sound to an AudioSource
      *
@@ -140,7 +124,7 @@ public class Sound implements ISound {
     
     @Override
     public SoundType getType() {
-        return SoundType.NORMAL;
+        return SoundType.CACHED;
     }
     
     @Override
@@ -161,6 +145,11 @@ public class Sound implements ISound {
     
     @Override
     public void update(double currentTime) {
+    }
+
+    @Override
+    public void deleteRaw() {
+        AL10.alDeleteBuffers(bufferID);
     }
     
 }

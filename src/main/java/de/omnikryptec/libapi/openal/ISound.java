@@ -14,9 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.audio;
-
-import de.omnikryptec.libapi.openal.AudioSource;
+package de.omnikryptec.libapi.openal;
 
 /**
  * Sound interface
@@ -29,7 +27,7 @@ public interface ISound {
      * Sound type (cached or streamed)
      */
     public static enum SoundType {
-        NORMAL, STREAM;
+        CACHED, STREAM;
     }
     
     /**
@@ -54,14 +52,6 @@ public interface ISound {
      * @param currentTime Long Current time in milliseconds
      */
     public void update(double currentTime);
-    
-    /**
-     * This function gets called when this ISound is deleted
-     *
-     * @param source AudioSource Source which got deleted
-     * @return <tt>true</tt> if the function was successfully
-     */
-    public boolean delete(AudioSource source);
     
     /**
      * Returns the SoundType of this ISound
