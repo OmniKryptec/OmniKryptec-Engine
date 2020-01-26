@@ -16,8 +16,6 @@
 
 package de.omnikryptec.libapi.openal;
 
-import java.util.ArrayList;
-
 import org.joml.Vector3f;
 import org.lwjgl.openal.AL10;
 
@@ -36,7 +34,6 @@ public class AudioSource implements Deletable {
     private float pitch = 1.0F;
     private float deltaPitch = 0.0F;
     private boolean pause = false;
-    private boolean affectedByPhysics = false;
     private AudioEffectState effectState = AudioEffectState.NOTHING;
     private ISound sound = null;
     private float fadeTimeComplete = 1000.0F;
@@ -328,41 +325,6 @@ public class AudioSource implements Deletable {
     }
     
     /**
-     * Sets the orientation
-     *
-     * @param orientation Vector3f Vector of the orientation
-     * @return AudioSource A reference to this AudioSource
-     */
-    public final AudioSource setOrientation(javax.vecmath.Vector3f orientation) {
-        setOrientation(orientation.x, orientation.y, orientation.z);
-        return this;
-    }
-    
-    /**
-     * Sets the orientation
-     *
-     * @param orientation Vector3f Vector of the orientation
-     * @return AudioSource A reference to this AudioSource
-     */
-    public final AudioSource setOrientation(Vector3f orientation) {
-        setOrientation(orientation.x, orientation.y, orientation.z);
-        return this;
-    }
-    
-    /**
-     * Sets the orientation
-     *
-     * @param x Float Float of the x-orientation
-     * @param y Float Float of the y-orientation
-     * @param z Float Float of the z-orientation
-     * @return AudioSource A reference to this AudioSource
-     */
-    public final AudioSource setOrientation(float x, float y, float z) {
-        AL10.alSource3f(sourceID, AL10.AL_ORIENTATION, x, y, z);
-        return this;
-    }
-    
-    /**
      * Sets the velocity
      *
      * @param velocity Vector3f Vector of the velocity
@@ -428,27 +390,6 @@ public class AudioSource implements Deletable {
      */
     public final AudioSource setMaxDistance(float maxDistance) {
         AL10.alSourcef(sourceID, AL10.AL_MAX_DISTANCE, maxDistance);
-        return this;
-    }
-    
-    /**
-     * Returns if this AudioSource is affected by the physics speed
-     *
-     * @return <tt>true</tt> if this AudioSource is affected by the physics speed
-     */
-    public final boolean isAffectedByPhysics() {
-        return affectedByPhysics;
-    }
-    
-    /**
-     * Sets if this AudioSource is affected by the physics speed
-     *
-     * @param affectedByPhysics Boolean If this AudioSource is effected by the
-     *                          physics speed
-     * @return AudioSource A reference to this AudioSource
-     */
-    public final AudioSource setAffectedByPhysics(boolean affectedByPhysics) {
-        this.affectedByPhysics = affectedByPhysics;
         return this;
     }
     

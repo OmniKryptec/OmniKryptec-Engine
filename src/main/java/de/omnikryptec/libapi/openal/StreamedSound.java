@@ -45,9 +45,9 @@ public class StreamedSound implements ISound, Deletable {
     public static final int STANDARD_BUFFER_COUNT = 3;
     public static final int STANDARD_BUFFER_LENGTH = 1000;
     
-    private final ArrayList<Integer> buffersCreated = new ArrayList<>();
+//    private final ArrayList<Integer> buffersCreated = new ArrayList<>();
     private final String name;
-    private final AudioSource source;
+    private AudioSource source;
     private final AudioInputStream audioInputStream;
     private final AudioFormat audioFormat;
     private final ByteBuffer pcm;
@@ -65,8 +65,8 @@ public class StreamedSound implements ISound, Deletable {
      * @param source           AudioSource component
      * @param audioInputStream AudioInputStream
      */
-    public StreamedSound(String name, AudioSource source, AudioInputStream audioInputStream) {
-        this(name, source, audioInputStream, STANDARD_BUFFER_COUNT, STANDARD_BUFFER_LENGTH);
+    public StreamedSound(String name, AudioInputStream audioInputStream) {
+        this(name, audioInputStream, STANDARD_BUFFER_COUNT, STANDARD_BUFFER_LENGTH);
     }
     
     /**
@@ -78,10 +78,9 @@ public class StreamedSound implements ISound, Deletable {
      * @param bufferCount      Number of used Buffers
      * @param bufferTime       Buffered time in milliseconds
      */
-    public StreamedSound(String name, AudioSource source, AudioInputStream audioInputStream, int bufferCount,
+    public StreamedSound(String name, AudioInputStream audioInputStream, int bufferCount,
             int bufferTime) {
         this.name = name;
-        this.source = source;
         this.audioInputStream = audioInputStream;
         this.audioFormat = audioInputStream.getFormat();
         this.bufferCount = bufferCount;
@@ -91,24 +90,25 @@ public class StreamedSound implements ISound, Deletable {
         registerThisAsAutodeletable();
     }
     
-    private final void initBuffers() {
+    private final void initBuffers(AudioSource source) {
         for (int i = 0; i < bufferCount; i++) {
             final int bufferID = AL10.alGenBuffers();
-            buffersCreated.add(bufferID);
+//            buffersCreated.add(bufferID);
             final boolean refilled = refillBuffer();
             AL10.alBufferData(bufferID, format, pcm, (int) audioFormat.getSampleRate());
             AL10.alSourceQueueBuffers(source.getSourceID(), bufferID);
         }
     }
     
-    private final void deleteBuffers() {
+    private final void deleteBuffers(AudioSource source) {
         int bufferRemovedID = 0;
         while ((bufferRemovedID = AL10.alSourceUnqueueBuffers(source.getSourceID())) != 0) {
+            AL10.alDeleteBuffers(bufferRemovedID);
         }
-        for (int bufferID : buffersCreated) {
-            AL10.alDeleteBuffers(bufferID);
-        }
-        buffersCreated.clear();
+//        for (int bufferID : buffersCreated) {
+//            AL10.alDeleteBuffers(bufferID);
+//        }
+//        buffersCreated.clear();
     }
     
     /**
@@ -131,13 +131,14 @@ public class StreamedSound implements ISound, Deletable {
     
     @Override
     public final boolean play(AudioSource source) {
-        initBuffers();
+        initBuffers(source);
+        this.source = source;//TODO fix the AudioSource usage
         return true;
     }
     
     @Override
     public final boolean stop(AudioSource source) {
-        deleteBuffers();
+        deleteBuffers(source);
         return true;
     }
     
@@ -148,7 +149,7 @@ public class StreamedSound implements ISound, Deletable {
     
     @Override
     public final int getOpenALFormat() {
-        return AudioUtil.audioFormatToOpenALFormat(audioFormat);
+        return OpenALUtil.audioFormatToOpenALFormat(audioFormat);
     }
     
     @Override
@@ -188,9 +189,9 @@ public class StreamedSound implements ISound, Deletable {
     
     @Override
     public final void update(double currentTime) {
-        if (buffersCreated.isEmpty()) {
-            return;
-        }
+//        if (buffersCreated.isEmpty()) {
+//            return;
+//        }
         final double duration = currentTime - lastTime;
         lastTime = currentTime;
         int bufferProcessedID = 0;
@@ -221,7 +222,7 @@ public class StreamedSound implements ISound, Deletable {
             return read >= 0;
         } catch (Exception ex) {
             LOGGER.warn("Error while refilling buffer", ex);
-            return false,
+            return false;
         }
     }
     

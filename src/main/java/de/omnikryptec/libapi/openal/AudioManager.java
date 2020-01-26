@@ -69,7 +69,6 @@ public class AudioManager {
     
     private static DistanceModel distanceModel = null;
     private static boolean isInitialized = false;
-    private static Component<?> blockingAudioListenerComponent = null;
     private static long defaultDevice = -1;
     private static long context = -1;
     private static ALCCapabilities deviceCapabilities = null;
@@ -113,80 +112,7 @@ public class AudioManager {
             return false;
         }
     }
-    
-    /**
-     * Sets the data for the listener of the AudioSystem
-     *
-     * @param component Component Component which sets the data
-     * @param position  Vector3f Vector of the position
-     * @param rotation  Vector3f Vector of the rotation
-     * @param velocity  Vector3f Vector of the velocity
-     * @return <tt>true</tt> if the data was successfully changed
-     */
-    public static final boolean setListenerData(Component<?> component, javax.vecmath.Vector3f position,
-            javax.vecmath.Vector3f rotation, javax.vecmath.Vector3f velocity) {
-        return setListenerData(component, position.x, position.y, position.z, rotation.x, rotation.y, rotation.z,
-                velocity.x, velocity.y, velocity.z);
-    }
-    
-    /**
-     * Sets the data for the listener of the AudioSystem
-     *
-     * @param component Component Component which sets the data
-     * @param position  Vector3f Vector of the position
-     * @param rotation  Vector3f Vector of the rotation
-     * @param velocity  Vector3f Vector of the velocity
-     * @return <tt>true</tt> if the data was successfully changed
-     */
-    public static final boolean setListenerData(Component<?> component, Vector3f position, Vector3f rotation,
-            Vector3f velocity) {
-        return setListenerData(component, position.x, position.y, position.z, rotation.x, rotation.y, rotation.z,
-                velocity.x, velocity.y, velocity.z);
-    }
-    
-    /**
-     * Sets the data for the listener of the AudioSystem
-     *
-     * @param component Component Component which sets the data
-     * @param posX      Float Float of the x-position
-     * @param posY      Float Float of the y-position
-     * @param posZ      Float Float of the z-position
-     * @param rotX      Float Float of the x-rotation
-     * @param rotY      Float Float of the y-rotation
-     * @param rotZ      Float Float of the z-rotation
-     * @param velX      Float Float of the x-velocity
-     * @param velY      Float Float of the y-velocity
-     * @param velZ      Float Float of the z-velocity
-     * @return <tt>true</tt> if the data was successfully changed
-     */
-    public static final boolean setListenerData(Component<?> component, float posX, float posY, float posZ, float rotX,
-            float rotY, float rotZ, float velX, float velY, float velZ) {
-        if (blockingAudioListenerComponent != null
-                && (component == null || blockingAudioListenerComponent != component)) {
-            return false;
-        }
-        AL10.alListener3f(AL10.AL_POSITION, posX, posY, posZ);
-        AL10.alListener3f(AL10.AL_ORIENTATION, rotX, rotY, rotZ);
-        AL10.alListener3f(AL10.AL_VELOCITY, velX, velY, velZ);
-        return true;
-    }
-    
-    /**
-     * Sets the Component which blocks the setListenerData function
-     *
-     * @param component    Component Active component or null
-     * @param newComponent Component New component or null
-     * @return <tt>true</tt> if the component was set successfully
-     */
-    public static final boolean setBlockingComponent(Component<?> component, Component<?> newComponent) {
-        if (blockingAudioListenerComponent != null
-                && (component == null || blockingAudioListenerComponent != component)) {
-            return false;
-        }
-        blockingAudioListenerComponent = newComponent;
-        return true;
-    }
-    
+
     /**
      * Loads a sound from a File to the static Soundbuffer
      *
@@ -220,7 +146,7 @@ public class AudioManager {
                 throw new UnsupportedAudioFileException("Can not handle Big Endian formats yet"); // TODO Implement Big
                                                                                                   // Endian formats
             }
-            final int openALFormat = AudioUtil.audioFormatToOpenALFormat(audioFormat);
+            final int openALFormat = OpenALUtil.audioFormatToOpenALFormat(audioFormat);
             final byte[] bytes = IOUtils.toByteArray(audioInputStream);
             final ByteBuffer data = BufferUtils.createByteBuffer(bytes.length).put(bytes);
             data.flip();
@@ -324,39 +250,5 @@ public class AudioManager {
             streamedSound.update(currentTime);
         }
     }
-    
-    /**
-     * Returns if the OpenAL AudioSystem is initialized
-     *
-     * @return <tt>true</tt> if the AudioSystem is initialized
-     */
-    public static final boolean isInitialized() {
-        return isInitialized;
-    }
-    
-    /**
-     * Returns the used DistanceModel
-     *
-     * @return DistanceModel DistanceModle used to calculate the volume of the
-     *         AudioSources
-     */
-    public static final DistanceModel getDistanceModel() {
-        return distanceModel;
-    }
-    
-    /**
-     * Sets the used DistanceModel
-     *
-     * @param distanceModel DistanceModel DistanceModul that should be used to
-     *                      calculate the volume of the AudioSources
-     */
-    public static final void setDistanceModel(DistanceModel distanceModel) {
-        if (distanceModel == null) {
-            return;
-        }
-        AL10.alDistanceModel(distanceModel.getDistanceModelId());
-        AudioManager.distanceModel = distanceModel;
-    }
-   
-    
+
 }

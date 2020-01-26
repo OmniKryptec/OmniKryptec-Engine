@@ -129,7 +129,7 @@ public class Sound implements ISound, Deletable {
     
     @Override
     public int getOpenALFormat() {
-        return AudioUtil.audioFormatToOpenALFormat(channels, bits);
+        return OpenALUtil.audioFormatToOpenALFormat(channels, bits);
     }
     
     @Override
