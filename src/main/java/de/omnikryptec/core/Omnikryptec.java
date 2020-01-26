@@ -83,7 +83,7 @@ public abstract class Omnikryptec {
     public static ResourceProvider getResourceProviderS() {
         return instance().getResourceProvider();
     }
-    
+
     private IWindow window;
     
     private IGameLoop gameLoop;
@@ -125,7 +125,7 @@ public abstract class Omnikryptec {
             LibAPIManager.instance().initOpenCL();
         }
         if (audio) {
-            //XXX initialize audio
+            LibAPIManager.instance().initOpenAL();
         }
     }
     

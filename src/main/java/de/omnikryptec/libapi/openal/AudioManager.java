@@ -78,40 +78,7 @@ public class AudioManager {
      *
      * @return <tt>true</tt> if the AudioSystem was successfully initialized
      */
-    public static final boolean init() {
-        if (isInitialized) {
-            if (Logger.isDebugMode()) {
-                Logger.log("Audio is already initialized!", LogLevel.INFO);
-            }
-            return false;
-        }
-        try {
-            defaultDevice = ALC10.alcOpenDevice((ByteBuffer) null);
-            deviceCapabilities = ALC.createCapabilities(defaultDevice);
-            final IntBuffer contextAttributeList = BufferUtils.createIntBuffer(16);
-            contextAttributeList.put(ALC10.ALC_REFRESH);
-            contextAttributeList.put(60);
-            contextAttributeList.put(ALC10.ALC_SYNC);
-            contextAttributeList.put(ALC10.ALC_FALSE);
-            contextAttributeList.put(ALC_MAX_AUXILIARY_SENDS);
-            contextAttributeList.put(2);
-            contextAttributeList.put(0);
-            contextAttributeList.flip();
-            context = ALC10.alcCreateContext(defaultDevice, contextAttributeList);
-            if (!ALC10.alcMakeContextCurrent(context)) {
-                throw new Exception("Failed to set current OpenAL Context!");
-            }
-            AL.createCapabilities(deviceCapabilities);
-            setDistanceModel(DistanceModel.EXPONENT_CLAMPED);
-            isInitialized = true;
-            Logger.log("Successfully initialized the Audiosystem!", LogLevel.FINEST);
-            return true;
-        } catch (Exception ex) {
-            isInitialized = false;
-            Logger.logErr("Error while initializing the sound library: " + ex, ex);
-            return false;
-        }
-    }
+
 
     /**
      * Loads a sound from a File to the static Soundbuffer
@@ -150,15 +117,15 @@ public class AudioManager {
             final byte[] bytes = IOUtils.toByteArray(audioInputStream);
             final ByteBuffer data = BufferUtils.createByteBuffer(bytes.length).put(bytes);
             data.flip();
-            deleteSound(name);
+            //deleteSound(name);
             final int bufferID = AL10.alGenBuffers();
             AL10.alBufferData(bufferID, openALFormat, data, (int) audioFormat.getSampleRate());
             final Sound sound = new Sound(name, bufferID);
             sound.setFrequency((int) audioFormat.getFrameRate());
-            sounds.add(sound);
+            //sounds.add(sound);
             return bufferID;
         } catch (Exception ex) {
-            Logger.logErr("Error while loading a Sound: " + ex, ex);
+           // Logger.logErr("Error while loading a Sound: " + ex, ex);
             return 0;
         }
     }
@@ -224,20 +191,6 @@ public class AudioManager {
             }
         }
         return null;
-    }
-
-    
-    static {
-        LibAPIManager.registerResourceShutdownHooks(() -> cleanup());
-    }
-    
-    /**
-     * Cleans up every Sound and destroys the OpenAL AudioSystem
-     */
-    private static final void cleanup() {
-        ALC10.alcMakeContextCurrent(0);
-        ALC10.alcDestroyContext(context);
-        ALC10.alcCloseDevice(defaultDevice);
     }
     
     /**

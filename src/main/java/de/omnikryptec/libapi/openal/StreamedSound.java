@@ -264,7 +264,7 @@ public class StreamedSound implements ISound, Deletable {
             int bufferCount, int bufferTime) {
         try {
             final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream);
-            return new StreamedSound(name, source, audioInputStream, bufferCount, bufferTime);
+            return new StreamedSound(name, audioInputStream, bufferCount, bufferTime);
         } catch (Exception ex) {
             LOGGER.error("Error while creating StreamedSound of InputStream", ex);
             return null;

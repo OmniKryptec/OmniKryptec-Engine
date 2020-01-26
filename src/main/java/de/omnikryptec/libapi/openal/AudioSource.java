@@ -18,8 +18,10 @@ package de.omnikryptec.libapi.openal;
 
 import org.joml.Vector3f;
 import org.lwjgl.openal.AL10;
+import org.lwjgl.openal.AL11;
 
 import de.omnikryptec.libapi.exposed.Deletable;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 
 /**
  * Source which plays the sounds
@@ -41,6 +43,8 @@ public class AudioSource implements Deletable {
     private float volumeStart = 0.0F;
     private float volumeTarget = 1.0F;
     
+    //TODO add direction + sound cone properties
+    
     /**
      * Creates an empty AudioSource
      */
@@ -51,6 +55,81 @@ public class AudioSource implements Deletable {
         setPitch(1.0F);
         setPosition(0, 0, 0);
         //audioSources.add(this);
+    }
+    
+    /**
+     * Fades one frame
+     *
+     * @param deltaTime out If fading out or fading in
+     * @return <tt>true</tt> if next frame also needs to be faded again
+     */
+    public final boolean fadeOneFrame(float deltaTime) {
+        final boolean out = (Math.max(volumeStart, volumeTarget) == volumeStart);
+        float newVolume = LibAPIManager.instance().getOpenAL().getDistanceModel().getFade(fadeTime,
+                fadeTimeComplete / 1000.0F, Math.max(volumeStart, volumeTarget), Math.min(volumeStart, volumeTarget));
+        fadeTime += (deltaTime * (out ? 1.0F : -1.0F));
+        setVolume(newVolume);
+        if (out) {
+            return (getVolume() - volumeTarget) > 0.0F;
+        } else {
+            return (volumeTarget - getVolume()) > 0.0F;
+        }
+    }
+    
+    /**
+     * Sets the AudioEffectState
+     *
+     * @param effectState AudioEffectState
+     * @return A reference to this AudioSource
+     */
+    public final AudioSource setEffectState(AudioEffectState effectState) {
+        if (this.effectState != effectState) {
+            switch (effectState) {
+            case NOTHING:
+                break;
+            case FADE_IN:
+                volumeStart = 0.0F;
+                volumeTarget = getVolume();
+                if (volumeTarget <= 0.0F) {
+                    volumeTarget = 1.0F;
+                }
+                fadeTime = fadeTimeComplete / 1000.0F;
+                break;
+            case FADE_OUT:
+                volumeStart = getVolume();
+                volumeTarget = 0.0F;
+                fadeTime = 0.0F;
+                break;
+            }
+        }
+        this.effectState = effectState;
+        return this;
+    }
+    
+    /**
+     * Updates the AudioEffectState
+     *
+     * @return A reference to this AudioSource
+     */
+    public final AudioSource updateState(float deltaTime) {
+        switch (effectState) {
+        case NOTHING:
+            break;
+        case FADE_IN:
+            if (!fadeOneFrame(deltaTime)) {
+                effectState = AudioEffectState.NOTHING;
+                setVolume(volumeTarget);
+            }
+            break;
+        case FADE_OUT:
+            if (!fadeOneFrame(deltaTime)) {
+                effectState = AudioEffectState.NOTHING;
+                setVolume(volumeTarget);
+            }
+            break;
+        
+        }
+        return this;
     }
     
     /**
@@ -96,7 +175,7 @@ public class AudioSource implements Deletable {
      * @return AudioSource A reference to this AudioSource
      */
     public final AudioSource setLooping(boolean loop) {
-        AL10.alSourcei(sourceID, AL10.AL_LOOPING, (loop ? AL10.AL_TRUE : AL10.AL_FALSE));
+        AL10.alSourcei(sourceID, AL10.AL_LOOPING, OpenALUtil.booleanToOpenAL(loop));
         return this;
     }
     
@@ -176,36 +255,6 @@ public class AudioSource implements Deletable {
         stop();
         continuePlaying();
         return this;
-    }
-    
-    /**
-     * Deletes the AudioSource and stops every ISound on this Object
-     *
-     * @return AudioSource A reference to this AudioSource
-     */
-    public final AudioSource delete() {
-        stop();
-        AL10.alDeleteSources(sourceID);
-        return this;
-    }
-    
-    /**
-     * Fades one frame
-     *
-     * @param deltaTime out If fading out or fading in
-     * @return <tt>true</tt> if next frame also needs to be faded again
-     */
-    public final boolean fadeOneFrame(float deltaTime) {
-        final boolean out = (Math.max(volumeStart, volumeTarget) == volumeStart);
-        float newVolume = AudioManager.getDistanceModel().getFade(fadeTime, fadeTimeComplete / 1000.0F,
-                Math.max(volumeStart, volumeTarget), Math.min(volumeStart, volumeTarget));
-        fadeTime += (deltaTime * (out ? 1.0F : -1.0F));
-        setVolume(newVolume);
-        if (out) {
-            return (getVolume() - volumeTarget) > 0.0F;
-        } else {
-            return (volumeTarget - getVolume()) > 0.0F;
-        }
     }
     
     /**
@@ -359,6 +408,11 @@ public class AudioSource implements Deletable {
         return this;
     }
     
+    public final AudioSource setRelative(boolean b) {
+        AL10.alSourcei(sourceID, AL11.AL_SOURCE_RELATIVE, OpenALUtil.booleanToOpenAL(b));
+        return this;
+    }
+    
     /**
      * Sets how fast the volume decreases over distance
      *
@@ -403,62 +457,6 @@ public class AudioSource implements Deletable {
     }
     
     /**
-     * Sets the AudioEffectState
-     *
-     * @param effectState AudioEffectState
-     * @return A reference to this AudioSource
-     */
-    public final AudioSource setEffectState(AudioEffectState effectState) {
-        if (this.effectState != effectState) {
-            switch (effectState) {
-            case NOTHING:
-                break;
-            case FADE_IN:
-                volumeStart = 0.0F;
-                volumeTarget = getVolume();
-                if (volumeTarget <= 0.0F) {
-                    volumeTarget = 1.0F;
-                }
-                fadeTime = fadeTimeComplete / 1000.0F;
-                break;
-            case FADE_OUT:
-                volumeStart = getVolume();
-                volumeTarget = 0.0F;
-                fadeTime = 0.0F;
-                break;
-            }
-        }
-        this.effectState = effectState;
-        return this;
-    }
-    
-    /**
-     * Updates the AudioEffectState
-     *
-     * @return A reference to this AudioSource
-     */
-    public final AudioSource updateState(float deltaTime) {
-        switch (effectState) {
-        case NOTHING:
-            break;
-        case FADE_IN:
-            if (!fadeOneFrame(deltaTime)) {
-                effectState = AudioEffectState.NOTHING;
-                setVolume(volumeTarget);
-            }
-            break;
-        case FADE_OUT:
-            if (!fadeOneFrame(deltaTime)) {
-                effectState = AudioEffectState.NOTHING;
-                setVolume(volumeTarget);
-            }
-            break;
-        
-        }
-        return this;
-    }
-    
-    /**
      * Returns the Fade tim
      *
      * @return Fading in and out time
@@ -484,6 +482,7 @@ public class AudioSource implements Deletable {
     
     @Override
     public void deleteRaw() {
+        stop();
         AL10.alDeleteSources(this.sourceID);
     }
     

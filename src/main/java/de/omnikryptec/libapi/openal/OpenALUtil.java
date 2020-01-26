@@ -18,25 +18,6 @@ package de.omnikryptec.libapi.openal;
 
 import org.lwjgl.openal.AL10;
 import org.lwjgl.openal.AL11;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-import org.lwjgl.opengl.GL13;
-import org.lwjgl.opengl.GL14;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL21;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.GL31;
-import org.lwjgl.opengl.GL32;
-import org.lwjgl.opengl.GL33;
-import org.lwjgl.opengl.GL40;
-import org.lwjgl.opengl.GL41;
-import org.lwjgl.opengl.GL42;
-import org.lwjgl.opengl.GL43;
-import org.lwjgl.opengl.GL44;
-import org.lwjgl.opengl.GL45;
-import org.lwjgl.opengl.GL46;
-
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.Logger;
 
@@ -84,6 +65,10 @@ public class OpenALUtil {
             break;
         }
         return openALFormat;
+    }
+    
+    public static int booleanToOpenAL(boolean b) {
+        return b ? AL10.AL_TRUE : AL10.AL_FALSE;
     }
     
     public static void flushErrors() {

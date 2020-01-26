@@ -51,7 +51,6 @@ public class OpenAL {
             throw new RuntimeException("Failed to make OpenAL context current!");
         }
         AL.createCapabilities(deviceCaps);
-        
     }
     
     public void setMasterGain(float f) {

@@ -32,9 +32,15 @@ import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.gui.GuiComponent;
 import de.omnikryptec.gui.GuiConstraints;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.input.InputEvent;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
+import de.omnikryptec.libapi.openal.AudioManager;
+import de.omnikryptec.libapi.openal.AudioSource;
+import de.omnikryptec.libapi.openal.DistanceModel;
+import de.omnikryptec.libapi.openal.OpenALUtil;
+import de.omnikryptec.libapi.openal.Sound;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
 import de.omnikryptec.render.batch.BorderedBatch2D;
 import de.omnikryptec.resource.Font;
@@ -104,6 +110,7 @@ public class Minigame extends Omnikryptec {
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
             final KeySettings keys) {
         //libSettings.set(LibSetting.DEBUG, true);
+        loaderSettings.set(LoaderSetting.INIT_OPENAL, true);
         libSettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "Minigame");
         //windowSettings.set(WindowSetting.LockAspectRatio, true);
@@ -140,6 +147,22 @@ public class Minigame extends Omnikryptec {
             }
         }
         getGame().getGuiManager().setGui(new TestComponent(0, 0));
+//        LibAPIManager.instance().getOpenAL().setDistanceModel(DistanceModel.EXPONENT_CLAMPED);
+//        AudioSource src = new AudioSource();
+//        Sound sound=null;
+//        try {
+//            sound = new Sound("test", AudioManager.loadSound("test", new AdvancedFile("intern:/de/omnikryptec/resources/bounce.wav").createInputStream()));
+//        } catch (Exception e) {
+//            
+//            e.printStackTrace();
+//        }
+//        LibAPIManager.instance().getOpenAL().setSpeedOfSound(300);
+//        LibAPIManager.instance().getOpenAL().setListenerVelocity(300, 0, 0);
+//        LibAPIManager.instance().getOpenAL().setDopplerFactor(0.0001f);
+//        src.setRelative(false);
+//        src.setVelocity(-300, 0, 0);
+//        src.play(sound);
+//        OpenALUtil.flushErrors();
     }
     
     @Override
