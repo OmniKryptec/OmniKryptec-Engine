@@ -20,16 +20,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import javax.swing.Timer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL10;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.libapi.exposed.Deletable;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.openal.ALSound.SoundType;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Util;
@@ -46,14 +50,13 @@ public class StreamedSound extends ALSound {
     public static final int STANDARD_BUFFER_COUNT = 3;
     public static final int STANDARD_BUFFER_LENGTH = 1000;
     
-    //    private final ArrayList<Integer> buffersCreated = new ArrayList<>();
-    private final String name;
-    private AudioSource source;
     private final AudioInputStream audioInputStream;
     private final ByteBuffer pcm;
     private final int bufferCount;
     private final int bufferTime;
     private double lastTime = 0;
+    
+    private AudioSource source;
     
     private Instant lastTimeT = Instant.now();
     
@@ -64,8 +67,8 @@ public class StreamedSound extends ALSound {
      * @param source           AudioSource component
      * @param audioInputStream AudioInputStream
      */
-    public StreamedSound(String name, AudioInputStream audioInputStream) {
-        this(name, audioInputStream, STANDARD_BUFFER_COUNT, STANDARD_BUFFER_LENGTH);
+    public StreamedSound(AudioInputStream audioInputStream) {
+        this(audioInputStream, STANDARD_BUFFER_COUNT, STANDARD_BUFFER_LENGTH);
     }
     
     /**
@@ -77,19 +80,18 @@ public class StreamedSound extends ALSound {
      * @param bufferCount      Number of used Buffers
      * @param bufferTime       Buffered time in milliseconds
      */
-    public StreamedSound(String name, AudioInputStream audioInputStream, int bufferCount, int bufferTime) {
+    public StreamedSound(AudioInputStream audioInputStream, int bufferCount, int bufferTime) {
         super(audioInputStream.getFormat(), SoundType.STREAM);
-        this.name = name;
         this.audioInputStream = audioInputStream;
         this.bufferCount = bufferCount;
         this.bufferTime = bufferTime;
-        this.pcm = BufferUtils.createByteBuffer((int) (audioInputStream.getFormat().getSampleRate() * 4 * (this.bufferTime / 1000)));
+        this.pcm = BufferUtils
+                .createByteBuffer((int) (audioInputStream.getFormat().getSampleRate() * 4 * (this.bufferTime / 1000)));
     }
     
     private final void initBuffers(AudioSource source) {
         for (int i = 0; i < bufferCount; i++) {
             final int bufferID = AL10.alGenBuffers();
-            //            buffersCreated.add(bufferID);
             final boolean refilled = refillBuffer();
             AL10.alBufferData(bufferID, getOpenALFormat(), pcm, getFrequency());
             AL10.alSourceQueueBuffers(source.getSourceID(), bufferID);
@@ -101,10 +103,6 @@ public class StreamedSound extends ALSound {
         while ((bufferRemovedID = AL10.alSourceUnqueueBuffers(source.getSourceID())) != 0) {
             AL10.alDeleteBuffers(bufferRemovedID);
         }
-        //        for (int bufferID : buffersCreated) {
-        //            AL10.alDeleteBuffers(bufferID);
-        //        }
-        //        buffersCreated.clear();
     }
     
     /**
@@ -118,10 +116,11 @@ public class StreamedSound extends ALSound {
     
     @Override
     final void attach(AudioSource source) {
-        if (Util.ensureNonNull(source) != this.source) {
+        if (Util.ensureNonNull(source) != this.source && this.source != null) {
             throw new IllegalStateException("Can't stream the same sound twice");
         }
         initBuffers(source);
+        OpenAL.ACTIVE_STREAMED_SOUNDS.add(this);
         this.source = source;
     }
     
@@ -131,20 +130,11 @@ public class StreamedSound extends ALSound {
             throw new IllegalStateException("No source attached");
         }
         deleteBuffers(this.source);
+        OpenAL.ACTIVE_STREAMED_SOUNDS.remove(this);
         this.source = null;
     }
     
-
-    public final String getName() {
-        return name;
-    }
-    
-    public final void update(double currentTime) {
-        //        if (buffersCreated.isEmpty()) {
-        //            return;
-        //        }
-        final double duration = currentTime - lastTime;
-        lastTime = currentTime;
+    final void update() {
         int bufferProcessedID = 0;
         while ((bufferProcessedID = AL10.alGetSourcei(source.getSourceID(), AL10.AL_BUFFERS_PROCESSED)) != 0) {
             final int bufferRemovedID = AL10.alSourceUnqueueBuffers(source.getSourceID());
@@ -156,6 +146,7 @@ public class StreamedSound extends ALSound {
                 LOGGER.warn("Buffer could not be refilled!");
             }
         }
+        //wat macht das denn hier?!
         if (!source.isPlaying()) {
             source.stop();
         }
@@ -177,50 +168,30 @@ public class StreamedSound extends ALSound {
         }
     }
     
-    /**
-     * Creates a new StreamSound of an ofAdvancedFile
-     *
-     * @param name   String Name of the Sound
-     * @param source AudioSource Destination for this StreamedSound
-     * @param file   ofAdvancedFile File to load from
-     * @return StreamedSound Sound
-     */
-    public static final StreamedSound ofAdvancedFile(String name, AudioSource source, AdvancedFile file) {
-        return ofInputStream(name, source, file.createInputStream());
-    }
-    
-    /**
-     * Creates a new StreamSound of an InputStream
-     *
-     * @param name        String Name of the Sound
-     * @param source      AudioSource Destination for this StreamedSound
-     * @param inputStream InputStream Stream to load from
-     * @return StreamedSound Sound
-     */
-    public static final StreamedSound ofInputStream(String name, AudioSource source, InputStream inputStream) {
-        return ofInputStream(name, source, inputStream, STANDARD_BUFFER_COUNT, STANDARD_BUFFER_LENGTH);
-    }
-    
-    /**
-     * Creates a new StreamSound of an InputStream
-     *
-     * @param name        String Name of the Sound
-     * @param source      AudioSource Destination for this StreamedSound
-     * @param inputStream InputStream Stream to load from
-     * @param bufferCount Integer Number of used Buffers
-     * @param bufferTime  Integer Buffered time in milliseconds
-     * @return StreamedSound Sound
-     */
-    public static final StreamedSound ofInputStream(String name, AudioSource source, InputStream inputStream,
-            int bufferCount, int bufferTime) {
-        try {
-            final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream);
-            return new StreamedSound(name, audioInputStream, bufferCount, bufferTime);
-        } catch (Exception ex) {
-            LOGGER.error("Error while creating StreamedSound of InputStream", ex);
-            return null;
-        }
-    }
+    //    /**
+    //     * Creates a new StreamSound of an ofAdvancedFile
+    //     *
+    //     * @param name   String Name of the Sound
+    //     * @param source AudioSource Destination for this StreamedSound
+    //     * @param file   ofAdvancedFile File to load from
+    //     * @return StreamedSound Sound
+    //     */
+    //    public static final StreamedSound ofAdvancedFile(String name, AudioSource source, AdvancedFile file) {
+    //        return ofInputStream(name, source, file.createInputStream());
+    //    }
+    //    
+    //    /**
+    //     * Creates a new StreamSound of an InputStream
+    //     *
+    //     * @param name        String Name of the Sound
+    //     * @param source      AudioSource Destination for this StreamedSound
+    //     * @param inputStream InputStream Stream to load from
+    //     * @return StreamedSound Sound
+    //     */
+    //    public static final StreamedSound ofInputStream(String name, AudioSource source, InputStream inputStream) {
+    //        return ofInputStream(name, source, inputStream, STANDARD_BUFFER_COUNT, STANDARD_BUFFER_LENGTH);
+    //    }
+    //    
     
     @Override
     public void deleteRaw() {

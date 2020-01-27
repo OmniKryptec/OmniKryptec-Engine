@@ -32,11 +32,6 @@ public class AudioPlaylist {
     
     private static final Logger LOGGER = Logger.getLogger(AudioPlaylist.class);
     
-    private static final Timer timer = new Timer(10, (e) -> {
-        updateAll();
-    });
-    private static final ArrayList<AudioPlaylist> playlists = new ArrayList<>();
-    
     private final ArrayList<ALSound> sounds = new ArrayList<>();
     private final AudioSource source_1 = new AudioSource();
     private final AudioSource source_2 = new AudioSource();
@@ -53,9 +48,6 @@ public class AudioPlaylist {
     // oder einfach abspielen mit naechster und so
     public AudioPlaylist(ALSound... sounds) {
         addSounds(sounds);
-        if (!timer.isRunning()) {
-            timer.start();
-        }
         source_1.setFadeTimeComplete(5.0F);
         source_2.setFadeTimeComplete(5.0F);
     }
@@ -69,8 +61,8 @@ public class AudioPlaylist {
         }
     }
     
-    public final boolean removeSounds(ALSound... sounds) { // TODO Falls der sound gerade gespielt wird, muss er gestoppt
-                                                          // werden
+    public final boolean removeSounds(ALSound... sounds) { // TODO Panzer1119 Falls der sound gerade gespielt wird, muss er gestoppt
+                                                           // werden
         if (sounds != null && sounds.length > 0) {
             for (ALSound sound : sounds) {
                 this.sounds.remove(sound);
@@ -105,6 +97,7 @@ public class AudioPlaylist {
         getWaitingAudioSource().setEffectState(AudioEffectState.FADE_IN);
         getWaitingAudioSource().play(sound);
         playerIsSource1 = !playerIsSource1;
+        OpenAL.ACTIVE_PLAYLISTS.add(this);
         return this;
     }
     
@@ -154,6 +147,7 @@ public class AudioPlaylist {
         isPlaying = false;
         source_1.stop();
         source_2.stop();
+        OpenAL.ACTIVE_PLAYLISTS.remove(this);
         return this;
     }
     
@@ -201,32 +195,18 @@ public class AudioPlaylist {
         return this;
     }
     
-    protected final AudioPlaylist update() {
+    final AudioPlaylist update() {
         //FIXME Panzer1119 length of streamed sounds
-//        if (!isPlaying) {
-//            return this;
-//        }
-//        final double deltaTime = (System.currentTimeMillis() - playStarted) / 1000.0;
-//        LOGGER.debug("Length: " + getPlayingAudioSource().getSound().getLength());
-//        if (deltaTime >= getPlayingAudioSource().getSound().getLength() - fadingStart) {
-//            startFading();
-//        }
-//        source_1.updateState(timer.getDelay() / 1000.0F);
-//        source_2.updateState(timer.getDelay() / 1000.0F);
+        //        if (!isPlaying) {
+        //            return this;
+        //        }
+        //        final double deltaTime = (System.currentTimeMillis() - playStarted) / 1000.0;
+        //        LOGGER.debug("Length: " + getPlayingAudioSource().getSound().getLength());
+        //        if (deltaTime >= getPlayingAudioSource().getSound().getLength() - fadingStart) {
+        //            startFading();
+        //        }
+        //        source_1.updateState(timer.getDelay() / 1000.0F);
+        //        source_2.updateState(timer.getDelay() / 1000.0F);
         return this;
     }
-    
-    public static final void updateAll() {//TODO pcfreak9000 update laylists
-        for (AudioPlaylist playlist : playlists) {
-            playlist.update();
-        }
-    }
-    
-    public static final void cleanUp() {
-        timer.stop();
-        playlists.stream().forEach((playlist) -> {
-            playlist.stop();
-        });
-    }
-    
 }

@@ -22,6 +22,7 @@ public abstract class ALSound implements Deletable {
         this.soundType = type;
         registerThisAsAutodeletable();
     }
+    
     abstract void attach(AudioSource as);
     
     abstract void detach();

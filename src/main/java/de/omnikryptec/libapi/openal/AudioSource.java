@@ -37,13 +37,14 @@ public class AudioSource implements Deletable {
     private float deltaPitch = 0.0F;
     private boolean pause = false;
     private AudioEffectState effectState = AudioEffectState.NOTHING;
-    private ALSound sound = null;
     private float fadeTimeComplete = 1000.0F;
     private float fadeTime = 0.0F;
     private float volumeStart = 0.0F;
     private float volumeTarget = 1.0F;
     
-    //TODO add direction + sound cone properties
+    private ALSound sound = null;
+    
+    //TODO pcfreak9000 add direction + sound cone properties
     
     /**
      * Creates an empty AudioSource
@@ -133,16 +134,6 @@ public class AudioSource implements Deletable {
     }
     
     /**
-     * Plays and sets the Sound given by the name
-     *
-     * @param name String Name of the Sound to be played
-     * @return AudioSource A reference to this AudioSource
-     */
-    public final AudioSource play(String name) {
-        return play(AudioManager.getSound(name));
-    }
-    
-    /**
      * Plays and sets the ISound
      *
      * @param sound ISound Sound to be played
@@ -153,8 +144,8 @@ public class AudioSource implements Deletable {
         if (sound == null) {
             return this;
         }
-        this.sound = sound;
         sound.attach(this);
+        this.sound = sound;
         continuePlaying();
         return this;
     }

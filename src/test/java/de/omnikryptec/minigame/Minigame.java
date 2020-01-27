@@ -18,6 +18,8 @@ package de.omnikryptec.minigame;
 
 import java.util.Random;
 
+import javax.swing.Timer;
+
 import org.joml.Matrix3x2f;
 import org.joml.Vector2dc;
 import org.joml.Vector2f;
@@ -32,9 +34,17 @@ import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.gui.GuiComponent;
 import de.omnikryptec.gui.GuiConstraints;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.input.InputEvent;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
+import de.omnikryptec.libapi.openal.AudioManager;
+import de.omnikryptec.libapi.openal.AudioSource;
+import de.omnikryptec.libapi.openal.DistanceModel;
+import de.omnikryptec.libapi.openal.OpenALUtil;
+import de.omnikryptec.libapi.openal.Sound;
+import de.omnikryptec.libapi.openal.SoundLoader;
+import de.omnikryptec.libapi.openal.StreamedSound;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
 import de.omnikryptec.render.batch.BorderedBatch2D;
 import de.omnikryptec.resource.Font;
@@ -141,22 +151,26 @@ public class Minigame extends Omnikryptec {
             }
         }
         getGame().getGuiManager().setGui(new TestComponent(0, 0));
-//        LibAPIManager.instance().getOpenAL().setDistanceModel(DistanceModel.EXPONENT_CLAMPED);
-//        AudioSource src = new AudioSource();
-//        Sound sound=null;
-//        try {
-//            sound = new Sound("test", AudioManager.loadSound("test", new AdvancedFile("intern:/de/omnikryptec/resources/bounce.wav").createInputStream()));
-//        } catch (Exception e) {
-//            
-//            e.printStackTrace();
-//        }
-//        LibAPIManager.instance().getOpenAL().setSpeedOfSound(300);
-//        LibAPIManager.instance().getOpenAL().setListenerVelocity(300, 0, 0);
-//        LibAPIManager.instance().getOpenAL().setDopplerFactor(0.0001f);
-//        src.setRelative(false);
-//        src.setVelocity(-300, 0, 0);
-//        src.play(sound);
-//        OpenALUtil.flushErrors();
+        LibAPIManager.instance().getOpenAL().setDistanceModel(DistanceModel.EXPONENT_CLAMPED);
+        AudioSource src = new AudioSource();
+        try {
+            
+            StreamedSound sound = SoundLoader.streamSound(
+                    new AdvancedFile("intern:/de/omnikryptec/resources/test.wav").createInputStream(), 3, 1000);
+            
+            //Timer timer = new Timer(10, e -> sound.update(0));
+            //timer.start();
+            LibAPIManager.instance().getOpenAL().setSpeedOfSound(300);
+            LibAPIManager.instance().getOpenAL().setListenerVelocity(300, 0, 0);
+            LibAPIManager.instance().getOpenAL().setDopplerFactor(0.0001f);
+            src.setRelative(false);
+            src.setVelocity(-300, 0, 0);
+            src.play(sound);
+            OpenALUtil.flushErrors();
+        } catch (Exception e) {
+            
+            e.printStackTrace();
+        }
     }
     
     @Override

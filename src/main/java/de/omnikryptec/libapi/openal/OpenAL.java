@@ -4,6 +4,10 @@ import static org.lwjgl.openal.EXTEfx.ALC_MAX_AUXILIARY_SENDS;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.Timer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL;
@@ -13,11 +17,28 @@ import org.lwjgl.openal.ALC;
 import org.lwjgl.openal.ALC10;
 import org.lwjgl.openal.ALCCapabilities;
 
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.Util;
 
 public class OpenAL {
     
     private static boolean created = false;
+    
+    static final List<StreamedSound> ACTIVE_STREAMED_SOUNDS = new ArrayList<>();
+    static final List<AudioPlaylist> ACTIVE_PLAYLISTS = new ArrayList<>();
+    
+    private static final Timer UPDATE_TIMER = new Timer(10, e -> {
+        for (StreamedSound s : ACTIVE_STREAMED_SOUNDS) {
+            s.update();
+        }
+        for(AudioPlaylist p : ACTIVE_PLAYLISTS) {
+            p.update();
+        }
+    });
+    
+    static {
+        LibAPIManager.registerResourceShutdownHooks(() -> UPDATE_TIMER.stop());
+    }
     
     private DistanceModel distanceModel;
     
@@ -25,6 +46,9 @@ public class OpenAL {
     private long context;
     private ALCCapabilities deviceCaps;
     
+    /**
+     * Used internally by the engine. Instead, use the LibAPIManager
+     */
     public void shutdown() {
         ALC10.alcMakeContextCurrent(0);
         ALC10.alcDestroyContext(context);
@@ -35,6 +59,7 @@ public class OpenAL {
         if (created) {
             throw new IllegalStateException("OpenAL has already been created");
         }
+        //TODO pick a better device
         defaultDevice = ALC10.alcOpenDevice((ByteBuffer) null);
         deviceCaps = ALC.createCapabilities(defaultDevice);
         IntBuffer contextAttributeList = BufferUtils.createIntBuffer(16);
@@ -51,6 +76,7 @@ public class OpenAL {
             throw new RuntimeException("Failed to make OpenAL context current!");
         }
         AL.createCapabilities(deviceCaps);
+        UPDATE_TIMER.start();
     }
     
     public void setMasterGain(float f) {

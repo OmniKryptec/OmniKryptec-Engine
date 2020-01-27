@@ -34,6 +34,7 @@
  */
 package de.omnikryptec.libapi.openal;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
@@ -55,20 +56,13 @@ import de.codemakers.io.file.AdvancedFile;
  * @author Panzer1119
  */
 public class AudioManager {
-    
-    private static DistanceModel distanceModel = null;
-    private static boolean isInitialized = false;
-    private static long defaultDevice = -1;
-    private static long context = -1;
-    private static ALCCapabilities deviceCapabilities = null;
-    
+
     /**
      * Initializes the OpenAL AudioSystem
      *
      * @return <tt>true</tt> if the AudioSystem was successfully initialized
      */
-
-
+    
     /**
      * Loads a sound from a File to the static Soundbuffer
      *
@@ -91,91 +85,26 @@ public class AudioManager {
         return loadSound(name, AudioManager.class.getResourceAsStream(path));
     }
     
-    public static final int loadSound(String name, InputStream inputStream) {
-        try {
-            final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream);
-            if (audioInputStream == null) {
-                return 0;
-            }
-            final AudioFormat audioFormat = audioInputStream.getFormat();
-            if (audioFormat.isBigEndian()) {
-                throw new UnsupportedAudioFileException("Can not handle Big Endian formats yet"); // TODO Implement Big
-                                                                                                  // Endian formats
-            }
-            final int openALFormat = OpenALUtil.audioFormatToOpenALFormat(audioFormat);
-            final byte[] bytes = IOUtils.toByteArray(audioInputStream);
-            final ByteBuffer data = BufferUtils.createByteBuffer(bytes.length).put(bytes);
-            data.flip();
-            //deleteSound(name);
-            final int bufferID = AL10.alGenBuffers();
-            AL10.alBufferData(bufferID, openALFormat, data, (int) audioFormat.getSampleRate());
-            final Sound sound = new Sound(name, bufferID);
-            sound.setFrequency((int) audioFormat.getFrameRate());
-            //sounds.add(sound);
-            return bufferID;
-        } catch (Exception ex) {
-           // Logger.logErr("Error while loading a Sound: " + ex, ex);
-            return 0;
-        }
-    }
+
     
-//    /**
-//     * Loads a sound from an InputStream to the static Soundbuffer
-//     *
-//     * @param name        String Name of the Sound
-//     * @param inputStream InputStream Stream where should be read from
-//     * @return Integer BufferID where the sound was saved
-//     */
-//    @Deprecated
-//    public static final int loadSoundOLD(String name, InputStream inputStream) {
-//        deleteSound(name);
-//        final int bufferID = AL10.alGenBuffers();
-//        // final WaveData waveData = WaveData.create(inputStream);
-//        // AL10.alBufferData(bufferID, waveData.format, waveData.data,
-//        // waveData.samplerate);
-//        // waveData.dispose();
-//        final Sound sound = new Sound(name, bufferID);
-//        sounds.add(sound);
-//        return bufferID;
-//    }
-//    
-    /**
-     * Returns a Sound for the given name
-     *
-     * @param name String Name of the Sound
-     * @return Sound Found Sound or null
-     */
-    public static final Sound getSound(String name) {
-        for (Sound sound : sounds) {
-            if (sound.getName().equals(name)) {
-                return sound;
-            }
-        }
-        return null;
-    }
-    
-    /**
-     * Returns all names of the loaded Sounds
-     *
-     * @return String Array with all Sound names
-     */
-    public static final String[] getSoundNames() {
-        final String[] names = new String[sounds.size()];
-        for (int i = 0; i < names.length; i++) {
-            names[i] = sounds.get(i).getName();
-        }
-        return names;
-    }
-    
-    /**
-     * Updates all StreamedSounds
-     *
-     * @param currentTime Long Current time in milliseconds
-     */
-    public static final void update(double currentTime) {//TODO pcfreak9000 update streamed sounds
-        for (StreamedSound streamedSound : StreamedSound.streamedSounds) {
-            streamedSound.update(currentTime);
-        }
-    }
+    //    /**
+    //     * Loads a sound from an InputStream to the static Soundbuffer
+    //     *
+    //     * @param name        String Name of the Sound
+    //     * @param inputStream InputStream Stream where should be read from
+    //     * @return Integer BufferID where the sound was saved
+    //     */
+    //    @Deprecated
+    //    public static final int loadSoundOLD(String name, InputStream inputStream) {
+    //        deleteSound(name);
+    //        final int bufferID = AL10.alGenBuffers();
+    //        // final WaveData waveData = WaveData.create(inputStream);
+    //        // AL10.alBufferData(bufferID, waveData.format, waveData.data,
+    //        // waveData.samplerate);
+    //        // waveData.dispose();
+    //        final Sound sound = new Sound(name, bufferID);
+    //        sounds.add(sound);
+    //        return bufferID;
+    //    }
 
 }
