@@ -16,14 +16,15 @@
 
 package de.omnikryptec.libapi.openal;
 
-import org.lwjgl.openal.AL10;
-import org.lwjgl.openal.AL11;
-import de.omnikryptec.libapi.exposed.LibAPIManager;
-import de.omnikryptec.util.Logger;
-
 import java.lang.reflect.Field;
 
 import javax.sound.sampled.AudioFormat;
+
+import org.lwjgl.openal.AL10;
+import org.lwjgl.openal.AL11;
+
+import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.util.Logger;
 
 /**
  *

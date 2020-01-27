@@ -21,7 +21,6 @@ import java.util.Arrays;
 
 import javax.swing.Timer;
 
-import de.codemakers.base.logger.LogLevel;
 import de.omnikryptec.util.Logger;
 
 /**
@@ -38,7 +37,7 @@ public class AudioPlaylist {
     });
     private static final ArrayList<AudioPlaylist> playlists = new ArrayList<>();
     
-    private final ArrayList<ISound> sounds = new ArrayList<>();
+    private final ArrayList<ALSound> sounds = new ArrayList<>();
     private final AudioSource source_1 = new AudioSource();
     private final AudioSource source_2 = new AudioSource();
     private boolean playerIsSource1 = false;
@@ -52,7 +51,7 @@ public class AudioPlaylist {
     // TODO Panzer1119 Vielleicht das Playlist extenden lassen, und dann ist PlayList eine
     // lustige PlayList, die alle funktionen generisch eingebaut hat wie shuffle
     // oder einfach abspielen mit naechster und so
-    public AudioPlaylist(ISound... sounds) {
+    public AudioPlaylist(ALSound... sounds) {
         addSounds(sounds);
         if (!timer.isRunning()) {
             timer.start();
@@ -61,7 +60,7 @@ public class AudioPlaylist {
         source_2.setFadeTimeComplete(5.0F);
     }
     
-    public final boolean addSounds(ISound... sounds) {
+    public final boolean addSounds(ALSound... sounds) {
         if (sounds != null && sounds.length > 0) {
             this.sounds.addAll(Arrays.asList(sounds));
             return true;
@@ -70,10 +69,10 @@ public class AudioPlaylist {
         }
     }
     
-    public final boolean removeSounds(ISound... sounds) { // TODO Falls der sound gerade gespielt wird, muss er gestoppt
+    public final boolean removeSounds(ALSound... sounds) { // TODO Falls der sound gerade gespielt wird, muss er gestoppt
                                                           // werden
         if (sounds != null && sounds.length > 0) {
-            for (ISound sound : sounds) {
+            for (ALSound sound : sounds) {
                 this.sounds.remove(sound);
             }
             checkPointer();
@@ -83,8 +82,8 @@ public class AudioPlaylist {
         }
     }
     
-    public final ISound[] getSounds() {
-        return sounds.toArray(new ISound[sounds.size()]);
+    public final ALSound[] getSounds() {
+        return sounds.toArray(new ALSound[sounds.size()]);
     }
     
     private final AudioSource getPlayingAudioSource() {
@@ -95,7 +94,7 @@ public class AudioPlaylist {
         return (playerIsSource1 ? source_2 : source_1);
     }
     
-    private final AudioPlaylist play(ISound sound) {
+    private final AudioPlaylist play(ALSound sound) {
         if (sound == null) {
             stop();
         }
@@ -109,11 +108,11 @@ public class AudioPlaylist {
         return this;
     }
     
-    private final ISound next() {
+    private final ALSound next() {
         if (sounds.isEmpty() || pointer == -1) {
             return null;
         }
-        final ISound sound = sounds.get(pointer);
+        final ALSound sound = sounds.get(pointer);
         pointer++;
         if (loop) {
             checkPointer();
@@ -156,14 +155,6 @@ public class AudioPlaylist {
         source_1.stop();
         source_2.stop();
         return this;
-    }
-    
-    public final float getLength() {
-        float lengthInSeconds = 0.0F;
-        for (ISound sound : sounds) {
-            lengthInSeconds += sound.getLength();
-        }
-        return lengthInSeconds;
     }
     
     public final AudioPlaylist shuffle() {
@@ -211,20 +202,21 @@ public class AudioPlaylist {
     }
     
     protected final AudioPlaylist update() {
-        if (!isPlaying) {
-            return this;
-        }
-        final double deltaTime = (System.currentTimeMillis() - playStarted) / 1000.0;
-        LOGGER.debug("Length: " + getPlayingAudioSource().getSound().getLength());
-        if (deltaTime >= getPlayingAudioSource().getSound().getLength() - fadingStart) {
-            startFading();
-        }
-        source_1.updateState(timer.getDelay() / 1000.0F);
-        source_2.updateState(timer.getDelay() / 1000.0F);
+        //FIXME Panzer1119 length of streamed sounds
+//        if (!isPlaying) {
+//            return this;
+//        }
+//        final double deltaTime = (System.currentTimeMillis() - playStarted) / 1000.0;
+//        LOGGER.debug("Length: " + getPlayingAudioSource().getSound().getLength());
+//        if (deltaTime >= getPlayingAudioSource().getSound().getLength() - fadingStart) {
+//            startFading();
+//        }
+//        source_1.updateState(timer.getDelay() / 1000.0F);
+//        source_2.updateState(timer.getDelay() / 1000.0F);
         return this;
     }
     
-    public static final void updateAll() {
+    public static final void updateAll() {//TODO pcfreak9000 update laylists
         for (AudioPlaylist playlist : playlists) {
             playlist.update();
         }

@@ -16,23 +16,25 @@
 
 package de.omnikryptec.libapi.openal;
 
+import javax.sound.sampled.AudioFormat;
+
 import org.lwjgl.openal.AL10;
 
 import de.omnikryptec.libapi.exposed.Deletable;
+import de.omnikryptec.libapi.openal.ALSound.SoundType;
 
 /**
  * Cached sound
  *
  * @author Panzer1119
  */
-public class Sound implements ISound, Deletable {
+public class Sound extends ALSound {
     
     private final String name;
+   
     private final int bufferID;
+    
     private final int size;
-    private final int channels;
-    private final int bits;
-    private int frequency;
     private float length;
     
     /**
@@ -41,53 +43,24 @@ public class Sound implements ISound, Deletable {
      * @param name     String Name of the Sound
      * @param bufferID Integer BufferID
      */
-    public Sound(String name, int bufferID) {
+    public Sound(String name, AudioFormat format) {//TODO load sounds (transfer stuff from AudioManager)
+        super(format, SoundType.CACHED);
         this.name = name;
-        this.bufferID = bufferID;
+        this.bufferID = AL10.alGenBuffers();
         this.size = AL10.alGetBufferi(bufferID, AL10.AL_SIZE);
-        this.channels = AL10.alGetBufferi(bufferID, AL10.AL_CHANNELS);
-        this.bits = AL10.alGetBufferi(bufferID, AL10.AL_BITS);
-        this.frequency = AL10.alGetBufferi(bufferID, AL10.AL_FREQUENCY);
         calculateLength();
         registerThisAsAutodeletable();
     }
     
     private final float calculateLength() {
-        length = (((size) * 8.0F) / (((float) channels) * ((float) bits))) / (frequency);
+        length = (((size) * 8.0F) / (((float) getChannels()) * ((float) getBits()))) / (getFrequency());
         return length;
     }
     
-    @Override
     public final String getName() {
         return name;
     }
     
-    @Override
-    public final int getBufferID() {
-        return bufferID;
-    }
-    
-    @Override
-    public final int getSize() {
-        return size;
-    }
-    
-    @Override
-    public final int getChannels() {
-        return channels;
-    }
-    
-    @Override
-    public final int getBits() {
-        return bits;
-    }
-    
-    @Override
-    public final int getFrequency() {
-        return frequency;
-    }
-    
-    @Override
     public final float getLength() {
         return length;
     }
@@ -98,8 +71,9 @@ public class Sound implements ISound, Deletable {
      * @param frequency Integer Frequency
      * @return Sound A reference to this Sound
      */
+    @Deprecated
     public final Sound setFrequency(int frequency) {
-        this.frequency = frequency;
+        //this.frequency = frequency;
         calculateLength();
         return this;
     }
@@ -119,34 +93,19 @@ public class Sound implements ISound, Deletable {
     public final String toString() {
         return String.format(
                 "Sound [bufferdID = %d, size = %d, channels = %d, bits = %d, frequency = %d, length = %.2f]", bufferID,
-                size, channels, bits, frequency, length);
+                size, getChannels(), getBits(), getFrequency(), length);
     }
     
+ 
     @Override
-    public SoundType getType() {
-        return SoundType.CACHED;
-    }
-    
-    @Override
-    public int getOpenALFormat() {
-        return OpenALUtil.audioFormatToOpenALFormat(channels, bits);
-    }
-    
-    @Override
-    public boolean play(AudioSource source) {
+    void attach(AudioSource source) {
         loadToAudioSource(source);
-        return true;
-    }
-    
-    @Override
-    public boolean stop(AudioSource source) {
-        return false;
-    }
-    
-    @Override
-    public void update(double currentTime) {
     }
 
+    @Override
+    void detach() {        
+    }
+    
     @Override
     public void deleteRaw() {
         AL10.alDeleteBuffers(bufferID);

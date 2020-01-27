@@ -37,7 +37,7 @@ public class AudioSource implements Deletable {
     private float deltaPitch = 0.0F;
     private boolean pause = false;
     private AudioEffectState effectState = AudioEffectState.NOTHING;
-    private ISound sound = null;
+    private ALSound sound = null;
     private float fadeTimeComplete = 1000.0F;
     private float fadeTime = 0.0F;
     private float volumeStart = 0.0F;
@@ -148,13 +148,13 @@ public class AudioSource implements Deletable {
      * @param sound ISound Sound to be played
      * @return AudioSource A reference to this AudioSource
      */
-    public final AudioSource play(ISound sound) {
+    public final AudioSource play(ALSound sound) {
         stop();
         if (sound == null) {
             return this;
         }
-        sound.play(this);
         this.sound = sound;
+        sound.attach(this);
         continuePlaying();
         return this;
     }
@@ -164,7 +164,7 @@ public class AudioSource implements Deletable {
      *
      * @return ISound Set ISound
      */
-    public final ISound getSound() {
+    public final ALSound getSound() {
         return sound;
     }
     
@@ -241,7 +241,7 @@ public class AudioSource implements Deletable {
         pause = true;
         AL10.alSourceStop(sourceID);
         if (sound != null) {
-            sound.stop(this);
+            sound.detach();
         }
         return this;
     }

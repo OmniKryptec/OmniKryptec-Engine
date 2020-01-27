@@ -34,12 +34,8 @@
  */
 package de.omnikryptec.libapi.openal;
 
-import static org.lwjgl.openal.EXTEfx.ALC_MAX_AUXILIARY_SENDS;
-
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-import java.util.ArrayList;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -47,18 +43,11 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.apache.commons.io.IOUtils;
-import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
-import org.lwjgl.openal.AL11;
-import org.lwjgl.openal.ALC;
-import org.lwjgl.openal.ALC10;
 import org.lwjgl.openal.ALCCapabilities;
 
-import de.codemakers.base.logger.LogLevel;
 import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.libapi.exposed.LibAPIManager;
 
 /**
  * Main audio manager class
@@ -179,26 +168,11 @@ public class AudioManager {
     }
     
     /**
-     * Returns a Sound for the given bufferID
-     *
-     * @param bufferID Integer BufferID
-     * @return Sound Found Sound or null
-     */
-    public static final Sound getSound(int bufferID) {
-        for (Sound sound : sounds) {
-            if (sound.getBufferID() == bufferID) {
-                return sound;
-            }
-        }
-        return null;
-    }
-    
-    /**
      * Updates all StreamedSounds
      *
      * @param currentTime Long Current time in milliseconds
      */
-    public static final void update(double currentTime) {
+    public static final void update(double currentTime) {//TODO pcfreak9000 update streamed sounds
         for (StreamedSound streamedSound : StreamedSound.streamedSounds) {
             streamedSound.update(currentTime);
         }
