@@ -26,11 +26,9 @@ import de.omnikryptec.libapi.exposed.LibAPIManager;
 /**
  * Source which plays the sounds
  *
- * @author Panzer1119
+ * @author Panzer1119 & pcfreak9000
  */
 public class AudioSource implements Deletable {
-    
-    //protected static final ArrayList<AudioSource> audioSources = new ArrayList<>();
     
     private final int sourceID;
     private float pitch = 1.0F;
@@ -44,7 +42,6 @@ public class AudioSource implements Deletable {
     
     private ALSound sound = null;
     
-    //TODO pcfreak9000 add direction + sound cone properties
     
     /**
      * Creates an empty AudioSource
@@ -55,7 +52,6 @@ public class AudioSource implements Deletable {
         setVolume(1.0F);
         setPitch(1.0F);
         setPosition(0, 0, 0);
-        //audioSources.add(this);
     }
     
     /**
@@ -404,6 +400,11 @@ public class AudioSource implements Deletable {
         return this;
     }
     
+    public final AudioSource setDirection(float dx, float dy, float dz) {
+        AL10.alSource3f(sourceID, AL10.AL_DIRECTION, dx, dy, dz);
+        return this;
+    }
+    
     /**
      * Sets how fast the volume decreases over distance
      *
@@ -435,6 +436,21 @@ public class AudioSource implements Deletable {
      */
     public final AudioSource setMaxDistance(float maxDistance) {
         AL10.alSourcef(sourceID, AL10.AL_MAX_DISTANCE, maxDistance);
+        return this;
+    }
+    
+    public final AudioSource setInnerConeDeg(float d) {
+        AL10.alSourcef(sourceID, AL10.AL_CONE_INNER_ANGLE, d);
+        return this;
+    }
+    
+    public final AudioSource setOuterConeDeg(float d) {
+        AL10.alSourcef(sourceID, AL10.AL_CONE_OUTER_ANGLE, d);
+        return this;
+    }
+    
+    public final AudioSource setOuterConeGain(float g) {
+        AL10.alSourcef(sourceID, AL10.AL_CONE_OUTER_GAIN, g);
         return this;
     }
     

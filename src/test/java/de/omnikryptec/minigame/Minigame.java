@@ -39,6 +39,7 @@ import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.openal.AudioSource;
 import de.omnikryptec.libapi.openal.DistanceModel;
 import de.omnikryptec.libapi.openal.OpenALUtil;
+import de.omnikryptec.libapi.openal.Sound;
 import de.omnikryptec.libapi.openal.SoundLoader;
 import de.omnikryptec.libapi.openal.StreamedSound;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
@@ -111,12 +112,14 @@ public class Minigame extends Omnikryptec {
             final KeySettings keys) {
         //libSettings.set(LibSetting.DEBUG, true);
         loaderSettings.set(LoaderSetting.INIT_OPENAL, true);
+        loaderSettings.set(LoaderSetting.SHOW_WINDOW_AFTER_CREATION, WindowMakeVisible.AFTER_INIT);
         libSettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
         windowSettings.set(WindowSetting.Name, "Minigame");
         //windowSettings.set(WindowSetting.LockAspectRatio, true);
         windowSettings.set(WindowSetting.VSync, true);
         windowSettings.set(WindowSetting.Width, 800);
         windowSettings.set(WindowSetting.Height, 600);
+        
         Profiler.setEnabled(true);
     }
     
@@ -147,26 +150,8 @@ public class Minigame extends Omnikryptec {
             }
         }
         getGame().getGuiManager().setGui(new TestComponent(0, 0));
-        LibAPIManager.instance().getOpenAL().setDistanceModel(DistanceModel.EXPONENT_CLAMPED);
-        AudioSource src = new AudioSource();
-        try {
-            
-            StreamedSound sound = SoundLoader.streamSound(
-                    new AdvancedFile("intern:/de/omnikryptec/resources/test.wav").createInputStream(), 3, 1000);
-            
-            //Timer timer = new Timer(10, e -> sound.update(0));
-            //timer.start();
-            LibAPIManager.instance().getOpenAL().setSpeedOfSound(300);
-            LibAPIManager.instance().getOpenAL().setListenerVelocity(300, 0, 0);
-            LibAPIManager.instance().getOpenAL().setDopplerFactor(0.0001f);
-            src.setRelative(false);
-            src.setVelocity(-300, 0, 0);
-            src.play(sound);
-            OpenALUtil.flushErrors();
-        } catch (Exception e) {
-            
-            e.printStackTrace();
-        }
+        Sound sound = SoundLoader.loadSound(new AdvancedFile("intern:/de/omnikryptec/resources/bounce.wav"));
+        this.mgr.addSystem(new AudioTestSystem(sound));
     }
     
     @Override
