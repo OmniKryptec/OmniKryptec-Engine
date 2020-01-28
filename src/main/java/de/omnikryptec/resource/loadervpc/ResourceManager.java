@@ -54,6 +54,7 @@ public class ResourceManager {
         addLoader(new MeshLoader());
         addLoader(new ShaderLoader());
         addLoader(new FontLoader());
+        addLoader(new SoundFileLoader());
     }
     
     public void clearLoaders() {

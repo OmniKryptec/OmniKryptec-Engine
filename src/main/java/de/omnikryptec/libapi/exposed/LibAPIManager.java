@@ -69,6 +69,7 @@ public final class LibAPIManager {
         if (isInitialized()) {
             logger.warn("Some settings may not have any effect because the LibAPI is initialized");
         }
+        Logger.setClassDebug(settings.get(LibSetting.DEBUG_CLASSES));
         Logger.setMinLogType(settings.get(LibSetting.LOGGING_MIN));
         final boolean debug = settings.get(LibSetting.DEBUG);
         final boolean fastMath = settings.get(LibSetting.FAST_MATH);

@@ -13,8 +13,15 @@ import org.apache.commons.io.IOUtils;
 import org.lwjgl.BufferUtils;
 
 import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 
 public class SoundLoader {
+    
+    private static void checkOpenAL() {
+        if(!LibAPIManager.instance().isOpenALinitialized()) {
+            throw new IllegalStateException("OpenAL is not initialized");
+        }
+    }
     
     public static final Sound loadSound(String name) {
         return loadSound(SoundLoader.class.getResourceAsStream(name));
@@ -29,6 +36,7 @@ public class SoundLoader {
     }
     
     public static final Sound loadSound(InputStream inputStream) {
+        checkOpenAL();
         try {
             final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream);
             if (audioInputStream == null) {
@@ -61,6 +69,7 @@ public class SoundLoader {
     }
     
     public static final StreamedSound streamSound(InputStream stream) {
+        checkOpenAL();
         try {
             final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(stream);
             return new StreamedSound(audioInputStream);
@@ -78,6 +87,7 @@ public class SoundLoader {
      * @return StreamedSound Sound
      */
     public static final StreamedSound streamSound(InputStream stream, int bufferCount, int bufferTime) {
+        checkOpenAL();
         try {
             final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(stream);
             return new StreamedSound(audioInputStream, bufferCount, bufferTime);

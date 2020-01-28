@@ -29,6 +29,7 @@ import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.resource.loadervpc.ResourceManager;
 import de.omnikryptec.resource.loadervpc.ResourceProvider;
+import de.omnikryptec.resource.loadervpc.SoundHelper;
 import de.omnikryptec.resource.loadervpc.TextureHelper;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Defaultable;
@@ -76,6 +77,10 @@ public abstract class Omnikryptec {
         return instance().getTextures();
     }
     
+    public static SoundHelper getSoundsS() {
+        return instance().getSounds();
+    }
+    
     public static ResourceManager getResourceManagerS() {
         return instance().getResourceManager();
     }
@@ -91,6 +96,7 @@ public abstract class Omnikryptec {
     
     private ResourceManager resources;
     private TextureHelper textures;
+    private SoundHelper sounds;
     
     private boolean started;
     
@@ -166,6 +172,7 @@ public abstract class Omnikryptec {
         this.resources = new ResourceManager();
         this.resources.addDefaultLoaders();
         this.textures = new TextureHelper(getResourceProvider());
+        this.sounds = new SoundHelper(getResourceProvider()); //<- only create a SoundHelper if OpenAL gets initialized?
         this.gameLoop = loaderSettings.get(LoaderSetting.GAME_LOOP);
         this.game = new Game(keySettings);
         this.started = true;
@@ -245,6 +252,10 @@ public abstract class Omnikryptec {
     
     public TextureHelper getTextures() {
         return this.textures;
+    }
+    
+    public SoundHelper getSounds() {
+        return this.sounds;
     }
     
     public ResourceManager setResourceManager(final ResourceManager proc) {

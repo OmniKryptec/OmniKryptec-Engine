@@ -70,7 +70,7 @@ public class TextureHelper {
         if (t == null) {
             final TextureData data = this.resProvider.get(TextureData.class, name);
             if (data == null) {
-                LOGGER.warn("Could not find the texture \"" + name + "\", using a placeholder texture instead");
+                LOGGER.warn(String.format("Could not find the texture \"%s\", using a placeholder texture instead", name));
                 return this.missingTexture;
             }
             t = this.api.createTexture2D(data, config == null ? new TextureConfig() : config);

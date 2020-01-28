@@ -114,9 +114,9 @@ public class Minigame extends Omnikryptec {
         loaderSettings.set(LoaderSetting.INIT_OPENAL, true);
         loaderSettings.set(LoaderSetting.SHOW_WINDOW_AFTER_CREATION, WindowMakeVisible.AFTER_INIT);
         libSettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
+        libSettings.set(LibSetting.DEBUG_CLASSES, false);
         windowSettings.set(WindowSetting.Name, "Minigame");
         //windowSettings.set(WindowSetting.LockAspectRatio, true);
-        windowSettings.set(WindowSetting.VSync, true);
         windowSettings.set(WindowSetting.Width, 800);
         windowSettings.set(WindowSetting.Height, 600);
         
@@ -150,7 +150,7 @@ public class Minigame extends Omnikryptec {
             }
         }
         getGame().getGuiManager().setGui(new TestComponent(0, 0));
-        Sound sound = SoundLoader.loadSound(new AdvancedFile("intern:/de/omnikryptec/resources/bounce.wav"));
+        Sound sound = getSounds().getCached("bounce.wav");
         this.mgr.addSystem(new AudioTestSystem(sound));
     }
     
