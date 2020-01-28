@@ -6,7 +6,8 @@ import org.lwjgl.openal.AL11;
 public enum DistanceModel {
     EXPONENT(AL11.AL_EXPONENT_DISTANCE, false), EXPONENT_CLAMPED(AL11.AL_EXPONENT_DISTANCE_CLAMPED, true),
     INVERSE(AL10.AL_INVERSE_DISTANCE, false), INVERSE_CLAMPED(AL10.AL_INVERSE_DISTANCE_CLAMPED, true),
-    LINEAR(AL11.AL_LINEAR_DISTANCE, false), LINEAR_CLAMPED(AL11.AL_LINEAR_DISTANCE_CLAMPED, true);
+    LINEAR(AL11.AL_LINEAR_DISTANCE, false), LINEAR_CLAMPED(AL11.AL_LINEAR_DISTANCE_CLAMPED, true),
+    NONE(AL10.AL_NONE, false);
     
     private final int distanceModel;
     private final boolean clamped;
@@ -52,6 +53,7 @@ public enum DistanceModel {
             break;
         case LINEAR:
         case LINEAR_CLAMPED:
+        case NONE:
             newVolume = fadeTime * ((volumeTarget - volumeStart) / fadeTimeComplete) + volumeStart;
             break;
         

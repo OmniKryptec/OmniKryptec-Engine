@@ -16,7 +16,6 @@ import org.lwjgl.openal.AL11;
 import org.lwjgl.openal.ALC;
 import org.lwjgl.openal.ALC10;
 import org.lwjgl.openal.ALCCapabilities;
-
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.Util;
 
@@ -31,7 +30,7 @@ public class OpenAL {
         for (StreamedSound s : ACTIVE_STREAMED_SOUNDS) {
             s.update();
         }
-        for(AudioPlaylist p : ACTIVE_PLAYLISTS) {
+        for (AudioPlaylist p : ACTIVE_PLAYLISTS) {
             p.update();
         }
     });
@@ -61,6 +60,9 @@ public class OpenAL {
         }
         //TODO pick a better device
         defaultDevice = ALC10.alcOpenDevice((ByteBuffer) null);
+        if (defaultDevice == 0) {
+            throw new RuntimeException("No audio device has been found");
+        }
         deviceCaps = ALC.createCapabilities(defaultDevice);
         IntBuffer contextAttributeList = BufferUtils.createIntBuffer(16);
         contextAttributeList.put(ALC10.ALC_REFRESH);

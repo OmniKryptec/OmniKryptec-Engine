@@ -12,7 +12,21 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import org.apache.commons.io.IOUtils;
 import org.lwjgl.BufferUtils;
 
+import de.codemakers.io.file.AdvancedFile;
+
 public class SoundLoader {
+    
+    public static final Sound loadSound(String name) {
+        return loadSound(SoundLoader.class.getResourceAsStream(name));
+    }
+    
+    public static final Sound loadSound(AdvancedFile file) {
+        try {
+            return loadSound(file.createInputStream());
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
     
     public static final Sound loadSound(InputStream inputStream) {
         try {
@@ -30,6 +44,27 @@ public class SoundLoader {
             final Sound sound = new Sound(audioFormat, data);
             return sound;
         } catch (IOException | UnsupportedAudioFileException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+    
+    public static final StreamedSound streamSound(String name) {
+        return streamSound(SoundLoader.class.getResourceAsStream(name));
+    }
+    
+    public static final StreamedSound streamSound(AdvancedFile file) {
+        try {
+            return streamSound(file.createInputStream());
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+    
+    public static final StreamedSound streamSound(InputStream stream) {
+        try {
+            final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(stream);
+            return new StreamedSound(audioInputStream);
+        } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }

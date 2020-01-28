@@ -18,8 +18,6 @@ package de.omnikryptec.minigame;
 
 import java.util.Random;
 
-import javax.swing.Timer;
-
 import org.joml.Matrix3x2f;
 import org.joml.Vector2dc;
 import org.joml.Vector2f;
@@ -38,11 +36,9 @@ import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.input.InputEvent;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
-import de.omnikryptec.libapi.openal.AudioManager;
 import de.omnikryptec.libapi.openal.AudioSource;
 import de.omnikryptec.libapi.openal.DistanceModel;
 import de.omnikryptec.libapi.openal.OpenALUtil;
-import de.omnikryptec.libapi.openal.Sound;
 import de.omnikryptec.libapi.openal.SoundLoader;
 import de.omnikryptec.libapi.openal.StreamedSound;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
