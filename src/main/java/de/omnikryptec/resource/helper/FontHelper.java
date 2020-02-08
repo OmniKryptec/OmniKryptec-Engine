@@ -7,11 +7,14 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.resource.Font;
 import de.omnikryptec.resource.FontFile;
 import de.omnikryptec.resource.loadervpc.ResourceProvider;
+import de.omnikryptec.util.Logger;
 
 public class FontHelper {
     
     private static final String DEFAULT_FNT_END = ".fnt";
     private static final String DEFAULT_TEX_END = ".png";
+    
+    private static final Logger LOGGER = Logger.getLogger(FontHelper.class);
     
     private final Map<String, Font> fonts;
     private final Map<String, Font> sdfFonts;
@@ -52,13 +55,20 @@ public class FontHelper {
             if (ff == null) {
                 ff = FontFile.getFontFile(name);
                 if (ff == null) {
-                    throw new NullPointerException(
-                            "Could not find font with name=" + name + ", fname=" + fname + ", tname=" + tname);
+                    LOGGER.error(
+                            String.format("Could not find font with name=%s, fname=%s, tname=%s", name, fname, tname));
+                    return null;
                 }
             }
-            Texture t = tHelper.get(tname == null ? name + DEFAULT_TEX_END : tname);
-            if (tHelper.isMissingTexture(t)) {
+            Texture t = null;
+            if (tname != null) {
+                t = tHelper.get(tname);
+            }
+            if (tHelper.isMissingTexture(t) || t == null) {
                 t = tHelper.get(ff.getTexFileName());
+            }
+            if (tHelper.isMissingTexture(t) || t == null) {
+                t = tHelper.get(name + DEFAULT_TEX_END);
             }
             f = new Font(ff, t, sdf);
             fonts.put(name, f);

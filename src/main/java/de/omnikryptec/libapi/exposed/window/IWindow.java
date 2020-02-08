@@ -44,4 +44,5 @@ public interface IWindow {
     
     void setFullscreen(boolean b);
     
+    void setOpacity(float a);
 }

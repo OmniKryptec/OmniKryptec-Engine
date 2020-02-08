@@ -189,4 +189,9 @@ public class GLWindow implements IWindow {
                 this.windowHeight, GLFW.GLFW_DONT_CARE);
     }
     
+    @Override
+    public void setOpacity(float a) {
+        GLFW.glfwSetWindowOpacity(this.windowId, a);
+    }
+    
 }

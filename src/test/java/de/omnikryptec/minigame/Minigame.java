@@ -32,7 +32,9 @@ import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.gui.GuiComponent;
 import de.omnikryptec.gui.GuiConstraints;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
+import de.omnikryptec.libapi.exposed.input.CursorType;
 import de.omnikryptec.libapi.exposed.input.InputEvent;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.openal.DistanceModel;
@@ -101,7 +103,7 @@ public class Minigame extends Omnikryptec {
     protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
             final KeySettings keys) {
-        libSettings.set(LibSetting.DEBUG, true);
+        libSettings.set(LibSetting.DEBUG, false);
         loaderSettings.set(LoaderSetting.INIT_OPENAL, true);
         loaderSettings.set(LoaderSetting.SHOW_WINDOW_AFTER_CREATION, WindowMakeVisible.AFTER_INIT);
         libSettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
