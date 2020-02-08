@@ -79,6 +79,7 @@ public class OpenAL {
         }
         AL.createCapabilities(deviceCaps);
         UPDATE_TIMER.start();
+        setDistanceModel(DistanceModel.NONE);
     }
     
     public void setMasterGain(float f) {

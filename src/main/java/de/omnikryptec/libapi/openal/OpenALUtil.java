@@ -80,7 +80,7 @@ public class OpenALUtil {
             found++;
         }
         if (found != 0) {
-            throw new RuntimeException("Stopping due to " + found + " OpenAL error(s)");
+            throw new RuntimeException("Found " + found + " OpenAL error(s)");
         }
         if (found == 0) {
             logger.debug("No OpenAL errors found!");

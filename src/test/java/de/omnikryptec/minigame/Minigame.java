@@ -110,7 +110,7 @@ public class Minigame extends Omnikryptec {
     protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
             final KeySettings keys) {
-        //libSettings.set(LibSetting.DEBUG, true);
+        libSettings.set(LibSetting.DEBUG, true);
         loaderSettings.set(LoaderSetting.INIT_OPENAL, true);
         loaderSettings.set(LoaderSetting.SHOW_WINDOW_AFTER_CREATION, WindowMakeVisible.AFTER_INIT);
         libSettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
@@ -140,6 +140,7 @@ public class Minigame extends Omnikryptec {
         this.mgr.addSystem(new RendererSystem(sn.getRendering()));
         this.mgr.addSystem(new MovementSystem());
         this.mgr.addSystem(new RangedSystem());
+        this.mgr.addSystem(new AudioSystem());
         this.mgr.addEntity(makePlayer(0, 0));
         this.mgr.addEntity(makeBackground());
         for (int i = -30; i < 30; i++) {
@@ -149,9 +150,8 @@ public class Minigame extends Omnikryptec {
                 }
             }
         }
-        getGame().getGuiManager().setGui(new TestComponent(0, 0));
-        Sound sound = getSounds().getCached("bounce.wav");
-        this.mgr.addSystem(new AudioTestSystem(sound));
+        LibAPIManager.instance().getOpenAL().setDistanceModel(DistanceModel.EXPONENT);
+        //getGame().getGuiManager().setGui(new TestComponent(0, 0));
     }
     
     @Override
@@ -163,6 +163,20 @@ public class Minigame extends Omnikryptec {
         final Entity e = new Entity();
         e.addComponent(new PositionComponent(-1000, -1000));
         e.addComponent(new RenderComponent(2000, 2000, new Color(1, 1, 1), -100));
+        return e;
+    }
+    
+    private Entity makeSoundEffect(Sound s, float x, float y) {
+        if (AudioComponent.count > 5) {
+            return null;
+        }
+        Entity e = new Entity();
+        e.addComponent(new PositionComponent(x, y));
+        AudioComponent ac = new AudioComponent();
+        ac.audioSource.play(s);
+        AudioComponent.count++;
+        ac.audioSource.setDeltaPitch(random.nextFloat());
+        e.addComponent(ac);
         return e;
     }
     
@@ -216,6 +230,13 @@ public class Minigame extends Omnikryptec {
     
     @EventSubscription
     public void bombExplode(final BombExplodeEvent ev) {
+        Entity ent = makeSoundEffect(getSounds().getCached("explosion.wav"),
+                this.mapper.get(ev.bomb).transform.worldspacePos().x(),
+                this.mapper.get(ev.bomb).transform.worldspacePos().y());
+        if (ent != null) {
+            this.mgr.addEntity(ent);
+        }
+        OpenALUtil.flushErrors();
         for (int i = 0; i < 100; i++) {
             final Vector2f r = MathUtil.randomDirection2D(this.random, 0, 2 * Mathf.PI, new Vector2f()).mul(500);
             getEventBus().post(new ShootEvent(this.mapper.get(ev.bomb).transform.worldspacePos().x(),
