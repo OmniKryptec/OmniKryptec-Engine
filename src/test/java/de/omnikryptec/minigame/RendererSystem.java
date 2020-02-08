@@ -19,6 +19,7 @@ package de.omnikryptec.minigame;
 import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
 
+import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityListener;
 import de.omnikryptec.ecs.Family;
@@ -26,8 +27,10 @@ import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.render.AdaptiveCamera;
 import de.omnikryptec.render.Camera;
+import de.omnikryptec.render.batch.AdvancedBatch2D;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.Light2D;
@@ -105,22 +108,22 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
     @Override
     public void entityAdded(final Entity entity) {
         final AdvancedSprite sprite = new AdvancedSprite() {
-            //            private long i = 0;
-            //            private Color borderColor = new Color();
-            //            public void draw(Batch2D batch) {
-            //                super.draw(batch);
-            //                i++;
-            //                AdvancedBatch2D adv = (AdvancedBatch2D) batch;
-            //                adv.signedDistanceFieldData().set(0.5f, 0.6f);
-            //                if (i % 400 == 0) {
-            //                    this.getColor().randomizeRGB();
-            //                    borderColor.randomizeRGB();
-            //                }
-            //                adv.borderColor().set(borderColor);
-            //                adv.borderSDFData().set(0.6f, 0.7f);
-            //                batch.drawStringSimple("OOOF", Minigame.font, 80, getTransform().worldspacePos().x(),
-            //                        getTransform().worldspacePos().y(), (float) LibAPIManager.instance().getGLFW().getTime());
-            //            };
+                        private long i = 0;
+                        private Color borderColor = new Color();
+                        public void draw(Batch2D batch) {
+                            super.draw(batch);
+                            i++;
+                            AdvancedBatch2D adv = (AdvancedBatch2D) batch;
+                            adv.signedDistanceFieldData().set(0.5f, 0.6f);
+                            if (i % 400 == 0) {
+                                this.getColor().randomizeRGB();
+                                borderColor.randomizeRGB();
+                            }
+                            adv.borderColor().set(borderColor);
+                            adv.borderSDFData().set(0.6f, 0.7f);
+                            adv.drawStringSimple("OOOF", Omnikryptec.getFontsS().getFontSDF("Candara"), 80, getTransform().worldspacePos().x(),
+                                    getTransform().worldspacePos().y(), (float) LibAPIManager.instance().getGLFW().getTime());
+                        };
         };
         sprite.setTransform(this.posMapper.get(entity).transform);
         sprite.setColor(this.rendMapper.get(entity).color);

@@ -2,7 +2,6 @@ package de.omnikryptec.libapi.openal;
 
 import static org.lwjgl.openal.EXTEfx.ALC_MAX_AUXILIARY_SENDS;
 
-import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +15,7 @@ import org.lwjgl.openal.AL11;
 import org.lwjgl.openal.ALC;
 import org.lwjgl.openal.ALC10;
 import org.lwjgl.openal.ALCCapabilities;
+
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.Util;
 
@@ -58,6 +58,12 @@ public class OpenAL {
         if (created) {
             throw new IllegalStateException("OpenAL has already been created");
         }
+        //        List<String> l = ALUtil.getStringList(0, ALC11.ALC_ALL_DEVICES_SPECIFIER);
+        //        for(String s : l) {
+        //            System.out.println(s);
+        //        }
+        //        System.out.println(ALC11.alcGetString(0, ALC11.ALC_DEFAULT_DEVICE_SPECIFIER));
+        //        System.out.println(ALC11.alcGetString(0, ALC11.ALC_DEVICE_SPECIFIER));
         //TODO pick a better device
         defaultDevice = ALC10.alcOpenDevice((ByteBuffer) null);
         if (defaultDevice == 0) {

@@ -22,6 +22,14 @@ import de.omnikryptec.render.batch.module.ModuleBatchingManager.QuadSide;
 
 public class SDFModule implements Module {
     
+    private final Vector2f sdData = new Vector2f();
+    private final Vector2f bsdData = new Vector2f();
+    
+    public SDFModule() {
+        setDefaultSD();
+        setDefaultBSD();
+    }
+    
     @Override
     public int size() {
         return 4;
@@ -31,9 +39,6 @@ public class SDFModule implements Module {
     public boolean sideIndependant() {
         return true;
     }
-    
-    private final Vector2f sdData = new Vector2f(0, 1);
-    private final Vector2f bsdData = new Vector2f(0, 1);
     
     @Override
     public void visit(float[] array, QuadSide side, int index) {
@@ -51,9 +56,12 @@ public class SDFModule implements Module {
         return this.bsdData;
     }
     
-    public void setDefault() {
+    public void setDefaultSD() {
         this.sdData.set(0, 1);
-        this.bsdData.set(0, 0.0001f);
+    }
+    
+    public void setDefaultBSD() {
+        this.bsdData.set(0, 0.000000001f);
     }
     
 }

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.resource.loadervpc;
+package de.omnikryptec.resource.helper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +26,7 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
+import de.omnikryptec.resource.loadervpc.ResourceProvider;
 import de.omnikryptec.util.Logger;
 
 public class TextureHelper {
@@ -63,6 +64,10 @@ public class TextureHelper {
         this.textures = new HashMap<>();
         this.configs = new HashMap<>();
         this.missingTexture = this.api.createTexture2D(MISSING_TEXTURE_DATA, MISSING_TEXTURE_CONFIG);
+    }
+    
+    public boolean isMissingTexture(Texture t) {
+        return t == missingTexture;
     }
     
     public Texture get(final String name, final TextureConfig config) {

@@ -1,7 +1,5 @@
 package de.omnikryptec.minigame;
 
-import java.util.BitSet;
-
 import org.joml.Vector2fc;
 
 import de.omnikryptec.ecs.Entity;

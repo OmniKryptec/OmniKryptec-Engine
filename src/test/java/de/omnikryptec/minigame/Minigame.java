@@ -32,20 +32,13 @@ import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.gui.GuiComponent;
 import de.omnikryptec.gui.GuiConstraints;
-import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.input.InputEvent;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
-import de.omnikryptec.libapi.openal.AudioSource;
 import de.omnikryptec.libapi.openal.DistanceModel;
-import de.omnikryptec.libapi.openal.OpenALUtil;
 import de.omnikryptec.libapi.openal.Sound;
-import de.omnikryptec.libapi.openal.SoundLoader;
-import de.omnikryptec.libapi.openal.StreamedSound;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
 import de.omnikryptec.render.batch.BorderedBatch2D;
-import de.omnikryptec.resource.Font;
-import de.omnikryptec.resource.FontFile;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.MathUtil;
@@ -83,9 +76,7 @@ public class Minigame extends Omnikryptec {
             batch.color().set(1, this.g, this.b, 0.4f);
             batch.drawRect(new Matrix3x2f().setTranslation(this.x, this.y), this.w, this.h);
             batch.color().setAll(1);
-            batch.signedDistanceFieldData().set(0.57f, 0.6f);
-            batch.drawStringSimple("Test", font, 0.1f, x, y, 0);
-            batch.setDefaultSdfData();
+            batch.drawStringSDFautoc("GURKEE", getFontsS().getFontSDF("candara"), 0.1f, 0.57f, x, y, 0);
         }
         
         @Override
@@ -123,13 +114,9 @@ public class Minigame extends Omnikryptec {
         Profiler.setEnabled(true);
     }
     
-    public static Font font;
-    
     @Override
     protected void onInitialized() {
         getResourceManager().load(false, true, new AdvancedFile("intern:/de/omnikryptec/resources/"));
-        FontFile fontfile = getResourceProvider().get(FontFile.class, "candara.fnt");
-        font = new Font(fontfile, getTextures().get("candara.png"));
         getEventBus().register(this);
         this.mgr = UpdateableFactory.createDefaultIECSManager();
         final Scene sn = getGame().createNewScene(true);
@@ -151,7 +138,7 @@ public class Minigame extends Omnikryptec {
             }
         }
         getAudio().setDistanceModel(DistanceModel.EXPONENT);
-        //getGame().getGuiManager().setGui(new TestComponent(0, 0));
+        getGame().getGuiManager().setGui(new TestComponent(0, 0));
     }
     
     @Override

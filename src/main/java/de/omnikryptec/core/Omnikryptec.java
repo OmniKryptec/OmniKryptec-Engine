@@ -28,10 +28,11 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.openal.OpenAL;
+import de.omnikryptec.resource.helper.FontHelper;
+import de.omnikryptec.resource.helper.SoundHelper;
+import de.omnikryptec.resource.helper.TextureHelper;
 import de.omnikryptec.resource.loadervpc.ResourceManager;
 import de.omnikryptec.resource.loadervpc.ResourceProvider;
-import de.omnikryptec.resource.loadervpc.SoundHelper;
-import de.omnikryptec.resource.loadervpc.TextureHelper;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.IntegerKey;
@@ -86,6 +87,10 @@ public abstract class Omnikryptec {
         return instance().getSounds();
     }
     
+    public static FontHelper getFontsS() {
+        return instance().getFonts();
+    }
+    
     public static ResourceManager getResourceManagerS() {
         return instance().getResourceManager();
     }
@@ -93,7 +98,7 @@ public abstract class Omnikryptec {
     public static ResourceProvider getResourceProviderS() {
         return instance().getResourceProvider();
     }
-
+    
     private IWindow window;
     
     private IGameLoop gameLoop;
@@ -102,6 +107,7 @@ public abstract class Omnikryptec {
     private ResourceManager resources;
     private TextureHelper textures;
     private SoundHelper sounds;
+    private FontHelper fonts;
     
     private boolean started;
     
@@ -178,6 +184,7 @@ public abstract class Omnikryptec {
         this.resources.addDefaultLoaders();
         this.textures = new TextureHelper(getResourceProvider());
         this.sounds = new SoundHelper(getResourceProvider()); //<- only create a SoundHelper if OpenAL gets initialized?
+        this.fonts = new FontHelper(getResourceProvider(), getTextures());
         this.gameLoop = loaderSettings.get(LoaderSetting.GAME_LOOP);
         this.game = new Game(keySettings);
         this.started = true;
@@ -261,6 +268,10 @@ public abstract class Omnikryptec {
     
     public SoundHelper getSounds() {
         return this.sounds;
+    }
+    
+    public FontHelper getFonts() {
+        return this.fonts;
     }
     
     public ResourceManager setResourceManager(final ResourceManager proc) {

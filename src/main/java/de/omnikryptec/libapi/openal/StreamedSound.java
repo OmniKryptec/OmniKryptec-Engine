@@ -18,7 +18,9 @@ package de.omnikryptec.libapi.openal;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+
 import javax.sound.sampled.AudioInputStream;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL10;
 

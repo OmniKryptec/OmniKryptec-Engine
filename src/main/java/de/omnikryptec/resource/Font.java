@@ -26,13 +26,19 @@ public class Font {
     
     private final FontFile fontFile;
     private final Texture fontAtlas;
+    private final boolean sdf;
     
     private final Map<FontCharacter, TextureRegion> cache;
     
-    public Font(FontFile fontFile, Texture fontAtlas) {
+    public Font(FontFile fontFile, Texture fontAtlas, boolean sdf) {
         this.cache = new HashMap<>();
         this.fontFile = fontFile;
         this.fontAtlas = fontAtlas;
+        this.sdf = sdf;
+    }
+    
+    public boolean isSDFFont() {
+        return sdf;
     }
     
     public FontFile getFontFile() {

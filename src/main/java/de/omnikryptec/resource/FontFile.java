@@ -21,22 +21,36 @@ import java.util.Map;
 
 public class FontFile {
     
+    private static final Map<String, FontFile> FONTFILES = new HashMap<>();
+    
+    public static FontFile getFontFile(String internalFontName) {
+        return FONTFILES.get(internalFontName);
+    }
+    
     private final float spaceWidth;
     private final float base;
     private final float lineHeight;
     private final String name;
+    private final String textureFileName;
     
     private Map<Character, FontCharacter> metaData = new HashMap<>();
     
-    public FontFile(Map<Character, FontCharacter> data, float spaceWidth, String name, float base, float lineHeight) {
+    public FontFile(Map<Character, FontCharacter> data, float spaceWidth, String name, float base, float lineHeight,
+            String textureFileName) {
+        this.textureFileName = textureFileName;
         this.metaData = data;
         this.spaceWidth = spaceWidth;
         this.name = name;
         this.base = base;
         this.lineHeight = lineHeight;
+        FONTFILES.put(name, this);
     }
     
-    public String getName() {
+    public String getTexFileName() {
+        return this.textureFileName;
+    }
+    
+    public String getInternalName() {
         return this.name;
     }
     

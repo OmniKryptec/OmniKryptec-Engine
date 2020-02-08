@@ -19,8 +19,6 @@ package de.omnikryptec.libapi.openal;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.swing.Timer;
-
 import de.omnikryptec.util.Logger;
 
 /**

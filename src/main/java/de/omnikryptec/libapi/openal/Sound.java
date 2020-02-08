@@ -19,6 +19,7 @@ package de.omnikryptec.libapi.openal;
 import java.nio.ByteBuffer;
 
 import javax.sound.sampled.AudioFormat;
+
 import org.lwjgl.openal.AL10;
 
 public class Sound extends ALSound {

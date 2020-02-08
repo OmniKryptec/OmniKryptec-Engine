@@ -113,8 +113,17 @@ public class AdvancedBatch2D extends AbstractBatch implements BorderedBatch2D {
     }
     
     @Override
-    public void setDefaultSdfData() {
-        sdfData.setDefault();
-        bsdfOffset.setDefault();
+    public void setDefaultSDFData() {
+        this.sdfData.setDefaultSD();
+    }
+    
+    @Override
+    public void setDefaultBDSFData() {
+        this.sdfData.setDefaultBSD();
+    }
+    
+    @Override
+    public void setDefaultBorderOffset() {
+        this.bsdfOffset.setDefault();
     }
 }

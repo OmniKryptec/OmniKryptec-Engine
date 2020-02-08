@@ -37,7 +37,7 @@ public class FontParser {
     private static final int INDEX_PAD_RIGHT = 3;
     
     //FIXME pcfreak9000 fix/improve stuff with padding
-    private static final int DESIRED_PADDING = 5;
+    private static final int DESIRED_PADDING = 10;
     private static final Logger LOGGER = Logger.getLogger(FontParser.class);
     
     private static FontParser instance;
@@ -61,6 +61,8 @@ public class FontParser {
     private double verticalPerPixelSize;
     private double horizontalPerPixelSize;
     private double base;
+    
+    private String textureFileName;
     
     private FontParser() {
         this.values = new HashMap<>();
@@ -91,7 +93,7 @@ public class FontParser {
             LOGGER.error(e);
         }
         return new FontFile(this.metaData, (float) this.spaceWidth, name, (float) this.base,
-                (float) this.verticalPerPixelSize);
+                (float) this.verticalPerPixelSize, textureFileName);
     }
     
     private boolean readNextLine() {
@@ -155,6 +157,7 @@ public class FontParser {
      */
     private void loadCharacterData(int imageWidth) {
         readNextLine();
+        textureFileName = this.values.get("file");
         readNextLine();
         while (readNextLine()) {
             FontCharacter c = loadCharacter(imageWidth);

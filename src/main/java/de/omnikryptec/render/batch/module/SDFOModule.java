@@ -22,6 +22,12 @@ import de.omnikryptec.render.batch.module.ModuleBatchingManager.QuadSide;
 
 public class SDFOModule implements Module {
     
+    private final Vector2f offset = new Vector2f();
+    
+    public SDFOModule() {
+        setDefault();
+    }
+    
     @Override
     public int size() {
         return 2;
@@ -31,8 +37,6 @@ public class SDFOModule implements Module {
     public boolean sideIndependant() {
         return true;
     }
-    
-    private final Vector2f offset = new Vector2f(0, 0);
     
     @Override
     public void visit(float[] array, QuadSide side, int index) {

@@ -29,7 +29,7 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.renderer.RendererContext;
-import de.omnikryptec.resource.loadervpc.TextureHelper;
+import de.omnikryptec.resource.helper.TextureHelper;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.KeySettings;
