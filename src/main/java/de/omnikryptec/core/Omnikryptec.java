@@ -27,6 +27,7 @@ import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
+import de.omnikryptec.libapi.openal.OpenAL;
 import de.omnikryptec.resource.loadervpc.ResourceManager;
 import de.omnikryptec.resource.loadervpc.ResourceProvider;
 import de.omnikryptec.resource.loadervpc.SoundHelper;
@@ -71,6 +72,10 @@ public abstract class Omnikryptec {
     
     public static Game getGameS() {
         return instance().getGame();
+    }
+    
+    public static OpenAL getAudio() {
+        return LibAPIManager.instance().getOpenAL();
     }
     
     public static TextureHelper getTexturesS() {

@@ -150,7 +150,7 @@ public class Minigame extends Omnikryptec {
                 }
             }
         }
-        LibAPIManager.instance().getOpenAL().setDistanceModel(DistanceModel.EXPONENT);
+        getAudio().setDistanceModel(DistanceModel.EXPONENT);
         //getGame().getGuiManager().setGui(new TestComponent(0, 0));
     }
     
@@ -236,7 +236,6 @@ public class Minigame extends Omnikryptec {
         if (ent != null) {
             this.mgr.addEntity(ent);
         }
-        OpenALUtil.flushErrors();
         for (int i = 0; i < 100; i++) {
             final Vector2f r = MathUtil.randomDirection2D(this.random, 0, 2 * Mathf.PI, new Vector2f()).mul(500);
             getEventBus().post(new ShootEvent(this.mapper.get(ev.bomb).transform.worldspacePos().x(),

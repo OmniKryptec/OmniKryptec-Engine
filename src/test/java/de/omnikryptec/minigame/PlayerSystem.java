@@ -77,9 +77,9 @@ public class PlayerSystem extends AbstractComponentSystem {
             }
             mov.dx = vx;
             mov.dy = vy;
-            LibAPIManager.instance().getOpenAL().setListenerPosition(plus.transform.worldspacePos().x() / 20,
+            Omnikryptec.getAudio().setListenerPosition(plus.transform.worldspacePos().x() / 20,
                     plus.transform.worldspacePos().y() / 20, -5);
-            LibAPIManager.instance().getOpenAL().setListenerVelocity(vx / 20, vy / 20, 0);
+            Omnikryptec.getAudio().setListenerVelocity(vx / 20, vy / 20, 0);
             if (this.inputManager.isMouseButtonPressed(KeysAndButtons.OKE_MOUSE_BUTTON_1)
                     && this.inputManager.isMouseInsideViewport() && this.again > 0.15f) {
                 this.again = 0;
