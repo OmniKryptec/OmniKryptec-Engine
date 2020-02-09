@@ -35,7 +35,6 @@ public class AudioSystem extends AbstractComponentSystem {
             if (ac.removeAfterEnding && !ac.audioSource.isPlaying()) {
                 ac.audioSource.deleteAndUnregister();
                 iecsManager.removeEntity(e);
-                AudioComponent.count--;
             }
         }
     }

@@ -38,6 +38,7 @@ import de.omnikryptec.libapi.exposed.input.CursorType;
 import de.omnikryptec.libapi.exposed.input.InputEvent;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.openal.DistanceModel;
+import de.omnikryptec.libapi.openal.OpenALUtil;
 import de.omnikryptec.libapi.openal.Sound;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
 import de.omnikryptec.render.batch.BorderedBatch2D;
@@ -103,7 +104,7 @@ public class Minigame extends Omnikryptec {
     protected void configure(final Settings<LoaderSetting> loaderSettings, final Settings<LibSetting> libSettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
             final KeySettings keys) {
-        libSettings.set(LibSetting.DEBUG, false);
+        libSettings.set(LibSetting.DEBUG, true);
         loaderSettings.set(LoaderSetting.INIT_OPENAL, true);
         loaderSettings.set(LoaderSetting.SHOW_WINDOW_AFTER_CREATION, WindowMakeVisible.AFTER_INIT);
         libSettings.set(LibSetting.LOGGING_MIN, LogType.Debug);
@@ -156,14 +157,10 @@ public class Minigame extends Omnikryptec {
     }
     
     private Entity makeSoundEffect(Sound s, float x, float y) {
-        if (AudioComponent.count > 5) {
-            return null;
-        }
         Entity e = new Entity();
         e.addComponent(new PositionComponent(x, y));
         AudioComponent ac = new AudioComponent();
         ac.audioSource.play(s);
-        AudioComponent.count++;
         ac.audioSource.setDeltaPitch(random.nextFloat());
         e.addComponent(ac);
         return e;
@@ -258,7 +255,7 @@ public class Minigame extends Omnikryptec {
         if (c.color.getR() >= 1) {
             this.mgr.removeEntity(hit);
         }
-        if (f >= 0.0247f) {
+        if (this.random.nextFloat() >= 0.987) {
             getEventBus().post(new BombExplodeEvent(hit));
         }
     }

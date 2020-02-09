@@ -59,14 +59,7 @@ public class OpenAL {
         if (created) {
             throw new IllegalStateException("OpenAL has already been created");
         }
-        //        List<String> l = ALUtil.getStringList(0, ALC11.ALC_ALL_DEVICES_SPECIFIER);
-        //        for(String s : l) {
-        //            System.out.println(s);
-        //        }
-        //        System.out.println(ALC11.alcGetString(0, ALC11.ALC_DEFAULT_DEVICE_SPECIFIER));
-        //        System.out.println(ALC11.alcGetString(0, ALC11.ALC_DEVICE_SPECIFIER));
-        //TODO pick a better device
-        defaultDevice = ALC10.alcOpenDevice((ByteBuffer) null);
+        defaultDevice = ALC10.alcOpenDevice("OpenAL Soft"); //Hardware accelerated OpenAL is apparently dead and also the performance of the Software renderer is better
         if (defaultDevice == 0) {
             throw new RuntimeException("No audio device has been found");
         }
