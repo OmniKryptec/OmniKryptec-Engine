@@ -110,7 +110,7 @@ public class RendererContext implements IUpdatable {
                 screen[this.subContextsActive.size() - i - 1] = this.subContextsActive.get(i).renderCycle(time);
             }
         }
-        this.renderApi.getCurrentFrameBuffer().clearAll();
+        this.renderApi.getCurrentFrameBuffer().clearComplete();
         this.renderApi.applyRenderState(DEFAULT_SCREENWRITER_STATE);
         RendererUtil.renderDirect(screen);
     }

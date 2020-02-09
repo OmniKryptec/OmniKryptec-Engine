@@ -244,7 +244,7 @@ public abstract class FrameBuffer implements Deletable {
         clear(color.getR(), color.getG(), color.getB(), color.getA(), types);
     }
     
-    public void clearAll() {
+    public void clearComplete() {
         clear(0, 0, 0, 0, SurfaceBufferType.Color, SurfaceBufferType.Depth);
     }
     

@@ -8,9 +8,10 @@ import de.omnikryptec.resource.Font;
 import de.omnikryptec.resource.FontFile;
 import de.omnikryptec.resource.loadervpc.ResourceProvider;
 import de.omnikryptec.util.Logger;
+import de.omnikryptec.util.Util;
 
 public class FontHelper {
-    
+    //TODO pcfreak9000 clear functions
     private static final String DEFAULT_FNT_END = ".fnt";
     private static final String DEFAULT_TEX_END = ".png";
     
@@ -51,7 +52,7 @@ public class FontHelper {
         Map<String, Font> fonts = sdf ? this.sdfFonts : this.fonts;
         Font f = fonts.get(name);
         if (f == null) {
-            FontFile ff = resProvider.get(FontFile.class, fname == null ? name + DEFAULT_FNT_END : fname);
+            FontFile ff = resProvider.get(FontFile.class, Util.defaultIfNull(name + DEFAULT_FNT_END, fname));//fname == null ? name + DEFAULT_FNT_END : fname
             if (ff == null) {
                 ff = FontFile.getFontFile(name);
                 if (ff == null) {

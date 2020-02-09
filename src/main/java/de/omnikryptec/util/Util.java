@@ -30,6 +30,10 @@ public class Util {
         return ensureNonNull(obj, message, 2);
     }
     
+    public static <T> T defaultIfNull(T deffault, T canBeNull) {
+        return canBeNull == null ? deffault : canBeNull;
+    }
+    
     private static <T> T ensureNonNull(final T obj, final String message, final int cut) {
         if (obj == null) {
             final NullPointerException exc = message == null ? new NullPointerException()
