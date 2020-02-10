@@ -28,6 +28,7 @@ import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.resource.loadervpc.ResourceProvider;
 import de.omnikryptec.util.Logger;
+import de.omnikryptec.util.Util;
 
 public class TextureHelper {
     
@@ -75,10 +76,11 @@ public class TextureHelper {
         if (t == null) {
             final TextureData data = this.resProvider.get(TextureData.class, name);
             if (data == null) {
-                LOGGER.warn(String.format("Could not find the texture \"%s\", using a placeholder texture instead", name));
+                LOGGER.warn(
+                        String.format("Could not find the texture \"%s\", using a placeholder texture instead", name));
                 return this.missingTexture;
             }
-            t = this.api.createTexture2D(data, config == null ? new TextureConfig() : config);
+            t = this.api.createTexture2D(data, Util.newIfNull(() -> new TextureConfig(), config));
             this.textures.put(name, t);
         }
         return t;

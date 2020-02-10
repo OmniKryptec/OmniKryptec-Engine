@@ -18,6 +18,8 @@ package de.omnikryptec.util;
 
 import java.util.Scanner;
 
+import org.apache.commons.collections4.Factory;
+
 import de.codemakers.io.file.AdvancedFile;
 
 public class Util {
@@ -32,6 +34,10 @@ public class Util {
     
     public static <T> T defaultIfNull(T deffault, T canBeNull) {
         return canBeNull == null ? deffault : canBeNull;
+    }
+    
+    public static <T> T newIfNull(Factory<T> f, T canBeNull) {
+        return canBeNull == null ? f.create() : canBeNull;
     }
     
     private static <T> T ensureNonNull(final T obj, final String message, final int cut) {

@@ -29,6 +29,8 @@ public class InstanceManager {
     private static final Comparator<Renderer> REND_COMP = (r1, r2) -> r1.priority() - r2.priority();
     
     private IProjection mainProjection;
+    private Settings<EnvironmentKey> mainEnvSettings;
+    private FrameBuffer mainTarget;
     private List<Renderer> renderers;
     private List<PriorityProjection> additionalProjections;
     private Map<IProjection, ProjData> additionalProjData;
@@ -61,7 +63,7 @@ public class InstanceManager {
         renderers.sort(REND_COMP);
     }
     
-    public void renderInstance(Time time, FrameBuffer mainTarget, Settings<EnvironmentKey> envSettings) {
+    public void renderInstance(Time time) {
         if (isInAction) {
             throw new IllegalStateException("Can't call renderInstance recursively");
         }
@@ -69,24 +71,27 @@ public class InstanceManager {
         isInAction = true;
         try {
             prepare(api, mainProjection, time);
-            for (PriorityProjection p : additionalProjections) {
-                ProjData projData = additionalProjData.get(p.projection);
-                render(api, p.projection, projData.target, Util.defaultIfNull(envSettings, projData.settings),
-                        time);
+            for (PriorityProjection prioProj : additionalProjections) {
+                ProjData projData = additionalProjData.get(prioProj.projection);
+                FrameBuffer actualTarget = Util.ensureNonNull(projData.target, "Target is null");
+                Settings<EnvironmentKey> actualSettings = Util.defaultIfNull(mainEnvSettings, projData.settings);
+                render(api, prioProj.projection, actualTarget, actualSettings, time);
             }
-            render(api, mainProjection, mainTarget, envSettings, time);
+            render(api, mainProjection, mainTarget, mainEnvSettings, time);
         } finally {
             isInAction = false;
         }
     }
     
-    public void renderView(IProjection projection, Time time) {
-        ProjData pd = additionalProjData.get(projection);
-        render(LibAPIManager.instance().getGLFW().getRenderAPI(), projection, pd.target, pd.settings, time);
+    public void renderView(IProjection projection, IProjection mainProjection, Time time) {//TODO main projection for prepare? in how far does that make sense?
+        ProjData pd = Util.newIfNull(() -> new ProjData(), additionalProjData.get(projection));
+        FrameBuffer actualTarget = Util.defaultIfNull(mainTarget, pd.target);
+        Settings<EnvironmentKey> actualSettings = Util.defaultIfNull(mainEnvSettings, pd.settings);
+        render(LibAPIManager.instance().getGLFW().getRenderAPI(), projection, actualTarget, actualSettings, time);
     }
     
-    private void render(RenderAPI api, IProjection p, FrameBuffer fbo,
-            Settings<EnvironmentKey> envSettings, Time time) {
+    private void render(RenderAPI api, IProjection p, FrameBuffer fbo, Settings<EnvironmentKey> envSettings,
+            Time time) {
         for (Renderer r : renderers) {
             r.render(this, api, p, fbo, envSettings, time);
         }
