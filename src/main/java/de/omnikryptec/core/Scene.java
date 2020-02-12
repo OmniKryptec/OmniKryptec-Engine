@@ -19,7 +19,7 @@ package de.omnikryptec.core;
 import java.util.function.UnaryOperator;
 
 import de.omnikryptec.core.update.IUpdatable;
-import de.omnikryptec.render.renderer2.ViewManager;
+import de.omnikryptec.render.renderer.ViewManager;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.updater.Time;
 

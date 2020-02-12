@@ -1,4 +1,4 @@
-package de.omnikryptec.render.renderer2;
+package de.omnikryptec.render.renderer;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -17,7 +17,7 @@ import de.omnikryptec.render.batch.AbstractProjectedShaderSlot;
 import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.objects.Light2D;
 import de.omnikryptec.render.objects.Sprite;
-import de.omnikryptec.render.renderer2.ViewManager.EnvironmentKey;
+import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathd;

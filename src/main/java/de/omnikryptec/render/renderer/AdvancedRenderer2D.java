@@ -1,19 +1,3 @@
-/*
- *    Copyright 2017 - 2020 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
-
 package de.omnikryptec.render.renderer;
 
 import java.util.ArrayList;
@@ -25,7 +9,7 @@ import org.joml.FrustumIntersection;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
-import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
+import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.batch.AbstractProjectedShaderSlot;
 import de.omnikryptec.render.batch.AdvancedBatch2D;
@@ -33,29 +17,28 @@ import de.omnikryptec.render.batch.AdvancedShaderSlot;
 import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.AdvancedSprite.Reflection2DType;
-import de.omnikryptec.render.objects.IRenderedObjectListener;
+import de.omnikryptec.render.renderer.Renderer2D.EnvironmentKeys2D;
+import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
 import de.omnikryptec.render.objects.Light2D;
-import de.omnikryptec.render.objects.RenderedObject;
 import de.omnikryptec.render.objects.Sprite;
-import de.omnikryptec.render.renderer.OofRenderer2D.EnvironmentKeys2D;
-import de.omnikryptec.render.renderer2.RendererUtil;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathd;
 import de.omnikryptec.util.profiling.IProfiler;
 import de.omnikryptec.util.profiling.ProfileHelper;
 import de.omnikryptec.util.profiling.Profiler;
+import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
-@Deprecated
-public class OofAdvancedRenderer2D implements OofRenderer, IRenderedObjectListener {
+public class AdvancedRenderer2D implements Renderer {
     private static int rc = 0;
     
     private final int countIndex = rc++;
     
-    private Comparator<Sprite> spriteComparator = OofRenderer2D.DEFAULT_COMPARATOR;
+    private Comparator<Sprite> spriteComparator = Renderer2D.DEFAULT_COMPARATOR;
     private final List<AdvancedSprite> sprites = new ArrayList<>();
     private final List<AdvancedSprite> reflectors = new ArrayList<>();
+    private final List<Light2D> lights = new ArrayList<>();
     
     private final SimpleBatch2D reflectionBatch;
     private final AdvancedBatch2D mainBatch;
@@ -66,17 +49,17 @@ public class OofAdvancedRenderer2D implements OofRenderer, IRenderedObjectListen
     private boolean shouldSort = false;
     private boolean enableReflections = true;
     
-    public OofAdvancedRenderer2D() {
+    public AdvancedRenderer2D() {
         this(1000);
     }
     
-    public OofAdvancedRenderer2D(final int vertices) {
+    public AdvancedRenderer2D(final int vertices) {
         this.reflectionBatch = new SimpleBatch2D(vertices);
         this.mainBatch = new AdvancedBatch2D(vertices);
         initStuff();
     }
     
-    public OofAdvancedRenderer2D(final int vertices, final AbstractProjectedShaderSlot mainShaderSlot,
+    public AdvancedRenderer2D(final int vertices, final AbstractProjectedShaderSlot mainShaderSlot,
             final AbstractProjectedShaderSlot reflectionShaderSlot) {
         this.reflectionBatch = new SimpleBatch2D(vertices, reflectionShaderSlot);
         this.mainBatch = new AdvancedBatch2D(vertices, mainShaderSlot);
@@ -92,55 +75,53 @@ public class OofAdvancedRenderer2D implements OofRenderer, IRenderedObjectListen
     }
     
     public void setSpriteComparator(final Comparator<Sprite> comparator) {
-        this.spriteComparator = Util.defaultIfNull(OofRenderer2D.DEFAULT_COMPARATOR, comparator);
+        this.spriteComparator = Util.defaultIfNull(Renderer2D.DEFAULT_COMPARATOR, comparator);
     }
     
     @Override
-    public void init(final LocalRendererContext context, final FrameBuffer target) {
-        createFBOs(context, target);
-        context.getIRenderedObjectManager().addListener(AdvancedSprite.TYPE, this);
-        final List<AdvancedSprite> list = context.getIRenderedObjectManager().getFor(AdvancedSprite.TYPE);
-        for (final AdvancedSprite s : list) {
-            this.sprites.add(s);
-            if (s.getReflectionType() == Reflection2DType.Cast) {
-                this.reflectors.add(s);
-            }
+    public void init(ViewManager vm, RenderAPI api) {
+        createFBOs(api, vm.getMainView().getTargetFbo());//put this directly into the checkFBOs method?
+        this.shouldSort = true;
+    }
+    
+    public void add(AdvancedSprite sprite) {
+        this.sprites.add(sprite);
+        if (sprite.getReflectionType() == Reflection2DType.Cast) {
+            this.reflectors.add(sprite);
         }
         this.shouldSort = true;
     }
     
-    @Override
-    public void onAdd(final RenderedObject obj) {
-        final AdvancedSprite s = (AdvancedSprite) obj;
-        this.sprites.add(s);
-        if (s.getReflectionType() == Reflection2DType.Cast) {
-            this.reflectors.add(s);
-        }
-        this.shouldSort = true;
+    public void addLight(Light2D light) {
+        this.lights.add(light);
+    }
+    
+    public void removeLight(Light2D light) {
+        this.lights.remove(light);
     }
     
     @Override
-    public void deinit(final LocalRendererContext context) {
+    public void deinit(ViewManager vm, RenderAPI api) {
         this.sprites.clear();
         this.shouldSort = false;
-        context.getIRenderedObjectManager().removeListener(AdvancedSprite.TYPE, this);
         //delete FBOs
         this.renderBuffer.deleteAndUnregister();
         this.spriteBuffer.deleteAndUnregister();
         this.reflectionBuffer.deleteAndUnregister();
     }
     
-    @Override
-    public void onRemove(final RenderedObject obj) {
-        this.sprites.remove(obj);
-        if (((AdvancedSprite) obj).getReflectionType() == Reflection2DType.Cast) {
-            this.reflectors.remove(obj);
+    public void remove(AdvancedSprite sprite) {
+        this.sprites.remove(sprite);
+        if (sprite.getReflectionType() == Reflection2DType.Cast) {
+            this.reflectors.remove(sprite);
         }
     }
     
     @Override
-    public void render(final Time time, final IProjection projection, final LocalRendererContext renderer) {
+    public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target,
+            Settings<EnvironmentKey> envS, Time time) {
         Profiler.begin(toString());
+        checkFBOs(target);
         boolean sorted = false;
         long spritesV = 0, reflV = 0;
         if (this.shouldSort) {
@@ -153,11 +134,11 @@ public class OofAdvancedRenderer2D implements OofRenderer, IRenderedObjectListen
         final FrustumIntersection intersFilter = new FrustumIntersection(projection.getProjection());
         this.reflectionBatch.getShaderSlot().setProjection(projection);
         //render lights
-        renderer.getRenderAPI().applyRenderState(OofRenderer2D.LIGHT_STATE);
-        this.renderBuffer.clearColor(renderer.getEnvironmentSettings().get(EnvironmentKeys2D.AmbientLight));
-        RendererUtil.render2d(this.reflectionBatch, renderer.getIRenderedObjectManager(), Light2D.TYPE, intersFilter);
+        api.applyRenderState(Renderer2D.LIGHT_STATE);
+        this.renderBuffer.clearColor(envS.get(EnvironmentKeys2D.AmbientLight));
+        RendererUtil.render2d(this.reflectionBatch, lights, intersFilter);
         //render reflection
-        renderer.getRenderAPI().applyRenderState(OofRenderer2D.SPRITE_STATE);
+        api.applyRenderState(Renderer2D.SPRITE_STATE);
         if (this.enableReflections) {
             this.reflectionBuffer.bindFrameBuffer();
             this.reflectionBuffer.clearColor();
@@ -191,11 +172,11 @@ public class OofAdvancedRenderer2D implements OofRenderer, IRenderedObjectListen
         this.mainBatch.end();
         this.spriteBuffer.unbindFrameBuffer();
         //combine lights with the scene
-        renderer.getRenderAPI().applyRenderState(OofRenderer2D.MULT_STATE);
+        api.applyRenderState(Renderer2D.MULT_STATE);
         this.spriteBuffer.renderDirect(0);
         this.renderBuffer.unbindFrameBuffer();
         //final draw
-        renderer.getRenderAPI().applyRenderState(OofRenderer2D.SPRITE_STATE);
+        api.applyRenderState(Renderer2D.SPRITE_STATE);
         this.renderBuffer.renderDirect(0);
         Profiler.end(sorted, this.reflectors.size(), this.sprites.size(), reflV, spritesV);
     }
@@ -204,28 +185,27 @@ public class OofAdvancedRenderer2D implements OofRenderer, IRenderedObjectListen
         this.shouldSort = true;
     }
     
-    @Override
-    public void resizeFBOs(final LocalRendererContext context, final SurfaceBuffer screen) {
-        this.spriteBuffer = this.spriteBuffer.resizedCloneAndDelete(screen.getWidth(), screen.getHeight());
-        this.renderBuffer = this.renderBuffer.resizedCloneAndDelete(screen.getWidth(), screen.getHeight());
-        this.reflectionBuffer = this.reflectionBuffer.resizedCloneAndDelete(screen.getWidth() / 2, screen.getHeight() / 2);
+    private void checkFBOs(FrameBuffer target) {
+        this.spriteBuffer = this.spriteBuffer.resizeAndDeleteOrThis(target.getWidth(), target.getHeight());
+        this.renderBuffer = this.renderBuffer.resizeAndDeleteOrThis(target.getWidth(), target.getHeight());
+        this.reflectionBuffer = this.reflectionBuffer.resizeAndDeleteOrThis(target.getWidth() / 2,
+                target.getHeight() / 2);
     }
     
-    private void createFBOs(final LocalRendererContext context, final FrameBuffer screen) {
-        this.spriteBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
+    private void createFBOs(RenderAPI api, final FrameBuffer target) {
+        this.spriteBuffer = api.createFrameBuffer(target.getWidth(), target.getHeight(), 0, 1);
         this.spriteBuffer.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
         
-        this.renderBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
+        this.renderBuffer = api.createFrameBuffer(target.getWidth(), target.getHeight(), 0, 1);
         this.renderBuffer.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
         
-        this.reflectionBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth() / 2, screen.getHeight() / 2,
-                0, 1);
+        this.reflectionBuffer = api.createFrameBuffer(target.getWidth() / 2, target.getHeight() / 2, 0, 1);
         this.reflectionBuffer.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
     }
     
     @Override
     public String toString() {
-        return OofAdvancedRenderer2D.class.getSimpleName() + "-" + this.countIndex;
+        return AdvancedRenderer2D.class.getSimpleName() + "-" + this.countIndex;
     }
     
     private final IProfiler profiler = new IProfiler() {
@@ -240,7 +220,7 @@ public class OofAdvancedRenderer2D implements OofRenderer, IRenderedObjectListen
             builder.append("Layers sorted: " + Mathd.round(this.sorted * 100 / (double) count, 2) + "%").append('\n');
             this.sprites.append("Sprites", count, 1, builder);
             this.spritesV.append("Sprites (visible): ", count, 1, builder);
-            if (OofAdvancedRenderer2D.this.enableReflections) {
+            if (AdvancedRenderer2D.this.enableReflections) {
                 this.reflectors.append("Reflectors: ", count, 1, builder);
                 this.reflectorsV.append("Reflectors (visible)", count, 1, builder);
             }
@@ -252,7 +232,7 @@ public class OofAdvancedRenderer2D implements OofRenderer, IRenderedObjectListen
                 this.sorted++;
             }
             this.sprites.push((int) objects[2]);
-            if (OofAdvancedRenderer2D.this.enableReflections) {
+            if (AdvancedRenderer2D.this.enableReflections) {
                 this.reflectors.push((int) objects[1]);
                 this.reflectorsV.push((long) objects[3]);
             }

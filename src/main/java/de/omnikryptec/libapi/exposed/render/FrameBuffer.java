@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 
 import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
-import de.omnikryptec.render.renderer2.RendererUtil;
+import de.omnikryptec.render.renderer.RendererUtil;
 import de.omnikryptec.util.data.Color;
 
 /**

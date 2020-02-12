@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.render.renderer2;
+package de.omnikryptec.render.renderer;
 
 import java.util.Collection;
 import java.util.List;

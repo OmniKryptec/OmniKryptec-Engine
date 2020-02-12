@@ -1,9 +1,9 @@
-package de.omnikryptec.render.renderer2;
+package de.omnikryptec.render.renderer;
 
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.postprocessing.Postprocessor;
-import de.omnikryptec.render.renderer2.ViewManager.EnvironmentKey;
+import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
 import de.omnikryptec.util.settings.Settings;
 
 public class View {

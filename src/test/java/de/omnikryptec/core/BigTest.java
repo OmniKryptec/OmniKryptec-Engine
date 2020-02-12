@@ -25,7 +25,7 @@ import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.AdvancedSprite.Reflection2DType;
-import de.omnikryptec.render.renderer2.AdvancedRenderer2D;
+import de.omnikryptec.render.renderer.AdvancedRenderer2D;
 import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.data.Color;
