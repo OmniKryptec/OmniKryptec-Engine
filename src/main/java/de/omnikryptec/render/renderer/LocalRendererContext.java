@@ -33,8 +33,8 @@ import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.objects.IRenderedObjectManager;
 import de.omnikryptec.render.objects.RenderedObjectManager;
 import de.omnikryptec.render.postprocessing.Postprocessor;
-import de.omnikryptec.render.renderer.RendererContext.EnvironmentKey;
-import de.omnikryptec.render.renderer.RendererContext.GlobalEnvironmentKeys;
+import de.omnikryptec.render.renderer2.ViewManager.EnvironmentKey;
+import de.omnikryptec.render.renderer2.ViewManager.GlobalEnvironmentKeys;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 

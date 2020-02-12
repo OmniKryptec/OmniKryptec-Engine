@@ -29,30 +29,12 @@ import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
-import de.omnikryptec.util.data.Color;
-import de.omnikryptec.util.settings.Defaultable;
+import de.omnikryptec.render.renderer2.ViewManager.EnvironmentKey;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class RendererContext implements IUpdatable {
-    
-    public static interface EnvironmentKey {
-    }
-    
-    public static enum GlobalEnvironmentKeys implements Defaultable, EnvironmentKey {
-        ClearColor(new Color(0, 0, 0, 0));
-        
-        private final Object def;
-        
-        private GlobalEnvironmentKeys(final Object def) {
-            this.def = def;
-        }
-        
-        @Override
-        public <T> T getDefault() {
-            return (T) this.def;
-        }
-    }
+
     
     private static final Comparator<LocalRendererContext> LOCAL_CONTEXT_PRIORITY_COMPARATOR = (e1,
             e2) -> e2.getPriority() - e1.getPriority();

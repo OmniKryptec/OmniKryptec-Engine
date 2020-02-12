@@ -244,6 +244,10 @@ public abstract class FrameBuffer implements Deletable {
         clear(color.getR(), color.getG(), color.getB(), color.getA(), types);
     }
     
+    public void clearComplete(Color color) {
+        clear(color, SurfaceBufferType.Color, SurfaceBufferType.Depth);   
+    }
+    
     public void clearComplete() {
         clear(0, 0, 0, 0, SurfaceBufferType.Color, SurfaceBufferType.Depth);
     }
@@ -282,6 +286,12 @@ public abstract class FrameBuffer implements Deletable {
     public abstract int targetCount();
     
     public abstract FrameBuffer resizedClone(int newWidth, int newHeight);
+    
+    public FrameBuffer resizedCloneAndDelete(int newWidth, int newHeight) {
+        FrameBuffer rC = resizedClone(newWidth, newHeight);
+        this.deleteAndUnregister();
+        return rC;
+    }
     
     public abstract int getWidth();
     

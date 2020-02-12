@@ -35,7 +35,7 @@ import de.omnikryptec.render.objects.IRenderedObjectListener;
 import de.omnikryptec.render.objects.Light2D;
 import de.omnikryptec.render.objects.RenderedObject;
 import de.omnikryptec.render.objects.Sprite;
-import de.omnikryptec.render.renderer.RendererContext.EnvironmentKey;
+import de.omnikryptec.render.renderer2.ViewManager.EnvironmentKey;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathd;
 import de.omnikryptec.util.profiling.IProfiler;
@@ -151,8 +151,8 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
     
     @Override
     public void resizeFBOs(final LocalRendererContext context, final SurfaceBuffer screen) {
-        this.spriteBuffer = this.spriteBuffer.resizedClone(screen.getWidth(), screen.getHeight());
-        this.renderBuffer = this.renderBuffer.resizedClone(screen.getWidth(), screen.getHeight());
+        this.spriteBuffer = this.spriteBuffer.resizedCloneAndDelete(screen.getWidth(), screen.getHeight());
+        this.renderBuffer = this.renderBuffer.resizedCloneAndDelete(screen.getWidth(), screen.getHeight());
     }
     
     private void createFBOs(final LocalRendererContext context, final FrameBuffer screen) {

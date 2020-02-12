@@ -118,6 +118,10 @@ public interface RenderAPI {
      */
     FrameBuffer createFrameBuffer(int width, int height, int multisample, int targets);
     
+    default FrameBuffer createFrameBufferScreenSized(int multisample, int targets) {
+        return createFrameBuffer(getSurface().getWidth(), getSurface().getHeight(), multisample, targets);
+    }
+    
     FrameBuffer getCurrentFrameBuffer();
     
     /**
