@@ -13,7 +13,7 @@ import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.updater.Time;
 
 public class ViewManager {
-
+    
     private static final Comparator<Renderer> REND_COMP = (r1, r2) -> r1.priority() - r2.priority();
     
     public static interface EnvironmentKey {
@@ -74,6 +74,8 @@ public class ViewManager {
         renderer.deinit(this, LibAPIManager.instance().getGLFW().getRenderAPI());
         renderers.remove(renderer);
     }
+    
+    //TODO pcfreak9000 include the renderapi in the ViewManager?
     
     public void renderInstance(Time time) {
         if (isInAction) {

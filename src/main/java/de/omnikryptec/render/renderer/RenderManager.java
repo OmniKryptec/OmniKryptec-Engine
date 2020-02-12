@@ -15,7 +15,7 @@ import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
 import de.omnikryptec.util.updater.Time;
-
+//TODO pcfreak9000 if there is only one ViewManager in the list, render it directly
 public class RenderManager {
     
     private static final Comparator<ViewManagerInfo> VMI_COMP = (v1, v2) -> v1.priority - v2.priority;
@@ -52,7 +52,7 @@ public class RenderManager {
         inf.priority = prio;
         inf.targetFbo = LibAPIManager.instance().getGLFW().getRenderAPI().createFrameBufferScreenSized(0, 1);
         inf.targetFbo.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
-        viewMgr.getMainView().setTargetFbo(inf.targetFbo);//TODO pcfreak9000 Hmmmmmm... is there a better way?
+        viewMgr.getMainView().setTargetFbo(inf.targetFbo);//TODx pcfreak9000 Hmmmmmm... is there a better way?
         this.views.add(inf);
         this.views.sort(VMI_COMP);
     }
@@ -72,7 +72,7 @@ public class RenderManager {
     public void event(final WindowEvent.ScreenBufferResized ev) {
         for (ViewManagerInfo vmInf : views) {
             vmInf.targetFbo = vmInf.targetFbo.resizedCloneAndDelete(ev.width, ev.height);
-            vmInf.viewManager.getMainView().setTargetFbo(vmInf.targetFbo);//TODO pcfreak9000 this is oof
+            vmInf.viewManager.getMainView().setTargetFbo(vmInf.targetFbo);//TODO pcfreak9000 this is oof, also see the above TODx
         }
     }
     
