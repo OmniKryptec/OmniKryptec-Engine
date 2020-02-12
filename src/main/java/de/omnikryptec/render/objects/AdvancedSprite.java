@@ -23,7 +23,6 @@ import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.util.data.Color;
 
 public class AdvancedSprite extends SimpleSprite {
-    public static final RenderedObjectType TYPE = RenderedObjectType.of(AdvancedSprite.class);
     
     private static final Matrix3x2f REFLECTION_MATRIX = new Matrix3x2f();
     
@@ -70,11 +69,6 @@ public class AdvancedSprite extends SimpleSprite {
     
     public Color reflectiveness() {
         return this.reflectiveness;
-    }
-    
-    @Override
-    public RenderedObjectType type() {
-        return TYPE;
     }
     
 }

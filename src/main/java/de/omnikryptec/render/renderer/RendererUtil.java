@@ -17,15 +17,12 @@
 package de.omnikryptec.render.renderer;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.joml.FrustumIntersection;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.batch.SimpleBatch2D;
-import de.omnikryptec.render.objects.IRenderedObjectManager;
-import de.omnikryptec.render.objects.RenderedObjectType;
 import de.omnikryptec.render.objects.Sprite;
 
 public class RendererUtil {
@@ -42,13 +39,6 @@ public class RendererUtil {
         directBatch.end();
     }
 
-    @Deprecated
-    public static void render2d(final Batch2D batch, final IRenderedObjectManager manager,
-            final RenderedObjectType type, final FrustumIntersection filter) {
-        final List<Sprite> sprites = manager.getFor(type);
-        render2d(batch, sprites, filter);
-    }
-    
     public static int render2d(final Batch2D batch, final Collection<? extends Sprite> sprites,
             final FrustumIntersection filter) {
         int c = 0;

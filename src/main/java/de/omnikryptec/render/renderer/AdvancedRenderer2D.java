@@ -17,10 +17,9 @@ import de.omnikryptec.render.batch.AdvancedShaderSlot;
 import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.AdvancedSprite.Reflection2DType;
+import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.render.renderer.Renderer2D.EnvironmentKeys2D;
 import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
-import de.omnikryptec.render.objects.Light2D;
-import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathd;
@@ -38,7 +37,7 @@ public class AdvancedRenderer2D implements Renderer {
     private Comparator<Sprite> spriteComparator = Renderer2D.DEFAULT_COMPARATOR;
     private final List<AdvancedSprite> sprites = new ArrayList<>();
     private final List<AdvancedSprite> reflectors = new ArrayList<>();
-    private final List<Light2D> lights = new ArrayList<>();
+    private final List<Sprite> lights = new ArrayList<>();
     
     private final SimpleBatch2D reflectionBatch;
     private final AdvancedBatch2D mainBatch;
@@ -92,11 +91,11 @@ public class AdvancedRenderer2D implements Renderer {
         this.shouldSort = true;
     }
     
-    public void addLight(Light2D light) {
+    public void addLight(Sprite light) {
         this.lights.add(light);
     }
     
-    public void removeLight(Light2D light) {
+    public void removeLight(Sprite light) {
         this.lights.remove(light);
     }
     

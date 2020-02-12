@@ -15,7 +15,6 @@ import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.batch.AbstractProjectedShaderSlot;
 import de.omnikryptec.render.batch.SimpleBatch2D;
-import de.omnikryptec.render.objects.Light2D;
 import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
 import de.omnikryptec.util.Util;
@@ -41,7 +40,7 @@ public class Renderer2D implements Renderer {
     
     private Comparator<Sprite> spriteComparator = DEFAULT_COMPARATOR;
     private final List<Sprite> sprites = new ArrayList<>();
-    private final List<Light2D> lights = new ArrayList<>();
+    private final List<Sprite> lights = new ArrayList<>();
     
     private final SimpleBatch2D batch;
     private FrameBuffer spriteBuffer;
@@ -82,11 +81,11 @@ public class Renderer2D implements Renderer {
         this.shouldSort = true;
     }
     
-    public void addLight(Light2D light) {
+    public void addLight(Sprite light) {
         this.lights.add(light);
     }
     
-    public void removeLight(Light2D light) {
+    public void removeLight(Sprite light) {
         this.lights.remove(light);
     }
     

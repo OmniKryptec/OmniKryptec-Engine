@@ -33,10 +33,10 @@ import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.batch.AdvancedBatch2D;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.objects.AdvancedSprite;
-import de.omnikryptec.render.objects.Light2D;
+import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.render.renderer.AdvancedRenderer2D;
-import de.omnikryptec.render.renderer.ViewManager;
 import de.omnikryptec.render.renderer.Renderer2D.EnvironmentKeys2D;
+import de.omnikryptec.render.renderer.ViewManager;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.updater.Time;
@@ -66,7 +66,7 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
         
     }
     
-    private class MyLight extends Light2D {
+    private class MyLight extends Sprite {
         private Color color;
         private float x, y;
         

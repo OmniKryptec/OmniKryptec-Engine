@@ -21,7 +21,6 @@ import org.joml.FrustumIntersection;
 import de.omnikryptec.render.batch.Batch2D;
 
 public abstract class Sprite implements RenderedObject {
-    public static final RenderedObjectType TYPE = RenderedObjectType.of(Sprite.class);
     
     private int layer;
     
@@ -39,9 +38,5 @@ public abstract class Sprite implements RenderedObject {
     }
     
     public abstract void draw(Batch2D batch);
-    
-    @Override
-    public RenderedObjectType type() {
-        return TYPE;
-    }
+   
 }

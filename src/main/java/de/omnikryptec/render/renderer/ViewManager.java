@@ -13,7 +13,7 @@ import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.updater.Time;
 
 public class ViewManager {
-    //TODO priority?
+
     private static final Comparator<Renderer> REND_COMP = (r1, r2) -> r1.priority() - r2.priority();
     
     public static interface EnvironmentKey {
