@@ -119,7 +119,7 @@ public class Minigame extends Omnikryptec {
         getResourceManager().load(false, true, new AdvancedFile("intern:/de/omnikryptec/resources/"));
         getEventBus().register(this);
         this.mgr = UpdateableFactory.createDefaultIECSManager();
-        final Scene sn = getGame().createNewScene(true);
+        final Scene sn = getGame().createAndAddScene();
         //sn.setTimeTransform(t -> new Time(t.opCount, t.ops, t.current, t.delta*3));
         sn.setGameLogic(this.mgr);
         this.mgr.addSystem(new CollisionSystem());

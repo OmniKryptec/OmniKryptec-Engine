@@ -45,10 +45,9 @@ public class RendererDemo extends Omnikryptec {
     @Override
     protected void onInitialized() {
         //Create the rendering environment
-        final Scene scene = getGame().createNewScene(true);
+        final Scene scene = getGame().createAndAddScene();
         Renderer2D renderer = new Renderer2D();
         scene.getViewManager().addRenderer(renderer);
-        scene.getViewManager().getMainView().setProjection(new Camera(new Matrix4f().ortho2D(0, 1, 0, 1)));
         
         //Load the texture and use the TextureHelper to make stuff easier
         getResourceManager().load(false, true, "intern:/de/omnikryptec/resources/jd.png");

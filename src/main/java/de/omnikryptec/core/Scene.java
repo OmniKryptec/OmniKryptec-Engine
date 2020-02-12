@@ -28,17 +28,11 @@ public class Scene {
     private IUpdatable gameLogic;
     
     private final ViewManager viewManager;
-    
-    private final Game game;
-    
+        
     private UnaryOperator<Time> timeTransform = UnaryOperator.identity();
-    
-    private int priority;
-    
-    Scene(ViewManager viewManager, final Game game, final int prio) {
-        this.viewManager = viewManager;
-        this.game = game;
-        setPriority(prio);
+        
+    public Scene() {
+        this.viewManager = new ViewManager();
     }
     
     public void updateScene(final Time time) {
@@ -65,16 +59,6 @@ public class Scene {
 
     public ViewManager getViewManager() {
         return viewManager;
-    }
-    
-    public void setPriority(final int i) {
-        this.priority = i;
-        this.game.notifyPriorityChange();
-        //this.renderer.setPriority(this.priority);
-    }
-    
-    public int priority() {
-        return this.priority;
     }
     
 }

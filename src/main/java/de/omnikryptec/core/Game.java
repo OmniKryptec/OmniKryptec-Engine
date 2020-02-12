@@ -33,9 +33,15 @@ import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.updater.Time;
 
 public class Game {
-    private static final Comparator<Scene> SCENE_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority() - e1.priority();
     
-    private final List<Scene> scenes;
+    private static class PrioScene {
+        Scene scene;
+        int prio;
+    }
+    
+    private static final Comparator<PrioScene> SCENE_PRIORITY_COMPARATOR = (e1, e2) -> e2.prio - e1.prio;
+    
+    private final List<PrioScene> scenes;
     
     private final InputManager input;
     
@@ -62,13 +68,13 @@ public class Game {
         this.eventBus = new EventBus(false);
     }
     
-    public Scene createNewScene(boolean add) {
-        ViewManager vm = new ViewManager();
-        this.renderManager.addViewManager(vm, 0);
-        final Scene newScene = new Scene(vm, this, 0);//TODO prios
-        if (add) {
-            addScene(newScene);
-        }
+    public Scene createAndAddScene() {
+        return createAndAddScene(0);
+    }
+    
+    public Scene createAndAddScene(int prio) {
+        final Scene newScene = new Scene();
+        addScene(newScene, prio);
         return newScene;
     }
     
@@ -82,7 +88,7 @@ public class Game {
     
     public void updateGame(final Time time) {
         for (int i = this.scenes.size() - 1; i >= 0; i--) {
-            this.scenes.get(i).updateScene(timeTransform.apply(time));
+            this.scenes.get(i).scene.updateScene(timeTransform.apply(time));
             this.eventBus.processQueuedEvents();
         }
     }
@@ -105,15 +111,18 @@ public class Game {
         return this.enableRenderContext;
     }
     
-    public void addScene(Scene scene) {
-        this.scenes.add(scene);
-        this.renderManager.addViewManager(scene.getViewManager(), 0);
-        notifyPriorityChange();
+    public void addScene(Scene scene, int prio) {
+        PrioScene prioScene = new PrioScene();
+        prioScene.scene = scene;
+        prioScene.prio = prio;
+        this.scenes.add(prioScene);
+        this.renderManager.addViewManager(scene.getViewManager(), prio);
+        this.scenes.sort(SCENE_PRIORITY_COMPARATOR);
     }
     
     public void removeScene(final Scene scene) {
         this.renderManager.removeViewManager(scene.getViewManager());
-        this.scenes.remove(scene);
+        this.scenes.removeIf((e) -> e.scene == scene);
     }
     
     public InputManager getInput() {
@@ -130,10 +139,6 @@ public class Game {
     
     public void setTimeTransform(UnaryOperator<Time> transform) {
         timeTransform = Util.ensureNonNull(transform);
-    }
-    
-    void notifyPriorityChange() {
-        this.scenes.sort(SCENE_PRIORITY_COMPARATOR);
     }
     
 }

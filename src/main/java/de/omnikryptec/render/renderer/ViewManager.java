@@ -45,7 +45,7 @@ public class ViewManager {
         this.renderers = new ArrayList<>();
         this.namedViews = new HashMap<>();
         this.isInAction = false;
-        setDefaultMainView();
+        this.mainView = new View();
     }
     
     public void addView(String name, View view) {
@@ -58,11 +58,6 @@ public class ViewManager {
     
     public void setMainView(View newView) {
         this.mainView = newView;
-    }
-    
-    public void setDefaultMainView() {
-        this.mainView = new View();
-        this.mainView.setTargetFbo(LibAPIManager.instance().getGLFW().getRenderAPI().getSurface());
     }
     
     public View getMainView() {

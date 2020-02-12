@@ -63,7 +63,7 @@ public class BigTest extends Omnikryptec {
     
     @Override
     protected void onInitialized() {
-        final Scene actual = getGame().createNewScene(true);
+        final Scene actual = getGame().createAndAddScene();
         final ULayer scene = new ULayer();
         actual.setGameLogic(scene);
         getResourceManager().stage("intern:/de/omnikryptec/resources/");
@@ -73,7 +73,6 @@ public class BigTest extends Omnikryptec {
         //scene.addUpdatable(UpdateableFactory.createRenderTest(getTextures()));
         AdvancedRenderer2D renderer = new AdvancedRenderer2D();
         actual.getViewManager().addRenderer(renderer);
-        actual.getViewManager().getMainView().setProjection(new Camera(new Matrix4f().ortho2D(0, 1, 0, 1)));
         final AdvancedSprite s = new AdvancedSprite();
         //s.setColor(new Color(1, 0, 0));
         s.setReflectionType(Reflection2DType.Cast);
