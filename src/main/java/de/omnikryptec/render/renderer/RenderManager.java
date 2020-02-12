@@ -72,6 +72,7 @@ public class RenderManager {
     public void event(final WindowEvent.ScreenBufferResized ev) {
         for (ViewManagerInfo vmInf : views) {
             vmInf.targetFbo = vmInf.targetFbo.resizedCloneAndDelete(ev.width, ev.height);
+            vmInf.viewManager.getMainView().setTargetFbo(vmInf.targetFbo);//TODO pcfreak9000 this is oof
         }
     }
     
