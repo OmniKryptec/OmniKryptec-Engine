@@ -29,10 +29,11 @@ import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
+import de.omnikryptec.render.renderer2.RendererUtil;
 import de.omnikryptec.render.renderer2.ViewManager.EnvironmentKey;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
-
+@Deprecated
 public class RendererContext implements IUpdatable {
 
     

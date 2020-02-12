@@ -14,7 +14,6 @@ import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.window.WindowEvent;
-import de.omnikryptec.render.renderer.RendererUtil;
 import de.omnikryptec.util.updater.Time;
 
 public class RenderManager {

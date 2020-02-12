@@ -16,14 +16,16 @@
 
 package de.omnikryptec.core;
 
+import org.joml.Matrix4f;
+
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.core.update.ULayer;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
+import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.AdvancedSprite.Reflection2DType;
-import de.omnikryptec.render.renderer.AdvancedRenderer2D;
-import de.omnikryptec.render.renderer.LocalRendererContext;
+import de.omnikryptec.render.renderer2.AdvancedRenderer2D;
 import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.data.Color;
@@ -69,8 +71,9 @@ public class BigTest extends Omnikryptec {
         getResourceManager().processStaged(false, false);
         //scene.addUpdatable(UpdateableFactory.createScreenClearTest());
         //scene.addUpdatable(UpdateableFactory.createRenderTest(getTextures()));
-        final LocalRendererContext c = actual.getRendering();
-        c.addRenderer(new AdvancedRenderer2D());
+        AdvancedRenderer2D renderer = new AdvancedRenderer2D();
+        actual.getViewManager().addRenderer(renderer);
+        actual.getViewManager().getMainView().setProjection(new Camera(new Matrix4f().ortho2D(0, 1, 0, 1)));
         final AdvancedSprite s = new AdvancedSprite();
         //s.setColor(new Color(1, 0, 0));
         s.setReflectionType(Reflection2DType.Cast);
@@ -107,9 +110,9 @@ public class BigTest extends Omnikryptec {
         back2.getTransform().localspaceWrite().translate(0, 0.4f);
         back2.setReflectionType(Reflection2DType.Disable);
         scene.addUpdatable(time -> back2.setColor(Color.ofTemperature(Mathf.pingpong(time.currentf, 20000))));
-        c.getIRenderedObjectManager().add(back2);
-        c.getIRenderedObjectManager().add(back);
-        c.getIRenderedObjectManager().add(s);
+        renderer.add(back2);
+        renderer.add(back);
+        renderer.add(s);
     }
     
     @Override

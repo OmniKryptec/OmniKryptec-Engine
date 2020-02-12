@@ -17,10 +17,13 @@
 package de.omnikryptec.gui;
 
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
+import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.batch.AdvancedBatch2D;
-import de.omnikryptec.render.renderer.LocalRendererContext;
-import de.omnikryptec.render.renderer.Renderer;
+import de.omnikryptec.render.renderer2.Renderer;
+import de.omnikryptec.render.renderer2.ViewManager;
+import de.omnikryptec.render.renderer2.ViewManager.EnvironmentKey;
+import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class GuiRenderer implements Renderer {
@@ -37,21 +40,14 @@ public class GuiRenderer implements Renderer {
     }
     
     @Override
-    public void init(final LocalRendererContext context, final FrameBuffer target) {
-    }
-    
-    @Override
-    public void render(final Time time, final IProjection projection, final LocalRendererContext context) {
+    public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target,
+            Settings<EnvironmentKey> envSettings, Time time) {
         if (this.componentRoot != null) {
             batch.getShaderSlot().setProjection(projection);
             this.batch.begin();
             this.componentRoot.render(this.batch);
             this.batch.end();
         }
-    }
-    
-    @Override
-    public void deinit(final LocalRendererContext context) {
     }
     
 }

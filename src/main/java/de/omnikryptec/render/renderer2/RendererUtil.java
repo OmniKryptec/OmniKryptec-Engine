@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.render.renderer;
+package de.omnikryptec.render.renderer2;
 
 import java.util.Collection;
 import java.util.List;
@@ -41,7 +41,8 @@ public class RendererUtil {
         }
         directBatch.end();
     }
-    
+
+    @Deprecated
     public static void render2d(final Batch2D batch, final IRenderedObjectManager manager,
             final RenderedObjectType type, final FrustumIntersection filter) {
         final List<Sprite> sprites = manager.getFor(type);

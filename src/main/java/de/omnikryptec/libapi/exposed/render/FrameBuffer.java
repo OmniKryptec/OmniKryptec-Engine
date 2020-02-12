@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 
 import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
-import de.omnikryptec.render.renderer.RendererUtil;
+import de.omnikryptec.render.renderer2.RendererUtil;
 import de.omnikryptec.util.data.Color;
 
 /**
@@ -245,7 +245,7 @@ public abstract class FrameBuffer implements Deletable {
     }
     
     public void clearComplete(Color color) {
-        clear(color, SurfaceBufferType.Color, SurfaceBufferType.Depth);   
+        clear(color, SurfaceBufferType.Color, SurfaceBufferType.Depth);
     }
     
     public void clearComplete() {
@@ -291,6 +291,13 @@ public abstract class FrameBuffer implements Deletable {
         FrameBuffer rC = resizedClone(newWidth, newHeight);
         this.deleteAndUnregister();
         return rC;
+    }
+    
+    public FrameBuffer resizeAndDeleteOrThis(int newWidth, int newHeight) {
+        if (this.getWidth() != newWidth || this.getHeight() != newHeight) {
+            return resizedCloneAndDelete(newWidth, newHeight);
+        }
+        return this;
     }
     
     public abstract int getWidth();

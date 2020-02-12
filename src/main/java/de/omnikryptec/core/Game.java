@@ -23,10 +23,11 @@ import java.util.function.UnaryOperator;
 
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.gui.GuiManager;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.input.InputManager;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
-import de.omnikryptec.render.renderer.LocalRendererContext;
-import de.omnikryptec.render.renderer.RendererContext;
+import de.omnikryptec.render.renderer2.RenderManager;
+import de.omnikryptec.render.renderer2.ViewManager;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.updater.Time;
@@ -38,7 +39,7 @@ public class Game {
     
     private final InputManager input;
     
-    private final RendererContext rendererContext;
+    private final RenderManager renderManager;
     
     private final GuiManager guiManager;
     
@@ -53,17 +54,18 @@ public class Game {
     public Game(final KeySettings keySettings) {
         this.scenes = new ArrayList<>();
         this.input = new InputManager(keySettings);
-        this.rendererContext = new RendererContext();
-        LocalRendererContext lrcGui = this.rendererContext.createLocal();
-        lrcGui.setPriority(100);
-        this.rendererContext.addLocal(lrcGui);
-        this.guiManager = new GuiManager(lrcGui);
-        this.windowUpdater = new WindowUpdater(this.rendererContext.getRenderAPI().getWindow());
+        this.renderManager = new RenderManager();
+        ViewManager gVm = new ViewManager();
+        this.renderManager.addViewManager(gVm, 100);
+        this.guiManager = new GuiManager(gVm);
+        this.windowUpdater = new WindowUpdater(LibAPIManager.instance().getGLFW().getRenderAPI().getWindow());
         this.eventBus = new EventBus(false);
     }
     
     public Scene createNewScene(boolean add) {
-        final Scene newScene = new Scene(this.rendererContext.createLocal(null, 0), this, 0);
+        ViewManager vm = new ViewManager();
+        this.renderManager.addViewManager(vm, 0);
+        final Scene newScene = new Scene(vm, this, 0);//TODO prios
         if (add) {
             addScene(newScene);
         }
@@ -87,7 +89,7 @@ public class Game {
     
     public void renderGame(final Time time) {
         if (this.enableRenderContext) {
-            this.rendererContext.renderComplete(time);
+            this.renderManager.renderAll(time);
         }
     }
     
@@ -105,12 +107,12 @@ public class Game {
     
     public void addScene(Scene scene) {
         this.scenes.add(scene);
-        this.rendererContext.addLocal(scene.getRendering());
+        this.renderManager.addViewManager(scene.getViewManager(), 0);
         notifyPriorityChange();
     }
     
     public void removeScene(final Scene scene) {
-        this.rendererContext.removeLocal(scene.getRendering());
+        this.renderManager.removeViewManager(scene.getViewManager());
         this.scenes.remove(scene);
     }
     

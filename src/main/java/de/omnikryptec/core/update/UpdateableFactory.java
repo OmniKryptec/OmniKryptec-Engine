@@ -48,12 +48,7 @@ public class UpdateableFactory {
     public static InputManager createInputManager(final KeySettings keySettings) {
         return new InputManager(keySettings);
     }
-    
-    @Deprecated
-    public static RendererContext createRendererContext() {
-        return new RendererContext();
-    }
-    
+
     @Deprecated
     public static IUpdatable createScreenClearTest() {
         return new IUpdatable() {

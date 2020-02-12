@@ -6,14 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.omnikryptec.gui.GuiRenderer;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.SurfaceBufferType;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.updater.Time;
 
 public class ViewManager {
-    
+    //TODO priority?
     private static final Comparator<Renderer> REND_COMP = (r1, r2) -> r1.priority() - r2.priority();
     
     public static interface EnvironmentKey {
@@ -72,6 +72,12 @@ public class ViewManager {
     public void addRenderer(Renderer r) {
         renderers.add(r);
         renderers.sort(REND_COMP);
+        r.init(this, LibAPIManager.instance().getGLFW().getRenderAPI());
+    }
+    
+    public void removeRenderer(GuiRenderer renderer) {
+        renderer.deinit(this, LibAPIManager.instance().getGLFW().getRenderAPI());
+        renderers.remove(renderer);
     }
     
     public void renderInstance(Time time) {

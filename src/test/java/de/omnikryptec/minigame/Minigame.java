@@ -124,7 +124,7 @@ public class Minigame extends Omnikryptec {
         sn.setGameLogic(this.mgr);
         this.mgr.addSystem(new CollisionSystem());
         this.mgr.addSystem(new PlayerSystem());
-        this.mgr.addSystem(new RendererSystem(sn.getRendering()));
+        this.mgr.addSystem(new RendererSystem(sn.getViewManager()));
         this.mgr.addSystem(new MovementSystem());
         this.mgr.addSystem(new RangedSystem());
         this.mgr.addSystem(new AudioSystem());

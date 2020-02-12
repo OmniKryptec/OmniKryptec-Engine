@@ -33,15 +33,16 @@ import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.objects.IRenderedObjectManager;
 import de.omnikryptec.render.objects.RenderedObjectManager;
 import de.omnikryptec.render.postprocessing.Postprocessor;
+import de.omnikryptec.render.postprocessing.SceneRenderBufferManager;
 import de.omnikryptec.render.renderer2.ViewManager.EnvironmentKey;
 import de.omnikryptec.render.renderer2.ViewManager.GlobalEnvironmentKeys;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
-//TODO pcfreak9000 also improve target information for renderers (null => surface, FrameBuffer => take its width and height and stay like that?) <- what do i mean with that?
+@Deprecated
 public class LocalRendererContext {
     
-    private static final Comparator<Renderer> RENDERER_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority() - e1.priority();
+    private static final Comparator<OofRenderer> RENDERER_PRIORITY_COMPARATOR = (e1, e2) -> e2.priority() - e1.priority();
     
     private final RendererContext context;
     
@@ -50,7 +51,7 @@ public class LocalRendererContext {
     
     private IProjection mainProjection;
     private IRenderedObjectManager objectManager;
-    private final List<Renderer> renderers;
+    private final List<OofRenderer> renderers;
     
     private final Settings<EnvironmentKey> environmentSettings;
     
@@ -111,13 +112,13 @@ public class LocalRendererContext {
         this.mainProjection = projection;
     }
     
-    public void addRenderer(final Renderer renderer) {
+    public void addRenderer(final OofRenderer renderer) {
         this.renderers.add(renderer);
         this.renderers.sort(RENDERER_PRIORITY_COMPARATOR);
         renderer.init(this, this.context.getRenderAPI().getSurface());
     }
     
-    public void removeRenderer(final Renderer renderer) {
+    public void removeRenderer(final OofRenderer renderer) {
         renderer.deinit(this);
         this.renderers.remove(renderer);
     }
@@ -134,19 +135,19 @@ public class LocalRendererContext {
         this.context.getRenderAPI().getCurrentFrameBuffer().clear(
                 getEnvironmentSettings().get(GlobalEnvironmentKeys.ClearColor), SurfaceBufferType.Color,
                 SurfaceBufferType.Depth);
-        for (final Renderer r : this.renderers) {
+        for (final OofRenderer r : this.renderers) {
             r.preRender(time, projection, this);
         }
     }
     
     public void render(final Time time, final IProjection projection) {
-        for (final Renderer r : this.renderers) {
+        for (final OofRenderer r : this.renderers) {
             r.render(time, projection, this);
         }
     }
     
     public void postRender(final Time time, final IProjection projection) {
-        for (final Renderer r : this.renderers) {
+        for (final OofRenderer r : this.renderers) {
             r.postRender(time, projection, this);
         }
     }
@@ -166,7 +167,7 @@ public class LocalRendererContext {
     
     void screenBufferResizedEventDelegate(final WindowEvent.ScreenBufferResized ev) {
         this.frameBuffers.resize(ev.width, ev.height);
-        for (final Renderer r : this.renderers) {
+        for (final OofRenderer r : this.renderers) {
             r.resizeFBOs(this, ev.surface);
         }
     }

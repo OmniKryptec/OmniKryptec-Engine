@@ -1,20 +1,4 @@
-/*
- *    Copyright 2017 - 2020 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
- */
-
-package de.omnikryptec.render.renderer;
+package de.omnikryptec.render.renderer2;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -25,26 +9,26 @@ import org.joml.FrustumIntersection;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
+import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
-import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.batch.AbstractProjectedShaderSlot;
 import de.omnikryptec.render.batch.SimpleBatch2D;
-import de.omnikryptec.render.objects.IRenderedObjectListener;
 import de.omnikryptec.render.objects.Light2D;
-import de.omnikryptec.render.objects.RenderedObject;
 import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.render.renderer2.ViewManager.EnvironmentKey;
+import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathd;
 import de.omnikryptec.util.profiling.IProfiler;
 import de.omnikryptec.util.profiling.ProfileHelper;
 import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.settings.Defaultable;
+import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
-public class Renderer2D implements Renderer, IRenderedObjectListener {
+public class Renderer2D implements Renderer {
     private static int rc = 0;
     
     private final int countIndex = rc++;
@@ -57,6 +41,7 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
     
     private Comparator<Sprite> spriteComparator = DEFAULT_COMPARATOR;
     private final List<Sprite> sprites = new ArrayList<>();
+    private final List<Light2D> lights = new ArrayList<>();
     
     private final SimpleBatch2D batch;
     private FrameBuffer spriteBuffer;
@@ -83,43 +68,45 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
     }
     
     public void setSpriteComparator(final Comparator<Sprite> comparator) {
-        this.spriteComparator = comparator == null ? DEFAULT_COMPARATOR : comparator;
+        this.spriteComparator = Util.defaultIfNull(DEFAULT_COMPARATOR, comparator);
     }
     
     @Override
-    public void init(final LocalRendererContext context, final FrameBuffer target) {
-        createFBOs(context, target);
-        context.getIRenderedObjectManager().addListener(Sprite.TYPE, this);
-        final List<Sprite> list = context.getIRenderedObjectManager().getFor(Sprite.TYPE);
-        //is addAll fast enough or is a raw forloop faster?
-        this.sprites.addAll(list);
+    public void init(ViewManager vm, RenderAPI api) {
+        createFBOs(api, vm.getMainView().getTargetFbo());
         this.shouldSort = true;
     }
     
-    @Override
-    public void onAdd(final RenderedObject obj) {
-        this.sprites.add((Sprite) obj);
+    public void add(Sprite sprite) {
+        this.sprites.add(sprite);
         this.shouldSort = true;
     }
     
+    public void addLight(Light2D light) {
+        this.lights.add(light);
+    }
+    
+    public void removeLight(Light2D light) {
+        this.lights.remove(light);
+    }
+    
     @Override
-    public void deinit(final LocalRendererContext context) {
+    public void deinit(ViewManager vm, RenderAPI api) {
         this.sprites.clear();
         this.shouldSort = false;
-        context.getIRenderedObjectManager().removeListener(Sprite.TYPE, this);
         //delete FBOs
         this.renderBuffer.deleteAndUnregister();
         this.spriteBuffer.deleteAndUnregister();
     }
     
-    @Override
-    public void onRemove(final RenderedObject obj) {
-        this.sprites.remove(obj);
+    public void remove(Sprite sprite) {
+        this.sprites.remove(sprite);
     }
     
-    @Override
-    public void render(final Time time, final IProjection projection, final LocalRendererContext renderer) {
+    public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target,
+            Settings<EnvironmentKey> envSettings, Time time) {
         Profiler.begin(toString());
+        checkFBOs(target);
         boolean sorted = false;
         if (this.shouldSort) {
             this.sprites.sort(this.spriteComparator);
@@ -130,36 +117,35 @@ public class Renderer2D implements Renderer, IRenderedObjectListener {
         final FrustumIntersection intersFilter = new FrustumIntersection(projection.getProjection());
         this.batch.getShaderSlot().setProjection(projection);
         //render lights
-        renderer.getRenderAPI().applyRenderState(LIGHT_STATE);
-        this.renderBuffer.clearColor(renderer.getEnvironmentSettings().get(EnvironmentKeys2D.AmbientLight));
-        RendererUtil.render2d(this.batch, renderer.getIRenderedObjectManager(), Light2D.TYPE, intersFilter);
+        api.applyRenderState(LIGHT_STATE);
+        this.renderBuffer.clearColor(envSettings.get(EnvironmentKeys2D.AmbientLight));
+        RendererUtil.render2d(this.batch, lights, intersFilter);
         //render scene
         this.spriteBuffer.bindFrameBuffer();
         this.spriteBuffer.clearColor();
-        renderer.getRenderAPI().applyRenderState(SPRITE_STATE);
+        api.applyRenderState(SPRITE_STATE);
         int vs = RendererUtil.render2d(this.batch, this.sprites, intersFilter);
         this.spriteBuffer.unbindFrameBuffer();
         //combine lights with the scene
-        renderer.getRenderAPI().applyRenderState(MULT_STATE);
+        api.applyRenderState(MULT_STATE);
         this.spriteBuffer.renderDirect(0);
         this.renderBuffer.unbindFrameBuffer();
         //final draw
-        renderer.getRenderAPI().applyRenderState(SPRITE_STATE);
+        api.applyRenderState(SPRITE_STATE);
         this.renderBuffer.renderDirect(0);
         Profiler.end(sorted, this.sprites.size(), vs);
     }
     
-    @Override
-    public void resizeFBOs(final LocalRendererContext context, final SurfaceBuffer screen) {
-        this.spriteBuffer = this.spriteBuffer.resizedCloneAndDelete(screen.getWidth(), screen.getHeight());
-        this.renderBuffer = this.renderBuffer.resizedCloneAndDelete(screen.getWidth(), screen.getHeight());
+    private void checkFBOs(FrameBuffer target) {
+        this.spriteBuffer = this.spriteBuffer.resizeAndDeleteOrThis(target.getWidth(), target.getHeight());
+        this.renderBuffer = this.renderBuffer.resizeAndDeleteOrThis(target.getWidth(), target.getHeight());
     }
     
-    private void createFBOs(final LocalRendererContext context, final FrameBuffer screen) {
-        this.spriteBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
+    private void createFBOs(RenderAPI api, final FrameBuffer screen) {
+        this.spriteBuffer = api.createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
         this.spriteBuffer.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
         
-        this.renderBuffer = context.getRenderAPI().createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
+        this.renderBuffer = api.createFrameBuffer(screen.getWidth(), screen.getHeight(), 0, 1);
         this.renderBuffer.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
     }
     

@@ -30,17 +30,18 @@ import de.omnikryptec.libapi.exposed.input.CursorType;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
+import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec3;
-import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.framebuffer.GLFrameBuffer;
 import de.omnikryptec.libapi.opengl.shader.GLShader;
 import de.omnikryptec.render.AdaptiveCamera;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.IProjection;
-import de.omnikryptec.render.renderer.LocalRendererContext;
-import de.omnikryptec.render.renderer.Renderer;
+import de.omnikryptec.render.renderer2.Renderer;
+import de.omnikryptec.render.renderer2.ViewManager;
+import de.omnikryptec.render.renderer2.ViewManager.EnvironmentKey;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.IntegerKey;
@@ -68,11 +69,11 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     protected void onInitialized() {
         getResourceManager().load(false, false, "intern:/de/pcfreak9000/raytracer/");
         final Scene s = getGame().createNewScene(true);
-        s.getRendering().addRenderer(this);
+        s.getViewManager().addRenderer(this);
         s.setGameLogic(this);
         this.camera = new AdaptiveCamera(
                 (w, h) -> new Matrix4f().perspective(Mathf.toRadians(80), w / (float) h, 1, 2));
-        s.getRendering().setMainProjection(this.camera);
+        s.getViewManager().getMainView().setProjection(camera);
         initShader();
     }
     
@@ -166,19 +167,20 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     }
     
     @Override
-    public void init(final LocalRendererContext context, final FrameBuffer target) {
-        this.image = (GLFrameBuffer) context.getRenderAPI().createFrameBuffer(target.getWidth(), target.getHeight(), 0,
-                1);
+    public void init(ViewManager vm, RenderAPI api) {
+        this.image = (GLFrameBuffer) api.createFrameBuffer(vm.getMainView().getTargetFbo().getWidth(),
+                vm.getMainView().getTargetFbo().getHeight(), 0, 1);
         this.image.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA32, 0));
     }
     
-    @Override
-    public void resizeFBOs(final LocalRendererContext context, final SurfaceBuffer screen) {
-        this.image = (GLFrameBuffer) this.image.resizedClone(screen.getWidth(), screen.getHeight());
+    private void checkFBOs(FrameBuffer target) {
+        this.image = (GLFrameBuffer) this.image.resizeAndDeleteOrThis(target.getWidth(), target.getHeight());
     }
     
     @Override
-    public void render(final Time time, final IProjection projection, final LocalRendererContext context) {
+    public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target,
+            Settings<EnvironmentKey> envSettings, Time time) {
+        checkFBOs(target);
         this.computeShader.bindShader();
         this.time.loadFloat(time.currentf);
         loadRays(this.camera);
@@ -186,10 +188,6 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         this.computeShader.dispatchCompute(MathUtil.toPowerOfTwo(this.image.getWidth() / 8),
                 MathUtil.toPowerOfTwo(this.image.getHeight() / 8), 1);
         this.image.renderDirect(0);
-    }
-    
-    @Override
-    public void deinit(final LocalRendererContext context) {
     }
     
 }

@@ -14,13 +14,13 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.render.renderer;
+package de.omnikryptec.render.postprocessing;
 
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 
-//TODO pcfreak9000 this class seems ugly and does it even work?
+@Deprecated
 public class SceneRenderBufferManager {
     
     private FrameBuffer multisampledScene;

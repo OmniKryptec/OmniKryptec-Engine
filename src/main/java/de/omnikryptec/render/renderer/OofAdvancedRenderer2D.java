@@ -37,7 +37,8 @@ import de.omnikryptec.render.objects.IRenderedObjectListener;
 import de.omnikryptec.render.objects.Light2D;
 import de.omnikryptec.render.objects.RenderedObject;
 import de.omnikryptec.render.objects.Sprite;
-import de.omnikryptec.render.renderer.Renderer2D.EnvironmentKeys2D;
+import de.omnikryptec.render.renderer.OofRenderer2D.EnvironmentKeys2D;
+import de.omnikryptec.render.renderer2.RendererUtil;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathd;
@@ -46,12 +47,13 @@ import de.omnikryptec.util.profiling.ProfileHelper;
 import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.updater.Time;
 
-public class AdvancedRenderer2D implements Renderer, IRenderedObjectListener {
+@Deprecated
+public class OofAdvancedRenderer2D implements OofRenderer, IRenderedObjectListener {
     private static int rc = 0;
     
     private final int countIndex = rc++;
     
-    private Comparator<Sprite> spriteComparator = Renderer2D.DEFAULT_COMPARATOR;
+    private Comparator<Sprite> spriteComparator = OofRenderer2D.DEFAULT_COMPARATOR;
     private final List<AdvancedSprite> sprites = new ArrayList<>();
     private final List<AdvancedSprite> reflectors = new ArrayList<>();
     
@@ -64,17 +66,17 @@ public class AdvancedRenderer2D implements Renderer, IRenderedObjectListener {
     private boolean shouldSort = false;
     private boolean enableReflections = true;
     
-    public AdvancedRenderer2D() {
+    public OofAdvancedRenderer2D() {
         this(1000);
     }
     
-    public AdvancedRenderer2D(final int vertices) {
+    public OofAdvancedRenderer2D(final int vertices) {
         this.reflectionBatch = new SimpleBatch2D(vertices);
         this.mainBatch = new AdvancedBatch2D(vertices);
         initStuff();
     }
     
-    public AdvancedRenderer2D(final int vertices, final AbstractProjectedShaderSlot mainShaderSlot,
+    public OofAdvancedRenderer2D(final int vertices, final AbstractProjectedShaderSlot mainShaderSlot,
             final AbstractProjectedShaderSlot reflectionShaderSlot) {
         this.reflectionBatch = new SimpleBatch2D(vertices, reflectionShaderSlot);
         this.mainBatch = new AdvancedBatch2D(vertices, mainShaderSlot);
@@ -90,7 +92,7 @@ public class AdvancedRenderer2D implements Renderer, IRenderedObjectListener {
     }
     
     public void setSpriteComparator(final Comparator<Sprite> comparator) {
-        this.spriteComparator = Util.defaultIfNull(Renderer2D.DEFAULT_COMPARATOR, comparator);
+        this.spriteComparator = Util.defaultIfNull(OofRenderer2D.DEFAULT_COMPARATOR, comparator);
     }
     
     @Override
@@ -151,11 +153,11 @@ public class AdvancedRenderer2D implements Renderer, IRenderedObjectListener {
         final FrustumIntersection intersFilter = new FrustumIntersection(projection.getProjection());
         this.reflectionBatch.getShaderSlot().setProjection(projection);
         //render lights
-        renderer.getRenderAPI().applyRenderState(Renderer2D.LIGHT_STATE);
+        renderer.getRenderAPI().applyRenderState(OofRenderer2D.LIGHT_STATE);
         this.renderBuffer.clearColor(renderer.getEnvironmentSettings().get(EnvironmentKeys2D.AmbientLight));
         RendererUtil.render2d(this.reflectionBatch, renderer.getIRenderedObjectManager(), Light2D.TYPE, intersFilter);
         //render reflection
-        renderer.getRenderAPI().applyRenderState(Renderer2D.SPRITE_STATE);
+        renderer.getRenderAPI().applyRenderState(OofRenderer2D.SPRITE_STATE);
         if (this.enableReflections) {
             this.reflectionBuffer.bindFrameBuffer();
             this.reflectionBuffer.clearColor();
@@ -189,11 +191,11 @@ public class AdvancedRenderer2D implements Renderer, IRenderedObjectListener {
         this.mainBatch.end();
         this.spriteBuffer.unbindFrameBuffer();
         //combine lights with the scene
-        renderer.getRenderAPI().applyRenderState(Renderer2D.MULT_STATE);
+        renderer.getRenderAPI().applyRenderState(OofRenderer2D.MULT_STATE);
         this.spriteBuffer.renderDirect(0);
         this.renderBuffer.unbindFrameBuffer();
         //final draw
-        renderer.getRenderAPI().applyRenderState(Renderer2D.SPRITE_STATE);
+        renderer.getRenderAPI().applyRenderState(OofRenderer2D.SPRITE_STATE);
         this.renderBuffer.renderDirect(0);
         Profiler.end(sorted, this.reflectors.size(), this.sprites.size(), reflV, spritesV);
     }
@@ -223,7 +225,7 @@ public class AdvancedRenderer2D implements Renderer, IRenderedObjectListener {
     
     @Override
     public String toString() {
-        return AdvancedRenderer2D.class.getSimpleName() + "-" + this.countIndex;
+        return OofAdvancedRenderer2D.class.getSimpleName() + "-" + this.countIndex;
     }
     
     private final IProfiler profiler = new IProfiler() {
@@ -238,7 +240,7 @@ public class AdvancedRenderer2D implements Renderer, IRenderedObjectListener {
             builder.append("Layers sorted: " + Mathd.round(this.sorted * 100 / (double) count, 2) + "%").append('\n');
             this.sprites.append("Sprites", count, 1, builder);
             this.spritesV.append("Sprites (visible): ", count, 1, builder);
-            if (AdvancedRenderer2D.this.enableReflections) {
+            if (OofAdvancedRenderer2D.this.enableReflections) {
                 this.reflectors.append("Reflectors: ", count, 1, builder);
                 this.reflectorsV.append("Reflectors (visible)", count, 1, builder);
             }
@@ -250,7 +252,7 @@ public class AdvancedRenderer2D implements Renderer, IRenderedObjectListener {
                 this.sorted++;
             }
             this.sprites.push((int) objects[2]);
-            if (AdvancedRenderer2D.this.enableReflections) {
+            if (OofAdvancedRenderer2D.this.enableReflections) {
                 this.reflectors.push((int) objects[1]);
                 this.reflectorsV.push((long) objects[3]);
             }

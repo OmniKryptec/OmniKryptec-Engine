@@ -19,7 +19,7 @@ package de.omnikryptec.core;
 import java.util.function.UnaryOperator;
 
 import de.omnikryptec.core.update.IUpdatable;
-import de.omnikryptec.render.renderer.LocalRendererContext;
+import de.omnikryptec.render.renderer2.ViewManager;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.updater.Time;
 
@@ -27,15 +27,16 @@ public class Scene {
     
     private IUpdatable gameLogic;
     
-    private final LocalRendererContext renderer;
+    private final ViewManager viewManager;
+    
     private final Game game;
     
     private UnaryOperator<Time> timeTransform = UnaryOperator.identity();
     
     private int priority;
     
-    Scene(final LocalRendererContext context, final Game game, final int prio) {
-        this.renderer = context;
+    Scene(ViewManager viewManager, final Game game, final int prio) {
+        this.viewManager = viewManager;
         this.game = game;
         setPriority(prio);
     }
@@ -61,15 +62,15 @@ public class Scene {
     public void setTimeTransform(UnaryOperator<Time> transform) {
         timeTransform = Util.ensureNonNull(transform);
     }
-    
-    public LocalRendererContext getRendering() {
-        return this.renderer;
+
+    public ViewManager getViewManager() {
+        return viewManager;
     }
     
     public void setPriority(final int i) {
         this.priority = i;
         this.game.notifyPriorityChange();
-        this.renderer.setPriority(this.priority);
+        //this.renderer.setPriority(this.priority);
     }
     
     public int priority() {

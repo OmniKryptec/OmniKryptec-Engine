@@ -16,12 +16,15 @@
 
 package de.omnikryptec.demo;
 
+import org.joml.Matrix4f;
+
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.core.Scene;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
+import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.objects.SimpleSprite;
-import de.omnikryptec.render.renderer.Renderer2D;
+import de.omnikryptec.render.renderer2.Renderer2D;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
@@ -43,7 +46,9 @@ public class RendererDemo extends Omnikryptec {
     protected void onInitialized() {
         //Create the rendering environment
         final Scene scene = getGame().createNewScene(true);
-        scene.getRendering().addRenderer(new Renderer2D());
+        Renderer2D renderer = new Renderer2D();
+        scene.getViewManager().addRenderer(renderer);
+        scene.getViewManager().getMainView().setProjection(new Camera(new Matrix4f().ortho2D(0, 1, 0, 1)));
         
         //Load the texture and use the TextureHelper to make stuff easier
         getResourceManager().load(false, true, "intern:/de/omnikryptec/resources/jd.png");
@@ -52,7 +57,6 @@ public class RendererDemo extends Omnikryptec {
         final SimpleSprite sprite = new SimpleSprite();
         sprite.setTexture(getTextures().get("jd.png"));
         
-        //add the sprite to the (default) robject manager
-        scene.getRendering().getIRenderedObjectManager().add(sprite);
+        renderer.add(sprite);
     }
 }

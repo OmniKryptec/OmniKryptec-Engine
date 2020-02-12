@@ -34,10 +34,9 @@ import de.omnikryptec.render.batch.AdvancedBatch2D;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.Light2D;
-import de.omnikryptec.render.objects.RenderedObject;
-import de.omnikryptec.render.renderer.AdvancedRenderer2D;
-import de.omnikryptec.render.renderer.LocalRendererContext;
-import de.omnikryptec.render.renderer.Renderer2D.EnvironmentKeys2D;
+import de.omnikryptec.render.renderer2.AdvancedRenderer2D;
+import de.omnikryptec.render.renderer2.Renderer2D.EnvironmentKeys2D;
+import de.omnikryptec.render.renderer2.ViewManager;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.updater.Time;
@@ -56,13 +55,14 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
     private final ComponentMapper<PositionComponent> posMapper = new ComponentMapper<>(PositionComponent.class);
     private final ComponentMapper<RenderComponent> rendMapper = new ComponentMapper<>(RenderComponent.class);
     
-    private final LocalRendererContext renderer;
+    private final ViewManager viewMgr;
+    private final AdvancedRenderer2D renderer;
     
-    public RendererSystem(final LocalRendererContext renderer) {
+    public RendererSystem(ViewManager vm) {
         super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(RenderComponent.class)));
-        this.renderer = renderer;
-        this.renderer.addRenderer(new AdvancedRenderer2D());
-        this.renderer.setMainProjection(CAMERA);
+        this.viewMgr = vm;
+        this.viewMgr.addRenderer(renderer = new AdvancedRenderer2D());
+        this.viewMgr.getMainView().setProjection(CAMERA);
         
     }
     
@@ -96,7 +96,7 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
         //        this.renderer.getIRenderedObjectManager().add(Light2D.TYPE, l1);
         //        this.renderer.getIRenderedObjectManager().add(Light2D.TYPE, l2);
         //        this.renderer.getIRenderedObjectManager().add(Light2D.TYPE, l3);
-        this.renderer.getEnvironmentSettings().set(EnvironmentKeys2D.AmbientLight, new Color());//new Color(0.3f, 0.3f, 0.3f));
+        this.viewMgr.getMainView().getEnvironment().set(EnvironmentKeys2D.AmbientLight, new Color());//new Color(0.3f, 0.3f, 0.3f));
     }
     
     @Override
@@ -108,22 +108,24 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
     @Override
     public void entityAdded(final Entity entity) {
         final AdvancedSprite sprite = new AdvancedSprite() {
-                        private long i = 0;
-                        private Color borderColor = new Color();
-                        public void draw(Batch2D batch) {
-                            super.draw(batch);
-                            i++;
-                            AdvancedBatch2D adv = (AdvancedBatch2D) batch;
-                            adv.signedDistanceFieldData().set(0.5f, 0.6f);
-                            if (i % 400 == 0) {
-                                this.getColor().randomizeRGB();
-                                borderColor.randomizeRGB();
-                            }
-                            adv.borderColor().set(borderColor);
-                            adv.borderSDFData().set(0.6f, 0.7f);
-                            adv.drawStringSimple("OOOF", Omnikryptec.getFontsS().getFontSDF("Candara"), 80, getTransform().worldspacePos().x(),
-                                    getTransform().worldspacePos().y(), (float) LibAPIManager.instance().getGLFW().getTime());
-                        };
+            private long i = 0;
+            private Color borderColor = new Color();
+            
+            public void draw(Batch2D batch) {
+                super.draw(batch);
+                i++;
+                AdvancedBatch2D adv = (AdvancedBatch2D) batch;
+                adv.signedDistanceFieldData().set(0.5f, 0.6f);
+                if (i % 400 == 0) {
+                    this.getColor().randomizeRGB();
+                    borderColor.randomizeRGB();
+                }
+                adv.borderColor().set(borderColor);
+                adv.borderSDFData().set(0.6f, 0.7f);
+                adv.drawStringSimple("OOOF", Omnikryptec.getFontsS().getFontSDF("Candara"), 80,
+                        getTransform().worldspacePos().x(), getTransform().worldspacePos().y(),
+                        (float) LibAPIManager.instance().getGLFW().getTime());
+            };
         };
         sprite.setTransform(this.posMapper.get(entity).transform);
         sprite.setColor(this.rendMapper.get(entity).color);
@@ -132,13 +134,12 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
         sprite.setLayer(this.rendMapper.get(entity).layer);
         sprite.setTexture(this.rendMapper.get(entity).texture);
         this.rendMapper.get(entity).backingSprite = sprite;
-        this.renderer.getIRenderedObjectManager().add(AdvancedSprite.TYPE, sprite);
+        this.renderer.add(sprite);
     }
     
     @Override
     public void entityRemoved(final Entity entity) {
-        final RenderedObject o = this.rendMapper.get(entity).backingSprite;
-        this.renderer.getIRenderedObjectManager().remove(AdvancedSprite.TYPE, o);
+        this.renderer.remove((AdvancedSprite) this.rendMapper.get(entity).backingSprite);
     }
     
     @Override

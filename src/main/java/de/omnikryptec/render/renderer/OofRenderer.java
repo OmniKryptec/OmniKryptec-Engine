@@ -20,8 +20,8 @@ import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.util.updater.Time;
-
-public interface Renderer {
+@Deprecated
+public interface OofRenderer {
     
     void init(LocalRendererContext context, FrameBuffer target);
     

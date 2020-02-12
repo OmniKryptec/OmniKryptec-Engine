@@ -20,29 +20,29 @@ import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.input.InputEvent;
 import de.omnikryptec.render.IProjection;
-import de.omnikryptec.render.renderer.LocalRendererContext;
+import de.omnikryptec.render.renderer2.ViewManager;
 
 public class GuiManager {
     
-    private final LocalRendererContext rendererContext;
+    private final ViewManager viewMgr;
     private GuiRenderer renderer;
     
     private GuiComponent componentRoot;
     
-    public GuiManager(final LocalRendererContext renderer) {
-        this.rendererContext = renderer;
+    public GuiManager(final ViewManager vm) {
+        this.viewMgr = vm;
         LibAPIManager.ENGINE_EVENTBUS.register(this);
         setRenderer(new GuiRenderer());
     }
     
     public void setRenderer(final GuiRenderer renderer) {
         if (this.renderer != null) {
-            this.rendererContext.removeRenderer(renderer);
+            this.viewMgr.removeRenderer(renderer);
             this.renderer.setGui(null);
         }
         this.renderer = renderer;
         if (this.renderer != null) {
-            this.rendererContext.addRenderer(renderer);
+            this.viewMgr.addRenderer(renderer);
             if (this.componentRoot != null) {
                 this.renderer.setGui(this.componentRoot);
             }
@@ -58,7 +58,7 @@ public class GuiManager {
     }
     
     public void setGuiProjection(IProjection proj) {
-        this.rendererContext.setMainProjection(proj);
+        this.viewMgr.getMainView().setProjection(proj);
     }
     
     private void recalculateConstraints() {
