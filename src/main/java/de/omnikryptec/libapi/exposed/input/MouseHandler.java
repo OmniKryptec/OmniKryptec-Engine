@@ -20,9 +20,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.joml.Vector2d;
 import org.joml.Vector2dc;
+import org.joml.Vector2f;
+import org.joml.Vector2fc;
 
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.keys.KeysAndButtons;
 
@@ -30,6 +33,7 @@ public class MouseHandler implements InputHandler {
     
     private final byte[] buttons = new byte[KeysAndButtons.MOUSE_BUTTON_AMOUNT];
     private final Vector2d position = new Vector2d(0.0, 0.0);
+    private Vector2f positionRelative;
     private final Vector2d scrollOffset = new Vector2d(0.0, 0.0);
     private final AtomicBoolean insideWindow = new AtomicBoolean(false);
     // Temporary variables
@@ -58,6 +62,9 @@ public class MouseHandler implements InputHandler {
     public void onPosChangeEvent(final InputEvent.MousePositionEvent ev) {
         this.position.x = ev.xPos;
         this.position.y = ev.yPos;
+        this.positionRelative = MathUtil.relativeMousePosition(this.position,
+                LibAPIManager.instance().getGLFW().getRenderAPI().getSurface().getViewportUnsafe(),
+                this.positionRelative);
     }
     
     @EventSubscription
@@ -146,6 +153,10 @@ public class MouseHandler implements InputHandler {
     
     public Vector2dc getScrollOffset() {
         return this.scrollOffset;
+    }
+    
+    public Vector2fc getPositionRelative() {
+        return this.positionRelative;
     }
     
     public boolean isInsideWindow() {

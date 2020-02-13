@@ -19,8 +19,8 @@ package de.omnikryptec.minigame;
 import java.util.Random;
 
 import org.joml.Matrix3x2f;
-import org.joml.Vector2dc;
 import org.joml.Vector2f;
+import org.joml.Vector2fc;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.core.Omnikryptec;
@@ -90,8 +90,8 @@ public class Minigame extends Omnikryptec {
         
         @EventSubscription
         public void event(InputEvent.MouseButtonEvent ev) {
-            Vector2dc v = getInput().getMousePosition();
-            if (v.x() < 300 && ev.action != KeysAndButtons.OKE_RELEASE) {
+            Vector2fc v = getInput().getMousePositionRelative();
+            if (v.x() < 0.375f && ev.action != KeysAndButtons.OKE_RELEASE) {
                 ev.consume();
             }
         }

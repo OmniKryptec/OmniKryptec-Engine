@@ -112,6 +112,7 @@ public class MathUtil {
         return (n & -n) == n;
     }
     
+    //TODO consider [-1,1] vs [0,1]
     public static Vector2f relativeMousePosition(final Vector2dc displayMousePosition, final int[] viewport,
             Vector2f target) {
         if (target == null) {
@@ -122,13 +123,11 @@ public class MathUtil {
         x = displayMousePosition.x();
         x -= viewport[0];
         x /= viewport[2];
-        x = 2 * x - 1;
         
         y = displayMousePosition.y();
         y -= viewport[1];
         y /= viewport[3];
         y = 1.0 - y;
-        y = 2 * y - 1;
         
         target.set((float) x, (float) y);
         return target;
@@ -144,13 +143,11 @@ public class MathUtil {
         x = displayMousePosition.x();
         x -= viewport[0];
         x /= viewport[2];
-        x = 2 * x - 1;
         
         y = displayMousePosition.y();
         y -= viewport[1];
         y /= viewport[3];
         y = 1.0 - y;
-        y = 2 * y - 1;
         
         target.set(x, y);
         return target;
@@ -171,7 +168,7 @@ public class MathUtil {
         if (target == null) {
             target = new Vector4f();
         }
-        target.set(relativeScreenPosition, depth, 1);
+        target.set(relativeScreenPosition.x() * 2 - 1, relativeScreenPosition.y() * 2 - 1, depth, 1);
         inverseViewprojection.transform(target);
         target.mul(1 / target.w, target);
         return target;

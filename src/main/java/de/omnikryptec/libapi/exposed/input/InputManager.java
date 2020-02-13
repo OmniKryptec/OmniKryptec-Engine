@@ -20,6 +20,7 @@ import org.joml.Matrix4fc;
 import org.joml.Vector2d;
 import org.joml.Vector2dc;
 import org.joml.Vector2f;
+import org.joml.Vector2fc;
 
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
@@ -181,9 +182,8 @@ public class InputManager implements IUpdatable {
         return this.mouseHandler.isButtonPressed(buttonCode); // || mouseHandler.isButtonRepeated(buttonCode); //TODO Panzer1119 Can a mouse buttons state be "REPEATED"?
     }
     
-    public Vector2f getMousePositionRelative(final Vector2f target) {
-        return MathUtil.relativeMousePosition(getMousePosition(),
-                LibAPIManager.instance().getGLFW().getRenderAPI().getSurface().getViewportUnsafe(), target);
+    public Vector2fc getMousePositionRelative() {
+        return this.mouseHandler.getPositionRelative();
     }
     
     public Vector2f getMousePositionInWorld2D(final Camera camera, final Vector2f target) {
@@ -191,8 +191,7 @@ public class InputManager implements IUpdatable {
     }
     
     public Vector2f getMousePositionInWorld2D(final Matrix4fc inverseViewProjection, Vector2f target) {
-        target = getMousePositionRelative(target);
-        MathUtil.screenToWorldspace2D(target, inverseViewProjection, target);
+        target = MathUtil.screenToWorldspace2D(getMousePositionRelative(), inverseViewProjection, target);
         return target;
     }
     
