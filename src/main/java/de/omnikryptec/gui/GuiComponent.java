@@ -81,10 +81,10 @@ public class GuiComponent {
         return this.constraints;
     }
     
-    public void render(final BorderedBatch2D batch) {
-        renderComponent(batch);
+    public void render(final BorderedBatch2D batch, float aspect) {
+        renderComponent(batch, aspect);
         for (final GuiComponent gc : this.children) {
-            gc.render(batch);
+            gc.render(batch, aspect);
         }
     }
     
@@ -92,7 +92,7 @@ public class GuiComponent {
         return this.events;
     }
     
-    protected void renderComponent(final BorderedBatch2D batch) {
+    protected void renderComponent(final BorderedBatch2D batch, float aspect) {
         
     }
     

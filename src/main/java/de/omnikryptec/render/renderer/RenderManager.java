@@ -13,7 +13,7 @@ import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.libapi.exposed.window.WindowEvent;
+import de.omnikryptec.libapi.opengl.framebuffer.GLScreenBuffer.ScreenBufferResizedEvent;
 import de.omnikryptec.util.updater.Time;
 //TODO pcfreak9000 if there is only one ViewManager in the list, render it directly
 public class RenderManager {
@@ -69,7 +69,7 @@ public class RenderManager {
     }
     
     @EventSubscription
-    public void event(final WindowEvent.ScreenBufferResized ev) {
+    public void event(final ScreenBufferResizedEvent ev) {
         for (ViewManagerInfo vmInf : views) {
             vmInf.targetFbo = vmInf.targetFbo.resizedCloneAndDelete(ev.width, ev.height);
             vmInf.viewManager.getMainView().setTargetFbo(vmInf.targetFbo);//TODO pcfreak9000 this is oof, also see the above TODx

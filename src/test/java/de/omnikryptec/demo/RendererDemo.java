@@ -16,13 +16,10 @@
 
 package de.omnikryptec.demo;
 
-import org.joml.Matrix4f;
-
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.core.Scene;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
-import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.objects.SimpleSprite;
 import de.omnikryptec.render.renderer.Renderer2D;
 import de.omnikryptec.util.settings.IntegerKey;

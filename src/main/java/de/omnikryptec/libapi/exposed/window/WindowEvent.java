@@ -46,13 +46,12 @@ public class WindowEvent extends Event {
         }
     }
     
-    public static class ScreenBufferResized extends WindowEvent {
+    public static class ScreenBufferResizedNative extends WindowEvent {
         public final int width;
         public final int height;
         public final SurfaceBuffer surface;
         
-        //TODx is this really a WindowEvent? Perhaps, yes.
-        public ScreenBufferResized(final IWindow window, final int width, final int height,
+        public ScreenBufferResizedNative(final IWindow window, final int width, final int height,
                 final SurfaceBuffer surface) {
             super(window);
             this.width = width;

@@ -20,7 +20,9 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
+import de.omnikryptec.event.Event;
 import de.omnikryptec.event.EventSubscription;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.FrameBufferStack;
@@ -36,8 +38,20 @@ public class GLScreenBuffer extends SurfaceBuffer {
     private static final FBTarget[] EMPTY = new FBTarget[0];
     private static final int GL_ID = 0;
     
-    private int width;
-    private int height;
+    public static class ScreenBufferResizedEvent extends Event {
+        public final SurfaceBuffer surfaceBuffer;
+        public final int width;
+        public final int height;
+        
+        private ScreenBufferResizedEvent(SurfaceBuffer b, int w, int h) {
+            this.surfaceBuffer = b;
+            this.width = w;
+            this.height = h;
+        }
+    }
+    
+    private int nativeWidth;
+    private int nativeHeight;
     //resolveToFrameBuffer needs access
     int[] viewport;
     private final double aspectRatio;
@@ -47,21 +61,22 @@ public class GLScreenBuffer extends SurfaceBuffer {
         final int[] wA = new int[1];
         final int[] hA = new int[1];
         GLFW.glfwGetFramebufferSize(window, wA, hA);
-        this.width = wA[0];
-        this.height = hA[0];
+        this.nativeWidth = wA[0];
+        this.nativeHeight = hA[0];
         this.aspectRatio = aspectRatio;
         bindFrameBuffer();
     }
     
     @EventSubscription
-    public void onBufferSizeChangeInternal(final WindowEvent.ScreenBufferResized ev) {
-        this.width = ev.width;
-        this.height = ev.height;
+    public void onBufferSizeChangeInternal(final WindowEvent.ScreenBufferResizedNative ev) {
+        this.nativeWidth = ev.width;
+        this.nativeHeight = ev.height;
         setViewport();
+        LibAPIManager.ENGINE_EVENTBUS.post(new ScreenBufferResizedEvent(this, getWidth(), getHeight()));
     }
     
     private void setViewport() {
-        this.viewport = MathUtil.calculateViewport(this.aspectRatio, this.width, this.height);
+        this.viewport = MathUtil.calculateViewport(this.aspectRatio, this.nativeWidth, this.nativeHeight);
         GL11.glViewport(this.viewport[0], this.viewport[1], this.viewport[2], this.viewport[3]);
     }
     

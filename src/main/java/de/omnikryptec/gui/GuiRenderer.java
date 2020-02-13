@@ -45,7 +45,7 @@ public class GuiRenderer implements Renderer {
         if (this.componentRoot != null) {
             batch.getShaderSlot().setProjection(projection);
             this.batch.begin();
-            this.componentRoot.render(this.batch);
+            this.componentRoot.render(this.batch, target.getWidth() / (float) target.getHeight());
             this.batch.end();
         }
     }

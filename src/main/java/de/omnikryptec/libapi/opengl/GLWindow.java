@@ -94,7 +94,7 @@ public class GLWindow implements IWindow {
         GLFW.glfwSetWindowSizeCallback(this.windowId,
                 (window, width, height) -> this.windowBus.post(new WindowEvent.WindowResized(this, width, height)));
         GLFW.glfwSetFramebufferSizeCallback(this.windowId, (window, width, height) -> this.windowBus
-                .post(new WindowEvent.ScreenBufferResized(this, width, height, this.screenBuffer)));
+                .post(new WindowEvent.ScreenBufferResizedNative(this, width, height, this.screenBuffer)));
         GLFW.glfwSetWindowFocusCallback(this.windowId,
                 (window, focused) -> this.windowBus.post(new WindowEvent.WindowFocused(this, focused)));
         GLFW.glfwSetWindowIconifyCallback(this.windowId,

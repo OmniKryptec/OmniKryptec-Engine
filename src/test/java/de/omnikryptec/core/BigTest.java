@@ -16,13 +16,10 @@
 
 package de.omnikryptec.core;
 
-import org.joml.Matrix4f;
-
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.core.update.ULayer;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
-import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.AdvancedSprite.Reflection2DType;
 import de.omnikryptec.render.renderer.AdvancedRenderer2D;

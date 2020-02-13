@@ -27,6 +27,7 @@ import de.omnikryptec.util.math.Mathf;
 
 //if transform==null use identity transform
 public interface Batch2D {
+    
     void begin();
     
     Color color();
@@ -69,6 +70,10 @@ public interface Batch2D {
     }
     
     default void drawStringSimple(String string, Font font, float size, float x, float y, float rad) {
+        this.drawStringSimple(string, font, size, 1, x, y, rad);
+    }
+    
+    default void drawStringSimple(String string, Font font, float size, float aspectCorrection, float x, float y, float rad) {
         char[] chars = string.toCharArray();
         //Doing everything in one Matrix and translating it after each char does not work because the floating point error gets too big
         Matrix3x2f baseTranslation = new Matrix3x2f().translation(x, y);
@@ -80,15 +85,15 @@ public interface Batch2D {
         float xVal = 0, yVal = 0;
         for (char c : chars) {
             if (c == ' ') {
-                xOffset += font.getFontFile().getSpaceWidth() * size;
+                xOffset += font.getFontFile().getSpaceWidth() * size / aspectCorrection;
             }
             FontCharacter character = font.getFontFile().getCharacter(c);
             if (character != null) {
-                xVal = character.getOffsetX() * size + xOffset;
+                xVal = character.getOffsetX() * size / aspectCorrection + xOffset;
                 yVal = (font.getFontFile().getBase() - character.getSizeY() - character.getOffsetY()) * size;
                 draw(font.getCharacterTexture(character), translation.set(baseTranslation).translate(xVal, yVal),
-                        character.getSizeX() * size, character.getSizeY() * size);
-                xOffset += character.getCursorAdvanceX() * size;
+                        character.getSizeX() * size / aspectCorrection, character.getSizeY() * size);
+                xOffset += character.getCursorAdvanceX() * size / aspectCorrection;
             }
         }
     }

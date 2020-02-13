@@ -21,7 +21,7 @@ import org.joml.Matrix4f;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
-import de.omnikryptec.libapi.exposed.window.WindowEvent;
+import de.omnikryptec.libapi.opengl.framebuffer.GLScreenBuffer.ScreenBufferResizedEvent;
 
 public class AdaptiveCamera extends Camera {
     
@@ -40,7 +40,7 @@ public class AdaptiveCamera extends Camera {
     }
     
     @EventSubscription
-    public void onChange(final WindowEvent.ScreenBufferResized ev) {
+    public void onChange(final ScreenBufferResizedEvent ev) {
         setProjection(this.delegate.createMatrix(ev.width, ev.height));
     }
     

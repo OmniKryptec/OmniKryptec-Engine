@@ -57,6 +57,7 @@ public class GuiManager {
         recalculateConstraints();
     }
     
+    @Deprecated
     public void setGuiProjection(IProjection proj) {
         this.viewMgr.getMainView().setProjection(proj);
     }

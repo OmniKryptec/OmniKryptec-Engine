@@ -89,7 +89,7 @@ public class GuiDemo extends Omnikryptec {
         }
         
         @Override
-        protected void renderComponent(final BorderedBatch2D batch) {
+        protected void renderComponent(final BorderedBatch2D batch, float aspect) {
             batch.color().set(1, this.g, this.b);
             batch.drawRect(new Matrix3x2f().setTranslation(this.x, this.y), this.w, this.h);
         }

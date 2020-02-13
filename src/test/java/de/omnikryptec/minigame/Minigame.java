@@ -72,11 +72,12 @@ public class Minigame extends Omnikryptec {
         }
         
         @Override
-        protected void renderComponent(final BorderedBatch2D batch) {
+        protected void renderComponent(final BorderedBatch2D batch, float aspect) {
             batch.color().set(1, this.g, this.b, 0.4f);
             batch.drawRect(new Matrix3x2f().setTranslation(this.x, this.y), this.w, this.h);
             batch.color().setAll(1);
-            batch.drawStringSDFautoc("GURKEE", getFontsS().getFontSDF("candara"), 0.1f, 0.57f, x, y, 0);
+            //System.out.println(aspect);
+            batch.drawStringSDFautoc("GURKEE", getFontsS().getFontSDF("candara"), 0.1f, aspect, 0.57f, x, y, 0);
         }
         
         @Override

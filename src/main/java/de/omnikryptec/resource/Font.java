@@ -37,6 +37,25 @@ public class Font {
         this.sdf = sdf;
     }
     
+    public float getLength(String text, float size) {
+        return getLength(text, size, 1);
+    }
+    
+    public float getLength(String text, float size, float aspectCorrection) {
+        char[] chars = text.toCharArray();       
+        float xOffset = 0;
+        for (char c : chars) {
+            if (c == ' ') {
+                xOffset += getFontFile().getSpaceWidth() * size / aspectCorrection;
+            }
+            FontCharacter character = getFontFile().getCharacter(c);
+            if (character != null) {
+                xOffset += character.getCursorAdvanceX() * size / aspectCorrection;
+            }
+        }
+        return xOffset;
+    }
+    
     public boolean isSDFFont() {
         return sdf;
     }
