@@ -102,4 +102,16 @@ public class ViewManager {
         view.getTargetFbo().unbindFrameBuffer();
     }
     
+    public Renderer2D createAndAddRenderer2D() {
+        Renderer2D r = new Renderer2D();
+        addRenderer(r);
+        return r;
+    }
+    
+    public AdvancedRenderer2D createAndAddAdvancedRenderer2D() {
+        AdvancedRenderer2D r = new AdvancedRenderer2D();
+        addRenderer(r);
+        return r;
+    }
+    
 }

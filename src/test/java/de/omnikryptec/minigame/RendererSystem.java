@@ -61,7 +61,7 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
     public RendererSystem(ViewManager vm) {
         super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(RenderComponent.class)));
         this.viewMgr = vm;
-        this.viewMgr.addRenderer(renderer = new AdvancedRenderer2D());
+        renderer = viewMgr.createAndAddAdvancedRenderer2D();
         this.viewMgr.getMainView().setProjection(CAMERA);
         
     }

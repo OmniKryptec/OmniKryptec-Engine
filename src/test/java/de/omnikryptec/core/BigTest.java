@@ -68,8 +68,7 @@ public class BigTest extends Omnikryptec {
         getResourceManager().processStaged(false, false);
         //scene.addUpdatable(UpdateableFactory.createScreenClearTest());
         //scene.addUpdatable(UpdateableFactory.createRenderTest(getTextures()));
-        AdvancedRenderer2D renderer = new AdvancedRenderer2D();
-        actual.getViewManager().addRenderer(renderer);
+        AdvancedRenderer2D renderer = actual.getViewManager().createAndAddAdvancedRenderer2D();
         final AdvancedSprite s = new AdvancedSprite();
         //s.setColor(new Color(1, 0, 0));
         s.setReflectionType(Reflection2DType.Cast);
