@@ -16,6 +16,7 @@
 
 package de.omnikryptec.minigame;
 
+import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.Family;
 import de.omnikryptec.ecs.IECSManager;
@@ -27,12 +28,13 @@ import de.omnikryptec.util.updater.Time;
 public class MovementSystem extends IterativeComponentSystem {
     
     protected MovementSystem() {
-        super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(MovementComponent.class)));
-        
+        super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(MovementComponent.class)));        
     }
     
     private final ComponentMapper<PositionComponent> posMapper = new ComponentMapper<>(PositionComponent.class);
     private final ComponentMapper<MovementComponent> movMapper = new ComponentMapper<>(MovementComponent.class);
+    
+    private final ComponentMapper<PlayerComponent> playMapper = new ComponentMapper<>(PlayerComponent.class);
     
     @Override
     public void updateIndividual(final IECSManager manager, final Entity entity, final Time time) {
@@ -40,6 +42,13 @@ public class MovementSystem extends IterativeComponentSystem {
         final MovementComponent mov = this.movMapper.get(entity);
         pos.transform.localspaceWrite().translate(mov.dx * time.deltaf, mov.dy * time.deltaf);
         pos.transform.revalidate();
+        if (entity.hasComponent(playMapper.getType())) {
+            RendererSystem.CAMERA.getTransform().localspaceWrite().setTranslation(-pos.transform.worldspacePos().x(),
+                    -pos.transform.worldspacePos().y(), 0);
+            Omnikryptec.getAudio().setListenerPosition(pos.transform.worldspacePos().x() / 20,
+                    pos.transform.worldspacePos().y() / 20, -5);
+            Omnikryptec.getAudio().setListenerVelocity(mov.dx / 20, mov.dy / 20, 0);
+        }
     }
     
     @Override

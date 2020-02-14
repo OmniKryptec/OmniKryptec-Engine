@@ -54,31 +54,27 @@ public class PlayerSystem extends AbstractComponentSystem {
             final MovementComponent mov = this.movMapper.get(e);
             final PlayerComponent play = this.playMapper.get(e);
             final PositionComponent plus = this.posMapper.get(e);
-            RendererSystem.CAMERA.getTransform().localspaceWrite().setTranslation(-plus.transform.worldspacePos().x(),
-                    -plus.transform.worldspacePos().y(), 0);
-            float vy = 0;
-            float vx = 0;
+            Vector2f vel = new Vector2f(0, 0);
             if (this.inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_W)) {
-                vy += play.maxYv;
+                vel = vel.add(0, 1);
             }
             if (this.inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_S)) {
-                vy -= play.maxYv;
+                vel = vel.add(0, -1);
             }
             if (this.inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_A)) {
-                vx -= play.maxXv;
+                vel = vel.add(-1, 0);
             }
             if (this.inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_D)) {
-                vx += play.maxXv;
+                vel = vel.add(1, 0);
             }
             if (this.inputManager.isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_LEFT_CONTROL)) {
-                vx /= 2;
-                vy /= 2;
+                vel = vel.mul(1 / 2f);
             }
-            mov.dx = vx;
-            mov.dy = vy;
-            Omnikryptec.getAudio().setListenerPosition(plus.transform.worldspacePos().x() / 20,
-                    plus.transform.worldspacePos().y() / 20, -5);
-            Omnikryptec.getAudio().setListenerVelocity(vx / 20, vy / 20, 0);
+            if (vel.lengthSquared() != 0) {
+                vel = vel.normalize(play.maxVelocity);
+            }
+            mov.dx = vel.x();
+            mov.dy = vel.y();
             if (this.inputManager.isMouseButtonPressed(KeysAndButtons.OKE_MOUSE_BUTTON_1)
                     && this.inputManager.isMouseInsideViewport() && this.again > 0.15f) {
                 this.again = 0;

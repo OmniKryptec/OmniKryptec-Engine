@@ -19,6 +19,10 @@ package de.omnikryptec.ecs.system;
 import java.util.BitSet;
 import java.util.List;
 
+import javax.annotation.OverridingMethodsMustInvokeSuper;
+
+import com.google.errorprone.annotations.ForOverride;
+
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.util.Util;
@@ -47,10 +51,12 @@ public abstract class AbstractComponentSystem {
         this.enabled = enabled;
     }
     
+    @OverridingMethodsMustInvokeSuper
     public void addedToIECSManager(final IECSManager iecsManager) {
         this.entities = iecsManager.getEntitesFor(this.family);
     }
     
+    @OverridingMethodsMustInvokeSuper
     public void removedFromIECSManager(final IECSManager iecsManager) {
         this.entities = null;
     }
@@ -59,6 +65,8 @@ public abstract class AbstractComponentSystem {
         return 0;
     }
     
-    public abstract void update(IECSManager iecsManager, Time time);
+    @ForOverride
+    public void update(IECSManager iecsManager, Time time) {
+    }
     
 }

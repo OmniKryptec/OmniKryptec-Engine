@@ -168,7 +168,7 @@ public class Minigame extends Omnikryptec {
         final Entity e = new Entity();
         e.addComponent(new PositionComponent(x, y));
         e.addComponent(new RenderComponent(10, 10, new Color(1, 1, 0), 10));
-        e.addComponent(new PlayerComponent(300, 300, 5, 5));
+        e.addComponent(new PlayerComponent(300, 5, 5));
         e.addComponent(new MovementComponent(0, 0));
         e.addComponent(new CollisionComponent(10, 10));
         return e;
