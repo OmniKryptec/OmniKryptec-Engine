@@ -11,7 +11,7 @@ import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Util;
 
 public class FontHelper {
-    //TODO pcfreak9000 clear functions
+
     private static final String DEFAULT_FNT_END = ".fnt";
     private static final String DEFAULT_TEX_END = ".png";
     
@@ -45,13 +45,12 @@ public class FontHelper {
     public Font getFontSDF(String name) {
         return getFont(name, null, null, true);
     }
-    
-    //TODO pcfreak9000 HMM... the order in which the different "branches" are tried might be oof?
-    
+        
     public Font getFont(String name, String fname, String tname, boolean sdf) {
         Map<String, Font> fonts = sdf ? this.sdfFonts : this.fonts;
         Font f = fonts.get(name);
         if (f == null) {
+            //TODO pcfreak9000 HMM... the order in which the different "branches" are tried might be oof?
             FontFile ff = resProvider.get(FontFile.class, Util.defaultIfNull(name + DEFAULT_FNT_END, fname));//fname == null ? name + DEFAULT_FNT_END : fname
             if (ff == null) {
                 ff = FontFile.getFontFile(name);
@@ -75,6 +74,14 @@ public class FontHelper {
             fonts.put(name, f);
         }
         return f;
+    }
+    
+    public void clearFonts() {
+        fonts.clear();
+    }
+    
+    public void clearSDFFonts() {
+        sdfFonts.clear();
     }
     
 }

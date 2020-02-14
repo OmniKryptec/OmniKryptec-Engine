@@ -112,7 +112,6 @@ public class MathUtil {
         return (n & -n) == n;
     }
     
-    //TODO consider [-1,1] vs [0,1]
     public static Vector2f relativeMousePosition(final Vector2dc displayMousePosition, final int[] viewport,
             Vector2f target) {
         if (target == null) {
