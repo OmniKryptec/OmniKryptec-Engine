@@ -1,7 +1,9 @@
 package de.omnikryptec.libapi.openal;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.ByteBuffer;
 
 import javax.sound.sampled.AudioFormat;
@@ -18,7 +20,7 @@ import de.omnikryptec.libapi.exposed.LibAPIManager;
 public class SoundLoader {
     
     private static void checkOpenAL() {
-        if(!LibAPIManager.instance().isOpenALinitialized()) {
+        if (!LibAPIManager.instance().isOpenALinitialized()) {
             throw new IllegalStateException("OpenAL is not initialized");
         }
     }
@@ -38,6 +40,10 @@ public class SoundLoader {
     public static final Sound loadSound(InputStream inputStream) {
         checkOpenAL();
         try {
+            //AudioSystem.getAudioInputStream(...) requires mark and reset
+            if (!inputStream.markSupported()) {
+                inputStream = new BufferedInputStream(inputStream);
+            }
             final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(inputStream);
             if (audioInputStream == null) {
                 throw new IllegalArgumentException("Couldn't create AudioInputStream");
@@ -71,6 +77,10 @@ public class SoundLoader {
     public static final StreamedSound streamSound(InputStream stream) {
         checkOpenAL();
         try {
+            //AudioSystem.getAudioInputStream(...) requires mark and reset
+            if (!stream.markSupported()) {
+                stream = new BufferedInputStream(stream);
+            }
             final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(stream);
             return new StreamedSound(audioInputStream);
         } catch (Exception ex) {
@@ -89,6 +99,10 @@ public class SoundLoader {
     public static final StreamedSound streamSound(InputStream stream, int bufferCount, int bufferTime) {
         checkOpenAL();
         try {
+            //AudioSystem.getAudioInputStream(...) requires mark and reset
+            if (!stream.markSupported()) {
+                stream = new BufferedInputStream(stream);
+            }
             final AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(stream);
             return new StreamedSound(audioInputStream, bufferCount, bufferTime);
         } catch (Exception ex) {
