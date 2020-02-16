@@ -42,7 +42,7 @@ public class InputManager implements IUpdatable {
     private final Vector2d mousePositionDelta = new Vector2d(0.0, 0.0);
     private final Vector2d mouseScrollOffsetDelta = new Vector2d(0.0, 0.0);
     
-    private boolean longButtonPressEnabled = false;
+    private boolean longButtonPressEnabled = true;//FIXME if this is not enabled something is broken (if KeySettings are used at least)
     
     public InputManager(final KeySettings keySettings) {
         this(keySettings, new KeyboardHandler(), new MouseHandler());

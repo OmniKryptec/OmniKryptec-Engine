@@ -111,6 +111,10 @@ public class Game {
         return this.enableRenderContext;
     }
     
+    public void addScene(Scene scene) {
+        addScene(scene, 0);
+    }
+    
     public void addScene(Scene scene, int prio) {
         PrioScene prioScene = new PrioScene();
         prioScene.scene = scene;
