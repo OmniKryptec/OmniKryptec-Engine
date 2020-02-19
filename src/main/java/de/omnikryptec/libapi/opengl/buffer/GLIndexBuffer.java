@@ -22,6 +22,7 @@ import org.lwjgl.opengl.GL15;
 
 import de.omnikryptec.libapi.exposed.render.IndexBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 
 public class GLIndexBuffer extends GLBuffer implements IndexBuffer {
@@ -33,11 +34,17 @@ public class GLIndexBuffer extends GLBuffer implements IndexBuffer {
     }
     
     @Override
-    public void storeData(final IntBuffer data, final BufferUsage usage, final int size) {
-        this.size = size;
+    public void setDescription(BufferUsage usage, int size) {
+        bindBuffer();
+        GL15.glBufferData(bufferType(), size * OpenGLUtil.sizeof(Type.INT), OpenGLUtil.bufferUsageId(usage));
+    }
+    
+    @Override
+    public void updateData(IntBuffer data) {
+        this.size = data.position();
         data.flip();
         bindBuffer();
-        GL15.glBufferData(bufferType(), data, OpenGLUtil.bufferUsageId(usage));
+        GL15.glBufferSubData(bufferType(), 0, data);
     }
     
     @Override

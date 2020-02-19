@@ -25,6 +25,7 @@ import org.joml.Vector2fc;
 import de.omnikryptec.core.update.IUpdatable;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.render.Camera;
+import de.omnikryptec.util.Util;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.updater.Time;
@@ -148,6 +149,11 @@ public class InputManager implements IUpdatable {
     public InputManager setLongButtonPressEnabled(final boolean longButtonPressEnabled) {
         this.longButtonPressEnabled = longButtonPressEnabled;
         return this;
+    }
+    
+    public boolean isPressed(String name) {
+        Util.ensureNonNull(this.keySettings);
+        return this.keySettings.isPressed(name);
     }
     
     // Keyboard part

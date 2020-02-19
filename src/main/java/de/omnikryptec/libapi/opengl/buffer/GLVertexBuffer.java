@@ -35,7 +35,7 @@ public class GLVertexBuffer extends GLBuffer implements VertexBuffer {
     }
     
     @Override
-    public void setDescription(BufferUsage usage, Type type, int size) {
+    public void setDescription(BufferUsage usage, Type type, int size) {//TODO pcfreak9000 max size?
         bindBuffer();
         GL15.glBufferData(bufferType(), size * OpenGLUtil.sizeof(type), OpenGLUtil.bufferUsageId(usage));
     }

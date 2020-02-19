@@ -21,6 +21,7 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 
 public interface IndexBuffer {
     
@@ -36,29 +37,25 @@ public interface IndexBuffer {
      */
     void unbindBuffer();
     
-    /**
-     * Stores indices in this {@link IndexBuffer}. This {@link IndexBuffer} will be
-     * auto-bound and the supplied {@link IntBuffer} will be flipped by this method.
-     *
-     * @param data  the indices to be stored
-     * @param usage buffer usage
-     * @param size  the size of the added data
-     */
-    void storeData(IntBuffer data, BufferUsage usage, int size);
     
-    /**
-     * Stores indices in this {@link IndexBuffer}. This method constructs and fills
-     * an {@link IntBuffer} with the supplied int[]. The data is then stored with
-     * {@link #storeData(IntBuffer, boolean, int)}
-     *
-     * @param data  the indices to be stored
-     * @param usage buffer usage
-     */
-    default void storeData(final int[] data, final BufferUsage usage) {
+    void updateData(IntBuffer data);
+    
+    
+    default void updateData(final int[] data) {
         final IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
         buffer.put(data);
-        storeData(buffer, usage, data.length);
+        updateData(buffer);
     }
+    /**
+     * Initializes this {@link IndexBuffer}.
+     *
+     * @param usage use case
+     * @param type  the type of what is going to be stored in this
+     *              {@link IndexBuffer}. Using a wrong type can in general result
+     *              in unexpected behaviour.
+     * @param size  the amount of max entries
+     */
+    void setDescription(BufferUsage usage, int size);
     
     /**
      * the size of this buffer

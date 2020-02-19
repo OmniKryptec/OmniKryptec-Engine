@@ -36,7 +36,9 @@ public class Mesh {
         this.elementCount = meshData.getElementCount();
         if (meshData.hasVertexAttribute(VertexAttribute.Index)) {
             final IndexBuffer ibo = LibAPIManager.instance().getGLFW().getRenderAPI().createIndexBuffer();
-            ibo.storeData(meshData.getAttribute(VertexAttribute.Index), BufferUsage.Static);
+            int[] indices = meshData.getAttribute(VertexAttribute.Index);
+            ibo.setDescription(BufferUsage.Static, indices.length);
+            ibo.updateData(indices);
             this.vertexArray.setIndexBuffer(ibo);
         }
         //TODO pcfreak9000 make attribute positions configurable
