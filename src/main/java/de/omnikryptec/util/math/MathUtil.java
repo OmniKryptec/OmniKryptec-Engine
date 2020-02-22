@@ -16,6 +16,8 @@
 
 package de.omnikryptec.util.math;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 
 import org.joml.Matrix4fc;
@@ -63,6 +65,36 @@ public class MathUtil {
             }
         }
         return viewport;
+    }
+    
+    public static <T extends Weighted> T getWeightedRandom(final Random random, final T[] ts) {
+        int sum = 0;
+        for (final T t : ts) {
+            sum += t.getWeight();
+        }
+        int rand = random.nextInt(sum) + 1;
+        for (T t : ts) {
+            if (rand <= t.getWeight()) {
+                return t;
+            }
+            rand -= t.getWeight();
+        }
+        return null;
+    }
+    
+    public static <T extends Weighted> T getWeightedRandom(final Random random, final Collection<T> ts) {
+        int sum = 0;
+        for (final T t : ts) {
+            sum += t.getWeight();
+        }
+        int rand = random.nextInt(sum) + 1;
+        for (T t : ts) {
+            if (rand <= t.getWeight()) {
+                return t;
+            }
+            rand -= t.getWeight();
+        }
+        return null;
     }
     
     public static <T> T getWeightedRandom(final Random random, final T[] ts, final int[] weights) {
