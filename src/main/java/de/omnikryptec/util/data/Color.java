@@ -291,6 +291,11 @@ public class Color implements Cloneable {
         return this;
     }
     
+    public Color setAllRGB(float i) {
+        set(i, i, i, 1);
+        return this;
+    }
+    
     public Color setAll(final float i) {
         set(i, i, i, i);
         return this;
