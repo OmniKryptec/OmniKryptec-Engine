@@ -218,9 +218,9 @@ public class AdvancedRenderer2D implements Renderer {
         public void writeData(StringBuilder builder, long count) {
             builder.append("Layers sorted: " + Mathd.round(this.sorted * 100 / (double) count, 2) + "%").append('\n');
             this.sprites.append("Sprites", count, 1, builder);
-            this.spritesV.append("Sprites (visible): ", count, 1, builder);
+            this.spritesV.append("Sprites (visible)", count, 1, builder);
             if (AdvancedRenderer2D.this.enableReflections) {
-                this.reflectors.append("Reflectors: ", count, 1, builder);
+                this.reflectors.append("Reflectors", count, 1, builder);
                 this.reflectorsV.append("Reflectors (visible)", count, 1, builder);
             }
         }
