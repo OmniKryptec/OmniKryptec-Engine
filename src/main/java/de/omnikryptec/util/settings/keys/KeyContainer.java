@@ -192,6 +192,11 @@ public class KeyContainer {
         return addIKey(new Key(name, keyCode));
     }
     
+    //TODO would be nice if this class could figure out if its a keyboard key or not itself
+    public KeyContainer addMouseKey(String name, int code) {
+        return addKey(name, code, false);
+    }
+    
     /**
      * Creates and adds a {@link de.omnikryptec.util.settings.keys.Key}
      *
