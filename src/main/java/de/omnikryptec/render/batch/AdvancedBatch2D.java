@@ -27,6 +27,7 @@ import de.omnikryptec.render.batch.module.ModuleBatchingManager;
 import de.omnikryptec.render.batch.module.PositionModule;
 import de.omnikryptec.render.batch.module.SDFModule;
 import de.omnikryptec.render.batch.module.SDFOModule;
+import de.omnikryptec.render.batch.module.TilingModule;
 import de.omnikryptec.render.batch.module.UVModule;
 import de.omnikryptec.render.batch.vertexmanager.RenderedVertexManager;
 import de.omnikryptec.render.batch.vertexmanager.VertexManager;
@@ -45,6 +46,7 @@ public class AdvancedBatch2D extends AbstractBatch implements BorderedBatch2D {
     private ColorModule borderColor;
     private SDFModule sdfData;
     private SDFOModule bsdfOffset;
+    private TilingModule tiling;
     
     private AbstractProjectedShaderSlot shaderSlot;
     
@@ -70,8 +72,9 @@ public class AdvancedBatch2D extends AbstractBatch implements BorderedBatch2D {
         this.borderColor = new ColorModule();
         this.sdfData = new SDFModule();
         this.bsdfOffset = new SDFOModule();
+        this.tiling = new TilingModule();
         return new ModuleBatchingManager(this.colorModule, this.reflectionMod, this.borderColor, this.sdfData,
-                this.bsdfOffset, this.posModule, this.uvModule);
+                this.bsdfOffset, this.tiling, this.posModule, this.uvModule);
     }
     
     @Override
@@ -105,6 +108,10 @@ public class AdvancedBatch2D extends AbstractBatch implements BorderedBatch2D {
     
     public Vector2f signedDistanceFieldData() {
         return this.sdfData.sdfData();
+    }
+    
+    public void setTilingFactor(float f) {
+        this.tiling.setTilingFactor(f);
     }
     
     @Nullable

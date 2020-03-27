@@ -43,13 +43,14 @@ void main(void){
 $define shader engineRenderBatch2DShaderRef VERTEX$
 #version 330 core
 
-layout(location = 5) in vec2 i_pos;
-layout(location = 6) in vec2 i_texcoords;
+layout(location = 6) in vec2 i_pos;
+layout(location = 7) in vec2 i_texcoords;
 layout(location = 0) in vec4 i_color;
 layout(location = 1) in vec4 i_reflective;
 layout(location = 2) in vec4 i_borderColor;
 layout(location = 3) in vec4 i_sdData;
 layout(location = 4) in vec2 i_sdOffset;
+layout(location = 5) in float i_tiling;
 
 out vec4 v_color;
 out vec2 v_texcoords;
@@ -58,6 +59,7 @@ out vec2 v_screenPos;
 out vec4 v_borderColor;
 out vec4 v_sdData;
 out vec2 v_sdOffset;
+out float v_tiling;
 
 uniform mat4 u_transform;
 uniform mat4 u_projview;
@@ -69,6 +71,7 @@ void main(void){
 	v_sdData = i_sdData;
 	v_sdOffset = i_sdOffset;
 	v_borderColor = i_borderColor;
+	v_tiling = i_tiling;
 	vec4 pos = u_projview * u_transform * vec4(i_pos,0,1);
 	v_screenPos = (pos.xy + 1) * 0.5;
 	gl_Position = pos;
@@ -84,6 +87,7 @@ in vec2 v_screenPos;
 in vec4 v_borderColor;
 in vec4 v_sdData;
 in vec2 v_sdOffset;
+in float v_tiling;
 
 out vec4 color;
 
@@ -97,8 +101,8 @@ void main(void){
 	if(booleanTexture <= 0.5f){
 		color = v_color;
 	}else{
-		color = v_color * texture(sampler, v_texcoords);
-		dCol = v_color.a * texture(sampler, v_texcoords + v_sdOffset).a;
+		color = v_color * texture(sampler, v_texcoords * v_tiling);
+		dCol = v_color.a * texture(sampler, v_texcoords * v_tiling + v_sdOffset).a;
     }
 	vec3 refl = texture(reflected, v_screenPos).rgb;
 	

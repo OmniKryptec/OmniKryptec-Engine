@@ -34,7 +34,7 @@ public abstract class AbstractComponentSystem {
     protected boolean enabled = true;
     private final BitSet family;
     
-    protected AbstractComponentSystem(final BitSet required) {
+    public AbstractComponentSystem(final BitSet required) {
         Util.ensureNonNull(required, "BitSet must not be null (but can be empty)");
         this.family = required;
     }

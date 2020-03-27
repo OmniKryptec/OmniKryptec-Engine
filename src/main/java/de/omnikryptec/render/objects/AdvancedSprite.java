@@ -38,6 +38,8 @@ public class AdvancedSprite extends SimpleSprite {
     private Reflection2DType refl;
     private float offset = 0;
     
+    private float tiling = 1;
+    
     public void drawReflection(final Batch2D batch) {
         if (this.refl == Reflection2DType.Cast) {
             batch.color().set(getColor() == null ? Color.ONE : getColor());
@@ -69,6 +71,14 @@ public class AdvancedSprite extends SimpleSprite {
     
     public Color reflectiveness() {
         return this.reflectiveness;
+    }
+    
+    public float getTilingFactor() {
+        return tiling;
+    }
+    
+    public void setTilingFactor(float f) {
+        this.tiling = f;
     }
     
 }

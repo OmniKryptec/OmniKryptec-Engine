@@ -164,6 +164,7 @@ public class AdvancedRenderer2D implements Renderer {
                 this.mainBatch.reflectionStrength()
                         .set(this.enableReflections && s.getReflectionType() != Reflection2DType.Receive ? Color.ZERO
                                 : s.reflectiveness());
+                this.mainBatch.setTilingFactor(s.getTilingFactor());
                 s.draw(this.mainBatch);
                 spritesV++;
             }

@@ -23,6 +23,8 @@ import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.AdvancedSprite.Reflection2DType;
 import de.omnikryptec.render.renderer.AdvancedRenderer2D;
+import de.omnikryptec.resource.TextureConfig;
+import de.omnikryptec.resource.TextureConfig.WrappingMode;
 import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.data.Color;
@@ -71,6 +73,7 @@ public class BigTest extends Omnikryptec {
         AdvancedRenderer2D renderer = actual.getViewManager().createAndAddAdvancedRenderer2D();
         final AdvancedSprite s = new AdvancedSprite();
         //s.setColor(new Color(1, 0, 0));
+        s.setTilingFactor(5);
         s.setReflectionType(Reflection2DType.Cast);
         s.getTransform().localspaceWrite().rotate(Mathf.PI / 4);
         s.getTransform().localspaceWrite().setTranslation(0.5f, 0.5f);
