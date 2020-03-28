@@ -31,7 +31,7 @@ public interface LoadingProgressCallback {
         @Override
         public void onStageChange(final AdvancedFile superfile, final int stageResMax, final int stageNumber) {
             this.lrmax = stageResMax;
-            this.logger.info("S: " + superfile + ", " + stageNumber + "/" + this.maxs);
+            this.logger.info("S: " + superfile + ", " + (stageNumber+1) + "/" + this.maxs);
         }
         
         @Override
