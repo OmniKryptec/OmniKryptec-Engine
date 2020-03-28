@@ -24,7 +24,7 @@ import de.omnikryptec.util.updater.Time;
 
 public abstract class IterativeComponentSystem extends AbstractComponentSystem implements IndividualUpdater {
     
-    protected IterativeComponentSystem(final BitSet required) {
+    public IterativeComponentSystem(final BitSet required) {
         super(required);
     }
     
