@@ -18,8 +18,8 @@ layout (std430, binding = 1) buffer shader_data_t
 	float data[];
 } shader_data;
 
-#define SIZE 400
-#define BOX_SIZE 0.1
+#define SIZE 4
+#define BOX_SIZE 1
 
 #define MAX_STEPS 100
 
@@ -71,23 +71,50 @@ float helper(vec2 lam){
 
 bool intersectBoxes(vec3 origin, vec3 dir, out hitinfo info) {
     vec2 lam = intersectBox(origin, dir, BIG_BOX);
+    float biggest = 0;
     if(intersectsBox(lam)){
         lam.x += EPSILON;
         lam.y -= EPSILON;
-        vec3 pos = origin + helper(lam) * dir;
-        ivec3 ipos = positionToFloored(pos);
-        if(exists(ipos)){
-            int index = positionToArrayIndex(ipos);
-            if(shader_data.data[index] >= 0.5){
-                info.col = vec3(1,0,1);
-                return true;
-            }else{
-                info.col = vec3(0,1,0);
-                return true;
-            }
+        ivec3 ipos;
+        if(lam.x>=0){
+            //Find small box in large box
+            vec3 pos = origin + lam.x * dir;
+            ipos = positionToFloored(pos);
         }else{
-            info.col = vec3(1,0.5,0);
-            return true;
+            ipos = positionToFloored(origin);
+        }
+        //Check small boxes
+        for(int i=0; i<MAX_STEPS; i++){
+            if(exists(ipos)){               
+                int index = positionToArrayIndex(ipos);
+                if(shader_data.data[index]>= 0.7){
+                   info.col = vec3(length(ipos)/(sqrt(3)*SIZE));
+                   return true;
+                }
+                bool found = false;
+                for(int k=0; k<6; k++){
+              // for(int x=-1; x<=1; x++){                for(int y=-1; y<=1; y++){                for(int z=-1; z<=1; z++){
+                //if(x==0&&y==0&&z==0){
+                  //  continue;
+                //}
+                    ivec3 newipos = ipos + DIRECTIONS[k]; //ivec3(x,y,z);
+                    if(exists(newipos)){
+                        box b = {vec3(newipos.x,newipos.y,newipos.z)*BOX_SIZE, vec3(newipos.x,newipos.y,newipos.z)*(BOX_SIZE+1)};
+                        lam = intersectBox(origin,dir,b);
+                        if(lam.y>=lam.x && lam.x >= biggest){
+                            //lam.x += EPSILON;
+                            //lam.y -= EPSILON;
+                            biggest = lam.x;
+                            ipos = newipos;
+                            found = true;   
+                            break;    
+                        }
+                    }
+                }//}}
+                if(!found){
+                    return false;
+                }
+            }
         }
     }
     return false;

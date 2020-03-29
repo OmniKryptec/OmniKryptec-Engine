@@ -100,8 +100,8 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     private UniformFloat time;
     private UniformVec3 eye, ray00, ray01, ray10, ray11;
     
-    private static final float BOX_SIZE = 0.1f;
-    private static final int SIZE = 400;
+    private static final float BOX_SIZE = 1;
+    private static final int SIZE = 4;
     
     private void initShader() {
         this.computeShader = (GLShader) LibAPIManager.instance().getGLFW().getRenderAPI().createShader();
@@ -113,8 +113,20 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         this.ray11 = this.computeShader.getUniform("ray11");
         this.time = this.computeShader.getUniform("time");
         float[] data = new float[SIZE * SIZE * SIZE];
-        for (int i = 0; i < SIZE * SIZE * SIZE; i++) {
-            data[i] = (float) Math.random();
+        for (int x = 0; x < SIZE; x++) {
+            for (int y = 0; y < SIZE; y++) {
+                for (int z = 0; z < SIZE; z++) {
+                    float value = 0;
+                    if (x == 0 || x == SIZE - 1) {
+                        if (y == 0 || y == SIZE - 1) {
+                            if (z == 0 || z == SIZE - 1) {
+                                value = 1;
+                            }
+                        }
+                    }
+                    data[x + y * SIZE + z * SIZE * SIZE] = value;
+                }
+            }
         }
         GLShaderStorageBuffer test = new GLShaderStorageBuffer();
         test.setDescription(BufferUsage.Dynamic, Type.FLOAT, data.length, 1);
