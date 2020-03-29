@@ -38,6 +38,7 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec3;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
+import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.libapi.opengl.buffer.GLShaderStorageBuffer;
 import de.omnikryptec.libapi.opengl.framebuffer.GLFrameBuffer;
 import de.omnikryptec.libapi.opengl.shader.GLShader;
@@ -50,6 +51,7 @@ import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.Mathf;
+import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
@@ -70,6 +72,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         libsettings.set(LibSetting.LOGGING_MIN, Logger.LogType.Debug);
         windowSettings.set(WindowSetting.Name, "Raytracer");
         windowSettings.set(WindowSetting.CursorState, CursorType.DISABLED);
+        Profiler.setEnabled(true);
     }
     
     @Override
@@ -84,6 +87,11 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         initShader();
     }
     
+    @Override
+    protected void onShutdown() {
+        System.out.println(Profiler.currentInfo());
+    }
+    
     private GLFrameBuffer image;
     
     private GLShader computeShader;
@@ -92,8 +100,8 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     private UniformFloat time;
     private UniformVec3 eye, ray00, ray01, ray10, ray11;
     
-    private static final float BOX_SIZE = 1;
-    private static final int SIZE = 3;
+    private static final float BOX_SIZE = 0.1f;
+    private static final int SIZE = 400;
     
     private void initShader() {
         this.computeShader = (GLShader) LibAPIManager.instance().getGLFW().getRenderAPI().createShader();
@@ -199,6 +207,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     @Override
     public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target,
             Settings<EnvironmentKey> envSettings, Time time) {
+        Profiler.begin("Raytracing");
         checkFBOs(target);
         this.computeShader.bindShader();
         this.time.loadFloat(time.currentf);
@@ -207,6 +216,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         this.computeShader.dispatchCompute(MathUtil.toPowerOfTwo(this.image.getWidth() / 8),
                 MathUtil.toPowerOfTwo(this.image.getHeight() / 8), 1);
         this.image.renderDirect(0);
+        Profiler.end();
     }
     
 }

@@ -18,12 +18,12 @@ layout (std430, binding = 1) buffer shader_data_t
 	float data[];
 } shader_data;
 
-#define SIZE 3
-#define BOX_SIZE 1
+#define SIZE 400
+#define BOX_SIZE 0.1
 
-#define MAX_SCENE_BOUNDS 500.0
 #define MAX_STEPS 100
 
+#define EPSILON 0.0001
 
 struct box {
   vec3 min;
@@ -40,7 +40,7 @@ struct hitinfo {
 };
 
 ivec3 positionToFloored(vec3 pos){
-    return ivec3(floor(pos.xyz/BOX_SIZE));
+    return ivec3(floor(pos.x/BOX_SIZE),floor(pos.y/BOX_SIZE),floor(pos.z/BOX_SIZE));
 }
 
 int positionToArrayIndex(ivec3 bpos){
@@ -61,43 +61,36 @@ vec2 intersectBox(vec3 origin, vec3 dir, const box b) {
   return vec2(tNear, tFar);
 }
 
-bool intersectBoxes(vec3 origin, vec3 dir, out hitinfo info) {    
-  float smallest = MAX_SCENE_BOUNDS;
-  bool found = false;
-  vec2 lambda = intersectBox(origin, dir, BIG_BOX);
-  if (lambda.x > 0.0 && lambda.x < lambda.y ) {
-    for(int i = 0; i < MAX_STEPS; i++) {
-        vec3 pos = origin + lambda.x * dir;
-        ivec3 bpos = positionToFloored(pos);
-        int index = positionToArrayIndex(bpos);
-        if(shader_data.data[index] > 0.5f){
-            info.lambda = lambda;
-            info.col = vec3(1,1,0);
-            found = true;
-            smallest = lambda.x;
-            break;
+bool intersectsBox(vec2 lam){
+    return (lam.y>=lam.x && (lam.x>=0 || lam.y>=0));
+}
+
+float helper(vec2 lam){
+    return lam.x >= 0 ? lam.x : lam.y;
+}
+
+bool intersectBoxes(vec3 origin, vec3 dir, out hitinfo info) {
+    vec2 lam = intersectBox(origin, dir, BIG_BOX);
+    if(intersectsBox(lam)){
+        lam.x += EPSILON;
+        lam.y -= EPSILON;
+        vec3 pos = origin + helper(lam) * dir;
+        ivec3 ipos = positionToFloored(pos);
+        if(exists(ipos)){
+            int index = positionToArrayIndex(ipos);
+            if(shader_data.data[index] >= 0.5){
+                info.col = vec3(1,0,1);
+                return true;
+            }else{
+                info.col = vec3(0,1,0);
+                return true;
+            }
         }else{
-            ivec3 nextbpos;
-            bool fuck = false;
-            for(int k = 0; k<6; k++){
-                nextbpos = bpos + DIRECTIONS[k];
-                if(exists(nextbpos)){
-                    box b = {vec3(nextbpos.xyz*BOX_SIZE), vec3(nextbpos.xyz*(1+BOX_SIZE))};
-                    lambda = intersectBox(origin, dir, b);
-                    if(lambda.x > 0.0 && lambda.x < lambda.y){
-                        fuck = true;
-                        break;
-                    }
-                }
-            }
-            if(!fuck){
-                break;
-            }
+            info.col = vec3(1,0.5,0);
+            return true;
         }
     }
-  }
-  
-  return found;
+    return false;
 }
 
 vec4 trace(vec3 origin, vec3 dir) {
@@ -105,7 +98,7 @@ vec4 trace(vec3 origin, vec3 dir) {
   if (intersectBoxes(origin, dir, i)) {
     return vec4(i.col, 1.0);
   }
-  return vec4(0,0,0.1, 1.0);
+  return vec4(0,0,0.5, 1.0);
 }
 
 void main(void) {
