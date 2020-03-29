@@ -69,8 +69,12 @@ public class GLShader implements Shader, Deletable {
             GL20.glShaderSource(shader, a.source);
             GL20.glCompileShader(shader);
             if (GL20.glGetShaderi(shader, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
+                String glerr = GL20.glGetShaderInfoLog(shader);
+                String n = glerr.substring(glerr.indexOf("(")+1, glerr.indexOf(")"));
+                int line = Integer.parseInt(n);
+                String[] lines = a.source.split("\n");
                 logger.log(LogType.Error, "Compilation error", "Shader: " + a.context + " (" + a.shaderType + ")",
-                        "Error: " + GL20.glGetShaderInfoLog(shader), LogType.Debug, "Src: \n" + a.source);
+                        "Error: " + glerr, LogType.Debug, "Src: \n" + lines[line]);
             } else {
                 GL20.glAttachShader(this.programId, shader);
             }
@@ -90,6 +94,11 @@ public class GLShader implements Shader, Deletable {
             throw new IllegalArgumentException("No uniform with name " + name + " in this shader");
         }
         return (T) u;
+    }
+    
+    //TODO tmp
+    public int progResInd(String s) {
+        return GL43.glGetProgramResourceIndex(programId, GL43.GL_SHADER_STORAGE_BLOCK, s);
     }
     
     public void dispatchCompute(final int xCount, final int yCount, final int zCount) {

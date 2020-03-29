@@ -126,7 +126,6 @@ public class GLFrameBuffer extends FrameBuffer {
             final int layer, final int access, final FBAttachmentFormat format) {
         GL42.glBindImageTexture(imageUnit, this.textures[texIndex].pointer, level, layered, layer, GL15.GL_READ_WRITE,
                 OpenGLUtil.textureFormatId(format));
-        OpenGLUtil.flushErrors();
     }
     
     @Override

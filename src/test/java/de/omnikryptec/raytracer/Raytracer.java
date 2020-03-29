@@ -16,10 +16,12 @@
 
 package de.omnikryptec.raytracer;
 
+import java.nio.FloatBuffer;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
+import org.lwjgl.BufferUtils;
 
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.core.Scene;
@@ -29,11 +31,14 @@ import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.input.CursorType;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec3;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
+import de.omnikryptec.libapi.opengl.buffer.GLShaderStorageBuffer;
 import de.omnikryptec.libapi.opengl.framebuffer.GLFrameBuffer;
 import de.omnikryptec.libapi.opengl.shader.GLShader;
 import de.omnikryptec.render.AdaptiveCamera;
@@ -42,6 +47,7 @@ import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.renderer.Renderer;
 import de.omnikryptec.render.renderer.ViewManager;
 import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
+import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.IntegerKey;
@@ -61,6 +67,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisetting,
             final KeySettings keys) {
         libsettings.set(LibSetting.DEBUG, false);
+        libsettings.set(LibSetting.LOGGING_MIN, Logger.LogType.Debug);
         windowSettings.set(WindowSetting.Name, "Raytracer");
         windowSettings.set(WindowSetting.CursorState, CursorType.DISABLED);
     }
@@ -85,6 +92,9 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     private UniformFloat time;
     private UniformVec3 eye, ray00, ray01, ray10, ray11;
     
+    private static final float BOX_SIZE = 1;
+    private static final int SIZE = 3;
+    
     private void initShader() {
         this.computeShader = (GLShader) LibAPIManager.instance().getGLFW().getRenderAPI().createShader();
         this.computeShader.create("raytracer");
@@ -94,6 +104,15 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         this.ray10 = this.computeShader.getUniform("ray10");
         this.ray11 = this.computeShader.getUniform("ray11");
         this.time = this.computeShader.getUniform("time");
+        float[] data = new float[SIZE * SIZE * SIZE];
+        for (int i = 0; i < SIZE * SIZE * SIZE; i++) {
+            data[i] = (float) Math.random();
+        }
+        GLShaderStorageBuffer test = new GLShaderStorageBuffer();
+        test.setDescription(BufferUsage.Dynamic, Type.FLOAT, data.length, 1);
+        FloatBuffer b = BufferUtils.createFloatBuffer(data.length);
+        b.put(data);
+        test.updateData(b);
     }
     
     private void loadRays(final Camera cam) {
