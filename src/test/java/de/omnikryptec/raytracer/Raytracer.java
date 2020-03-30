@@ -107,6 +107,8 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     private static final int SIZE = 25;
     private static final int MAX_STEPS = 150;
     
+    private static final int TOTAL_MODES = 2;
+    
     private static class SSBOHelper {
         private final GLShaderStorageBuffer ssbo;
         private final float[] array;
@@ -129,6 +131,15 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         
     }
     
+    int SIZE_CUBED = SIZE * SIZE * SIZE;
+    SSBOHelper dataHelper;
+    SSBOHelper speedHelper;
+    SSBOHelper redHelper;
+    SSBOHelper greenHelper;
+    SSBOHelper blueHelper;
+    private int currentMode = -1;
+    private float cd=0;
+    
     private void initShader() {
         this.computeShader = (GLShader) LibAPIManager.instance().getGLFW().getRenderAPI().createShader();
         this.computeShader.create("raytracer");
@@ -145,41 +156,61 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         this.size.loadInt(SIZE);
         this.boxSize.loadFloat(BOX_SIZE);
         this.maxSteps.loadInt(MAX_STEPS);
-        int SIZE_CUBED = SIZE * SIZE * SIZE;
-        SSBOHelper dataHelper = new SSBOHelper(1, SIZE_CUBED);
-        SSBOHelper speedHelper = new SSBOHelper(2, SIZE_CUBED);
-        SSBOHelper redHelper = new SSBOHelper(3, SIZE_CUBED);
-        SSBOHelper greenHelper = new SSBOHelper(4, SIZE_CUBED);
-        SSBOHelper blueHelper = new SSBOHelper(5, SIZE_CUBED);
+        dataHelper = new SSBOHelper(1, SIZE_CUBED); 
+        speedHelper = new SSBOHelper(2, SIZE_CUBED);
+        redHelper = new SSBOHelper(3, SIZE_CUBED);  
+        greenHelper = new SSBOHelper(4, SIZE_CUBED);
+        blueHelper = new SSBOHelper(5, SIZE_CUBED); 
+        updateMode(0);
+    }
+    
+    private void updateMode(int newMode) {
+        if (newMode == currentMode) {
+            return;
+        }
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
                 for (int z = 0; z < SIZE; z++) {
                     float dataV = 0;
                     float speedV = 300000;
                     Color color = new Color();
-                    if (y == 0 || y==SIZE-1) {
-                        dataV = 1;
-                        if(y==0) {
-                            color.set(0, 1, 0.5f);
-                        }else {
-                            color.set(0, 0, 1);
+                    if (newMode == 0) {
+                        if (y == 0 || y == SIZE - 1) {
+                            dataV = 1;
+                            if (y == 0) {
+                                color.set(0, 1, 0.5f);
+                            } else {
+                                color.set(0, 0, 1);
+                            }
+                        }
+                        if (y == 0 && x == SIZE / 2 && z == SIZE / 2) {
+                            color.setAll(1);
+                        }
+                        if (y <= 8 && y != 0) {
+                            speedV = 235000;
+                        }
+                        if (y == 8) {
+                            color.set(0, 0.1f, 0.6f);
+                        }
+                        
+                        if (y <= 9 && (x == 0 || x == SIZE - 1 || z == 0 || z == SIZE - 1)) {
+                            color.set(0, 0.7f, 0.7f);
+                            dataV = 1;
+                        }
+                    } else if (newMode == 1) {
+                        if (y > SIZE / 3 && y < 2 * SIZE / 3f && x > SIZE / 3 && x < 2 * SIZE / 3f && z > SIZE / 3
+                                && z < 2 * SIZE / 3f) {
+                            dataV = 0;
+                            speedV = 235000;
+                            //color.set(0, 0.3f, 0);
+                        }
+                        
+                        if (x == SIZE / 2 && z == SIZE / 2) {
+                            dataV = 1;
+                            speedV = 300000;
+                            color.set(1, 0, 0);
                         }
                     }
-                    if (y == 0 && x == SIZE / 2 && z == SIZE / 2) {
-                        color.setAll(1);
-                    }
-                    if (y <= 8 && y != 0) {
-                        speedV = 235000;
-                    }
-                    if (y == 8) {
-                        color.set(0, 0.1f, 0.6f);
-                    }
-                    
-                    if (y <= 9 && (x == 0 || x == SIZE - 1 || z == 0 || z == SIZE - 1)) {
-                        color.set(0, 0.7f, 0.7f);
-                        dataV = 1;
-                    }
-                    
                     dataHelper.array()[x + y * SIZE + z * SIZE * SIZE] = dataV;
                     speedHelper.array()[x + y * SIZE + z * SIZE * SIZE] = speedV;
                     redHelper.array()[x + y * SIZE + z * SIZE * SIZE] = color.getR();
@@ -193,6 +224,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         redHelper.push();
         greenHelper.push();
         blueHelper.push();
+        this.currentMode = newMode;
     }
     
     private void loadRays(final Camera cam) {
@@ -258,6 +290,11 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         this.z += t.z;
         
         cam.getTransform().localspaceWrite().translate(this.x, this.y, this.z);
+        cd += dt;
+        if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_R)&&cd>0.15f) {
+            updateMode((currentMode + 1) % TOTAL_MODES);
+            cd = 0;
+        }
     }
     
     @Override

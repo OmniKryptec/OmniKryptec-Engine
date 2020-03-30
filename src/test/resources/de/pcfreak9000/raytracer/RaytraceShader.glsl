@@ -113,10 +113,10 @@ bool intersectBoxes(vec3 origin, vec3 dir, out hitinfo info) {
             for(int i=0; i<MAX_STEPS; i++) {
                 int index = positionToArrayIndex(ipos);
                 if(shader_data.data[index] >= 0.95){
-                        float r = red.data[index];
-                        float g = green.data[index];
-                        float b = blue.data[index];
-                        info.col += vec3(r,g,b)*factor;
+                    float r = red.data[index];
+                    float g = green.data[index];
+                    float b = blue.data[index];
+                    info.col += vec3(r,g,b)*factor;
                     return true;
                 }else{
                     if(lastIndex!=-1){
@@ -129,13 +129,13 @@ bool intersectBoxes(vec3 origin, vec3 dir, out hitinfo info) {
                             if(newDirection.x==0 && newDirection.y==0 && newDirection.z==0) {
                                 //internal reflection, so use reflect instead
                                 newDirection = reflect(dir, normal);
-                            }
-                            origin = origin + (helper(lam))*dir;
+                                origin = origin + (lam.x+EPSILON)*dir;
+                            }else{
+                                origin = origin + (helper(lam))*dir;
+                            }                        
                             dir = newDirection;
                             biggest = 0;
-                            //biggest = EPSILON; //<- at this point NOT helpful (fucks things up).
                         }
-
                     }
                 }
                 bool found = false;                
@@ -145,7 +145,7 @@ bool intersectBoxes(vec3 origin, vec3 dir, out hitinfo info) {
                         box b = {vec3(newipos.x,newipos.y,newipos.z)*BOX_SIZE, vec3(newipos.x+1,newipos.y+1,newipos.z+1)*BOX_SIZE};
                         lam = intersectBox(origin,dir,b);
                         if(lam.y >= lam.x && lam.x > biggest) {
-                            lam.x += EPSILON;
+                            //lam.x += EPSILON;
                             biggest = lam.x;
                             lastipos = ipos;
                             lastIndex = positionToArrayIndex(ipos);
@@ -156,7 +156,6 @@ bool intersectBoxes(vec3 origin, vec3 dir, out hitinfo info) {
                     }
                 }
                 if(!found){
-                    //info.col += vec3(0,0,0.5);
                     return false;
                 }
             }
