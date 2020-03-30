@@ -100,8 +100,8 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     private UniformFloat time;
     private UniformVec3 eye, ray00, ray01, ray10, ray11;
     
-    private static final float BOX_SIZE = 1;
-    private static final int SIZE = 4;
+    private static final float BOX_SIZE = 0.1f;
+    private static final int SIZE = 400;
     
     private void initShader() {
         this.computeShader = (GLShader) LibAPIManager.instance().getGLFW().getRenderAPI().createShader();
@@ -124,6 +124,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
                             }
                         }
                     }
+                    value = (float) Math.random();
                     data[x + y * SIZE + z * SIZE * SIZE] = value;
                 }
             }
@@ -203,6 +204,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     @Override
     public void update(final Time time) {
         camInput(this.camera, time.deltaf);
+        System.out.println(time.ops);
     }
     
     @Override

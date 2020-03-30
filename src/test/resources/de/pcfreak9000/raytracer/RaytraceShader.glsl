@@ -18,10 +18,13 @@ layout (std430, binding = 1) buffer shader_data_t
 	float data[];
 } shader_data;
 
-#define SIZE 4
-#define BOX_SIZE 1
 
-#define MAX_STEPS 100
+$module random$
+
+#define SIZE 400
+#define BOX_SIZE 0.1
+
+#define MAX_STEPS 1000
 
 #define EPSILON 0.0001
 
@@ -71,46 +74,49 @@ float helper(vec2 lam){
 
 bool intersectBoxes(vec3 origin, vec3 dir, out hitinfo info) {
     vec2 lam = intersectBox(origin, dir, BIG_BOX);
-    float biggest = 0;
-    if(intersectsBox(lam)){
-        lam.x += EPSILON;
-        lam.y -= EPSILON;
+    if(intersectsBox(lam)) {
+        float biggest = 0;
         ivec3 ipos;
-        if(lam.x>=0){
+        if(lam.x>=0) {
+            lam.x += EPSILON;
             //Find small box in large box
             vec3 pos = origin + lam.x * dir;
+            biggest = lam.x;
             ipos = positionToFloored(pos);
         }else{
             ipos = positionToFloored(origin);
         }
-        //Check small boxes
-        for(int i=0; i<MAX_STEPS; i++){
-            if(exists(ipos)){               
+        if(exists(ipos)) {               
+            //Check small boxes
+            for(int i=0; i<MAX_STEPS; i++) {
                 int index = positionToArrayIndex(ipos);
-                if(shader_data.data[index]>= 0.7){
-                   info.col = vec3(length(ipos)/(sqrt(3)*SIZE));
-                   return true;
+                if(shader_data.data[index]>= 0.999){
+                    if(i<2*MAX_STEPS/3){
+                    float r = random(vec3(ipos), 1)*0.9;
+                    float g = random(vec3(ipos), 2)*0.9;
+                    float b = random(vec3(ipos), 3)*0.9;
+                    info.col = vec3(r,g,b);//vec3(length(ipos)/(sqrt(3)*SIZE));
+                    }else{
+                    info.col = vec3(1);
+                    }
+                    return true;
                 }
                 bool found = false;
-                for(int k=0; k<6; k++){
-              // for(int x=-1; x<=1; x++){                for(int y=-1; y<=1; y++){                for(int z=-1; z<=1; z++){
-                //if(x==0&&y==0&&z==0){
-                  //  continue;
-                //}
-                    ivec3 newipos = ipos + DIRECTIONS[k]; //ivec3(x,y,z);
-                    if(exists(newipos)){
-                        box b = {vec3(newipos.x,newipos.y,newipos.z)*BOX_SIZE, vec3(newipos.x,newipos.y,newipos.z)*(BOX_SIZE+1)};
+                for(int k=0; k<6; k++) {
+                    ivec3 newipos = ipos + DIRECTIONS[k];
+                    if(exists(newipos)) {
+                        box b = {vec3(newipos.x,newipos.y,newipos.z)*BOX_SIZE, vec3(newipos.x+1,newipos.y+1,newipos.z+1)*BOX_SIZE};
                         lam = intersectBox(origin,dir,b);
-                        if(lam.y>=lam.x && lam.x >= biggest){
+                        if(lam.y >= lam.x && lam.x > biggest) {
                             //lam.x += EPSILON;
-                            //lam.y -= EPSILON;
                             biggest = lam.x;
-                            ipos = newipos;
+                            
+                            ipos = newipos;//positionToFloored(origin + lam.x * dir);//newipos;
                             found = true;   
                             break;    
                         }
                     }
-                }//}}
+                }
                 if(!found){
                     return false;
                 }
