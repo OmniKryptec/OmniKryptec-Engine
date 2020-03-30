@@ -50,6 +50,7 @@ import de.omnikryptec.render.renderer.Renderer;
 import de.omnikryptec.render.renderer.ViewManager;
 import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
 import de.omnikryptec.util.Logger;
+import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.profiling.Profiler;
@@ -102,9 +103,31 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     private UniformVec3 eye, ray00, ray01, ray10, ray11;
     private UniformInt size, maxSteps;
     
-    private static final float BOX_SIZE = 0.1f;
-    private static final int SIZE = 100;
-    private static final int MAX_STEPS = 100;
+    private static final float BOX_SIZE = 1f;
+    private static final int SIZE = 25;
+    private static final int MAX_STEPS = 150;
+    
+    private static class SSBOHelper {
+        private final GLShaderStorageBuffer ssbo;
+        private final float[] array;
+        
+        public SSBOHelper(int index, int size) {
+            this.ssbo = new GLShaderStorageBuffer();
+            this.ssbo.setDescription(BufferUsage.Dynamic, Type.FLOAT, size, index);
+            this.array = new float[size];
+        }
+        
+        public void push() {
+            FloatBuffer b = BufferUtils.createFloatBuffer(array.length);
+            b.put(array);
+            this.ssbo.updateData(b);
+        }
+        
+        public float[] array() {
+            return array;
+        }
+        
+    }
     
     private void initShader() {
         this.computeShader = (GLShader) LibAPIManager.instance().getGLFW().getRenderAPI().createShader();
@@ -122,28 +145,50 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         this.size.loadInt(SIZE);
         this.boxSize.loadFloat(BOX_SIZE);
         this.maxSteps.loadInt(MAX_STEPS);
-        float[] data = new float[SIZE * SIZE * SIZE];
+        int SIZE_CUBED = SIZE * SIZE * SIZE;
+        SSBOHelper dataHelper = new SSBOHelper(1, SIZE_CUBED);
+        SSBOHelper speedHelper = new SSBOHelper(2, SIZE_CUBED);
+        SSBOHelper redHelper = new SSBOHelper(3, SIZE_CUBED);
+        SSBOHelper greenHelper = new SSBOHelper(4, SIZE_CUBED);
+        SSBOHelper blueHelper = new SSBOHelper(5, SIZE_CUBED);
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
                 for (int z = 0; z < SIZE; z++) {
-                    float value = 0;
-                    if (x == 0 || x == SIZE - 1) {
-                        if (y == 0 || y == SIZE - 1) {
-                            if (z == 0 || z == SIZE - 1) {
-                                value = 1;
-                            }
-                        }
+                    float dataV = 0;
+                    float speedV = 300000;
+                    Color color = new Color();
+                    if (y == 0) {
+                        dataV = 1;
+                        color.setAll(0.2f);
                     }
-                    value = (float) Math.random();
-                    data[x + y * SIZE + z * SIZE * SIZE] = value;
+                    if (y == 0 && x == SIZE / 2 && z == SIZE / 2) {
+                        color.setAll(1);
+                    }
+                    if (y <= 8 && y != 0) {
+                        speedV = 235000;
+                    }
+                    if (y == 8) {
+                        color.set(0, 0.1f, 0.6f);
+                    }
+                    
+                    if (y <= 9 && (x == 0 || x == SIZE - 1 || z == 0 || z == SIZE - 1)) {
+                        color.set(0, 0.7f, 0.7f);
+                        dataV = 1;
+                    }
+                    
+                    dataHelper.array()[x + y * SIZE + z * SIZE * SIZE] = dataV;
+                    speedHelper.array()[x + y * SIZE + z * SIZE * SIZE] = speedV;
+                    redHelper.array()[x + y * SIZE + z * SIZE * SIZE] = color.getR();
+                    greenHelper.array()[x + y * SIZE + z * SIZE * SIZE] = color.getG();
+                    blueHelper.array()[x + y * SIZE + z * SIZE * SIZE] = color.getB();
                 }
             }
         }
-        GLShaderStorageBuffer test = new GLShaderStorageBuffer();
-        test.setDescription(BufferUsage.Dynamic, Type.FLOAT, data.length, 1);
-        FloatBuffer b = BufferUtils.createFloatBuffer(data.length);
-        b.put(data);
-        test.updateData(b);
+        dataHelper.push();
+        speedHelper.push();
+        redHelper.push();
+        greenHelper.push();
+        blueHelper.push();
     }
     
     private void loadRays(final Camera cam) {
@@ -172,23 +217,23 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     
     private void camInput(final Camera cam, float dt) {
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_LEFT_CONTROL)) {
-            dt *= 3;
+            dt /= 3;
         }
         float vx = 0, vy = 0, vz = 0;
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_W)) {
-            vz = 1;
+            vz = 4;
         } else if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_S)) {
-            vz = -1;
+            vz = -4;
         }
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_A)) {
-            vx = 1;
+            vx = 4;
         } else if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_D)) {
-            vx = -1;
+            vx = -4;
         }
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_SPACE)) {
-            vy = -1;
+            vy = -4;
         } else if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_LEFT_SHIFT)) {
-            vy = 1;
+            vy = 4;
         }
         float ry = 0, rx = 0;
         ry = (float) getInput().getMousePositionDelta().x() * 0.1f;
@@ -218,8 +263,8 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     
     @Override
     public void init(ViewManager vm, RenderAPI api) {
-        this.image = (GLFrameBuffer) api.createFrameBuffer(vm.getMainView().getTargetFbo().getWidth(),
-                vm.getMainView().getTargetFbo().getHeight(), 0, 1);
+        this.image = (GLFrameBuffer) api.createFrameBuffer(vm.getMainView().getTargetFbo().getWidth() * 2,
+                vm.getMainView().getTargetFbo().getHeight() * 2, 0, 1);
         this.image.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA32, 0));
     }
     

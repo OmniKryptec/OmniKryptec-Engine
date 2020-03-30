@@ -22,6 +22,25 @@ layout (std430, binding = 1) buffer shader_data_t
 	float data[];
 } shader_data;
 
+layout (std430, binding = 2) buffer speed_t
+{ 
+	float data[];
+} speedS;
+
+layout (std430, binding = 3) buffer red_t
+{ 
+	float data[];
+} red;
+
+layout (std430, binding = 4) buffer green_t
+{ 
+	float data[];
+} green;
+
+layout (std430, binding = 5) buffer blue_t
+{ 
+	float data[];
+} blue;
 
 $module random$
 
@@ -85,21 +104,34 @@ bool intersectBoxes(vec3 origin, vec3 dir, out hitinfo info) {
         }else{
             ipos = positionToFloored(origin);
         }
-        info.col = vec3(0);
+        int lastIndex = -1;
+        ivec3 lastipos;
         if(exists(ipos)) {               
+            info.col = vec3(0);
+            float factor=1;
             //Check small boxes
             for(int i=0; i<MAX_STEPS; i++) {
                 int index = positionToArrayIndex(ipos);
-                if(shader_data.data[index] >= 0.999){
-                    if(i<2*MAX_STEPS/3) {
-                        float r = random(vec3(ipos), 1)*0.9;
-                        float g = random(vec3(ipos), 2)*0.9;
-                        float b = random(vec3(ipos), 3)*0.9;
-                        info.col = vec3(r,g,b);
-                    }else{
-                        info.col = vec3(1);
-                    }
+                if(shader_data.data[index] >= 0.95){
+                        float r = red.data[index];
+                        float g = green.data[index];
+                        float b = blue.data[index];
+                        info.col += vec3(r,g,b)*factor;
                     return true;
+                }else{
+                    if(lastIndex!=-1){
+                        float s1 = speedS.data[lastIndex];
+                        float s2 = speedS.data[index];
+                        float bNumber = s1/s2;
+                        if(bNumber<0.9999||bNumber>1.0001) {
+                            vec3 normal = normalize(vec3(lastipos - ipos));
+                            vec3 newDirection = refract(dir, normal, bNumber);
+                            origin = origin + (helper(lam))*dir;
+                            dir = newDirection;
+                            biggest = EPSILON;
+                        }
+
+                    }
                 }
                 bool found = false;                
                 for(int k=0; k<6; k++) {
@@ -108,8 +140,10 @@ bool intersectBoxes(vec3 origin, vec3 dir, out hitinfo info) {
                         box b = {vec3(newipos.x,newipos.y,newipos.z)*BOX_SIZE, vec3(newipos.x+1,newipos.y+1,newipos.z+1)*BOX_SIZE};
                         lam = intersectBox(origin,dir,b);
                         if(lam.y >= lam.x && lam.x > biggest) {
-                            //lam.x += EPSILON;
+                            lam.x += EPSILON;
                             biggest = lam.x;
+                            lastipos = ipos;
+                            lastIndex = positionToArrayIndex(ipos);
                             ipos = newipos;
                             found = true;   
                             break;    
@@ -117,6 +151,7 @@ bool intersectBoxes(vec3 origin, vec3 dir, out hitinfo info) {
                     }
                 }
                 if(!found){
+                    //info.col += vec3(0,0,0.5);
                     return false;
                 }
             }
@@ -141,7 +176,7 @@ void main(void) {
   }
   vec2 pos = vec2(pix) / vec2(size.x - 1, size.y - 1);
   vec3 dir = mix(mix(ray00, ray01, pos.y), mix(ray10, ray11, pos.y), pos.x);
-  vec4 color = trace(eye, dir);
+  vec4 color = trace(eye, normalize(dir));
   imageStore(framebuffer, pix, color);
 }
 
