@@ -122,13 +122,18 @@ bool intersectBoxes(vec3 origin, vec3 dir, out hitinfo info) {
                     if(lastIndex!=-1){
                         float s1 = speedS.data[lastIndex];
                         float s2 = speedS.data[index];
-                        float bNumber = s1/s2;
+                        float bNumber = s2/s1;
                         if(bNumber<0.9999||bNumber>1.0001) {
                             vec3 normal = normalize(vec3(lastipos - ipos));
                             vec3 newDirection = refract(dir, normal, bNumber);
+                            if(newDirection.x==0 && newDirection.y==0 && newDirection.z==0) {
+                                //internal reflection, so use reflect instead
+                                newDirection = reflect(dir, normal);
+                            }
                             origin = origin + (helper(lam))*dir;
                             dir = newDirection;
-                            biggest = EPSILON;
+                            biggest = 0;
+                            //biggest = EPSILON; //<- at this point NOT helpful (fucks things up).
                         }
 
                     }

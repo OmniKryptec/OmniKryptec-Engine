@@ -157,9 +157,13 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
                     float dataV = 0;
                     float speedV = 300000;
                     Color color = new Color();
-                    if (y == 0) {
+                    if (y == 0 || y==SIZE-1) {
                         dataV = 1;
-                        color.setAll(0.2f);
+                        if(y==0) {
+                            color.set(0, 1, 0.5f);
+                        }else {
+                            color.set(0, 0, 1);
+                        }
                     }
                     if (y == 0 && x == SIZE / 2 && z == SIZE / 2) {
                         color.setAll(1);
