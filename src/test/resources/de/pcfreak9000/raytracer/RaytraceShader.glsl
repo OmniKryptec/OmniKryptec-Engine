@@ -11,6 +11,10 @@ uniform vec3 ray10;
 uniform vec3 ray11;
 uniform float time;
 
+uniform int SIZE;
+uniform float BOX_SIZE;
+uniform int MAX_STEPS;
+
 layout (local_size_x = 8, local_size_y = 8) in;
 
 layout (std430, binding = 1) buffer shader_data_t
@@ -20,11 +24,6 @@ layout (std430, binding = 1) buffer shader_data_t
 
 
 $module random$
-
-#define SIZE 400
-#define BOX_SIZE 0.1
-
-#define MAX_STEPS 1000
 
 #define EPSILON 0.0001
 
@@ -86,22 +85,23 @@ bool intersectBoxes(vec3 origin, vec3 dir, out hitinfo info) {
         }else{
             ipos = positionToFloored(origin);
         }
+        info.col = vec3(0);
         if(exists(ipos)) {               
             //Check small boxes
             for(int i=0; i<MAX_STEPS; i++) {
                 int index = positionToArrayIndex(ipos);
-                if(shader_data.data[index]>= 0.999){
-                    if(i<2*MAX_STEPS/3){
-                    float r = random(vec3(ipos), 1)*0.9;
-                    float g = random(vec3(ipos), 2)*0.9;
-                    float b = random(vec3(ipos), 3)*0.9;
-                    info.col = vec3(r,g,b);//vec3(length(ipos)/(sqrt(3)*SIZE));
+                if(shader_data.data[index] >= 0.999){
+                    if(i<2*MAX_STEPS/3) {
+                        float r = random(vec3(ipos), 1)*0.9;
+                        float g = random(vec3(ipos), 2)*0.9;
+                        float b = random(vec3(ipos), 3)*0.9;
+                        info.col = vec3(r,g,b);
                     }else{
-                    info.col = vec3(1);
+                        info.col = vec3(1);
                     }
                     return true;
                 }
-                bool found = false;
+                bool found = false;                
                 for(int k=0; k<6; k++) {
                     ivec3 newipos = ipos + DIRECTIONS[k];
                     if(exists(newipos)) {
@@ -110,8 +110,7 @@ bool intersectBoxes(vec3 origin, vec3 dir, out hitinfo info) {
                         if(lam.y >= lam.x && lam.x > biggest) {
                             //lam.x += EPSILON;
                             biggest = lam.x;
-                            
-                            ipos = newipos;//positionToFloored(origin + lam.x * dir);//newipos;
+                            ipos = newipos;
                             found = true;   
                             break;    
                         }

@@ -18,7 +18,9 @@ package de.omnikryptec.libapi.opengl.shader;
 
 import org.lwjgl.opengl.GL20;
 
-public class GLUniformInt extends GLUniform {
+import de.omnikryptec.libapi.exposed.render.shader.UniformInt;
+
+public class GLUniformInt extends GLUniform implements UniformInt {
     
     private int currentValue;
     private boolean used = false;
@@ -27,6 +29,7 @@ public class GLUniformInt extends GLUniform {
         super(name);
     }
     
+    @Override
     public void loadInt(final int value) {
         if (existsInCompilation() && (!this.used || this.currentValue != value)) {
             GL20.glUniform1i(super.getLocation(), value);

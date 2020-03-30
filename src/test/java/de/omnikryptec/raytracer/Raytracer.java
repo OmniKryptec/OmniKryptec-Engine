@@ -36,6 +36,7 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
+import de.omnikryptec.libapi.exposed.render.shader.UniformInt;
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec3;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
@@ -72,7 +73,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         libsettings.set(LibSetting.LOGGING_MIN, Logger.LogType.Debug);
         windowSettings.set(WindowSetting.Name, "Raytracer");
         windowSettings.set(WindowSetting.CursorState, CursorType.DISABLED);
-        Profiler.setEnabled(true);
+        //Profiler.setEnabled(true);
     }
     
     @Override
@@ -89,7 +90,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     
     @Override
     protected void onShutdown() {
-        System.out.println(Profiler.currentInfo());
+        //System.out.println(Profiler.currentInfo());
     }
     
     private GLFrameBuffer image;
@@ -97,11 +98,13 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     private GLShader computeShader;
     
     private Camera camera;
-    private UniformFloat time;
+    private UniformFloat time, boxSize;
     private UniformVec3 eye, ray00, ray01, ray10, ray11;
+    private UniformInt size, maxSteps;
     
     private static final float BOX_SIZE = 0.1f;
-    private static final int SIZE = 400;
+    private static final int SIZE = 100;
+    private static final int MAX_STEPS = 100;
     
     private void initShader() {
         this.computeShader = (GLShader) LibAPIManager.instance().getGLFW().getRenderAPI().createShader();
@@ -112,6 +115,13 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         this.ray10 = this.computeShader.getUniform("ray10");
         this.ray11 = this.computeShader.getUniform("ray11");
         this.time = this.computeShader.getUniform("time");
+        this.boxSize = this.computeShader.getUniform("BOX_SIZE");
+        this.size = this.computeShader.getUniform("SIZE");
+        this.maxSteps = this.computeShader.getUniform("MAX_STEPS");
+        this.computeShader.bindShader();
+        this.size.loadInt(SIZE);
+        this.boxSize.loadFloat(BOX_SIZE);
+        this.maxSteps.loadInt(MAX_STEPS);
         float[] data = new float[SIZE * SIZE * SIZE];
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
@@ -204,7 +214,6 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     @Override
     public void update(final Time time) {
         camInput(this.camera, time.deltaf);
-        System.out.println(time.ops);
     }
     
     @Override
@@ -221,7 +230,6 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     @Override
     public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target,
             Settings<EnvironmentKey> envSettings, Time time) {
-        Profiler.begin("Raytracing");
         checkFBOs(target);
         this.computeShader.bindShader();
         this.time.loadFloat(time.currentf);
@@ -230,7 +238,6 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         this.computeShader.dispatchCompute(MathUtil.toPowerOfTwo(this.image.getWidth() / 8),
                 MathUtil.toPowerOfTwo(this.image.getHeight() / 8), 1);
         this.image.renderDirect(0);
-        Profiler.end();
     }
     
 }

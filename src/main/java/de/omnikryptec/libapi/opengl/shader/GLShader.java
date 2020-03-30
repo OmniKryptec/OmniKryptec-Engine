@@ -139,6 +139,8 @@ public class GLShader implements Shader, Deletable {
             return new GLUniformVec3(name);
         case "vec2":
             return new GLUniformVec2(name);
+        case "int":
+            return new GLUniformInt(name);
         default:
             throw new IllegalArgumentException("Uniform type not found: " + types + " " + name);
         }
