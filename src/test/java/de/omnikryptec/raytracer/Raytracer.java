@@ -149,6 +149,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     private float currentBoxSize;
     private int currentSize;
     private int currentMaxSteps;
+    private float currentResMult = 1;
     
     private void initShader() {
         this.computeShader = (GLShader) LibAPIManager.instance().getGLFW().getRenderAPI().createShader();
@@ -283,21 +284,25 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_LEFT_CONTROL)) {
             dt /= 3;
         }
+        int change = 1;
+        if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_TAB)) {
+            change = 10;
+        }
         float vx = 0, vy = 0, vz = 0;
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_W)) {
-            vz = 4;
+            vz = 4 * change;
         } else if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_S)) {
-            vz = -4;
+            vz = -4 * change;
         }
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_A)) {
-            vx = 4;
+            vx = 4 * change;
         } else if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_D)) {
-            vx = -4;
+            vx = -4 * change;
         }
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_SPACE)) {
-            vy = -4;
+            vy = -4 * change;
         } else if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_LEFT_SHIFT)) {
-            vy = 4;
+            vy = 4 * change;
         }
         float ry = 0, rx = 0;
         ry = (float) getInput().getMousePositionDelta().x() * 0.1f;
@@ -319,10 +324,6 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         
         cam.getTransform().localspaceWrite().translate(this.x, this.y, this.z);
         
-        int change = 1;
-        if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_TAB)) {
-            change = 10;
-        }
         cd += dt;
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_R) && cd > CD_THRESHHOLD) {
             updateMode((currentMode + 1) % TOTAL_MODES);
@@ -330,16 +331,17 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         }
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_ENTER)) {
             resetSizes();
+            this.currentResMult = 1;
         }
         cd1 += dt;
         if (cd1 > CD_THRESHHOLD) {
             if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_1)) {
                 cd1 = 0;
-                this.currentSize = Math.max(0, this.currentSize - 1);
+                this.currentSize = Math.max(0, this.currentSize - change);
                 updateSizes();
             } else if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_2)) {
                 cd1 = 0;
-                this.currentSize = Math.min(MAX_SIZE, this.currentSize + 1);
+                this.currentSize = Math.min(MAX_SIZE, this.currentSize + change);
                 updateSizes();
             }
         }
@@ -355,6 +357,12 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
                 updateSizes();
             }
         }
+        if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_7)) {
+            this.currentResMult = Math.max(0, this.currentResMult - dt);
+        } else if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_8)) {
+            this.currentResMult = Math.min(10, this.currentResMult + dt);
+        }
+        
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_5)) {
             this.currentBoxSize = Math.max(0, this.currentBoxSize - dt * change);
             updateSizes();
@@ -371,13 +379,15 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     
     @Override
     public void init(ViewManager vm, RenderAPI api) {
-        this.image = (GLFrameBuffer) api.createFrameBuffer(vm.getMainView().getTargetFbo().getWidth() * 2,
-                vm.getMainView().getTargetFbo().getHeight() * 2, 0, 1);
+        this.image = (GLFrameBuffer) api.createFrameBuffer(
+                (int) (vm.getMainView().getTargetFbo().getWidth() * currentResMult),
+                (int) (vm.getMainView().getTargetFbo().getHeight() * currentResMult), 0, 1);
         this.image.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA32, 0));
     }
     
     private void checkFBOs(FrameBuffer target) {
-        this.image = (GLFrameBuffer) this.image.resizeAndDeleteOrThis(target.getWidth(), target.getHeight());
+        this.image = (GLFrameBuffer) this.image.resizeAndDeleteOrThis((int) (target.getWidth() * currentResMult),
+                (int) (target.getHeight() * currentResMult));
     }
     
     @Override
