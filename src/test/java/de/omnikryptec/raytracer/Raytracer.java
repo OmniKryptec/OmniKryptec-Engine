@@ -103,11 +103,16 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     private UniformVec3 eye, ray00, ray01, ray10, ray11;
     private UniformInt size, maxSteps;
     
-    private static final float BOX_SIZE = 1f;
-    private static final int SIZE = 25;
-    private static final int MAX_STEPS = 150;
+    private static final float DEFAULT_BOX_SIZE = 1f;
+    private static final int DEFAULT_SIZE = 25;
+    private static final int DEFAULT_MAX_STEPS = 150;
     
-    private static final int TOTAL_MODES = 2;
+    private static final int TOTAL_MODES = 3;
+    private static final float CD_THRESHHOLD = 0.2f;
+    
+    private static final int MAX_SIZE = 400;
+    private static final int MAXMAX_STEPS = 1000;
+    private static final int MAX_SIZE_CUBED = MAX_SIZE * MAX_SIZE * MAX_SIZE;
     
     private static class SSBOHelper {
         private final GLShaderStorageBuffer ssbo;
@@ -119,9 +124,9 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
             this.array = new float[size];
         }
         
-        public void push() {
-            FloatBuffer b = BufferUtils.createFloatBuffer(array.length);
-            b.put(array);
+        public void push(int actual) {
+            FloatBuffer b = BufferUtils.createFloatBuffer(actual);
+            b.put(array, 0, actual);
             this.ssbo.updateData(b);
         }
         
@@ -131,14 +136,19 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         
     }
     
-    int SIZE_CUBED = SIZE * SIZE * SIZE;
     SSBOHelper dataHelper;
     SSBOHelper speedHelper;
     SSBOHelper redHelper;
     SSBOHelper greenHelper;
     SSBOHelper blueHelper;
     private int currentMode = -1;
-    private float cd=0;
+    private float cd = 0;
+    
+    private float cd1 = 0, cd2 = 0;
+    
+    private float currentBoxSize;
+    private int currentSize;
+    private int currentMaxSteps;
     
     private void initShader() {
         this.computeShader = (GLShader) LibAPIManager.instance().getGLFW().getRenderAPI().createShader();
@@ -152,30 +162,39 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         this.boxSize = this.computeShader.getUniform("BOX_SIZE");
         this.size = this.computeShader.getUniform("SIZE");
         this.maxSteps = this.computeShader.getUniform("MAX_STEPS");
-        this.computeShader.bindShader();
-        this.size.loadInt(SIZE);
-        this.boxSize.loadFloat(BOX_SIZE);
-        this.maxSteps.loadInt(MAX_STEPS);
-        dataHelper = new SSBOHelper(1, SIZE_CUBED); 
-        speedHelper = new SSBOHelper(2, SIZE_CUBED);
-        redHelper = new SSBOHelper(3, SIZE_CUBED);  
-        greenHelper = new SSBOHelper(4, SIZE_CUBED);
-        blueHelper = new SSBOHelper(5, SIZE_CUBED); 
+        dataHelper = new SSBOHelper(1, MAX_SIZE_CUBED);
+        speedHelper = new SSBOHelper(2, MAX_SIZE_CUBED);
+        redHelper = new SSBOHelper(3, MAX_SIZE_CUBED);
+        greenHelper = new SSBOHelper(4, MAX_SIZE_CUBED);
+        blueHelper = new SSBOHelper(5, MAX_SIZE_CUBED);
+        resetSizes();
         updateMode(0);
     }
     
+    private void updateSizes() {
+        updateMode(currentMode);
+        this.computeShader.bindShader();
+        this.size.loadInt(currentSize);
+        this.boxSize.loadFloat(currentBoxSize);
+        this.maxSteps.loadInt(currentMaxSteps);
+    }
+    
+    private void resetSizes() {
+        this.currentSize = DEFAULT_SIZE;
+        this.currentBoxSize = DEFAULT_BOX_SIZE;
+        this.currentMaxSteps = DEFAULT_MAX_STEPS;
+        updateSizes();
+    }
+    
     private void updateMode(int newMode) {
-        if (newMode == currentMode) {
-            return;
-        }
-        for (int x = 0; x < SIZE; x++) {
-            for (int y = 0; y < SIZE; y++) {
-                for (int z = 0; z < SIZE; z++) {
+        for (int x = 0; x < currentSize; x++) {
+            for (int y = 0; y < currentSize; y++) {
+                for (int z = 0; z < currentSize; z++) {
                     float dataV = 0;
                     float speedV = 300000;
                     Color color = new Color();
                     if (newMode == 0) {
-                        if (y == 0 || y == SIZE - 1) {
+                        if (y == 0 || y == currentSize - 1) {
                             dataV = 1;
                             if (y == 0) {
                                 color.set(0, 1, 0.5f);
@@ -183,7 +202,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
                                 color.set(0, 0, 1);
                             }
                         }
-                        if (y == 0 && x == SIZE / 2 && z == SIZE / 2) {
+                        if (y == 0 && x == currentSize / 2 && z == currentSize / 2) {
                             color.setAll(1);
                         }
                         if (y <= 8 && y != 0) {
@@ -193,41 +212,46 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
                             color.set(0, 0.1f, 0.6f);
                         }
                         
-                        if (y <= 9 && (x == 0 || x == SIZE - 1 || z == 0 || z == SIZE - 1)) {
+                        if (y <= 9 && (x == 0 || x == currentSize - 1 || z == 0 || z == currentSize - 1)) {
                             color.set(0, 0.7f, 0.7f);
                             dataV = 1;
                         }
-                        if(x==y&&x==z) {
+                        if (x == y && x == z) {
                             color.set(1, 0, 0);
                             dataV = 1;
                         }
                     } else if (newMode == 1) {
-                        if (y > SIZE / 3 && y < 2 * SIZE / 3f && x > SIZE / 3 && x < 2 * SIZE / 3f && z > SIZE / 3
-                                && z < 2 * SIZE / 3f) {
+                        if (y > currentSize / 3 && y < 2 * currentSize / 3f && x > currentSize / 3
+                                && x < 2 * currentSize / 3f && z > currentSize / 3 && z < 2 * currentSize / 3f) {
                             dataV = 0;
                             speedV = 235000;
                             //color.set(0, 0.3f, 0);
                         }
                         
-                        if (x == SIZE / 2 && z == SIZE / 2) {
+                        if (x == currentSize / 2 && z == currentSize / 2) {
                             dataV = 1;
                             speedV = 300000;
                             color.set(1, 0, 0);
                         }
+                    } else if (newMode == 2) {
+                        color.randomizeRGB();
+                        speedV = (float) Math.random();
+                        dataV = (float) Math.random();
                     }
-                    dataHelper.array()[x + y * SIZE + z * SIZE * SIZE] = dataV;
-                    speedHelper.array()[x + y * SIZE + z * SIZE * SIZE] = speedV;
-                    redHelper.array()[x + y * SIZE + z * SIZE * SIZE] = color.getR();
-                    greenHelper.array()[x + y * SIZE + z * SIZE * SIZE] = color.getG();
-                    blueHelper.array()[x + y * SIZE + z * SIZE * SIZE] = color.getB();
+                    dataHelper.array()[x + y * currentSize + z * currentSize * currentSize] = dataV;
+                    speedHelper.array()[x + y * currentSize + z * currentSize * currentSize] = speedV;
+                    redHelper.array()[x + y * currentSize + z * currentSize * currentSize] = color.getR();
+                    greenHelper.array()[x + y * currentSize + z * currentSize * currentSize] = color.getG();
+                    blueHelper.array()[x + y * currentSize + z * currentSize * currentSize] = color.getB();
                 }
             }
         }
-        dataHelper.push();
-        speedHelper.push();
-        redHelper.push();
-        greenHelper.push();
-        blueHelper.push();
+        int currSizeCubed = currentSize * currentSize * currentSize;
+        dataHelper.push(currSizeCubed);
+        speedHelper.push(currSizeCubed);
+        redHelper.push(currSizeCubed);
+        greenHelper.push(currSizeCubed);
+        blueHelper.push(currSizeCubed);
         this.currentMode = newMode;
     }
     
@@ -294,10 +318,49 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         this.z += t.z;
         
         cam.getTransform().localspaceWrite().translate(this.x, this.y, this.z);
+        
+        int change = 1;
+        if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_TAB)) {
+            change = 10;
+        }
         cd += dt;
-        if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_R)&&cd>0.15f) {
+        if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_R) && cd > CD_THRESHHOLD) {
             updateMode((currentMode + 1) % TOTAL_MODES);
             cd = 0;
+        }
+        if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_ENTER)) {
+            resetSizes();
+        }
+        cd1 += dt;
+        if (cd1 > CD_THRESHHOLD) {
+            if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_1)) {
+                cd1 = 0;
+                this.currentSize = Math.max(0, this.currentSize - 1);
+                updateSizes();
+            } else if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_2)) {
+                cd1 = 0;
+                this.currentSize = Math.min(MAX_SIZE, this.currentSize + 1);
+                updateSizes();
+            }
+        }
+        cd2 += dt;
+        if (cd2 > CD_THRESHHOLD) {
+            if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_3)) {
+                cd2 = 0;
+                this.currentMaxSteps = Math.max(0, this.currentMaxSteps - change);
+                updateSizes();
+            } else if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_4)) {
+                cd2 = 0;
+                this.currentMaxSteps = Math.min(MAXMAX_STEPS, this.currentMaxSteps + change);
+                updateSizes();
+            }
+        }
+        if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_5)) {
+            this.currentBoxSize = Math.max(0, this.currentBoxSize - dt * change);
+            updateSizes();
+        } else if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_6)) {
+            this.currentBoxSize += dt * change;
+            updateSizes();
         }
     }
     

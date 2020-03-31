@@ -55,10 +55,10 @@ struct box {
 struct Ray{
     vec3 origin;
     vec3 dir;
+    float biggest;
 };
 
 struct Hitinfo {
-  float biggest;
   vec2 lambda;
   vec3 col;
 };
@@ -68,9 +68,7 @@ struct Recursion {
     Hitinfo infos[MAX_REC];
     int currentIndex;
     
-};
-
-const box BIG_BOX = {vec3(0,0,0), vec3(SIZE*BOX_SIZE,SIZE*BOX_SIZE,SIZE*BOX_SIZE)};
+}; 
 
 const ivec3[] DIRECTIONS = {ivec3(1,0,0),ivec3(-1,0,0),ivec3(0,1,0),ivec3(0,-1,0),ivec3(0,0,1),ivec3(0,0,-1)};
 
@@ -105,53 +103,69 @@ float helper(vec2 lam){
     return lam.x >= 0 ? lam.x : lam.y;
 }
 
-bool dealWithIt(inout Ray ray, inout Hitinfo info, ivec3 ipos, ivec3 lastipos, int lastIndex, vec2 lam){
+bool dealWithIt(inout Ray ray, inout Hitinfo info, ivec3 ipos, ivec3 lastipos){
     int index = positionToArrayIndex(ipos);
-    if(shader_data.data[index] >= 0.95){
+    if(shader_data.data[index] >= 0.9){
         float r = red.data[index];
         float g = green.data[index];
         float b = blue.data[index];
         info.col += vec3(r,g,b);
         return true;
     }else{
-        if(lastIndex!=-1){
+        if(lastipos.x!=-1){
+            int lastIndex = positionToArrayIndex(lastipos);
             float s1 = speedS.data[lastIndex];
             float s2 = speedS.data[index];
             float bNumber = s2/s1;
-            if(bNumber!=1) {
-                vec3 normal = normalize(vec3(lastipos - ipos));
+            if(bNumber != 1) {
+                vec3 normal = vec3(lastipos - ipos);
                 vec3 newDirection = refract(ray.dir, normal, bNumber);
                 if(newDirection.x==0 && newDirection.y==0 && newDirection.z==0) {
                     //internal reflection, so use reflect instead
                     newDirection = reflect(ray.dir, normal);
-                    ray.origin = ray.origin + (lam.x+EPSILON)*ray.dir;
+                    ray.origin = ray.origin + (info.lambda.x + EPSILON)*ray.dir;
                 }else{
-                    ray.origin = ray.origin + (helper(lam))*ray.dir;
+                    ray.origin = ray.origin + (helper(info.lambda))*ray.dir;
                 }                        
                 ray.dir = newDirection;
-                info.biggest = 0;
+                ray.biggest = 0;
             }
         }
     }
     return false;
 }
 
+ivec3 findAdjacent(inout Ray ray, inout Hitinfo info, ivec3 ipos){
+    for(int k=0; k<6; k++) {
+        ivec3 newipos = ipos + DIRECTIONS[k];
+        if(exists(newipos)) {
+            box b = {vec3(newipos.x,newipos.y,newipos.z)*BOX_SIZE, vec3(newipos.x+1,newipos.y+1,newipos.z+1)*BOX_SIZE};
+            info.lambda = intersectBox(ray.origin,ray.dir,b);
+            if(info.lambda.y >= info.lambda.x && info.lambda.x > ray.biggest) {
+                ray.biggest = info.lambda.x;
+                return newipos;
+            }
+        }
+    }
+    return ivec3(0,0,0);
+}
+
 bool intersectBoxes(Ray ray, out Hitinfo info) {
-    vec2 lam = intersectBox(ray.origin, ray.dir, BIG_BOX);
-    if(intersectsBox(lam)) {
-        info.biggest = 0;
+    box BIG_BOX = {vec3(0,0,0), vec3(SIZE*BOX_SIZE,SIZE*BOX_SIZE,SIZE*BOX_SIZE)};
+    info.lambda = intersectBox(ray.origin, ray.dir, BIG_BOX);
+    if(intersectsBox(info.lambda)) {
+        ray.biggest = 0;
         ivec3 ipos;
-        if(lam.x>=0) {
-            lam.x += EPSILON;
+        if(info.lambda.x >= 0) {
+            info.lambda.x += EPSILON;
             //Find small box in large box
-            vec3 pos = ray.origin + lam.x * ray.dir;
-            info.biggest = lam.x;
+            vec3 pos = ray.origin + info.lambda.x * ray.dir;
+            ray.biggest = info.lambda.x;
             ipos = positionToFloored(pos);
-        }else{
+        } else {
             ipos = positionToFloored(ray.origin);
         }
-        int lastIndex = -1;
-        ivec3 lastipos;
+        ivec3 lastipos = ivec3(-1);
         if(exists(ipos)) {               
             info.col = vec3(0);
             Recursion recursion;
@@ -160,26 +174,14 @@ bool intersectBoxes(Ray ray, out Hitinfo info) {
             for(int rec=0; rec<MAX_REC; rec++){
                 //Check small boxes
                 for(int i=0; i<MAX_STEPS; i++) {
-                    if(dealWithIt(ray, info, ipos, lastipos, lastIndex, lam)){
+                    if(dealWithIt(ray, info, ipos, lastipos)) {
                         return true;
                     }
-                    bool found = false;                
-                    for(int k=0; k<6; k++) {
-                        ivec3 newipos = ipos + DIRECTIONS[k];
-                        if(exists(newipos)) {
-                            box b = {vec3(newipos.x,newipos.y,newipos.z)*BOX_SIZE, vec3(newipos.x+1,newipos.y+1,newipos.z+1)*BOX_SIZE};
-                            lam = intersectBox(ray.origin,ray.dir,b);
-                            if(lam.y >= lam.x && lam.x > info.biggest) {
-                                info.biggest = lam.x;
-                                lastipos = ipos;
-                                lastIndex = positionToArrayIndex(ipos);
-                                ipos = newipos;
-                                found = true;   
-                                break;    
-                            }
-                        }
-                    }
-                    if(!found){
+                    ivec3 newipos = findAdjacent(ray, info, ipos);
+                    if(newipos.x!=0 || newipos.y!=0 || newipos.z!=0) {
+                        lastipos = ipos;
+                        ipos = newipos;
+                    } else {
                         return false;
                     }
                 }
@@ -205,7 +207,7 @@ void main(void) {
   }
   vec2 pos = vec2(pix) / vec2(size.x - 1, size.y - 1);
   vec3 dir = mix(mix(ray00, ray01, pos.y), mix(ray10, ray11, pos.y), pos.x);
-  Ray ray = {eye, normalize(dir)};
+  Ray ray = {eye, normalize(dir), 0};
   vec4 color = trace(ray);
   imageStore(framebuffer, pix, color);
 }
