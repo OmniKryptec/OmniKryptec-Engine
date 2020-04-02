@@ -122,6 +122,10 @@ public class TextureHelper {
         this.textures.clear();
     }
     
+    public Texture createTexture(TextureData data, TextureConfig config) {
+        return this.api.createTexture2D(data, config);
+    }
+    
     public void clearAndDeleteTextures() {
         for (final Texture t : this.textures.values()) {
             if (t instanceof Deletable) {

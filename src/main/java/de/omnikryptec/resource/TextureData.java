@@ -26,6 +26,15 @@ import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
 
 public class TextureData {
+    public static final TextureData WHITE_TEXTURE_DATA = createWhite1x1();
+    
+    private static TextureData createWhite1x1() {
+        ByteBuffer buffer = BufferUtils.createByteBuffer(4);
+        final byte b = -1;
+        buffer.put(b).put(b).put(b).put(b);
+        buffer.flip();
+        return new TextureData(buffer, 1, 1);
+    }
     
     public static TextureData decode(final InputStream inputstream) {
         int width = 0;

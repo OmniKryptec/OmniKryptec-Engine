@@ -27,22 +27,8 @@ import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
 
 public interface RenderAPI {
-    public static final Class<OpenGLRenderAPI> OpenGL = OpenGLRenderAPI.class;
     
-    //    /**
-    //     * The currently set {@link RenderAPI}.
-    //     * <p>
-    //     * Note: this is the same as calling<br>
-    //     * {@code LibAPIManager.instance().getRenderAPI()}
-    //     * </p>
-    //     *
-    //     * @return the current {@code RenderAPI}
-    //     */
-    //    //TODx don't use this better use it through renderercontext because this is ugly af?
-    //    @Deprecated
-    //    public static RenderAPI get() {
-    //        return LibAPIManager.instance().getGLFW().getRenderAPI();
-    //    }
+    public static final Class<OpenGLRenderAPI> OpenGL = OpenGLRenderAPI.class;
     
     public static enum Type {
         FLOAT, INT

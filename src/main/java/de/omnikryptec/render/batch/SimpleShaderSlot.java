@@ -31,8 +31,6 @@ public class SimpleShaderSlot extends AbstractProjectedShaderSlot {
     private final UniformMatrix viewProjectionUniform;
     private final UniformMatrix transformUniform;
     
-    private final UniformBool usesTexture;
-    
     private IProjection projection;
     private Transform3Df transform;
     
@@ -40,7 +38,6 @@ public class SimpleShaderSlot extends AbstractProjectedShaderSlot {
         this.shader.create("engineRenderBatch2DShader");
         this.transformUniform = this.shader.getUniform("u_transform");
         this.viewProjectionUniform = this.shader.getUniform("u_projview");
-        this.usesTexture = this.shader.getUniform("booleanTexture");
         
         final UniformSampler sampler = this.shader.getUniform("sampler");
         this.shader.bindShader();
@@ -80,10 +77,5 @@ public class SimpleShaderSlot extends AbstractProjectedShaderSlot {
         if (this.transform == null) {
             setTransformMatrix(Mathf.IDENTITY4f);
         }
-    }
-    
-    @Override
-    public void setNextUsesTexture(boolean b) {
-        this.usesTexture.loadBoolean(b);
     }
 }

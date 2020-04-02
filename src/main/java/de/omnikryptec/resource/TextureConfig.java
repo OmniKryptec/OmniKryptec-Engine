@@ -27,7 +27,7 @@ public class TextureConfig {
         Nearest, Linear
     }
     
-    private float anisotropic;
+    private float anisotropic = 0.0f;
     private boolean mipmap = true;
     
     private WrappingMode wrappingMode = WrappingMode.ClampToEdge;

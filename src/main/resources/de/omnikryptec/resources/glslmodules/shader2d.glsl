@@ -28,15 +28,9 @@ out vec4 color;
 
 uniform sampler2D sampler;
 
-uniform float booleanTexture;
 
 void main(void){
-	if(booleanTexture <= 0.5f){
-		color = v_color;
-	}else{
-		color = v_color * texture(sampler, v_texcoords);
-	}
-	
+	color = v_color * texture(sampler, v_texcoords);
 }
 
 
@@ -94,16 +88,12 @@ out vec4 color;
 uniform sampler2D sampler;
 uniform sampler2D reflected;
 
-uniform float booleanTexture;
 
 void main(void){
 	float dCol = v_color.a;
-	if(booleanTexture <= 0.5f){
-		color = v_color;
-	}else{
-		color = v_color * texture(sampler, v_texcoords * v_tiling);
-		dCol = v_color.a * texture(sampler, v_texcoords * v_tiling + v_sdOffset).a;
-    }
+	color = v_color * texture(sampler, v_texcoords * v_tiling);
+	dCol = v_color.a * texture(sampler, v_texcoords * v_tiling + v_sdOffset).a;
+    
 	vec3 refl = texture(reflected, v_screenPos).rgb;
 	
 	float dist = 1.0 - color.a;

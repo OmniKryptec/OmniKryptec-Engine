@@ -19,7 +19,6 @@ package de.omnikryptec.render.batch;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 
-import de.omnikryptec.libapi.exposed.render.shader.UniformBool;
 import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
 import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
 import de.omnikryptec.render.IProjection;
@@ -30,9 +29,7 @@ public class AdvancedShaderSlot extends AbstractProjectedShaderSlot {
     
     private final UniformMatrix viewProjectionUniform;
     private final UniformMatrix transformUniform;
-    
-    private final UniformBool usesTexture;
-    
+        
     private IProjection projection;
     private Transform3Df transform;
     
@@ -42,7 +39,6 @@ public class AdvancedShaderSlot extends AbstractProjectedShaderSlot {
         this.shader.create("engineRenderBatch2DShaderRef");
         this.transformUniform = this.shader.getUniform("u_transform");
         this.viewProjectionUniform = this.shader.getUniform("u_projview");
-        this.usesTexture = this.shader.getUniform("booleanTexture");
         
         final UniformSampler sampler = this.shader.getUniform("sampler");
         final UniformSampler refl = this.shader.getUniform("reflected");
@@ -86,8 +82,4 @@ public class AdvancedShaderSlot extends AbstractProjectedShaderSlot {
         }
     }
     
-    @Override
-    public void setNextUsesTexture(boolean b) {
-        this.usesTexture.loadBoolean(b);
-    }
 }
