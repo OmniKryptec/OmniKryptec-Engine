@@ -24,6 +24,7 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.module.ColorModule;
 import de.omnikryptec.render.batch.module.ModuleBatchingManager;
 import de.omnikryptec.render.batch.module.PositionModule;
+import de.omnikryptec.render.batch.module.TilingModule;
 import de.omnikryptec.render.batch.module.UVModule;
 import de.omnikryptec.render.batch.vertexmanager.RenderedVertexManager;
 import de.omnikryptec.render.batch.vertexmanager.VertexManager;
@@ -38,6 +39,7 @@ public class SimpleBatch2D extends AbstractBatch implements Batch2D {
     private PositionModule posModule;
     private UVModule uvModule;
     private ColorModule colorModule;
+    private TilingModule tilingModule;
     
     private AbstractProjectedShaderSlot shaderSlot;
     
@@ -59,7 +61,8 @@ public class SimpleBatch2D extends AbstractBatch implements Batch2D {
         this.posModule = new PositionModule();
         this.uvModule = new UVModule();
         this.colorModule = new ColorModule();
-        return new ModuleBatchingManager(this.colorModule, this.posModule, this.uvModule);
+        this.tilingModule = new TilingModule();
+        return new ModuleBatchingManager(this.colorModule, this.tilingModule, this.posModule, this.uvModule);
     }
     
     @Override
@@ -68,6 +71,10 @@ public class SimpleBatch2D extends AbstractBatch implements Batch2D {
         this.posModule.setTransform(transform, width, height);
         this.uvModule.set(texture, flipU, flipV);
         issueVertices(texture);
+    }
+    
+    public void setTilingFactor(float f) {
+        this.tilingModule.setTilingFactor(f);
     }
     
     @Override

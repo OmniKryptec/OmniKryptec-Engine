@@ -30,6 +30,8 @@ public class SimpleSprite extends Sprite {
     private Color color;
     private Texture texture;
     
+    private float tiling = 1;
+    
     @Override
     public void draw(final Batch2D batch) {
         batch.color().set(this.color == null ? Color.ONE : this.color);
@@ -38,6 +40,14 @@ public class SimpleSprite extends Sprite {
     
     public Transform2Df getTransform() {
         return this.transform;
+    }
+    
+    public float getTilingFactor() {
+        return tiling;
+    }
+    
+    public void setTilingFactor(float f) {
+        this.tiling = f;
     }
     
     public void setTransform(final Transform2Df mat) {

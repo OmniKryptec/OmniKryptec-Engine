@@ -45,6 +45,8 @@ public class AdvancedRenderer2D implements Renderer {
     private FrameBuffer renderBuffer;
     private FrameBuffer reflectionBuffer;
     
+    private final Color ambientLight = new Color(1, 1, 1, 1);
+    
     private boolean shouldSort = false;
     private boolean enableReflections = true;
     
@@ -75,6 +77,10 @@ public class AdvancedRenderer2D implements Renderer {
     
     public void setSpriteComparator(final Comparator<Sprite> comparator) {
         this.spriteComparator = Util.defaultIfNull(Renderer2D.DEFAULT_COMPARATOR, comparator);
+    }
+    
+    public Color ambientLight() {
+        return ambientLight;
     }
     
     @Override
@@ -134,7 +140,7 @@ public class AdvancedRenderer2D implements Renderer {
         this.reflectionBatch.getShaderSlot().setProjection(projection);
         //render lights
         api.applyRenderState(Renderer2D.LIGHT_STATE);
-        this.renderBuffer.clearColor(envS.get(EnvironmentKeys2D.AmbientLight));
+        this.renderBuffer.clearColor(ambientLight);
         RendererUtil.render2d(this.reflectionBatch, lights, intersFilter);
         //render reflection
         api.applyRenderState(Renderer2D.SPRITE_STATE);

@@ -1,18 +1,20 @@
 $define shader engineRenderBatch2DShader VERTEX$
 #version 330 core
 
-layout(location = 1) in vec2 i_pos;
-layout(location = 2) in vec2 i_texcoords;
+layout(location = 2) in vec2 i_pos;
+layout(location = 3) in vec2 i_texcoords;
 layout(location = 0) in vec4 i_color;
-
+layout(location = 1) in float i_tiling;
 
 out vec4 v_color;
 out vec2 v_texcoords;
+out float v_tiling;
 
 uniform mat4 u_transform;
 uniform mat4 u_projview;
 
 void main(void){
+    v_tiling = i_tiling;
 	v_color = i_color;
 	v_texcoords = i_texcoords;
 	gl_Position = u_projview * u_transform * vec4(i_pos,0,1);
@@ -23,6 +25,7 @@ $define shader engineRenderBatch2DShader FRAGMENT$
 
 in vec4 v_color;
 in vec2 v_texcoords;
+in float v_tiling;
 
 out vec4 color;
 
@@ -30,7 +33,7 @@ uniform sampler2D sampler;
 
 
 void main(void){
-	color = v_color * texture(sampler, v_texcoords);
+	color = v_color * texture(sampler, v_texcoords * v_tiling);
 }
 
 

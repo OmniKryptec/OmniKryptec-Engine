@@ -15,6 +15,7 @@ import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.batch.AbstractProjectedShaderSlot;
 import de.omnikryptec.render.batch.SimpleBatch2D;
+import de.omnikryptec.render.objects.SimpleSprite;
 import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
 import de.omnikryptec.util.Util;
@@ -46,6 +47,9 @@ public class Renderer2D implements Renderer {
     private FrameBuffer spriteBuffer;
     private FrameBuffer renderBuffer;
     
+    private final Color ambientColor = new Color(1, 1, 1, 1);
+    private boolean enableTiling = false;
+    
     private boolean shouldSort = false;
     
     public Renderer2D() {
@@ -68,6 +72,14 @@ public class Renderer2D implements Renderer {
     
     public void setSpriteComparator(final Comparator<Sprite> comparator) {
         this.spriteComparator = Util.defaultIfNull(DEFAULT_COMPARATOR, comparator);
+    }
+    
+    public Color ambientLight() {
+        return ambientColor;
+    }
+    
+    public void setEnableTiling(boolean b) {
+        this.enableTiling = b;
     }
     
     @Override
@@ -117,13 +129,31 @@ public class Renderer2D implements Renderer {
         this.batch.getShaderSlot().setProjection(projection);
         //render lights
         api.applyRenderState(LIGHT_STATE);
-        this.renderBuffer.clearColor(envSettings.get(EnvironmentKeys2D.AmbientLight));
+        this.renderBuffer.clearColor(ambientColor);
         RendererUtil.render2d(this.batch, lights, intersFilter);
         //render scene
         this.spriteBuffer.bindFrameBuffer();
         this.spriteBuffer.clearColor();
         api.applyRenderState(SPRITE_STATE);
-        int vs = RendererUtil.render2d(this.batch, this.sprites, intersFilter);
+        batch.begin();
+        int vs = 0;
+        if (!enableTiling) {
+            batch.setTilingFactor(1);
+        }
+        for (final Sprite s : sprites) {
+            if (s.isVisible(intersFilter)) {
+                if (enableTiling) {
+                    if (s instanceof SimpleSprite) {
+                        batch.setTilingFactor(((SimpleSprite) s).getTilingFactor());
+                    } else {
+                        batch.setTilingFactor(1);
+                    }
+                }
+                s.draw(batch);
+                vs++;
+            }
+        }
+        batch.end();
         this.spriteBuffer.unbindFrameBuffer();
         //combine lights with the scene
         api.applyRenderState(MULT_STATE);
