@@ -19,6 +19,8 @@ package de.omnikryptec.gui;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.errorprone.annotations.ForOverride;
+
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.render.batch.BorderedBatch2D;
 import de.omnikryptec.util.Util;
@@ -92,10 +94,12 @@ public class GuiComponent {
         return this.events;
     }
     
+    @ForOverride
     protected void renderComponent(final BorderedBatch2D batch, float aspect) {
         
     }
     
+    @ForOverride
     protected void calculateActualPosition(final GuiConstraints constraints) {
         //use the current constraints and some other stuff to calculate the components actual pos, width and height here
     }

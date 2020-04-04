@@ -16,17 +16,23 @@
 
 package de.omnikryptec.demo;
 
+import javax.swing.Timer;
+
 import org.joml.Matrix3x2f;
 
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.gui.GuiComponent;
 import de.omnikryptec.gui.GuiConstraints;
 import de.omnikryptec.gui.GuiManager;
+import de.omnikryptec.gui.GuiProgressBar;
 import de.omnikryptec.gui.TilingLayout;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.render.batch.BorderedBatch2D;
 import de.omnikryptec.render.objects.SimpleSprite;
+import de.omnikryptec.util.data.Color;
+import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
@@ -60,10 +66,18 @@ public class GuiDemo extends Omnikryptec {
         final GuiComponent innerParent = new GuiComponent();
         innerParent.setLayout(new TilingLayout(2, 2));
         
+        GuiProgressBar bar = new GuiProgressBar();
+        bar.setColorEmpty(new Color(0, 0, 1));
+        bar.setColorFull(new Color(1, 0, 0));
+        
+        Timer t = new Timer(20, (e) -> bar.setValue(bar.getValue() + 0.01f));
+        t.start();
+        LibAPIManager.registerResourceShutdownHooks(() -> t.stop());
+        
         innerParent.addComponent(new TestComponent(0, 0));
         innerParent.addComponent(new TestComponent(1, 0));
         innerParent.addComponent(new TestComponent(0, 1));
-        innerParent.addComponent(new TestComponent(1, 1));
+        innerParent.addComponent(bar);
         
         parent.addComponent(new TestComponent(0, 0));
         parent.addComponent(new TestComponent(1, 0));

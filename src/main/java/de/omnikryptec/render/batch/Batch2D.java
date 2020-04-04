@@ -42,13 +42,27 @@ public interface Batch2D {
         draw(texture, transform, width, height, false, false);
     }
     
+    default void draw(final Texture texture, final float x, final float y, final boolean flipU, final boolean flipV) {
+        draw(texture, x, y, 1f, 1f, flipU, flipV);
+    }
+    
+    default void draw(final Texture texture, final float x, final float y, float width, float height) {
+        draw(texture, x, y, width, height, false, false);
+    }
+    
     void draw(Texture texture, Matrix3x2fc transform, float width, float height, boolean flipU, boolean flipV);
+    
+    void draw(Texture texture, float x, float y, float width, float height, boolean flipU, boolean flipV);
     
     default void drawPolygon(final Texture texture, final float[] poly) {
         drawPolygon(texture, poly, 0, poly.length);
     }
     
     void drawPolygon(Texture texture, float[] poly, int start, int len);
+    
+    default void drawRect(final float x, final float y, final float width, final float height) {
+        draw((Texture) null, x, y, width, height, false, false);
+    }
     
     default void drawRect(final Matrix3x2fc transform, final float width, final float height) {
         draw((Texture) null, transform, width, height, false, false);
@@ -73,7 +87,8 @@ public interface Batch2D {
         this.drawStringSimple(string, font, size, 1, x, y, rad);
     }
     
-    default void drawStringSimple(String string, Font font, float size, float aspectCorrection, float x, float y, float rad) {
+    default void drawStringSimple(String string, Font font, float size, float aspectCorrection, float x, float y,
+            float rad) {
         char[] chars = string.toCharArray();
         //Doing everything in one Matrix and translating it after each char does not work because the floating point error gets too big
         Matrix3x2f baseTranslation = new Matrix3x2f().translation(x, y);

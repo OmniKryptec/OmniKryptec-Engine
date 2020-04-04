@@ -86,6 +86,13 @@ public class AdvancedBatch2D extends AbstractBatch implements BorderedBatch2D {
     }
     
     @Override
+    public void draw(Texture texture, float x, float y, float width, float height, boolean flipU, boolean flipV) {
+        this.posModule.setTransform(x, y, width, height);
+        this.uvModule.set(texture, flipU, flipV);
+        issueVertices(texture);
+    }
+    
+    @Override
     public Color color() {
         return this.colorModule.color();
     }

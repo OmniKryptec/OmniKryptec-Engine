@@ -73,6 +73,13 @@ public class SimpleBatch2D extends AbstractBatch implements Batch2D {
         issueVertices(texture);
     }
     
+    @Override
+    public void draw(Texture texture, float x, float y, float width, float height, boolean flipU, boolean flipV) {
+        this.posModule.setTransform(x, y, width, height);
+        this.uvModule.set(texture, flipU, flipV);
+        issueVertices(texture);
+    }
+    
     public void setTilingFactor(float f) {
         this.tilingModule.setTilingFactor(f);
     }
