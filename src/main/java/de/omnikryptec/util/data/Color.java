@@ -322,6 +322,60 @@ public class Color implements Cloneable {
         return this;
     }
     
+    public Color mulRGB(float f) {
+        this.r *= f;
+        this.g *= f;
+        this.b *= f;
+        return this;
+    }
+    
+    public Color mul(float f) {
+        this.r *= f;
+        this.g *= f;
+        this.b *= f;
+        this.a *= f;
+        return this;
+    }
+    
+    public Color mulRGB(Color c) {
+        this.r *= c.r;
+        this.g *= c.g;
+        this.b *= c.b;
+        return this;
+    }
+    
+    public Color mul(Color c) {
+        this.r *= c.r;
+        this.g *= c.g;
+        this.b *= c.b;
+        this.a *= c.a;
+        return this;
+    }
+    
+    public Color add(Color c) {
+        this.r += c.r;
+        this.g += c.g;
+        this.b += c.b;
+        this.a += c.a;
+        return this;
+    }
+    
+    public float max() {
+        return Mathf.max(Mathf.max(Mathf.max(r, g), b), a);
+    }
+    
+    public float maxRGB() {
+        return Mathf.max(Mathf.max(r, g), b);
+    }
+    
+    public float min() {
+        return Mathf.min(Mathf.min(Mathf.min(r, g), b), a);
+    }
+    
+    public float minRGB() {
+        return Mathf.min(Mathf.min(r, g), b);
+    }
+    
     public Color randomizeRGBA() {
         return randomizeRGB((float) Math.random());
     }
