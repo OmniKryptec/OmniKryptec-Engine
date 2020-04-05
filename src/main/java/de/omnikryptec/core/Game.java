@@ -61,10 +61,11 @@ public class Game {
         this.scenes = new ArrayList<>();
         this.input = new InputManager(keySettings);
         this.renderManager = new RenderManager();
-        ViewManager gVm = new ViewManager();
-        this.renderManager.addViewManager(gVm, 100);
-        this.guiManager = new GuiManager(gVm);
+        ViewManager guiViewManager = new ViewManager();
+        this.renderManager.addViewManager(guiViewManager, 100);
+        this.guiManager = new GuiManager(guiViewManager);
         this.windowUpdater = new WindowUpdater(LibAPIManager.instance().getGLFW().getRenderAPI().getWindow());
+        this.windowUpdater.update();
         this.eventBus = new EventBus(false);
     }
     
@@ -143,6 +144,15 @@ public class Game {
     
     public void setTimeTransform(UnaryOperator<Time> transform) {
         timeTransform = Util.ensureNonNull(transform);
+    }
+    
+    //TODO pcfreak9000 improve (selective updating?)
+    public void updateAll() {
+        this.getWindowUpdater().update();
+        final Time time = this.getWindowUpdater().asTime();
+        this.prepareGame(time);
+        this.updateGame(time);
+        this.renderGame(time);
     }
     
 }

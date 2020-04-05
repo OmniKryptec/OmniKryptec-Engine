@@ -19,6 +19,7 @@ package de.omnikryptec.libapi.opengl;
 import java.lang.reflect.Field;
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.lwjgl.opengl.EXTTextureFilterAnisotropic;
 import org.lwjgl.opengl.GL;
@@ -333,6 +334,14 @@ public class OpenGLUtil {
     
     private static enum CACHE_ENUM {
         CULL_FACE_KEY, POLY_MODE_KEY, BLEND_MODE, DEPTH_FUNC, MULTISAMPLE;
+    }
+    
+    public static void logRenderState() {
+        for (Entry<CACHE_ENUM, Object> e : cache.entrySet()) {
+            logger.debug(e.getKey() + " " + e.getValue());
+        }
+        logger.debug("Write color: " + oldColor);
+        logger.debug("Write depth: " + oldDepth);
     }
     
     public static void setWriteColor(final boolean color) {

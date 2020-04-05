@@ -18,9 +18,12 @@ package de.omnikryptec.gui;
 
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.libapi.exposed.render.RenderState;
+import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.batch.AdvancedBatch2D;
 import de.omnikryptec.render.renderer.Renderer;
+import de.omnikryptec.render.renderer.Renderer2D;
 import de.omnikryptec.render.renderer.ViewManager;
 import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
 import de.omnikryptec.util.settings.Settings;
@@ -43,6 +46,7 @@ public class GuiRenderer implements Renderer {
     public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target,
             Settings<EnvironmentKey> envSettings, Time time) {
         if (this.componentRoot != null) {
+            api.applyRenderState(Renderer2D.SPRITE_STATE);
             batch.getShaderSlot().setProjection(projection);
             this.batch.begin();
             this.componentRoot.render(this.batch, target.getWidth() / (float) target.getHeight());

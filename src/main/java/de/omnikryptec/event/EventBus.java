@@ -39,6 +39,8 @@ public class EventBus implements IUpdatable, IEventListener {
     private static final int DEFAULT_EVENTBUS_PRIORITY = Integer.MIN_VALUE + 100;
     private static final boolean DEFAULT_EVENTBUS_CONCURRENT = false;
     
+    private static final Logger LOGGER = Logger.getLogger(EventBus.class);
+    
     private static final Comparator<IEventListener> LISTENER_COMP = (o1, o2) -> o2.priority() - o1.priority();
     
     private static class ObjMapping {
@@ -56,6 +58,8 @@ public class EventBus implements IUpdatable, IEventListener {
     private final ListMultimap<Object, ObjMapping> objMappings;
     private final Queue<Event> eventQueue;
     private boolean receiveConsumed = true;
+    private boolean acceptEvents = true;
+    private boolean verbose = false;
     private final int priority;
     
     /**
@@ -164,6 +168,9 @@ public class EventBus implements IUpdatable, IEventListener {
      * @param object the object to search for subscriptions in
      */
     public void register(Object object) {
+        if (verbose) {
+            LOGGER.debug("Registering " + object);
+        }
         Method[] methods;
         if (object instanceof Class<?>) {
             methods = ((Class<?>) object).getDeclaredMethods();
@@ -198,19 +205,37 @@ public class EventBus implements IUpdatable, IEventListener {
                 }
             }
         }
-        if (!annotationFound) {
-            Logger.log(getClass(), LogType.Debug, "No EventSubscriptions were found: " + object);
+        if (!annotationFound && verbose) {
+            LOGGER.debug("No EventSubscriptions were found: " + object);
         }
     }
     
+    /**
+     * Immediately processes the given {@code event}.
+     * 
+     * @param event the event
+     */
     public void post(final Event event) {
-        processEvent(event);
+        if (acceptEvents) {
+            processEvent(event);
+        }
     }
     
+    /**
+     * Enqueues the given event so it can be processed later via
+     * {@link #processQueuedEvents()}.
+     * 
+     * @param event the event
+     */
     public void enqueue(final Event event) {
-        this.eventQueue.add(event);
+        if (acceptEvents) {
+            this.eventQueue.add(event);
+        }
     }
     
+    /**
+     * Process events added through {@link #enqueue(Event)}.
+     */
     public void processQueuedEvents() {
         if (this.processing.get()) {
             throw new IllegalStateException("Already processing!");
@@ -227,6 +252,9 @@ public class EventBus implements IUpdatable, IEventListener {
     }
     
     private void processEvent(final Event event) {
+        if (verbose) {
+            LOGGER.debugf("Processing event: %s", event.toString());
+        }
         Class<?> someclazz = event.getClass();
         List<IEventListener> filteredListeners = new ArrayList<>();
         do {
@@ -242,14 +270,23 @@ public class EventBus implements IUpdatable, IEventListener {
         }
     }
     
+    public void setAcceptEvents(boolean b) {
+        this.acceptEvents = b;
+    }
+    
     @Override
     public void update(final Time time) {
         processQueuedEvents();
     }
     
+    /**
+     * Internal use so an EventBus can act as an IEventListener for another EventBus
+     * 
+     * @see #post(Event)
+     */
     @Override
     public void invoke(final Event ev) {
-        processEvent(ev);
+        post(ev);
     }
     
     @Override
@@ -266,4 +303,7 @@ public class EventBus implements IUpdatable, IEventListener {
         this.receiveConsumed = b;
     }
     
+    public void setVerbose(boolean b) {
+        this.verbose = b;
+    }
 }

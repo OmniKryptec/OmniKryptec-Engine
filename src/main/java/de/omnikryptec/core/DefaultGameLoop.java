@@ -57,11 +57,7 @@ public class DefaultGameLoop implements IGameLoop {
         try {
             this.game.getWindowUpdater().resetDeltaTime();
             while (!shouldStop()) {
-                this.game.getWindowUpdater().update();
-                final Time time = this.game.getWindowUpdater().asTime();
-                this.game.prepareGame(time);
-                this.game.updateGame(time);
-                this.game.renderGame(time);
+                this.game.updateAll();
             }
         } finally {
             this.running.set(false);

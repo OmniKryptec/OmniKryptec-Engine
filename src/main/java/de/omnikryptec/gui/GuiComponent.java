@@ -34,6 +34,8 @@ public class GuiComponent {
     
     private GuiConstraints constraints;
     
+    private boolean enabled = true;
+    
     private final List<GuiComponent> children;
     private final EventBus events;
     
@@ -84,14 +86,21 @@ public class GuiComponent {
     }
     
     public void render(final BorderedBatch2D batch, float aspect) {
-        renderComponent(batch, aspect);
-        for (final GuiComponent gc : this.children) {
-            gc.render(batch, aspect);
+        if (enabled) {
+            renderComponent(batch, aspect);
+            for (final GuiComponent gc : this.children) {
+                gc.render(batch, aspect);
+            }
         }
     }
     
     EventBus getEventBus() {
         return this.events;
+    }
+    
+    public void setEnabled(boolean b) {
+        this.enabled = b;
+        this.events.setAcceptEvents(b);
     }
     
     @ForOverride

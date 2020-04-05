@@ -25,7 +25,7 @@ import java.util.Map;
 public class Logger {
     
     public enum LogType {
-        Debug(-1, false, 2), Info(0, false, 3), Warning(1, true, 0), Error(2, true, 2);
+        /* Verbose(-2, false, 0), */ Debug(-1, false, 2), Info(0, false, 3), Warning(1, true, 0), Error(2, true, 2);
         
         private final int importance;
         private final boolean red;
@@ -63,7 +63,7 @@ public class Logger {
     }
     
     public static void log(final Class<?> clazz, final LogType type, final Object... msgs) {
-        if (type.importance >= minlevel.importance) {
+        if (meetsMin(type)) {
             final LocalDateTime now = LocalDateTime.now();
             final StringBuilder builder = new StringBuilder();
             builder.append("[ " + type);
@@ -107,6 +107,10 @@ public class Logger {
         }
     }
     
+    private static boolean meetsMin(LogType t) {
+        return t.importance >= minlevel.importance;
+    }
+    
     public static void setClassDebug(final boolean b) {
         classDebug = b;
     }
@@ -133,19 +137,49 @@ public class Logger {
         log(this.clazz, type, msgs);
     }
     
+    public void logf(LogType t, String format, Object... args) {
+        if (meetsMin(t)) {
+            log(t, String.format(format, args));
+        }
+    }
+    
     public void debug(final Object... msgs) {
         log(this.clazz, LogType.Debug, msgs);
+    }
+    
+    public void debugf(String format, Object... data) {
+        if (meetsMin(LogType.Debug)) {
+            debug(String.format(format, data));
+        }
     }
     
     public void info(final Object... msgs) {
         log(this.clazz, LogType.Info, msgs);
     }
     
+    public void infof(String format, Object... data) {
+        if (meetsMin(LogType.Info)) {
+            info(String.format(format, data));
+        }
+    }
+    
     public void warn(final Object... msgs) {
         log(this.clazz, LogType.Warning, msgs);
     }
     
+    public void warnf(String format, Object... data) {
+        if (meetsMin(LogType.Warning)) {
+            warn(String.format(format, data));
+        }
+    }
+    
     public void error(final Object... msgs) {
         log(this.clazz, LogType.Error, msgs);
+    }
+    
+    public void errorf(String format, Object... data) {
+        if (meetsMin(LogType.Error)) {
+            error(String.format(format, data));
+        }
     }
 }

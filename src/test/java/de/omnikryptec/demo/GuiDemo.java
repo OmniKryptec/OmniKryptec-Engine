@@ -67,8 +67,9 @@ public class GuiDemo extends Omnikryptec {
         innerParent.setLayout(new TilingLayout(2, 2));
         
         GuiProgressBar bar = new GuiProgressBar();
-        bar.setColorEmpty(new Color(0, 0, 1));
-        bar.setColorFull(new Color(1, 0, 0));
+        bar.setMaxAlways(true);
+        bar.colorEmpty().set(0, 0, 1);
+        bar.colorFull().set(1, 0, 0);
         
         Timer t = new Timer(20, (e) -> bar.setValue(bar.getValue() + 0.01f));
         t.start();

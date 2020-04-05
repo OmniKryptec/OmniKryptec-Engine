@@ -37,6 +37,7 @@ import de.omnikryptec.libapi.exposed.input.InputEvent;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.openal.DistanceModel;
 import de.omnikryptec.libapi.openal.Sound;
+import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
 import de.omnikryptec.render.batch.BorderedBatch2D;
 import de.omnikryptec.util.Logger.LogType;
