@@ -34,7 +34,7 @@ public class GuiComponent {
 
     private GuiConstraints constraints;
 
-    private boolean enabled = true;
+    private boolean visible = true;
 
     private final List<GuiComponent> children;
     private final EventBus events;
@@ -86,7 +86,7 @@ public class GuiComponent {
     }
 
     public void render(final BorderedBatch2D batch, float aspect) {
-        if (this.enabled) {
+        if (this.visible) {
             renderComponent(batch, aspect);
             for (final GuiComponent gc : this.children) {
                 gc.render(batch, aspect);
@@ -98,8 +98,8 @@ public class GuiComponent {
         return this.events;
     }
 
-    public void setEnabled(boolean b) {
-        this.enabled = b;
+    public void setVisibility(boolean b) {
+        this.visible = b;
         this.events.setAcceptEvents(b);
     }
 

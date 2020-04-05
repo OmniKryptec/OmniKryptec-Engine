@@ -3,12 +3,12 @@ package de.omnikryptec.gui;
 import de.omnikryptec.util.math.Mathf;
 
 public class GuiComponentPositionable extends GuiComponent {
-
+    
     private float mx, my, mw, mh;
     private float x, y, w, h;
-
-    private boolean alwaysMax = false;
-
+    
+    private boolean alwaysMax = true;
+    
     @Override
     protected void calculateActualPosition(GuiConstraints constraints) {
         this.mx = constraints.getX();
@@ -16,51 +16,37 @@ public class GuiComponentPositionable extends GuiComponent {
         this.mw = constraints.getMaxWidth();
         this.mh = constraints.getMaxHeight();
     }
-
+    
     public float getX() {
-        return this.alwaysMax ? this.mx : Mathf.max(this.x, this.mx);
+        return this.alwaysMax ? this.mx : this.mx + x * mw;
     }
-
+    
     public float getY() {
-        return this.alwaysMax ? this.my : Mathf.max(this.y, this.my);
+        return this.alwaysMax ? this.my : this.my + y * mh;
     }
-
+    
     public float getW() {
-        return this.alwaysMax ? this.mw : Mathf.min(this.w, this.mw);
+        return this.alwaysMax ? this.mw : Mathf.min(mw * w, mw * (1 - x));
     }
-
+    
     public float getH() {
-        return this.alwaysMax ? this.mh : Mathf.min(this.h, this.mh);
+        return this.alwaysMax ? this.mh : Mathf.min(mh * h, mh * (1 - y));
     }
-
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public void setY(float y) {
-        this.y = y;
-    }
-
-    public void setW(float w) {
-        this.w = w;
-    }
-
-    public void setH(float h) {
-        this.h = h;
-    }
-
-    public void setPos(float x, float y) {
+    
+    public void setDimensions(float x, float y, float w, float h) {
+        setMaxAlways(false);
         this.x = x;
         this.y = y;
-    }
-
-    public void setSize(float w, float h) {
         this.w = w;
         this.h = h;
     }
-
-    public void setMaxAlways(boolean b) {
+    
+    public void setMaxAlways() {
+        setMaxAlways(true);
+    }
+    
+    private void setMaxAlways(boolean b) {
         this.alwaysMax = b;
     }
-
+    
 }

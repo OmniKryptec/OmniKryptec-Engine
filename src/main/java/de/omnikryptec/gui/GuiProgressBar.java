@@ -4,18 +4,19 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.BorderedBatch2D;
 import de.omnikryptec.resource.Font;
 import de.omnikryptec.util.data.Color;
+import de.omnikryptec.util.math.Mathf;
 
 public class GuiProgressBar extends GuiComponentPositionable {
-
+    
     private float value;
     private final Color empty = new Color();
     private final Color full = new Color();
     private final Color textColor = new Color();
     private Font font;
     private String string = "";
-
+    
     private Texture emptyT, fullT;
-
+    
     @Override
     protected void renderComponent(BorderedBatch2D batch, float aspect) {
         float x = getX();
@@ -35,39 +36,39 @@ public class GuiProgressBar extends GuiComponentPositionable {
             batch.drawStringSDFautoc(this.string, this.font, size, aspect, 0.57f, x - f / 2 + w / 2, y + h / 3, 0);
         }
     }
-
+    
     public Color colorEmpty() {
         return this.empty;
     }
-
+    
     public Color colorFull() {
         return this.full;
     }
-
+    
     public Color colorText() {
         return this.textColor;
     }
-
+    
     public void setTextureEmpty(Texture t) {
         this.emptyT = t;
     }
-
+    
     public void setTextureFull(Texture t) {
         this.fullT = t;
     }
-
+    
     public void setValue(float f) {
-        this.value = f;
+        this.value = Mathf.clamp01(f);
     }
-
+    
     public float getValue() {
         return this.value;
     }
-
+    
     public void setFont(Font f) {
         this.font = f;
     }
-
+    
     public void setText(String s) {
         this.string = s;
     }
