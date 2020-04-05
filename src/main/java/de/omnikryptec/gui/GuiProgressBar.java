@@ -30,8 +30,9 @@ public class GuiProgressBar extends GuiComponentPositionable {
         //TODO pcfreak9000 more text settings (also fix text y offset)
         if (font != null) {
             batch.color().set(textColor);
-            float f = font.getLength(string, h - 4 * h / 20, aspect);
-            batch.drawStringSDFautoc(string, font, h - 4 * h / 20, aspect, 0.57f, x - f / 2 + w / 2, y + h / 3, 0);
+            float size = h - 9 * h / 20;
+            float f = font.getLength(string, size, aspect);
+            batch.drawStringSDFautoc(string, font, size, aspect, 0.57f, x - f / 2 + w / 2, y + h / 3, 0);
         }
     }
     
