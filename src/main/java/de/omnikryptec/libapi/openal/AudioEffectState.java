@@ -18,7 +18,7 @@ package de.omnikryptec.libapi.openal;
 
 /**
  * AudioEffectState
- * 
+ *
  * @author Panzer1119
  */
 //test

@@ -23,18 +23,18 @@ import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.renderer.ViewManager;
 
 public class GuiManager {
-    
+
     private final ViewManager viewMgr;
     private GuiRenderer renderer;
-    
+
     private GuiComponent componentRoot;
-    
+
     public GuiManager(final ViewManager vm) {
         this.viewMgr = vm;
         LibAPIManager.ENGINE_EVENTBUS.register(this);
         setRenderer(new GuiRenderer());
     }
-    
+
     public void setRenderer(final GuiRenderer renderer) {
         if (this.renderer != null) {
             this.viewMgr.removeRenderer(renderer);
@@ -48,7 +48,7 @@ public class GuiManager {
             }
         }
     }
-    
+
     public void setGui(final GuiComponent componentRoot) {
         this.componentRoot = componentRoot;
         if (this.renderer != null) {
@@ -56,18 +56,18 @@ public class GuiManager {
         }
         recalculateConstraints();
     }
-    
+
     @Deprecated
     public void setGuiProjection(IProjection proj) {
         this.viewMgr.getMainView().setProjection(proj);
     }
-    
+
     private void recalculateConstraints() {
         if (this.componentRoot != null) {
             this.componentRoot.setConstraints(new GuiConstraints(0, 0, 1, 1));
         }
     }
-    
+
     @EventSubscription(priority = 2000, receiveConsumed = false)
     public void event(final InputEvent event) {
         if (this.componentRoot != null) {

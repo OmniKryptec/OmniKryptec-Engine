@@ -23,15 +23,15 @@ import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Logger.LogType;
 
 public abstract class GLUniform implements Uniform {
-    
+
     private final String name;
     private int location;
     private boolean isfound = false;
-    
+
     protected GLUniform(final String name) {
         this.name = name;
     }
-    
+
     protected void storeUniformLocation(final int programID) {
         this.location = GL20.glGetUniformLocation(programID, this.name);
         if (this.location == -1) {
@@ -40,19 +40,19 @@ public abstract class GLUniform implements Uniform {
             this.isfound = true;
         }
     }
-    
+
     protected int getLocation() {
         return this.location;
     }
-    
+
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + ", Name: " + this.name + " Location: " + this.location;
     }
-    
+
     @Override
     public boolean existsInCompilation() {
         return this.isfound;
     }
-    
+
 }

@@ -21,25 +21,25 @@ import org.joml.Vector2f;
 import de.omnikryptec.render.batch.module.ModuleBatchingManager.QuadSide;
 
 public class SDFModule implements Module {
-    
+
     private final Vector2f sdData = new Vector2f();
     private final Vector2f bsdData = new Vector2f();
-    
+
     public SDFModule() {
         setDefaultSD();
         setDefaultBSD();
     }
-    
+
     @Override
     public int size() {
         return 4;
     }
-    
+
     @Override
     public boolean sideIndependant() {
         return true;
     }
-    
+
     @Override
     public void visit(float[] array, QuadSide side, int index) {
         array[index] = this.sdData.x();
@@ -47,21 +47,21 @@ public class SDFModule implements Module {
         array[index + 2] = this.bsdData.x();
         array[index + 3] = this.bsdData.y();
     }
-    
+
     public Vector2f sdfData() {
         return this.sdData;
     }
-    
+
     public Vector2f bsdfData() {
         return this.bsdData;
     }
-    
+
     public void setDefaultSD() {
         this.sdData.set(0, 1);
     }
-    
+
     public void setDefaultBSD() {
         this.bsdData.set(0, 0.000000001f);
     }
-    
+
 }

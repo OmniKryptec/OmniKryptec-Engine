@@ -23,12 +23,12 @@ import java.util.List;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 
 public class VertexBufferLayout {
-    
+
     public static class VertexBufferElement {
         private final Type type;
         private final int count;
         private final boolean normalize;
-        
+
         /**
          *
          * @param type      the {@link Type} of the data
@@ -40,7 +40,7 @@ public class VertexBufferLayout {
             this.count = count;
             this.normalize = normalize;
         }
-        
+
         /**
          * The {@link Type} of the data
          *
@@ -49,7 +49,7 @@ public class VertexBufferLayout {
         public Type getType() {
             return this.type;
         }
-        
+
         /**
          * Number of values per vertex
          *
@@ -58,7 +58,7 @@ public class VertexBufferLayout {
         public int getCount() {
             return this.count;
         }
-        
+
         /**
          * If the data should be normalized
          *
@@ -67,17 +67,17 @@ public class VertexBufferLayout {
         public boolean normalize() {
             return this.normalize;
         }
-        
+
     }
-    
+
     private final List<VertexBufferElement> elements;
     private boolean locked;
-    
+
     public VertexBufferLayout() {
         this.elements = new ArrayList<>();
         this.locked = false;
     }
-    
+
     /**
      *
      * @param type      the {@link Type} of the data
@@ -90,7 +90,7 @@ public class VertexBufferLayout {
         }
         this.elements.add(new VertexBufferElement(type, count, normalize));
     }
-    
+
     /**
      * per-vertex count
      *
@@ -103,11 +103,11 @@ public class VertexBufferLayout {
         }
         return count;
     }
-    
+
     public List<VertexBufferElement> getElements() {
         return Collections.unmodifiableList(this.elements);
     }
-    
+
     //XXx nice?
     public void lock() {
         this.locked = true;

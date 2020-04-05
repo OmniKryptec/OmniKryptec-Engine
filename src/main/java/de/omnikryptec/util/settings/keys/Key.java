@@ -23,19 +23,19 @@ import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.settings.KeySettings;
 
 public class Key implements IKey {
-    
+
     /**
      * Default {@link de.omnikryptec.util.settings.keys.Key} which can be returned
      * instead of null
      */
     public static final Key DEFAULT_NULL_KEY = new Key("DEFAULT_NULL_KEY", -1);
-    
+
     protected final String name;
     protected int key;
     protected boolean isKeyboardKey;
     protected byte keyState = KeySettings.KEY_UNKNOWN;
     protected double lastUpdate = 0.0F;
-    
+
     /**
      * Constructs a {@link de.omnikryptec.util.settings.keys.Key} (as a keyboard
      * key)
@@ -48,7 +48,7 @@ public class Key implements IKey {
     public Key(final String name, final int key) {
         this(name, key, true);
     }
-    
+
     /**
      * Constructs a {@link de.omnikryptec.util.settings.keys.Key}
      *
@@ -66,7 +66,7 @@ public class Key implements IKey {
         this.key = key;
         this.isKeyboardKey = isKeyboardKey;
     }
-    
+
     /**
      * Returns the name of the {@link de.omnikryptec.util.settings.keys.Key}
      *
@@ -76,7 +76,7 @@ public class Key implements IKey {
     public String getName() {
         return this.name;
     }
-    
+
     /**
      * Returns if this {@link de.omnikryptec.util.settings.keys.Key} is being
      * pressed
@@ -88,7 +88,7 @@ public class Key implements IKey {
     public boolean isPressed() {
         return this.keyState == KeySettings.KEY_PRESSED || this.keyState == KeySettings.KEY_REPEATED; //TODO Panzer1119 Check this, is Repeated == Pressed?
     }
-    
+
     /**
      * Returns the state of this {@link de.omnikryptec.util.settings.keys.Key}
      *
@@ -101,7 +101,7 @@ public class Key implements IKey {
     public byte getKeyState() {
         return this.keyState;
     }
-    
+
     /**
      * Sets the state of this {@link de.omnikryptec.util.settings.keys.Key}
      *
@@ -114,14 +114,14 @@ public class Key implements IKey {
      *                 {@link de.omnikryptec.util.settings.KeySettings#KEY_REPEATED}
      *                 or
      *                 {@link de.omnikryptec.util.settings.KeySettings#KEY_RELEASED}
-     *                
+     *                 
      * @return A reference to this {@link de.omnikryptec.util.settings.keys.Key}
      */
     public Key setKeyState(final byte keyState) {
         this.keyState = keyState;
         return this;
     }
-    
+
     /**
      * Returns if this {@link de.omnikryptec.util.settings.keys.Key} is being
      * pressed for a specified time
@@ -145,7 +145,7 @@ public class Key implements IKey {
         //this.lastChange = currentTime; //FIXME Panzer1119 lastChange/lastUpdate should just show the last time, when this key isPressed was updated. Why should this method reset this time?
         return (pressedTime >= minTime || minTime < 0) && (pressedTime <= maxTime || maxTime < 0);
     }
-    
+
     /**
      * Returns the KeyCode
      *
@@ -154,20 +154,20 @@ public class Key implements IKey {
     public int getKey() {
         return this.key;
     }
-    
+
     /**
      * Sets the KeyCode
      *
      * @param key KeyCode (e.g.
      *            {@link de.omnikryptec.util.settings.keys.KeysAndButtons#OKE_KEY_A})
-     *           
+     *            
      * @return A reference to this {@link de.omnikryptec.util.settings.keys.Key}
      */
     public Key setKey(final int key) {
         this.key = key;
         return this;
     }
-    
+
     /**
      * Returns if this {@link de.omnikryptec.util.settings.keys.Key} is a keyboard
      * key
@@ -178,7 +178,7 @@ public class Key implements IKey {
     public boolean isKeyboardKey() {
         return this.isKeyboardKey;
     }
-    
+
     /**
      * @param keyboardKey <tt>true</tt> if this
      *                    {@link de.omnikryptec.util.settings.keys.Key} is a
@@ -190,7 +190,7 @@ public class Key implements IKey {
         this.isKeyboardKey = keyboardKey;
         return this;
     }
-    
+
     /**
      * Returns the last update of this {@link de.omnikryptec.util.settings.keys.Key}
      *
@@ -199,20 +199,20 @@ public class Key implements IKey {
     public double getLastUpdate() { // TODO Panzer1119 Maybe use another System to determine long key presses
         return this.lastUpdate;
     }
-    
+
     /**
      * Sets the last update of this {@link de.omnikryptec.util.settings.keys.Key}
      *
      * @param lastUpdate Last update of this
      *                   {@link de.omnikryptec.util.settings.keys.Key}
-     *                  
+     *                   
      * @return A reference to this {@link de.omnikryptec.util.settings.keys.Key}
      */
     public Key setLastUpdate(final double lastUpdate) {
         this.lastUpdate = lastUpdate;
         return this;
     }
-    
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -224,16 +224,16 @@ public class Key implements IKey {
         final Key key1 = (Key) o;
         return this.key == key1.key && this.isKeyboardKey == key1.isKeyboardKey && Objects.equals(this.name, key1.name);
     }
-    
+
     @Override
     public int hashCode() {
         return Objects.hash(this.name, this.key, this.isKeyboardKey);
     }
-    
+
     @Override
     public String toString() {
         return "Key{" + "name='" + this.name + '\'' + ", key=" + this.key + ", isKeyboardKey=" + this.isKeyboardKey
                 + ", keyState=" + this.keyState + ", lastUpdate=" + this.lastUpdate + '}';
     }
-    
+
 }

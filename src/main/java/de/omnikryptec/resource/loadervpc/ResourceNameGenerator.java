@@ -19,7 +19,7 @@ package de.omnikryptec.resource.loadervpc;
 import de.codemakers.io.file.AdvancedFile;
 
 public interface ResourceNameGenerator {
-    
+
     public static ResourceNameGenerator defaultNameGen() {
         return (resource, file, superfile) -> {
             String path = file.getPath().replace("\\", "/");
@@ -39,7 +39,7 @@ public interface ResourceNameGenerator {
             return s;
         };
     }
-    
+
     String genName(Object resource, AdvancedFile file, AdvancedFile superfile);
-    
+
 }

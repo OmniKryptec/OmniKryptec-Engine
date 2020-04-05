@@ -20,7 +20,7 @@ import de.omnikryptec.util.updater.Time;
 
 @FunctionalInterface
 public interface IUpdatable {
-    
+
     void update(Time time);
-    
+
 }

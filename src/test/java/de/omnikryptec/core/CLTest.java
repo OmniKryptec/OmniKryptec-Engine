@@ -35,13 +35,13 @@ import de.omnikryptec.libapi.opencl.OpenCL;
 import de.omnikryptec.util.settings.Settings;
 
 public class CLTest {
-    
+
     private static final String KERNEL = "__kernel void sum(__global const float *a, __global const float *b, __global float *result, int const size) {\r\n"
             + "    const int itemId = get_global_id(0); \r\n" + "    if(itemId < size) {\r\n"
             + "        result[itemId] = a[itemId] + b[itemId];\r\n" + "    }\r\n" + "} ";
-    
+
     private static final int size = 10;
-    
+
     public static void main(final String[] args) {
         //Create stuff
         final Settings<LibSetting> s = new Settings<>();

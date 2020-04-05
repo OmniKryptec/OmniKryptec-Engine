@@ -8,10 +8,10 @@ public enum DistanceModel {
     INVERSE(AL10.AL_INVERSE_DISTANCE, false), INVERSE_CLAMPED(AL10.AL_INVERSE_DISTANCE_CLAMPED, true),
     LINEAR(AL11.AL_LINEAR_DISTANCE, false), LINEAR_CLAMPED(AL11.AL_LINEAR_DISTANCE_CLAMPED, true),
     NONE(AL10.AL_NONE, false);
-    
+
     private final int distanceModel;
     private final boolean clamped;
-    
+
     /**
      * Creates the DistanceModel
      *
@@ -22,25 +22,25 @@ public enum DistanceModel {
         this.distanceModel = distanceModel;
         this.clamped = clamped;
     }
-    
+
     /**
      * Returns the OpenAL-Equivalent for the DistanceModel
      *
      * @return Integer OpenAL Distancemodel
      */
     public final int getDistanceModelId() {
-        return distanceModel;
+        return this.distanceModel;
     }
-    
+
     /**
      * Returns if the DistanceModel is a clamped one
      *
      * @return <tt>true</tt> if it is clamped
      */
     public final boolean isClamped() {
-        return clamped;
+        return this.clamped;
     }
-    
+
     public final float getFade(float fadeTime, float fadeTimeComplete, float volumeStart, float volumeTarget) {
         float newVolume = 0;
         switch (this) {
@@ -56,7 +56,7 @@ public enum DistanceModel {
         case NONE:
             newVolume = fadeTime * ((volumeTarget - volumeStart) / fadeTimeComplete) + volumeStart;
             break;
-        
+
         }
         return Math.max(newVolume, 0.0F);
     }

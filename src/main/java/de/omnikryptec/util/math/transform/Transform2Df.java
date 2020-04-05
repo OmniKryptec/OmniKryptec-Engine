@@ -22,36 +22,36 @@ import org.joml.Vector2f;
 import org.joml.Vector2fc;
 
 public class Transform2Df extends TransformBase<Vector2fc, Matrix3x2fc, Vector2f, Matrix3x2f, Transform2Df> {
-    
+
     @Override
     protected Matrix3x2f createWM() {
         return new Matrix3x2f();
     }
-    
+
     @Override
     protected Vector2f createWV() {
         return new Vector2f();
     }
-    
+
     @Override
     protected void set(final Matrix3x2f set, final Matrix3x2fc in) {
         set.set(in);
     }
-    
+
     @Override
     protected void mul(final Matrix3x2f leftM, final Matrix3x2fc rightM) {
         leftM.mul(rightM);
     }
-    
+
     @Override
     protected void getPosition(final Matrix3x2fc from, final Vector2f target) {
         //untested; was different: old is making the vec 0 and then mulling it with the mat)
         target.set(from.m20(), from.m21());
     }
-    
+
     @Override
     protected Transform2Df thiz() {
         return this;
     }
-    
+
 }

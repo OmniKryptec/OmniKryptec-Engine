@@ -27,9 +27,9 @@ import de.omnikryptec.util.Logger;
  * @author Panzer1119
  */
 public class AudioPlaylist {
-    
+
     private static final Logger LOGGER = Logger.getLogger(AudioPlaylist.class);
-    
+
     private final ArrayList<ALSound> sounds = new ArrayList<>();
     private final AudioSource source_1 = new AudioSource();
     private final AudioSource source_2 = new AudioSource();
@@ -40,16 +40,16 @@ public class AudioPlaylist {
     private boolean isFading = false;
     private boolean isPlaying = false;
     private boolean loop = false;
-    
+
     // TODO Panzer1119 Vielleicht das Playlist extenden lassen, und dann ist PlayList eine
     // lustige PlayList, die alle funktionen generisch eingebaut hat wie shuffle
     // oder einfach abspielen mit naechster und so
     public AudioPlaylist(ALSound... sounds) {
         addSounds(sounds);
-        source_1.setFadeTimeComplete(5.0F);
-        source_2.setFadeTimeComplete(5.0F);
+        this.source_1.setFadeTimeComplete(5.0F);
+        this.source_2.setFadeTimeComplete(5.0F);
     }
-    
+
     public final boolean addSounds(ALSound... sounds) {
         if (sounds != null && sounds.length > 0) {
             this.sounds.addAll(Arrays.asList(sounds));
@@ -58,7 +58,7 @@ public class AudioPlaylist {
             return false;
         }
     }
-    
+
     public final boolean removeSounds(ALSound... sounds) { // TODO Panzer1119 Falls der sound gerade gespielt wird, muss er gestoppt
                                                            // werden
         if (sounds != null && sounds.length > 0) {
@@ -71,128 +71,128 @@ public class AudioPlaylist {
             return false;
         }
     }
-    
+
     public final ALSound[] getSounds() {
-        return sounds.toArray(new ALSound[sounds.size()]);
+        return this.sounds.toArray(new ALSound[this.sounds.size()]);
     }
-    
+
     private final AudioSource getPlayingAudioSource() {
-        return (playerIsSource1 ? source_1 : source_2);
+        return (this.playerIsSource1 ? this.source_1 : this.source_2);
     }
-    
+
     private final AudioSource getWaitingAudioSource() {
-        return (playerIsSource1 ? source_2 : source_1);
+        return (this.playerIsSource1 ? this.source_2 : this.source_1);
     }
-    
+
     private final AudioPlaylist play(ALSound sound) {
         if (sound == null) {
             stop();
         }
         LOGGER.info("Playing: " + sound);
-        playStarted = System.currentTimeMillis();
+        this.playStarted = System.currentTimeMillis();
         getWaitingAudioSource().stop();
         getWaitingAudioSource().setVolume(1.0F);
         getWaitingAudioSource().setEffectState(AudioEffectState.FADE_IN);
         getWaitingAudioSource().play(sound);
-        playerIsSource1 = !playerIsSource1;
+        this.playerIsSource1 = !this.playerIsSource1;
         OpenAL.ACTIVE_PLAYLISTS.add(this);
         return this;
     }
-    
+
     private final ALSound next() {
-        if (sounds.isEmpty() || pointer == -1) {
+        if (this.sounds.isEmpty() || this.pointer == -1) {
             return null;
         }
-        final ALSound sound = sounds.get(pointer);
-        pointer++;
-        if (loop) {
+        final ALSound sound = this.sounds.get(this.pointer);
+        this.pointer++;
+        if (this.loop) {
             checkPointer();
-        } else if (pointer >= sounds.size()) {
-            pointer = -1;
+        } else if (this.pointer >= this.sounds.size()) {
+            this.pointer = -1;
         }
         return sound;
     }
-    
+
     private final AudioPlaylist checkPointer() {
-        while (pointer < 0) {
-            pointer += sounds.size();
+        while (this.pointer < 0) {
+            this.pointer += this.sounds.size();
         }
-        pointer = pointer % sounds.size();
+        this.pointer = this.pointer % this.sounds.size();
         return this;
     }
-    
+
     public final AudioPlaylist start() {
-        pointer = 0;
-        isPlaying = true;
+        this.pointer = 0;
+        this.isPlaying = true;
         play(next());
         return this;
     }
-    
+
     public final AudioPlaylist pause() {
-        isPlaying = false;
+        this.isPlaying = false;
         getPlayingAudioSource().pause();
         return this;
     }
-    
+
     public final AudioPlaylist continuePlaying() {
-        isPlaying = true;
+        this.isPlaying = true;
         getPlayingAudioSource().continuePlaying();
         return this;
     }
-    
+
     public final AudioPlaylist stop() {
-        pointer = 0;
-        isPlaying = false;
-        source_1.stop();
-        source_2.stop();
+        this.pointer = 0;
+        this.isPlaying = false;
+        this.source_1.stop();
+        this.source_2.stop();
         OpenAL.ACTIVE_PLAYLISTS.remove(this);
         return this;
     }
-    
+
     public final AudioPlaylist shuffle() {
-        pointer = 0;
+        this.pointer = 0;
         final int shuffleTimes = Math.max((int) (Math.random() * 8.0 + 2.0), 2);
         for (int i = 0; i < shuffleTimes; i++) {
-            sounds.sort((sound_1, sound_2) -> (int) (Math.random() * 3 - 1.5));
+            this.sounds.sort((sound_1, sound_2) -> (int) (Math.random() * 3 - 1.5));
         }
         LOGGER.debug("Shuffled AudioPlaylist " + shuffleTimes + " times");
         return this;
     }
-    
+
     /**
      * Returns how many seconds before a track ends its fading out
      *
      * @return Fading start
      */
     public final float getFadingStart() {
-        return fadingStart;
+        return this.fadingStart;
     }
-    
+
     public final AudioPlaylist setFadingStart(float fadingStart) {
         this.fadingStart = fadingStart;
         return this;
     }
-    
+
     public final boolean isLoop() {
-        return loop;
+        return this.loop;
     }
-    
+
     public final AudioPlaylist setLoop(boolean loop) {
         this.loop = loop;
         return this;
     }
-    
+
     private final AudioPlaylist startFading() {
-        if (isFading) {
+        if (this.isFading) {
             return this;
         }
-        isFading = true;
+        this.isFading = true;
         getPlayingAudioSource().setEffectState(AudioEffectState.FADE_OUT);
         play(next());
-        isFading = false;
+        this.isFading = false;
         return this;
     }
-    
+
     final AudioPlaylist update() {
         //FIXME Panzer1119 length of streamed sounds
         //        if (!isPlaying) {

@@ -19,21 +19,21 @@ package de.omnikryptec.libapi.exposed.input;
 import de.omnikryptec.util.settings.KeySettings;
 
 public interface InputHandler {
-    
+
     boolean init();
-    
+
     default boolean preUpdate(final double currentTime, final KeySettings keySettings) {
         return true;
     }
-    
+
     boolean update(double currentTime, KeySettings keySettings);
-    
+
     default boolean postUpdate(final double currentTime, final KeySettings keySettings) {
         return true;
     }
-    
+
     boolean deinit();
-    
+
     boolean close();
-    
+
 }

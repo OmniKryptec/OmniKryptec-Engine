@@ -23,8 +23,6 @@ import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.AdvancedSprite.Reflection2DType;
 import de.omnikryptec.render.renderer.AdvancedRenderer2D;
-import de.omnikryptec.resource.TextureConfig;
-import de.omnikryptec.resource.TextureConfig.WrappingMode;
 import de.omnikryptec.resource.loadervpc.LoadingProgressCallback;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.data.Color;
@@ -36,7 +34,7 @@ import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class BigTest extends Omnikryptec {
-    
+
     public static void main(final String[] args) {
         //Logger.getDefaultAdvancedLeveledLogger().setMinimumLogLevel(LogLevel.FINEST);
         //Logger.getDefaultAdvancedLeveledLogger().createLogFormatBuilder().appendLogLevel().appendText(": ").appendObject().appendNewLine().appendThread().appendSource().appendNewLine().finishWithoutException();
@@ -44,7 +42,7 @@ public class BigTest extends Omnikryptec {
         //AdvancedFile.DEBUG_TO_STRING = true;
         new BigTest().start();
     }
-    
+
     @Override
     protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisettings,
@@ -54,12 +52,12 @@ public class BigTest extends Omnikryptec {
         windowSettings.set(WindowSetting.Name, "BigTest-Window");
         windowSettings.set(WindowSetting.LockAspectRatio, true);
         windowSettings.set(WindowSetting.VSync, false);
-        
+
         //windowSettings.set(WindowSetting.Fullscreen, true);
         //windowSettings.set(WindowSetting.Width, 10000);
         //windowSettings.set(WindowSetting.Height, 2000);
     }
-    
+
     @Override
     protected void onInitialized() {
         final Scene actual = getGame().createAndAddScene();
@@ -80,7 +78,7 @@ public class BigTest extends Omnikryptec {
         scene.addUpdatable(new IUpdatable() {
             private float f;
             private int fac = 1;
-            
+
             @Override
             public void update(final Time time) {
                 s.getTransform().localspaceWrite().translate(0.5f * s.getWidth(), 0.5f * s.getHeight());
@@ -112,7 +110,7 @@ public class BigTest extends Omnikryptec {
         renderer.add(back);
         renderer.add(s);
     }
-    
+
     @Override
     protected void onShutdown() {
         System.out.println(Profiler.currentInfo());

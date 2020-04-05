@@ -26,9 +26,9 @@ import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.objects.Sprite;
 
 public class RendererUtil {
-    
+
     private static final Batch2D directBatch = new SimpleBatch2D(18);
-    
+
     public static void renderDirect(final Texture... ts) {
         directBatch.begin();
         for (final Texture t : ts) {
@@ -38,7 +38,7 @@ public class RendererUtil {
         }
         directBatch.end();
     }
-
+    
     public static int render2d(final Batch2D batch, final Collection<? extends Sprite> sprites,
             final FrustumIntersection filter) {
         int c = 0;
@@ -52,5 +52,5 @@ public class RendererUtil {
         batch.end();
         return c;
     }
-    
+
 }

@@ -34,25 +34,25 @@ import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Logger.LogType;
 
 public class GLShader implements Shader, Deletable {
-    
+
     private static final Logger logger = Logger.getLogger(GLShader.class);
-    
+
     private final int programId;
     private final Map<ShaderType, Integer> attachments;
     private final Map<String, GLUniform> uniforms;
-    
+
     public GLShader() {
         this.programId = GL20.glCreateProgram();
         this.attachments = new EnumMap<>(ShaderType.class);
         this.uniforms = new HashMap<>();
         registerThisAsAutodeletable();
     }
-    
+
     @Override
     public void bindShader() {
         OpenGLUtil.useProgram(this.programId);
     }
-    
+
     @Override
     public void deleteRaw() {
         for (final Integer id : this.attachments.values()) {
@@ -61,7 +61,7 @@ public class GLShader implements Shader, Deletable {
         }
         GL20.glDeleteProgram(this.programId);
     }
-    
+
     @Override
     public void create(final ShaderSource... shaderAttachments) {
         for (final ShaderSource a : shaderAttachments) {
@@ -70,7 +70,7 @@ public class GLShader implements Shader, Deletable {
             GL20.glCompileShader(shader);
             if (GL20.glGetShaderi(shader, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
                 String glerr = GL20.glGetShaderInfoLog(shader);
-                String n = glerr.substring(glerr.indexOf("(")+1, glerr.indexOf(")"));
+                String n = glerr.substring(glerr.indexOf("(") + 1, glerr.indexOf(")"));
                 int line = Integer.parseInt(n);
                 String[] lines = a.source.split("\n");
                 logger.log(LogType.Error, "Compilation error", "Shader: " + a.context + " (" + a.shaderType + ")",
@@ -86,7 +86,7 @@ public class GLShader implements Shader, Deletable {
             extractUniforms(a.source);
         }
     }
-    
+
     @Override
     public <T extends Uniform> T getUniform(final String name) {
         final Uniform u = this.uniforms.get(name);
@@ -95,16 +95,16 @@ public class GLShader implements Shader, Deletable {
         }
         return (T) u;
     }
-    
+
     //TODO tmp
     public int progResInd(String s) {
-        return GL43.glGetProgramResourceIndex(programId, GL43.GL_SHADER_STORAGE_BLOCK, s);
+        return GL43.glGetProgramResourceIndex(this.programId, GL43.GL_SHADER_STORAGE_BLOCK, s);
     }
-    
+
     public void dispatchCompute(final int xCount, final int yCount, final int zCount) {
         GL43.glDispatchCompute(xCount, yCount, zCount);
     }
-    
+
     //TODx somewhere else? no, because this is probably shader dependant
     private void extractUniforms(final String src) {
         final String[] lines = src.split("[\n\r]+");
@@ -120,7 +120,7 @@ public class GLShader implements Shader, Deletable {
             }
         }
     }
-    
+
     //TODx better way of doing the uniforms? shader dependant so no
     private GLUniform createUniformObj(final String name, final String types) {
         switch (types) {
@@ -145,5 +145,5 @@ public class GLShader implements Shader, Deletable {
             throw new IllegalArgumentException("Uniform type not found: " + types + " " + name);
         }
     }
-    
+
 }

@@ -37,25 +37,25 @@ import de.omnikryptec.util.math.MathUtil;
 public class GLScreenBuffer extends SurfaceBuffer {
     private static final FBTarget[] EMPTY = new FBTarget[0];
     private static final int GL_ID = 0;
-    
+
     public static class ScreenBufferResizedEvent extends Event {
         public final SurfaceBuffer surfaceBuffer;
         public final int width;
         public final int height;
-        
+
         private ScreenBufferResizedEvent(SurfaceBuffer b, int w, int h) {
             this.surfaceBuffer = b;
             this.width = w;
             this.height = h;
         }
     }
-    
+
     private int nativeWidth;
     private int nativeHeight;
     //resolveToFrameBuffer needs access
     int[] viewport;
     private final double aspectRatio;
-    
+
     public GLScreenBuffer(final long window, final double aspectRatio, final FrameBufferStack stack) {
         super(stack);
         final int[] wA = new int[1];
@@ -66,7 +66,7 @@ public class GLScreenBuffer extends SurfaceBuffer {
         this.aspectRatio = aspectRatio;
         bindFrameBuffer();
     }
-    
+
     @EventSubscription
     public void onBufferSizeChangeInternal(final WindowEvent.ScreenBufferResizedNative ev) {
         this.nativeWidth = ev.width;
@@ -74,18 +74,18 @@ public class GLScreenBuffer extends SurfaceBuffer {
         setViewport();
         LibAPIManager.ENGINE_EVENTBUS.post(new ScreenBufferResizedEvent(this, getWidth(), getHeight()));
     }
-    
+
     private void setViewport() {
         this.viewport = MathUtil.calculateViewport(this.aspectRatio, this.nativeWidth, this.nativeHeight);
         GL11.glViewport(this.viewport[0], this.viewport[1], this.viewport[2], this.viewport[3]);
     }
-    
+
     @Override
     protected void bindRaw() {
         GL30.glBindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, GL_ID);
         setViewport();
     }
-    
+
     @Override
     public void clear(final float r, final float g, final float b, final float a, final SurfaceBufferType... types) {
         bindAsTmp();
@@ -93,66 +93,66 @@ public class GLScreenBuffer extends SurfaceBuffer {
         OpenGLUtil.clear(types);
         unbindAsTmp();
     }
-    
+
     @Override
     public int[] getViewportUnsafe() {
         return this.viewport;
     }
-    
+
     @Override
     public FBTarget[] targets() {
         //is this correct? somehow create an FBTarget from the display?
         return EMPTY;
     }
-    
+
     @Override
     public int getWidth() {
         return this.viewport[2];
     }
-    
+
     @Override
     public int getHeight() {
         return this.viewport[3];
     }
-    
+
     @Override
     public int multisamples() {
         return 0;
     }
-    
+
     @Override
     public boolean isRenderBuffer() {
         return false;
     }
-    
+
     @Override
     public int targetCount() {
         return 1;
     }
-    
+
     @Override
     public FrameBuffer resizedClone(final int newWidth, final int newHeight) {
         throw new UnsupportedOperationException("");
     }
-    
+
     @Override
     public Texture getTexture(final int targetIndex) {
         throw new UnsupportedOperationException("");
     }
-    
+
     @Override
     public void resolveToFrameBuffer(final FrameBuffer target, final int attachment) {
         throw new UnsupportedOperationException("");
     }
-    
+
     @Override
     public void assignTarget(final int index, final FBTarget target) {
         throw new UnsupportedOperationException("");
     }
-    
+
     @Override
     public void deleteRaw() {
         throw new UnsupportedOperationException("");
     }
-    
+
 }

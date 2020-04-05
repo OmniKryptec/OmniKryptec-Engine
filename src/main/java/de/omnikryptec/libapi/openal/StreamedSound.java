@@ -33,19 +33,19 @@ import de.omnikryptec.util.Util;
  * @author Panzer1119 & pcfreak9000
  */
 public class StreamedSound extends ALSound {
-    
+
     private static final Logger LOGGER = Logger.getLogger(StreamedSound.class);
-    
+
     public static final int STANDARD_BUFFER_COUNT = 3;
     public static final int STANDARD_BUFFER_LENGTH = 1000;
-    
+
     private final AudioInputStream audioInputStream;
     private final ByteBuffer pcm;
     private final int bufferCount;
     private final int bufferTime;
-    
+
     private AudioSource source;
-    
+
     /**
      * Creates a StreamedSound Object
      *
@@ -56,7 +56,7 @@ public class StreamedSound extends ALSound {
     public StreamedSound(AudioInputStream audioInputStream) {
         this(audioInputStream, STANDARD_BUFFER_COUNT, STANDARD_BUFFER_LENGTH);
     }
-    
+
     /**
      * Creates a StreamedSound Object
      *
@@ -74,36 +74,36 @@ public class StreamedSound extends ALSound {
         this.pcm = BufferUtils
                 .createByteBuffer((int) (audioInputStream.getFormat().getSampleRate() * 4 * (this.bufferTime / 1000)));
     }
-    
+
     private final void initBuffers(AudioSource source) {
-        for (int i = 0; i < bufferCount; i++) {
+        for (int i = 0; i < this.bufferCount; i++) {
             final int bufferID = AL10.alGenBuffers();
             final boolean refilled = refillBuffer();
             if (refilled) {
-                AL10.alBufferData(bufferID, getOpenALFormat(), pcm, getFrequency());
+                AL10.alBufferData(bufferID, getOpenALFormat(), this.pcm, getFrequency());
                 AL10.alSourceQueueBuffers(source.getSourceID(), bufferID);
             } else {
                 LOGGER.warn("Buffer could not be filled");
             }
         }
     }
-    
+
     private final void deleteBuffers(AudioSource source) {
         int bufferRemovedID = 0;
         while ((bufferRemovedID = AL10.alSourceUnqueueBuffers(source.getSourceID())) != 0) {
             AL10.alDeleteBuffers(bufferRemovedID);
         }
     }
-    
+
     /**
      * Returns the AudioInputStream
      *
      * @return AudioInputStream Audiostream
      */
     public final AudioInputStream getAudioInputStream() {
-        return audioInputStream;
+        return this.audioInputStream;
     }
-    
+
     @Override
     final void attach(AudioSource source) {
         if (Util.ensureNonNull(source) != this.source && this.source != null) {
@@ -113,7 +113,7 @@ public class StreamedSound extends ALSound {
         OpenAL.ACTIVE_STREAMED_SOUNDS.add(this);
         this.source = source;
     }
-    
+
     @Override
     final void detach() {
         if (this.source == null) {
@@ -123,45 +123,45 @@ public class StreamedSound extends ALSound {
         OpenAL.ACTIVE_STREAMED_SOUNDS.remove(this);
         this.source = null;
     }
-    
+
     final void update() {
-        while ((AL10.alGetSourcei(source.getSourceID(), AL10.AL_BUFFERS_PROCESSED)) != 0) {
-            final int bufferRemovedID = AL10.alSourceUnqueueBuffers(source.getSourceID());
+        while ((AL10.alGetSourcei(this.source.getSourceID(), AL10.AL_BUFFERS_PROCESSED)) != 0) {
+            final int bufferRemovedID = AL10.alSourceUnqueueBuffers(this.source.getSourceID());
             final boolean refilled = refillBuffer();
             if (refilled) {
-                AL10.alBufferData(bufferRemovedID, getOpenALFormat(), pcm, getFrequency());
-                AL10.alSourceQueueBuffers(source.getSourceID(), bufferRemovedID);
+                AL10.alBufferData(bufferRemovedID, getOpenALFormat(), this.pcm, getFrequency());
+                AL10.alSourceQueueBuffers(this.source.getSourceID(), bufferRemovedID);
             } else {
                 LOGGER.warn("Buffer could not be refilled");
             }
         }
         //wat macht das denn hier?!
-        if (!source.isPlaying()) {
-            source.stop();
+        if (!this.source.isPlaying()) {
+            this.source.stop();
         }
     }
-    
+
     private final boolean refillBuffer() {
         try {
-            pcm.clear();
-            final byte[] data = new byte[pcm.capacity()];
-            final int read = audioInputStream.read(data);
-            pcm.put(data);
-            pcm.flip();
+            this.pcm.clear();
+            final byte[] data = new byte[this.pcm.capacity()];
+            final int read = this.audioInputStream.read(data);
+            this.pcm.put(data);
+            this.pcm.flip();
             return read >= 0;
         } catch (Exception ex) {
             LOGGER.warn("Error while refilling buffer", ex);
             return false;
         }
     }
-    
+
     @Override
     public void deleteRaw() {
         try {
-            audioInputStream.close();
+            this.audioInputStream.close();
         } catch (IOException e) {
             LOGGER.warn("Could not delete StreamedSound", e);
         }
     }
-    
+
 }

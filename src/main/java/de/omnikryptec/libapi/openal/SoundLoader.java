@@ -3,7 +3,6 @@ package de.omnikryptec.libapi.openal;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.ByteBuffer;
 
 import javax.sound.sampled.AudioFormat;
@@ -18,17 +17,17 @@ import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 
 public class SoundLoader {
-    
+
     private static void checkOpenAL() {
         if (!LibAPIManager.instance().isOpenALinitialized()) {
             throw new IllegalStateException("OpenAL is not initialized");
         }
     }
-    
+
     public static final Sound loadSound(String name) {
         return loadSound(SoundLoader.class.getResourceAsStream(name));
     }
-    
+
     public static final Sound loadSound(AdvancedFile file) {
         try {
             return loadSound(file.createInputStream());
@@ -36,7 +35,7 @@ public class SoundLoader {
             throw new RuntimeException(ex);
         }
     }
-    
+
     public static final Sound loadSound(InputStream inputStream) {
         checkOpenAL();
         try {
@@ -61,11 +60,11 @@ public class SoundLoader {
             throw new RuntimeException(ex);
         }
     }
-    
+
     public static final StreamedSound streamSound(String name) {
         return streamSound(SoundLoader.class.getResourceAsStream(name));
     }
-    
+
     public static final StreamedSound streamSound(AdvancedFile file) {
         try {
             return streamSound(file.createInputStream());
@@ -73,7 +72,7 @@ public class SoundLoader {
             throw new RuntimeException(ex);
         }
     }
-    
+
     public static final StreamedSound streamSound(InputStream stream) {
         checkOpenAL();
         try {
@@ -87,7 +86,7 @@ public class SoundLoader {
             throw new RuntimeException(ex);
         }
     }
-    
+
     /**
      * Creates a new StreamSound of an InputStream
      *

@@ -23,11 +23,11 @@ import de.omnikryptec.libapi.exposed.render.shader.UniformVec3;
 public class GLUniformVec3 extends GLUniform implements UniformVec3 {
     private final float[] old = new float[3];
     private boolean used = false;
-    
+
     public GLUniformVec3(final String name) {
         super(name);
     }
-    
+
     @Override
     public void loadVec3(final float x, final float y, final float z) {
         if (existsInCompilation() && (!this.used || x != this.old[0] || y != this.old[1] || z != this.old[2])) {
@@ -38,5 +38,5 @@ public class GLUniformVec3 extends GLUniform implements UniformVec3 {
             this.used = true;
         }
     }
-    
+
 }

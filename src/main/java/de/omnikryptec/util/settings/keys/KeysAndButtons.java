@@ -17,23 +17,23 @@
 package de.omnikryptec.util.settings.keys;
 
 public class KeysAndButtons {
-    
+
     public static final byte OKE_KEY_NOTHING = Byte.MIN_VALUE;
-    
+
     //Straight up stolen from GLFW
-    
+
     /** The key or button was released. */
     public static final int OKE_RELEASE = 0;
-    
+
     /** The key or button was pressed. */
     public static final int OKE_PRESS = 1;
-    
+
     /** The key was held down until it repeated. */
     public static final int OKE_REPEAT = 2;
-    
+
     /** The unknown key. */
     public static final int OKE_KEY_UNKNOWN = -1;
-    
+
     /** Printable keys. */
     public static final int OKE_KEY_SPACE = 32, OKE_KEY_APOSTROPHE = 39, OKE_KEY_COMMA = 44, OKE_KEY_MINUS = 45,
             OKE_KEY_PERIOD = 46, OKE_KEY_SLASH = 47, OKE_KEY_0 = 48, OKE_KEY_1 = 49, OKE_KEY_2 = 50, OKE_KEY_3 = 51,
@@ -45,7 +45,7 @@ public class KeysAndButtons {
             OKE_KEY_W = 87, OKE_KEY_X = 88, OKE_KEY_Y = 89, OKE_KEY_Z = 90, OKE_KEY_LEFT_BRACKET = 91,
             OKE_KEY_BACKSLASH = 92, OKE_KEY_RIGHT_BRACKET = 93, OKE_KEY_GRAVE_ACCENT = 96, OKE_KEY_WORLD_1 = 161,
             OKE_KEY_WORLD_2 = 162;
-    
+
     /** Function keys. */
     public static final int OKE_KEY_ESCAPE = 256, OKE_KEY_ENTER = 257, OKE_KEY_TAB = 258, OKE_KEY_BACKSPACE = 259,
             OKE_KEY_INSERT = 260, OKE_KEY_DELETE = 261, OKE_KEY_RIGHT = 262, OKE_KEY_LEFT = 263, OKE_KEY_DOWN = 264,
@@ -63,16 +63,16 @@ public class KeysAndButtons {
             OKE_KEY_LEFT_CONTROL = 341, OKE_KEY_LEFT_ALT = 342, OKE_KEY_LEFT_SUPER = 343, OKE_KEY_RIGHT_SHIFT = 344,
             OKE_KEY_RIGHT_CONTROL = 345, OKE_KEY_RIGHT_ALT = 346, OKE_KEY_RIGHT_SUPER = 347, OKE_KEY_MENU = 348,
             OKE_KEY_LAST = OKE_KEY_MENU;
-    
+
     /** If this bit is set one or more Shift keys were held down. */
     public static final int OKE_MOD_SHIFT = 0x1;
-    
+
     /** If this bit is set one or more Control keys were held down. */
     public static final int OKE_MOD_CONTROL = 0x2;
-    
+
     /** If this bit is set one or more Alt keys were held down. */
     public static final int OKE_MOD_ALT = 0x4;
-    
+
     /** If this bit is set one or more Super keys were held down. */
     public static final int OKE_MOD_SUPER = 0x8;
     //TODO WHO? set the inputmode so this works: <- what do i mean?
@@ -81,13 +81,13 @@ public class KeysAndButtons {
      * {@link #OKE_LOCK_KEY_MODS LOCK_KEY_MODS} input mode is set.
      */
     public static final int OKE_MOD_CAPS_LOCK = 0x10;
-    
+
     /**
      * If this bit is set the Num Lock key is enabled and the
      * {@link #OKE_LOCK_KEY_MODS LOCK_KEY_MODS} input mode is set.
      */
     public static final int OKE_MOD_NUM_LOCK = 0x20;
-    
+
     /**
      * Mouse buttons. See <a target="_blank" href=
      * "http://www.glfw.org/docs/latest/input.html#input_mouse_button">mouse button
@@ -98,7 +98,7 @@ public class KeysAndButtons {
             OKE_MOUSE_BUTTON_8 = 7, OKE_MOUSE_BUTTON_LAST = OKE_MOUSE_BUTTON_8,
             OKE_MOUSE_BUTTON_LEFT = OKE_MOUSE_BUTTON_1, OKE_MOUSE_BUTTON_RIGHT = OKE_MOUSE_BUTTON_2,
             OKE_MOUSE_BUTTON_MIDDLE = OKE_MOUSE_BUTTON_3;
-    
+
     public static final int MOUSE_BUTTON_AMOUNT = 8;
-    
+
 }

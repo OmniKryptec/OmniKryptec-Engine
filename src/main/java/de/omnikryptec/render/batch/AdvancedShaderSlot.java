@@ -26,20 +26,20 @@ import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.math.transform.Transform3Df;
 
 public class AdvancedShaderSlot extends AbstractProjectedShaderSlot {
-    
+
     private final UniformMatrix viewProjectionUniform;
     private final UniformMatrix transformUniform;
-        
+    
     private IProjection projection;
     private Transform3Df transform;
-    
+
     public static final int REFLECTION_TEXTURE_UNIT = 1;
-    
+
     public AdvancedShaderSlot() {
         this.shader.create("engineRenderBatch2DShaderRef");
         this.transformUniform = this.shader.getUniform("u_transform");
         this.viewProjectionUniform = this.shader.getUniform("u_projview");
-        
+
         final UniformSampler sampler = this.shader.getUniform("sampler");
         final UniformSampler refl = this.shader.getUniform("reflected");
         this.shader.bindShader();
@@ -48,7 +48,7 @@ public class AdvancedShaderSlot extends AbstractProjectedShaderSlot {
         sampler.setSampler(0);
         refl.setSampler(REFLECTION_TEXTURE_UNIT);
     }
-    
+
     @Override
     protected void onBound() {
         if (this.projection != null) {
@@ -58,22 +58,22 @@ public class AdvancedShaderSlot extends AbstractProjectedShaderSlot {
             this.transformUniform.loadMatrix(this.transform.worldspace());
         }
     }
-    
+
     @Override
     public void setProjection(final IProjection projection) {
         this.projection = projection;
     }
-    
+
     public void setViewProjectionMatrix(final Matrix4fc mat) {
         this.shader.bindShader();
         this.viewProjectionUniform.loadMatrix(mat);
     }
-    
+
     public void setTransformMatrix(final Matrix4fc mat) {
         this.shader.bindShader();
         this.transformUniform.loadMatrix(mat);
     }
-    
+
     @Override
     public void setTransform(final Transform3Df transform) {
         this.transform = transform;
@@ -81,5 +81,5 @@ public class AdvancedShaderSlot extends AbstractProjectedShaderSlot {
             setTransformMatrix(Mathf.IDENTITY4f);
         }
     }
-    
+
 }

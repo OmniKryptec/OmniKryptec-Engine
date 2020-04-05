@@ -22,20 +22,20 @@ import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.render.batch.vertexmanager.VertexManager;
 
 public class ModuleBatchingManager {
-    
+
     public static enum QuadSide {
         TopLeft, TopRight, BotLeft, BotRight;
     }
-    
+
     private static final QuadSide[] ARRANGED = { QuadSide.TopLeft, QuadSide.TopRight, QuadSide.BotLeft,
             QuadSide.TopRight, QuadSide.BotRight, QuadSide.BotLeft };
     private static final QuadSide[] SIDES = QuadSide.values();
-    
+
     private final Module[] modules;
     private final float[] global;
     private final float[][] local = new float[SIDES.length][];
     private final int totalFloatsPerVertex;
-    
+
     public ModuleBatchingManager(final Module... modules) {
         this.modules = modules;
         int sideCount = 0;
@@ -53,7 +53,7 @@ public class ModuleBatchingManager {
             this.local[i] = new float[sideCount];
         }
     }
-    
+
     public VertexBufferLayout createLayout() {
         final VertexBufferLayout layout = new VertexBufferLayout();
         for (final Module m : this.modules) {
@@ -68,15 +68,15 @@ public class ModuleBatchingManager {
         }
         return layout;
     }
-    
+
     public Module[] getModules() {
         return this.modules.clone();
     }
-    
+
     public int floatsPerVertex() {
         return this.totalFloatsPerVertex;
     }
-    
+
     public void issueVertices(final Texture texture, final VertexManager manager) {
         manager.prepareNext(texture, this.totalFloatsPerVertex * ARRANGED.length);
         int globalindex = 0;
@@ -97,7 +97,7 @@ public class ModuleBatchingManager {
             manager.addData(this.local[q.ordinal()]);
         }
     }
-    
+
     public void issuePreComputed(final Texture texture, final VertexManager manager, final float[] floats,
             final int start, final int length) {
         if (length % this.totalFloatsPerVertex != 0) {
@@ -106,5 +106,5 @@ public class ModuleBatchingManager {
         manager.prepareNext(texture, length);
         manager.addData(floats, start, length);
     }
-    
+
 }

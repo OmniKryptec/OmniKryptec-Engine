@@ -11,47 +11,47 @@ import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Util;
 
 public class FontHelper {
-
+    
     private static final String DEFAULT_FNT_END = ".fnt";
     private static final String DEFAULT_TEX_END = ".png";
-    
+
     private static final Logger LOGGER = Logger.getLogger(FontHelper.class);
-    
+
     private final Map<String, Font> fonts;
     private final Map<String, Font> sdfFonts;
     private final ResourceProvider resProvider;
     private final TextureHelper tHelper;
-    
+
     public FontHelper(ResourceProvider provider, TextureHelper tHelper) {
         this.resProvider = provider;
         this.tHelper = tHelper;
         this.fonts = new HashMap<>();
         this.sdfFonts = new HashMap<>();
     }
-    
+
     //Unsafe but maybe useful for plugins who know the font is loaded but not if it's sdf.... hmmm
     public Font getFontAuto(String name) {
-        Font f = fonts.get(name);
+        Font f = this.fonts.get(name);
         if (f == null) {
-            f = sdfFonts.get(name);
+            f = this.sdfFonts.get(name);
         }
         return f;
     }
-    
+
     public Font getFont(String name) {
         return getFont(name, null, null, false);
     }
-    
+
     public Font getFontSDF(String name) {
         return getFont(name, null, null, true);
     }
-        
+    
     public Font getFont(String name, String fname, String tname, boolean sdf) {
         Map<String, Font> fonts = sdf ? this.sdfFonts : this.fonts;
         Font f = fonts.get(name);
         if (f == null) {
             //TODO pcfreak9000 HMM... the order in which the different "branches" are tried might be oof?
-            FontFile ff = resProvider.get(FontFile.class, Util.defaultIfNull(name + DEFAULT_FNT_END, fname));//fname == null ? name + DEFAULT_FNT_END : fname
+            FontFile ff = this.resProvider.get(FontFile.class, Util.defaultIfNull(name + DEFAULT_FNT_END, fname));//fname == null ? name + DEFAULT_FNT_END : fname
             if (ff == null) {
                 ff = FontFile.getFontFile(name);
                 if (ff == null) {
@@ -62,26 +62,26 @@ public class FontHelper {
             }
             Texture t = null;
             if (tname != null) {
-                t = tHelper.get(tname);
+                t = this.tHelper.get(tname);
             }
-            if (tHelper.isMissingTexture(t) || t == null) {
-                t = tHelper.get(ff.getTexFileName());
+            if (this.tHelper.isMissingTexture(t) || t == null) {
+                t = this.tHelper.get(ff.getTexFileName());
             }
-            if (tHelper.isMissingTexture(t) || t == null) {
-                t = tHelper.get(name + DEFAULT_TEX_END);
+            if (this.tHelper.isMissingTexture(t) || t == null) {
+                t = this.tHelper.get(name + DEFAULT_TEX_END);
             }
             f = new Font(ff, t, sdf);
             fonts.put(name, f);
         }
         return f;
     }
-    
+
     public void clearFonts() {
-        fonts.clear();
+        this.fonts.clear();
     }
-    
+
     public void clearSDFFonts() {
-        sdfFonts.clear();
+        this.sdfFonts.clear();
     }
-    
+
 }

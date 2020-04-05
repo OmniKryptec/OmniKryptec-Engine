@@ -21,47 +21,45 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 
 public interface IndexBuffer {
-    
+
     /**
      * Binds this {@link IndexBuffer}.
      *
      * @see VertexArray#bindArray()
      */
     void bindBuffer();
-    
+
     /**
      * Unbinds this {@link IndexBuffer}
      */
     void unbindBuffer();
     
-    
     void updateData(IntBuffer data);
-    
     
     default void updateData(final int[] data) {
         final IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
         buffer.put(data);
         updateData(buffer);
     }
+    
     /**
      * Initializes this {@link IndexBuffer}.
      *
      * @param usage use case
      * @param type  the type of what is going to be stored in this
-     *              {@link IndexBuffer}. Using a wrong type can in general result
-     *              in unexpected behaviour.
+     *              {@link IndexBuffer}. Using a wrong type can in general result in
+     *              unexpected behaviour.
      * @param size  the amount of max entries
      */
     void setDescription(BufferUsage usage, int size);
-    
+
     /**
      * the size of this buffer
      *
      * @return size
      */
     int size();
-    
+
 }

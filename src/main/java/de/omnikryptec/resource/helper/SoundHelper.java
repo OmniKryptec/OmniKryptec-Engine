@@ -11,21 +11,21 @@ import de.omnikryptec.resource.loadervpc.SoundFileWrapper;
 import de.omnikryptec.util.Logger;
 
 public class SoundHelper {
-    
+
     private static final Logger LOGGER = Logger.getLogger(SoundHelper.class);
-    
+
     private final Map<String, Sound> sounds;
     private final Map<String, StreamedSound> streamedSounds;
     private final ResourceProvider resProvider;
-    
+
     public SoundHelper(ResourceProvider prov) {
         this.resProvider = prov;
         this.sounds = new HashMap<>();
         this.streamedSounds = new HashMap<>();
     }
-    
+
     public Sound getCached(String name) {
-        Sound s = sounds.get(name);
+        Sound s = this.sounds.get(name);
         if (s == null) {
             SoundFileWrapper soundFileWrapper = this.resProvider.get(SoundFileWrapper.class, name);
             if (soundFileWrapper == null) {
@@ -37,16 +37,16 @@ public class SoundHelper {
         }
         return s;
     }
-    
+
     public StreamedSound getStreamed(String name) {
         return getStreamed(name, 0);
     }
-    
-    //A StreamedSound can not be used in more than one AudioSource at the same time. 
+
+    //A StreamedSound can not be used in more than one AudioSource at the same time.
     //Different numbers create new StreamedSounds but from the same Audiofile so they can be used in parallel.
     public StreamedSound getStreamed(String name, int number) {
         String key = name + number;
-        StreamedSound s = streamedSounds.get(key);
+        StreamedSound s = this.streamedSounds.get(key);
         if (s == null) {
             SoundFileWrapper soundFileWrapper = this.resProvider.get(SoundFileWrapper.class, name);
             if (soundFileWrapper == null) {
@@ -58,24 +58,24 @@ public class SoundHelper {
         }
         return s;
     }
-    
+
     public void clearStreamedSounds() {
-        streamedSounds.clear();
+        this.streamedSounds.clear();
     }
-    
+
     public void clearCachedSounds() {
-        sounds.clear();
+        this.sounds.clear();
     }
-    
+
     public void clearAndDeleteStreamedSounds() {
-        for (StreamedSound s : streamedSounds.values()) {
+        for (StreamedSound s : this.streamedSounds.values()) {
             s.deleteAndUnregister();
         }
         clearStreamedSounds();
     }
-    
+
     public void clearAndDeleteCachedSounds() {
-        for (Sound s : sounds.values()) {
+        for (Sound s : this.sounds.values()) {
             s.deleteAndUnregister();
         }
         clearCachedSounds();

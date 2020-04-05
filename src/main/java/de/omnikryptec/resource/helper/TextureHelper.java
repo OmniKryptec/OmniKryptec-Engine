@@ -31,7 +31,7 @@ import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Util;
 
 public class TextureHelper {
-    
+
     public static final TextureData MISSING_TEXTURE_DATA;
     private static final TextureConfig MISSING_TEXTURE_CONFIG;
     static {
@@ -46,18 +46,18 @@ public class TextureHelper {
         MISSING_TEXTURE_DATA = data;
         MISSING_TEXTURE_CONFIG = new TextureConfig();
     }
-    
+
     private static final Logger LOGGER = Logger.getLogger(TextureHelper.class);
-    
+
     private final Map<String, Texture> textures;
     private final Map<String, TextureConfig> configs;
-    
+
     private TextureConfig defaultConfig;
     private final Texture missingTexture;
-    
+
     private final ResourceProvider resProvider;
     private final RenderAPI api;
-    
+
     public TextureHelper(final ResourceProvider prov) {
         this.resProvider = prov;
         this.api = LibAPIManager.instance().getGLFW().getRenderAPI();
@@ -66,11 +66,11 @@ public class TextureHelper {
         this.configs = new HashMap<>();
         this.missingTexture = this.api.createTexture2D(MISSING_TEXTURE_DATA, MISSING_TEXTURE_CONFIG);
     }
-    
+
     public boolean isMissingTexture(Texture t) {
-        return t == missingTexture;
+        return t == this.missingTexture;
     }
-    
+
     public Texture get(final String name, final TextureConfig config) {
         Texture t = this.textures.get(name);
         if (t == null) {
@@ -85,7 +85,7 @@ public class TextureHelper {
         }
         return t;
     }
-    
+
     public Texture get(final String name, final String configName) {
         final Texture t = this.textures.get(name);
         if (t != null) {
@@ -97,35 +97,35 @@ public class TextureHelper {
         }
         return get(name, config);
     }
-    
+
     public Texture get(final String name) {
         return get(name, this.defaultConfig);
     }
-    
+
     public void setTextureConfig(final String name, final TextureConfig config) {
         this.configs.put(name, config);
     }
-    
+
     public void setTexture(final String name, final Texture tex) {
         this.textures.put(name, tex);
     }
-    
+
     public void setDefaultTextureConfig(final TextureConfig config) {
         this.defaultConfig = config;
     }
-    
+
     public void clearConfigs() {
         this.configs.clear();
     }
-    
+
     public void clearTextures() {
         this.textures.clear();
     }
-    
+
     public Texture createTexture(TextureData data, TextureConfig config) {
         return this.api.createTexture2D(data, config);
     }
-    
+
     public void clearAndDeleteTextures() {
         for (final Texture t : this.textures.values()) {
             if (t instanceof Deletable) {

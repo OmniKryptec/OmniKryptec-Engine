@@ -30,52 +30,52 @@ import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.render.batch.AbstractShaderSlot;
 import de.omnikryptec.render.batch.module.ModuleBatchingManager;
+import de.omnikryptec.resource.MeshData.Primitive;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
-import de.omnikryptec.resource.MeshData.Primitive;
 
 public class RenderedVertexManager implements VertexManager {
-    
+
     private static final TextureConfig MYCONFIG = new TextureConfig();
-    
+
     private final int vertexCount;
-    
+
     private FloatBuffer buffer;
     private int floatsPerVertex;
     private Texture currentTexture;
     private VertexArray va;
     private VertexBuffer vb;
     private final AbstractShaderSlot shader;
-    
+
     private final Texture NULL_TEXTURE;
-    
+
     public RenderedVertexManager(final int vertexCount, final AbstractShaderSlot shader) {
         this.vertexCount = vertexCount;
         this.shader = shader;
         this.NULL_TEXTURE = LibAPIManager.instance().getGLFW().getRenderAPI()
                 .createTexture2D(TextureData.WHITE_TEXTURE_DATA, MYCONFIG);
     }
-    
+
     @Override
     public void addData(final float[] floats, final int offset, final int length) {
         this.buffer.put(floats, offset, length);
     }
-    
+
     @Override
     public void prepareNext(final Texture texture, final int requiredFloats) {
         if (requiredFloats > this.buffer.capacity()) {
             throw new IndexOutOfBoundsException(
                     requiredFloats + " floats required, but buffer size is only " + this.buffer.capacity());
         }
-        final Texture baseTexture = texture == null ? NULL_TEXTURE : texture.getBaseTexture();
+        final Texture baseTexture = texture == null ? this.NULL_TEXTURE : texture.getBaseTexture();
         if (requiredFloats > this.buffer.remaining() || !Objects.equals(baseTexture, this.currentTexture)) {
             //flush BEFORE setting new texture
             forceFlush();
             this.currentTexture = baseTexture;
         }
-        
+
     }
-    
+
     @Override
     public void forceFlush() {
         final int count = this.buffer.position();
@@ -90,7 +90,7 @@ public class RenderedVertexManager implements VertexManager {
         LibAPIManager.instance().getGLFW().getRenderAPI().render(this.va, Primitive.Triangle,
                 count / this.floatsPerVertex);
     }
-    
+
     @Override
     public void init(final ModuleBatchingManager mgr) {
         final VertexBufferLayout layout = mgr.createLayout();
@@ -101,7 +101,7 @@ public class RenderedVertexManager implements VertexManager {
         this.va = LibAPIManager.instance().getGLFW().getRenderAPI().createVertexArray();
         this.va.addVertexBuffer(this.vb, layout);
     }
-    
+
     @Override
     public void begin() {
         this.shader.bindShaderRenderReady();

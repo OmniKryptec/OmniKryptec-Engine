@@ -27,7 +27,7 @@ public class FontCharacter {
     private final float sizeX;
     private final float sizeY;
     private final float xAdvance;
-    
+
     /**
      * @param id            - the ASCII value of the character.
      * @param xTextureCoord - the x texture coordinate for the top left corner of
@@ -58,50 +58,50 @@ public class FontCharacter {
         this.yMaxTextureCoord = yTexSize + yTextureCoord;
         this.xAdvance = xAdvance;
     }
-    
+
     @Override
     public int hashCode() {
         return this.id;
     }
-    
+
     protected int getAscii() {
         return this.id;
     }
-    
+
     public float getTextureCoordX() {
         return this.xTextureCoord;
     }
-    
+
     public float getTextureCoordY() {
         return this.yTextureCoord;
     }
-    
+
     public float getTextureCoordMaxX() {
         return this.xMaxTextureCoord;
     }
-    
+
     public float getTextureCoordMaxY() {
         return this.yMaxTextureCoord;
     }
-    
+
     public float getOffsetX() {
         return this.xOffset;
     }
-    
+
     public float getOffsetY() {
         return this.yOffset;
     }
-    
+
     public float getSizeX() {
         return this.sizeX;
     }
-    
+
     public float getSizeY() {
         return this.sizeY;
     }
-    
+
     public float getCursorAdvanceX() {
         return this.xAdvance;
     }
-    
+
 }

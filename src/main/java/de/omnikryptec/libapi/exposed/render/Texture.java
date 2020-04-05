@@ -17,32 +17,32 @@
 package de.omnikryptec.libapi.exposed.render;
 
 public interface Texture {
-    
+
     /**
      * Binds this {@link Texture} to a certain textureunit
      *
      * @param unit the textureunit in the range [0;31]
      */
     void bindTexture(int unit);
-    
+
     /**
      * the width, in texels, of this {@link Texture}
      *
      * @return width
      */
     float getWidth();
-    
+
     /**
      * The height, in texels, of this {@link Texture}
      *
      * @return
      */
     float getHeight();
-    
+
     default boolean requiresInvertedVifDrawn2D() {
         return false;
     }
-    
+
     default Texture getBaseTexture() {
         return this;
     }

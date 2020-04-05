@@ -24,26 +24,26 @@ import org.lwjgl.PointerBuffer;
 import org.lwjgl.opencl.CL10;
 
 public class CLKernel {
-    
+
     private static List<CLKernel> kernels = new ArrayList<>();
-    
+
     private final long id;
-    
+
     public CLKernel(final CLProgram prog, final String method) {
         this.id = CL10.clCreateKernel(prog.getID(), method, OpenCL.tmpBuffer);
         OpenCL.checked(OpenCL.tmpBuffer.get(0));
     }
-    
+
     public static void cleanup() {
         for (final CLKernel k : kernels) {
             CL10.clReleaseKernel(k.getID());
         }
     }
-    
+
     public long getID() {
         return this.id;
     }
-    
+
     public void enqueue(final CLCommandQueue queue, final int dim, final int worksize_gl, final int worksize_loc) {
         final PointerBuffer global = BufferUtils.createPointerBuffer(1);
         global.put(0, worksize_gl);
@@ -51,23 +51,23 @@ public class CLKernel {
                 /* TODO pcfreak9000 worksize local */null, null, null);
         OpenCL.checked(i);
     }
-    
+
     public CLKernel setArg(final int i, final CLMemory mem) {
         final int k = CL10.clSetKernelArg1p(getID(), i, mem.getID());
         OpenCL.checked(k);
         return this;
     }
-    
+
     public CLKernel setArg(final int i, final int someInt) {
         final int k = CL10.clSetKernelArg1i(getID(), i, someInt);
         OpenCL.checked(k);
         return this;
     }
-    
+
     public CLKernel setArg(final int i, final float someFloat) {
         final int k = CL10.clSetKernelArg1f(getID(), i, someFloat);
         OpenCL.checked(k);
         return this;
     }
-    
+
 }

@@ -24,13 +24,13 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.opengl.framebuffer.GLScreenBuffer.ScreenBufferResizedEvent;
 
 public class AdaptiveCamera extends Camera {
-    
+
     public static interface ProjectionCreationDelegate {
         Matrix4f createMatrix(int width, int height);
     }
-    
+
     private final ProjectionCreationDelegate delegate;
-    
+
     public AdaptiveCamera(final ProjectionCreationDelegate delegate) {
         super(null);
         this.delegate = delegate;
@@ -38,10 +38,10 @@ public class AdaptiveCamera extends Camera {
         setProjection(delegate.createMatrix(rapi.getSurface().getWidth(), rapi.getSurface().getHeight()));
         LibAPIManager.ENGINE_EVENTBUS.register(this);
     }
-    
+
     @EventSubscription
     public void onChange(final ScreenBufferResizedEvent ev) {
         setProjection(this.delegate.createMatrix(ev.width, ev.height));
     }
-    
+
 }

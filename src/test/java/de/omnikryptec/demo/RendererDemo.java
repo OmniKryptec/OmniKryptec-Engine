@@ -27,31 +27,31 @@ import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 
 public class RendererDemo extends Omnikryptec {
-    
+
     public static void main(final String[] args) {
         new RendererDemo().start();
     }
-    
+
     @Override
     protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisetting,
             final KeySettings keys) {
         windowSettings.set(WindowSetting.Name, "RendererDemo");
     }
-    
+
     @Override
     protected void onInitialized() {
         //Create the rendering environment
         final Scene scene = getGame().createAndAddScene();
         Renderer2D renderer = scene.getViewManager().createAndAddRenderer2D();
-        
+
         //Load the texture and use the TextureHelper to make stuff easier
         getResourceManager().load(false, true, "intern:/de/omnikryptec/resources/jd.png");
-        
+
         //Create a sprite and set some of its properties
         final SimpleSprite sprite = new SimpleSprite();
         sprite.setTexture(getTextures().get("jd.png"));
-        
+
         renderer.add(sprite);
     }
 }

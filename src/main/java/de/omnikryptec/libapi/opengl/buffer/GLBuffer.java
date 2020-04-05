@@ -22,35 +22,35 @@ import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 
 public abstract class GLBuffer implements Deletable {
-    
+
     private final int pointer;
     private final int type;
-    
+
     public GLBuffer(final int type) {
         this.type = type;
         this.pointer = GL15.glGenBuffers();
         registerThisAsAutodeletable();
     }
-    
+
     @Override
     public void deleteRaw() {
         GL15.glDeleteBuffers(this.pointer);
     }
-    
+
     public int bufferId() {
         return this.pointer;
     }
-    
+
     public int bufferType() {
         return this.type;
     }
-    
+
     public void bindBuffer() {
         OpenGLUtil.bindBuffer(this.type, this.pointer);
     }
-    
+
     public void unbindBuffer() {
         OpenGLUtil.bindBuffer(this.type, this.pointer);
     }
-    
+
 }

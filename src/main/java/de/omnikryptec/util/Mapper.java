@@ -20,10 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Mapper<T> {
-    
+
     private int next = 0;
     private final Map<Class<? extends T>, Mapping> mappings = new HashMap<>();
-    
+
     public Mapping of(final Class<? extends T> clazz) {
         Mapping mapper = this.mappings.get(clazz);
         if (mapper == null) {
@@ -32,21 +32,21 @@ public class Mapper<T> {
         }
         return mapper;
     }
-    
+
     public class Mapping {
         public final int id;
         private final Mapper<T> mapper = Mapper.this;
-        
+
         private Mapping() {
             this.id = Mapper.this.next;
             Mapper.this.next++;
         }
-        
+
         @Override
         public int hashCode() {
             return this.id;
         }
-        
+
         @Override
         public boolean equals(final Object obj) {
             if (obj == this) {

@@ -21,14 +21,14 @@ import org.lwjgl.opengl.GL20;
 import de.omnikryptec.libapi.exposed.render.shader.UniformInt;
 
 public class GLUniformInt extends GLUniform implements UniformInt {
-    
+
     private int currentValue;
     private boolean used = false;
-    
+
     public GLUniformInt(final String name) {
         super(name);
     }
-    
+
     @Override
     public void loadInt(final int value) {
         if (existsInCompilation() && (!this.used || this.currentValue != value)) {
@@ -37,5 +37,5 @@ public class GLUniformInt extends GLUniform implements UniformInt {
             this.currentValue = value;
         }
     }
-    
+
 }
