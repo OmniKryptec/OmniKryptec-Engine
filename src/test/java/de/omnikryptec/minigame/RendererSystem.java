@@ -96,7 +96,7 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
         //        this.renderer.getIRenderedObjectManager().add(Light2D.TYPE, l1);
         //        this.renderer.getIRenderedObjectManager().add(Light2D.TYPE, l2);
         //        this.renderer.getIRenderedObjectManager().add(Light2D.TYPE, l3);
-        this.viewMgr.getMainView().getEnvironment().set(EnvironmentKeys2D.AmbientLight, new Color());//new Color(0.3f, 0.3f, 0.3f));
+        //this.viewMgr.getMainView().getEnvironment().set(EnvironmentKeys2D.AmbientLight, new Color());//new Color(0.3f, 0.3f, 0.3f));
     }
 
     @Override

@@ -206,8 +206,9 @@ public class Renderer2D implements Renderer {
         }
     };
 
+    @Deprecated
     public static enum EnvironmentKeys2D implements Defaultable, EnvironmentKey {
-        AmbientLight(new Color(1f, 1f, 1f));
+        ExtendedLightRange(false);
 
         private final Object def;
 
