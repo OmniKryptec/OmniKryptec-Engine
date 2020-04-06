@@ -44,7 +44,7 @@ public class GuiButton extends GuiComponentPositionable {
     
     @EventSubscription
     public void onMouseMoveEvent(InputEvent.MousePositionEvent ev) {
-        this.hovering = posInBounds(ev.xRel, ev.yRel);
+        this.hovering = ev.inViewport && posInBounds(ev.xRel, ev.yRel);
         if (!this.hovering && clicked) {
             clicked = false;
         }

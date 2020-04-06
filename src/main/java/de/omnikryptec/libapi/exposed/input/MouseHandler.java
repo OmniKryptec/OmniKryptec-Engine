@@ -60,10 +60,12 @@ public class MouseHandler implements InputHandler {
     
     @EventSubscription
     public void onPosChangeEvent(final InputEvent.MousePositionEvent ev) {
-        this.position.x = ev.xPos;
-        this.position.y = ev.yPos;
-        this.positionRelative.set(ev.xRel, ev.yRel);
-        insideViewport.set(ev.inViewport && insideWindow.get());
+        if (ev.inViewport) {
+            this.position.x = ev.xPos;
+            this.position.y = ev.yPos;
+            this.positionRelative.set(ev.xRel, ev.yRel);
+        }
+        insideViewport.set(ev.inViewport);
     }
     
     @EventSubscription
@@ -75,9 +77,6 @@ public class MouseHandler implements InputHandler {
     @EventSubscription
     public void onCursorEnterEvent(final InputEvent.CursorInWindowEvent ev) {
         this.insideWindow.set(ev.entered);
-        if (!ev.entered) {
-            this.insideViewport.set(false);
-        }
     }
     
     @Override
