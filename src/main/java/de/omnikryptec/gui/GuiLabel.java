@@ -2,6 +2,7 @@ package de.omnikryptec.gui;
 
 import de.omnikryptec.render.batch.BorderedBatch2D;
 import de.omnikryptec.resource.Font;
+import de.omnikryptec.resource.FontCharacter;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Color;
 
@@ -12,6 +13,7 @@ public class GuiLabel extends GuiComponentPositionable {
     private String text;
     private float thickness;
     private float size;
+    private boolean centered;
     
     public GuiLabel() {
         this.color = new Color();
@@ -23,7 +25,13 @@ public class GuiLabel extends GuiComponentPositionable {
     @Override
     protected void renderComponent(BorderedBatch2D batch, float aspect) {
         batch.color().set(color);
-        batch.drawStringSDFautoc(text, font, size, aspect, thickness, getX(), getY(), 0);
+        float x = getX();
+        float y = getY();
+        if (centered) {
+            x += getW() / 2 - font.getLength(text, size, aspect) / 2;
+            y += getH() / 2 - font.getHeightAbs(text, size) / 2;
+        }
+        batch.drawStringSDFautoc(text, font, size, aspect, thickness, x, y, 0);
     }
     
     public Color color() {
@@ -60,6 +68,14 @@ public class GuiLabel extends GuiComponentPositionable {
     
     public void setSize(float size) {
         this.size = size;
+    }
+    
+    public boolean isCentered() {
+        return centered;
+    }
+    
+    public void setCentered(boolean centered) {
+        this.centered = centered;
     }
     
 }

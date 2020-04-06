@@ -21,26 +21,27 @@ import java.util.Map;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.TextureRegion;
+import de.omnikryptec.util.math.Mathf;
 
 public class Font {
-
+    
     private final FontFile fontFile;
     private final Texture fontAtlas;
     private final boolean sdf;
-
+    
     private final Map<FontCharacter, TextureRegion> cache;
-
+    
     public Font(FontFile fontFile, Texture fontAtlas, boolean sdf) {
         this.cache = new HashMap<>();
         this.fontFile = fontFile;
         this.fontAtlas = fontAtlas;
         this.sdf = sdf;
     }
-
+    
     public float getLength(String text, float size) {
         return getLength(text, size, 1);
     }
-
+    
     public float getLength(String text, float size, float aspectCorrection) {
         char[] chars = text.toCharArray();
         float xOffset = 0;
@@ -55,15 +56,31 @@ public class Font {
         }
         return xOffset;
     }
-
+    
+    public float getHeightBase(String text, float size) {
+        return (getFontFile().getBase() - getFontFile().getLineHeight()) * size;
+    }
+    
+    //TODO pcfreak9000 maybe create a "String" like class where some of this information is precomputed? 
+    public float getHeightAbs(String text, float size) {
+        float f = -100;
+        for (char c : text.toCharArray()) {
+            FontCharacter k = getFontFile().getCharacter(c);
+            if (k != null) {//If it's null it is probably a space then...
+                f = Mathf.max(f, k.getOffsetY());
+            }
+        }
+        return (getFontFile().getBase() - getFontFile().getLineHeight() - f) * size;
+    }
+    
     public boolean isSDFFont() {
         return this.sdf;
     }
-
+    
     public FontFile getFontFile() {
         return this.fontFile;
     }
-
+    
     public TextureRegion getCharacterTexture(FontCharacter c) {
         TextureRegion r = this.cache.get(c);
         if (r == null) {
@@ -73,9 +90,9 @@ public class Font {
         }
         return r;
     }
-
+    
     public Texture getFontTexture() {
         return this.fontAtlas;
     }
-
+    
 }
