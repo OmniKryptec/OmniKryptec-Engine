@@ -61,12 +61,18 @@ public class InputEvent extends Event {
         public final double yPos;
         public final float xRel;
         public final float yRel;
+        /**
+         * If the mouse moved to a position inside the viewport. if the mouse leaves the
+         * window this might not be updated correctly.
+         */
+        public final boolean inViewport;
         
-        public MousePositionEvent(final double xPos, final double yPos, Vector2fc rel) {
+        public MousePositionEvent(final double xPos, final double yPos, Vector2fc rel, boolean inVp) {
             this.xPos = xPos;
             this.yPos = yPos;
             this.xRel = rel.x();
             this.yRel = rel.y();
+            this.inViewport = inVp;
         }
     }
     

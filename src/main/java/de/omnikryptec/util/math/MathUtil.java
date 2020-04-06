@@ -204,10 +204,13 @@ public class MathUtil {
         return target;
     }
     
-    public static boolean isMouseInViewport(final Vector2dc displayMousePosition, final int[] viewport) {
-        final boolean out = (displayMousePosition.x() < viewport[0]
-                || displayMousePosition.x() > viewport[2] + viewport[0])
-                || (displayMousePosition.y() < viewport[1] || displayMousePosition.y() > viewport[3] + viewport[1]);
+    public static boolean isMouseInViewport(Vector2dc mouse, final int[] viewport) {
+        return isMouseInViewport(mouse.x(), mouse.y(), viewport);
+    }
+    
+    public static boolean isMouseInViewport(double x, double y, final int[] viewport) {
+        final boolean out = (x < viewport[0] || x > viewport[2] + viewport[0])
+                || (y < viewport[1] || y > viewport[3] + viewport[1]);
         return !out;
     }
     

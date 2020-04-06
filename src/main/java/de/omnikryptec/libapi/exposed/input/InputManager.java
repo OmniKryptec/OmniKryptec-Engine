@@ -23,7 +23,6 @@ import org.joml.Vector2f;
 import org.joml.Vector2fc;
 
 import de.omnikryptec.core.update.IUpdatable;
-import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.math.MathUtil;
@@ -210,8 +209,7 @@ public class InputManager implements IUpdatable {
     }
 
     public boolean isMouseInsideViewport() {
-        return isMouseInsideWindow() && LibAPIManager.instance().getGLFW().getRenderAPI().getSurface()
-                .isInViewport(this.mouseHandler.getPosition());
+        return this.mouseHandler.isInsideViewport();
     }
 
     public boolean isMouseInsideWindow() {

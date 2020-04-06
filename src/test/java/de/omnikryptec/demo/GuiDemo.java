@@ -21,6 +21,7 @@ import javax.swing.Timer;
 import org.joml.Matrix3x2f;
 
 import de.omnikryptec.core.Omnikryptec;
+import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.gui.GuiButton;
 import de.omnikryptec.gui.GuiComponent;
 import de.omnikryptec.gui.GuiConstraints;
@@ -31,6 +32,7 @@ import de.omnikryptec.gui.TilingLayout;
 import de.omnikryptec.gui.GuiButton.State;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
+import de.omnikryptec.libapi.exposed.input.InputEvent;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.render.batch.BorderedBatch2D;
 import de.omnikryptec.render.objects.SimpleSprite;

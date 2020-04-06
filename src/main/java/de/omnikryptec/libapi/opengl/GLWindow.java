@@ -109,8 +109,11 @@ public class GLWindow implements IWindow {
         GLFW.glfwSetMouseButtonCallback(this.windowId, (window, button, action, mods) -> this.windowBus
                 .post(new InputEvent.MouseButtonEvent(button, action, mods)));
         GLFW.glfwSetCursorPosCallback(this.windowId,
-                (window, xpos, ypos) -> this.windowBus.post(new InputEvent.MousePositionEvent(xpos, ypos, MathUtil
-                        .relativeMousePosition(xpos, ypos, this.screenBuffer.getViewportUnsafe(), new Vector2f()))));
+                (window, xpos,
+                        ypos) -> this.windowBus.post(new InputEvent.MousePositionEvent(xpos, ypos,
+                                MathUtil.relativeMousePosition(xpos, ypos, this.screenBuffer.getViewportUnsafe(),
+                                        new Vector2f()),
+                                MathUtil.isMouseInViewport(xpos, ypos, this.screenBuffer.getViewportUnsafe()))));
         GLFW.glfwSetScrollCallback(this.windowId,
                 (window, x, y) -> this.windowBus.post(new InputEvent.MouseScrollEvent(x, y)));
         GLFW.glfwSetCursorEnterCallback(this.windowId,
