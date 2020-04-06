@@ -25,17 +25,17 @@ public class GuiButton extends GuiComponentPositionable {
     private List<ActionListener> actionlisteners;
     private Color[] colors = new Color[State.values().length];
     private Texture[] textures = new Texture[State.values().length];
-    private State state;
+    private boolean hovering;
+    private boolean clicked;
     
     public GuiButton() {
         this.actionlisteners = new ArrayList<>();
         Arrays.setAll(colors, (i) -> new Color());
-        this.state = State.Idle;
     }
     
     @Override
     protected void renderComponent(BorderedBatch2D batch, float aspect) {
-        State state = enabled ? this.state : State.Disabled;
+        State state = enabled ? (hovering ? (clicked ? State.Clicked : State.Hovering) : State.Idle) : State.Disabled;
         Color c = colors[state.ordinal()];
         Texture t = textures[state.ordinal()];
         batch.color().set(c);
@@ -44,31 +44,23 @@ public class GuiButton extends GuiComponentPositionable {
     
     @EventSubscription
     public void onMouseMoveEvent(InputEvent.MousePositionEvent ev) {
-        if (state != State.Clicked && enabled) {
-            checkHovering();
-        }
-    }
-    
-    private void checkHovering() {
-        Vector2fc pos = Omnikryptec.getInput().getMousePositionRelative();//FIXME pcfreak9000 fix relative mouse pos ("random" exceptions)
-        if (posInBounds(pos.x(), pos.y())) {
-            state = State.Hovering;
-        } else {
-            state = State.Idle;
+        this.hovering = posInBounds(ev.xRel, ev.yRel);
+        if (!this.hovering && clicked) {
+            clicked = false;
         }
     }
     
     @EventSubscription
     public void onMouseButtonEvent(InputEvent.MouseButtonEvent ev) {
         if (enabled) {
-            if (state == State.Hovering && ev.button == KeysAndButtons.OKE_MOUSE_BUTTON_LEFT
+            if (hovering && ev.button == KeysAndButtons.OKE_MOUSE_BUTTON_LEFT
                     && ev.action == KeysAndButtons.OKE_PRESS) {
-                state = State.Clicked;
+                clicked = true;
                 actionlisteners.forEach((al) -> al.onAction(this));
                 ev.consume();
-            } else if (state == State.Clicked && ev.button == KeysAndButtons.OKE_MOUSE_BUTTON_LEFT
+            } else if (clicked && ev.button == KeysAndButtons.OKE_MOUSE_BUTTON_LEFT
                     && ev.action == KeysAndButtons.OKE_RELEASE) {
-                checkHovering();
+                clicked = false;
             }
         }
     }

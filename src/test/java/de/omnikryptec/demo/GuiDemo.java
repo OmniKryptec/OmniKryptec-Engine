@@ -79,7 +79,7 @@ public class GuiDemo extends Omnikryptec {
         label.setDimensions(0.27f, 0.37f, 1, 1);
         
         GuiButton button = new GuiButton();
-        button.addActionListener((e) -> ((GuiButton)e).setEnabled(false));
+        //button.addActionListener((e) -> ((GuiButton)e).setEnabled(false));
         button.color(State.Clicked).set(1, 0, 0);
         button.color(State.Hovering).set(0, 1, 0);
         button.color(State.Disabled).set(.3f, .3f, .3f);
