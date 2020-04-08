@@ -31,10 +31,10 @@ import de.omnikryptec.util.math.Mathf;
  *
  */
 public class Color implements Cloneable {
-
+    
     public static final Color ZERO = new Color(0, 0, 0, 0);
     public static final Color ONE = new Color(1, 1, 1, 1);
-
+    
     private static final double TEMPERATURE_RED_EXP_CONST = 329.698727446;
     private static final double TEMPERATURE_RED_EXP = -0.1332047592;
     private static final double TEMPERATURE_GREEN_LN_CONST = 99.4708025861;
@@ -43,7 +43,7 @@ public class Color implements Cloneable {
     private static final double TEMPERATURE_GREEN_EXP = -0.0755148492;
     private static final double TEMPERATURE_BLUE_LN_CONST = 138.5177312231;
     private static final double TEMPERATURE_BLUE_LN_SUB = 305.0447927307;
-
+    
     /**
      * Interpolates between to {@link Color}s. A ratio of 0 means that the output
      * color is color1, a ratio of 1 means that the output color is color2.<br>
@@ -62,7 +62,7 @@ public class Color implements Cloneable {
             final Interpolator interpol) {
         return color1.clone().interpolate(color2, ratio, interpol);
     }
-
+    
     /**
      * Linearly interpolates between to {@link Color}s. A ratio of 0 means that the
      * output color is color1, a ratio of 1 means that the output color is
@@ -80,7 +80,7 @@ public class Color implements Cloneable {
     public static Color lerp(final Color color1, final Color color2, final float ratio) {
         return color1.clone().lerp(color2, ratio);
     }
-
+    
     /**
      * Converts a color temperature into a {@link Color}. The color temperature
      * should be in the range [0, 50000].
@@ -119,47 +119,47 @@ public class Color implements Cloneable {
         blue = Mathf.clamp(blue, 0.0f, 255.0f);
         return new Color(red / 255.0f, green / 255.0f, blue / 255.0f);
     }
-
+    
     //Maybe make array for the FloatCollecor? But shouldn't be that impactfull
     private final float[] d = new float[4]; //getR, getG, getB, getA;
-
+    
     /**
      * Creates a new {@link Color} and initializes it as r=1 g=1 b=1 a=1.
      */
     public Color() {
         this(1, 1, 1, 1);
     }
-
+    
     /**
      * Creates a new {@link Color} and initializes it as given but a=1.
      */
     public Color(final float r, final float g, final float b) {
         this(r, g, b, 1);
     }
-
+    
     /**
      * Creates a new {@link Color} and initializes it as given.
      */
     public Color(final float r, final float g, final float b, final float a) {
         set(r, g, b, a);
     }
-
+    
     public Color(final int rgb) {
         this(rgb, false);
     }
-
+    
     public Color(final int rgba, final boolean hasAlpha) {
         setRGBA(rgba, hasAlpha);
     }
-
+    
     public Color(final float[] array) {
         set(array);
     }
-
+    
     public Color(final Vector4f color) {
         setFrom(color);
     }
-
+    
     /**
      * Creates a new {@link Color} and initializes it with the given awt color.
      *
@@ -168,7 +168,7 @@ public class Color implements Cloneable {
     public Color(final java.awt.Color color) {
         this(color.getRGBComponents(null));
     }
-
+    
     /**
      * Creates a new {@link Vector4f} and fills it components as x=r, y=g, z=b and
      * w=a.
@@ -176,7 +176,7 @@ public class Color implements Cloneable {
     public final Vector4f getVector4f() {
         return new Vector4f(this.getR(), this.getG(), this.getB(), this.getA());
     }
-
+    
     /**
      * Creates a new float[] and fills it with the r, g, b, and a values of this
      * {@link Color}.
@@ -184,60 +184,60 @@ public class Color implements Cloneable {
     public final float[] getArray() {
         return this.d.clone();
     }
-
+    
     public final float getR() {
         return this.d[0];
     }
-
+    
     public final Color setR(final float r) {
         this.d[0] = r;
         return this;
     }
-
+    
     public final float getG() {
         return this.d[1];
     }
-
+    
     public final Color setG(final float g) {
         this.d[1] = g;
         return this;
     }
-
+    
     public final float getB() {
         return this.d[2];
     }
-
+    
     public final Color setB(final float b) {
         this.d[2] = b;
         return this;
     }
-
+    
     public final float getA() {
         return this.d[3];
     }
-
+    
     public final Color setA(final float a) {
         this.d[3] = a;
         return this;
     }
-
+    
     public final float get(int index) {
         return this.d[index];
     }
-
+    
     public final Color set(int index, float value) {
         this.d[index] = value;
         return this;
     }
-
+    
     public final int getRGB() {
         return getRGBA(false);
     }
-
+    
     public final Color setRGB(final int rgb) {
         return setRGBA(rgb, false);
     }
-
+    
     public final int getRGBA(final boolean withAlpha) {
         final int r = (int) (getR() * 255) << 16;
         final int g = (int) (getG() * 255) << 8;
@@ -248,16 +248,16 @@ public class Color implements Cloneable {
         }
         return (r + g + b + a);
     }
-
+    
     public final java.awt.Color getAWTColor() {
         return new java.awt.Color(getR(), getG(), getB(), getA());
     }
-
+    
     public final Color set(final float r, final float g, final float b) {
         set(r, g, b, 1);
         return this;
     }
-
+    
     public final Color set(final float r, final float g, final float b, final float a) {
         this.d[0] = r;
         this.d[1] = g;
@@ -265,7 +265,7 @@ public class Color implements Cloneable {
         this.d[3] = a;
         return this;
     }
-
+    
     public final Color setRGBA(final int rgba, final boolean hasAlpha) {
         if (hasAlpha) {
             setA(((rgba >> 24) & 0xFF) / 255.0F);
@@ -277,16 +277,16 @@ public class Color implements Cloneable {
         setB(((rgba) & 0xFF) / 255.0F);
         return this;
     }
-
+    
     public final Color setFrom(final Vector4f v) {
         return set(v.x, v.y, v.z, v.w);
     }
-
+    
     public final Color set(final Color c) {
         set(c.d);
         return this;
     }
-
+    
     public final Color set(final float[] array) {
         setR(array[0]);
         setG(array[1]);
@@ -294,26 +294,26 @@ public class Color implements Cloneable {
         setA(array.length > 3 ? array[3] : 1);
         return this;
     }
-
+    
     public final Color setFromAWT(final java.awt.Color color) {
         set(color.getRGBComponents(null));
         return this;
     }
-
+    
     public Color setAllRGB(float i) {
         set(i, i, i, 1);
         return this;
     }
-
+    
     public Color setAll(final float i) {
         set(i, i, i, i);
         return this;
     }
-
+    
     public Color interpolate(final Color color, final float ratio, final Interpolator interpol) {
         return lerp(color, interpol.interpolate(ratio));
     }
-
+    
     public Color lerp(final Color color, final float ratio) {
         final float inv = 1.0f - ratio;
         for (int i = 0; i < 4; i++) {
@@ -321,49 +321,49 @@ public class Color implements Cloneable {
         }
         return this;
     }
-
+    
     public Color clip() {
         for (int i = 0; i < 4; i++) {
             this.d[i] = Mathf.min(1.0f, Mathf.max(0.0f, this.d[i]));
         }
         return this;
     }
-
+    
     public Color mulRGB(float f) {
         for (int i = 0; i < 3; i++) {
             this.d[i] *= f;
         }
         return this;
     }
-
+    
     public Color mul(float f) {
         for (int i = 0; i < 4; i++) {
             this.d[i] *= f;
         }
         return this;
     }
-
+    
     public Color mulRGB(Color c) {
         for (int i = 0; i < 3; i++) {
             this.d[i] *= c.d[i];
         }
         return this;
     }
-
+    
     public Color mul(Color c) {
         for (int i = 0; i < 4; i++) {
             this.d[i] *= c.d[i];
         }
         return this;
     }
-
+    
     public Color add(Color c) {
         for (int i = 0; i < 4; i++) {
             this.d[i] += c.d[i];
         }
         return this;
     }
-
+    
     private float maxHelper(int l) {
         float max = this.d[0];
         for (int i = 1; i < l; i++) {
@@ -371,15 +371,15 @@ public class Color implements Cloneable {
         }
         return max;
     }
-
+    
     public float max() {
         return maxHelper(4);
     }
-
+    
     public float maxRGB() {
         return maxHelper(3);
     }
-
+    
     private float minHelper(int l) {
         float min = this.d[0];
         for (int i = 1; i < l; i++) {
@@ -387,15 +387,15 @@ public class Color implements Cloneable {
         }
         return min;
     }
-
+    
     public float min() {
         return minHelper(4);
     }
-
+    
     public float minRGB() {
         return minHelper(3);
     }
-
+    
     private float sHelp(int l) {
         float r = 0;
         for (int i = 0; i < l; i++) {
@@ -403,35 +403,35 @@ public class Color implements Cloneable {
         }
         return r;
     }
-
+    
     public float lengthSquare() {
         return sHelp(4);
     }
-
+    
     public float lengthSquareRGB() {
         return sHelp(3);
     }
-
+    
     public float length() {
         return Mathf.sqrt(lengthSquare());
     }
-
+    
     public float lengthRGB() {
         return Mathf.sqrt(lengthSquareRGB());
     }
-
+    
     public Color randomizeRGBA() {
         return randomizeRGB((float) Math.random());
     }
-
+    
     public Color randomizeRGB(final float a) {
         return set((float) Math.random(), (float) Math.random(), (float) Math.random(), a);
     }
-
+    
     public Color randomizeRGB() {
         return randomizeRGB(1);
     }
-
+    
     @Override
     public final Color clone() {
         try {
@@ -441,10 +441,14 @@ public class Color implements Cloneable {
             return null;
         }
     }
-
+    
     @Override
     public String toString() {
         return "Color: [R=" + getR() + " G=" + getG() + " B=" + getB() + " A=" + getA() + "]";
     }
-
+    
+    public boolean equals(float r, float g, float b) {
+        return d[0] == r && d[1] == g && d[2] == b;
+    }
+    
 }
