@@ -16,6 +16,8 @@
 
 package de.omnikryptec.util.data;
 
+import java.util.Arrays;
+
 import org.joml.Vector4f;
 
 import de.omnikryptec.util.math.Interpolator;
@@ -447,8 +449,39 @@ public class Color implements Cloneable {
         return "Color: [R=" + getR() + " G=" + getG() + " B=" + getB() + " A=" + getA() + "]";
     }
     
-    public boolean equals(float r, float g, float b) {
+    public boolean equalsRGB(float r, float g, float b) {
         return d[0] == r && d[1] == g && d[2] == b;
+    }
+    
+    public boolean equals(float r, float g, float b, float a) {
+        return d[0] == r && d[1] == g && d[2] == b && d[3] == a;
+    }
+    
+    public boolean equalsRGB(Color c) {
+        return c != null && (c == this || this.equalsRGB(c.getR(), c.getG(), c.getB()));
+    }
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Arrays.hashCode(d);
+        return result;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Color)) {
+            return false;
+        }
+        Color other = (Color) obj;
+        if (!Arrays.equals(d, other.d)) {
+            return false;
+        }
+        return true;
     }
     
 }
