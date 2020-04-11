@@ -57,7 +57,7 @@ public class Test {
             }
 
             @Override
-            public void onProgressChange(final AdvancedFile f, final int localprocessed) {
+            public void onProgressChange(final AdvancedFile f, int i, final int localprocessed) {
                 System.out.println("P:" + localprocessed);
             }
 
