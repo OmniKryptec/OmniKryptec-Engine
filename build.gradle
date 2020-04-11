@@ -26,7 +26,7 @@ targetCompatibility = 1.8
 
 project.ext.lwjglVersion = "3.2.3"
 project.ext.jomlVersion = "1.9.19"
-project.ext.cjpbaseVersion = "v1.8.0_172-alpha.47" //11.04.2020 17:20
+project.ext.cjpbaseVersion = "v1.8.0_172-alpha.48" //11.04.2020 17:49
 project.ext.cjpnetVersion = "v1.8.0_172-alpha.4" //11.04.2020 17:24
 project.ext.lwjglNativesWindows = "natives-windows"
 project.ext.lwjglNativesLinux = "natives-linux"
