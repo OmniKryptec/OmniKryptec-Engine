@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import de.codemakers.io.file.AdvancedFile;
 import de.omnikryptec.util.ExecutorsUtil;
@@ -170,6 +171,7 @@ public class ResourceManager {
 
         /* for #notifyProcessed() */
         private int localprocessed;
+        private AtomicInteger globalprocessed = new AtomicInteger(0);
         /**/
 
         private Processor(final boolean override, final boolean flat) {
@@ -252,8 +254,9 @@ public class ResourceManager {
 
         private void notifyProcessed(final AdvancedFile file) {
             this.localprocessed++;
+            this.globalprocessed.addAndGet(1);
             for (final LoadingProgressCallback callback : ResourceManager.this.callbacks) {
-                callback.onProgressChange(file, this.localprocessed);
+                callback.onProgressChange(file, this.globalprocessed.get(), this.localprocessed);
             }
         }
 
