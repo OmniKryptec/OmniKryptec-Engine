@@ -1,23 +1,32 @@
+/*
+ *    Copyright 2017 - 2020 Roman Borris (pcfreak9000), Paul Hagedorn (Panzer1119)
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package de.omnikryptec.libapi.openal;
 
-import static org.lwjgl.openal.EXTEfx.ALC_MAX_AUXILIARY_SENDS;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.util.Util;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.openal.*;
 
+import javax.swing.*;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Timer;
-
-import org.lwjgl.BufferUtils;
-import org.lwjgl.openal.AL;
-import org.lwjgl.openal.AL10;
-import org.lwjgl.openal.AL11;
-import org.lwjgl.openal.ALC;
-import org.lwjgl.openal.ALC10;
-import org.lwjgl.openal.ALCCapabilities;
-
-import de.omnikryptec.libapi.exposed.LibAPIManager;
-import de.omnikryptec.util.Util;
+import static org.lwjgl.openal.EXTEfx.ALC_MAX_AUXILIARY_SENDS;
 
 public class OpenAL {
 
