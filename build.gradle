@@ -26,8 +26,8 @@ targetCompatibility = 1.8
 
 project.ext.lwjglVersion = "3.2.3"
 project.ext.jomlVersion = "1.9.19"
-project.ext.cjpbaseVersion = "v1.8.0_172-alpha.45"
-project.ext.cjpnetCommit = "dfe31b3ba4" //09.05.2019 20:45
+project.ext.cjpbaseVersion = "v1.8.0_172-alpha.47" //11.04.2020 17:20
+project.ext.cjpnetVersion = "v1.8.0_172-alpha.4" //11.04.2020 17:24
 project.ext.lwjglNativesWindows = "natives-windows"
 project.ext.lwjglNativesLinux = "natives-linux"
 project.ext.lwjglNativesMacOs = "natives-macos"
@@ -83,8 +83,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.reflections/reflections
     compile group: 'org.reflections', name: 'reflections', version: '0.9.11'
     compile 'com.google.guava:guava:27.0-jre'
-    //implementation "com.github.Panzer1119:CJP-Base:$cjpbaseVersion"
-    implementation "com.github.Panzer1119:CJP-Net:$cjpnetCommit" //TODO Fix this
+    implementation "com.github.Panzer1119:CJP-Base:$cjpbaseVersion"
+    implementation "com.github.Panzer1119:CJP-Net:$cjpnetVersion"
     // CUSTOM LIBS BEGIN
     //compile name: 'JavaPlus'
     //compile name: 'MathPlus'
@@ -130,8 +130,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.reflections/reflections
     extraLibs group: 'org.reflections', name: 'reflections', version: '0.9.11'
     extraLibs 'com.google.guava:guava:27.0-jre'
-    //extraLibs "com.github.Panzer1119:CJP-Base:$cjpbaseVersion"
-    extraLibs "com.github.Panzer1119:CJP-Net:$cjpnetCommit" //TODO Fix this
+    extraLibs "com.github.Panzer1119:CJP-Base:$cjpbaseVersion"
+    extraLibs "com.github.Panzer1119:CJP-Net:$cjpnetVersion"
     // CUSTOM LIBS BEGIN
     //extraLibs name: 'JavaPlus'
     //extraLibs name: 'MathPlus'
