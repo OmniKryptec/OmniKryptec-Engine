@@ -63,6 +63,7 @@ public class InputEvent extends Event {
         public final float yRel;
         
         public final boolean inViewport;
+        public final boolean virtualCursor; 
         
         public MousePositionEvent() {
             this.xPos = Double.NEGATIVE_INFINITY;
@@ -70,14 +71,16 @@ public class InputEvent extends Event {
             this.xRel = Float.NEGATIVE_INFINITY;
             this.yRel = Float.NEGATIVE_INFINITY;
             this.inViewport = false;
+            this.virtualCursor = false;
         }
         
-        public MousePositionEvent(final double xPos, final double yPos, Vector2fc rel, boolean inVp) {
+        public MousePositionEvent(final double xPos, final double yPos, Vector2fc rel, boolean inVp, boolean virtualCursor) {
             this.xPos = xPos;
             this.yPos = yPos;
             this.xRel = rel.x();
             this.yRel = rel.y();
             this.inViewport = inVp;
+            this.virtualCursor = virtualCursor;
         }
     }
     

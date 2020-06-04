@@ -60,7 +60,7 @@ public class MouseHandler implements InputHandler {
     
     @EventSubscription
     public void onPosChangeEvent(final InputEvent.MousePositionEvent ev) {
-        if (ev.inViewport) {
+        if (ev.inViewport || ev.virtualCursor) {
             this.position.x = ev.xPos;
             this.position.y = ev.yPos;
             this.positionRelative.set(ev.xRel, ev.yRel);

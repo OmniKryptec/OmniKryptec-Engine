@@ -17,12 +17,12 @@
 package de.omnikryptec.libapi.opengl;
 
 import org.joml.Vector2f;
-import org.joml.Vector2fc;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL;
 
 import de.omnikryptec.event.EventBus;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.libapi.exposed.input.CursorType;
 import de.omnikryptec.libapi.exposed.input.InputEvent;
 import de.omnikryptec.libapi.exposed.render.FrameBufferStack;
 import de.omnikryptec.libapi.exposed.window.IWindow;
@@ -44,6 +44,8 @@ public class GLWindow implements IWindow {
     private int windowHeight;
     private boolean isFullscreen;
     private boolean isActive;
+    
+    private boolean virtualCursor = false;
     
     public GLWindow(final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apiSettings,
             final FrameBufferStack fbStack) {
@@ -89,6 +91,7 @@ public class GLWindow implements IWindow {
         GLFW.glfwMakeContextCurrent(this.windowId);
         GL.createCapabilities();
         setVSync(windowSettings.get(WindowSetting.VSync));
+        setCursorState(windowSettings.get(WindowSetting.CursorState));
         this.screenBuffer = new GLScreenBuffer(this.windowId, aspectRatio, fbStack);
         this.windowBus.register(this.screenBuffer);
     }
@@ -109,16 +112,18 @@ public class GLWindow implements IWindow {
         GLFW.glfwSetMouseButtonCallback(this.windowId, (window, button, action, mods) -> this.windowBus
                 .post(new InputEvent.MouseButtonEvent(button, action, mods)));
         GLFW.glfwSetCursorPosCallback(this.windowId,
-                (window, xpos,
-                        ypos) -> this.windowBus.post(new InputEvent.MousePositionEvent(xpos, ypos,
-                                MathUtil.relativeMousePosition(xpos, ypos, this.screenBuffer.getViewportUnsafe(),
-                                        new Vector2f()),
-                                MathUtil.isMouseInViewport(xpos, ypos, this.screenBuffer.getViewportUnsafe()))));
+                (window, xpos, ypos) -> this.windowBus.post(new InputEvent.MousePositionEvent(xpos, ypos,
+                        MathUtil.relativeMousePosition(xpos, ypos, this.screenBuffer.getViewportUnsafe(),
+                                new Vector2f()),
+                        MathUtil.isMouseInViewport(xpos, ypos, this.screenBuffer.getViewportUnsafe()), virtualCursor)));
         GLFW.glfwSetScrollCallback(this.windowId,
                 (window, x, y) -> this.windowBus.post(new InputEvent.MouseScrollEvent(x, y)));
         GLFW.glfwSetCursorEnterCallback(this.windowId, (window, entered) -> {
             this.windowBus.post(new InputEvent.CursorInWindowEvent(entered));
             if (!entered) {
+                if (virtualCursor) {
+                    throw new RuntimeException("Go fuck yourself");
+                }
                 this.windowBus.post(new InputEvent.MousePositionEvent());
             }
         });
@@ -205,4 +210,9 @@ public class GLWindow implements IWindow {
         GLFW.glfwSetWindowOpacity(this.windowId, a);
     }
     
+    public void setCursorState(final CursorType state) {
+        Util.ensureNonNull(state);
+        GLFW.glfwSetInputMode(this.windowId, GLFW.GLFW_CURSOR, state.getState());
+        this.virtualCursor = state == CursorType.DISABLED;
+    }
 }

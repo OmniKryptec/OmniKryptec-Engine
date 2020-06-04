@@ -20,11 +20,9 @@ import java.lang.reflect.Constructor;
 
 import org.lwjgl.glfw.GLFW;
 
-import de.omnikryptec.libapi.exposed.input.CursorType;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.util.Logger;
-import de.omnikryptec.util.Util;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.Settings;
 
@@ -47,7 +45,6 @@ public class GLFWAccessManager {
             renderApiConstructor.setAccessible(true);
             this.renderApi = renderApiConstructor.newInstance(windowSettings, apiSettings);
             this.logger.info("Set the RenderAPI to " + clazz.getSimpleName());
-            setCursorState(windowSettings.get(WindowSetting.CursorState));
         } catch (final NoSuchMethodException ex) {
             throw new IllegalArgumentException("Invalid RendererAPI: Missing constructor", ex);
         } catch (final Exception ex) {
@@ -81,8 +78,4 @@ public class GLFWAccessManager {
         return GLFW.glfwGetTime();
     }
 
-    public void setCursorState(final CursorType state) {
-        Util.ensureNonNull(state);
-        GLFW.glfwSetInputMode(this.getRenderAPI().getWindow().getID(), GLFW.GLFW_CURSOR, state.getState());
-    }
 }
