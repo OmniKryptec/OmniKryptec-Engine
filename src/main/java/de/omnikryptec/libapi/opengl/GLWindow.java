@@ -121,9 +121,6 @@ public class GLWindow implements IWindow {
         GLFW.glfwSetCursorEnterCallback(this.windowId, (window, entered) -> {
             this.windowBus.post(new InputEvent.CursorInWindowEvent(entered));
             if (!entered) {
-                if (virtualCursor) {
-                    throw new RuntimeException("Go fuck yourself");
-                }
                 this.windowBus.post(new InputEvent.MousePositionEvent());
             }
         });
