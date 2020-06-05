@@ -242,7 +242,7 @@ public class ResourceManager {
         }
 
         private boolean canList(final AdvancedFile f) {
-            return f.isDirectory() || f.isFileProvided();
+            return f.mayListFiles();
         }
 
         private void notifyStage(final AdvancedFile file, final int stagenumber, final int localmax) {
