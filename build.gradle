@@ -17,7 +17,7 @@
 import org.gradle.internal.os.OperatingSystem
 
 group 'de.omnikryptec'
-version '1.0-SNAPSHOT'
+version 'v1.8.0_172-alpha.1'
 
 apply plugin: 'java'
 
