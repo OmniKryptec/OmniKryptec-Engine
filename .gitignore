@@ -1,5 +1,11 @@
+# IDE Stuff
+/.settings/
+/.idea/
+
+# Gradle Stuff
+/.gradle/
+
+# Temp Stuff
 bin/
-\.gradle/
 /build/
 /out/
-/.idea/
