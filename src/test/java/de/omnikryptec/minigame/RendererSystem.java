@@ -35,6 +35,7 @@ import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.render.postprocessing.BrightnessAccent;
+import de.omnikryptec.render.postprocessing.EffectMixer;
 import de.omnikryptec.render.postprocessing.GaussianBlur;
 import de.omnikryptec.render.postprocessing.PostprocessingBundle;
 import de.omnikryptec.render.renderer.AdvancedRenderer2D;
@@ -65,7 +66,15 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
         this.viewMgr = vm;
         this.renderer = this.viewMgr.createAndAddAdvancedRenderer2D();
         this.viewMgr.getMainView().setProjection(CAMERA);
-        this.viewMgr.getMainView().setPostprocessor(new BrightnessAccent());
+        PostprocessingBundle bund = new PostprocessingBundle();
+        bund.add(new BrightnessAccent());
+        bund.add(GaussianBlur.createGaussianBlurBundle(1));
+        bund.add(GaussianBlur.createGaussianBlurBundle(0.85f));
+        bund.add(GaussianBlur.createGaussianBlurBundle(0.4f));
+        EffectMixer eff = new EffectMixer(bund);
+        eff.setWeightSource(0.6f);
+        eff.setWeightEffect(0.5f);
+        this.viewMgr.getMainView().setPostprocessor(eff);
     }
     
     private class MyLight extends Sprite {
@@ -117,17 +126,17 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
             public void draw(Batch2D batch) {
                 super.draw(batch);
                 this.i++;
-                AdvancedBatch2D adv = (AdvancedBatch2D) batch;
-                adv.signedDistanceFieldData().set(0.5f, 0.6f);
+                //                AdvancedBatch2D adv = (AdvancedBatch2D) batch;
+                //                adv.signedDistanceFieldData().set(0.5f, 0.6f);
                 if (this.i % 400 == 0) {
-                    this.getColor().randomizeRGB();
-                    this.borderColor.randomizeRGB();
+                    // this.getColor().randomizeRGB();
+                    //                    this.borderColor.randomizeRGB();
                 }
-                adv.borderColor().set(this.borderColor);
-                adv.borderSDFData().set(0.6f, 0.7f);
-                adv.drawStringSimple("OOOF", Omnikryptec.getFontsS().getFontSDF("Candara"), 80,
-                        getTransform().worldspacePos().x(), getTransform().worldspacePos().y(),
-                        (float) LibAPIManager.instance().getGLFW().getTime());
+                //                adv.borderColor().set(this.borderColor);
+                //                adv.borderSDFData().set(0.6f, 0.7f);
+                //                adv.drawStringSimple("OOOF", Omnikryptec.getFontsS().getFontSDF("Candara"), 80,
+                //                        getTransform().worldspacePos().x(), getTransform().worldspacePos().y(),
+                //                        (float) LibAPIManager.instance().getGLFW().getTime());
             };
         };
         sprite.setTransform(this.posMapper.get(entity).transform);

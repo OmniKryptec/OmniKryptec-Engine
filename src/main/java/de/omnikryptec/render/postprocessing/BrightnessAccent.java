@@ -3,18 +3,29 @@ package de.omnikryptec.render.postprocessing;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
+import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
 import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
 import de.omnikryptec.render.renderer.View;
 import de.omnikryptec.util.updater.Time;
 
 public class BrightnessAccent extends AbstractPostProcessor {
     
+    private UniformFloat poweru;
+    
+    private float power = 1;
+    
     public BrightnessAccent() {
         shader.create("pp-vert", "pp-brightness-accent");
         UniformSampler sam = shader.getUniform("scene");
+        poweru = shader.getUniform("power");
         shader.bindShader();
         sam.setSampler(0);
+        poweru.loadFloat(1);
         buffer.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
+    }
+    
+    public void setPower(float f) {
+        this.power = f;
     }
     
     @Override
@@ -23,6 +34,7 @@ public class BrightnessAccent extends AbstractPostProcessor {
         buffer.bindFrameBuffer();
         buffer.clearComplete();
         shader.bindShader();
+        poweru.loadFloat(power);
         sceneRaw.bindTexture(0);
         PPMesh.renderPPMesh();
         buffer.unbindFrameBuffer();

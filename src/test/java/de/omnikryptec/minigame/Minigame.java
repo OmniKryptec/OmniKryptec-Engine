@@ -130,6 +130,7 @@ public class Minigame extends Omnikryptec {
         this.mgr.addSystem(new MovementSystem());
         this.mgr.addSystem(new RangedSystem());
         this.mgr.addSystem(new AudioSystem());
+        this.mgr.addSystem(new RandomColorSystem());
         this.mgr.addEntity(makePlayer(0, 0));
         this.mgr.addEntity(makeBackground());
         for (int i = -30; i < 30; i++) {
@@ -140,7 +141,7 @@ public class Minigame extends Omnikryptec {
             }
         }
         getAudio().setDistanceModel(DistanceModel.EXPONENT);
-        getGame().getGuiManager().setGui(new TestComponent(0, 0));
+        //getGame().getGuiManager().setGui(new TestComponent(0, 0));
     }
 
     @Override
@@ -151,7 +152,7 @@ public class Minigame extends Omnikryptec {
     private Entity makeBackground() {
         final Entity e = new Entity();
         e.addComponent(new PositionComponent(-1000, -1000));
-        e.addComponent(new RenderComponent(2000, 2000, new Color(1, 1, 1), -100));
+        e.addComponent(new RenderComponent(2000, 2000, new Color(0.1f, 0.15f, 0.15f), -100));
         return e;
     }
 
@@ -172,6 +173,8 @@ public class Minigame extends Omnikryptec {
         e.addComponent(new PlayerComponent(300, 5, 5));
         e.addComponent(new MovementComponent(0, 0));
         e.addComponent(new CollisionComponent(10, 10));
+        e.addComponent(new RandomColorComponent());
+
         return e;
     }
 
@@ -181,6 +184,7 @@ public class Minigame extends Omnikryptec {
         e.addComponent(new RenderComponent(15, 15, new Color(0, 1, 1), 8));
         e.addComponent(new CollisionComponent(15, 15));
         e.addComponent(new MovementComponent(0, 0));
+        e.addComponent(new RandomColorComponent());
         e.flags = -10;
         return e;
     }
@@ -192,6 +196,7 @@ public class Minigame extends Omnikryptec {
         e.addComponent(new MovementComponent(dir.x, dir.y));
         e.addComponent(new RangedComponent(range, x, y));
         e.addComponent(new CollisionComponent(5, 5));
+        e.addComponent(new RandomColorComponent());
 
         e.flags = f;
         return e;

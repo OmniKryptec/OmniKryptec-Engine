@@ -41,8 +41,8 @@ public class GaussianBlur extends AbstractPostProcessor {
     
     @Override
     public Texture postprocess(Time time, View view, Texture sceneRaw) {
-        buffer = buffer.resizeAndDeleteOrThis((int) (sceneRaw.getWidth() * scale),
-                (int) (sceneRaw.getHeight() * scale));
+        buffer = buffer.resizeAndDeleteOrThis((int) (sceneRaw.getWidth() * (horizontal ? scale : 1)),
+                (int) (sceneRaw.getHeight() * (horizontal ? 1 : scale)));//Not checking horizontal makes the blur look stretched
         buffer.bindFrameBuffer();
         buffer.clearComplete();
         shader.bindShader();

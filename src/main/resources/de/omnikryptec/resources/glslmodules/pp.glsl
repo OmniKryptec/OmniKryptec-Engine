@@ -86,11 +86,29 @@ in vec2 textureCoords;
 out vec4 color;
 
 uniform sampler2D scene;
-
+uniform float power;
 
 void main(void){
 	
 	color = texture(scene, textureCoords);
 	float brightness = (color.r * 0.2126 + color.g * 0.7152 + color.b * 0.0722);
-	color = color * brightness;
+	color.rgb = color.rgb * pow(brightness, power);
+}
+
+$define shader pp-effect-mixer FRAGMENT$
+#version 330
+
+in vec2 textureCoords;
+
+out vec4 color;
+
+uniform sampler2D tex1;
+uniform sampler2D tex2;
+
+uniform vec2 weights;
+
+void main(void){
+	
+	color = texture(tex1, textureCoords) * weights.x + texture(tex2, textureCoords) * weights.y;
+
 }
