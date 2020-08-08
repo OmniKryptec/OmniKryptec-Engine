@@ -34,49 +34,51 @@ import de.omnikryptec.render.batch.AdvancedBatch2D;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.Sprite;
+import de.omnikryptec.render.postprocessing.BrightnessAccent;
+import de.omnikryptec.render.postprocessing.GaussianBlur;
+import de.omnikryptec.render.postprocessing.PostprocessingBundle;
 import de.omnikryptec.render.renderer.AdvancedRenderer2D;
-import de.omnikryptec.render.renderer.Renderer2D.EnvironmentKeys2D;
 import de.omnikryptec.render.renderer.ViewManager;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.updater.Time;
 
 public class RendererSystem extends AbstractComponentSystem implements EntityListener {
-
+    
     public static Camera CAMERA = new AdaptiveCamera(RendererSystem::get);
-
+    
     private static Matrix4f get(int w, int h) {
         Matrix4f m = new Matrix4f();
         int[] vp = MathUtil.calculateViewport(w / (double) h, 800, 600);
         m.setOrtho2D(-vp[2], vp[2], -vp[3], vp[3]);
         return m;
     }
-
+    
     private final ComponentMapper<PositionComponent> posMapper = new ComponentMapper<>(PositionComponent.class);
     private final ComponentMapper<RenderComponent> rendMapper = new ComponentMapper<>(RenderComponent.class);
-
+    
     private final ViewManager viewMgr;
     private final AdvancedRenderer2D renderer;
-
+    
     public RendererSystem(ViewManager vm) {
         super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(RenderComponent.class)));
         this.viewMgr = vm;
         this.renderer = this.viewMgr.createAndAddAdvancedRenderer2D();
         this.viewMgr.getMainView().setProjection(CAMERA);
-
+        this.viewMgr.getMainView().setPostprocessor(new BrightnessAccent());
     }
-
+    
     private class MyLight extends Sprite {
         private Color color;
         private float x, y;
-
+        
         @Override
         public void draw(final Batch2D batch) {
             batch.color().set(this.color);
             batch.drawRect(new Matrix3x2f().translate(this.x, this.y), 300, 300);
         }
     };
-
+    
     @Override
     public void addedToIECSManager(final IECSManager iecsManager) {
         super.addedToIECSManager(iecsManager);
@@ -98,19 +100,19 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
         //        this.renderer.getIRenderedObjectManager().add(Light2D.TYPE, l3);
         //this.viewMgr.getMainView().getEnvironment().set(EnvironmentKeys2D.AmbientLight, new Color());//new Color(0.3f, 0.3f, 0.3f));
     }
-
+    
     @Override
     public void removedFromIECSManager(final IECSManager iecsManager) {
         super.removedFromIECSManager(iecsManager);
         iecsManager.removeEntityListener(getFamily(), this);
     }
-
+    
     @Override
     public void entityAdded(final Entity entity) {
         final AdvancedSprite sprite = new AdvancedSprite() {
             private long i = 0;
             private final Color borderColor = new Color();
-
+            
             @Override
             public void draw(Batch2D batch) {
                 super.draw(batch);
@@ -137,14 +139,14 @@ public class RendererSystem extends AbstractComponentSystem implements EntityLis
         this.rendMapper.get(entity).backingSprite = sprite;
         this.renderer.add(sprite);
     }
-
+    
     @Override
     public void entityRemoved(final Entity entity) {
         this.renderer.remove((AdvancedSprite) this.rendMapper.get(entity).backingSprite);
     }
-
+    
     @Override
     public void update(final IECSManager manager, final Time time) {
     }
-
+    
 }

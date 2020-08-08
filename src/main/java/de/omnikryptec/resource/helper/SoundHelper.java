@@ -16,15 +16,15 @@
 
 package de.omnikryptec.resource.helper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.omnikryptec.libapi.openal.Sound;
 import de.omnikryptec.libapi.openal.SoundLoader;
 import de.omnikryptec.libapi.openal.StreamedSound;
 import de.omnikryptec.resource.loadervpc.ResourceProvider;
 import de.omnikryptec.resource.loadervpc.SoundFileWrapper;
 import de.omnikryptec.util.Logger;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class SoundHelper {
 

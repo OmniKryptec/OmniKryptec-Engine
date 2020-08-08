@@ -16,9 +16,10 @@
 
 package de.omnikryptec.render.batch;
 
+import org.joml.Vector2f;
+
 import de.omnikryptec.resource.Font;
 import de.omnikryptec.util.data.Color;
-import org.joml.Vector2f;
 
 public interface BorderedBatch2D extends Batch2D {
 

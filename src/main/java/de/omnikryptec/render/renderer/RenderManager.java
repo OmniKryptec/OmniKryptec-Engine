@@ -16,6 +16,11 @@
 
 package de.omnikryptec.render.renderer;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.FBTarget;
@@ -27,27 +32,22 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.opengl.framebuffer.GLScreenBuffer.ScreenBufferResizedEvent;
 import de.omnikryptec.util.updater.Time;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-
 //TODO pcfreak9000 if there is only one ViewManager in the list, render it directly
 public class RenderManager {
-
+    
     private static final Comparator<ViewManagerInfo> VMI_COMP = (v1, v2) -> v1.priority - v2.priority;
     private static final RenderState DEFAULT_SCREENWRITER_STATE = RenderState.of(BlendMode.ALPHA);
-
+    
     private static RenderManager instance;
-
+    
     private static class ViewManagerInfo {
         FrameBuffer targetFbo;
         int priority;
         ViewManager viewManager;
     }
-
+    
     private final List<ViewManagerInfo> views;
-
+    
     public RenderManager() {
         if (instance != null) {
             throw new IllegalStateException("RenderManager already exists");
@@ -56,13 +56,13 @@ public class RenderManager {
         LibAPIManager.ENGINE_EVENTBUS.register(this);
         instance = this;
     }
-
+    
     public ViewManager createAndAddViewManager(int prio) {
         ViewManager vm = new ViewManager();
         addViewManager(vm, prio);
         return vm;
     }
-
+    
     public void addViewManager(ViewManager viewMgr, int prio) {
         ViewManagerInfo inf = new ViewManagerInfo();
         inf.viewManager = viewMgr;
@@ -73,7 +73,7 @@ public class RenderManager {
         this.views.add(inf);
         this.views.sort(VMI_COMP);
     }
-
+    
     public void removeViewManager(ViewManager viewMgr) {
         Iterator<ViewManagerInfo> it = this.views.iterator();
         while (it.hasNext()) {
@@ -84,7 +84,7 @@ public class RenderManager {
             }
         }
     }
-
+    
     @EventSubscription
     public void event(final ScreenBufferResizedEvent ev) {
         for (ViewManagerInfo vmInf : this.views) {
@@ -92,17 +92,17 @@ public class RenderManager {
             vmInf.viewManager.getMainView().setTargetFbo(vmInf.targetFbo);//TODO pcfreak9000 this is oof, also see the above TODx
         }
     }
-
+    
     public void renderAll(Time time) {
         Texture[] viewTextures = new Texture[this.views.size()];
         for (int i = 0; i < this.views.size(); i++) {
             ViewManagerInfo vmInf = this.views.get(i);
             vmInf.viewManager.renderInstance(time);
-            viewTextures[i] = vmInf.targetFbo.getTexture(0);
+            viewTextures[i] = vmInf.viewManager.getMainView().getResult();
         }
         LibAPIManager.instance().getGLFW().getRenderAPI().getCurrentFrameBuffer().clearComplete();
         LibAPIManager.instance().getGLFW().getRenderAPI().applyRenderState(DEFAULT_SCREENWRITER_STATE);
         RendererUtil.renderDirect(viewTextures);
     }
-
+    
 }

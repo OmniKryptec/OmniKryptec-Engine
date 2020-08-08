@@ -17,12 +17,15 @@
 package de.omnikryptec.render.postprocessing;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
+import de.omnikryptec.render.renderer.View;
 import de.omnikryptec.util.updater.Time;
 
-public class Postprocessor {
-
-    public Texture postprocess(final Time time, final SceneRenderBufferManager scene) {
-        return null;
+public interface Postprocessor {
+    
+    public static Postprocessor constant(Texture texture) {
+        return (t, v, r) -> texture;
     }
-
+    
+    Texture postprocess(final Time time, View view, Texture sceneRaw);
+    
 }

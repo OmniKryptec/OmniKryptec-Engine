@@ -16,6 +16,12 @@
 
 package de.omnikryptec.render.renderer;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+import org.joml.FrustumIntersection;
+
 import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
@@ -37,11 +43,6 @@ import de.omnikryptec.util.profiling.ProfileHelper;
 import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
-import org.joml.FrustumIntersection;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 public class AdvancedRenderer2D implements Renderer {
     private static int rc = 0;

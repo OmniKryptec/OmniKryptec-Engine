@@ -30,14 +30,14 @@ public interface Texture {
      *
      * @return width
      */
-    float getWidth();
+    int getWidth();
 
     /**
      * The height, in texels, of this {@link Texture}
      *
      * @return
      */
-    float getHeight();
+    int getHeight();
 
     default boolean requiresInvertedVifDrawn2D() {
         return false;

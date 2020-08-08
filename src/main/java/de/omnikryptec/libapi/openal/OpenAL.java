@@ -16,17 +16,24 @@
 
 package de.omnikryptec.libapi.openal;
 
-import de.omnikryptec.libapi.exposed.LibAPIManager;
-import de.omnikryptec.util.Util;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.openal.*;
+import static org.lwjgl.openal.EXTEfx.ALC_MAX_AUXILIARY_SENDS;
 
-import javax.swing.*;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.lwjgl.openal.EXTEfx.ALC_MAX_AUXILIARY_SENDS;
+import javax.swing.Timer;
+
+import org.lwjgl.BufferUtils;
+import org.lwjgl.openal.AL;
+import org.lwjgl.openal.AL10;
+import org.lwjgl.openal.AL11;
+import org.lwjgl.openal.ALC;
+import org.lwjgl.openal.ALC10;
+import org.lwjgl.openal.ALCCapabilities;
+
+import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.util.Util;
 
 public class OpenAL {
 

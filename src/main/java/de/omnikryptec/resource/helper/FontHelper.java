@@ -16,15 +16,15 @@
 
 package de.omnikryptec.resource.helper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.resource.Font;
 import de.omnikryptec.resource.FontFile;
 import de.omnikryptec.resource.loadervpc.ResourceProvider;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Util;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class FontHelper {
     

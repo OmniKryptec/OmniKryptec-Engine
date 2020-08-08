@@ -16,15 +16,16 @@
 
 package de.omnikryptec.libapi.opengl.buffer;
 
-import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
-import de.omnikryptec.libapi.opengl.OpenGLUtil;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL43;
 
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
+import de.omnikryptec.libapi.opengl.OpenGLUtil;
 
 public class GLShaderStorageBuffer extends GLBuffer {
 

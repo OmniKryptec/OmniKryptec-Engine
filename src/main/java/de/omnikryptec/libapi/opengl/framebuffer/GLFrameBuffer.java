@@ -173,12 +173,12 @@ public class GLFrameBuffer extends FrameBuffer {
         }
 
         @Override
-        public float getWidth() {
+        public int getWidth() {
             return GLFrameBuffer.this.width;
         }
 
         @Override
-        public float getHeight() {
+        public int getHeight() {
             return GLFrameBuffer.this.height;
         }
 

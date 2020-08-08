@@ -20,13 +20,13 @@ import javax.swing.Timer;
 
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.gui.GuiButton;
+import de.omnikryptec.gui.GuiButton.State;
 import de.omnikryptec.gui.GuiComponent;
 import de.omnikryptec.gui.GuiConstraints;
 import de.omnikryptec.gui.GuiLabel;
 import de.omnikryptec.gui.GuiManager;
 import de.omnikryptec.gui.GuiProgressBar;
 import de.omnikryptec.gui.TilingLayout;
-import de.omnikryptec.gui.GuiButton.State;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;

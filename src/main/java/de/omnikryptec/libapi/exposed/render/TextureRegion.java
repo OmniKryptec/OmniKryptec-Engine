@@ -21,7 +21,7 @@ public class TextureRegion implements Texture {
 
     private final Texture superTexture;
     private final float[] uvs = { 0, 0, 1, 1 };
-    private final float width, height;
+    private final int width, height;
 
     public TextureRegion(final Texture superTexture, float u0, float v0, float u1, float v1) {
         this.superTexture = superTexture;
@@ -46,8 +46,8 @@ public class TextureRegion implements Texture {
         this.uvs[3] = v1;
         width *= (Math.abs(u1 - u0));
         height *= (Math.abs(v1 - v0));
-        this.width = width;
-        this.height = height;
+        this.width = (int) Math.ceil(width);//This is not nice?
+        this.height = (int) Math.ceil(height);
     }
 
     @Override
@@ -56,12 +56,12 @@ public class TextureRegion implements Texture {
     }
 
     @Override
-    public float getWidth() {
+    public int getWidth() {
         return this.width;
     }
 
     @Override
-    public float getHeight() {
+    public int getHeight() {
         return this.height;
     }
 

@@ -16,19 +16,21 @@
 
 package de.omnikryptec.libapi.openal;
 
-import de.codemakers.io.file.AdvancedFile;
-import de.omnikryptec.libapi.exposed.LibAPIManager;
-import org.apache.commons.io.IOUtils;
-import org.lwjgl.BufferUtils;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
+
+import org.apache.commons.io.IOUtils;
+import org.lwjgl.BufferUtils;
+
+import de.codemakers.io.file.AdvancedFile;
+import de.omnikryptec.libapi.exposed.LibAPIManager;
 
 public class SoundLoader {
 

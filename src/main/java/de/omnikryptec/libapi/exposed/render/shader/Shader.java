@@ -16,6 +16,8 @@
 
 package de.omnikryptec.libapi.exposed.render.shader;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Table;
@@ -24,12 +26,12 @@ import de.omnikryptec.resource.parser.shader.ShaderParser;
 import de.omnikryptec.resource.parser.shader.ShaderParser.ShaderType;
 
 public interface Shader {
-
+    
     /**
      * Binds this {@link Shader}
      */
     void bindShader();
-
+    
     /**
      * Supplies the individual shaders (e.g. vertex- and fragmentshader) to
      * initialize this {@link Shader} program.
@@ -37,13 +39,14 @@ public interface Shader {
      * @param shaderAttachments the individual shaders
      */
     void create(ShaderSource... shaderAttachments);
-
+    
     <T extends Uniform> T getUniform(String name);
-
-    default void create(final String name) {
-        create(name, ShaderParser.instance().getCurrentShaderTable());
+    
+    default void create(final String... names) {
+        create(ShaderParser.instance().getCurrentShaderTable(), names);
     }
-
+    
+    @Deprecated
     default void create(final String name, final Table<String, ShaderType, ShaderSource> table) {
         final Map<ShaderType, ShaderSource> map = table.row(name);
         if (map.size() == 0) {
@@ -56,5 +59,19 @@ public interface Shader {
             index++;
         }
         create(srcs);
+    }
+    
+    default void create(Table<String, ShaderType, ShaderSource> table, String... names) {
+        List<ShaderSource> srcs = new ArrayList<>();
+        for (String name : names) {
+            Map<ShaderType, ShaderSource> map = table.row(name);
+            if (map.size() == 0) {
+                throw new IllegalStateException("shader not found: " + name);
+            }
+            for (ShaderSource s : map.values()) {
+                srcs.add(s);
+            }
+        }
+        create(srcs.toArray(new ShaderSource[srcs.size()]));
     }
 }

@@ -16,9 +16,9 @@
 
 package de.omnikryptec.libapi.openal;
 
-import de.omnikryptec.libapi.exposed.Deletable;
-
 import javax.sound.sampled.AudioFormat;
+
+import de.omnikryptec.libapi.exposed.Deletable;
 
 public abstract class ALSound implements Deletable {
     /**
