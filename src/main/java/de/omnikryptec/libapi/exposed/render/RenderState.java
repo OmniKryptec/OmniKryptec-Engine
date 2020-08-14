@@ -51,7 +51,7 @@ public class RenderState implements Cloneable {
     }
 
     public static enum BlendMode {
-        ADDITIVE, ALPHA, MULTIPLICATIVE, OFF;
+        ADDITIVE, ALPHA, ALPHA_2D, MULTIPLICATIVE, OFF;
     }
 
     public static enum CullMode {

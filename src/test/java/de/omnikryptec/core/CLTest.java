@@ -35,13 +35,13 @@ import de.omnikryptec.libapi.opencl.OpenCL;
 import de.omnikryptec.util.settings.Settings;
 
 public class CLTest {
-
+    
     private static final String KERNEL = "__kernel void sum(__global const float *a, __global const float *b, __global float *result, int const size) {\r\n"
             + "    const int itemId = get_global_id(0); \r\n" + "    if(itemId < size) {\r\n"
-            + "        result[itemId] = a[itemId] + b[itemId];\r\n" + "    }\r\n" + "} ";
-
-    private static final int size = 10;
-
+            + "        result[itemId] = log(sqrt(a[itemId])) + log(sqrt(b[itemId]));\r\n" + "    }\r\n" + "} ";
+    
+    private static final int size = 2000000;
+    
     public static void main(final String[] args) {
         //Create stuff
         final Settings<LibSetting> s = new Settings<>();
@@ -74,6 +74,7 @@ public class CLTest {
         }
         bBuff.put(bArray);
         bBuff.rewind();
+        long time = System.nanoTime();
         //write buffers
         aMem.enqueueWriteBuffer(queue, aBuff);
         bMem.enqueueWriteBuffer(queue, bBuff);
@@ -88,12 +89,21 @@ public class CLTest {
         final FloatBuffer result = BufferUtils.createFloatBuffer(size);
         resultMem.enqueueReadBuffer(queue, result);
         queue.finish();
+        long time2 = System.nanoTime();
+        System.out.println("CL Time: " + (time2 - time));
+        //        for (int i = 0; i < size; i++) {
+        //            System.out.print(result.get(i) + " ");
+        //            if ((i + 1) % 100 == 0) {
+        //                System.out.println();
+        //            }
+        //        }
+        //        System.out.println();
+        time = System.nanoTime();
+        float[] resulta = new float[size];
         for (int i = 0; i < size; i++) {
-            System.out.print(result.get(i) + " ");
-            if ((i + 1) % 100 == 0) {
-                System.out.println();
-            }
+            resulta[i] = (float) (Math.log(Math.sqrt(aArray[i])) + Math.log(Math.sqrt(bArray[i])));
         }
-        System.out.println();
+        time2 = System.nanoTime();
+        System.out.println("J Time: " + (time2 - time));
     }
 }

@@ -51,7 +51,7 @@ public class Renderer2D implements Renderer {
 
     static final Comparator<Sprite> DEFAULT_COMPARATOR = (s0, s1) -> s0.getLayer() - s1.getLayer();
 
-    public static final RenderState SPRITE_STATE = RenderState.of(BlendMode.ALPHA);
+    public static final RenderState SPRITE_STATE = RenderState.of(BlendMode.ALPHA_2D);
     public static final RenderState LIGHT_STATE = RenderState.of(BlendMode.ADDITIVE);
     public static final RenderState MULT_STATE = RenderState.of(BlendMode.MULTIPLICATIVE);
 
