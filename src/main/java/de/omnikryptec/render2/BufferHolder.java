@@ -53,4 +53,12 @@ public class BufferHolder {
         }
         this.buffer.put(floats, offset, length);
     }
+    
+    public void addData(RenderData2D dd) {
+        if (dd.vertexDataSize() > buffer.remaining()) {
+            flush();
+        }
+        dd.fillVertexData(buffer);
+    }
+    
 }

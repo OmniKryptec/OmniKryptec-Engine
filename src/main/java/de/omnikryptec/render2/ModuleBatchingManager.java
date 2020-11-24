@@ -16,8 +16,7 @@
 
 package de.omnikryptec.render2;
 
-import java.util.Arrays;
-
+import java.nio.FloatBuffer;
 import de.omnikryptec.render.batch.module.Module;
 import de.omnikryptec.render.batch.module.ModuleBatchingManager.QuadSide;
 
@@ -38,7 +37,7 @@ public class ModuleBatchingManager {
         }
     }
     
-    public void put(float[] target, int index, Module... modules) {
+    public void put(FloatBuffer b, Module... modules) {
         int globalindex = 0;
         int localindex = 0;
         for (final Module m : modules) {
@@ -56,12 +55,9 @@ public class ModuleBatchingManager {
                 localindex += m.size();
             }
         }
-        int x = 0;
-        for (final QuadSide q : ARRANGED) {//Fuck I dont like this, this has to become faster or something, looks slow
-            System.arraycopy(this.global, 0, target, x, this.global.length);
-            x += this.global.length;
-            System.arraycopy(this.local[q.ordinal()], 0, target, x, this.local[q.ordinal()].length);
-            x += this.local[q.ordinal()].length;
+        for (final QuadSide q : ARRANGED) {
+            b.put(global, 0, this.global.length);
+            b.put(this.local[q.ordinal()], 0, this.local[q.ordinal()].length);
         }
     }
     

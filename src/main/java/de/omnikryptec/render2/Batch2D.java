@@ -21,7 +21,7 @@ public class Batch2D {
             this.target.prepare(renderdata);
         }
         this.currentMeta = renderdata;
-        this.target.addData(renderdata.getVertexData());
+        this.target.addData(renderdata);
     }
     
     public void begin(BaseRenderer target) {

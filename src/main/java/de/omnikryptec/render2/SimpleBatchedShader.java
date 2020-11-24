@@ -1,5 +1,8 @@
 package de.omnikryptec.render2;
 
+import java.nio.FloatBuffer;
+import java.util.function.Consumer;
+
 import org.joml.Matrix4f;
 
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
@@ -17,7 +20,6 @@ public class SimpleBatchedShader implements BatchedShader {
     public static class SimpleData2D implements RenderData2D {
         
         private SimpleBatchedShader bshad;
-        private float[] floats = new float[54];
         
         public PositionModule posModule = new PositionModule();
         public UVModule uvModule = new UVModule();
@@ -31,12 +33,6 @@ public class SimpleBatchedShader implements BatchedShader {
         }
         
         @Override
-        public float[] getVertexData() {
-            bshad.helper.put(floats, 0, colorModule, tilingModule, posModule, uvModule);
-            return floats;
-        }
-        
-        @Override
         public Texture[] getTextures() {
             return t;
         }
@@ -46,6 +42,15 @@ public class SimpleBatchedShader implements BatchedShader {
             return bshad;
         }
         
+        @Override
+        public void fillVertexData(FloatBuffer into) {
+            bshad.helper.put(into, colorModule, tilingModule, posModule, uvModule);
+        }
+
+        @Override
+        public int vertexDataSize() {
+            return 54;
+        }
     }
     
     private ModuleBatchingManager helper;
@@ -54,7 +59,7 @@ public class SimpleBatchedShader implements BatchedShader {
     
     public SimpleBatchedShader() {
         this.helper = new ModuleBatchingManager(5, 4);
-        this.buffers = new BufferHolder(layout(), 1000, 9);
+        this.buffers = new BufferHolder(layout(), 10000, 9);
         this.shader = new SimpleShaderSlot();
         //this.shader.setProjection(new Camera(new Matrix4f()));
         this.shader.setViewProjectionMatrix(new Matrix4f());
