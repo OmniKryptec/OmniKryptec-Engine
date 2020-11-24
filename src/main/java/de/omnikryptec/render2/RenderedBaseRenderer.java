@@ -1,5 +1,7 @@
 package de.omnikryptec.render2;
 
+import java.util.Arrays;
+
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.resource.TextureConfig;
@@ -21,7 +23,7 @@ public class RenderedBaseRenderer implements BaseRenderer {
     @Override
     public void prepare(RenderData2D meta) {
         this.currentMeta = meta;
-        // meta.getShader().bindShader(); TODO BIND THE SHADER
+        this.currentMeta.getShader().bind();
         for (int i = 0; i < meta.getTextures().length; i++) {
             if (meta.getTextures()[i] == null) {
                 NULL_TEXTURE.bindTexture(i);
@@ -29,7 +31,7 @@ public class RenderedBaseRenderer implements BaseRenderer {
                 meta.getTextures()[i].getBaseTexture().bindTexture(i);//Should already be efficient
             }
         }
-        meta.updateShader();//meh
+        meta.updateShader();
     }
     
     @Override

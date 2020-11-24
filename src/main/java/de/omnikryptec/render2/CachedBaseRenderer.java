@@ -3,8 +3,6 @@ package de.omnikryptec.render2;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.Lists;
-
 import de.omnikryptec.render.batch.vertexmanager.FloatCollector;
 
 public class CachedBaseRenderer implements BaseRenderer {

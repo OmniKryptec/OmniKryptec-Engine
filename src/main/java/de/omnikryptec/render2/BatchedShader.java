@@ -5,4 +5,6 @@ public interface BatchedShader {
     RenderData2D createRenderData();
     
     BufferHolder getBuffers();
+    
+    void bind();
 }

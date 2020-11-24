@@ -8,10 +8,13 @@ public interface RenderData2D extends Cloneable {
     
     Texture[] getTextures();
     
-    boolean requireUpdateShader();
+    default boolean requireUpdateShader() {
+        return false;
+    }
     
     //Shader specific stuff
-    void updateShader();
+    default void updateShader() {
+    }
     
     BatchedShader getShader();
     
