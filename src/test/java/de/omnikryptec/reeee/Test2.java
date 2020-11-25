@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 
 import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL46;
 
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.core.Scene;
@@ -51,7 +50,7 @@ import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
-public class Test extends Omnikryptec {
+public class Test2 extends Omnikryptec {
     
     public static void main(final String[] args) {
         Omnikryptec.initialize(new Settings<>(), RenderAPI.OpenGL, new Settings<>(), new Settings<>(), false, false);
@@ -107,8 +106,6 @@ public class Test extends Omnikryptec {
             trans.get(floats, i * 6);
         }
         instanced.updateData(floats);
-        System.out.println(GL46.glGetInteger(GL46.GL_MAX_TEXTURE_IMAGE_UNITS));
-        
         while (!window.isCloseRequested()) {
             LibAPIManager.instance().getGLFW().getRenderAPI().getSurface().clearColor(clearColor);
             api.renderInstanced(va, Primitive.Triangle, 6, 1000);

@@ -49,7 +49,7 @@ public class Mesh {
                 vbo.setDescription(BufferUsage.Static, Type.FLOAT, array.length);
                 vbo.updateData(array);
                 this.vertexArray.addVertexBuffer(vbo,
-                        new VertexBufferElement(Type.FLOAT, meshData.getAttributeSize(va), false));
+                        new VertexBufferElement(Type.FLOAT, meshData.getAttributeSize(va), false, 0));
             }
         }
     }

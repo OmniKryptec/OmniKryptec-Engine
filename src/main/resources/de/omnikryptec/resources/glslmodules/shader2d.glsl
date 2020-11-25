@@ -1,3 +1,32 @@
+$define shader gurke VERTEX$
+#version 330 core
+
+layout(location = 0) in vec2 i_pos;
+layout(location = 1) in mat2 i_rotate;
+layout(location = 3) in vec2 i_translate;
+
+out vec2 v_tex;
+
+uniform mat4 u_projview;
+
+void main(void){
+    v_tex = i_pos;//Hacky, lol
+    vec2 pos = i_translate + i_rotate * i_pos;
+    gl_Position = u_projview * vec4(pos, 0, 1);
+}
+
+$define shader gurke FRAGMENT$
+#version 330 core
+
+in vec2 v_tex;
+
+out vec4 color;
+
+void main(void){
+    color = vec4(v_tex,0,1);
+}
+
+
 $define shader engineRenderBatch2DShader VERTEX$
 #version 330 core
 

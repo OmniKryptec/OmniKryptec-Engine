@@ -59,7 +59,7 @@ public class SimpleBatchedShader implements BatchedShader {
     
     public SimpleBatchedShader() {
         this.helper = new ModuleBatchingManager(5, 4);
-        this.buffers = new BufferHolder(layout(), 10000, 9);
+        this.buffers = new BufferHolder(layout(), 10000);
         this.shader = new SimpleShaderSlot();
         //this.shader.setProjection(new Camera(new Matrix4f()));
         this.shader.setViewProjectionMatrix(new Matrix4f());

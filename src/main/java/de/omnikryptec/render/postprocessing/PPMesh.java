@@ -2,7 +2,6 @@ package de.omnikryptec.render.postprocessing;
 
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.Mesh;
-import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.resource.MeshData;
 import de.omnikryptec.resource.MeshData.VertexAttribute;
 

@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.opengl.GL33;
 
 import de.omnikryptec.libapi.exposed.Deletable;
 import de.omnikryptec.libapi.exposed.render.IndexBuffer;
@@ -30,69 +31,72 @@ import de.omnikryptec.libapi.exposed.render.VertexBufferLayout.VertexBufferEleme
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
 
 public class GLVertexArray implements VertexArray, Deletable {
-
+    
     private final int pointer;
     private int vaaIndex = 0;
-
+    
     private boolean indexBuffer;
-
+    private int attributeOffset = 0;//Ist dies klug?
+    
     public GLVertexArray() {
         this.pointer = GL30.glGenVertexArrays();
         registerThisAsAutodeletable();
     }
-
+    
     @Override
     public void bindArray() {
         OpenGLUtil.bindVertexArray(this.pointer, false);
     }
-
+    
     @Override
     public void unbindArray() {
         OpenGLUtil.bindVertexArray(0, true);
     }
-
+    
     @Override
     public void deleteRaw() {
         GL30.glDeleteVertexArrays(this.pointer);
     }
-
+    
     public int arrayId() {
         return this.pointer;
     }
-
+    
     @Override
     public void addVertexBuffer(final VertexBuffer buffer, final VertexBufferLayout layout) {
         final List<VertexBufferElement> elements = layout.getElements();
         int stride = 0;
         int offset = 0;
         for (final VertexBufferElement element : elements) {
-            stride += element.getCount() * OpenGLUtil.sizeof(element.getType());
+            stride += element.getValuesPerVertex() * OpenGLUtil.sizeof(element.getType());
         }
         bindArray();
         buffer.bindBuffer();
         for (int i = 0; i < elements.size(); i++) {
             final VertexBufferElement element = elements.get(i);
-            GL20.glEnableVertexAttribArray(i);
-            GL20.glVertexAttribPointer(i, element.getCount(), OpenGLUtil.typeId(element.getType()), element.normalize(),
-                    stride, offset);
-            offset += element.getCount() * OpenGLUtil.sizeof(element.getType());
+            GL20.glEnableVertexAttribArray(i + attributeOffset);
+            GL20.glVertexAttribPointer(i + attributeOffset, element.getValuesPerVertex(), OpenGLUtil.typeId(element.getType()),
+                    element.normalize(), stride, offset);
+            GL33.glVertexAttribDivisor(i + attributeOffset, element.getDivisor());//Probably should only allow one divisor per VBO? performance and so... but whatever
+            offset += element.getValuesPerVertex() * OpenGLUtil.sizeof(element.getType());
             this.vaaIndex++;
         }
+        attributeOffset += elements.size();
         unbindArray();
     }
-
+    
     @Override
     public void addVertexBuffer(final VertexBuffer buffer, final VertexBufferElement element) {
         bindArray();
         buffer.bindBuffer();
         //pass the attribarrayindex as parameter in the future?
         GL20.glEnableVertexAttribArray(this.vaaIndex);
-        GL20.glVertexAttribPointer(this.vaaIndex, element.getCount(), OpenGLUtil.typeId(element.getType()),
+        GL20.glVertexAttribPointer(this.vaaIndex, element.getValuesPerVertex(), OpenGLUtil.typeId(element.getType()),
                 element.normalize(), 0, 0);
         this.vaaIndex++;
         unbindArray();
     }
-
+    
     @Override
     public void setIndexBuffer(final IndexBuffer buffer) {
         this.indexBuffer = true;
@@ -100,10 +104,10 @@ public class GLVertexArray implements VertexArray, Deletable {
         buffer.bindBuffer();
         unbindArray();
     }
-
+    
     @Override
     public boolean hasIndexBuffer() {
         return this.indexBuffer;
     }
-
+    
 }

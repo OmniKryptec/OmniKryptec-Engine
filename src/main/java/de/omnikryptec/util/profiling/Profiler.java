@@ -110,7 +110,7 @@ public class Profiler {
 
     public static String currentInfo() {
         if (map.isEmpty()) {
-            return "";
+            return "Nothing has been profiled";
         }
         final StringBuilder b = new StringBuilder();
         for (final Object id : map.keySet()) {

@@ -21,8 +21,8 @@ public class BufferHolder {
     private int floatsPerVertex;
     private int maxfloats;
     
-    public BufferHolder(VertexBufferLayout layout, int vertexCount, int floatsPerVertex) {
-        this.floatsPerVertex = floatsPerVertex;
+    public BufferHolder(VertexBufferLayout layout, int vertexCount) {
+        this.floatsPerVertex = layout.getValuesPerVertex();
         this.maxfloats = vertexCount * this.floatsPerVertex;
         this.buffer = BufferUtils.createFloatBuffer(this.maxfloats);
         this.vb = LibAPIManager.instance().getGLFW().getRenderAPI().createVertexBuffer();
@@ -30,6 +30,10 @@ public class BufferHolder {
         this.va = LibAPIManager.instance().getGLFW().getRenderAPI().createVertexArray();
         this.va.addVertexBuffer(this.vb, layout);
     }
+    
+    
+   
+    
     
     public void flush() {
         final int count = this.buffer.position();

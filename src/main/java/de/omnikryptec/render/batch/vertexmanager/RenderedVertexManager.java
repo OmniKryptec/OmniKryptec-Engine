@@ -94,7 +94,7 @@ public class RenderedVertexManager implements VertexManager {
     @Override
     public void init(final ModuleBatchingManager mgr) {
         final VertexBufferLayout layout = mgr.createLayout();
-        this.floatsPerVertex = layout.getCount();
+        this.floatsPerVertex = layout.getValuesPerVertex();
         this.buffer = BufferUtils.createFloatBuffer(this.vertexCount * this.floatsPerVertex);
         this.vb = LibAPIManager.instance().getGLFW().getRenderAPI().createVertexBuffer();
         this.vb.setDescription(BufferUsage.Dynamic, Type.FLOAT, this.vertexCount * this.floatsPerVertex);

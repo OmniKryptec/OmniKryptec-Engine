@@ -37,7 +37,7 @@ public interface VertexArray {
 
     /**
      * Adds a {@link VertexBuffer} with a certain layout to this
-     * {@link VertexArray}. This method should only be used once.
+     * {@link VertexArray}. This method should only be used once?
      *
      * @param buffer the vertexbuffer
      * @param layout the layout
