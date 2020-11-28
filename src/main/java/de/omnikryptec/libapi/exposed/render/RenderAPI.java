@@ -142,5 +142,15 @@ public interface RenderAPI {
     
     void printErrors();
     
+    void printFBStackTrace();
+    
+    void printRenderState();
+    
+    default public void printDebug() {
+        printErrors();
+        printRenderState();
+        printFBStackTrace();
+    }
+    
     void setPolyMode(PolyMode polyMode);
 }

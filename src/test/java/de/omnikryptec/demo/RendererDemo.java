@@ -19,21 +19,12 @@ package de.omnikryptec.demo;
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.core.Scene;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
-import de.omnikryptec.libapi.exposed.render.FrameBuffer;
-import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
-import de.omnikryptec.libapi.opengl.OpenGLUtil;
-import de.omnikryptec.render.IProjection;
-import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.objects.SimpleSprite;
-import de.omnikryptec.render.renderer.Renderer;
 import de.omnikryptec.render.renderer.Renderer2D;
-import de.omnikryptec.render.renderer.ViewManager;
-import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
-import de.omnikryptec.util.updater.Time;
 
 public class RendererDemo extends Omnikryptec {
     

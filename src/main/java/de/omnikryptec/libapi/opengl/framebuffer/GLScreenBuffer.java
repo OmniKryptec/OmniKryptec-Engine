@@ -16,6 +16,8 @@
 
 package de.omnikryptec.libapi.opengl.framebuffer;
 
+import java.util.Arrays;
+
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
@@ -153,6 +155,12 @@ public class GLScreenBuffer extends SurfaceBuffer {
     @Override
     public void deleteRaw() {
         throw new UnsupportedOperationException("");
+    }
+    
+    @Override
+    public String toString() {
+        return GLScreenBuffer.class.getSimpleName() + "[viewport=" + Arrays.toString(viewport) + ", nW=" + nativeWidth
+                + ", nH=" + nativeHeight + "]";
     }
     
 }

@@ -42,7 +42,6 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
         va = api.createVertexArray();
         VertexBufferLayout layout = new VertexBufferLayout();
         layout.push(Type.FLOAT, 2, false);
-        //layout.push(Type.FLOAT, 2, false);
         va.addVertexBuffer(vb, layout);
         instanced = api.createVertexBuffer();
         instanced.setDescription(BufferUsage.Dynamic, Type.FLOAT, bsize);
@@ -61,6 +60,7 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
     
     @Override
     public void render(List<InstanceData> list) {
+        shader.bindShader();
         int count = 0;
         for (InstanceData id : list) {
             InstancedRectData d = (InstancedRectData) id;
@@ -83,7 +83,6 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
         }
         instanced.updateData(buffer);
         buffer.clear();
-        shader.bindShader();
         api.renderInstanced(va, Primitive.Triangle, 6, count);
     }
     

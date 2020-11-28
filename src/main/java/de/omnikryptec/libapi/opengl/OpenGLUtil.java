@@ -337,6 +337,7 @@ public class OpenGLUtil {
     }
     
     public static void logRenderState() {
+        logger.debug("RenderState (never modified entries might be wrong):");
         for (Entry<CACHE_ENUM, Object> e : cache.entrySet()) {
             logger.debug(e.getKey() + " " + e.getValue());
         }
