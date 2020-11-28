@@ -106,7 +106,7 @@ public class VertexBufferLayout {
      *
      * @return
      */
-    public int getValuesPerVertex() {
+    public int getSize() {
         int count = 0;
         for (final VertexBufferElement elem : this.elements) {
             count += elem.getValuesPerVertex();

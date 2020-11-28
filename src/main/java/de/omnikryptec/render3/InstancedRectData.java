@@ -4,21 +4,26 @@ import java.nio.FloatBuffer;
 
 import org.joml.Matrix3x2f;
 
+import de.omnikryptec.util.data.Color;
+
 public class InstancedRectData implements InstanceData {
     
     public static final InstancedRectBatchedRenderer REND = new InstancedRectBatchedRenderer();
     
     @Override
     public BatchedRenderer getBatchedRenderer() {
-        
         return REND;
     }
     
     public Matrix3x2f transform = new Matrix3x2f();
+    private float u0 = 0, v0 = 0, u1 = 1, v1 = 1;
+    private Color color = new Color();
     
     public void fill(FloatBuffer b) {
         transform.get(b);
         b.position(b.position() + 6);
+        b.put(u0).put(v0).put(u1).put(v1);
+        color.get(b);
     }
     
 }

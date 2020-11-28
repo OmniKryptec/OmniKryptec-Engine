@@ -22,7 +22,7 @@ public class BufferHolder {
     private int maxfloats;
     
     public BufferHolder(VertexBufferLayout layout, int vertexCount) {
-        this.floatsPerVertex = layout.getValuesPerVertex();
+        this.floatsPerVertex = layout.getSize();
         this.maxfloats = vertexCount * this.floatsPerVertex;
         this.buffer = BufferUtils.createFloatBuffer(this.maxfloats);
         this.vb = LibAPIManager.instance().getGLFW().getRenderAPI().createVertexBuffer();

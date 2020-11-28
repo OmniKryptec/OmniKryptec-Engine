@@ -16,6 +16,7 @@
 
 package de.omnikryptec.util.data;
 
+import java.nio.FloatBuffer;
 import java.util.Arrays;
 
 import org.joml.Vector4f;
@@ -459,6 +460,10 @@ public class Color implements Cloneable {
     
     public boolean equalsRGB(Color c) {
         return c != null && (c == this || this.equalsRGB(c.getR(), c.getG(), c.getB()));
+    }
+    
+    public void get(FloatBuffer floatBuffer) {
+        floatBuffer.put(d);
     }
     
     @Override

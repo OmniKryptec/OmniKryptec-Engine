@@ -1,29 +1,36 @@
 $define shader gurke VERTEX$
 #version 330 core
 
-layout(location = 0) in vec2 i_pos;
+layout(location = 0) in vec2 i_pos;//[0,1]x[0,1]
 layout(location = 1) in mat2 i_rotate;
 layout(location = 3) in vec2 i_translate;
+layout(location = 4) in vec4 i_texcoords;
+layout(location = 5) in vec4 i_color;
 
 out vec2 v_tex;
+out vec4 v_color;
 
 uniform mat4 u_projview;
 
 void main(void){
-    v_tex = i_pos;//Hacky, lol
+    float x = mix(i_texcoords.x, i_texcoords.z, i_pos.x);
+    float y = mix(i_texcoords.y, i_texcoords.w, i_pos.y);
+    v_tex = vec2(x, y);
     vec2 pos = i_translate + i_rotate * i_pos;
     gl_Position = u_projview * vec4(pos, 0, 1);
+    v_color = i_color;
 }
 
 $define shader gurke FRAGMENT$
 #version 330 core
 
 in vec2 v_tex;
+in vec4 v_color;
 
 out vec4 color;
 
 void main(void){
-    color = vec4(v_tex,0,1);
+    color = vec4(v_tex,0,1) * v_color;
 }
 
 

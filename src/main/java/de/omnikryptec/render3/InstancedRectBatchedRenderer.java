@@ -21,13 +21,15 @@ import de.omnikryptec.resource.MeshData.Primitive;
 
 public class InstancedRectBatchedRenderer implements BatchedRenderer {
     
-    private static final int bsize = 10000;
+    private static final int bsize = 40000;
     
     private FloatBuffer buffer;
     private VertexBuffer instanced;
     private RenderAPI api = LibAPIManager.instance().getGLFW().getRenderAPI();
     private VertexArray va;
     private Shader shader;
+    
+    private int instancedArgSize;
     
     public InstancedRectBatchedRenderer() {
         buffer = BufferUtils.createFloatBuffer(bsize);
@@ -49,6 +51,9 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
         lay2.push(Type.FLOAT, 2, false, 1);
         lay2.push(Type.FLOAT, 2, false, 1);
         lay2.push(Type.FLOAT, 2, false, 1);
+        lay2.push(Type.FLOAT, 4, false, 1);
+        lay2.push(Type.FLOAT, 4, false, 1);
+        instancedArgSize = lay2.getSize();
         va.addVertexBuffer(instanced, lay2);
         va.setIndexBuffer(ib);
         shader = api.createShader();
@@ -64,7 +69,7 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
         int count = 0;
         for (InstanceData id : list) {
             InstancedRectData d = (InstancedRectData) id;
-            if (count * 6 + 6 > buffer.remaining()) {
+            if ((count + 1) * instancedArgSize > buffer.remaining()) {
                 flush(count);
                 count = 0;
             }
