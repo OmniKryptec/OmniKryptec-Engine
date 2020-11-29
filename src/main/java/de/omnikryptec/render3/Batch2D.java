@@ -29,12 +29,12 @@ public class Batch2D {
     public void flush() {
         Collection<BatchedRenderer> renderers = batch.keySet();
         for (BatchedRenderer r : renderers) {
-            //batch.get(r).sort(c); TODO Sort here? Sort in the batched renderer? What? Oof
+            //batch.get(r).sort(c); TODO Sort here? Sort in the batched renderer? What? O
             switch (currentTarget) {
             case Cache:
                 throw new NotImplementedException("Cache is not yet implemented");
             case Render:
-                r.render(batch.get(r));
+                //r.render(batch.get(r));
                 break;
             default:
                 throw new IllegalStateException();
