@@ -272,6 +272,8 @@ public class OpenGLUtil {
     private static final int[] lastBoundTextures = new int[32];
     private static int currentShader;
     
+    private static int maxTexUnits = -1;
+    
     public static void bindVertexArray(final int vertexArray, final boolean override) {
         if (vertexArray != lastVertexArray || override) {
             GL30.glBindVertexArray(vertexArray);
@@ -478,6 +480,13 @@ public class OpenGLUtil {
             return GL11.GL_DEPTH_BUFFER_BIT;
         }
         return GL11.GL_COLOR_BUFFER_BIT;
+    }
+    
+    public static int getMaxTextureUnits() {
+        if (maxTexUnits == -1) {
+            maxTexUnits = GL46.glGetInteger(GL46.GL_MAX_TEXTURE_UNITS);
+        }
+        return maxTexUnits;
     }
     
 }

@@ -20,6 +20,7 @@ import javax.annotation.Nonnull;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL31;
+import org.lwjgl.opengl.GL46;
 
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.FrameBufferStack;
@@ -153,4 +154,8 @@ public class OpenGLRenderAPI implements RenderAPI {
         this.frameBufferStack.printStackTrace();
     }
     
+    @Override
+    public int getMaxTextureUnits() {
+        return OpenGLUtil.getMaxTextureUnits();
+    }
 }

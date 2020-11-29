@@ -117,6 +117,10 @@ public class GLShader implements Shader, Deletable {
         final String[] lines = src.split("[\n\r]+");
         for (final String l : lines) {
             if (l.contains("uniform")) {
+                if(l.contains("]")) {
+                    logger.debug("'"+l+"' possibly contains a uniform array which is not automated yet");
+                    continue;
+                }
                 final String un = l.substring(l.indexOf("uniform") + "uniform".length()).replace(";", "").trim();
                 final String[] data = un.split("\\s+");
                 final String name = data[1].trim();

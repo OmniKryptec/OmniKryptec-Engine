@@ -1,6 +1,8 @@
 package de.omnikryptec.render3;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.function.Supplier;
 
 import org.apache.commons.lang3.NotImplementedException;
 
@@ -27,7 +29,7 @@ public class Batch2D {
     public void flush() {
         Collection<BatchedRenderer> renderers = batch.keySet();
         for (BatchedRenderer r : renderers) {
-            //batch.get(r).sort(c); TODO Sort here? Sort in the batched renderer? What?
+            //batch.get(r).sort(c); TODO Sort here? Sort in the batched renderer? What? Oof
             switch (currentTarget) {
             case Cache:
                 throw new NotImplementedException("Cache is not yet implemented");
@@ -44,6 +46,11 @@ public class Batch2D {
     public void end() {
         flush();
         this.currentTarget = null;
+    }
+    
+    public void drawDirect(List<? extends Supplier<InstanceData>> d) {//this is WIP or something
+        BatchedRenderer r = d.get(0).get().getBatchedRenderer();
+        r.render(d);
     }
     
     public void draw(InstanceData data) {

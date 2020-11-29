@@ -6,9 +6,11 @@ layout(location = 1) in mat2 i_rotate;
 layout(location = 3) in vec2 i_translate;
 layout(location = 4) in vec4 i_texcoords;
 layout(location = 5) in vec4 i_color;
+layout(location = 6) in float i_texIndex;
 
 out vec2 v_tex;
-out vec4 v_color;
+flat out vec4 v_color;
+flat out int v_texIndex;
 
 uniform mat4 u_projview;
 
@@ -19,18 +21,22 @@ void main(void){
     vec2 pos = i_translate + i_rotate * i_pos;
     gl_Position = u_projview * vec4(pos, 0, 1);
     v_color = i_color;
+    v_texIndex = int(i_texIndex);
 }
 
 $define shader gurke FRAGMENT$
 #version 330 core
 
 in vec2 v_tex;
-in vec4 v_color;
+flat in vec4 v_color;
+flat in int v_texIndex;
 
 out vec4 color;
 
+uniform sampler2D samplers[8]; 
+
 void main(void){
-    color = vec4(v_tex,0,1) * v_color;
+    color = texture(samplers[v_texIndex], v_tex) * v_color;
 }
 
 

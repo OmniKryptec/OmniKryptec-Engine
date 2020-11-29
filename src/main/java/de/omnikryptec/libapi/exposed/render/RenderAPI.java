@@ -153,4 +153,6 @@ public interface RenderAPI {
     }
     
     void setPolyMode(PolyMode polyMode);
+    
+    int getMaxTextureUnits();
 }
