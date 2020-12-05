@@ -81,7 +81,7 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
     }
     
     @Override
-    public void render(List<? extends Supplier<InstanceData>> list) {
+    public void render(Iterable<? extends Supplier<InstanceData>> list) {
         shader.bindShader();
         int instanceCount = 0;
         for (Supplier<InstanceData> id : list) {
@@ -151,7 +151,7 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
     }
     
     @Override
-    public BatchCache prepare(List<InstanceData> list) {
+    public BatchCache prepare(Iterable<InstanceData> list) {
         return null;
     }
     

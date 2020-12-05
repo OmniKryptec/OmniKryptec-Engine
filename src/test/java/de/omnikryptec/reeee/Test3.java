@@ -49,10 +49,10 @@ public class Test3 extends Omnikryptec {
             LibAPIManager.instance().getGLFW().getRenderAPI().getSurface().clearColor(clearColor);
             batch.begin(Target.Render);
             Profiler.begin("test3");
-            batch.drawDirect(list);
-//            for (InstancedRectData d : ar) {
-//                batch.draw(d);
-//            }
+            //batch.drawList(list);
+            for (InstancedRectData d : ar) {
+                batch.draw(d);
+            }
             batch.end();
             Profiler.end();
             updater.update();
