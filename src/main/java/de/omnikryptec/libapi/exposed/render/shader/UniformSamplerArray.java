@@ -34,7 +34,7 @@ public class UniformSamplerArray {
         }
     }
     
-    public final UniformSamplerArray loadMatrixArray(final int[] ints) {
+    public final UniformSamplerArray loadSamplerArray(final int[] ints) {
         for (int i = 0; i < uniforms.length; i++) {
             this.uniforms[i].setSampler(ints[i]);
         }

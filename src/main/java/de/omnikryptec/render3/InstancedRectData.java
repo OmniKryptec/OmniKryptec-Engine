@@ -1,8 +1,5 @@
 package de.omnikryptec.render3;
 
-import java.nio.FloatBuffer;
-import java.util.function.Supplier;
-
 import org.joml.Matrix3x2f;
 
 import de.omnikryptec.libapi.exposed.render.Texture;

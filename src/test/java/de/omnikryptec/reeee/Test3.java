@@ -47,9 +47,9 @@ public class Test3 extends Omnikryptec {
             d.transform = trans;
         }
         List<InstanceData> list = Arrays.asList(ar);
-        batch.begin(Target.Cache);
-        batch.drawList(InstancedRectData.REND, list);
-        List<BatchCache> bcl = batch.end();
+        //batch.begin(Target.Cache);
+        //batch.drawList(InstancedRectData.REND, list);
+        //List<BatchCache> bcl = batch.end();
         while (!window.isCloseRequested()) {
             LibAPIManager.instance().getGLFW().getRenderAPI().getSurface().clearColor(clearColor);
             batch.begin(Target.Render);
