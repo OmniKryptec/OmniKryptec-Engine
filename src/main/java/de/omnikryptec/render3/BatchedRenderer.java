@@ -2,12 +2,16 @@ package de.omnikryptec.render3;
 
 import java.util.function.Supplier;
 
+import de.omnikryptec.render3.Batch2D.Target;
+
 public interface BatchedRenderer {
     
-    void render(Iterable<? extends Supplier<InstanceData>> list);
+    void start(Target target);
     
-    void render(BatchCache cache);
+    BatchCache end();
     
-    BatchCache prepare(Iterable<InstanceData> list);
+    void put(Iterable<? extends Supplier<? extends InstanceData>> list);
+    
+    void put(BatchCache cache);
     
 }

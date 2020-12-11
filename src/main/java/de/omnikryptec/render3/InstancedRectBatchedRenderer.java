@@ -21,13 +21,17 @@ import de.omnikryptec.libapi.exposed.render.shader.Shader;
 import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
 import de.omnikryptec.libapi.exposed.render.shader.UniformMatrixArray;
 import de.omnikryptec.libapi.exposed.render.shader.UniformSamplerArray;
+import de.omnikryptec.render3.Batch2D.Target;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
+import de.omnikryptec.util.data.DynamicArray;
 import de.omnikryptec.resource.MeshData.Primitive;
 
 public class InstancedRectBatchedRenderer implements BatchedRenderer {
     
     private static final int bsize = 40000;
+    
+    private static final int texcount = 8;
     
     private FloatBuffer buffer;
     private VertexBuffer instanced;
@@ -40,7 +44,7 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
     private final Texture NULL_TEXTURE;
     private static final TextureConfig MYCONFIG = new TextureConfig();
     
-    private Texture[] textures = new Texture[8];
+    private Texture[] textures = new Texture[texcount];
     private int textureFillIndex = 0;
     
     public InstancedRectBatchedRenderer() {
@@ -80,11 +84,15 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
         m.loadMatrix(new Matrix4f());
     }
     
+    private int instanceCount = 0;
+    
     @Override
-    public void render(Iterable<? extends Supplier<InstanceData>> list) {
+    public void put(Iterable<? extends Supplier<? extends InstanceData>> list) {
         shader.bindShader();
-        int instanceCount = 0;
-        for (Supplier<InstanceData> id : list) {
+        for (Supplier<? extends InstanceData> id : list) {
+            if (id == null || id.get() == null) {
+                continue;
+            }
             if ((instanceCount + 1) * instancedArgSize > buffer.remaining()) {
                 flush(instanceCount);
                 instanceCount = 0;
@@ -105,10 +113,20 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
             buffer.put(localTextureIndex);
             instanceCount++;
         }
+        
+    }
+    
+    @Override
+    public void start(Target target) {
+    }
+    
+    @Override
+    public BatchCache end() {
         if (instanceCount != 0) {
             flush(instanceCount);
             instanceCount = 0;
         }
+        return null;
     }
     
     private int findTexture(Texture t) {
@@ -147,12 +165,7 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
     }
     
     @Override
-    public void render(BatchCache cache) {
-    }
-    
-    @Override
-    public BatchCache prepare(Iterable<InstanceData> list) {
-        return null;
+    public void put(BatchCache cache) {
     }
     
 }

@@ -36,7 +36,8 @@ public class Test3 extends Omnikryptec {
         rm.load(false, false, "intern:/de/omnikryptec/resources/glslmodules/shader2d.glsl");
         Batch2D batch = new Batch2D();
         InstancedRectData[] ar = new InstancedRectData[10000];
-        for (int i = 0; i < ar.length; i++) {
+        ar[0] = null;
+        for (int i = 1; i < ar.length; i++) {
             Matrix3x2f trans = new Matrix3x2f();
             trans.setTranslation(-0.5f, -0.5f);
             trans.rotateLocal(3.14f / 4 + i);
@@ -49,10 +50,10 @@ public class Test3 extends Omnikryptec {
             LibAPIManager.instance().getGLFW().getRenderAPI().getSurface().clearColor(clearColor);
             batch.begin(Target.Render);
             Profiler.begin("test3");
-            //batch.drawList(list);
-            for (InstancedRectData d : ar) {
-                batch.draw(d);
-            }
+            batch.drawList(InstancedRectData.REND, list);
+//            for (InstancedRectData d : ar) {
+//                batch.draw(d);
+//            }
             batch.end();
             Profiler.end();
             updater.update();
