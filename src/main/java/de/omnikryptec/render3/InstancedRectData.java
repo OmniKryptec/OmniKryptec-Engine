@@ -26,9 +26,8 @@ public class InstancedRectData implements InstanceData {
         return texture;
     }
     
-    public void fill(FloatBuffer b) {
-        transform.get(b);
-        b.position(b.position() + 6);
+    public void fill(FloatCollector b) {
+        b.put(transform);
         b.put(u0).put(v0).put(u1).put(v1);
         color.get(b);
     }

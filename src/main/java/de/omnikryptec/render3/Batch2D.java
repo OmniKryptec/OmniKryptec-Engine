@@ -81,6 +81,7 @@ public class Batch2D {
         for (BatchCache bc : cache) {
             Util.ensureNonNull(bc);
             cacheBatch.put(bc.getBatchedRenderer(), bc);
+            renderers.add(bc.getBatchedRenderer());
         }
     }
     

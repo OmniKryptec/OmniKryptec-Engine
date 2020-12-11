@@ -12,6 +12,7 @@ import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
 import de.omnikryptec.render3.Batch2D;
 import de.omnikryptec.render3.Batch2D.Target;
+import de.omnikryptec.render3.BatchCache;
 import de.omnikryptec.render3.InstanceData;
 import de.omnikryptec.render3.InstancedRectData;
 import de.omnikryptec.resource.loadervpc.ResourceManager;
@@ -46,14 +47,18 @@ public class Test3 extends Omnikryptec {
             d.transform = trans;
         }
         List<InstanceData> list = Arrays.asList(ar);
+        batch.begin(Target.Cache);
+        batch.drawList(InstancedRectData.REND, list);
+        List<BatchCache> bcl = batch.end();
         while (!window.isCloseRequested()) {
             LibAPIManager.instance().getGLFW().getRenderAPI().getSurface().clearColor(clearColor);
             batch.begin(Target.Render);
             Profiler.begin("test3");
+            //batch.drawCache(bcl);
             batch.drawList(InstancedRectData.REND, list);
-//            for (InstancedRectData d : ar) {
-//                batch.draw(d);
-//            }
+            //            for (InstancedRectData d : ar) {
+            //                batch.draw(d);
+            //            }
             batch.end();
             Profiler.end();
             updater.update();

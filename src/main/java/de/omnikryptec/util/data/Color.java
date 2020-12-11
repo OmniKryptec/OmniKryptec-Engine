@@ -21,6 +21,7 @@ import java.util.Arrays;
 
 import org.joml.Vector4f;
 
+import de.omnikryptec.render3.FloatCollector;
 import de.omnikryptec.util.math.Interpolator;
 import de.omnikryptec.util.math.Mathf;
 
@@ -464,6 +465,10 @@ public class Color implements Cloneable {
     
     public void get(FloatBuffer floatBuffer) {
         floatBuffer.put(d);
+    }
+    
+    public void get(FloatCollector flc) {
+        flc.put(d);
     }
     
     @Override

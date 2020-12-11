@@ -1,6 +1,7 @@
 package de.omnikryptec.render3;
 
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -22,6 +23,7 @@ import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
 import de.omnikryptec.libapi.exposed.render.shader.UniformMatrixArray;
 import de.omnikryptec.libapi.exposed.render.shader.UniformSamplerArray;
 import de.omnikryptec.render3.Batch2D.Target;
+import de.omnikryptec.render3.InstancedRectBatchCache.CacheEntry;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
 import de.omnikryptec.util.data.DynamicArray;
@@ -33,7 +35,7 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
     
     private static final int texcount = 8;
     
-    private FloatBuffer buffer;
+    private BufferFloatCollector renderCollector;
     private VertexBuffer instanced;
     private RenderAPI api = LibAPIManager.instance().getGLFW().getRenderAPI();
     private VertexArray va;
@@ -44,13 +46,18 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
     private final Texture NULL_TEXTURE;
     private static final TextureConfig MYCONFIG = new TextureConfig();
     
+    private InstancedRectBatchCache batchCache;
+    
     private Texture[] textures = new Texture[texcount];
     private int textureFillIndex = 0;
+    
+    private FloatCollector currentFloats;
+    private int instanceCount = 0;
     
     public InstancedRectBatchedRenderer() {
         this.NULL_TEXTURE = LibAPIManager.instance().getGLFW().getRenderAPI()
                 .createTexture2D(TextureData.WHITE_TEXTURE_DATA, MYCONFIG);
-        buffer = BufferUtils.createFloatBuffer(bsize);
+        renderCollector = new BufferFloatCollector(bsize);
         float[] array = new float[] { 0, 0, 0, 1, 1, 0, 1, 1 };
         int[] index = new int[] { 0, 1, 2, 2, 1, 3 };
         IndexBuffer ib = api.createIndexBuffer();
@@ -84,16 +91,13 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
         m.loadMatrix(new Matrix4f());
     }
     
-    private int instanceCount = 0;
-    
     @Override
     public void put(Iterable<? extends Supplier<? extends InstanceData>> list) {
-        shader.bindShader();
         for (Supplier<? extends InstanceData> id : list) {
             if (id == null || id.get() == null) {
                 continue;
             }
-            if ((instanceCount + 1) * instancedArgSize > buffer.remaining()) {
+            if ((instanceCount + 1) * instancedArgSize > currentFloats.remaining()) {
                 flush(instanceCount);
                 instanceCount = 0;
             }
@@ -109,15 +113,38 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
                 textures[textureFillIndex] = getBaseTexture(instanceData.getTexture());
                 localTextureIndex = textureFillIndex;
             }
-            instanceData.fill(buffer);
-            buffer.put(localTextureIndex);
+            instanceData.fill(currentFloats);
+            currentFloats.put(localTextureIndex);
             instanceCount++;
         }
         
     }
     
     @Override
+    public void put(BatchCache cache) {
+        InstancedRectBatchCache irbc = (InstancedRectBatchCache) cache;
+        flush(instanceCount);
+        instanceCount = 0;
+        Texture[] old = this.textures;
+        for (CacheEntry ce : irbc.cache) {
+            if (ce != null) {
+                currentFloats.put(ce.collector.getArray(), 0, ce.collector.position());//FIXME array half filled
+                this.textures = ce.textures;
+                flush(ce.instanceCount);
+            }
+        }
+        this.textures = old;
+    }
+    
+    @Override
     public void start(Target target) {
+        if (target == Target.Cache) {
+            this.batchCache = new InstancedRectBatchCache();
+            this.currentFloats = new ArrayFloatCollector(bsize);
+        } else {
+            shader.bindShader();
+            this.currentFloats = renderCollector;
+        }
     }
     
     @Override
@@ -126,7 +153,9 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
             flush(instanceCount);
             instanceCount = 0;
         }
-        return null;
+        BatchCache returnthis = this.batchCache;
+        this.batchCache = null;
+        return returnthis;
     }
     
     private int findTexture(Texture t) {
@@ -150,22 +179,23 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
     }
     
     private void flush(int count) {
-        if (count == 0 || buffer.position() == 0) {
+        if (count == 0 || currentFloats.position() == 0) {
             return;
         }
-        for (int i = 0; i < textures.length; i++) {
-            if (textures[i] == null) {
-                break;
+        if (batchCache != null) {
+            batchCache.push((ArrayFloatCollector) currentFloats, textures.clone(), count);
+            currentFloats = new ArrayFloatCollector(bsize);
+        } else {
+            for (int i = 0; i < textures.length; i++) {
+                if (textures[i] == null) {
+                    break;
+                }
+                textures[i].bindTexture(i);
             }
-            textures[i].bindTexture(i);
+            instanced.updateData(renderCollector.getBuffer());
+            renderCollector.getBuffer().clear();
+            api.renderInstanced(va, Primitive.Triangle, 6, count);
         }
-        instanced.updateData(buffer);
-        buffer.clear();
-        api.renderInstanced(va, Primitive.Triangle, 6, count);
-    }
-    
-    @Override
-    public void put(BatchCache cache) {
     }
     
 }
