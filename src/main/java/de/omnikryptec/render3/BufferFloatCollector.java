@@ -3,6 +3,8 @@ package de.omnikryptec.render3;
 import java.nio.FloatBuffer;
 
 import org.joml.Matrix3x2fc;
+import org.joml.Vector2fc;
+import org.joml.Vector4fc;
 import org.lwjgl.BufferUtils;
 
 public class BufferFloatCollector implements FloatCollector {
@@ -19,7 +21,18 @@ public class BufferFloatCollector implements FloatCollector {
         buffer.position(buffer.position() + 6);
         return this;
     }
-    
+    @Override
+    public FloatCollector put(Vector2fc vec) {
+        vec.get(buffer);
+        buffer.position(buffer.position() + 2);
+        return this;
+    }
+    @Override
+    public FloatCollector put(Vector4fc vec) {
+        vec.get(buffer);
+        buffer.position(buffer.position() + 4);
+        return this;
+    }
     @Override
     public FloatCollector put(float f) {
         buffer.put(f);

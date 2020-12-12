@@ -16,6 +16,8 @@ public class InstancedRectBatchCache implements BatchCache {
     
     DynamicArray<CacheEntry> cache = new DynamicArray<>();
     
+    Class<? extends BatchedRenderer> actualClazz;
+    
     void push(ArrayFloatCollector buffer, Texture[] textures, int instancecount) {
         CacheEntry e = new CacheEntry();
         e.collector = buffer;
@@ -26,6 +28,6 @@ public class InstancedRectBatchCache implements BatchCache {
     
     @Override
     public Class<? extends BatchedRenderer> getBatchedRendererClass() {
-        return InstancedRectBatchedRenderer.class;
+        return actualClazz;
     }
 }

@@ -2,7 +2,6 @@ package de.omnikryptec.render3.instancedrect;
 
 import java.util.function.Supplier;
 
-import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.render3.ArrayFloatCollector;
@@ -14,39 +13,40 @@ import de.omnikryptec.render3.InstanceData;
 import de.omnikryptec.render3.InstancedRender;
 import de.omnikryptec.render3.instancedrect.InstancedRectBatchCache.CacheEntry;
 
-public class InstancedRectBatchedRenderer implements BatchedRenderer {
+public abstract class InstancedRectBatchedRenderer<T extends InstancedRectData> implements BatchedRenderer {
     
-    private static final int FLOATCOLLECTOR_SIZE = 40000;
-    static final int TEXTURE_ACCUM_SIZE = 8;
-    
-    private final int instancedArgSize;
+    private final int floatcollectorSize;
+    private final int argSize;
     
     private BufferFloatCollector renderCollector;
     private InstancedRender rendermgr;
-    private InstancedRectShader shader;
     
     private InstancedRectBatchCache batchCache;
     private final boolean caching;
     
-    private Texture[] textures = new Texture[TEXTURE_ACCUM_SIZE];
+    private Texture[] textures;
     private int textureFillIndex = 0;
     
     private FloatCollector currentFloats;
     private int instanceCount = 0;
     
-    public InstancedRectBatchedRenderer(boolean cache) {
-        renderCollector = new BufferFloatCollector(FLOATCOLLECTOR_SIZE);
-        VertexBufferLayout instancedLayout = new VertexBufferLayout();
-        instancedLayout.push(Type.FLOAT, 2, false, 1);
-        instancedLayout.push(Type.FLOAT, 2, false, 1);
-        instancedLayout.push(Type.FLOAT, 2, false, 1);
-        instancedLayout.push(Type.FLOAT, 4, false, 1);
-        instancedLayout.push(Type.FLOAT, 4, false, 1);
-        instancedLayout.push(Type.FLOAT, 1, false, 1);
-        instancedArgSize = instancedLayout.getSize();
-        rendermgr = new InstancedRender(instancedLayout, FLOATCOLLECTOR_SIZE);
-        shader = new InstancedRectShader();
+    public InstancedRectBatchedRenderer(boolean cache, int floatcollectorsize, VertexBufferLayout instancedLayout,
+            int texAccumSize) {
         this.caching = cache;
+        this.floatcollectorSize = floatcollectorsize;
+        this.argSize = instancedLayout.getSize();
+        this.textures = new Texture[texAccumSize];
+        if (!cache) {
+            renderCollector = new BufferFloatCollector(floatcollectorsize);
+            rendermgr = new InstancedRender(instancedLayout, floatcollectorsize);
+        }
+    }
+    
+    protected abstract void fill(FloatCollector target, T id, int textureIndex);
+    
+    protected abstract void bindShader();
+    
+    protected void prepareDrawCmd() {
     }
     
     @Override
@@ -55,13 +55,12 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
             if (id == null || id.get() == null) {
                 continue;
             }
-            if ((instanceCount + 1) * instancedArgSize > currentFloats.remaining()) {
+            if ((instanceCount + 1) * argSize > currentFloats.remaining()) {
                 flush();
             }
-            InstancedRectData instanceData = (InstancedRectData) id.get();
+            T instanceData = (T) id.get();
             int localTextureIndex = setupTexture(instanceData.getTexture());
-            instanceData.fill(currentFloats);
-            currentFloats.put(localTextureIndex);
+            fill(currentFloats, instanceData, localTextureIndex);
             instanceCount++;
         }
         
@@ -115,9 +114,10 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
     public void start() {
         if (caching) {
             this.batchCache = new InstancedRectBatchCache();
-            this.currentFloats = new ArrayFloatCollector(FLOATCOLLECTOR_SIZE);
+            this.batchCache.actualClazz = this.getClass();
+            this.currentFloats = new ArrayFloatCollector(floatcollectorSize);
         } else {
-            shader.bindShader();
+            bindShader();
             this.currentFloats = renderCollector;
         }
     }
@@ -130,17 +130,13 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
         return returnthis;
     }
     
-    public InstancedRectShader getShader() {
-        return shader;
-    }
-    
     private void flush() {
         if (instanceCount == 0 || currentFloats.position() == 0) {
             return;
         }
         if (caching) {
             batchCache.push((ArrayFloatCollector) currentFloats, textures.clone(), instanceCount);
-            currentFloats = new ArrayFloatCollector(FLOATCOLLECTOR_SIZE);
+            currentFloats = new ArrayFloatCollector(floatcollectorSize);
         } else {
             for (int i = 0; i < textures.length; i++) {
                 if (textures[i] == null) {
@@ -148,6 +144,7 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
                 }
                 textures[i].bindTexture(i);
             }
+            prepareDrawCmd();
             rendermgr.draw(renderCollector.getBuffer(), instanceCount);
             renderCollector.getBuffer().clear();
         }

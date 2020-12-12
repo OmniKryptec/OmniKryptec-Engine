@@ -11,19 +11,19 @@ import de.omnikryptec.libapi.exposed.render.shader.ShaderProgram;
 import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
 import de.omnikryptec.libapi.exposed.render.shader.UniformSamplerArray;
 
-public class InstancedRectShader {
+public class DefaultInstancedRectShader {
     private final RenderAPI api = LibAPIManager.instance().getGLFW().getRenderAPI();
     private ShaderProgram shaderProgram;
     
     private UniformMatrix projViewU;
     
-    InstancedRectShader() {
+    DefaultInstancedRectShader() {
         shaderProgram = api.createShader();
-        shaderProgram.create("gurke");
+        shaderProgram.create("defaultInstancedShader");
         projViewU = shaderProgram.getUniform("u_projview");
         UniformSamplerArray samplers = new UniformSamplerArray("samplers",
-                InstancedRectBatchedRenderer.TEXTURE_ACCUM_SIZE);
-        samplers.loadSamplerArray(IntStream.range(0, InstancedRectBatchedRenderer.TEXTURE_ACCUM_SIZE).toArray());
+                DefaultInstancedRectRenderer.TEXTURE_ACCUM_SIZE);
+        samplers.loadSamplerArray(IntStream.range(0, DefaultInstancedRectRenderer.TEXTURE_ACCUM_SIZE).toArray());
         shaderProgram.bindShader();
         projViewU.loadMatrix(new Matrix4f());
     }

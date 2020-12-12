@@ -39,6 +39,72 @@ void main(void){
     color = texture(samplers[v_texIndex], v_tex) * v_color;
 }
 
+$define shader defaultInstancedShader VERTEX$
+#version 330 core
+
+layout(location = 0) in vec2 i_pos;//[0,1]x[0,1]
+layout(location = 1) in mat2 i_rotate;
+layout(location = 3) in vec2 i_translate;
+layout(location = 4) in vec4 i_texcoords;
+layout(location = 5) in vec4 i_color;
+layout(location = 6) in vec4 i_borderColor;
+layout(location = 7) in vec4 i_sdData;
+layout(location = 8) in vec2 i_sdOffset;
+layout(location = 9) in float i_texIndex;
+
+out vec2 v_tex;
+flat out vec4 v_color;
+flat out int v_texIndex;
+flat out vec4 v_borderColor;
+flat out vec4 v_sdData;
+flat out vec2 v_sdOffset;
+
+uniform mat4 u_projview;
+
+void main(void){
+    float x = mix(i_texcoords.x, i_texcoords.z, i_pos.x);
+    float y = mix(i_texcoords.y, i_texcoords.w, i_pos.y);
+    v_tex = vec2(x, y);
+    vec2 pos = i_translate + i_rotate * i_pos;
+    gl_Position = u_projview * vec4(pos, 0, 1);
+    v_color = i_color;
+    v_texIndex = int(i_texIndex);
+    v_borderColor = i_borderColor;
+    v_sdData = i_sdData;
+    v_sdOffset = i_sdOffset;
+}
+
+$define shader defaultInstancedShader FRAGMENT$
+#version 330 core
+
+in vec2 v_tex;
+flat in vec4 v_color;
+flat in int v_texIndex;
+flat in vec4 v_borderColor;
+flat in vec4 v_sdData;
+flat in vec2 v_sdOffset;
+
+out vec4 color;
+
+uniform sampler2D samplers[8]; 
+
+void main(void){
+	float dCol = v_color.a * texture(samplers[v_texIndex], v_tex + v_sdOffset).a;
+    color = texture(samplers[v_texIndex], v_tex) * v_color;
+    
+    float dist = 1.0 - color.a;
+	float alpha = 1.0 - smoothstep(v_sdData.x, v_sdData.y, dist);
+	
+	float dist2 = 1.0 - dCol;
+	float outlineAlpha = 1.0 - smoothstep(v_sdData.z, v_sdData.w, dist2);
+	
+	float overallAlpha = alpha + (1.0 - alpha) * outlineAlpha;
+
+	color.a = alpha;	
+    color = mix(v_borderColor, color, alpha/overallAlpha);
+}
+
+
 
 $define shader engineRenderBatch2DShader VERTEX$
 #version 330 core

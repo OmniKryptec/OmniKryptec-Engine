@@ -11,7 +11,10 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
 import de.omnikryptec.render3.Batch2D;
+import de.omnikryptec.render3.BatchCache;
 import de.omnikryptec.render3.InstanceData;
+import de.omnikryptec.render3.instancedrect.DefaultInstanceRectData;
+import de.omnikryptec.render3.instancedrect.DefaultInstancedRectRenderer;
 import de.omnikryptec.render3.instancedrect.InstancedRectBatchedRenderer;
 import de.omnikryptec.render3.instancedrect.InstancedRectData;
 import de.omnikryptec.resource.loadervpc.ResourceManager;
@@ -35,29 +38,29 @@ public class Test3 extends Omnikryptec {
         rm.addDefaultLoaders();
         rm.load(false, false, "intern:/de/omnikryptec/resources/glslmodules/shader2d.glsl");
         Batch2D batch = new Batch2D();
-        InstancedRectData[] ar = new InstancedRectData[10000];
+        DefaultInstanceRectData[] ar = new DefaultInstanceRectData[10000];
         ar[0] = null;
         for (int i = 1; i < ar.length; i++) {
             Matrix3x2f trans = new Matrix3x2f();
             trans.setTranslation(-0.5f, -0.5f);
             trans.rotateLocal(3.14f / 4 + i);
-            InstancedRectData d = new InstancedRectData();
+            DefaultInstanceRectData d = new DefaultInstanceRectData();
             ar[i] = d;
             d.transform = trans;
         }
         List<InstanceData> list = Arrays.asList(ar);
-        //batch.setInstance(InstancedRectBatchedRenderer.class, new InstancedRectBatchedRenderer(true));
-        //batch.begin();
-        //batch.drawList(InstancedRectBatchedRenderer.class, list);
-        //List<BatchCache> bcl = batch.end();
-        batch.setInstance(InstancedRectBatchedRenderer.class, new InstancedRectBatchedRenderer(false));
+        batch.setInstance(DefaultInstancedRectRenderer.class, new DefaultInstancedRectRenderer(true));
+        batch.begin();
+        batch.drawList(DefaultInstancedRectRenderer.class, list);
+        List<BatchCache> bcl = batch.end();
+        batch.setInstance(DefaultInstancedRectRenderer.class, new DefaultInstancedRectRenderer(false));
         //OpenGLUtil.setPolyMode(PolyMode.LINE);
         while (!window.isCloseRequested()) {
             LibAPIManager.instance().getGLFW().getRenderAPI().getSurface().clearColor(clearColor);
             batch.begin();
             Profiler.begin("test3");
-            //batch.drawCache(bcl);
-            batch.drawList(InstancedRectBatchedRenderer.class, list);
+            batch.drawCache(bcl);
+            //batch.drawList(DefaultInstancedRectRenderer.class, list);
             //            for (InstancedRectData d : ar) {
             //                batch.draw(d);
             //            }

@@ -1,6 +1,8 @@
 package de.omnikryptec.render3;
 
 import org.joml.Matrix3x2fc;
+import org.joml.Vector2fc;
+import org.joml.Vector4fc;
 
 public class ArrayFloatCollector implements FloatCollector {
     
@@ -15,6 +17,18 @@ public class ArrayFloatCollector implements FloatCollector {
     public FloatCollector put(Matrix3x2fc mat) {
         mat.get(floats, index);
         index += 6;
+        return this;
+    }
+    
+    @Override
+    public FloatCollector put(Vector2fc vec) {
+        put(vec.x()).put(vec.y());
+        return this;
+    }
+    
+    @Override
+    public FloatCollector put(Vector4fc vec) {
+        put(vec.x()).put(vec.y()).put(vec.z()).put(vec.w());
         return this;
     }
     
@@ -51,4 +65,5 @@ public class ArrayFloatCollector implements FloatCollector {
     public int position() {
         return index;
     }
+    
 }
