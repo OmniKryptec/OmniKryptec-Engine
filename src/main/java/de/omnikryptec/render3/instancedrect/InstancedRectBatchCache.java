@@ -1,8 +1,9 @@
-package de.omnikryptec.render3;
-
-import java.util.Arrays;
+package de.omnikryptec.render3.instancedrect;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
+import de.omnikryptec.render3.ArrayFloatCollector;
+import de.omnikryptec.render3.BatchCache;
+import de.omnikryptec.render3.BatchedRenderer;
 import de.omnikryptec.util.data.DynamicArray;
 
 public class InstancedRectBatchCache implements BatchCache {

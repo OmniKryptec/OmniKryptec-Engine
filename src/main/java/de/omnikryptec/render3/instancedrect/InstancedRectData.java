@@ -1,8 +1,11 @@
-package de.omnikryptec.render3;
+package de.omnikryptec.render3.instancedrect;
 
 import org.joml.Matrix3x2f;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
+import de.omnikryptec.render3.BatchedRenderer;
+import de.omnikryptec.render3.FloatCollector;
+import de.omnikryptec.render3.InstanceData;
 import de.omnikryptec.util.data.Color;
 
 public class InstancedRectData implements InstanceData {

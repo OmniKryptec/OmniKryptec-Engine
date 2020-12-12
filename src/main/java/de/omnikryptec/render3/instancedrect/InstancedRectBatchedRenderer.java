@@ -1,50 +1,34 @@
-package de.omnikryptec.render3;
+package de.omnikryptec.render3.instancedrect;
 
-import java.lang.reflect.Array;
-import java.nio.FloatBuffer;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Supplier;
-import java.util.stream.IntStream;
-
-import org.joml.Matrix3x2f;
-import org.joml.Matrix4f;
-import org.lwjgl.BufferUtils;
-
 import de.omnikryptec.libapi.exposed.LibAPIManager;
-import de.omnikryptec.libapi.exposed.render.IndexBuffer;
-import de.omnikryptec.libapi.exposed.render.RenderAPI;
-import de.omnikryptec.libapi.exposed.render.VertexArray;
-import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.libapi.exposed.render.shader.Shader;
-import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
-import de.omnikryptec.libapi.exposed.render.shader.UniformMatrixArray;
-import de.omnikryptec.libapi.exposed.render.shader.UniformSamplerArray;
+import de.omnikryptec.render3.ArrayFloatCollector;
+import de.omnikryptec.render3.BatchCache;
+import de.omnikryptec.render3.BatchedRenderer;
+import de.omnikryptec.render3.BufferFloatCollector;
+import de.omnikryptec.render3.FloatCollector;
+import de.omnikryptec.render3.InstanceData;
+import de.omnikryptec.render3.InstancedRender;
 import de.omnikryptec.render3.Batch2D.Target;
-import de.omnikryptec.render3.InstancedRectBatchCache.CacheEntry;
+import de.omnikryptec.render3.instancedrect.InstancedRectBatchCache.CacheEntry;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;
-import de.omnikryptec.util.data.DynamicArray;
-import de.omnikryptec.resource.MeshData.Primitive;
 
 public class InstancedRectBatchedRenderer implements BatchedRenderer {
     
     private static final int FLOATCOLLECTOR_SIZE = 40000;
-    private static final int TEXTURE_ACCUM_SIZE = 8;
+    static final int TEXTURE_ACCUM_SIZE = 8;
     private static final TextureConfig MYCONFIG = new TextureConfig();
     
     private final int instancedArgSize;
     private final Texture NULL_TEXTURE;
-    private final RenderAPI api = LibAPIManager.instance().getGLFW().getRenderAPI();
     
     private BufferFloatCollector renderCollector;
-    private VertexBuffer instanced;
-    private VertexArray va;
-    private Shader shader;
+    private InstancedRender rendermgr;
+    private InstancedRectShader shader;
     
     private InstancedRectBatchCache batchCache;
     private boolean caching = false;
@@ -59,37 +43,16 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
         this.NULL_TEXTURE = LibAPIManager.instance().getGLFW().getRenderAPI()
                 .createTexture2D(TextureData.WHITE_TEXTURE_DATA, MYCONFIG);
         renderCollector = new BufferFloatCollector(FLOATCOLLECTOR_SIZE);
-        float[] array = new float[] { 0, 0, 0, 1, 1, 0, 1, 1 };
-        int[] index = new int[] { 0, 1, 2, 2, 1, 3 };
-        IndexBuffer ib = api.createIndexBuffer();
-        ib.setDescription(BufferUsage.Static, 6);
-        ib.updateData(index);
-        VertexBuffer vb = api.createVertexBuffer();
-        vb.setDescription(BufferUsage.Static, Type.FLOAT, 8);
-        vb.updateData(array);
-        va = api.createVertexArray();
-        VertexBufferLayout layout = new VertexBufferLayout();
-        layout.push(Type.FLOAT, 2, false);
-        va.addVertexBuffer(vb, layout);
-        instanced = api.createVertexBuffer();
-        instanced.setDescription(BufferUsage.Dynamic, Type.FLOAT, FLOATCOLLECTOR_SIZE);
-        VertexBufferLayout lay2 = new VertexBufferLayout();
-        lay2.push(Type.FLOAT, 2, false, 1);
-        lay2.push(Type.FLOAT, 2, false, 1);
-        lay2.push(Type.FLOAT, 2, false, 1);
-        lay2.push(Type.FLOAT, 4, false, 1);
-        lay2.push(Type.FLOAT, 4, false, 1);
-        lay2.push(Type.FLOAT, 1, false, 1);
-        instancedArgSize = lay2.getSize();
-        va.addVertexBuffer(instanced, lay2);
-        va.setIndexBuffer(ib);
-        shader = api.createShader();
-        shader.create("gurke");
-        UniformMatrix m = shader.getUniform("u_projview");
-        UniformSamplerArray samplers = new UniformSamplerArray("samplers", TEXTURE_ACCUM_SIZE);
-        samplers.loadSamplerArray(IntStream.range(0, TEXTURE_ACCUM_SIZE).toArray());
-        shader.bindShader();
-        m.loadMatrix(new Matrix4f());
+        VertexBufferLayout instancedLayout = new VertexBufferLayout();
+        instancedLayout.push(Type.FLOAT, 2, false, 1);
+        instancedLayout.push(Type.FLOAT, 2, false, 1);
+        instancedLayout.push(Type.FLOAT, 2, false, 1);
+        instancedLayout.push(Type.FLOAT, 4, false, 1);
+        instancedLayout.push(Type.FLOAT, 4, false, 1);
+        instancedLayout.push(Type.FLOAT, 1, false, 1);
+        instancedArgSize = instancedLayout.getSize();
+        rendermgr = new InstancedRender(instancedLayout, FLOATCOLLECTOR_SIZE);
+        shader = new InstancedRectShader();
     }
     
     @Override
@@ -187,9 +150,8 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
                 }
                 textures[i].bindTexture(i);
             }
-            instanced.updateData(renderCollector.getBuffer());
+            rendermgr.draw(renderCollector.getBuffer(), instanceCount);
             renderCollector.getBuffer().clear();
-            api.renderInstanced(va, Primitive.Triangle, 6, instanceCount);
         }
         instanceCount = 0;
     }
