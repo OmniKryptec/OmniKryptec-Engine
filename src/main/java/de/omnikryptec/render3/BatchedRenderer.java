@@ -1,7 +1,5 @@
 package de.omnikryptec.render3;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Supplier;
 
 public interface BatchedRenderer {
