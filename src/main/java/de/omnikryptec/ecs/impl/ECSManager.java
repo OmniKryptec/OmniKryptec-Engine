@@ -54,7 +54,7 @@ public class ECSManager implements IECSManager {
         this(concurrent, new EntityManager(), new SystemManager());
     }
 
-    public ECSManager(final boolean concurrent, final EntityManager entityManager, final SystemManager systemManager) {
+    public ECSManager(boolean concurrent, final EntityManager entityManager, final SystemManager systemManager) {
         if (concurrent) {
             this.systemTasks = new ConcurrentLinkedQueue<>();
             this.entityTasks = new ConcurrentLinkedQueue<>();
@@ -177,7 +177,7 @@ public class ECSManager implements IECSManager {
             }
         }
         while (!this.entityTasks.isEmpty()) {
-            final ECSEntityTask t = this.entityTasks.poll();
+            final ECSEntityTask t = this.entityTasks.poll();//Sometimes is null with the minigames collisionsystem and multithreading (ECS not in concurrent mode). why though?
             switch (t.type) {
             case ADD:
                 addEntityInt(t.entity);

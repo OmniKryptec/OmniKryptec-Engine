@@ -24,19 +24,14 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.objects.Sprite;
+import de.omnikryptec.render3.PassthroughRenderer;
 
 public class RendererUtil {
-
-    private static final Batch2D directBatch = new SimpleBatch2D(18);
-
+    
     public static void renderDirect(final Texture... ts) {
-        directBatch.begin();
-        for (final Texture t : ts) {
-            if (t != null) {
-                directBatch.draw(t, null, false, false);
-            }
+        for (Texture t : ts) {
+            PassthroughRenderer.instance().render(t);
         }
-        directBatch.end();
     }
     
     public static int render2d(final Batch2D batch, final Collection<? extends Sprite> sprites,
@@ -52,5 +47,5 @@ public class RendererUtil {
         batch.end();
         return c;
     }
-
+    
 }

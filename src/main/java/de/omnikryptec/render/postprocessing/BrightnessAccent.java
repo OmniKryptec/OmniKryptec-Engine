@@ -36,7 +36,7 @@ public class BrightnessAccent extends AbstractPostProcessor {
         shader.bindShader();
         poweru.loadFloat(power);
         sceneRaw.bindTexture(0);
-        PPMesh.renderPPMesh();
+        QuadMesh.renderScreenQuad();
         buffer.unbindFrameBuffer();
         return buffer.getTexture(0);
     }

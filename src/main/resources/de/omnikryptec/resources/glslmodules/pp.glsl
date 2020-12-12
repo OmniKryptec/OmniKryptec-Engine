@@ -11,6 +11,20 @@ void main(void){
 	textureCoords = position * 0.5 + 0.5;
 }
 
+$define shader passthrough FRAGMENT$
+#version 330
+
+in vec2 textureCoords;
+
+out vec4 color;
+
+uniform sampler2D img;
+
+void main(void) {
+    color = texture(img, textureCoords);
+}
+
+
 $define shader pp-contrast-frag FRAGMENT$
 #version 330
 

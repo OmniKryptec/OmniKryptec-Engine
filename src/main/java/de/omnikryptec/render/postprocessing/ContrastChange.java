@@ -31,7 +31,7 @@ public class ContrastChange extends AbstractPostProcessor {
         shader.bindShader();
         change.loadFloat(changef);
         sceneRaw.bindTexture(0);
-        PPMesh.renderPPMesh();
+        QuadMesh.renderScreenQuad();
         buffer.unbindFrameBuffer();
         return buffer.getTexture(0);
     }

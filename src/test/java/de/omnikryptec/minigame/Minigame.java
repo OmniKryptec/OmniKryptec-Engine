@@ -29,6 +29,7 @@ import de.omnikryptec.core.update.UpdateableFactory;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
+import de.omnikryptec.ecs.impl.ECSManager;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.gui.GuiComponent;
 import de.omnikryptec.gui.GuiConstraints;
@@ -120,7 +121,8 @@ public class Minigame extends Omnikryptec {
     protected void onInitialized() {
         getResourceManager().load(false, true, new AdvancedFile("intern:/de/omnikryptec/resources/"));
         getEventBus().register(this);
-        this.mgr = UpdateableFactory.createDefaultIECSManager();
+        this.mgr = new ECSManager(true);//If not in concurrent mode, the collisionsystem and the entitytaskqueue make problems, for whatever reason
+        //this.mgr = UpdateableFactory.createDefaultIECSManager();
         final Scene sn = getGame().createAndAddScene();
         //sn.setTimeTransform(t -> new Time(t.opCount, t.ops, t.current, t.delta*3));
         sn.setGameLogic(this.mgr);

@@ -48,7 +48,7 @@ public class GaussianBlur extends AbstractPostProcessor {
         shader.bindShader();
         sizeu.loadFloat(horizontal ? buffer.getWidth() : buffer.getHeight());
         sceneRaw.bindTexture(0);
-        PPMesh.renderPPMesh();
+        QuadMesh.renderScreenQuad();
         buffer.unbindFrameBuffer();
         return buffer.getTexture(0);
     }

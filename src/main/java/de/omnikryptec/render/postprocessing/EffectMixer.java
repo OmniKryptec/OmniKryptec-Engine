@@ -48,7 +48,7 @@ public class EffectMixer extends AbstractPostProcessor {
         weights.loadVec2(sceneWeight, effectWeight);
         sceneRaw.bindTexture(0);
         effectTexture.bindTexture(1);
-        PPMesh.renderPPMesh();
+        QuadMesh.renderScreenQuad();
         buffer.unbindFrameBuffer();
         return buffer.getTexture(0);
     }
