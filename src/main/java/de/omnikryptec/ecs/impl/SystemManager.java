@@ -25,30 +25,30 @@ import java.util.List;
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
 
 public class SystemManager {
-
+    
     private static final Comparator<AbstractComponentSystem> COMPARATOR = (o1, o2) -> o2.priority() - o1.priority();
-
+    
     private final List<AbstractComponentSystem> systems;
     private final Collection<AbstractComponentSystem> unmodifiableSystems;
-
+    
     public SystemManager() {
         this.systems = new ArrayList<>();
         this.unmodifiableSystems = Collections.unmodifiableCollection(this.systems);
     }
-
+    
     public SystemManager addSystem(final AbstractComponentSystem system) {
         this.systems.add(system);
         Collections.sort(this.systems, COMPARATOR);
         return this;
     }
-
+    
     public SystemManager removeSystem(final AbstractComponentSystem system) {
         this.systems.remove(system);
         return this;
     }
-
+    
     public Collection<AbstractComponentSystem> getAll() {
         return this.unmodifiableSystems;
     }
-
+    
 }

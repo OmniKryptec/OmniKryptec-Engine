@@ -22,19 +22,19 @@ import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.util.updater.Time;
 
 public class AnotherSystem extends AbstractComponentSystem {
-
+    
     protected AnotherSystem() {
         super(new BitSet());
     }
-
+    
     @Override
     public void update(final IECSManager entityManager, final Time deltaTime) {
         // System.out.println("Another System!");
     }
-
+    
     @Override
     public int priority() {
         return -100;
     }
-
+    
 }

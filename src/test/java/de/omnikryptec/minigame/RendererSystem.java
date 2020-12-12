@@ -19,7 +19,6 @@ package de.omnikryptec.minigame;
 import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
 
-import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.ecs.Entity;
 import de.omnikryptec.ecs.EntityListener;
 import de.omnikryptec.ecs.Family;
@@ -27,10 +26,8 @@ import de.omnikryptec.ecs.IECSManager;
 import de.omnikryptec.ecs.component.ComponentMapper;
 import de.omnikryptec.ecs.component.ComponentType;
 import de.omnikryptec.ecs.system.AbstractComponentSystem;
-import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.render.AdaptiveCamera;
 import de.omnikryptec.render.Camera;
-import de.omnikryptec.render.batch.AdvancedBatch2D;
 import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.Sprite;

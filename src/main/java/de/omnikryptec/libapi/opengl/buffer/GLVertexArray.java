@@ -75,8 +75,8 @@ public class GLVertexArray implements VertexArray, Deletable {
         for (int i = 0; i < elements.size(); i++) {
             final VertexBufferElement element = elements.get(i);
             GL20.glEnableVertexAttribArray(i + attributeOffset);
-            GL20.glVertexAttribPointer(i + attributeOffset, element.getValuesPerVertex(), OpenGLUtil.typeId(element.getType()),
-                    element.normalize(), stride, offset);
+            GL20.glVertexAttribPointer(i + attributeOffset, element.getValuesPerVertex(),
+                    OpenGLUtil.typeId(element.getType()), element.normalize(), stride, offset);
             GL33.glVertexAttribDivisor(i + attributeOffset, element.getDivisor());//Probably should only allow one divisor per VBO? performance and so... but whatever
             offset += element.getValuesPerVertex() * OpenGLUtil.sizeof(element.getType());
             this.vaaIndex++;

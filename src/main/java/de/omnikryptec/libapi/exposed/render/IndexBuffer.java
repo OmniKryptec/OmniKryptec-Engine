@@ -23,14 +23,14 @@ import org.lwjgl.BufferUtils;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
 
 public interface IndexBuffer {
-
+    
     /**
      * Binds this {@link IndexBuffer}.
      *
      * @see VertexArray#bindArray()
      */
     void bindBuffer();
-
+    
     /**
      * Unbinds this {@link IndexBuffer}
      */
@@ -54,12 +54,12 @@ public interface IndexBuffer {
      * @param size  the amount of max entries
      */
     void setDescription(BufferUsage usage, int size);
-
+    
     /**
      * the size of this buffer
      *
      * @return size
      */
     int size();
-
+    
 }

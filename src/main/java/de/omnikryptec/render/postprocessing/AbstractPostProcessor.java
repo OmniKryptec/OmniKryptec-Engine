@@ -4,7 +4,7 @@ import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.shader.Shader;
 
-public abstract class AbstractPostProcessor implements Postprocessor{
+public abstract class AbstractPostProcessor implements Postprocessor {
     
     protected FrameBuffer buffer;
     protected Shader shader;

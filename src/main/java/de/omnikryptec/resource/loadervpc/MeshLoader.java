@@ -33,11 +33,11 @@ import de.omnikryptec.resource.MeshData.VertexAttribute;
 import de.omnikryptec.resource.MeshFile;
 
 public class MeshLoader implements ResourceLoader<MeshFile> {
-
+    
     private final int flags = Assimp.aiProcess_CalcTangentSpace | Assimp.aiProcess_JoinIdenticalVertices
             | Assimp.aiProcess_RemoveRedundantMaterials | Assimp.aiProcess_OptimizeMeshes
             | Assimp.aiProcess_SplitLargeMeshes | Assimp.aiProcess_Triangulate | Assimp.aiProcess_SortByPType;
-
+    
     @Override
     public MeshFile load(final AdvancedFile file) throws Exception {
         final byte[] bytes = IOUtils.toByteArray(file.createInputStream());
@@ -53,7 +53,7 @@ public class MeshLoader implements ResourceLoader<MeshFile> {
         }
         for (int i = 0; i < scene.mNumMeshes(); i++) {
             final AIMesh mesh = AIMesh.create(scene.mMeshes().get(i));
-
+            
             final int vertexCount = mesh.mNumVertices();
             final float[] positions = new float[vertexCount * 3];
             for (int j = 0; j < vertexCount; j += 3) {
@@ -73,15 +73,15 @@ public class MeshLoader implements ResourceLoader<MeshFile> {
         }
         return new MeshFile(meshFile);
     }
-
+    
     @Override
     public String getFileNameRegex() {
         return ".*\\.dae";
     }
-
+    
     @Override
     public boolean requiresMainThread() {
         return false;
     }
-
+    
 }

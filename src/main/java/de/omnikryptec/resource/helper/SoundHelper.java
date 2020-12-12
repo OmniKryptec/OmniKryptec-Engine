@@ -27,19 +27,19 @@ import de.omnikryptec.resource.loadervpc.SoundFileWrapper;
 import de.omnikryptec.util.Logger;
 
 public class SoundHelper {
-
+    
     private static final Logger LOGGER = Logger.getLogger(SoundHelper.class);
-
+    
     private final Map<String, Sound> sounds;
     private final Map<String, StreamedSound> streamedSounds;
     private final ResourceProvider resProvider;
-
+    
     public SoundHelper(ResourceProvider prov) {
         this.resProvider = prov;
         this.sounds = new HashMap<>();
         this.streamedSounds = new HashMap<>();
     }
-
+    
     public Sound getCached(String name) {
         Sound s = this.sounds.get(name);
         if (s == null) {
@@ -53,11 +53,11 @@ public class SoundHelper {
         }
         return s;
     }
-
+    
     public StreamedSound getStreamed(String name) {
         return getStreamed(name, 0);
     }
-
+    
     //A StreamedSound can not be used in more than one AudioSource at the same time.
     //Different numbers create new StreamedSounds but from the same Audiofile so they can be used in parallel.
     public StreamedSound getStreamed(String name, int number) {
@@ -74,22 +74,22 @@ public class SoundHelper {
         }
         return s;
     }
-
+    
     public void clearStreamedSounds() {
         this.streamedSounds.clear();
     }
-
+    
     public void clearCachedSounds() {
         this.sounds.clear();
     }
-
+    
     public void clearAndDeleteStreamedSounds() {
         for (StreamedSound s : this.streamedSounds.values()) {
             s.deleteAndUnregister();
         }
         clearStreamedSounds();
     }
-
+    
     public void clearAndDeleteCachedSounds() {
         for (Sound s : this.sounds.values()) {
             s.deleteAndUnregister();

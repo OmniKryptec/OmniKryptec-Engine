@@ -19,15 +19,15 @@ package de.omnikryptec.gui;
 import java.util.List;
 
 public class TilingLayout implements GuiLayout {
-
+    
     private final int columns;//Spalten
     private final int rows;//Zeilen
-
+    
     public TilingLayout(final int rows, final int columns) {
         this.rows = rows;
         this.columns = columns;
     }
-
+    
     @Override
     public void doLayout(final GuiComponent parent, final List<GuiComponent> children) {
         if (children.size() > this.rows * this.columns) {
@@ -44,5 +44,5 @@ public class TilingLayout implements GuiLayout {
             children.get(i).setConstraints(childsConstraints);
         }
     }
-
+    
 }

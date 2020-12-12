@@ -26,16 +26,16 @@ import de.omnikryptec.ecs.system.IterativeComponentSystem;
 import de.omnikryptec.util.updater.Time;
 
 public class MovementSystem extends IterativeComponentSystem {
-
+    
     protected MovementSystem() {
         super(Family.of(ComponentType.of(PositionComponent.class), ComponentType.of(MovementComponent.class)));
     }
-
+    
     private final ComponentMapper<PositionComponent> posMapper = new ComponentMapper<>(PositionComponent.class);
     private final ComponentMapper<MovementComponent> movMapper = new ComponentMapper<>(MovementComponent.class);
-
+    
     private final ComponentMapper<PlayerComponent> playMapper = new ComponentMapper<>(PlayerComponent.class);
-
+    
     @Override
     public void updateIndividual(final IECSManager manager, final Entity entity, final Time time) {
         final PositionComponent pos = this.posMapper.get(entity);
@@ -50,11 +50,11 @@ public class MovementSystem extends IterativeComponentSystem {
             Omnikryptec.getAudio().setListenerVelocity(mov.dx / 20, mov.dy / 20, 0);
         }
     }
-
+    
     @Override
     public int priority() {
-
+        
         return -10;
     }
-
+    
 }

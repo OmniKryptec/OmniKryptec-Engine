@@ -31,31 +31,31 @@ import de.omnikryptec.render.batch.vertexmanager.VertexManager;
 import de.omnikryptec.util.data.Color;
 
 public class SimpleBatch2D extends AbstractBatch implements Batch2D {
-
+    
     public static AbstractProjectedShaderSlot createDefaultShaderSlot() {
         return new SimpleShaderSlot();
     }
-
+    
     private PositionModule posModule;
     private UVModule uvModule;
     private ColorModule colorModule;
     private TilingModule tilingModule;
-
+    
     private AbstractProjectedShaderSlot shaderSlot;
-
+    
     public SimpleBatch2D(final int vertices) {
         this(vertices, createDefaultShaderSlot());
     }
-
+    
     public SimpleBatch2D(final int vertices, final AbstractProjectedShaderSlot shaderslot) {
         this(new RenderedVertexManager(vertices, shaderslot));
         this.shaderSlot = shaderslot;
     }
-
+    
     public SimpleBatch2D(final VertexManager vertexManager) {
         super(vertexManager);
     }
-
+    
     @Override
     protected ModuleBatchingManager createManager() {
         this.posModule = new PositionModule();
@@ -64,7 +64,7 @@ public class SimpleBatch2D extends AbstractBatch implements Batch2D {
         this.tilingModule = new TilingModule();
         return new ModuleBatchingManager(this.colorModule, this.tilingModule, this.posModule, this.uvModule);
     }
-
+    
     @Override
     public void draw(final Texture texture, final Matrix3x2fc transform, final float width, final float height,
             final boolean flipU, final boolean flipV) {
@@ -72,23 +72,23 @@ public class SimpleBatch2D extends AbstractBatch implements Batch2D {
         this.uvModule.set(texture, flipU, flipV);
         issueVertices(texture);
     }
-
+    
     @Override
     public void draw(Texture texture, float x, float y, float width, float height, boolean flipU, boolean flipV) {
         this.posModule.setTransform(x, y, width, height);
         this.uvModule.set(texture, flipU, flipV);
         issueVertices(texture);
     }
-
+    
     public void setTilingFactor(float f) {
         this.tilingModule.setTilingFactor(f);
     }
-
+    
     @Override
     public Color color() {
         return this.colorModule.color();
     }
-
+    
     @Nullable
     public AbstractProjectedShaderSlot getShaderSlot() {
         return this.shaderSlot;

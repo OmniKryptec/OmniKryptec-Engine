@@ -21,15 +21,15 @@ import org.lwjgl.opengl.GL20;
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec2;
 
 public class GLUniformVec2 extends GLUniform implements UniformVec2 {
-
+    
     private float currentX;
     private float currentY;
     private boolean used = false;
-
+    
     public GLUniformVec2(final String name) {
         super(name);
     }
-
+    
     @Override
     public void loadVec2(final float x, final float y) {
         if (existsInCompilation() && (!this.used || x != this.currentX || y != this.currentY)) {
@@ -39,5 +39,5 @@ public class GLUniformVec2 extends GLUniform implements UniformVec2 {
             GL20.glUniform2f(super.getLocation(), x, y);
         }
     }
-
+    
 }

@@ -28,7 +28,7 @@ import de.omnikryptec.libapi.exposed.LibAPIManager;
  * @author Panzer1119 & pcfreak9000
  */
 public class AudioSource implements Deletable {
-
+    
     private final int sourceID;
     private float pitch = 1.0F;
     private float deltaPitch = 0.0F;
@@ -38,7 +38,7 @@ public class AudioSource implements Deletable {
     private float fadeTime = 0.0F;
     private float volumeStart = 0.0F;
     private float volumeTarget = 1.0F;
-
+    
     private ALSound sound = null;
     
     /**
@@ -51,7 +51,7 @@ public class AudioSource implements Deletable {
         setPitch(1.0F);
         setPosition(0, 0, 0);
     }
-
+    
     /**
      * Fades one frame
      *
@@ -71,7 +71,7 @@ public class AudioSource implements Deletable {
             return (this.volumeTarget - getVolume()) > 0.0F;
         }
     }
-
+    
     /**
      * Sets the AudioEffectState
      *
@@ -101,7 +101,7 @@ public class AudioSource implements Deletable {
         this.effectState = effectState;
         return this;
     }
-
+    
     /**
      * Updates the AudioEffectState
      *
@@ -123,11 +123,11 @@ public class AudioSource implements Deletable {
                 setVolume(this.volumeTarget);
             }
             break;
-
+        
         }
         return this;
     }
-
+    
     /**
      * Plays and sets the ISound
      *
@@ -144,7 +144,7 @@ public class AudioSource implements Deletable {
         continuePlaying();
         return this;
     }
-
+    
     /**
      * Returns the set ISound
      *
@@ -153,7 +153,7 @@ public class AudioSource implements Deletable {
     public final ALSound getSound() {
         return this.sound;
     }
-
+    
     /**
      * Sets if the ISound should be played in a loop
      *
@@ -164,7 +164,7 @@ public class AudioSource implements Deletable {
         AL10.alSourcei(this.sourceID, AL10.AL_LOOPING, OpenALUtil.booleanToOpenAL(loop));
         return this;
     }
-
+    
     /**
      * Returns if any ISound is actually played
      *
@@ -173,7 +173,7 @@ public class AudioSource implements Deletable {
     public final boolean isPlaying() {
         return AL10.alGetSourcei(this.sourceID, AL10.AL_SOURCE_STATE) == AL10.AL_PLAYING;
     }
-
+    
     /**
      * Pauses the AudioSource
      *
@@ -184,7 +184,7 @@ public class AudioSource implements Deletable {
         pauseTemporarily();
         return this;
     }
-
+    
     /**
      * Pauses the AudioSource temporarily
      *
@@ -194,7 +194,7 @@ public class AudioSource implements Deletable {
         AL10.alSourcePause(this.sourceID);
         return this;
     }
-
+    
     /**
      * Continues the ISound playing
      *
@@ -205,7 +205,7 @@ public class AudioSource implements Deletable {
         this.pause = false;
         return this;
     }
-
+    
     /**
      * Continues the ISound playing temporarily
      *
@@ -217,7 +217,7 @@ public class AudioSource implements Deletable {
         }
         return this;
     }
-
+    
     /**
      * Stops the AudioSources
      *
@@ -231,7 +231,7 @@ public class AudioSource implements Deletable {
         }
         return this;
     }
-
+    
     /**
      * Restarts the AudioSource
      *
@@ -242,7 +242,7 @@ public class AudioSource implements Deletable {
         continuePlaying();
         return this;
     }
-
+    
     /**
      * Sets the volume
      *
@@ -253,7 +253,7 @@ public class AudioSource implements Deletable {
         AL10.alSourcef(this.sourceID, AL10.AL_GAIN, volume);
         return this;
     }
-
+    
     /**
      * Returns the volume
      *
@@ -262,7 +262,7 @@ public class AudioSource implements Deletable {
     public final float getVolume() {
         return AL10.alGetSourcef(this.sourceID, AL10.AL_GAIN);
     }
-
+    
     /**
      * Sets the real pitch
      *
@@ -272,7 +272,7 @@ public class AudioSource implements Deletable {
         AL10.alSourcef(this.sourceID, AL10.AL_PITCH, this.pitch + this.deltaPitch);
         return this;
     }
-
+    
     /**
      * Returns the real pitch
      *
@@ -281,7 +281,7 @@ public class AudioSource implements Deletable {
     public final float getRealPitch() {
         return AL10.alGetSourcef(this.sourceID, AL10.AL_PITCH);
     }
-
+    
     /**
      * Sets the pitch
      *
@@ -293,7 +293,7 @@ public class AudioSource implements Deletable {
         setRealPitch();
         return this;
     }
-
+    
     /**
      * Returns the setted pitch
      *
@@ -302,7 +302,7 @@ public class AudioSource implements Deletable {
     public final float getPitch() {
         return this.pitch;
     }
-
+    
     /**
      * Sets the delta which gets added to the pitch
      *
@@ -314,7 +314,7 @@ public class AudioSource implements Deletable {
         setRealPitch();
         return this;
     }
-
+    
     /**
      * Returns the delta which gets added to the pitch
      *
@@ -323,7 +323,7 @@ public class AudioSource implements Deletable {
     public final float getDeltaPitch() {
         return this.deltaPitch;
     }
-
+    
     /**
      * Sets the position
      *
@@ -334,7 +334,7 @@ public class AudioSource implements Deletable {
         setPosition(position.x, position.y, position.z);
         return this;
     }
-
+    
     /**
      * Sets the position
      *
@@ -345,7 +345,7 @@ public class AudioSource implements Deletable {
         setPosition(position.x, position.y, position.z);
         return this;
     }
-
+    
     /**
      * Sets the position
      *
@@ -358,7 +358,7 @@ public class AudioSource implements Deletable {
         AL10.alSource3f(this.sourceID, AL10.AL_POSITION, x, y, z);
         return this;
     }
-
+    
     /**
      * Sets the velocity
      *
@@ -369,7 +369,7 @@ public class AudioSource implements Deletable {
         setVelocity(velocity.x, velocity.y, velocity.z);
         return this;
     }
-
+    
     /**
      * Sets the velocity
      *
@@ -380,7 +380,7 @@ public class AudioSource implements Deletable {
         setVelocity(velocity.x, velocity.y, velocity.z);
         return this;
     }
-
+    
     /**
      * Sets the velocity
      *
@@ -393,17 +393,17 @@ public class AudioSource implements Deletable {
         AL10.alSource3f(this.sourceID, AL10.AL_VELOCITY, x, y, z);
         return this;
     }
-
+    
     public final AudioSource setRelative(boolean b) {
         AL10.alSourcei(this.sourceID, AL10.AL_SOURCE_RELATIVE, OpenALUtil.booleanToOpenAL(b));
         return this;
     }
-
+    
     public final AudioSource setDirection(float dx, float dy, float dz) {
         AL10.alSource3f(this.sourceID, AL10.AL_DIRECTION, dx, dy, dz);
         return this;
     }
-
+    
     /**
      * Sets how fast the volume decreases over distance
      *
@@ -414,7 +414,7 @@ public class AudioSource implements Deletable {
         AL10.alSourcef(this.sourceID, AL10.AL_ROLLOFF_FACTOR, rollOffFactor);
         return this;
     }
-
+    
     /**
      * Sets the reference distance
      *
@@ -426,7 +426,7 @@ public class AudioSource implements Deletable {
         AL10.alSourcef(this.sourceID, AL10.AL_REFERENCE_DISTANCE, referenceDistance);
         return this;
     }
-
+    
     /**
      * Sets the maximum distance for clamped DistanceModels
      *
@@ -437,22 +437,22 @@ public class AudioSource implements Deletable {
         AL10.alSourcef(this.sourceID, AL10.AL_MAX_DISTANCE, maxDistance);
         return this;
     }
-
+    
     public final AudioSource setInnerConeDeg(float d) {
         AL10.alSourcef(this.sourceID, AL10.AL_CONE_INNER_ANGLE, d);
         return this;
     }
-
+    
     public final AudioSource setOuterConeDeg(float d) {
         AL10.alSourcef(this.sourceID, AL10.AL_CONE_OUTER_ANGLE, d);
         return this;
     }
-
+    
     public final AudioSource setOuterConeGain(float g) {
         AL10.alSourcef(this.sourceID, AL10.AL_CONE_OUTER_GAIN, g);
         return this;
     }
-
+    
     /**
      * Returns the AudioEffectState
      *
@@ -461,7 +461,7 @@ public class AudioSource implements Deletable {
     public final AudioEffectState getEffectState() {
         return this.effectState;
     }
-
+    
     /**
      * Returns the Fade tim
      *
@@ -470,7 +470,7 @@ public class AudioSource implements Deletable {
     public final float getFadeTimeComplete() {
         return this.fadeTimeComplete;
     }
-
+    
     /**
      * Sets the fading in and out time
      *
@@ -481,15 +481,15 @@ public class AudioSource implements Deletable {
         this.fadeTimeComplete = fadeTimeComplete;
         return this;
     }
-
+    
     protected final int getSourceID() {
         return this.sourceID;
     }
-
+    
     @Override
     public void deleteRaw() {
         stop();
         AL10.alDeleteSources(this.sourceID);
     }
-
+    
 }

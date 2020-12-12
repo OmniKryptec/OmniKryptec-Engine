@@ -32,20 +32,20 @@ import de.omnikryptec.util.settings.keys.KeysAndButtons;
 import de.omnikryptec.util.updater.Time;
 
 public class PlayerSystem extends AbstractComponentSystem {
-
+    
     public PlayerSystem() {
         super(Family.of(ComponentType.of(MovementComponent.class), ComponentType.of(PlayerComponent.class),
                 ComponentType.of(PositionComponent.class)));
     }
-
+    
     private final InputManager inputManager = Omnikryptec.getInput();
-
+    
     private final ComponentMapper<MovementComponent> movMapper = new ComponentMapper<>(MovementComponent.class);
     private final ComponentMapper<PlayerComponent> playMapper = new ComponentMapper<>(PlayerComponent.class);
     private final ComponentMapper<PositionComponent> posMapper = new ComponentMapper<>(PositionComponent.class);
-
+    
     private float again;
-
+    
     @Override
     public void update(final IECSManager iecsManager, final Time time) {
         Profiler.begin("PlayerSystem");
@@ -88,5 +88,5 @@ public class PlayerSystem extends AbstractComponentSystem {
         }
         Profiler.end();
     }
-
+    
 }

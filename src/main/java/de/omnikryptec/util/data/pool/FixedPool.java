@@ -28,10 +28,10 @@ import de.omnikryptec.util.data.FixedStack;
  * @author pcfreak9000
  */
 public abstract class FixedPool<T> extends Pool<T> {
-
+    
     private final FixedStack<T> free;
     private boolean poolable = false;
-
+    
     public FixedPool(final Class<T> clazz, final int size, final boolean prewarm) {
         this.poolable = Poolable.class.isAssignableFrom(clazz);
         this.free = new FixedStack<>(size);
@@ -41,12 +41,12 @@ public abstract class FixedPool<T> extends Pool<T> {
             }
         }
     }
-
+    
     @Override
     public T retrieve() {
         return this.free.isEmpty() ? newObject() : this.free.pop();
     }
-
+    
     @Override
     public void free(final T t) {
         if (this.poolable) {
@@ -56,7 +56,7 @@ public abstract class FixedPool<T> extends Pool<T> {
             this.free.push(t);
         }
     }
-
+    
     @Override
     public int available() {
         return Math.max(1, this.free.filled());

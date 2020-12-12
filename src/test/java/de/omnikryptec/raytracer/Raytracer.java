@@ -60,11 +60,11 @@ import de.omnikryptec.util.settings.keys.KeysAndButtons;
 import de.omnikryptec.util.updater.Time;
 
 public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
-
+    
     public static void main(final String[] args) {
         new Raytracer().start();
     }
-
+    
     @Override
     protected void configure(final Settings<LoaderSetting> loadersettings, final Settings<LibSetting> libsettings,
             final Settings<WindowSetting> windowSettings, final Settings<IntegerKey> apisetting,
@@ -75,7 +75,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         windowSettings.set(WindowSetting.CursorState, CursorType.DISABLED);
         //Profiler.setEnabled(true);
     }
-
+    
     @Override
     protected void onInitialized() {
         getResourceManager().load(false, false, "intern:/de/pcfreak9000/raytracer/");
@@ -87,54 +87,54 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         s.getViewManager().getMainView().setProjection(this.camera);
         initShader();
     }
-
+    
     @Override
     protected void onShutdown() {
         //System.out.println(Profiler.currentInfo());
     }
-
+    
     private GLFrameBuffer image;
-
+    
     private GLShader computeShader;
-
+    
     private Camera camera;
     private UniformFloat time, boxSize;
     private UniformVec3 eye, ray00, ray01, ray10, ray11;
     private UniformInt size, maxSteps;
-
+    
     private static final float DEFAULT_BOX_SIZE = 1f;
     private static final int DEFAULT_SIZE = 25;
     private static final int DEFAULT_MAX_STEPS = 150;
-
+    
     private static final int TOTAL_MODES = 3;
     private static final float CD_THRESHHOLD = 0.2f;
-
+    
     private static final int MAX_SIZE = 400;
     private static final int MAXMAX_STEPS = 1000;
     private static final int MAX_SIZE_CUBED = MAX_SIZE * MAX_SIZE * MAX_SIZE;
-
+    
     private static class SSBOHelper {
         private final GLShaderStorageBuffer ssbo;
         private final float[] array;
-
+        
         public SSBOHelper(int index, int size) {
             this.ssbo = new GLShaderStorageBuffer();
             this.ssbo.setDescription(BufferUsage.Dynamic, Type.FLOAT, size, index);
             this.array = new float[size];
         }
-
+        
         public void push(int actual) {
             FloatBuffer b = BufferUtils.createFloatBuffer(actual);
             b.put(this.array, 0, actual);
             this.ssbo.updateData(b);
         }
-
+        
         public float[] array() {
             return this.array;
         }
-
+        
     }
-
+    
     SSBOHelper dataHelper;
     SSBOHelper speedHelper;
     SSBOHelper redHelper;
@@ -142,14 +142,14 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
     SSBOHelper blueHelper;
     private int currentMode = -1;
     private float cd = 0;
-
+    
     private float cd1 = 0, cd2 = 0;
-
+    
     private float currentBoxSize;
     private int currentSize;
     private int currentMaxSteps;
     private float currentResMult = 1;
-
+    
     private void initShader() {
         this.computeShader = (GLShader) LibAPIManager.instance().getGLFW().getRenderAPI().createShader();
         this.computeShader.create("raytracer");
@@ -170,7 +170,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         resetSizes();
         updateMode(0);
     }
-
+    
     private void updateSizes() {
         updateMode(this.currentMode);
         this.computeShader.bindShader();
@@ -178,14 +178,14 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         this.boxSize.loadFloat(this.currentBoxSize);
         this.maxSteps.loadInt(this.currentMaxSteps);
     }
-
+    
     private void resetSizes() {
         this.currentSize = DEFAULT_SIZE;
         this.currentBoxSize = DEFAULT_BOX_SIZE;
         this.currentMaxSteps = DEFAULT_MAX_STEPS;
         updateSizes();
     }
-
+    
     private void updateMode(int newMode) {
         for (int x = 0; x < this.currentSize; x++) {
             for (int y = 0; y < this.currentSize; y++) {
@@ -211,7 +211,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
                         if (y == 8) {
                             color.set(0, 0.1f, 0.6f);
                         }
-
+                        
                         if (y <= 9 && (x == 0 || x == this.currentSize - 1 || z == 0 || z == this.currentSize - 1)) {
                             color.set(0, 0.7f, 0.7f);
                             dataV = 1;
@@ -228,7 +228,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
                             speedV = 235000;
                             //color.set(0, 0.3f, 0);
                         }
-
+                        
                         if (x == this.currentSize / 2 && z == this.currentSize / 2) {
                             dataV = 1;
                             speedV = 300000;
@@ -259,7 +259,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         this.blueHelper.push(currSizeCubed);
         this.currentMode = newMode;
     }
-
+    
     private void loadRays(final Camera cam) {
         final Matrix4f inv = cam.getRawProjection().invert(new Matrix4f());
         final Matrix4f wInv = cam.getTransform().worldspace().invert(new Matrix4f());
@@ -270,7 +270,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         prepareRay(1, -1, inv, wInv, this.ray10, pos);
         prepareRay(1, 1, inv, wInv, this.ray11, pos);
     }
-
+    
     private void prepareRay(final float x, final float y, final Matrix4fc proj, final Matrix4fc stuff,
             final UniformVec3 u, final Vector4f pos) {
         final Vector4f v = new Vector4f(x, y, 0, 1);
@@ -281,9 +281,9 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         v.normalize();
         u.loadVec3(new Vector3f(v.x, v.y, v.z));
     }
-
+    
     float x, y, z, ry, rx;
-
+    
     private void camInput(final Camera cam, float dt) {
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_LEFT_CONTROL)) {
             dt /= 3;
@@ -325,9 +325,9 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         this.x += t.x;
         this.y += t.y;
         this.z += t.z;
-
+        
         cam.getTransform().localspaceWrite().translate(this.x, this.y, this.z);
-
+        
         this.cd += dt;
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_R) && this.cd > CD_THRESHHOLD) {
             updateMode((this.currentMode + 1) % TOTAL_MODES);
@@ -366,7 +366,7 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
         } else if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_8)) {
             this.currentResMult = Math.min(10, this.currentResMult + dt);
         }
-
+        
         if (getInput().isKeyboardKeyPressed(KeysAndButtons.OKE_KEY_5)) {
             this.currentBoxSize = Math.max(0, this.currentBoxSize - dt * change);
             updateSizes();
@@ -375,12 +375,12 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
             updateSizes();
         }
     }
-
+    
     @Override
     public void update(final Time time) {
         camInput(this.camera, time.deltaf);
     }
-
+    
     @Override
     public void init(ViewManager vm, RenderAPI api) {
         this.image = (GLFrameBuffer) api.createFrameBuffer(
@@ -388,12 +388,12 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
                 (int) (vm.getMainView().getTargetFbo().getHeight() * this.currentResMult), 0, 1);
         this.image.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA32, 0));
     }
-
+    
     private void checkFBOs(FrameBuffer target) {
         this.image = (GLFrameBuffer) this.image.resizeAndDeleteOrThis((int) (target.getWidth() * this.currentResMult),
                 (int) (target.getHeight() * this.currentResMult));
     }
-
+    
     @Override
     public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target,
             Settings<EnvironmentKey> envSettings, Time time) {
@@ -406,5 +406,5 @@ public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
                 MathUtil.toPowerOfTwo(this.image.getHeight() / 8), 1);
         this.image.renderDirect(0);
     }
-
+    
 }

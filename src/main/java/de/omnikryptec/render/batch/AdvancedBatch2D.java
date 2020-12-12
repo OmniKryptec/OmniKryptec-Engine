@@ -34,11 +34,11 @@ import de.omnikryptec.render.batch.vertexmanager.VertexManager;
 import de.omnikryptec.util.data.Color;
 
 public class AdvancedBatch2D extends AbstractBatch implements BorderedBatch2D {
-
+    
     public static AbstractProjectedShaderSlot createDefaultShaderSlot() {
         return new AdvancedShaderSlot();
     }
-
+    
     private PositionModule posModule;
     private UVModule uvModule;
     private ColorModule colorModule;
@@ -47,22 +47,22 @@ public class AdvancedBatch2D extends AbstractBatch implements BorderedBatch2D {
     private SDFModule sdfData;
     private SDFOModule bsdfOffset;
     private TilingModule tiling;
-
+    
     private AbstractProjectedShaderSlot shaderSlot;
-
+    
     public AdvancedBatch2D(final int vertices) {
         this(vertices, createDefaultShaderSlot());
     }
-
+    
     public AdvancedBatch2D(final int vertices, final AbstractProjectedShaderSlot shaderslot) {
         this(new RenderedVertexManager(vertices, shaderslot));
         this.shaderSlot = shaderslot;
     }
-
+    
     public AdvancedBatch2D(final VertexManager vertexManager) {
         super(vertexManager);
     }
-
+    
     @Override
     protected ModuleBatchingManager createManager() {
         this.posModule = new PositionModule();
@@ -76,7 +76,7 @@ public class AdvancedBatch2D extends AbstractBatch implements BorderedBatch2D {
         return new ModuleBatchingManager(this.colorModule, this.reflectionMod, this.borderColor, this.sdfData,
                 this.bsdfOffset, this.tiling, this.posModule, this.uvModule);
     }
-
+    
     @Override
     public void draw(final Texture texture, final Matrix3x2fc transform, final float width, final float height,
             final boolean flipU, final boolean flipV) {
@@ -84,62 +84,62 @@ public class AdvancedBatch2D extends AbstractBatch implements BorderedBatch2D {
         this.uvModule.set(texture, flipU, flipV);
         issueVertices(texture);
     }
-
+    
     @Override
     public void draw(Texture texture, float x, float y, float width, float height, boolean flipU, boolean flipV) {
         this.posModule.setTransform(x, y, width, height);
         this.uvModule.set(texture, flipU, flipV);
         issueVertices(texture);
     }
-
+    
     @Override
     public Color color() {
         return this.colorModule.color();
     }
-
+    
     public Color reflectionStrength() {
         return this.reflectionMod.color();
     }
-
+    
     @Override
     public Color borderColor() {
         return this.borderColor.color();
     }
-
+    
     @Override
     public Vector2f borderSDFData() {
         return this.sdfData.bsdfData();
     }
-
+    
     @Override
     public Vector2f borderOffset() {
         return this.bsdfOffset.bsdfOffset();
     }
-
+    
     @Override
     public Vector2f signedDistanceFieldData() {
         return this.sdfData.sdfData();
     }
-
+    
     public void setTilingFactor(float f) {
         this.tiling.setTilingFactor(f);
     }
-
+    
     @Nullable
     public AbstractProjectedShaderSlot getShaderSlot() {
         return this.shaderSlot;
     }
-
+    
     @Override
     public void setDefaultSDFData() {
         this.sdfData.setDefaultSD();
     }
-
+    
     @Override
     public void setDefaultBDSFData() {
         this.sdfData.setDefaultBSD();
     }
-
+    
     @Override
     public void setDefaultBorderOffset() {
         this.bsdfOffset.setDefault();

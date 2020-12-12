@@ -22,7 +22,6 @@ import org.joml.FrustumIntersection;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.Batch2D;
-import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.render3.PassthroughRenderer;
 

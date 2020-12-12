@@ -31,16 +31,16 @@ import de.omnikryptec.util.Logger;
  * @author Panzer1119 & pcfreak9000
  */
 public class OpenALUtil {
-
+    
     private static final Logger logger = Logger.getLogger(OpenALUtil.class);
-
+    
     public static final int MONO = 1;
     public static final int STEREO = 2;
-
+    
     public static final int audioFormatToOpenALFormat(AudioFormat audioFormat) {
         return audioFormatToOpenALFormat(audioFormat.getChannels(), audioFormat.getSampleSizeInBits());
     }
-
+    
     public static final int audioFormatToOpenALFormat(int channels, int sampleSizeInBits) {
         int openALFormat = -1;
         switch (channels) {
@@ -67,11 +67,11 @@ public class OpenALUtil {
         }
         return openALFormat;
     }
-
+    
     public static int booleanToOpenAL(boolean b) {
         return b ? AL10.AL_TRUE : AL10.AL_FALSE;
     }
-
+    
     public static void flushErrors() {
         int e = 0;
         int found = 0;
@@ -86,9 +86,9 @@ public class OpenALUtil {
             logger.debug("No OpenAL errors found!");
         }
     }
-
+    
     private static final Class<?>[] constantsClasses = { AL10.class, AL11.class };
-
+    
     private static String searchConstants(final int i) {
         for (final Class<?> c : constantsClasses) {
             final Field[] fields = c.getFields();

@@ -1,16 +1,15 @@
 package de.omnikryptec.render2;
 
 import java.nio.FloatBuffer;
-import java.util.Arrays;
 
 import org.lwjgl.BufferUtils;
 
 import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.resource.MeshData.Primitive;
 
 public class BufferHolder {
@@ -30,10 +29,6 @@ public class BufferHolder {
         this.va = LibAPIManager.instance().getGLFW().getRenderAPI().createVertexArray();
         this.va.addVertexBuffer(this.vb, layout);
     }
-    
-    
-   
-    
     
     public void flush() {
         final int count = this.buffer.position();

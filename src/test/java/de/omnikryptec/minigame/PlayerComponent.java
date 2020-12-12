@@ -20,13 +20,13 @@ import de.omnikryptec.ecs.component.Component;
 
 public class PlayerComponent implements Component {
     public float maxVelocity;
-
+    
     public final float shOffsetX, shOffsetY;
-
+    
     public PlayerComponent(final float maxV, final float ox, final float oy) {
         this.maxVelocity = maxV;
         this.shOffsetX = ox;
         this.shOffsetY = oy;
     }
-
+    
 }

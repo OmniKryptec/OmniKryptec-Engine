@@ -22,14 +22,14 @@ import de.omnikryptec.libapi.exposed.render.shader.UniformBool;
 import de.omnikryptec.libapi.exposed.render.shader.UniformFloat;
 
 public class GLUniformFloat extends GLUniform implements UniformFloat, UniformBool {
-
+    
     private float currentValue;
     private boolean used = false;
-
+    
     public GLUniformFloat(final String name) {
         super(name);
     }
-
+    
     @Override
     public void loadFloat(final float value) {
         if (existsInCompilation() && (!this.used || this.currentValue != value)) {
@@ -38,10 +38,10 @@ public class GLUniformFloat extends GLUniform implements UniformFloat, UniformBo
             this.currentValue = value;
         }
     }
-
+    
     @Override
     public void loadBoolean(boolean b) {
         loadFloat(b ? 1.0f : 0.0f);
     }
-
+    
 }

@@ -1,48 +1,28 @@
 package de.omnikryptec.reeee;
 
-import java.nio.FloatBuffer;
-import java.util.Arrays;
-import java.util.function.Consumer;
-
 import org.joml.Matrix3x2f;
 import org.joml.Matrix4f;
 
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.core.Scene;
-import de.omnikryptec.core.Omnikryptec.LoaderSetting;
-import de.omnikryptec.demo.RendererDemo;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
-import de.omnikryptec.libapi.exposed.render.FBTarget;
-import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
-import de.omnikryptec.libapi.exposed.render.IndexBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
-import de.omnikryptec.libapi.exposed.render.VertexArray;
-import de.omnikryptec.libapi.exposed.render.VertexBuffer;
-import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
-import de.omnikryptec.libapi.exposed.render.shader.Shader;
-import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.batch.SimpleShaderSlot;
-import de.omnikryptec.render.objects.SimpleSprite;
 import de.omnikryptec.render.renderer.Renderer;
-import de.omnikryptec.render.renderer.Renderer2D;
 import de.omnikryptec.render.renderer.ViewManager;
 import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
 import de.omnikryptec.render2.Batch2D;
 import de.omnikryptec.render2.RenderedBaseRenderer;
 import de.omnikryptec.render2.SimpleBatchedShader;
 import de.omnikryptec.render2.SimpleBatchedShader.SimpleData2D;
-import de.omnikryptec.resource.MeshData.Primitive;
 import de.omnikryptec.resource.loadervpc.ResourceManager;
-import de.omnikryptec.resource.parser.shader.ShaderParser;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.profiling.Profiler;
@@ -81,7 +61,7 @@ public class Test_Backup extends Omnikryptec {
         }
         SimpleBatch2D b = new SimpleBatch2D(10000);
         b.color().set(1, 0, 0);
-        ((SimpleShaderSlot)b.getShaderSlot()).setViewProjectionMatrix(new Matrix4f());
+        ((SimpleShaderSlot) b.getShaderSlot()).setViewProjectionMatrix(new Matrix4f());
         Profiler.setEnabled(true);
         ResourceManager rm = new ResourceManager();
         rm.addDefaultLoaders();

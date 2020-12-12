@@ -36,12 +36,12 @@ import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.util.Util;
 
 public class OpenAL {
-
+    
     private static boolean created = false;
-
+    
     static final List<StreamedSound> ACTIVE_STREAMED_SOUNDS = new ArrayList<>();
     static final List<AudioPlaylist> ACTIVE_PLAYLISTS = new ArrayList<>();
-
+    
     private static final Timer UPDATE_TIMER = new Timer(10, e -> {
         for (StreamedSound s : ACTIVE_STREAMED_SOUNDS) {
             s.update();
@@ -50,17 +50,17 @@ public class OpenAL {
             p.update();
         }
     });
-
+    
     static {
         LibAPIManager.registerResourceShutdownHooks(() -> UPDATE_TIMER.stop());
     }
-
+    
     private DistanceModel distanceModel;
-
+    
     private final long defaultDevice;
     private final long context;
     private final ALCCapabilities deviceCaps;
-
+    
     /**
      * Used internally by the engine. Instead, use the LibAPIManager
      */
@@ -69,7 +69,7 @@ public class OpenAL {
         ALC10.alcDestroyContext(this.context);
         ALC10.alcCloseDevice(this.defaultDevice);
     }
-
+    
     public OpenAL() {
         if (created) {
             throw new IllegalStateException("OpenAL has already been created");
@@ -96,35 +96,35 @@ public class OpenAL {
         UPDATE_TIMER.start();
         setDistanceModel(DistanceModel.NONE);
     }
-
+    
     public void setMasterGain(float f) {
         AL10.alListenerf(AL10.AL_GAIN, f);
     }
-
+    
     public void setListenerPosition(float x, float y, float z) {
         AL10.alListener3f(AL10.AL_POSITION, x, y, z);
     }
-
+    
     public void setListenerVelocity(float vx, float vy, float vz) {
         AL10.alListener3f(AL10.AL_VELOCITY, vx, vy, vz);
     }
-
+    
     public void setListenerOrientation(float atx, float aty, float atz, float upx, float upy, float upz) {
         AL10.alListenerfv(AL10.AL_ORIENTATION, new float[] { atx, aty, atz, upx, upy, upz });
     }
-
+    
     public void setSpeedOfSound(float v) {
         AL11.alSpeedOfSound(v);
     }
-
+    
     public void setDopplerFactor(float f) {
         AL10.alDopplerFactor(f);
     }
-
+    
     public DistanceModel getDistanceModel() {
         return this.distanceModel;
     }
-
+    
     public void setDistanceModel(DistanceModel distanceModel) {
         AL10.alDistanceModel(Util.ensureNonNull(distanceModel).getDistanceModelId());
         this.distanceModel = distanceModel;

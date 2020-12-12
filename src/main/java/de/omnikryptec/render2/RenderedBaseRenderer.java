@@ -1,7 +1,5 @@
 package de.omnikryptec.render2;
 
-import java.util.Arrays;
-
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.resource.TextureConfig;
@@ -43,7 +41,7 @@ public class RenderedBaseRenderer implements BaseRenderer {
     public void flush() {
         this.currentMeta.getShader().getBuffers().flush();
     }
-
+    
     @Override
     public void addData(RenderData2D data) {
         this.currentMeta.getShader().getBuffers().addData(data);

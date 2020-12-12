@@ -1,22 +1,15 @@
 package de.omnikryptec.render3;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.ListMultimap;
-import com.google.common.collect.Lists;
 
 import de.omnikryptec.util.Util;
-import de.omnikryptec.util.data.IterableCombiner;
 
 public class Batch2D {
     

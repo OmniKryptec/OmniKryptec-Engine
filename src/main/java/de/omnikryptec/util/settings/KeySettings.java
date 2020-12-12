@@ -27,13 +27,13 @@ import de.omnikryptec.util.settings.keys.KeyGroup;
 import de.omnikryptec.util.settings.keys.KeysAndButtons;
 
 public class KeySettings extends KeyContainer {
-
+    
     public static final byte KEY_UNKNOWN = KeysAndButtons.OKE_KEY_UNKNOWN;
     public static final byte KEY_NOTHING = KeysAndButtons.OKE_KEY_NOTHING;
     public static final byte KEY_RELEASED = KeysAndButtons.OKE_RELEASE;
     public static final byte KEY_PRESSED = KeysAndButtons.OKE_PRESS;
     public static final byte KEY_REPEATED = KeysAndButtons.OKE_REPEAT;
-
+    
     public static final Key STANDARD_MOUSE_BUTTON_LEFT = new Key("mouseButtonLeft",
             KeysAndButtons.OKE_MOUSE_BUTTON_LEFT, false);
     public static final Key STANDARD_MOUSE_BUTTON_RIGHT = new Key("mouseButtonRight",
@@ -52,7 +52,7 @@ public class KeySettings extends KeyContainer {
     public static final Key STANDARD_KEY_TURN_PITCH_DOWN = new Key("turnPitchDown", KeysAndButtons.OKE_KEY_DOWN);
     public static final Key STANDARD_KEY_TURN_ROLL_RIGHT = new Key("turnRollRight", KeysAndButtons.OKE_KEY_E);
     public static final Key STANDARD_KEY_TURN_ROLL_LEFT = new Key("turnRollLeft", KeysAndButtons.OKE_KEY_Q);
-
+    
     public static final Key[] STANDARD_MOUSE_BUTTONS = new Key[] { STANDARD_MOUSE_BUTTON_LEFT,
             STANDARD_MOUSE_BUTTON_RIGHT, STANDARD_MOUSE_BUTTON_MIDDLE };
     public static final Key[] STANDARD_KEYBOARD_KEYS = new Key[] { STANDARD_KEY_MOVE_FORWARD,
@@ -61,17 +61,17 @@ public class KeySettings extends KeyContainer {
             STANDARD_KEY_TURN_PITCH_DOWN, STANDARD_KEY_TURN_ROLL_RIGHT, STANDARD_KEY_TURN_ROLL_LEFT };
     public static final Key[] STANDARD_KEYS = ObjectArrays.concat(STANDARD_MOUSE_BUTTONS, STANDARD_KEYBOARD_KEYS,
             Key.class);
-
+    
     public KeySettings() {
         this(null);
     }
-
+    
     public KeySettings(final Collection<IKey> keys) {
         if (keys != null) {
             addIKeys(keys);
         }
     }
-
+    
     public static void updateKeys(final Collection<IKey> keys, final double currentTime, final int keyCode,
             final boolean isKeyboardKey, final byte keyState) {
         for (final IKey key : keys) {
@@ -86,20 +86,20 @@ public class KeySettings extends KeyContainer {
             }
         }
     }
-
+    
     public void updateKeys(final double currentTime, final int keyCode, final boolean isKeyboardKey,
             final byte keyState) {
         updateKeys(getIKeys(), currentTime, keyCode, isKeyboardKey, keyState);
     }
-
+    
     public boolean isPressed(final String name) {
         final IKey key = getIKey(name);
         return key != null && key.isPressed();
     }
-
+    
     public boolean isLongPressed(final String name, final double minTime, final double maxTime) {
         final IKey key = getIKey(name);
         return key != null && key.isLongPressed(minTime, maxTime);
     }
-
+    
 }

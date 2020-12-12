@@ -1,7 +1,6 @@
 package de.omnikryptec.render2;
 
 import java.nio.FloatBuffer;
-import java.util.function.Consumer;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
 

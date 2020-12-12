@@ -22,22 +22,22 @@ import org.joml.Vector2f;
 import org.joml.Vector2fc;
 
 public class Struct2f {
-
+    
     public final float x, y;
-
+    
     public Struct2f(final float x, final float y) {
         this.x = x;
         this.y = y;
     }
-
+    
     public Struct2f(final Vector2fc invec) {
         this(invec.x(), invec.y());
     }
-
+    
     public Vector2f dynamic() {
         return new Vector2f(this.x, this.y);
     }
-
+    
     @Override
     public boolean equals(final Object obj) {
         if (obj == null) {
@@ -52,7 +52,7 @@ public class Struct2f {
         }
         return false;
     }
-
+    
     @Override
     public int hashCode() {
         return Objects.hash(this.x, this.y);

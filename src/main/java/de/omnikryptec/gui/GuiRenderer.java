@@ -28,18 +28,18 @@ import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class GuiRenderer implements Renderer {
-
+    
     private GuiComponent componentRoot;
     private final AdvancedBatch2D batch;
-
+    
     public GuiRenderer() {
         this.batch = new AdvancedBatch2D(1000);
     }
-
+    
     protected void setGui(final GuiComponent componentRoot) {
         this.componentRoot = componentRoot;
     }
-
+    
     @Override
     public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target,
             Settings<EnvironmentKey> envSettings, Time time) {
@@ -51,5 +51,5 @@ public class GuiRenderer implements Renderer {
             this.batch.end();
         }
     }
-
+    
 }

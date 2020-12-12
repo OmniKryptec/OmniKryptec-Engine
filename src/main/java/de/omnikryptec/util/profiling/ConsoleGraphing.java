@@ -1,13 +1,12 @@
 package de.omnikryptec.util.profiling;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class ConsoleGraphing {
     
-    public static String graph(int width, int height, List<? extends Number> data, String title, String xName, String yName) {
-        String string = title+"\n";
+    public static String graph(int width, int height, List<? extends Number> data, String title, String xName,
+            String yName) {
+        String string = title + "\n";
         double xDiv = data.size() == width ? 1 : data.size() / (double) width;
         int[] values = new int[width];
         int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;

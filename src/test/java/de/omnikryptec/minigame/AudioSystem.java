@@ -10,15 +10,15 @@ import de.omnikryptec.ecs.system.AbstractComponentSystem;
 import de.omnikryptec.util.updater.Time;
 
 public class AudioSystem extends AbstractComponentSystem {
-
+    
     public AudioSystem() {
         super(Family.of(AudioComponent.class, PositionComponent.class));
     }
-
+    
     private final ComponentMapper<AudioComponent> AC = new ComponentMapper<>(AudioComponent.class);
     private final ComponentMapper<PositionComponent> PC = new ComponentMapper<>(PositionComponent.class);
     private final ComponentMapper<MovementComponent> MC = new ComponentMapper<>(MovementComponent.class);
-
+    
     @Override
     public void update(IECSManager iecsManager, Time time) {
         for (Entity e : this.entities) {
@@ -38,5 +38,5 @@ public class AudioSystem extends AbstractComponentSystem {
             }
         }
     }
-
+    
 }

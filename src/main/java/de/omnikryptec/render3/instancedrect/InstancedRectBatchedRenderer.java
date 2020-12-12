@@ -1,18 +1,19 @@
 package de.omnikryptec.render3.instancedrect;
 
 import java.util.function.Supplier;
+
 import de.omnikryptec.libapi.exposed.LibAPIManager;
-import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.Texture;
+import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.render3.ArrayFloatCollector;
+import de.omnikryptec.render3.Batch2D.Target;
 import de.omnikryptec.render3.BatchCache;
 import de.omnikryptec.render3.BatchedRenderer;
 import de.omnikryptec.render3.BufferFloatCollector;
 import de.omnikryptec.render3.FloatCollector;
 import de.omnikryptec.render3.InstanceData;
 import de.omnikryptec.render3.InstancedRender;
-import de.omnikryptec.render3.Batch2D.Target;
 import de.omnikryptec.render3.instancedrect.InstancedRectBatchCache.CacheEntry;
 import de.omnikryptec.resource.TextureConfig;
 import de.omnikryptec.resource.TextureData;

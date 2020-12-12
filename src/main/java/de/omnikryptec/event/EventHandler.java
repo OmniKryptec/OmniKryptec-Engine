@@ -20,27 +20,27 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class EventHandler implements IEventListener {
-
+    
     private final Object handler;
     private final Method m;
     private final boolean receiveConsumed;
     private final int prio;
-
+    
     public EventHandler(final Object handler, final Method m, final boolean receiveConsumed, final int prio) {
         this.handler = handler;
         this.m = m;
         this.receiveConsumed = receiveConsumed;
         this.prio = prio;
     }
-
+    
     public Object getHandler() {
         return this.handler;
     }
-
+    
     public Method getMethod() {
         return this.m;
     }
-
+    
     @Override
     public boolean equals(final Object obj) {
         if (obj == this) {
@@ -54,7 +54,7 @@ public class EventHandler implements IEventListener {
         }
         return false;
     }
-
+    
     @Override
     public void invoke(final Event ev) {
         try {
@@ -65,15 +65,15 @@ public class EventHandler implements IEventListener {
             e.printStackTrace();
         }
     }
-
+    
     @Override
     public boolean receiveConsumed() {
         return this.receiveConsumed;
     }
-
+    
     @Override
     public int priority() {
         return this.prio;
     }
-
+    
 }

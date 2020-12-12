@@ -30,21 +30,21 @@ public class FontHelper {
     
     private static final String DEFAULT_FNT_END = ".fnt";
     private static final String DEFAULT_TEX_END = ".png";
-
+    
     private static final Logger LOGGER = Logger.getLogger(FontHelper.class);
-
+    
     private final Map<String, Font> fonts;
     private final Map<String, Font> sdfFonts;
     private final ResourceProvider resProvider;
     private final TextureHelper tHelper;
-
+    
     public FontHelper(ResourceProvider provider, TextureHelper tHelper) {
         this.resProvider = provider;
         this.tHelper = tHelper;
         this.fonts = new HashMap<>();
         this.sdfFonts = new HashMap<>();
     }
-
+    
     //Unsafe but maybe useful for plugins who know the font is loaded but not if it's sdf.... hmmm
     public Font getFontAuto(String name) {
         Font f = this.fonts.get(name);
@@ -53,11 +53,11 @@ public class FontHelper {
         }
         return f;
     }
-
+    
     public Font getFont(String name) {
         return getFont(name, null, null, false);
     }
-
+    
     public Font getFontSDF(String name) {
         return getFont(name, null, null, true);
     }
@@ -91,13 +91,13 @@ public class FontHelper {
         }
         return f;
     }
-
+    
     public void clearFonts() {
         this.fonts.clear();
     }
-
+    
     public void clearSDFFonts() {
         this.sdfFonts.clear();
     }
-
+    
 }

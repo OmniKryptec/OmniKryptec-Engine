@@ -21,27 +21,27 @@ import java.util.Objects;
 import de.codemakers.io.file.AdvancedFile;
 
 public class StagedAdvancedFile {
-
+    
     private final long options;
     private final AdvancedFile advancedFile;
-
+    
     public StagedAdvancedFile(final long options, final AdvancedFile advancedFile) {
         this.options = options;
         this.advancedFile = advancedFile;
     }
-
+    
     public final long getOptions() {
         return this.options;
     }
-
+    
     public final AdvancedFile getAdvancedFile() {
         return this.advancedFile;
     }
-
+    
     public final boolean isLoadingXMLInfo() {
         return (this.options & DefaultResourceManager.OPTION_LOAD_XML_INFO) != 0;
     }
-
+    
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -53,16 +53,16 @@ public class StagedAdvancedFile {
         final StagedAdvancedFile that = (StagedAdvancedFile) o;
         return this.options == that.options && Objects.equals(this.advancedFile, that.advancedFile);
     }
-
+    
     @Override
     public int hashCode() {
         return Objects.hash(this.options, this.advancedFile);
     }
-
+    
     @Override
     public String toString() {
         return getClass().getSimpleName() + "{" + "options=" + this.options + ", advancedFile=" + this.advancedFile
                 + '}';
     }
-
+    
 }

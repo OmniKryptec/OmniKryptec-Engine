@@ -22,7 +22,7 @@ public enum Interpolator {
         public double interpolate(final double t) {
             return 0.0;
         }
-
+        
         @Override
         public float interpolate(final float t) {
             return 0.0F;
@@ -33,7 +33,7 @@ public enum Interpolator {
         public double interpolate(final double t) {
             return t;
         }
-
+        
         @Override
         public float interpolate(final float t) {
             return t;
@@ -44,7 +44,7 @@ public enum Interpolator {
         public double interpolate(final double t) {
             return (t * t * (3.0 - 2.0 * t));
         }
-
+        
         @Override
         public float interpolate(final float t) {
             return (t * t * (3.0F - 2.0F * t));
@@ -55,7 +55,7 @@ public enum Interpolator {
         public double interpolate(final double t) {
             return t * t * t * (t * (t * 6.0 - 15.0) + 10.0);
         }
-
+        
         @Override
         public float interpolate(final float t) {
             return t * t * t * (t * (t * 6.0F - 15.0F) + 10.0F);
@@ -66,19 +66,19 @@ public enum Interpolator {
         public double interpolate(final double t) {
             return (1.0 - Mathd.cos(t * Mathd.PI)) * 0.5;
         }
-
+        
         @Override
         public float interpolate(final float t) {
             return (1.0F - Mathf.cos(t * Mathf.PI)) * 0.5F;
         }
     };
-
+    
     public double interpolate(final double t) {
         throw new AbstractMethodError();
     }
-
+    
     public float interpolate(final float t) {
         throw new AbstractMethodError();
     }
-
+    
 }

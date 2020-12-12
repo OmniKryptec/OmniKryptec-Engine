@@ -24,7 +24,7 @@ import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.Settings;
 
 public class StaticInitTest {
-
+    
     public static void main(final String[] args) {
         Omnikryptec.initialize(new Settings<>(), RenderAPI.OpenGL, new Settings<>(), new Settings<>(), false, false);
         final IWindow window = LibAPIManager.instance().getGLFW().getRenderAPI().getWindow();
@@ -40,5 +40,5 @@ public class StaticInitTest {
         }
         Omnikryptec.deinitialize();
     }
-
+    
 }

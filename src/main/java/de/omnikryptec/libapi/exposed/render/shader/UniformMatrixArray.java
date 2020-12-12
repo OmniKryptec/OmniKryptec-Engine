@@ -26,21 +26,21 @@ import de.omnikryptec.libapi.opengl.shader.GLUniformMatrix;
  * @author Panzer1119
  */
 public class UniformMatrixArray {
-
+    
     private final GLUniformMatrix[] uniformMatrices;
-
+    
     public UniformMatrixArray(final String name, final int size) {
         this.uniformMatrices = new GLUniformMatrix[size];
         for (int i = 0; i < size; i++) {
             this.uniformMatrices[i] = new GLUniformMatrix(name + "[" + i + "]");
         }
     }
-
+    
     public final UniformMatrixArray loadMatrixArray(final Matrix4f[] matrices) {
         for (int i = 0; i < matrices.length; i++) {
             this.uniformMatrices[i].loadMatrix(matrices[i]);
         }
         return this;
     }
-
+    
 }

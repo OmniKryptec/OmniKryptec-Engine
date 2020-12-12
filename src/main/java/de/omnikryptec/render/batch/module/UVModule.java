@@ -21,19 +21,19 @@ import de.omnikryptec.libapi.exposed.render.TextureRegion;
 import de.omnikryptec.render.batch.module.ModuleBatchingManager.QuadSide;
 
 public class UVModule implements Module {
-
+    
     @Override
     public int size() {
         return 2;
     }
-
+    
     @Override
     public boolean sideIndependant() {
         return false;
     }
-
+    
     private float u0, v0, u1, v1;
-
+    
     public void set(final Texture t, final boolean flipU, boolean flipV) {
         if (t == null) {
             return;
@@ -62,7 +62,7 @@ public class UVModule implements Module {
             this.v1 = tmp;
         }
     }
-
+    
     public void set(float u0, float v0, float u1, float v1, final boolean flipV, final boolean flipU) {
         if (flipU) {
             u0 = 1 - u0;
@@ -77,7 +77,7 @@ public class UVModule implements Module {
         this.u1 = u1;
         this.v1 = v1;
     }
-
+    
     @Override
     public void visit(final float[] array, final QuadSide side, final int index) {
         switch (side) {
@@ -101,5 +101,5 @@ public class UVModule implements Module {
             throw new IllegalArgumentException();
         }
     }
-
+    
 }

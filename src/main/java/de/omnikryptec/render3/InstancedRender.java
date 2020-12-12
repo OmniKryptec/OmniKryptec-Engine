@@ -5,11 +5,11 @@ import java.nio.FloatBuffer;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.IndexBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.BufferUsage;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.resource.MeshData.Primitive;
 
 public class InstancedRender {

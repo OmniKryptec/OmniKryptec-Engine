@@ -1,8 +1,8 @@
 package de.omnikryptec.render.postprocessing;
 
 import de.omnikryptec.libapi.exposed.render.FBTarget;
-import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
+import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
 import de.omnikryptec.libapi.exposed.render.shader.UniformVec2;
 import de.omnikryptec.render.renderer.View;

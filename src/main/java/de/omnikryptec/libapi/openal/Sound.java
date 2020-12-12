@@ -23,12 +23,12 @@ import javax.sound.sampled.AudioFormat;
 import org.lwjgl.openal.AL10;
 
 public class Sound extends ALSound {
-
+    
     public final int bufferID;
-
+    
     private final int size;
     private float length;
-
+    
     public Sound(AudioFormat format, ByteBuffer data) {
         super(format, SoundType.CACHED);
         this.bufferID = AL10.alGenBuffers();
@@ -36,12 +36,12 @@ public class Sound extends ALSound {
         this.size = AL10.alGetBufferi(this.bufferID, AL10.AL_SIZE);
         calculateLength();
     }
-
+    
     private final float calculateLength() {
         this.length = (((this.size) * 8.0F) / (((float) getChannels()) * ((float) getBits()))) / (getFrequency());
         return this.length;
     }
-
+    
     public final float getLength() {
         return this.length;
     }
@@ -52,19 +52,19 @@ public class Sound extends ALSound {
                 "Sound [bufferdID = %d, size = %d, channels = %d, bits = %d, frequency = %d, length = %.2f]",
                 this.bufferID, this.size, getChannels(), getBits(), getFrequency(), this.length);
     }
-
+    
     @Override
     void attach(AudioSource source) {
         AL10.alSourcei(source.getSourceID(), AL10.AL_BUFFER, this.bufferID);
     }
-
+    
     @Override
     void detach() {
     }
-
+    
     @Override
     public void deleteRaw() {
         AL10.alDeleteBuffers(this.bufferID);
     }
-
+    
 }

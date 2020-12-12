@@ -17,14 +17,14 @@
 package de.omnikryptec.util.settings.keys;
 
 public interface IKey {
-
+    
     /**
      * Returns the name of the {@link de.omnikryptec.util.settings.keys.IKey}
      *
      * @return Name of the {@link de.omnikryptec.util.settings.keys.IKey}
      */
     String getName();
-
+    
     /**
      * Returns if this {@link de.omnikryptec.util.settings.keys.IKey} is being
      * pressed
@@ -33,7 +33,7 @@ public interface IKey {
      *         is pressed
      */
     boolean isPressed();
-
+    
     /**
      * Returns if this {@link de.omnikryptec.util.settings.keys.IKey} is being
      * pressed for a specified time
@@ -45,5 +45,5 @@ public interface IKey {
      *         is pressed for the specified time
      */
     boolean isLongPressed(double minTime, double maxTime);
-
+    
 }

@@ -30,7 +30,7 @@ import de.omnikryptec.util.settings.Settings;
  *
  */
 public class BasicFunctionsTest {
-
+    
     public static void main(final String[] args) {
         LibAPIManager.init(new Settings<>());
         LibAPIManager.instance().initGlfw();
@@ -48,5 +48,5 @@ public class BasicFunctionsTest {
         }
         LibAPIManager.shutdown();
     }
-
+    
 }

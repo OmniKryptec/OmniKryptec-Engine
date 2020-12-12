@@ -30,44 +30,44 @@ public class FontParser {
     private static final String SPLITTER = " ";
     private static final String NUMBER_SEPARATOR = ",";
     private static final int SPACE_ASCII = 32;
-
+    
     private static final int INDEX_PAD_TOP = 0;
     private static final int INDEX_PAD_LEFT = 1;
     private static final int INDEX_PAD_BOTTOM = 2;
     private static final int INDEX_PAD_RIGHT = 3;
-
+    
     //FIXME pcfreak9000 fix/improve stuff with padding
     private static final int DESIRED_PADDING = 10;
     private static final Logger LOGGER = Logger.getLogger(FontParser.class);
-
+    
     private static FontParser instance;
-
+    
     public static FontParser instance() {
         if (instance == null) {
             instance = new FontParser();
         }
         return instance;
     }
-
+    
     private final Map<String, String> values;
-
+    
     private BufferedReader reader;
     private int[] padding;
     private int paddingWidth;
     private int paddingHeight;
-
+    
     private double spaceWidth;
     private Map<Character, FontCharacter> metaData;
     private double verticalPerPixelSize;
     private double horizontalPerPixelSize;
     private double base;
-
+    
     private String textureFileName;
-
+    
     private FontParser() {
         this.values = new HashMap<>();
     }
-
+    
     public FontFile parse(InputStream stream) {
         this.metaData = new HashMap<>();
         this.spaceWidth = 0;
@@ -95,7 +95,7 @@ public class FontParser {
         return new FontFile(this.metaData, (float) this.spaceWidth, name, (float) this.base,
                 (float) this.verticalPerPixelSize, this.textureFileName);
     }
-
+    
     private boolean readNextLine() {
         this.values.clear();
         String line = null;
@@ -122,7 +122,7 @@ public class FontParser {
         }
         return true;
     }
-
+    
     /**
      * Gets the {@code int} value of the variable with a certain name on the current
      * line.
@@ -133,7 +133,7 @@ public class FontParser {
     private int getValueOfVariable(String variable) {
         return Integer.parseInt(this.values.get(variable));
     }
-
+    
     /**
      * Gets the array of ints associated with a variable on the current line.
      *
@@ -148,7 +148,7 @@ public class FontParser {
         }
         return actualValues;
     }
-
+    
     /**
      * Loads in data about each character and stores the data in the
      * {@link Character} class.
@@ -166,7 +166,7 @@ public class FontParser {
             }
         }
     }
-
+    
     /**
      * Loads all the data about one character in the texture atlas and converts it
      * all from 'pixels' to 'screen-space' before storing. The effects of padding

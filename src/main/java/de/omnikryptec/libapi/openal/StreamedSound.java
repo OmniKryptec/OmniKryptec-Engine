@@ -33,19 +33,19 @@ import de.omnikryptec.util.Util;
  * @author Panzer1119 & pcfreak9000
  */
 public class StreamedSound extends ALSound {
-
+    
     private static final Logger LOGGER = Logger.getLogger(StreamedSound.class);
-
+    
     public static final int STANDARD_BUFFER_COUNT = 3;
     public static final int STANDARD_BUFFER_LENGTH = 1000;
-
+    
     private final AudioInputStream audioInputStream;
     private final ByteBuffer pcm;
     private final int bufferCount;
     private final int bufferTime;
-
+    
     private AudioSource source;
-
+    
     /**
      * Creates a StreamedSound Object
      *
@@ -56,7 +56,7 @@ public class StreamedSound extends ALSound {
     public StreamedSound(AudioInputStream audioInputStream) {
         this(audioInputStream, STANDARD_BUFFER_COUNT, STANDARD_BUFFER_LENGTH);
     }
-
+    
     /**
      * Creates a StreamedSound Object
      *
@@ -74,7 +74,7 @@ public class StreamedSound extends ALSound {
         this.pcm = BufferUtils
                 .createByteBuffer((int) (audioInputStream.getFormat().getSampleRate() * 4 * (this.bufferTime / 1000)));
     }
-
+    
     private final void initBuffers(AudioSource source) {
         for (int i = 0; i < this.bufferCount; i++) {
             final int bufferID = AL10.alGenBuffers();
@@ -87,14 +87,14 @@ public class StreamedSound extends ALSound {
             }
         }
     }
-
+    
     private final void deleteBuffers(AudioSource source) {
         int bufferRemovedID = 0;
         while ((bufferRemovedID = AL10.alSourceUnqueueBuffers(source.getSourceID())) != 0) {
             AL10.alDeleteBuffers(bufferRemovedID);
         }
     }
-
+    
     /**
      * Returns the AudioInputStream
      *
@@ -103,7 +103,7 @@ public class StreamedSound extends ALSound {
     public final AudioInputStream getAudioInputStream() {
         return this.audioInputStream;
     }
-
+    
     @Override
     final void attach(AudioSource source) {
         if (Util.ensureNonNull(source) != this.source && this.source != null) {
@@ -113,7 +113,7 @@ public class StreamedSound extends ALSound {
         OpenAL.ACTIVE_STREAMED_SOUNDS.add(this);
         this.source = source;
     }
-
+    
     @Override
     final void detach() {
         if (this.source == null) {
@@ -123,7 +123,7 @@ public class StreamedSound extends ALSound {
         OpenAL.ACTIVE_STREAMED_SOUNDS.remove(this);
         this.source = null;
     }
-
+    
     final void update() {
         while ((AL10.alGetSourcei(this.source.getSourceID(), AL10.AL_BUFFERS_PROCESSED)) != 0) {
             final int bufferRemovedID = AL10.alSourceUnqueueBuffers(this.source.getSourceID());
@@ -140,7 +140,7 @@ public class StreamedSound extends ALSound {
             this.source.stop();
         }
     }
-
+    
     private final boolean refillBuffer() {
         try {
             this.pcm.clear();
@@ -154,7 +154,7 @@ public class StreamedSound extends ALSound {
             return false;
         }
     }
-
+    
     @Override
     public void deleteRaw() {
         try {
@@ -163,5 +163,5 @@ public class StreamedSound extends ALSound {
             LOGGER.warn("Could not delete StreamedSound", e);
         }
     }
-
+    
 }

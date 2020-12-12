@@ -24,9 +24,9 @@ import de.omnikryptec.util.Util;
 import de.omnikryptec.util.updater.Time;
 
 public class Scene {
-
+    
     private IUpdatable gameLogic;
-
+    
     private final ViewManager viewManager;
     
     private UnaryOperator<Time> timeTransform = UnaryOperator.identity();
@@ -34,25 +34,25 @@ public class Scene {
     public Scene() {
         this.viewManager = new ViewManager();
     }
-
+    
     public void updateScene(final Time time) {
         if (hasGameLogic()) {
             this.gameLogic.update(this.timeTransform.apply(time));
         }
     }
-
+    
     public boolean hasGameLogic() {
         return this.gameLogic != null;
     }
-
+    
     public void setGameLogic(final IUpdatable updatable) {
         this.gameLogic = updatable;
     }
-
+    
     public IUpdatable getGameLogic() {
         return this.gameLogic;
     }
-
+    
     public void setTimeTransform(UnaryOperator<Time> transform) {
         this.timeTransform = Util.ensureNonNull(transform);
     }
@@ -60,5 +60,5 @@ public class Scene {
     public ViewManager getViewManager() {
         return this.viewManager;
     }
-
+    
 }

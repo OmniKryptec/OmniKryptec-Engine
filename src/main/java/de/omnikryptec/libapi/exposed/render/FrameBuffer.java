@@ -32,18 +32,18 @@ import de.omnikryptec.util.data.Color;
  * @see RenderAPI#createFrameBuffer(int, int, int, int)
  */
 public abstract class FrameBuffer implements Deletable {
-
+    
     protected final FrameBufferStack stack;
-
+    
     public FrameBuffer(final FrameBufferStack stack) {
         this.stack = stack;
         registerThisAsAutodeletable();
     }
-
+    
     private boolean isNull() {
         return this.stack == null;
     }
-
+    
     /**
      * Binds this {@link FrameBuffer} to be operated upon.<br>
      * <br>
@@ -62,7 +62,7 @@ public abstract class FrameBuffer implements Deletable {
             this.stack.bind(this);
         }
     }
-
+    
     /**
      * Unbinds this {@link FrameBuffer}.
      *
@@ -75,7 +75,7 @@ public abstract class FrameBuffer implements Deletable {
             this.stack.unbind(this);
         }
     }
-
+    
     public void bindAsTmp() {
         if (isNull()) {
             bindRaw();
@@ -83,7 +83,7 @@ public abstract class FrameBuffer implements Deletable {
             this.stack.bindTmp(this);
         }
     }
-
+    
     public void unbindAsTmp() {
         if (isNull()) {
             unbindRaw();
@@ -91,12 +91,12 @@ public abstract class FrameBuffer implements Deletable {
             this.stack.unbindTmp();
         }
     }
-
+    
     protected abstract void bindRaw();
-
+    
     protected void unbindRaw() {
     }
-
+    
     /**
      * Sets the {@link FBTarget} at a certain index of this {@link FrameBuffer}.<br>
      * <br>
@@ -111,7 +111,7 @@ public abstract class FrameBuffer implements Deletable {
      * @see #assignTargets(FBTarget...)
      */
     public abstract void assignTarget(int index, @Nonnull FBTarget target);
-
+    
     /**
      * Sets the targets of this {@link FrameBuffer}. All given targets will be set,
      * beginning on the FrameBuffers first target location.
@@ -122,7 +122,7 @@ public abstract class FrameBuffer implements Deletable {
     public void assignTargets(@Nonnull final FBTarget... targets) {
         assignTargets(0, targets);
     }
-
+    
     /**
      * Sets the targets of this {@link FrameBuffer}. All given targets will be set.
      *
@@ -133,7 +133,7 @@ public abstract class FrameBuffer implements Deletable {
     public void assignTargets(final int startIndex, @Nonnull final FBTarget... targets) {
         assignTargets(startIndex, 0, targets.length, targets);
     }
-
+    
     /**
      * Sets the targets of this {@link FrameBuffer}.
      *
@@ -150,7 +150,7 @@ public abstract class FrameBuffer implements Deletable {
             assignTarget(i, targets[srcStart + i]);
         }
     }
-
+    
     /**
      * The same as {@link #assignTarget(int, FBTarget)} except this functions binds
      * and unbinds the framebuffer during this operation.
@@ -161,7 +161,7 @@ public abstract class FrameBuffer implements Deletable {
         assignTarget(index, target);
         unbindAsTmp();
     }
-
+    
     /**
      * The same as {@link #assignTargets(FBTarget...)} except this functions binds
      * and unbinds the framebuffer during this operation.
@@ -172,7 +172,7 @@ public abstract class FrameBuffer implements Deletable {
         assignTargets(0, targets);
         unbindAsTmp();
     }
-
+    
     /**
      * The same as {@link #assignTargets(int, int, int, FBTarget...)} except this
      * functions binds and unbinds the framebuffer during this operation.
@@ -184,7 +184,7 @@ public abstract class FrameBuffer implements Deletable {
         assignTargets(startIndex, srcStart, srcLength, targets);
         unbindAsTmp();
     }
-
+    
     /**
      * Returns a {@link Texture} of this {@link FrameBuffer}.
      *
@@ -194,7 +194,7 @@ public abstract class FrameBuffer implements Deletable {
      */
     @Nullable
     public abstract Texture getTexture(int targetIndex);
-
+    
     /**
      * Blits the specified attachment of this {@link FrameBuffer} to another
      * FrameBuffer.
@@ -204,11 +204,11 @@ public abstract class FrameBuffer implements Deletable {
      * @param resolveDepth if the depthbuffer should be resolved, too
      */
     public abstract void resolveToFrameBuffer(@Nonnull FrameBuffer target, int attachment);
-
+    
     public void resolveToFrameBuffer(@Nonnull final FrameBuffer target, final FBTarget attachment) {
         resolveToFrameBuffer(target, attachment.attachmentIndex);
     }
-
+    
     /**
      * Draws the texture from the specified index of this {@link FrameBuffer} to the
      * given {@code Batch2D} without any transformation.
@@ -222,38 +222,38 @@ public abstract class FrameBuffer implements Deletable {
     public void renderDirect(final int targetIndex) {
         RendererUtil.renderDirect(getTexture(targetIndex));
     }
-
+    
     //clearing and setting clear color at the same time might be inefficient/redundant. Don't spam the clear functions?
     public void clearDepth() {
         clear(0, 0, 0, 0, SurfaceBufferType.Depth);
     }
-
+    
     public void clearColor() {
         clearColor(0, 0, 0, 0);
     }
-
+    
     public void clearColor(final Color color) {
         clearColor(color.getR(), color.getG(), color.getB(), color.getA());
     }
-
+    
     public void clearColor(final float r, final float g, final float b, final float a) {
         clear(r, g, b, a, SurfaceBufferType.Color);
     }
-
+    
     public void clear(final Color color, final SurfaceBufferType... types) {
         clear(color.getR(), color.getG(), color.getB(), color.getA(), types);
     }
-
+    
     public void clearComplete(Color color) {
         clear(color, SurfaceBufferType.Color, SurfaceBufferType.Depth);
     }
-
+    
     public void clearComplete() {
         clear(0, 0, 0, 0, SurfaceBufferType.Color, SurfaceBufferType.Depth);
     }
-
+    
     public abstract void clear(float r, float g, float b, float a, SurfaceBufferType... types);
-
+    
     /**
      * THe amount of samples this {@link FrameBuffer} does when rendering onto. 0 if
      * none.
@@ -261,7 +261,7 @@ public abstract class FrameBuffer implements Deletable {
      * @return multisampling value
      */
     public abstract int multisamples();
-
+    
     /**
      * A copy of the current set targets.
      *
@@ -270,37 +270,37 @@ public abstract class FrameBuffer implements Deletable {
      */
     @Nonnull
     public abstract FBTarget[] targets();
-
+    
     /**
      * This {@link FrameBuffer} is a RenderBuffer if it has no textures.
      *
      * @return is render buffer?
      */
     public abstract boolean isRenderBuffer();
-
+    
     /**
      * The maximum number of targets this {@link FrameBuffer} can handle
      *
      * @return max number of targets
      */
     public abstract int targetCount();
-
+    
     public abstract FrameBuffer resizedClone(int newWidth, int newHeight);
-
+    
     public FrameBuffer resizedCloneAndDelete(int newWidth, int newHeight) {
         FrameBuffer rC = resizedClone(newWidth, newHeight);
         this.deleteAndUnregister();
         return rC;
     }
-
+    
     public FrameBuffer resizeAndDeleteOrThis(int newWidth, int newHeight) {
         if (this.getWidth() != newWidth || this.getHeight() != newHeight) {
             return resizedCloneAndDelete(newWidth, newHeight);
         }
         return this;
     }
-
+    
     public abstract int getWidth();
-
+    
     public abstract int getHeight();
 }

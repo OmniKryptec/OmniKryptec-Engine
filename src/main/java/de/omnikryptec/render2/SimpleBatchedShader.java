@@ -1,14 +1,12 @@
 package de.omnikryptec.render2;
 
 import java.nio.FloatBuffer;
-import java.util.function.Consumer;
 
 import org.joml.Matrix4f;
 
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
-import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.batch.SimpleShaderSlot;
 import de.omnikryptec.render.batch.module.ColorModule;
 import de.omnikryptec.render.batch.module.PositionModule;
@@ -46,7 +44,7 @@ public class SimpleBatchedShader implements BatchedShader {
         public void fillVertexData(FloatBuffer into) {
             bshad.helper.put(into, colorModule, tilingModule, posModule, uvModule);
         }
-
+        
         @Override
         public int vertexDataSize() {
             return 54;

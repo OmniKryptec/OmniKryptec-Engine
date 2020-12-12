@@ -22,32 +22,32 @@ import de.omnikryptec.resource.Font;
 import de.omnikryptec.util.data.Color;
 
 public interface BorderedBatch2D extends Batch2D {
-
+    
     Color borderColor();
-
+    
     Vector2f borderSDFData();
-
+    
     Vector2f borderOffset();
-
+    
     Vector2f signedDistanceFieldData();
-
+    
     default void setDefaultSDFData() {
         signedDistanceFieldData().set(0, 1);
     }
-
+    
     default void setDefaultBDSFData() {
         borderSDFData().set(0, 0.00000000001f);
     }
-
+    
     default void setDefaultBorderOffset() {
         borderOffset().set(0);
     }
-
+    
     default void drawStringSDFautoc(String string, Font font, float size, float thickness, float x, float y,
             float rad) {
         this.drawStringSDFautoc(string, font, size, 1, thickness, x, y, rad);
     }
-
+    
     default void drawStringSDFautoc(String string, Font font, float size, float aspect, float thickness, float x,
             float y, float rad) {
         if (!font.isSDFFont()) {
