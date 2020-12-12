@@ -16,7 +16,14 @@
 
 package de.omnikryptec.libapi.exposed.render;
 
+import de.omnikryptec.libapi.exposed.LibAPIManager;
+import de.omnikryptec.resource.TextureConfig;
+import de.omnikryptec.resource.TextureData;
+
 public interface Texture {
+    
+    public static final Texture WHITE_1x1 = LibAPIManager.instance().getGLFW().getRenderAPI()
+            .createTexture2D(TextureData.WHITE_TEXTURE_DATA, new TextureConfig());
     
     /**
      * Binds this {@link Texture} to a certain textureunit

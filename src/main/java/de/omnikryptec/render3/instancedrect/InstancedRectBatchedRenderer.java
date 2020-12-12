@@ -22,10 +22,8 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
     
     private static final int FLOATCOLLECTOR_SIZE = 40000;
     static final int TEXTURE_ACCUM_SIZE = 8;
-    private static final TextureConfig MYCONFIG = new TextureConfig();
     
     private final int instancedArgSize;
-    private final Texture NULL_TEXTURE;
     
     private BufferFloatCollector renderCollector;
     private InstancedRender rendermgr;
@@ -41,8 +39,6 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
     private int instanceCount = 0;
     
     public InstancedRectBatchedRenderer() {
-        this.NULL_TEXTURE = LibAPIManager.instance().getGLFW().getRenderAPI()
-                .createTexture2D(TextureData.WHITE_TEXTURE_DATA, MYCONFIG);
         renderCollector = new BufferFloatCollector(FLOATCOLLECTOR_SIZE);
         VertexBufferLayout instancedLayout = new VertexBufferLayout();
         instancedLayout.push(Type.FLOAT, 2, false, 1);
@@ -75,7 +71,7 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
     }
     
     private int setupTexture(Texture t) {
-        Texture base = t == null ? NULL_TEXTURE : t.getBaseTexture();
+        Texture base = t == null ? Texture.WHITE_1x1 : t.getBaseTexture();
         int index = -1;
         for (int i = 0; i < textures.length; i++) {
             if (textures[i] == null) {
@@ -135,6 +131,10 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
         BatchCache returnthis = this.batchCache;
         this.batchCache = null;
         return returnthis;
+    }
+    
+    public InstancedRectShader getShader() {
+        return shader;
     }
     
     private void flush() {

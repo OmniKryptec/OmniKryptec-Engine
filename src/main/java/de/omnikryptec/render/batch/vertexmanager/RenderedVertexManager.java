@@ -36,8 +36,6 @@ import de.omnikryptec.resource.TextureData;
 
 public class RenderedVertexManager implements VertexManager {
     
-    private static final TextureConfig MYCONFIG = new TextureConfig();
-    
     private final int vertexCount;
     
     private FloatBuffer buffer;
@@ -47,13 +45,9 @@ public class RenderedVertexManager implements VertexManager {
     private VertexBuffer vb;
     private final AbstractShaderSlot shader;
     
-    private final Texture NULL_TEXTURE;
-    
     public RenderedVertexManager(final int vertexCount, final AbstractShaderSlot shader) {
         this.vertexCount = vertexCount;
         this.shader = shader;
-        this.NULL_TEXTURE = LibAPIManager.instance().getGLFW().getRenderAPI()
-                .createTexture2D(TextureData.WHITE_TEXTURE_DATA, MYCONFIG);
     }
     
     @Override
@@ -67,7 +61,7 @@ public class RenderedVertexManager implements VertexManager {
             throw new IndexOutOfBoundsException(
                     requiredFloats + " floats required, but buffer size is only " + this.buffer.capacity());
         }
-        final Texture baseTexture = texture == null ? this.NULL_TEXTURE : texture.getBaseTexture();
+        final Texture baseTexture = texture == null ? Texture.WHITE_1x1 : texture.getBaseTexture();
         if (requiredFloats > this.buffer.remaining() || !Objects.equals(baseTexture, this.currentTexture)) {
             //flush BEFORE setting new texture
             forceFlush();

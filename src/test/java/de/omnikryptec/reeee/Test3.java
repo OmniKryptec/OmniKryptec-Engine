@@ -8,8 +8,10 @@ import org.joml.Matrix3x2f;
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.libapi.exposed.render.RenderAPI.PolyMode;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
+import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.render3.Batch2D;
 import de.omnikryptec.render3.Batch2D.Target;
 import de.omnikryptec.render3.BatchCache;
@@ -50,6 +52,7 @@ public class Test3 extends Omnikryptec {
         batch.begin(Target.Cache);
         batch.drawList(InstancedRectData.REND, list);
         List<BatchCache> bcl = batch.end();
+        //OpenGLUtil.setPolyMode(PolyMode.LINE);
         while (!window.isCloseRequested()) {
             LibAPIManager.instance().getGLFW().getRenderAPI().getSurface().clearColor(clearColor);
             batch.begin(Target.Render);
