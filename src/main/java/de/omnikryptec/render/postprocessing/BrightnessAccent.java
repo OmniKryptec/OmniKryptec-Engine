@@ -15,10 +15,10 @@ public class BrightnessAccent extends AbstractPostProcessor {
     private float power = 1;
     
     public BrightnessAccent() {
-        shader.create("pp-vert", "pp-brightness-accent");
-        UniformSampler sam = shader.getUniform("scene");
-        poweru = shader.getUniform("power");
-        shader.bindShader();
+        shaderProgram.create("pp-vert", "pp-brightness-accent");
+        UniformSampler sam = shaderProgram.getUniform("scene");
+        poweru = shaderProgram.getUniform("power");
+        shaderProgram.bindShader();
         sam.setSampler(0);
         poweru.loadFloat(1);
         buffer.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
@@ -33,7 +33,7 @@ public class BrightnessAccent extends AbstractPostProcessor {
         buffer = buffer.resizeAndDeleteOrThis(sceneRaw.getWidth(), sceneRaw.getHeight());
         buffer.bindFrameBuffer();
         buffer.clearComplete();
-        shader.bindShader();
+        shaderProgram.bindShader();
         poweru.loadFloat(power);
         sceneRaw.bindTexture(0);
         QuadMesh.renderScreenQuad();

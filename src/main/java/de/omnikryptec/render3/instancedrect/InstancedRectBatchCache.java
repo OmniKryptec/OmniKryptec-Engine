@@ -25,7 +25,7 @@ public class InstancedRectBatchCache implements BatchCache {
     }
     
     @Override
-    public BatchedRenderer getBatchedRenderer() {
-        return InstancedRectData.REND;
+    public Class<? extends BatchedRenderer> getBatchedRendererClass() {
+        return InstancedRectBatchedRenderer.class;
     }
 }

@@ -34,12 +34,12 @@ public class SimpleShaderSlot extends AbstractProjectedShaderSlot {
     private Transform3Df transform;
     
     public SimpleShaderSlot() {
-        this.shader.create("engineRenderBatch2DShader");
-        this.transformUniform = this.shader.getUniform("u_transform");
-        this.viewProjectionUniform = this.shader.getUniform("u_projview");
+        this.shaderProgram.create("engineRenderBatch2DShader");
+        this.transformUniform = this.shaderProgram.getUniform("u_transform");
+        this.viewProjectionUniform = this.shaderProgram.getUniform("u_projview");
         
-        final UniformSampler sampler = this.shader.getUniform("sampler");
-        this.shader.bindShader();
+        final UniformSampler sampler = this.shaderProgram.getUniform("sampler");
+        this.shaderProgram.bindShader();
         this.transformUniform.loadMatrix(Mathf.IDENTITY4f);
         this.viewProjectionUniform.loadMatrix(new Matrix4f().ortho2D(0, 1, 0, 1));
         sampler.setSampler(0);
@@ -61,12 +61,12 @@ public class SimpleShaderSlot extends AbstractProjectedShaderSlot {
     }
     
     public void setViewProjectionMatrix(final Matrix4fc mat) {
-        this.shader.bindShader();
+        this.shaderProgram.bindShader();
         this.viewProjectionUniform.loadMatrix(mat);
     }
     
     public void setTransformMatrix(final Matrix4fc mat) {
-        this.shader.bindShader();
+        this.shaderProgram.bindShader();
         this.transformUniform.loadMatrix(mat);
     }
     

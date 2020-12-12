@@ -8,14 +8,11 @@ import org.joml.Matrix3x2f;
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
-import de.omnikryptec.libapi.exposed.render.RenderAPI.PolyMode;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
-import de.omnikryptec.libapi.opengl.OpenGLUtil;
 import de.omnikryptec.render3.Batch2D;
-import de.omnikryptec.render3.Batch2D.Target;
-import de.omnikryptec.render3.BatchCache;
 import de.omnikryptec.render3.InstanceData;
+import de.omnikryptec.render3.instancedrect.InstancedRectBatchedRenderer;
 import de.omnikryptec.render3.instancedrect.InstancedRectData;
 import de.omnikryptec.resource.loadervpc.ResourceManager;
 import de.omnikryptec.util.Logger;
@@ -49,16 +46,18 @@ public class Test3 extends Omnikryptec {
             d.transform = trans;
         }
         List<InstanceData> list = Arrays.asList(ar);
-        batch.begin(Target.Cache);
-        batch.drawList(InstancedRectData.REND, list);
-        List<BatchCache> bcl = batch.end();
+        //batch.setInstance(InstancedRectBatchedRenderer.class, new InstancedRectBatchedRenderer(true));
+        //batch.begin();
+        //batch.drawList(InstancedRectBatchedRenderer.class, list);
+        //List<BatchCache> bcl = batch.end();
+        batch.setInstance(InstancedRectBatchedRenderer.class, new InstancedRectBatchedRenderer(false));
         //OpenGLUtil.setPolyMode(PolyMode.LINE);
         while (!window.isCloseRequested()) {
             LibAPIManager.instance().getGLFW().getRenderAPI().getSurface().clearColor(clearColor);
-            batch.begin(Target.Render);
+            batch.begin();
             Profiler.begin("test3");
-            batch.drawCache(bcl);
-            //batch.drawList(InstancedRectData.REND, list);
+            //batch.drawCache(bcl);
+            batch.drawList(InstancedRectBatchedRenderer.class, list);
             //            for (InstancedRectData d : ar) {
             //                batch.draw(d);
             //            }

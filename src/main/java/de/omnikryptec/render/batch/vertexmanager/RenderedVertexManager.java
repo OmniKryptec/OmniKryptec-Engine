@@ -31,8 +31,6 @@ import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.render.batch.AbstractShaderSlot;
 import de.omnikryptec.render.batch.module.ModuleBatchingManager;
 import de.omnikryptec.resource.MeshData.Primitive;
-import de.omnikryptec.resource.TextureConfig;
-import de.omnikryptec.resource.TextureData;
 
 public class RenderedVertexManager implements VertexManager {
     

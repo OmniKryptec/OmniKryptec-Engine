@@ -17,19 +17,19 @@
 package de.omnikryptec.render.batch;
 
 import de.omnikryptec.libapi.exposed.LibAPIManager;
-import de.omnikryptec.libapi.exposed.render.shader.Shader;
+import de.omnikryptec.libapi.exposed.render.shader.ShaderProgram;
 
 public abstract class AbstractShaderSlot {
-    protected final Shader shader;
+    protected final ShaderProgram shaderProgram;
     
     public AbstractShaderSlot() {
-        this.shader = LibAPIManager.instance().getGLFW().getRenderAPI().createShader();
+        this.shaderProgram = LibAPIManager.instance().getGLFW().getRenderAPI().createShader();
     }
     
     protected abstract void onBound();
     
     public final void bindShaderRenderReady() {
-        this.shader.bindShader();
+        this.shaderProgram.bindShader();
         onBound();
     }
     

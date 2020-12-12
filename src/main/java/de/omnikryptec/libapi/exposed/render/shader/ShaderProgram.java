@@ -25,16 +25,16 @@ import com.google.common.collect.Table;
 import de.omnikryptec.resource.parser.shader.ShaderParser;
 import de.omnikryptec.resource.parser.shader.ShaderParser.ShaderType;
 
-public interface Shader {
+public interface ShaderProgram {
     
     /**
-     * Binds this {@link Shader}
+     * Binds this {@link ShaderProgram}
      */
     void bindShader();
     
     /**
      * Supplies the individual shaders (e.g. vertex- and fragmentshader) to
-     * initialize this {@link Shader} program.
+     * initialize this {@link ShaderProgram} program.
      *
      * @param shaderAttachments the individual shaders
      */
@@ -72,6 +72,6 @@ public interface Shader {
                 srcs.add(s);
             }
         }
-        create(srcs.toArray(new ShaderSource[srcs.size()]));
+        create(srcs.toArray(ShaderSource[]::new));
     }
 }

@@ -1,12 +1,12 @@
 package de.omnikryptec.render3;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
-
-import de.omnikryptec.render3.Batch2D.Target;
 
 public interface BatchedRenderer {
     
-    void start(Target target);
+    void start();
     
     BatchCache end();
     

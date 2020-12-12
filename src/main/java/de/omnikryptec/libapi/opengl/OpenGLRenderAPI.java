@@ -29,7 +29,7 @@ import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexArray;
 import de.omnikryptec.libapi.exposed.render.VertexBuffer;
-import de.omnikryptec.libapi.exposed.render.shader.Shader;
+import de.omnikryptec.libapi.exposed.render.shader.ShaderProgram;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
@@ -89,7 +89,7 @@ public class OpenGLRenderAPI implements RenderAPI {
     }
     
     @Override
-    public Shader createShader() {
+    public ShaderProgram createShader() {
         return new GLShader();
     }
     

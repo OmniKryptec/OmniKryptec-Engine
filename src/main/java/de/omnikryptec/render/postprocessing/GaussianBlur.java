@@ -30,11 +30,11 @@ public class GaussianBlur extends AbstractPostProcessor {
         this.horizontal = blur == BlurType.Horizontal;
         this.scale = scale;
         this.buffer.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
-        this.shader.create("pp-gaussian-blur");
-        UniformBool hor = shader.getUniform("hor");
-        sizeu = shader.getUniform("size");
-        UniformSampler sampler = shader.getUniform("tex");
-        shader.bindShader();
+        this.shaderProgram.create("pp-gaussian-blur");
+        UniformBool hor = shaderProgram.getUniform("hor");
+        sizeu = shaderProgram.getUniform("size");
+        UniformSampler sampler = shaderProgram.getUniform("tex");
+        shaderProgram.bindShader();
         hor.loadBoolean(horizontal);
         sampler.setSampler(0);
     }
@@ -45,7 +45,7 @@ public class GaussianBlur extends AbstractPostProcessor {
                 (int) (sceneRaw.getHeight() * (horizontal ? 1 : scale)));//Not checking horizontal makes the blur look stretched
         buffer.bindFrameBuffer();
         buffer.clearComplete();
-        shader.bindShader();
+        shaderProgram.bindShader();
         sizeu.loadFloat(horizontal ? buffer.getWidth() : buffer.getHeight());
         sceneRaw.bindTexture(0);
         QuadMesh.renderScreenQuad();

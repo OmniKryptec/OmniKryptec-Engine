@@ -25,7 +25,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL43;
 
 import de.omnikryptec.libapi.exposed.Deletable;
-import de.omnikryptec.libapi.exposed.render.shader.Shader;
+import de.omnikryptec.libapi.exposed.render.shader.ShaderProgram;
 import de.omnikryptec.libapi.exposed.render.shader.ShaderSource;
 import de.omnikryptec.libapi.exposed.render.shader.Uniform;
 import de.omnikryptec.libapi.opengl.OpenGLUtil;
@@ -33,7 +33,7 @@ import de.omnikryptec.resource.parser.shader.ShaderParser.ShaderType;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Logger.LogType;
 
-public class GLShader implements Shader, Deletable {
+public class GLShader implements ShaderProgram, Deletable {
     
     private static final Logger logger = Logger.getLogger(GLShader.class);
     private static int count = 0;

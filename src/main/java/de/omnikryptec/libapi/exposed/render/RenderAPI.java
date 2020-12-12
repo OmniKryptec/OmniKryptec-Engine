@@ -18,7 +18,7 @@ package de.omnikryptec.libapi.exposed.render;
 
 import java.awt.Window;
 
-import de.omnikryptec.libapi.exposed.render.shader.Shader;
+import de.omnikryptec.libapi.exposed.render.shader.ShaderProgram;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.SurfaceBuffer;
 import de.omnikryptec.libapi.opengl.OpenGLRenderAPI;
@@ -84,12 +84,12 @@ public interface RenderAPI {
     Texture createTexture2D(TextureData textureData, TextureConfig textureConfig);
     
     /**
-     * Creates a new {@link Shader} program (e.g. bundle of vertex- and
+     * Creates a new {@link ShaderProgram} program (e.g. bundle of vertex- and
      * fragmentshader)
      *
      * @return shaderprogram
      */
-    Shader createShader();
+    ShaderProgram createShader();
     
     /**
      * Creates a new {@link FrameBuffer} to be used with this {@link RenderAPI}.

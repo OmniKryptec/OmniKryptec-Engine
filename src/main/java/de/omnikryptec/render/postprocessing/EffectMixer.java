@@ -29,11 +29,11 @@ public class EffectMixer extends AbstractPostProcessor {
     public EffectMixer(Postprocessor effect) {
         this.effect = Util.ensureNonNull(effect);
         buffer.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
-        shader.create("pp-vert", "pp-effect-mixer");
-        weights = shader.getUniform("weights");
-        UniformSampler tex1 = shader.getUniform("tex1");
-        UniformSampler tex2 = shader.getUniform("tex2");
-        shader.bindShader();
+        shaderProgram.create("pp-vert", "pp-effect-mixer");
+        weights = shaderProgram.getUniform("weights");
+        UniformSampler tex1 = shaderProgram.getUniform("tex1");
+        UniformSampler tex2 = shaderProgram.getUniform("tex2");
+        shaderProgram.bindShader();
         tex1.setSampler(0);
         tex2.setSampler(1);
     }
@@ -44,7 +44,7 @@ public class EffectMixer extends AbstractPostProcessor {
         buffer = buffer.resizeAndDeleteOrThis(sceneRaw.getWidth(), sceneRaw.getHeight());
         buffer.bindFrameBuffer();
         buffer.clearComplete();
-        shader.bindShader();
+        shaderProgram.bindShader();
         weights.loadVec2(sceneWeight, effectWeight);
         sceneRaw.bindTexture(0);
         effectTexture.bindTexture(1);

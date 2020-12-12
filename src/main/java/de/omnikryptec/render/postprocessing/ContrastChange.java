@@ -15,10 +15,10 @@ public class ContrastChange extends AbstractPostProcessor {
     private float changef = 0;
     
     public ContrastChange() {
-        shader.create("pp-vert", "pp-contrast-frag");
-        change = shader.getUniform("change");
-        sampler = shader.getUniform("img");
-        shader.bindShader();
+        shaderProgram.create("pp-vert", "pp-contrast-frag");
+        change = shaderProgram.getUniform("change");
+        sampler = shaderProgram.getUniform("img");
+        shaderProgram.bindShader();
         sampler.setSampler(0);
         buffer.assignTargetB(0, new FBTarget(FBAttachmentFormat.RGBA16, 0));
     }
@@ -28,7 +28,7 @@ public class ContrastChange extends AbstractPostProcessor {
         buffer = buffer.resizeAndDeleteOrThis(sceneRaw.getWidth(), sceneRaw.getHeight());
         buffer.bindFrameBuffer();
         buffer.clearComplete();
-        shader.bindShader();
+        shaderProgram.bindShader();
         change.loadFloat(changef);
         sceneRaw.bindTexture(0);
         QuadMesh.renderScreenQuad();

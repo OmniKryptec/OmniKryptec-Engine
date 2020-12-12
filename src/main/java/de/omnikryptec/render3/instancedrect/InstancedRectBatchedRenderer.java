@@ -2,12 +2,10 @@ package de.omnikryptec.render3.instancedrect;
 
 import java.util.function.Supplier;
 
-import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.render3.ArrayFloatCollector;
-import de.omnikryptec.render3.Batch2D.Target;
 import de.omnikryptec.render3.BatchCache;
 import de.omnikryptec.render3.BatchedRenderer;
 import de.omnikryptec.render3.BufferFloatCollector;
@@ -15,8 +13,6 @@ import de.omnikryptec.render3.FloatCollector;
 import de.omnikryptec.render3.InstanceData;
 import de.omnikryptec.render3.InstancedRender;
 import de.omnikryptec.render3.instancedrect.InstancedRectBatchCache.CacheEntry;
-import de.omnikryptec.resource.TextureConfig;
-import de.omnikryptec.resource.TextureData;
 
 public class InstancedRectBatchedRenderer implements BatchedRenderer {
     
@@ -30,7 +26,7 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
     private InstancedRectShader shader;
     
     private InstancedRectBatchCache batchCache;
-    private boolean caching = false;
+    private final boolean caching;
     
     private Texture[] textures = new Texture[TEXTURE_ACCUM_SIZE];
     private int textureFillIndex = 0;
@@ -38,7 +34,7 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
     private FloatCollector currentFloats;
     private int instanceCount = 0;
     
-    public InstancedRectBatchedRenderer() {
+    public InstancedRectBatchedRenderer(boolean cache) {
         renderCollector = new BufferFloatCollector(FLOATCOLLECTOR_SIZE);
         VertexBufferLayout instancedLayout = new VertexBufferLayout();
         instancedLayout.push(Type.FLOAT, 2, false, 1);
@@ -50,6 +46,7 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
         instancedArgSize = instancedLayout.getSize();
         rendermgr = new InstancedRender(instancedLayout, FLOATCOLLECTOR_SIZE);
         shader = new InstancedRectShader();
+        this.caching = cache;
     }
     
     @Override
@@ -115,8 +112,8 @@ public class InstancedRectBatchedRenderer implements BatchedRenderer {
     }
     
     @Override
-    public void start(Target target) {
-        if (caching = target == Target.Cache) {
+    public void start() {
+        if (caching) {
             this.batchCache = new InstancedRectBatchCache();
             this.currentFloats = new ArrayFloatCollector(FLOATCOLLECTOR_SIZE);
         } else {

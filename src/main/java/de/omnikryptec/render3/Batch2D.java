@@ -1,100 +1,104 @@
 package de.omnikryptec.render3;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Supplier;
 
 import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ClassToInstanceMap;
 import com.google.common.collect.ListMultimap;
+import com.google.common.collect.MutableClassToInstanceMap;
 
 import de.omnikryptec.util.Util;
 
 public class Batch2D {
     
-    public static enum Target {
-        Render, Cache
-    }
-    
-    private Target currentTarget;
-    private ListMultimap<BatchedRenderer, List<? extends Supplier<? extends InstanceData>>> batch = ArrayListMultimap
+    private ListMultimap<Class<? extends BatchedRenderer>, List<? extends Supplier<? extends InstanceData>>> batch = ArrayListMultimap
             .create();
-    private ListMultimap<BatchedRenderer, InstanceData> indirectBatch = ArrayListMultimap.create();
-    private ListMultimap<BatchedRenderer, BatchCache> cacheBatch = ArrayListMultimap.create();
-    private Set<BatchedRenderer> renderers = new HashSet<>();
+    private ListMultimap<Class<? extends BatchedRenderer>, InstanceData> indirectBatch = ArrayListMultimap.create();
+    private ListMultimap<Class<? extends BatchedRenderer>, BatchCache> cacheBatch = ArrayListMultimap.create();
+    private ClassToInstanceMap<BatchedRenderer> rendererImplementations = MutableClassToInstanceMap.create();
     
     private List<BatchCache> cache;
+    private boolean drawing;
     
-    public void begin(Target target) {
-        if (currentTarget != null) {
-            throw new IllegalStateException();
-        }
-        this.currentTarget = Util.ensureNonNull(target);
-        if (this.currentTarget == Target.Cache) {
-            this.cache = new ArrayList<>();
-        }
+    public <T extends BatchedRenderer> void setInstance(Class<T> clazz, T renderer) {
+        Util.ensureNonNull(renderer);
+        rendererImplementations.put(clazz, renderer);
+    }
+    
+    public void clearImplementations() {
+        rendererImplementations.clear();
+    }
+    
+    public void begin() {
+        this.drawing = true;
     }
     
     public void flush() {
-        for (BatchedRenderer r : indirectBatch.keySet()) {
+        for (Class<? extends BatchedRenderer> r : indirectBatch.keySet()) {
             batch.put(r, indirectBatch.get(r));
         }
-        for (BatchedRenderer r : renderers) {
-            //batch.get(r).sort(c); TODO Sort here? Sort in the batched renderer? What? O
-            r.start(currentTarget);
-            for (BatchCache bc : cacheBatch.get(r)) {
-                r.put(bc);
+        for (Class<? extends BatchedRenderer> rendClass : rendererImplementations.keySet()) {
+            //batch.get(r).sort(c); Sort here? Sort in the batched renderer? What? Do we need to sort?
+            BatchedRenderer renderer = rendererImplementations.getInstance(rendClass);
+            renderer.start();
+            for (BatchCache bc : cacheBatch.get(rendClass)) {
+                renderer.put(bc);
             }
-            for (List<? extends Supplier<? extends InstanceData>> l : batch.get(r)) {//batch.get is not null
-                r.put(l);
+            for (List<? extends Supplier<? extends InstanceData>> l : batch.get(rendClass)) {//batch.get is not null
+                renderer.put(l);
             }
-            BatchCache bc = r.end();
-            if (currentTarget == Target.Cache) {
-                Util.ensureNonNull(bc);
+            BatchCache bc = renderer.end();
+            if (bc != null) {
+                if (cache == null) {
+                    cache = new ArrayList<>();
+                }
                 cache.add(bc);
             }
         }
         indirectBatch.clear();
         batch.clear();
         cacheBatch.clear();
-        renderers.clear();//is this even needed?
     }
     
     public List<BatchCache> end() {
         flush();
         List<BatchCache> returnthis = this.cache;
         this.cache = null;
-        this.currentTarget = null;
         return returnthis;
+    }
+    
+    public void drawCache(BatchCache bc) {
+        checkDrawing();
+        Util.ensureNonNull(bc);
+        cacheBatch.put(bc.getBatchedRendererClass(), bc);
     }
     
     public void drawCache(List<BatchCache> cache) {
         checkDrawing();
         for (BatchCache bc : cache) {
             Util.ensureNonNull(bc);
-            cacheBatch.put(bc.getBatchedRenderer(), bc);
-            renderers.add(bc.getBatchedRenderer());
+            cacheBatch.put(bc.getBatchedRendererClass(), bc);
         }
     }
     
-    public void drawList(BatchedRenderer renderer, List<? extends Supplier<? extends InstanceData>> d) {
+    public void drawList(Class<? extends BatchedRenderer> renderer,
+            List<? extends Supplier<? extends InstanceData>> d) {
         checkDrawing();
         Util.ensureNonNull(renderer);
         Util.ensureNonNull(d);
         batch.put(renderer, d);
-        renderers.add(renderer);
     }
     
-    public void draw(InstanceData data) {
+    public void draw(Class<? extends BatchedRenderer> renderer, InstanceData data) {
         checkDrawing();
         Util.ensureNonNull(data);
-        indirectBatch.put(data.getBatchedRenderer(), data);
-        renderers.add(data.getBatchedRenderer());
+        indirectBatch.put(renderer, data);
     }
     
     private void checkDrawing() {
-        if (currentTarget == null) {
+        if (!drawing) {
             throw new IllegalStateException();
         }
     }
