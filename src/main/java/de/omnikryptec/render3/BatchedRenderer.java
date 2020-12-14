@@ -1,12 +1,19 @@
 package de.omnikryptec.render3;
 
-public interface BatchedRenderer {
+import de.omnikryptec.render3.sprites.AnotherFuckingRenderer;
+
+public interface BatchedRenderer extends AnotherFuckingRenderer {
     
     void start();
     
-    BatchCache end();
+    @Override
+    default void flush() {
+        flushWithOptionalCache();
+    }
     
-    void put(Iterable<? extends InstanceDataProvider> list);
+    BatchCache flushWithOptionalCache();
+    
+    void put(InstanceDataProvider idp);
     
     void put(BatchCache cache);
     

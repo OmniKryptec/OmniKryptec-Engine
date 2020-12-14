@@ -15,7 +15,7 @@ public class Batch2D {
     
     private ArrayListMultimap<Class<? extends BatchedRenderer>, List<? extends InstanceDataProvider>> batch = ArrayListMultimap
             .create();
-    private ListMultimap<Class<? extends BatchedRenderer>, InstanceData> indirectBatch = ArrayListMultimap.create();
+    private ListMultimap<Class<? extends BatchedRenderer>, InstanceDataProvider> indirectBatch = ArrayListMultimap.create();
     private ListMultimap<Class<? extends BatchedRenderer>, BatchCache> cacheBatch = ArrayListMultimap.create();
     private ClassToInstanceMap<BatchedRenderer> rendererImplementations = MutableClassToInstanceMap.create();
     
@@ -49,14 +49,15 @@ public class Batch2D {
         for (Class<? extends BatchedRenderer> rendClass : rendererImplementations.keySet()) {
             //batch.get(r).sort(c); Sort here? Sort in the batched renderer? What? Do we need to sort?
             BatchedRenderer renderer = rendererImplementations.getInstance(rendClass);
-            renderer.start();
             for (BatchCache bc : cacheBatch.get(rendClass)) {
                 renderer.put(bc);
             }
             for (List<? extends InstanceDataProvider> l : batch.get(rendClass)) {//batch.get is not null
-                renderer.put(l);
+                for (InstanceDataProvider idp : l) {
+                    renderer.put(idp);
+                }
             }
-            BatchCache bc = renderer.end();
+            BatchCache bc = renderer.flushWithOptionalCache();
             if (bc != null) {
                 if (cache == null) {
                     cache = new ArrayList<>();
@@ -96,34 +97,33 @@ public class Batch2D {
         }
     }
     
-    public void drawList(Class<? extends BatchedRenderer> renderer,
-            List<? extends InstanceDataProvider> d) {
+    public void drawList(Class<? extends BatchedRenderer> renderer, List<? extends InstanceDataProvider> d) {
         Util.ensureNonNull(renderer);
         Util.ensureNonNull(d);
         batch.put(renderer, d);
     }
     
-    public void draw(InstanceData data) {
-        draw(Util.ensureNonNull(data.getDefaultRenderer()), data);
+    public void draw(InstanceDataProvider data) {
+        draw(Util.ensureNonNull(data.getInstanceData().getDefaultRenderer()), data);
     }
     
-    public void draw(Class<? extends BatchedRenderer> renderer, InstanceData data) {
+    public void draw(Class<? extends BatchedRenderer> renderer, InstanceDataProvider data) {
         Util.ensureNonNull(data);
         indirectBatch.put(renderer, data);
         updateIndirect = true;
     }
     
-    public void remove(InstanceData data) {
-        this.remove(data.getDefaultRenderer(), data);
+    public void remove(InstanceDataProvider data) {
+        this.remove(data.getInstanceData().getDefaultRenderer(), data);
     }
     
-    public void remove(Class<? extends BatchedRenderer> renderer, InstanceData data) {
+    public void remove(Class<? extends BatchedRenderer> renderer, InstanceDataProvider data) {
         indirectBatch.remove(renderer, data);
         updateIndirect = true;
     }
     
     public void removeList(Class<? extends BatchedRenderer> renderer,
-            List<? extends Supplier<? extends InstanceData>> d) {
+            List<? extends InstanceDataProvider> d) {
         batch.remove(renderer, d);
     }
     

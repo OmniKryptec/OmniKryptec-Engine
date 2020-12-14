@@ -2,6 +2,9 @@ package de.omnikryptec.render3.instancedrect;
 
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.render3.FloatCollector;
+
+import org.joml.Matrix4fc;
+
 import de.omnikryptec.libapi.exposed.render.RenderAPI.Type;
 
 public class DefaultInstancedRectRenderer extends InstancedRectBatchedRenderer<DefaultInstanceRectData> {
@@ -42,6 +45,11 @@ public class DefaultInstancedRectRenderer extends InstancedRectBatchedRenderer<D
     
     public DefaultInstancedRectShader getShader() {
         return shader;
+    }
+    
+    @Override
+    public void setProjectionViewMatrx(Matrix4fc mat) {
+        this.shader.setProjectionViewMatrix(mat);
     }
     
 }

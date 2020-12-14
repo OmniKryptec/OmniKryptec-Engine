@@ -25,6 +25,7 @@ import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.postprocessing.Postprocessor;
 import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
+import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
@@ -32,12 +33,11 @@ public class View {
     
     private IProjection projection;
     private FrameBuffer targetFbo;
-    private Settings<EnvironmentKey> environmentSettings;
     private Postprocessor postprocessor;
     private Texture resultImage;
+    private Color clearColor = new Color(0.1f, 0.1f, 0.1f);
     
     public View() {
-        this.environmentSettings = new Settings<>();
         this.projection = new Camera(new Matrix4f().ortho2D(0, 1, 0, 1));
         setTargetToSurface();
     }
@@ -52,10 +52,6 @@ public class View {
     
     public void setTargetFbo(FrameBuffer targetFbo) {
         this.targetFbo = targetFbo;
-    }
-    
-    public void setEnvironment(Settings<EnvironmentKey> environmentSettings) {
-        this.environmentSettings = environmentSettings;
     }
     
     public void setPostprocessor(Postprocessor postprocessor) {
@@ -74,10 +70,6 @@ public class View {
         return this.projection;
     }
     
-    public Settings<EnvironmentKey> getEnvironment() {
-        return this.environmentSettings;
-    }
-    
     public FrameBuffer getTargetFbo() {
         return this.targetFbo;
     }
@@ -92,5 +84,9 @@ public class View {
         } else {
             this.resultImage = getTargetFbo().getTexture(0);
         }
+    }
+    
+    public Color getClearColor() {
+        return clearColor;
     }
 }

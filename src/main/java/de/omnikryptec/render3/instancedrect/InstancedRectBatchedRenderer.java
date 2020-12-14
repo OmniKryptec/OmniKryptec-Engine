@@ -51,20 +51,17 @@ public abstract class InstancedRectBatchedRenderer<T extends InstancedRectData> 
     }
     
     @Override
-    public void put(Iterable<? extends InstanceDataProvider> list) {
-        for (InstanceDataProvider id : list) {
-            if (id == null || id.getInstanceData() == null) {
-                continue;
-            }
-            if ((instanceCount + 1) * argSize > currentFloats.remaining()) {
-                flush();
-            }
-            T instanceData = (T) id.getInstanceData();
-            int localTextureIndex = setupTexture(instanceData.getTexture());
-            fill(currentFloats, instanceData, localTextureIndex);
-            instanceCount++;
+    public void put(InstanceDataProvider id) {
+        if (id == null || id.getInstanceData() == null) {
+            return;
         }
-        
+        if ((instanceCount + 1) * argSize > currentFloats.remaining()) {
+            flushIntern();
+        }
+        T instanceData = (T) id.getInstanceData();
+        int localTextureIndex = setupTexture(instanceData.getTexture());
+        fill(currentFloats, instanceData, localTextureIndex);
+        instanceCount++;
     }
     
     private int setupTexture(Texture t) {
@@ -82,7 +79,7 @@ public abstract class InstancedRectBatchedRenderer<T extends InstancedRectData> 
         }
         if (index == -1) {
             if (textureFillIndex == textures.length) {
-                flush();
+                flushIntern();
                 textureFillIndex = 0;
                 for (int i = 0; i < textures.length; i++) {
                     textures[i] = null;
@@ -98,14 +95,14 @@ public abstract class InstancedRectBatchedRenderer<T extends InstancedRectData> 
     @Override
     public void put(BatchCache cache) {
         InstancedRectBatchCache irbc = (InstancedRectBatchCache) cache;
-        flush();
+        flushIntern();
         Texture[] old = this.textures;
         for (CacheEntry ce : irbc.cache) {
             if (ce != null) {
                 this.currentFloats.put(ce.collector.getArray(), 0, ce.collector.position());
                 this.textures = ce.textures;
                 this.instanceCount = ce.instanceCount;
-                flush();
+                flushIntern();
             }
         }
         this.textures = old;
@@ -124,14 +121,14 @@ public abstract class InstancedRectBatchedRenderer<T extends InstancedRectData> 
     }
     
     @Override
-    public BatchCache end() {
-        flush();
+    public BatchCache flushWithOptionalCache() {
+        flushIntern();
         BatchCache returnthis = this.batchCache;
         this.batchCache = null;
         return returnthis;
     }
     
-    private void flush() {
+    private void flushIntern() {
         if (instanceCount == 0 || currentFloats.position() == 0) {
             return;
         }

@@ -30,35 +30,17 @@ import de.omnikryptec.util.updater.Time;
 
 public class ViewManager {
     
-    private static final Comparator<Renderer> REND_COMP = (r1, r2) -> r1.priority() - r2.priority();
-    
-    public static interface EnvironmentKey {
-    }
-    
-    public static enum GlobalEnvironmentKeys implements Defaultable, EnvironmentKey {
-        ClearColor(new Color(0, 0, 0, 0));
-        
-        private final Object def;
-        
-        private GlobalEnvironmentKeys(final Object def) {
-            this.def = def;
-        }
-        
-        @Override
-        public <T> T getDefault() {
-            return (T) this.def;
-        }
-    }
+    private static final Comparator<ViewRenderer> REND_COMP = (r1, r2) -> r1.priority() - r2.priority();
     
     private View mainView;
     
-    private final List<Renderer> renderers;
+    private final List<ViewRenderer> viewRenderers;
     private final Map<String, View> namedViews;
     
     private boolean isInAction;
     
     public ViewManager() {
-        this.renderers = new ArrayList<>();
+        this.viewRenderers = new ArrayList<>();
         this.namedViews = new HashMap<>();
         this.isInAction = false;
         this.mainView = new View();
@@ -80,15 +62,15 @@ public class ViewManager {
         return this.mainView;
     }
     
-    public void addRenderer(Renderer r) {
-        this.renderers.add(r);
-        this.renderers.sort(REND_COMP);
+    public void addRenderer(ViewRenderer r) {
+        this.viewRenderers.add(r);
+        this.viewRenderers.sort(REND_COMP);
         r.init(this, LibAPIManager.instance().getGLFW().getRenderAPI());
     }
     
     public void removeRenderer(GuiRenderer renderer) {
         renderer.deinit(this, LibAPIManager.instance().getGLFW().getRenderAPI());
-        this.renderers.remove(renderer);
+        this.viewRenderers.remove(renderer);
     }
     
     //TODO pcfreak9000 include the renderapi in the ViewManager?
@@ -110,10 +92,10 @@ public class ViewManager {
     
     public void renderView(View view, Time time) {
         view.getTargetFbo().bindFrameBuffer();
-        view.getTargetFbo().clearComplete(view.getEnvironment().get(GlobalEnvironmentKeys.ClearColor));
-        for (Renderer renderer : this.renderers) {
-            renderer.render(this, LibAPIManager.instance().getGLFW().getRenderAPI(), view.getProjection(),
-                    view.getTargetFbo(), view.getEnvironment(), time);
+        view.getTargetFbo().clearComplete(view.getClearColor());
+        for (ViewRenderer viewRenderer : this.viewRenderers) {
+            viewRenderer.render(this, LibAPIManager.instance().getGLFW().getRenderAPI(), view.getProjection(),
+                    view.getTargetFbo(), time);
         }
         view.getTargetFbo().unbindFrameBuffer();
         view.renderResult(time);

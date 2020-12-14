@@ -46,7 +46,7 @@ import de.omnikryptec.libapi.opengl.shader.GLShader;
 import de.omnikryptec.render.AdaptiveCamera;
 import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.IProjection;
-import de.omnikryptec.render.renderer.Renderer;
+import de.omnikryptec.render.renderer.ViewRenderer;
 import de.omnikryptec.render.renderer.ViewManager;
 import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
 import de.omnikryptec.util.Logger;
@@ -59,7 +59,7 @@ import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.settings.keys.KeysAndButtons;
 import de.omnikryptec.util.updater.Time;
 
-public class Raytracer extends Omnikryptec implements Renderer, IUpdatable {
+public class Raytracer extends Omnikryptec implements ViewRenderer, IUpdatable {
     
     public static void main(final String[] args) {
         new Raytracer().start();

@@ -44,7 +44,7 @@ import de.omnikryptec.util.settings.Defaultable;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
-public class Renderer2D implements Renderer {
+public class Renderer2D implements ViewRenderer {
     private static int rc = 0;
     
     private final int countIndex = rc++;

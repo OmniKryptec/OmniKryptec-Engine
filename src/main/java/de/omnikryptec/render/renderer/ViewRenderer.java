@@ -23,7 +23,7 @@ import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
 import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
-public interface Renderer {
+public interface ViewRenderer {
     
     default int priority() {
         return 0;
@@ -35,6 +35,5 @@ public interface Renderer {
     default void deinit(ViewManager viewManager, RenderAPI api) {
     }
     
-    void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target,
-            Settings<EnvironmentKey> envSettings, Time time);
+    void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target, Time time);
 }
