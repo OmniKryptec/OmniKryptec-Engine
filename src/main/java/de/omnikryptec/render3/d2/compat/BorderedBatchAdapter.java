@@ -4,6 +4,7 @@ import org.joml.Matrix3x2fc;
 import org.joml.Vector2f;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
+import de.omnikryptec.render3.d2.BatchCache;
 import de.omnikryptec.render3.d2.instanced.InstancedBatch2D;
 import de.omnikryptec.render3.d2.instanced.InstancedData;
 import de.omnikryptec.util.data.Color;
@@ -31,7 +32,6 @@ public class BorderedBatchAdapter implements BorderedBatch2D {
     
     @Override
     public Color color() {
-        
         return dataTmp.color();
     }
     
@@ -41,10 +41,9 @@ public class BorderedBatchAdapter implements BorderedBatch2D {
     }
     
     @Override
-    public void draw(Texture texture, Matrix3x2fc transform, float width, float height, boolean flipU, boolean flipV) {
+    public void draw(Texture texture, Matrix3x2fc transform, boolean flipU, boolean flipV) {
         dataTmp.transform().identity();
         dataTmp.transform().set(transform);
-        dataTmp.transform().scale(width, height);
         dataTmp.setUVAndTexture(texture, flipU, flipV);
         actualBatch.put(dataTmp);
     }
@@ -59,32 +58,28 @@ public class BorderedBatchAdapter implements BorderedBatch2D {
     }
     
     @Override
-    public void drawPolygon(Texture texture, float[] poly, int start, int len) {
-        throw new UnsupportedOperationException();
-    }
-    
-    @Override
     public Color borderColor() {
-        
         return dataTmp.borderColor();
     }
     
     @Override
     public Vector2f borderSDFData() {
-        
         return dataTmp.bsdData();
     }
     
     @Override
-    public Vector2f borderOffset() {
-        
-        return dataTmp.offset();
+    public Vector2f signedDistanceFieldData() {
+        return dataTmp.sdData();
     }
     
     @Override
-    public Vector2f signedDistanceFieldData() {
-        
-        return dataTmp.sdData();
+    public void draw(BatchCache cache) {
+        this.actualBatch.put(cache);
+    }
+    
+    @Override
+    public Vector2f borderOffset() {
+        return this.dataTmp.offset();
     }
     
 }

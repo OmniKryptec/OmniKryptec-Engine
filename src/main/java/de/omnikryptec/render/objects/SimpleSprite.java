@@ -17,7 +17,7 @@
 package de.omnikryptec.render.objects;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.render3.d2.compat.Batch2D;
+import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.transform.Transform2Df;
 

@@ -19,7 +19,7 @@ package de.omnikryptec.render.objects;
 import org.joml.Matrix3x2f;
 import org.joml.Vector2f;
 
-import de.omnikryptec.render3.d2.compat.Batch2D;
+import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.util.data.Color;
 
 public class AdvancedSprite extends SimpleSprite {

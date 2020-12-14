@@ -14,13 +14,12 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.render3.d2.compat;
+package de.omnikryptec.render.batch;
 
 import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fc;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.render3.d2.BatchCache;
 import de.omnikryptec.resource.Font;
 import de.omnikryptec.resource.FontCharacter;
 import de.omnikryptec.util.data.Color;
@@ -35,8 +34,12 @@ public interface Batch2D {
     
     void end();
     
-    default void draw(final Texture texture, final Matrix3x2fc transform) {
-        draw(texture, transform, false, false);
+    default void draw(final Texture texture, final Matrix3x2fc transform, final boolean flipU, final boolean flipV) {
+        draw(texture, transform, 1f, 1f, flipU, flipV);
+    }
+    
+    default void draw(final Texture texture, final Matrix3x2fc transform, float width, float height) {
+        draw(texture, transform, width, height, false, false);
     }
     
     default void draw(final Texture texture, final float x, final float y, final boolean flipU, final boolean flipV) {
@@ -47,18 +50,22 @@ public interface Batch2D {
         draw(texture, x, y, width, height, false, false);
     }
     
-    void draw(Texture texture, Matrix3x2fc transform, boolean flipU, boolean flipV);
+    void draw(Texture texture, Matrix3x2fc transform, float width, float height, boolean flipU, boolean flipV);
     
     void draw(Texture texture, float x, float y, float width, float height, boolean flipU, boolean flipV);
     
-    void draw(BatchCache cache);
+    default void drawPolygon(final Texture texture, final float[] poly) {
+        drawPolygon(texture, poly, 0, poly.length);
+    }
+    
+    void drawPolygon(Texture texture, float[] poly, int start, int len);
     
     default void drawRect(final float x, final float y, final float width, final float height) {
         draw((Texture) null, x, y, width, height, false, false);
     }
     
-    default void drawRect(final Matrix3x2fc transform) {
-        draw((Texture) null, transform, false, false);
+    default void drawRect(final Matrix3x2fc transform, final float width, final float height) {
+        draw((Texture) null, transform, width, height, false, false);
     }
     
     default void drawLine(final float x0, final float y0, final float x1, final float y1, final float thickness) {
@@ -69,8 +76,11 @@ public interface Batch2D {
         final Matrix3x2f m = new Matrix3x2f();
         m.translate(x0, y0);
         m.rotate(rad);
-        m.scale(dist, thickness);
-        drawRect(m);
+        drawLine(m, dist, thickness);
+    }
+    
+    default void drawLine(final Matrix3x2fc transform, final float length, final float thickness) {
+        drawRect(transform, length, thickness);
     }
     
     default void drawStringSimple(String string, Font font, float size, float x, float y, float rad) {
@@ -96,9 +106,8 @@ public interface Batch2D {
             if (character != null) {
                 xVal = character.getOffsetX() * size / aspectCorrection + xOffset;
                 yVal = (font.getFontFile().getBase() - character.getSizeY() - character.getOffsetY()) * size;
-                translation.set(baseTranslation).translate(xVal, yVal)
-                        .scale(character.getSizeX() * size / aspectCorrection, character.getSizeY() * size);
-                draw(font.getCharacterTexture(character), translation);
+                draw(font.getCharacterTexture(character), translation.set(baseTranslation).translate(xVal, yVal),
+                        character.getSizeX() * size / aspectCorrection, character.getSizeY() * size);
                 xOffset += character.getCursorAdvanceX() * size / aspectCorrection;
             }
         }
