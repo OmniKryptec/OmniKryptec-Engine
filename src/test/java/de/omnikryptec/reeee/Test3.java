@@ -8,6 +8,7 @@ import org.joml.Matrix3x2f;
 import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
 import de.omnikryptec.render3.d2.Batch2D;
@@ -15,6 +16,7 @@ import de.omnikryptec.render3.d2.BatchCache;
 import de.omnikryptec.render3.d2.InstanceData;
 import de.omnikryptec.render3.d2.instanced.InstancedBatch2D;
 import de.omnikryptec.render3.d2.instanced.InstancedData;
+import de.omnikryptec.resource.helper.TextureHelper;
 import de.omnikryptec.resource.loadervpc.ResourceManager;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Logger.LogType;
@@ -35,16 +37,20 @@ public class Test3 extends Omnikryptec {
         ResourceManager rm = new ResourceManager();
         rm.addDefaultLoaders();
         rm.load(false, false, "intern:/de/omnikryptec/resources/glslmodules/shader2d.glsl");
+        rm.load(false, false, "intern:/de/omnikryptec/resources/");
+        TextureHelper texHelper = new TextureHelper(rm.getProvider());
+        Texture t = texHelper.get("candara.png");
         Batch2D batch = new Batch2D();
         InstancedData[] ar = new InstancedData[10000];
         ar[0] = null;
         for (int i = 1; i < ar.length; i++) {
             Matrix3x2f trans = new Matrix3x2f();
             trans.setTranslation(-0.5f, -0.5f);
-            trans.rotateLocal(3.14f / 4 + i);
+            //            trans.rotateLocal(3.14f / 4 + i);
             InstancedData d = new InstancedData();
             ar[i] = d;
-            d.transform = trans;
+            d.transform().set(trans);
+            d.setUVAndTexture(t);
         }
         List<InstanceData> list = Arrays.asList(ar);
         batch.setInstance(new InstancedBatch2D(true));

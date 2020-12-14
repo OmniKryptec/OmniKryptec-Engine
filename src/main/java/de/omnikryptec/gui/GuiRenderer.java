@@ -18,9 +18,9 @@ package de.omnikryptec.gui;
 
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
-import de.omnikryptec.render.batch.AdvancedBatch2D;
 import de.omnikryptec.render.renderer.Renderer2D;
 import de.omnikryptec.render3.IProjection;
+import de.omnikryptec.render3.d2.instanced.InstancedBatch2D;
 import de.omnikryptec.render3.structure.ViewManager;
 import de.omnikryptec.render3.structure.ViewRenderer;
 import de.omnikryptec.util.updater.Time;
@@ -28,10 +28,10 @@ import de.omnikryptec.util.updater.Time;
 public class GuiRenderer implements ViewRenderer {
     
     private GuiComponent componentRoot;
-    private final AdvancedBatch2D batch;
+    private final BatchAdapter batch;
     
     public GuiRenderer() {
-        this.batch = new AdvancedBatch2D(1000);
+        this.batch = new BatchAdapter(new InstancedBatch2D(false));
     }
     
     protected void setGui(final GuiComponent componentRoot) {
@@ -42,7 +42,7 @@ public class GuiRenderer implements ViewRenderer {
     public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target, Time time) {
         if (this.componentRoot != null) {
             api.applyRenderState(Renderer2D.SPRITE_STATE);
-            this.batch.getShaderSlot().setProjection(projection);
+            this.batch.getActualBatch().setProjectionViewMatrx(projection.getProjection());
             this.batch.begin();
             this.componentRoot.render(this.batch, target.getWidth() / (float) target.getHeight());
             this.batch.end();

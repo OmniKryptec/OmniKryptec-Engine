@@ -31,7 +31,6 @@ import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.render.batch.BorderedBatch2D;
-import de.omnikryptec.render.objects.SimpleSprite;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
@@ -53,11 +52,8 @@ public class GuiDemo extends Omnikryptec {
     protected void onInitialized() {
         final GuiManager gmgr = getGame().getGuiManager();
         
-        //Load the texture and use the TextureHelper to make stuff easier
-        getResourceManager().load(false, true, "intern:/de/omnikryptec/resources/");
-        
-        final SimpleSprite sprite = new SimpleSprite();
-        sprite.setTexture(getTextures().get("jd.png"));
+        //Load some resources
+        getResourceManager().load(false, false, "intern:/de/omnikryptec/resources/");
         
         final GuiComponent parent = new GuiComponent();
         parent.setLayout(new TilingLayout(2, 2));
@@ -70,6 +66,7 @@ public class GuiDemo extends Omnikryptec {
         bar.colorFull().set(1, 0, 0);
         
         GuiLabel label = new GuiLabel();
+        //label.setFont(getFonts().getFont("Sitka Small", "text.fnt", "text1.png", false));
         label.setFont(getFonts().getFontSDF("candara"));
         label.setText("Test");
         label.setSize(0.1f);
@@ -82,6 +79,7 @@ public class GuiDemo extends Omnikryptec {
         button.color(State.Disabled).set(.3f, .3f, .3f);
         button.addComponent(label);
         button.setDimensions(0.2f, 0.2f, 0.6f, 0.6f);
+        button.setTexture(State.Idle, getTextures().get("jd.png"));
         
         Timer t = new Timer(20, (e) -> bar.setValue(bar.getValue() + 0.01f));
         t.start();

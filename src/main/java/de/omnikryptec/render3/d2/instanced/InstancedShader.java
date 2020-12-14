@@ -21,10 +21,9 @@ public class InstancedShader {
         shaderProgram = api.createShader();
         shaderProgram.create("defaultInstancedShader");
         projViewU = shaderProgram.getUniform("u_projview");
-        UniformSamplerArray samplers = new UniformSamplerArray("samplers",
-                InstancedBatch2D.TEXTURE_ACCUM_SIZE);
-        samplers.loadSamplerArray(IntStream.range(0, InstancedBatch2D.TEXTURE_ACCUM_SIZE).toArray());
+        UniformSamplerArray samplers = shaderProgram.getUniform("samplers");
         shaderProgram.bindShader();
+        samplers.setSamplers(IntStream.range(0, InstancedBatch2D.TEXTURE_ACCUM_SIZE).toArray());
         projViewU.loadMatrix(new Matrix4f());
     }
     

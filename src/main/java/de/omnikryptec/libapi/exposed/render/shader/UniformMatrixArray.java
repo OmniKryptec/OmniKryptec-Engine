@@ -26,7 +26,7 @@ import de.omnikryptec.libapi.opengl.shader.GLUniformMatrix;
  * @author Panzer1119
  */
 public class UniformMatrixArray {
-    
+
     private final GLUniformMatrix[] uniformMatrices;
     
     public UniformMatrixArray(final String name, final int size) {

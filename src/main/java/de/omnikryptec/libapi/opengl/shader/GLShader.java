@@ -118,14 +118,18 @@ public class GLShader implements ShaderProgram, Deletable {
         for (final String l : lines) {
             if (l.contains("uniform")) {
                 if (l.contains("]")) {
-                    logger.debug("'" + l + "' possibly contains a uniform array which is not automated yet");
-                    continue;
+                    logger.debug("'" + l + "' possibly contains a uniform array which might not be automated yet");
                 }
                 final String un = l.substring(l.indexOf("uniform") + "uniform".length()).replace(";", "").trim();
                 final String[] data = un.split("\\s+");
-                final String name = data[1].trim();
+                String name = data[1].trim();
                 final String types = data[0].trim();
-                final GLUniform unif = createUniformObj(name, types);
+                int array = 0;
+                if (name.endsWith("]")) {
+                    array = Integer.parseInt(name.substring(name.indexOf("[") + 1, name.indexOf("]")));
+                    name = name.replace(name.substring(name.indexOf("["), name.indexOf("]") + 1), "");
+                }
+                final GLUniform unif = createUniformObj(name, types, array);
                 unif.storeUniformLocation(this.programId);
                 this.uniforms.put(name, unif);
             }
@@ -133,12 +137,15 @@ public class GLShader implements ShaderProgram, Deletable {
     }
     
     //TODx better way of doing the uniforms? shader dependant so no
-    private GLUniform createUniformObj(final String name, final String types) {
+    private GLUniform createUniformObj(final String name, final String types, int array) {
         switch (types) {
         case "mat4":
             return new GLUniformMatrix(name);
         case "sampler2D":
         case "samplerCube":
+            if (array != 0) {
+                return new GLUniformSamplerArray(name, array);
+            }
             return new GLUniformSampler(name);
         case "vec4":
             return new GLUniformVec4(name);

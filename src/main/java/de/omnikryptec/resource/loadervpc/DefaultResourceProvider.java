@@ -66,4 +66,8 @@ public class DefaultResourceProvider implements ResourceProvider {
         this.resourceTable.remove(clazz, name);
     }
     
+    @Override
+    public String toString() {
+        return this.resourceTable.toString();
+    }
 }
