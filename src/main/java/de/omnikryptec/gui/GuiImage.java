@@ -17,7 +17,7 @@
 package de.omnikryptec.gui;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.render.batch.BorderedBatch2D;
+import de.omnikryptec.render3.d2.compat.BorderedBatch2D;
 import de.omnikryptec.util.data.Color;
 
 public class GuiImage extends GuiComponentPositionable {

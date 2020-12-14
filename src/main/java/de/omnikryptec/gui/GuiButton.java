@@ -23,7 +23,7 @@ import java.util.List;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.input.InputEvent;
 import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.render.batch.BorderedBatch2D;
+import de.omnikryptec.render3.d2.compat.BorderedBatch2D;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.settings.keys.KeysAndButtons;
 

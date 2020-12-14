@@ -31,6 +31,7 @@ import de.omnikryptec.render.batch.module.TilingModule;
 import de.omnikryptec.render.batch.module.UVModule;
 import de.omnikryptec.render.batch.vertexmanager.RenderedVertexManager;
 import de.omnikryptec.render.batch.vertexmanager.VertexManager;
+import de.omnikryptec.render3.d2.compat.BorderedBatch2D;
 import de.omnikryptec.util.data.Color;
 
 public class AdvancedBatch2D extends AbstractBatch implements BorderedBatch2D {

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.render.batch;
+package de.omnikryptec.render3.d2.compat;
 
 import org.joml.Matrix3x2f;
 import org.joml.Matrix3x2fc;

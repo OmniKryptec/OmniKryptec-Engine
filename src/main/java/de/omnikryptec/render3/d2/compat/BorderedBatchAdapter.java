@@ -1,20 +1,19 @@
-package de.omnikryptec.gui;
+package de.omnikryptec.render3.d2.compat;
 
 import org.joml.Matrix3x2fc;
 import org.joml.Vector2f;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.render.batch.BorderedBatch2D;
 import de.omnikryptec.render3.d2.instanced.InstancedBatch2D;
 import de.omnikryptec.render3.d2.instanced.InstancedData;
 import de.omnikryptec.util.data.Color;
 
-public class BatchAdapter implements BorderedBatch2D {
+public class BorderedBatchAdapter implements BorderedBatch2D {
     
     private InstancedData dataTmp = new InstancedData();
     private InstancedBatch2D actualBatch;
     
-    public BatchAdapter(InstancedBatch2D actualBatch) {
+    public BorderedBatchAdapter(InstancedBatch2D actualBatch) {
         this.actualBatch = actualBatch;
         setDefaultBDSFData();
         setDefaultBorderOffset();

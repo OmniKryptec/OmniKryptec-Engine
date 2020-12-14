@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.render.batch;
+package de.omnikryptec.render3.d2.compat;
 
 import org.joml.Vector2f;
 

@@ -22,7 +22,7 @@ import java.util.List;
 import com.google.errorprone.annotations.ForOverride;
 
 import de.omnikryptec.event.EventBus;
-import de.omnikryptec.render.batch.BorderedBatch2D;
+import de.omnikryptec.render3.d2.compat.BorderedBatch2D;
 import de.omnikryptec.util.Util;
 
 public class GuiComponent {

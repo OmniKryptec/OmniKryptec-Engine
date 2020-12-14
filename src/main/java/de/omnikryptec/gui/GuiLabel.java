@@ -16,7 +16,7 @@
 
 package de.omnikryptec.gui;
 
-import de.omnikryptec.render.batch.BorderedBatch2D;
+import de.omnikryptec.render3.d2.compat.BorderedBatch2D;
 import de.omnikryptec.resource.Font;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Color;

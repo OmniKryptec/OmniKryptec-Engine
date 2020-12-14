@@ -20,6 +20,7 @@ import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.render.renderer.Renderer2D;
 import de.omnikryptec.render3.IProjection;
+import de.omnikryptec.render3.d2.compat.BorderedBatchAdapter;
 import de.omnikryptec.render3.d2.instanced.InstancedBatch2D;
 import de.omnikryptec.render3.structure.ViewManager;
 import de.omnikryptec.render3.structure.ViewRenderer;
@@ -28,10 +29,10 @@ import de.omnikryptec.util.updater.Time;
 public class GuiRenderer implements ViewRenderer {
     
     private GuiComponent componentRoot;
-    private final BatchAdapter batch;
+    private final BorderedBatchAdapter batch;
     
     public GuiRenderer() {
-        this.batch = new BatchAdapter(new InstancedBatch2D(false));
+        this.batch = new BorderedBatchAdapter(new InstancedBatch2D(false));
     }
     
     protected void setGui(final GuiComponent componentRoot) {

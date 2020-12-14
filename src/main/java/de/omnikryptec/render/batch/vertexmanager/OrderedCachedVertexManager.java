@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Objects;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.batch.module.ModuleBatchingManager;
+import de.omnikryptec.render3.d2.compat.Batch2D;
 
 public class OrderedCachedVertexManager implements VertexManager {
     

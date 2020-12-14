@@ -21,9 +21,9 @@ import java.util.Collection;
 import org.joml.FrustumIntersection;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
-import de.omnikryptec.render.batch.Batch2D;
 import de.omnikryptec.render.objects.Sprite;
 import de.omnikryptec.render3.PassthroughRenderer;
+import de.omnikryptec.render3.d2.compat.Batch2D;
 
 public class RendererUtil {
     

@@ -30,7 +30,7 @@ import de.omnikryptec.gui.TilingLayout;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
-import de.omnikryptec.render.batch.BorderedBatch2D;
+import de.omnikryptec.render3.d2.compat.BorderedBatch2D;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;

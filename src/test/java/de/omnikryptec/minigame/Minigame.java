@@ -38,7 +38,7 @@ import de.omnikryptec.libapi.exposed.window.WindowSetting;
 import de.omnikryptec.libapi.openal.DistanceModel;
 import de.omnikryptec.libapi.openal.Sound;
 import de.omnikryptec.minigame.ShootEvent.Projectile;
-import de.omnikryptec.render.batch.BorderedBatch2D;
+import de.omnikryptec.render3.d2.compat.BorderedBatch2D;
 import de.omnikryptec.util.Logger.LogType;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.MathUtil;
