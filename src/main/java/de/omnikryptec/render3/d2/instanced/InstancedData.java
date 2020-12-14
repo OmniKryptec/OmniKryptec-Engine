@@ -33,10 +33,10 @@ public class InstancedData extends AbstractInstancedData {
     }
     
     public void setUVAndTexture(final Texture t, final boolean flipU, boolean flipV) {
+        this.setTexture(t);
         if (t == null) {
             return;
         }
-        this.setTexture(t);
         flipV = flipV != t.requiresInvertedVifDrawn2D();
         if (t instanceof TextureRegion) {
             final TextureRegion r = (TextureRegion) t;
