@@ -33,7 +33,7 @@ public class View {
     private FrameBuffer targetFbo;
     private Postprocessor postprocessor;
     private Texture resultImage;
-    private Color clearColor = new Color(0.1f, 0.1f, 0.1f);
+    private Color clearColor = new Color(0,0,0,0);//Non-zero can cause just seeing the clear color...
     
     public View() {
         this.projection = new Camera(new Matrix4f().ortho2D(0, 1, 0, 1));
