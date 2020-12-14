@@ -21,7 +21,7 @@ import org.joml.Matrix4fc;
 
 import de.omnikryptec.libapi.exposed.render.shader.UniformMatrix;
 import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
-import de.omnikryptec.render.IProjection;
+import de.omnikryptec.render3.IProjection;
 import de.omnikryptec.util.math.Mathf;
 import de.omnikryptec.util.math.transform.Transform3Df;
 

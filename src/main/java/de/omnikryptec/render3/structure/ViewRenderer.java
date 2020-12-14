@@ -14,14 +14,24 @@
  *    limitations under the License.
  */
 
-package de.omnikryptec.render.batch;
+package de.omnikryptec.render3.structure;
 
+import de.omnikryptec.libapi.exposed.render.FrameBuffer;
+import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.render3.IProjection;
-import de.omnikryptec.util.math.transform.Transform3Df;
+import de.omnikryptec.util.updater.Time;
 
-public abstract class AbstractProjectedShaderSlot extends AbstractShaderSlot {
+public interface ViewRenderer {
     
-    public abstract void setProjection(IProjection projection);
+    default int priority() {
+        return 0;
+    }
     
-    public abstract void setTransform(Transform3Df transform);
+    default void init(ViewManager viewManager, RenderAPI api) {
+    }
+    
+    default void deinit(ViewManager viewManager, RenderAPI api) {
+    }
+    
+    void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target, Time time);
 }

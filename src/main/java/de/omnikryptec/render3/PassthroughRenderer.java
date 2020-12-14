@@ -5,7 +5,7 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.shader.ShaderProgram;
 import de.omnikryptec.libapi.exposed.render.shader.UniformSampler;
-import de.omnikryptec.render.postprocessing.QuadMesh;
+import de.omnikryptec.render3.postprocessing.QuadMesh;
 
 public class PassthroughRenderer {
     

@@ -21,7 +21,7 @@ import java.util.Arrays;
 
 import org.joml.Vector4f;
 
-import de.omnikryptec.render3.FloatCollector;
+import de.omnikryptec.util.data.fc.FloatCollector;
 import de.omnikryptec.util.math.Interpolator;
 import de.omnikryptec.util.math.Mathf;
 

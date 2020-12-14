@@ -18,13 +18,11 @@ package de.omnikryptec.gui;
 
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
-import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.batch.AdvancedBatch2D;
-import de.omnikryptec.render.renderer.ViewRenderer;
 import de.omnikryptec.render.renderer.Renderer2D;
-import de.omnikryptec.render.renderer.ViewManager;
-import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
-import de.omnikryptec.util.settings.Settings;
+import de.omnikryptec.render3.IProjection;
+import de.omnikryptec.render3.structure.ViewManager;
+import de.omnikryptec.render3.structure.ViewRenderer;
 import de.omnikryptec.util.updater.Time;
 
 public class GuiRenderer implements ViewRenderer {
@@ -41,8 +39,7 @@ public class GuiRenderer implements ViewRenderer {
     }
     
     @Override
-    public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target,
-            Settings<EnvironmentKey> envSettings, Time time) {
+    public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target, Time time) {
         if (this.componentRoot != null) {
             api.applyRenderState(Renderer2D.SPRITE_STATE);
             this.batch.getShaderSlot().setProjection(projection);

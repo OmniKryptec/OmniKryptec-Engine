@@ -23,7 +23,7 @@ import org.joml.Vector2f;
 import org.joml.Vector2fc;
 
 import de.omnikryptec.core.update.IUpdatable;
-import de.omnikryptec.render.Camera;
+import de.omnikryptec.render3.Camera;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.math.MathUtil;
 import de.omnikryptec.util.settings.KeySettings;

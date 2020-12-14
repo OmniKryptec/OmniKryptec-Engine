@@ -28,20 +28,19 @@ import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.RenderState;
 import de.omnikryptec.libapi.exposed.render.RenderState.BlendMode;
-import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.batch.AbstractProjectedShaderSlot;
 import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.objects.SimpleSprite;
 import de.omnikryptec.render.objects.Sprite;
-import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
+import de.omnikryptec.render3.IProjection;
+import de.omnikryptec.render3.structure.ViewManager;
+import de.omnikryptec.render3.structure.ViewRenderer;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathd;
 import de.omnikryptec.util.profiling.IProfiler;
 import de.omnikryptec.util.profiling.ProfileHelper;
 import de.omnikryptec.util.profiling.Profiler;
-import de.omnikryptec.util.settings.Defaultable;
-import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class Renderer2D implements ViewRenderer {
@@ -131,8 +130,7 @@ public class Renderer2D implements ViewRenderer {
     }
     
     @Override
-    public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target,
-            Settings<EnvironmentKey> envSettings, Time time) {
+    public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target, Time time) {
         Profiler.begin(toString());
         checkFBOs(target);
         boolean sorted = false;
@@ -221,20 +219,4 @@ public class Renderer2D implements ViewRenderer {
             this.spritesV.push((int) objects[2]);
         }
     };
-    
-    @Deprecated
-    public static enum EnvironmentKeys2D implements Defaultable, EnvironmentKey {
-        ExtendedLightRange(false);
-        
-        private final Object def;
-        
-        private EnvironmentKeys2D(final Object o) {
-            this.def = o;
-        }
-        
-        @Override
-        public <T> T getDefault() {
-            return (T) this.def;
-        }
-    }
 }

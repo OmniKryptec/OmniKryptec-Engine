@@ -19,8 +19,8 @@ package de.omnikryptec.gui;
 import de.omnikryptec.event.EventSubscription;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.input.InputEvent;
-import de.omnikryptec.render.IProjection;
-import de.omnikryptec.render.renderer.ViewManager;
+import de.omnikryptec.render3.IProjection;
+import de.omnikryptec.render3.structure.ViewManager;
 
 public class GuiManager {
     

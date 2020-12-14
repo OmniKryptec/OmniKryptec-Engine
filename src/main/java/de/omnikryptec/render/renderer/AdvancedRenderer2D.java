@@ -26,7 +26,6 @@ import de.omnikryptec.libapi.exposed.render.FBTarget;
 import de.omnikryptec.libapi.exposed.render.FBTarget.FBAttachmentFormat;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
-import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.batch.AbstractProjectedShaderSlot;
 import de.omnikryptec.render.batch.AdvancedBatch2D;
 import de.omnikryptec.render.batch.AdvancedShaderSlot;
@@ -34,14 +33,15 @@ import de.omnikryptec.render.batch.SimpleBatch2D;
 import de.omnikryptec.render.objects.AdvancedSprite;
 import de.omnikryptec.render.objects.AdvancedSprite.Reflection2DType;
 import de.omnikryptec.render.objects.Sprite;
-import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
+import de.omnikryptec.render3.IProjection;
+import de.omnikryptec.render3.structure.ViewManager;
+import de.omnikryptec.render3.structure.ViewRenderer;
 import de.omnikryptec.util.Util;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathd;
 import de.omnikryptec.util.profiling.IProfiler;
 import de.omnikryptec.util.profiling.ProfileHelper;
 import de.omnikryptec.util.profiling.Profiler;
-import de.omnikryptec.util.settings.Settings;
 import de.omnikryptec.util.updater.Time;
 
 public class AdvancedRenderer2D implements ViewRenderer {
@@ -148,8 +148,7 @@ public class AdvancedRenderer2D implements ViewRenderer {
     }
     
     @Override
-    public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target,
-            Settings<EnvironmentKey> envS, Time time) {
+    public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target,Time time) {
         Profiler.begin(toString());
         checkFBOs(target);
         boolean sorted = false;

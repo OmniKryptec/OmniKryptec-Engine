@@ -10,13 +10,11 @@ import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
-import de.omnikryptec.render3.Batch2D;
-import de.omnikryptec.render3.BatchCache;
-import de.omnikryptec.render3.InstanceData;
-import de.omnikryptec.render3.instancedrect.DefaultInstanceRectData;
-import de.omnikryptec.render3.instancedrect.DefaultInstancedRectRenderer;
-import de.omnikryptec.render3.instancedrect.InstancedRectBatchedRenderer;
-import de.omnikryptec.render3.instancedrect.InstancedRectData;
+import de.omnikryptec.render3.d2.Batch2D;
+import de.omnikryptec.render3.d2.BatchCache;
+import de.omnikryptec.render3.d2.InstanceData;
+import de.omnikryptec.render3.d2.instanced.InstancedBatch2D;
+import de.omnikryptec.render3.d2.instanced.InstancedData;
 import de.omnikryptec.resource.loadervpc.ResourceManager;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.Logger.LogType;
@@ -38,21 +36,21 @@ public class Test3 extends Omnikryptec {
         rm.addDefaultLoaders();
         rm.load(false, false, "intern:/de/omnikryptec/resources/glslmodules/shader2d.glsl");
         Batch2D batch = new Batch2D();
-        DefaultInstanceRectData[] ar = new DefaultInstanceRectData[10000];
+        InstancedData[] ar = new InstancedData[10000];
         ar[0] = null;
         for (int i = 1; i < ar.length; i++) {
             Matrix3x2f trans = new Matrix3x2f();
             trans.setTranslation(-0.5f, -0.5f);
             trans.rotateLocal(3.14f / 4 + i);
-            DefaultInstanceRectData d = new DefaultInstanceRectData();
+            InstancedData d = new InstancedData();
             ar[i] = d;
             d.transform = trans;
         }
         List<InstanceData> list = Arrays.asList(ar);
-        batch.setInstance(new DefaultInstancedRectRenderer(true));
-        batch.drawList(DefaultInstancedRectRenderer.class, list);
+        batch.setInstance(new InstancedBatch2D(true));
+        batch.drawList(InstancedBatch2D.class, list);
         List<BatchCache> bcl = batch.flush();
-        batch.setInstance(new DefaultInstancedRectRenderer(false));
+        batch.setInstance(new InstancedBatch2D(false));
         batch.setAutoclear(false);
         batch.drawCache(bcl);
         while (!window.isCloseRequested()) {
