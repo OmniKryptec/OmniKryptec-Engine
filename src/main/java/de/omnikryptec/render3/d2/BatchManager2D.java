@@ -10,7 +10,7 @@ import com.google.common.collect.MutableClassToInstanceMap;
 
 import de.omnikryptec.util.Util;
 
-public class Batch2D {
+public class BatchManager2D {
     
     private ArrayListMultimap<Class<? extends IBatchedRenderer2D>, List<? extends InstanceDataProvider>> batch = ArrayListMultimap
             .create();

@@ -1,5 +1,7 @@
-package de.omnikryptec.render3.d2.sprites;
+package de.omnikryptec.render3.d2;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
@@ -9,6 +11,8 @@ import org.joml.Matrix4fc;
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.render3.IProjection;
+import de.omnikryptec.render3.d2.sprites.AbstractSprite;
+import de.omnikryptec.render3.d2.sprites.IRenderer2D;
 import de.omnikryptec.render3.structure.ViewManager;
 import de.omnikryptec.render3.structure.ViewRenderer;
 import de.omnikryptec.util.updater.Time;
@@ -27,6 +31,36 @@ public class ViewRenderer2D implements ViewRenderer {
     
     private boolean sort;
     private Comparator<AbstractSprite> comparator = DEFAULT_COMPARATOR;
+    
+    public ViewRenderer2D() {
+        this.abstractSprites = new ArrayList<>();
+    }
+    
+    public void addSprite(AbstractSprite sprite) {
+        this.abstractSprites.add(sprite);
+        this.sort = true;
+    }
+    
+    public void addSprites(Collection<? extends AbstractSprite> sprites) {
+        this.abstractSprites.addAll(sprites);
+        this.sort = true;
+    }
+    
+    public void removeSprite(AbstractSprite sprite) {
+        this.abstractSprites.remove(sprite);
+    }
+    
+    public void removeSprites(Collection<? extends AbstractSprite> sprites) {
+        this.abstractSprites.removeAll(sprites);
+    }
+    
+    public void setComparator(Comparator<AbstractSprite> comparator) {
+        this.comparator = comparator;
+    }
+    
+    public void forceSort() {
+        this.sort = true;
+    }
     
     @Override
     public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target, Time time) {
@@ -52,7 +86,6 @@ public class ViewRenderer2D implements ViewRenderer {
                     currentRenderer.start();
                 }
                 abstractSprite.draw();
-                //Now render the sprite
             }
         }
         currentRenderer.flush();

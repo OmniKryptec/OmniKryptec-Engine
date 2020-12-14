@@ -11,7 +11,7 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
-import de.omnikryptec.render3.d2.Batch2D;
+import de.omnikryptec.render3.d2.BatchManager2D;
 import de.omnikryptec.render3.d2.BatchCache;
 import de.omnikryptec.render3.d2.InstanceData;
 import de.omnikryptec.render3.d2.instanced.InstancedBatch2D;
@@ -40,7 +40,7 @@ public class Test3 extends Omnikryptec {
         rm.load(false, false, "intern:/de/omnikryptec/resources/");
         TextureHelper texHelper = new TextureHelper(rm.getProvider());
         Texture t = texHelper.get("candara.png");
-        Batch2D batch = new Batch2D();
+        BatchManager2D batch = new BatchManager2D();
         InstancedData[] ar = new InstancedData[10000];
         ar[0] = null;
         for (int i = 1; i < ar.length; i++) {
