@@ -49,22 +49,16 @@ public class Test3 extends Omnikryptec {
             d.transform = trans;
         }
         List<InstanceData> list = Arrays.asList(ar);
-        batch.setInstance(DefaultInstancedRectRenderer.class, new DefaultInstancedRectRenderer(true));
-        batch.begin();
+        batch.setInstance(new DefaultInstancedRectRenderer(true));
         batch.drawList(DefaultInstancedRectRenderer.class, list);
-        List<BatchCache> bcl = batch.end();
-        batch.setInstance(DefaultInstancedRectRenderer.class, new DefaultInstancedRectRenderer(false));
-        //OpenGLUtil.setPolyMode(PolyMode.LINE);
+        List<BatchCache> bcl = batch.flush();
+        batch.setInstance(new DefaultInstancedRectRenderer(false));
+        batch.setAutoclear(false);
+        batch.drawCache(bcl);
         while (!window.isCloseRequested()) {
             LibAPIManager.instance().getGLFW().getRenderAPI().getSurface().clearColor(clearColor);
-            batch.begin();
             Profiler.begin("test3");
-            batch.drawCache(bcl);
-            //batch.drawList(DefaultInstancedRectRenderer.class, list);
-            //            for (InstancedRectData d : ar) {
-            //                batch.draw(d);
-            //            }
-            batch.end();
+            batch.flush();
             Profiler.end();
             updater.update();
         }

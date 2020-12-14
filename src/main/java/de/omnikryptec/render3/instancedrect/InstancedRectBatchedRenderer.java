@@ -10,6 +10,7 @@ import de.omnikryptec.render3.BatchedRenderer;
 import de.omnikryptec.render3.BufferFloatCollector;
 import de.omnikryptec.render3.FloatCollector;
 import de.omnikryptec.render3.InstanceData;
+import de.omnikryptec.render3.InstanceDataProvider;
 import de.omnikryptec.render3.InstancedRender;
 import de.omnikryptec.render3.instancedrect.InstancedRectBatchCache.CacheEntry;
 
@@ -50,15 +51,15 @@ public abstract class InstancedRectBatchedRenderer<T extends InstancedRectData> 
     }
     
     @Override
-    public void put(Iterable<? extends Supplier<? extends InstanceData>> list) {
-        for (Supplier<? extends InstanceData> id : list) {
-            if (id == null || id.get() == null) {
+    public void put(Iterable<? extends InstanceDataProvider> list) {
+        for (InstanceDataProvider id : list) {
+            if (id == null || id.getInstanceData() == null) {
                 continue;
             }
             if ((instanceCount + 1) * argSize > currentFloats.remaining()) {
                 flush();
             }
-            T instanceData = (T) id.get();
+            T instanceData = (T) id.getInstanceData();
             int localTextureIndex = setupTexture(instanceData.getTexture());
             fill(currentFloats, instanceData, localTextureIndex);
             instanceCount++;

@@ -3,6 +3,7 @@ package de.omnikryptec.render3.instancedrect;
 import org.joml.Matrix3x2f;
 import org.joml.Vector2f;
 
+import de.omnikryptec.render3.BatchedRenderer;
 import de.omnikryptec.render3.FloatCollector;
 import de.omnikryptec.util.data.Color;
 
@@ -23,5 +24,10 @@ public class DefaultInstanceRectData extends InstancedRectData {
         borderColor.get(b);
         b.put(sdData).put(bsdData);
         b.put(offset);
+    }
+    
+    @Override
+    public Class<? extends BatchedRenderer> getDefaultRenderer() {
+        return DefaultInstancedRectRenderer.class;
     }
 }
