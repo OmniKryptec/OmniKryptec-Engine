@@ -1,8 +1,8 @@
 package de.omnikryptec.render3;
 
-import de.omnikryptec.render3.sprites.AnotherFuckingRenderer;
+import de.omnikryptec.render3.sprites.IRenderer2D;
 
-public interface BatchedRenderer extends AnotherFuckingRenderer {
+public interface IBatchedRenderer2D extends IRenderer2D {
     
     void start();
     

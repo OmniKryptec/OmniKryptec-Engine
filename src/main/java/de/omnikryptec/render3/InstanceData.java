@@ -2,7 +2,7 @@ package de.omnikryptec.render3;
 
 public interface InstanceData extends InstanceDataProvider {
     
-    Class<? extends BatchedRenderer> getDefaultRenderer();
+    Class<? extends IBatchedRenderer2D> getDefaultRenderer();
     
     @Override
     default InstanceData getInstanceData() {

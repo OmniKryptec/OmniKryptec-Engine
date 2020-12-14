@@ -22,7 +22,7 @@ public abstract class AbstractSprite {
         return this.layer;
     }
     
-    public abstract AnotherFuckingRenderer getRenderer();
+    public abstract IRenderer2D getRenderer();
     
     public abstract void draw();
 }

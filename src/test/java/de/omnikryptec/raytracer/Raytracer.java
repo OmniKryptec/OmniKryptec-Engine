@@ -48,7 +48,6 @@ import de.omnikryptec.render.Camera;
 import de.omnikryptec.render.IProjection;
 import de.omnikryptec.render.renderer.ViewRenderer;
 import de.omnikryptec.render.renderer.ViewManager;
-import de.omnikryptec.render.renderer.ViewManager.EnvironmentKey;
 import de.omnikryptec.util.Logger;
 import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.MathUtil;
@@ -395,8 +394,7 @@ public class Raytracer extends Omnikryptec implements ViewRenderer, IUpdatable {
     }
     
     @Override
-    public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target,
-            Settings<EnvironmentKey> envSettings, Time time) {
+    public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target, Time time) {
         checkFBOs(target);
         this.computeShader.bindShader();
         this.time.loadFloat(time.currentf);

@@ -13,7 +13,7 @@ import de.omnikryptec.render.renderer.ViewRenderer;
 import de.omnikryptec.render.renderer.ViewManager;
 import de.omnikryptec.util.updater.Time;
 
-public class Renderer2D implements ViewRenderer {
+public class ViewRenderer2D implements ViewRenderer {
     private static final Comparator<AbstractSprite> DEFAULT_COMPARATOR = (s0, s1) -> {
         int layers = s0.getLayer() - s1.getLayer();
         if (layers != 0) {
@@ -37,7 +37,7 @@ public class Renderer2D implements ViewRenderer {
         FrustumIntersection frustumFilter = projection.getFrustumTester();
         Matrix4fc projectionMatrix = projection.getProjection();
         int currentlayer = abstractSprites.get(0).getLayer();
-        AnotherFuckingRenderer currentRenderer = abstractSprites.get(0).getRenderer();
+        IRenderer2D currentRenderer = abstractSprites.get(0).getRenderer();
         currentRenderer.start();
         for (AbstractSprite abstractSprite : abstractSprites) {
             if (abstractSprite.isVisible(frustumFilter)) {

@@ -6,7 +6,7 @@ import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.render3.ArrayFloatCollector;
 import de.omnikryptec.render3.BatchCache;
-import de.omnikryptec.render3.BatchedRenderer;
+import de.omnikryptec.render3.IBatchedRenderer2D;
 import de.omnikryptec.render3.BufferFloatCollector;
 import de.omnikryptec.render3.FloatCollector;
 import de.omnikryptec.render3.InstanceData;
@@ -14,7 +14,7 @@ import de.omnikryptec.render3.InstanceDataProvider;
 import de.omnikryptec.render3.InstancedRender;
 import de.omnikryptec.render3.instancedrect.InstancedRectBatchCache.CacheEntry;
 
-public abstract class InstancedRectBatchedRenderer<T extends InstancedRectData> implements BatchedRenderer {
+public abstract class InstancedRectBatchedRenderer<T extends InstancedRectData> implements IBatchedRenderer2D {
     
     private final int floatcollectorSize;
     private final int argSize;

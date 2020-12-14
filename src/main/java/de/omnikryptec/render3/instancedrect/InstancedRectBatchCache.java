@@ -3,7 +3,7 @@ package de.omnikryptec.render3.instancedrect;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render3.ArrayFloatCollector;
 import de.omnikryptec.render3.BatchCache;
-import de.omnikryptec.render3.BatchedRenderer;
+import de.omnikryptec.render3.IBatchedRenderer2D;
 import de.omnikryptec.util.data.DynamicArray;
 
 public class InstancedRectBatchCache implements BatchCache {
@@ -16,7 +16,7 @@ public class InstancedRectBatchCache implements BatchCache {
     
     DynamicArray<CacheEntry> cache = new DynamicArray<>();
     
-    Class<? extends BatchedRenderer> actualClazz;
+    Class<? extends IBatchedRenderer2D> actualClazz;
     
     void push(ArrayFloatCollector buffer, Texture[] textures, int instancecount) {
         CacheEntry e = new CacheEntry();
@@ -27,7 +27,7 @@ public class InstancedRectBatchCache implements BatchCache {
     }
     
     @Override
-    public Class<? extends BatchedRenderer> getBatchedRendererClass() {
+    public Class<? extends IBatchedRenderer2D> getBatchedRendererClass() {
         return actualClazz;
     }
 }

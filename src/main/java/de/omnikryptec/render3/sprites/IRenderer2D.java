@@ -2,7 +2,7 @@ package de.omnikryptec.render3.sprites;
 
 import org.joml.Matrix4fc;
 
-public interface AnotherFuckingRenderer {
+public interface IRenderer2D {
     
     void setProjectionViewMatrx(Matrix4fc mat);
     

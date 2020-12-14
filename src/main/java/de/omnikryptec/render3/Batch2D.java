@@ -13,20 +13,20 @@ import de.omnikryptec.util.Util;
 
 public class Batch2D {
     
-    private ArrayListMultimap<Class<? extends BatchedRenderer>, List<? extends InstanceDataProvider>> batch = ArrayListMultimap
+    private ArrayListMultimap<Class<? extends IBatchedRenderer2D>, List<? extends InstanceDataProvider>> batch = ArrayListMultimap
             .create();
-    private ListMultimap<Class<? extends BatchedRenderer>, InstanceDataProvider> indirectBatch = ArrayListMultimap.create();
-    private ListMultimap<Class<? extends BatchedRenderer>, BatchCache> cacheBatch = ArrayListMultimap.create();
-    private ClassToInstanceMap<BatchedRenderer> rendererImplementations = MutableClassToInstanceMap.create();
+    private ListMultimap<Class<? extends IBatchedRenderer2D>, InstanceDataProvider> indirectBatch = ArrayListMultimap.create();
+    private ListMultimap<Class<? extends IBatchedRenderer2D>, BatchCache> cacheBatch = ArrayListMultimap.create();
+    private ClassToInstanceMap<IBatchedRenderer2D> rendererImplementations = MutableClassToInstanceMap.create();
     
     private boolean autoclear = true;
     private boolean updateIndirect;
     
-    public void setInstance(BatchedRenderer renderer) {
+    public void setInstance(IBatchedRenderer2D renderer) {
         this.setInstance(renderer.getClass(), renderer);
     }
     
-    public void setInstance(Class<? extends BatchedRenderer> clazz, BatchedRenderer renderer) {
+    public void setInstance(Class<? extends IBatchedRenderer2D> clazz, IBatchedRenderer2D renderer) {
         Util.ensureNonNull(renderer);
         rendererImplementations.put(clazz, renderer);
     }
@@ -39,16 +39,16 @@ public class Batch2D {
         List<BatchCache> cache = null;
         if (updateIndirect) {
             updateIndirect = false;
-            for (Class<? extends BatchedRenderer> r : indirectBatch.keySet()) {
+            for (Class<? extends IBatchedRenderer2D> r : indirectBatch.keySet()) {
                 List<? extends InstanceDataProvider> list = indirectBatch.get(r);
                 if (!batch.containsEntry(r, list)) {
                     batch.put(r, list);
                 }
             }
         }
-        for (Class<? extends BatchedRenderer> rendClass : rendererImplementations.keySet()) {
+        for (Class<? extends IBatchedRenderer2D> rendClass : rendererImplementations.keySet()) {
             //batch.get(r).sort(c); Sort here? Sort in the batched renderer? What? Do we need to sort?
-            BatchedRenderer renderer = rendererImplementations.getInstance(rendClass);
+            IBatchedRenderer2D renderer = rendererImplementations.getInstance(rendClass);
             for (BatchCache bc : cacheBatch.get(rendClass)) {
                 renderer.put(bc);
             }
@@ -97,7 +97,7 @@ public class Batch2D {
         }
     }
     
-    public void drawList(Class<? extends BatchedRenderer> renderer, List<? extends InstanceDataProvider> d) {
+    public void drawList(Class<? extends IBatchedRenderer2D> renderer, List<? extends InstanceDataProvider> d) {
         Util.ensureNonNull(renderer);
         Util.ensureNonNull(d);
         batch.put(renderer, d);
@@ -107,7 +107,7 @@ public class Batch2D {
         draw(Util.ensureNonNull(data.getInstanceData().getDefaultRenderer()), data);
     }
     
-    public void draw(Class<? extends BatchedRenderer> renderer, InstanceDataProvider data) {
+    public void draw(Class<? extends IBatchedRenderer2D> renderer, InstanceDataProvider data) {
         Util.ensureNonNull(data);
         indirectBatch.put(renderer, data);
         updateIndirect = true;
@@ -117,12 +117,12 @@ public class Batch2D {
         this.remove(data.getInstanceData().getDefaultRenderer(), data);
     }
     
-    public void remove(Class<? extends BatchedRenderer> renderer, InstanceDataProvider data) {
+    public void remove(Class<? extends IBatchedRenderer2D> renderer, InstanceDataProvider data) {
         indirectBatch.remove(renderer, data);
         updateIndirect = true;
     }
     
-    public void removeList(Class<? extends BatchedRenderer> renderer,
+    public void removeList(Class<? extends IBatchedRenderer2D> renderer,
             List<? extends InstanceDataProvider> d) {
         batch.remove(renderer, d);
     }
