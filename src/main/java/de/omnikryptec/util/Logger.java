@@ -182,4 +182,12 @@ public class Logger {
             error(String.format(format, data));
         }
     }
+    
+    public PrintStream getOut() {
+        return out;
+    }
+    
+    public PrintStream getErr() {
+        return err;
+    }
 }
