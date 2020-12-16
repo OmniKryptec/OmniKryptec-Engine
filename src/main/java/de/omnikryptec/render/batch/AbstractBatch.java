@@ -21,7 +21,7 @@ import javax.annotation.OverridingMethodsMustInvokeSuper;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.render.batch.module.ModuleBatchingManager;
 import de.omnikryptec.render.batch.vertexmanager.VertexManager;
-
+@Deprecated
 public abstract class AbstractBatch {
     
     protected final ModuleBatchingManager modBatchManager;

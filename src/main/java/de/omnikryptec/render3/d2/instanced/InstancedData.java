@@ -13,11 +13,12 @@ public class InstancedData extends AbstractInstancedData {
     
     private Matrix3x2f transform = new Matrix3x2f();
     private float u0 = 0, v0 = 0, u1 = 1, v1 = 1;
-    private Color color = new Color(1, 0, 0, 1).randomizeRGB();
+    private Color color = new Color();
     private Vector2f sdData = new Vector2f();
     private Vector2f bsdData = new Vector2f();
     private Color borderColor = new Color();
     private Vector2f offset = new Vector2f();
+    private float tiling = 1;
     
     public void fill(FloatCollector b) {
         b.put(transform);
@@ -26,6 +27,7 @@ public class InstancedData extends AbstractInstancedData {
         borderColor.get(b);
         b.put(sdData).put(bsdData);
         b.put(offset);
+        b.put(tiling);
     }
     
     public void setUVAndTexture(Texture t) {
@@ -89,8 +91,16 @@ public class InstancedData extends AbstractInstancedData {
         return offset;
     }
     
-    public Matrix3x2f transform() {
+    public Matrix3x2f getTransform() {
         return transform;
+    }
+    
+    public void setTransform(Matrix3x2f mat) {
+        this.transform = mat;
+    }
+    
+    public void setTilingFactor(float f) {
+        this.tiling = f;
     }
     
     @Override

@@ -49,7 +49,7 @@ public class Test3 extends Omnikryptec {
             //            trans.rotateLocal(3.14f / 4 + i);
             InstancedData d = new InstancedData();
             ar[i] = d;
-            d.transform().set(trans);
+            d.getTransform().set(trans);
             d.setUVAndTexture(t);
         }
         List<InstanceData> list = Arrays.asList(ar);

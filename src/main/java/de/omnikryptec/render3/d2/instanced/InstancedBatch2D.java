@@ -7,6 +7,8 @@ import de.omnikryptec.libapi.exposed.render.VertexBufferLayout;
 import de.omnikryptec.util.data.fc.FloatCollector;
 
 public class InstancedBatch2D extends AbstractInstancedBatch2D<InstancedData> {
+    
+    
     private static final int FLOATCOLLECTOR_SIZE = 20000;
     static final int TEXTURE_ACCUM_SIZE = 8;
     private static final VertexBufferLayout INSTANCED_LAYOUT = new VertexBufferLayout();
@@ -21,7 +23,11 @@ public class InstancedBatch2D extends AbstractInstancedBatch2D<InstancedData> {
         INSTANCED_LAYOUT.push(Type.FLOAT, 4, false, 1);
         INSTANCED_LAYOUT.push(Type.FLOAT, 2, false, 1);
         INSTANCED_LAYOUT.push(Type.FLOAT, 1, false, 1);
+        INSTANCED_LAYOUT.push(Type.FLOAT, 1, false, 1);
     }
+    public static final InstancedBatch2D DEFAULT_BATCH = new InstancedBatch2D();
+
+    
     private InstancedShader shader;
     
     public InstancedBatch2D() {

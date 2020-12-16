@@ -20,7 +20,7 @@ import org.joml.Vector2f;
 
 import de.omnikryptec.resource.Font;
 import de.omnikryptec.util.data.Color;
-
+@Deprecated
 public interface BorderedBatch2D extends Batch2D {
     
     Color borderColor();

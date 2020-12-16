@@ -26,6 +26,7 @@ import de.omnikryptec.gui.GuiRenderer;
 import de.omnikryptec.libapi.exposed.LibAPIManager;
 import de.omnikryptec.render.renderer.AdvancedRenderer2D;
 import de.omnikryptec.render.renderer.Renderer2D;
+import de.omnikryptec.render3.d2.ViewRenderer2D;
 import de.omnikryptec.util.updater.Time;
 
 public class ViewManager {
@@ -101,8 +102,15 @@ public class ViewManager {
         view.renderResult(time);
     }
     
+    @Deprecated
     public Renderer2D createAndAddRenderer2D() {
         Renderer2D r = new Renderer2D();
+        addRenderer(r);
+        return r;
+    }
+    
+    public ViewRenderer2D createAndAddVRenderer2D() {
+        ViewRenderer2D r = new ViewRenderer2D();
         addRenderer(r);
         return r;
     }

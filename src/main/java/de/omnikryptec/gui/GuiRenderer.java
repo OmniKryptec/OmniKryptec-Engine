@@ -32,7 +32,7 @@ public class GuiRenderer implements ViewRenderer {
     private final BorderedBatchAdapter batch;
     
     public GuiRenderer() {
-        this.batch = new BorderedBatchAdapter(new InstancedBatch2D(false));
+        this.batch = new BorderedBatchAdapter(InstancedBatch2D.DEFAULT_BATCH);
     }
     
     protected void setGui(final GuiComponent componentRoot) {

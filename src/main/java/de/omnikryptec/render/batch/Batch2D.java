@@ -26,6 +26,7 @@ import de.omnikryptec.util.data.Color;
 import de.omnikryptec.util.math.Mathf;
 
 //if transform==null use identity transform
+@Deprecated
 public interface Batch2D {
     
     void begin();

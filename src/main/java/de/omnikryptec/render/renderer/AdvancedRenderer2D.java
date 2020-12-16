@@ -44,6 +44,7 @@ import de.omnikryptec.util.profiling.ProfileHelper;
 import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.updater.Time;
 
+@Deprecated
 public class AdvancedRenderer2D implements ViewRenderer {
     private static int rc = 0;
     
@@ -148,7 +149,7 @@ public class AdvancedRenderer2D implements ViewRenderer {
     }
     
     @Override
-    public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target,Time time) {
+    public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target, Time time) {
         Profiler.begin(toString());
         checkFBOs(target);
         boolean sorted = false;

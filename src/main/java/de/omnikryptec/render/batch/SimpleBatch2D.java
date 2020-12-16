@@ -30,6 +30,7 @@ import de.omnikryptec.render.batch.vertexmanager.RenderedVertexManager;
 import de.omnikryptec.render.batch.vertexmanager.VertexManager;
 import de.omnikryptec.util.data.Color;
 
+@Deprecated
 public class SimpleBatch2D extends AbstractBatch implements Batch2D {
     
     public static AbstractProjectedShaderSlot createDefaultShaderSlot() {

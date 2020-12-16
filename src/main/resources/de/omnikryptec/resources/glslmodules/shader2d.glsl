@@ -50,7 +50,8 @@ layout(location = 5) in vec4 i_color;
 layout(location = 6) in vec4 i_borderColor;
 layout(location = 7) in vec4 i_sdData;
 layout(location = 8) in vec2 i_sdOffset;
-layout(location = 9) in float i_texIndex;
+layout(location = 9) in float i_tiling;
+layout(location = 10) in float i_texIndex;
 
 out vec2 v_tex;
 flat out vec4 v_color;
@@ -58,6 +59,7 @@ flat out int v_texIndex;
 flat out vec4 v_borderColor;
 flat out vec4 v_sdData;
 flat out vec2 v_sdOffset;
+flat out float v_tiling;
 
 uniform mat4 u_projview;
 
@@ -72,6 +74,7 @@ void main(void){
     v_borderColor = i_borderColor;
     v_sdData = i_sdData;
     v_sdOffset = i_sdOffset;
+    v_tiling = i_tiling;
 }
 
 $define shader defaultInstancedShader FRAGMENT$
@@ -83,14 +86,15 @@ flat in int v_texIndex;
 flat in vec4 v_borderColor;
 flat in vec4 v_sdData;
 flat in vec2 v_sdOffset;
+flat in float v_tiling;
 
 out vec4 color;
 
 uniform sampler2D samplers[8]; 
 
 void main(void){
-	float dCol = v_color.a * texture(samplers[v_texIndex], v_tex + v_sdOffset).a;
-    color = texture(samplers[v_texIndex], v_tex) * v_color;
+	float dCol = v_color.a * texture(samplers[v_texIndex], v_tex * v_tiling + v_sdOffset).a;
+    color = texture(samplers[v_texIndex], v_tex * v_tiling) * v_color;
     
     float dist = 1.0 - color.a;
 	float alpha = 1.0 - smoothstep(v_sdData.x, v_sdData.y, dist);

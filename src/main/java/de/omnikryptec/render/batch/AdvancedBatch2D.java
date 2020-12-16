@@ -32,7 +32,7 @@ import de.omnikryptec.render.batch.module.UVModule;
 import de.omnikryptec.render.batch.vertexmanager.RenderedVertexManager;
 import de.omnikryptec.render.batch.vertexmanager.VertexManager;
 import de.omnikryptec.util.data.Color;
-
+@Deprecated
 public class AdvancedBatch2D extends AbstractBatch implements BorderedBatch2D {
     
     public static AbstractProjectedShaderSlot createDefaultShaderSlot() {

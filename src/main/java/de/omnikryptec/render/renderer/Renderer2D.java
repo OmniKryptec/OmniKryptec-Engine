@@ -42,7 +42,7 @@ import de.omnikryptec.util.profiling.IProfiler;
 import de.omnikryptec.util.profiling.ProfileHelper;
 import de.omnikryptec.util.profiling.Profiler;
 import de.omnikryptec.util.updater.Time;
-
+@Deprecated
 public class Renderer2D implements ViewRenderer {
     private static int rc = 0;
     

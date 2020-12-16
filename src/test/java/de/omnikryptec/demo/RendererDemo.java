@@ -20,8 +20,8 @@ import de.omnikryptec.core.Omnikryptec;
 import de.omnikryptec.core.Scene;
 import de.omnikryptec.libapi.exposed.LibAPIManager.LibSetting;
 import de.omnikryptec.libapi.exposed.window.WindowSetting;
-import de.omnikryptec.render.objects.SimpleSprite;
-import de.omnikryptec.render.renderer.Renderer2D;
+import de.omnikryptec.render3.d2.ViewRenderer2D;
+import de.omnikryptec.render3.d2.sprites.Sprite;
 import de.omnikryptec.util.settings.IntegerKey;
 import de.omnikryptec.util.settings.KeySettings;
 import de.omnikryptec.util.settings.Settings;
@@ -43,15 +43,15 @@ public class RendererDemo extends Omnikryptec {
     protected void onInitialized() {
         //Create the rendering environment
         final Scene scene = getGame().createAndAddScene();
-        Renderer2D renderer = scene.getViewManager().createAndAddRenderer2D();
+        ViewRenderer2D renderer = scene.getViewManager().createAndAddVRenderer2D();
         //Load the texture and use the TextureHelper to make stuff easier
         getResourceManager().load(false, true, "intern:/de/omnikryptec/resources/jd.png");
         
         //Create a sprite and set some of its properties
-        final SimpleSprite sprite = new SimpleSprite();
-        sprite.setTexture(getTextures().get("jd.png"));
+        Sprite sprite = new Sprite();
+        sprite.getRenderData().setUVAndTexture(getTextures().get("jd.png"));
         
-        renderer.add(sprite);
+        renderer.addSprite(sprite);
     }
     
 }

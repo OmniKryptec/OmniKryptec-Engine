@@ -32,7 +32,7 @@ public class RendererUtil {
             PassthroughRenderer.instance().render(t);
         }
     }
-    
+    @Deprecated
     public static int render2d(final Batch2D batch, final Collection<? extends Sprite> sprites,
             final FrustumIntersection filter) {
         int c = 0;

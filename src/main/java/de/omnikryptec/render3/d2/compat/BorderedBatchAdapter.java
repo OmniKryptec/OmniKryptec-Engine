@@ -42,17 +42,17 @@ public class BorderedBatchAdapter implements BorderedBatch2D {
     
     @Override
     public void draw(Texture texture, Matrix3x2fc transform, boolean flipU, boolean flipV) {
-        dataTmp.transform().identity();
-        dataTmp.transform().set(transform);
+        dataTmp.getTransform().identity();
+        dataTmp.getTransform().set(transform);
         dataTmp.setUVAndTexture(texture, flipU, flipV);
         actualBatch.put(dataTmp);
     }
     
     @Override
     public void draw(Texture texture, float x, float y, float width, float height, boolean flipU, boolean flipV) {
-        dataTmp.transform().identity();
-        dataTmp.transform().setTranslation(x, y);
-        dataTmp.transform().scale(width, height);
+        dataTmp.getTransform().identity();
+        dataTmp.getTransform().setTranslation(x, y);
+        dataTmp.getTransform().scale(width, height);
         dataTmp.setUVAndTexture(texture, flipU, flipV);
         actualBatch.put(dataTmp);
     }
