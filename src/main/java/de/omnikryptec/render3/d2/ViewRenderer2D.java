@@ -10,6 +10,7 @@ import org.joml.Matrix4fc;
 
 import de.omnikryptec.libapi.exposed.render.FrameBuffer;
 import de.omnikryptec.libapi.exposed.render.RenderAPI;
+import de.omnikryptec.render.renderer.Renderer2D;
 import de.omnikryptec.render3.IProjection;
 import de.omnikryptec.render3.d2.sprites.AbstractSprite;
 import de.omnikryptec.render3.d2.sprites.IRenderer2D;
@@ -68,6 +69,7 @@ public class ViewRenderer2D implements ViewRenderer {
             sort = false;
             abstractSprites.sort(comparator);
         }
+        api.applyRenderState(Renderer2D.SPRITE_STATE);
         FrustumIntersection frustumFilter = projection.getFrustumTester();
         Matrix4fc projectionMatrix = projection.getProjection();
         int currentlayer = abstractSprites.get(0).getLayer();
@@ -77,8 +79,8 @@ public class ViewRenderer2D implements ViewRenderer {
         for (AbstractSprite abstractSprite : abstractSprites) {
             if (abstractSprite.isVisible(frustumFilter)) {
                 if (currentlayer != abstractSprite.getLayer()) {
-                    currentlayer = abstractSprite.getLayer();
                     currentRenderer.flush();
+                    currentlayer = abstractSprite.getLayer();
                 }
                 if (currentRenderer != abstractSprite.getRenderer()) {
                     currentRenderer.flush();

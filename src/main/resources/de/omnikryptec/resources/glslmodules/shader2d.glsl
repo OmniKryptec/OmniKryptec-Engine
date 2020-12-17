@@ -95,7 +95,7 @@ uniform sampler2D samplers[8];
 void main(void){
 	float dCol = v_color.a * texture(samplers[v_texIndex], v_tex * v_tiling + v_sdOffset).a;
     color = texture(samplers[v_texIndex], v_tex * v_tiling) * v_color;
-    
+        
     float dist = 1.0 - color.a;
 	float alpha = 1.0 - smoothstep(v_sdData.x, v_sdData.y, dist);
 	
@@ -104,7 +104,7 @@ void main(void){
 	
 	float overallAlpha = alpha + (1.0 - alpha) * outlineAlpha;
 
-	color.a = alpha;	
+  	color.a = alpha;	
     color = mix(v_borderColor, color, alpha/overallAlpha);
 }
 

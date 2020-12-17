@@ -15,6 +15,11 @@ public abstract class AbstractSprite {
         return this.layer;
     }
     
+    @Deprecated //For now... maybe make layer final or smth
+    public void setLayer(int layer) { 
+        this.layer = layer;
+    }
+    
     public abstract IRenderer2D getRenderer();
     
     public abstract void draw();

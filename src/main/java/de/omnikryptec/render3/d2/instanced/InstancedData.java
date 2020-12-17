@@ -1,6 +1,7 @@
 package de.omnikryptec.render3.d2.instanced;
 
 import org.joml.Matrix3x2f;
+import org.joml.Matrix3x2fc;
 import org.joml.Vector2f;
 
 import de.omnikryptec.libapi.exposed.render.Texture;
@@ -14,10 +15,10 @@ public class InstancedData extends AbstractInstancedData {
     private Matrix3x2f transform = new Matrix3x2f();
     private float u0 = 0, v0 = 0, u1 = 1, v1 = 1;
     private Color color = new Color();
-    private Vector2f sdData = new Vector2f();
-    private Vector2f bsdData = new Vector2f();
+    private Vector2f sdData = new Vector2f(0, 1);
+    private Vector2f bsdData = new Vector2f(0, 0.00000000001f);//TODO having this font stuff in the default renderer is meh i guess
     private Color borderColor = new Color();
-    private Vector2f offset = new Vector2f();
+    private Vector2f offset = new Vector2f(0);
     private float tiling = 1;
     
     public void fill(FloatCollector b) {
@@ -94,9 +95,9 @@ public class InstancedData extends AbstractInstancedData {
     public Matrix3x2f getTransform() {
         return transform;
     }
-    
-    public void setTransform(Matrix3x2f mat) {
-        this.transform = mat;
+    //Hmmmmmm.
+    public void setTransform(Matrix3x2fc mat) {
+        this.transform.set(mat);
     }
     
     public void setTilingFactor(float f) {
