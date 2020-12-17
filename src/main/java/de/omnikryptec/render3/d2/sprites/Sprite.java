@@ -9,7 +9,7 @@ public class Sprite extends AbstractSprite {
     private InstancedData data = new InstancedData();
     private Transform2Df transform = new Transform2Df();
     
-    public float tmpW=1, tmpH=1;
+    public float tmpW=1, tmpH=1;//TODO fixme ugly and temporary
     
     @Override
     public IRenderer2D getRenderer() {
