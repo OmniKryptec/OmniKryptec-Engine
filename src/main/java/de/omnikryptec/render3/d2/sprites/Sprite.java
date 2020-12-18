@@ -9,7 +9,8 @@ public class Sprite extends AbstractSprite {
     private InstancedData data = new InstancedData();
     private Transform2Df transform = new Transform2Df();
     
-    public float tmpW=1, tmpH=1;//TODO fixme ugly and temporary
+    private float width = 1;
+    private float height = 1;
     
     @Override
     public IRenderer2D getRenderer() {
@@ -19,7 +20,7 @@ public class Sprite extends AbstractSprite {
     @Override
     public void draw() {
         data.setTransform(transform.worldspace());
-        data.getTransform().scale(tmpW, tmpH);
+        data.getTransform().scale(width, height);
         InstancedBatch2D.DEFAULT_BATCH.put(data);
     }
     
@@ -34,11 +35,20 @@ public class Sprite extends AbstractSprite {
     public void setTransform(Transform2Df transform) {
         this.transform = transform;
     }
+    
     public void setWidth(float w) {
-        this.tmpW = w;
+        this.width = w;
     }
     
     public void setHeight(float h) {
-        this.tmpH = h;
+        this.height = h;
+    }
+    
+    public float getWidth() {
+        return width;
+    }
+    
+    public float getHeight() {
+        return height;
     }
 }
