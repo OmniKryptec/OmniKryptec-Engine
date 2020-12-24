@@ -43,7 +43,7 @@ public class GuiRenderer implements ViewRenderer {
     public void render(ViewManager viewManager, RenderAPI api, IProjection projection, FrameBuffer target, Time time) {
         if (this.componentRoot != null) {
             api.applyRenderState(Renderer2D.SPRITE_STATE);
-            this.batch.getActualBatch().setProjectionViewMatrx(projection.getProjection());
+            this.batch.getActualBatch().setProjectionViewMatrix(projection.getProjection());
             this.batch.begin();
             this.componentRoot.render(this.batch, target.getWidth() / (float) target.getHeight());
             this.batch.end();

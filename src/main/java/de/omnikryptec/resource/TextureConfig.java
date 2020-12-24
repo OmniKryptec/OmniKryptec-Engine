@@ -20,7 +20,7 @@ package de.omnikryptec.resource;
 public class TextureConfig {
     
     public static enum WrappingMode {
-        ClampToEdge, Repeat
+        ClampToEdge, Repeat, MirroredRepeat
     }
     
     public static enum MagMinFilter {

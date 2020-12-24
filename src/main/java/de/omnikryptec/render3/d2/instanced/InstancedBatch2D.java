@@ -65,7 +65,7 @@ public class InstancedBatch2D extends AbstractInstancedBatch2D<InstancedData> {
     }
     
     @Override
-    public void setProjectionViewMatrx(Matrix4fc mat) {
+    public void setProjectionViewMatrix(Matrix4fc mat) {
         this.shader.setProjectionViewMatrix(mat);
     }
     

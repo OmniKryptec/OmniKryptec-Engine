@@ -4,7 +4,7 @@ import org.joml.Matrix4fc;
 
 public interface IRenderer2D {
     
-    void setProjectionViewMatrx(Matrix4fc mat);
+    void setProjectionViewMatrix(Matrix4fc mat);
     
     void start();
     

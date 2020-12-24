@@ -74,7 +74,7 @@ public class ViewRenderer2D implements ViewRenderer {
         Matrix4fc projectionMatrix = projection.getProjection();
         int currentlayer = abstractSprites.get(0).getLayer();
         IRenderer2D currentRenderer = abstractSprites.get(0).getRenderer();
-        currentRenderer.setProjectionViewMatrx(projectionMatrix);
+        currentRenderer.setProjectionViewMatrix(projectionMatrix);
         currentRenderer.start();
         for (AbstractSprite abstractSprite : abstractSprites) {
             if (abstractSprite.isVisible(frustumFilter)) {
@@ -85,7 +85,7 @@ public class ViewRenderer2D implements ViewRenderer {
                 if (currentRenderer != abstractSprite.getRenderer()) {
                     currentRenderer.flush();
                     currentRenderer = abstractSprite.getRenderer();
-                    currentRenderer.setProjectionViewMatrx(projectionMatrix);
+                    currentRenderer.setProjectionViewMatrix(projectionMatrix);
                     currentRenderer.start();
                 }
                 abstractSprite.draw();

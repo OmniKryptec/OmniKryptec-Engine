@@ -32,7 +32,7 @@ public class InstancedRenderHelper {
         layout.push(Type.FLOAT, 2, false);
         va.addVertexBuffer(vb, layout);
         instanced = api.createVertexBuffer();
-        instanced.setDescription(BufferUsage.Dynamic, Type.FLOAT, buffersize);
+        instanced.setDescription(BufferUsage.Stream, Type.FLOAT, buffersize);
         va.addVertexBuffer(instanced, instancedLayout);
         va.setIndexBuffer(ib);
     }

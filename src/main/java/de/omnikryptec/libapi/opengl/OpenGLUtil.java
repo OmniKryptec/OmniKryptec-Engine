@@ -228,6 +228,8 @@ public class OpenGLUtil {
             return GL12.GL_CLAMP_TO_EDGE;
         case Repeat:
             return GL11.GL_REPEAT;
+        case MirroredRepeat:
+            return GL14.GL_MIRRORED_REPEAT;
         default:
             throw new IllegalArgumentException();
         }

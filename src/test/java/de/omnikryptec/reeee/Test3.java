@@ -11,8 +11,8 @@ import de.omnikryptec.libapi.exposed.render.RenderAPI;
 import de.omnikryptec.libapi.exposed.render.Texture;
 import de.omnikryptec.libapi.exposed.window.IWindow;
 import de.omnikryptec.libapi.exposed.window.WindowUpdater;
-import de.omnikryptec.render3.d2.BatchManager2D;
 import de.omnikryptec.render3.d2.BatchCache;
+import de.omnikryptec.render3.d2.BatchManager2D;
 import de.omnikryptec.render3.d2.InstanceData;
 import de.omnikryptec.render3.d2.instanced.InstancedBatch2D;
 import de.omnikryptec.render3.d2.instanced.InstancedData;
@@ -26,7 +26,7 @@ import de.omnikryptec.util.settings.Settings;
 
 public class Test3 extends Omnikryptec {
     
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
         Omnikryptec.initialize(new Settings<>(), RenderAPI.OpenGL, new Settings<>(), new Settings<>(), false, false);
         Logger.setMinLogType(LogType.Debug);
         final IWindow window = LibAPIManager.instance().getGLFW().getRenderAPI().getWindow();
