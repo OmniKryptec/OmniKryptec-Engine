@@ -185,6 +185,7 @@ public class EventBus implements IUpdatable, IEventListener {
             final EventSubscription esub = m.getAnnotation(EventSubscription.class);
             if (esub != null) {
                 annotationFound = true;
+                m.setAccessible(true);
                 final EventHandler handler = new EventHandler(object, m, esub.receiveConsumed(), esub.priority());
                 final Class<?>[] cls = m.getParameterTypes();
                 if (cls.length != 1) {
